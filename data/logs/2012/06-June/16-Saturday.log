@@ -1,0 +1,289 @@
+
+
+Starting up. 13:35.00
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Addictgamer has started the game.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+GAME: SQL ERROR during player polling. Failed to connect.
+GAME: SQL ERROR during admin polling. Failed to connect.
+GAME: SQL ERROR during death reporting. Failed to connect.
+ACCESS: Logout: *no client*/(Efig Neckins)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+ACCESS: Logout: Addictgamer/(Efig Neckins)
+
+
+Starting up. 15:18.31
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Addictgamer has started the game.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+ADMIN: Addictgamer/(Efig Neckins) has granted Addictgamer full access.
+GAME: SQL ERROR during death reporting. Failed to connect.
+ACCESS: Logout: *no client*/(Efig Neckins)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+GAME: Efig Neckins/Addictgamer used abandon mob.
+ACCESS: Logout: *no client*/(Efig Neckins)
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+GAME: SQL ERROR during player polling. Failed to connect.
+GAME: SQL ERROR during admin polling. Failed to connect.
+ADMIN: Addictgamer/(Efig Neckins) initiated a reboot.
+ACCESS: Logout: Addictgamer/(Efig Neckins)
+
+
+Starting up. 15:26.58
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+ADMIN: Addictgamer/(Efig Neckins) initiated a reboot.
+ACCESS: Logout: Addictgamer/(Efig Neckins)
+
+
+Starting up. 15:35.20
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Addictgamer/(Addictgamer) set the mode as extended.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 192.168.0.3
+ADMIN: Addictgamer/(Efig Neckins) spawned /obj/item/weapon/dnainjector/h2m at (131,81,1)
+GAME: Addictgamer/(Efig Neckins) injected Addictgamer/(Efig Neckins) with the DNA-Injector (Human > Monkey)
+ACCESS: Logout: *no client*/(Efig Neckins)
+ACCESS: Login: Addictgamer/(monkey (323)) from 192.168.0.3
+GAME: monkey (09d7)/Addictgamer used abandon mob.
+ACCESS: Logout: *no client*/(monkey (323))
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 192.168.0.3
+ACCESS: Logout: *no client*/(Efig Neckins)
+ACCESS: Login: Addictgamer/(Tobor) from 192.168.0.3
+GAME: Tobor/Addictgamer used abandon mob.
+ACCESS: Logout: *no client*/(Tobor)
+GAME: Rebooting because of no live players
+ACCESS: Logout: Addictgamer/(new player)
+
+
+Starting up. 15:38.40
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+GAME: SQL ERROR during death reporting. Failed to connect.
+ACCESS: Logout: *no client*/(Efig Neckins)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+GAME: Efig Neckins/Addictgamer used abandon mob.
+ACCESS: Logout: *no client*/(Efig Neckins)
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+ACCESS: Logout: *no client*/(Efig Neckins)
+ACCESS: Login: Addictgamer/(Cyborg) from 127.0.0.1
+GAME: SQL ERROR during player polling. Failed to connect.
+GAME: SQL ERROR during death reporting. Failed to connect.
+ACCESS: Logout: *no client*/(Cyborg -787)
+ACCESS: Login: Addictgamer/(Cyborg -787) from 127.0.0.1
+GAME: SQL ERROR during admin polling. Failed to connect.
+GAME: Rebooting because of no live players
+ACCESS: Logout: Addictgamer/(Cyborg -787)
+
+
+Starting up. 15:46.51
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+
+
+Starting up. 15:50.24
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+ACCESS: Notice: Addictgamer/(Efig Neckins) has same IP address as Guest-4244397027/(Guest-4244397027)
+ACCESS: Notice: Addictgamer/(Efig Neckins) has same computer ID as Guest-4244397027/(Guest-4244397027)
+ACCESS: Logout: *no client*/(Guest-4244397027)
+ACCESS: Login: Guest-4244397027/(Trenton Gibson) from 127.0.0.1
+ACCESS: Notice: Guest-4244397027/(Trenton Gibson) has same IP address as Addictgamer/(Efig Neckins)
+ACCESS: Notice: Guest-4244397027/(Trenton Gibson) has same computer ID as Addictgamer/(Efig Neckins)
+GAME: SQL ERROR during death reporting. Failed to connect.
+ACCESS: Logout: *no client*/(Trenton Gibson)
+ACCESS: Login: Guest-4244397027/(Trenton Gibson) from 127.0.0.1
+ACCESS: Notice: Guest-4244397027/(Trenton Gibson) has same IP address as Addictgamer/(Efig Neckins)
+ACCESS: Notice: Guest-4244397027/(Trenton Gibson) has same computer ID as Addictgamer/(Efig Neckins)
+ACCESS: Logout: *no client*/(Trenton Gibson)
+ACCESS: Login: Guest-4244397027/(alien hunter (542)) from 127.0.0.1
+ACCESS: Notice: Guest-4244397027/(alien hunter (542)) has same IP address as Addictgamer/(Efig Neckins)
+ACCESS: Notice: Guest-4244397027/(alien hunter (542)) has same computer ID as Addictgamer/(Efig Neckins)
+ACCESS: Logout: *no client*/(alien hunter (542))
+ACCESS: Login: Guest-4244397027/(alien hunter (542)) from 127.0.0.1
+ACCESS: Notice: Guest-4244397027/(alien hunter (542)) has same IP address as Addictgamer/(Efig Neckins)
+ACCESS: Notice: Guest-4244397027/(alien hunter (542)) has same computer ID as Addictgamer/(Efig Neckins)
+GAME: alien hunter (542)/Guest-4244397027 used abandon mob.
+ACCESS: Logout: *no client*/(alien hunter (542))
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: Guest-4244397027/(Harrison Knapenberger) from 127.0.0.1
+ACCESS: Notice: Guest-4244397027/(Harrison Knapenberger) has same IP address as Addictgamer/(Efig Neckins)
+ACCESS: Notice: Guest-4244397027/(Harrison Knapenberger) has same computer ID as Addictgamer/(Efig Neckins)
+ACCESS: Logout: *no client*/(Harrison Knapenberger)
+ACCESS: Login: Guest-4244397027/(Harrison Knapenberger) from 127.0.0.1
+ACCESS: Notice: Guest-4244397027/(Harrison Knapenberger) has same IP address as Addictgamer/(Efig Neckins)
+ACCESS: Notice: Guest-4244397027/(Harrison Knapenberger) has same computer ID as Addictgamer/(Efig Neckins)
+ACCESS: Logout: Guest-4244397027/(Harrison Knapenberger)
+ACCESS: Login: Guest-4244397027/(Harrison Knapenberger) from 127.0.0.1
+ACCESS: Notice: Guest-4244397027/(Harrison Knapenberger) has same IP address as Addictgamer/(Efig Neckins)
+ACCESS: Notice: Guest-4244397027/(Harrison Knapenberger) has same computer ID as Addictgamer/(Efig Neckins)
+ACCESS: Logout: *no client*/(Harrison Knapenberger)
+ACCESS: Login: Guest-4244397027/(Harrison Knapenberger) from 127.0.0.1
+ACCESS: Notice: Guest-4244397027/(Harrison Knapenberger) has same IP address as Addictgamer/(Efig Neckins)
+ACCESS: Notice: Guest-4244397027/(Harrison Knapenberger) has same computer ID as Addictgamer/(Efig Neckins)
+ADMIN: Addictgamer/(Efig Neckins) spawned /mob/living/carbon/monkey at (104,179,1)
+ADMIN: Addictgamer/(Efig Neckins) spawned /obj/alien/facehugger at (104,179,1)
+ADMIN: Addictgamer/(Efig Neckins) spawned /area/toxins/xenobiology at (105,175,1)
+ACCESS: Logout: Addictgamer/(Efig Neckins)
+ACCESS: Logout: Guest-4244397027/(Harrison Knapenberger)
+
+
+Starting up. 15:58.49
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+ADMIN: Addictgamer/(Efig Neckins) spawned /obj/alien/facehugger at (131,81,1)
+GAME: SQL ERROR during player polling. Failed to connect.
+ACCESS: Logout: *no client*/(Efig Neckins)
+ACCESS: Login: Addictgamer/(alien larva (715)) from 127.0.0.1
+GAME: SQL ERROR during admin polling. Failed to connect.
+ACCESS: Logout: *no client*/(alien larva (715))
+ACCESS: Login: Addictgamer/(alien larva (715)) from 127.0.0.1
+ACCESS: Logout: Addictgamer/(alien larva (715))
+
+
+Starting up. 19:51.07
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Addictgamer has started the game.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+ADMIN: Addictgamer/(Efig Neckins) spawned /obj/machinery/singularity at (131,81,1)
+GAME: SQL ERROR during death reporting. Failed to connect.
+ACCESS: Logout: *no client*/(Efig Neckins)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+ADMIN: Addictgamer/(Efig Neckins) spawned /obj/item/weapon/reagent_containers/food/snacks/sliceable/pizza/margherita at (133,81,1)
+GAME: Efig Neckins/Addictgamer used abandon mob.
+ACCESS: Logout: *no client*/(Efig Neckins)
+ACCESS: Logout: Addictgamer/(new player)
+ACCESS: Logout: Addictgamer/(Addictgamer)
+
+
+Starting up. 19:55.28
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Addictgamer has started the game.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(observer) from 127.0.0.1
+ADMIN: Addictgamer/(Efig Neckins) spawned /obj/machinery/singularity at (104,180,1)
+GAME: SQL ERROR during player polling. Failed to connect.
+ACCESS: Logout: Addictgamer/(Efig Neckins)
+
+
+Starting up. 20:03.17
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Addictgamer has started the game.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(observer) from 127.0.0.1
+ADMIN: Addictgamer/(Efig Neckins) spawned /obj/machinery/singularity at (106,197,1)
+ACCESS: Logout: Addictgamer/(Efig Neckins)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+GAME: SQL ERROR during player polling. Failed to connect.
+GAME: SQL ERROR during admin polling. Failed to connect.
+ACCESS: Logout: Addictgamer/(Efig Neckins)
+
+
+Starting up. 22:57.07
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Addictgamer has started the game.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(observer) from 127.0.0.1
+ADMIN: Addictgamer/(Efig Neckins) spawned /obj/machinery/singularity at (106,197,1)
+ACCESS: Logout: Addictgamer/(Efig Neckins)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+GAME: SQL ERROR during player polling. Failed to connect.
+GAME: SQL ERROR during admin polling. Failed to connect.
+GAME: Explosion with size (-1, 0, 2) in area Space 
+GAME: Explosion with size (-1, 0, 2) in area Space 
+GAME: Explosion with size (-1, 0, 2) in area Bar 
+GAME: SQL ERROR during player polling. Failed to connect.
+GAME: SQL ERROR during admin polling. Failed to connect.
+GAME: Rebooting because of no live players
+ACCESS: Logout: Addictgamer/(Efig Neckins)
+
+
+Starting up. 23:27.44
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist

@@ -1,0 +1,7 @@
+first:
+git commit -a -m "commit message"
+then:
+git push git@gitorious.org:terrastation-13/terrastation-13.git master
+enter password at prompt.
+You can use git push master
+if you've added git@gitorious.org:terrastation-13/terrastation-13.git to remote...

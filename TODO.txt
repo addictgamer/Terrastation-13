@@ -1,0 +1,248 @@
+SS13 Terraform Server TODO 
+
+---------Addictgamer-----------------
+
+2. Program space pods and mini fighters.
+Space pods = little tin can spaceship.
+Mini fighter = little tin can with guns.
+
+3. Improve combat.
+
+4. Split the mining furnace into a manually controlled one and an automatic one, or combine the automatic and manual function into one.
+Automatic = it just picks up the ore and spits out the bar.
+Manual = It picks up the ore and you have to tell it to process it and how much to process.
+
+5. Make status displays walkable.
+
+6. Give the AI some form of materializing a physical body, or directly controlling robots or something.
+
+8. Mine oxygen on frozen planets/asteroids or something.
+
+9. 3D station as in, multiple levels that can be accessed with ladders and elevators and stuff.
+
+10. Space exploration probes.
+
+11. Fighter drones. Like minifighters except unarmed, automatic, can patrol, can explore, and can be directly ai controlled. :O
+
+12. Status panels can be configured to show any input at all.
+
+13. Make the stacker found under obj/machines/mineral work.
+
+14. Better turrets.
+
+15. Spaceships. Like shuttles, bu instead, you pilot them around.
+
+16. SMGs are high rate of fire.
+
+17. More weapons.
+
+18. Better planets and new planet features.
+
+19. More stuff to mine.
+
+20. Better mining.
+
+21. Interaction between maps so as to sort of simulate a galaxy or solor system or something along those lines.
+
+22. More computers to build.
+
+23. More machines to build.
+
+24. More foods.
+
+25. More random items.
+
+26. Better cooking system.
+
+27. Better construction sysem.
+
+28. Fix the ai being able to drink water from a toilet bug.
+
+29. Better mecha system. So as to be more customizable.
+
+30. Better robot system. So as to be more customizable.
+
+31. Fix the doors closing while you're standing on them bug.
+
+32. Livestock.
+
+33. The deep dark secret vault.
+
+34. A device that heats up tanks of gas and/or canisters for you.
+
+35. Mining laser module.
+
+38. Centcomm dynamically adjusts your station's budget while the level's ongoing. And stuf flike lots of mining, new research, artifacts, PROGRESS, etc increase your budget.
+
+39. You can order crates of money, so you can then spend your station's budget with other companies in galactic trading and whatnot.
+
+40. Mass approve request feature.
+
+41. Lazor face Cyborg Module; I'MMA FIRIN MAH LAZOR
+
+42. Solar Ass Cyborg Module; Recharges powercell when in sunlight
+
+43. New type of cyborg that supports up to 10 or so modules.
+
+44. Cyborgs entering mechas.
+
+45. Fix the infinite fire alarm going off sound when a real fire triggers the alarm.
+
+46. Black market.
+
+47. Make multiple APCs in one room work together to power it. 
+
+48. A door closing on you gibs you.   
+
+49. TRADE
+
+50. Some type of reactor notable for setting it up once and never having to refuel it or anything.
+
+51. Pirates.
+
+52. One way power cable; only conducts power into one direction. Essentially connecting two power grids by draining the first grid's power by how much the second grid demands and then providing the second grid with the power it drained from the first grid.
+
+53. Warthog mech = marauder + colored brown with lighter brown for camofloage stuff + minigun.
+
+54. Automatic weapons are automatic.
+
+55. SPACE PIRATES!!!
+
+56. Door killing railgun. And walls.
+
+57. Add AI to the free slots list.
+
+58. Resource manager. Handles station funding and is the boss of the QM.
+
+59. Add the terminator bot.
+
+60. Rewrite computer system to be a one-machine-does-it-all thing. Use software to make it do specialized task. Allow for programming computers.
+
+61. Give all machines that apply a cpu variable. This variable is used to control how much a computer can do. And how much more computer power it gives an AI that controls it.
+
+62. Rewrite mechas to be a one-base-makes-them-all kind of thing. Where you assemble whatever kind of mecha you want, from scratch and blarg like that.
+
+63. Buttbot
+It is an automated butt with a robot arm sticking out of it. A buttbot will occasionally copy things people say and randomly replace their words with, "butt." "You can imagine the hilarity." -> ~"You butt imagine the butt." To build one manually, combine the following in order:
+Butt
+Robot arm                     
+
+64. Make the mecha flamethrower actually work. 
+
+66. Give the mecha a occupant_play_sound function, to handle remote controlled and occupants.
+
+67. Popup a dialogue asking the AI if it wants to take over the mecha when it clicks on one.
+
+68. Give AI option to force take control of a mecha (ejecting the current occupant in the process)
+
+69. BroBot Module: <-- IE Nannek.
+ Provides the following tools: Beer, probability cube, probability disc, a cardboard tube, and a zippo lighter
+ 
+70. Vendor Module:
+ Provides the following tools: Health Analyzer, Camera Viewer, Bike Horn, 2x Drinking Glass, Burger Vendor, Ice Cream Vendor, Milk Vendor, Cola Vendor, and Beer Vendor
+ 
+71. Zombies.
+
+72. Elite security.
+
+73. Give warthogs construction modules.
+
+74. [9:53:30 PM] [FTZ]sarge: warthog v1.2
+gat laser
+flamethrower (debugged)
+deconstruction device
+ohk gun?
+blarg missiles
+blarg missiles
+
+75. for areas that are important but not off the grid, put a device that behaves exactly like an SMES with much less storage capabilities near the room(s) that need a backup supply that draw from the grid and output only to those rooms
+[9:53:27 PM] L Z: an SMES can do this job already but it's too fucking big to work practically
+[9:53:53 PM] L Z: so make a smaller one with lower input/output/storage maximums and call it an UPS
+[9:54:19 PM] L Z: these exist in real life by the way and do this very thing
+[9:56:53 PM] L Z: But keep in mind that the UPS should behave like a SMES but on a smaller scale
+[9:57:58 PM] L Z: and it should default to working properly instead of needing someone to set the charging and I/O values and should in fact be locked to anyone without proper permissions
+
+77. ADD ABLILITY TO COMBINE A BUTT AND A SECURITY HELMET
+[10:23:30 PM] L Z: BUTT HELMETS
+
+78. Fix laying down and getting back up.
+
+79. Add butts.
+
+80. Add poop. And pooping.
+
+81. Throwing poop = splatter, destroying poop. Dropping poop = splatter, destroying it.
+
+82. New AI module: Mecha control.
+
+83. Every AI module takes up space. AI selected modules on creation. More can be researched/created and added to the AI later on, if space is left.
+
+84. Brain transplants between humans and other life forms.
+
+85. In the poop material creation code, change the 10 to a value stored in poop that specifies how much material it is composed of. UPDATE: Just take all the poop material and create poop with it, and set its material ammount to the ammount of poop material there was when it was created.
+
+86. As the poop splatters over stuff, it loses bits and pieces of itself, gradually getting smaller. So, let's say throwing it removes 5 material. The poop started at 10. It now is half size, having 5 material. One effect is the sprite got smaller.
+
+87. If thrown poop hits eyes, it blinds somebody until they wash their face.
+
+88. On traitor and all applicable game modes, default respawning to disabled.
+
+89. Bug report: If a person has had one or more characters die (and they respawned, of course) and they're currently alive, and the brain from one of their old corpses is cut out, that brain will steal the client away to it leaving the guy they were just playing clientless.
+
+90. Make terralabs accessible only to client addictgamer.
+
+91. The AI access bridge. Basically, it's an area that warps in from another dimension when the AI calls it, making it easy for people to access the AI say. Perhaps instead of this, a special teleporter that teleports directly into the AI sat that only works when the AI enables it.
+
+92. Grab an updated (and working) version of the atmos code from either tgstation or bs12.
+
+93. Late spawn as AI.
+
+94. Make poop go into hand when pooping. If hand doesn't have room, drop it on floor.
+
+95. Alien queen can take human corpse, inject them with plasma, and place them a little lifeform in them that can work on a "trigger bomb on impact, timer, remote control, or somebody passing next to this of the specified species."
+
+96. Game setup lobby. Default the game starts as it does now. However, an admin can interrupt that and open up a game lobby where they can assign players jobs, add NPCs, set up events, etc. Ya, setup the game.
+
+97. Realistic health system. And limbs. And organs. And stuff like that. This also brings a combat rewrite. 
+
+98. Add a command that makes a mob a NPC.
+
+99. The piratize function makes clientless mobs NPCs. Make it check to make sure that mob is unable to get a client again.
+
+101. Make the "walk_around" task walk only where the NPC can.
+
+103. Allow cloning of NPCs and the like. This probably requires giving NPCs a client, with a "npc" variable set. Ya, that's it. even better than the current system.
+
+104. icons/obj/pipes/disposal.dmi : Add north and south icons for the toilet.
+
+105. Syringe guns and DNA injectors.
+
+106. Nuclear gun doesn't just have nuclear reactor. It fires nuclear explosives.
+
+107.  if(singularity.size == 3) play_nyan_on_repeat()
+
+108. Make the hivebot invasion music play the entire time hivebots spawned from the invasion exist.
+
+109. If somebody is standing on a door they get gibbed.
+
+
+----------
+DONE
+----------
+
+
+
+1. Make the furnace for mining work. - DONE
+
+7. Create an electricity generator that uses gas tanks filled with plasma to create electricity. - DONE
+
+36. Mass ordering for the quartermaster. - DONE
+
+37. Likewise, mass requesting at supply requesting consoles. - DONE                                   
+
+65. Make AI controlling mecha work. - DONE        
+
+100. Smooth movement between tiles. - DONE          
+
+102. Play final countdown when the nuke's timer is started. - DONE
+ 

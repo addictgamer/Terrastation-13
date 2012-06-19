@@ -1,0 +1,5 @@
+<h1>Welcome to Space Station 13!</h1>
+
+<i>This server is running a terrastation 13 dev build. There will be bugs and broken features.</i><br>
+Make sure to view the server's rules before you start playing.<br>
+The official forum is here: http://s1.zetaboards.com/Terraform_Gaming/forum/1701376/

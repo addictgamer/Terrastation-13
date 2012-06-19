@@ -1,0 +1,248 @@
+
+
+Starting up. 02:43.55
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Addictgamer has started the game.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Devon Ironmonger) from 127.0.0.1
+GAME: Explosion with size (-1, -1, 2) in area Space 
+ADMIN: Addictgamer/(Devon Ironmonger) modified human's npc to 1
+ADMIN: Addictgamer/(Devon Ironmonger) modified [0x21004718] (/datum/npc_variables)'s actively_seek_attack_targets to 1
+ACCESS: Logout: Addictgamer/(Devon Ironmonger)
+
+
+Starting up. 02:53.41
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+GAME: Explosion with size (-1, -1, 2) in area Space 
+ADMIN: Addictgamer has started the game.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Dylan Duncan) from 127.0.0.1
+ADMIN: Addictgamer/(Dylan Duncan) modified human's npc to 1
+ADMIN: Addictgamer/(Dylan Duncan) modified [0x210046f7] (/datum/npc_variables)'s actively_seek_attack_targets to 1
+ADMIN: Addictgamer/(Dylan Duncan) modified human's npc to 1
+ADMIN: Addictgamer/(Dylan Duncan) Piratized *no client*/(human)
+ADMIN: Addictgamer/(Dylan Duncan) Piratized *no client*/(human)
+ACCESS: Logout: Addictgamer/(Dylan Duncan)
+
+
+Starting up. 03:12.14
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+GAME: Explosion with size (-1, -1, 2) in area Space 
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Emmanuel Cox) from 127.0.0.1
+ADMIN: Addictgamer/(Emmanuel Cox) modified human's npc to 1
+GAME: SQL ERROR during player polling. Failed to connect.
+GAME: SQL ERROR during admin polling. Failed to connect.
+ADMIN: Addictgamer/(Emmanuel Cox) modified [0x210046c4] (/datum/npc_variables)'s actively_seek_attack_targets to 1
+ACCESS: Logout: Addictgamer/(Emmanuel Cox)
+
+
+Starting up. 06:11.06
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+GAME: Explosion with size (-1, -1, 2) in area Space 
+ADMIN: Addictgamer has started the game.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Simon Boyer) from 127.0.0.1
+GAME: SQL ERROR during player polling. Failed to connect.
+ADMIN: Addictgamer/(Simon Boyer) modified human's npc_data to /obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction
+ADMIN: Addictgamer/(Simon Boyer) modified human's npc_data to 
+ADMIN: Addictgamer/(Simon Boyer) modified [0x2100475b] (/datum/npc_variables)'s actively_seek_attack_targets to 1
+ACCESS: Logout: Addictgamer/(Simon Boyer)
+
+
+Starting up. 06:37.10
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+GAME: Explosion with size (-1, -1, 2) in area Space 
+ADMIN: Addictgamer has started the game.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Chance Stall) from 127.0.0.1
+ADMIN: Addictgamer/(Chance Stall) modified [0x210046e1] (/datum/npc_variables)'s actively_seek_attack_targets to 1
+ACCESS: Logout: Addictgamer/(Chance Stall)
+
+
+Starting up. 07:33.03
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+GAME: Explosion with size (-1, -1, 2) in area Space 
+
+
+Starting up. 07:42.22
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+GAME: Explosion with size (-1, -1, 2) in area Space 
+ADMIN: Addictgamer has started the game.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Brody Hussain) from 127.0.0.1
+ADMIN: Addictgamer/(Brody Hussain) modified [0x21004680] (/datum/npc_variables)'s actively_seek_attack_targets to 1
+ADMIN: Addictgamer/(Brody Hussain) made *no client*/(human) drop everything!
+ACCESS: Logout: Addictgamer/(Brody Hussain)
+
+
+Starting up. 08:01.10
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+GAME: Explosion with size (-1, -1, 2) in area Space 
+ADMIN: Addictgamer has started the game.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Mauricio Zadovsky) from 127.0.0.1
+ADMIN: Addictgamer/(Mauricio Zadovsky) modified [0x21004634] (/datum/npc_variables)'s actively_seek_attack_targets to 1
+ACCESS: Logout: Addictgamer/(Mauricio Zadovsky)
+
+
+Starting up. 08:06.47
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+GAME: Explosion with size (-1, -1, 2) in area Space 
+ADMIN: Addictgamer has started the game.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Conner Mills) from 127.0.0.1
+ADMIN: Addictgamer/(Conner Mills) spawned /obj/item/weapon/gun/energy/pulse_rifle/M1911 at (80,97,1)
+ADMIN: Addictgamer/(Conner Mills) modified [0x21004709] (/datum/npc_variables)'s actively_seek_attack_targets to 1
+ACCESS: Logout: Addictgamer/(Conner Mills)
+
+
+Starting up. 08:13.32
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+GAME: Explosion with size (-1, -1, 2) in area Space 
+ADMIN: Addictgamer has started the game.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Cy Hughes) from 127.0.0.1
+ADMIN: Addictgamer/(Cy Hughes) modified [0x210046e1] (/datum/npc_variables)'s actively_seek_attack_targets to 1
+ACCESS: Logout: Addictgamer/(Cy Hughes)
+
+
+Starting up. 09:16.14
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Addictgamer has started the game.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Homo Martin) from 127.0.0.1
+ADMIN: Addictgamer/(Homo Martin) spawned /obj/machinery/floodlight at (109,136,1)
+ADMIN: Addictgamer/(Homo Martin) spawned /obj/machinery/portable_atmospherics/canister/oxygen at (112,139,1)
+ACCESS: Logout: Addictgamer/(Homo Martin)
+
+
+Starting up. 09:24.48
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Leonardo Thomas) from 127.0.0.1
+GAME: SQL ERROR during player polling. Failed to connect.
+GAME: SQL ERROR during admin polling. Failed to connect.
+ADMIN: Addictgamer/(Leonardo Thomas) spawned /obj/machinery/portable_atmospherics/canister/oxygen at (109,139,1)
+ADMIN: Addictgamer/(Leonardo Thomas) spawned /obj/item/weapon/wrench at (109,137,1)
+ACCESS: Logout: *no client*/(Guest-728266893)
+ACCESS: Login: Guest-728266893/(Oliver Butte) from 127.0.0.1
+ACCESS: Notice: Guest-728266893/(Oliver Butte) has same IP address as Addictgamer/(Leonardo Thomas)
+ACCESS: Notice: Guest-728266893/(Oliver Butte) has same computer ID as Addictgamer/(Leonardo Thomas)
+ADMIN: Addictgamer/(Leonardo Thomas) made Guest-728266893/(Oliver Butte) drop everything!
+ADMIN: Addictgamer/(Leonardo Thomas) spawned /obj/item/weapon/crowbar/red at (128,167,1)
+GAME: SQL ERROR during player polling. Failed to connect.
+ACCESS: Logout: Guest-728266893/(Oliver Butte)
+GAME: SQL ERROR during admin polling. Failed to connect.
+ADMIN: Addictgamer/(Leonardo Thomas) spawned /obj/item/weapon/paper/Court at (133,134,1)
+ACCESS: Logout: Addictgamer/(Leonardo Thomas)
+
+
+Starting up. 09:59.27
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Addictgamer has started the game.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Nasir Wolfe) from 127.0.0.1
+ADMIN: Addictgamer/(Nasir Wolfe) spawned /obj/machinery/portable_atmospherics/canister/oxygen at (109,138,1)
+ADMIN: Addictgamer/(Nasir Wolfe) spawned /obj/item/weapon/wrench at (109,137,1)
+ACCESS: Logout: *no client*/(Guest-728266893)
+ACCESS: Login: Guest-728266893/(Braylon Kifer) from 127.0.0.1
+ACCESS: Notice: Guest-728266893/(Braylon Kifer) has same IP address as Addictgamer/(Nasir Wolfe)
+ACCESS: Notice: Guest-728266893/(Braylon Kifer) has same computer ID as Addictgamer/(Nasir Wolfe)
+ADMIN: Addictgamer/(Nasir Wolfe) made Guest-728266893/(Braylon Kifer) drop everything!
+ACCESS: Logout: Guest-728266893/(Braylon Kifer)
+ACCESS: Logout: Addictgamer/(Nasir Wolfe)
+
+
+Starting up. 14:22.23
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+GAME: Explosion with size (-1, -1, 2) in area Space 
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Abel Leach) from 127.0.0.1
+ADMIN: Addictgamer/(Abel Leach) modified [0x2100474a] (/datum/npc_variables)'s actively_seek_attack_targets to 1
+GAME: SQL ERROR during death reporting. Failed to connect.
+ACCESS: Logout: Addictgamer/(Abel Leach)

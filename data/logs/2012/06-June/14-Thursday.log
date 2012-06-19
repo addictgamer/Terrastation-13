@@ -1,0 +1,1305 @@
+
+
+Starting up. 13:14.35
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Addictgamer/(Addictgamer) set the mode as extended.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Damart Flaggins) from 127.0.0.1
+ACCESS: Logout: *no client*/(Zjean)
+ACCESS: Login: Zjean/(Zjean Dragonus) from 70.251.239.150
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/item/clothing/suit/pirate at (132,83,1)
+ACCESS: Logout: *no client*/(Lair of Rockwhales)
+ACCESS: Login: Lair of Rockwhales/(Gunner Holmes) from 70.129.141.175
+SAY: Zjean Dragonus/Zjean : sup
+ADMIN: Addictgamer/(Damart Flaggins) modified Airlock's req_access_txt to 47
+ADMIN: Addictgamer/(Damart Flaggins) has granted Addictgamer full access.
+SAY: Damart Flaggins/Addictgamer : Hello.
+SAY: Damart Flaggins/Addictgamer : Please report any station flaws to me.
+SAY: Damart Flaggins/Addictgamer : Or any potential imrpovements.
+ACCESS: Logout: *no client*/(LordZakida)
+ACCESS: Login: LordZakida/(Dragon Toast) from 70.251.239.150
+ACCESS: Notice: LordZakida/(Dragon Toast) has same IP address as Zjean/(Zjean Dragonus)
+ACCESS: Logout: Lair of Rockwhales/(Gunner Holmes)
+GAME: SQL ERROR during player polling. Failed to connect.
+ADMIN: PM: Addictgamer/(Damart Flaggins)->LordZakida/(Dragon Toast) : Currently this is just an extended round - but it has the potential to become an interesting round. What do you think?
+ADMIN: PM: LordZakida/(Dragon Toast)->Addictgamer/(Damart Flaggins) : Make it heppan
+GAME: SQL ERROR during admin polling. Failed to connect.
+ADMIN: PM: Addictgamer/(Damart Flaggins)->LordZakida/(Dragon Toast) : What does the annoucne objectives button int he traitor panel for a certain mob do?
+ADMIN: PM: LordZakida/(Dragon Toast)->Addictgamer/(Damart Flaggins) : Not sure.
+ADMIN: PM: Addictgamer/(Damart Flaggins)->LordZakida/(Dragon Toast) : I clicked it. It probably announced the objectives. Not sure, but it didn't announce it globally, which is what I was worried about.
+ADMIN: PM: LordZakida/(Dragon Toast)->Addictgamer/(Damart Flaggins) : It didn't.
+SAY: Damart Flaggins/Addictgamer : Random unconnected APC.
+SAY: Dragon Toast/LordZakida : WAIR
+SAY: Damart Flaggins/Addictgamer : Starboard Solars
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/item/weapon/storage/utilitybelt/full at (65,112,1)
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/item/clothing/gloves/yellow at (65,111,1)
+SAY: Dragon Toast/LordZakida : oh, I knew that.
+SAY: Damart Flaggins/Addictgamer : Hooked it up to the solar panels and hooked the panels up to the main grid.
+SAY: Damart Flaggins/Addictgamer : Eh?
+GAME: SQL ERROR during player polling. Failed to connect.
+SAY: Damart Flaggins/Addictgamer : Why is it like that?
+GAME: SQL ERROR during admin polling. Failed to connect.
+SAY: Damart Flaggins/Addictgamer : Weapons storage is not connected to the main power grid
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/item/weapon/tray at (67,135,1)
+ADMIN: Addictgamer/(Damart Flaggins) deleted Tray at (67,135,1)
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/item/device/t_scanner at (66,135,1)
+SAY: Damart Flaggins/Addictgamer : bridge pwoer online
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/item/weapon/tank/oxygen/yellow at (68,152,1)
+GAME: SQL ERROR during player polling. Failed to connect.
+GAME: SQL ERROR during admin polling. Failed to connect.
+ADMIN: Addictgamer/(Damart Flaggins) deleted Securitron at (109,150,1)
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/machinery/portable_atmospherics/canister/sleeping_agent at (95,152,1)
+SAY: Damart Flaggins/Addictgamer : Cyrogenics is online.
+SAY: Zjean Dragonus/Zjean : two burgers in kitchen for those who want them
+SAY: Zjean Dragonus/Zjean : Burgers in kitchen for those who want them
+SAY: Damart Flaggins/Addictgamer : yay
+SAY: Damart Flaggins/Addictgamer : What/
+ADMIN: Addictgamer/(Damart Flaggins) toggled respawn to Off.
+GAME: SQL ERROR during death reporting. Failed to connect.
+ACCESS: Logout: *no client*/(Unknown)
+ACCESS: Login: Addictgamer/(Unknown) from 127.0.0.1
+ADMIN: Addictgamer/(Unknown) modified [0x21003cf0] (/datum/npc_variables)'s actively_seek_attack_targets to 1
+SAY: Zjean Dragonus/Zjean : ummmm
+ADMIN: Addictgamer/(Unknown) modified [0x21003171] (/datum/npc_variables)'s actively_seek_attack_targets to 1
+SAY: Zjean Dragonus/Zjean : why is there a random death squad menber shooting this wall?
+ADMIN: Addictgamer/(Unknown) modified [0x21001d0b] (/datum/npc_variables)'s actively_seek_attack_targets to 1
+GAME: SQL ERROR during player polling. Failed to connect.
+GAME: SQL ERROR during admin polling. Failed to connect.
+SAY: Zjean Dragonus/Zjean : dude
+SAY: Zjean Dragonus/Zjean : there was an NPC killing all our monkeys
+SAY: Zjean Dragonus/Zjean : wtf
+ADMIN: Addictgamer/(Unknown) modified [0x210044c4] (/datum/npc_variables)'s actively_seek_attack_targets to 1
+ADMIN: LordZakida/(Dragon Toast) spawned /obj/item/weapon/storage/beakerbox at (31,190,4)
+ADMIN: Addictgamer/(Unknown) modified [0x210044a4] (/datum/npc_variables)'s actively_seek_attack_targets to 1
+ADMIN: PM: LordZakida/(Dragon Toast)->Addictgamer/(Unknown) : Are you spawning those humans
+ADMIN: PM: Addictgamer/(Unknown)->LordZakida/(Dragon Toast) : yes
+ADMIN: PM: LordZakida/(Dragon Toast)->Addictgamer/(Unknown) : well cut it out, there are better ways to make this interesting
+ADMIN: PM: Addictgamer/(Unknown)->LordZakida/(Dragon Toast) : Eh, I got bored and decided to test the NPC code.
+ADMIN: PM: LordZakida/(Dragon Toast)->Addictgamer/(Unknown) : oh, I see.
+ADMIN: PM: Addictgamer/(Unknown)->LordZakida/(Dragon Toast) : But anyway, done now.
+OOC: Dragon Toast/LordZakida : Ogm I ate a chair with a crate
+OOC: Unknown/Addictgamer : Eh?
+ADMIN: Addictgamer/(Unknown) jumped to LordZakida/(Dragon Toast)
+OOC: Unknown/Addictgamer : What happened?
+OOC: Dragon Toast/LordZakida : om nom chair
+GAME: SQL ERROR during player polling. Failed to connect.
+OOC: Unknown/Addictgamer : I saw no stool
+GAME: SQL ERROR during admin polling. Failed to connect.
+OOC: Unknown/Addictgamer : actually nv, I wasn&#39;t looking
+OOC: Unknown/Addictgamer : nvm*
+ADMIN: Addictgamer/(Unknown) jumped to Zjean/(Zjean Dragonus)
+ADMIN: Addictgamer/(Unknown) jumped to Zjean/(Zjean Dragonus)
+SAY: Ghost/Addictgamer : ololo
+SAY: Ghost/Addictgamer : HAI
+SAY: Ghost/Addictgamer : MY NAME&#39;S BOB
+SAY: Ghost/Addictgamer : I&#39;M THE GUY YOU RUTHLESSLY MURDERED
+ADMIN: Addictgamer/(Unknown) used secret check_antagonist
+ADMIN: Addictgamer/(Unknown) used secret manifest
+ADMIN: Addictgamer/(Unknown) used secret wave
+ADMIN: Addictgamer/(Unknown) jumped to 99,130,1 in Central Primary Hallway
+SAY: Ghost/Addictgamer : Woah now buddy
+SAY: Ghost/Addictgamer : Whatcha gonna do with that bod?
+SAY: Ghost/Addictgamer : Don&#39;t tell me you are a necrophile!
+ADMIN: Addictgamer/(Unknown) used secret carp
+GAME: Explosion with size (0, 0, 1) in area Central Primary Hallway 
+SAY: Ghost/Addictgamer : what
+ADMIN: Addictgamer/(Unknown) used secret immovable
+GAME: SQL ERROR during death reporting. Failed to connect.
+ADMIN: Addictgamer/(Unknown) moved the mining shuttle
+ADMIN: Addictgamer/(Unknown) used secret moveminingshuttle
+ADMIN: LordZakida/(Dragon Toast) jumped to 22,194,4 in Mining station
+ADMIN: Addictgamer/(Unknown) jumped to LordZakida/(Dragon Toast)
+ADMIN: LordZakida/(Dragon Toast) jumped to 23,194,4 in Mining station
+SAY: Zjean Dragonus/Zjean : Is anybody there?
+SAY: Ghost/Addictgamer : No
+SAY: Dragon Toast/LordZakida : Haha, fool.
+ADMIN: Addictgamer/(Unknown) jumped to Zjean/(Zjean Dragonus)
+SAY: Ghost/Addictgamer : ROFL
+SAY: Ghost/Addictgamer : ZJEAN WAS CAUGHT BY A SECURITRON
+SAY: Ghost/Addictgamer : THEY DON&#39;T TAKE A LIKING TO NONHUMANS.
+SAY: Ghost/Addictgamer : Lol attempts to remove handcuffs.
+SAY: Ghost/Addictgamer : Transform into a monkey
+GAME: SQL ERROR during player polling. Failed to connect.
+SAY: Ghost/Addictgamer : That&#39;ll get the cuffs off.
+SAY: Ghost/Addictgamer : I think
+SAY: Dragon Toast/LordZakida : I don&#39;t think it will
+SAY: Dragon Toast/LordZakida : shit
+SAY: Ghost/Addictgamer : What?
+ADMIN: Addictgamer/(Unknown) jumped to Zjean/(Zjean Dragonus)
+ADMIN: Addictgamer/(Unknown) jumped to LordZakida/(Dragon Toast)
+ADMIN: Addictgamer/(Unknown) jumped to Zjean/(Zjean Dragonus)
+SAY: Ghost/Addictgamer : Now Zjean is going to wait for the newcomer to find him
+SAY: Dragon Toast/LordZakida : newcomer?
+SAY: Zjean Dragonus/Zjean : You don&#39;t think what will do what?
+SAY: Ghost/Addictgamer : Acmex
+GAME: SQL ERROR during admin polling. Failed to connect.
+SAY: Ghost/Addictgamer : Lol zjean is confsued
+SAY: Dragon Toast/LordZakida : NEVERMIND I WAS TALKING TO GHOSTS
+SAY: Zjean Dragonus/Zjean : Oh.
+SAY: Zjean Dragonus/Zjean : Wait, what?
+SAY: Ghost/Addictgamer : DT is cult
+SAY: Ghost/Addictgamer : He has powerz
+SAY: Ghost/Addictgamer : You mortalz lack
+SAY: Ghost/Addictgamer : HE IS BADMIN
+SAY: Ghost/Addictgamer : THE BADMIN
+SAY: Dragon Toast/LordZakida : hush niggar
+SAY: Zjean Dragonus/Zjean : Anyway... The station has been beaten to shit. What should we do?
+SAY: Dragon Toast/LordZakida : Fix it for all I give a pfargtl
+SAY: Ghost/Addictgamer : THOSE CUFFS AIN&#39;T COMING OFF BUDDY
+SAY: Ghost/Addictgamer : YOU FAIL.
+SAY: Ghost/Addictgamer : NOW TRY TO MAKE DO
+SAY: Ghost/Addictgamer : Oh crap he took them off
+SAY: Ghost/Addictgamer : I need to add autopsy code
+OOC: Unknown/Addictgamer : I need to add autopsy code
+ADMIN: Addictgamer/(Unknown) used secret virus
+GAME: Zjean/(Zjean Dragonus) has called the shuttle.
+SAY: Ghost/Addictgamer : Lol one monkey sole survivor in medbay
+ADMIN: Addictgamer/(Unknown) used secret wave
+SAY: Dragon Toast/LordZakida : GOD DMAN
+GAME: Explosion with size (-1, 0, 2) in area Engineering 
+SAY: Dragon Toast/LordZakida : DAMN*
+ADMIN: GlobalNarrate: Addictgamer/(Unknown) : You feel the wrath of the Gods boiling.
+SAY: Dragon Toast/LordZakida : Oh fuck
+ADMIN: Addictgamer/(Unknown) used secret immovable
+ADMIN: Addictgamer/(Unknown) used secret immovable
+SAY: Ghost/Addictgamer : This station is going to hell
+SAY: Ghost/Addictgamer : And you&#39;re all going down with it
+SAY: Dragon Toast/LordZakida : like fuck we are
+SAY: Ghost/Addictgamer : ROFL
+ADMIN: Addictgamer/(Unknown) used secret immovable
+SAY: Ghost/Addictgamer : ES DOCKING WAS RAPED BY 3 GIANT PIGNASES
+SAY: Ghost/Addictgamer : AT THE SAME TIME
+ADMIN: Addictgamer/(Unknown) used secret immovable
+SAY: Ghost/Addictgamer : Rofl
+SAY: Ghost/Addictgamer : That barely missed zjean
+ADMIN: Addictgamer/(Unknown) used secret immovable
+GAME: Explosion with size (0, 0, 1) in area Firestation 
+ADMIN: Addictgamer/(Unknown) used secret immovable
+SAY: Ghost/Addictgamer : Oooh explosion
+ADMIN: Addictgamer/(Unknown) used secret immovable
+ADMIN: Addictgamer/(Unknown) used secret immovable
+ADMIN: Addictgamer/(Unknown) used secret immovable
+ADMIN: Addictgamer/(Unknown) used secret immovable
+ADMIN: Addictgamer/(Unknown) used secret immovable
+ADMIN: Addictgamer/(Unknown) used secret immovable
+SAY: Dragon Toast/LordZakida : Dear god we are getting humped
+SAY: Ghost/Addictgamer : You certainly are.
+SAY: Dragon Toast/LordZakida : Oh dear shit
+ADMIN: Addictgamer/(Unknown) used secret aliens
+ADMIN: Addictgamer/(Unknown) used secret ionstorm
+OOC: Dragon Toast/LordZakida : STOP MAKING LAG
+OOC: Unknown/Addictgamer : Lol
+ADMIN: Addictgamer/(Unknown) used secret immovable
+GAME: Explosion with size (0, 0, 1) in area Mech Bay 
+ADMIN: Addictgamer/(Unknown) used secret immovable
+SAY: Ghost/Addictgamer : Ooooh he got you
+ADMIN: Addictgamer/(Unknown) used secret immovable
+ADMIN: Addictgamer/(Unknown) used secret immovable
+ADMIN: Addictgamer/(Unknown) used secret immovable
+ADMIN: Addictgamer/(Unknown) used secret immovable
+ADMIN: Addictgamer/(Unknown) used secret immovable
+ADMIN: Addictgamer/(Unknown) used secret immovable
+ADMIN: Addictgamer/(Unknown) used secret immovable
+ADMIN: Addictgamer/(Unknown) used secret immovable
+ADMIN: Addictgamer/(Unknown) used secret immovable
+ADMIN: Addictgamer/(Unknown) used secret immovable
+ADMIN: Addictgamer/(Unknown) used secret immovable
+ADMIN: Addictgamer/(Unknown) used secret immovable
+ADMIN: Addictgamer/(Unknown) jumped to Acmex/(Acmex)
+ACCESS: Logout: *no client*/(Acmex)
+ACCESS: Login: Acmex/(Malik Altmann) from 67.235.135.104
+ADMIN: LordZakida/(Dragon Toast) created an explosion (0,1,1,1) at (93,153,1)
+GAME: Explosion with size (0, 1, 1) in area Waiting area 
+SAY: Ghost/Addictgamer : What
+ADMIN: Addictgamer/(Unknown) used secret immovable
+GAME: SQL ERROR during death reporting. Failed to connect.
+ADMIN: Addictgamer/(Unknown) jumped to Acmex/(Malik Altmann)
+ACCESS: Logout: *no client*/(Dragon Toast)
+ACCESS: Login: LordZakida/(Dragon Toast) from 70.251.239.150
+ACCESS: Notice: LordZakida/(Dragon Toast) has same IP address as Zjean/(Zjean Dragonus)
+SAY: Ghost/Addictgamer : Lola cmex is alone on the station
+ADMIN: LordZakida/(Dragon Toast) spawned /obj/item/weapon/circular_saw at (94,154,1)
+ACCESS: Logout: *no client*/(Dragon Toast)
+ACCESS: Login: LordZakida/(Dragon Toast) from 70.251.239.150
+ACCESS: Notice: LordZakida/(Dragon Toast) has same IP address as Zjean/(Zjean Dragonus)
+ACCESS: Logout: LordZakida/(Dragon Toast)
+ACCESS: Login: LordZakida/(Dragon Toast) from 70.251.239.150
+ACCESS: Notice: LordZakida/(Dragon Toast) has same IP address as Zjean/(Zjean Dragonus)
+GAME: zjean has authorized early shuttle launch
+GAME: SQL ERROR during player polling. Failed to connect.
+GAME: SQL ERROR during admin polling. Failed to connect.
+GAME: SQL ERROR during death reporting. Failed to connect.
+ACCESS: Logout: Acmex/(Malik Altmann)
+ACCESS: Logout: Addictgamer/(Unknown)
+ACCESS: Logout: Zjean/(Zjean Dragonus)
+ACCESS: Logout: LordZakida/(Dragon Toast)
+
+
+Starting up. 14:41.25
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: LordZakida/(LordZakida) delayed the game.
+ADMIN: LordZakida/(LordZakida) set the mode as traitor.
+OOC: Addictgamer/Addictgamer : hang on
+ADMIN: Addictgamer/(Addictgamer) removed the delay.
+OOC: Addictgamer/Addictgamer : I need to recomipile the server for map fixes and NPC fixes
+OOC: LordZakida/LordZakida : oh so well fuck this game then
+OOC: Addictgamer/Addictgamer : Anyway, that last round was INSANE
+OOC: LordZakida/LordZakida : how so
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Damart Flaggins) from 192.168.0.4
+ACCESS: Logout: *no client*/(Acmex)
+ACCESS: Login: Acmex/(Malik Altmann) from 67.235.135.104
+OOC: Damart Flaggins/Addictgamer : Ah, you didn&#39;t see the madness
+OOC: Damart Flaggins/Addictgamer : I was dead at start
+OOC: Damart Flaggins/Addictgamer : not start
+OOC: Damart Flaggins/Addictgamer : but early in
+ACCESS: Logout: *no client*/(Zjean)
+ACCESS: Login: Zjean/(Zjean Dragonus) from 70.251.239.150
+ACCESS: Notice: Zjean/(Zjean Dragonus) has same IP address as LordZakida/(LordZakida)
+ACCESS: Logout: *no client*/(LordZakida)
+ACCESS: Login: LordZakida/(Dragon Toast) from 70.251.239.150
+ACCESS: Notice: LordZakida/(Dragon Toast) has same IP address as Zjean/(Zjean Dragonus)
+ADMIN: Addictgamer/(Damart Flaggins) has granted Addictgamer full access.
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/item/weapon/storage/utilitybelt/full at (123,98,1)
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/item/weapon/cloaking_device at (73,158,1)
+SAY: Damart Flaggins/Addictgamer : No need for setting up the engine, i did that.
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/item/clothing/mask/breath at (100,98,1)
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/item/clothing/suit/pirate at (101,98,1)
+GAME: SQL ERROR during player polling. Failed to connect.
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/item/weapon/tank/oxygen/yellow at (99,98,1)
+GAME: SQL ERROR during admin polling. Failed to connect.
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/machinery/portable_atmospherics/canister/sleeping_agent at (99,98,1)
+SAY: Malik Altmann/Acmex : How the hell did someone embed a paper tray in the wall?
+SAY: Dragon Toast/LordZakida : With Hax and buttsex
+SAY: Damart Flaggins/Addictgamer : Centcom did that.
+ACCESS: Logout: *no client*/(Lair of Rockwhales)
+ACCESS: Login: Lair of Rockwhales/(Gunner Holmes) from 70.129.141.175
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/item/device/analyzer at (94,95,1)
+SAY: Gunner Holmes/Lair of Rockwhales : whut dead end
+ADMIN: LordZakida/(Dragon Toast) jumped to 134,136,1 in Quartermaster's Office
+ADMIN: LordZakida/(Dragon Toast) spawned /obj/machinery/status_display at (134,136,1)
+GAME: SQL ERROR during player polling. Failed to connect.
+SAY: Zjean Dragonus/Zjean : OMFG
+GAME: SQL ERROR during admin polling. Failed to connect.
+SAY: Gunner Holmes/Lair of Rockwhales : ?
+SAY: Zjean Dragonus/Zjean : nothing
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/machinery/portable_atmospherics/canister/sleeping_agent at (99,98,1)
+SAY: Dragon Toast/LordZakida : you pissant.
+SAY: Gunner Holmes/Lair of Rockwhales : yes?
+SAY: Damart Flaggins/Addictgamer : Blarg
+SAY: Damart Flaggins/Addictgamer : Anybody alive?
+SAY: Dragon Toast/LordZakida : Gunner, do you have a valid reason to be on this shuttle?
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/item/pipe_meter at (101,96,1)
+SAY: Gunner Holmes/Lair of Rockwhales : I was curious
+OOC: Damart Flaggins/Addictgamer : Are people connected?
+OOC: Zjean Dragonus/Zjean : yah
+OOC: Damart Flaggins/Addictgamer : k
+SAY: Dragon Toast/LordZakida : Well onysay GUNNER IS HITTING ME
+SAY: Dragon Toast/LordZakida : GUNNER IS ATTACKING ME
+SAY: Damart Flaggins/Addictgamer : SAY WAHT
+SAY: Damart Flaggins/Addictgamer : Where?
+SAY: Dragon Toast/LordZakida : Mining shuttle hall
+SAY: Damart Flaggins/Addictgamer : where is gunner?
+SAY: Dragon Toast/LordZakida : Mining shuttle hall is where I last saw him.
+SAY: Damart Flaggins/Addictgamer : Security, order a full crackdown on Gunner.
+SAY: Dragon Toast/LordZakida : Lol.
+SAY: Zjean Dragonus/Zjean : I would
+SAY: Zjean Dragonus/Zjean : but am currently afs
+SAY: Damart Flaggins/Addictgamer : AFS?
+SAY: Damart Flaggins/Addictgamer : Also, the mining shuttle is gone
+SAY: Zjean Dragonus/Zjean : Away From Station
+SAY: Damart Flaggins/Addictgamer : Suspect culprit at minign planet
+SAY: Damart Flaggins/Addictgamer : Oh
+GAME: SQL ERROR during player polling. Failed to connect.
+SAY: Damart Flaggins/Addictgamer : You are.
+SAY: Zjean Dragonus/Zjean : oh
+SAY: Zjean Dragonus/Zjean : at the mining plane eh?
+SAY: Damart Flaggins/Addictgamer : The mining shuttle is not at teh station.
+SAY: Zjean Dragonus/Zjean : I believe that I am as well.
+SAY: Zjean Dragonus/Zjean : But am not sure
+SAY: Damart Flaggins/Addictgamer : Zjean, where should the mining shuttl ebe righ tnow?
+SAY: Zjean Dragonus/Zjean : Statiion
+SAY: Damart Flaggins/Addictgamer : YUUUUP HE&#39;S AT TEH PLANET
+GAME: SQL ERROR during admin polling. Failed to connect.
+SAY: Damart Flaggins/Addictgamer : I&#39;m locking the doors at this end.
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/item/device/multitool at (129,117,1)
+SAY: Dragon Toast/LordZakida : He has no business there.
+SAY: Dragon Toast/LordZakida : He has no business on that station.
+GAME: SQL ERROR during death reporting. Failed to connect.
+GAME: Traitor Addictgamer/(Damart Flaggins) has died.
+SAY: Dragon Toast/LordZakida : LOL U DIED
+SAY: Dragon Toast/LordZakida : Ack, no air
+SAY: Dragon Toast/LordZakida : Damart Flaggins died, I&#39;m cloning him now.
+GAME: Explosion with size (-1, 0, 2) in area Port Maintenance 
+SAY: Dragon Toast/LordZakida : no shit
+OOC: Damart Flaggins/Addictgamer : I need to change the kitchen&#39;s tileset
+ACCESS: Logout: Acmex/(Malik Altmann)
+OOC: Gunner Holmes/Lair of Rockwhales : it looks like the hospital right now
+OOC: Damart Flaggins/Addictgamer : Ya
+OOC: Damart Flaggins/Addictgamer : Gonna make it look teh same as it used too
+ACCESS: Logout: *no client*/(Damart Flaggins)
+ACCESS: Login: Addictgamer/(human) from 192.168.0.4
+GAME: <a href="byond://?src=%admin_ref%;priv_msg=[0x300001b]">Zjean</a>/(Zjean Dragonus) used a chemistry grenade (Metal-Foam Grenade).
+SAY: Zjean Dragonus/Zjean : dyiong
+GAME: SQL ERROR during death reporting. Failed to connect.
+SAY: Damart Flaggins/Addictgamer : i am-m ner-rvous-s-s
+ACCESS: Logout: *no client*/(Zjean Dragonus)
+ACCESS: Login: Zjean/(Zjean Dragonus) from 70.251.239.150
+ACCESS: Notice: Zjean/(Zjean Dragonus) has same IP address as LordZakida/(Dragon Toast)
+SAY: Damart Flaggins/Addictgamer : DT, I need you real quick.
+SAY: Damart Flaggins/Addictgamer : w-wait n-nv-vm-m
+GAME: Addictgamer/(Damart Flaggins) injected Addictgamer/(Damart Flaggins) with the DNA-Injector (Structural Enzymes)
+SAY: Damart Flaggins/Addictgamer : Tes-s-st-t
+SAY: Damart Flaggins/Addictgamer : test
+SAY: Damart Flaggins/Addictgamer : There.
+SAY: Damart Flaggins/Addictgamer : Thanks
+GAME: SQL ERROR during player polling. Failed to connect.
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/machinery/computer/secure_data at (120,146,1)
+GAME: SQL ERROR during admin polling. Failed to connect.
+SAY: Damart Flaggins/Addictgamer : Criminal aboard station
+SAY: Damart Flaggins/Addictgamer : Arrest Homes.
+SAY: Dragon Toast/LordZakida : Why
+SAY: Dragon Toast/LordZakida : What did he do?
+SAY: Damart Flaggins/Addictgamer : Attempted murder of you
+SAY: Damart Flaggins/Addictgamer : Yo zjean, you here?
+SAY: Dragon Toast/LordZakida : I haven&#39;t heard a peep out of him for a while now
+SAY: Damart Flaggins/Addictgamer : Gunner was at the mining station
+SAY: Damart Flaggins/Addictgamer : Alone with Zjean
+SAY: Ghost/Zjean : stupid god damn phazon getting destroyed right where I need it not to be
+SAY: Dragon Toast/LordZakida : shoulda used seraph I guess.
+SAY: Ghost/Zjean : ejecting me into space
+SAY: Ghost/Zjean : thereby getting me killed
+SAY: Damart Flaggins/Addictgamer : Ah, tahnk you sir.
+SAY: Ghost/Zjean : blarglefargle
+SAY: Damart Flaggins/Addictgamer : Well, have fun being fed on by the spess carp.
+SAY: Damart Flaggins/Addictgamer : nothing we can do.
+SAY: Dragon Toast/LordZakida : Who is in charge now?
+SAY: Damart Flaggins/Addictgamer : One of us.
+SAY: Damart Flaggins/Addictgamer : There&#39;s also the CE, I beleive
+SAY: Ghost/Zjean : boo
+SAY: Dragon Toast/LordZakida : Wait who were you talking to?
+SAY: Dragon Toast/LordZakida : Wait who were you just talking to?
+SAY: Damart Flaggins/Addictgamer : oh, nobody
+SAY: Damart Flaggins/Addictgamer : Just a cult ritual.
+SAY: Ghost/Zjean : blarg I&#39;m hungry
+SAY: Dragon Toast/LordZakida : You better not have just killed Gunner
+SAY: Damart Flaggins/Addictgamer : I didn&#39;t
+SAY: Damart Flaggins/Addictgamer : I was speaking with a relation of Zjean.
+SAY: Ghost/Zjean : huh?
+SAY: Ghost/Zjean : lol fail
+SAY: Ghost/Zjean : I&#39;m give you a ghost willy
+SAY: Ghost/Zjean : or whatever
+SAY: Dragon Toast/LordZakida : fuck off
+ACCESS: Logout: *no client*/(Gunner Holmes)
+ACCESS: Login: Lair of Rockwhales/(monkey (756)) from 70.129.141.175
+SAY: Ghost/Zjean : no
+SAY: Ghost/Zjean : bored
+SAY: Damart Flaggins/Addictgamer : Now where&#39;s the sleep toxin
+SAY: Damart Flaggins/Addictgamer : or do I have to make the sedative
+SAY: Ghost/Zjean : laughing gas
+SAY: Dragon Toast/LordZakida : Oh goddammit.
+SAY: Ghost/Zjean : and a hole in the wall
+SAY: Damart Flaggins/Addictgamer : Where&#39;s the laughing gas?
+SAY: Dragon Toast/LordZakida : The R&amp;D room
+SAY: Damart Flaggins/Addictgamer : ...really?
+SAY: Ghost/Zjean : yeah
+SAY: Ghost/Zjean : gaah
+SAY: Ghost/Zjean : so bored
+SAY: Ghost/Zjean : and hungry
+SAY: Damart Flaggins/Addictgamer : Go eat then
+SAY: Damart Flaggins/Addictgamer : Now stop haunting me
+SAY: Dragon Toast/LordZakida : Stop talking to yourself
+SAY: Damart Flaggins/Addictgamer : No, you
+SAY: Dragon Toast/LordZakida : Or at least turn off your headset when you do
+SAY: Damart Flaggins/Addictgamer : engineering: Southern halls are depowered
+SAY: Damart Flaggins/Addictgamer : Where laughing gas?
+SAY: Dragon Toast/LordZakida : all over.
+SAY: Damart Flaggins/Addictgamer : ...
+SAY: Damart Flaggins/Addictgamer : I need it in syringe gun form
+SAY: Dragon Toast/LordZakida : Hah. good luck with that.
+SAY: Damart Flaggins/Addictgamer : En gineering, holes in teh hull in the southern hall
+GAME: SQL ERROR during player polling. Failed to connect.
+SAY: Damart Flaggins/Addictgamer : Do we even have any live engineers?
+SAY: Dragon Toast/LordZakida : I really don&#39;t know.
+SAY: Damart Flaggins/Addictgamer : MONKEY
+SAY: Damart Flaggins/Addictgamer : THERE&#39;S AN INTELLIGENT MONKEY
+SAY: Dragon Toast/LordZakida : Malik is/was our CE, where has he been this whole time? I heard him over the radio all of once.
+GAME: SQL ERROR during admin polling. Failed to connect.
+SAY: Damart Flaggins/Addictgamer : Ah, he&#39;s got a braindead stare on his face.
+SAY: Dragon Toast/LordZakida : Christ.
+SAY: Damart Flaggins/Addictgamer : Stop that monkey!
+SAY: Dragon Toast/LordZakida : what in the....
+SAY: Damart Flaggins/Addictgamer : I found gunner holme&#39;s items
+SAY: Damart Flaggins/Addictgamer : Starboard maintanence
+SAY: Dragon Toast/LordZakida : Yeah I just passed them
+SAY: Damart Flaggins/Addictgamer : Perhaps he is that monkey
+SAY: Damart Flaggins/Addictgamer : Or he stole an ID?
+SAY: Damart Flaggins/Addictgamer : Would you happen to know anything?
+SAY: Dragon Toast/LordZakida : nope, not a damn thing
+SAY: Dragon Toast/LordZakida : Where is the monkey now?
+SAY: Damart Flaggins/Addictgamer : Dunno
+SAY: Damart Flaggins/Addictgamer : he last was in engineering
+SAY: Damart Flaggins/Addictgamer : Janitorials closest
+SAY: Damart Flaggins/Addictgamer : closet*
+SAY: Damart Flaggins/Addictgamer : He escaped through a evnt
+SAY: Damart Flaggins/Addictgamer : vent*
+SAY: Damart Flaggins/Addictgamer : were you jsut in the security office that beepsky iis in?
+SAY: Dragon Toast/LordZakida : Hell, the south hall is fucked three ways
+SAY: Dragon Toast/LordZakida : I have a sinking suspicion that a singularity is loose.
+OOC: monkey (aac1)/Lair of Rockwhales : uh
+OOC: Damart Flaggins/Addictgamer : what the lag
+OOC: monkey (aac1)/Lair of Rockwhales : the server just froze
+SAY: Damart Flaggins/Addictgamer : Same
+SAY: Damart Flaggins/Addictgamer : The bottom aprt of the station has holes in it
+SAY: Damart Flaggins/Addictgamer : And lacks power
+SAY: Dragon Toast/LordZakida : I just saw that.
+SAY: Damart Flaggins/Addictgamer : odd
+SAY: Damart Flaggins/Addictgamer : The station is still hooked up to the power grid
+SAY: Dragon Toast/LordZakida : That and there are firelock in bizarre places
+SAY: Damart Flaggins/Addictgamer : That means the SMES at the very least are undamaged
+SAY: Dragon Toast/LordZakida : Wait hang on
+SAY: Dragon Toast/LordZakida : No this wasn&#39;t singularity
+SAY: Damart Flaggins/Addictgamer : Who&#39;s brave enough to check?
+SAY: Dragon Toast/LordZakida : This wasn&#39;t singularity damage, it was wormhole damage.
+SAY: Damart Flaggins/Addictgamer : Ah
+ADMIN: Addictgamer/(Damart Flaggins) modified [0x21004da8] (/datum/npc_variables)'s actively_seek_attack_targets to 1
+SAY: Damart Flaggins/Addictgamer : Rampaging death squad commando
+GAME: SQL ERROR during player polling. Failed to connect.
+OOC: monkey (aac1)/Lair of Rockwhales : lag again
+OOC: Damart Flaggins/Addictgamer : test
+SAY: Damart Flaggins/Addictgamer : yay I killed him
+GAME: SQL ERROR during admin polling. Failed to connect.
+SAY: Dragon Toast/LordZakida : Who
+SAY: Damart Flaggins/Addictgamer : The rogue death commando
+SAY: Damart Flaggins/Addictgamer : Wow monkeys are just dropping dead
+ACCESS: Logout: *no client*/(monkey (aac1))
+ACCESS: Login: Lair of Rockwhales/(Gunner Holmes) from 70.129.141.175
+ACCESS: Logout: *no client*/(Gunner Holmes)
+ACCESS: Login: Lair of Rockwhales/(monkey (951)) from 70.129.141.175
+ACCESS: Logout: *no client*/(Zjean Dragonus)
+ACCESS: Login: Zjean/(Assassin Ogre) from 70.251.239.150
+ACCESS: Notice: Zjean/(Assassin Ogre) has same IP address as LordZakida/(Dragon Toast)
+ADMIN: Addictgamer used Spawn Space Ninja.
+OOC: Dragon Toast/LordZakida : FAG.
+OOC: Damart Flaggins/Addictgamer : YES.
+OOC: monkey (aac1)/Lair of Rockwhales : what?
+OOC: Damart Flaggins/Addictgamer : I need to recompile for new code anyway
+SAY: Damart Flaggins/Addictgamer : Lol securitron chasing down monkeys
+GAME: SQL ERROR during player polling. Failed to connect.
+GAME: SQL ERROR during admin polling. Failed to connect.
+OOC: Damart Flaggins/Addictgamer : Ack, soon I need to rewrite NPCs.
+OOC: Damart Flaggins/Addictgamer : To make them able to use all mob types.
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/item/weapon/reagent_containers/food/snacks/meat/corgi at (97,150,1)
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/item/weapon/reagent_containers/food/snacks/grown/potato at (97,150,1)
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/item/weapon/reagent_containers/food/snacks/xenoburger at (93,154,1)
+SAY: Damart Flaggins/Addictgamer : You look delicious.
+SAY: Damart Flaggins/Addictgamer : Going to... devour you...
+SAY: Damart Flaggins/Addictgamer : Going to... devour you...
+SAY: Damart Flaggins/Addictgamer : You look delicious.
+SAY: Damart Flaggins/Addictgamer : You look delicious.
+SAY: Damart Flaggins/Addictgamer : You look delicious.
+ACCESS: Logout: *no client*/(Damart Flaggins)
+ACCESS: Login: Addictgamer/(alien sentinel (506)) from 192.168.0.4
+SAY: alien sentinel (506)/Addictgamer : B-Bl-lar-r-r-rg-g
+SAY: alien sentinel (506)/Addictgamer : B-BL-LAAAAAAAAAAAAAAAAAAAAAARG-G
+SAY: alien sentinel (506)/Addictgamer : B-Bl-laaaaaaar-rg-g-g
+SAY: alien sentinel (506)/Addictgamer : g-g-get-t out-t
+SAY: alien sentinel (506)/Addictgamer : you
+ACCESS: Logout: *no client*/(monkey (aac1))
+ACCESS: Login: Lair of Rockwhales/(monkey (aac1)) from 70.129.141.175
+SAY: alien sentinel (506)/Addictgamer : S-Sh-h-hut-tup-p
+SAY: alien sentinel (506)/Addictgamer : Muahahahahaha
+GAME: Explosion with size (0, 0, 1) in area Firestation 
+GAME: SQL ERROR during player polling. Failed to connect.
+GAME: SQL ERROR during admin polling. Failed to connect.
+ADMIN: Addictgamer/(alien sentinel (506)) played sound Scatman.mid
+SAY: Dragon Toast/LordZakida : I&#39;M DAH SCAT-MAAAAAAN
+SAY: alien sentinel (506)/Addictgamer : I WILL RAPE ALL OF YOU
+SAY: alien sentinel (506)/Addictgamer : AND SEND THIS STATION TO HELL.
+SAY: Dragon Toast/LordZakida : CALM YOUR TITS ALIUM
+SAY: alien sentinel (506)/Addictgamer : Do you hear me?
+SAY: alien sentinel (506)/Addictgamer : Suckers.
+SAY: alien sentinel (506)/Addictgamer : You crappy lower species
+SAY: Cameron Flynn/Zjean : i-i hu¤µnd §¤me a£ien-en-en weed taking ¤ber ze §-§¤µzern-rn þarto ¤hu ze §tat-§tat-§tati¤n
+ACCESS: Logout: *no client*/(monkey (aac1))
+ACCESS: Login: Lair of Rockwhales/(alien hunter (972)) from 70.129.141.175
+SAY: alien sentinel (506)/Addictgamer : I have friends now
+SAY: alien hunter (972)/Lair of Rockwhales : HISS
+SAY: alien sentinel (506)/Addictgamer : All of you are dead meat
+SAY: alien sentinel (506)/Addictgamer : Lair of rockwahles, help me destroy this station
+SAY: alien hunter (972)/Lair of Rockwhales : PISS
+SAY: Cameron Flynn/Zjean : so
+SAY: Cameron Flynn/Zjean : An Alien, eh?
+SAY: Cameron Flynn/Zjean : wanna dance, alien?
+SAY: Cameron Flynn/Zjean : I will rip you a new one.
+SAY: Cameron Flynn/Zjean : Is anyone else abourd this station?
+OOC: alien hunter (972)/Lair of Rockwhales : did it freeze or is it just me
+OOC: Cameron Flynn/Zjean : just you
+ACCESS: Logout: *no client*/(SadieMeowsalot)
+ACCESS: Login: SadieMeowsalot/(Sophie Mewsalot) from 72.77.117.138
+OOC: alien sentinel (506)/Addictgamer : Ya, jsut you
+ADMIN: DirectNarrate: Addictgamer/(alien sentinel (506)) to (alien hunter (972)/Lair of Rockwhales): Find your alien buddy and assist tehm
+SAY: Cameron Flynn/Zjean : So.
+ADMIN: HELP: Lair of Rockwhales/(alien hunter (972)): is centcom wall supposed to be sticky or have I glitched out the game
+SAY: Cameron Flynn/Zjean : Who all is on this station?
+ADMIN: PM: Addictgamer/(alien sentinel (506))->Lair of Rockwhales/(alien hunter (972)) : You glitched
+GAME: SQL ERROR during player polling. Failed to connect.
+ADMIN: Addictgamer/(alien sentinel (506)) teleported Addictgamer/(alien sentinel (506))
+ADMIN: PM: Lair of Rockwhales/(alien hunter (972))->Addictgamer/(alien sentinel (506)) : how do I fix it, I can't move at all
+ADMIN: PM: Addictgamer/(alien sentinel (506))->Lair of Rockwhales/(alien hunter (972)) : I'mt rying to fix it
+ADMIN: Addictgamer/(alien sentinel (506)) teleported *no client*/(monkey (aac1))
+ADMIN: Addictgamer/(alien sentinel (506)) teleported Lair of Rockwhales/(alien hunter (972))
+SAY: alien sentinel (506)/Addictgamer : Hey
+SAY: alien sentinel (506)/Addictgamer : I&#39;m you rbuddy
+SAY: alien sentinel (506)/Addictgamer : Let&#39;s rape this tation. eh?
+SAY: alien hunter (972)/Lair of Rockwhales : sssss
+SAY: alien hunter (972)/Lair of Rockwhales : let&#39;s
+SAY: alien hunter (972)/Lair of Rockwhales : how shall we do that
+SAY: alien sentinel (506)/Addictgamer : Expose the station to space
+GAME: SQL ERROR during admin polling. Failed to connect.
+SAY: alien sentinel (506)/Addictgamer : Corrode APCs with acid
+SAY: alien hunter (972)/Lair of Rockwhales : excellent
+SAY: alien sentinel (506)/Addictgamer : Break glass and lightbulbs
+OOC: Dragon Toast/LordZakida : does this game only handle MIDI files for music like that
+SAY: alien sentinel (506)/Addictgamer : Destroy mechas
+OOC: alien sentinel (506)/Addictgamer : MIDI, WAV&lt; and OGG
+OOC: Dragon Toast/LordZakida : k
+OOC: alien sentinel (506)/Addictgamer : and several obscure formats
+SAY: alien sentinel (506)/Addictgamer : That&#39;s about it.
+SAY: alien sentinel (506)/Addictgamer : You ready?
+SAY: alien hunter (972)/Lair of Rockwhales : yes
+SAY: alien sentinel (506)/Addictgamer : Ok
+SAY: alien sentinel (506)/Addictgamer : Which part of the station will you cover?
+SAY: alien hunter (972)/Lair of Rockwhales : too bad we don&#39;t have facehuggers
+SAY: alien hunter (972)/Lair of Rockwhales : uh
+SAY: alien sentinel (506)/Addictgamer : Ya, I wanted to be a queen
+SAY: alien sentinel (506)/Addictgamer : Couldn&#39;t unfortunaetly
+SAY: alien sentinel (506)/Addictgamer : plant weeds everywhere too
+SAY: alien hunter (972)/Lair of Rockwhales : Er
+SAY: alien sentinel (506)/Addictgamer : ya?
+SAY: alien sentinel (506)/Addictgamer : Avoid security bots
+SAY: alien sentinel (506)/Addictgamer : They stuna nd cuff you
+SAY: alien hunter (972)/Lair of Rockwhales : I can&#39;t seem to access my acid store
+SAY: alien sentinel (506)/Addictgamer : You must stay on plasma to charge it
+SAY: alien sentinel (506)/Addictgamer : You used it up
+SAY: alien hunter (972)/Lair of Rockwhales : I have 150 stores
+SAY: alien sentinel (506)/Addictgamer : YOu need 200 for corrode
+SAY: alien sentinel (506)/Addictgamer : Destroy good equipment
+SAY: alien hunter (972)/Lair of Rockwhales : where can i  store it up
+SAY: alien sentinel (506)/Addictgamer : and EVA too
+SAY: alien sentinel (506)/Addictgamer : Stand on plasma to store it up
+SAY: alien sentinel (506)/Addictgamer : I&#39;m going to target the engine soon
+SAY: alien hunter (972)/Lair of Rockwhales : someone comes
+SAY: alien sentinel (506)/Addictgamer : hide
+GAME: SQL ERROR during death reporting. Failed to connect.
+SAY: alien hunter (972)/Lair of Rockwhales : where is there plasma to absorb
+SAY: alien sentinel (506)/Addictgamer : Stand still on weed
+SAY: alien sentinel (506)/Addictgamer : That&#39;s how yous tore plasma
+SAY: alien sentinel (506)/Addictgamer : That&#39;s why youwant to spread weed
+GAME: Zjean/(Assassin Ogre) has called the shuttle.
+SAY: alien sentinel (506)/Addictgamer : silly humans
+SAY: alien sentinel (506)/Addictgamer : I&#39;m hitting the engine room
+GAME: Sophie Mewsalot/SadieMeowsalot used abandon mob.
+ACCESS: Logout: *no client*/(Sophie Mewsalot)
+SAY: alien hunter (972)/Lair of Rockwhales : the shuttle
+SAY: alien hunter (972)/Lair of Rockwhales : wait
+SAY: alien hunter (972)/Lair of Rockwhales : the shuttle is
+SAY: alien hunter (972)/Lair of Rockwhales : wait
+SAY: alien sentinel (506)/Addictgamer : yes?
+SAY: alien hunter (972)/Lair of Rockwhales : the shuttle is full of weeds
+SAY: alien sentinel (506)/Addictgamer : Yay
+SAY: alien hunter (972)/Lair of Rockwhales : they won&#39;t know what hit them
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: SadieMeowsalot/(Sophie Mewsalot) from 72.77.117.138
+SAY: alien sentinel (506)/Addictgamer : DESTROY!
+SAY: Cameron Flynn/Zjean : Get over here!
+ACCESS: Logout: *no client*/(alien hunter (972))
+ACCESS: Login: Lair of Rockwhales/(alien hunter (972)) from 70.129.141.175
+SAY: Ghost/Lair of Rockwhales : run brother
+SAY: Ghost/Lair of Rockwhales : run
+SAY: alien sentinel (506)/Addictgamer : oh dear
+SAY: alien sentinel (506)/Addictgamer : i well unleash the singularity
+ACCESS: Logout: *no client*/(alien hunter (972))
+ACCESS: Login: Lair of Rockwhales/(alien hunter (656)) from 70.129.141.175
+SAY: alien sentinel (506)/Addictgamer : &gt;:D
+SAY: alien sentinel (506)/Addictgamer : ALL GHOSTS ARISE
+SAY: alien sentinel (506)/Addictgamer : AAAAAAAAAAAACK
+GAME: SQL ERROR during player polling. Failed to connect.
+SAY: alien sentinel (506)/Addictgamer : WTF ABONDONED STATION
+OOC: alien sentinel (506)/Addictgamer : WTF
+OOC: alien sentinel (506)/Addictgamer : WAT THE HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEECK
+OOC: Cameron Flynn/Zjean : what?
+OOC: Dragon Toast/LordZakida : what did you do
+OOC: alien sentinel (506)/Addictgamer : It&#39;s IC in OOC
+SAY: Cameron Flynn/Zjean : Hello, is anybody out there?
+OOC: alien sentinel (506)/Addictgamer : I&#39;ll tell you after the round
+GAME: SQL ERROR during admin polling. Failed to connect.
+SAY: Cameron Flynn/Zjean : The alien has been dealt with.
+SAY: Cameron Flynn/Zjean : You can all come out of hiding now.
+SAY: Cameron Flynn/Zjean : Especially since your escape shuttle is here.
+SAY: Cameron Flynn/Zjean : as
+SAY: Cameron Flynn/Zjean : of
+SAY: Cameron Flynn/Zjean : now
+SAY: Cameron Flynn/Zjean : ohhey
+SAY: Cameron Flynn/Zjean : weed
+ADMIN: Addictgamer/(alien sentinel (506)) played sound HAL - Human Error.wav
+GAME: Explosion with size (-1, 0, 2) in area Engineering 
+GAME: Explosion with size (-1, 0, 2) in area Engineering 
+ADMIN: Addictgamer/(alien sentinel (506)) spawned /obj/machinery/singularity/narsie at (17,263,4)
+ACCESS: Logout: *no client*/(alien sentinel (506))
+ACCESS: Login: Addictgamer/(alien sentinel (506)) from 192.168.0.4
+ADMIN: Addictgamer/(alien sentinel (506)) jumped to Engineering
+ADMIN: Addictgamer/(alien sentinel (506)) spawned /obj/machinery/singularity/narsie at (118,64,1)
+GAME: SQL ERROR during death reporting. Failed to connect.
+GAME: Traitor Acmex/(Malik Altmann) has died.
+ACCESS: Logout: Addictgamer/(alien sentinel (506))
+ACCESS: Logout: SadieMeowsalot/(Sophie Mewsalot)
+ACCESS: Logout: LordZakida/(Dragon Toast)
+ACCESS: Logout: Zjean/(Assassin Ogre)
+ACCESS: Logout: Lair of Rockwhales/(alien hunter (656))
+
+
+Starting up. 16:49.34
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Addictgamer/(Addictgamer) delayed the game.
+ADMIN: Addictgamer/(Addictgamer) removed the delay.
+ADMIN: Addictgamer/(Addictgamer) set the mode as traitor.
+ADMIN: LordZakida/(LordZakida) delayed the game.
+OOC: Addictgamer/Addictgamer : Why?
+OOC: LordZakida/LordZakida : dude look at what you just did
+OOC: Addictgamer/Addictgamer : What did I do?
+OOC: LordZakida/LordZakida : you set teh game mode obvious
+OOC: Addictgamer/Addictgamer : I know.
+ADMIN: LordZakida/(LordZakida) removed the delay.
+OOC: LordZakida/LordZakida : ok then, wtvr
+ACCESS: Logout: *no client*/(Lair of Rockwhales)
+ACCESS: Login: Lair of Rockwhales/(Gunner Holmes) from 70.129.141.175
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Foofoofoo) from 127.0.0.1
+ACCESS: Logout: *no client*/(Zjean)
+ACCESS: Login: Zjean/(Zjean Dragonus) from 70.251.239.150
+ACCESS: Notice: Zjean/(Zjean Dragonus) has same IP address as LordZakida/(LordZakida)
+ACCESS: Logout: *no client*/(LordZakida)
+ACCESS: Login: LordZakida/(Dragon Toast) from 70.251.239.150
+ACCESS: Notice: LordZakida/(Dragon Toast) has same IP address as Zjean/(Zjean Dragonus)
+SAY: Gunner Holmes/Lair of Rockwhales : Where are the mining tools kept/
+SAY: Gunner Holmes/Lair of Rockwhales : Does anyone know?
+SAY: Gunner Holmes/Lair of Rockwhales : Where are the mining tools kept on this station?
+ADMIN: Addictgamer/(Foofoofoo) spawned /obj/item/clothing/suit/pirate at (129,82,1)
+OOC: Foofoofoo/Addictgamer : Also, I wanted to add a library
+OOC: Foofoofoo/Addictgamer : What do you guys think?
+SAY: Gunner Holmes/Lair of Rockwhales : Is anyone on this station?
+SAY: Dragon Toast/LordZakida : Uh, yeah?
+SAY: Gunner Holmes/Lair of Rockwhales : Do you know where the mining tools are kept?
+SAY: Zjean Dragonus/Zjean : nope
+SAY: Zjean Dragonus/Zjean : nobody whatsoever
+ADMIN: Addictgamer/(Foofoofoo) has granted Addictgamer full access.
+OOC: Dragon Toast/LordZakida : At the mining station.
+OOC: Dragon Toast/LordZakida : whoops IC in ooc fuck
+OOC: Foofoofoo/Addictgamer : user has been banned
+SAY: Dragon Toast/LordZakida : at the mining station
+OOC: Gunner Holmes/Lair of Rockwhales : is the closet from the old map still here
+OOC: Dragon Toast/LordZakida : no
+GAME: SQL ERROR during player polling. Failed to connect.
+OOC: Gunner Holmes/Lair of Rockwhales : piss
+OOC: Gunner Holmes/Lair of Rockwhales : pickaxe is useless as brick
+SAY: Gunner Holmes/Lair of Rockwhales : This station needs better mining tools
+GAME: SQL ERROR during admin polling. Failed to connect.
+OOC: Foofoofoo/Addictgamer : Anyway, as Iw as saying last round
+OOC: Foofoofoo/Addictgamer : I was a xeno, you know?
+OOC: Foofoofoo/Addictgamer : I was walking around
+OOC: Foofoofoo/Addictgamer : When suddenly
+OOC: Gunner Holmes/Lair of Rockwhales : no i didn&#39;t know
+OOC: Foofoofoo/Addictgamer : I was blasted off the map at several thousand light years a second
+OOC: Zjean Dragonus/Zjean : lol
+OOC: Foofoofoo/Addictgamer : And crashed into th emining planet
+OOC: Foofoofoo/Addictgamer : northeast side
+OOC: Foofoofoo/Addictgamer : where a hivebot was waiting for me in the base
+OOC: Dragon Toast/LordZakida : ROFL!
+OOC: Foofoofoo/Addictgamer : I then jumped off the planet and the hivebot chased me back to thes tation
+OOC: Foofoofoo/Addictgamer : I hit teh AI upload foyer
+OOC: Foofoofoo/Addictgamer : And thens pawned a narsie after playing that hal file with the human error narration
+OOC: Dragon Toast/LordZakida : that&#39;s cruel
+SAY: Gunner Holmes/Lair of Rockwhales : How do I get better mining tools?
+SAY: Dragon Toast/LordZakida : We need to research them.
+SAY: Gunner Holmes/Lair of Rockwhales : What materials do I need to collecr for a drill?
+SAY: Dragon Toast/LordZakida : uhm
+SAY: Dragon Toast/LordZakida : I forget what the research levels are
+ACCESS: Logout: *no client*/(SadieMeowsalot)
+ACCESS: Login: SadieMeowsalot/(Sophie Mewsalot) from 72.77.117.138
+SAY: Gunner Holmes/Lair of Rockwhales : ...
+GAME: SQL ERROR during death reporting. Failed to connect.
+SAY: Gunner Holmes/Lair of Rockwhales : Well, I need a drill
+SAY: Gunner Holmes/Lair of Rockwhales : this pick is bad
+SAY: Gunner Holmes/Lair of Rockwhales : if I had a drill, i could get you minerals much faster
+SAY: Foofoofoo/Addictgamer : It&#39;s what centcomm starts us out with
+SAY: Gunner Holmes/Lair of Rockwhales : is anyon in RaD?
+SAY: Foofoofoo/Addictgamer : Negative, busy with other stuff.
+SAY: Gunner Holmes/Lair of Rockwhales : Tell me when you are
+SAY: Foofoofoo/Addictgamer : k
+SAY: Gunner Holmes/Lair of Rockwhales : I have some materials right here for a strong drill
+SAY: Gunner Holmes/Lair of Rockwhales : what the hell
+SAY: Gunner Holmes/Lair of Rockwhales : bananium?
+ACCESS: Logout: *no client*/(Dragon Toast)
+ACCESS: Login: LordZakida/(Dragon Toast) from 70.251.239.150
+ACCESS: Notice: LordZakida/(Dragon Toast) has same IP address as Zjean/(Zjean Dragonus)
+SAY: Gunner Holmes/Lair of Rockwhales : MORE bananium
+ADMIN: Addictgamer/(Foofoofoo) modified mass driver's id to chapel_mass_driver
+ADMIN: Addictgamer/(Foofoofoo) modified Pod Launch Control's id to 1
+SAY: Gunner Holmes/Lair of Rockwhales : WHAT IS THIS
+ADMIN: LordZakida/(Dragon Toast) jumped to Lair of Rockwhales/(Gunner Holmes)
+ADMIN: Addictgamer/(Foofoofoo) modified Pod Launch Control's tag to "chapel_mass_driver"
+GAME: Dragon Toast/LordZakida used abandon mob.
+ACCESS: Logout: *no client*/(Dragon Toast)
+ADMIN: Addictgamer/(Foofoofoo) modified mass driver's id to chapel_mass_driver
+ADMIN: Addictgamer/(Foofoofoo) modified mass driver's id to 1
+GAME: SQL ERROR during player polling. Failed to connect.
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: LordZakida/(Butt Plug) from 70.251.239.150
+ACCESS: Notice: LordZakida/(Butt Plug) has same IP address as Zjean/(Zjean Dragonus)
+SAY: Butt Plug/LordZakida : h: Hello?
+SAY: Butt Plug/LordZakida : hello?
+SAY: Foofoofoo/Addictgamer : Shut yoru butt.
+GAME: SQL ERROR during admin polling. Failed to connect.
+SAY: Butt Plug/LordZakida : Oh hello
+SAY: Butt Plug/LordZakida : Where is the mining shuttle?
+SAY: Butt Plug/LordZakida : where is the mining shuttle?
+SAY: Zjean Dragonus/Zjean : Ah.
+SAY: Zjean Dragonus/Zjean : It is pretty much due south of here.
+SAY: Butt Plug/LordZakida : Ok, thanks.
+SAY: Zjean Dragonus/Zjean : Take a left at the end of the hall towards hydroponics then south from there.
+ADMIN: Addictgamer/(Foofoofoo) modified mass driver's id to 1
+SAY: Zjean Dragonus/Zjean : There&#39;s an airlock on the side
+SAY: Butt Plug/LordZakida : Thank you
+ADMIN: Addictgamer/(Foofoofoo) modified mass driver's id to 1
+SAY: Zjean Dragonus/Zjean : if you pass it you&#39;ll be able to see the shuttle comp through a window
+SAY: Butt Plug/LordZakida : Okay, thanks.
+SAY: Butt Plug/LordZakida : Uhm....
+SAY: Butt Plug/LordZakida : The quartermaster is my boss, right?
+SAY: Zjean Dragonus/Zjean : uhh
+SAY: Zjean Dragonus/Zjean : actually
+SAY: Zjean Dragonus/Zjean : that&#39;s me
+SAY: Zjean Dragonus/Zjean : I&#39;m technically your boss
+SAY: Butt Plug/LordZakida : oh.
+SAY: Zjean Dragonus/Zjean : but QM is normally who you report to
+SAY: Zjean Dragonus/Zjean : as he knows where everything should go
+SAY: Gunner Holmes/Lair of Rockwhales : HONK
+ACCESS: Logout: LordZakida/(Butt Plug)
+SAY: Gunner Holmes/Lair of Rockwhales : I have the urge to HONK
+ACCESS: Logout: Zjean/(Zjean Dragonus)
+ACCESS: Login: LordZakida/(Butt Plug) from 70.251.239.150
+ACCESS: Notice: LordZakida/(Butt Plug) has same IP address as Zjean/(Zjean Dragonus) did (Zjean/(Zjean Dragonus) is no longer logged in).
+ACCESS: Login: Zjean/(Zjean Dragonus) from 70.251.239.150
+ACCESS: Notice: Zjean/(Zjean Dragonus) has same IP address as LordZakida/(Butt Plug)
+SAY: Zjean Dragonus/Zjean : ummmm
+SAY: Zjean Dragonus/Zjean : Dragon toast?
+SAY: Gunner Holmes/Lair of Rockwhales : I found the best ore ever
+SAY: Zjean Dragonus/Zjean : NOOOOOOOOOOOo
+SAY: Gunner Holmes/Lair of Rockwhales : WHAT
+SAY: Zjean Dragonus/Zjean : DT IS DEAD
+SAY: Gunner Holmes/Lair of Rockwhales : HOW
+SAY: Zjean Dragonus/Zjean : IN SPACE
+SAY: Foofoofoo/Addictgamer : Say what?
+SAY: Zjean Dragonus/Zjean : BY MINING SHUTTLE
+ADMIN: Addictgamer/(Foofoofoo) spawned /obj/spawner/newbomb/timer at (109,133,1)
+SAY: Zjean Dragonus/Zjean : He must have gone outside and not realized taht the shuttle wasn&#39;t there
+SAY: Butt Plug/LordZakida : Could you move, please?
+SAY: Foofoofoo/Addictgamer : LOLFAIL
+SAY: Zjean Dragonus/Zjean : That, mister Plug, was the QM
+SAY: Butt Plug/LordZakida : Hell
+SAY: Gunner Holmes/Lair of Rockwhales : o
+SAY: Zjean Dragonus/Zjean : ummm
+SAY: Gunner Holmes/Lair of Rockwhales : where did he die
+SAY: Zjean Dragonus/Zjean : Gunner
+SAY: Butt Plug/LordZakida : Why are you bloody?
+SAY: Zjean Dragonus/Zjean : right herte
+SAY: Gunner Holmes/Lair of Rockwhales : mining accident
+ADMIN: Addictgamer/(Foofoofoo) spawned /obj/plasticflaps at (97,95,1)
+SAY: Gunner Holmes/Lair of Rockwhales : he walked outside
+SAY: Zjean Dragonus/Zjean : I pulled his body inside
+SAY: Zjean Dragonus/Zjean : yeah
+SAY: Gunner Holmes/Lair of Rockwhales : could he not at least check the window?
+SAY: Zjean Dragonus/Zjean : guess he forgot
+GAME: Bomb valve opened in Atmospherics with device attacher: Unknown. Last touched by: Addictgamer
+ADMIN: Addictgamer/(Foofoofoo) spawned /obj/spawner/newbomb/timer at (97,94,1)
+GAME: Explosion with size (1, 2, 5) in area Atmospherics 
+SAY: Butt Plug/LordZakida : Would anybody mind if i took some of his gear?
+SAY: Gunner Holmes/Lair of Rockwhales : I guess I&#39;ll keep mining
+SAY: Butt Plug/LordZakida : Is it okay if I take some of his gear?
+SAY: Gunner Holmes/Lair of Rockwhales : Where do I take the ore now that the QM is dead
+GAME: Bomb valve opened in Engineering with device attacher: Unknown. Last touched by: Addictgamer
+SAY: Zjean Dragonus/Zjean : uhhh
+GAME: Explosion with size (1, 2, 5) in area Engineering 
+SAY: Zjean Dragonus/Zjean : ike what?
+SAY: Butt Plug/LordZakida : his hard hat for one
+ADMIN: Addictgamer/(Foofoofoo) spawned /obj/machinery/computer/secure_data at (66,137,1)
+SAY: Zjean Dragonus/Zjean : Why do you need it?
+SAY: Butt Plug/LordZakida : I dunno.
+SAY: Butt Plug/LordZakida : oh and his shades?
+SAY: Zjean Dragonus/Zjean : ...
+SAY: Zjean Dragonus/Zjean : fine.
+SAY: Butt Plug/LordZakida : I &#39;m sorry if this is inappropriate
+SAY: Butt Plug/LordZakida : AC-CK-K!
+SAY: Zjean Dragonus/Zjean : lol
+GAME: SQL ERROR during player polling. Failed to connect.
+SAY: Zjean Dragonus/Zjean : I&#39;m not going to get involved in this
+SAY: Gunner Holmes/Lair of Rockwhales : W-W-W-WH-HAT-T-T THE H-HEL-L-LL-L
+SAY: Butt Plug/LordZakida : WHat just happened?
+ADMIN: Addictgamer/(Foofoofoo) toggled respawn to Off.
+SAY: Zjean Dragonus/Zjean : stay out of my wayu
+SAY: Zjean Dragonus/Zjean : gunner, move
+SAY: Gunner Holmes/Lair of Rockwhales : i can&#39;t
+SAY: Gunner Holmes/Lair of Rockwhales : trying to break these
+GAME: SQL ERROR during admin polling. Failed to connect.
+SAY: Butt Plug/LordZakida : Thank you sir
+SAY: Zjean Dragonus/Zjean : Welcome.
+SAY: Gunner Holmes/Lair of Rockwhales : what happened
+WHISPER: Butt Plug/LordZakida : what on earth....
+OOC: Foofoofoo/Addictgamer : Umm
+OOC: Foofoofoo/Addictgamer : I gotta
+OOC: Foofoofoo/Addictgamer : go
+SAY: Gunner Holmes/Lair of Rockwhales : what
+WHISPER: Butt Plug/LordZakida : odd...
+OOC: Foofoofoo/Addictgamer : Unfortunately, I need to take teh server down
+SAY: Gunner Holmes/Lair of Rockwhales : uh
+OOC: Gunner Holmes/Lair of Rockwhales : what
+OOC: Butt Plug/LordZakida : wat wai
+OOC: Foofoofoo/Addictgamer : I need to take this laptop with me
+OOC: Foofoofoo/Addictgamer : Now here&#39;s the biggest problem
+OOC: Gunner Holmes/Lair of Rockwhales : is sarge&#39;s server up
+OOC: Foofoofoo/Addictgamer : The repo doesn&#39;t have the new map
+OOC: Foofoofoo/Addictgamer : And I don&#39;t have enough time to copy and upload.
+OOC: Foofoofoo/Addictgamer : So, sarge&#39;s hosting has trorbes
+OOC: Gunner Holmes/Lair of Rockwhales : okay
+OOC: Foofoofoo/Addictgamer : That&#39;ll have to do I&#39;m afraid
+OOC: Gunner Holmes/Lair of Rockwhales : then we&#39;ll just trorbes
+OOC: Foofoofoo/Addictgamer : Server going down now :(
+OOC: Gunner Holmes/Lair of Rockwhales : bye
+ACCESS: Logout: Lair of Rockwhales/(Gunner Holmes)
+ACCESS: Logout: Addictgamer/(Foofoofoo)
+ACCESS: Logout: LordZakida/(Butt Plug)
+ACCESS: Logout: Zjean/(Zjean Dragonus)
+ACCESS: Logout: SadieMeowsalot/(Sophie Mewsalot)
+
+
+Starting up. 21:31.05
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Addictgamer/(Addictgamer) delayed the game.
+ADMIN: Addictgamer/(Addictgamer) set the mode as secret.
+ADMIN: Addictgamer/(Addictgamer) set the forced secret mode as traitor.
+ACCESS: Logout: Addictgamer/(Addictgamer)
+
+
+Starting up. 21:39.51
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ACCESS: Logout: Addictgamer/(Addictgamer)
+
+
+Starting up. 21:44.30
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ACCESS: Logout: Addictgamer/(Addictgamer)
+
+
+Starting up. 21:46.38
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+
+
+Starting up. 21:48.04
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Addictgamer/(Addictgamer) delayed the game.
+ADMIN: Addictgamer/(Addictgamer) removed the delay.
+ACCESS: Logout: Addictgamer/(Addictgamer)
+ACCESS: Logout: *no client*/(SadieMeowsalot)
+ACCESS: Login: SadieMeowsalot/(Sophie Mewsalot) from 72.77.117.138
+GAME: SQL ERROR during player polling. Failed to connect.
+GAME: SQL ERROR during admin polling. Failed to connect.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Damart Flaggins) from 127.0.0.1
+ADMIN: Addictgamer/(Damart Flaggins) has metroidized SadieMeowsalot.
+ACCESS: Logout: *no client*/(Sophie Mewsalot)
+ACCESS: Login: SadieMeowsalot/(baby metroid (458)) from 72.77.117.138
+ADMIN: Addictgamer/(Damart Flaggins) has granted Addictgamer full access.
+ADMIN: Addictgamer/(Damart Flaggins) jumped to 82,132,1 in Space
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/crate/trashcart at (112,72,1)
+ADMIN: Addictgamer/(Damart Flaggins) jumped to 68,125,1 in Chapel
+ACCESS: Logout: *no client*/(baby metroid (458))
+ACCESS: Login: SadieMeowsalot/(adult metroid (636)) from 72.77.117.138
+ACCESS: Logout: *no client*/(adult metroid (636))
+ACCESS: Login: SadieMeowsalot/(baby metroid (969)) from 72.77.117.138
+ADMIN: Addictgamer/(Damart Flaggins) spawned /obj/item/clothing/glasses/thermal/monocle at (95,63,1)
+GAME: SQL ERROR during player polling. Failed to connect.
+ACCESS: Logout: *no client*/(baby metroid (969))
+ACCESS: Login: SadieMeowsalot/(adult metroid (715)) from 72.77.117.138
+GAME: SQL ERROR during admin polling. Failed to connect.
+ADMIN: Addictgamer/(Damart Flaggins) initiated a reboot.
+ACCESS: Logout: Addictgamer/(Damart Flaggins)
+ACCESS: Logout: SadieMeowsalot/(adult metroid (715))
+
+
+Starting up. 22:23.52
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Addictgamer/(Addictgamer) delayed the game.
+ADMIN: Addictgamer/(Addictgamer) set the forced secret mode as traitor.
+ADMIN: Addictgamer/(Addictgamer) removed the delay.
+ACCESS: Logout: *no client*/(SadieMeowsalot)
+ACCESS: Login: SadieMeowsalot/(Sophie Mewsalot) from 72.77.117.138
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+ADMIN: Addictgamer/(Efig Neckins) spawned /obj/item/clothing/suit/pirate at (131,80,1)
+GAME: SQL ERROR during death reporting. Failed to connect.
+ADMIN: Addictgamer/(Efig Neckins) jumped to 74,141,1 in Security
+ADMIN: Addictgamer/(Efig Neckins) jumped to 68,136,1 in Brig
+ADMIN: Addictgamer/(Efig Neckins) jumped to 63,132,1 in Warden
+ADMIN: Addictgamer/(Efig Neckins) jumped to 63,132,1 in Warden
+GAME: SQL ERROR during player polling. Failed to connect.
+ADMIN: Addictgamer/(Efig Neckins) jumped to 68,136,1 in Brig
+ADMIN: Addictgamer/(Efig Neckins) jumped to 71,135,1 in Security
+ADMIN: Addictgamer/(Efig Neckins) jumped to 76,132,1 in Detectives Office
+ADMIN: Addictgamer/(Efig Neckins) jumped to 78,118,1 in Chapel
+ADMIN: Addictgamer/(Efig Neckins) jumped to 81,120,1 in Port Primary Hallway
+GAME: SQL ERROR during admin polling. Failed to connect.
+GAME: Sophie Mewsalot/SadieMeowsalot used abandon mob.
+ACCESS: Logout: *no client*/(Sophie Mewsalot)
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: SadieMeowsalot/(Sophie Mewsalot) from 72.77.117.138
+OOC: Efig Neckins/Addictgamer : TODO: Fix AI job select
+OOC: Efig Neckins/Addictgamer : blarg blarg
+ADMIN: Addictgamer/(Efig Neckins) jumped to 79,163,1 in Emergency Storage B
+ADMIN: Addictgamer/(Efig Neckins) jumped to 79,163,1 in Emergency Storage B
+GAME: SQL ERROR during death reporting. Failed to connect.
+GAME: Traitor Addictgamer/(Efig Neckins) has died.
+ACCESS: Logout: *no client*/(Efig Neckins)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+GAME: Efig Neckins/Addictgamer used abandon mob.
+ACCESS: Logout: *no client*/(Efig Neckins)
+OOC: new player/Addictgamer : Choose from the following open positions:
+GAME: SQL ERROR during player polling. Failed to connect.
+OOC: new player/Addictgamer : blarg
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+OOC: Efig Neckins/Addictgamer : Changing some stuff
+OOC: Efig Neckins/Addictgamer : Need to recompile and restart server.
+OOC: Efig Neckins/Addictgamer : Isn&#39;t top priority
+OOC: Efig Neckins/Addictgamer : Shall we do this round?
+OOC: ChuckleFuck/SadieMeowsalot : Yes
+OOC: Efig Neckins/Addictgamer : anybody?
+OOC: Efig Neckins/Addictgamer : ok
+GAME: SQL ERROR during admin polling. Failed to connect.
+ACCESS: Logout: *no client*/(LordZakida)
+ACCESS: Login: LordZakida/(Dragon Toast) from 70.251.239.150
+ADMIN: Addictgamer/(Efig Neckins) spawned /obj/item/clothing/suit/pirate at (90,107,1)
+GAME: SQL ERROR during player polling. Failed to connect.
+GAME: SQL ERROR during admin polling. Failed to connect.
+ADMIN: Addictgamer/(Efig Neckins) spawned /obj/machinery/portable_atmospherics/canister/nitrogen at (99,98,1)
+ADMIN: Addictgamer/(Efig Neckins) spawned /obj/item/weapon/storage/utilitybelt/full at (98,96,1)
+ADMIN: Addictgamer/(Efig Neckins) spawned /obj/machinery/atmospherics/binary/circulator at (98,98,1)
+ADMIN: Addictgamer/(Efig Neckins) deleted the pipe at (98,98,1)
+SAY: Efig Neckins/Addictgamer : Greaaaaaaaaaaaaaat.
+ADMIN: Addictgamer/(Efig Neckins) has granted Addictgamer full access.
+ADMIN: Addictgamer/(Efig Neckins) spawned /obj/machinery/portable_atmospherics/canister/sleeping_agent/roomfiller at (64,166,1)
+SAY: Dragon Toast/LordZakida : how did you get in here
+GAME: SQL ERROR during player polling. Failed to connect.
+SAY: Dragon Toast/LordZakida : Fag
+OOC: Efig Neckins/Addictgamer : Ooooh
+OOC: Efig Neckins/Addictgamer : A new player is connecting
+GAME: SQL ERROR during admin polling. Failed to connect.
+ADMIN: Addictgamer/(Efig Neckins) spawned /obj/item/weapon/gun/energy/pulse_rifle/M1911 at (73,167,1)
+ACCESS: Logout: *no client*/(Lair of Rockwhales)
+ACCESS: Login: Lair of Rockwhales/(Gunner Holmes) from 70.129.141.175
+SAY: Efig Neckins/Addictgamer : Captain!
+SAY: Gunner Holmes/Lair of Rockwhales : hmhmhmhmh
+SAY: Efig Neckins/Addictgamer : We have an emergancy situation!
+SAY: Gunner Holmes/Lair of Rockwhales : Geniet ervan,
+SAY: Efig Neckins/Addictgamer : Hivebots!!!!
+SAY: Gunner Holmes/Lair of Rockwhales : Zo&#39;n mooi moment
+SAY: Gunner Holmes/Lair of Rockwhales : Met Roiko, Cup-A-Soup
+ADMIN: Addictgamer/(Efig Neckins) spawned /obj/machinery/vending/medical at (82,157,1)
+SAY: Gunner Holmes/Lair of Rockwhales : Je hebt het verdient dat je jezelf verwend,
+ADMIN: Addictgamer/(Efig Neckins) spawned /obj/item/stack/medical/bruise_pack at (81,157,1)
+SAY: Gunner Holmes/Lair of Rockwhales : met Roiko Cup-A-Soup!
+SAY: Gunner Holmes/Lair of Rockwhales : Ohhh, de lekkerste soep,
+SAY: Gunner Holmes/Lair of Rockwhales : zo lekker warm,
+SAY: Gunner Holmes/Lair of Rockwhales : ja dat is Roiko Cup-A-Soup.
+SAY: Efig Neckins/Addictgamer : Captain, did you get into the rum barrel again?
+SAY: Gunner Holmes/Lair of Rockwhales : Er kan er maar een de lekkerste zijn.
+SAY: Gunner Holmes/Lair of Rockwhales : Er kan er maar een de lekkerste zijn.
+SAY: Gunner Holmes/Lair of Rockwhales : no
+SAY: Gunner Holmes/Lair of Rockwhales : I got into cup-a-soup
+SAY: Efig Neckins/Addictgamer : Dragon Toast, we need your help.
+SAY: Gunner Holmes/Lair of Rockwhales : HELP
+SAY: Gunner Holmes/Lair of Rockwhales : IM DYNG
+SAY: Dragon Toast/LordZakida : I can&#39;t at teh moment.
+SAY: Dragon Toast/LordZakida : I can&#39;t right now.
+GAME: SQL ERROR during death reporting. Failed to connect.
+OOC: Efig Neckins/Addictgamer : Hum dee dum
+ACCESS: Logout: *no client*/(ADwarvenBard)
+ACCESS: Login: ADwarvenBard/(Davie Brew) from 50.99.106.158
+OOC: Efig Neckins/Addictgamer : So what say you all about a library?
+OOC: Gunner Holmes/Lair of Rockwhales : LAG
+OOC: Gunner Holmes/Lair of Rockwhales : LAG
+OOC: Efig Neckins/Addictgamer : Well, somebody is downloading resources.
+OOC: Dragon Toast/LordZakida : add it
+OOC: Efig Neckins/Addictgamer : And there are 50000000 hivebots
+OOC: Efig Neckins/Addictgamer : Ok, next compilation will have the library.
+GAME: SQL ERROR during death reporting. Failed to connect.
+OOC: Efig Neckins/Addictgamer : Where should it be? It&#39;s constructed for the west side of the station
+OOC: Efig Neckins/Addictgamer : Or atleast, the entrance and book ordering blarg have the access from the west side
+GAME: Efig Neckins/Addictgamer used abandon mob.
+ACCESS: Logout: *no client*/(Efig Neckins)
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: Addictgamer/(Porackin Mag) from 127.0.0.1
+ADMIN: Addictgamer/(Porackin Mag) spawned /obj/item/weapon/gun/energy/pulse_rifle/M1911 at (104,196,1)
+ACCESS: Logout: *no client*/(Gunner Holmes)
+ACCESS: Login: Lair of Rockwhales/(Gunner Holmes) from 70.129.141.175
+GAME: SQL ERROR during death reporting. Failed to connect.
+GAME: SQL ERROR during death reporting. Failed to connect.
+OOC: Gunner Holmes/Lair of Rockwhales : the AI door in facepunch chops people in half when it closes
+SAY: Porackin Mag/Addictgamer : Medbay is infested
+ACCESS: Logout: *no client*/(Davie Brew)
+ACCESS: Login: ADwarvenBard/(Davie Brew) from 50.99.106.158
+OOC: Gunner Holmes/Lair of Rockwhales : if you stand there when it closes it says &#34;X screams violently&#34; and blood goes everywhere
+ADMIN: Addictgamer/(Porackin Mag) spawned /obj/machinery/bot/medbot at (112,179,1)
+SAY: Porackin Mag/Addictgamer : Thank you medibot
+SAY: Porackin Mag/Addictgamer : Now let&#39;s go hick hivebot.
+ACCESS: Logout: Lair of Rockwhales/(Gunner Holmes)
+ACCESS: Logout: *no client*/(ChuckleFuck)
+ACCESS: Login: SadieMeowsalot/(ChuckleFuck) from 72.77.117.138
+ADMIN: Addictgamer/(Porackin Mag) has granted Addictgamer full access.
+SAY: Unknown/Addictgamer : Station lower power. Have we not engineers?
+SAY: Dragon Toast/LordZakida : I guess not.
+SAY: Porackin Mag/Addictgamer : I slipped in shit.
+SAY: Dragon Toast/LordZakida : I giggle at thee.
+SAY: Porackin Mag/Addictgamer : Shall we call for an emergancy evac?
+SAY: Dragon Toast/LordZakida : No, not yet.
+SAY: Porackin Mag/Addictgamer : Okay...But you have to help with all these hivebots.
+SAY: Porackin Mag/Addictgamer : Damm invasion.
+SAY: Porackin Mag/Addictgamer : These things swarm like no-
+SAY: Porackin Mag/Addictgamer : What the fire?
+GAME: SQL ERROR during player polling. Failed to connect.
+SAY: Porackin Mag/Addictgamer : Fire in Starboard primary
+ACCESS: Logout: ADwarvenBard/(Davie Brew)
+ADMIN: Addictgamer/(Porackin Mag) spawned /obj/item/weapon/storage/utilitybelt/full at (123,85,1)
+GAME: SQL ERROR during admin polling. Failed to connect.
+SAY: Dragon Toast/LordZakida : By Thor&#39;s shocking left testicle.
+SAY: Porackin Mag/Addictgamer : EMP?
+SAY: Dragon Toast/LordZakida : Looks like it.
+SAY: Dragon Toast/LordZakida : That was a conveniently placed one if so
+SAY: Porackin Mag/Addictgamer : Try not to get shot, medbay is infested.
+SAY: Dragon Toast/LordZakida : Who is still alive?
+SAY: Porackin Mag/Addictgamer : I am.
+SAY: Porackin Mag/Addictgamer : Plasma flooding detected.
+GAME: <a href="byond://?src=%admin_ref%;priv_msg=[0x3000022]">LordZakida</a>/(Dragon Toast) used a chemistry grenade (Cleaner Grenade).
+SAY: Porackin Mag/Addictgamer : Soutehr medbay is clear
+SAY: Porackin Mag/Addictgamer : That means the cyro chambers are usable.
+SAY: Dragon Toast/LordZakida : Wonderful.
+GAME: <a href="byond://?src=%admin_ref%;priv_msg=[0x3000022]">LordZakida</a>/(Dragon Toast) used a chemistry grenade (Cleaner Grenade).
+GAME: ChuckleFuck/SadieMeowsalot used abandon mob.
+ACCESS: Logout: *no client*/(ChuckleFuck)
+SAY: Porackin Mag/Addictgamer : Medbay is clear.
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: SadieMeowsalot/(Sophie Mewsalot) from 72.77.117.138
+ACCESS: Logout: *no client*/(Sophie Mewsalot)
+ACCESS: Login: SadieMeowsalot/(Cyborg) from 72.77.117.138
+SAY: Porackin Mag/Addictgamer : Grab a gun and help
+SAY: Porackin Mag/Addictgamer : or emp
+SAY: Dragon Toast/LordZakida : Argh, where is the fire alarm
+SAY: Porackin Mag/Addictgamer : Ack
+SAY: Porackin Mag/Addictgamer : I can&#39;t get into the hall
+SAY: Porackin Mag/Addictgamer : Port primary is overflowing
+SAY: Porackin Mag/Addictgamer : Need an EMP
+GAME: SQL ERROR during player polling. Failed to connect.
+GAME: SQL ERROR during admin polling. Failed to connect.
+SAY: Porackin Mag/Addictgamer : Freaking bots.
+GAME: SQL ERROR during death reporting. Failed to connect.
+SAY: Porackin Mag/Addictgamer : The bots are too strong in Port Primary
+SAY: Porackin Mag/Addictgamer : Requesting backup.
+SAY: Porackin Mag/Addictgamer : They&#39;ve swarmed Security and taken over.
+SAY: Porackin Mag/Addictgamer : Have you EMP?
+SAY: Dragon Toast/LordZakida : no
+ACCESS: Logout: *no client*/(Knightday)
+ACCESS: Login: Knightday/(Crush Mason) from 76.224.220.73
+SAY: Porackin Mag/Addictgamer : Well crap.
+ACCESS: Logout: *no client*/(Cyborg -785)
+ACCESS: Login: SadieMeowsalot/(Cyborg -785) from 72.77.117.138
+SAY: Porackin Mag/Addictgamer : I&#39;ve sustained permanent damage.
+SAY: Porackin Mag/Addictgamer : I don&#39;t think I&#39;ll be able to do another raid on the hivebots.
+GAME: Cyborg -785/SadieMeowsalot used abandon mob.
+ACCESS: Logout: *no client*/(Cyborg -785)
+SAY: Porackin Mag/Addictgamer : Oooh, thank you medibot.
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: SadieMeowsalot/(Sophie Mewsalot) from 72.77.117.138
+ACCESS: Logout: *no client*/(Sophie Mewsalot)
+ACCESS: Login: SadieMeowsalot/(Cyborg) from 72.77.117.138
+ACCESS: Logout: *no client*/(Porackin Mag)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+OOC: Efig Neckins/Addictgamer : I just noticed that there&#39;s a bug in the hivebot spawning code.
+OOC: Efig Neckins/Addictgamer : Don&#39;t we all love &#39;em?
+GAME: SQL ERROR during death reporting. Failed to connect.
+ACCESS: Logout: *no client*/(Cyborg -416)
+ACCESS: Login: SadieMeowsalot/(Cyborg -416) from 72.77.117.138
+GAME: Cyborg -416/SadieMeowsalot used abandon mob.
+ACCESS: Logout: *no client*/(Cyborg -416)
+OOC: Crush Mason/Knightday : sf
+OOC: Crush Mason/Knightday : is htis sand box
+OOC: Efig Neckins/Addictgamer : Negative. The game mode is currently secret.
+OOC: Crush Mason/Knightday : can i be a cult
+OOC: Dragon Toast/LordZakida : Oh dear
+OOC: Efig Neckins/Addictgamer : Cult requires 16 or more players.
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: SadieMeowsalot/(Sophie Mewsalot) from 72.77.117.138
+GAME: SQL ERROR during player polling. Failed to connect.
+OOC: Crush Mason/Knightday : a tratior then
+OOC: Efig Neckins/Addictgamer : If the Gods so decide that a traitor is needed for this secret round, I&#39;m sure a traitor will be found.
+GAME: SQL ERROR during admin polling. Failed to connect.
+OOC: Efig Neckins/Addictgamer : Oh damm, rhymes.
+OOC: Dragon Toast/LordZakida : What is the point of asking if you can be traitor over ooc? If you are given such, your cover is instantly blown.
+ADMIN: PM: LordZakida/(Dragon Toast)->Knightday/(Crush Mason) : FUCK YOU TOO, WANKASS.
+ADMIN: PM: Knightday/(Crush Mason)->LordZakida/(Dragon Toast) : i love satan
+ADMIN: LordZakida/(Dragon Toast) has gibbed Knightday/(Crush Mason)
+GAME: SQL ERROR during death reporting. Failed to connect.
+ACCESS: Logout: *no client*/(Crush Mason)
+ACCESS: Login: Knightday/(Crush Mason) from 76.224.220.73
+OOC: Crush Mason/Knightday : why u gib me
+OOC: Dragon Toast/LordZakida : So you could join satan
+OOC: Crush Mason/Knightday : i was playinh
+ADMIN: PM: Addictgamer/(Efig Neckins)->LordZakida/(Dragon Toast) : Hmm. What do we do with him? Tell him to read the rules, to start off?
+SAY: Dragon Toast/LordZakida : Ah why the fuck did I think this shotgun would be a good idea
+GAME: Guest-4244397027/Guest-4244397027 used abandon mob.
+ACCESS: Logout: *no client*/(Guest-4244397027)
+GAME: Crush Mason/Knightday used abandon mob.
+ACCESS: Logout: *no client*/(Crush Mason)
+ADMIN: PM: LordZakida/(Dragon Toast)->Addictgamer/(Efig Neckins) : He didn't really brak any rules
+ADMIN: PM: LordZakida/(Dragon Toast)->Addictgamer/(Efig Neckins) : But he deserved that
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: Knightday/(Crush Mason) from 76.224.220.73
+ADMIN: PM: Addictgamer/(Efig Neckins)->LordZakida/(Dragon Toast) : True. I wasn't thinking of a ban. Just telling him to not be rude and stuff.
+SAY: Dragon Toast/LordZakida : Why did I just see someone streaking
+OOC: Crush Mason/Knightday : buh
+OOC: Crush Mason/Knightday : RUH ROH! Your job is AI and the game just can&#39;t handle it! Please report this bug to an administrator.#You are the AI.#Your icons have been generated!#
+OOC: Efig Neckins/Addictgamer : That is a bug.
+OOC: Efig Neckins/Addictgamer : We&#39;re working on getting it fixed.
+OOC: Crush Mason/Knightday : can i be al
+SAY: Dragon Toast/LordZakida : Didn&#39;t I just see you explose
+OOC: Efig Neckins/Addictgamer : Ask the roboticist, or a member of R&amp;D maybe?
+OOC: Crush Mason/Knightday : satan rule
+OOC: Efig Neckins/Addictgamer : God rule.
+SAY: Dragon Toast/LordZakida : dudes slow down
+OOC: Crush Mason/Knightday : fuck that god do usee him
+SAY: Dragon Toast/LordZakida : nvm fuck it
+OOC: Crush Mason/Knightday : dragon help me
+ADMIN: GlobalNarrate: Addictgamer/(Efig Neckins) : The gods are not pleased.
+SAY: Dragon Toast/LordZakida : OH SHIT
+OOC: Crush Mason/Knightday : The gods are not pleased.&#39;
+OOC: Crush Mason/Knightday : i dont give a fuck
+SAY: Dragon Toast/LordZakida : Mag, I need you gun
+OOC: Efig Neckins/Addictgamer : What?
+SAY: Crush Mason/Knightday : open the door
+GAME: new player/Guest-4244397027 used abandon mob.
+ACCESS: Logout: *no client*/(new player)
+SAY: Crush Mason/Knightday : d-dude
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: Guest-4244397027/(Desmond Weinstein) from 127.0.0.1
+ACCESS: Notice: Guest-4244397027/(Desmond Weinstein) has same IP address as Addictgamer/(Efig Neckins)
+ACCESS: Notice: Guest-4244397027/(Desmond Weinstein) has same computer ID as Addictgamer/(Efig Neckins)
+SAY: Crush Mason/Knightday : wtf
+SAY: Crush Mason/Knightday : inee dthat
+SAY: Desmond Weinstein/Guest-4244397027 : There is blood all over medbay and a dead body with its brain removed.
+SAY: Desmond Weinstein/Guest-4244397027 : What the hell?
+SAY: Porackin Mag/Knightday : guys
+SAY: Porackin Mag/Knightday : follwo me
+SAY: Dragon Toast/LordZakida : We need an AI
+SAY: Dragon Toast/LordZakida : We need an AI
+SAY: Desmond Weinstein/Guest-4244397027 : Sophie, why did yous teal the captain&#39;s ID?
+SAY: Desmond Weinstein/Guest-4244397027 : YOu murdered the captain.
+GAME: SQL ERROR during player polling. Failed to connect.
+GAME: SQL ERROR during admin polling. Failed to connect.
+GAME: <a href="byond://?src=%admin_ref%;priv_msg=[0x3000031]">SadieMeowsalot</a>/(Sophie Mewsalot) used a chemistry grenade (Metal-Foam Grenade).
+GAME: SQL ERROR during death reporting. Failed to connect.
+GAME: Traitor LordZakida/(Dragon Toast) has died.
+OOC: Porackin Mag/Knightday : admin heal me
+ACCESS: Logout: *no client*/(Dragon Toast)
+ACCESS: Login: LordZakida/(Dragon Toast) from 70.251.239.150
+SAY: Ghost/LordZakida : who&#39;s the wiseass that flooded the bridge with laughing gas anyway
+GAME: SQL ERROR during death reporting. Failed to connect.
+ADMIN: PM: Addictgamer/(Efig Neckins)->*no client*/(Dragon Toast) : I want to tell him "If you haven't noticed, this is a roleplaying server, not a sandbox server."
+ADMIN: HELP: Addictgamer/(Efig Neckins):  I want to tell him &#34;If you haven&#39;t noticed, this is a roleplaying server, not a sandbox server.&#34;
+ADMIN: HELP: Addictgamer/(Efig Neckins): What think you?
+OOC: Dragon Toast/LordZakida : why haven&#39;t you yet
+OOC: Dragon Toast/LordZakida : seriously
+OOC: Porackin Mag/Knightday : i tred to get amo they killed m,e
+OOC: Efig Neckins/Addictgamer : Well yes, they&#39;re hivebots.
+OOC: Efig Neckins/Addictgamer : They shoot
+OOC: Efig Neckins/Addictgamer : They kill.
+ADMIN: LordZakida/(Dragon Toast) jumped to Knightday/(Crush Mason)
+ADMIN: Addictgamer/(Efig Neckins) toggled respawn to Off.
+OOC: Porackin Mag/Knightday : god did nto help
+ACCESS: Logout: *no client*/(Crush Mason)
+ACCESS: Login: Knightday/(Crush Mason) from 76.224.220.73
+OOC: Efig Neckins/Addictgamer : God does not screw up roleplaying.
+OOC: Dragon Toast/LordZakida : lol securitron as a bullet sponge
+OOC: Efig Neckins/Addictgamer : Rofl, I did that
+GAME: <a href="byond://?src=%admin_ref%;priv_msg=[0x3000031]">SadieMeowsalot</a>/(Sophie Mewsalot) used a chemistry grenade (Metal-Foam Grenade).
+OOC: Efig Neckins/Addictgamer : Well, this station has gone to hell.
+OOC: Efig Neckins/Addictgamer : All that&#39;s left is trollcat.
+OOC: Dragon Toast/LordZakida : yeah I&#39;m thinking restart time
+OOC: Efig Neckins/Addictgamer : Same
+ADMIN: Addictgamer/(Efig Neckins) initiated a reboot.
+ACCESS: Logout: Addictgamer/(Efig Neckins)
+ACCESS: Logout: Guest-4244397027/(Desmond Weinstein)
+ACCESS: Logout: SadieMeowsalot/(Sophie Mewsalot)
+ACCESS: Logout: LordZakida/(Dragon Toast)
+ACCESS: Logout: Knightday/(Crush Mason)

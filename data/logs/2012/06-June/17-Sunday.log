@@ -1,0 +1,50 @@
+
+
+Starting up. 22:48.06
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Addictgamer/(Addictgamer) delayed the game.
+ACCESS: Logout: Addictgamer/(Addictgamer)
+ADMIN: Addictgamer has started the game.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+ADMIN: Addictgamer/(Efig Neckins) played sound lobby3.mid
+GAME: SQL ERROR during player polling. Failed to connect.
+ACCESS: Logout: Addictgamer/(Efig Neckins)
+
+
+Starting up. 23:00.17
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Addictgamer/(Addictgamer) delayed the game.
+ACCESS: Logout: Addictgamer/(Addictgamer)
+ACCESS: Logout: Addictgamer/(Addictgamer)
+
+
+Starting up. 23:28.13
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: jobban_keylist was empty
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Addictgamer/(Addictgamer) delayed the game.
+ACCESS: Logout: Addictgamer/(Addictgamer)
+ACCESS: Logout: Addictgamer/(Addictgamer)
+ADMIN: Addictgamer/(Addictgamer) spawned /obj/machinery/singularity at (107,196,1)
+ADMIN: Addictgamer/(Addictgamer) removed the delay.
+ADMIN: Addictgamer has started the game.
+ACCESS: Logout: *no client*/(Addictgamer)
+ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
+ACCESS: Logout: Addictgamer/(Efig Neckins)
