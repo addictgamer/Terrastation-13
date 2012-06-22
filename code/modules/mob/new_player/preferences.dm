@@ -96,7 +96,7 @@ datum/preferences
 
 	proc/randomize_hair(var/gender)
 		//Women are more likely to have longer hair.
-		var/temp = gender==FEMALE&&prob(80) ? pick(2,6,8) : rand(1,9)
+		var/temp = gender==FEMALE&&prob(80) ? pick(2,6,8) : rand(1,10)
 		switch(temp)
 			if(1)
 				h_style = "Short Hair"
@@ -114,11 +114,13 @@ datum/preferences
 				h_style = "Bedhead"
 			if(8)
 				h_style = "Dreadlocks"
+			if(9)
+				h_style = "Spike"
 			else
 				h_style = "bald"
 
 	proc/randomize_facial()
-		var/temp = prob(50) ? 14 : rand(1,13)//50% of not having a beard. Otherwise get a random one.
+		var/temp = prob(50) ? 14 : rand(1,14)//50% of not having a beard. Otherwise get a random one.
 		switch(temp)
 			if(1)
 				f_style = "Watson"
@@ -146,6 +148,8 @@ datum/preferences
 				f_style = "Goatee"
 			if(13)
 				f_style = "Hogan"
+			if(14)
+				f_style = "Stark"
 			else
 				f_style = "bald"
 
@@ -322,6 +326,8 @@ datum/preferences
 				h_style_r = "hair_bedhead"
 			if("Dreadlocks")
 				h_style_r = "hair_dreads"
+			if("Spike")
+				h_style_r = "hair_spike"
 			else
 				h_style_r = "bald"
 
@@ -353,6 +359,8 @@ datum/preferences
 				f_style_r = "facial_gt"
 			if ("Hogan")
 				f_style_r = "facial_hogan"
+			if ("Stark")
+				f_style_r = "facial_stark"
 			else
 				f_style_r = "bald"
 
@@ -757,12 +765,12 @@ datum/preferences
 			switch(link_tags["h_style"])
 				if ("random")
 					if (gender == FEMALE)
-						h_style = pickweight ( list ("Cut Hair" = 5, "Short Hair" = 5, "Long Hair" = 5, "Mohawk" = 5, "Balding" = 1, "Fag" = 5, "Bedhead" = 5, "Dreadlocks" = 5, "Bald" = 5))
+						h_style = pickweight ( list ("Cut Hair" = 5, "Short Hair" = 5, "Long Hair" = 5, "Mohawk" = 5, "Balding" = 1, "Fag" = 5, "Bedhead" = 5, "Dreadlocks" = 5, "Spike" = 5, "Bald" = 5))
 					else
-						h_style = pickweight ( list ("Cut Hair" = 5, "Short Hair" = 5, "Long Hair" = 5, "Mohawk" = 5, "Balding" = 5, "Fag" = 5, "Bedhead" = 5, "Dreadlocks" = 5, "Bald" = 5))
+						h_style = pickweight ( list ("Cut Hair" = 5, "Short Hair" = 5, "Long Hair" = 5, "Mohawk" = 5, "Balding" = 5, "Fag" = 5, "Bedhead" = 5, "Dreadlocks" = 5, "Spike" = 5, "Bald" = 5))
 
 				if("input")
-					var/new_style = input(user, "Please select hair style", "Character Generation")  as null|anything in list( "Cut Hair", "Short Hair", "Long Hair", "Mohawk", "Balding", "Fag", "Bedhead", "Dreadlocks", "Bald" )
+					var/new_style = input(user, "Please select hair style", "Character Generation")  as null|anything in list( "Cut Hair", "Short Hair", "Long Hair", "Mohawk", "Balding", "Fag", "Bedhead", "Dreadlocks", "Spike", "Bald" )
 					if (new_style)
 						h_style = new_style
 
@@ -776,11 +784,11 @@ datum/preferences
 			switch(link_tags["f_style"])
 				if ("random")
 					if (gender == FEMALE)
-						f_style = pickweight ( list("Watson" = 1, "Chaplin" = 1, "Selleck" = 1, "Full Beard" = 1, "Long Beard" = 1, "Neckbeard" = 1, "Van Dyke" = 1, "Elvis" = 1, "Abe" = 1, "Chinstrap" = 1, "Hipster" = 1, "Goatee" = 1, "Hogan" = 1, "Shaved" = 100))
+						f_style = pickweight ( list("Watson" = 1, "Chaplin" = 1, "Selleck" = 1, "Full Beard" = 1, "Long Beard" = 1, "Neckbeard" = 1, "Van Dyke" = 1, "Elvis" = 1, "Abe" = 1, "Chinstrap" = 1, "Hipster" = 1, "Goatee" = 1, "Hogan" = 1, "Stark" = 1, "Shaved" = 100))
 					else
-						f_style = pickweight ( list("Watson" = 1, "Chaplin" = 1, "Selleck" = 1, "Full Beard" = 1, "Long Beard" = 1, "Neckbeard" = 1, "Van Dyke" = 1, "Elvis" = 1, "Abe" = 1, "Chinstrap" = 1, "Hipster" = 1, "Goatee" = 1, "Hogan" = 1, "Shaved" = 10))
+						f_style = pickweight ( list("Watson" = 1, "Chaplin" = 1, "Selleck" = 1, "Full Beard" = 1, "Long Beard" = 1, "Neckbeard" = 1, "Van Dyke" = 1, "Elvis" = 1, "Abe" = 1, "Chinstrap" = 1, "Hipster" = 1, "Goatee" = 1, "Hogan" = 1, "Stark" = 1, "Shaved" = 10))
 				if("input")
-					var/new_style = input(user, "Please select facial style", "Character Generation")  as null|anything in list("Watson", "Chaplin", "Selleck", "Full Beard", "Long Beard", "Neckbeard", "Van Dyke", "Elvis", "Abe", "Chinstrap", "Hipster", "Goatee", "Hogan", "Shaved")
+					var/new_style = input(user, "Please select facial style", "Character Generation")  as null|anything in list("Watson", "Chaplin", "Selleck", "Full Beard", "Long Beard", "Neckbeard", "Van Dyke", "Elvis", "Abe", "Chinstrap", "Hipster", "Goatee", "Hogan", "Stark", "Shaved")
 					if (new_style)
 						f_style = new_style
 
@@ -912,6 +920,8 @@ datum/preferences
 				character.hair_icon_state = "hair_bedhead"
 			if("Dreadlocks")
 				character.hair_icon_state = "hair_dreads"
+			if("Spike")
+				character.hair_icon_state = "hair_spike"
 			else
 				character.hair_icon_state = "bald"
 
@@ -942,6 +952,8 @@ datum/preferences
 				character.face_icon_state = "facial_gt"
 			if ("Hogan")
 				character.face_icon_state = "facial_hogan"
+			if ("Stark")
+				character.face_icon_state = "facial_stark"
 			else
 				character.face_icon_state = "bald"
 
