@@ -1,8 +1,4 @@
 /mob/Login()
-	if(chickenz)
-		world << "http://www.youtube.com/watch?v=wYUhGRynyJw <- That's what's happening to the station right now."
-		world << sound('chickenz.mid', 1)
-
 	log_access("Login: [key_name(src)] from [src.client.address ? src.client.address : "localhost"]")
 	src.lastKnownIP = src.client.address
 	src.computer_id = src.client.computer_id
@@ -27,6 +23,10 @@
 	if(!src.dna) src.dna = new /datum/dna(null)
 	//src.client.screen -= main_hud1.contents
 	world.update_status()
+	if(chickenz)
+		src << "http://www.youtube.com/watch?v=wYUhGRynyJw <- That's what's happening to the station right now."
+		src << sound('chickenz.mid', 1)
+
 	//if (!src.hud_used)
 	//	src.hud_used = main_hud1
 
@@ -39,7 +39,6 @@
 	src.next_move = 1
 	src.sight |= SEE_SELF
 	src.logged_in = 1
-
 	if(istype (src, /mob/living))
 		if(ticker)
 			if(ticker.mode)

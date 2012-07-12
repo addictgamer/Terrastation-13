@@ -2,10 +2,9 @@
 /*
 MAP_ICON_TYPE: 0
 LAST_COMPILE_VERSION: 495.1136
-UPDATE_OBJ_TREE: ON
-DIR: code code\defines code\defines\obj code\game code\game\mecha code\game\mecha\combat code\game\mecha\working icons icons\misc icons\obj icons\obj\doors maps 
-FILE: maps\blarg2.dmm
-LAST_COMPILE_TIME: 1341862289
+DIR: code code\defines code\defines\obj code\game code\game\mecha code\game\mecha\combat code\game\mecha\working code\modules code\modules\mob maps 
+FILE: code\modules\mob\mob.dm
+LAST_COMPILE_TIME: 1342112259
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS
