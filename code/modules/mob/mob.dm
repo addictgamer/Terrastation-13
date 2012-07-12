@@ -2007,14 +2007,6 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	if (join_motd)
 		src << "<div class=\"motd\">[join_motd]</div>"
 
-
-	if(!ticker || ticker.current_state == GAME_STATE_PREGAME || ticker.current_state == GAME_STATE_SETTING_UP)
-		if(!src.playing_lobby_music)
-			src.music = sound('lobby3.mid', 1)
-			src << sound(src.music,1)
-			src.playing_lobby_music = 1
-			world << "Playing lobby music. (from client/new())"
-
 	authorize()
 	//goonauth() -- Skie, commented out because not goons anymore.
 	///beta_tester_auth()

@@ -88,7 +88,7 @@ datum/npc_task/proc/process()
 
 	//TODO: Stand up if lying down.
 
-	if(owner.actively_seek_attack_targets  && !owner.owner.eye_blind && !owner.owner.blinded && !owner.owner.sleeping && !owner.owner.resting && !owner.owner.lying && owner.owner.canmove && !owner.owner.stunned)
+	if(owner.actively_seek_attack_targets && !owner.owner.eye_blind && !owner.owner.blinded && !owner.owner.sleeping && !owner.owner.resting && !owner.owner.lying)
 		var/list/targets[0]
 		//for(var/mob/living/M in range(world.view, src)) //Find any living mobs in the sight of this guy.
 		for(var/mob/living/M in view(12, owner.owner)) //Find any living mobs in the sight of this guy.
@@ -110,12 +110,11 @@ datum/npc_task/proc/process()
 			the_target = pick(targets) //Choose a target.
 			if(the_target)
 				//TODO: Make this code work with mechas and bots and stuff too.
-				if(istype(the_target, /mob/living))
-					if(the_target:health > 0)
+				if(istype(the_target, /mob))
+					if(the_target:health > 0 && !istype(the_target, /mob/dead/observer))
 						done = 1
 					else
 						targets -= the_target
-						the_target = null //Reset this.
 				else
 					done = 1
 			else
@@ -144,15 +143,15 @@ datum/npc_task/proc/process()
 
 		//owner.owner.Move(null, text2dir(direct))
 		owner.owner.Move(get_step(owner.owner, pick(cardinal)))
-	else if(task_type == "attack mob"   && !owner.owner.eye_blind && !owner.owner.blinded && !owner.owner.sleeping && !owner.owner.resting && !owner.owner.lying && owner.owner.canmove && !owner.owner.stunned)
+	else if(task_type == "attack mob"  && !owner.owner.eye_blind && !owner.owner.blinded  && !owner.owner.sleeping && !owner.owner.resting && !owner.owner.lying && !owner.owner.stunned)
 		//world << "Attacking something."
 		//if(istype(target, /mob))
 		//	world << "Target is a mob."
 
 		attack_mob() //Have it attack the mob.
-	else if(task_type == "attack mecha"   && !owner.owner.eye_blind && !owner.owner.blinded && !owner.owner.sleeping && !owner.owner.resting && !owner.owner.lying && owner.owner.canmove && !owner.owner.stunned)
+	else if(task_type == "attack mecha"  && !owner.owner.eye_blind && !owner.owner.blinded && !owner.owner.sleeping && !owner.owner.resting && !owner.owner.lying && !owner.owner.stunned)
 		attack_mecha() //Have it attack the mecha.
-	else if(task_type == "attack bot"   && !owner.owner.eye_blind && !owner.owner.blinded && !owner.owner.sleeping && !owner.owner.resting && !owner.owner.lying && owner.owner.canmove && !owner.owner.stunned)
+	else if(task_type == "attack bot"  && !owner.owner.eye_blind && !owner.owner.blinded && !owner.owner.sleeping && !owner.owner.resting && !owner.owner.lying && !owner.owner.stunned)
 		attack_bot()
 	else if(task_type == "")
 		//Assign new task.
@@ -174,7 +173,7 @@ datum/npc_task/proc/process()
 		//if(!weapon) //If it didn't find a weapon.
 
 	if(!istype(target, /mob))
-		log_admin("Invalid target.")
+		//world << "Invalid target."
 		del owner.task
 		return
 
@@ -239,7 +238,7 @@ datum/npc_task/proc/process()
 		//if(!weapon) //If it didn't find a weapon.
 
 	if(!istype(target, /obj/mecha))
-		log_admin("Invalid target.")
+		//world << "Invalid target."
 		del owner.task
 		return
 
@@ -306,7 +305,7 @@ datum/npc_task/proc/process()
 		//if(!weapon) //If it didn't find a weapon.
 
 	if(!istype(target, /obj/machinery/bot))
-		log_admin("Invalid target.")
+		//world << "Invalid target."
 		del owner.task
 		return
 

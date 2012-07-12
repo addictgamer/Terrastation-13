@@ -331,6 +331,60 @@
 	origin_tech = "materials=5;bluespace=3;magnets=3"
 
 
+////////// Warthog
+/*
+/obj/item/mecha_parts/chassis/warthog
+	name = "Warthog Chassis"
+	origin_tech = "materials=7"
+
+	New()
+		..()
+		construct = new /datum/construction/mecha/warthog_chassis(src)
+
+/obj/item/mecha_parts/part/warthog_torso
+	name="Warthog Torso"
+	icon_state = "warthog_harness"
+	construction_time = 300
+	construction_cost = list("metal"=45000,"glass"=10000,"plasma"=25000)
+	origin_tech = "programming=4;materials=7;powerstorage=5"
+
+/obj/item/mecha_parts/part/warthog_head
+	name="Warthog Head"
+	icon_state = "warthog_head"
+	construction_time = 200
+	construction_cost = list("metal"=25000,"glass"=5000,"plasma"=10000)
+	origin_tech = "programming=4;materials=5"
+
+/obj/item/mecha_parts/part/warthog_left_arm
+	name="Warthog Left Arm"
+	icon_state = "warthog_l_arm"
+	construction_time = 200
+	construction_cost = list("metal"=25000,"plasma"=10000)
+	origin_tech = "materials=5;magnets=2"
+
+/obj/item/mecha_parts/part/warthog_right_arm
+	name="Warthog Right Arm"
+	icon_state = "warthog_r_arm"
+	construction_time = 200
+	construction_cost = list("metal"=25000,"plasma"=20000)
+	origin_tech = "materials=5magnets=4"
+
+/obj/item/mecha_parts/part/warthog_left_leg
+	name="Warthog Left Leg"
+	icon_state = "warthog_l_leg"
+	construction_time = 200
+	construction_cost = list("metal"=25000,"plasma"=15000)
+	origin_tech = "materials=5;magnets=2"
+
+/obj/item/mecha_parts/part/warthog_right_leg
+	name="Warthog Right Leg"
+	icon_state = "warthog_r_leg"
+	construction_time = 200
+	construction_cost = list("metal"=25000,"plasma"=15000)
+	origin_tech = "materials=5;magnets=2"
+*/
+
+
 ///////// Circuitboards
 
 /obj/item/mecha_parts/circuitboard

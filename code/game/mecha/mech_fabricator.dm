@@ -80,7 +80,18 @@
 						/obj/item/mecha_parts/part/honker_right_arm,
 						/obj/item/mecha_parts/part/honker_left_leg,
 						/obj/item/mecha_parts/part/honker_right_leg
-						),
+					),
+/*	"Warthog"=list(
+						/obj/item/mecha_parts/chassis/warthog,
+						/obj/item/mecha_parts/part/warthog_torso,
+						/obj/item/mecha_parts/part/warthog_head,
+						/obj/item/mecha_parts/part/warthog_left_arm,
+						/obj/item/mecha_parts/part/warthog_right_arm
+						/obj/item/mecha_parts/part/warthog_left_leg,
+						/obj/item/mecha_parts/part/warthog_right_leg
+						/obj/item/mecha_parts/part/warthog_armor
+					),*/
+
 	"Exosuit Equipment"=list(
 						/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp,
 						/obj/item/mecha_parts/mecha_equipment/tool/drill,

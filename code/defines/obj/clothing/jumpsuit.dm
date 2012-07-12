@@ -505,3 +505,4 @@
 	flags = FPRINT | TABLEPASS | SUITSPACE
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
 	armor = list(melee = 100, bullet = 100, laser = 100, taser = 100, bomb = 100, bio = 100, rad = 100)
+

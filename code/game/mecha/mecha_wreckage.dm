@@ -166,3 +166,7 @@
 /obj/decal/mecha_wreckage/phazon
 	name = "Phazon wreckage"
 	icon_state = "phazon-broken"
+
+/obj/decal/mecha_wreckage/warthog
+	name = "Warthog wreckage"
+	icon_state = "warthog-broken"

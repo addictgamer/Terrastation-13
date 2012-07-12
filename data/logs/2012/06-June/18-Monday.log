@@ -1,6 +1,6 @@
 
 
-Starting up. 12:35.12
+Starting up. 15:20.15
 ---------------------
 
 
@@ -8,14 +8,13 @@ ADMIN: Loading jobban_rank
 ADMIN: jobban_keylist was empty
 ADMIN: Updating jobbanfile!
 ADMIN: Loading Banlist
-ADMIN: Addictgamer/(Addictgamer) delayed the game.
-ADMIN: Addictgamer has started the game.
-ACCESS: Logout: *no client*/(Addictgamer)
-ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
-ACCESS: Logout: Addictgamer/(Efig Neckins)
+ACCESS: Logout: Guest-2094813359/(Guest-2094813359)
+ACCESS: Logout: *no client*/(Tauka Usanake)
+ACCESS: Login: Tauka Usanake/(Emma-2) from 127.0.0.1
+ACCESS: Logout: Tauka Usanake/(Santa)
 
 
-Starting up. 12:43.14
+Starting up. 16:40.22
 ---------------------
 
 
@@ -23,14 +22,10 @@ ADMIN: Loading jobban_rank
 ADMIN: jobban_keylist was empty
 ADMIN: Updating jobbanfile!
 ADMIN: Loading Banlist
-ADMIN: Addictgamer/(Addictgamer) delayed the game.
-ACCESS: Logout: Addictgamer/(Addictgamer)
-ACCESS: Logout: *no client*/(Addictgamer)
-ACCESS: Login: Addictgamer/(observer) from 127.0.0.1
-ACCESS: Logout: Addictgamer/(Efig Neckins)
+ACCESS: Logout: Tauka Usanake/(Tauka Usanake)
 
 
-Starting up. 14:26.48
+Starting up. 16:46.06
 ---------------------
 
 
@@ -38,189 +33,10 @@ ADMIN: Loading jobban_rank
 ADMIN: jobban_keylist was empty
 ADMIN: Updating jobbanfile!
 ADMIN: Loading Banlist
-ACCESS: Logout: Addictgamer/(Addictgamer)
-
-
-Starting up. 14:36.03
----------------------
-
-
-ADMIN: Loading jobban_rank
-ADMIN: jobban_keylist was empty
-ADMIN: Updating jobbanfile!
-ADMIN: Loading Banlist
-ADMIN: Addictgamer/(Addictgamer) delayed the game.
-ACCESS: Logout: *no client*/(Addictgamer)
-ACCESS: Login: Addictgamer/(observer) from 127.0.0.1
-ACCESS: Logout: Addictgamer/(Efig Neckins)
-ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
-ACCESS: Logout: Addictgamer/(Efig Neckins)
-
-
-Starting up. 14:49.04
----------------------
-
-
-ADMIN: Loading jobban_rank
-ADMIN: jobban_keylist was empty
-ADMIN: Updating jobbanfile!
-ADMIN: Loading Banlist
-ADMIN: Addictgamer/(Addictgamer) delayed the game.
-ACCESS: Logout: Addictgamer/(Addictgamer)
-ACCESS: Logout: *no client*/(Addictgamer)
-ACCESS: Login: Addictgamer/(observer) from 127.0.0.1
-ACCESS: Logout: Addictgamer/(Efig Neckins)
-
-
-Starting up. 15:12.36
----------------------
-
-
-ADMIN: Loading jobban_rank
-ADMIN: jobban_keylist was empty
-ADMIN: Updating jobbanfile!
-ADMIN: Loading Banlist
-ADMIN: Addictgamer/(Addictgamer) delayed the game.
-ACCESS: Logout: Addictgamer/(Addictgamer)
-ACCESS: Logout: *no client*/(Addictgamer)
-ACCESS: Login: Addictgamer/(observer) from 127.0.0.1
-ADMIN: Addictgamer/(Efig Neckins) played sound lobby3.mid
-ADMIN: PM: Addictgamer/(Efig Neckins)->Addictgamer/(Efig Neckins) : Test
-ACCESS: Logout: Addictgamer/(Efig Neckins)
-
-
-Starting up. 15:28.42
----------------------
-
-
-ADMIN: Loading jobban_rank
-ADMIN: jobban_keylist was empty
-ADMIN: Updating jobbanfile!
-ADMIN: Loading Banlist
-ACCESS: Logout: *no client*/(Addictgamer)
-ACCESS: Login: Addictgamer/(observer) from 127.0.0.1
-ACCESS: Logout: Addictgamer/(Efig Neckins)
-
-
-Starting up. 15:41.26
----------------------
-
-
-ADMIN: Loading jobban_rank
-ADMIN: jobban_keylist was empty
-ADMIN: Updating jobbanfile!
-ADMIN: Loading Banlist
-SAY: Ian/ : Bark!
-SAY: Runtime/ : Esp!
-ACCESS: Logout: Addictgamer/(Addictgamer)
-SAY: Runtime/ : HSSSSS
-SAY: Runtime/ : Esp!
+ACCESS: Logout: *no client*/(Tauka Usanake)
+ACCESS: Login: Tauka Usanake/(Robotman) from 127.0.0.1
+SAY: Runtime/ : Meow!
+SAY: Ian/ : YAP
 GAME: SQL ERROR during player polling. Failed to connect.
 GAME: SQL ERROR during admin polling. Failed to connect.
-SAY: Runtime/ : Esp!
-SAY: Ian/ : AUUUUUU
-SAY: Ian/ : YAP
-SAY: Ian/ : Bark!
-SAY: Ian/ : Woof!
-SAY: Ian/ : YAP
-SAY: Ian/ : AUUUUUU
-SAY: Runtime/ : Purr!
-GAME: SQL ERROR during player polling. Failed to connect.
-SAY: Ian/ : YAP
-GAME: SQL ERROR during admin polling. Failed to connect.
-SAY: Ian/ : Bark!
-SAY: Ian/ : YAP
-SAY: Ian/ : YAP
-SAY: Runtime/ : Esp!
-SAY: Ian/ : Bark!
-SAY: Ian/ : YAP
-GAME: SQL ERROR during player polling. Failed to connect.
-ACCESS: Logout: Addictgamer/(Addictgamer)
-
-
-Starting up. 16:11.48
----------------------
-
-
-ADMIN: Loading jobban_rank
-ADMIN: jobban_keylist was empty
-ADMIN: Updating jobbanfile!
-ADMIN: Loading Banlist
-ACCESS: Logout: Addictgamer/(Addictgamer)
-
-
-Starting up. 16:17.03
----------------------
-
-
-ADMIN: Loading jobban_rank
-ADMIN: jobban_keylist was empty
-ADMIN: Updating jobbanfile!
-ADMIN: Loading Banlist
-
-
-Starting up. 17:43.11
----------------------
-
-
-ADMIN: Loading jobban_rank
-ADMIN: jobban_keylist was empty
-ADMIN: Updating jobbanfile!
-ADMIN: Loading Banlist
-ADMIN: Addictgamer has started the game.
-ACCESS: Logout: *no client*/(Addictgamer)
-ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
-ACCESS: Logout: Addictgamer/(Efig Neckins)
-
-
-Starting up. 21:35.45
----------------------
-
-
-ADMIN: Loading jobban_rank
-ADMIN: jobban_keylist was empty
-ADMIN: Updating jobbanfile!
-ADMIN: Loading Banlist
-ACCESS: Logout: *no client*/(Addictgamer)
-ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
-
-
-Starting up. 21:52.38
----------------------
-
-
-ADMIN: Loading jobban_rank
-ADMIN: jobban_keylist was empty
-ADMIN: Updating jobbanfile!
-ADMIN: Loading Banlist
-ACCESS: Logout: *no client*/(Addictgamer)
-ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
-ACCESS: Logout: Addictgamer/(Efig Neckins)
-
-
-Starting up. 22:12.52
----------------------
-
-
-ADMIN: Loading jobban_rank
-ADMIN: jobban_keylist was empty
-ADMIN: Updating jobbanfile!
-ADMIN: Loading Banlist
-ACCESS: Logout: *no client*/(Addictgamer)
-ACCESS: Login: Addictgamer/(Efig Neckins) from 127.0.0.1
-ACCESS: Logout: Addictgamer/(Efig Neckins)
-
-
-Starting up. 22:15.11
----------------------
-
-
-ADMIN: Loading jobban_rank
-ADMIN: jobban_keylist was empty
-ADMIN: Updating jobbanfile!
-ADMIN: Loading Banlist
-SAY: Ian/ : AUUUUUU
-GAME: SQL ERROR during player polling. Failed to connect.
-GAME: SQL ERROR during admin polling. Failed to connect.
-SAY: Ian/ : Bark!
-SAY: Ian/ : AUUUUUU
+ACCESS: Logout: Tauka Usanake/(Robotman)

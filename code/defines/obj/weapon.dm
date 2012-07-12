@@ -1867,3 +1867,14 @@
 	origin_tech = "materials=5"
 	rating = 3
 	m_amt = 80
+
+/*
+
+/obj/item/weapon/katanasword
+	name = "Katana"
+	desc = "A japanese samurai sword."
+	//origin_tech = "materials=5"
+	rating = 3
+	m_amt = 80
+
+*/

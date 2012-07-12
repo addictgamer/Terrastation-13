@@ -495,5 +495,17 @@
 	item_state = "holidaypriest"
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 
+/obj/item/clothing/suit/addictvest
+	name = "Terrastation Vest"
+	desc = "Official Terrastation vest. Lastest in style, get one now!"
+	icon_state = "addictvest"
+	item_state = "addictvest"
+	flags = FPRINT | TABLEPASS | ONESIZEFITSALL
 
+/obj/item/clothing/suit/taukakimono
+	name = "Tauka's Kimono"
+	desc = "Tauka Usanake's samurai kimono."
+	icon_state = "taukakimono"
+	item_state = "taukakimono"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 

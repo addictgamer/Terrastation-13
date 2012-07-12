@@ -332,3 +332,38 @@
 	desc = "A box of clean drinking glasses"
 	icon_state = "box"
 	item_state = "syringe_kit"
+
+/obj/item/weapon/storage/katanabelt
+	name = "katana belt"
+	desc = "A fabric belt that has a japanese katana hanging off of it."
+	icon = 'belts.dmi'
+	icon_state = "katanabelt"
+	item_state = "katana"
+	can_hold = list(
+		"/obj/item/weapon/katanasword")
+	storage_slots = 1
+	flags = FPRINT | TABLEPASS | ONBELT
+/*
+/obj/item/weapon/storage/katanabelt/full/New()
+	..()
+	new /obj/item/weapon/katanasword(src)
+*/
+
+/obj/item/weapon/storage/dualkatanabelt
+	name = "Dual Katana belt"
+	desc = "For when one katana isn't enough."
+	icon = 'belts.dmi'
+	icon_state = "dualkatanabelt"
+	item_state = "dualkatana"
+	can_hold = list(
+		"/obj/item/weapon/katanasword")
+	storage_slots = 2
+	flags = FPRINT | TABLEPASS | ONBELT
+/*
+/obj/item/weapon/storage/dualkatanabelt/full/New()
+	..()
+	new /obj/item/weapon/katanasword(src)
+	new /obj/item/weapon/katanasword(src)
+
+
+*/

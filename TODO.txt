@@ -1,4 +1,4 @@
-SS13 Terraform Server TODO 
+SS13 Terraform Server TODO
 
 ---------Addictgamer-----------------
 
@@ -199,7 +199,7 @@ blarg missiles
 
 94. Make poop go into hand when pooping. If hand doesn't have room, drop it on floor.
 
-95. Alien queen can take human corpse, inject them with plasma, and place them a little lifeform in them that can work on a "trigger bomb on impact, timer, remote control, or somebody passing next to this of the specified species."
+95. Alien queen can take human corpses, inject them with plasma, and place them a little lifeform in them that can work on a "trigger bomb on impact, timer, remote control, or somebody passing next to this of the specified species."
 
 96. Game setup lobby. Default the game starts as it does now. However, an admin can interrupt that and open up a game lobby where they can assign players jobs, add NPCs, set up events, etc. Ya, setup the game.
 
@@ -223,8 +223,6 @@ blarg missiles
 
 108. Make the hivebot invasion music play the entire time hivebots spawned from the invasion exist.
 
-109. If somebody is standing on a door they get gibbed.
-
 
 ----------
 DONE
@@ -245,4 +243,3 @@ DONE
 100. Smooth movement between tiles. - DONE          
 
 102. Play final countdown when the nuke's timer is started. - DONE
- 

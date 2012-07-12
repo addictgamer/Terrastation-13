@@ -501,3 +501,29 @@
 	icon_state = "bowler"
 	item_state = "bowler"
 	flags = FPRINT | TABLEPASS | HEADSPACE
+
+/obj/item/clothing/shoes/green
+	name = "green shoes"
+	desc = "Stylish green shoes."
+	icon_state = "green"
+
+/obj/item/clothing/under/addictblue
+	name = "Terrastation Jumpsuit"
+	desc = "Official Terrastation jumpsuit. One size fits all!"
+	icon_state = "addictblue"
+	item_state = "addictblue"
+	color = "addictblue"
+
+/obj/item/clothing/under/taukawrap
+	name = "Tauka's Wrapping"
+	desc = "Tauka Usanake's under clothing. He can't just run around in a robe after all."
+	icon_state = "taukawrap"
+	item_state = "taukawrap"
+	color = "taukawrap"
+	body_parts_covered = UPPER_TORSO|LOWER_TORSO
+
+/obj/item/clothing/shoes/taukashoes
+	name = "Tauka shoes"
+	desc = "Tauka Usanake's shoes."
+	icon_state = "taukashoes"
+
