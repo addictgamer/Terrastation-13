@@ -1087,6 +1087,9 @@
 				<h2>Fries:<h2>
 				Add one potato to the processor and wait.
 
+				<h2>Banana-Nut Bread:<h2>
+				Add three flour, three eggs, 5 unit milk and one banana to microwave and wait.
+
 
 				</body>
 				</html>
