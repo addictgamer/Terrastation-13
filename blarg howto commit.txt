@@ -5,3 +5,6 @@ git push git@gitorious.org:terrastation-13/terrastation-13.git master
 enter password at prompt.
 You can use git push master
 if you've added git@gitorious.org:terrastation-13/terrastation-13.git to remote...
+
+IGNORE ALL THAT THAT'S FOR GITORIOUS.
+For github, follow github instructions. Or use github for windows.
