@@ -68,3 +68,7 @@ The SQL backend for the library, karma system and stats tracking requires a
 MySQL server.  Your server details go in /config/dbconfig.txt, and the SQL 
 schema is in /SQL/tgstation_schema.sql.  More detailed setup instructions are
 coming soon, for now ask in our IRC channel.
+
+
+
+TESTicles
