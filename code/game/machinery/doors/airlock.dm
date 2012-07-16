@@ -84,36 +84,94 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	icon = 'Doorcom.dmi'
 	doortype = 1
 
+/obj/machinery/door/airlock/command/glass_command
+	name = "Glass Airlock"
+	icon = 'Doorcomglass.dmi'
+	opacity = 0
+	doortype = 14
+
+/obj/machinery/door/airlock/command/captain
+	name = "Airlock"
+	icon = 'Doorcom.dmi'
+	doortype = 1
+
+/obj/machinery/door/airlock/command/head_personnel
+	name = "Airlock"
+	icon = 'Doorcom.dmi'
+	doortype = 1
+
+/obj/machinery/door/airlock/command/head_chief_engineer
+	name = "Airlock"
+	icon = 'Doorcom.dmi'
+	doortype = 1
+
+/obj/machinery/door/airlock/command/head_rnd
+	name = "Airlock"
+	icon = 'Doorcom.dmi'
+	doortype = 1
+
+/obj/machinery/door/airlock/command/head_chief_medical
+	name = "Airlock"
+	icon = 'Doorcom.dmi'
+	doortype = 1
+
+/obj/machinery/door/airlock/command/head_security
+	name = "Airlock"
+	icon = 'Doorcom.dmi'
+	doortype = 1
+
 /obj/machinery/door/airlock/security
 	name = "Airlock"
 	icon = 'Doorsec.dmi'
 	doortype = 2
+
+/obj/machinery/door/airlock/security/glass_security
+	name = "Glass Airlock"
+	icon = 'Doorsecglass.dmi'
+	opacity = 0
+	doortype = 16
 
 /obj/machinery/door/airlock/engineering
 	name = "Airlock"
 	icon = 'Dooreng.dmi'
 	doortype = 3
 
+/obj/machinery/door/airlock/engineering/glass_engineering
+	name = "Glass Airlock"
+	icon = 'Doorengglass.dmi'
+	opacity = 0
+	doortype = 15
+
 /obj/machinery/door/airlock/medical
 	name = "Airlock"
 	icon = 'Doormed.dmi'
 	doortype = 4
 
-/obj/machinery/door/airlock/maintenance
+/obj/machinery/door/airlock/medical/glass_medical
+	name = "Glass Airlock"
+	icon = 'doormedglass.dmi'
+	opacity = 0
+	doortype = 17
+
+/obj/machinery/door/airlock/general
+	name = "General Access"
+	icon = 'doorgen.dmi'
+	doortype = 5
+
+/obj/machinery/door/airlock/general/maintenance
 	name = "Maintenance Access"
 	icon = 'Doormaint.dmi'
+	doortype = 5
+
+/obj/machinery/door/airlock/general/prison
+	name = "Prison Access"
+	icon = 'Doorprison.dmi'
 	doortype = 5
 
 /obj/machinery/door/airlock/external
 	name = "External Airlock"
 	icon = 'Doorext.dmi'
 	doortype = 6
-
-/obj/machinery/door/airlock/glass
-	name = "Glass Airlock"
-	icon = 'Doorglass.dmi'
-	opacity = 0
-	doortype = 7
 
 /obj/machinery/door/airlock/centcom
 	name = "Airlock"
@@ -126,6 +184,12 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	icon = 'vault.dmi'
 	opacity = 1
 	doortype = 9
+
+/obj/machinery/door/airlock/glass
+	name = "Glass Airlock"
+	icon = 'Doorglass.dmi'
+	opacity = 0
+	doortype = 7
 
 /obj/machinery/door/airlock/glass_large
 	name = "Glass Airlock"
@@ -146,34 +210,11 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	doortype = 12
 
 /obj/machinery/door/airlock/maintenance_hatch
-	name = "Maintenance Hatch"
+	name = "Airtight Maintenance Hatch"
 	icon = 'Doorhatchmaint2.dmi'
 	opacity = 1
 	doortype = 13
 
-/obj/machinery/door/airlock/glass/glass_command
-	name = "Maintenance Hatch"
-	icon = 'Doorcomglass.dmi'
-	opacity = 0
-	doortype = 14
-
-/obj/machinery/door/airlock/glass_engineering
-	name = "Maintenance Hatch"
-	icon = 'Doorengglass.dmi'
-	opacity = 0
-	doortype = 15
-
-/obj/machinery/door/airlock/glass_security
-	name = "Maintenance Hatch"
-	icon = 'Doorsecglass.dmi'
-	opacity = 0
-	doortype = 16
-
-/obj/machinery/door/airlock/glass_medical
-	name = "Maintenance Hatch"
-	icon = 'doormedglass.dmi'
-	opacity = 0
-	doortype = 17
 
 /*
 About the new airlock wires panel:

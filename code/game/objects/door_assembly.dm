@@ -28,7 +28,7 @@ obj/door_assembly
 		name = "Command Airlock Assembly"
 		icon_state = "door_as_com1"
 		glass_base_icon_state = "door_as_gcom"
-		glass_type = /obj/machinery/door/airlock/glass/glass_command
+		glass_type = /obj/machinery/door/airlock/command/glass_command
 		airlock_type = /obj/machinery/door/airlock/command
 		anchored = 1
 		density = 1
@@ -43,7 +43,7 @@ obj/door_assembly
 		name = "Security Airlock Assembly"
 		icon_state = "door_as_sec1"
 		glass_base_icon_state = "door_as_gsec"
-		glass_type = /obj/machinery/door/airlock/glass_security
+		glass_type = /obj/machinery/door/airlock/security/glass_security
 		airlock_type = /obj/machinery/door/airlock/security
 		anchored = 1
 		density = 1
@@ -58,7 +58,7 @@ obj/door_assembly
 		name = "Engineering Airlock Assembly"
 		icon_state = "door_as_eng1"
 		glass_base_icon_state = "door_as_geng"
-		glass_type = /obj/machinery/door/airlock/glass_engineering
+		glass_type = /obj/machinery/door/airlock/engineering/glass_engineering
 		airlock_type = /obj/machinery/door/airlock/engineering
 		anchored = 1
 		density = 1
@@ -73,7 +73,7 @@ obj/door_assembly
 		name = "Medical Airlock Assembly"
 		icon_state = "door_as_med1"
 		glass_base_icon_state = "door_as_gmed"
-		glass_type = /obj/machinery/door/airlock/glass_medical
+		glass_type = /obj/machinery/door/airlock/medical/glass_medical
 		airlock_type = /obj/machinery/door/airlock/medical
 		anchored = 1
 		density = 1
@@ -87,7 +87,7 @@ obj/door_assembly
 	door_assembly_mai
 		name = "Maintenance Airlock Assembly"
 		icon_state = "door_as_mai1"
-		airlock_type = /obj/machinery/door/airlock/maintenance
+		airlock_type = /obj/machinery/door/airlock/general/maintenance
 		anchored = 1
 		density = 1
 		state = 1
