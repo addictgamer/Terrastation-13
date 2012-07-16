@@ -3,9 +3,9 @@
 MAP_ICON_TYPE: 0
 LAST_COMPILE_VERSION: 495.1136
 UPDATE_OBJ_TREE: ON
-DIR: code code\defines code\defines\obj code\game code\game\mecha code\game\mecha\combat code\game\mecha\working code\game\objects code\modules code\modules\mob maps 
-FILE: code\game\objects\door_assembly.dm
-LAST_COMPILE_TIME: 1342467323
+DIR: code code\defines code\defines\obj code\game code\game\machinery code\game\machinery\doors code\game\mecha code\game\mecha\combat code\game\mecha\working code\game\objects code\modules code\modules\mob icons icons\obj icons\obj\doors maps 
+FILE: maps\blarg2.dmm
+LAST_COMPILE_TIME: 1342470511
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS

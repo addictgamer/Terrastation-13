@@ -92,32 +92,32 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 
 /obj/machinery/door/airlock/command/captain
 	name = "Airlock"
-	icon = 'Doorcom.dmi'
+	icon = 'Doorcomcapt.dmi'
 	doortype = 1
 
 /obj/machinery/door/airlock/command/head_personnel
 	name = "Airlock"
-	icon = 'Doorcom.dmi'
+	icon = 'Doorcomper.dmi'
 	doortype = 1
 
 /obj/machinery/door/airlock/command/head_chief_engineer
 	name = "Airlock"
-	icon = 'Doorcom.dmi'
+	icon = 'Doorcomeng.dmi'
 	doortype = 1
 
-/obj/machinery/door/airlock/command/head_rnd
+/obj/machinery/door/airlock/command/head_rd
 	name = "Airlock"
-	icon = 'Doorcom.dmi'
+	icon = 'Doorcomrd.dmi'
 	doortype = 1
 
 /obj/machinery/door/airlock/command/head_chief_medical
 	name = "Airlock"
-	icon = 'Doorcom.dmi'
+	icon = 'Doorcommed.dmi'
 	doortype = 1
 
 /obj/machinery/door/airlock/command/head_security
 	name = "Airlock"
-	icon = 'Doorcom.dmi'
+	icon = 'Doorcomsec.dmi'
 	doortype = 1
 
 /obj/machinery/door/airlock/security

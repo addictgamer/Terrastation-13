@@ -24,6 +24,15 @@ obj/door_assembly
 		state = 1
 		glass = 0
 
+	door_assembly_gen
+		name = "Airlock Assembly"
+		icon_state = "door_as_gen"
+		airlock_type = /obj/machinery/door/airlock
+		anchored = 1
+		density = 1
+		state = 1
+		glass = 0
+
 	door_assembly_com
 		name = "Command Airlock Assembly"
 		icon_state = "door_as_com1"
