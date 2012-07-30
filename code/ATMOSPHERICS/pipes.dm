@@ -416,7 +416,7 @@ obj/machinery/atmospherics/pipe
 				..()
 
 		air
-			icon = 'red_pipe_tank.dmi'
+			icon = 'white_pipe_tank.dmi'
 			name = "Pressure Tank (Air)"
 
 			New()

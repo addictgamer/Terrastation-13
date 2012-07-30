@@ -131,6 +131,11 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	opacity = 0
 	doortype = 16
 
+/obj/machinery/door/airlock/security/warden
+	name = "Airlock"
+	icon = 'Doorsecward.dmi'
+	doortype = 2
+
 /obj/machinery/door/airlock/engineering
 	name = "Airlock"
 	icon = 'Dooreng.dmi'
@@ -141,6 +146,11 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	icon = 'Doorengglass.dmi'
 	opacity = 0
 	doortype = 15
+
+/obj/machinery/door/airlock/engineering/atmos
+	name = "Airlock"
+	icon = 'Doorengatmos.dmi'
+	doortype = 3
 
 /obj/machinery/door/airlock/medical
 	name = "Airlock"
