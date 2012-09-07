@@ -2091,7 +2091,7 @@
 "aOk" = (/turf/simulated/floor{icon_state = "dark"; name = "server floor"; nitrogen = 500; oxygen = 0; temperature = 80},/area/toxins/server)
 "aOl" = (/obj/machinery/r_n_d/server{id_with_download_string = "1;2"; id_with_upload_string = "1;2"; name = "Robotics R&D Server"; server_id = 2},/obj/machinery/light/small{dir = 4},/turf/simulated/floor/grid{name = "Server Base"; nitrogen = 500; oxygen = 0; temperature = 80},/area/toxins/server)
 "aOm" = (/obj/window/reinforced{dir = 8},/obj/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0; tag = "Streight"},/turf/simulated/floor{icon_state = "dark"},/area/toxins/server)
-"aOn" = (/obj/machinery/atmospherics/unary/cold_sink/freezer{current_temperature = 100; on = 1},/turf/simulated/floor{icon_state = "dark"},/area/toxins/server)
+"aOn" = (/obj/machinery/atmospherics/unary/cold_sink/freezer{tag = "icon-freezer"; icon_state = "freezer"; on = 1; current_temperature = 100},/turf/simulated/floor{icon_state = "dark"},/area/toxins/server)
 "aOo" = (/obj/item/device/radio/intercom,/turf/simulated/wall,/area/toxins/server)
 "aOp" = (/obj/machinery/chem_dispenser,/turf/simulated/floor/grass,/area/hydroponics)
 "aOq" = (/obj/machinery/atmospherics/pipe/manifold/supply/hidden{tag = "icon-manifold-b-f (WEST)"; icon_state = "manifold-b-f"; dir = 8},/turf/simulated/floor,/area/hallway/primary/aft)

@@ -160,3 +160,18 @@
 	W.registered = name
 	del(src)
 	*/
+
+/obj/landmark/costume/terraclothes/New()
+	new /obj/item/clothing/under/addictblue(src.loc)
+	new /obj/item/clothing/suit/addictvest(src.loc)
+	new /obj/item/clothing/shoes/green(src.loc)
+	new /obj/item/clothing/gloves/green(src.loc)
+	del(src)
+
+
+/obj/landmark/costume/taukausanake/New()
+	new /obj/item/clothing/under/taukawrap(src.loc)
+	new /obj/item/clothing/suit/taukakimono(src.loc)
+	new /obj/item/clothing/shoes/taukashoes(src.loc)
+	new /obj/item/clothing/gloves/green(src.loc)
+	new /obj/item/weapon/storage/dualkatanabelt(src.loc)

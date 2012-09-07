@@ -152,6 +152,16 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	icon = 'Doorengatmos.dmi'
 	doortype = 3
 
+/obj/machinery/door/airlock/engineering/solars
+	name = "Airlock"
+	icon = 'Doorengsolar.dmi'
+	doortype = 3
+
+/obj/machinery/door/airlock/robotics
+	name = "Airlock"
+	icon = 'Doorrobotic.dmi'
+	doortype = 3
+
 /obj/machinery/door/airlock/medical
 	name = "Airlock"
 	icon = 'Doormed.dmi'
@@ -163,6 +173,21 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	opacity = 0
 	doortype = 17
 
+/obj/machinery/door/airlock/medical/surgery
+	name = "Airlock"
+	icon = 'Doormedsurgery.dmi'
+	doortype = 4
+
+/obj/machinery/door/airlock/medical/chemistry
+	name = "Airlock"
+	icon = 'Doormedchem.dmi'
+	doortype = 4
+
+/obj/machinery/door/airlock/medical/virology
+	name = "Airlock"
+	icon = 'Doormedviro.dmi'
+	doortype = 4
+
 /obj/machinery/door/airlock/general
 	name = "General Access"
 	icon = 'doorgen.dmi'
@@ -171,6 +196,11 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 /obj/machinery/door/airlock/general/maintenance
 	name = "Maintenance Access"
 	icon = 'Doormaint.dmi'
+	doortype = 5
+
+/obj/machinery/door/airlock/general/storage
+	name = "Storage Access"
+	icon = 'Doorstorage.dmi'
 	doortype = 5
 
 /obj/machinery/door/airlock/general/prison

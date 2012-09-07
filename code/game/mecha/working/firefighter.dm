@@ -1,12 +1,12 @@
 /obj/mecha/working/firefighter
 	desc = "Standart APLU chassis was refitted with additional thermal protection and cistern."
 	name = "Ripley-on-Fire"
-	icon_state = "ripley"
+	icon_state = "fireripley"
 	step_in = 6
 	max_temperature = 6000
 	health = 250
 	internal_damage_threshold = 40
-	wreckage = "/obj/decal/mecha_wreckage/ripley"
+	wreckage = "/obj/decal/mecha_wreckage/fireripley"
 	infra_luminosity = 5
 
 
