@@ -1,9 +1,16 @@
 var/global/datum/controller/gameticker/ticker
 
+var/global/const/GAME_STATE_PREGAME = 1
+var/global/const/GAME_STATE_SETTING_UP = 2
+var/global/const/GAME_STATE_PLAYING = 3
+var/global/const/GAME_STATE_FINISHED = 4
+
+/*
 #define GAME_STATE_PREGAME		1
 #define GAME_STATE_SETTING_UP	2
 #define GAME_STATE_PLAYING		3
 #define GAME_STATE_FINISHED		4
+*/
 
 
 /datum/controller/gameticker
@@ -25,6 +32,13 @@ var/global/datum/controller/gameticker/ticker
 	var/pregame_timeleft = 0
 
 /datum/controller/gameticker/proc/pregame()
+
+	/*for(var/client/c in world)
+		if(!c.playing_lobby_music)
+			c.music = sound('lobby3.mid')
+			c << sound(c.music,1)
+			c.playing_lobby_music = 1
+			world << "Playing lobby music. (from master controller)"*/
 
 	do
 		pregame_timeleft = 60
@@ -119,6 +133,31 @@ var/global/datum/controller/gameticker/ticker
 	if (config.sql_enabled)
 		spawn(3000)
 		statistic_cycle() // Polls population totals regularly and stores them in an SQL DB -- TLE
+
+	/*world << "Time to do clients."
+	for(var/client/c in world)
+		world << "Found a client in world."
+		if(c.playing_lobby_music)
+			if(c.music)
+				c.playing_lobby_music = 0
+				c.music.status = SOUND_PAUSED | SOUND_UPDATE
+				del c.music
+			else
+				c.playing_lobby_music = 0*/
+
+
+	for(var/mob/m in world)
+		if(m.client) //If has client.
+			if(m.client.playing_lobby_music)
+				if(m.client.music)
+					m.client.playing_lobby_music = 0
+					m.client.music.status = SOUND_PAUSED | SOUND_UPDATE
+					m.client << m.client.music //Stop the music.
+					del m.client.music
+					world << "Stopping music."
+				else
+					m.client.playing_lobby_music = 0
+
 	return 1
 
 /datum/controller/gameticker

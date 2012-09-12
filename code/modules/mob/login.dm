@@ -1,4 +1,9 @@
 /mob/Login()
+	/*if(ticker.current_state == GAME_STATE_PREGAME || ticker.current_state == GAME_STATE_SETTING_UP)
+		src.client.music = sound('lobby3.mid')
+		src.client << sound(src.client.music,1)
+		src.client.playing_lobby_music = 1
+		world << "Playing lobby music. (from mob login)"*/
 	log_access("Login: [key_name(src)] from [src.client.address ? src.client.address : "localhost"]")
 	src.lastKnownIP = src.client.address
 	src.computer_id = src.client.computer_id

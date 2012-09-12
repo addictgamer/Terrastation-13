@@ -33,6 +33,7 @@
 	var/karma_spent = 0
 
 
+
 	var/midis = 1 //Check if midis should be played for someone -- Urist
 	var/bubbles = 1 //Check if bubbles should be displayed for someone -- Doohl
 	var/be_alien = 0 //Check if that guy wants to be an alien -- Urist
@@ -41,6 +42,9 @@
 
 	var/vote = null
 	var/showvote = null
+
+	var/sound/music = null
+	var/playing_lobby_music = 0
 
 
 
