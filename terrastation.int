@@ -1,12 +1,12 @@
 // BEGIN_INTERNALS
 /*
 MAP_ICON_TYPE: 0
-WINDOW: code\game\machinery\doors\airlock.dm;icons\obj\doors\Doorrobotic.dmi;icons\obj\doors\doormedsurgery.dmi;icons\obj\doors\doormedchem.dmi;icons\obj\doors\doormedviro.dmi;icons\mob\mecha.dmi;code\defines\obj\clothing\costume.dm;maps\blarg2.dmm
+WINDOW: code\WorkInProgress\virus2\Disease2\monkeydispensor.dm
 LAST_COMPILE_VERSION: 496.1145
 UPDATE_OBJ_TREE: ON
-DIR: code code\ATMOSPHERICS code\defines code\defines\obj code\defines\obj\clothing code\game code\game\machinery code\game\machinery\doors code\game\mecha code\game\mecha\combat code\game\mecha\equipment code\game\mecha\equipment\weapons icons icons\mob icons\obj icons\obj\doors maps 
-FILE: maps\blarg2.dmm
-LAST_COMPILE_TIME: 1347166973
+DIR: code code\ATMOSPHERICS code\defines code\defines\obj code\defines\obj\clothing code\game code\game\machinery code\game\machinery\doors code\game\mecha code\game\mecha\combat code\game\mecha\equipment code\game\mecha\equipment\weapons code\WorkInProgress code\WorkInProgress\virus2 code\WorkInProgress\virus2\Disease2 icons icons\mob icons\obj icons\obj\doors maps 
+FILE: code\WorkInProgress\virus2\Disease2\monkeydispensor.dm
+LAST_COMPILE_TIME: 1347473499
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS
