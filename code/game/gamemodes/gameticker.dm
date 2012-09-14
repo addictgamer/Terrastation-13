@@ -154,7 +154,7 @@ var/global/const/GAME_STATE_FINISHED = 4
 					m.client.music.status = SOUND_PAUSED | SOUND_UPDATE
 					m.client << m.client.music //Stop the music.
 					del m.client.music
-					world << "Stopping music."
+					m << "Stopping music."
 				else
 					m.client.playing_lobby_music = 0
 
