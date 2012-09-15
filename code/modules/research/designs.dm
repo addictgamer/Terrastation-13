@@ -566,6 +566,62 @@ datum
 			materials = list("$glass" = 2000, "acid" = 20)
 			build_path = "/obj/item/mecha_parts/circuitboard/honker/targeting"
 
+
+		phazon_main
+			name = "Circuit Design (\"Phazon\" Central Control module)"
+			desc = "Allows for the construction of a \"Phazon\" Central Control module."
+			id = "phazon_main"
+			req_tech = list("programming" = 4, "bluespace" = 6)
+			build_type = IMPRINTER
+			materials = list("$glass" = 2000, "acid" = 20)
+			build_path = "/obj/item/mecha_parts/circuitboard/honker/main"
+
+		phazon_peri
+			name = "Circuit Design (\"Phazon\" Peripherals Control module)"
+			desc = "Allows for the construction of a \"Phazon\" Peripheral Control module."
+			id = "phazon_peri"
+			req_tech = list("programming" = 4, "bluespace" = 6)
+			build_type = IMPRINTER
+			materials = list("$glass" = 2000, "acid" = 20)
+			build_path = "/obj/item/mecha_parts/circuitboard/honker/peripherals"
+
+		phazon_targ
+			name = "Circuit Design (\"Phazon\" Weapons & Targeting Control module)"
+			desc = "Allows for the construction of a \"Phazon\" Weapons & Targeting Control module."
+			id = "phazon_targ"
+			req_tech = list("programming" = 4, "bluespace" = 6)
+			build_type = IMPRINTER
+			materials = list("$glass" = 2000, "acid" = 20)
+			build_path = "/obj/item/mecha_parts/circuitboard/honker/targeting"
+
+
+		warthog_main
+			name = "Circuit Design (\"Warthog\" Central Control module)"
+			desc = "Allows for the construction of a \"Warthog\" Central Control module."
+			id = "warthog_main"
+			req_tech = list("programming" = 5, "combat" = 4)
+			build_type = IMPRINTER
+			materials = list("$glass" = 2000, "acid" = 20)
+			build_path = "/obj/item/mecha_parts/circuitboard/honker/main"
+
+		warthog_peri
+			name = "Circuit Design (\"Warthog\" Peripherals Control module)"
+			desc = "Allows for the construction of a \"Warthog\" Peripheral Control module."
+			id = "warthog_peri"
+			req_tech = list("programming" = 5, "combat" = 4)
+			build_type = IMPRINTER
+			materials = list("$glass" = 2000, "acid" = 20)
+			build_path = "/obj/item/mecha_parts/circuitboard/honker/peripherals"
+
+		warthog_targ
+			name = "Circuit Design (\"Warthog\" Weapons & Targeting Control module)"
+			desc = "Allows for the construction of a \"Warthog\" Weapons & Targeting Control module."
+			id = "warthog_targ"
+			req_tech = list("programming" = 5, "combat" = 4)
+			build_type = IMPRINTER
+			materials = list("$glass" = 2000, "acid" = 20)
+			build_path = "/obj/item/mecha_parts/circuitboard/honker/targeting"
+
 ////////////////////////////////////////
 /////////// Mecha Equpment /////////////
 ////////////////////////////////////////
@@ -585,6 +641,22 @@ datum
 			build_type = MECHFAB
 			req_tech = list("combat" = 3, "magnets" = 3)
 			build_path = "/obj/item/mecha_parts/mecha_equipment/weapon/laser"
+
+		mech_missle_rack
+			name = "Exosuit Weapon Design (SGL-6 Grenade Launcher)"
+			desc = "Allows for the construction of SGL-6 Grenade Launcher."
+			id = "mecha_missilerack"
+			build_type = MECHFAB
+			req_tech = list("combat" = 5)
+			build_path = "/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack"
+
+		mech_missle_rack_fast
+			name = "Exosuit Weapon Design (SGL-6 Grenade Launcher)"
+			desc = "Allows for the construction of SGL-6 Grenade Launcher."
+			id = "mecha_missilerack_fast"
+			build_type = MECHFAB
+			req_tech = list("combat" = 6)
+			build_path = "/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/missile_rack_fast"
 
 		mech_grenade_launcher
 			name = "Exosuit Weapon Design (SGL-6 Grenade Launcher)"

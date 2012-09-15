@@ -284,38 +284,41 @@
 
 		if ("Clown")
 			if(src.gender == FEMALE)
-				world << "TODO: Equip female clown with special items and stuff."
+				src.equip_if_possible(new /obj/item/clothing/under/sexyclown(src), slot_w_uniform)
+				src.equip_if_possible(new /obj/item/clothing/mask/gas/sexyclown(src), slot_wear_mask)
 			else //MALE or NEUTER
-				src.equip_if_possible(new /obj/item/weapon/storage/backpack/clown (src), slot_back)
-				src.equip_if_possible(new /obj/item/weapon/storage/box/survival(src.back), slot_in_backpack)
+
 				src.equip_if_possible(new /obj/item/clothing/under/rank/clown(src), slot_w_uniform)
-				src.equip_if_possible(new /obj/item/device/pda/clown(src), slot_belt)
-				src.equip_if_possible(new /obj/item/clothing/shoes/clown_shoes(src), slot_shoes)
 				src.equip_if_possible(new /obj/item/clothing/mask/gas/clown_hat(src), slot_wear_mask)
-				src.equip_if_possible(new /obj/item/weapon/reagent_containers/food/snacks/grown/banana(src), slot_in_backpack)
-				src.equip_if_possible(new /obj/item/weapon/bikehorn(src), slot_in_backpack)
-				src.equip_if_possible(new /obj/item/weapon/stamp/clown(src), slot_in_backpack)
-				src.equip_if_possible(new /obj/item/toy/crayon/rainbow(src), slot_in_backpack)
-				src.equip_if_possible(new /obj/item/toy/crayonbox(src), slot_in_backpack)
 			//All genders require these.
+			src.equip_if_possible(new /obj/item/device/pda/clown(src), slot_belt)
+			src.equip_if_possible(new /obj/item/clothing/shoes/clown_shoes(src), slot_shoes)
+			src.equip_if_possible(new /obj/item/weapon/storage/backpack/clown (src), slot_back)
+			src.equip_if_possible(new /obj/item/weapon/storage/box/survival(src.back), slot_in_backpack)
+			src.equip_if_possible(new /obj/item/weapon/reagent_containers/food/snacks/grown/banana(src), slot_in_backpack)
+			src.equip_if_possible(new /obj/item/weapon/bikehorn(src), slot_in_backpack)
+			src.equip_if_possible(new /obj/item/weapon/stamp/clown(src), slot_in_backpack)
+			src.equip_if_possible(new /obj/item/toy/crayon/rainbow(src), slot_in_backpack)
+			src.equip_if_possible(new /obj/item/toy/crayonbox(src), slot_in_backpack)
 			src.mutations |= CLOWN
 
 		if ("Mime")
 			if(src.gender == FEMALE)
-				world << "TODO: Equip female mime with special items and stuff."
+				src.equip_if_possible(new /obj/item/clothing/under/sexymime(src), slot_w_uniform)
+				src.equip_if_possible(new /obj/item/clothing/mask/gas/sexymime(src), slot_wear_mask)
 			else //MALE or NEUTER
-				src.equip_if_possible(new /obj/item/weapon/storage/backpack(src), slot_back)
-				src.equip_if_possible(new /obj/item/weapon/storage/box/survival(src.back), slot_in_backpack)
 				src.equip_if_possible(new /obj/item/clothing/under/mime(src), slot_w_uniform)
-				src.equip_if_possible(new /obj/item/device/pda/mime(src), slot_belt)
-				src.equip_if_possible(new /obj/item/clothing/shoes/black(src), slot_shoes)
-				src.equip_if_possible(new /obj/item/clothing/gloves/white(src), slot_gloves)
 				src.equip_if_possible(new /obj/item/clothing/mask/gas/mime(src), slot_wear_mask)
-				src.equip_if_possible(new /obj/item/clothing/head/beret(src), slot_head)
 				src.equip_if_possible(new /obj/item/clothing/suit/suspenders(src), slot_wear_suit)
-				src.equip_if_possible(new /obj/item/toy/crayon/mime(src), slot_in_backpack)
-				src.equip_if_possible(new /obj/item/weapon/reagent_containers/food/drinks/bottle/bottleofnothing(src), slot_in_backpack)
 			//All genders require these.
+			src.equip_if_possible(new /obj/item/clothing/head/beret(src), slot_head)
+			src.equip_if_possible(new /obj/item/device/pda/mime(src), slot_belt)
+			src.equip_if_possible(new /obj/item/clothing/shoes/black(src), slot_shoes)
+			src.equip_if_possible(new /obj/item/clothing/gloves/white(src), slot_gloves)
+			src.equip_if_possible(new /obj/item/weapon/storage/backpack(src), slot_back)
+			src.equip_if_possible(new /obj/item/weapon/storage/box/survival(src.back), slot_in_backpack)
+			src.equip_if_possible(new /obj/item/toy/crayon/mime(src), slot_in_backpack)
+			src.equip_if_possible(new /obj/item/weapon/reagent_containers/food/drinks/bottle/bottleofnothing(src), slot_in_backpack)
 			src.verbs += /client/proc/mimespeak
 			src.verbs += /client/proc/mimewall
 			src.mind.special_verbs += /client/proc/mimespeak

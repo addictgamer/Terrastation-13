@@ -350,14 +350,14 @@
 		do_after_cooldown()
 		return
 
-/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack_fast
+/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/missile_rack_fast
 	name = "BLARG Fast Missile Rack"
 	icon_state = "mecha_missilerack"
 	projectiles = 10
 	projectile_energy_cost = 1000
 	equip_cooldown = 1
-	var/missile_speed = 5
-	var/missile_range = 120
+	missile_speed = 5
+	missile_range = 120
 
 	action(target)
 		if(!action_checks(target)) return

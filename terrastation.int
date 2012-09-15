@@ -1,11 +1,12 @@
 // BEGIN_INTERNALS
 /*
 MAP_ICON_TYPE: 0
-WINDOW: code\game\gamemodes\setupgame.dm;code\game\gamemodes\gameticker.dm;code\modules\mob\new_player\new_player.dm;code\game\jobs\jobprocs.dm
+WINDOW: maps\blarg2.dmm
 LAST_COMPILE_VERSION: 496.1145
-DIR: code code\defines code\defines\mob code\defines\mob\living code\defines\mob\living\carbon code\defines\obj\clothing code\defines\procs code\game code\game\gamemodes code\game\jobs code\game\mecha\equipment code\game\mecha\equipment\weapons code\modules code\modules\mob code\modules\mob\living code\modules\mob\living\carbon code\modules\mob\living\carbon\human code\modules\mob\new_player code\WorkInProgress code\WorkInProgress\virus2 code\WorkInProgress\virus2\Disease2 
-FILE: code\game\jobs\jobprocs.dm
-LAST_COMPILE_TIME: 1347659295
+UPDATE_OBJ_TREE: ON
+DIR: code\defines\obj\clothing code\game\mecha\equipment code\game\mecha\equipment\weapons maps 
+FILE: maps\blarg2.dmm
+LAST_COMPILE_TIME: 1347679823
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS

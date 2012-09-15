@@ -293,42 +293,42 @@
 	icon_state = "phazon_harness"
 	construction_time = 300
 	construction_cost = list("metal"=35000,"glass"=10000,"plasma"=20000)
-	origin_tech = "programming=5;materials=7;bluespace=6;powerstorage=6"
+	origin_tech = "programming=4;materials=7;bluespace=6;powerstorage=6"
 
 /obj/item/mecha_parts/part/phazon_head
 	name="Phazon Head"
 	icon_state = "phazon_head"
 	construction_time = 200
 	construction_cost = list("metal"=15000,"glass"=5000,"plasma"=10000)
-	origin_tech = "programming=4;materials=5;magnets=6"
+	origin_tech = "programming=3;materials=5bluespace=2;magnets=6"
 
 /obj/item/mecha_parts/part/phazon_left_arm
 	name="Phazon Left Arm"
 	icon_state = "phazon_l_arm"
 	construction_time = 200
 	construction_cost = list("metal"=20000,"plasma"=10000)
-	origin_tech = "materials=5;bluespace=2;magnets=2"
+	origin_tech = "materials=5;bluespace=3;magnets=2"
 
 /obj/item/mecha_parts/part/phazon_right_arm
 	name="Phazon Right Arm"
 	icon_state = "phazon_r_arm"
 	construction_time = 200
 	construction_cost = list("metal"=20000,"plasma"=10000)
-	origin_tech = "materials=5;bluespace=2;magnets=2"
+	origin_tech = "materials=5;bluespace=3;magnets=2"
 
 /obj/item/mecha_parts/part/phazon_left_leg
 	name="Phazon Left Leg"
 	icon_state = "phazon_l_leg"
 	construction_time = 200
 	construction_cost = list("metal"=20000,"plasma"=10000)
-	origin_tech = "materials=5;bluespace=3;magnets=3"
+	origin_tech = "materials=5;bluespace=4;magnets=3"
 
 /obj/item/mecha_parts/part/phazon_right_leg
 	name="Phazon Right Leg"
 	icon_state = "phazon_r_leg"
 	construction_time = 200
 	construction_cost = list("metal"=20000,"plasma"=10000)
-	origin_tech = "materials=5;bluespace=3;magnets=3"
+	origin_tech = "materials=5;bluespace=4;magnets=3"
 
 
 ////////// Warthog
@@ -360,14 +360,14 @@
 	icon_state = "warthog_l_arm"
 	construction_time = 200
 	construction_cost = list("metal"=25000,"plasma"=10000)
-	origin_tech = "materials=5;magnets=2"
+	origin_tech = "materials=5;magnets=2;combat=3"
 
 /obj/item/mecha_parts/part/warthog_right_arm
 	name="Warthog Right Arm"
 	icon_state = "warthog_r_arm"
 	construction_time = 200
 	construction_cost = list("metal"=25000,"plasma"=20000)
-	origin_tech = "materials=5magnets=4"
+	origin_tech = "materials=5;magnets=2;combat=3"
 
 /obj/item/mecha_parts/part/warthog_left_leg
 	name="Warthog Left Leg"
@@ -382,6 +382,13 @@
 	construction_time = 200
 	construction_cost = list("metal"=25000,"plasma"=15000)
 	origin_tech = "materials=5;magnets=2"
+
+/obj/item/mecha_parts/part/warthog_armour
+	name="Warthog Armour Plates"
+	icon_state = "warthog_armour"
+	origin_tech = "materials=5;combat=4;"
+	construction_time = 600
+	construction_cost = list("metal"=50000,"glass"=5000"uranium"=1000)
 */
 
 
@@ -399,6 +406,7 @@
 	throw_speed = 3
 	throw_range = 15
 
+//Ripley
 	ripley
 		origin_tech = "programming=3"
 
@@ -410,6 +418,7 @@
 		name = "Circuit board (Ripley Central Control module)"
 		icon_state = "mainboard"
 
+//Gygax
 	gygax
 		origin_tech = "programming=4"
 
@@ -420,12 +429,13 @@
 	gygax/targeting
 		name = "Circuit board (Gygax Weapon Control and Targeting module)"
 		icon_state = "mcontroller"
-		origin_tech = "programming=4;combat=4"
+		origin_tech = "programming=4;combat=3"
 
 	gygax/main
 		name = "Circuit board (Gygax Central Control module)"
 		icon_state = "mainboard"
 
+//Durand
 	durand
 		origin_tech = "programming=4"
 
@@ -442,23 +452,57 @@
 		name = "Circuit board (Durand Central Control module)"
 		icon_state = "mainboard"
 
+//Ripley-on-Fire
 	firefighter/peripherals
 		name = "Circuit board (Ripley-on-Fire Peripherals Control module)"
 		icon_state = "mcontroller"
 
+//H.O.N.K.
 	honker
 		origin_tech = "programming=4"
 
 	honker/peripherals
-		name = "Circuit board (H.O.N.K Peripherals Control module)"
+		name = "Circuit board (H.O.N.K. Peripherals Control module)"
 		icon_state = "mcontroller"
 
 	honker/targeting
-		name = "Circuit board (H.O.N.K Weapon Control and Targeting module)"
+		name = "Circuit board (H.O.N.K. Weapon Control and Targeting module)"
 		icon_state = "mcontroller"
 
 	honker/main
-		name = "Circuit board (H.O.N.K Central Control module)"
+		name = "Circuit board (H.O.N.K. Central Control module)"
+		icon_state = "mainboard"
+
+//Phazon
+	phazon
+		origin_tech = "programming=4;bluespace=6"
+
+	phazon/peripherals
+		name = "Circuit board (Phazon Peripherals Control module)"
+		icon_state = "mcontroller"
+
+	phazon/targeting
+		name = "Circuit board (Phazon Weapon Control and Targeting module)"
+		icon_state = "mcontroller"
+
+	phazon/main
+		name = "Circuit board (Phazon Central Control module)"
+		icon_state = "mainboard"
+
+//Warthog
+	warthog
+		origin_tech = "programming=5;combat=4"
+
+	warthog/peripherals
+		name = "Circuit board (Warthog Peripherals Control module)"
+		icon_state = "mcontroller"
+
+	warthog/targeting
+		name = "Circuit board (Warthog Weapon Control and Targeting module)"
+		icon_state = "mcontroller"
+
+	warthog/main
+		name = "Circuit board (Warthog Central Control module)"
 		icon_state = "mainboard"
 
 

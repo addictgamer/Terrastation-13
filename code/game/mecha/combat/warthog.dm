@@ -31,10 +31,9 @@
 	ME.attach(src)
 	ME = new /obj/item/mecha_parts/mecha_equipment/weapon/flamethrower
 	ME.attach(src)
-	ME = new /obj/
-	ME = new /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack_fast
+	ME = new /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack
 	ME.attach(src)
-	ME = new /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack_fast
+	ME = new /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/missile_rack_fast
 	ME.attach(src)
 	ME = new /obj/item/mecha_parts/mecha_equipment/tesla_energy_relay(src)
 	ME.attach(src)
