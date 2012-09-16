@@ -2013,7 +2013,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 			src.music = sound('lobby3.mid', 1)
 			src << sound(src.music,1)
 			src.playing_lobby_music = 1
-			world << "Playing lobby music. (from client/new())"
+			//world << "Playing lobby music. (from client/new())"
 
 	authorize()
 	//goonauth() -- Skie, commented out because not goons anymore.

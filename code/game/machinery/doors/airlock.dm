@@ -78,11 +78,13 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	var/doortype = 0
 	var/justzap = 0
 	var/obj/item/weapon/airlock_electronics/electronics = null
+	req_access_txt = 0
 
 /obj/machinery/door/airlock/command
 	name = "Airlock"
 	icon = 'Doorcom.dmi'
 	doortype = 1
+	req_access_txt = 19
 
 /obj/machinery/door/airlock/command/glass_command
 	name = "Glass Airlock"
@@ -94,36 +96,43 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	name = "Airlock"
 	icon = 'Doorcomcapt.dmi'
 	doortype = 1
+	req_access_txt = 20
 
 /obj/machinery/door/airlock/command/head_personnel
 	name = "Airlock"
 	icon = 'Doorcomper.dmi'
 	doortype = 1
+	req_access_txt = 57
 
 /obj/machinery/door/airlock/command/head_chief_engineer
 	name = "Airlock"
 	icon = 'Doorcomeng.dmi'
 	doortype = 1
+	req_access_txt = 56
 
 /obj/machinery/door/airlock/command/head_rd
 	name = "Airlock"
 	icon = 'Doorcomrd.dmi'
 	doortype = 1
+	req_access_txt = 30
 
 /obj/machinery/door/airlock/command/head_chief_medical
 	name = "Airlock"
 	icon = 'Doorcommed.dmi'
 	doortype = 1
+	req_access_txt = 40
 
 /obj/machinery/door/airlock/command/head_security
 	name = "Airlock"
 	icon = 'Doorcomsec.dmi'
 	doortype = 1
+	req_access_txt = 58
 
 /obj/machinery/door/airlock/security
 	name = "Airlock"
 	icon = 'Doorsec.dmi'
 	doortype = 2
+	req_access_txt = 1
 
 /obj/machinery/door/airlock/security/glass_security
 	name = "Glass Airlock"
@@ -135,11 +144,13 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	name = "Airlock"
 	icon = 'Doorsecward.dmi'
 	doortype = 2
+	req_access_txt = 3
 
 /obj/machinery/door/airlock/engineering
 	name = "Airlock"
 	icon = 'Dooreng.dmi'
 	doortype = 3
+	req_access_txt = 10
 
 /obj/machinery/door/airlock/engineering/glass_engineering
 	name = "Glass Airlock"
@@ -151,6 +162,7 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	name = "Airlock"
 	icon = 'Doorengatmos.dmi'
 	doortype = 3
+	req_access_txt = 24
 
 /obj/machinery/door/airlock/engineering/solars
 	name = "Airlock"
@@ -161,11 +173,13 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	name = "Airlock"
 	icon = 'Doorrobotic.dmi'
 	doortype = 3
+	req_access_txt = 29
 
 /obj/machinery/door/airlock/medical
 	name = "Airlock"
 	icon = 'Doormed.dmi'
 	doortype = 4
+	req_access_txt = 5
 
 /obj/machinery/door/airlock/medical/glass_medical
 	name = "Glass Airlock"
@@ -177,16 +191,19 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	name = "Airlock"
 	icon = 'Doormedsurgery.dmi'
 	doortype = 4
+	req_access_txt = 45
 
 /obj/machinery/door/airlock/medical/chemistry
 	name = "Airlock"
 	icon = 'Doormedchem.dmi'
 	doortype = 4
+	req_access_txt = 33
 
 /obj/machinery/door/airlock/medical/virology
 	name = "Airlock"
 	icon = 'Doormedviro.dmi'
 	doortype = 4
+	req_access_txt = 39
 
 /obj/machinery/door/airlock/general
 	name = "General Access"
@@ -197,33 +214,39 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	name = "Maintenance Access"
 	icon = 'Doormaint.dmi'
 	doortype = 5
+	req_access_txt = 12
 
 /obj/machinery/door/airlock/general/storage
 	name = "Storage Access"
 	icon = 'Doorstorage.dmi'
 	doortype = 5
+	req_access_txt = 14
 
 /obj/machinery/door/airlock/general/prison
 	name = "Prison Access"
 	icon = 'Doorprison.dmi'
 	doortype = 5
+	req_access_txt = 2
 
 /obj/machinery/door/airlock/external
 	name = "External Airlock"
 	icon = 'Doorext.dmi'
 	doortype = 6
+	req_access_txt = 13
 
 /obj/machinery/door/airlock/centcom
 	name = "Airlock"
 	icon = 'Doorele.dmi'
 	opacity = 0
 	doortype = 8
+	req_access_txt = 101
 
 /obj/machinery/door/airlock/vault
 	name = "Vault"
 	icon = 'vault.dmi'
 	opacity = 1
 	doortype = 9
+	req_access_txt = -1
 
 /obj/machinery/door/airlock/glass
 	name = "Glass Airlock"
@@ -242,6 +265,7 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	icon = 'Doorfreezer.dmi'
 	opacity = 1
 	doortype = 11
+	req_access_txt = 28
 
 /obj/machinery/door/airlock/hatch
 	name = "Airtight Hatch"
@@ -254,6 +278,7 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	icon = 'Doorhatchmaint2.dmi'
 	opacity = 1
 	doortype = 13
+	req_access_txt = 12
 
 
 /*
