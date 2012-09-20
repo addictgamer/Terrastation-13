@@ -201,3 +201,5 @@ var/list/accessable_z_levels = list("1" = 10, "3" = 15, "4" = 60, "5" = 15) //Th
 
 
 var/list/global_mutations = list() // list of hidden mutation things
+
+#define MAX_NAME_LEN 32

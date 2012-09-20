@@ -1433,3 +1433,17 @@ proc/get_cardinal_dir(atom/A, atom/B)
 	var/dy = abs(B.y - A.y)
 	return get_dir(A, B) & (rand() * (dx+dy) < dy ? 3 : 12)
 
+
+
+//For sanitizing user inputs
+/proc/reject_bad_text(var/text)
+	if(length(text) > 512)	return			//message too long
+	var/non_whitespace = 0
+	for(var/i=1, i<=length(text), i++)
+		switch(text2ascii(text,i))
+			if(62,60,92,47)	return			//rejects the text if it contains these bad characters: <, >, \ or /
+			if(127 to 255)	return			//rejects weird letters like ÿ
+			if(0 to 31)		return			//more weird stuff
+			if(32)							//whitespace
+			else			non_whitespace = 1
+	if(non_whitespace)		return text		//only accepts the text if it has some non-spaces

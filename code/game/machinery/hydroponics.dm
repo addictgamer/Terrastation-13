@@ -293,22 +293,27 @@ obj/machinery/hydroponics/proc/hardmutate() // Strongly mutates the current seed
 
 obj/machinery/hydroponics/proc/mutatespecie() // Mutagent produced a new plant!
 
+//Nettle -> Death Nettle
 	if ( istype(src.myseed, /obj/item/seeds/nettleseed ))
 		del(src.myseed)
 		src.myseed = new /obj/item/seeds/deathnettleseed
 
+//amanitamycelium -> angelmycelium
 	else if ( istype(src.myseed, /obj/item/seeds/amanitamycelium ))
 		del(src.myseed)
 		src.myseed = new /obj/item/seeds/angelmycelium
 
+//plumpmycelium -> walkingmushroommycelium
 	else if ( istype(src.myseed, /obj/item/seeds/plumpmycelium ))
 		del(src.myseed)
 		src.myseed = new /obj/item/seeds/walkingmushroommycelium
 
+//chili -> icepepper
 	else if ( istype(src.myseed, /obj/item/seeds/chiliseed ))
 		del(src.myseed)
 		src.myseed = new /obj/item/seeds/icepepperseed
 
+//berry -> poisonberry/glowberry
 	else if ( istype(src.myseed, /obj/item/seeds/berryseed ))
 		del(src.myseed)
 		switch(rand(1,100))
@@ -317,10 +322,12 @@ obj/machinery/hydroponics/proc/mutatespecie() // Mutagent produced a new plant!
 			if(51 to 100)
 				src.myseed = new /obj/item/seeds/glowberryseed
 
+//poisonberry -> deathberry
 	else if ( istype(src.myseed, /obj/item/seeds/poisonberryseed ))
 		del(src.myseed)
 		src.myseed = new /obj/item/seeds/deathberryseed
 
+//tomato -> bluetomato/blooddtomato/killertomato
 	else if ( istype(src.myseed, /obj/item/seeds/tomatoseed ))
 		del(src.myseed)
 		switch(rand(1,100))
@@ -331,6 +338,7 @@ obj/machinery/hydroponics/proc/mutatespecie() // Mutagent produced a new plant!
 			if(71 to 100)
 				src.myseed = new /obj/item/seeds/killertomatoseed
 
+//grape -> greengrape
 	else if ( istype(src.myseed, /obj/item/seeds/grapeseed ))
 		del(src.myseed)
 		src.myseed = new /obj/item/seeds/greengrapeseed
@@ -339,6 +347,8 @@ obj/machinery/hydroponics/proc/mutatespecie() // Mutagent produced a new plant!
 		del(src.myseed)
 		src.myseed = new /obj/item/seeds/gibtomatoseed
 */
+
+//eggplant -> eggy
 	else if ( istype(src.myseed, /obj/item/seeds/eggplantseed ))
 		del(src.myseed)
 		src.myseed = new /obj/item/seeds/eggyseed
@@ -473,7 +483,7 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 				if(S.reagents.has_reagent("toxin", 1))
 					src.toxic += round(S.reagents.get_reagent_amount("toxin")*2)
 
-				// Milk is good for humans, but bad for plants. The sugars canot be used by ploants, and the milk fat fuck up growth. Not shrooms though. I can't deal with this now...
+				// Milk is good for humans, but bad for plants. The sugars canot be used by plants, and the milk fat fuck up growth. Not shrooms though. I can't deal with this now...
 				if(S.reagents.has_reagent("milk", 1))
 					src.nutrilevel += round(S.reagents.get_reagent_amount("milk")*0.1)
 					src.waterlevel += round(S.reagents.get_reagent_amount("milk")*0.9)
@@ -501,7 +511,7 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 					src.waterlevel -= round(S.reagents.get_reagent_amount("chlorine")*0.5)
 					src.weedlevel -= rand(1,3)
 
-				// White Phosphorous + water -> phosphoric acid. That's not a good thing really. Phosphoric salts are beneficial though. And even if the plan suffers, in the long run the tray gets some nutrients. The benefit isn't worth that much.
+				// White Phosphorous + water -> phosphoric acid. That's not a good thing really. Phosphoric salts are beneficial though. And even if the plant suffers, in the long run the tray gets some nutrients. The benefit isn't worth that much.
 
 				if(S.reagents.has_reagent("phosphorus", 1))
 					src.health -= round(S.reagents.get_reagent_amount("phosphorus")*0.75)
