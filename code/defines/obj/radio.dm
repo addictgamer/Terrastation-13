@@ -12,7 +12,7 @@
 		obj/item/weapon/syndicate_uplink/traitorradio = null
 		wires = WIRE_SIGNAL | WIRE_RECEIVE | WIRE_TRANSMIT
 		b_stat = 0
-		broadcasting = 0
+		broadcasting = 1
 		listening = 1
 		freerange = 0 // 0 - Sanitize frequencies, 1 - Full range
 		list/channels = list() //see communications.dm for full list. First channes is a "default" for :h

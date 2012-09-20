@@ -1,11 +1,9 @@
 // BEGIN_INTERNALS
 /*
 MAP_ICON_TYPE: 0
-WINDOW: code\game\trade\traderequestcomp.dm;code\game\machinery\computer-old\security.dm
 LAST_COMPILE_VERSION: 496.1145
-DIR: code code\defines code\defines\obj code\defines\obj\clothing code\game code\game\jobs code\game\machinery code\game\machinery\computer-old code\game\machinery\doors code\game\mecha\equipment code\game\mecha\equipment\weapons code\game\objects code\game\objects\items code\game\objects\items\weapons code\game\trade code\modules code\modules\paperwork maps 
-FILE: code\game\machinery\computer-old\security.dm
-LAST_COMPILE_TIME: 1348181031
+DIR: code code\defines code\defines\obj code\game code\game\mecha\equipment code\game\mecha\equipment\weapons code\game\trade code\modules code\modules\admin code\modules\admin\verbs code\modules\paperwork 
+LAST_COMPILE_TIME: 1348182871
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS
