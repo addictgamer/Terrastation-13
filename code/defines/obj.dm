@@ -118,7 +118,7 @@
 	name = "monkey"
 	var/mob/living/carbon/monkey/target = null
 
-/obj/securearea
+/obj/sign/securearea
 	desc = "A warning sign which reads 'SECURE AREA'. This obviously applies to a nun-Clown."
 	name = "SECURE AREA"
 	icon = 'decals.dmi'
@@ -174,7 +174,6 @@
 	opacity = 0
 	density = 0
 
-
 /obj/sign/nosmoking_1
 	desc = "A warning sign which reads 'NO SMOKING'"
 	name = "NO SMOKING"
@@ -183,7 +182,6 @@
 	anchored = 1.0
 	opacity = 0
 	density = 0
-
 
 /obj/sign/nosmoking_2
 	desc = "A warning sign which reads 'NO SMOKING'"
@@ -195,7 +193,7 @@
 	density = 0
 
 /obj/sign/redcross
-	desc = "The Intergalactic symbol of Medical institutions. You'll probably get help here.'"
+	desc = "The Intergalactic symbol of Medical institutions. You'll probably get help here."
 	name = "Med-Bay"
 	icon = 'decals.dmi'
 	icon_state = "redcross"
@@ -208,6 +206,33 @@
 	name = "The Most Robust Men Award for Robustness"
 	icon = 'decals.dmi'
 	icon_state = "goldenplaque"
+	anchored = 1.0
+	opacity = 0
+	density = 0
+
+/obj/sign/doors
+	desc = "This way be doors."
+	name = "Doors Sign"
+	icon = 'decals.dmi'
+	icon_state = "doors"
+	anchored = 1.0
+	opacity = 0
+	density = 0
+
+/obj/sign/radioactive
+	desc = "Make sure you wear protective gear in this area."
+	name = "Radiation Warning"
+	icon = 'decals.dmi'
+	icon_state = "radiation"
+	anchored = 1.0
+	opacity = 0
+	density = 0
+
+/obj/sign/star
+	desc = "Oh, lookit. You found something interesting."
+	name = "Elder Sign"
+	icon = 'decals.dmi'
+	icon_state = "eldersign"
 	anchored = 1.0
 	opacity = 0
 	density = 0

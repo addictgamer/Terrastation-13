@@ -1,8 +1,8 @@
 /obj/item/weapon/clipboard
 	name = "clipboard"
 	icon = 'items.dmi'
-	icon_state = "clipboard"
-	item_state = "clipboard"
+	icon_state = "clipboard00"
+	item_state = "clipboard00"
 	throwforce = 0
 	w_class = 2.0
 	throw_speed = 3

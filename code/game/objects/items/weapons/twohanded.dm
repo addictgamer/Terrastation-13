@@ -26,3 +26,9 @@
 
 /obj/item/weapon/offhand/dropped(mob/user as mob)
 	del(src)
+
+
+/*
+/obj/item/weapon/taukakatanas
+
+*/
