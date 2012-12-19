@@ -1,3 +1,4 @@
+
 proc/spawn_asteroid(var/turf/start_loc,var/type,var/size,var/richness)//type: 0 or null - random, 1 - nothing,  2 - iron, 3 - silicon
 	if(!size)
 		size = pick(100;2,50;3,35;4,25;6,10;12)

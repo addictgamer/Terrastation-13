@@ -2,8 +2,8 @@
 /*
 MAP_ICON_TYPE: 0
 LAST_COMPILE_VERSION: 496.1145
-DIR: code code\game code\game\mecha\equipment code\game\mecha\equipment\weapons code\game\objects 
-LAST_COMPILE_TIME: 1349570739
+DIR: code code\game\mob code\game\objects code\game\objects\admin code\game\objects\item\clothing\suit\space interface 
+LAST_COMPILE_TIME: 1355894391
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS

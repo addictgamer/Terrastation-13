@@ -2,6 +2,17 @@
 // can have multiple per area
 // can also operate on non-loc area through "otherarea" var
 
+/obj/machinery/light_switch
+	desc = "A light switch"
+	name = null
+	icon = 'power.dmi'
+	icon_state = "light1"
+	anchored = 1.0
+	var/on = 1
+	var/area/area = null
+	var/otherarea = null
+	//	luminosity = 1
+
 /obj/machinery/light_switch/New()
 	..()
 	spawn(5)

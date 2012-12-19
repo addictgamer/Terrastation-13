@@ -1,6 +1,16 @@
 /var/const/OPEN = 1
 /var/const/CLOSED = 2
 
+/obj/machinery/door/firedoor
+	name = "Firelock"
+	desc = "Apply crowbar"
+	icon = 'Doorfire.dmi'
+	icon_state = "door0"
+	var/blocked = null
+	opacity = 0
+	density = 0
+	var/nextstate = null
+
 /obj/machinery/door/firedoor/Bumped(atom/AM)
 	if(p_open || operating)
 		return
@@ -9,6 +19,14 @@
 	else
 		return 0
 
+/obj/machinery/door/firedoor/proc/ion_act()
+	if(src.z == 1)
+		if(prob(15))
+			if(density)
+				open()
+			else
+				close()
+	return
 
 /obj/machinery/door/firedoor/power_change()
 	if( powered(ENVIRON) )
@@ -68,39 +86,44 @@
 		src.nextstate = null
 
 /obj/machinery/door/firedoor/border_only
-	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-		if(air_group)
+	name = "Firelock"
+	desc = "Apply crowbar."
+	icon = 'door_fire2.dmi'
+	icon_state = "door0"
+
+/obj/machinery/door/firedoor/border_only/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
+	if(air_group)
+		var/direction = get_dir(src,target)
+		return (dir != direction)
+	else if(density)
+		if(!height)
 			var/direction = get_dir(src,target)
 			return (dir != direction)
-		else if(density)
-			if(!height)
-				var/direction = get_dir(src,target)
-				return (dir != direction)
-			else
-				return 0
-
-		return 1
-
-	update_nearby_tiles(need_rebuild)
-		if(!air_master) return 0
-
-		var/turf/simulated/source = loc
-		var/turf/simulated/destination = get_step(source,dir)
-
-		if(need_rebuild)
-			if(istype(source)) //Rebuild/update nearby group geometry
-				if(source.parent)
-					air_master.groups_to_rebuild += source.parent
-				else
-					air_master.tiles_to_update += source
-			if(istype(destination))
-				if(destination.parent)
-					air_master.groups_to_rebuild += destination.parent
-				else
-					air_master.tiles_to_update += destination
-
 		else
-			if(istype(source)) air_master.tiles_to_update += source
-			if(istype(destination)) air_master.tiles_to_update += destination
+			return 0
 
-		return 1
+	return 1
+
+/obj/machinery/door/firedoor/border_only/update_nearby_tiles(need_rebuild)
+	if(!air_master) return 0
+
+	var/turf/simulated/source = loc
+	var/turf/simulated/destination = get_step(source,dir)
+
+	if(need_rebuild)
+		if(istype(source)) //Rebuild/update nearby group geometry
+			if(source.parent)
+				air_master.groups_to_rebuild += source.parent
+			else
+				air_master.tiles_to_update += source
+		if(istype(destination))
+			if(destination.parent)
+				air_master.groups_to_rebuild += destination.parent
+			else
+				air_master.tiles_to_update += destination
+
+	else
+		if(istype(source)) air_master.tiles_to_update += source
+		if(istype(destination)) air_master.tiles_to_update += destination
+
+	return 1

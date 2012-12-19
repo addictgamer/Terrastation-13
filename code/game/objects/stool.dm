@@ -1,3 +1,12 @@
+
+/obj/stool
+	name = "stool"
+	desc = "Apply butt."
+	icon = 'objects.dmi'
+	icon_state = "stool"
+	flags = FPRINT
+	pressure_resistance = 3*ONE_ATMOSPHERE
+
 /obj/stool/ex_act(severity)
 
 	switch(severity)
@@ -29,39 +38,6 @@
 		new /obj/item/stack/sheet/metal( src.loc )
 		//SN src = null
 		del(src)
-	return
-
-
-/obj/stool/bed/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	..()
-	if (istype(W, /obj/item/weapon/wrench))
-		playsound(src.loc, 'Ratchet.ogg', 50, 1)
-		new /obj/item/stack/sheet/metal( src.loc )
-		del(src)
-	return
-
-/obj/stool/chair/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	..()
-	if (istype(W, /obj/item/assembly/shock_kit))
-		var/obj/stool/chair/e_chair/E = new /obj/stool/chair/e_chair( src.loc )
-		playsound(src.loc, 'Deconstruct.ogg', 50, 1)
-		E.dir = src.dir
-		E.part1 = W
-		W.loc = E
-		W.master = E
-		user.u_equip(W)
-		W.layer = initial(W.layer)
-		//SN src = null
-		del(src)
-		return
-	return
-
-/obj/stool/bed/Del()
-	for(var/mob/M in src.buckled_mobs)
-		if (M.buckled == src)
-			M.lying = 0
-	unbuckle_all()
-	..()
 	return
 
 /obj/stool/proc/unbuckle_all()
@@ -113,6 +89,33 @@
 	src.add_fingerprint(user)
 	return
 
+///////////
+////Bed////
+///////////
+
+/obj/stool/bed
+	name = "bed"
+	desc = "This is used to lie in, sleep in or strap on."
+	icon_state = "bed"
+	anchored = 1.0
+	var/list/buckled_mobs = list(  )
+
+/obj/stool/bed/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	..()
+	if (istype(W, /obj/item/weapon/wrench))
+		playsound(src.loc, 'Ratchet.ogg', 50, 1)
+		new /obj/item/stack/sheet/metal( src.loc )
+		del(src)
+	return
+
+/obj/stool/bed/Del()
+	for(var/mob/M in src.buckled_mobs)
+		if (M.buckled == src)
+			M.lying = 0
+	unbuckle_all()
+	..()
+	return
+
 /obj/stool/bed/MouseDrop_T(mob/M as mob, mob/user as mob)
 	if (!istype(M)) return
 	buckle_mob(M, user)
@@ -126,6 +129,178 @@
 	if (manual_unbuckle_all(user))
 		src.add_fingerprint(user)
 	return
+
+//////////////////
+////Roller bed////
+//////////////////
+
+/obj/stool/bed/roller
+	name = "roller bed"
+	icon = 'rollerbed.dmi'
+	icon_state = "down"
+	anchored = 0
+
+	Move()
+		..()
+		for(var/mob/M in src:buckled_mobs)
+			if (M.buckled == src)
+				M.loc = src.loc
+
+	buckle_mob(mob/M as mob, mob/user as mob)
+		if (!ticker)
+			user << "You can't buckle anyone in before the game starts."
+			return 0
+		if ((!( istype(M, /mob) ) || get_dist(src, user) > 1 || M.loc != src.loc || user.restrained() || usr.stat || M.buckled))
+			return 0
+		if (M == usr)
+			M.visible_message(\
+				"\blue [M.name] buckles in!",\
+				"You buckle yourself to [src].",\
+				"You hear metal clanking")
+		else
+			M.visible_message(\
+				"\blue [M.name] is buckled in to [src] by [user.name]!",\
+				"You buckled in to [src] by [user.name].",\
+				"You hear metal clanking")
+		M.anchored = 1
+		M.buckled = src
+		M.loc = src.loc
+		M.pixel_y = 6
+		M.update_clothing()
+		src:buckled_mobs += M
+		src.add_fingerprint(user)
+		density = 1
+		icon_state = "up"
+		return 1
+
+	manual_unbuckle_all(mob/user as mob)
+		var/N = 0;
+		for(var/mob/M in src:buckled_mobs)
+			if (M.buckled == src)
+				if (M != user)
+					M.visible_message(\
+						"\blue [M.name] was unbuckled by [user.name]!",\
+						"You unbuckled from [src] by [user.name].",\
+						"You hear metal clanking")
+				else
+					M.visible_message(\
+						"\blue [M.name] was unbuckled himself!",\
+						"You unbuckle yourself from [src].",\
+						"You hear metal clanking")
+				M.pixel_y = 0
+				M.anchored = 0
+				M.buckled = null
+				N++
+		if(N)
+			density = 0
+			icon_state = "down"
+		return N
+
+/////////////////
+////Alien bed////
+/////////////////
+
+/obj/stool/bed/alien
+	name = "Resting contraption"
+	desc = "This looks similar to contraptions from earth. Could aliens be stealing our technology?"
+	icon_state = "abed"
+
+/////////////
+////Chair////
+/////////////
+
+/obj/stool/chair
+	name = "chair"
+	desc = "You sit in this. Either by will or force."
+	icon_state = "chair"
+	var/status = 0.0
+	anchored = 1.0
+	var/list/buckled_mobs = list(  )
+
+/obj/stool/chair/attackby(obj/item/weapon/W as obj, mob/user as mob)
+	..()
+	if (istype(W, /obj/item/assembly/shock_kit))
+		var/obj/stool/chair/e_chair/E = new /obj/stool/chair/e_chair( src.loc )
+		playsound(src.loc, 'Deconstruct.ogg', 50, 1)
+		E.dir = src.dir
+		E.part1 = W
+		W.loc = E
+		W.master = E
+		user.u_equip(W)
+		W.layer = initial(W.layer)
+		//SN src = null
+		del(src)
+		return
+	return
+
+/obj/stool/chair/ex_act(severity)
+	unbuckle_all()
+	switch(severity)
+		if(1.0)
+			del(src)
+			return
+		if(2.0)
+			if (prob(50))
+				del(src)
+				return
+		if(3.0)
+			if (prob(5))
+				del(src)
+				return
+	return
+
+/obj/stool/chair/blob_act()
+	if(prob(75))
+		unbuckle_all()
+		del(src)
+
+/obj/stool/chair/New()
+	src.verbs -= /atom/movable/verb/pull
+	if (src.dir == NORTH)
+		src.layer = FLY_LAYER
+	..()
+	return
+
+/obj/stool/chair/Del()
+	unbuckle_all()
+	..()
+	return
+
+/obj/stool/chair/verb/rotate()
+	set name = "Rotate Chair"
+	set category = "Object"
+	set src in oview(1)
+
+	src.dir = turn(src.dir, 90)
+	if (src.dir == NORTH)
+		src.layer = FLY_LAYER
+	else
+		src.layer = OBJ_LAYER
+	return
+
+/obj/stool/chair/MouseDrop_T(mob/M as mob, mob/user as mob)
+	buckle_mob(M, user)
+	return
+
+/obj/stool/chair/attack_paw(mob/user as mob)
+	return src.attack_hand(user)
+
+/obj/stool/chair/attack_hand(mob/user as mob)
+	if (manual_unbuckle_all(user))
+		src.add_fingerprint(user)
+	return
+/////////////////////////
+////Electrified chair////
+/////////////////////////
+
+/obj/stool/chair/e_chair
+	name = "electrified chair"
+	desc = "Looks absolutely SHOCKING!"
+	icon_state = "e_chair0"
+	var/atom/movable/overlay/overl = null
+	var/on = 0.0
+	var/obj/item/assembly/shock_kit/part1 = null
+	var/last_time = 1.0
 
 /obj/stool/chair/e_chair/New()
 
@@ -205,124 +380,3 @@
 	A.power_light = light
 	A.updateicon()
 	return
-
-/obj/stool/chair/ex_act(severity)
-	unbuckle_all()
-	switch(severity)
-		if(1.0)
-			del(src)
-			return
-		if(2.0)
-			if (prob(50))
-				del(src)
-				return
-		if(3.0)
-			if (prob(5))
-				del(src)
-				return
-	return
-
-/obj/stool/chair/blob_act()
-	if(prob(75))
-		unbuckle_all()
-		del(src)
-
-/obj/stool/chair/New()
-	src.verbs -= /atom/movable/verb/pull
-	if (src.dir == NORTH)
-		src.layer = FLY_LAYER
-	..()
-	return
-
-/obj/stool/chair/Del()
-	unbuckle_all()
-	..()
-	return
-
-/obj/stool/chair/verb/rotate()
-	set name = "Rotate Chair"
-	set category = "Object"
-	set src in oview(1)
-
-	src.dir = turn(src.dir, 90)
-	if (src.dir == NORTH)
-		src.layer = FLY_LAYER
-	else
-		src.layer = OBJ_LAYER
-	return
-
-/obj/stool/chair/MouseDrop_T(mob/M as mob, mob/user as mob)
-	buckle_mob(M, user)
-	return
-
-/obj/stool/chair/attack_paw(mob/user as mob)
-	return src.attack_hand(user)
-
-/obj/stool/chair/attack_hand(mob/user as mob)
-	if (manual_unbuckle_all(user))
-		src.add_fingerprint(user)
-	return
-
-//roller bed
-
-/obj/stool/bed/roller
-	name = "roller bed"
-	icon = 'rollerbed.dmi'
-	icon_state = "down"
-	anchored = 0
-
-	Move()
-		..()
-		for(var/mob/M in src:buckled_mobs)
-			if (M.buckled == src)
-				M.loc = src.loc
-
-	buckle_mob(mob/M as mob, mob/user as mob)
-		if (!ticker)
-			user << "You can't buckle anyone in before the game starts."
-			return 0
-		if ((!( istype(M, /mob) ) || get_dist(src, user) > 1 || M.loc != src.loc || user.restrained() || usr.stat || M.buckled))
-			return 0
-		if (M == usr)
-			M.visible_message(\
-				"\blue [M.name] buckles in!",\
-				"You buckle yourself to [src].",\
-				"You hear metal clanking")
-		else
-			M.visible_message(\
-				"\blue [M.name] is buckled in to [src] by [user.name]!",\
-				"You buckled in to [src] by [user.name].",\
-				"You hear metal clanking")
-		M.anchored = 1
-		M.buckled = src
-		M.loc = src.loc
-		M.pixel_y = 6
-		M.update_clothing()
-		src:buckled_mobs += M
-		src.add_fingerprint(user)
-		density = 1
-		icon_state = "up"
-		return 1
-
-	manual_unbuckle_all(mob/user as mob)
-		var/N = 0;
-		for(var/mob/M in src:buckled_mobs)
-			if (M.buckled == src)
-				if (M != user)
-					M.visible_message(\
-						"\blue [M.name] was unbuckled by [user.name]!",\
-						"You unbuckled from [src] by [user.name].",\
-						"You hear metal clanking")
-				else
-					M.visible_message(\
-						"\blue [M.name] was unbuckled himself!",\
-						"You unbuckle yourself from [src].",\
-						"You hear metal clanking")
-				M.pixel_y = 0
-				M.anchored = 0
-				M.buckled = null
-				N++
-		if(N)
-			density = 0
-			icon_state = "down"
-		return N

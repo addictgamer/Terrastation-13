@@ -1,4 +1,6 @@
+
 //this function places received data into element with specified id.
+
 var/const/js_byjax = {"
 function replaceContent(id,content) {
 	var parent = document.getElementById(id);
@@ -26,4 +28,3 @@ proc/send_byjax(receiver, control_id, target_element, new_content=null, callback
 		if(callback)
 			receiver << output(istype(callback_args)?list2params(callback_args):"","[control_id]:[callback]")
 	return
-

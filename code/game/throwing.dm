@@ -1,3 +1,4 @@
+
 /mob/living/carbon/proc/toggle_throw_mode()
 	if (src.in_throw_mode)
 		throw_mode_off()

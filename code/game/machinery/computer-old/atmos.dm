@@ -7,6 +7,14 @@ Atmos alert computer
 
 
 //the station alerts computer
+
+/obj/machinery/computer/station_alert
+	name = "Station Alert Computer"
+	desc = "Alert. Alert. ALERT!!!"
+	icon_state = "alert:0"
+	circuit = "/obj/item/weapon/circuitboard/stationalert"
+	var/alarms = list("Fire"=list(), "Atmosphere"=list(), "Power"=list())
+
 /obj/machinery/computer/station_alert/attack_ai(mob/user)
 	add_fingerprint(user)
 
@@ -20,7 +28,7 @@ Atmos alert computer
 		return
 	interact(user)
 
-/obj/machinery/computer/station_alert/proc/interact(mob/user)
+/obj/machinery/computer/station_alert/interact(mob/user)
 	usr.machine = src
 	var/dat = "<HEAD><TITLE>Current Station Alerts</TITLE><META HTTP-EQUIV='Refresh' CONTENT='10'></HEAD><BODY>\n"
 	dat += "<A HREF='?src=\ref[user];mach_close=alerts'>Close</A><br><br>"

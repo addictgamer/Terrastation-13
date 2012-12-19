@@ -1,3 +1,19 @@
+
+/obj/machinery/door
+	name = "Door"
+	desc = "It opens and closes."
+	icon = 'doorint.dmi'
+	icon_state = "door1"
+	opacity = 1
+	density = 1
+	layer = 2.7
+	var/secondsElectrified = 0
+	var/visible = 1
+	var/p_open = 0
+	var/operating = 0
+	anchored = 1
+	var/autoclose = 0
+
 /obj/machinery/door/Bumped(atom/AM)
 	if(p_open || operating) return
 	if(ismob(AM))
@@ -34,6 +50,13 @@
 				else
 					flick("door_deny", src)
 
+/obj/machinery/door/proc/checkForMultipleDoors()
+	if(!src.loc)
+		return 0
+	for(var/obj/machinery/door/D in src.loc)
+		if(!istype(D, /obj/machinery/door/window) && D.density)
+			return 0
+	return 1
 
 /obj/machinery/door/proc/bumpopen(mob/user as mob)
 	if (src.operating)
@@ -186,33 +209,6 @@
 			close()
 	else if (src.density)
 		flick("door_deny", src)
-	return
-
-/obj/machinery/door/airlock/proc/ion_act()
-	if(src.z == 1 && src.density)
-		if(length(req_access) > 0 && !(12 in req_access))
-			if(prob(4))
-				world << "\red Airlock emagged in [src.loc.loc]"
-				src.operating = -1
-				flick("door_spark", src)
-				sleep(6)
-				open()
-		else
-			if(prob(8))
-				world << "\red non vital Airlock emagged in [src.loc.loc]"
-				src.operating = -1
-				flick("door_spark", src)
-				sleep(6)
-				open()
-	return
-
-/obj/machinery/door/firedoor/proc/ion_act()
-	if(src.z == 1)
-		if(prob(15))
-			if(density)
-				open()
-			else
-				close()
 	return
 
 /obj/machinery/door/blob_act()

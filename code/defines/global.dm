@@ -1,3 +1,4 @@
+
 var/global
 	obj/datacore/data_core = null
 	obj/overlay/plmaster = null

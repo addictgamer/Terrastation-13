@@ -4,6 +4,17 @@
 
 var/reportingpower = 0  //this tracks whether this power monitoring computer is the one reporting to engi PDAs - muskets
 
+/obj/machinery/power/monitor
+	name = "Power Monitoring Computer"
+	desc = "Used to monitor the power. Pretty useless."
+	icon = 'computer.dmi'
+	icon_state = "power"
+	density = 1
+	anchored = 1
+	use_power = 2
+	idle_power_usage = 20
+	active_power_usage = 80
+
 /obj/machinery/power/monitor/attack_ai(mob/user)
 	add_fingerprint(user)
 

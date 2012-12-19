@@ -1,3 +1,4 @@
+
 obj/machinery/recharger
 	anchored = 1.0
 	icon = 'stationobjs.dmi'

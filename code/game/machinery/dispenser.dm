@@ -1,3 +1,17 @@
+
+/obj/machinery/dispenser
+	desc = "A simple yet bulky one-way storage device for gas tanks. Holds 10 plasma and 10 oxygen tanks."
+	name = "Tank Storage Unit"
+	icon = 'objects.dmi'
+	icon_state = "dispenser"
+	density = 1
+	var/o2tanks = 10.0
+	var/pltanks = 10.0
+	anchored = 1.0
+	use_power = 1
+	idle_power_usage = 5
+	active_power_usage = 10
+
 /obj/machinery/dispenser/ex_act(severity)
 	switch(severity)
 		if(1.0)

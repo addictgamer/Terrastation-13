@@ -1,3 +1,13 @@
+## Levels from highest to lowest
+## Game Master - 6
+## Game Admin - 5
+## Badmin - 4
+## Trial Admin - 3
+## Admin Candidate - 2
+## Temporary Admin - 1
+## Moderator - 0
+## Admin Observer	-1
+## Banned		-2
 addictgamer - Game Master
 lordzakida - Game Master
 ftzsarge - Game Master

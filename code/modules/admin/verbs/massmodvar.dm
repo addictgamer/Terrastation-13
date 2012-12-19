@@ -1,3 +1,4 @@
+
 /client/proc/cmd_mass_modify_object_variables(obj/O as obj|mob|turf|area in world)
 	set category = "Debug"
 	set name = "Mass Edit Variables"

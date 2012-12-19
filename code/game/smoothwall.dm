@@ -83,16 +83,6 @@
 
 	..()
 
-/obj/falsewall/New()
-
-	for(var/turf/simulated/wall/W in range(src,1))
-		W.relativewall()
-
-	for(var/obj/falsewall/W in range(src,1))
-		W.relativewall()
-
-	..()
-
 /*/turf/simulated/shuttle/wall/New()
 
 	spawn(20) //testing if this will make /obj/machinery/shuttle and /door count - It does, it stays.
@@ -100,7 +90,8 @@
 			for(var/turf/simulated/shuttle/wall/W in range(src,1))
 				W.relativewall()
 
-	..()*/
+	..()
+*/
 
 /turf/simulated/wall/Del()
 

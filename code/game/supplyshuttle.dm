@@ -35,39 +35,14 @@ var/trade_ordernum=0
 
 //SUPPLY PACKS MOVED TO /code/defines/obj/supplypacks.dm
 
-/obj/plasticflaps //HOW DO YOU CALL THOSE THINGS ANYWAY
-	name = "Plastic flaps"
-	desc = "I definitely cant get past those. No way."
-	icon = 'stationobjs.dmi' //Change this.
-	icon_state = "plasticflaps"
-	density = 0
-	anchored = 1
-	layer = 4
-
-/obj/plasticflaps/CanPass(atom/A, turf/T)
-	if(istype(A) && A.checkpass(PASSGLASS))
-		return prob(60)
-	else if(istype(A, /mob/living)) // You Shall Not Pass!
-		var/mob/living/M = A
-		if(!M.lying)			// unless you're lying down
-			return 0
-	return ..()
-
-/obj/plasticflaps/ex_act(severity)
-	switch(severity)
-		if (1)
-			del(src)
-		if (2)
-			if (prob(50))
-				del(src)
-		if (3)
-			if (prob(5))
-				del(src)
-
 /area/supplyshuttle/
 	name = "Supply Shuttle"
 	icon_state = "supply"
 	requires_power = 0
+
+///////////////////////
+////Supply computer////
+///////////////////////
 
 /obj/machinery/computer/supplycomp
 	name = "Supply shuttle console"
@@ -78,263 +53,11 @@ var/trade_ordernum=0
 	var/temp = null
 	var/hacked = 0
 
-/obj/machinery/computer/ordercomp
-	name = "Supply requesting console"
-	icon = 'computer.dmi'
-	icon_state = "request"
-	circuit = "/obj/item/weapon/circuitboard/ordercomp"
-	var/temp = null
-
-/obj/marker/supplymarker
-	icon_state = "X"
-	icon = 'mark.dmi'
-	name = "X"
-	invisibility = 101
-	anchored = 1
-	opacity = 0
-
-/datum/supply_order
-	var/datum/supply_packs/object = null
-	var/orderedby = null
-	var/comment = null
-
-/datum/supply_packs
-	var/name = null
-	var/list/contains = new/list()
-	var/amount = null
-	var/cost = null
-	var/containertype = null
-	var/containername = null
-	var/access = null
-	var/hidden = 0
-
-/proc/supply_ticker()
-	//world << "Supply ticker ticked : Adding [SUPPLY_POINTSPER] to [supply_shuttle_points]."
-	supply_shuttle_points += SUPPLY_POINTSPER
-	//world << "New SP total is [supply_shuttle_points]"
-	spawn(SUPPLY_POINTDELAY) supply_ticker()
-
-/proc/supply_process()
-	while(supply_shuttle_time - world.timeofday > 0)
-		var/ticksleft = supply_shuttle_time - world.timeofday
-
-		if(ticksleft > 1e5)
-			supply_shuttle_time = world.timeofday + 10	// midnight rollover
-
-
-		supply_shuttle_timeleft = round( ((ticksleft / 10)/60) )
-		sleep(10)
-	supply_shuttle_moving = 0
-	send_supply_shuttle()
-
-/proc/supply_can_move()
-	if(supply_shuttle_moving) return 0
-
-	var/shuttleat = supply_shuttle_at_station ? SUPPLY_STATION_AREATYPE : SUPPLY_DOCK_AREATYPE
-
-	for(var/turf/T in get_area_turfs(shuttleat) )
-		//if((locate(/mob/living) in T) && (!locate(/mob/living/carbon/monkey) in T)) return 0  //old check for living excluded monkeys
-		if((locate(/mob/living) in T)) return 0
-		if((locate(/obj/item/device/radio/beacon) in T)) return 0
-		for(var/atom/ATM in T)
-			if((locate(/mob/living) in ATM)) return 0
-			if((locate(/obj/item/device/radio/beacon) in ATM)) return 0
-
-	return 1
-
-/proc/sell_crates()
-	var/shuttleat = supply_shuttle_at_station ? SUPPLY_STATION_AREATYPE : SUPPLY_DOCK_AREATYPE
-
-	for(var/turf/T in get_area_turfs(shuttleat) )
-		var/crate = locate(/obj/crate) in T
-		if (crate)
-			del(crate)
-			supply_shuttle_points += SUPPLY_POINTSPERCRATE
-
-/obj/item/weapon/paper/manifest
-	name = "Supply Manifest"
-
-/proc/process_supply_order()
-	var/shuttleat = supply_shuttle_at_station ? SUPPLY_STATION_AREATYPE : SUPPLY_DOCK_AREATYPE
-
-	var/list/markers = new/list()
-
-	if(!supply_shuttle_shoppinglist.len) return
-
-	for(var/turf/T in get_area_turfs(shuttleat))
-		for(var/obj/marker/supplymarker/D in T)
-			markers += D
-
-	for(var/S in supply_shuttle_shoppinglist)
-		var/pickedloc = 0
-		var/found = 0
-		for(var/C in markers)
-			if (locate(/obj/crate) in get_turf(C)) continue
-			found = 1
-			pickedloc = get_turf(C)
-		if (!found) pickedloc = get_turf(pick(markers))
-		var/datum/supply_order/SO = S
-		var/datum/supply_packs/SP = SO.object
-
-		var/atom/A = new SP.containertype ( pickedloc )
-		A.name = "[SP.containername] [SO.comment ? "([SO.comment])":"" ]"
-
-		//supply manifest generation begin
-
-		if(ordernum)
-			ordernum++
-		else
-			ordernum = rand(500,5000) //pick a random number to start with
-
-		var/obj/item/weapon/paper/manifest/slip = new /obj/item/weapon/paper/manifest (A)
-		slip.info = ""
-		slip.info +="<h3>[command_name()] Shipping Manifest</h3><hr><br>"
-		slip.info +="Order #: [ordernum]<br>"
-		slip.info +="Destination: [station_name]<br>"
-		slip.info +="[supply_shuttle_shoppinglist.len] PACKAGES IN THIS SHIPMENT<br>"
-		slip.info +="CONTENTS:<br><ul>"
-
-		//spawn the stuff, finish generating the manifest while you're at it
-		if(SP.access)
-			A:req_access = new/list()
-			A:req_access += text2num(SP.access)
-		for(var/B in SP.contains)
-			if(!B)	continue
-			var/thepath = text2path(B)
-			var/atom/B2 = new thepath (A)
-			if(SP.amount && B2:amount) B2:amount = SP.amount
-			slip.info += "<li>[B2.name]</li>" //add the item to the manifest
-
-		//manifest finalisation
-		slip.info += "</ul><br>"
-		slip.info += "CHECK CONTENTS AND STAMP BELOW THE LINE TO CONFIRM RECEIPT OF GOODS<hr>"
-
-	return
-
-/obj/machinery/computer/ordercomp/attack_ai(var/mob/user as mob)
-	return src.attack_hand(user)
-
-/obj/machinery/computer/ordercomp/attack_paw(var/mob/user as mob)
-	return src.attack_hand(user)
-
 /obj/machinery/computer/supplycomp/attack_ai(var/mob/user as mob)
 	return src.attack_hand(user)
 
 /obj/machinery/computer/supplycomp/attack_paw(var/mob/user as mob)
 	return src.attack_hand(user)
-
-/obj/machinery/computer/ordercomp/attack_hand(var/mob/user as mob)
-	if(..())
-		return
-	user.transform_into_space_pirate()
-	user.machine = src
-	var/dat
-	if (src.temp)
-		dat = src.temp
-	else
-
-		dat += {"<BR><B>Supply shuttle</B><HR>
-		Location: [supply_shuttle_moving ? "Moving to station ([supply_shuttle_timeleft] Mins.)":supply_shuttle_at_station ? "Station":"Dock"]<BR>
-		<HR>Supply points: [supply_shuttle_points]<BR>
-		<BR>\n<A href='?src=\ref[src];order=1'>Request items</A><BR><BR>
-		<A href='?src=\ref[src];vieworders=1'>View approved orders</A><BR><BR>
-		<A href='?src=\ref[src];viewrequests=1'>View requests</A><BR><BR>
-		<A href='?src=\ref[user];mach_close=computer'>Close</A>"}
-
-	user << browse(dat, "window=computer;size=575x450")
-	onclose(user, "computer")
-	return
-
-/obj/machinery/computer/ordercomp/Topic(href, href_list)
-	if(..())
-		return
-
-	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
-		usr.machine = src
-
-	if (href_list["order"])
-		src.temp = "Supply points: [supply_shuttle_points]<BR><HR><BR>Request what?<BR><BR>"
-		for(var/S in (typesof(/datum/supply_packs) - /datum/supply_packs) )
-			var/datum/supply_packs/N = new S()
-			if(N.hidden) continue																	//Have to send the type instead of a reference to
-			src.temp += "<A href='?src=\ref[src];doorder=[N.type]'>[N.name]</A> Cost: [N.cost] "    //the obj because it would get caught by the garbage
-			src.temp += "<A href='?src=\ref[src];printform=[N.type]'>Print Requisition</A><br>"     //collector. oh well.
-		src.temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
-
-	else if (href_list["doorder"])
-		var/datum/supply_order/O = new/datum/supply_order ()
-		var/supplytype = href_list["doorder"]
-		var/datum/supply_packs/P = new supplytype ()
-		O.object = P
-		O.orderedby = usr.name
-		//supply_shuttle_requestlist += O
-		var/count = input(usr, "Ammount:","Enter ammount","") as num
-		var/i = 0
-		while(i < count)
-			if(supply_shuttle_points >= P.cost)
-				supply_shuttle_requestlist += O
-			i++
-		src.temp = "Thanks for your request. The cargo team will process it as soon as possible.<BR>"
-		src.temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
-
-	else if (href_list["printform"])
-		var/supplytype = href_list["printform"]
-		var/datum/supply_packs/P = new supplytype ()
-		var/obj/item/weapon/paper/reqform = new /obj/item/weapon/paper(src.loc)
-		var/idname = "Unknown"
-		var/idrank = "Unknown"
-		var/reason = input(usr,"Reason:","Why do you require this item?","")
-
-		reqform.name = "Requisition Form - [P.name]"
-		reqform.info += "<h3>[station_name] Supply Requisition Form</h3><hr>"
-
-		if (istype(usr:wear_id, /obj/item/weapon/card/id))
-			if(usr:wear_id.registered)
-				idname = usr:wear_id.registered
-			if(usr:wear_id.assignment)
-				idrank = usr:wear_id.assignment
-		if (istype(usr:wear_id, /obj/item/device/pda))
-			var/obj/item/device/pda/pda = usr:wear_id
-			if(pda.owner)
-				idname = pda.owner
-			if(pda.ownjob)
-				idrank = pda.ownjob
-		else
-			idname = usr.name
-
-		reqform.info += "REQUESTED BY: [idname]<br>"
-		reqform.info += "RANK: [idrank]<br>"
-		reqform.info += "REASON: [reason]<br>"
-		reqform.info += "SUPPLY CRATE TYPE: [P.name]<br>"
-		reqform.info += "Contents:<br><ul>"
-
-		for(var/B in P.contains)
-			var/thepath = text2path(B)
-			var/atom/B2 = new thepath ()
-			reqform.info += "<li>[B2.name]</li>"
-		reqform.info += "</ul><hr>"
-		reqform.info += "STAMP BELOW TO APPROVE THIS REQUISITION:<br>"
-
-	else if (href_list["vieworders"])
-		src.temp = "Current approved orders: <BR><BR>"
-		for(var/S in supply_shuttle_shoppinglist)
-			var/datum/supply_order/SO = S
-			src.temp += "[SO.object.name] approved by [SO.orderedby] [SO.comment ? "([SO.comment])":""]<BR>"
-		src.temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
-
-	else if (href_list["viewrequests"])
-		src.temp = "Current requests: <BR><BR>"
-		for(var/S in supply_shuttle_requestlist)
-			var/datum/supply_order/SO = S
-			src.temp += "[SO.object.name] requested by [SO.orderedby]<BR>"
-		src.temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
-
-	else if (href_list["mainmenu"])
-		src.temp = null
-
-	src.add_fingerprint(usr)
-	src.updateUsrDialog()
-	return
 
 /obj/machinery/computer/supplycomp/attack_hand(var/mob/user as mob)
 	if(!src.allowed(user))
@@ -570,3 +293,259 @@ var/trade_ordernum=0
 
 	from.move_contents_to(dest)
 	supply_shuttle_at_station = !supply_shuttle_at_station
+
+//////////////////////
+////Order computer////
+//////////////////////
+
+/obj/machinery/computer/ordercomp
+	name = "Supply requesting console"
+	icon = 'computer.dmi'
+	icon_state = "request"
+	circuit = "/obj/item/weapon/circuitboard/ordercomp"
+	var/temp = null
+
+/obj/machinery/computer/ordercomp/attack_ai(var/mob/user as mob)
+	return src.attack_hand(user)
+
+/obj/machinery/computer/ordercomp/attack_paw(var/mob/user as mob)
+	return src.attack_hand(user)
+
+/obj/machinery/computer/ordercomp/attack_hand(var/mob/user as mob)
+	if(..())
+		return
+	user.transform_into_space_pirate()
+	user.machine = src
+	var/dat
+	if (src.temp)
+		dat = src.temp
+	else
+
+		dat += {"<BR><B>Supply shuttle</B><HR>
+		Location: [supply_shuttle_moving ? "Moving to station ([supply_shuttle_timeleft] Mins.)":supply_shuttle_at_station ? "Station":"Dock"]<BR>
+		<HR>Supply points: [supply_shuttle_points]<BR>
+		<BR>\n<A href='?src=\ref[src];order=1'>Request items</A><BR><BR>
+		<A href='?src=\ref[src];vieworders=1'>View approved orders</A><BR><BR>
+		<A href='?src=\ref[src];viewrequests=1'>View requests</A><BR><BR>
+		<A href='?src=\ref[user];mach_close=computer'>Close</A>"}
+
+	user << browse(dat, "window=computer;size=575x450")
+	onclose(user, "computer")
+	return
+
+/obj/machinery/computer/ordercomp/Topic(href, href_list)
+	if(..())
+		return
+
+	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
+		usr.machine = src
+
+	if (href_list["order"])
+		src.temp = "Supply points: [supply_shuttle_points]<BR><HR><BR>Request what?<BR><BR>"
+		for(var/S in (typesof(/datum/supply_packs) - /datum/supply_packs) )
+			var/datum/supply_packs/N = new S()
+			if(N.hidden) continue																	//Have to send the type instead of a reference to
+			src.temp += "<A href='?src=\ref[src];doorder=[N.type]'>[N.name]</A> Cost: [N.cost] "    //the obj because it would get caught by the garbage
+			src.temp += "<A href='?src=\ref[src];printform=[N.type]'>Print Requisition</A><br>"     //collector. oh well.
+		src.temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
+
+	else if (href_list["doorder"])
+		var/datum/supply_order/O = new/datum/supply_order ()
+		var/supplytype = href_list["doorder"]
+		var/datum/supply_packs/P = new supplytype ()
+		O.object = P
+		O.orderedby = usr.name
+		//supply_shuttle_requestlist += O
+		var/count = input(usr, "Ammount:","Enter ammount","") as num
+		var/i = 0
+		while(i < count)
+			if(supply_shuttle_points >= P.cost)
+				supply_shuttle_requestlist += O
+			i++
+		src.temp = "Thanks for your request. The cargo team will process it as soon as possible.<BR>"
+		src.temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
+
+	else if (href_list["printform"])
+		var/supplytype = href_list["printform"]
+		var/datum/supply_packs/P = new supplytype ()
+		var/obj/item/weapon/paper/reqform = new /obj/item/weapon/paper(src.loc)
+		var/idname = "Unknown"
+		var/idrank = "Unknown"
+		var/reason = input(usr,"Reason:","Why do you require this item?","")
+
+		reqform.name = "Requisition Form - [P.name]"
+		reqform.info += "<h3>[station_name] Supply Requisition Form</h3><hr>"
+
+		if (istype(usr:wear_id, /obj/item/weapon/card/id))
+			if(usr:wear_id.registered)
+				idname = usr:wear_id.registered
+			if(usr:wear_id.assignment)
+				idrank = usr:wear_id.assignment
+		if (istype(usr:wear_id, /obj/item/device/pda))
+			var/obj/item/device/pda/pda = usr:wear_id
+			if(pda.owner)
+				idname = pda.owner
+			if(pda.ownjob)
+				idrank = pda.ownjob
+		else
+			idname = usr.name
+
+		reqform.info += "REQUESTED BY: [idname]<br>"
+		reqform.info += "RANK: [idrank]<br>"
+		reqform.info += "REASON: [reason]<br>"
+		reqform.info += "SUPPLY CRATE TYPE: [P.name]<br>"
+		reqform.info += "Contents:<br><ul>"
+
+		for(var/B in P.contains)
+			var/thepath = text2path(B)
+			var/atom/B2 = new thepath ()
+			reqform.info += "<li>[B2.name]</li>"
+		reqform.info += "</ul><hr>"
+		reqform.info += "STAMP BELOW TO APPROVE THIS REQUISITION:<br>"
+
+	else if (href_list["vieworders"])
+		src.temp = "Current approved orders: <BR><BR>"
+		for(var/S in supply_shuttle_shoppinglist)
+			var/datum/supply_order/SO = S
+			src.temp += "[SO.object.name] approved by [SO.orderedby] [SO.comment ? "([SO.comment])":""]<BR>"
+		src.temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
+
+	else if (href_list["viewrequests"])
+		src.temp = "Current requests: <BR><BR>"
+		for(var/S in supply_shuttle_requestlist)
+			var/datum/supply_order/SO = S
+			src.temp += "[SO.object.name] requested by [SO.orderedby]<BR>"
+		src.temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
+
+	else if (href_list["mainmenu"])
+		src.temp = null
+
+	src.add_fingerprint(usr)
+	src.updateUsrDialog()
+	return
+
+/obj/marker/supplymarker
+	icon_state = "X"
+	icon = 'mark.dmi'
+	name = "X"
+	invisibility = 101
+	anchored = 1
+	opacity = 0
+
+/datum/supply_order
+	var/datum/supply_packs/object = null
+	var/orderedby = null
+	var/comment = null
+
+/datum/supply_packs
+	var/name = null
+	var/list/contains = new/list()
+	var/amount = null
+	var/cost = null
+	var/containertype = null
+	var/containername = null
+	var/access = null
+	var/hidden = 0
+
+/proc/supply_ticker()
+	//world << "Supply ticker ticked : Adding [SUPPLY_POINTSPER] to [supply_shuttle_points]."
+	supply_shuttle_points += SUPPLY_POINTSPER
+	//world << "New SP total is [supply_shuttle_points]"
+	spawn(SUPPLY_POINTDELAY) supply_ticker()
+
+/proc/supply_process()
+	while(supply_shuttle_time - world.timeofday > 0)
+		var/ticksleft = supply_shuttle_time - world.timeofday
+
+		if(ticksleft > 1e5)
+			supply_shuttle_time = world.timeofday + 10	// midnight rollover
+
+
+		supply_shuttle_timeleft = round( ((ticksleft / 10)/60) )
+		sleep(10)
+	supply_shuttle_moving = 0
+	send_supply_shuttle()
+
+/proc/supply_can_move()
+	if(supply_shuttle_moving) return 0
+
+	var/shuttleat = supply_shuttle_at_station ? SUPPLY_STATION_AREATYPE : SUPPLY_DOCK_AREATYPE
+
+	for(var/turf/T in get_area_turfs(shuttleat) )
+		//if((locate(/mob/living) in T) && (!locate(/mob/living/carbon/monkey) in T)) return 0  //old check for living excluded monkeys
+		if((locate(/mob/living) in T)) return 0
+		if((locate(/obj/item/device/radio/beacon) in T)) return 0
+		for(var/atom/ATM in T)
+			if((locate(/mob/living) in ATM)) return 0
+			if((locate(/obj/item/device/radio/beacon) in ATM)) return 0
+
+	return 1
+
+/proc/sell_crates()
+	var/shuttleat = supply_shuttle_at_station ? SUPPLY_STATION_AREATYPE : SUPPLY_DOCK_AREATYPE
+
+	for(var/turf/T in get_area_turfs(shuttleat) )
+		var/crate = locate(/obj/crate) in T
+		if (crate)
+			del(crate)
+			supply_shuttle_points += SUPPLY_POINTSPERCRATE
+
+/obj/item/weapon/paper/manifest
+	name = "Supply Manifest"
+
+/proc/process_supply_order()
+	var/shuttleat = supply_shuttle_at_station ? SUPPLY_STATION_AREATYPE : SUPPLY_DOCK_AREATYPE
+
+	var/list/markers = new/list()
+
+	if(!supply_shuttle_shoppinglist.len) return
+
+	for(var/turf/T in get_area_turfs(shuttleat))
+		for(var/obj/marker/supplymarker/D in T)
+			markers += D
+
+	for(var/S in supply_shuttle_shoppinglist)
+		var/pickedloc = 0
+		var/found = 0
+		for(var/C in markers)
+			if (locate(/obj/crate) in get_turf(C)) continue
+			found = 1
+			pickedloc = get_turf(C)
+		if (!found) pickedloc = get_turf(pick(markers))
+		var/datum/supply_order/SO = S
+		var/datum/supply_packs/SP = SO.object
+
+		var/atom/A = new SP.containertype ( pickedloc )
+		A.name = "[SP.containername] [SO.comment ? "([SO.comment])":"" ]"
+
+		//supply manifest generation begin
+
+		if(ordernum)
+			ordernum++
+		else
+			ordernum = rand(500,5000) //pick a random number to start with
+
+		var/obj/item/weapon/paper/manifest/slip = new /obj/item/weapon/paper/manifest (A)
+		slip.info = ""
+		slip.info +="<h3>[command_name()] Shipping Manifest</h3><hr><br>"
+		slip.info +="Order #: [ordernum]<br>"
+		slip.info +="Destination: [station_name]<br>"
+		slip.info +="[supply_shuttle_shoppinglist.len] PACKAGES IN THIS SHIPMENT<br>"
+		slip.info +="CONTENTS:<br><ul>"
+
+		//spawn the stuff, finish generating the manifest while you're at it
+		if(SP.access)
+			A:req_access = new/list()
+			A:req_access += text2num(SP.access)
+		for(var/B in SP.contains)
+			if(!B)	continue
+			var/thepath = text2path(B)
+			var/atom/B2 = new thepath (A)
+			if(SP.amount && B2:amount) B2:amount = SP.amount
+			slip.info += "<li>[B2.name]</li>" //add the item to the manifest
+
+		//manifest finalisation
+		slip.info += "</ul><br>"
+		slip.info += "CHECK CONTENTS AND STAMP BELOW THE LINE TO CONFIRM RECEIPT OF GOODS<hr>"
+
+	return

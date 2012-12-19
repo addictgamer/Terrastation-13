@@ -1,3 +1,4 @@
+
 /obj/machinery/ai_slipper
 	name = "AI Liquid Dispenser"
 	icon = 'device.dmi'

@@ -1,6 +1,20 @@
 
 //SPELL BOOK PROCS
 
+/obj/item/weapon/spellbook
+	name = "Spell Book"
+	desc = "The legendary book of spells of the wizard."
+	icon = 'library.dmi'
+	icon_state ="book"
+	throw_speed = 1
+	throw_range = 5
+	w_class = 1.0
+	flags = FPRINT | TABLEPASS
+	var/uses = 4.0
+	var/temp = null
+	var/spell_type = "verb"
+	var/max_uses = 5
+
 /obj/item/weapon/spellbook/attack_self(mob/user as mob)
 	user.machine = src
 	var/dat
@@ -166,7 +180,30 @@
 					src.attack_self(M)
 	return
 
+/obj/item/weapon/spellbook/object_type_spells //used for giving out object spells as opposed to verb spells
+	spell_type = "object"
+
 //SWF UPLINK PROCS
+
+/obj/item/weapon/SWF_uplink
+	name = "station bounced radio"
+	desc = "used to comunicate it appears."
+	icon = 'radio.dmi'
+	icon_state = "radio"
+	var/temp = null
+	var/uses = 4.0
+	var/selfdestruct = 0.0
+	var/traitor_frequency = 0.0
+	var/obj/item/device/radio/origradio = null
+	flags = FPRINT | TABLEPASS| CONDUCT | ONBELT
+	item_state = "radio"
+	throwforce = 5
+	w_class = 2.0
+	throw_speed = 4
+	throw_range = 20
+	m_amt = 100
+	origin_tech = "magnets=1"
+
 /obj/item/weapon/SWF_uplink/attack_self(mob/user as mob)
 	user.machine = src
 	var/dat

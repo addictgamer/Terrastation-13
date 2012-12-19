@@ -92,6 +92,59 @@ Class Procs:
 */
 
 
+/obj/machinery
+	name = "machinery"
+	icon = 'stationobjs.dmi'
+	var
+		stat = 0
+
+		use_power = 0
+		//0 = dont run the auto
+		//1 = run auto, use idle
+		//2 = run auto, use active
+		idle_power_usage = 0
+		active_power_usage = 0
+		power_channel = EQUIP
+		//EQUIP,ENVIRON or LIGHT
+		list/component_parts = null //list of all the parts used to build it, if made from certain kinds of frames.
+		uid
+		manual = 0
+		global
+			gl_uid = 1
+
+// returns true if the area has power on given channel (or doesn't require power).
+// defaults to equipment channel
+
+/obj/machinery/proc/powered(var/chan = EQUIP)
+
+	if(!src.loc)
+		return 0
+
+	var/area/A = src.loc.loc		// make sure it's in an area
+	if(!A || !isarea(A))
+		return 0					// if not, then not powered
+
+	return A.master.powered(chan)	// return power status of the area
+
+// increment the power usage stats for an area
+
+/obj/machinery/proc/use_power(var/amount, var/chan=EQUIP) // defaults to Equipment channel
+	var/area/A = src.loc.loc		// make sure it's in an area
+	if(!A || !isarea(A))
+		return
+
+	A.master.use_power(amount, chan)
+
+/obj/machinery/proc/power_change()		// called whenever the power settings of the containing area change
+										// by default, check equipment channel & set flag
+										// can override if needed
+	if(powered())
+		stat &= ~NOPOWER
+	else
+
+		stat |= NOPOWER
+	return
+
 /obj/machinery/New()
 	..()
 	machines.Add(src)
@@ -204,3 +257,49 @@ Class Procs:
 /obj/machinery/proc/assign_uid()
 	uid = gl_uid
 	gl_uid++
+
+// FIX THESE SOON
+
+/obj/machinery/dna_scanner
+	name = "DNA Scanner/Implanter"
+	desc = "Scans DNA."
+	icon = 'Cryogenic2.dmi'
+	icon_state = "scanner_0"
+	density = 1
+	var/locked = 0.0
+	var/mob/occupant = null
+	anchored = 1.0
+	use_power = 1
+	idle_power_usage = 50
+	active_power_usage = 300
+
+/obj/machinery/scan_console
+	name = "DNA Scanner Access Console"
+	desc = "Scand DNA."
+	icon = 'computer.dmi'
+	icon_state = "scanner"
+	density = 1
+	var/obj/item/weapon/card/data/scan = null
+	var/func = ""
+	var/data = ""
+	var/special = ""
+	var/status = null
+	var/prog_p1 = null
+	var/prog_p2 = null
+	var/prog_p3 = null
+	var/prog_p4 = null
+	var/temp = null
+	var/obj/machinery/dna_scanner/connected = null
+	anchored = 1.0
+	use_power = 1
+	idle_power_usage = 10
+	active_power_usage = 400
+
+/*
+/obj/machinery/wire
+	name = "wire"
+	icon = 'power_cond_red.dmi'
+	use_power = 1
+	idle_power_usage = 0
+	active_power_usage = 1
+*/

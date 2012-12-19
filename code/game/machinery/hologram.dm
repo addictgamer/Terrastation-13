@@ -11,6 +11,75 @@ Possible to do for anyone motivated enough:
 	Give an AI variable for different hologram icons.
 	Itegrate EMP effects to disable the unit.
 */
+
+/obj/machinery/hologram
+	anchored = 1
+	use_power = 1
+	idle_power_usage = 5
+	active_power_usage = 100
+	var
+		obj/overlay/hologram//The projection itself. If there is one, the instrument is on, off otherwise.
+
+/obj/machinery/hologram/power_change()
+	if (powered())
+		stat &= ~NOPOWER
+	else
+		stat |= ~NOPOWER
+
+//Destruction procs.
+/obj/machinery/hologram/ex_act(severity)
+	switch(severity)
+		if(1.0)
+			del(src)
+		if(2.0)
+			if (prob(50))
+				del(src)
+		if(3.0)
+			if (prob(5))
+				del(src)
+	return
+
+/obj/machinery/hologram/blob_act()
+	del(src)
+	return
+
+/obj/machinery/hologram/meteorhit()
+	del(src)
+	return
+
+/obj/machinery/hologram/Del()
+	if(hologram)
+		src:clear_holo()
+	..()
+
+/*
+Holographic project of everything else.
+
+/mob/verb/hologram_test()
+	set name = "Hologram Debug New"
+	set category = "CURRENT DEBUG"
+
+	var/obj/overlay/hologram = new(loc)//Spawn a blank effect at the location.
+	var/icon/flat_icon = icon(getFlatIcon(src,0))//Need to make sure it's a new icon so the old one is not reused.
+	flat_icon.ColorTone(rgb(125,180,225))//Let's make it bluish.
+	flat_icon.ChangeOpacity(0.5)//Make it half transparent.
+	var/input = input("Select what icon state to use in effects.",,"")
+	if(input)
+		var/icon/alpha_mask = new('effects.dmi', "[input]")
+		flat_icon.AddAlphaMask(alpha_mask)//Finally, let's mix in a distortion effect.
+		hologram.icon = flat_icon
+
+		world << "Your icon should appear now."
+	return
+*/
+
+/obj/machinery/hologram/holopad
+	name = "AI holopad"
+	desc = "A floor-mounted device for projecting a holographic image. It will activate remotely."
+	icon_state = "holopad0"
+	var
+		mob/living/silicon/ai/master//Which AI, if any, is controlling the object? Only one AI may control a hologram at any time.
+
 /obj/machinery/hologram/holopad/attack_ai(mob/living/silicon/ai/user)
 	if (!istype(user))
 		return
@@ -83,58 +152,23 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 		clear_holo()//If not, we want to get rid of the hologram.
 	return 1
 
-/obj/machinery/hologram/power_change()
-	if (powered())
-		stat &= ~NOPOWER
-	else
-		stat |= ~NOPOWER
+/obj/machinery/hologram/projector
+	name = "Hologram Projector"
+	desc = "Makes a hologram appear...somehow..."
+	icon = 'stationobjs.dmi'
+	icon_state = "hologram0"
 
-//Destruction procs.
-/obj/machinery/hologram/ex_act(severity)
-	switch(severity)
-		if(1.0)
-			del(src)
-		if(2.0)
-			if (prob(50))
-				del(src)
-		if(3.0)
-			if (prob(5))
-				del(src)
-	return
-
-/obj/machinery/hologram/blob_act()
-	del(src)
-	return
-
-/obj/machinery/hologram/meteorhit()
-	del(src)
-	return
-
-/obj/machinery/hologram/Del()
-	if(hologram)
-		src:clear_holo()
-	..()
-
-/*
-Holographic project of everything else.
-
-/mob/verb/hologram_test()
-	set name = "Hologram Debug New"
-	set category = "CURRENT DEBUG"
-
-	var/obj/overlay/hologram = new(loc)//Spawn a blank effect at the location.
-	var/icon/flat_icon = icon(getFlatIcon(src,0))//Need to make sure it's a new icon so the old one is not reused.
-	flat_icon.ColorTone(rgb(125,180,225))//Let's make it bluish.
-	flat_icon.ChangeOpacity(0.5)//Make it half transparent.
-	var/input = input("Select what icon state to use in effects.",,"")
-	if(input)
-		var/icon/alpha_mask = new('effects.dmi', "[input]")
-		flat_icon.AddAlphaMask(alpha_mask)//Finally, let's mix in a distortion effect.
-		hologram.icon = flat_icon
-
-		world << "Your icon should appear now."
-	return
-*/
+/obj/machinery/hologram/proj_ai
+	name = "Hologram Projector Platform"
+	desc = "Used for the fun of the diabolical AI."
+	icon = 'stationobjs.dmi'
+	icon_state = "hologram0"
+	var
+		temp = null
+		lumens = 0.0
+		h_r = 245.0
+		h_g = 245.0
+		h_b = 245.0
 
 /obj/machinery/hologram_ai
 	name = "Hologram Projector Platform"

@@ -1,3 +1,4 @@
+
 /client/proc/Debug2()
 	set category = "Debug"
 	set name = "Debug-Game"

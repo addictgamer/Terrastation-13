@@ -80,6 +80,24 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	var/obj/item/weapon/airlock_electronics/electronics = null
 	req_access_txt = 0
 
+/obj/machinery/door/airlock/proc/ion_act()
+	if(src.z == 1 && src.density)
+		if(length(req_access) > 0 && !(12 in req_access))
+			if(prob(4))
+				world << "\red Airlock emagged in [src.loc.loc]"
+				src.operating = -1
+				flick("door_spark", src)
+				sleep(6)
+				open()
+		else
+			if(prob(8))
+				world << "\red non vital Airlock emagged in [src.loc.loc]"
+				src.operating = -1
+				flick("door_spark", src)
+				sleep(6)
+				open()
+	return
+
 /obj/machinery/door/airlock/command
 	name = "Airlock"
 	icon = 'Doorcom.dmi'

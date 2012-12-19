@@ -1,4 +1,28 @@
+
 /obj/machinery/autolathe
+	name = "Autolathe"
+	desc = "Produces items with metal and glass."
+	icon_state = "autolathe"
+	density = 1
+	var/m_amount = 0.0
+	var/g_amount = 0.0
+	var/operating = 0.0
+	var/opened = 0.0
+	//var/temp = null
+	anchored = 1.0
+	var/list/L = list()
+	var/list/LL = list()
+	var/hacked = 0
+	var/disabled = 0
+	var/shocked = 0
+	var/list/wires = list()
+	var/hack_wire
+	var/disable_wire
+	var/shock_wire
+	use_power = 1
+	idle_power_usage = 10
+	active_power_usage = 100
+
 	var/busy = 0
 	var/max_m_amount = 150000.0
 	var/max_g_amount = 75000.0

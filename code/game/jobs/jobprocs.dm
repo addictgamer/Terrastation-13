@@ -364,7 +364,7 @@
 			src.equip_if_possible(CIG, slot_wear_mask) // sorry, no more cigar
 			src.equip_if_possible(new /obj/item/clothing/gloves/black(src), slot_gloves)
 			src.equip_if_possible(new /obj/item/weapon/storage/fcard_kit(src.back), slot_in_backpack)
-			src.equip_if_possible(new /obj/item/weapon/fcardholder(src), slot_in_backpack)
+			src.equip_if_possible(new /obj/item/weapon/f_cardholder(src), slot_in_backpack)
 			src.equip_if_possible(new /obj/item/clothing/suit/det_suit(src), slot_wear_suit)
 			src.equip_if_possible(new /obj/item/device/detective_scanner(src), slot_in_backpack)
 			src.equip_if_possible(new /obj/item/weapon/zippo(src), slot_l_store)

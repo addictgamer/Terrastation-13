@@ -1,3 +1,17 @@
+
+/obj/machinery/meter
+	name = "meter"
+	desc = "It measures something."
+	icon = 'meter.dmi'
+	icon_state = "meterX"
+	var/obj/machinery/atmospherics/pipe/target = null
+	anchored = 1.0
+	var/frequency = 0
+	var/id
+	use_power = 1
+	idle_power_usage = 2
+	active_power_usage = 4
+
 /obj/machinery/meter/New()
 	..()
 
@@ -89,7 +103,7 @@
 
 	usr << t
 	return 1
-	
+
 /obj/machinery/meter/attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
 	if (!istype(W, /obj/item/weapon/wrench))
 		return ..()

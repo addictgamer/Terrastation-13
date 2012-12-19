@@ -1,3 +1,4 @@
+
 /client/proc/ticklag(number as num)
 	set category = "Debug"
 	set name = "Ticklag"
@@ -17,4 +18,3 @@
 	else
 		alert("Debugging is disabled")
 		return
-

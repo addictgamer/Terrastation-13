@@ -1,3 +1,4 @@
+
 obj/door_assembly
 	icon = 'door_assembly.dmi'
 
@@ -119,7 +120,7 @@ obj/door_assembly
 		density = 1
 		state = 1
 		glass = 0
-
+/*
 	door_assembly_mhatch
 		name = "Airtight Maintenance Hatch Assembly"
 		icon_state = "door_as_mhatch1"
@@ -128,7 +129,7 @@ obj/door_assembly
 		density = 1
 		state = 1
 		glass = 0
-
+*/
 	door_assembly_g
 		name = "Glass Airlock Assembly"
 		icon_state = "door_as_g1"

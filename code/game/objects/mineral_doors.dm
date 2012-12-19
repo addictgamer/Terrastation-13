@@ -181,17 +181,21 @@
 		return 1
 
 /obj/mineral_door/iron
+	icon_state = "iron"
 	mineralType = "iron"
 	hardness = 3
 
 /obj/mineral_door/silver
+	icon_state = "silver"
 	mineralType = "silver"
 	hardness = 3
 
 /obj/mineral_door/gold
+	icon_state = "gold"
 	mineralType = "gold"
 
 /obj/mineral_door/uranium
+	icon_state = "uranium"
 	mineralType = "uranium"
 	hardness = 3
 
@@ -200,6 +204,7 @@
 		sd_SetLuminosity(3)
 
 /obj/mineral_door/sandstone
+	icon_state = "sandstone"
 	mineralType = "sandstone"
 	hardness = 0.5
 
@@ -211,6 +216,7 @@
 		opacity = 0
 
 /obj/mineral_door/transparent/plasma
+	icon_state = "plasma"
 	mineralType = "plasma"
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
@@ -242,5 +248,6 @@
 			CheckHardness()
 
 /obj/mineral_door/transparent/diamond
+	icon_state = "diamond"
 	mineralType = "diamond"
 	hardness = 10

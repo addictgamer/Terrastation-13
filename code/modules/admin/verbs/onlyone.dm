@@ -1,3 +1,4 @@
+
 /client/proc/only_one()
 	set category = "Fun"
 	set name = "THERE CAN BE ONLY ONE"

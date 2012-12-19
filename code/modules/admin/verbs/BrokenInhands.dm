@@ -1,3 +1,4 @@
+
 /proc/getbrokeninhands()
 	var/icon/IL = new('items_lefthand.dmi')
 	var/list/Lstates = IL.IconStates()
@@ -32,5 +33,3 @@
 		fdel(F)
 		F << text
 		world << "Completely successfully and written to [F]"
-
-

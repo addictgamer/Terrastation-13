@@ -7,6 +7,16 @@
 		p++
 	return t
 
+/obj/machinery/computer/dna
+	name = "DNA operations computer"
+	desc = "A Computer used to advanced DNA stuff."
+	icon_state = "dna"
+	var/obj/item/weapon/card/data/scan = null
+	var/obj/item/weapon/card/data/modify = null
+	var/obj/item/weapon/card/data/modify2 = null
+	var/mode = null
+	var/temp = null
+
 /obj/machinery/computer/dna/attack_ai(mob/user as mob)
 	return src.attack_hand(user)
 
@@ -677,6 +687,19 @@
 		src.add_fingerprint(usr)
 		src.updateUsrDialog()
 	return
+
+/obj/machinery/restruct
+	name = "DNA Physical Restructurization Accelerator"
+	desc = "This looks complex."
+	icon = 'Cryogenic2.dmi'
+	icon_state = "restruct_0"
+	density = 1
+	var/locked = 0.0
+	var/mob/occupant = null
+	anchored = 1.0
+	use_power = 1
+	idle_power_usage = 10
+	active_power_usage = 600
 
 /obj/machinery/restruct/allow_drop()
 	return 0

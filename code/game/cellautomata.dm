@@ -184,8 +184,3 @@
 		del(P)
 
 	usr.visible_message("<b>[usr]</b> points to [this]")
-
-/obj/decal/point/point()
-	set src in oview()
-	set hidden = 1
-	return

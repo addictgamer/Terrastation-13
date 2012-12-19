@@ -1,3 +1,16 @@
+
+/obj/machinery/computer/operating
+	name = "Operating Computer"
+	density = 1
+	anchored = 1.0
+	icon_state = "operating"
+	circuit = "/obj/item/weapon/circuitboard/operating"
+
+	var/mob/living/carbon/human/victim = null
+
+	var/obj/machinery/optable/table = null
+	var/id = 0.0
+
 /obj/machinery/computer/operating/New()
 	..()
 	for(var/obj/machinery/optable/O in world)
@@ -16,7 +29,7 @@
 		return
 	interact(user)
 
-/obj/machinery/computer/operating/proc/interact(mob/user)
+/obj/machinery/computer/operating/interact(mob/user)
 	if ( (get_dist(src, user) > 1 ) || (stat & (BROKEN|NOPOWER)) )
 		if (!istype(user, /mob/living/silicon))
 			user.machine = null
@@ -51,6 +64,7 @@
 "}
 	user << browse(dat, "window=op")
 	onclose(user, "op")
+
 
 /obj/machinery/computer/operating/Topic(href, href_list)
 	if(..())

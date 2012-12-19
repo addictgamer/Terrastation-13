@@ -1,3 +1,4 @@
+
 world
 	mob = /mob/new_player
 	turf = /turf/space

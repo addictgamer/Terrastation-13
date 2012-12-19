@@ -1,3 +1,4 @@
+
 /client/proc/cmd_admin_say(msg as text)
 	set category = "Special Verbs"
 	set name = "Asay" //Gave this shit a shorter name so you only have to time out "asay" rather than "admin say" to use it --NeoFite
@@ -25,4 +26,3 @@
 				M << "<span class=\"gfartadmin\"><span class=\"prefix\">ADMIN:</span> <span class=\"name\">[key_name(usr, M)]:</span> <span class=\"message\">[msg]</span></span>"
 			else
 				M << "<span class=\"admin\"><span class=\"prefix\">ADMIN:</span> <span class=\"name\">[key_name(usr, M)]</span><a href='?src=\ref[M.client.holder];jumpto=\ref[mob]'>X</a>: <span class=\"message\">[msg]</span></span>"
-
