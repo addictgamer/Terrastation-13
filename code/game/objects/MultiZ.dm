@@ -9,7 +9,7 @@
 		return airflow || !density
 
 /obj/multiz/proc/targetZ()
-	return src.z + (istop ? 1 : -1)
+	return src.z + (istop ? -1 : 1)
 
 /obj/multiz/ladder
 	icon_state = "ladderdown"
