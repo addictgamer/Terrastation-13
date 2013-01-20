@@ -1871,7 +1871,7 @@
 <A href='?src=\ref[src];secretsfun=goblob'>Spawn blob(Untested)</A><BR>
 <A href='?src=\ref[src];secretsfun=aliens'>Trigger an Alien infestation</A><BR>
 <A href='?src=\ref[src];secretsfun=spaceninja'>Send in a space ninja</A><BR>
-<A href='?src=\ref[src];secretsfun=carp'>Trigger an Carp migration</A><BR>
+<A href='?src=\ref[src];secretsfun=carp'>Trigger a Carp migration</A><BR>
 <A href='?src=\ref[src];secretsfun=radiation'>Irradiate the station</A><BR>
 <A href='?src=\ref[src];secretsfun=prison_break'>Trigger a Prison Break</A><BR>
 <A href='?src=\ref[src];secretsfun=virus'>Trigger a Virus Outbreak</A><BR>

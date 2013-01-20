@@ -24,6 +24,19 @@
 	var/needs_held_update = 0 //If set to true, it needs its held_update function called when held.
 	proc/held_update() //This proc is called when it's being held, if the held_update var is set to true.
 
+	proc/attack_by_critter(var/damage, obj/critter/critter) //Call if a critter is attacking it.
+		//This is just the default case. Every object has its own death thing...
+		for(var/mob/O in viewers(src, null))
+			O.show_message(text("\red <B>[src] was genocidedly attacked by [critter].</B>"), 1)
+		playsound(src.loc, 'bamf.ogg', 100, 1)
+		//src.health -= damage //TODO: Take damage if it has health.
+		src.anchored = 0
+		step(src, get_dir(critter, src))
+		src.density = 0
+		critter.broke_object = 1 //Broke the object!
+		del(src)
+		return
+
 /obj/signpost
 	icon = 'stationobjs.dmi'
 	icon_state = "signpost"

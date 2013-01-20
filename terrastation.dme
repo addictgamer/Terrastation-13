@@ -594,6 +594,7 @@
 #include "code\modules\critters\critter_defenses.dm"
 #include "code\modules\critters\critters.dm"
 #include "code\modules\critters\hivebots\hivebot.dm"
+#include "code\modules\critters\spesscarp\spesscarp.dm"
 #include "code\modules\food\food.dm"
 #include "code\modules\food\recipes_microwave.dm"
 #include "code\modules\mining\datum_processing_recipe.dm"

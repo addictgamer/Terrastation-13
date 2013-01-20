@@ -126,7 +126,7 @@
 /turf/proc
 	AdjacentTurfs()
 		var/L[] = new()
-		for(var/turf/simulated/t in oview(src,1))
+		for(var/turf/simulated/t in range(src,1))
 			if(!t.density)
 				if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
 					L.Add(t)
@@ -140,10 +140,26 @@
 			return get_dist(src,t)
 	AdjacentTurfsSpace()
 		var/L[] = new()
-		for(var/turf/t in oview(src,1))
+		for(var/turf/t in range(src,1))
 			if(!t.density)
 				if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
 					L.Add(t)
+		return L
+	AdjacentTurfsCritter() //For use when seeking a path to a creature.
+		var/L[] = new()
+		for(var/turf/t in range(src,1)) //Using range instead of oview or view to see in dark....
+			if(!t.density)
+				if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
+					L.Add(t)
+				//L.Add(t)
+		return L
+	AdjacentTurfsCritterB() //For use when seeking a path to an object.
+		var/L[] = new()
+		for(var/turf/t in range(src,1)) //Using range instead of oview or view to see in dark...
+			if(!t.density)
+				//if(!LinkBlockedCritter(src, t))
+				//	L.Add(t)
+				L.Add(t)
 		return L
 
 

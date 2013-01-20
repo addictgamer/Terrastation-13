@@ -59,10 +59,18 @@
 		//Basic attack message when they move to attack and attack
 		angertext = "charges at"
 		attacktext = "attacks"
+		attacktextobject = "attacks"
 
 		attack_sound = null // the sound it makes when it attacks!
 
 		attack_speed = 25 // delay of attack
+
+		target_is_object = 0 //If the target it decides to attack is a window -- BREAK DOWN THAT WINDOW! >:) MUAHAHAHAHA!
+		broke_object = 0 //Used in determining if it managed to break the window.
+
+		path[] = new()
+
+
 
 
 	proc

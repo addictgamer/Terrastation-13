@@ -102,6 +102,25 @@
 		del(src)
 	return
 
+/obj/window/attack_by_critter(var/damage, obj/critter/critter) //Call if a critter is attacking it.
+	playsound(src.loc, 'Glasshit.ogg', 100, 1) //Just a normal glasshit sound.
+	for(var/mob/O in viewers(src, null))
+		O.show_message(text("\red <B>[src] was hit by [critter].</B>"), 1)
+	src.health -= damage
+	if (src.health <= 7 && !reinf)
+		src.anchored = 0
+		step(src, get_dir(critter, src))
+	if (src.health <= 0)
+		new /obj/item/weapon/shard( src.loc )
+		if(reinf) new /obj/item/stack/rods( src.loc)
+		src.density = 0
+		critter.broke_object = 1 //Broke the object!
+		//Shatter sound is played on delete.
+		del(src)
+		return
+	return
+
+
 /obj/window/attack_paw()
 	if ((usr.mutations & HULK))
 		usr << text("\blue You smash through the window.")
@@ -280,6 +299,7 @@
 	return
 
 /obj/window/Del()
+	//TODO: When broken or deleted, tell any critters targetting this glass to bugger off.
 	density = 0
 
 	update_nearby_tiles()
