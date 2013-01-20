@@ -180,7 +180,7 @@ proc
 			closed.Cut(closed.len)
 
 		if(path)
-			for(var/i = 1; i <= path.len/2; i++)
-				path.Swap(i,path.len-i+1)
+			//for(var/i = 1; i <= path.len/2; i++)
+			//	path.Swap(i,path.len-i+1)
 
 		return path
