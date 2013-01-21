@@ -1,44 +1,6 @@
-/*
-A Star pathfinding algorithm
-Returns a list of tiles forming a path from A to B, taking dense objects as well as walls, and the orientation of
-windows along the route into account.
-Use:
-your_list = AStar(start location, end location, adjacent turf proc, distance proc)
-For the adjacent turf proc i wrote:
-/turf/proc/AdjacentTurfs
-And for the distance one i wrote:
-/turf/proc/Distance
-So an example use might be:
-
-src.path_list = AStar(src.loc, target.loc, /turf/proc/AdjacentTurfs, /turf/proc/Distance)
-
-Note: The path is returned starting at the END node, so i wrote reverselist to reverse it for ease of use.
-
-src.path_list = reverselist(src.pathlist)
-
-Then to start on the path, all you need to do it:
-Step_to(src, src.path_list[1])
-src.path_list -= src.path_list[1] or equivilent to remove that node from the list.
-
-Optional extras to add on (in order):
-MaxNodes: The maximum number of nodes the returned path can be (0 = infinite)
-Maxnodedepth: The maximum number of nodes to search (default: 30, 0 = infinite)
-Mintargetdist: Minimum distance to the target before path returns, could be used to get
-near a target, but not right to it - for an AI mob with a gun, for example.
-Minnodedist: Minimum number of nodes to return in the path, could be used to give a path a minimum
-length to avoid portals or something i guess?? Not that they're counted right now but w/e.
-*/
-
-// Modified to provide ID argument - supplied to 'adjacent' proc, defaults to null
-// Used for checking if route exists through a door which can be opened
-
-// Also added 'exclude' turf to avoid travelling over; defaults to null
-
-
 PriorityQueue
-	var
-		L[]
-		cmp
+	var/L[]
+	var/cmp
 	New(compare)
 		L = new()
 		cmp = compare
@@ -57,12 +19,12 @@ PriorityQueue
 				j >>= 1
 
 		Dequeue()
-			ASSERT(L.len)
+			if(!L.len) return 0
 			. = L[1]
 			Remove(1)
 
 		Remove(i)
-			ASSERT(i <= L.len)
+			if(i > L.len) return 0
 			L.Swap(i,L.len)
 			L.Cut(L.len)
 			if(i < L.len)
@@ -92,13 +54,12 @@ PriorityQueue
 			if(ind)
 				Remove(ind)
 PathNode
-	var
-		datum/source
-		PathNode/prevNode
-		f
-		g
-		h
-		nt		// Nodes traversed
+	var/datum/source
+	var/PathNode/prevNode
+	var/f
+	var/g
+	var/h
+	var/nt		// Nodes traversed
 	New(s,p,pg,ph,pnt)
 		source = s
 		prevNode = p
@@ -109,8 +70,7 @@ PathNode
 		nt = pnt
 
 datum
-	var
-		bestF
+	var/bestF
 proc
 	PathWeightCompare(PathNode/a, PathNode/b)
 		return a.f - b.f
@@ -180,7 +140,56 @@ proc
 			closed.Cut(closed.len)
 
 		if(path)
-			//for(var/i = 1; i <= path.len/2; i++)
-			//	path.Swap(i,path.len-i+1)
+			for(var/i = 1; i <= path.len/2; i++)
+				path.Swap(i,path.len-i+1)
+			//if (Debug || Debug2) world << "Pathfinding NOTE: path.len = [path.len]"
 
 		return path
+
+
+// Returns true if a link between A and B is blocked
+// Movement through doors allowed if ID has access
+/proc/LinkBlockedWithAccess(turf/A, turf/B, obj/item/weapon/card/id/ID)
+
+	if(A == null || B == null) return 1
+	var/adir = get_dir(A,B)
+	var/rdir = get_dir(B,A)
+	if((adir & (NORTH|SOUTH)) && (adir & (EAST|WEST)))	//	diagonal
+		var/iStep = get_step(A,adir&(NORTH|SOUTH))
+		if(!LinkBlockedWithAccess(A,iStep, ID) && !LinkBlockedWithAccess(iStep,B,ID))
+			return 0
+
+		var/pStep = get_step(A,adir&(EAST|WEST))
+		if(!LinkBlockedWithAccess(A,pStep,ID) && !LinkBlockedWithAccess(pStep,B,ID))
+			return 0
+		return 1
+
+	if(DirBlockedWithAccess(A,adir, ID))
+		return 1
+
+	if(DirBlockedWithAccess(B,rdir, ID))
+		return 1
+
+	for(var/obj/O in B)
+		if(O.density && !istype(O, /obj/machinery/door) && !(O.flags & ON_BORDER))
+			return 1
+
+	return 0
+
+// Returns true if direction is blocked from loc
+// Checks doors against access with given ID
+/proc/DirBlockedWithAccess(turf/loc,var/dir,var/obj/item/weapon/card/id/ID)
+	for(var/obj/window/D in loc)
+		if(!D.density)			continue
+		if(D.dir == SOUTHWEST)	return 1
+		if(D.dir == dir)		return 1
+
+	for(var/obj/machinery/door/D in loc)
+		if(!D.density)			continue
+		if(istype(D, /obj/machinery/door/window))
+			if( dir & D.dir )	return !D.check_access(ID)
+
+			//if((dir & SOUTH) && (D.dir & (EAST|WEST)))		return !D.check_access(ID)
+			//if((dir & EAST ) && (D.dir & (NORTH|SOUTH)))	return !D.check_access(ID)
+		else return !D.check_access(ID)	// it's a real, air blocking door
+	return 0

@@ -60,6 +60,7 @@
 		angertext = "charges at"
 		attacktext = "attacks"
 		attacktextobject = "attacks"
+		deathtext = "dies"
 
 		attack_sound = null // the sound it makes when it attacks!
 

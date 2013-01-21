@@ -80,218 +80,109 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	var/obj/item/weapon/airlock_electronics/electronics = null
 	req_access_txt = 0
 
-/obj/machinery/door/airlock/command
-	name = "Airlock"
-	icon = 'Doorcom.dmi'
-	doortype = 1
-	req_access_txt = 19
+	// This code allows for airlocks to be controlled externally by setting an id_tag and comm frequency (disables ID access)
+	var/id_tag
+	var/frequency
 
-/obj/machinery/door/airlock/command/glass_command
-	name = "Glass Airlock"
-	icon = 'Doorcomglass.dmi'
-	opacity = 0
-	doortype = 14
+	var/datum/radio_frequency/radio_connection
+	receive_signal(datum/signal/signal)
+		if(!signal || signal.encryption) return
 
-/obj/machinery/door/airlock/command/captain
-	name = "Airlock"
-	icon = 'Doorcomcapt.dmi'
-	doortype = 1
-	req_access_txt = 20
+		if(id_tag != signal.data["tag"] || !signal.data["command"]) return
 
-/obj/machinery/door/airlock/command/head_personnel
-	name = "Airlock"
-	icon = 'Doorcomper.dmi'
-	doortype = 1
-	req_access_txt = 57
+		switch(signal.data["command"])
+			if("open")
+				spawn open(1)
 
-/obj/machinery/door/airlock/command/head_chief_engineer
-	name = "Airlock"
-	icon = 'Doorcomeng.dmi'
-	doortype = 1
-	req_access_txt = 56
+			if("close")
+				spawn close(1)
 
-/obj/machinery/door/airlock/command/head_rd
-	name = "Airlock"
-	icon = 'Doorcomrd.dmi'
-	doortype = 1
-	req_access_txt = 30
+			if("unlock")
+				locked = 0
+				update_icon()
 
-/obj/machinery/door/airlock/command/head_chief_medical
-	name = "Airlock"
-	icon = 'Doorcommed.dmi'
-	doortype = 1
-	req_access_txt = 40
+			if("lock")
+				locked = 1
+				update_icon()
 
-/obj/machinery/door/airlock/command/head_security
-	name = "Airlock"
-	icon = 'Doorcomsec.dmi'
-	doortype = 1
-	req_access_txt = 58
+			if("secure_open")
+				spawn
+					locked = 0
+					update_icon()
 
-/obj/machinery/door/airlock/security
-	name = "Airlock"
-	icon = 'Doorsec.dmi'
-	doortype = 2
-	req_access_txt = 1
+					sleep(2)
+					open(1)
 
-/obj/machinery/door/airlock/security/glass_security
-	name = "Glass Airlock"
-	icon = 'Doorsecglass.dmi'
-	opacity = 0
-	doortype = 16
+					locked = 1
+					update_icon()
 
-/obj/machinery/door/airlock/security/warden
-	name = "Airlock"
-	icon = 'Doorsecward.dmi'
-	doortype = 2
-	req_access_txt = 3
+			if("secure_close")
+				spawn
+					locked = 0
+					close(1)
 
-/obj/machinery/door/airlock/engineering
-	name = "Airlock"
-	icon = 'Dooreng.dmi'
-	doortype = 3
-	req_access_txt = 10
+					locked = 1
+					sleep(2)
+					update_icon()
 
-/obj/machinery/door/airlock/engineering/glass_engineering
-	name = "Glass Airlock"
-	icon = 'Doorengglass.dmi'
-	opacity = 0
-	doortype = 15
+		send_status()
 
-/obj/machinery/door/airlock/engineering/atmos
-	name = "Airlock"
-	icon = 'Doorengatmos.dmi'
-	doortype = 3
-	req_access_txt = 24
+	proc/send_status()
+		if(radio_connection)
+			var/datum/signal/signal = new
+			signal.transmission_method = 1 //radio signal
+			signal.data["tag"] = id_tag
+			signal.data["timestamp"] = world.time
 
-/obj/machinery/door/airlock/engineering/solars
-	name = "Airlock"
-	icon = 'Doorengsolar.dmi'
-	doortype = 3
+			signal.data["door_status"] = density?("closed"):("open")
+			signal.data["lock_status"] = locked?("locked"):("unlocked")
 
-/obj/machinery/door/airlock/robotics
-	name = "Airlock"
-	icon = 'Doorrobotic.dmi'
-	doortype = 3
-	req_access_txt = 29
+			radio_connection.post_signal(src, signal, range = AIRLOCK_CONTROL_RANGE, filter = RADIO_AIRLOCK)
 
-/obj/machinery/door/airlock/medical
-	name = "Airlock"
-	icon = 'Doormed.dmi'
-	doortype = 4
-	req_access_txt = 5
+	open(surpress_send)
+		. = ..()
+		if(!surpress_send) send_status()
 
-/obj/machinery/door/airlock/medical/glass_medical
-	name = "Glass Airlock"
-	icon = 'doormedglass.dmi'
-	opacity = 0
-	doortype = 17
+	close(surpress_send)
+		. = ..()
+		if(!surpress_send) send_status()
 
-/obj/machinery/door/airlock/medical/surgery
-	name = "Airlock"
-	icon = 'Doormedsurgery.dmi'
-	doortype = 4
-	req_access_txt = 45
+	initialize()
+		if(frequency)
+			set_frequency(frequency)
 
-/obj/machinery/door/airlock/medical/chemistry
-	name = "Airlock"
-	icon = 'Doormedchem.dmi'
-	doortype = 4
-	req_access_txt = 33
+		update_icon()
 
-/obj/machinery/door/airlock/medical/virology
-	name = "Airlock"
-	icon = 'Doormedviro.dmi'
-	doortype = 4
-	req_access_txt = 39
+	New()
+		..()
 
-/obj/machinery/door/airlock/general
-	name = "General Access"
-	icon = 'doorgen.dmi'
-	doortype = 5
+		if(radio_controller)
+			set_frequency(frequency)
 
-/obj/machinery/door/airlock/general/maintenance
-	name = "Maintenance Access"
-	icon = 'Doormaint.dmi'
-	doortype = 5
-	req_access_txt = 12
+	proc
+		set_frequency(new_frequency)
+			radio_controller.remove_object(src, frequency)
+			if(new_frequency)
+				frequency = new_frequency
+				radio_connection = radio_controller.add_object(src, frequency, RADIO_AIRLOCK)
 
-/obj/machinery/door/airlock/general/storage
-	name = "Storage Access"
-	icon = 'Doorstorage.dmi'
-	doortype = 5
-	req_access_txt = 14
-
-/obj/machinery/door/airlock/general/prison
-	name = "Prison Access"
-	icon = 'Doorprison.dmi'
-	doortype = 5
-	req_access_txt = 2
-
-/obj/machinery/door/airlock/external
-	name = "External Airlock"
-	icon = 'Doorext.dmi'
-	doortype = 6
-	req_access_txt = 13
-
-/obj/machinery/door/airlock/centcom
-	name = "Airlock"
-	icon = 'Doorele.dmi'
-	opacity = 0
-	doortype = 8
-	req_access_txt = 101
-
-/obj/machinery/door/airlock/vault
-	name = "Vault"
-	icon = 'vault.dmi'
-	opacity = 1
-	doortype = 9
-	req_access_txt = -1
-
-/obj/machinery/door/airlock/glass
-	name = "Glass Airlock"
-	icon = 'Doorglass.dmi'
-	opacity = 0
-	doortype = 7
-
-/obj/machinery/door/airlock/glass_large
-	name = "Glass Airlock"
-	icon = 'Door2x1glassfull.dmi'
-	opacity = 0
-	doortype = 10
-
-/obj/machinery/door/airlock/freezer
-	name = "Freezer Airlock"
-	icon = 'Doorfreezer.dmi'
-	opacity = 1
-	doortype = 11
-	req_access_txt = 28
-
-/obj/machinery/door/airlock/hatch
-	name = "Airtight Hatch"
-	icon = 'Doorhatchele.dmi'
-	opacity = 1
-	doortype = 12
-
-/obj/machinery/door/airlock/maintenance_hatch
-	name = "Airtight Maintenance Hatch"
-	icon = 'Doorhatchmaint2.dmi'
-	opacity = 1
-	doortype = 13
-	req_access_txt = 12
-
-
-/*
-About the new airlock wires panel:
-*	An airlock wire dialog can be accessed by the normal way or by using wirecutters or a multitool on the door while the wire-panel is open. This would show the following wires, which you can either wirecut/mend or send a multitool pulse through. There are 9 wires.
-*		one wire from the ID scanner. Sending a pulse through this flashes the red light on the door (if the door has power). If you cut this wire, the door will stop recognizing valid IDs. (If the door has 0000 access, it still opens and closes, though)
-*		two wires for power. Sending a pulse through either one causes a breaker to trip, disabling the door for 10 seconds if backup power is connected, or 1 minute if not (or until backup power comes back on, whichever is shorter). Cutting either one disables the main door power, but unless backup power is also cut, the backup power re-powers the door in 10 seconds. While unpowered, the door may be \red open, but bolts-raising will not work. Cutting these wires may electrocute the user.
-*		one wire for door bolts. Sending a pulse through this drops door bolts (whether the door is powered or not) or raises them (if it is). Cutting this wire also drops the door bolts, and mending it does not raise them. If the wire is cut, trying to raise the door bolts will not work.
-*		two wires for backup power. Sending a pulse through either one causes a breaker to trip, but this does not disable it unless main power is down too (in which case it is disabled for 1 minute or however long it takes main power to come back, whichever is shorter). Cutting either one disables the backup door power (allowing it to be crowbarred open, but disabling bolts-raising), but may electocute the user.
-*		one wire for opening the door. Sending a pulse through this while the door has power makes it open the door if no access is required.
-*		one wire for AI control. Sending a pulse through this blocks AI control for a second or so (which is enough to see the AI control light on the panel dialog go off and back on again). Cutting this prevents the AI from controlling the door unless it has hacked the door through the power connection (which takes about a minute). If both main and backup power are cut, as well as this wire, then the AI cannot operate or hack the door at all.
-*		one wire for electrifying the door. Sending a pulse through this electrifies the door for 30 seconds. Cutting this wire electrifies the door, so that the next person to touch the door without insulated gloves gets electrocuted. (Currently it is also STAYING electrified until someone mends the wire)
-*/
+		ion_act()
+			if(src.z == 1 && src.density)
+				if(length(req_access) > 0 && !(12 in req_access))
+					if(prob(4))
+						world << "\red Airlock emagged in [src.loc.loc]"
+						src.operating = -1
+						flick("door_spark", src)
+						sleep(6)
+						open()
+				else
+					if(prob(8))
+						world << "\red non vital Airlock emagged in [src.loc.loc]"
+						src.operating = -1
+						flick("door_spark", src)
+						sleep(6)
+						open()
+			return
 
 /obj/machinery/door/airlock/bumpopen(mob/user as mob) //Airlocks now zap you when you 'bump' them open when they're electrified. --NeoFite
 	if (!istype(usr, /mob/living/silicon))
@@ -368,7 +259,17 @@ About the new airlock wires panel:
 				else
 					close()
 
-
+/*
+About the new airlock wires panel:
+An airlock wire dialog can be accessed by the normal way or by using wirecutters or a multitool on the door while the wire-panel is open. This would show the following wires, which you can either wirecut/mend or send a multitool pulse through. There are 9 wires.
+-one wire from the ID scanner. Sending a pulse through this flashes the red light on the door (if the door has power). If you cut this wire, the door will stop recognizing valid IDs. (If the door has 0000 access, it still opens and closes, though)
+-two wires for power. Sending a pulse through either one causes a breaker to trip, disabling the door for 10 seconds if backup power is connected, or 1 minute if not (or until backup power comes back on, whichever is shorter). Cutting either one disables the main door power, but unless backup power is also cut, the backup power re-powers the door in 10 seconds. While unpowered, the door may be \red open, but bolts-raising will not work. Cutting these wires may electrocute the user.
+-one wire for door bolts. Sending a pulse through this drops door bolts (whether the door is powered or not) or raises them (if it is). Cutting this wire also drops the door bolts, and mending it does not raise them. If the wire is cut, trying to raise the door bolts will not work.
+-two wires for backup power. Sending a pulse through either one causes a breaker to trip, but this does not disable it unless main power is down too (in which case it is disabled for 1 minute or however long it takes main power to come back, whichever is shorter). Cutting either one disables the backup door power (allowing it to be crowbarred open, but disabling bolts-raising), but may electocute the user.
+-one wire for opening the door. Sending a pulse through this while the door has power makes it open the door if no access is required.
+-one wire for AI control. Sending a pulse through this blocks AI control for a second or so (which is enough to see the AI control light on the panel dialog go off and back on again). Cutting this prevents the AI from controlling the door unless it has hacked the door through the power connection (which takes about a minute). If both main and backup power are cut, as well as this wire, then the AI cannot operate or hack the door at all.
+-one wire for electrifying the door. Sending a pulse through this electrifies the door for 30 seconds. Cutting this wire electrifies the door, so that the next person to touch the door without insulated gloves gets electrocuted. (Currently it is also STAYING electrified until someone mends the wire)
+*/
 
 /obj/machinery/door/airlock/proc/cut(var/wireColor)
 	var/wireFlag = airlockWireColorToFlag[wireColor]
@@ -1120,3 +1021,201 @@ About the new airlock wires panel:
 	src.open()
 	src.locked = 1
 	return
+
+/obj/machinery/door/airlock/command
+	name = "Airlock"
+	icon = 'Doorcom.dmi'
+	doortype = 1
+	req_access_txt = "19"
+
+/obj/machinery/door/airlock/command/glass_command
+	name = "Glass Airlock"
+	icon = 'Doorcomglass.dmi'
+	opacity = 0
+	doortype = 14
+
+/obj/machinery/door/airlock/command/captain
+	name = "Airlock"
+	icon = 'Doorcomcapt.dmi'
+	req_access_txt = "20"
+
+/obj/machinery/door/airlock/command/head_personnel
+	name = "Airlock"
+	icon = 'Doorcomper.dmi'
+	req_access_txt = "57"
+
+/obj/machinery/door/airlock/command/head_chief_engineer
+	name = "Airlock"
+	icon = 'Doorcomeng.dmi'
+	req_access_txt = "56"
+
+/obj/machinery/door/airlock/command/head_rd
+	name = "Airlock"
+	icon = 'Doorcomrd.dmi'
+	req_access_txt = "30"
+
+/obj/machinery/door/airlock/command/head_chief_medical
+	name = "Airlock"
+	icon = 'Doorcommed.dmi'
+	req_access_txt = "40"
+
+/obj/machinery/door/airlock/command/head_security
+	name = "Airlock"
+	icon = 'Doorcomsec.dmi'
+	req_access_txt = "58"
+
+/obj/machinery/door/airlock/security
+	name = "Airlock"
+	icon = 'Doorsec.dmi'
+	doortype = 2
+	req_access_txt = "1"
+
+/obj/machinery/door/airlock/security/glass_security
+	name = "Glass Airlock"
+	icon = 'Doorsecglass.dmi'
+	opacity = 0
+	doortype = 16
+
+/obj/machinery/door/airlock/security/warden
+	name = "Airlock"
+	icon = 'Doorsecward.dmi'
+	doortype = 2
+	req_access_txt = "3"
+
+/obj/machinery/door/airlock/security/armory
+	name = "Airlock"
+	icon = 'Doorsec.dmi'
+	doortype = 2
+	req_access_txt = "3"
+
+/obj/machinery/door/airlock/security/detective
+	name = "Airlock"
+	icon = 'Doorsec.dmi'
+	doortype = 2
+	req_access_txt = "60"
+
+/obj/machinery/door/airlock/engineering
+	name = "Airlock"
+	icon = 'Dooreng.dmi'
+	doortype = 3
+	req_access_txt = "10"
+
+/obj/machinery/door/airlock/engineering/glass_engineering
+	name = "Glass Airlock"
+	icon = 'Doorengglass.dmi'
+	opacity = 0
+	doortype = 16
+
+/obj/machinery/door/airlock/engineering/solars
+	name = "Airlock"
+	icon = 'Doorengsolar.dmi'
+
+/obj/machinery/door/airlock/engineering/atmos
+	name = "Airlock"
+	icon = 'Doorengatmos.dmi'
+	req_access_txt = "24"
+
+/obj/machinery/door/airlock/robotics
+	name = "Airlock"
+	icon = 'Doorrobotic.dmi'
+	doortype = 3
+	req_access_txt = "29"
+
+/obj/machinery/door/airlock/medical
+	name = "Airlock"
+	icon = 'Doormed.dmi'
+	doortype = 4
+	req_access_txt = "5"
+
+/obj/machinery/door/airlock/medical/glass_medical
+	name = "Glass Airlock"
+	icon = 'doormedglass.dmi'
+	opacity = 0
+	doortype = 17
+
+/obj/machinery/door/airlock/medical/surgery
+	name = "Airlock"
+	icon = 'Doormedsurgery.dmi'
+	req_access_txt = "45"
+
+/obj/machinery/door/airlock/medical/chemistry
+	name = "Airlock"
+	icon = 'Doormedchem.dmi'
+	req_access_txt = "33"
+
+/obj/machinery/door/airlock/medical/virology
+	name = "Airlock"
+	icon = 'Doormedviro.dmi'
+	req_access_txt = "39"
+
+/obj/machinery/door/airlock/general
+	name = "General Access"
+	icon = 'doorgen.dmi'
+	doortype = 5
+
+/obj/machinery/door/airlock/general/maintenance
+	name = "Maintenance Access"
+	icon = 'Doormaint.dmi'
+	req_access_txt = "12"
+
+/obj/machinery/door/airlock/general/storage
+	name = "Storage Access"
+	icon = 'Doorstorage.dmi'
+	req_access_txt = "14"
+
+/obj/machinery/door/airlock/general/prison
+	name = "Prison Access"
+	icon = 'Doorprison.dmi'
+	req_access_txt = "2"
+
+/obj/machinery/door/airlock/external
+	name = "External Airlock"
+	icon = 'Doorext.dmi'
+	doortype = 6
+	req_access_txt = "13"
+
+/obj/machinery/door/airlock/centcom
+	name = "Airlock"
+	icon = 'Doorele.dmi'
+	opacity = 0
+	doortype = 8
+	req_access_txt = "101"
+
+/obj/machinery/door/airlock/vault
+	name = "Vault"
+	icon = 'vault.dmi'
+	opacity = 1
+	doortype = 9
+	req_access_txt = "-1"
+
+/obj/machinery/door/airlock/glass
+	name = "Glass Airlock"
+	icon = 'Doorglass.dmi'
+	opacity = 0
+	doortype = 7
+
+/obj/machinery/door/airlock/glass_large
+	name = "Glass Airlock"
+	icon = 'Door2x1glassfull.dmi'
+	opacity = 0
+	doortype = 10
+
+/obj/machinery/door/airlock/freezer
+	name = "Freezer Airlock"
+	icon = 'Doorfreezer.dmi'
+	opacity = 1
+	doortype = 11
+	req_access_txt = "28"
+
+/obj/machinery/door/airlock/hatch
+	name = "Airtight Hatch"
+	icon = 'Doorhatchele.dmi'
+	opacity = 1
+	doortype = 12
+
+/obj/machinery/door/airlock/maintenance_hatch
+	name = "Airtight Maintenance Hatch"
+	icon = 'Doorhatchmaint2.dmi'
+	opacity = 1
+	doortype = 13
+	req_access_txt = "12"

@@ -35,6 +35,15 @@
 				if (src.wanderer && !src.target) src.task = "wandering"
 			if("chasing")
 				if (Debug || Debug2) world << "[src.name] is chasing!"
+
+				if (src.path && src.path.len) //Remove excess stuff in the path.
+					var/turf/next = path[1]
+					var/done = 0
+					while(next == loc && path.len) //While there is stuff left in the path.
+						src.path -= next //Remove this one, the dupe.
+						if (path.len) //If there's another one
+							next = path[1] //Assign next to it.
+
 				if (!target_is_object)
 					if (Debug || Debug2) world << "[src.name] is not chasing an object. Target is [src.target:name]"
 					if (src.frustration >= max_frustration)
@@ -56,7 +65,7 @@
 							if (Debug || Debug2) world << "[src.name] needs to move closer to [src.target:name]..."
 							var/turf/olddist = get_dist(src, src.target)
 							//walk_to(src, src.target,1,4)
-							if (src.path.len) //Has a path.
+							if (src.path && src.path.len) //Has a path.
 								if (Debug || Debug2) world << "[src.name] HAS PATH!"
 								step_to(src, src.path[1])
 								//src.path -= src.path[1]
@@ -95,7 +104,7 @@
 							if (Debug || Debug2) world << "[src.name] needs to move closer to [src.target:name]..."
 							var/turf/olddist = get_dist(src, src.target)
 							//walk_to(src, src.target,1,4)
-							if (src.path.len) //Has a path.
+							if (src.path && src.path.len) //Has a path.
 								if (Debug || Debug2) world << "[src.name] HAS PATH!"
 								step_to(src, src.path[1])
 								//src.path -= src.path[1]
@@ -288,30 +297,34 @@
 				//var/list[] = new()
 				src.path = new()
 				src.path = AStar(src.loc, C.loc, /turf/proc/AdjacentTurfsSpace, /turf/proc/Distance)
+				//src.path = AStar(src.loc, C.loc, /turf/proc/CardinalTurfs, /turf/proc/Distance)
 				//var/list2[] = reverselist(list)
 				//reverselist(list)
-				src.path = reverselist(src.path)
-				if (src.path.len != 0)
-					if (Debug || Debug2) world << "[C.name] is in range of [src.name]."
-					//Assign the target.
-					//T = C
-					//src.attack = 1
-					//src.task = "chasing"
-					//TODO: Save the pathfinding list?
-					//if((C.name == src.oldtarget_name) && (world.time < src.last_found + 100)) continue
-					//if(istype(C, /mob/living/carbon/) && !src.atkcarbon) continue
-					//if(istype(C, /mob/living/silicon/) && !src.atksilicon) continue
-					//path = list //Copy this over.
-					if(C.health < 0) continue
-					if(istype(C, /mob/living/carbon/))	src.attack = 1
-					if(istype(C, /mob/living/silicon/))	src.attack = 1
-					if(src.attack)
-						//path = list//reverselist(list)
-						if (Debug || Debug2) world << "[src.name] is targetting creature [C.name]."
-						src.target_is_object = 0
-						T = C
-						found = 1
-						break
+				if (path) //If it got a path.
+					src.path = reverselist(src.path)
+					if (src.path.len != 0)
+						if (Debug || Debug2) world << "[C.name] is in range of [src.name]."
+						//Assign the target.
+						//T = C
+						//src.attack = 1
+						//src.task = "chasing"
+						//TODO: Save the pathfinding list?
+						//if((C.name == src.oldtarget_name) && (world.time < src.last_found + 100)) continue
+						//if(istype(C, /mob/living/carbon/) && !src.atkcarbon) continue
+						//if(istype(C, /mob/living/silicon/) && !src.atksilicon) continue
+						//path = list //Copy this over.
+						if(C.health < 0) continue
+						if(istype(C, /mob/living/carbon/))	src.attack = 1
+						if(istype(C, /mob/living/silicon/))	src.attack = 1
+						if(src.attack)
+							//path = list//reverselist(list)
+							if (Debug || Debug2) world << "[src.name] is targetting creature [C.name]."
+							src.target_is_object = 0
+							T = C
+							found = 1
+							break
+				else
+					if (Debug || Debug2) world << "[src.name] does not have a path!"
 			else
 				break //Found one. Stop.
 
@@ -343,7 +356,7 @@
 
 		//TODO: Compile a list of targets and randomly choose one.
 
-		if (found == 0) //Didn't find a creature o an adjacent object. Look for all other objects now.
+		if (found == 0) //Didn't find a creature or an adjacent object. Look for all other objects now.
 			if (Debug || Debug2) world << "[src.name] did not find a creature or an adjacent object. Looking for other objects."
 			for (var/obj/O in view(src.seekrange, src)) //Look at all the objects in range.
 				if (found == 0) //Didn't find one yet.
@@ -352,21 +365,25 @@
 						//var/list[] = new()
 						src.path = new()
 						src.path = AStar(src.loc, O.loc, /turf/proc/AdjacentTurfsCritterB, /turf/proc/Distance)
+						//src.path = AStar(src.loc, O.loc, /turf/proc/CardinalTurfs, /turf/proc/Distance)
 						//var/list2[] = reverselist(list)
 						//var/list2 = reverselist(list)
-						src.path = reverselist(src.path)
-						if (src.path.len != 0)
-							if (Debug || Debug2) world << "[src.name] found an object. Targetting [O.name]!"
-							//Assign the target.
-							found = 1
-							src.attack = 1
-							T = O
-							//path = list //Copy this over.
-							//path = list2 //reverselist(list)
-							//src.task = "chasing"
-							src.target_is_object = 1
-							//TODO: Save the pathfinding list?
-							break
+						if (path)
+							src.path = reverselist(src.path)
+							if (src.path.len != 0)
+								if (Debug || Debug2) world << "[src.name] found an object. Targetting [O.name]!"
+								//Assign the target.
+								found = 1
+								src.attack = 1
+								T = O
+								//path = list //Copy this over.
+								//path = list2 //reverselist(list)
+								//src.task = "chasing"
+								src.target_is_object = 1
+								//TODO: Save the pathfinding list?
+								break
+					else
+						if (Debug || Debug2) world << "[src.name] does not have a path!"
 				else
 					break //Found one. Stop.
 

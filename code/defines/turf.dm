@@ -126,7 +126,7 @@
 /turf/proc
 	AdjacentTurfs()
 		var/L[] = new()
-		for(var/turf/simulated/t in range(src,1))
+		for(var/turf/t in range(src,1))
 			if(!t.density)
 				if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
 					L.Add(t)
@@ -160,6 +160,32 @@
 				//if(!LinkBlockedCritter(src, t))
 				//	L.Add(t)
 				L.Add(t)
+		return L
+
+// Returns the surrounding cardinal turfs with open links
+// Including through doors openable with the ID
+	CardinalTurfsWithAccess(var/obj/item/weapon/card/id/ID)
+		var/L[] = new()
+
+		//	for(var/turf/simulated/t in oview(src,1))
+
+		for(var/d in cardinal)
+			var/turf/T = get_step(src, d)
+			if(istype(T) && !T.density)
+				if(!LinkBlockedWithAccess(src, T, ID))
+					L.Add(T)
+		return L
+
+	CardinalTurfs()
+		var/L[] = new()
+
+		//	for(var/turf/simulated/t in oview(src,1))
+
+		for(var/d in cardinal)
+			var/turf/T = get_step(src, d)
+			if(/*istype(T) &&*/ !T.density)
+				if(!LinkBlocked(src, T) && !TurfBlockedNonWindow(T))
+					L.Add(T)
 		return L
 
 
