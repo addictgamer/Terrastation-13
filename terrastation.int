@@ -1,11 +1,12 @@
 // BEGIN_INTERNALS
 /*
 MAP_ICON_TYPE: 0
-WINDOW: code\modules\critters\critters.dm;code\modules\critters\critter_AI.dm;code\modules\critters\spesscarp\spesscarp.dm;code\defines\obj\window.dm;code\modules\mob\living\living.dm;code\game\objects\window.dm;code\modules\critters\critter.dm;code\defines\procs\AStar.dm
-LAST_COMPILE_VERSION: 498.1158
-DIR: code code\defines code\defines\obj code\defines\procs code\game code\game\machinery code\game\mecha\equipment code\game\mecha\equipment\weapons code\game\objects code\game\structure code\modules code\modules\critters code\modules\critters\spesscarp code\modules\mob code\modules\mob\living 
-FILE: code\defines\procs\AStar.dm
-LAST_COMPILE_TIME: 1358689045
+WINDOW: maps\blarg2.dmm
+LAST_COMPILE_VERSION: 496.1145
+UPDATE_OBJ_TREE: ON
+DIR: code code\defines code\defines\obj code\defines\procs code\game code\game\machinery code\game\mecha\equipment code\game\mecha\equipment\weapons code\game\objects code\game\structure code\modules code\modules\critters code\modules\critters\spesscarp maps 
+FILE: maps\blarg2.dmm
+LAST_COMPILE_TIME: 1358766396
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS
