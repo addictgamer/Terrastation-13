@@ -1,4 +1,5 @@
 /mob/living/carbon/
+	can_be_gibbered = 1
 	gender = MALE
 	var/list/stomach_contents = list()
 

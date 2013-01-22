@@ -325,7 +325,7 @@
 	command_alert("Prison station VI is not accepting commands. Recommend station AI involvement.", "VI Alert")
 
 /proc/carp_migration() // -- Darem
-	for(var/obj/landmark/C in world)
+	/*for(var/obj/landmark/C in world)
 		if(C.name == "carpspawn")
 			if(prob(99))
 				new /obj/critter/spesscarp(C.loc)
@@ -333,7 +333,26 @@
 				new /obj/critter/spesscarp/elite(C.loc)
 	sleep(100)
 	command_alert("Unknown biological entities have been detected near [station_name()], please stand-by.", "Lifesign Alert")
+	world << sound('commandreport.ogg')*/
+
+	var/list/spawns = list()
+	for(var/obj/landmark/C in world)
+		spawns.Add(C)
+	var/spawncount = rand(2, 30) //Choose how many carp to spawn.
+	if (Debug || Debug2) world << "Carp migration spawncount: [spawncount]."
+	while(spawncount > 0 && spawns.len > 0)
+		var/obj/landmark = pick(spawns)
+		if(prob(99))
+			new /obj/critter/spesscarp(landmark.loc)
+		else
+			new /obj/critter/spesscarp/elite(landmark.loc)
+		spawns.Remove(landmark)
+		spawncount -= 1
+
+	sleep(100)
+	command_alert("Unknown biological entities have been detected near [station_name()], please stand-by.", "Lifesign Alert")
 	world << sound('commandreport.ogg')
+
 
 /proc/lightsout(isEvent = 0, lightsoutAmount = 1,lightsoutRange = 25) //leave lightsoutAmount as 0 to break ALL lights
 	if(isEvent)

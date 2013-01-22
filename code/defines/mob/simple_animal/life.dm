@@ -1,4 +1,5 @@
 /mob/living/simple_animal
+	can_be_gibbered = 1 //Can be put into the gibber.
 	name = "animal"
 	var/icon_living = ""
 	var/icon_dead = ""
@@ -371,3 +372,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/meat/corgi
 	name = "Corgi meat"
 	desc = "Tastes like... well you know..."
+
+/obj/item/weapon/reagent_containers/food/snacks/meat/cat
+	name = "Cat meat"
+	desc = "A dwarf's favorite snack."

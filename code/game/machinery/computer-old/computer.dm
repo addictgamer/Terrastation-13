@@ -326,6 +326,8 @@ Pod/Blast Doors computer
 			if ((!( authenticated ) && (scan || (istype(usr, /mob/living/silicon))) && (modify || mode)))
 				if (check_access(scan))
 					authenticated = 1
+				else if (istype(usr, /mob/living/silicon)) //So that the AI can modify IDs.
+					authenticated = 1
 			else if ((!( authenticated ) && (istype(usr, /mob/living/silicon))) && (!modify))
 				usr << "You can't modify an ID without an ID inserted to modify. Once one is in the modify slot on the computer, you can log in."
 		if ("logout")

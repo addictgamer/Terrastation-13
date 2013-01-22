@@ -1,12 +1,10 @@
 // BEGIN_INTERNALS
 /*
 MAP_ICON_TYPE: 0
-WINDOW: code\game\jobs\access.dm;maps\blarg2.dmm
-LAST_COMPILE_VERSION: 496.1145
+LAST_COMPILE_VERSION: 498.1158
 UPDATE_OBJ_TREE: ON
 DIR: code code\defines code\defines\obj code\defines\procs code\game code\game\jobs code\game\machinery code\game\machinery\doors code\game\mecha\equipment code\game\mecha\equipment\weapons code\game\objects code\game\structure code\modules maps 
-FILE: maps\blarg2.dmm
-LAST_COMPILE_TIME: 1358895528
+LAST_COMPILE_TIME: 1358871347
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS
