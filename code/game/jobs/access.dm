@@ -181,7 +181,7 @@
 			return list(access_medical, access_morgue, access_tox, access_tox_storage, access_chemistry, access_medlab, access_court,
 			            access_teleporter, access_heads, access_tech_storage, access_security, access_brig, access_atmospherics,
 			            access_maint_tunnels, access_bar, access_janitor, access_kitchen, access_robotics, access_armory, access_hydroponics,
-			            access_theatre, access_research, access_hos, access_RC_announce, access_forensics_lockers, access_detective)
+			            access_theatre, access_research, access_hos, access_RC_announce, access_forensics_lockers, access_detective, access_external_airlocks)
 		if("Head of Personnel")
 			return list(access_security, access_brig, access_court, access_forensics_lockers, access_detective,
 			            access_tox, access_tox_storage, access_chemistry, access_medical, access_medlab, access_engine,
@@ -189,7 +189,7 @@
 			            access_all_personal_lockers, access_tech_storage, access_maint_tunnels, access_bar, access_janitor,
 			            access_crematorium, access_kitchen, access_robotics, access_cargo, access_cargo_bot, access_hydroponics, access_lawyer,
 			            access_theatre, access_research, access_mining, access_heads_vault, access_mining_station,
-			            access_hop, access_RC_announce)
+			            access_hop, access_RC_announce, access_external_airlocks)
 		if("Atmospheric Technician")
 			return list(access_atmospherics, access_maint_tunnels, access_emergency_storage)
 		if("Bartender")
@@ -220,9 +220,9 @@
 			            access_mint, access_ce, access_RC_announce)
 		if("Research Director")
 			return list(access_medlab, access_rd,
-			            access_maint_tunnels, access_heads, access_tox,
+			            access_maint_tunnels, access_heads, access_tox, access_medical,
 			            access_tox_storage, access_chemistry, access_teleporter,
-			            access_research, access_robotics, access_xenobiology, access_RC_announce, access_manufacturing)
+			            access_research, access_robotics, access_xenobiology, access_RC_announce, access_manufacturing, access_external_airlocks)
 		if("Virologist")
 			return list(access_medical, access_morgue, access_virology)
 		if("Chief Medical Officer")

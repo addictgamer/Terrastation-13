@@ -303,15 +303,15 @@ var/list/occupations = list(
 	//body
 	"Bartender"              = 1,
 	"Chef"                   = 1,
-	"Janitor"                = 1,
+	"Janitor"                = 2,
 	"Quartermaster"          = 1,
 	"Cargo Technician"       = 3,
-	"Shaft Miner"            = 3,
+	"Shaft Miner"            = 4,
 
 	//engineering
 	"Chief Engineer"         = 1,
 	"Station Engineer"       = 5,
-	"Roboticist"             = 1,
+	"Roboticist"             = 3,
 
 	//red shirts
 	"Head of Security"       = 1,
@@ -341,14 +341,13 @@ var/list/occupations = list(
 var/list/assistant_occupations = list(
 	"Assistant" = -1,
 	"Chaplain" = 1,
-	"Librarian" = 1,
+	"Librarian" = 3,
 	"Lawyer" = 2,
 	"Atmospheric Technician" = 4,
 	//"Tourist", //I am not going to implement these jobs at the moment. Just listed it as examples. --rastaf0
 	//"Monkey",
 	//"Prisoneer",
 	//"Lizard"
-//	"AI",
 	"Cyborg"
 )
 
