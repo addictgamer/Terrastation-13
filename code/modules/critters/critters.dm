@@ -179,7 +179,7 @@
 
 // We can maybe make these controllable via some console or something
 /obj/critter/manhack
-	name = "viscerator"
+	name = "manhack"
 	desc = "A small, twin-bladed machine capable of inflicting very deadly lacerations."
 	icon_state = "viscerator"
 	pass_flags = PASSTABLE

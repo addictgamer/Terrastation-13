@@ -178,7 +178,7 @@ var/global/list/uneatable = list(
 					if(!spawned_chickenz)
 						chickenz = 1 //CHICKENZ.
 						world << "http://www.youtube.com/watch?v=wYUhGRynyJw <- That's what's happening to the station right now."
-						world << sound('chickenz.mid', 1)
+						world << sound('chickenz.mid', 1) //TODO: Use the music stuff I programmed.
 			if(current_size == allowed_size)
 				return 1
 			else if(current_size < (--temp_allowed_size))
