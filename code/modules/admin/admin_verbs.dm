@@ -137,6 +137,7 @@
 			verbs += /client/proc/object_talk
 			verbs += /client/proc/strike_team
 			verbs += /client/proc/enable_mapping_debug
+			verbs += /client/proc/shitbomb
 
 		if (holder.level >= 5)//Game Admin********************************************************************
 			verbs += /obj/admins/proc/view_txt_log
@@ -376,7 +377,75 @@
 	verbs -= /client/proc/play_local_sound
 	verbs -= /client/proc/enable_mapping_debug
 	verbs -= /client/proc/toggleprayers
+	verbs -= /client/proc/shitbomb
 	return
+
+/client/proc/shitbomb() //Covers every floor in the world with poop.
+	set category = "Admin"
+	set name = "Shitbomb"
+	if (!holder)
+		alert("You are not an admin")
+		return
+
+	var/list/floors = list()
+
+	var/count = 0
+	//NOW COVER THE WORLD WITH SHIT.
+	//TODO: Do not place on tiles that already have poop.
+	for (var/turf/simulated/floor/temp_floor in world)
+		//if (
+		//var/obj/decal/cleanable/poop/splatter/b = new /obj/decal/cleanable/poop/splatter(floor.loc)
+		//var/obj/item/weapon/poop/p = new /obj/item/weapon/poop
+		//p.place_in_world(floor.loc)
+		//var/doit = 1
+		//if (temp_floor in floors) //If the floor is in floors
+		if(floors.Find(temp_floor))
+			world << "WARNING : FLOOR ALREADY IN FLOORS."
+			continue
+		else
+			floors += temp_floor
+			//previous = temp_floor
+			count++
+
+	for (var/turf/unsimulated/floor/temp_floor in world)
+		//var/obj/decal/cleanable/poop/splatter/b = new /obj/decal/cleanable/poop/splatter(floor.loc)
+		//var/obj/item/weapon/poop/p = new /obj/item/weapon/poop
+		//p.place_in_world(floor.loc)
+		/*var/doit = 1
+		if (previous)
+			if (previous == temp_floor)
+				world << "WARNING : CURRENT FLOOR = PREVIOUS FLOOR"
+				doit = 0
+		if (doit)
+			floors += temp_floor
+			previous = temp_floor
+			count++*/
+		/*var/doit = 1
+		if (temp_floor in floors) //If the floor is in floors
+			world << "WARNING : FLOOR ALREADY IN FLOORS."
+		else
+			floors += temp_floor
+			//previous = temp_floor
+			count++*/
+		if(floors.Find(temp_floor))
+			world << "WARNING : FLOOR ALREADY IN FLOORS."
+			continue
+		else
+			floors += temp_floor
+			//previous = temp_floor
+			count++
+
+	while (floors.len)
+		var/turf/floor = floors[1]
+		var/obj/item/weapon/poop/p = new /obj/item/weapon/poop
+		p.place_in_world(floor)
+
+		floors -= floor
+
+	if (Debug || Debug2) world << "Floors done: [count]"
+
+	world << sound('HAWLY SHET.wav')
+	world << "\blue You feel as if some diety just took a dump."
 
 
 /client/proc/admin_observe()
