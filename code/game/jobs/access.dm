@@ -172,7 +172,7 @@
 		if("Captain")
 			return get_all_accesses()
 		if("Security Officer")
-			return list(access_security, access_brig, access_court)
+			return list(access_security, access_brig, access_court, access_maint_tunnels)
 		if("Warden")
 			return list(access_security, access_brig, access_armory, access_court)
 		if("Scientist")

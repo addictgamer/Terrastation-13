@@ -59,6 +59,7 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	name = "Airlock"
 	icon = 'doorint.dmi'
 	icon_state = "door_closed"
+	req_access_txt = 0
 
 	var/aiControlDisabled = 0 //If 1, AI control is disabled until the AI hacks back in and disables the lock. If 2, the AI has bypassed the lock. If -1, the control is enabled but the AI had bypassed it earlier, so if it is disabled again the AI would have no trouble getting back in.
 	var/secondsMainPowerLost = 0 //The number of seconds until power is restored.
@@ -78,7 +79,7 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	var/doortype = 0
 	var/justzap = 0
 	var/obj/item/weapon/airlock_electronics/electronics = null
-	req_access_txt = 0
+
 
 	// This code allows for airlocks to be controlled externally by setting an id_tag and comm frequency (disables ID access)
 	var/id_tag
@@ -1015,12 +1016,12 @@ An airlock wire dialog can be accessed by the normal way or by using wirecutters
 					src.closeOther = A
 					break
 
-
 /obj/machinery/door/airlock/proc/prison_open()
 	src.locked = 0
 	src.open()
 	src.locked = 1
 	return
+
 
 /obj/machinery/door/airlock/command
 	name = "Airlock"
