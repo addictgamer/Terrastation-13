@@ -33,6 +33,7 @@
 	containertype = "/obj/crate/freezer"
 	containername = "Food crate"
 
+/*
 /datum/supply_packs/money
 	name = "Money crate"
 	contains = list("/obj/item/weapon/coin/gold",
@@ -44,6 +45,7 @@
 	containertype = "/obj/crate"
 	//containertype = "/obj/item/weapon/moneybag"
 	containername = "Money bag"
+	*/
 
 /*/datum/supply_packs/money/New()
 	var/list/tempContains = list()
