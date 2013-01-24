@@ -188,6 +188,7 @@ display round(lastgen) and plasmatank amount
 
 /obj/machinery/power/port_gen/pacmanmagical
 	name = "P.A.C.M.A.N MAGIC.-type Portable Generator"
+	power_gen = 5025
 	var
 		coins = 120
 		max_coins = 120

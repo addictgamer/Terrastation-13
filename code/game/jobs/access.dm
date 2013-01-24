@@ -209,7 +209,7 @@
 		if("Cargo Technician")
 			return list(access_maint_tunnels, access_cargo, access_cargo_bot, access_mailsorting)
 		if("Shaft Miner")
-			return list(access_maint_tunnels, access_mining, access_mint, access_mining_station)
+			return list(access_maint_tunnels, access_mining, access_mint, access_mining_station, access_cargo)
 		if("Quartermaster")
 			return list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mint, access_mining, access_mining_station)
 			//return get_all_accesses()
