@@ -1,3 +1,17 @@
+/obj/closet
+	desc = "It's a closet!"
+	name = "Closet"
+	icon = 'closet.dmi'
+	icon_state = "closed"
+	density = 1
+	var/icon_closed = "closed"
+	var/icon_opened = "open"
+	var/opened = 0
+	var/welded = 0
+	var/wall_mounted = 0 //never solid (You can always pass over it)
+	flags = FPRINT
+	var/health = 200//Might be a bit much, dono can always change later
+
 /obj/closet/alter_health()
 	return get_turf(src)
 
