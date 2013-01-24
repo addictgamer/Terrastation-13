@@ -1,12 +1,11 @@
 // BEGIN_INTERNALS
 /*
 MAP_ICON_TYPE: 0
-WINDOW: code\defines\area\Space Station 13 areas.dm;maps\blarg2.dmm
+WINDOW: maps\blarg2.dmm;code\game\jobs\access.dm;code\modules\mining\mine_areas.dm
 LAST_COMPILE_VERSION: 496.1145
-UPDATE_OBJ_TREE: ON
-DIR: code code\datums code\defines code\defines\area code\defines\mob\living code\defines\mob\living\carbon code\defines\obj code\game code\game\area code\game\jobs code\game\machinery code\game\machinery\doors code\game\mecha\equipment code\game\mecha\equipment\weapons maps 
-FILE: maps\blarg2.dmm
-LAST_COMPILE_TIME: 1358994397
+DIR: code code\datums code\defines code\defines\area code\defines\mob code\defines\mob\living\carbon code\defines\obj code\defines\procs code\game code\game\area code\game\machinery\doors code\game\mecha\equipment code\modules code\modules\mining maps 
+FILE: code\modules\mining\mine_areas.dm
+LAST_COMPILE_TIME: 1359011445
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS

@@ -60,14 +60,14 @@
 
 /*	if ((CLUMSY in usr.mutations) && prob(50))
 		usr << "\red You cut yourself on the paper."
-		return
+		return*/
 	var/n_name = input(usr, "What would you like to label the paper?", "Paper Labelling", null)  as text
 	n_name = copytext(n_name, 1, 32)
 	if ((loc == usr && usr.stat == 0))
 		name = "paper[(n_name ? text("- '[n_name]'") : null)]"
 	add_fingerprint(usr)
 	return
-
+/*
 /obj/item/weapon/paper/attack_self(mob/living/user as mob)
 	examine()
 	if(rigged && (Holiday == "April Fool's Day"))

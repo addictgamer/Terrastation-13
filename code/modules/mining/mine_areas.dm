@@ -51,3 +51,15 @@
 
 /area/mine/west_outpost
 	name = "West Mining Outpost"
+
+/area/mine/geostation
+	name = "Geostation"
+	icon_state = "yellow"
+
+/area/mine/geostation/power
+	name = "Geostation Power Room"
+	icon_state = "green"
+
+/area/mine/geostation/waste
+	name = "The ShitHub"
+	icon_state = "law"
