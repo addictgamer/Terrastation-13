@@ -1046,6 +1046,38 @@ proc/process_ghost_teleport_locs()
 	name = "Derelict Station"
 	icon_state = "storage"
 
+/area/derelict/terralabs
+	name = "Terralabs"
+	icon_state = "yellow"
+
+/area/derelict/terralabs/main
+	name = "Terralabs Main"
+	icon_state = "hallP"
+
+/area/derelict/terralabs/storage
+	name = "Terralabs Storage"
+	icon_state = "storage"
+
+/area/derelict/terralabs/power
+	name = "Terralabs Power"
+	icon_state = "green"
+
+/area/derelict/terralabs/hall
+	name = "Terralabs Hall"
+	icon_state = "hallS"
+
+/area/derelict/mining
+	name = "Derelict Mining Station"
+	icon_state = "yellow"
+
+/area/derelict/mining/power
+	name = "Derelict Mining Power Room"
+	icon_state = "green"
+
+/area/derelict/mining/waste
+	name = "The ShitHub"
+	icon_state = "law"
+
 /area/derelict/hallway/primary
 	name = "Derelict Primary Hallway"
 	icon_state = "hallP"
