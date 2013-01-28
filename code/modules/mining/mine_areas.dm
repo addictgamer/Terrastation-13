@@ -54,12 +54,12 @@
 
 /area/mine/geostation
 	name = "Geostation"
-	icon_state = "yellow"
+	icon_state = "mining"
 
-/area/mine/geostation/power
+/area/mine/geopower
 	name = "Geostation Power Room"
 	icon_state = "green"
 
-/area/mine/geostation/waste
+/area/mine/geowaste
 	name = "The ShitHub"
 	icon_state = "law"

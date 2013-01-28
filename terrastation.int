@@ -1,11 +1,12 @@
 // BEGIN_INTERNALS
 /*
 MAP_ICON_TYPE: 0
-WINDOW: code\game\jobs\access.dm;code\game\jobs\jobprocs.dm;code\modules\power\port_gen.dm
-LAST_COMPILE_VERSION: 498.1158
-DIR: code code\datums code\defines code\defines\area code\defines\mob code\defines\mob\living\carbon code\defines\obj code\defines\obj\closet code\defines\procs code\game code\game\jobs code\game\machinery\doors code\game\mecha\equipment code\modules code\modules\mining code\modules\power 
-FILE: code\modules\power\port_gen.dm
-LAST_COMPILE_TIME: 1359056426
+WINDOW: maps\blarg2.test.dmm
+LAST_COMPILE_VERSION: 496.1145
+UPDATE_OBJ_TREE: ON
+DIR: code code\datums code\defines code\defines\area code\defines\mob code\defines\mob\living\carbon code\defines\obj code\defines\obj\closet code\defines\procs code\game code\game\area code\game\jobs code\game\machinery\doors code\game\mecha\equipment code\modules code\modules\mining maps 
+FILE: maps\blarg2.test.dmm
+LAST_COMPILE_TIME: 1359332189
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS
