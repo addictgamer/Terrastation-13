@@ -396,7 +396,7 @@
 	var/atom/cur_target
 	var/scan_range = 7
 	var/health = 40
-	var/list/scan_for = list("human"=0,"cyborg"=0,"mecha"=0,"alien"=1)
+	var/list/scan_for = list("human"=0,"cyborg"=0,"mecha"=0,"alien"=1,"critters"=1) //Critters currently does nothing; working on it and ran into errors --LZ
 	var/on = 0
 	icon = 'turrets.dmi'
 	icon_state = "gun_turret"
@@ -518,6 +518,10 @@
 			for(var/mob/living/carbon/alien/M in oview(scan_range,src))
 				if(!M.stat && !M.lying)
 					pos_targets += M
+/*		if(scan_for["critters"])
+			for(var/obj/critter/M in oview(scan_range,src))
+				if(!M.stat && !M.lying)
+					pos_targets += M */
 		if(pos_targets.len)
 			target = pick(pos_targets)
 		return target

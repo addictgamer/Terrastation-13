@@ -950,6 +950,5 @@
 #include "code\WorkInProgress\virus2\Disease2\isolator.dm"
 #include "code\WorkInProgress\virus2\Disease2\monkeydispensor.dm"
 #include "interface\skin.dmf"
-#include "maps\blarg2.test.dmm"
 // END_INCLUDE
 

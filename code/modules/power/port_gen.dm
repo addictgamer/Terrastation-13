@@ -50,7 +50,7 @@ display round(lastgen) and plasmatank amount
 	use_power = 0
 	var
 		active = 0
-		power_gen = 5000
+		power_gen = 5025
 		open = 0
 		recent_fault = 0
 
@@ -176,14 +176,14 @@ display round(lastgen) and plasmatank amount
 	name = "S.U.P.E.R.P.A.C.M.A.N.-type Portable Generator"
 	icon_state = "portgen1"
 	coin_path = "/obj/item/weapon/coin/uranium"
-	power_gen = 10000
+	power_gen = 10025
 	board_path = "/obj/item/weapon/circuitboard/pacman/super"
 
 /obj/machinery/power/port_gen/pacman/mrs
 	name = "M.R.S.P.A.C.M.A.N.-type Portable Generator"
 	icon_state = "portgen2"
 	coin_path = "/obj/item/weapon/coin/diamond"
-	power_gen = 20000
+	power_gen = 20025
 	board_path = "/obj/item/weapon/circuitboard/pacman/mrs"
 
 /obj/machinery/power/port_gen/pacmanmagical
