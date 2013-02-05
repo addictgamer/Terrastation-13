@@ -1,12 +1,11 @@
 // BEGIN_INTERNALS
 /*
 MAP_ICON_TYPE: 0
-WINDOW: code\game\gamemodes\events.dm;code\defines\obj\poop.dm;code\game\machinery\turrets.dm;maps\blarg2.dmm
+WINDOW: code\game\machinery\turrets.dm;code\game\gamemodes\objective.dm;code\game\cellautomata.dm
 LAST_COMPILE_VERSION: 496.1145
-UPDATE_OBJ_TREE: ON
-DIR: code code\datums code\defines code\defines\area code\defines\mob code\defines\mob\living\carbon code\defines\obj code\defines\obj\closet code\defines\procs code\game code\game\area code\game\gamemodes code\game\jobs code\game\machinery code\game\machinery\doors code\game\machinery\pipe code\modules code\modules\power code\modules\power\reactor code\modules\power\reactor\energyfunnel maps 
-FILE: maps\blarg2.dmm
-LAST_COMPILE_TIME: 1359618845
+DIR: code code\defines code\defines\area code\defines\mob code\defines\mob\living\carbon code\defines\obj code\defines\obj\closet code\defines\procs code\game code\game\area code\game\gamemodes code\game\gamemodes\blob code\game\gamemodes\events code\game\gamemodes\malfunction code\game\gamemodes\nuclear code\modules code\modules\admin code\modules\mob code\modules\mob\living\carbon code\modules\mob\living\carbon\alien code\modules\mob\living\carbon\alien\humanoid code\modules\mob\living\carbon\alien\larva code\modules\mob\living\carbon\brain code\modules\mob\living\carbon\human code\modules\mob\living\carbon\metroid code\modules\mob\living\carbon\monkey code\modules\mob\living\silicon code\modules\mob\living\silicon\ai code\modules\mob\living\silicon\pai code\modules\mob\living\silicon\robot code\unused code\unused\gamemodes maps sound\announcer sound\voice 
+FILE: code\game\cellautomata.dm
+LAST_COMPILE_TIME: 1360047286
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS

@@ -254,7 +254,7 @@ datum/objective/steal
 		"an RCD" = /obj/item/weapon/rcd,
 		"a jetpack" = /obj/item/weapon/tank/jetpack,
 		"a captains jumpsuit" = /obj/item/clothing/under/rank/captain,
-		"functional ai" = /obj/item/device/aicard,
+//		"functional ai" = /obj/item/device/aicard, //This is a bullshit objective 99% of the time. Commenting out until we decide it should be put back. --LZ
 		"a pair of magboots" = /obj/item/clothing/shoes/magboots,
 		"the station blueprints" = /obj/item/blueprints,
 		"thermal optics" = /obj/item/clothing/glasses/thermal,
@@ -327,7 +327,7 @@ datum/objective/steal
 					for(var/obj/item/weapon/coin/C in B)
 						found_amount++
 					return found_amount>=target
-			if("functional ai")
+/*			if("functional ai") //Commented out because I commented out the list entry; this is done to avoid possible errors. --LZ
 //						world << "dude's after an AI, time to check for one."
 				for(var/obj/item/device/aicard/C in all_items)
 //							world << "Found an intelicard, checking it for an AI"
@@ -335,7 +335,7 @@ datum/objective/steal
 //								world << "Found an AI, checking if it's alive"
 						if(istype(M, /mob/living/silicon/ai) && M.stat != 2)
 //									world << "yay, you win!"
-							return 1
+							return 1 */
 			else
 				for(var/obj/I in all_items)
 					if(istype(I, steal_target))
