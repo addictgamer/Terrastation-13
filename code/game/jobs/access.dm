@@ -197,7 +197,7 @@
 		if("Chemist")
 			return list(access_medical, access_chemistry)
 		if("Janitor")
-			return list(access_janitor, access_maint_tunnels)
+			return list(access_janitor, access_maint_tunnels, access_engine_equip)
 		if("Clown")
 			return list(access_maint_tunnels, access_clown, access_theatre)
 		if("Mime")

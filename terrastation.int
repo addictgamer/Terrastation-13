@@ -1,12 +1,12 @@
 // BEGIN_INTERNALS
 /*
 MAP_ICON_TYPE: 0
-WINDOW: code\game\machinery\turrets.dm;code\game\gamemodes\objective.dm;code\game\cellautomata.dm;maps\blarg2.dmm
+WINDOW: code\game\machinery\turrets.dm;code\game\gamemodes\objective.dm;code\game\cellautomata.dm;maps\blarg2.dmm;code\game\jobs\access.dm
 LAST_COMPILE_VERSION: 496.1145
 UPDATE_OBJ_TREE: ON
-DIR: code code\defines code\defines\area code\defines\mob code\defines\mob\living\carbon code\defines\obj code\defines\obj\closet code\defines\procs code\game code\game\area code\game\gamemodes code\game\gamemodes\blob code\game\gamemodes\events code\game\machinery maps 
-FILE: maps\blarg2.dmm
-LAST_COMPILE_TIME: 1360226291
+DIR: code code\defines code\defines\area code\defines\mob code\defines\mob\living\carbon code\defines\obj code\defines\obj\closet code\defines\procs code\game code\game\area code\game\gamemodes code\game\gamemodes\blob code\game\gamemodes\events code\game\jobs code\game\machinery maps 
+FILE: code\game\jobs\access.dm
+LAST_COMPILE_TIME: 1360398731
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS
