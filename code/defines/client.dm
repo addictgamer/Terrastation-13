@@ -44,6 +44,7 @@
 	var/showvote = null
 
 	var/sound/music = null
+	var/ingame_musics_playing[]
 	var/playing_lobby_music = 0
 
 

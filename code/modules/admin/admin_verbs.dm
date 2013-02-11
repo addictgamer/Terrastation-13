@@ -138,6 +138,8 @@
 			verbs += /client/proc/strike_team
 			verbs += /client/proc/enable_mapping_debug
 			verbs += /client/proc/shitbomb
+			verbs += /client/proc/clownmusic
+			verbs += /client/proc/heyaheyamusic
 
 		if (holder.level >= 5)//Game Admin********************************************************************
 			verbs += /obj/admins/proc/view_txt_log
@@ -378,6 +380,8 @@
 	verbs -= /client/proc/enable_mapping_debug
 	verbs -= /client/proc/toggleprayers
 	verbs -= /client/proc/shitbomb
+	verbs -= /client/proc/clownmusic
+	verbs -= /client/proc/heyaheyamusic
 	return
 
 /client/proc/shitbomb() //Covers every floor in the world with poop.
@@ -447,6 +451,32 @@
 	world << sound('HAWLY SHET.wav')
 	world << "\blue You feel as if some diety just took a dump."
 
+
+
+/client/proc/clownmusic()
+	set category = "Admin"
+	set name = "Shitbomb"
+	if (!holder)
+		alert("You are not an admin")
+		return
+
+	//TODO: Write it.
+
+	//for(var/mob/m in world)
+	//	if(m.client) //If has client.
+	//		m.music <<
+	world << sound('clown_station_redux.ogg')
+
+
+/client/proc/heyaheyamusic()
+	set category = "Admin"
+	set name = "Shitbomb"
+	if (!holder)
+		alert("You are not an admin")
+		return
+
+	//TODO: Write it.
+	world << sound('heman-heya-full.ogg')
 
 /client/proc/admin_observe()
 	set category = "Admin"
