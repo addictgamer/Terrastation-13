@@ -455,7 +455,7 @@
 
 /client/proc/clownmusic()
 	set category = "Admin"
-	set name = "Shitbomb"
+	set name = "Clownmusic"
 	if (!holder)
 		alert("You are not an admin")
 		return
@@ -470,7 +470,7 @@
 
 /client/proc/heyaheyamusic()
 	set category = "Admin"
-	set name = "Shitbomb"
+	set name = "Heyaheyaheya"
 	if (!holder)
 		alert("You are not an admin")
 		return
