@@ -9,8 +9,6 @@
 	new /obj/item/clothing/head/ushanka(src)
 	new /obj/item/clothing/head/ushanka(src)
 	new /obj/item/clothing/head/ushanka(src)
-	new /obj/item/clothing/head/ushanka(src)
-	new /obj/item/clothing/under/soviet(src)
 	new /obj/item/clothing/under/soviet(src)
 	new /obj/item/clothing/under/soviet(src)
 	new /obj/item/clothing/under/soviet(src)
