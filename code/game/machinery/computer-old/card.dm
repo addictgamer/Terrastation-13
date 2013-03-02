@@ -238,7 +238,7 @@
 			if (!( printing ))
 				printing = 1
 				sleep(50)
-				var/obj/item/weapon/paper/P = new /obj/item/weapon/paper( loc )
+				var/obj/item/paper/P = new /obj/item/paper( loc )
 				var/t1 = "<B>Crew Manifest:</B><BR>"
 				for(var/datum/data/record/t in data_core.general)
 					t1 += "<B>[t.fields["name"]]</B> - [t.fields["rank"]]<BR>"

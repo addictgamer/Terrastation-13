@@ -201,7 +201,7 @@ Random chance of pirate shuttle arriving instead.
 		else
 			ordernum = rand(500,5000) //pick a random number to start with
 
-		var/obj/item/weapon/paper/manifest/slip = new /obj/item/weapon/paper/manifest (A)
+		var/obj/item/paper/manifest/slip = new /obj/item/paper/manifest (A)
 		slip.info = ""
 		slip.info +="<h3>[command_name()] Receipt</h3><hr><br>"
 		slip.info +="Purchase #: [ordernum]<br>"

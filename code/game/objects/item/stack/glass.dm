@@ -22,31 +22,31 @@ SHARDS
 			if (src.amount < 1)
 				return 1
 			var/list/directions = new/list(cardinal)
-			for (var/obj/window/win in usr.loc)
+			for (var/obj/structure/window/win in usr.loc)
 				directions-=win.dir
 				if(!(win.ini_dir in cardinal))
 					usr << "\red Can't let you do that."
 					return 1
 			var/dir_to_set = 2
 			//yes, this could probably be done better but hey... it works...
-			for(var/obj/window/WT in usr.loc)
+			for(var/obj/structure/window/WT in usr.loc)
 				if (WT.dir == dir_to_set)
 					dir_to_set = 4
-			for(var/obj/window/WT in usr.loc)
+			for(var/obj/structure/window/WT in usr.loc)
 				if (WT.dir == dir_to_set)
 					dir_to_set = 1
-			for(var/obj/window/WT in usr.loc)
+			for(var/obj/structure/window/WT in usr.loc)
 				if (WT.dir == dir_to_set)
 					dir_to_set = 8
-			for(var/obj/window/WT in usr.loc)
+			for(var/obj/structure/window/WT in usr.loc)
 				if (WT.dir == dir_to_set)
 					dir_to_set = 2
-			var/obj/window/W
+			var/obj/structure/window/W
 			if(reinf)
-				W = new /obj/window/reinforced( usr.loc, reinf )
+				W = new /obj/structure/window/reinforced( usr.loc, reinf )
 				W.state = 0
 			else
-				W = new /obj/window/basic( usr.loc, reinf )
+				W = new /obj/structure/window/basic( usr.loc, reinf )
 			W.dir = dir_to_set
 			W.ini_dir = W.dir
 			W.anchored = 0
@@ -54,15 +54,15 @@ SHARDS
 		if("full (2 sheets)")
 			if (src.amount < 2)
 				return 1
-			if (locate(/obj/window) in usr.loc)
+			if (locate(/obj/structure/window) in usr.loc)
 				usr << "\red Can't let you do that."
 				return 1
-			var/obj/window/W
+			var/obj/structure/window/W
 			if(reinf)
-				W = new /obj/window/reinforced( usr.loc, reinf )
+				W = new /obj/structure/window/reinforced( usr.loc, reinf )
 				W.state = 0
 			else
-				W = new /obj/window/basic( usr.loc, reinf )
+				W = new /obj/structure/window/basic( usr.loc, reinf )
 			W.dir = SOUTHWEST
 			W.ini_dir = SOUTHWEST
 			W.anchored = 0
@@ -91,8 +91,8 @@ SHARDS
 
 /obj/item/stack/sheet/glass/attackby(obj/item/W, mob/user)
 	..()
-	if(istype(W,/obj/item/weapon/cable_coil))
-		var/obj/item/weapon/cable_coil/CC = W
+	if(istype(W,/obj/item/cable_coil))
+		var/obj/item/cable_coil/CC = W
 		if(CC.amount < 5)
 			user << "\b There is not enough wire in this coil. You need 5 lengths."
 		CC.amount -= 5

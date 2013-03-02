@@ -9,7 +9,7 @@
 	throw_speed = 3
 	throw_range = 10
 	var/obj/item/weapon/pen/haspen		//The stored pen.
-	var/obj/item/weapon/paper/toppaper	//The topmost piece of paper.
+	var/obj/item/paper/toppaper	//The topmost piece of paper.
 	flags = FPRINT | TABLEPASS
 	//slot_flags = SLOT_BELT
 	pressure_resistance = 10
@@ -47,7 +47,7 @@
 	return
 
 /obj/item/weapon/clipboard/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/paper))
+	if(istype(W, /obj/item/paper))
 		user.drop_item()
 		W.loc = src
 		toppaper = W
@@ -67,7 +67,7 @@
 
 	//The topmost paper. I don't think there's any way to organise contents in byond, so this is what we're stuck with.	-Pete
 	if(toppaper)
-		var/obj/item/weapon/paper/P = toppaper
+		var/obj/item/paper/P = toppaper
 		dat += "<A href='?src=\ref[src];write=\ref[P]'>Write</A> <A href='?src=\ref[src];remove=\ref[P]'>Remove</A> - <A href='?src=\ref[src];read=\ref[P]'>[P.name]</A><BR><HR>"
 
 		for(P in src)
@@ -119,14 +119,14 @@
 				else
 					P.loc = get_turf(usr)
 				if(P == toppaper)
-					var/obj/item/weapon/paper/newtop = locate(/obj/item/weapon/paper in src)
+					var/obj/item/paper/newtop = locate(/obj/item/paper in src)
 					if(newtop && (newtop != toppaper))
 						toppaper = newtop
 					else
 						toppaper = null
 
 		if(href_list["read"])
-			var/obj/item/weapon/paper/P = locate(href_list["read"])
+			var/obj/item/paper/P = locate(href_list["read"])
 			if(P)
 				if(!(istype(usr, /mob/living/carbon/human) || istype(usr, /mob/dead/observer) || istype(usr, /mob/living/silicon)))
 					usr << browse("<HTML><HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[stars(P.info)][P.stamps]</BODY></HTML>", "window=[P.name]")

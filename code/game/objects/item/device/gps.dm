@@ -9,7 +9,7 @@
 	throw_speed = 4
 	throw_range = 20
 	m_amt = 500
-	var/obj/ship_landing_beacon/beacon = null
+	var/obj/structure/ship_landing_beacon/beacon = null
 	var/active = 0
 
 	attack_self()
@@ -25,7 +25,7 @@
 	proc/work()
 		while(active)
 			if(!beacon)
-				for(var/obj/ship_landing_beacon/B in world)
+				for(var/obj/structure/ship_landing_beacon/B in world)
 					if(B.name == "Beacon - SS13")
 						beacon = B
 						break

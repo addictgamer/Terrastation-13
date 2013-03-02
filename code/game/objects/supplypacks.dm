@@ -403,7 +403,7 @@
 
 /datum/supply_packs/mecha_ripley
 	name = "Circuit Crate (\"Ripley\" APLU)"
-	contains = list("/obj/item/weapon/book/manual/ripley_build_and_repair",
+	contains = list("/obj/item/book/manual/ripley_build_and_repair",
 					"/obj/item/mecha_parts/circuitboard/ripley/peripherals", //TEMPORARY due to lack of circuitboard printer
 					"/obj/item/mecha_parts/circuitboard/ripley/main") //TEMPORARY due to lack of circuitboard printer
 	cost = 40

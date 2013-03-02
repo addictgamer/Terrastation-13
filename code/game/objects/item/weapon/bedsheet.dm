@@ -11,14 +11,14 @@
 	throw_speed = 2
 	throw_range = 10
 
-/obj/item/weapon/bedsheet/ex_act(severity)
-	if (severity <= 2)
-		del(src)
+	ex_act(severity)
+		if (severity <= 2)
+			del(src)
+			return
 		return
-	return
 
-/obj/item/weapon/bedsheet/attack_self(mob/user as mob)
-	user.drop_item()
-	src.layer = 5
-	add_fingerprint(user)
-	return
+	attack_self(mob/user as mob)
+		user.drop_item()
+		src.layer = 5
+		add_fingerprint(user)
+		return

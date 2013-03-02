@@ -453,9 +453,9 @@
 
 /obj/machinery/power/attackby(obj/item/weapon/W, mob/user)
 
-	if(istype(W, /obj/item/weapon/cable_coil))
+	if(istype(W, /obj/item/cable_coil))
 
-		var/obj/item/weapon/cable_coil/coil = W
+		var/obj/item/cable_coil/coil = W
 
 		var/turf/T = user.loc
 
@@ -506,7 +506,7 @@
 		coil.use(1)
 		if (NC.shock(user, 50))
 			if (prob(50)) //fail
-				new/obj/item/weapon/cable_coil(NC.loc, 1, NC.color)
+				new/obj/item/cable_coil(NC.loc, 1, NC.color)
 				del(NC)
 		return
 	else

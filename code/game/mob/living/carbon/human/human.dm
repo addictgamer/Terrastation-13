@@ -67,10 +67,6 @@
 
 	var/nutrition_decreased_since_last_poop_material = 0
 
-/mob/living/carbon/human/dummy
-	real_name = "Test Dummy"
-	nodamage = 1
-
 /mob/living/carbon/human/New()
 	var/datum/reagents/R = new/datum/reagents(1000)
 	reagents = R
@@ -141,13 +137,6 @@
 
 	organStructure = new /obj/organstructure/human(src)
 
-/mob/living/carbon/human/cyborg
-	New()
-		..()
-		if(organStructure) //hacky, but it's not supposed to be in for a long time anyway
-			del(organStructure)
-		organStructure = new /obj/organstructure/cyber(src)
-
 /mob/living/carbon/human/Bump(atom/movable/AM as mob|obj, yes)
 	if ((!( yes ) || now_pushing))
 		return
@@ -202,9 +191,9 @@
 
 			if (!AM.anchored)
 				var/t = get_dir(src, AM)
-				if (istype(AM, /obj/window))
+				if (istype(AM, /obj/structure/window))
 					if(AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
-						for(var/obj/window/win in get_step(AM,t))
+						for(var/obj/structure/window/win in get_step(AM,t))
 							now_pushing = 0
 							return
 				step(AM, t)
@@ -891,7 +880,7 @@
 				if (emptyHand)
 					head.DblClick()
 				return
-			if (( istype(W, /obj/item/weapon/paper) ))
+			if (( istype(W, /obj/item/paper) ))
 				u_equip(W)
 				head = W
 			else if (!( istype(W, /obj/item/clothing/head) ))
@@ -1081,9 +1070,9 @@
 						M.pulling = t
 				else
 					if (pulling)
-						if (istype(pulling, /obj/window))
+						if (istype(pulling, /obj/structure/window))
 							if(pulling:ini_dir == NORTHWEST || pulling:ini_dir == NORTHEAST || pulling:ini_dir == SOUTHWEST || pulling:ini_dir == SOUTHEAST)
-								for(var/obj/window/win in get_step(pulling,get_dir(pulling.loc, T)))
+								for(var/obj/structure/window/win in get_step(pulling,get_dir(pulling.loc, T)))
 									pulling = null
 					if (pulling)
 						step(pulling, get_dir(pulling.loc, T))
@@ -1155,7 +1144,7 @@
 			update_body()
 
 	if(buckled)
-		if(istype(buckled, /obj/stool/bed))
+		if(istype(buckled, /obj/structure/stool/bed))
 			lying = 1
 		else
 			lying = 0
@@ -2085,6 +2074,13 @@
 	hair_s.Blend(rgb(r_hair, g_hair, b_hair), ICON_ADD)
 	hair_l.Blend(rgb(r_hair, g_hair, b_hair), ICON_ADD)
 
+	var/icon/earbit_s = new/icon("icon" = 'human_face.dmi', "icon_state" = "hair_kittyinner_s")
+	var/icon/earbit_l = new/icon("icon" = 'human_face.dmi', "icon_state" = "hair_kittyinner_l")
+	if (hair_icon_state == "hair_kitty")
+		earbit_s.Blend(rgb(0,0,0), ICON_ADD)
+		earbit_l.Blend(rgb(0,0,0), ICON_ADD)
+
+
 	var/icon/facial_s = new/icon("icon" = 'human_face.dmi', "icon_state" = "[face_icon_state]_s")
 	var/icon/facial_l = new/icon("icon" = 'human_face.dmi', "icon_state" = "[face_icon_state]_l")
 	facial_s.Blend(rgb(r_facial, g_facial, b_facial), ICON_ADD)
@@ -2095,6 +2091,9 @@
 
 	eyes_s.Blend(hair_s, ICON_OVERLAY)
 	eyes_l.Blend(hair_l, ICON_OVERLAY)
+	if (hair_icon_state == "hair_kitty")
+		eyes_s.Blend(earbit_s, ICON_OVERLAY)
+		eyes_l.Blend(earbit_l, ICON_OVERLAY)
 	eyes_s.Blend(mouth_s, ICON_OVERLAY)
 	eyes_l.Blend(mouth_l, ICON_OVERLAY)
 	eyes_s.Blend(facial_s, ICON_OVERLAY)
@@ -2111,6 +2110,9 @@
 	del(facial_s)
 	del(hair_l)
 	del(hair_s)
+	if (hair_icon_state == "hair_kitty")
+		del(earbit_l)
+		del(earbit_s)
 	del(eyes_l)
 	del(eyes_s)
 
@@ -3157,3 +3159,15 @@ It can still be worn/put on as normal.
 
 ///mob/living/carbon/human/proc/find_weapon_on_self()
 //
+
+
+/mob/living/carbon/human/cyborg
+	New()
+		..()
+		if(organStructure) //hacky, but it's not supposed to be in for a long time anyway
+			del(organStructure)
+		organStructure = new /obj/organstructure/cyber(src)
+
+/mob/living/carbon/human/dummy
+	real_name = "Test Dummy"
+	nodamage = 1

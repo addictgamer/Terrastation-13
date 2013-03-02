@@ -7,11 +7,13 @@
 		return
 	if(holder.rank == "Game Admin")
 		Debug2 = !Debug2
+		Debug = Debug2
 
 		world << "Debugging [Debug2 ? "On" : "Off"]"
 		log_admin("[key_name(src)] toggled debugging to [Debug2]")
 	else if(holder.rank == "Game Master")
 		Debug2 = !Debug2
+		Debug = Debug2
 
 		world << "Debugging [Debug2 ? "On" : "Off"]"
 		log_admin("[key_name(src)] toggled debugging to [Debug2]")

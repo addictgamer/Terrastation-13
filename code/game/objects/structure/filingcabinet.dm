@@ -9,7 +9,7 @@
 	var/list/items = new/list()
 
 /obj/structure/filingcabinet/attackby(obj/item/P as obj, mob/user as mob)
-	if(istype(P, /obj/item/weapon/paper) || istype(P, /obj/item/weapon/folder))
+	if(istype(P, /obj/item/paper) || istype(P, /obj/item/weapon/folder))
 		user << "You put the [P] in the [name]."
 		user.drop_item()
 		P.loc = src

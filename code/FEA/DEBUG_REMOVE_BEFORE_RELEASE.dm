@@ -480,7 +480,7 @@ obj/indicator
 	Click()
 		process()
 
-obj/window
+obj/structure/window
 	verb
 		destroy()
 			set category = "Minor"

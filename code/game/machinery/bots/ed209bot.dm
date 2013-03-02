@@ -825,8 +825,8 @@ Auto Patrol: []"},
 		src.item_state = "ed209_prox"
 		src.icon_state = "ed209_prox"
 		del(W)
-	else if(istype(W, /obj/item/weapon/cable_coil) && (src.build_step == 6) )
-		var/obj/item/weapon/cable_coil/coil = W
+	else if(istype(W, /obj/item/cable_coil) && (src.build_step == 6) )
+		var/obj/item/cable_coil/coil = W
 		var/turf/T = get_turf(user)
 		user.visible_message("[user] wires killbot.", "You start to wire the killbot.")
 		sleep(40)

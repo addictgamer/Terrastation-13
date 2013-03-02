@@ -299,34 +299,22 @@ Made a proc here so it's not repeated several times.*/
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 //UNUSED/OLD CODE
+/*
+	for (var/obj/landmark/A in world)
+		if (A.name == "Teleport-Scroll")
+			new /obj/item/weapon/teleportation_scroll(A.loc)
+			del(A)
+			continue
+	//Scroll now starts in the wizard's inventory.
 
-//	for (var/obj/landmark/A in world)
-//		if (A.name == "Teleport-Scroll")
-//			new /obj/item/weapon/teleportation_scroll(A.loc)
-//			del(A)
-//			continue
-//Scroll now starts in the wizard's inventory.
+	if (wizard_mob.mind.assigned_role == "Clown")
+		wizard_mob << "Your training has allowed you to overcome your clownish nature, allowing you to wield weapons without harming yourself."
+		wizard_mob.mutations &= ~CLOWN No more clowns as wizarrrddsss
+*/
 
-//	if (wizard_mob.mind.assigned_role == "Clown")
-//		wizard_mob << "Your training has allowed you to overcome your clownish nature, allowing you to wield weapons without harming yourself."
-//		wizard_mob.mutations &= ~CLOWN No more clowns as wizarrrddsss
-
-/*Creates random numbers/codes for the uplink.
+/*
+Creates random numbers/codes for the uplink.
 	var/freq = 1441
 	var/list/freqlist = list()
 	while (freq <= 1489)
@@ -338,9 +326,11 @@ Made a proc here so it's not repeated several times.*/
 	freq = freqlist[rand(1, freqlist.len)]
 	// generate a passcode if the uplink is hidden in a PDA
 	var/pda_pass = "[rand(100,999)] [pick("Morgan","Circe","Prospero","Elminister","Raistlin","Tzeentch","Saruman","Khelben","Dumbledor","Gandalf","Houdini","Teferi","Urza","Tenser","Zagyg","Mystryl","Boccob","Merlin")]"
-No longer used because wizards begin with a spell book.*/
+No longer used because wizards begin with a spell book.
+*/
 
-/*Checks where to spawn the swf uplink.
+/*
+Checks where to spawn the swf uplink.
 	var/loc = ""
 	var/obj/item/device/R = null //Hide the uplink in a PDA if available, otherwise radio
 	if (!R && istype(wizard_mob.belt, /obj/item/device/pda))
@@ -392,9 +382,11 @@ No longer used because wizards begin with a spell book.*/
 			T.hostpda = R
 			wizard_mob << "The Space Wizards Federation have cunningly enchanted a spellbook into your PDA [loc]. Simply enter the code \"[pda_pass]\" into the ringtone select to unlock its hidden features."
 			wizard_mob.mind.store_memory("<B>Uplink Passcode:</B> [pda_pass] ([R.name] [loc]).")
-No longer used because wizards begin with a spell book.*/
+No longer used because wizards begin with a spell book.
+*/
 
-/*Code which works for intergrated uplinks, like those in PDAs.
+/*
+Code which works for intergrated uplinks, like those in PDAs.
 /obj/item/weapon/integrated_uplink/SWF
 	name = "enchanted uplink"
 	uses = 4
@@ -500,4 +492,5 @@ No longer used because wizards begin with a spell book.*/
 		return
 
 	return
-No longer used because wizards begin with a spell book.*/
+No longer used because wizards begin with a spell book.
+*/

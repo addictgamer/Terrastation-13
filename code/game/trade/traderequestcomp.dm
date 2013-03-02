@@ -67,7 +67,7 @@
 	else if (href_list["printform"])
 		var/tradetype = href_list["printform"]
 		var/datum/trade_packs/P = new tradetype ()
-		var/obj/item/weapon/paper/reqform = new /obj/item/weapon/paper(src.loc)
+		var/obj/item/paper/reqform = new /obj/item/paper(src.loc)
 		var/idname = "Unknown"
 		var/idrank = "Unknown"
 		var/reason = input(usr,"Reason:","Why do you require this item?","")

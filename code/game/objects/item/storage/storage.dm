@@ -18,7 +18,7 @@
 
 	for(var/obj/item/weapon/storage/S in src)
 		L += S.return_inv()
-	for(var/obj/item/weapon/gift/G in src)
+	for(var/obj/item/gift/G in src)
 		L += G.gift
 		if (istype(G.gift, /obj/item/weapon/storage))
 			L += G.gift:return_inv()
@@ -368,6 +368,21 @@
 	P.name = "Cyanide pill"
 	return
 
+/obj/item/weapon/storage/mechatrackingbox
+	name = "Mech tracking box"
+	icon_state = "box"
+	desc = "Contains mech trackers so they aren't all just laying around the place."
+
+/obj/item/weapon/storage/mechatrackingbox/New()
+	new /obj/item/mecha_tracking(src)
+	new /obj/item/mecha_tracking(src)
+	new /obj/item/mecha_tracking(src)
+	new /obj/item/mecha_tracking(src)
+	new /obj/item/mecha_tracking(src)
+	new /obj/item/mecha_tracking(src)
+	new /obj/item/mecha_tracking(src)
+	..()
+	return
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -386,7 +401,7 @@
 		"/obj/item/weapon/wrench",
 		"/obj/item/device/multitool",
 		"/obj/item/device/flashlight",
-		"/obj/item/weapon/cable_coil",
+		"/obj/item/cable_coil",
 		"/obj/item/device/t_scanner",
 		"/obj/item/device/analyzer")
 	flags = FPRINT | TABLEPASS | ONBELT
@@ -458,7 +473,7 @@
 	new /obj/item/weapon/weldingtool(src)
 	new /obj/item/weapon/crowbar(src)
 	new /obj/item/weapon/wirecutters(src)
-	new /obj/item/weapon/cable_coil(src,30,pick("red","yellow"))
+	new /obj/item/cable_coil(src,30,pick("red","yellow"))
 
 
 /obj/item/weapon/storage/utilitybelt/medical

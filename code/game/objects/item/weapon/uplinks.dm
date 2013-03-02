@@ -192,7 +192,7 @@ SYNDICATE UPLINK
 				if("lawmod")
 					if (src.uses >= 7)
 						src.uses -= 7
-						new /obj/item/weapon/aiModule/syndicate(get_turf(src))
+						new /obj/item/aiModule/syndicate(get_turf(src))
 				if("botchat")
 					if (src.uses >= 3)
 						src.uses -= 3

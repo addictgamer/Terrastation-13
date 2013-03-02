@@ -359,9 +359,9 @@ turf/simulated/floor/return_siding_icon_state()
 			user << "\blue This section already has a tile on it. Use a crowbar to pry it off."
 
 
-	if(istype(C, /obj/item/weapon/cable_coil))
+	if(istype(C, /obj/item/cable_coil))
 		if(is_plating())
-			var/obj/item/weapon/cable_coil/coil = C
+			var/obj/item/cable_coil/coil = C
 			coil.turf_place(src, user)
 		else
 			user << "\red You must remove the plating first."

@@ -181,7 +181,7 @@
 			if("lawmod")
 				if (uses >= 7)
 					uses -= 7
-					new /obj/item/weapon/aiModule/syndicate(get_turf(hostpda))
+					new /obj/item/aiModule/syndicate(get_turf(hostpda))
 			if("botchat")
 				if (uses >= 3)
 					uses -= 3

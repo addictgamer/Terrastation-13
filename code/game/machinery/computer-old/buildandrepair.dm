@@ -221,7 +221,7 @@
 				user << "\blue You unfasten the circuit board."
 				src.state = 1
 				src.icon_state = "1"
-			if(istype(P, /obj/item/weapon/cable_coil))
+			if(istype(P, /obj/item/cable_coil))
 				if(P:amount >= 5)
 					playsound(src.loc, 'Deconstruct.ogg', 50, 1)
 					if(do_after(user, 20))
@@ -237,7 +237,7 @@
 				user << "\blue You remove the cables."
 				src.state = 2
 				src.icon_state = "2"
-				var/obj/item/weapon/cable_coil/A = new /obj/item/weapon/cable_coil( src.loc )
+				var/obj/item/cable_coil/A = new /obj/item/cable_coil( src.loc )
 				A.amount = 5
 
 			if(istype(P, /obj/item/stack/sheet/glass))

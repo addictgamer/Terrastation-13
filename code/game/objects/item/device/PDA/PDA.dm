@@ -687,7 +687,7 @@
 			else
 				user << "\blue No significant chemical agents found in [A]."
 
-	if (!scanmode && istype(A, /obj/item/weapon/paper) && owner)
+	if (!scanmode && istype(A, /obj/item/paper) && owner)
 		if ((!isnull(uplink)) && (uplink.active))
 			uplink.orignote = A:info
 		else

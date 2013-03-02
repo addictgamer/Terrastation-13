@@ -193,7 +193,7 @@
 	new /obj/item/weapon/reagent_containers/glass/beaker( src )
 	new /obj/item/weapon/reagent_containers/glass/beaker( src )
 
-/obj/item/weapon/paper/alchemy/
+/obj/item/paper/alchemy/
 	name = "paper- 'Chemistry Information'"
 
 /obj/item/weapon/storage/trashcan

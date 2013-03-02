@@ -329,7 +329,7 @@ datum
 			req_tech = list("programming" = 3, "materials" = 4)
 			build_type = IMPRINTER
 			materials = list("$glass" = 2000, "acid" = 20, "$gold" = 100)
-			build_path = "/obj/item/weapon/aiModule/safeguard"
+			build_path = "/obj/item/aiModule/safeguard"
 
 		onehuman_module
 			name = "Module Design (OneHuman)"
@@ -338,7 +338,7 @@ datum
 			req_tech = list("programming" = 4, "materials" = 6)
 			build_type = IMPRINTER
 			materials = list("$glass" = 2000, "acid" = 20, "$diamond" = 100)
-			build_path = "/obj/item/weapon/aiModule/oneHuman"
+			build_path = "/obj/item/aiModule/oneHuman"
 
 		protectstation_module
 			name = "Module Design (ProtectStation)"
@@ -347,7 +347,7 @@ datum
 			req_tech = list("programming" = 3, "materials" = 6)
 			build_type = IMPRINTER
 			materials = list("$glass" = 2000, "acid" = 20, "$gold" = 100)
-			build_path = "/obj/item/weapon/aiModule/protectStation"
+			build_path = "/obj/item/aiModule/protectStation"
 
 		notele_module
 			name = "Module Design (TeleporterOffline Module)"
@@ -356,7 +356,7 @@ datum
 			req_tech = list("programming" = 3)
 			build_type = IMPRINTER
 			materials = list("$glass" = 2000, "acid" = 20, "$gold" = 100)
-			build_path = "/obj/item/weapon/aiModule/teleporterOffline"
+			build_path = "/obj/item/aiModule/teleporterOffline"
 
 		quarantine_module
 			name = "Module Design (Quarantine)"
@@ -365,7 +365,7 @@ datum
 			req_tech = list("programming" = 3, "biotech" = 2, "materials" = 4)
 			build_type = IMPRINTER
 			materials = list("$glass" = 2000, "acid" = 20, "$gold" = 100)
-			build_path = "/obj/item/weapon/aiModule/quarantine"
+			build_path = "/obj/item/aiModule/quarantine"
 
 		oxygen_module
 			name = "Module Design (OxygenIsToxicToHumans)"
@@ -374,7 +374,7 @@ datum
 			req_tech = list("programming" = 3, "biotech" = 2, "materials" = 4)
 			build_type = IMPRINTER
 			materials = list("$glass" = 2000, "acid" = 20, "$gold" = 100)
-			build_path = "/obj/item/weapon/aiModule/oxygen"
+			build_path = "/obj/item/aiModule/oxygen"
 
 		freeform_module
 			name = "Module Design (Freeform)"
@@ -383,7 +383,7 @@ datum
 			req_tech = list("programming" = 4, "materials" = 4)
 			build_type = IMPRINTER
 			materials = list("$glass" = 2000, "acid" = 20, "$gold" = 100)
-			build_path = "/obj/item/weapon/aiModule/freeform"
+			build_path = "/obj/item/aiModule/freeform"
 
 		reset_module
 			name = "Module Design (Reset)"
@@ -392,7 +392,7 @@ datum
 			req_tech = list("programming" = 3, "materials" = 6)
 			build_type = IMPRINTER
 			materials = list("$glass" = 2000, "acid" = 20, "$gold" = 100)
-			build_path = "/obj/item/weapon/aiModule/reset"
+			build_path = "/obj/item/aiModule/reset"
 
 		purge_module
 			name = "Module Design (Purge)"
@@ -401,7 +401,7 @@ datum
 			req_tech = list("programming" = 4, "materials" = 6)
 			build_type = IMPRINTER
 			materials = list("$glass" = 2000, "acid" = 20, "$diamond" = 100)
-			build_path = "/obj/item/weapon/aiModule/purge"
+			build_path = "/obj/item/aiModule/purge"
 
 		freeformcore_module
 			name = "Core Module Design (Freeform)"
@@ -410,7 +410,7 @@ datum
 			req_tech = list("programming" = 4, "materials" = 6)
 			build_type = IMPRINTER
 			materials = list("$glass" = 2000, "acid" = 20, "$diamond" = 100)
-			build_path = "/obj/item/weapon/aiModule/freeformcore"
+			build_path = "/obj/item/aiModule/freeformcore"
 
 		asimov
 			name = "Core Module Design (Asimov)"
@@ -419,7 +419,7 @@ datum
 			req_tech = list("programming" = 3, "materials" = 6)
 			build_type = IMPRINTER
 			materials = list("$glass" = 2000, "acid" = 20, "$diamond" = 100)
-			build_path = "/obj/item/weapon/aiModule/asimov"
+			build_path = "/obj/item/aiModule/asimov"
 
 		paladin_module
 			name = "Core Module Design (P.A.L.A.D.I.N.)"
@@ -428,7 +428,7 @@ datum
 			req_tech = list("programming" = 4, "materials" = 6)
 			build_type = IMPRINTER
 			materials = list("$glass" = 2000, "acid" = 20, "$diamond" = 100)
-			build_path = "/obj/item/weapon/aiModule/paladin"
+			build_path = "/obj/item/aiModule/paladin"
 
 		tyrant_module
 			name = "Core Module Design (T.Y.R.A.N.T.)"
@@ -437,7 +437,7 @@ datum
 			req_tech = list("programming" = 4, "syndicate" = 2, "materials" = 6)
 			build_type = IMPRINTER
 			materials = list("$glass" = 2000, "acid" = 20, "$diamond" = 100)
-			build_path = "/obj/item/weapon/aiModule/tyrant"
+			build_path = "/obj/item/aiModule/tyrant"
 
 
 ///////////////////////////////////

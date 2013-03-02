@@ -102,7 +102,7 @@ obj/item/weapon/robot_module/syndicate
 	G.amount = 50
 	src.modules += G
 
-	var/obj/item/weapon/cable_coil/W = new /obj/item/weapon/cable_coil(src)
+	var/obj/item/cable_coil/W = new /obj/item/cable_coil(src)
 	W.amount = 50
 	src.modules += W
 	src.modules += new /obj/item/weapon/borg/sight/meson(src)
@@ -114,7 +114,7 @@ obj/item/weapon/robot_module/syndicate
 	var/list/what = list (
 		/obj/item/stack/sheet/metal,
 		/obj/item/stack/sheet/rglass,
-		/obj/item/weapon/cable_coil,
+		/obj/item/cable_coil,
 	)
 	for (var/T in what)
 		if (!(locate(T) in src.modules))

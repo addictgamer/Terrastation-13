@@ -1,3 +1,4 @@
+
 /proc/start_events()
 	if(prob(50))//Every 120 seconds and prob 50 2-4 weak spacedusts will hit the station
 		spawn(1)

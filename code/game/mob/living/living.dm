@@ -169,7 +169,7 @@
 	L += src.contents
 	for(var/obj/item/weapon/storage/S in src.contents)
 		L += S.return_inv()
-	for(var/obj/item/weapon/gift/G in src.contents)
+	for(var/obj/item/gift/G in src.contents)
 		L += G.gift
 		if (istype(G.gift, /obj/item/weapon/storage))
 			L += G.gift:return_inv()
@@ -180,7 +180,7 @@
 	L += src.contents
 	for(var/obj/item/weapon/storage/S in src.contents)
 		L += S.return_inv()
-	for(var/obj/item/weapon/gift/G in src.contents)
+	for(var/obj/item/gift/G in src.contents)
 		L += G.gift
 		if (istype(G.gift, /obj/item/weapon/storage))
 			L += G.gift:return_inv()

@@ -36,6 +36,99 @@
 	proc/return_siding_icon_state()
 		return 0
 
+/turf/proc
+	AdjacentTurfs()
+		var/L[] = new()
+		for(var/turf/t in range(src,1))
+			if(!t.density)
+				if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
+					L.Add(t)
+		return L
+	Distance(turf/t)
+		if(get_dist(src,t) == 1)
+			var/cost = (src.x - t.x) * (src.x - t.x) + (src.y - t.y) * (src.y - t.y)
+			cost *= (pathweight+t.pathweight)/2
+			return cost
+		else
+			return get_dist(src,t)
+	AdjacentTurfsSpace()
+		var/L[] = new()
+		for(var/turf/t in range(src,1))
+			if(!t.density)
+				if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
+					L.Add(t)
+		return L
+	AdjacentTurfsCritter() //For use when seeking a path to a creature.
+		var/L[] = new()
+		for(var/turf/t in range(src,1)) //Using range instead of oview or view to see in dark....
+			if(!t.density)
+				if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
+					L.Add(t)
+				//L.Add(t)
+		return L
+	AdjacentTurfsCritterB() //For use when seeking a path to an object.
+		var/L[] = new()
+		for(var/turf/t in range(src,1)) //Using range instead of oview or view to see in dark...
+			if(!t.density)
+				//if(!LinkBlockedCritter(src, t))
+				//	L.Add(t)
+				L.Add(t)
+		return L
+
+// Returns the surrounding cardinal turfs with open links
+// Including through doors openable with the ID
+	CardinalTurfsWithAccess(var/obj/item/weapon/card/id/ID)
+		var/L[] = new()
+
+		//	for(var/turf/simulated/t in oview(src,1))
+
+		for(var/d in cardinal)
+			var/turf/T = get_step(src, d)
+			if(istype(T) && !T.density)
+				if(!LinkBlockedWithAccess(src, T, ID))
+					L.Add(T)
+		return L
+
+	CardinalTurfs()
+		var/L[] = new()
+
+		//	for(var/turf/simulated/t in oview(src,1))
+
+		for(var/d in cardinal)
+			var/turf/T = get_step(src, d)
+			if(/*istype(T) &&*/ !T.density)
+				if(!LinkBlocked(src, T) && !TurfBlockedNonWindow(T))
+					L.Add(T)
+		return L
+
+
+/turf/proc/move_camera_by_click()
+	if (usr.stat)
+		return ..()
+	if (world.time <= usr:lastDblClick+2)
+		return ..()
+
+	//try to find the closest working camera in the same area, switch to it
+	var/area/A = get_area(src)
+	var/best_dist = INFINITY //infinity
+	var/best_cam = null
+	for(var/obj/machinery/camera/C in A)
+		if(usr:network != C.network)
+			continue	//	different network (syndicate)
+		if(C.z != usr.z)
+			continue	//	different viewing plane
+		if(!C.status)
+			continue	//	ignore disabled cameras
+		var/dist = get_dist(src, C)
+		if(dist < best_dist)
+			best_dist = dist
+			best_cam = C
+
+	if(!best_cam)
+		return ..()
+	usr:lastDblClick = world.time
+	usr:switchCamera(best_cam)
+
 /turf/DblClick()
 	if(istype(usr, /mob/living/silicon/ai))
 		return move_camera_by_click()
@@ -142,10 +235,17 @@
 			return
 	return
 
+
 /turf/proc/levelupdate()
 	for(var/obj/O in src)
 		if(O.level == 1)
 			O.hide(src.intact)
+
+// override for space turfs, since they should never hide anything
+/turf/space/levelupdate()
+	for(var/obj/O in src)
+		if(O.level == 1)
+			O.hide(0)
 
 /turf/proc/ReplaceWithFloor(explode=0)
 	var/prior_icon = icon_old
@@ -186,6 +286,62 @@
 	E.dir = old_dir
 	E.icon_state = "engine"
 
+/turf/simulated/Entered(atom/A, atom/OL)
+	if (istype(A,/mob/living/carbon))
+		var/mob/living/carbon/M = A
+		if(M.lying)
+			return
+		if(istype(M, /mob/living/carbon/human))			// Split this into two seperate if checks, when non-humans were being checked it would throw a null error -- TLE
+			if(istype(M:shoes, /obj/item/clothing/shoes/clown_shoes))
+				if(M.m_intent == "run")
+					if(M.footstep >= 2)
+						M.footstep = 0
+					else
+						M.footstep++
+					if(M.footstep == 0)
+						playsound(src, "clownstep", 50, 1) // this will get annoying very fast.
+				else
+					playsound(src, "clownstep", 20, 1)
+		switch (src.wet)
+			if(1)
+				if (istype(M, /mob/living/carbon/human)) // Added check since monkeys don't have shoes
+					if ((M.m_intent == "run") && !(istype(M:shoes, /obj/item/clothing/shoes) && M:shoes.flags&NOSLIP))
+						M.pulling = null
+						step(M, M.dir)
+						M << "\blue You slipped on the wet floor!"
+						playsound(src.loc, 'slip.ogg', 50, 1, -3)
+						M.stunned = 8
+						M.weakened = 5
+					else
+						M.inertia_dir = 0
+						return
+				else if(!istype(M, /mob/living/carbon/metroid))
+					if (M.m_intent == "run")
+						M.pulling = null
+						step(M, M.dir)
+						M << "\blue You slipped on the wet floor!"
+						playsound(src.loc, 'slip.ogg', 50, 1, -3)
+						M.stunned = 8
+						M.weakened = 5
+					else
+						M.inertia_dir = 0
+						return
+
+			if(2) //lube
+				if(!istype(M, /mob/living/carbon/metroid))
+					M.pulling = null
+					step(M, M.dir)
+					spawn(1) step(M, M.dir)
+					spawn(2) step(M, M.dir)
+					spawn(3) step(M, M.dir)
+					spawn(4) step(M, M.dir)
+					M.take_organ_damage(2) // Was 5 -- TLE
+					M << "\blue You slipped on the floor!"
+					playsound(src.loc, 'slip.ogg', 50, 1, -3)
+					M.weakened = 10
+
+	..()
+
 /turf/proc/ReplaceWithSpace()
 	var/old_dir = dir
 	var/turf/space/S = new /turf/space( locate(src.x, src.y, src.z) )
@@ -215,30 +371,6 @@
 	S.sd_NewOpacity(1)
 	return S
 
-/turf/proc/AdjacentTurfs()
-	var/L[] = new()
-	for(var/turf/simulated/t in oview(src,1))
-		if(!t.density)
-			if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
-				L.Add(t)
-	return L
-
-/turf/proc/Distance(turf/t)
-	if(get_dist(src,t) == 1)
-		var/cost = (src.x - t.x) * (src.x - t.x) + (src.y - t.y) * (src.y - t.y)
-		cost *= (pathweight+t.pathweight)/2
-		return cost
-	else
-		return get_dist(src,t)
-
-/turf/proc/AdjacentTurfsSpace()
-	var/L[] = new()
-	for(var/turf/t in oview(src,1))
-		if(!t.density)
-			if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
-				L.Add(t)
-	return L
-
 /turf/proc/kill_creatures(mob/U = null)//Will kill people/creatures and damage mechs./N
 //Useful to batch-add creatures to the list.
 	for(var/mob/living/M in src)
@@ -258,32 +390,3 @@
 /turf/proc/Bless()
 	flags |= NOJAUNT
 	overlays += image('water.dmi',src,"holywater")
-
-// Double clicking turfs to move to nearest camera
-
-/turf/proc/move_camera_by_click()
-	if (usr.stat)
-		return ..()
-	if (world.time <= usr:lastDblClick+2)
-		return ..()
-
-	//try to find the closest working camera in the same area, switch to it
-	var/area/A = get_area(src)
-	var/best_dist = INFINITY //infinity
-	var/best_cam = null
-	for(var/obj/machinery/camera/C in A)
-		if(usr:network != C.network)
-			continue	//	different network (syndicate)
-		if(C.z != usr.z)
-			continue	//	different viewing plane
-		if(!C.status)
-			continue	//	ignore disabled cameras
-		var/dist = get_dist(src, C)
-		if(dist < best_dist)
-			best_dist = dist
-			best_cam = C
-
-	if(!best_cam)
-		return ..()
-	usr:lastDblClick = world.time
-	usr:switchCamera(best_cam)

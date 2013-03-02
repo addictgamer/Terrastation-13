@@ -108,7 +108,7 @@
 	var/m_intent = "run"//Living
 	var/lastDblClick = 0
 	var/lastKnownIP = null
-	var/obj/stool/buckled = null//Living
+	var/obj/structure/stool/buckled = null//Living
 	var/obj/item/weapon/handcuffs/handcuffed = null//Living
 	var/obj/item/l_hand = null//Living
 	var/obj/item/r_hand = null//Living
@@ -853,7 +853,6 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	update_clothing()
 	return
 
-
 //Attemps to remove an object on a mob.  Will not move it to another area or such, just removes from the mob.
 /mob/proc/remove_from_mob(var/obj/O)
 	src.u_equip(O)
@@ -1596,7 +1595,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 /mob/proc/can_use_hands()
 	if(handcuffed)
 		return 0
-	if(buckled && istype(buckled, /obj/stool/bed)) // buckling does not restrict hands
+	if(buckled && istype(buckled, /obj/structure/stool/bed)) // buckling does not restrict hands
 		return 0
 	return ..()
 

@@ -33,7 +33,7 @@ THERMAL GLASSES
 	..()
 	return
 
-/obj/item/clothing/gloves/latex/attackby(obj/item/weapon/cable_coil/O as obj, loc)
+/obj/item/clothing/gloves/latex/attackby(obj/item/cable_coil/O as obj, loc)
 	if (istype(O) && O.amount==1)
 		var/obj/item/latexballon/LB = new
 		if (usr.get_inactive_hand()==src)

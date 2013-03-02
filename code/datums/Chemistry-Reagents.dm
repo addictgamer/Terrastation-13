@@ -449,7 +449,7 @@ datum
 
 			reaction_obj(var/obj/O, var/volume)
 				src = null
-				if(istype(O,/obj/window))
+				if(istype(O,/obj/structure/window))
 					if(O:silicate <= 200)
 
 						O:silicate += volume

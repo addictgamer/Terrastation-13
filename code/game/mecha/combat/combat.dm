@@ -3,7 +3,7 @@
 	var/damtype = "brute"
 	var/melee_cooldown = 10
 	var/melee_can_hit = 1
-	var/list/destroyable_obj = list(/obj/mecha, /obj/window, /obj/grille, /turf/simulated/wall)
+	var/list/destroyable_obj = list(/obj/mecha, /obj/structure/window, /obj/grille, /turf/simulated/wall)
 	internal_damage_threshold = 50
 
 /*

@@ -173,8 +173,8 @@ obj/door_assembly
 			user << "\blue You unsecured the airlock assembly!"
 			src.name = "Airlock Assembly"
 			src.anchored = 0
-	else if(istype(W, /obj/item/weapon/cable_coil) && state == 0 && anchored )
-		var/obj/item/weapon/cable_coil/coil = W
+	else if(istype(W, /obj/item/cable_coil) && state == 0 && anchored )
+		var/obj/item/cable_coil/coil = W
 		var/turf/T = get_turf(user)
 		user.visible_message("[user] wires the airlock assembly.", "You start to wire the airlock assembly.")
 		sleep(40)
@@ -190,7 +190,7 @@ obj/door_assembly
 		sleep(40)
 		if(get_turf(user) == T)
 			user << "\blue You cut the airlock wires.!"
-			new/obj/item/weapon/cable_coil(T, 1)
+			new/obj/item/cable_coil(T, 1)
 			src.state = 0
 			src.name = "Secured Airlock Assembly"
 	else if(istype(W, /obj/item/weapon/airlock_electronics) && state == 1 )

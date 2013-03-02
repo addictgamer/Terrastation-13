@@ -60,8 +60,8 @@
 	..()
 	if (istype(W, /obj/item/weapon/wirecutters))
 		deactivate(user)
-	else if (istype(W, /obj/item/weapon/paper))
-		var/obj/item/weapon/paper/X = W
+	else if (istype(W, /obj/item/paper))
+		var/obj/item/paper/X = W
 		user << "You hold a paper up to the camera ..."
 		for(var/mob/living/silicon/ai/O in world)
 			//if (O.current == src)

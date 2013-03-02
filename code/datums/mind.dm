@@ -1,3 +1,4 @@
+
 datum/mind
 	var/key
 	var/mob/living/current

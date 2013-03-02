@@ -104,7 +104,7 @@
 				if(prob(probab))
 
 
-					if(istype(AM, /obj/window) || istype(AM, /obj/grille))
+					if(istype(AM, /obj/structure/window) || istype(AM, /obj/grille))
 						if(istype(src, /mob/living/carbon/metroid/adult))
 							if(nutrition <= 600 && !Atkcool)
 								AM.attack_metroid(src)
@@ -142,9 +142,9 @@
 			now_pushing = 1
 			if (!( AM.anchored ))
 				var/t = get_dir(src, AM)
-				if (istype(AM, /obj/window))
+				if (istype(AM, /obj/structure/window))
 					if(AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
-						for(var/obj/window/win in get_step(AM,t))
+						for(var/obj/structure/window/win in get_step(AM,t))
 							now_pushing = 0
 							return
 				step(AM, t)

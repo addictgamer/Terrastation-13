@@ -1,3 +1,4 @@
+
 /datum/npc_variables
 	var
 		thought = "" //The NPC's current thought.

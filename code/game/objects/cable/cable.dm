@@ -78,9 +78,9 @@
 			return
 
 		if(src.d1)	// 0-X cables are 1 unit, X-X cables are 2 units long
-			new/obj/item/weapon/cable_coil(T, 2, color)
+			new/obj/item/cable_coil(T, 2, color)
 		else
-			new/obj/item/weapon/cable_coil(T, 1, color)
+			new/obj/item/cable_coil(T, 1, color)
 
 		for(var/mob/O in viewers(src, null))
 			O.show_message("\red [user] cuts the cable.", 1)
@@ -94,8 +94,8 @@
 		return	// not needed, but for clarity
 
 
-	else if(istype(W, /obj/item/weapon/cable_coil))
-		var/obj/item/weapon/cable_coil/coil = W
+	else if(istype(W, /obj/item/cable_coil))
+		var/obj/item/cable_coil/coil = W
 		coil.cable_join(src, user)
 
 	else if(istype(W, /obj/item/device/multitool))
@@ -135,12 +135,12 @@
 			del(src)
 		if(2.0)
 			if (prob(50))
-				new/obj/item/weapon/cable_coil(src.loc, src.d1 ? 2 : 1, color)
+				new/obj/item/cable_coil(src.loc, src.d1 ? 2 : 1, color)
 				del(src)
 
 		if(3.0)
 			if (prob(25))
-				new/obj/item/weapon/cable_coil(src.loc, src.d1 ? 2 : 1, color)
+				new/obj/item/cable_coil(src.loc, src.d1 ? 2 : 1, color)
 				del(src)
 	return
 

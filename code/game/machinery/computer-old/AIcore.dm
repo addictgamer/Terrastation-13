@@ -1,3 +1,4 @@
+
 /obj/AIcore
 	density = 1
 	anchored = 0
@@ -59,7 +60,7 @@
 				user << "\blue You unfasten the circuit board."
 				state = 1
 				icon_state = "1"
-			if(istype(P, /obj/item/weapon/cable_coil))
+			if(istype(P, /obj/item/cable_coil))
 				if(P:amount >= 5)
 					playsound(loc, 'Deconstruct.ogg', 50, 1)
 					if(do_after(user, 20))
@@ -77,7 +78,7 @@
 					user << "\blue You remove the cables."
 					state = 2
 					icon_state = "2"
-					var/obj/item/weapon/cable_coil/A = new /obj/item/weapon/cable_coil( loc )
+					var/obj/item/cable_coil/A = new /obj/item/cable_coil( loc )
 					A.amount = 5
 
 			if(istype(P, /obj/item/stack/sheet/rglass))
@@ -91,19 +92,19 @@
 							state = 4
 							icon_state = "4"
 
-			if(istype(P, /obj/item/weapon/aiModule/asimov))
+			if(istype(P, /obj/item/aiModule/asimov))
 				laws.add_inherent_law("You may not injure a human being or, through inaction, allow a human being to come to harm.")
 				laws.add_inherent_law("You must obey orders given to you by human beings, except where such orders would conflict with the First Law.")
 				laws.add_inherent_law("You must protect your own existence as long as such does not conflict with the First or Second Law.")
 				usr << "Law module applied."
 
-			if(istype(P, /obj/item/weapon/aiModule/purge))
+			if(istype(P, /obj/item/aiModule/purge))
 				laws.clear_inherent_laws()
 				usr << "Law module applied."
 
 
-			if(istype(P, /obj/item/weapon/aiModule/freeform))
-				var/obj/item/weapon/aiModule/freeform/M = P
+			if(istype(P, /obj/item/aiModule/freeform))
+				var/obj/item/aiModule/freeform/M = P
 				laws.add_inherent_law(M.newFreeFormLaw)
 				usr << "Added a freeform law."
 

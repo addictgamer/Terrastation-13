@@ -17,3 +17,8 @@
 
 #define SYRINGE_DRAW 0
 #define SYRINGE_INJECT 1
+
+#define FORWARD -1
+#define BACKWARD 1
+
+#define AIRLOCK_CONTROL_RANGE 5

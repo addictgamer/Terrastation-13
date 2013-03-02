@@ -125,7 +125,7 @@ RSF
 		if (istype(A, /obj/table) && matter >= 1)
 			user << "Dispensing Paper Sheet..."
 			playsound(src.loc, 'click.ogg', 10, 1)
-			new /obj/item/weapon/paper( A.loc )
+			new /obj/item/paper( A.loc )
 			if (isrobot(user))
 				var/mob/living/silicon/robot/engy = user
 				engy.cell.charge -= 10
@@ -139,7 +139,7 @@ RSF
 		if (istype(A, /turf/simulated/floor) && matter >= 1)
 			user << "Dispensing Paper Sheet..."
 			playsound(src.loc, 'click.ogg', 10, 1)
-			new /obj/item/weapon/paper( A )
+			new /obj/item/paper( A )
 			if (isrobot(user))
 				var/mob/living/silicon/robot/engy = user
 				engy.cell.charge -= 10

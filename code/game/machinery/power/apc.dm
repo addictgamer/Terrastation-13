@@ -314,11 +314,11 @@
 					updateicon()
 				else
 					user << "You fail to [ locked ? "unlock" : "lock"] the APC interface."
-	else if (istype(W, /obj/item/weapon/cable_coil) && !terminal && opened && has_electronics!=2)
+	else if (istype(W, /obj/item/cable_coil) && !terminal && opened && has_electronics!=2)
 		if (src.loc:intact)
 			user << "\red You must remove the floor plating first."
 			return
-		var/obj/item/weapon/cable_coil/C = W
+		var/obj/item/cable_coil/C = W
 		if(C.amount < 10)
 			user << "\red You need more wires."
 			return
@@ -350,7 +350,7 @@
 				s.set_up(5, 1, src)
 				s.start()
 				return
-			new /obj/item/weapon/cable_coil(loc,10)
+			new /obj/item/cable_coil(loc,10)
 			user.visible_message(\
 				"\red [user.name] cut cables and dismantled the power terminal.",\
 				"You cut cables and dismantle the power terminal.")

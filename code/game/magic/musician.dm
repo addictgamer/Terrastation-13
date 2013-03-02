@@ -1,3 +1,4 @@
+
 /datum/song
 	var
 		name = "Untitled"
@@ -360,7 +361,6 @@
 					soundfile = 'Cn9.ogg'
 				else
 					return
-
 			for(var/mob/M in range(15, src))
 				M << sound(soundfile)
 
@@ -443,8 +443,10 @@
 		updateUsrDialog()
 		return
 
-/*        playing = 1
-        var/datum/song/S = new /datum/song
-        S.lines.Add("A;B;C;D;E;F;G;A;A;B;B;A;G;A;F;F;A;*;*;*;*;B;C;C;F;G")
-        S.lines.Add("A;B;C;D;E;F;G;A;A;B;B;A;G;A;F;F;A;*;*;*;*;B;C;C;F;G")
-        song = S*/
+/*
+		playing = 1
+		var/datum/song/S = new /datum/song
+		S.lines.Add("A;B;C;D;E;F;G;A;A;B;B;A;G;A;F;F;A;*;*;*;*;B;C;C;F;G")
+		S.lines.Add("A;B;C;D;E;F;G;A;A;B;B;A;G;A;F;F;A;*;*;*;*;B;C;C;F;G")
+		song = S
+*/

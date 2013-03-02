@@ -11,10 +11,10 @@
 	anchored = 1.0
 	density = 0
 
-/obj/item/weapon/secstorage/ssafe/New()
-	..()
-	new /obj/item/weapon/paper(src)
-	new /obj/item/weapon/pen(src)
+	New()
+		..()
+		new /obj/item/paper(src)
+		new /obj/item/weapon/pen(src)
 
-/obj/item/weapon/secstorage/ssafe/attack_hand(mob/user as mob)
-	return attack_self(user)
+	attack_hand(mob/user as mob)
+		return attack_self(user)

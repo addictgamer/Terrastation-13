@@ -1,4 +1,3 @@
-
 /client
 //START Admin Things
 	//This should be changed to a datum
@@ -33,13 +32,10 @@
 	var/karma = 0
 	var/karma_spent = 0
 
-
-
 	var/midis = 1 //Check if midis should be played for someone -- Urist
 	var/bubbles = 1 //Check if bubbles should be displayed for someone -- Doohl
 	var/be_alien = 0 //Check if that guy wants to be an alien -- Urist
 	var/be_pai = 1 //Consider client when searching for players to recruit as a pAI -- TLE
-
 
 	var/vote = null
 	var/showvote = null
@@ -47,7 +43,5 @@
 	var/sound/music = null
 	var/playing_lobby_music = 0
 
-
-
 	// comment out the line below when debugging locally to enable the options & messages menu
-	control_freak = 1
+	//control_freak = 1

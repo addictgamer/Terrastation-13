@@ -80,7 +80,7 @@
 		bitesize = reagents.total_volume
 
 	/*attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon/cable_coil))
+		if(istype(W, /obj/item/cable_coil))
 			if(W:amount >= 5)
 				W:amount -= 5
 				if(!W:amount) del(W)

@@ -1,3 +1,6 @@
+
+//TODO: Find out what the heck is up with the procs in this file
+
 /datum/game_mode
 	var
 		list/datum/mind/cult = list()
@@ -116,7 +119,7 @@
 /datum/game_mode/proc/equip_cultist(mob/living/carbon/human/mob)
 	if(!istype(mob))
 		return
-	var/obj/item/weapon/paper/talisman/supply/T = new(mob)
+	var/obj/item/paper/talisman/supply/T = new(mob)
 	var/list/slots = list (
 		"backpack" = mob.slot_in_backpack,
 		"left pocket" = mob.slot_l_store,

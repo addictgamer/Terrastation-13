@@ -101,7 +101,7 @@
 							playsound(src.loc, 'Screwdriver.ogg', 50, 1)
 							user << "\blue You unfasten the circuitry."
 							src.state = 1
-						if(istype(W, /obj/item/weapon/cable_coil))
+						if(istype(W, /obj/item/cable_coil))
 							if(W:amount >= 1)
 								playsound(src.loc, 'Deconstruct.ogg', 50, 1)
 								if(do_after(user, 20))
@@ -114,7 +114,7 @@
 							playsound(src.loc, 'wirecutter.ogg', 50, 1)
 							user << "\blue You remove the cabling."
 							src.state = 2
-							var/obj/item/weapon/cable_coil/A = new /obj/item/weapon/cable_coil( src.loc )
+							var/obj/item/cable_coil/A = new /obj/item/cable_coil( src.loc )
 							A.amount = 1
 						if(istype(W, /obj/item/device/radio/signaler))
 							playsound(src.loc, 'Deconstruct.ogg', 50, 1)

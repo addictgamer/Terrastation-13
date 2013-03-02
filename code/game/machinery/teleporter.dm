@@ -202,9 +202,9 @@
 			return
 	var/disky = 0
 	for (var/atom/O in M.contents) //I'm pretty sure this accounts for the maximum amount of container in container stacking. --NeoFite
-		if (istype(O, /obj/item/weapon/storage) || istype(O, /obj/item/weapon/gift))
+		if (istype(O, /obj/item/weapon/storage) || istype(O, /obj/item/gift))
 			for (var/obj/OO in O.contents)
-				if (istype(OO, /obj/item/weapon/storage) || istype(OO, /obj/item/weapon/gift))
+				if (istype(OO, /obj/item/weapon/storage) || istype(OO, /obj/item/gift))
 					for (var/obj/OOO in OO.contents)
 						if (istype(OOO, /obj/item/weapon/disk/nuclear))
 							disky = 1
@@ -230,9 +230,9 @@
 	if (istype(M, /obj/item/weapon/storage/backpack/holding))
 		precision = rand(1,100)
 	for (var/atom/O in M.contents) //I'm pretty sure this accounts for the maximum amount of container in container stacking. --NeoFite
-		if (istype(O, /obj/item/weapon/storage) || istype(O, /obj/item/weapon/gift))
+		if (istype(O, /obj/item/weapon/storage) || istype(O, /obj/item/gift))
 			for (var/obj/OO in O.contents)
-				if (istype(OO, /obj/item/weapon/storage) || istype(OO, /obj/item/weapon/gift))
+				if (istype(OO, /obj/item/weapon/storage) || istype(OO, /obj/item/gift))
 					for (var/obj/OOO in OO.contents)
 						if (istype(OOO, /obj/item/weapon/storage/backpack/holding))
 							precision = rand(1,100)

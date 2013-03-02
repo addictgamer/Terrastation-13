@@ -491,7 +491,7 @@
 
 		check_if_buckled()
 			if (buckled)
-				lying = (istype(buckled, /obj/stool/bed) ? 1 : 0)
+				lying = (istype(buckled, /obj/structure/stool/bed) ? 1 : 0)
 				if(lying)
 					drop_item()
 				density = 1

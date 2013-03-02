@@ -7,4 +7,4 @@
 	melee_damage_upper = 35
 	stunchance = 15
 	attack_speed = 7
-//	opensdoors = 1 would give all access dono if want
+	opensdoors = 1 // would give all access dono if want

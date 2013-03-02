@@ -11,7 +11,7 @@
 	idle_power_usage = 30
 	active_power_usage = 200
 	power_channel = EQUIP
-	var/obj/item/weapon/paper/copy = null	//what's in the copier!
+	var/obj/item/paper/copy = null	//what's in the copier!
 	var/copies = 1	//how many copies to print!
 	var/toner = 30 //how much toner is left! woooooo~
 	var/maxcopies = 10	//how many copies can be copied at once- idea shamelessly stolen from bs12's copier!
@@ -47,7 +47,7 @@
 			if(copy)
 				for(var/i = 0, i < copies, i++)
 					if(toner > 0)
-						var/obj/item/weapon/paper/c = new /obj/item/weapon/paper (src.loc)
+						var/obj/item/paper/c = new /obj/item/paper (src.loc)
 						if(toner > 10)	//lots of toner, make it dark
 							c.info = "<font color = #101010>"
 						else			//no toner? shitty copies for you!
@@ -84,7 +84,7 @@
 				updateUsrDialog()
 
 	attackby(obj/item/O as obj, mob/user as mob)
-		if(istype(O, /obj/item/weapon/paper))
+		if(istype(O, /obj/item/paper))
 			if(!copy)
 				user.drop_item()
 				copy = O

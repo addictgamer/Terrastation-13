@@ -1,4 +1,9 @@
+
+// THIS IS IN code\game\objects\critter\creature.dm
+// THERE IS NO NEED FOR TWO DIFFERENT CREATURES.
+
 // BLATANTLY ripped from the facehugger.dm alien code. -- TLE
+
 
 #define viewrange 7 //min 2
 

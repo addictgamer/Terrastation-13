@@ -1,3 +1,4 @@
+
 #define UI_OLD 0
 #define UI_NEW 1
 
@@ -96,7 +97,7 @@ datum/preferences
 
 	proc/randomize_hair(var/gender)
 		//Women are more likely to have longer hair.
-		var/temp = gender==FEMALE&&prob(80) ? pick(2,6,8) : rand(1,10)
+		var/temp = gender==FEMALE&&prob(80) ? pick(2,6,8) : rand(1,11)
 		switch(temp)
 			if(1)
 				h_style = "Short Hair"
@@ -116,11 +117,13 @@ datum/preferences
 				h_style = "Dreadlocks"
 			if(9)
 				h_style = "Spike"
+			if(10)
+				h_style = "Kitty"
 			else
 				h_style = "bald"
 
 	proc/randomize_facial()
-		var/temp = prob(50) ? 14 : rand(1,14)//50% of not having a beard. Otherwise get a random one.
+		var/temp = prob(50) ? 15 : rand(1,15)//50% of not having a beard. Otherwise get a random one.
 		switch(temp)
 			if(1)
 				f_style = "Watson"
@@ -156,7 +159,7 @@ datum/preferences
 	proc/randomize_skin_tone()
 		var/tone
 
-		var/tmp = pickweight ( list ("caucasian" = 55, "afroamerican" = 15, "african" = 10, "latino" = 10, "albino" = 5, "weird" = 5))
+		var/tmp = pickweight ( list ("caucasian" = 55, "afroamerican" = 15, "african" = 10, "latino" = 10, "albino" = 5, "weird" = 5/*, "LEGO" = 2*/))
 		switch (tmp)
 			if ("caucasian")
 				tone = -45 + 35
@@ -170,6 +173,10 @@ datum/preferences
 				tone = -1 + 35
 			if ("weird")
 				tone = -(rand (1, 220)) + 35
+/*
+			if ("LEGO")
+				tone = -1 + 35
+*/
 
 		s_tone = min(max(tone + rand (-25, 25), -185), 34)
 
@@ -238,7 +245,7 @@ datum/preferences
 		var/green
 		var/blue
 
-		var/col = pick ("black", "grey", "brown", "chestnut", "blue", "lightblue", "green", "albino", "weird", "LEGO")
+		var/col = pick ("black", "grey", "brown", "chestnut", "blue", "lightblue", "green", "albino", "weird",)
 		switch (col)
 			if ("black")
 				red = 0
@@ -276,10 +283,6 @@ datum/preferences
 				red = rand (0, 255)
 				green = rand (0, 255)
 				blue = rand (0, 255)
-			if ("LEGO")
-				red = 247
-				green = 209
-				blue = 23
 
 		red = max(min(red + rand (-25, 25), 255), 0)
 		green = max(min(green + rand (-25, 25), 255), 0)
@@ -332,6 +335,8 @@ datum/preferences
 				h_style_r = "hair_dreads"
 			if("Spike")
 				h_style_r = "hair_spike"
+			if("Kitty")
+				h_style_r = "hair_kitty"
 			else
 				h_style_r = "bald"
 
@@ -769,9 +774,9 @@ datum/preferences
 			switch(link_tags["h_style"])
 				if ("random")
 					if (gender == FEMALE)
-						h_style = pickweight ( list ("Cut Hair" = 5, "Short Hair" = 5, "Long Hair" = 5, "Mohawk" = 5, "Balding" = 1, "Fag" = 5, "Bedhead" = 5, "Dreadlocks" = 5, "Spike" = 5, "Bald" = 5))
+						h_style = pickweight ( list ("Cut Hair" = 2, "Short Hair" = 5, "Long Hair" = 5, "Mohawk" = 1, "Balding" = 1, "Fag" = 5, "Bedhead" = 5, "Dreadlocks" = 5, "Spike" = 3, "Kitty" = 0, "Bald" = 5))
 					else
-						h_style = pickweight ( list ("Cut Hair" = 5, "Short Hair" = 5, "Long Hair" = 5, "Mohawk" = 5, "Balding" = 5, "Fag" = 5, "Bedhead" = 5, "Dreadlocks" = 5, "Spike" = 5, "Bald" = 5))
+						h_style = pickweight ( list ("Cut Hair" = 5, "Short Hair" = 5, "Long Hair" = 2, "Mohawk" = 5, "Balding" = 5, "Fag" = 5, "Bedhead" = 5, "Dreadlocks" = 5, "Spike" = 5, "Kitty" = 0, "Bald" = 5))
 
 				if("input")
 					var/new_style = input(user, "Please select hair style", "Character Generation")  as null|anything in list( "Cut Hair", "Short Hair", "Long Hair", "Mohawk", "Balding", "Fag", "Bedhead", "Dreadlocks", "Spike", "Kitty", "Bald" )
@@ -925,7 +930,9 @@ datum/preferences
 			if("Dreadlocks")
 				character.hair_icon_state = "hair_dreads"
 			if("Spike")
-				character.hair_icon_state = "hair_spike"
+				character.hair_icon_state = "hair_Spike"
+			if("Kitty")
+				character.hair_icon_state = "hair_kitty"
 			else
 				character.hair_icon_state = "bald"
 
@@ -976,7 +983,6 @@ datum/preferences
 					character.client.be_pai = be_special&BE_PAI
 
 /*
-
 	if (!M.real_name || M.be_random_name)
 		if (M.gender == "male")
 			M.real_name = capitalize(pick(first_names_male) + " " + capitalize(pick(last_names)))
@@ -989,7 +995,7 @@ datum/preferences
 	if(cmptext("Unknown",M.real_name))
 		usr << "This name is reserved for use by the game, please choose another one using Character Setup."
 		return
-
 */
+
 #undef UI_OLD
 #undef UI_NEW

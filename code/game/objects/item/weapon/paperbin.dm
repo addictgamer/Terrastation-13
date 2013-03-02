@@ -38,12 +38,12 @@
 			if(amount==0)
 				update_icon()
 
-			var/obj/item/weapon/paper/P
+			var/obj/item/paper/P
 			if (papers.len > 0) // If there's any custom paper on the stack, use that instead of creating a new paper.
 				P = papers[papers.len]
 				papers.Remove(P)
 			else
-				P = new /obj/item/weapon/paper
+				P = new /obj/item/paper
 				/*if(Holiday == "April Fool's Day")
 					if(prob(30))
 						P.info = "<font face=\"[P.crayonfont]\" color=\"red\"><b>HONK HONK HONK HONK HONK HONK HONK<br>HOOOOOOOOOOOOOOOOOOOOOONK<br>APRIL FOOLS</b></font>"
@@ -64,7 +64,7 @@
 		add_fingerprint(user)
 		return
 
-	attackby(obj/item/weapon/paper/i as obj, mob/user as mob)
+	attackby(obj/item/paper/i as obj, mob/user as mob)
 		if(!istype(i))
 			return
 

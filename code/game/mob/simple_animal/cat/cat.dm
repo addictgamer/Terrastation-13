@@ -5,7 +5,7 @@
 	icon = 'mob.dmi'
 	icon_state = "tempcat"
 	icon_living = "tempcat"
-	icon_dead = "gibbed-h"
+	icon_dead = "cat-dead"
 	speak = list("Meow!","Esp!","Purr!","HSSSSS")
 	speak_emote = list("purrs", "meows")
 	emote_hear = list("meows","mews")

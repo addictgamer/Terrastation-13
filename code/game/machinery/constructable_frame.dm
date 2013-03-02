@@ -26,7 +26,7 @@ to destroy them and players will be able to make replacements.
 			return
 		switch(state)
 			if(1)
-				if(istype(P, /obj/item/weapon/cable_coil))
+				if(istype(P, /obj/item/cable_coil))
 					if(P:amount >= 5)
 						playsound(src.loc, 'Deconstruct.ogg', 50, 1)
 						user << "\blue You start to add cables to the frame."
@@ -64,7 +64,7 @@ to destroy them and players will be able to make replacements.
 					user << "\blue You remove the cables."
 					state = 1
 					icon_state = "box_0"
-					var/obj/item/weapon/cable_coil/A = new /obj/item/weapon/cable_coil( src.loc )
+					var/obj/item/cable_coil/A = new /obj/item/cable_coil( src.loc )
 					A.amount = 5
 
 			if(3)
@@ -106,10 +106,10 @@ to destroy them and players will be able to make replacements.
 				if(istype(P, /obj/item/weapon))
 					for(var/I in req_components)
 						if(istype(P, text2path(I)) && (req_components[I] > 0))
-							if(istype(P, /obj/item/weapon/cable_coil))
-								var/obj/item/weapon/cable_coil/CP = P
+							if(istype(P, /obj/item/cable_coil))
+								var/obj/item/cable_coil/CP = P
 								if(CP.amount > 1)
-									var/obj/item/weapon/cable_coil/CC = new /obj/item/weapon/cable_coil(src)
+									var/obj/item/cable_coil/CC = new /obj/item/cable_coil(src)
 									CC.amount = 1
 									components += CC
 									req_components[I]--
@@ -119,5 +119,5 @@ to destroy them and players will be able to make replacements.
 							components += P
 							req_components[I]--
 							break
-					if(P.loc != src && !istype(P, /obj/item/weapon/cable_coil))
+					if(P.loc != src && !istype(P, /obj/item/cable_coil))
 						user << "\red You cannot add that component to the machine!"

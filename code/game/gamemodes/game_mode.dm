@@ -28,8 +28,8 @@
 	world << "<B>Notice</B>: [src] did not define announce()"
 
 
-///can_start()
-///Checks to see if the game can be setup and ran with the current number of players or whatnot.
+//can_start()
+//Checks to see if the game can be setup and ran with the current number of players or whatnot.
 /datum/game_mode/proc/can_start()
 	var/playerC = 0
 	for(var/mob/new_player/player in world)
@@ -40,20 +40,20 @@
 	return 0
 
 
-///pre_setup()
-///Attempts to select players for special roles the mode might have.
+//pre_setup()
+//Attempts to select players for special roles the mode might have.
 /datum/game_mode/proc/pre_setup()
 	return 1
 
 
-///post_setup()
-///Everyone should now be on the station and have their normal gear.  This is the place to give the special roles extra things
+//post_setup()
+//Everyone should now be on the station and have their normal gear.  This is the place to give the special roles extra things
 /datum/game_mode/proc/post_setup()
 	return 1
 
 
-///process()
-///Called by the gameticker
+//process()
+//Called by the gameticker
 /datum/game_mode/proc/process()
 	return 0
 
@@ -98,7 +98,7 @@
 
 	for (var/obj/machinery/computer/communications/comm in world)
 		if (!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
-			var/obj/item/weapon/paper/intercept = new /obj/item/weapon/paper( comm.loc )
+			var/obj/item/paper/intercept = new /obj/item/paper( comm.loc )
 			intercept.name = "paper- 'Cent. Com. Status Summary'"
 			intercept.info = intercepttext
 

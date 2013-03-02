@@ -489,11 +489,11 @@
 	items = list(
 		/obj/item/weapon/reagent_containers/food/snacks/flour,
 		/obj/item/weapon/reagent_containers/food/snacks/egg,
-		/obj/item/weapon/paper,
+		/obj/item/paper,
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/fortunecookie
 	make_food(var/obj/container as obj)
-		var/obj/item/weapon/paper/paper = locate() in container
+		var/obj/item/paper/paper = locate() in container
 		paper.loc = null //prevent deletion
 		var/obj/item/weapon/reagent_containers/food/snacks/fortunecookie/being_cooked = ..(container)
 		paper.loc = being_cooked
@@ -501,7 +501,7 @@
 	check_items(var/obj/container as obj)
 		. = ..()
 		if (.)
-			var/obj/item/weapon/paper/paper = locate() in container
+			var/obj/item/paper/paper = locate() in container
 			if (!paper.info)
 				return 0
 		return .

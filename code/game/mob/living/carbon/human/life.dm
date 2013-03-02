@@ -1,3 +1,4 @@
+
 #define HUMAN_MAX_OXYLOSS 12 //Defines how much oxyloss humans can get per tick. No air applies this value.
 
 /mob/living/carbon/human
@@ -91,8 +92,7 @@
 
 	..() //for organs
 
-
-/mob/living/carbon/human
+/mob/living/carbon/human/
 	proc
 		clamp_values()
 
@@ -158,7 +158,7 @@
 						if(1)
 							say(pick("IM A PONY NEEEEEEIIIIIIIIIGH", "without oxigen blob don't evoluate?", "CAPTAINS A COMDOM", "[pick("", "that faggot traitor")] [pick("joerge", "george", "gorge", "gdoruge")] [pick("mellens", "melons", "mwrlins")] is grifing me HAL;P!!!", "can u give me [pick("telikesis","halk","eppilapse")]?", "THe saiyans screwed", "Bi is THE BEST OF BOTH WORLDS>", "I WANNA PET TEH MONKIES", "stop grifing me!!!!", "SOTP IT#"))
 						if(2)
-							say(pick("fucking 4rries!", "stat me", ">my face", "roll it easy!", "waaaaaagh!!!", "red wonz go fasta", "FOR TEH EMPRAH", "lol2cat", "dem dwarfs man, dem dwarfs", "SPESS MAHREENS", "hwee did eet fhor khayosss", "lifelike texture ;_;", "luv can bloooom"))
+							say(pick("fucking 4rries!", "stat me", ">my face", "roll it easy!", "waaaaaagh!!!", "red wonz go fasta", "FOR TEH EMPRAH", "lol2cat", "dem dwarfs man, dem dwarfs", "SPESS MAHREENS", "hwee did eet fhor khayosss", "lifelike texture ;_;", "luv can bloooom", "PEEEEENIS WITHOUT END!"/*lol -- Tauka Usanake*/))
 						if(3)
 							emote("drool")
 
@@ -1012,7 +1012,7 @@
 
 		check_if_buckled()
 			if (buckled)
-				lying = istype(buckled, /obj/stool/bed) || istype(buckled, /obj/machinery/conveyor)
+				lying = istype(buckled, /obj/structure/stool/bed) || istype(buckled, /obj/machinery/conveyor)
 				if(lying)
 					drop_item()
 				density = 1

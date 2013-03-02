@@ -368,7 +368,7 @@ var/trade_ordernum=0
 	else if (href_list["printform"])
 		var/supplytype = href_list["printform"]
 		var/datum/supply_packs/P = new supplytype ()
-		var/obj/item/weapon/paper/reqform = new /obj/item/weapon/paper(src.loc)
+		var/obj/item/paper/reqform = new /obj/item/paper(src.loc)
 		var/idname = "Unknown"
 		var/idrank = "Unknown"
 		var/reason = input(usr,"Reason:","Why do you require this item?","")
@@ -490,7 +490,7 @@ var/trade_ordernum=0
 			del(crate)
 			supply_shuttle_points += SUPPLY_POINTSPERCRATE
 
-/obj/item/weapon/paper/manifest
+/obj/item/paper/manifest
 	name = "Supply Manifest"
 
 /proc/process_supply_order()
@@ -525,7 +525,7 @@ var/trade_ordernum=0
 		else
 			ordernum = rand(500,5000) //pick a random number to start with
 
-		var/obj/item/weapon/paper/manifest/slip = new /obj/item/weapon/paper/manifest (A)
+		var/obj/item/paper/manifest/slip = new /obj/item/paper/manifest (A)
 		slip.info = ""
 		slip.info +="<h3>[command_name()] Shipping Manifest</h3><hr><br>"
 		slip.info +="Order #: [ordernum]<br>"

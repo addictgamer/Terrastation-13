@@ -10,7 +10,7 @@
 	On_Consume()
 		if(!reagents.total_volume)
 			var/mob/M = usr
-			var/obj/item/weapon/paper/paper = locate() in src
+			var/obj/item/paper/paper = locate() in src
 			M.visible_message( \
 				"\blue [M] takes a piece of paper from the cookie!", \
 				"\blue You take a piece of paper from the cookie! Read it!" \

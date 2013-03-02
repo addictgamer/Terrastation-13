@@ -1224,7 +1224,7 @@
 					sleep(40)
 					for(var/mob/M in world)
 						shake_camera(M, 400, 1)
-					for(var/obj/window/W in world)
+					for(var/obj/structure/window/W in world)
 						spawn(0)
 							sleep(rand(10,400))
 							W.ex_act(rand(2,1))
@@ -1879,7 +1879,7 @@
 <A href='?src=\ref[src];secretsfun=goblob'>Spawn blob(Untested)</A><BR>
 <A href='?src=\ref[src];secretsfun=aliens'>Trigger an Alien infestation</A><BR>
 <A href='?src=\ref[src];secretsfun=spaceninja'>Send in a space ninja</A><BR>
-<A href='?src=\ref[src];secretsfun=carp'>Trigger an Carp migration</A><BR>
+<A href='?src=\ref[src];secretsfun=carp'>Trigger a Carp migration</A><BR>
 <A href='?src=\ref[src];secretsfun=radiation'>Irradiate the station</A><BR>
 <A href='?src=\ref[src];secretsfun=prison_break'>Trigger a Prison Break</A><BR>
 <A href='?src=\ref[src];secretsfun=virus'>Trigger a Virus Outbreak</A><BR>
