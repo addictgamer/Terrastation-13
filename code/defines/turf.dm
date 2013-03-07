@@ -164,6 +164,7 @@
 
 // Returns the surrounding cardinal turfs with open links
 // Including through doors openable with the ID
+//Includes spacetiles
 	CardinalTurfsWithAccess(var/obj/item/weapon/card/id/ID)
 		var/L[] = new()
 
@@ -172,6 +173,31 @@
 		for(var/d in cardinal)
 			var/turf/T = get_step(src, d)
 			if(istype(T) && !T.density)
+				if(!LinkBlockedWithAccess(src, T, ID))
+					L.Add(T)
+		return L
+
+	CardinalNonspaceTurfsWithAccess(var/obj/item/weapon/card/id/ID)
+		var/L[] = new()
+
+		//	for(var/turf/simulated/t in oview(src,1))
+
+		for(var/d in cardinal)
+			var/turf/T = get_step(src, d)
+			if(istype(T) && !T.density && !istype(T, /turf/space))
+				if(!LinkBlockedWithAccess(src, T, ID))
+					L.Add(T)
+		return L
+
+// Returns the surrounding cardinal turfs with open links
+// Including through doors openable with the ID
+// Includes spacetiles
+//TODO: Remove all occurences of this and replace with normal CardinalTurfsWithAccess.
+	CardinalTurfsWithAccessSpace(var/obj/item/weapon/card/id/ID)
+		var/L[] = new()
+		for(var/d in cardinal)
+			var/turf/simulated/T = get_step(src, d)
+			if((istype(T) || istype(T,/turf/space))&& !T.density)
 				if(!LinkBlockedWithAccess(src, T, ID))
 					L.Add(T)
 		return L

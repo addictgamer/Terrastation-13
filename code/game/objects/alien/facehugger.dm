@@ -1,21 +1,6 @@
 #define cycle_pause 5 //min 1
 #define viewrange 7 //min 2
 
-
-
-
-// Returns the surrounding cardinal turfs with open links
-// Including through doors openable with the ID
-// Includes spacetiles
-/turf/proc/CardinalTurfsWithAccessSpace(var/obj/item/weapon/card/id/ID)
-	var/L[] = new()
-	for(var/d in cardinal)
-		var/turf/simulated/T = get_step(src, d)
-		if((istype(T) || istype(T,/turf/space))&& !T.density)
-			if(!LinkBlockedWithAccess(src, T, ID))
-				L.Add(T)
-	return L
-
 /obj/alien/facehugger
 	name = "alien"
 	desc = "An alien, looks pretty scary!"
@@ -378,12 +363,12 @@
 				idle()
 
 	proc/path_idle(var/atom/trg)
-		path_idle = AStar(loc, get_turf(trg), /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 250, null, null)
+		path_idle = AStar(loc, get_turf(trg), /turf/proc/CardinalNonspaceTurfsWithAccess, /turf/proc/Distance, 0, 250, null, null)
 		path_idle = reverselist(path_idle)
 
 	proc/path_attack(var/atom/trg)
 		target = trg
-		path_target = AStar(loc, target.loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 250, null, null)
+		path_target = AStar(loc, target.loc, /turf/proc/CardinalNonspaceTurfsWithAccess, /turf/proc/Distance, 0, 250, null, null)
 		path_target = reverselist(path_target)
 
 

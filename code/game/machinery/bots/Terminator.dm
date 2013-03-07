@@ -428,7 +428,7 @@
 // calculates a path to the current destination
 // given an optional turf to avoid
 /obj/machinery/bot/terminator/proc/calc_path(var/turf/avoid = null)
-	src.path = AStar(src.loc, src.target, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 250, id=botcard, exclude=avoid)
+	src.path = AStar(src.loc, src.target, /turf/proc/CardinalNonspaceTurfsWithAccess, /turf/proc/Distance, 0, 250, id=botcard, exclude=avoid)
 	src.path = reverselist(src.path)
 
 // called when bot bumps into anything

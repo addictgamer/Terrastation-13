@@ -1067,6 +1067,16 @@
 							//poo.loc = src.loc
 							//poo.place_in_world(loc)
 							//Check if there's room in the hand.
+
+
+							for (var/obj/machinery/disposal/toilet/T in loc.contents)
+								var/obj/item/weapon/poop/poo = new /obj/item/weapon/poop
+								poo.material_ammount = _butt.poop_material
+								poo.layer = 20
+								_butt.poop_material = 0
+								poo.splatter_ground(0, src.loc)
+								T.attackby(poo, src)
+
 							var/place_in_hand = 0
 							if(hand) //Check which hand is active.
 								if(!l_hand)

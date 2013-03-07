@@ -27,12 +27,12 @@
 	//world << "poop/place_in_world()"
 	src.loc = location
 	//TODO: If standing on toilet, no poop.
-	if(/obj/machinery/disposal/toilet in src.loc.contents)
-		var/found = 1
-		if (Debug || Debug2) world << "Placing poop in toilet."
-	else
-		src.splatter_ground(0, src.loc)
-		if (Debug || Debug2) world << "No toilet."
+	//if(/obj/machinery/disposal/toilet in src.loc.contents)
+		//var/found = 1
+	//	if (Debug || Debug2) world << "Placing poop in toilet."
+	//else
+	src.splatter_ground(0, src.loc)
+	if (Debug || Debug2) world << "No toilet."
 
 /obj/item/weapon/poop/splatter_ground(var/ammount_lost, var/turf/location)
 	//world << "Making poop splatter."

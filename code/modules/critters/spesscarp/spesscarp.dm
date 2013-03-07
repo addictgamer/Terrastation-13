@@ -38,7 +38,7 @@
 
 				if (src.path && src.path.len) //Remove excess stuff in the path.
 					var/turf/next = path[1]
-					var/done = 0
+					//var/done = 0
 					while(next == loc && path.len) //While there is stuff left in the path.
 						src.path -= next //Remove this one, the dupe.
 						if (path.len) //If there's another one

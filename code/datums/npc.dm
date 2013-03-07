@@ -136,7 +136,7 @@ datum/npc_task/proc/process()
 			owner.assign_task(new_task)
 
 	if(task_type == "walk around"  && !owner.owner.eye_blind && !owner.owner.blinded && !owner.owner.sleeping && !owner.owner.resting && !owner.owner.lying && owner.owner.canmove && !owner.owner.stunned) //Randomly walk around.
-		var/direct = pick("NORTH", "SOUTH", "EAST", "WEST") //Choose a direction.
+		//var/direct = pick("NORTH", "SOUTH", "EAST", "WEST") //Choose a direction.
 
 		//if(can_move_to_that_turf()) //Todo: Find out if it can move to that turf.
 		//	owner.owner.Move(null, direct)
@@ -191,9 +191,9 @@ datum/npc_task/proc/process()
 		if(istype(owner.owner.r_hand, /obj/item/weapon))
 			weapon = owner.owner.r_hand
 
-	//if(weapon)
+	if(weapon)
 		//TODO: Attack the target.
-		//world << "Weapon."
+		if (Debug) world << "Weapon."
 	//else
 		//No weapon. Cancel attack.
 		//world << "No weapon."
@@ -256,9 +256,9 @@ datum/npc_task/proc/process()
 		if(istype(owner.owner.r_hand, /obj/item/weapon))
 			weapon = owner.owner.r_hand
 
-	//if(weapon)
+	if(weapon)
 		//TODO: Attack the target.
-		//world << "Weapon."
+		if (Debug) world << "Weapon."
 	//else
 		//No weapon. Cancel attack.
 		//world << "No weapon."
@@ -323,9 +323,9 @@ datum/npc_task/proc/process()
 		if(istype(owner.owner.r_hand, /obj/item/weapon))
 			weapon = owner.owner.r_hand
 
-	//if(weapon)
+	if(weapon)
 		//TODO: Attack the target.
-		//world << "Weapon."
+		if (Debug) world << "Weapon."
 	//else
 		//No weapon. Cancel attack.
 		//world << "No weapon."

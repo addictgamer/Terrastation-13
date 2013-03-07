@@ -109,11 +109,11 @@
 		frustration = 0
 
 	proc/path_idle(var/atom/trg)
-		path_idle = AStar(src.loc, get_turf(trg), /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 250, anicard, null)
+		path_idle = AStar(src.loc, get_turf(trg), /turf/proc/CardinalNonspaceTurfsWithAccess, /turf/proc/Distance, 0, 250, anicard, null)
 		path_idle = reverselist(path_idle)
 
 	proc/path_attack(var/atom/trg)
-		path_target = AStar(src.loc, trg.loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 250, anicard, null)
+		path_target = AStar(src.loc, trg.loc, /turf/proc/CardinalNonspaceTurfsWithAccess, /turf/proc/Distance, 0, 250, anicard, null)
 		path_target = reverselist(path_target)
 
 

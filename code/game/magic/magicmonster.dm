@@ -272,12 +272,12 @@
 				idle()
 
 	proc/path_idle(var/atom/trg)
-		path_idle = AStar(src.loc, get_turf(trg), /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 250, null, null)
+		path_idle = AStar(src.loc, get_turf(trg), /turf/proc/CardinalNonspaceTurfsWithAccess, /turf/proc/Distance, 0, 250, null, null)
 		path_idle = reverselist(path_idle)
 
 	proc/path_attack(var/atom/trg)
 		target = trg
-		path_target = AStar(src.loc, target.loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 250, null, null)
+		path_target = AStar(src.loc, target.loc, /turf/proc/CardinalNonspaceTurfsWithAccess, /turf/proc/Distance, 0, 250, null, null)
 		path_target = reverselist(path_target)
 
 

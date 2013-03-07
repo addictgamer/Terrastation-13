@@ -142,7 +142,7 @@
 
 		if(locate(href_list["doorder"])) //Comes from the requestlist
 			var/datum/trade_order/O = locate(href_list["doorder"])
-			var/datum/trade_packs/P = O.object
+			//var/datum/trade_packs/P = O.object //Uh, is this needed? What's it do?
 			trade_shuttle_requestlist -= O
 
 		else							//Comes from the orderform
