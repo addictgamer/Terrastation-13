@@ -1,12 +1,11 @@
 // BEGIN_INTERNALS
 /*
 MAP_ICON_TYPE: 0
-WINDOW: code\modules\mob\living\carbon\human\life.dm;code\defines\turf.dm;code\game\trade\tradecomp.dm;code\game\objects\poop.dm;code\modules\critters\spesscarp\spesscarp.dm;code\datums\npc.dm;code\FEA\FEA_turf_tile.dm;maps\blarg2.dmm
+WINDOW: code\game\trade\tradecomp.dm;code\datums\npc.dm;code\defines\area\Space Station 13 areas.dm;code\datums\configuration.dm;code\game\master_controller.dm;code\game\area\areas.dm;code\unused\musicplayer.dm;code\defines\client.dm
 LAST_COMPILE_VERSION: 498.1158
-UPDATE_OBJ_TREE: ON
-DIR: code code\ATMOSPHERICS code\datums code\defines code\defines\area code\defines\mob code\defines\mob\living\carbon code\defines\obj code\defines\obj\closet code\defines\procs code\FEA code\game code\game\area code\game\gamemodes code\game\gamemodes\blob code\game\jobs code\game\machinery code\game\objects code\game\objects\closets code\game\objects\items code\game\objects\items\weapons code\game\trade code\modules code\modules\critters code\modules\critters\spesscarp code\modules\mob code\modules\mob\living code\modules\mob\living\carbon code\modules\mob\living\carbon\human maps 
-FILE: maps\blarg2.dmm
-LAST_COMPILE_TIME: 1362617059
+DIR: code code\datums code\defines code\defines\area code\defines\mob\living\carbon code\defines\obj\closet code\game code\game\area code\game\gamemodes code\game\gamemodes\blob code\game\objects code\game\trade code\modules\critters\spesscarp code\modules\mob\living code\modules\mob\living\carbon code\modules\mob\living\carbon\human code\unused code\unused\beast code\unused\computer2 maps music music\areas 
+FILE: code\unused\musicplayer.dm
+LAST_COMPILE_TIME: 1362689588
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS

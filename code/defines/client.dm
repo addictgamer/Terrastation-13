@@ -44,8 +44,13 @@
 	var/showvote = null
 
 	var/sound/music = null
+	//var/sound/music_lastplayed = music
 	var/ingame_musics_playing[]
 	var/playing_lobby_music = 0
+
+	//For the music player, area music.
+	var/music_lastplayed = "null"
+	var/be_music = 1
 
 
 

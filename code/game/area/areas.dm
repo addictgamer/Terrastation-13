@@ -21,8 +21,10 @@
 		src.icon = 'alert.dmi'
 		src.layer = 10
 //		update_lights()
-		if(name == "Space")			// override defaults for space
+		if (name == "Space")			// override defaults for space
 			requires_power = 0
+		//else //Cheap workaround to make the space music play only when the area is a space //TODO: Instead, give every area its music.
+			//music = ""
 
 		if(!requires_power)
 			power_light = 0//rastaf0
