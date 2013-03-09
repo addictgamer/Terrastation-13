@@ -1075,3 +1075,25 @@
 		/obj/item/weapon/reagent_containers/food/snacks/egg,
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/mysterysoup
+
+/datum/recipe/lasagna
+	reagents = list( "blackpepper" = 5, "water" = 5)
+	items = list(
+		/obj/item/weapon/reagent_containers/food/snacks/flour,
+		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,
+		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,
+		/obj/item/weapon/reagent_containers/food/snacks/faggot,
+		/obj/item/weapon/reagent_containers/food/snacks/faggot,
+		/obj/item/weapon/reagent_containers/food/snacks/grown/tomato,
+	)
+	result = /obj/item/weapon/reagent_containers/food/snacks/lasagna
+
+/datum/recipe/tomatomeatspagetti
+	reagents = list("water" = 5)
+	items = list(
+		/obj/item/weapon/reagent_containers/food/snacks/spagetti,
+		/obj/item/weapon/reagent_containers/food/snacks/faggot,
+		/obj/item/weapon/reagent_containers/food/snacks/faggot,
+		/obj/item/weapon/reagent_containers/food/snacks/grown/tomato,
+	)
+	result = /obj/item/weapon/reagent_containers/food/snacks/tomatomeatspagetti

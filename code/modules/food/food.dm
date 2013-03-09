@@ -1190,7 +1190,7 @@
 	New()
 		..()
 		reagents.add_reagent("nutriment", 8)
-		bitesize = 2
+		bitesize = 4
 
 /obj/item/weapon/reagent_containers/food/snacks/spesslaw
 	name = "Spesslaw"
@@ -1284,6 +1284,27 @@
 		..()
 		reagents.add_reagent("nutriment", 28)
 		bitesize = 3
+
+/obj/item/weapon/reagent_containers/food/snacks/lasagna
+	name = "Lasagna"
+	desc = "A little bit of homemade Italy."
+	icon_state = "lasagna"
+	New()
+		..()
+		reagents.add_reagent("tomatojuice", 25)
+		reagents.add_reagent("nutriment", 10)
+		reagents.add_reagent("blackpepper", 1)
+		bitesize = 5
+
+/obj/item/weapon/reagent_containers/food/snacks/tomatomeatspagetti
+	name = "Tomato and Meat Spagetti"
+	desc = "The ultimate spagetti plate."
+	icon_state = "tomatomeatspagetti"
+	New()
+		..()
+		reagents.add_reagent("tomatojuice", 10)
+		reagents.add_reagent("nutriment", 10)
+		bitesize = 4
 
 /////////////////////////////////////////////////Sliceable////////////////////////////////////////
 // All the food items that can be sliced into smaller bits like Meatbread and Cheesewheels

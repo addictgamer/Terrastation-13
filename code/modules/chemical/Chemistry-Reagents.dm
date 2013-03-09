@@ -280,7 +280,7 @@ datum
 		lube
 			name = "Space Lube"
 			id = "lube"
-			description = "Lubricant is a substance introduced between two moving surfaces to reduce the friction and wear between them. giggity."
+			description = "Lubricant is a substance introduced between two moving surfaces to reduce the friction and wear between them. Giggity."
 			reagent_state = LIQUID
 			color = "#009CA8" // rgb: 0, 156, 168
 
@@ -896,7 +896,6 @@ datum
 				..()
 				return
 
-
 			reaction_turf(var/turf/T, var/volume)
 				src = null
 				if(!istype(T, /turf/space))
@@ -960,6 +959,7 @@ datum
 				else
 					if (O)
 						O.clean_blood()
+
 			reaction_turf(var/turf/T, var/volume)
 				T.overlays = null
 				T.clean_blood()
@@ -990,7 +990,6 @@ datum
 							C:gloves.clean_blood()
 						if(C:head)
 							C:head.clean_blood()
-
 
 		plantbgone
 			name = "Plant-B-Gone"
@@ -1026,7 +1025,6 @@ datum
 						//if(prob(10))
 							//M.make_dizzy(1) doesn't seem to do anything
 
-
 		plasma
 			name = "Plasma"
 			id = "plasma"
@@ -1041,6 +1039,7 @@ datum
 				M:toxloss++
 				..()
 				return
+
 			reaction_obj(var/obj/O, var/volume)
 				src = null
 				var/turf/the_turf = get_turf(O)
@@ -1049,6 +1048,7 @@ datum
 				fuel.moles = 5
 				napalm.trace_gases += fuel
 				the_turf.assume_air(napalm)
+
 			reaction_turf(var/turf/T, var/volume)
 				src = null
 				var/datum/gas_mixture/napalm = new

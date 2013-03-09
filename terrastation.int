@@ -1,12 +1,12 @@
 // BEGIN_INTERNALS
 /*
 MAP_ICON_TYPE: 0
-WINDOW: maps\blarg2.dmm;code\game\jobs\access.dm
-LAST_COMPILE_VERSION: 496.1145
+WINDOW: code\modules\food\food.dm;code\modules\food\recipes_microwave.dm;code\datums\recipe.dm;code\modules\chemical\Chemistry-Reagents.dm;icons\obj\food.dmi
+LAST_COMPILE_VERSION: 498.1163
 UPDATE_OBJ_TREE: ON
-DIR: code code\datums code\defines code\defines\area code\defines\mob\living\carbon code\defines\obj\closet code\game code\game\area code\game\gamemodes code\game\gamemodes\blob code\game\jobs code\game\objects code\game\trade code\modules\critters\spesscarp code\unused maps 
-FILE: maps\blarg2.dmm
-LAST_COMPILE_TIME: 1362781151
+DIR: code code\datums code\defines\mob\living\carbon code\modules code\modules\chemical code\modules\critters\spesscarp code\modules\food icons icons\obj maps 
+FILE: code\modules\food\food.dm
+LAST_COMPILE_TIME: 1362796696
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS
