@@ -1,0 +1,82 @@
+
+
+Starting up. 12:56.43
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Tauka Usanake has started the game.
+ACCESS: Logout: *no client*/(Tauka Usanake)
+ACCESS: Login: Tauka Usanake/(Tauka Usanake) from 127.0.0.1
+ADMIN: Tauka Usanake/(Tauka Usanake) modified Tauka Usanake's icon_state to human
+GAME: SQL ERROR during death reporting. Failed to connect.
+ACCESS: Logout: *no client*/(Tauka Usanake)
+ACCESS: Login: Tauka Usanake/(Tauka Usanake) from 127.0.0.1
+GAME: Tauka Usanake/Tauka Usanake used abandon mob.
+ACCESS: Logout: *no client*/(Tauka Usanake)
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: Tauka Usanake/(Tauka Usanake) from 127.0.0.1
+ADMIN: Tauka Usanake/(Tauka Usanake) made Tauka Usanake/(Tauka Usanake) drop everything!
+GAME: SQL ERROR during player polling. Failed to connect.
+ADMIN: Tauka Usanake/(Tauka Usanake) modified Tauka Usanake's face_icon_state to spike
+ADMIN: Tauka Usanake/(Tauka Usanake) modified Tauka Usanake's face_icon_state to spiky
+ADMIN: Tauka Usanake/(Tauka Usanake) modified Tauka Usanake's face_icon_state to Spike
+ADMIN: Tauka Usanake/(Tauka Usanake) modified Tauka Usanake's face_icon_state to spike
+GAME: SQL ERROR during admin polling. Failed to connect.
+ADMIN: Tauka Usanake/(Tauka Usanake) modified Tauka Usanake's face_icon_state to stark
+ADMIN: Tauka Usanake/(Tauka Usanake) modified Tauka Usanake's face_icon_state to shaved
+ACCESS: Logout: Tauka Usanake/(Tauka Usanake)
+
+
+Starting up. 13:19.57
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ACCESS: Logout: *no client*/(Guest-2094813359)
+ACCESS: Login: Guest-2094813359/(Allen Marshall) from 127.0.0.1
+SAY: Ian/ : Bark!
+GAME: SQL ERROR during death reporting. Failed to connect.
+GAME: Allen Marshall/Guest-2094813359 used abandon mob.
+ACCESS: Logout: *no client*/(Allen Marshall)
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: Guest-2094813359/(Holden Endsley) from 127.0.0.1
+GAME: SQL ERROR during death reporting. Failed to connect.
+GAME: Holden Endsley/Guest-2094813359 used abandon mob.
+ACCESS: Logout: *no client*/(Holden Endsley)
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: Guest-2094813359/(Michael Griffiths) from 127.0.0.1
+GAME: SQL ERROR during death reporting. Failed to connect.
+GAME: Michael Griffiths/Guest-2094813359 used abandon mob.
+ACCESS: Logout: *no client*/(Michael Griffiths)
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: Guest-2094813359/(Rickena Paynter) from 127.0.0.1
+ACCESS: Logout: Guest-2094813359/(Rickena Paynter)
+
+
+Starting up. 13:37.44
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ADMIN: Tauka Usanake has started the game.
+ACCESS: Logout: *no client*/(Tauka Usanake)
+ACCESS: Login: Tauka Usanake/(Tauka Usanake) from 127.0.0.1
+ADMIN: Tauka Usanake/(Tauka Usanake) made Tauka Usanake/(Tauka Usanake) drop everything!
+GAME: SQL ERROR during death reporting. Failed to connect.
+ACCESS: Logout: *no client*/(Tauka Usanake)
+ACCESS: Login: Tauka Usanake/(Tauka Usanake) from 127.0.0.1
+GAME: Tauka Usanake/Tauka Usanake used abandon mob.
+ACCESS: Logout: *no client*/(Tauka Usanake)
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: Tauka Usanake/(Tauka Usanake) from 127.0.0.1
+GAME: SQL ERROR during death reporting. Failed to connect.
+ADMIN: Tauka Usanake/(Tauka Usanake) healed / revived Tauka Usanake/(Tauka Usanake)
+ADMIN: Tauka Usanake/(Tauka Usanake) deleted External Airlock at (104,192,1)
+ACCESS: Logout: Tauka Usanake/(Tauka Usanake)

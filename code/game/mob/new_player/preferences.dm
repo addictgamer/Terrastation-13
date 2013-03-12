@@ -930,7 +930,7 @@ datum/preferences
 			if("Dreadlocks")
 				character.hair_icon_state = "hair_dreads"
 			if("Spike")
-				character.hair_icon_state = "hair_Spike"
+				character.hair_icon_state = "hair_spike"
 			if("Kitty")
 				character.hair_icon_state = "hair_kitty"
 			else

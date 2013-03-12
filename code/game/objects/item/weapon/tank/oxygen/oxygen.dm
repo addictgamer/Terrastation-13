@@ -1,0 +1,18 @@
+
+/obj/item/weapon/tank/oxygen
+	name = "Gas Tank (Oxygen)"
+	desc = "A tank of oxygen"
+	icon_state = "oxygen"
+	distribute_pressure = ONE_ATMOSPHERE*O2STANDARD
+
+	New()
+		..()
+		src.air_contents.oxygen = (6*ONE_ATMOSPHERE)*volume/(R_IDEAL_GAS_EQUATION*T20C)
+		return
+
+	examine()
+		set src in usr
+		..()
+		if(air_contents.oxygen < 10)
+			usr << text("\red <B>The meter on the tank indicates you are almost out of air!</B>")
+			playsound(usr, 'alert.ogg', 50, 1)

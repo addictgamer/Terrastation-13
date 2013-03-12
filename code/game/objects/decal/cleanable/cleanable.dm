@@ -1,5 +1,4 @@
 
-
 /obj/decal/cleanable
 	density = 0
 	var

@@ -7,7 +7,6 @@
 	icon_state = "right-closed"
 	density = 1
 	anchored = 1
-
 	var
 		open = 0  // It's closed!
 

@@ -1,0 +1,71 @@
+
+
+Starting up. 23:34.24
+---------------------
+
+
+ADMIN: Loading jobban_rank
+ADMIN: Updating jobbanfile!
+ADMIN: Loading Banlist
+ACCESS: Logout: *no client*/(Guest-2094813359)
+ACCESS: Login: Guest-2094813359/(observer) from 127.0.0.1
+GAME: Justice Bousum/Guest-2094813359 used abandon mob.
+ACCESS: Logout: *no client*/(Justice Bousum)
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: Guest-2094813359/(Lanny Barrett) from 127.0.0.1
+GAME: SQL ERROR during death reporting. Failed to connect.
+ACCESS: Logout: *no client*/(Lanny Barrett)
+ACCESS: Login: Guest-2094813359/(Lanny Barrett) from 127.0.0.1
+GAME: Lanny Barrett/Guest-2094813359 used abandon mob.
+ACCESS: Logout: *no client*/(Lanny Barrett)
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: Guest-2094813359/(Gary Greenwood) from 127.0.0.1
+GAME: SQL ERROR during death reporting. Failed to connect.
+ACCESS: Logout: Guest-2094813359/(Gary Greenwood)
+ACCESS: Logout: *no client*/(Tauka Usanake)
+ACCESS: Login: Tauka Usanake/(Tauka Usanake) from 127.0.0.1
+ACCESS: Notice: Tauka Usanake/(Tauka Usanake) has same IP address as Guest-2094813359/(Gary Greenwood) did (Guest-2094813359/(Gary Greenwood) is no longer logged in).
+ACCESS: Notice: Tauka Usanake/(Tauka Usanake) has same computer ID as Guest-2094813359/(Gary Greenwood) did (Guest-2094813359/(Gary Greenwood) is no longer logged in).
+ACCESS: Logout: *no client*/(Tauka Usanake)
+ACCESS: Login: Tauka Usanake/(Cyborg) from 127.0.0.1
+ACCESS: Notice: Tauka Usanake/(Cyborg) has same IP address as Guest-2094813359/(Gary Greenwood) did (Guest-2094813359/(Gary Greenwood) is no longer logged in).
+ACCESS: Notice: Tauka Usanake/(Cyborg) has same computer ID as Guest-2094813359/(Gary Greenwood) did (Guest-2094813359/(Gary Greenwood) is no longer logged in).
+ACCESS: Logout: *no client*/(Cyborg -703)
+ACCESS: Login: Tauka Usanake/(Tauka Usanake) from 127.0.0.1
+ACCESS: Notice: Tauka Usanake/(Tauka Usanake) has same IP address as Guest-2094813359/(Gary Greenwood) did (Guest-2094813359/(Gary Greenwood) is no longer logged in).
+ACCESS: Notice: Tauka Usanake/(Tauka Usanake) has same computer ID as Guest-2094813359/(Gary Greenwood) did (Guest-2094813359/(Gary Greenwood) is no longer logged in).
+ADMIN: Tauka Usanake/(Tauka Usanake) created an explosion (1,10,10,-1) at (105,196,1)
+GAME: Explosion with size (1, 10, 10) in area Arrival Shuttle 
+ACCESS: Logout: *no client*/(Tauka Usanake)
+ACCESS: Login: Tauka Usanake/(Tauka Usanake) from 127.0.0.1
+ACCESS: Notice: Tauka Usanake/(Tauka Usanake) has same IP address as Guest-2094813359/(Gary Greenwood) did (Guest-2094813359/(Gary Greenwood) is no longer logged in).
+ACCESS: Notice: Tauka Usanake/(Tauka Usanake) has same computer ID as Guest-2094813359/(Gary Greenwood) did (Guest-2094813359/(Gary Greenwood) is no longer logged in).
+GAME: Tauka Usanake/Tauka Usanake used abandon mob.
+ACCESS: Logout: *no client*/(Tauka Usanake)
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: Tauka Usanake/(Tauka Usanake) from 127.0.0.1
+ADMIN: Tauka Usanake/(Slippy Joe) has metroidized Tauka Usanake.
+ACCESS: Logout: *no client*/(Slippy Joe)
+ACCESS: Login: Tauka Usanake/(baby metroid (747)) from 127.0.0.1
+ACCESS: Logout: *no client*/(baby metroid (747))
+ACCESS: Login: Tauka Usanake/(baby metroid (747)) from 127.0.0.1
+GAME: baby metroid (747)/Tauka Usanake used abandon mob.
+ACCESS: Logout: *no client*/(baby metroid (747))
+GAME: SQL ERROR during player polling. Failed to connect.
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: Tauka Usanake/(Tauka Usanake) from 127.0.0.1
+ACCESS: Logout: *no client*/(Tauka Usanake)
+ACCESS: Login: Tauka Usanake/(Speedy) from 127.0.0.1
+ACCESS: Logout: *no client*/(Speedy)
+ACCESS: Login: Tauka Usanake/(Speedy) from 127.0.0.1
+GAME: Speedy/Tauka Usanake used abandon mob.
+ACCESS: Logout: *no client*/(Speedy)
+ACCESS: Logout: *no client*/(new player)
+ACCESS: Login: Tauka Usanake/(Tauka Usanake) from 127.0.0.1
+GAME: SQL ERROR during admin polling. Failed to connect.
+ADMIN: Tauka Usanake/(Tauka Usanake) has alienized Tauka Usanake.
+ACCESS: Logout: *no client*/(Tauka Usanake)
+ACCESS: Login: Tauka Usanake/(alien hunter (431)) from 127.0.0.1
+ACCESS: Logout: *no client*/(alien hunter (431))
+ACCESS: Login: Tauka Usanake/(alien hunter (431)) from 127.0.0.1
+ACCESS: Logout: Tauka Usanake/(alien hunter (431))

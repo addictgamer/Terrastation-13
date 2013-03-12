@@ -2,9 +2,8 @@
 /*
 MAP_ICON_TYPE: 0
 LAST_COMPILE_VERSION: 498.1163
-UPDATE_OBJ_TREE: ON
-DIR: code code\game code\game\magic\cultist code\WorkInProgress maps 
-LAST_COMPILE_TIME: 1361845357
+DIR: code code\datums\construction code\datums\diseases code\datums\effects code\datums\helper_datums code\datums\spells code\defines code\game code\game\magic\cultist code\game\mob code\game\mob\living code\game\mob\living\carbon code\game\mob\living\carbon\human code\WorkInProgress 
+LAST_COMPILE_TIME: 1363042573
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS

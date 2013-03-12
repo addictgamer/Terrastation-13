@@ -53,13 +53,6 @@
 		src << "\blue Your icons have been generated!"
 	..()
 
-/mob/living/carbon/metroid/proc/mind_initialize(mob/G)
-	mind = new
-	mind.current = src
-	mind.assigned_role = "Metroid"
-	//mind.special_role = alien_caste
-	mind.key = G.key
-
 /mob/living/carbon/metroid/movement_delay()
 	var/tally = 0
 
@@ -820,3 +813,15 @@ mob/living/carbon/metroid/var/temperature_resistance = T0C+75
 		return 0
 
 	return 1
+
+/mob/living/carbon/metroid/proc/regular_hud_updates()
+	if(client)
+		for(var/hud in client.screen)
+			del(hud)
+
+/mob/living/carbon/metroid/proc/mind_initialize(mob/G)
+	mind = new
+	mind.current = src
+	mind.assigned_role = "Metroid"
+	//mind.special_role = alien_caste
+	mind.key = G.key

@@ -5,18 +5,18 @@
 	icon_state = "x"
 	unacidable = 1//Just to be sure.
 
-/obj/manifest/New()
+	New()
+		src.invisibility = 101
+		return
 
-	src.invisibility = 101
-	return
-
-/obj/manifest/proc/manifest()
-	var/dat = "<B>Crew Manifest</B>:<BR>"
-	for(var/mob/living/carbon/human/M in world)
-		dat += text("    <B>[]</B> -  []<BR>", M.name, M.get_assignment())
-	var/obj/item/paper/P = new /obj/item/paper( src.loc )
-	P.info = dat
-	P.name = "paper- 'Crew Manifest'"
-	//SN src = null
-	del(src)
-	return
+	proc
+		manifest()
+			var/dat = "<B>Crew Manifest</B>:<BR>"
+			for(var/mob/living/carbon/human/M in world)
+				dat += text("    <B>[]</B> -  []<BR>", M.name, M.get_assignment())
+			var/obj/item/paper/P = new /obj/item/paper( src.loc )
+			P.info = dat
+			P.name = "paper- 'Crew Manifest'"
+			//SN src = null
+			del(src)
+			return

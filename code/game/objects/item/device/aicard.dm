@@ -1,3 +1,4 @@
+
 /obj/item/device/aicard
 	name = "inteliCard"
 	icon = 'pda.dmi'

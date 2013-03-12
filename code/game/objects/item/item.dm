@@ -68,6 +68,11 @@
 // ***TODO: implement unequipped()
 //
 
+/obj/item/proc/updateSelfDialog()
+	var/mob/M = src.loc
+	if(istype(M) && M.client && M.machine == src)
+		src.attack_self(M)
+
 /obj/item/proc/afterattack()
 
 	return

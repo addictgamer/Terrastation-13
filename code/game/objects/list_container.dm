@@ -4,6 +4,6 @@
 
 /obj/list_container/mobl
 	name = "mobl"
-	var/master = null
-
-	var/list/container = list(  )
+	var
+		master = null
+		list/container = list(  )
