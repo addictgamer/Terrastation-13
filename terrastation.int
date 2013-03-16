@@ -1,12 +1,11 @@
 // BEGIN_INTERNALS
 /*
 MAP_ICON_TYPE: 0
-WINDOW: code\modules\food\food.dm;code\modules\food\recipes_microwave.dm;code\datums\recipe.dm;code\modules\chemical\Chemistry-Reagents.dm;icons\obj\food.dmi
-LAST_COMPILE_VERSION: 498.1163
-UPDATE_OBJ_TREE: ON
-DIR: code code\datums code\defines\mob\living\carbon code\modules code\modules\chemical code\modules\critters\spesscarp code\modules\food icons icons\obj maps 
-FILE: code\modules\food\food.dm
-LAST_COMPILE_TIME: 1362796696
+WINDOW: code\game\gamemodes\traitor\traitor.dm
+LAST_COMPILE_VERSION: 498.1158
+DIR: code code\datums code\defines\mob\living\carbon code\game code\game\gamemodes code\game\gamemodes\traitor code\modules code\modules\chemical code\modules\critters\spesscarp code\modules\food icons icons\obj maps 
+FILE: code\game\gamemodes\traitor\traitor.dm
+LAST_COMPILE_TIME: 1363411789
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS

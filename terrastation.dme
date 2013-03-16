@@ -26,6 +26,7 @@
 #define FILE_DIR "sound"
 #define FILE_DIR "sound/ambience"
 #define FILE_DIR "sound/announcer"
+#define FILE_DIR "sound/BOARDS"
 #define FILE_DIR "sound/bots"
 #define FILE_DIR "sound/effects"
 #define FILE_DIR "sound/items"
