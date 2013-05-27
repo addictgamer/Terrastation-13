@@ -1453,6 +1453,15 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	set category = "OOC"
 	src << browse(rules, "window=rules;size=480x320")
 
+/mob/verb/stop_pulling()
+
+	set name = "Stop Pulling"
+	set category = "IC"
+
+	if(pulling)
+		//pulling.pulledby = null
+		pulling = null
+
 /mob/verb/changes()
 	set name = "Changelog"
 	set category = "OOC"
@@ -1473,6 +1482,14 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 		usr << "\blue Now you hear all speech in the world"
 	else
 		usr << "\blue Now you hear speech only from nearest creatures."
+
+/client/verb/delete_key_pressed()
+	set hidden = 1
+
+	if(!usr.pulling)
+		usr << "\blue You are not pulling anything."
+		return
+	usr.stop_pulling()
 
 /mob/verb/observe()
 	set name = "Observe"
