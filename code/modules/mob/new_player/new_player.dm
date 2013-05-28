@@ -40,7 +40,7 @@ mob/new_player
 			if (!client.changes)
 				changes()
 		else
-			var/lastchangelog = length('changelog.html')
+			var/lastchangelog = length('html/changelog.html')
 			if (!client.changes && preferences.lastchangelog!=lastchangelog)
 				changes()
 				preferences.lastchangelog = lastchangelog

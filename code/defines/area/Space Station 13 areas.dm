@@ -938,68 +938,81 @@ proc/process_ghost_teleport_locs()
 	sec_status = access_medical
 
 /area/medical/patients_rooms
-//TODO: CONTINUE THE MUSICS.
-//	music = "music/areas/"
+	music = "music/areas/medica-lpatients_roomms.wav"
 	name = "Patients Rooms"
 	icon_state = "patients"
 	sec_status = access_medical
 
 /area/medical/cmo
+	music = "music/areas/medical-cmo.wav"
 	name = "Chief Medical Officer's office"
 	icon_state = "CMO"
 	sec_status = access_cmo
 
 /area/medical/robotics
+	music = "music/areas/medical-robotics.wav"
 	name = "Robotics"
 	icon_state = "medresearch"
 	sec_status = access_robotics
 /area/medical/research
+	music = "music/areas/medical-research.wav"
 	name = "Medical Research"
 	icon_state = "medresearch"
 /area/medical/virology
+	music = "music/areas/medical-virology.wav"
 	name = "Virology"
 	icon_state = "virology"
 
 /area/medical/morgue
+	music = "music/areas/medical-morgue.wav"
 	name = "Morgue"
 	icon_state = "morgue"
 	sec_status = access_morgue
 
 /area/medical/chemistry
+	music = "music/areas/medical-chemistry.wav"
 	name = "Chemistry"
 	icon_state = "chem"
 
 /area/medical/surgery
+	music = "music/areas/medical-surgery.wav"
 	name = "Surgery"
 	icon_state = "surgery"
 
 /area/medical/surgery/loyalty
+	music = "music/areas/medical-loyalty.wav"
 	name = "Implant Surgery"
 	icon_state = "surgery"
 
 /area/medical/cryo
+	music = "music/areas/medical-cyro.wav"
 	name = "Cryo"
 	icon_state = "cryo"
 
 /area/medical/exam_room
+	music = "music/areas/medical-exam_room.wav"
 	name = "Exam Room"
 	icon_state = "exam_room"
 	sec_status = access_medical
 
 /area/medical/genetics
+	music = "music/areas/medical-genetics.wav"
 	name = "Genetics"
 	icon_state = "genetics"
 
 /area/medical/storage
+	music = "music/areas/medical-storage.wav"
 	name = "Medical storage"
 	icon_state = "chem"
 	sec_status = access_medical
 
 /area/medical/waiting
+	music = "music/areas/medical-waiting.wav"
 	name = "Waiting area"
 	icon_state = "exam_room"
 
 /area/medical/office
+	music = "music/areas/medical-office.wav"
 	name = "Medical office"
 	icon_state = "CMO"
 	sec_status = access_medical
@@ -1007,35 +1020,43 @@ proc/process_ghost_teleport_locs()
 //Security
 
 /area/security
+	music = "music/areas/security.wav"
 	sec_status = access_security
 
 /area/security/main
+	music = "music/areas/security-main.wav"
 	name = "Security"
 	icon_state = "security"
 
 /area/security/brig
+	music = "music/areas/security-brig.wav"
 	name = "Brig"
 	icon_state = "brig"
 
 
 /area/security/secstorage
+	music = "music/areas/security-secstorage.wav"
 	name = "Security storage"
 	icon_state = "Warden"
 
 /area/security/warden
+	music = "music/areas/security-warden.wav"
 	name = "Warden"
 	icon_state = "Warden"
 
 /area/security/hos
+	music = "music/areas/securty-hos.wav"
 	name = "Head of Security"
 	icon_state = "security"
 
 /area/security/detectives_office
+	music = "music/areas/security-detectives_office.wav"
 	name = "Detectives Office"
 	icon_state = "detective"
 	sec_status = access_forensics_lockers
 
 /area/security/brig2
+	music = "music/areas/security-brig2.wav"
 	name = "Secondary brig"
 	icon_state = "brig"
 
@@ -1057,22 +1078,27 @@ proc/process_ghost_teleport_locs()
 */
 
 /area/security/nuke_storage
+	music = "music/areas/security-nuke_storage.wav"
 	name = "Vault"
 	icon_state = "nuke_storage"
 
 /area/security/checkpoint
+	music = "music/areas/security-checkpoint.wav"
 	name = "Security Checkpoint"
 	icon_state = "checkpoint1"
 
 /area/security/checkpoint2
+	music = "music/areas/security-checkpoint2.wav"
 	name = "Security Checkpoint"
 	icon_state = "security"
 
 /area/security/vacantoffice
+	music = "music/areas/security-vacantoffice.wav"
 	name = "Vacant Office"
 	icon_state = "security"
 
 /area/quartermaster
+	music = "music/areas/quartermaster.wav"
 	name = "Quartermasters"
 	icon_state = "quart"
 	sec_status = access_cargo
@@ -1080,70 +1106,86 @@ proc/process_ghost_teleport_locs()
 ///////////WORK IN PROGRESS//////////
 
 /area/quartermaster/sorting
+	music = "music/areas/quartermaster-sorting.wav"
 	name = "Delivery Office"
 	icon_state = "quartstorage"
 
 ////////////WORK IN PROGRESS//////////
 
 /area/quartermaster/office
+	music = "music/areas/quartermaster-office.wav"
 	name = "Cargo Office"
 	icon_state = "quartoffice"
 
 /area/quartermaster/storage
+	music = "music/areas/quartermaster-storage.wav"
 	name = "Cargo Bay"
 	icon_state = "quartstorage"
 
 /area/quartermaster/qm
+	music = "music/areas/quartermaster-qm.wav"
 	name = "Quartermaster's Office"
 	icon_state = "quart"
 
 /area/quartermaster/miningdock
+	music = "music/areas/quartermaster-miningdock.wav"
 	name = "Mining Dock"
 	icon_state = "mining"
 
 /area/quartermaster/miningstorage
+	music = "music/areas/quartermaster-miningstorage.wav"
 	name = "Mining Storage"
 	icon_state = "green"
 
 /area/quartermaster/mechbay
+	music = "music/areas/quartermaster-mechbay.wav"
 	name = "Mech Bay"
 	icon_state = "yellow"
 
 /area/janitor/
+	music = "music/areas/janitor.wav"
 	name = "Janitors Closet"
 	icon_state = "janitor"
 	sec_status = access_janitor
 /area/hydroponics
+	music = "music/areas/hydroponics.wav"
 	name = "Hydroponics"
 	icon_state = "hydro"
 /area/hydroponics/storage
+	music = "music/areas/hydroponics-storage.wav"
 	name = "Hydroponics - Storage"
 	icon_state = "hydro"
 
 //Toxins
 
 /area/toxins/lab
+	music = "music/areas/toxins-lab.wav"
 	name = "Toxin Lab"
 	icon_state = "toxlab"
 	sec_status = access_tox
 
 /area/toxins/xenobiology
+	music = "music/areas/toxins-xenobiology.wav"
 	name = "Xenobiology Lab"
 	icon_state = "toxlab"
 
 /area/toxins/storage
+	music = "music/areas/toxins-storage.wav"
 	name = "Toxin Storage"
 	icon_state = "toxstorage"
 	sec_status = access_tox_storage
 /area/toxins/test_area
+	music = "music/areas/toxins-test_area.wav"
 	name = "Toxin Test Area"
 	icon_state = "toxtest"
 
 /area/toxins/mixing
+	music = "music/areas/toxins-mixing.wav"
 	name = "Toxin Mixing Room"
 	icon_state = "toxmix"
 
 /area/toxins/server
+	music = "music/areas/toxins-server.wav"
 	name = "Server Room"
 	icon_state = "server"
 	sec_status = access_rd
@@ -1151,44 +1193,54 @@ proc/process_ghost_teleport_locs()
 //Storage
 
 /area/storage/tools
+	music = "music/areas/storage-tools.wav"
 	name = "Tool Storage"
 	icon_state = "storage"
 	sec_status = access_maint_tunnels
 /area/storage/primary
+	music = "music/areas/storage-primary.wav"
 	name = "Primary Tool Storage"
 	icon_state = "primarystorage"
 	sec_status = access_maint_tunnels
 /area/storage/autolathe
+	music = "music/areas/storage-autolathe.wav"
 	name = "Autolathe Storage"
 	icon_state = "storage"
 
 /area/storage/auxillary
+	music = "music/areas/storage-auxillary.wav"
 	name = "Auxillary Storage"
 	icon_state = "auxstorage"
 
 /area/storage/eva
+	music = "music/areas/storage-eva.wav"
 	name = "EVA Storage"
 	icon_state = "eva"
 	sec_status = access_eva
 
 /area/storage/secure
+	music = "music/areas/storage-secure.wav"
 	name = "Secure Storage"
 	icon_state = "storage"
 
 /area/storage/emergency
+	music = "music/areas/storage-emergency.wav"
 	name = "Emergency Storage A"
 	icon_state = "emergencystorage"
 
 /area/storage/emergency2
+	music = "music/areas/storage-emergency2.wav"
 	name = "Emergency Storage B"
 	icon_state = "emergencystorage"
 
 /area/storage/tech
+	music = "music/areas/storage-tech.wav"
 	name = "Technical Storage"
 	icon_state = "auxstorage"
 	sec_status = access_tech_storage
 
 /area/storage/testroom
+	music = "music/areas/storage-testroom.wav"
 	requires_power = 0
 	name = "Test Room"
 	icon_state = "storage"
@@ -1196,229 +1248,286 @@ proc/process_ghost_teleport_locs()
 //DJSTATION
 
 /area/djstation
+	music = "music/areas/djstation.wav"
 	name = "Ruskie DJ Station"
 	icon_state = "DJ"
 
 /area/djstation/solars
+	music = "music/areas/djstation-solars.wav"
 	name = "DJ Station Solars"
 	icon_state = "DJ"
 
 //DERELICT
 
 /area/derelict
+	music = "music/areas/derelict.wav"
 	name = "Derelict Station"
 	icon_state = "storage"
 
 /area/derelict/terralabs
+	music = "music/areas/derelict-terralabs.wav"
 	name = "Terralabs"
 	icon_state = "yellow"
 
 /area/derelict/terralabs/main
+	music = "music/areas/derelict-terralabs-main.wav"
 	name = "Terralabs Main"
 	icon_state = "hallP"
 
 /area/derelict/terralabs/storage
+	music = "music/areas/derelict-terralabs-storage.wav"
 	name = "Terralabs Storage"
 	icon_state = "storage"
 
 /area/derelict/terralabs/power
+	music = "music/areas/derelict-terralabs-power.wav"
 	name = "Terralabs Power"
 	icon_state = "green"
 
 /area/derelict/terralabs/hall
+	music = "music/areas/derelict-terralabs-hall.wav"
 	name = "Terralabs Hall"
 	icon_state = "hallS"
 
 /area/derelict/hallway/primary
+	music = "music/areas/derelict-hallway-primary.wav"
 	name = "Derelict Primary Hallway"
 	icon_state = "hallP"
 
 /area/derelict/hallway/secondary
+	music = "music/areas/derelict-hallway-secondary.wav"
 	name = "Derelict Secondary Hallway"
 	icon_state = "hallS"
 
 /area/derelict/arrival
+	music = "music/areas/derelict-arrival.wav"
 	name = "Arrival Centre"
 	icon_state = "yellow"
 
 /area/derelict/storage/equipment
+	music = "music/areas/derelict-storage-equipment.wav"
 	name = "Derelict Equipment Storage"
 
 /area/derelict/storage/storage_access
+	music = "music/areas/derelict-storage-storage_access.wav"
 	name = "Derelict Storage Access"
 
 /area/derelict/storage/engine_storage
+	music = "music/areas/derelct-storage-engine_storage.wav"
 	name = "Derelict Engine Storage"
 	icon_state = "green"
 
 /area/derelict/bridge
+	music = "music/areas/derelict-bridge.wav"
 	name = "Control Room"
 	icon_state = "bridge"
 
 /area/derelict/secret
+	music = "music/areas/derelict-secret.wav"
 	name = "Secret Room"
 	icon_state = "library"
 
 /area/derelict/bridge/access
+	music = "music/areas/derelict-bridge-access.wav"
 	name = "Control Room Access"
 	icon_state = "auxstorage"
 
 /area/derelict/bridge/ai_upload
+	music = "music/areas/derelict-bridge-ai_upload.wav"
 	name = "Ruined Computer Core"
 	icon_state = "ai"
 
 /area/derelict/solar_control
+	music = "music/areas/derelict-solar_control.wav"
 	name = "Solar Control"
 	icon_state = "engine"
 
 /area/derelict/crew_quarters
+	music = "music/areas/derelict-crew_quarters.wav"
 	name = "Derelict Crew Quarters"
 	icon_state = "fitness"
 
 /area/derelict/medical
+	music = "music/areas/derelict-medical.wav"
 	name = "Derelict Medbay"
 	icon_state = "medbay"
 
 /area/derelict/medical/morgue
+	music = "music/areas/derelict-medcal-morgue.wav"
 	name = "Derelict Morgue"
 	icon_state = "morgue"
 
 /area/derelict/medical/chapel
+	music = "music/areas/derelict-medical-chapel.wav"
 	name = "Derelict Chapel"
 	icon_state = "chapel"
 
 /area/derelict/teleporter
+	music = "music/areas/derelict-teleporter.wav"
 	name = "Derelict Teleporter"
 	icon_state = "teleporter"
 
 /area/derelict/eva
+	music = "music/areas/derelict-eva.wav"
 	name = "Derelict EVA Storage"
 	icon_state = "eva"
 
 /area/derelict/ship
+	music = "music/areas/derelict-ship.wav"
 	name = "Abandoned ship"
 	icon_state = "yellow"
 
 /area/solar/derelict_starboard
+	music = "music/areas/solar-derelict_starboard.wav"
 	name = "Derelict Starboard Solar Array"
 	icon_state = "panelsS"
 
 /area/solar/derelict_aft
+	music = "music/areas/solar-derelict_aft.wav"
 	name = "Derelict Aft Solar Array"
 	icon_state = "aft"
 
 /area/derelict/singularity_engine
+	music = "music/areas/derelict-singularity_engine.wav"
 	name = "Derelict Singularity Engine"
 	icon_state = "engine"
 
 //Construction
 
 /area/construction
+	music = "music/areas/construction.wav"
 	name = "Construction Area"
 	icon_state = "yellow"
 
 /area/construction/supplyshuttle
+	music = "music/areas/construction-supplyshuttle.wav"
 	name = "Supply Shuttle"
 	icon_state = "yellow"
 
 /area/construction/quarters
+	music = "music/areas/construction-quarters.wav"
 	name = "Engineer's Quarters"
 	icon_state = "yellow"
 
 /area/construction/qmaint
+	music = "music/areas/construction-qmaint.wav"
 	name = "Maintenance"
 	icon_state = "yellow"
 
 /area/construction/hallway
+	music = "music/areas/construction-hallway.wav"
 	name = "Hallway"
 	icon_state = "yellow"
 
 /area/construction/solars
+	music = "music/areas/construction-solars.wav"
 	name = "Solar Panels"
 	icon_state = "yellow"
 
 /area/construction/solarscontrol
+	music = "music/areas/construction-solarscontrol.wav"
 	name = "Solar Panel Control"
 	icon_state = "yellow"
 
 /area/construction/Storage
+	music = "music/areas/construction-storage.wav"
 	name = "Construction Site Storage"
 	icon_state = "yellow"
 
 //AI
 
 /area/ai_monitored/storage/eva
+	music = "music/areas/ai_monitored-storage-eva.wav"
 	name = "EVA Storage"
 	icon_state = "eva"
 	sec_status = access_eva
 
 /area/ai_monitored/storage/secure
+	music = "music/areas/ai_monitored-storage-secure.wav"
 	name = "Secure Storage"
 	icon_state = "storage"
 
 /area/ai_monitored/storage/emergency
+	music = "music/areas/ai_monitored-storage-emergency.wav"
 	name = "Emergency Storage"
 	icon_state = "storage"
 
 /area/turret_protected/ai_upload
+	music = "music/areas/turret_protected-ai_upload.wav"
 	name = "AI Upload Chamber"
 	icon_state = "ai_upload"
 	sec_status = access_ai_upload
 
 /area/turret_protected/ai_upload_foyer
+	music = "music/areas/turret_protected-ai_upload_foyer.wav"
 	name = "AI Upload Foyer"
 	icon_state = "ai_foyer"
 	sec_status = access_ai_upload
 
 /area/turret_protected/ai
+	music = "music/areas/turret_protected-ai.wav"
 	name = "AI Chamber"
 	icon_state = "ai_chamber"
 	sec_status = access_ai_upload
 /area/turret_protected/aisat
+	music = "music/areas/turret_protected-aisat.wav"
 	name = "AI Satellite"
 	icon_state = "ai"
 	sec_status = access_ai_upload
 /area/turret_protected/aisat_interior
+	music = "music/areas/turret_protected-aisat_interior.wav"
 	name = "AI Satellite"
 	icon_state = "ai"
 	sec_status = access_ai_upload
 /area/turret_protected/AIsatextFP
+	music = "music/areas/turret_protected-aisatextfp.wav"
 	name = "AI Sat Ext"
 	icon_state = "storage"
 	luminosity = 1
 	sd_lighting = 0
 
 /area/turret_protected/AIsatextFS
+	music = "music/areas/turret_protected-aisatextfs.wav"
 	name = "AI Sat Ext"
 	icon_state = "storage"
 	luminosity = 1
 	sd_lighting = 0
 
 /area/turret_protected/AIsatextAS
+	music = "music/areas/turret_protected-aisatextas.wav"
 	name = "AI Sat Ext"
 	icon_state = "storage"
 	luminosity = 1
 	sd_lighting = 0
 
 /area/turret_protected/AIsatextAP
+	music = "music/areas/turret_protected-aisatextap.wav"
 	name = "AI Sat Ext"
 	icon_state = "storage"
 	luminosity = 1
 	sd_lighting = 0
 
 /area/turret_protected/NewAIMain
+	music = "music/areas/turret_protected-newaimain.wav"
 	name = "AI Main New"
 	icon_state = "storage"
 
 
 /area/syndicate_mothership/elite_squad
+	music = "music/areas/syndicate_mothership-elite_squad.wav"
 /area/syndicate_mothership/control/
+	music = "music/areas/sundicate_mothership=control.wav"
 /area/syndicate_mothership
+	music = "music/areas/syndicate_mothership.wav"
 /area/shuttle/syndicate_elite/mothership
+	music = "music/areas/shuttle-syndicate_elite-mothership.wav"
 /area/shuttle/syndicate_elite/station
+	music = "music/areas/shuttle-syndicate_elite-station.wav"
 
 /area/shuttle/alien/mine
+	music = "music/areas/shuttle-alien-mine.wav"
 /area/shuttle/alien/base
+	music = "music/areas/shuttle-alien-base.wav"
 /////////////////////////////////////////////////////////////////////
 /*
  Lists of areas to be used with is_type_in_list.
@@ -1476,7 +1585,8 @@ var/list/the_station_areas = list (
 
 
 /area/beach
-	name = "Keelin's private beach"
+	music = "music/areas/beach.wav"
+	name = "Gaylord's private beach"
 	icon_state = "null"
 	luminosity = 1
 	sd_lighting = 0

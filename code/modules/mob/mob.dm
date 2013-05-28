@@ -1469,7 +1469,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 		src << browse_rsc('postcardsmall.jpg')
 		src << browse_rsc('somerights20.png')
 		src << browse_rsc('88x31.png')
-		src << browse('changelog.html', "window=changes;size=675x650")
+		src << browse('html/changelog.html', "window=changes;size=675x650")
 		client.changes = 1
 
 /client/var/ghost_ears = 1
