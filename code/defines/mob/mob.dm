@@ -236,3 +236,5 @@ the mob is also allowed to move without any sort of restriction. For instance, i
 	var/datum/npc_variables/npc_data = null
 
 	proc/process()
+
+	var/effect = null //Used for the gaylord's glowy thingy.

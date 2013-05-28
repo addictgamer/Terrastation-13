@@ -89,6 +89,8 @@
 	if(npc)
 		npc_process()
 
+	//if(gaylord)
+
 	..() //for organs
 
 

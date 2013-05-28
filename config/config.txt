@@ -22,6 +22,9 @@ LOG_WHISPER
 ## sql switching
 # SQL_ENABLED
 
+## I think the delay between each processing tick...
+TICK_LAG 0.5
+
 ## disconnect players who did nothing during 10 minutes
 # KICK_INACTIVE
 
@@ -89,7 +92,7 @@ GUEST_JOBBAN 1
 # USEWHITELIST
 
 ## set a server location for world reboot. Don't include the byond://, just give the address and port.
-# SERVER ss13.example.com:2506
+ SERVER doc.asdfxyz.de:9998
 
 ## Ban appeals URL - usually for a forum or wherever people should go to contact your admins.
 # BANAPPEALS http://justanotherday.example.com
@@ -97,3 +100,5 @@ GUEST_JOBBAN 1
 ## In-game features
 ## spawns a spellbook which gives object-type spells instead of verb-type spells for the wizard
 # FEATURE_OBJECT_SPELL_SYSTEM
+
+

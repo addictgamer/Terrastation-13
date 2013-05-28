@@ -1,12 +1,11 @@
 // BEGIN_INTERNALS
 /*
 MAP_ICON_TYPE: 0
-WINDOW: code\modules\research\designs.dm;code\modules\research\destructive_analyzer.dm;code\modules\research\protolathe.dm;code\datums\npc.dm;code\modules\mob\mob.dm;code\game\gamemodes\meteor\meteors.dm;code\game\gamemodes\meteor\meteor.dm;code\modules\admin\create_mob.dm;code\modules\admin\create_object.dm;code\modules\admin\create_turf.dm;code\modules\mob\new_player\new_player.dm
+WINDOW: code\datums\npc.dm;code\modules\mob\mob.dm;code\game\gamemodes\meteor\meteors.dm;code\game\gamemodes\meteor\meteor.dm;code\modules\mob\living\carbon\human\human.dm;code\modules\mob\login.dm;code\defines\mob\mob.dm;code\modules\mob\new_player\new_player.dm
 LAST_COMPILE_VERSION: 498.1158
-UPDATE_OBJ_TREE: ON
-DIR: code code\datums code\defines code\defines\area code\defines\mob code\defines\mob\living code\defines\mob\living\carbon code\game code\game\asteroid code\game\gamemodes code\game\gamemodes\meteor code\modules code\modules\admin code\modules\critters\spesscarp code\modules\mob code\modules\mob\new_player code\modules\research maps 
+DIR: code code\datums code\defines code\defines\area code\defines\mob code\defines\mob\living code\defines\mob\living\carbon code\defines\obj code\defines\procs code\game code\game\asteroid code\game\gamemodes code\game\gamemodes\events code\game\gamemodes\meteor code\modules code\modules\mob code\modules\mob\living code\modules\mob\living\carbon code\modules\mob\living\carbon\human code\modules\mob\new_player 
 FILE: code\modules\mob\new_player\new_player.dm
-LAST_COMPILE_TIME: 1369683036
+LAST_COMPILE_TIME: 1369755828
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS

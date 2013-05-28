@@ -38,6 +38,8 @@
 	var/usewhitelist = 0
 	var/kick_inactive = 0				//force disconnect for inactive players
 
+	var/tick_lag = 0.9
+
 	var/server
 	var/banappeals
 
@@ -166,6 +168,9 @@
 
 			if ("medalpass")
 				config.medal_password = value
+
+			if ("tick_lag")
+				config.tick_lag = value
 
 			if ("hostedby")
 				config.hostedby = value

@@ -28,7 +28,7 @@
 	if(!src.dna) src.dna = new /datum/dna(null)
 	//src.client.screen -= main_hud1.contents
 	world.update_status()
-	if(chickenz)
+	if (chickenz)
 		src << "http://www.youtube.com/watch?v=wYUhGRynyJw <- That's what's happening to the station right now."
 		src << sound('chickenz.mid', 1)
 

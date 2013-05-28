@@ -19,7 +19,9 @@ datum/controller/game_controller
 			air_master = new /datum/controller/air_system()
 			air_master.setup()
 
-		world.tick_lag = 0.9
+		//world.tick_lag = 0.9 //Seems like changing this makes the game smoother -- but also puts more strain on the server.
+		world << "\red Tick lag is [config.tick_lag]"
+		world.tick_lag = config.tick_lag
 
 		setup_objects()
 

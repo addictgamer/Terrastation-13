@@ -17,7 +17,7 @@
 	no_auth_motd = file2text("config/motd-noauth.txt")
 
 /world/proc/load_rules()
-	rules = file2text("config/rules.html")
+	rules = file2text("html/rules.html")
 	if (!rules)
 		rules = "<html><head><title>Rules</title><body>There are no rules! Go nuts!</body></html>"
 

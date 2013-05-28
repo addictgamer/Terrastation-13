@@ -21,6 +21,8 @@
 	var/age = 30.0
 	var/b_type = "A+"
 
+	var/gaylord = 0 //False by default. Don't set it to true, that's just gay.
+
 	var/obj/item/clothing/suit/wear_suit = null
 	var/obj/item/clothing/under/w_uniform = null
 //	var/obj/item/device/radio/w_radio = null

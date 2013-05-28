@@ -93,6 +93,16 @@ When I already created about 4 new objectives, this doesn't seem terribly import
 /var/global/toggle_space_ninja = 1//If ninjas can spawn or not.
 /var/global/sent_ninja_to_station = 0//If a ninja is already on the station.
 
+/client/proc/spawn_random_spaceninja()
+	set category = "Fun"
+	set name = "Trigger Spaceninja event"
+	set desc = "Force triggers the random event that sends in a randomized space ninja. Yeehaw! Needs a dead person, keep that in mind."
+	if (!holder)
+		alert("You are not an admin")
+		return
+	space_ninja_arrival()
+
+
 /proc/space_ninja_arrival()
 
 	var/datum/game_mode/current_mode = ticker.mode
@@ -108,10 +118,10 @@ When I already created about 4 new objectives, this doesn't seem terribly import
 	var/xeno_list[] = list()//Aliens.
 	var/commando_list[] = list()//Commandos.
 
-	//We want the ninja to appear only in certain modes.
-	var/acceptable_modes_list[] = list("traitor","revolution","cult","wizard","changeling","traitorchan","nuclear","malfunction","monkey")
-	if(!(current_mode.config_tag in acceptable_modes_list))
-		return
+	//We want the ninja to appear only in certain modes. //NO WE DON'T.
+	//var/acceptable_modes_list[] = list("traitor","revolution","cult","wizard","changeling","traitorchan","nuclear","malfunction","monkey")
+	//if(!(current_mode.config_tag in acceptable_modes_list))
+	//	return
 
 	/*No longer need to determine what mode it is since bad guys are basically universal.
 	And there is now a mode with two types of bad guys.*/

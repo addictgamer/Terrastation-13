@@ -41,7 +41,7 @@ var/global/const/GAME_STATE_FINISHED = 4
 			world << "Playing lobby music. (from master controller)"*/
 
 	do
-		pregame_timeleft = 60
+		pregame_timeleft = 120 //We need a bit more time methinks.
 		world << "<B><FONT color='blue'>Welcome to the pre-game lobby!</FONT></B>"
 		world << "Please, setup your character and select ready. Game will start in [pregame_timeleft] seconds"
 		while(current_state == GAME_STATE_PREGAME)

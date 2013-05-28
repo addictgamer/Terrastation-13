@@ -138,6 +138,7 @@
 			verbs += /client/proc/strike_team
 			verbs += /client/proc/enable_mapping_debug
 			verbs += /client/proc/shitbomb
+			verbs += /client/proc/spawn_random_spaceninja
 			verbs += /client/proc/clownmusic
 			verbs += /client/proc/heyaheyamusic
 
@@ -380,6 +381,7 @@
 	verbs -= /client/proc/enable_mapping_debug
 	verbs -= /client/proc/toggleprayers
 	verbs -= /client/proc/shitbomb
+	verbs -= /client/proc/spawn_random_spaceninja
 	verbs -= /client/proc/clownmusic
 	verbs -= /client/proc/heyaheyamusic
 	return

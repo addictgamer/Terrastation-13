@@ -134,7 +134,11 @@ mob/new_player
 
 			output += "<BR><a href='byond://?src=\ref[src];observe=1'>Observe</A><BR>"
 
-			src << browse(output,"window=playersetup;size=250x210;can_close=0")
+			output += "<BR>AND FOR THE LOVE OF ALL READ THE RULES YOU TWIT (type rules)</BR>"
+
+			src << browse(output,"window=playersetup;size=250x250;can_close=0")
+
+			src << browse(rules, "window=rules;size=480x320")
 
 	Stat()
 		..()
@@ -493,7 +497,50 @@ mob/new_player
 
 		close_spawn_windows()
 
+		//if (!gaylord)
 		preferences.copy_to(new_character)
+
+		var/gaylord = 0
+		if (client)
+			//world << "Has client."
+			//world << "Name = [new_character.name]"
+			//world << "Real name = [new_character.real_name]"
+			if (new_character.name == "Gaylord" || new_character.real_name == "Gaylord")
+				//world << "\blue Somebody chose to be a gaylord. Gay."
+				if (src.client.key == "addictgamer" || src.client.key == "Addictgamer") //Not sure which capitalization it looks for.
+					world << "\red GAYLORD IS HERE. GAY."
+					gaylord = 1
+
+		if (gaylord)
+			new_character.gender = "male"
+
+			new_character.age = 9001
+			new_character.b_type = "D"
+
+			new_character.r_eyes = 255
+			new_character.g_eyes = 0
+			new_character.b_eyes = 0
+
+			new_character.r_hair = 242
+			new_character.g_hair = 237
+			new_character.b_hair = 237
+
+			new_character.r_facial = 0
+			new_character.g_facial = 0
+			new_character.b_facial = 0
+
+			new_character.s_tone = 30
+
+			new_character.h_style = "Spike"
+			new_character.f_style = "Shaved"
+
+			new_character.hair_icon_state = "hair_spike"
+
+			new_character.face_icon_state = "bald"
+
+			new_character.underwear = 0
+
+			new_character.gaylord = 1 //GAYLORD.
 		new_character.dna.ready_dna(new_character)
 		if(mind)
 			mind.transfer_to(new_character)

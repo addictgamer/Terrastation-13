@@ -1283,6 +1283,15 @@
 			var/icon/stain_icon = icon('blood.dmi', "helmetblood[!lying ? "" : "2"]")
 			overlays += image("icon" = stain_icon, "layer" = MOB_LAYER)
 		head.screen_loc = ui_head
+	if (gaylord)
+		var/icon/gaylord_effect = null
+		if (!lying)
+			gaylord_effect = icon("icon" = 'mob-effects.dmi', "icon_state" = "weird-glow")
+		else
+			gaylord_effect = icon("icon" = 'mob-effects.dmi', "icon_state" = "weird-glow-lay")
+		overlays += image("icon" = gaylord_effect, "layer" = MOB_LAYER)
+		if (Debug || Debug2)
+			world << "\blue Gave gaylord his special effect."
 
 	// Belt
 	if (belt)

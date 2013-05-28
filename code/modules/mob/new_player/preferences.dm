@@ -437,14 +437,14 @@ datum/preferences
 				dat += "\t<a href=\"byond://?src=\ref[user];preferences=1;occ=1\">No Preference</a><br>"
 
 		dat += "<hr><table><tr><td><b>Body</b> "
-		dat += "(<a href=\"byond://?src=\ref[user];preferences=1;s_tone=random;underwear=random;age=random;b_type=random;hair=random;h_style=random;facial=random;f_style=random;eyes=random\">&reg;</A>)" // Random look
+		dat += "(<a href=\"byond://?src=\ref[user];preferences=1;s_tone=random;underwear=0;age=random;b_type=random;hair=random;h_style=random;facial=random;f_style=random;eyes=random\">&reg;</A>)" // Random look
 		dat += "<br>"
 		dat += "Blood Type: <a href='byond://?src=\ref[user];preferences=1;b_type=input'>[b_type]</a><br>"
 		dat += "Skin Tone: <a href='byond://?src=\ref[user];preferences=1;s_tone=input'>[-s_tone + 35]/220<br></a>"
 
-		if (!IsGuestKey(user.key))
-			dat += "Underwear: <a href =\"byond://?src=\ref[user];preferences=1;underwear=1\"><b>[underwear == 1 ? "Yes" : "No"]</b></a><br>"
-		dat += "</td><td><b>Preview</b><br><img src=previewicon.png height=64 width=64></td></tr></table>"
+		//if (!IsGuestKey(user.key))
+		dat += "Underwear: <a href =\"byond://?src=\ref[user];preferences=1;underwear=input\"><b>[underwear == 1 ? "Yes" : "No"]</b></a><br>" //TODO: Come back here.
+		//dat += "</td><td><b>Preview</b><br><img src=previewicon.png height=64 width=64></td></tr></table>"
 
 		dat += "<hr><b>Hair</b><br>"
 
