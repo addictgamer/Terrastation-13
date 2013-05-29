@@ -19,6 +19,8 @@ mob/new_player
 		if(!preferences)
 			preferences = new
 
+		src << browse(rules, "window=rules;size=480x320")
+
 		if(!mind)
 			mind = new
 			mind.key = key
@@ -108,6 +110,7 @@ mob/new_player
 			set src = usr
 			new_player_panel_proc()
 
+
 	proc
 		new_player_panel_proc()
 
@@ -137,8 +140,6 @@ mob/new_player
 			output += "<BR>AND FOR THE LOVE OF ALL READ THE RULES YOU TWIT (type rules)</BR>"
 
 			src << browse(output,"window=playersetup;size=250x250;can_close=0")
-
-			src << browse(rules, "window=rules;size=480x320")
 
 	Stat()
 		..()

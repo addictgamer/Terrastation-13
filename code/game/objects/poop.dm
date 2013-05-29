@@ -5,6 +5,7 @@
 			sleep(3)
 			if(i > 0)
 				var/obj/decal/cleanable/poop/splatter/b = new /obj/decal/cleanable/poop/splatter(src.loc)
+				b = b //to kill the warning
 			if(step_to(src, get_step(src, direction), 0))
 				break
 
@@ -38,6 +39,7 @@
 	//world << "Making poop splatter."
 	src.material_ammount -= ammount_lost
 	var/obj/decal/cleanable/poop/splatter/b = new /obj/decal/cleanable/poop/splatter(location)
+	b = b //To kill the warning
 
 	if(material_ammount < 1)
 		del(src)

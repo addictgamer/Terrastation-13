@@ -8,9 +8,31 @@
 	src.jitteriness = 0
 
 	if (!gibbed)
-		emote("deathgasp") //let the world KNOW WE ARE DEAD
+		if (gaylord)
+			for(var/mob/O in viewers(src, null))
+				O.show_message("<b>[src.name]</b>'s corpse compacts into a ball and explodes in an outburst of divine energy!...", 1) //THE GOD IS DEAD. Or so the foolish mortals think.
+			world << "\red THINK YOU CAN GET RID OF ME, FOOLISH MORTALS? I'LL BE BACK!\nGay."
+			explosion(src.loc, rand(1,2),rand(1,5),rand(1,7),rand(1,10)) //Corpse explodes on death.
+			var/i = 0
+			var/meteorcount = rand(1,5)
+			while (i < meteorcount)
+				world << "Sent meteor wave."
+				meteor_wave()
+			command_alert("Meteors have been detected on collision course with the station.", "Meteor Alert")
+			world << sound('meteors.ogg')
+			empulse(src.loc, rand(50,150), rand(100,200)) //EM Pulse on death.
+		else
+			emote("deathgasp") //let the world KNOW WE ARE DEAD
 
-		take_a_dump(1)
+			take_a_dump(1)
+			canmove = 0
+			lying = 1
+			var/h = src.hand
+			hand = 0
+			drop_item()
+			hand = 1
+			drop_item()
+			hand = h
 
 		//For ninjas exploding when they die./N
 		if (istype(wear_suit, /obj/item/clothing/suit/space/space_ninja)&&wear_suit:s_initialized)
@@ -18,16 +40,8 @@
 			var/location = loc
 			explosion(location, 1, 2, 3, 4)
 
-		canmove = 0
 		if(src.client)
 			src.blind.layer = 0
-		lying = 1
-		var/h = src.hand
-		hand = 0
-		drop_item()
-		hand = 1
-		drop_item()
-		hand = h
 		//This is where the suicide assemblies checks would go
 
 		if (client)

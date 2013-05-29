@@ -444,7 +444,7 @@ datum/preferences
 
 		//if (!IsGuestKey(user.key))
 		dat += "Underwear: <a href =\"byond://?src=\ref[user];preferences=1;underwear=input\"><b>[underwear == 1 ? "Yes" : "No"]</b></a><br>" //TODO: Come back here.
-		//dat += "</td><td><b>Preview</b><br><img src=previewicon.png height=64 width=64></td></tr></table>"
+		dat += "</td><td><b>Preview</b><br><img src=previewicon.png height=64 width=64></td></tr></table>"
 
 		dat += "<hr><b>Hair</b><br>"
 

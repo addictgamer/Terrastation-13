@@ -91,7 +91,25 @@
 
 	//if(gaylord)
 
+
+
+	//Commented out so hunger system won't be such shock //Recommented because twits need to eat.
+	//Damage and effects from not eating.
+	if(nutrition <= 50)
+		if (prob (0.1))
+			src << "\red Your stomach rumbles."
+		if (prob (10))
+			bruteloss++
+		if (prob (5))
+			src << "You feel very weak."
+			weakened += rand(2, 3)
+
 	..() //for organs
+
+	if (health <= 0 || oxyloss + toxloss + bruteloss + fireloss >= 100)
+		//if (!dead_last_turn && gaylord)
+
+		dead_last_turn = 1 //Set to trueeeeee.
 
 
 /mob/living/carbon/human
@@ -662,6 +680,16 @@
 					sleeping = 1
 					paralysis = 5
 
+			if (confused > 0 && gaylord)
+				//If confused and gaylord:
+				//Say something random and spawn an item.
+				var/chance = rand(1,10) //Chance he'll be silly.
+				if (chance == 5)
+					say("HEY LOOK I'M SANTY CLAHWS")
+					for(var/mob/O in viewers(src, null))
+						O.show_message(text("\red <B>[src] waves his hands erratically and conjures an object!"), 1)
+						var/temp = new /obj/item/weapon/beach_ball(src.loc) //Spawn a beach ball. //TODO: Spawn a random item.
+						temp = temp //To kill the warning.
 			confused = max(0, confused - 1)
 			// decrement dizziness counter, clamped to 0
 			if(resting)
@@ -1131,19 +1159,6 @@
 				if (mind.special_role == "Changeling" && changeling)
 					changeling.chem_charges = between(0, (max((0.9 - (changeling.chem_charges / 50)), 0.1) + changeling.chem_charges), 50)
 
-
-/*
-			// Commented out so hunger system won't be such shock
-			// Damage and effects from not eating
-			if(nutrition <= 50)
-				if (prob (0.1))
-					src << "\red Your stomach rumbles."
-				if (prob (10))
-					bruteloss++
-				if (prob (5))
-					src << "You feel very weak."
-					weakened += rand(2, 3)
-*/
 /*
 snippets
 

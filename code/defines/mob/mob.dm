@@ -87,6 +87,7 @@
 	var/timeofdeath = 0.0//Living
 	var/cpr_time = 1.0//Carbon
 	var/health = 100//Living
+	var/dead_last_turn = 0 //Living
 	var/bodytemperature = 310.055	//98.7 F
 	var/drowsyness = 0.0//Carbon
 	var/dizziness = 0//Carbon

@@ -6,5 +6,4 @@
 	var/now_pushing = null
 	var/cameraFollow = null
 	var/can_poop = 0
-	var/
-		can_be_gibbered = 0
+	var/can_be_gibbered = 0
