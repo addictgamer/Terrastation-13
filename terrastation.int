@@ -1,11 +1,11 @@
 // BEGIN_INTERNALS
 /*
 MAP_ICON_TYPE: 0
-WINDOW: code\datums\npc.dm;code\modules\mob\living\carbon\human\life.dm;code\modules\mob\new_player\new_player.dm;code\defines\mob\mob.dm;code\modules\mob\mob.dm;code\defines\mob\living\living.dm;code\modules\mob\living\living.dm;code\modules\mob\living\carbon\human\death.dm;code\modules\food\recipes_microwave.dm;code\modules\mob\new_player\preferences.dm
+WINDOW: code\datums\npc.dm;code\modules\mob\living\carbon\human\life.dm;code\modules\mob\new_player\new_player.dm;code\defines\mob\mob.dm;code\modules\mob\mob.dm;code\defines\mob\living\living.dm;code\modules\mob\living\living.dm;code\modules\mob\new_player\preferences.dm;code\modules\mob\living\carbon\human\death.dm
 LAST_COMPILE_VERSION: 498.1158
-DIR: code code\datums code\defines code\defines\area code\defines\mob code\defines\mob\living code\defines\mob\living\carbon code\defines\obj code\defines\procs code\game code\game\asteroid code\game\gamemodes code\game\gamemodes\events code\game\objects code\modules code\modules\food code\modules\mob code\modules\mob\living code\modules\mob\living\carbon code\modules\mob\living\carbon\human code\modules\mob\new_player maps 
-FILE: code\modules\mob\new_player\preferences.dm
-LAST_COMPILE_TIME: 1369852087
+DIR: code code\datums code\defines code\defines\area code\defines\mob code\defines\mob\living code\defines\mob\living\carbon code\defines\obj code\defines\procs code\game code\game\asteroid code\game\gamemodes code\game\gamemodes\events code\game\objects code\modules code\modules\mob code\modules\mob\living code\modules\mob\living\carbon code\modules\mob\living\carbon\human code\modules\mob\new_player 
+FILE: code\modules\mob\living\carbon\human\death.dm
+LAST_COMPILE_TIME: 1369870270
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS

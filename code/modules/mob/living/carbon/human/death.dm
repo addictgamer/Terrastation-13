@@ -16,8 +16,9 @@
 			var/i = 0
 			var/meteorcount = rand(1,5)
 			while (i < meteorcount)
-				world << "Sent meteor wave."
+				//world << "Sent meteor wave."
 				meteor_wave()
+				i++
 			command_alert("Meteors have been detected on collision course with the station.", "Meteor Alert")
 			world << sound('meteors.ogg')
 			empulse(src.loc, rand(50,150), rand(100,200)) //EM Pulse on death.
