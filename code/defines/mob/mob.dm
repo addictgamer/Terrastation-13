@@ -239,3 +239,4 @@ the mob is also allowed to move without any sort of restriction. For instance, i
 	proc/process()
 
 	var/effect = null //Used for the gaylord's glowy thingy.
+	var/gaylord = 0

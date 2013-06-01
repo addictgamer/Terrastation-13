@@ -176,6 +176,20 @@ var
 	join_motd = null
 	auth_motd = null
 	rules = null
+
+	space_law = {"
+
+	<html><head>
+	</head>
+
+	<body>
+	<iframe width='100%' height='97%' src="http://doc.asdfxyz.de:81/ss13/index.php/Space_Law?printable=yes&remove_links=1" frameborder="0" id="main_frame"></iframe>
+	</body>
+
+	</html>
+
+	"}
+
 	no_auth_motd = null
 	forceblob = 0
 

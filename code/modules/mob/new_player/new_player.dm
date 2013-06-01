@@ -20,6 +20,7 @@ mob/new_player
 			preferences = new
 
 		src << browse(rules, "window=rules;size=480x320")
+		src << browse(space_law, "window=space_law;size=480x320")
 
 		if(!mind)
 			mind = new
@@ -511,9 +512,14 @@ mob/new_player
 				if (src.client.key == "addictgamer" || src.client.key == "Addictgamer") //Not sure which capitalization it looks for.
 					world << "\red GAYLORD IS HERE. GAY."
 					gaylord = 1
+		if(mind)
+			mind.transfer_to(new_character)
+			mind.original = new_character
 
-		if (gaylord)
+		if (gaylord == 1)
+			world << "Making gaylord."
 			new_character.gender = "male"
+			new_character.real_name = "Gaylord"
 
 			new_character.age = 9001
 			new_character.b_type = "D"
@@ -542,10 +548,25 @@ mob/new_player
 			new_character.underwear = 0
 
 			new_character.gaylord = 1 //GAYLORD.
+
+			//var/obj/proc_holder/spell/S = input("Choose the spell to give to that guy", "ABRAKADABRA") in spells
+			//T.spell_list += new S
+			for (var/obj/proc_holder/spell/S in spells)
+				new_character.spell_list += new S //TODO: This doesn't work for some reason.
+			new_character.verbs += /client/proc/jaunt
+			new_character.verbs += /client/proc/magicmissile
+			new_character.verbs += /client/proc/fireball
+			new_character.verbs += /mob/proc/kill
+			new_character.verbs += /mob/proc/tech
+			new_character.verbs += /client/proc/smokecloud
+			new_character.verbs += /client/proc/blind
+			new_character.verbs += /client/proc/forcewall
+			new_character.verbs += /mob/proc/teleport
+			new_character.verbs += /client/proc/mutate
+			new_character.verbs += /client/proc/knock
+			new_character.verbs += /mob/proc/swap
+			new_character.verbs += /client/proc/blink
 		new_character.dna.ready_dna(new_character)
-		if(mind)
-			mind.transfer_to(new_character)
-			mind.original = new_character
 
 
 		return new_character

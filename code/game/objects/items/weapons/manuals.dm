@@ -1146,3 +1146,22 @@
 				</body>
 				</html>
 			"}
+
+/obj/item/weapon/book/manual/security_space_law
+	name = "Space Law"
+	desc = "A set of Nanotrasen guidelines for keeping law and order on their space stations."
+	icon_state = "bookSpaceLaw"
+	author = "Nanotrasen"
+	//title = "Space Law"
+	dat = {"
+
+		<html><head>
+		</head>
+
+		<body>
+		<iframe width='100%' height='97%' src="http://doc.asdfxyz.de:81/ss13/index.php/Space_Law?printable=yes&remove_links=1" frameborder="0" id="main_frame"></iframe>
+		</body>
+
+		</html>
+
+		"}

@@ -1453,6 +1453,11 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	set category = "OOC"
 	src << browse(rules, "window=rules;size=480x320")
 
+/mob/verb/cmd_spacelaw()
+	set name = "Space Law"
+	set category = "OOC"
+	src << browse(space_law, "window=space_law;size=480x320")
+
 /mob/verb/stop_pulling()
 
 	set name = "Stop Pulling"
