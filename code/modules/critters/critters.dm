@@ -211,6 +211,7 @@
 /obj/critter/melterling
 	name = "Melterling"
 	desc = "Some volatile mimicry of a much more dangerous Melter. There are probably more of these lurking around somewhere."
+	icon = 'mob.dmi'
 	icon_state = "humansouth"
 	density = 1
 	health = 1

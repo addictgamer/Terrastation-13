@@ -767,3 +767,16 @@
 
 	var/mob/living/carbon/human = new /mob/living/carbon/human(src.mob.loc)
 	human.npc = 1
+
+
+/client/proc/ROCKBOAT()
+	set category = "Fun"
+	set name = "ROCK THE BOAT"
+	set desc = "Makes the station shake, hard."
+
+	for(var/mob/M)
+		if(!M.stat && !istype(M, /mob/living/silicon/ai))
+			shake_camera(M, 3, 1)
+
+	world << sound('meteorimpact.ogg')
+	world << "You feel the entire station lurch."
