@@ -1125,6 +1125,20 @@
 						spawn(50) charge()
 						//Added this to the cap's laser back before the gun overhaul to make it halfways worth stealing. It's back now. --NEO
 
+			shiper
+				name = "Shiper"
+				icon = 'shiper.png'
+				icon_state = "cshotgun" //Placeholder; closest thing we currently have
+				desc = "A collapsable gun that appears to be a mix of a shotgun and a sniper, I think? It fires lazors instead of bullets, though. Who the hell designed this?"
+				fire_sound = 'shiper.ogg'
+				origin_tech = null //lost karieten technology roflmao
+				New()
+					power_supply = new /obj/item/weapon/cell/super(src)
+					power_supply.give(power_supply.maxcharge)
+					update_icon()
+					//hopefully will make it behave like it never runs out of power
+				//this gun currently behaves like a laser gun that doesn't run out of ammo. It isn't quite supposed to do that. Intent to make this fire a different projectile and maybe have a firing cooldown.
+
 			cyborg
 				load_into_chamber()
 					if(in_chamber)

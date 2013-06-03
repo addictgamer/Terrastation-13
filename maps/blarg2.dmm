@@ -4401,7 +4401,7 @@
 "bGG" = (/obj/rack,/obj/item/clothing/suit/space/syndicate,/obj/item/clothing/head/helmet/space/syndicate,/obj/item/clothing/mask/breath,/obj/item/weapon/tank/oxygen,/obj/machinery/light/small{dir = 4},/turf/simulated/floor/plating,/area/djstation)
 "bGH" = (/obj/machinery/atmospherics/pipe/simple/general/visible{tag = "icon-intact (NORTH)"; icon_state = "intact"; dir = 1},/turf/simulated/floor/plating,/area/djstation)
 "bGI" = (/obj/item/weapon/cleaner,/turf/simulated/floor/plating,/area/djstation)
-"bGJ" = (/obj/rack,/obj/item/weapon/gun/energy/laser/captain,/turf/simulated/floor/plating,/area/djstation)
+"bGJ" = (/obj/rack,/obj/item/weapon/gun/energy/laser/shiper,/turf/simulated/floor/plating,/area/djstation)
 "bGK" = (/obj/machinery/seed_extractor,/turf/simulated/floor/plating,/area/djstation)
 "bGL" = (/obj/machinery/cell_charger,/turf/simulated/floor/plating,/area/djstation)
 "bGM" = (/obj/machinery/hydroponics,/turf/simulated/floor/plating,/area/djstation)

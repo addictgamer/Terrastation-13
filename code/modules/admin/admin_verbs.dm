@@ -141,6 +141,7 @@
 			verbs += /client/proc/spawn_random_spaceninja
 			verbs += /client/proc/clownmusic
 			verbs += /client/proc/heyaheyamusic
+			verbs += /client/proc/ROCKBOAT
 
 		if (holder.level >= 5)//Game Admin********************************************************************
 			verbs += /obj/admins/proc/view_txt_log
@@ -384,6 +385,7 @@
 	verbs -= /client/proc/spawn_random_spaceninja
 	verbs -= /client/proc/clownmusic
 	verbs -= /client/proc/heyaheyamusic
+	verbs -= /client/proc/ROCKBOAT
 	return
 
 /client/proc/shitbomb() //Covers every floor in the world with poop.
