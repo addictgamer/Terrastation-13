@@ -165,7 +165,7 @@
 		if("Medical Doctor")
 			return list(access_medical, access_morgue, access_surgery)
 		if("Botanist")	// -- TLE
-			return list(access_hydroponics) // Removed tox and chem access because STOP PISSING OFF THE CHEMIST GUYS // //Removed medical access because WHAT THE FUCK YOU AREN'T A DOCTOR YOU GROW WHEAT
+			return list(access_maint_tunnels, access_hydroponics) // Removed tox and chem access because STOP PISSING OFF THE CHEMIST GUYS // //Removed medical access because WHAT THE FUCK YOU AREN'T A DOCTOR YOU GROW WHEAT
 		if("Librarian") // -- TLE
 			return list(access_library)
 		if("Lawyer") //Muskets 160910
@@ -194,7 +194,7 @@
 		if("Atmospheric Technician")
 			return list(access_atmospherics, access_maint_tunnels, access_emergency_storage)
 		if("Bartender")
-			return list(access_bar)
+			return list(access_bar, access_kitchen)
 		if("Chemist")
 			return list(access_medical, access_chemistry)
 		if("Janitor")
@@ -204,7 +204,7 @@
 		if("Mime")
 			return list(access_maint_tunnels, access_mime, access_theatre)
 		if("Chef")
-			return list(access_kitchen, access_morgue)
+			return list(access_kitchen, access_morgue, access_bar)
 		if("Roboticist")
 			return list(access_robotics, access_tech_storage, access_maint_tunnels, access_science)
 		if("Cargo Technician")

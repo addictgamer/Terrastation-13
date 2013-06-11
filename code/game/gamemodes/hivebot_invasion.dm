@@ -1,6 +1,12 @@
 /proc/hivebot_invasion() // -- TLE
-	command_alert("Unidentified electronic signals detected aboard [station_name()]. Proceed with caution.", "Unidentified Contact Alert")
-	world << sound('hivebots_announcer.ogg')
+	world << sound('fucked.ogg')
+	spawn(70)
+		command_alert("Unidentified electronic signals detected aboard [station_name()]. Proceed with caution.", "Unidentified Contact Alert")
+		world << sound('hivebots_announcer.ogg')
+		world << sound('hivebots.ogg')
+		//world << sound('siren.ogg')
+		world << sound('alarm.wav')
+		world << sound('hivebot_invasion.mid')
 	var/list/vents = list()
 	for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in world)
 		//if(temp_vent.loc.z == 1)
@@ -38,7 +44,3 @@
 		spawncount -= 1
 
 
-	world << sound('hivebots.ogg')
-	//world << sound('siren.ogg')
-	world << sound('alarm.wav')
-	world << sound('hivebot_invasion.mid')
