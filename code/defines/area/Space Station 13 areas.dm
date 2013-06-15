@@ -269,6 +269,17 @@ proc/process_ghost_teleport_locs()
 	name = "Pirate boarding shuttle - at the dock"
 	icon_state = "pirateboardingdock"
 
+/area/shuttle/ruskie
+	name = "ruskie transport"
+
+/area/shuttle/ruskie/ruskie //the area at the ruskie station
+	name = "Ruskie Transport Shuttle - Satellite"
+	icon_state = "shuttle"
+
+/area/shuttle/ruskie/centcom //the area at centcom
+	name = "Ruskie Transport Shuttle - Centcom"
+	icon_state = "shuttle2"
+
 // === Trying to remove these areas:
 
 /area/airtunnel1/      // referenced in airtunnel.dm:759
@@ -650,6 +661,11 @@ proc/process_ghost_teleport_locs()
 	music = "music/areas/hallway-secondary-entry.wav"
 	name = "Arrival Shuttle Hallway"
 	icon_state = "entry"
+
+/area/hallway/secondary/lounge
+	music = "music/areas/hallway-primary-port.wav"
+	name = "Lounge"
+	icon_state = "hallP"
 
 //Command
 

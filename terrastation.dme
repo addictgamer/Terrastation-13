@@ -662,6 +662,7 @@
 #include "code\game\objects\storage\storage.dm"
 #include "code\game\objects\storage\toolbox.dm"
 #include "code\game\structure\structure.dm"
+#include "code\game\trade\ruskiestuff.dm"
 #include "code\game\trade\trade_packs.dm"
 #include "code\game\trade\trade_shutte_comp.dm"
 #include "code\game\trade\trade_shuttle.dm"
