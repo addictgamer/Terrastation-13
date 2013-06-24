@@ -544,6 +544,17 @@ proc/process_ghost_teleport_locs()
 	name = "Research center"
 	icon_state = "atmos"
 	sec_status = access_research
+
+/area/crew_quarters/clown
+	music = null
+	name = "HONK!"
+	icon_state = "honk"
+
+/area/crew_quarters/mime
+	music = null
+	name = "Silent"
+	icon_state = "purple"
+
 //Maintenance
 
 /area/maintenance/

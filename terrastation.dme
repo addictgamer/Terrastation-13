@@ -573,6 +573,7 @@
 #include "code\game\objects\closets\secure\chemlocker.dm"
 #include "code\game\objects\closets\secure\courtroom.dm"
 #include "code\game\objects\closets\secure\engineering.dm"
+#include "code\game\objects\closets\secure\hop.dm"
 #include "code\game\objects\closets\secure\medical.dm"
 #include "code\game\objects\closets\secure\personal.dm"
 #include "code\game\objects\closets\secure\scientist.dm"

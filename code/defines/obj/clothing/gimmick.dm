@@ -33,6 +33,7 @@
 	name = "Owl mask"
 	desc = "Twoooo!"
 	icon_state = "owl"
+	var/voice = "The Owl" //THIS MIGHT NOT WORK THE WAY I WANT IT.
 
 /obj/item/clothing/under/owl
 	name = "Owl uniform"

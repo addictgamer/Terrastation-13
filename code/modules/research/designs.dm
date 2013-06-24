@@ -868,7 +868,6 @@ datum
 			req_tech = list("materials" = 5)
 			build_type = PROTOLATHE
 			materials = list("$metal" = 80)
-			reliability_base = 75
 			build_path = "/obj/item/weapon/stock_parts/matter_bin/super"
 
 ////////////////////////////////////////
@@ -898,7 +897,7 @@ datum
 			desc = "A power cell that holds 20000 units of energy"
 			id = "super_cell"
 			req_tech = list("powerstorage" = 3, "materials" = 2)
-			reliability_base = 75
+			reliability_base = 83
 			build_type = PROTOLATHE
 			materials = list("$metal" = 700, "$glass" = 70)
 			build_path = "/obj/item/weapon/cell/super"

@@ -715,6 +715,10 @@
 /obj/secure_closet/kitchen/mining
 	req_access = list()
 
+/obj/secure_closet/hop
+	name = "HoP Pesronal Closet"
+	req_access = list(access_hop)
+
 /obj/secure_closet/meat
 	name = "Meat Fridge"
 	icon_state = "fridge1"

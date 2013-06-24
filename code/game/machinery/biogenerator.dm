@@ -1,6 +1,6 @@
 /obj/machinery/biogenerator
 	name = "Biogenerator"
-	desc = ""
+	desc = "It can make stuff out of the plants you grow."
 	icon = 'biogenerator.dmi'
 	icon_state = "biogen-stand"
 	density = 1

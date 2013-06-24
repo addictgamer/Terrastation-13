@@ -11,7 +11,7 @@
 /obj/machinery/mineral/stacking_unit_console/New()
 	..()
 	spawn(7)
-		src.machine = locate(/obj/machinery/mineral/stacking_machine, get_step(src, SOUTHEAST))
+		src.machine = locate(/obj/machinery/mineral/stacking_machine, get_step(src, SOUTHEAST))  //THIS "SOUTHEAST" CALL RIGHT HERE MIGHT BE WHY THE FUCKING THING DOESN'T WORK. SOMEBODY DICK WITH THIS.
 		if (machine)
 			machine.CONSOLE = src
 		else
@@ -152,7 +152,7 @@
 	var/ore_rglass = 0;
 	var/ore_steel = 0;
 	var/ore_adamantine = 0;
-	var/stack_amt = 50; //ammount to stack before releassing
+	var/stack_amt = 5; //ammount to stack before releassing //NOTE: this variable SHOULD be set to 50. I set it to 5 because the console is broken. --LZ
 
 /obj/machinery/mineral/stacking_machine/New()
 	..()

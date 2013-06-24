@@ -781,4 +781,4 @@
 			shake_camera(M, 3, 1)
 
 	world << sound('meteorimpact.ogg')
-	world << "You feel the entire station lurch."
+	world << "The entire station lurches."

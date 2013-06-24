@@ -1,7 +1,12 @@
-//This is a method (albiet a rondabout one) to allow a ruskie to trade with the main station.
-//He or she can also use this method to board the actual station, but they would have no way of legitimately getting back.
-//Also, this file will contain other stuff pertinent to the ruskie in the future.
+/*
+	This is a method (albiet a rondabout one) to allow a ruskie to trade with the main station.
+	He or she can also use this method to board the actual station, but they would have no way of
+	getting back without using Sadie's little tracking beacon exploit.
+	Also, this file will contain other stuff pertinent to the ruskie in the future.
+*/
 
+
+/*************** Centcom-Ruskiestation Transport Shuttle ***************/
 //most of this is copypasta and edit from the mining shuttle
 
 var/ruskie_shuttle_tickstomove = 10
@@ -13,15 +18,15 @@ proc/move_ruskie_shuttle()  //This is what makes the goddamn thing move
 	if(ruskie_shuttle_moving)	return
 	ruskie_shuttle_moving = 1
 	spawn(ruskie_shuttle_tickstomove*10)
-		var/area/fromArea
-		var/area/toArea
+		var/area/dasOrigin
+		var/area/dasDest
 		if (ruskie_shuttle_location == 1)
-			fromArea = locate(/area/shuttle/ruskie/ruskie)
-			toArea = locate(/area/shuttle/ruskie/centcom)
+			dasOrigin = locate(/area/shuttle/ruskie/ruskie)
+			dasDest = locate(/area/shuttle/ruskie/centcom)
 		else
-			fromArea = locate(/area/shuttle/ruskie/centcom)
-			toArea = locate(/area/shuttle/ruskie/ruskie)
-		fromArea.move_contents_to(toArea)
+			dasOrigin = locate(/area/shuttle/ruskie/centcom)
+			dasDest = locate(/area/shuttle/ruskie/ruskie)
+		dasOrigin.move_contents_to(dasDest)
 		if (ruskie_shuttle_location)
 			ruskie_shuttle_location = 0
 		else
