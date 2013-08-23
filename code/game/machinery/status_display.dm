@@ -6,7 +6,7 @@
 // And arbitrary messages set by comms computer
 
 /obj/machinery/status_display
-	icon = 'status_display.dmi'
+	icon = 'icons/obj/status_display.dmi'
 	icon_state = "frame"
 	name = "status display"
 	anchored = 1
@@ -18,7 +18,6 @@
 					// 2 = Arbitrary message(s)
 					// 3 = alert picture
 					// 4 = Supply shuttle timer
-					// 5 = Trade Shuttle Timer
 
 	var/picture_state	// icon_state of alert picture
 	var/message1 = ""	// message line 1
@@ -31,7 +30,6 @@
 
 	var/frequency = 1435		// radio frequency
 	var/supply_display = 0		// true if a supply shuttle display
-	var/trade_display = 0
 	var/repeat_update = 0		// true if we are going to update again this ptick
 
 	var/friendc = 0      // track if Friend Computer mode
@@ -49,22 +47,28 @@
 
 	process()
 		if(stat & NOPOWER)
-			overlays = null
+			overlays.Cut()
 			return
 
 		update()
 
+	emp_act(severity)
+		if(stat & (BROKEN|NOPOWER))
+			..(severity)
+			return
+		set_picture("ai_bsod")
+		..(severity)
 
 	// set what is displayed
 
 	proc/update()
 
-		if(friendc && (mode!=4 && mode != 5)) //Makes all status displays except supply shuttle and trade shuttle timer display the eye -- Urist
+		if(friendc && mode!=4) //Makes all status displays except supply shuttle timer display the eye -- Urist
 			set_picture("ai_friend")
 			return
 
 		if(mode==0)
-			overlays = null
+			overlays.Cut()
 			return
 
 		if(mode==3)	// alert picture, no change
@@ -85,44 +89,25 @@
 				update_display(displayloc, displaytime)
 				return
 			else
-				overlays = null
+				overlays.Cut()
 				return
 
 		if(mode==4)		// supply shuttle timer
 			var/disp1
 			var/disp2
-			if(supply_shuttle_moving)
-				disp1 = get_supply_shuttle_timer()
+			if(supply_shuttle.moving)
+				disp1 = "SPPLY"
+				disp2 = get_supply_shuttle_timer()
 				if(lentext(disp1) > 5)
 					disp1 = "**~**"
-				disp2 = null
 
 			else
-				if(supply_shuttle_at_station)
+				if(supply_shuttle.at_station)
 					disp1 = "SPPLY"
 					disp2 = "STATN"
 				else
 					disp1 = "SPPLY"
-					disp2 = "DOCK"
-
-			update_display(disp1, disp2)
-
-		if(mode==5)		//Trade shuttle timer
-			var/disp1
-			var/disp2
-			if(trade_shuttle_moving)
-				disp1 = get_trade_shuttle_timer()
-				if(lentext(disp1) > 5)
-					disp1 = "**~**"
-				disp2 = null
-
-			else
-				if(trade_shuttle_at_station)
-					disp1 = "TRADE"
-					disp2 = "STATN"
-				else
-					disp1 = "TRADE"
-					disp2 = "DOCK"
+					disp2 = "AWAY"
 
 			update_display(disp1, disp2)
 
@@ -175,8 +160,8 @@
 
 	proc/set_picture(var/state)
 		picture_state = state
-		overlays = null
-		overlays += image('status_display.dmi', icon_state=picture_state)
+		overlays.Cut()
+		overlays += image('icons/obj/status_display.dmi', icon_state=picture_state)
 
 	proc/update_display(var/line1, var/line2)
 
@@ -187,11 +172,11 @@
 		lastdisplayline2 = line2
 
 		if(line2 == null)		// single line display
-			overlays = null
+			overlays.Cut()
 			overlays += texticon(line1, 23, -13)
 		else					// dual line display
 
-			overlays = null
+			overlays.Cut()
 			overlays += texticon(line1, 23, -9)
 			overlays += texticon(line2, 23, -17)
 
@@ -206,15 +191,8 @@
 		return ""
 
 	proc/get_supply_shuttle_timer()
-		if(supply_shuttle_moving)
-			var/timeleft = round((supply_shuttle_time - world.timeofday) / 10,1)
-			return "[add_zero(num2text((timeleft / 60) % 60),2)]~[add_zero(num2text(timeleft % 60), 2)]"
-			// note ~ translates into a blinking :
-		return ""
-
-	proc/get_trade_shuttle_timer()
-		if(trade_shuttle_moving)
-			var/timeleft = round((trade_shuttle_time - world.timeofday) / 10,1)
+		if(supply_shuttle.moving)
+			var/timeleft = round((supply_shuttle.eta_timeofday - world.timeofday) / 10,1)
 			return "[add_zero(num2text((timeleft / 60) % 60),2)]~[add_zero(num2text(timeleft % 60), 2)]"
 			// note ~ translates into a blinking :
 		return ""
@@ -226,7 +204,7 @@
 	// valid characters are 0-9 and :
 	// px, py are pixel offsets
 	proc/texticon(var/tn, var/px = 0, var/py = 0)
-		var/image/I = image('status_display.dmi', "blank")
+		var/image/I = image('icons/obj/status_display.dmi', "blank")
 
 
 		var/len = lentext(tn)
@@ -239,7 +217,7 @@
 			if(char == " ")
 				continue
 
-			var/image/ID = image('status_display.dmi', icon_state=char)
+			var/image/ID = image('icons/obj/status_display.dmi', icon_state=char)
 
 			ID.pixel_x = -(d-1)*5 + px
 			ID.pixel_y = py
@@ -274,14 +252,10 @@
 				if(supply_display)
 					mode = 4
 
-			if("trade")
-				if(trade_display)
-					mode = 5
-
 
 
 /obj/machinery/ai_status_display
-	icon = 'status_display.dmi'
+	icon = 'icons/obj/status_display.dmi'
 	icon_state = "frame"
 	name = "AI display"
 	anchored = 1
@@ -298,15 +272,22 @@
 
 	process()
 		if(stat & NOPOWER)
-			overlays = null
+			overlays.Cut()
 			return
 
 		update()
 
+	emp_act(severity)
+		if(stat & (BROKEN|NOPOWER))
+			..(severity)
+			return
+		set_picture("ai_bsod")
+		..(severity)
+
 	proc/update()
 
 		if(mode==0) //Blank
-			overlays = null
+			overlays.Cut()
 			return
 
 		if(mode==1)	// AI emoticon
@@ -337,6 +318,16 @@
 					set_picture("ai_facepalm")
 				if("Friend Computer")
 					set_picture("ai_friend")
+				if("Tribunal")
+					set_picture("tribunal")
+				if("Beer mug")
+					set_picture("ai_beer")
+				if("Dwarf")
+					set_picture("ai_dwarf")
+				if("Fishtank")
+					set_picture("ai_fishtank")
+				if("Plump Helmet")
+					set_picture("ai_plump")
 
 			return
 
@@ -347,5 +338,5 @@
 
 	proc/set_picture(var/state)
 		picture_state = state
-		overlays = null
-		overlays += image('status_display.dmi', icon_state=picture_state)
+		overlays.Cut()
+		overlays += image('icons/obj/status_display.dmi', icon_state=picture_state)

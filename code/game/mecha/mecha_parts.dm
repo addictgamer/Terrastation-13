@@ -4,7 +4,7 @@
 
 /obj/item/mecha_parts
 	name = "mecha part"
-	icon = 'mech_construct.dmi'
+	icon = 'icons/mecha/mech_construct.dmi'
 	icon_state = "blank"
 	w_class = 20
 	flags = FPRINT | TABLEPASS | CONDUCT
@@ -205,12 +205,12 @@
 ////////// Firefighter
 
 /obj/item/mecha_parts/chassis/firefighter
-	name = "Ripley-on-Fire Chassis"
+	name = "Firefighter Chassis"
 
 	New()
 		..()
 		construct = new /datum/construction/mecha/firefighter_chassis(src)
-
+/*
 /obj/item/mecha_parts/part/firefighter_torso
 	name="Ripley-on-Fire Torso"
 	icon_state = "ripley_harness"
@@ -230,7 +230,7 @@
 /obj/item/mecha_parts/part/firefighter_right_leg
 	name="Ripley-on-Fire Right Leg"
 	icon_state = "ripley_r_leg"
-
+*/
 
 ////////// HONK
 
@@ -293,120 +293,123 @@
 	icon_state = "phazon_harness"
 	construction_time = 300
 	construction_cost = list("metal"=35000,"glass"=10000,"plasma"=20000)
-	origin_tech = "programming=4;materials=7;bluespace=6;powerstorage=6"
+	origin_tech = "programming=5;materials=7;bluespace=6;powerstorage=6"
 
 /obj/item/mecha_parts/part/phazon_head
 	name="Phazon Head"
 	icon_state = "phazon_head"
 	construction_time = 200
 	construction_cost = list("metal"=15000,"glass"=5000,"plasma"=10000)
-	origin_tech = "programming=3;materials=5bluespace=2;magnets=6"
+	origin_tech = "programming=4;materials=5;magnets=6"
 
 /obj/item/mecha_parts/part/phazon_left_arm
 	name="Phazon Left Arm"
 	icon_state = "phazon_l_arm"
 	construction_time = 200
 	construction_cost = list("metal"=20000,"plasma"=10000)
-	origin_tech = "materials=5;bluespace=3;magnets=2"
+	origin_tech = "materials=5;bluespace=2;magnets=2"
 
 /obj/item/mecha_parts/part/phazon_right_arm
 	name="Phazon Right Arm"
 	icon_state = "phazon_r_arm"
 	construction_time = 200
 	construction_cost = list("metal"=20000,"plasma"=10000)
-	origin_tech = "materials=5;bluespace=3;magnets=2"
+	origin_tech = "materials=5;bluespace=2;magnets=2"
 
 /obj/item/mecha_parts/part/phazon_left_leg
 	name="Phazon Left Leg"
 	icon_state = "phazon_l_leg"
 	construction_time = 200
 	construction_cost = list("metal"=20000,"plasma"=10000)
-	origin_tech = "materials=5;bluespace=4;magnets=3"
+	origin_tech = "materials=5;bluespace=3;magnets=3"
 
 /obj/item/mecha_parts/part/phazon_right_leg
 	name="Phazon Right Leg"
 	icon_state = "phazon_r_leg"
 	construction_time = 200
 	construction_cost = list("metal"=20000,"plasma"=10000)
-	origin_tech = "materials=5;bluespace=4;magnets=3"
+	origin_tech = "materials=5;bluespace=3;magnets=3"
+
+///////// Odysseus
 
 
-////////// Warthog
-/*
-/obj/item/mecha_parts/chassis/warthog
-	name = "Warthog Chassis"
-	origin_tech = "materials=7"
+/obj/item/mecha_parts/chassis/odysseus
+	name = "Odysseus Chassis"
 
 	New()
 		..()
-		construct = new /datum/construction/mecha/warthog_chassis(src)
+		construct = new /datum/construction/mecha/odysseus_chassis(src)
 
-/obj/item/mecha_parts/part/warthog_torso
-	name="Warthog Torso"
-	icon_state = "warthog_harness"
-	construction_time = 300
-	construction_cost = list("metal"=45000,"glass"=10000,"plasma"=25000)
-	origin_tech = "programming=4;materials=7;powerstorage=5"
+/obj/item/mecha_parts/part/odysseus_head
+	name="Odysseus Head"
+	icon_state = "odysseus_head"
+	construction_time = 100
+	construction_cost = list("metal"=2000,"glass"=10000)
+	origin_tech = "programming=3;materials=2"
 
-/obj/item/mecha_parts/part/warthog_head
-	name="Warthog Head"
-	icon_state = "warthog_head"
+/obj/item/mecha_parts/part/odysseus_torso
+	name="Odysseus Torso"
+	desc="A torso part of Odysseus. Contains power unit, processing core and life support systems."
+	icon_state = "odysseus_torso"
+	origin_tech = "programming=2;materials=2;biotech=2;engineering=2"
+	construction_time = 180
+	construction_cost = list("metal"=25000)
+
+/obj/item/mecha_parts/part/odysseus_left_arm
+	name="Odysseus Left Arm"
+	desc="An Odysseus left arm. Data and power sockets are compatible with most exosuit tools."
+	icon_state = "odysseus_l_arm"
+	origin_tech = "programming=2;materials=2;engineering=2"
+	construction_time = 120
+	construction_cost = list("metal"=10000)
+
+/obj/item/mecha_parts/part/odysseus_right_arm
+	name="Odysseus Right Arm"
+	desc="An Odysseus right arm. Data and power sockets are compatible with most exosuit tools."
+	icon_state = "odysseus_r_arm"
+	origin_tech = "programming=2;materials=2;engineering=2"
+	construction_time = 120
+	construction_cost = list("metal"=10000)
+
+/obj/item/mecha_parts/part/odysseus_left_leg
+	name="Odysseus Left Leg"
+	desc="An Odysseus left leg. Contains somewhat complex servodrives and balance maintaining systems."
+	icon_state = "odysseus_l_leg"
+	origin_tech = "programming=2;materials=2;engineering=2"
+	construction_time = 130
+	construction_cost = list("metal"=15000)
+
+/obj/item/mecha_parts/part/odysseus_right_leg
+	name="Odysseus Right Leg"
+	desc="A Odysseus right leg. Contains somewhat complex servodrives and balance maintaining systems."
+	icon_state = "odysseus_r_leg"
+	origin_tech = "programming=2;materials=2;engineering=2"
+	construction_time = 130
+	construction_cost = list("metal"=15000)
+
+/*/obj/item/mecha_parts/part/odysseus_armour
+	name="Odysseus Carapace"
+	icon_state = "odysseus_armour"
+	origin_tech = "materials=3;engineering=3"
 	construction_time = 200
-	construction_cost = list("metal"=25000,"glass"=5000,"plasma"=10000)
-	origin_tech = "programming=4;materials=5"
-
-/obj/item/mecha_parts/part/warthog_left_arm
-	name="Warthog Left Arm"
-	icon_state = "warthog_l_arm"
-	construction_time = 200
-	construction_cost = list("metal"=25000,"plasma"=10000)
-	origin_tech = "materials=5;magnets=2;combat=3"
-
-/obj/item/mecha_parts/part/warthog_right_arm
-	name="Warthog Right Arm"
-	icon_state = "warthog_r_arm"
-	construction_time = 200
-	construction_cost = list("metal"=25000,"plasma"=20000)
-	origin_tech = "materials=5;magnets=2;combat=3"
-
-/obj/item/mecha_parts/part/warthog_left_leg
-	name="Warthog Left Leg"
-	icon_state = "warthog_l_leg"
-	construction_time = 200
-	construction_cost = list("metal"=25000,"plasma"=15000)
-	origin_tech = "materials=5;magnets=2"
-
-/obj/item/mecha_parts/part/warthog_right_leg
-	name="Warthog Right Leg"
-	icon_state = "warthog_r_leg"
-	construction_time = 200
-	construction_cost = list("metal"=25000,"plasma"=15000)
-	origin_tech = "materials=5;magnets=2"
-
-/obj/item/mecha_parts/part/warthog_armour
-	name="Warthog Armour Plates"
-	icon_state = "warthog_armour"
-	origin_tech = "materials=5;combat=4;"
-	construction_time = 600
-	construction_cost = list("metal"=50000,"glass"=5000"uranium"=1000)
-*/
+	construction_cost = list("metal"=15000)*/
 
 
 ///////// Circuitboards
 
-/obj/item/mecha_parts/circuitboard
+/obj/item/weapon/circuitboard/mecha
 	name = "Exosuit Circuit board"
-	icon = 'module.dmi'
+	icon = 'icons/obj/module.dmi'
 	icon_state = "std_mod"
 	item_state = "electronic"
-	flags = FPRINT | TABLEPASS| CONDUCT
+	board_type = "other"
+	flags = FPRINT | TABLEPASS | CONDUCT
 	force = 5.0
 	w_class = 2.0
 	throwforce = 5.0
 	throw_speed = 3
 	throw_range = 15
 
-//Ripley
 	ripley
 		origin_tech = "programming=3"
 
@@ -418,7 +421,6 @@
 		name = "Circuit board (Ripley Central Control module)"
 		icon_state = "mainboard"
 
-//Gygax
 	gygax
 		origin_tech = "programming=4"
 
@@ -429,13 +431,12 @@
 	gygax/targeting
 		name = "Circuit board (Gygax Weapon Control and Targeting module)"
 		icon_state = "mcontroller"
-		origin_tech = "programming=4;combat=3"
+		origin_tech = "programming=4;combat=4"
 
 	gygax/main
 		name = "Circuit board (Gygax Central Control module)"
 		icon_state = "mainboard"
 
-//Durand
 	durand
 		origin_tech = "programming=4"
 
@@ -452,57 +453,30 @@
 		name = "Circuit board (Durand Central Control module)"
 		icon_state = "mainboard"
 
-//Ripley-on-Fire
-	firefighter/peripherals
-		name = "Circuit board (Ripley-on-Fire Peripherals Control module)"
-		icon_state = "mcontroller"
-
-//H.O.N.K.
 	honker
 		origin_tech = "programming=4"
 
 	honker/peripherals
-		name = "Circuit board (H.O.N.K. Peripherals Control module)"
+		name = "Circuit board (H.O.N.K Peripherals Control module)"
 		icon_state = "mcontroller"
 
 	honker/targeting
-		name = "Circuit board (H.O.N.K. Weapon Control and Targeting module)"
+		name = "Circuit board (H.O.N.K Weapon Control and Targeting module)"
 		icon_state = "mcontroller"
 
 	honker/main
-		name = "Circuit board (H.O.N.K. Central Control module)"
+		name = "Circuit board (H.O.N.K Central Control module)"
 		icon_state = "mainboard"
 
-//Phazon
-	phazon
-		origin_tech = "programming=4;bluespace=6"
+	odysseus
+		origin_tech = "programming=3"
 
-	phazon/peripherals
-		name = "Circuit board (Phazon Peripherals Control module)"
+	odysseus/peripherals
+		name = "Circuit board (Odysseus Peripherals Control module)"
 		icon_state = "mcontroller"
 
-	phazon/targeting
-		name = "Circuit board (Phazon Weapon Control and Targeting module)"
-		icon_state = "mcontroller"
-
-	phazon/main
-		name = "Circuit board (Phazon Central Control module)"
-		icon_state = "mainboard"
-
-//Warthog
-	warthog
-		origin_tech = "programming=5;combat=4"
-
-	warthog/peripherals
-		name = "Circuit board (Warthog Peripherals Control module)"
-		icon_state = "mcontroller"
-
-	warthog/targeting
-		name = "Circuit board (Warthog Weapon Control and Targeting module)"
-		icon_state = "mcontroller"
-
-	warthog/main
-		name = "Circuit board (Warthog Central Control module)"
+	odysseus/main
+		name = "Circuit board (Odysseus Central Control module)"
 		icon_state = "mainboard"
 
 

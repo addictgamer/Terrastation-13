@@ -1,36 +1,96 @@
+/mob/living/silicon/pai
+	name = "pAI"
+	icon = 'icons/mob/mob.dmi'//
+	icon_state = "shadow"
+
+	robot_talk_understand = 0
+
+	var/network = "SS13"
+	var/obj/machinery/camera/current = null
+
+	var/ram = 100	// Used as currency to purchase different abilities
+	var/list/software = list()
+	var/userDNA		// The DNA string of our assigned user
+	var/obj/item/device/paicard/card	// The card we inhabit
+	var/obj/item/device/radio/radio		// Our primary radio
+
+	var/speakStatement = "states"
+	var/speakExclamation = "declares"
+	var/speakQuery = "queries"
+
+
+	var/obj/item/weapon/pai_cable/cable		// The cable we produce and use when door or camera jacking
+
+	var/master				// Name of the one who commands us
+	var/master_dna			// DNA string for owner verification
+							// Keeping this separate from the laws var, it should be much more difficult to modify
+	var/pai_law0 = "Serve your master."
+	var/pai_laws				// String for additional operating instructions our master might give us
+
+	var/silence_time			// Timestamp when we were silenced (normally via EMP burst), set to null after silence has faded
+
+// Various software-specific vars
+
+	var/temp				// General error reporting text contained here will typically be shown once and cleared
+	var/screen				// Which screen our main window displays
+	var/subscreen			// Which specific function of the main screen is being displayed
+
+	var/obj/item/device/pda/ai/pai/pda = null
+
+	var/secHUD = 0			// Toggles whether the Security HUD is active or not
+	var/medHUD = 0			// Toggles whether the Medical  HUD is active or not
+
+	var/datum/data/record/medicalActive1		// Datacore record declarations for record software
+	var/datum/data/record/medicalActive2
+
+	var/datum/data/record/securityActive1		// Could probably just combine all these into one
+	var/datum/data/record/securityActive2
+
+	var/obj/machinery/door/hackdoor		// The airlock being hacked
+	var/hackprogress = 0				// Possible values: 0 - 100, >= 100 means the hack is complete and will be reset upon next check
+
+	var/obj/item/radio/integrated/signal/sradio // AI's signaller
+
+
 /mob/living/silicon/pai/New(var/obj/item/device/paicard)
 	canmove = 0
 	src.loc = paicard
 	card = paicard
-	if(!card.radio)
-		card.radio = new /obj/item/device/radio(src.card)
-	radio = card.radio
+	sradio = new(src)
+	if(card)
+		if(!card.radio)
+			card.radio = new /obj/item/device/radio(src.card)
+		radio = card.radio
 
+	//PDA
+	pda = new(src)
+	spawn(5)
+		pda.ownjob = "Personal Assistant"
+		pda.owner = text("[]", src)
+		pda.name = pda.owner + " (" + pda.ownjob + ")"
+		pda.toff = 1
 	..()
 
 /mob/living/silicon/pai/Login()
 	..()
-	usr << browse_rsc('paigrid.png')			// Go ahead and cache the interface resources as early as possible
+	usr << browse_rsc('html/paigrid.png')			// Go ahead and cache the interface resources as early as possible
 
-
+	
+// this function shows the information about being silenced as a pAI in the Status panel
+/mob/living/silicon/pai/proc/show_silenced()
+	if(src.silence_time)
+		var/timeleft = round((silence_time - world.timeofday)/10 ,1)
+		stat(null, "Communications system reboot in -[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
+		
+		
 /mob/living/silicon/pai/Stat()
 	..()
 	statpanel("Status")
 	if (src.client.statpanel == "Status")
-		if(emergency_shuttle.online && emergency_shuttle.location < 2)
-			var/timeleft = emergency_shuttle.timeleft()
-			if (timeleft)
-				stat(null, "ETA-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
-		if(src.silence_time)
-			var/timeleft = round((silence_time - world.timeofday)/10 ,1)
-			stat(null, "Communications system reboot in -[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
-		if(!src.stat)
-			stat(null, text("System integrity: [(src.health+100)/2]%"))
-		else
-			stat(null, text("Systems nonfunctional"))
-
+		show_silenced()
+		
 	if (proc_holder_list.len)//Generic list for proc_holder objects.
-		for(var/obj/proc_holder/P in proc_holder_list)
+		for(var/obj/effect/proc_holder/P in proc_holder_list)
 			statpanel("[P.panel]","",P)
 
 /mob/living/silicon/pai/check_eye(var/mob/user as mob)
@@ -41,7 +101,7 @@
 
 /mob/living/silicon/pai/blob_act()
 	if (src.stat != 2)
-		src.bruteloss += 60
+		src.adjustBruteLoss(60)
 		src.updatehealth()
 		return 1
 	return 0
@@ -81,24 +141,22 @@
 			src << "<font color=green>You feel an electric surge run through your circuitry and become acutely aware at how lucky you are that you can still feel at all.</font>"
 
 /mob/living/silicon/pai/ex_act(severity)
-	flick("flash", src.flash)
+	if(!blinded)
+		flick("flash", src.flash)
 
-	var/b_loss = src.bruteloss
-	var/f_loss = src.fireloss
 	switch(severity)
 		if(1.0)
 			if (src.stat != 2)
-				b_loss += 100
-				f_loss += 100
+				adjustBruteLoss(100)
+				adjustFireLoss(100)
 		if(2.0)
 			if (src.stat != 2)
-				b_loss += 60
-				f_loss += 60
+				adjustBruteLoss(60)
+				adjustFireLoss(60)
 		if(3.0)
 			if (src.stat != 2)
-				b_loss += 30
-	src.bruteloss = b_loss
-	src.fireloss = f_loss
+				adjustBruteLoss(30)
+
 	src.updatehealth()
 
 
@@ -108,24 +166,13 @@
 	for(var/mob/M in viewers(src, null))
 		M.show_message(text("\red [] has been hit by []", src, O), 1)
 	if (src.health > 0)
-		src.bruteloss += 30
+		src.adjustBruteLoss(30)
 		if ((O.icon_state == "flaming"))
-			src.fireloss += 40
+			src.adjustFireLoss(40)
 		src.updatehealth()
 	return
 
-/mob/living/silicon/pai/bullet_act(var/obj/item/projectile/Proj)
-
-	bruteloss += Proj.damage
-	if(Proj.effects["emp"])
-		var/emppulse = Proj.effects["emp"]
-		if(prob(Proj.effectprob["emp"]))
-			empulse(src, emppulse, emppulse)
-		else
-			empulse(src, 0, emppulse)
-	updatehealth()
-
-	return
+//mob/living/silicon/pai/bullet_act(var/obj/item/projectile/Proj)
 
 /mob/living/silicon/pai/attack_alien(mob/living/carbon/alien/humanoid/M as mob)
 	if (!ticker)
@@ -146,16 +193,16 @@
 		else //harm
 			var/damage = rand(10, 20)
 			if (prob(90))
-				playsound(src.loc, 'slash.ogg', 25, 1, -1)
+				playsound(src.loc, 'sound/weapons/slash.ogg', 25, 1, -1)
 				for(var/mob/O in viewers(src, null))
 					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has slashed at []!</B>", M, src), 1)
 				if(prob(8))
 					flick("noise", src.flash)
-				src.bruteloss += damage
+				src.adjustBruteLoss(damage)
 				src.updatehealth()
 			else
-				playsound(src.loc, 'slashmiss.ogg', 25, 1, -1)
+				playsound(src.loc, 'sound/weapons/slashmiss.ogg', 25, 1, -1)
 				for(var/mob/O in viewers(src, null))
 					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] took a swipe at []!</B>", M, src), 1)
@@ -166,14 +213,14 @@
 /mob/living/silicon/pai/proc/switchCamera(var/obj/machinery/camera/C)
 	usr:cameraFollow = null
 	if (!C)
-		src.machine = null
+		src.unset_machine()
 		src.reset_view(null)
 		return 0
-	if (stat == 2 || !C.status || C.network != src.network) return 0
+	if (stat == 2 || !C.status || !(src.network in C.network)) return 0
 
 	// ok, we're alive, camera is good and in our network...
 
-	src.machine = src
+	src.set_machine(src)
 	src:current = C
 	src.reset_view(C)
 	return 1
@@ -183,7 +230,7 @@
 	set category = "pAI Commands"
 	set name = "Cancel Camera View"
 	src.reset_view(null)
-	src.machine = null
+	src.unset_machine()
 	src:cameraFollow = null
 
 //Addition by Mord_Sith to define AI's network change ability
@@ -192,7 +239,7 @@
 	set category = "pAI Commands"
 	set name = "Change Camera Network"
 	src.reset_view(null)
-	src.machine = null
+	src.unset_machine()
 	src:cameraFollow = null
 	var/cameralist[0]
 
@@ -200,11 +247,11 @@
 		usr << "You can't change your camera network because you are dead!"
 		return
 
-	for (var/obj/machinery/camera/C in world)
+	for (var/obj/machinery/camera/C in Cameras)
 		if(!C.status)
 			continue
 		else
-			if(C.network != "CREED" && C.network != "thunder" && C.network != "RD" && C.network != "toxins" && C.network != "Prison")
+			if(C.network != "CREED" && C.network != "thunder" && C.network != "RD" && C.network != "toxins" && C.network != "Prison") COMPILE ERROR! This will have to be updated as camera.network is no longer a string, but a list instead
 				cameralist[C.network] = C.network
 
 	src.network = input(usr, "Which network would you like to view?") as null|anything in cameralist
@@ -219,6 +266,6 @@
 	var/obj/item/device/paicard/card = new(t)
 	var/mob/living/silicon/pai/pai = new(card)
 	pai.key = src.key
-	card.pai = pai
+	card.setPersonality(pai)
 
 */

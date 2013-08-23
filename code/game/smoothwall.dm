@@ -12,7 +12,10 @@
 		for(var/turf/simulated/wall/W in orange(src,1))
 			if(abs(src.x-W.x)-abs(src.y-W.y)) //doesn't count diagonal walls
 				junction |= get_dir(src,W)
-		for(var/obj/falsewall/W in orange(src,1))
+		for(var/obj/structure/falsewall/W in orange(src,1))
+			if(abs(src.x-W.x)-abs(src.y-W.y)) //doesn't count diagonal walls
+				junction |= get_dir(src,W)
+		for(var/obj/structure/falserwall/W in orange(src,1))
 			if(abs(src.x-W.x)-abs(src.y-W.y)) //doesn't count diagonal walls
 				junction |= get_dir(src,W)
 
@@ -28,17 +31,18 @@
 		for(var/obj/machinery/door/W in orange(src,1)) //doors should not result in diagonal walls, it just looks ugly. checking if area is shuttle so it won't merge with the station
 			if((abs(src.x-W.x)-abs(src.y-W.y)) && (istype(W.loc.loc,/area/shuttle) || istype(W.loc.loc,/area/supply)))
 				junction |= get_dir(src,W)
-		for(var/obj/grille/W in orange(src,1)) //same for grilles. checking if area is shuttle so it won't merge with the station
+		for(var/obj/structure/grille/W in orange(src,1)) //same for grilles. checking if area is shuttle so it won't merge with the station
 			if((abs(src.x-W.x)-abs(src.y-W.y)) && (istype(W.loc.loc,/area/shuttle) || istype(W.loc.loc,/area/supply)))
 				junction |= get_dir(src,W)*/
 
 	if(istype(src,/turf/simulated/wall))
 		var/turf/simulated/wall/wall = src
 		wall.icon_state = "[wall.walltype][junction]"
-	else if (istype(src,/obj/falserwall))
+	else if (istype(src,/obj/structure/falserwall))
 		src.icon_state = "rwall[junction]"
-	else if (istype(src,/obj/falsewall))
-		src.icon_state = "wall[junction]"
+	else if (istype(src,/obj/structure/falsewall))
+		var/obj/structure/falsewall/fwall = src
+		fwall.icon_state = "[fwall.mineral][junction]"
 /*	else if(istype(src,/turf/simulated/shuttle/wall))
 		var/newicon = icon;
 		var/newiconstate = icon_state;
@@ -67,30 +71,24 @@
 			if(is_floor) //if is_floor = 1, we use the floor diagonal sprite
 				src.icon = newicon; //we'll set the floor's icon to the floor next to it and overlay the wall segment. shuttle floor sprites have priority
 				src.icon_state = newiconstate; //
-				src.overlays += icon('shuttle.dmi',"swall_f[junction]")
+				src.overlays += icon('icons/turf/shuttle.dmi',"swall_f[junction]")
 			else //otherwise, the space one
 				src.icon_state = "swall_s[junction]"*/
 
 	return
 
+/atom/proc/relativewall_neighbours()
+	for(var/turf/simulated/wall/W in range(src,1))
+		W.relativewall()
+	for(var/obj/structure/falsewall/W in range(src,1))
+		W.relativewall()
+		W.update_icon()//Refreshes the wall to make sure the icons don't desync
+	for(var/obj/structure/falserwall/W in range(src,1))
+		W.relativewall()
+	return
+
 /turf/simulated/wall/New()
-
-	for(var/turf/simulated/wall/W in range(src,1))
-		W.relativewall()
-
-	for(var/obj/falsewall/W in range(src,1))
-		W.relativewall()
-
-	..()
-
-/obj/falsewall/New()
-
-	for(var/turf/simulated/wall/W in range(src,1))
-		W.relativewall()
-
-	for(var/obj/falsewall/W in range(src,1))
-		W.relativewall()
-
+	relativewall_neighbours()
 	..()
 
 /*/turf/simulated/shuttle/wall/New()
@@ -110,29 +108,16 @@
 		for(var/turf/simulated/wall/W in range(temploc,1))
 			W.relativewall()
 
-		for(var/obj/falsewall/W in range(temploc,1))
+		for(var/obj/structure/falsewall/W in range(temploc,1))
 			W.relativewall()
 
 	for(var/direction in cardinal)
-		for(var/obj/glowshroom/shroom in get_step(src,direction))
+		for(var/obj/effect/glowshroom/shroom in get_step(src,direction))
 			if(!shroom.floor) //shrooms drop to the floor
 				shroom.floor = 1
 				shroom.icon_state = "glowshroomf"
 				shroom.pixel_x = 0
 				shroom.pixel_y = 0
-
-	..()
-
-/obj/falsewall/Del()
-
-	var/temploc = src.loc
-
-	spawn(10)
-		for(var/turf/simulated/wall/W in range(temploc,1))
-			W.relativewall()
-
-		for(var/obj/falsewall/W in range(temploc,1))
-			W.relativewall()
 
 	..()
 
@@ -145,3 +130,25 @@
 			W.relativewall()
 
 	..()*/
+
+/turf/simulated/wall/relativewall()
+	if(istype(src,/turf/simulated/wall/vault)) //HACK!!!
+		return
+
+	var/junction = 0 //will be used to determine from which side the wall is connected to other walls
+
+	for(var/turf/simulated/wall/W in orange(src,1))
+		if(abs(src.x-W.x)-abs(src.y-W.y)) //doesn't count diagonal walls
+			if(src.mineral == W.mineral)//Only 'like' walls connect -Sieve
+				junction |= get_dir(src,W)
+	for(var/obj/structure/falsewall/W in orange(src,1))
+		if(abs(src.x-W.x)-abs(src.y-W.y)) //doesn't count diagonal walls
+			if(src.mineral == W.mineral)
+				junction |= get_dir(src,W)
+	for(var/obj/structure/falserwall/W in orange(src,1))
+		if(abs(src.x-W.x)-abs(src.y-W.y)) //doesn't count diagonal walls
+			if(src.mineral == W.mineral)
+				junction |= get_dir(src,W)
+	var/turf/simulated/wall/wall = src
+	wall.icon_state = "[wall.walltype][junction]"
+	return

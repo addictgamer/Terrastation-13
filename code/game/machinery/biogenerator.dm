@@ -1,7 +1,7 @@
 /obj/machinery/biogenerator
 	name = "Biogenerator"
-	desc = "It can make stuff out of the plants you grow."
-	icon = 'biogenerator.dmi'
+	desc = ""
+	icon = 'icons/obj/biogenerator.dmi'
 	icon_state = "biogen-stand"
 	density = 1
 	anchored = 1
@@ -17,7 +17,7 @@
 		var/datum/reagents/R = new/datum/reagents(1000)
 		reagents = R
 		R.my_atom = src
-		beaker = new /obj/item/weapon/reagent_containers/glass/large(src)
+		beaker = new /obj/item/weapon/reagent_containers/glass/beaker/large(src)
 
 	on_reagent_change()			//When the reagents change, change the icon as well.
 		update_icon()
@@ -42,7 +42,7 @@
 			updateUsrDialog()
 	else if(processing)
 		user << "\red The biogenerator is currently processing."
-	else if(istype(O, /obj/item/weapon/plantbag))
+	else if(istype(O, /obj/item/weapon/storage/bag/plants))
 		var/i = 0
 		for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in contents)
 			i++
@@ -74,10 +74,10 @@
 	update_icon()
 	return
 
-/obj/machinery/biogenerator/proc/interact(mob/user as mob)
+/obj/machinery/biogenerator/interact(mob/user as mob)
 	if(stat & BROKEN)
 		return
-	user.machine = src
+	user.set_machine(src)
 	var/dat = "<TITLE>Biogenerator</TITLE>Biogenerator:<BR>"
 	if (processing)
 		dat += "<FONT COLOR=red>Biogenerator is processing! Please wait...</FONT>"
@@ -92,9 +92,14 @@
 					dat += "<A href='?src=\ref[src];action=create;item=milk;cost=20'>10 milk</A> <FONT COLOR=blue>(20)</FONT><BR>"
 					dat += "<A href='?src=\ref[src];action=create;item=meat;cost=50'>Slab of meat</A> <FONT COLOR=blue>(50)</FONT><BR>"
 					dat += "Nutrient<BR>"
-					dat += "<A href='?src=\ref[src];action=create;item=ez;cost=10'>E-Z-Nutrient</A> <FONT COLOR=blue>(10)</FONT><BR>"
-					dat += "<A href='?src=\ref[src];action=create;item=l4z;cost=20'>Left 4 Zed</A> <FONT COLOR=blue>(20)</FONT><BR>"
-					dat += "<A href='?src=\ref[src];action=create;item=rh;cost=25'>Robust Harvest</A> <FONT COLOR=blue>(25)</FONT><BR>"
+					dat += "<A href='?src=\ref[src];action=create;item=ez;cost=10'>E-Z-Nutrient</A> <FONT COLOR=blue>(10)</FONT> | <A href='?src=\ref[src];action=create;item=ez5;cost=50'>x5</A><BR>"
+					dat += "<A href='?src=\ref[src];action=create;item=l4z;cost=20'>Left 4 Zed</A> <FONT COLOR=blue>(20)</FONT> | <A href='?src=\ref[src];action=create;item=l4z5;cost=100'>x5</A><BR>"
+					dat += "<A href='?src=\ref[src];action=create;item=rh;cost=25'>Robust Harvest</A> <FONT COLOR=blue>(25)</FONT> | <A href='?src=\ref[src];action=create;item=rh5;cost=125'>x5</A><BR>"
+					dat += "Leather<BR>"
+					dat += "<A href='?src=\ref[src];action=create;item=wallet;cost=100'>Wallet</A> <FONT COLOR=blue>(100)</FONT><BR>"
+					dat += "<A href='?src=\ref[src];action=create;item=gloves;cost=250'>Botanical gloves</A> <FONT COLOR=blue>(250)</FONT><BR>"
+					dat += "<A href='?src=\ref[src];action=create;item=tbelt;cost=300'>Utility belt</A> <FONT COLOR=blue>(300)</FONT><BR>"
+					dat += "<A href='?src=\ref[src];action=create;item=satchel;cost=400'>Leather Satchel</A> <FONT COLOR=blue>(400)</FONT><BR>"
 					//dat += "Other<BR>"
 					//dat += "<A href='?src=\ref[src];action=create;item=monkey;cost=500'>Monkey</A> <FONT COLOR=blue>(500)</FONT><BR>"
 				else
@@ -134,7 +139,7 @@
 		processing = 1
 		update_icon()
 		updateUsrDialog()
-		playsound(src.loc, 'blender.ogg', 50, 1)
+		playsound(src.loc, 'sound/machines/blender.ogg', 50, 1)
 		use_power(S*30)
 		sleep(S+15)
 		processing = 0
@@ -163,6 +168,32 @@
 			new/obj/item/nutrient/l4z(src.loc)
 		if("rh")
 			new/obj/item/nutrient/rh(src.loc)
+		if("ez5") //It's not an elegant method, but it's safe and easy. -Cheridan
+			new/obj/item/nutrient/ez(src.loc)
+			new/obj/item/nutrient/ez(src.loc)
+			new/obj/item/nutrient/ez(src.loc)
+			new/obj/item/nutrient/ez(src.loc)
+			new/obj/item/nutrient/ez(src.loc)
+		if("l4z5")
+			new/obj/item/nutrient/l4z(src.loc)
+			new/obj/item/nutrient/l4z(src.loc)
+			new/obj/item/nutrient/l4z(src.loc)
+			new/obj/item/nutrient/l4z(src.loc)
+			new/obj/item/nutrient/l4z(src.loc)
+		if("rh5")
+			new/obj/item/nutrient/rh(src.loc)
+			new/obj/item/nutrient/rh(src.loc)
+			new/obj/item/nutrient/rh(src.loc)
+			new/obj/item/nutrient/rh(src.loc)
+			new/obj/item/nutrient/rh(src.loc)
+		if("wallet")
+			new/obj/item/weapon/storage/wallet(src.loc)
+		if("gloves")
+			new/obj/item/clothing/gloves/botanic_leather(src.loc)
+		if("tbelt")
+			new/obj/item/weapon/storage/belt/utility(src.loc)
+		if("satchel")
+			new/obj/item/weapon/storage/backpack/satchel(src.loc)
 		if("monkey")
 			new/mob/living/carbon/monkey(src.loc)
 	processing = 0
@@ -175,15 +206,16 @@
 	if(usr.stat || usr.restrained()) return
 	if(!in_range(src, usr)) return
 
-	usr.machine = src
+	usr.set_machine(src)
 
 	switch(href_list["action"])
 		if("activate")
 			activate()
 		if("detach")
-			beaker.loc = src.loc
-			beaker = null
-			update_icon()
+			if(beaker)
+				beaker.loc = src.loc
+				beaker = null
+				update_icon()
 		if("create")
 			create_product(href_list["item"],text2num(href_list["cost"]))
 		if("menu")

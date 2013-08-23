@@ -1,3 +1,5 @@
+//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:33
+
 /obj/machinery/shipcore
 	icon = 'craft.dmi'
 	icon_state = "core"
@@ -94,7 +96,7 @@
 		for(var/turf/T in src.turfs)
 
 			for(var/obj/O in T)
-				if(istype(O, /obj/ship_landing_beacon)) // Leave beacons where they are, we don't want to take them with us.
+				if(istype(O, /obj/effect/ship_landing_beacon)) // Leave beacons where they are, we don't want to take them with us.
 					continue
 				var/
 					_x = Center.x + O.x - xsav
@@ -116,7 +118,7 @@
 			var/turf/Newloc = locate(_x, _y, _z)
 			//new T(Newloc)
 			new T.type(Newloc)
-			T.ReplaceWithSpace()
+			T.ChangeTurf(/turf/space)
 
 			if(Newloc)
 				Newloc.assume_air(T.return_air())
@@ -172,8 +174,8 @@ obj/machinery/shipcore/Topic(href, href_list)
 		src.group_self()
 	if (href_list["move"])
 		var/list/beacons = list()
-		for(var/obj/ship_landing_beacon/b in world)
-			if(istype(b, /obj/ship_landing_beacon))
+		for(var/obj/effect/ship_landing_beacon/b in world)
+			if(istype(b, /obj/effect/ship_landing_beacon))
 				if(b.active)
 					beacons.Add(b)
 		if(!beacons.len)
@@ -193,10 +195,9 @@ obj/machinery/shipcore/Topic(href, href_list)
 obj/machinery/ship_component
 	name = "ship component"
 	icon = 'craft.dmi'
-	var
-		obj/machinery/shipcore/core
-		required_draw = 0
-		active = 1
+	var/obj/machinery/shipcore/core
+	var/required_draw = 0
+	var/active = 1
 
 	proc
 		draw_power(var/n as num)
@@ -213,10 +214,9 @@ obj/machinery/ship_component/thruster
 	density = 1
 	opacity = 1
 
-	var
-		cooldown = 600 // In 1/10th seconds
-		lastused
-		ready = 0
+	var/cooldown = 600 // In 1/10th seconds
+	var/lastused
+	var/ready = 0
 	required_draw = 100
 
 	proc
@@ -249,9 +249,8 @@ obj/machinery/ship_component/engine
 	density = 1
 	opacity = 1
 
-	var
-		charge = 1000
-		capacity = 1000
+	var/charge = 1000
+	var/capacity = 1000
 
 	draw_power(var/n as num)
 		if(charge >= n)
@@ -330,7 +329,7 @@ obj/machinery/ship_component/control_panel
 	icon = 'craft.dmi'
 	icon_state = "ship_overlay"
 
-/obj/ship_landing_beacon
+/obj/effect/ship_landing_beacon
 	icon = 'craft.dmi'
 	icon_state = "beacon"
 	name = "Beacon"

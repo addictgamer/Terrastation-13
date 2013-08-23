@@ -2,11 +2,15 @@
 	var/angle
 	var/dx
 	var/dy
-	var/counter = 50		// to make the vars update during 1st call
+//	var/counter = 50		// to make the vars update during 1st call
 	var/rate
+	var/list/solars			// for debugging purposes, references solars_list at the constructor
+	var/nexttime = 3600		// Replacement for var/counter to force the sun to move every X IC minutes
 
 /datum/sun/New()
-	rate = rand(75,125)/100			// 75% - 125% of standard rotation
+
+	solars = solars_list
+	rate = rand(750,1250)/1000			// 75.0% - 125.0% of standard rotation
 	if(prob(50))
 		rate = -rate
 
@@ -14,13 +18,22 @@
 
 /datum/sun/proc/calc_position()
 
-	counter++
+/*	counter++
 	if(counter<50)		// count 50 pticks (50 seconds, roughly - about a 5deg change)
 		return
-	counter = 0
+	counter = 0 */
 
-	angle = ((rate*world.realtime/100)%360 + 360)%360		// gives about a 60 minute rotation time
-															// now 45 - 75 minutes, depending on rate
+	angle = ((rate*world.time/100)%360 + 360)%360
+	/*
+		Yields a 45 - 75 IC minute rotational period
+		Rotation rate can vary from 4.8 deg/min to 8 deg/min (288 to 480 deg/hr)
+	*/
+
+	//  To prevent excess server load the server only updates the sun's sight lines every 6 minutes
+	if(nexttime < world.time)
+		return
+	nexttime = nexttime + 3600	// 600 world.time ticks = 1 minute, 3600 = 6 minutes.
+
 	// now calculate and cache the (dx,dy) increments for line drawing
 
 	var/s = sin(angle)
@@ -41,12 +54,23 @@
 		dy = c / abs(s)
 
 
-	for(var/obj/machinery/power/tracker/T in machines)
-		T.set_angle(angle)
+	for(var/obj/machinery/power/M in solars_list)
 
-	for(var/obj/machinery/power/solar/S in machines)
-		if(S.control)
-			occlusion(S)
+		if(!M.powernet)
+			solars_list.Remove(M)
+			continue
+
+		// Solar Tracker
+		if(istype(M, /obj/machinery/power/tracker))
+			var/obj/machinery/power/tracker/T = M
+			T.set_angle(angle)
+
+		// Solar Panel
+		else if(istype(M, /obj/machinery/power/solar))
+			var/obj/machinery/power/solar/S = M
+			if(S.control)
+				occlusion(S)
+
 
 
 // for a solar panel, trace towards sun to see if we're in shadow
@@ -73,26 +97,5 @@
 	S.update_solar_exposure()
 
 
-//returns the north-zero clockwise angle in degrees, given a direction
 
-/proc/dir2angle(var/D)
-	switch(D)
-		if(1)
-			return 0
-		if(2)
-			return 180
-		if(4)
-			return 90
-		if(8)
-			return 270
-		if(5)
-			return 45
-		if(6)
-			return 135
-		if(9)
-			return 315
-		if(10)
-			return 225
-		else
-			return null
 

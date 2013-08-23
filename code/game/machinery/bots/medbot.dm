@@ -6,19 +6,17 @@
 /obj/machinery/bot/medbot
 	name = "Medibot"
 	desc = "A little medical robot. He looks somewhat underwhelmed."
-	icon = 'aibots.dmi'
+	icon = 'icons/obj/aibots.dmi'
 	icon_state = "medibot0"
 	layer = 5.0
-	density = 1
+	density = 0
 	anchored = 0
 	health = 20
 	maxhealth = 20
 	req_access =list(access_medical)
 	var/stunned = 0 //It can be stunned by tasers. Delicate circuits.
-	var/locked = 1
 //var/emagged = 0
-	var/obj/machinery/camera/cam = null
-	var/list/botcard_access = list(access_medical, access_morgue, access_medlab, access_robotics)
+	var/list/botcard_access = list(access_medical)
 	var/obj/item/weapon/reagent_containers/glass/reagent_glass = null //Can be set to draw from this for reagents.
 	var/skin = null //Set to "tox", "ointment" or "o2" for the other two firstaid kits.
 	var/frustration = 0
@@ -30,13 +28,13 @@
 	var/last_newpatient_speak = 0 //Don't spam the "HEY I'M COMING" messages
 	var/currently_healing = 0
 	var/injection_amount = 15 //How much reagent do we inject at a time?
-	var/heal_threshold = 15 //Start healing when they have this much damage in a category
+	var/heal_threshold = 10 //Start healing when they have this much damage in a category
 	var/use_beaker = 0 //Use reagents in beaker instead of default treatment agents.
 	//Setting which reagents to use to treat what by default. By id.
-	var/treatment_brute = "bicaridine"
-	var/treatment_oxy = "dexalin"
-	var/treatment_fire = "kelotane"
-	var/treatment_tox = "anti_toxin"
+	var/treatment_brute = "tricordrazine"
+	var/treatment_oxy = "tricordrazine"
+	var/treatment_fire = "tricordrazine"
+	var/treatment_tox = "tricordrazine"
 	var/treatment_virus = "spaceacillin"
 	var/shut_up = 0 //self explanatory :)
 
@@ -45,11 +43,14 @@
 	desc = "International Medibot of mystery."
 	skin = "bezerk"
 	treatment_oxy = "dexalinp"
+	treatment_brute = "bicaridine"
+	treatment_fire = "kelotane"
+	treatment_tox = "anti_toxin"
 
 /obj/item/weapon/firstaid_arm_assembly
 	name = "first aid/robot arm assembly"
 	desc = "A first aid kit with a robot arm permanently grafted to it."
-	icon = 'aibots.dmi'
+	icon = 'icons/obj/aibots.dmi'
 	icon_state = "firstaid_arm"
 	var/build_step = 0
 	var/created_name = "Medibot" //To preserve the name if it's a unique medbot I guess
@@ -60,7 +61,7 @@
 		..()
 		spawn(5)
 			if(src.skin)
-				src.overlays += image('aibots.dmi', "kit_skin_[src.skin]")
+				src.overlays += image('icons/obj/aibots.dmi', "kit_skin_[src.skin]")
 
 
 /obj/machinery/bot/medbot/New()
@@ -69,16 +70,14 @@
 
 	spawn(4)
 		if(src.skin)
-			src.overlays += image('aibots.dmi', "medskin_[src.skin]")
+			src.overlays += image('icons/obj/aibots.dmi', "medskin_[src.skin]")
 
 		src.botcard = new /obj/item/weapon/card/id(src)
 		if(isnull(src.botcard_access) || (src.botcard_access.len < 1))
-			src.botcard.access = get_access("Medical Doctor")
+			var/datum/job/doctor/J = new/datum/job/doctor
+			src.botcard.access = J.get_access()
 		else
 			src.botcard.access = src.botcard_access
-		src.cam = new /obj/machinery/camera(src)
-		src.cam.c_tag = src.name
-		src.cam.network = "SS13"
 
 /obj/machinery/bot/medbot/turn_on()
 	. = ..()
@@ -106,13 +105,14 @@
 	var/dat
 	dat += "<TT><B>Automatic Medical Unit v1.0</B></TT><BR><BR>"
 	dat += "Status: <A href='?src=\ref[src];power=1'>[src.on ? "On" : "Off"]</A><BR>"
+	dat += "Maintenance panel panel is [src.open ? "opened" : "closed"]<BR>"
 	dat += "Beaker: "
 	if (src.reagent_glass)
 		dat += "<A href='?src=\ref[src];eject=1'>Loaded \[[src.reagent_glass.reagents.total_volume]/[src.reagent_glass.reagents.maximum_volume]\]</a>"
 	else
 		dat += "None Loaded"
 	dat += "<br>Behaviour controls are [src.locked ? "locked" : "unlocked"]<hr>"
-	if(!src.locked)
+	if(!src.locked || issilicon(user))
 		dat += "<TT>Healing Threshold: "
 		dat += "<a href='?src=\ref[src];adj_threshold=-10'>--</a> "
 		dat += "<a href='?src=\ref[src];adj_threshold=-5'>-</a> "
@@ -139,7 +139,7 @@
 /obj/machinery/bot/medbot/Topic(href, href_list)
 	if(..())
 		return
-	usr.machine = src
+	usr.set_machine(src)
 	src.add_fingerprint(usr)
 	if ((href_list["power"]) && (src.allowed(usr)))
 		if (src.on)
@@ -147,7 +147,7 @@
 		else
 			turn_on()
 
-	else if((href_list["adj_threshold"]) && (!src.locked))
+	else if((href_list["adj_threshold"]) && (!src.locked || issilicon(usr)))
 		var/adjust_num = text2num(href_list["adj_threshold"])
 		src.heal_threshold += adjust_num
 		if(src.heal_threshold < 5)
@@ -155,7 +155,7 @@
 		if(src.heal_threshold > 75)
 			src.heal_threshold = 75
 
-	else if((href_list["adj_inject"]) && (!src.locked))
+	else if((href_list["adj_inject"]) && (!src.locked || issilicon(usr)))
 		var/adjust_num = text2num(href_list["adj_inject"])
 		src.injection_amount += adjust_num
 		if(src.injection_amount < 5)
@@ -163,7 +163,7 @@
 		if(src.injection_amount > 15)
 			src.injection_amount = 15
 
-	else if((href_list["use_beaker"]) && (!src.locked))
+	else if((href_list["use_beaker"]) && (!src.locked || issilicon(usr)))
 		src.use_beaker = !src.use_beaker
 
 	else if (href_list["eject"] && (!isnull(src.reagent_glass)))
@@ -171,9 +171,9 @@
 			src.reagent_glass.loc = get_turf(src)
 			src.reagent_glass = null
 		else
-			usr << "You cannot eject the beaker because the panel is locked!"
+			usr << "<span class='notice'>You cannot eject the beaker because the panel is locked.</span>"
 
-	else if ((href_list["togglevoice"]) && (!src.locked))
+	else if ((href_list["togglevoice"]) && (!src.locked || issilicon(usr)))
 		src.shut_up = !src.shut_up
 
 	src.updateUsrDialog()
@@ -181,25 +181,30 @@
 
 /obj/machinery/bot/medbot/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if (istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
-		if (src.allowed(user))
+		if (src.allowed(user) && !open && !emagged)
 			src.locked = !src.locked
-			user << "Controls are now [src.locked ? "locked." : "unlocked."]"
+			user << "<span class='notice'>Controls are now [src.locked ? "locked." : "unlocked."]</span>"
 			src.updateUsrDialog()
 		else
-			user << "\red Access denied."
+			if(emagged)
+				user << "<span class='warning'>ERROR</span>"
+			if(open)
+				user << "<span class='warning'>Please close the access panel before locking it.</span>"
+			else
+				user << "<span class='warning'>Access denied.</span>"
 
 	else if (istype(W, /obj/item/weapon/reagent_containers/glass))
 		if(src.locked)
-			user << "You cannot insert a beaker because the panel is locked!"
+			user << "<span class='notice'>You cannot insert a beaker because the panel is locked.</span>"
 			return
 		if(!isnull(src.reagent_glass))
-			user << "There is already a beaker loaded!"
+			user << "<span class='notice'>There is already a beaker loaded.</span>"
 			return
 
 		user.drop_item()
 		W.loc = src
 		src.reagent_glass = W
-		user << "You insert [W]."
+		user << "<span class='notice'>You insert [W].</span>"
 		src.updateUsrDialog()
 		return
 
@@ -210,19 +215,20 @@
 
 /obj/machinery/bot/medbot/Emag(mob/user as mob)
 	..()
-	if(user) user << "\red You short out [src]'s reagent synthesis circuits."
-	spawn(0)
-		for(var/mob/O in hearers(src, null))
-			O.show_message("\red <B>[src] buzzes oddly!</B>", 1)
-	flick("medibot_spark", src)
-	src.patient = null
-	if(user) src.oldpatient = user
-	src.currently_healing = 0
-	src.last_found = world.time
-	src.anchored = 0
-	src.emagged = 1
-	src.on = 1
-	src.icon_state = "medibot[src.on]"
+	if(open && !locked)
+		if(user) user << "<span class='warning'>You short out [src]'s reagent synthesis circuits.</span>"
+		spawn(0)
+			for(var/mob/O in hearers(src, null))
+				O.show_message("\red <B>[src] buzzes oddly!</B>", 1)
+		flick("medibot_spark", src)
+		src.patient = null
+		if(user) src.oldpatient = user
+		src.currently_healing = 0
+		src.last_found = world.time
+		src.anchored = 0
+		src.emagged = 2
+		src.on = 1
+		src.icon_state = "medibot[src.on]"
 
 /obj/machinery/bot/medbot/process()
 	set background = 1
@@ -252,7 +258,7 @@
 		src.path = new()
 
 	if(!src.patient)
-		if(prob(1) && (!src.shut_up))
+		if(!src.shut_up && prob(1))
 			var/message = pick("Radar, put a mask on!","There's always a catch, and it's the best there is.","I knew it, I should've been a plastic surgeon.","What kind of medbay is this? Everyone's dropping like dead flies.","Delicious!")
 			src.speak(message)
 
@@ -292,8 +298,8 @@
 
 	if(src.patient && src.path.len == 0 && (get_dist(src,src.patient) > 1))
 		spawn(0)
-			src.path = AStar(src.loc, get_turf(src.patient), /turf/proc/CardinalNonspaceTurfsWithAccess, /turf/proc/Distance, 0, 30,id=botcard)
-			src.path = reverselist(src.path)
+			src.path = AStar(src.loc, get_turf(src.patient), /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 30,id=botcard)
+			if (!path) path = list()
 			if(src.path.len == 0)
 				src.oldpatient = src.patient
 				src.patient = null
@@ -322,27 +328,27 @@
 	if(C.suiciding)
 		return 0 //Kevorkian school of robotic medical assistants.
 
-	if(src.emagged) //Everyone needs our medicine. (Our medicine is toxins)
+	if(src.emagged == 2) //Everyone needs our medicine. (Our medicine is toxins)
 		return 1
 
 	//If they're injured, we're using a beaker, and don't have one of our WONDERCHEMS.
-	if((src.reagent_glass) && (src.use_beaker) && ((C.bruteloss >= heal_threshold) || (C.toxloss >= heal_threshold) || (C.toxloss >= heal_threshold) || (C.oxyloss >= (heal_threshold + 15))))
+	if((src.reagent_glass) && (src.use_beaker) && ((C.getBruteLoss() >= heal_threshold) || (C.getToxLoss() >= heal_threshold) || (C.getToxLoss() >= heal_threshold) || (C.getOxyLoss() >= (heal_threshold + 15))))
 		for(var/datum/reagent/R in src.reagent_glass.reagents.reagent_list)
 			if(!C.reagents.has_reagent(R))
 				return 1
 			continue
 
 	//They're injured enough for it!
-	if((C.bruteloss >= heal_threshold) && (!C.reagents.has_reagent(src.treatment_brute)))
+	if((C.getBruteLoss() >= heal_threshold) && (!C.reagents.has_reagent(src.treatment_brute)))
 		return 1 //If they're already medicated don't bother!
 
-	if((C.oxyloss >= (15 + heal_threshold)) && (!C.reagents.has_reagent(src.treatment_oxy)))
+	if((C.getOxyLoss() >= (15 + heal_threshold)) && (!C.reagents.has_reagent(src.treatment_oxy)))
 		return 1
 
-	if((C.fireloss >= heal_threshold) && (!C.reagents.has_reagent(src.treatment_fire)))
+	if((C.getFireLoss() >= heal_threshold) && (!C.reagents.has_reagent(src.treatment_fire)))
 		return 1
 
-	if((C.toxloss >= heal_threshold) && (!C.reagents.has_reagent(src.treatment_tox)))
+	if((C.getToxLoss() >= heal_threshold) && (!C.reagents.has_reagent(src.treatment_tox)))
 		return 1
 
 
@@ -380,7 +386,7 @@
 	if((src.use_beaker) && (src.reagent_glass) && (src.reagent_glass.reagents.total_volume))
 		reagent_id = "internal_beaker"
 
-	if(src.emagged) //Emagged! Time to poison everybody.
+	if(src.emagged == 2) //Emagged! Time to poison everybody.
 		reagent_id = "toxin"
 
 	var/virus = 0
@@ -391,19 +397,19 @@
 		if(!C.reagents.has_reagent(src.treatment_virus))
 			reagent_id = src.treatment_virus
 
-	if (!reagent_id && (C.bruteloss >= heal_threshold))
+	if (!reagent_id && (C.getBruteLoss() >= heal_threshold))
 		if(!C.reagents.has_reagent(src.treatment_brute))
 			reagent_id = src.treatment_brute
 
-	if (!reagent_id && (C.oxyloss >= (15 + heal_threshold)))
+	if (!reagent_id && (C.getOxyLoss() >= (15 + heal_threshold)))
 		if(!C.reagents.has_reagent(src.treatment_oxy))
 			reagent_id = src.treatment_oxy
 
-	if (!reagent_id && (C.fireloss >= heal_threshold))
+	if (!reagent_id && (C.getFireLoss() >= heal_threshold))
 		if(!C.reagents.has_reagent(src.treatment_fire))
 			reagent_id = src.treatment_fire
 
-	if (!reagent_id && (C.toxloss >= heal_threshold))
+	if (!reagent_id && (C.getToxLoss() >= heal_threshold))
 		if(!C.reagents.has_reagent(src.treatment_tox))
 			reagent_id = src.treatment_tox
 
@@ -417,8 +423,7 @@
 		return
 	else
 		src.icon_state = "medibots"
-		for(var/mob/O in viewers(src, null))
-			O.show_message("\red <B>[src] is trying to inject [src.patient]!</B>", 1)
+		visible_message("\red <B>[src] is trying to inject [src.patient]!</B>")
 		spawn(30)
 			if ((get_dist(src, src.patient) <= 1) && (src.on))
 				if((reagent_id == "internal_beaker") && (src.reagent_glass) && (src.reagent_glass.reagents.total_volume))
@@ -426,8 +431,7 @@
 					src.reagent_glass.reagents.reaction(src.patient, 2)
 				else
 					src.patient.reagents.add_reagent(reagent_id,src.injection_amount)
-				for(var/mob/O in viewers(src, null))
-					O.show_message("\red <B>[src] injects [src.patient] with the syringe!</B>", 1)
+				visible_message("\red <B>[src] injects [src.patient] with the syringe!</B>")
 
 			src.icon_state = "medibot[src.on]"
 			src.currently_healing = 0
@@ -441,29 +445,22 @@
 /obj/machinery/bot/medbot/proc/speak(var/message)
 	if((!src.on) || (!message))
 		return
-	for(var/mob/O in hearers(src, null))
-		O.show_message("<span class='game say'><span class='name'>[src]</span> beeps, \"[message]\"",2)
+	visible_message("[src] beeps, \"[message]\"")
 	return
 
 /obj/machinery/bot/medbot/bullet_act(var/obj/item/projectile/Proj)
-	if (Proj.flag == "taser")
+	if(Proj.flag == "taser")
 		src.stunned = min(stunned+10,20)
-	..()
-
-/obj/machinery/bot/medbot/emp_act(severity)
-	if (cam)
-		cam.emp_act(severity)
 	..()
 
 /obj/machinery/bot/medbot/explode()
 	src.on = 0
-	for(var/mob/O in hearers(src, null))
-		O.show_message("\red <B>[src] blows apart!</B>", 1)
+	visible_message("\red <B>[src] blows apart!</B>", 1)
 	var/turf/Tsec = get_turf(src)
 
 	new /obj/item/weapon/storage/firstaid(Tsec)
 
-	new /obj/item/device/prox_sensor(Tsec)
+	new /obj/item/device/assembly/prox_sensor(Tsec)
 
 	new /obj/item/device/healthanalyzer(Tsec)
 
@@ -474,31 +471,30 @@
 	if (prob(50))
 		new /obj/item/robot_parts/l_arm(Tsec)
 
-	var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
+	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 	s.set_up(3, 1, src)
 	s.start()
 	del(src)
 	return
 
 /obj/machinery/bot/medbot/Bump(M as mob|obj) //Leave no door unopened!
-	spawn(0)
-		if ((istype(M, /obj/machinery/door)) && (!isnull(src.botcard)))
-			var/obj/machinery/door/D = M
-			if (!istype(D, /obj/machinery/door/firedoor) && D.check_access(src.botcard))
-				D.open()
-				src.frustration = 0
-		else if ((istype(M, /mob/living/)) && (!src.anchored))
-			src.loc = M:loc
+	if ((istype(M, /obj/machinery/door)) && (!isnull(src.botcard)))
+		var/obj/machinery/door/D = M
+		if (!istype(D, /obj/machinery/door/firedoor) && D.check_access(src.botcard))
+			D.open()
 			src.frustration = 0
-
-		return
+	else if ((istype(M, /mob/living/)) && (!src.anchored))
+		src.loc = M:loc
+		src.frustration = 0
 	return
 
+/* terrible
 /obj/machinery/bot/medbot/Bumped(atom/movable/M as mob|obj)
 	spawn(0)
 		if (M)
 			var/turf/T = get_turf(src)
 			M:loc = T
+*/
 
 /*
  *	Pathfinding procs, allow the medibot to path through doors it has access to.
@@ -518,7 +514,7 @@
 //It isn't blocked if we can open it, man.
 /proc/TurfBlockedNonWindowNonDoor(turf/loc, var/list/access)
 	for(var/obj/O in loc)
-		if(O.density && !istype(O, /obj/window) && !istype(O, /obj/machinery/door))
+		if(O.density && !istype(O, /obj/structure/window) && !istype(O, /obj/machinery/door))
 			return 1
 
 		if (O.density && (istype(O, /obj/machinery/door)) && (access.len))
@@ -542,7 +538,7 @@
 
 	//Making a medibot!
 	if(src.contents.len >= 1)
-		user << "\red You need to empty [src] out first!"
+		user << "<span class='notice'>You need to empty [src] out first.</span>"
 		return
 
 	var/obj/item/weapon/firstaid_arm_assembly/A = new /obj/item/weapon/firstaid_arm_assembly
@@ -553,44 +549,43 @@
 	else if(istype(src,/obj/item/weapon/storage/firstaid/o2))
 		A.skin = "o2"
 
-	A.loc = user
-	if (user.r_hand == S)
-		user.u_equip(S)
-		user.r_hand = A
-	else
-		user.u_equip(S)
-		user.l_hand = A
-	A.layer = 20
-	user << "You add the robot arm to the first aid kit"
 	del(S)
+	user.put_in_hands(A)
+	user << "<span class='notice'>You add the robot arm to the first aid kit.</span>"
+	user.drop_from_inventory(src)
 	del(src)
 
 
 /obj/item/weapon/firstaid_arm_assembly/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
-	if ((istype(W, /obj/item/device/healthanalyzer)) && (!src.build_step))
-		src.build_step++
-		user << "You add the health sensor to [src]!"
-		src.name = "First aid/robot arm/health analyzer assembly"
-		src.overlays += image('aibots.dmi', "na_scanner")
-		del(W)
-
-	else if ((istype(W, /obj/item/device/prox_sensor)) && (src.build_step == 1))
-		src.build_step++
-		user << "You complete the Medibot! Beep boop."
-		var/obj/machinery/bot/medbot/S = new /obj/machinery/bot/medbot
-		S.skin = src.skin
-		S.loc = get_turf(src)
-		S.name = src.created_name
-		del(W)
-		del(src)
-
-	else if (istype(W, /obj/item/weapon/pen))
-		var/t = input(user, "Enter new robot name", src.name, src.created_name) as text
-		t = copytext(sanitize(t), 1, MAX_MESSAGE_LEN)
+	if(istype(W, /obj/item/weapon/pen))
+		var/t = copytext(stripped_input(user, "Enter new robot name", src.name, src.created_name),1,MAX_NAME_LEN)
 		if (!t)
 			return
 		if (!in_range(src, usr) && src.loc != usr)
 			return
-
 		src.created_name = t
+	else
+		switch(build_step)
+			if(0)
+				if(istype(W, /obj/item/device/healthanalyzer))
+					user.drop_item()
+					del(W)
+					src.build_step++
+					user << "<span class='notice'>You add the health sensor to [src].</span>"
+					src.name = "First aid/robot arm/health analyzer assembly"
+					src.overlays += image('icons/obj/aibots.dmi', "na_scanner")
+
+			if(1)
+				if(isprox(W))
+					user.drop_item()
+					del(W)
+					src.build_step++
+					user << "<span class='notice'>You complete the Medibot! Beep boop.</span>"
+					var/turf/T = get_turf(src)
+					var/obj/machinery/bot/medbot/S = new /obj/machinery/bot/medbot(T)
+					S.skin = src.skin
+					S.name = src.created_name
+					user.drop_from_inventory(src)
+					del(src)
+

@@ -30,10 +30,10 @@
 		return
 
 	if(M.client)
-		M.client.mob = new/mob/living/carbon/alien/humanoid/special/snakeman(new/obj/snake_egg(src.loc))
+		M.client.mob = new/mob/living/carbon/alien/humanoid/special/snakeman(new/obj/effect/snake_egg(src.loc))
 		visible_message("[src] injects [M] with an egg.")
 		visible_message("The egg absorbs [M]")
-		M.mutations |= HUSK
+		M.mutations |= NOCLONE
 		M.update_body()
 		M.death()
 	else
@@ -41,7 +41,7 @@
 
 	return
 
-/obj/snake_egg
+/obj/effect/snake_egg
 	name = "Egg"
 	icon = 'alien.dmi'
 	icon_state = "egg"

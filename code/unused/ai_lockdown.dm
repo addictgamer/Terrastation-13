@@ -8,7 +8,7 @@
 
 	src << "<b>Initiating lockdowns has been disabled due to system stress.</b>"
 //	Commented this out to disable Lockdowns -- TLE
-	world << "\red Lockdown initiated by [usr.name]!"
+/*	world << "\red Lockdown initiated by [usr.name]!"
 
 	for(var/obj/machinery/firealarm/FA in world) //activate firealarms
 		spawn( 0 )
@@ -24,13 +24,13 @@
 	var/obj/machinery/computer/communications/C = locate() in world
 	if(C)
 		C.post_status("alert", "lockdown")
+*/
 
-
-	src.verbs -= /mob/living/silicon/ai/proc/lockdown
+/*	src.verbs -= /mob/living/silicon/ai/proc/lockdown
 	src.verbs += /mob/living/silicon/ai/proc/disablelockdown
 	usr << "\red Disable lockdown command enabled!"
 	winshow(usr,"rpane",1)
-
+*/
 
 /mob/living/silicon/ai/proc/disablelockdown()
 	set category = "AI Commands"
@@ -53,7 +53,8 @@
 				AL.open()
 				AL.lockdownbyai = 0
 
-	src.verbs -= /mob/living/silicon/ai/proc/disablelockdown
+/*	src.verbs -= /mob/living/silicon/ai/proc/disablelockdown
 	src.verbs += /mob/living/silicon/ai/proc/lockdown
 	usr << "\red Disable lockdown command removed until lockdown initiated again!"
 	winshow(usr,"rpane",1)
+*/

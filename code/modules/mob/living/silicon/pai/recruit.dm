@@ -1,15 +1,16 @@
+//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:33
+
 // Recruiting observers to play as pAIs
 
 var/datum/paiController/paiController			// Global handler for pAI candidates
 
 /datum/paiCandidate
-	var
-		name
-		key
-		description
-		role
-		comments
-		ready = 0
+	var/name
+	var/key
+	var/description
+	var/role
+	var/comments
+	var/ready = 0
 
 
 
@@ -25,32 +26,59 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 			var/obj/item/device/paicard/card = locate(href_list["device"])
 			if(card.pai)
 				return
-			if(card && candidate)
+			if(istype(card,/obj/item/device/paicard) && istype(candidate,/datum/paiCandidate))
 				var/mob/living/silicon/pai/pai = new(card)
-				pai.name = candidate.name
+				if(!candidate.name)
+					pai.name = pick(ninja_names)
+				else
+					pai.name = candidate.name
 				pai.real_name = pai.name
 				pai.key = candidate.key
-				card.pai = pai
+
+				card.setPersonality(pai)
 				card.looking_for_personality = 0
-				pai_candidates.Remove(candidate)
+
+				ticker.mode.update_cult_icons_removed(card.pai.mind)
+				ticker.mode.update_rev_icons_removed(card.pai.mind)
+
+				pai_candidates -= candidate
 				usr << browse(null, "window=findPai")
+
 		if(href_list["new"])
 			var/datum/paiCandidate/candidate = locate(href_list["candidate"])
 			var/option = href_list["option"]
+			var/t = ""
+
 			switch(option)
 				if("name")
-					candidate.name = input("Enter a name for your pAI", "pAI Name", candidate.name) as text
+					t = input("Enter a name for your pAI", "pAI Name", candidate.name) as text
+					if(t)
+						candidate.name = copytext(sanitize(t),1,MAX_NAME_LEN)
 				if("desc")
-					candidate.description = input("Enter a description for your pAI", "pAI Description", candidate.description) as message
+					t = input("Enter a description for your pAI", "pAI Description", candidate.description) as message
+					if(t)
+						candidate.description = copytext(sanitize(t),1,MAX_MESSAGE_LEN)
 				if("role")
-					candidate.role = input("Enter a role for your pAI", "pAI Role", candidate.role) as text
+					t = input("Enter a role for your pAI", "pAI Role", candidate.role) as text
+					if(t)
+						candidate.role = copytext(sanitize(t),1,MAX_MESSAGE_LEN)
 				if("ooc")
-					candidate.comments = input("Enter any OOC comments", "pAI OOC Comments", candidate.comments) as message
-
+					t = input("Enter any OOC comments", "pAI OOC Comments", candidate.comments) as message
+					if(t)
+						candidate.comments = copytext(sanitize(t),1,MAX_MESSAGE_LEN)
 				if("save")
 					candidate.savefile_save(usr)
 				if("load")
 					candidate.savefile_load(usr)
+					//In case people have saved unsanitized stuff.
+					if(candidate.name)
+						candidate.name = copytext(sanitize(candidate.name),1,MAX_NAME_LEN)
+					if(candidate.description)
+						candidate.description = copytext(sanitize(candidate.description),1,MAX_MESSAGE_LEN)
+					if(candidate.role)
+						candidate.role = copytext(sanitize(candidate.role),1,MAX_MESSAGE_LEN)
+					if(candidate.comments)
+						candidate.comments = copytext(sanitize(candidate.comments),1,MAX_MESSAGE_LEN)
 
 				if("submit")
 					if(candidate)
@@ -65,6 +93,8 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 	proc/recruitWindow(var/mob/M as mob)
 		var/datum/paiCandidate/candidate
 		for(var/datum/paiCandidate/c in pai_candidates)
+			if(!istype(c) || !istype(M))
+				break
 			if(c.key == M.key)
 				candidate = c
 		if(!candidate)
@@ -119,7 +149,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 		for(var/datum/paiCandidate/c in paiController.pai_candidates)
 			if(c.ready)
 				var/found = 0
-				for(var/mob/dead/observer/o in world)
+				for(var/mob/dead/observer/o in player_list)
 					if(o.key == c.key)
 						found = 1
 				if(found)
@@ -160,7 +190,7 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 		user << browse(dat, "window=findPai")
 
 	proc/requestRecruits()
-		for(var/mob/dead/observer/O in world)
+		for(var/mob/dead/observer/O in player_list)
 			if(jobban_isbanned(O, "pAI"))
 				continue
 			if(asked.Find(O.key))
@@ -173,14 +203,21 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 				for(var/datum/paiCandidate/c in paiController.pai_candidates)
 					if(c.key == O.key)
 						hasSubmitted = 1
-				if(!hasSubmitted && O.client.be_pai)
-					spawn question(O.client)
+				if(!hasSubmitted && (O.client.prefs.be_special & BE_PAI))
+					question(O.client)
 
 	proc/question(var/client/C)
-		asked.Add(C.key)
-		asked[C.key] = world.time
-		var/response = alert(C, "Someone is requesting a pAI personality. Would you like to play as a personal AI?", "pAI Request", "Yes", "No", "Never for this round")
-		if(response == "Yes")
-			recruitWindow(C.mob)
-		else if (response == "Never for this round")
-			C.be_pai = 0
+		spawn(0)
+			if(!C)	return
+			asked.Add(C.key)
+			asked[C.key] = world.time
+			var/response = alert(C, "Someone is requesting a pAI personality. Would you like to play as a personal AI?", "pAI Request", "Yes", "No", "Never for this round")
+			if(!C)	return		//handle logouts that happen whilst the alert is waiting for a response.
+			if(response == "Yes")
+				recruitWindow(C.mob)
+			else if (response == "Never for this round")
+				var/warning = alert(C, "Are you sure? This action will be undoable and you will need to wait until next round.", "You sure?", "Yes", "No")
+				if(warning == "Yes")
+					asked[C.key] = INFINITY
+				else
+					question(C)

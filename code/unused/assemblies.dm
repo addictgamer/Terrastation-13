@@ -1,6 +1,6 @@
 /*/obj/item/assembly
 	name = "assembly"
-	icon = 'assemblies.dmi'
+	icon = 'icons/obj/assemblies.dmi'
 	item_state = "assembly"
 	var/status = 0.0
 	throwforce = 10
@@ -140,7 +140,7 @@
 	src.part2.Activate()
 	return
 
-/obj/decal/ash/attack_hand(mob/user as mob)
+/obj/effect/decal/ash/attack_hand(mob/user as mob)
 	usr << "\blue The ashes slip through your fingers."
 	del(src)
 	return
@@ -370,7 +370,7 @@
 	return
 
 /obj/item/assembly/rad_prox/HasProximity(atom/movable/AM as mob|obj)
-	if (istype(AM, /obj/beam))
+	if (istype(AM, /obj/effect/beam))
 		return
 	if (AM.move_speed < 12)
 		src.part2.sense()
@@ -504,7 +504,7 @@
 
 /obj/item/assembly/prox_ignite/HasProximity(atom/movable/AM as mob|obj)
 
-	if (istype(AM, /obj/beam))
+	if (istype(AM, /obj/effect/beam))
 		return
 	if (AM.move_speed < 12 && src.part1)
 		src.part1.sense()
@@ -619,7 +619,7 @@
 	return
 
 /obj/item/assembly/m_i_ptank/HasProximity(atom/movable/AM as mob|obj)
-	if (istype(AM, /obj/beam))
+	if (istype(AM, /obj/effect/beam))
 		return
 	if (AM.move_speed < 12 && src.part1)
 		src.part1.sense()
@@ -714,7 +714,7 @@
 
 /obj/item/assembly/m_i_ptank/attack_self(mob/user as mob)
 
-	playsound(src.loc, 'armbomb.ogg', 100, 1)
+	playsound(src.loc, 'sound/weapons/armbomb.ogg', 100, 1)
 	src.part1.attack_self(user, 1)
 	src.add_fingerprint(user)
 	return
@@ -805,7 +805,7 @@
 /obj/item/assembly/t_i_ptank/attack_self(mob/user as mob)
 
 	src.part1.attack_self(user, 1)
-	playsound(src.loc, 'armbomb.ogg', 100, 1)
+	playsound(src.loc, 'sound/weapons/armbomb.ogg', 100, 1)
 	src.add_fingerprint(user)
 	return
 
@@ -929,7 +929,7 @@
 	return
 
 /obj/item/assembly/r_i_ptank/attack_self(mob/user as mob)
-	playsound(src.loc, 'armbomb.ogg', 100, 1)
+	playsound(src.loc, 'sound/weapons/armbomb.ogg', 100, 1)
 	src.part1.attack_self(user, 1)
 	src.add_fingerprint(user)
 	return

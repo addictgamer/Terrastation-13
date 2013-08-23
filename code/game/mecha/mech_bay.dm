@@ -1,6 +1,6 @@
 /turf/simulated/floor/mech_bay_recharge_floor
 	name = "Mech Bay Recharge Station"
-	icon = 'mech_bay.dmi'
+	icon = 'icons/mecha/mech_bay.dmi'
 	icon_state = "recharge_floor"
 	var/obj/machinery/mech_bay_recharge_port/recharge_port
 	var/obj/machinery/computer/mech_bay_power_console/recharge_console
@@ -49,7 +49,7 @@
 	name = "Mech Bay Power Port"
 	density = 1
 	anchored = 1
-	icon = 'mech_bay.dmi'
+	icon = 'icons/mecha/mech_bay.dmi'
 	icon_state = "recharge_port"
 	var/turf/simulated/floor/mech_bay_recharge_floor/recharge_floor
 	var/obj/machinery/computer/mech_bay_power_console/recharge_console
@@ -107,8 +107,9 @@
 	check_for_null = 0 //since port.stop_charge() must be called. The checks are made in process()
 
 	process(var/obj/machinery/mech_bay_recharge_port/port, var/obj/mecha/mecha)
-		if((!port) || (!mecha))	return 0
-		if(mecha in port.recharge_floor)
+		if(!port)
+			return 0
+		if(mecha && mecha in port.recharge_floor)
 			if(!mecha.cell)	return
 			var/delta = min(max_charge, mecha.cell.maxcharge - mecha.cell.charge)
 			if(delta>0)
@@ -128,7 +129,7 @@
 	name = "Mech Bay Power Control Console"
 	density = 1
 	anchored = 1
-	icon = 'computer.dmi'
+	icon = 'icons/obj/computer.dmi'
 	icon_state = "recharge_comp"
 	circuit = "/obj/item/weapon/circuitboard/mech_bay_power_console"
 	var/autostart = 1

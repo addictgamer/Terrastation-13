@@ -1,7 +1,9 @@
+//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
+
 /obj/item/device/mmi
 	name = "Man-Machine Interface"
 	desc = "The Warrior's bland acronym, MMI, obscures the true horror of this monstrosity."
-	icon = 'assemblies.dmi'
+	icon = 'icons/obj/assemblies.dmi'
 	icon_state = "mmi_empty"
 	w_class = 3
 	origin_tech = "biotech=3"
@@ -14,11 +16,10 @@
 
 	//Revised. Brainmob is now contained directly within object of transfer. MMI in this case.
 
-	var
-		locked = 0
-		mob/living/carbon/brain/brainmob = null//The current occupant.
-		mob/living/silicon/robot = null//Appears unused.
-		obj/mecha = null//This does not appear to be used outside of reference in mecha.dm.
+	var/locked = 0
+	var/mob/living/carbon/brain/brainmob = null//The current occupant.
+	var/mob/living/silicon/robot = null//Appears unused.
+	var/obj/mecha = null//This does not appear to be used outside of reference in mecha.dm.
 
 	attackby(var/obj/item/O as obj, var/mob/user as mob)
 		if(istype(O,/obj/item/brain) && !brainmob) //Time to stick a brain in it --NEO
@@ -33,6 +34,8 @@
 			brainmob.loc = src
 			brainmob.container = src
 			brainmob.stat = 0
+			dead_mob_list -= brainmob//Update dem lists
+			living_mob_list += brainmob
 
 			user.drop_item()
 			del(O)
@@ -41,6 +44,9 @@
 			icon_state = "mmi_full"
 
 			locked = 1
+
+			feedback_inc("cyborg_mmis_filled",1)
+
 			return
 
 		if((istype(O,/obj/item/weapon/card/id)||istype(O,/obj/item/device/pda)) && brainmob)
@@ -65,6 +71,7 @@
 			var/obj/item/brain/brain = new(user.loc)
 			brainmob.container = null//Reset brainmob mmi var.
 			brainmob.loc = brain//Throw mob into brain.
+			living_mob_list -= brainmob//Get outta here
 			brain.brainmob = brainmob//Set the brain to use the brainmob
 			brainmob = null//Set mmi brainmob var to null
 
@@ -122,3 +129,16 @@
 
 			radio.listening = radio.listening==1 ? 0 : 1
 			brainmob << "\blue Radio is [radio.listening==1 ? "now" : "no longer"] receiving broadcast."
+
+/obj/item/device/mmi/emp_act(severity)
+	if(!brainmob)
+		return
+	else
+		switch(severity)
+			if(1)
+				brainmob.emp_damage += rand(20,30)
+			if(2)
+				brainmob.emp_damage += rand(10,20)
+			if(3)
+				brainmob.emp_damage += rand(0,10)
+	..()

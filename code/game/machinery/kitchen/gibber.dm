@@ -2,7 +2,7 @@
 /obj/machinery/gibber
 	name = "Gibber"
 	desc = "The name isn't descriptive enough?"
-	icon = 'kitchen.dmi'
+	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "grinder"
 	density = 1
 	anchored = 1
@@ -14,23 +14,53 @@
 	idle_power_usage = 2
 	active_power_usage = 500
 
+//auto-gibs anything that bumps into it
+/obj/machinery/gibber/autogibber
+	var/turf/input_plate
+
+	New()
+		..()
+		spawn(5)
+			for(var/i in cardinal)
+				var/obj/machinery/mineral/input/input_obj = locate( /obj/machinery/mineral/input, get_step(src.loc, i) )
+				if(input_obj)
+					if(isturf(input_obj.loc))
+						input_plate = input_obj.loc
+						del(input_obj)
+						break
+
+			if(!input_plate)
+				diary << "a [src] didn't find an input plate."
+				return
+
+	Bumped(var/atom/A)
+		if(!input_plate) return
+
+		if(ismob(A))
+			var/mob/M = A
+
+			if(M.loc == input_plate
+			)
+				M.loc = src
+				M.gib()
+
 
 /obj/machinery/gibber/New()
 	..()
-	src.overlays += image('kitchen.dmi', "grjam")
+	src.overlays += image('icons/obj/kitchen.dmi', "grjam")
 
 /obj/machinery/gibber/update_icon()
-	overlays = null
+	overlays.Cut()
 	if (dirty)
-		src.overlays += image('kitchen.dmi', "grbloody")
+		src.overlays += image('icons/obj/kitchen.dmi', "grbloody")
 	if(stat & (NOPOWER|BROKEN))
 		return
 	if (!occupant)
-		src.overlays += image('kitchen.dmi', "grjam")
+		src.overlays += image('icons/obj/kitchen.dmi', "grjam")
 	else if (operating)
-		src.overlays += image('kitchen.dmi', "gruse")
+		src.overlays += image('icons/obj/kitchen.dmi', "gruse")
 	else
-		src.overlays += image('kitchen.dmi', "gridle")
+		src.overlays += image('icons/obj/kitchen.dmi', "gridle")
 
 /obj/machinery/gibber/attack_paw(mob/user as mob)
 	return src.attack_hand(user)
@@ -52,13 +82,10 @@
 	if(src.occupant)
 		user << "\red The gibber is full, empty it first!"
 		return
-	if (!( istype(G, /obj/item/weapon/grab)) || !istype(G.affecting, /mob/))
+	if (!( istype(G, /obj/item/weapon/grab)) || !(istype(G.affecting, /mob/living/carbon/human)))
 		user << "\red This item is not suitable for the gibber!"
 		return
-	if (!G.affecting:can_be_gibbered)
-		user << "\red This mob cannot be gibbered!"
-		return
-	if(G.affecting.abiotic())
+	if(G.affecting.abiotic(1))
 		user << "\red Subject may not have abiotic items on."
 		return
 
@@ -104,102 +131,46 @@
 	if(src.operating)
 		return
 	if(!src.occupant)
-		for(var/mob/M in viewers(src, null))
-			M.show_message("\red You hear a loud metallic grinding sound.", 1)
+		visible_message("\red You hear a loud metallic grinding sound.")
 		return
 	use_power(1000)
-	for(var/mob/M in viewers(src, null))
-		M.show_message("\red You hear a loud squelchy grinding sound.", 1)
+	visible_message("\red You hear a loud squelchy grinding sound.")
 	src.operating = 1
 	update_icon()
+	var/sourcename = src.occupant.real_name
+	var/sourcejob = src.occupant.job
+	var/sourcenutriment = src.occupant.nutrition / 15
+	var/sourcetotalreagents = src.occupant.reagents.total_volume
+	var/totalslabs = 3
 
-	if (istype(src.occupant, /mob/living/carbon/)) //TODO: Make it all automatic.
-		var/sourcename = src.occupant.real_name
-		var/sourcejob = src.occupant.job
-		var/sourcenutriment = src.occupant.nutrition / 15
-		var/sourcetotalreagents = src.occupant.reagents.total_volume
-		var/totalslabs = 3
+	var/obj/item/weapon/reagent_containers/food/snacks/meat/human/allmeat[totalslabs]
+	for (var/i=1 to totalslabs)
+		var/obj/item/weapon/reagent_containers/food/snacks/meat/human/newmeat = new
+		newmeat.name = sourcename + newmeat.name
+		newmeat.subjectname = sourcename
+		newmeat.subjectjob = sourcejob
+		newmeat.reagents.add_reagent ("nutriment", sourcenutriment / totalslabs) // Thehehe. Fat guys go first
+		src.occupant.reagents.trans_to (newmeat, round (sourcetotalreagents / totalslabs, 1)) // Transfer all the reagents from the
+		allmeat[i] = newmeat
 
-		var/obj/item/weapon/reagent_containers/food/snacks/meat/human/allmeat[totalslabs]
+	src.occupant.attack_log += "\[[time_stamp()]\] Was gibbed by <b>[user]/[user.ckey]</b>" //One shall not simply gib a mob unnoticed!
+	user.attack_log += "\[[time_stamp()]\] Gibbed <b>[src.occupant]/[src.occupant.ckey]</b>"
+	log_attack("\[[time_stamp()]\] <b>[user]/[user.ckey]</b> gibbed <b>[src.occupant]/[src.occupant.ckey]</b>")
+
+	src.occupant.death(1)
+	src.occupant.ghostize()
+	del(src.occupant)
+	spawn(src.gibtime)
+		playsound(src.loc, 'sound/effects/splat.ogg', 50, 1)
+		operating = 0
 		for (var/i=1 to totalslabs)
-			var/obj/item/weapon/reagent_containers/food/snacks/meat/human/newmeat = new
-			newmeat.name = sourcename + newmeat.name
-			newmeat.subjectname = sourcename
-			newmeat.subjectjob = sourcejob
-			newmeat.reagents.add_reagent ("nutriment", sourcenutriment / totalslabs) // Thehehe. Fat guys go first
-			src.occupant.reagents.trans_to (newmeat, round (sourcetotalreagents / totalslabs, 1)) // Transfer all the reagents from the
-			allmeat[i] = newmeat
+			var/obj/item/meatslab = allmeat[i]
+			var/turf/Tx = locate(src.x - i, src.y, src.z)
+			meatslab.loc = src.loc
+			meatslab.throw_at(Tx,i,3)
+			if (!Tx.density)
+				new /obj/effect/decal/cleanable/blood/gibs(Tx,i)
+		src.operating = 0
+		update_icon()
 
-		src.occupant.death(1)
-		src.occupant.ghostize()
-		del(src.occupant)
-		spawn(src.gibtime)
-			playsound(src.loc, 'splat.ogg', 50, 1)
-			operating = 0
-			for (var/i=1 to totalslabs)
-				var/obj/item/meatslab = allmeat[i]
-				var/turf/Tx = locate(src.x - i, src.y, src.z)
-				meatslab.loc = src.loc
-				meatslab.throw_at(Tx,i,3)
-				if (!Tx.density)
-					new /obj/decal/cleanable/blood/gibs(Tx,i)
-			src.operating = 0
-			update_icon()
-
-	else if (istype(src.occupant, /mob/living/simple_animal))
-		if (istype(src.occupant, /mob/living/simple_animal/corgi))
-			var/sourcename = src.occupant.real_name
-			var/totalslabs = 2
-			var/obj/item/weapon/reagent_containers/food/snacks/meat/corgi/allmeat[totalslabs]
-
-			for (var/i=1 to totalslabs)
-				var/obj/item/weapon/reagent_containers/food/snacks/meat/corgi/newmeat = new
-				newmeat.name = sourcename + newmeat.name
-				//newmeat.subjectname = sourcename
-				newmeat.reagents.add_reagent ("nutriment", 300 / totalslabs) //Very nutritious!
-				allmeat[i] = newmeat
-
-			src.occupant.death(1)
-			del(src.occupant)
-			spawn(src.gibtime)
-				playsound(src.loc, 'splat.ogg', 50, 1)
-				operating = 0
-				for (var/i=1 to totalslabs)
-					var/obj/item/meatslab = allmeat[i]
-					var/turf/Tx = locate(src.x - i, src.y, src.z)
-					meatslab.loc = src.loc
-					meatslab.throw_at(Tx,i,3)
-					if (!Tx.density)
-						new /obj/decal/cleanable/blood/gibs(Tx,i)
-				src.operating = 0
-				update_icon()
-
-
-		else if (istype(src.occupant, /mob/living/simple_animal/cat))
-			//TODO: Cat stuff.
-			var/totalslabs = 1
-			var/sourcename = src.occupant.real_name
-			var/obj/item/weapon/reagent_containers/food/snacks/meat/cat/allmeat[totalslabs]
-
-			for (var/i=1 to totalslabs)
-				var/obj/item/weapon/reagent_containers/food/snacks/meat/cat/newmeat = new
-				newmeat.name = sourcename + newmeat.name
-				//newmeat.subjectname = sourcename
-				newmeat.reagents.add_reagent ("nutriment", 200 / totalslabs) //Very nutritious!
-				allmeat[i] = newmeat
-
-			src.occupant.death(1)
-			del(src.occupant)
-			spawn(src.gibtime)
-				playsound(src.loc, 'splat.ogg', 50, 1)
-				operating = 0
-				for (var/i=1 to totalslabs)
-					var/obj/item/meatslab = allmeat[i]
-					var/turf/Tx = locate(src.x - i, src.y, src.z)
-					meatslab.loc = src.loc
-					meatslab.throw_at(Tx,i,3)
-					if (!Tx.density)
-						new /obj/decal/cleanable/blood/gibs(Tx,i)
-				src.operating = 0
-				update_icon()
 

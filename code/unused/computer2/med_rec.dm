@@ -2,7 +2,7 @@
 	name = "Medical Records"
 	size = 32.0
 	active_icon = "dna"
-	req_access = list(access_medical)
+	req_access = list(ACCESS_MEDICAL)
 	var/authenticated = null
 	var/rank = null
 	var/screen = null
@@ -119,7 +119,7 @@
 			src.active1 = null
 			src.active2 = null
 			if (src.check_access(src.master.authid))
-				src.authenticated = src.master.authid.registered
+				src.authenticated = src.master.authid.registered_name
 				src.rank = src.master.authid.assignment
 				src.screen = 1
 	if (src.authenticated)
@@ -171,7 +171,7 @@
 <BR><b>Possible Cure:</b> None
 <BR><b>Affected Species:</b> Monkey
 <BR>
-<BR><b>Notes:</b> Monkies with this disease will bite humans, causing humans to spontaneously to mutate into a monkey.
+<BR><b>Notes:</b> monkeys with this disease will bite humans, causing humans to spontaneously to mutate into a monkey.
 <BR>
 <BR><b>Severity:</b> Medium"}
 				if("ca")
@@ -409,7 +409,7 @@
 			var/counter = 1
 			while(src.active2.fields[text("com_[]", counter)])
 				counter++
-			src.active2.fields[text("com_[]", counter)] = text("Made by [] ([]) on [], 2053<BR>[]", src.authenticated, src.rank, time2text(world.realtime, "DDD MMM DD hh:mm:ss"), t1)
+			src.active2.fields[text("com_[]", counter)] = text("Made by [] ([]) on [], 2556<BR>[]", src.authenticated, src.rank, time2text(world.realtime, "DDD MMM DD hh:mm:ss"), t1)
 
 		if (href_list["del_c"])
 			if ((istype(src.active2, /datum/data/record) && src.active2.fields[text("com_[]", href_list["del_c"])]))

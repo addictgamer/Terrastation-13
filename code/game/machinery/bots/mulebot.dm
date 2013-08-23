@@ -1,3 +1,5 @@
+//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
+
 // Mulebot - carries crates around for Quartermaster
 // Navigates via floor navbeacons
 // Remote Controlled from QM's PDA
@@ -15,9 +17,7 @@
 	maxhealth = 150
 	fire_dam_coeff = 0.7
 	brute_dam_coeff = 0.5
-	var/locked = 1
 	var/atom/movable/load = null		// the loaded crate (usually)
-
 	var/beacon_freq = 1400
 	var/control_freq = 1447
 
@@ -28,7 +28,7 @@
 	var/new_destination = ""	// pending new destination (waiting for beacon response)
 	var/destination = ""		// destination description
 	var/home_destination = "" 	// tag of home beacon
-	req_access = list(access_cargo, access_cargo_bot) // added robotics access so assembly line drop-off works properly -veyveyr //I don't think so, Tim. You need to add it to the MULE's hidden robot ID card. -NEO
+	req_access = list(access_cargo) // added robotics access so assembly line drop-off works properly -veyveyr //I don't think so, Tim. You need to add it to the MULE's hidden robot ID card. -NEO
 	var/path[] = new()
 
 	var/mode = 0		//0 = idle/ready
@@ -47,22 +47,20 @@
 	var/auto_return = 1	// true if auto return to home beacon after unload
 	var/auto_pickup = 1 // true if auto-pickup at beacon
 
-	var/open = 0		// true if maint hatch is open
 	var/obj/item/weapon/cell/cell
 						// the installed power cell
 
 	// constants for internal wiring bitflags
-	var/const
-		wire_power1 = 1			// power connections
-		wire_power2 = 2
-		wire_mobavoid = 4		// mob avoidance
-		wire_loadcheck = 8		// load checking (non-crate)
-		wire_motor1 = 16		// motor wires
-		wire_motor2 = 32		//
-		wire_remote_rx = 64		// remote recv functions
-		wire_remote_tx = 128	// remote trans status
-		wire_beacon_rx = 256	// beacon ping recv
-		wire_beacon_tx = 512	// beacon ping trans
+	var/const/wire_power1 = 1			// power connections
+	var/const/wire_power2 = 2
+	var/const/wire_mobavoid = 4		// mob avoidance
+	var/const/wire_loadcheck = 8		// load checking (non-crate)
+	var/const/wire_motor1 = 16		// motor wires
+	var/const/wire_motor2 = 32		//
+	var/const/wire_remote_rx = 64		// remote recv functions
+	var/const/wire_remote_tx = 128	// remote trans status
+	var/const/wire_beacon_rx = 256	// beacon ping recv
+	var/const/wire_beacon_tx = 512	// beacon ping trans
 
 	var/wires = 1023		// all flags on
 
@@ -75,9 +73,9 @@
 /obj/machinery/bot/mulebot/New()
 	..()
 	botcard = new(src)
-	botcard.access = get_access("Quartermaster")
-	botcard.access += access_robotics
-	botcard.access += access_engine_equip
+	var/datum/job/cargo_tech/J = new/datum/job/cargo_tech
+	botcard.access = J.get_access()
+//	botcard.access += access_robotics //Why --Ikki
 	cell = new(src)
 	cell.charge = 2000
 	cell.maxcharge = 2000
@@ -127,7 +125,7 @@
 		locked = !locked
 		user << "\blue You [locked ? "lock" : "unlock"] the mulebot's controls!"
 		flick("mulebot-emagged", src)
-		playsound(src.loc, 'sparks1.ogg', 100, 0)
+		playsound(src.loc, 'sound/effects/sparks1.ogg', 100, 0)
 	else if(istype(I,/obj/item/weapon/cell) && open && !cell)
 		var/obj/item/weapon/cell/C = I
 		user.drop_item()
@@ -183,7 +181,6 @@
 
 /obj/machinery/bot/mulebot/bullet_act()
 	if(prob(50) && !isnull(load))
-		load.bullet_act()
 		unload(0)
 	if(prob(25))
 		src.visible_message("\red Something shorts out inside [src]!")
@@ -196,17 +193,17 @@
 
 
 /obj/machinery/bot/mulebot/attack_ai(var/mob/user)
-	user.machine = src
+	user.set_machine(src)
 	interact(user, 1)
 
 /obj/machinery/bot/mulebot/attack_hand(var/mob/user)
 	. = ..()
 	if (.)
 		return
-	user.machine = src
+	user.set_machine(src)
 	interact(user, 0)
 
-/obj/machinery/bot/mulebot/proc/interact(var/mob/user, var/ai=0)
+/obj/machinery/bot/mulebot/interact(var/mob/user, var/ai=0)
 	var/dat
 	dat += "<TT><B>Multiple Utility Load Effector Mk. III</B></TT><BR><BR>"
 	dat += "ID: [suffix]<BR>"
@@ -294,7 +291,7 @@
 	if (usr.stat)
 		return
 	if ((in_range(src, usr) && istype(src.loc, /turf)) || (istype(usr, /mob/living/silicon)))
-		usr.machine = src
+		usr.set_machine(src)
 
 		switch(href_list["op"])
 			if("lock", "unlock")
@@ -313,24 +310,15 @@
 						return
 				else
 					return
-				usr << "You switch [on ? "on" : "off"] [src]."
-				for(var/mob/M in viewers(src))
-					if(M==usr) continue
-					M << "[usr] switches [on ? "on" : "off"] [src]."
+				visible_message("[usr] switches [on ? "on" : "off"] [src].")
 				updateDialog()
 
 
 			if("cellremove")
-				if(open && cell && !usr.equipped())
-					cell.loc = usr
-					cell.layer = 20
-					if(usr.hand)
-						usr.l_hand = cell
-					else
-						usr.r_hand = cell
-
-					cell.add_fingerprint(usr)
+				if(open && cell && !usr.get_active_hand())
 					cell.updateicon()
+					usr.put_in_active_hand(cell)
+					cell.add_fingerprint(usr)
 					cell = null
 
 					usr.visible_message("\blue [usr] removes the power cell from [src].", "\blue You remove the power cell from [src].")
@@ -338,7 +326,7 @@
 
 			if("cellinsert")
 				if(open && !cell)
-					var/obj/item/weapon/cell/C = usr.equipped()
+					var/obj/item/weapon/cell/C = usr.get_active_hand()
 					if(istype(C))
 						usr.drop_item()
 						cell = C
@@ -374,7 +362,7 @@
 
 			if("setid")
 				refresh=0
-				var/new_id = input("Enter new bot ID", "Mulebot [suffix ? "([suffix])" : ""]", suffix) as text|null
+				var/new_id = copytext(sanitize(input("Enter new bot ID", "Mulebot [suffix ? "([suffix])" : ""]", suffix) as text|null),1,MAX_NAME_LEN)
 				refresh=1
 				if(new_id)
 					suffix = new_id
@@ -403,25 +391,25 @@
 				auto_pickup = !auto_pickup
 
 			if("close")
-				usr.machine = null
+				usr.unset_machine()
 				usr << browse(null,"window=mulebot")
 
 
 			if("wirecut")
-				if(istype(usr.equipped(), /obj/item/weapon/wirecutters))
+				if(istype(usr.get_active_hand(), /obj/item/weapon/wirecutters))
 					var/wirebit = text2num(href_list["wire"])
 					wires &= ~wirebit
 				else
 					usr << "\blue You need wirecutters!"
 			if("wiremend")
-				if(istype(usr.equipped(), /obj/item/weapon/wirecutters))
+				if(istype(usr.get_active_hand(), /obj/item/weapon/wirecutters))
 					var/wirebit = text2num(href_list["wire"])
 					wires |= wirebit
 				else
 					usr << "\blue You need wirecutters!"
 
 			if("wirepulse")
-				if(istype(usr.equipped(), /obj/item/device/multitool))
+				if(istype(usr.get_active_hand(), /obj/item/device/multitool))
 					switch(href_list["wire"])
 						if("1","2")
 							usr << "\blue \icon[src] The charge light flickers."
@@ -442,7 +430,7 @@
 		//src.updateUsrDialog()
 	else
 		usr << browse(null, "window=mulebot")
-		usr.machine = null
+		usr.unset_machine()
 	return
 
 
@@ -470,22 +458,34 @@
 
 // called to load a crate
 /obj/machinery/bot/mulebot/proc/load(var/atom/movable/C)
-	if((wires & wire_loadcheck) && !istype(C,/obj/crate))
+	if((wires & wire_loadcheck) && !istype(C,/obj/structure/closet/crate))
 		src.visible_message("[src] makes a sighing buzz.", "You hear an electronic buzzing sound.")
-		playsound(src.loc, 'buzz-sigh.ogg', 50, 0)
+		playsound(src.loc, 'sound/machines/buzz-sigh.ogg', 50, 0)
 		return		// if not emagged, only allow crates to be loaded
+
+	//I'm sure someone will come along and ask why this is here... well people were dragging screen items onto the mule, and that was not cool.
+	//So this is a simple fix that only allows a selection of item types to be considered. Further narrowing-down is below.
+	if(!istype(C,/obj/item) && !istype(C,/obj/machinery) && !istype(C,/obj/structure) && !ismob(C))
+		return
+	if(!isturf(C.loc)) //To prevent the loading from stuff from someone's inventory, which wouldn't get handled properly.
+		return
 
 	if(get_dist(C, src) > 1 || load || !on)
 		return
+	for(var/obj/structure/plasticflaps/P in src.loc)//Takes flaps into account
+		if(!CanPass(C,P))
+			return
 	mode = 1
 
 	// if a create, close before loading
-	var/obj/crate/crate = C
+	var/obj/structure/closet/crate/crate = C
 	if(istype(crate))
 		crate.close()
 
 	C.loc = src.loc
 	sleep(2)
+	if(C.loc != src.loc) //To prevent you from going onto more thano ne bot.
+		return
 	C.loc = src
 	load = C
 
@@ -511,7 +511,7 @@
 		return
 
 	mode = 1
-	overlays = null
+	overlays.Cut()
 
 	load.loc = src.loc
 	load.pixel_y -= 9
@@ -524,7 +524,12 @@
 
 
 	if(dirn)
-		step(load, dirn)
+		var/turf/T = src.loc
+		T = get_step(T,dirn)
+		if(CanPass(load,T))//Can't get off onto anything that wouldn't let you pass normally
+			step(load, dirn)
+		else
+			load.loc = src.loc//Drops you right there, so you shouldn't be able to get yourself stuck
 
 	load = null
 
@@ -558,13 +563,17 @@
 				// do nothing
 			if(1)
 				process_bot()
-				spawn(3)
+				spawn(2)
 					process_bot()
-					sleep(3)
+					sleep(2)
+					process_bot()
+					sleep(2)
+					process_bot()
+					sleep(2)
 					process_bot()
 			if(2)
 				process_bot()
-				spawn(5)
+				spawn(4)
 					process_bot()
 			if(3)
 				process_bot()
@@ -599,7 +608,7 @@
 
 
 					if(bloodiness)
-						var/obj/decal/cleanable/blood/tracks/B = new(loc)
+						var/obj/effect/decal/cleanable/blood/tracks/B = new(loc)
 						var/newdir = get_dir(next, loc)
 						if(newdir == dir)
 							B.dir = newdir
@@ -641,25 +650,25 @@
 						mode = 4
 						if(blockcount == 3)
 							src.visible_message("[src] makes an annoyed buzzing sound", "You hear an electronic buzzing sound.")
-							playsound(src.loc, 'buzz-two.ogg', 50, 0)
+							playsound(src.loc, 'sound/machines/buzz-two.ogg', 50, 0)
 
 						if(blockcount > 5)	// attempt 5 times before recomputing
 							// find new path excluding blocked turf
 							src.visible_message("[src] makes a sighing buzz.", "You hear an electronic buzzing sound.")
-							playsound(src.loc, 'buzz-sigh.ogg', 50, 0)
+							playsound(src.loc, 'sound/machines/buzz-sigh.ogg', 50, 0)
 
 							spawn(2)
 								calc_path(next)
 								if(path.len > 0)
 									src.visible_message("[src] makes a delighted ping!", "You hear a ping.")
-									playsound(src.loc, 'ping.ogg', 50, 0)
+									playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
 								mode = 4
 							mode =6
 							return
 						return
 				else
 					src.visible_message("[src] makes an annoyed buzzing sound", "You hear an electronic buzzing sound.")
-					playsound(src.loc, 'buzz-two.ogg', 50, 0)
+					playsound(src.loc, 'sound/machines/buzz-two.ogg', 50, 0)
 					//world << "Bad turf."
 					mode = 5
 					return
@@ -679,11 +688,11 @@
 					blockcount = 0
 					mode = 4
 					src.visible_message("[src] makes a delighted ping!", "You hear a ping.")
-					playsound(src.loc, 'ping.ogg', 50, 0)
+					playsound(src.loc, 'sound/machines/ping.ogg', 50, 0)
 
 				else
 					src.visible_message("[src] makes a sighing buzz.", "You hear an electronic buzzing sound.")
-					playsound(src.loc, 'buzz-sigh.ogg', 50, 0)
+					playsound(src.loc, 'sound/machines/buzz-sigh.ogg', 50, 0)
 
 					mode = 7
 		//if(6)
@@ -696,8 +705,9 @@
 // calculates a path to the current destination
 // given an optional turf to avoid
 /obj/machinery/bot/mulebot/proc/calc_path(var/turf/avoid = null)
-	src.path = AStar(src.loc, src.target, /turf/proc/CardinalNonspaceTurfsWithAccess, /turf/proc/Distance, 0, 250, id=botcard, exclude=avoid)
-	src.path = reverselist(src.path)
+	src.path = AStar(src.loc, src.target, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 250, id=botcard, exclude=avoid)
+	if(!src.path)
+		src.path = list()
 
 
 // sets the current destination
@@ -729,7 +739,7 @@
 /obj/machinery/bot/mulebot/proc/at_target()
 	if(!reached_target)
 		src.visible_message("[src] makes a chiming sound!", "You hear a chime.")
-		playsound(src.loc, 'chime.ogg', 50, 0)
+		playsound(src.loc, 'sound/machines/chime.ogg', 50, 0)
 		reached_target = 1
 
 		if(load)		// if loaded, unload at target
@@ -744,7 +754,7 @@
 							AM = A
 							break
 				else			// otherwise, look for crates only
-					AM = locate(/obj/crate) in get_step(loc,loaddir)
+					AM = locate(/obj/structure/closet/crate) in get_step(loc,loaddir)
 				if(AM)
 					load(AM)
 		// whatever happened, check to see if we return home
@@ -769,9 +779,9 @@
 				src.visible_message("\red [src] bumps into [M]!")
 			else
 				src.visible_message("\red [src] knocks over [M]!")
-				M.pulling = null
-				M.stunned = 8
-				M.weakened = 5
+				M.stop_pulling()
+				M.Stun(8)
+				M.Weaken(5)
 				M.lying = 1
 	..()
 
@@ -783,29 +793,19 @@
 // when mulebot is in the same loc
 /obj/machinery/bot/mulebot/proc/RunOver(var/mob/living/carbon/human/H)
 	src.visible_message("\red [src] drives over [H]!")
-	playsound(src.loc, 'splat.ogg', 50, 1)
-
-	/*
-	if(ismob(load))
-		var/mob/M = load
-		if(M.reagents.has_reagent("beer"))
-			M.unlock_medal("DUI", 1)
-		if(M.reagents.has_reagent("space_drugs") && istype(H) && H.wear_id.assignment == "Security Officer")
-			M.unlock_medel("Ridin' Dirty",1)
-	*/
+	playsound(src.loc, 'sound/effects/splat.ogg', 50, 1)
 
 	var/damage = rand(5,15)
+	H.apply_damage(2*damage, BRUTE, "head")
+	H.apply_damage(2*damage, BRUTE, "chest")
+	H.apply_damage(0.5*damage, BRUTE, "l_leg")
+	H.apply_damage(0.5*damage, BRUTE, "r_leg")
+	H.apply_damage(0.5*damage, BRUTE, "l_arm")
+	H.apply_damage(0.5*damage, BRUTE, "r_arm")
 
-	H.TakeDamage("head", 2*damage, 0)
-	H.TakeDamage("chest",2*damage, 0)
-	H.TakeDamage("l_leg",0.5*damage, 0)
-	H.TakeDamage("r_leg",0.5*damage, 0)
-	H.TakeDamage("l_arm",0.5*damage, 0)
-	H.TakeDamage("r_arm",0.5*damage, 0)
-
-	var/obj/decal/cleanable/blood/B = new(src.loc)
-	B.blood_DNA = H.dna.unique_enzymes
-	B.blood_type = H.b_type
+	var/obj/effect/decal/cleanable/blood/B = new(src.loc)
+	B.blood_DNA = list()
+	B.blood_DNA[H.dna.unique_enzymes] = H.dna.b_type
 
 	bloodiness += 4
 
@@ -928,7 +928,7 @@
 	var/list/kv = list(
 		"type" = "mulebot",
 		"name" = suffix,
-		"loca" = loc.loc,	// area
+		"loca" = (loc ? loc.loc : "Unknown"),	// somehow loc can be null and cause a runtime - Quarxink
 		"mode" = mode,
 		"powr" = (cell ? cell.percent() : 0),
 		"dest" = destination,
@@ -951,7 +951,7 @@
 	src.visible_message("\red <B>[src] blows apart!</B>", 1)
 	var/turf/Tsec = get_turf(src)
 
-	new /obj/item/device/prox_sensor(Tsec)
+	new /obj/item/device/assembly/prox_sensor(Tsec)
 	new /obj/item/stack/rods(Tsec)
 	new /obj/item/stack/rods(Tsec)
 	new /obj/item/weapon/cable_coil/cut(Tsec)
@@ -960,10 +960,10 @@
 		cell.update_icon()
 		cell = null
 
-	var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
+	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 	s.set_up(3, 1, src)
 	s.start()
 
-	new /obj/decal/cleanable/oil(src.loc)
+	new /obj/effect/decal/cleanable/oil(src.loc)
 	unload(0)
 	del(src)

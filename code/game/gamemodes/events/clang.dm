@@ -7,34 +7,41 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 --NEOFite
 */
 
-/obj/immovablerod
+/obj/effect/immovablerod
 	name = "Immovable Rod"
 	desc = "What the fuck is that?"
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	icon_state = "immrod"
 	throwforce = 100
 	density = 1
 	anchored = 1
 
 	Bump(atom/clong)
-		if (istype(clong, /turf))
+		if(istype(clong, /turf/simulated/shuttle)) //Skip shuttles without actually deleting the rod
+			return
+
+		else if (istype(clong, /turf) && !istype(clong, /turf/unsimulated))
 			if(clong.density)
 				clong.ex_act(2)
 				for (var/mob/O in hearers(src, null))
 					O.show_message("CLANG", 2)
-		if (istype(clong, /obj))
+
+		else if (istype(clong, /obj))
 			if(clong.density)
 				clong.ex_act(2)
 				for (var/mob/O in hearers(src, null))
 					O.show_message("CLANG", 2)
-		if (istype(clong, /mob))
+
+		else if (istype(clong, /mob))
 			if(clong.density || prob(10))
 				clong.meteorhit(src)
+		else
+			del(src)
+
 		if(clong && prob(25))
 			src.loc = clong.loc
 
 /proc/immovablerod()
-
 	var/startx = 0
 	var/starty = 0
 	var/endy = 0
@@ -64,7 +71,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 			endx = 199
 
 	//rod time!
-	var/obj/immovablerod/immrod = new /obj/immovablerod(locate(startx, starty, 1))
+	var/obj/effect/immovablerod/immrod = new /obj/effect/immovablerod(locate(startx, starty, 1))
 //	world << "Rod in play, starting at [start.loc.x],[start.loc.y] and going to [end.loc.x],[end.loc.y]"
 	var/end = locate(endx, endy, 1)
 	spawn(0)
@@ -76,7 +83,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 		if(immrod.loc == end)
 			del(immrod)
 		sleep(10)
-	for(var/obj/immovablerod/imm in world)
+	for(var/obj/effect/immovablerod/imm in world)
 		return
 	sleep(50)
 	command_alert("What the fuck was that?!", "General Alert")

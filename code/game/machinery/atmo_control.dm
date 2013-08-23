@@ -1,5 +1,5 @@
 obj/machinery/air_sensor
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "gsensor1"
 	name = "Gas Sensor"
 
@@ -75,8 +75,8 @@ obj/machinery/air_sensor
 			set_frequency(frequency)
 
 obj/machinery/computer/general_air_control
-	icon = 'computer.dmi'
-	icon_state = "computer_generic"
+	icon = 'icons/obj/computer.dmi'
+	icon_state = "tank"
 
 	name = "Computer"
 
@@ -87,22 +87,23 @@ obj/machinery/computer/general_air_control
 	var/datum/radio_frequency/radio_connection
 
 	attack_hand(mob/user)
+		if(..(user))
+			return
 		user << browse(return_text(),"window=computer")
-		user.machine = src
+		user.set_machine(src)
 		onclose(user, "computer")
 
 	process()
 		..()
-
 		src.updateDialog()
 
 	attackby(I as obj, user as mob)
 		if(istype(I, /obj/item/weapon/screwdriver))
-			playsound(src.loc, 'Screwdriver.ogg', 50, 1)
+			playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 			if(do_after(user, 20))
 				if (src.stat & BROKEN)
 					user << "\blue The broken glass falls out."
-					var/obj/computerframe/A = new /obj/computerframe( src.loc )
+					var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 					new /obj/item/weapon/shard( src.loc )
 					var/obj/item/weapon/circuitboard/air_management/M = new /obj/item/weapon/circuitboard/air_management( A )
 					for (var/obj/C in src)
@@ -115,7 +116,7 @@ obj/machinery/computer/general_air_control
 					del(src)
 				else
 					user << "\blue You disconnect the monitor."
-					var/obj/computerframe/A = new /obj/computerframe( src.loc )
+					var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 					var/obj/item/weapon/circuitboard/air_management/M = new /obj/item/weapon/circuitboard/air_management( A )
 					for (var/obj/C in src)
 						C.loc = src.loc
@@ -185,7 +186,7 @@ obj/machinery/computer/general_air_control
 		set_frequency(frequency)
 
 	large_tank_control
-		icon = 'computer.dmi'
+		icon = 'icons/obj/computer.dmi'
 		icon_state = "tank"
 
 		var/input_tag
@@ -225,7 +226,7 @@ Max Output Pressure: [output_pressure] kPa<BR>"}
 			else
 				output += "<FONT color='red'>ERROR: Can not find output port</FONT> <A href='?src=\ref[src];out_refresh_status=1'>Search</A><BR>"
 
-			output += "Max Output Pressure Set: <A href='?src=\ref[src];adj_pressure=-100'>-</A> <A href='?src=\ref[src];adj_pressure=-1'>-</A> [pressure_setting] kPa <A href='?src=\ref[src];adj_pressure=1'>+</A> <A href='?src=\ref[src];adj_pressure=100'>+</A><BR>"
+			output += "Max Output Pressure Set: <A href='?src=\ref[src];adj_pressure=-1000'>-</A> <A href='?src=\ref[src];adj_pressure=-100'>-</A> <A href='?src=\ref[src];adj_pressure=-10'>-</A> <A href='?src=\ref[src];adj_pressure=-1'>-</A> [pressure_setting] kPa <A href='?src=\ref[src];adj_pressure=1'>+</A> <A href='?src=\ref[src];adj_pressure=10'>+</A> <A href='?src=\ref[src];adj_pressure=100'>+</A> <A href='?src=\ref[src];adj_pressure=1000'>+</A><BR>"
 
 			return output
 
@@ -284,7 +285,7 @@ Max Output Pressure: [output_pressure] kPa<BR>"}
 				src.updateDialog()
 
 	fuel_injection
-		icon = 'computer.dmi'
+		icon = 'icons/obj/computer.dmi'
 		icon_state = "atmos"
 
 		var/device_tag
@@ -297,11 +298,11 @@ Max Output Pressure: [output_pressure] kPa<BR>"}
 
 		attackby(I as obj, user as mob)
 			if(istype(I, /obj/item/weapon/screwdriver))
-				playsound(src.loc, 'Screwdriver.ogg', 50, 1)
+				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				if(do_after(user, 20))
 					if (src.stat & BROKEN)
 						user << "\blue The broken glass falls out."
-						var/obj/computerframe/A = new /obj/computerframe( src.loc )
+						var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 						new /obj/item/weapon/shard( src.loc )
 						var/obj/item/weapon/circuitboard/injector_control/M = new /obj/item/weapon/circuitboard/injector_control( A )
 						for (var/obj/C in src)
@@ -314,7 +315,7 @@ Max Output Pressure: [output_pressure] kPa<BR>"}
 						del(src)
 					else
 						user << "\blue You disconnect the monitor."
-						var/obj/computerframe/A = new /obj/computerframe( src.loc )
+						var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 						var/obj/item/weapon/circuitboard/injector_control/M = new /obj/item/weapon/circuitboard/injector_control( A )
 						for (var/obj/C in src)
 							C.loc = src.loc
@@ -442,94 +443,6 @@ Rate: [volume_rate] L/sec<BR>"}
 
 				radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
 
-/obj/machinery/computer/atmos_alert
-	var/datum/radio_frequency/radio_connection
 
-/obj/machinery/computer/atmos_alert/initialize()
-	set_frequency(receive_frequency)
 
-/obj/machinery/computer/atmos_alert/receive_signal(datum/signal/signal)
-	if(!signal || signal.encryption) return
 
-	var/zone = signal.data["zone"]
-	var/severity = signal.data["alert"]
-
-	if(!zone || !severity) return
-
-	minor_alarms -= zone
-	priority_alarms -= zone
-	if(severity=="severe")
-		priority_alarms += zone
-	else if (severity=="minor")
-		minor_alarms += zone
-	/*else "clear"*/
-		//do nothing
-	update_icon()
-
-/obj/machinery/computer/atmos_alert/proc/set_frequency(new_frequency)
-	radio_controller.remove_object(src, receive_frequency)
-	receive_frequency = new_frequency
-	radio_connection = radio_controller.add_object(src, receive_frequency, RADIO_ATMOSIA)
-
-/obj/machinery/computer/atmos_alert/attack_hand(mob/user)
-	user << browse(return_text(),"window=computer")
-	user.machine = src
-	onclose(user, "computer")
-
-/obj/machinery/computer/atmos_alert/process()
-	..()
-	src.updateDialog()
-
-/obj/machinery/computer/atmos_alert/update_icon()
-	if(priority_alarms.len)
-		icon_state = "alert:2"
-
-	else if(minor_alarms.len)
-		icon_state = "alert:1"
-
-	else
-		icon_state = "alert:0"
-
-/obj/machinery/computer/atmos_alert/proc/return_text()
-	var/priority_text
-	var/minor_text
-
-	if(priority_alarms.len)
-		for(var/zone in priority_alarms)
-			priority_text += "<FONT color='red'><B>[zone]</B></FONT>  <A href='?src=\ref[src];priority_clear=[ckey(zone)]'>X</A><BR>"
-	else
-		priority_text = "No priority alerts detected.<BR>"
-
-	if(minor_alarms.len)
-		for(var/zone in minor_alarms)
-			minor_text += "<B>[zone]</B>  <A href='?src=\ref[src];minor_clear=[ckey(zone)]'>X</A><BR>"
-	else
-		minor_text = "No minor alerts detected.<BR>"
-
-	var/output = {"<B>[name]</B><HR>
-<B>Priority Alerts:</B><BR>
-[priority_text]
-<BR>
-<HR>
-<B>Minor Alerts:</B><BR>
-[minor_text]
-<BR>"}
-
-	return output
-
-/obj/machinery/computer/atmos_alert/Topic(href, href_list)
-	if(..())
-		return
-
-	if(href_list["priority_clear"])
-		var/removing_zone = href_list["priority_clear"]
-		for(var/zone in priority_alarms)
-			if(ckey(zone) == removing_zone)
-				priority_alarms -= zone
-
-	if(href_list["minor_clear"])
-		var/removing_zone = href_list["minor_clear"]
-		for(var/zone in minor_alarms)
-			if(ckey(zone) == removing_zone)
-				minor_alarms -= zone
-	update_icon()

@@ -33,7 +33,7 @@ turf/space
 		create_meteor(direction as num)
 			set src in world
 
-			var/obj/meteor/M = new( src )
+			var/obj/effect/meteor/M = new( src )
 			walk(M, direction,10)
 
 
@@ -116,7 +116,7 @@ obj/machinery/portable_atmospherics/canister
 
 		valve_open = 1
 		release_pressure = 1000
-
+/*
 obj/machinery/atmospherics
 	unary
 		heat_reservoir
@@ -352,6 +352,7 @@ obj/machinery/atmospherics
 					usr << "[x],[y] is in a pipeline with [parent.members.len] members ([parent.edges.len] edges)! Volume: [parent.air.volume]"
 					usr << "Pressure: [parent.air.return_pressure()], Temperature: [parent.air.temperature]"
 					usr << "[parent.air.oxygen], [parent.air.toxins], [parent.air.nitrogen], [parent.air.carbon_dioxide] .. [parent.alert_pressure]"
+*/
 mob
 	verb
 		flag_all_pipe_networks()
@@ -367,27 +368,27 @@ mob
 				network.marker = rand(1,4)
 
 			for(var/obj/machinery/atmospherics/pipe/P in world)
-				P.overlays = null
+				P.overlays.Cut()
 
 				var/datum/pipe_network/master = P.return_network()
 				if(master)
-					P.overlays += icon('atmos_testing.dmi',"marker[master.marker]")
+					P.overlays += icon('icons/Testing/atmos_testing.dmi',"marker[master.marker]")
 				else
 					world << "error"
-					P.overlays += icon('atmos_testing.dmi',"marker0")
+					P.overlays += icon('icons/Testing/atmos_testing.dmi',"marker0")
 
 			for(var/obj/machinery/atmospherics/valve/V in world)
-				V.overlays = null
+				V.overlays.Cut()
 
 				if(V.network_node1)
-					V.overlays += icon('atmos_testing.dmi',"marker[V.network_node1.marker]")
+					V.overlays += icon('icons/Testing/atmos_testing.dmi',"marker[V.network_node1.marker]")
 				else
-					V.overlays += icon('atmos_testing.dmi',"marker0")
+					V.overlays += icon('icons/Testing/atmos_testing.dmi',"marker0")
 
 				if(V.network_node2)
-					V.overlays += icon('atmos_testing.dmi',"marker[V.network_node2.marker]")
+					V.overlays += icon('icons/Testing/atmos_testing.dmi',"marker[V.network_node2.marker]")
 				else
-					V.overlays += icon('atmos_testing.dmi',"marker0")
+					V.overlays += icon('icons/Testing/atmos_testing.dmi',"marker0")
 
 turf/simulated
 	var/fire_verbose = 0
@@ -395,12 +396,12 @@ turf/simulated
 	verb
 		mark_direction()
 			set src in world
-			overlays = null
+			overlays.Cut()
 			for(var/direction in list(NORTH,SOUTH,EAST,WEST))
 				if(group_border&direction)
-					overlays += icon('turf_analysis.dmi',"red_arrow",direction)
+					overlays += icon('icons/Testing/turf_analysis.dmi',"red_arrow",direction)
 				else if(air_check_directions&direction)
-					overlays += icon('turf_analysis.dmi',"arrow",direction)
+					overlays += icon('icons/Testing/turf_analysis.dmi',"arrow",direction)
 		air_status()
 			set src in world
 			set category = "Minor"
@@ -445,11 +446,11 @@ turf/simulated
 				assume_air(adding)
 
 obj/indicator
-	icon = 'air_meter.dmi'
+	icon = 'icons/Testing/air_meter.dmi'
 	var/measure = "temperature"
 	anchored = 1
 
-	proc/process()
+	process()
 		icon_state = measurement()
 
 	proc/measurement()
@@ -479,6 +480,7 @@ obj/indicator
 
 	Click()
 		process()
+
 
 obj/window
 	verb
@@ -514,7 +516,7 @@ mob
 		fire_report()
 			set category = "Debug"
 			usr << "\b \red Fire Report"
-			for(var/obj/hotspot/flame in world)
+			for(var/obj/effect/hotspot/flame in world)
 				usr << "[flame.x],[flame.y]: [flame.temperature]K, [flame.volume] L - [flame.loc:air:temperature]"
 
 		process_cycle()
@@ -550,6 +552,52 @@ mob
 			air_master.process_update_tiles()
 			air_master.process_rebuild_select_groups()
 
+		mark_group_delay()
+			set category = "Debug"
+			if(!air_master)
+				usr << "Cannot find air_system"
+				return
+
+			for(var/datum/air_group/group in air_master.air_groups)
+				group.marker = 0
+
+			for(var/turf/simulated/floor/S in world)
+				S.icon = 'icons/Testing/turf_analysis.dmi'
+				if(S.parent)
+					if(S.parent.group_processing)
+						if (S.parent.check_delay < 2)
+							S.parent.marker=1
+						else if (S.parent.check_delay < 5)
+							S.parent.marker=2
+						else if (S.parent.check_delay < 15)
+							S.parent.marker=3
+						else if (S.parent.check_delay < 30)
+							S.parent.marker=4
+						else
+							S.parent.marker=5
+						if(S.parent.borders && S.parent.borders.Find(S))
+							S.icon_state = "on[S.parent.marker]_border"
+						else
+							S.icon_state = "on[S.parent.marker]"
+
+					else
+						if (S.check_delay < 2)
+							S.icon_state= "on1_border"
+						else if (S.check_delay < 5)
+							S.icon_state= "on2_border"
+						else if (S.check_delay < 15)
+							S.icon_state= "on3_border"
+						else if (S.check_delay < 30)
+							S.icon_state= "on4_border"
+						else
+							S.icon_state = "suspended"
+				else
+					if(S.processing)
+						S.icon_state = "individual_on"
+					else
+						S.icon_state = "individual_off"
+
+
 		mark_groups()
 			set category = "Debug"
 			if(!air_master)
@@ -560,7 +608,7 @@ mob
 				group.marker = 0
 
 			for(var/turf/simulated/floor/S in world)
-				S.icon = 'turf_analysis.dmi'
+				S.icon = 'icons/Testing/turf_analysis.dmi'
 				if(S.parent)
 					if(S.parent.group_processing)
 						if(S.parent.marker == 0)
@@ -582,23 +630,16 @@ mob
 			set category = "Debug"
 			getbrokeninhands()
 
-/*
-			for(var/obj/movable/floor/S in world)
-				S.icon = 'turf_analysis.dmi'
-				if(S.parent)
-					if(S.parent.group_processing)
-						if(S.parent.marker == 0)
-							S.parent.marker = rand(1,5)
-						if(S.parent.borders && S.parent.borders.Find(S))
-							S.icon_state = "on[S.parent.marker]_border"
-						else
-							S.icon_state = "on[S.parent.marker]"
 
-					else
-						S.icon_state = "suspended"
-				else
-					if(S.processing)
-						S.icon_state = "individual_on"
-					else
-						S.icon_state = "individual_off"
-*/
+/*		jump_to_dead_group() Currently in the normal admin commands but fits here
+			set category = "Debug"
+			if(!air_master)
+				usr << "Cannot find air_system"
+				return
+
+			var/datum/air_group/dead_groups = list()
+			for(var/datum/air_group/group in air_master.air_groups)
+				if (!group.group_processing)
+					dead_groups += group
+			var/datum/air_group/dest_group = pick(dead_groups)
+			usr.loc = pick(dest_group.members)*/

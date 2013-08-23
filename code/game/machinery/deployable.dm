@@ -14,7 +14,7 @@ for reference:
 	access_morgue = 6
 	access_tox = 7
 	access_tox_storage = 8
-	access_medlab = 9
+	access_genetics = 9
 	access_engine = 10
 	access_engine_equip= 11
 	access_maint_tunnels = 12
@@ -55,26 +55,24 @@ for reference:
 
 
 //Barricades, maybe there will be a metal one later...
-/obj/barricade/wooden
+/obj/structure/barricade/wooden
 	name = "wooden barricade"
 	desc = "This space is blocked off by a wooden barricade."
-	icon = 'structures.dmi'
+	icon = 'icons/obj/structures.dmi'
 	icon_state = "woodenbarricade"
 	anchored = 1.0
 	density = 1.0
 	var/health = 100.0
 	var/maxhealth = 100.0
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
+	attackby(obj/item/W as obj, mob/user as mob)
 		if (istype(W, /obj/item/stack/sheet/wood))
 			if (src.health < src.maxhealth)
-				for(var/mob/O in viewers(src, null))
-					O << "\red [user] begins to repair the [src]!"
+				visible_message("\red [user] begins to repair the [src]!")
 				if(do_after(user,20))
 					src.health = src.maxhealth
 					W:use(1)
-					for(var/mob/O in viewers(src, null))
-						O << "\red [user] repairs the [src]!"
+					visible_message("\red [user] repairs the [src]!")
 					return
 			else
 				return
@@ -87,8 +85,7 @@ for reference:
 					src.health -= W.force * 0.75
 				else
 			if (src.health <= 0)
-				for(var/mob/O in viewers(src, null))
-					O << "\red <B>The barricade is smashed appart!</B>"
+				visible_message("\red <B>The barricade is smashed apart!</B>")
 				new /obj/item/stack/sheet/wood(get_turf(src))
 				new /obj/item/stack/sheet/wood(get_turf(src))
 				new /obj/item/stack/sheet/wood(get_turf(src))
@@ -98,15 +95,13 @@ for reference:
 	ex_act(severity)
 		switch(severity)
 			if(1.0)
-				for(var/mob/O in viewers(src, null))
-					O << "\red <B>The barricade is blown appart!</B>"
+				visible_message("\red <B>The barricade is blown apart!</B>")
 				del(src)
 				return
 			if(2.0)
 				src.health -= 25
 				if (src.health <= 0)
-					for(var/mob/O in viewers(src, null))
-						O << "\red <B>The barricade is blown appart!</B>"
+					visible_message("\red <B>The barricade is blown apart!</B>")
 					new /obj/item/stack/sheet/wood(get_turf(src))
 					new /obj/item/stack/sheet/wood(get_turf(src))
 					new /obj/item/stack/sheet/wood(get_turf(src))
@@ -114,8 +109,7 @@ for reference:
 				return
 
 	meteorhit()
-		for(var/mob/O in viewers(src, null))
-			O << "\red <B>The barricade is smashed appart!</B>"
+		visible_message("\red <B>The barricade is smashed apart!</B>")
 		new /obj/item/stack/sheet/wood(get_turf(src))
 		new /obj/item/stack/sheet/wood(get_turf(src))
 		new /obj/item/stack/sheet/wood(get_turf(src))
@@ -125,8 +119,7 @@ for reference:
 	blob_act()
 		src.health -= 25
 		if (src.health <= 0)
-			for(var/mob/O in viewers(src, null))
-				O << "\red <B>The blob eats through the barricade!</B>"
+			visible_message("\red <B>The blob eats through the barricade!</B>")
 			del(src)
 		return
 
@@ -138,39 +131,25 @@ for reference:
 		else
 			return 0
 
-/*	bullet_act(flag, A as obj)
-		switch(flag)
-			if (PROJECTILE_BULLET)
-				src.health -= 20
-			if (PROJECTILE_WEAKBULLET) //Detective's revolver fires marshmallows
-				src.health -= 2
-			if (PROJECTILE_LASER)
-				src.health -= 20
-			if (PROJECTILE_PULSE)
-				src.health -=50
-		if (src.health <= 0)
-			src.explode()
-These should not block bullets/N */
 
 //Actual Deployable machinery stuff
 
 /obj/machinery/deployable
 	name = "deployable"
 	desc = "deployable"
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	req_access = list(access_security)//I'm changing this until these are properly tested./N
 
 /obj/machinery/deployable/barrier
 	name = "deployable barrier"
 	desc = "A deployable barrier. Swipe your ID card to lock/unlock it."
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	anchored = 0.0
 	density = 1.0
 	icon_state = "barrier0"
 	var/health = 100.0
 	var/maxhealth = 100.0
 	var/locked = 0.0
-	var/emagged = 0.0
 //	req_access = list(access_maint_tunnels)
 
 	New()
@@ -192,11 +171,10 @@ These should not block bullets/N */
 						user << "Barrier lock toggled off."
 						return
 				else
-					var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
+					var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 					s.set_up(2, 1, src)
 					s.start()
-					for(var/mob/O in viewers(src, null))
-						O << "\red BZZzZZzZZzZT"
+					visible_message("\red BZZzZZzZZzZT")
 					return
 			return
 		else if (istype(W, /obj/item/weapon/card/emag))
@@ -204,34 +182,30 @@ These should not block bullets/N */
 				src.emagged = 1
 				src.req_access = null
 				user << "You break the ID authentication lock on the [src]."
-				var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
+				var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 				s.set_up(2, 1, src)
 				s.start()
-				for(var/mob/O in viewers(src, null))
-					O << "\red BZZZZT"
+				visible_message("\red BZZzZZzZZzZT")
 				return
 			else if (src.emagged == 1)
 				src.emagged = 2
 				user << "You short out the anchoring mechanism on the [src]."
-				var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
+				var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 				s.set_up(2, 1, src)
 				s.start()
-				for(var/mob/O in viewers(src, null))
-					O << "\red BZZZZT"
+				visible_message("\red BZZzZZzZZzZT")
 				return
 		else if (istype(W, /obj/item/weapon/wrench))
 			if (src.health < src.maxhealth)
 				src.health = src.maxhealth
 				src.emagged = 0
 				src.req_access = list(access_security)
-				for(var/mob/O in viewers(src, null))
-					O << "\red [user] repairs the [src]!"
+				visible_message("\red [user] repairs the [src]!")
 				return
 			else if (src.emagged > 0)
 				src.emagged = 0
 				src.req_access = list(access_security)
-				for(var/mob/O in viewers(src, null))
-					O << "\red [user] repairs the [src]!"
+				visible_message("\red [user] repairs the [src]!")
 				return
 			return
 		else
@@ -255,6 +229,13 @@ These should not block bullets/N */
 				if (src.health <= 0)
 					src.explode()
 				return
+	emp_act(severity)
+		if(stat & (BROKEN|NOPOWER))
+			return
+		if(prob(50/severity))
+			locked = !locked
+			anchored = !anchored
+			icon_state = "barrier[src.locked]"
 
 	meteorhit()
 		src.explode()
@@ -274,31 +255,15 @@ These should not block bullets/N */
 		else
 			return 0
 
-/*	bullet_act(flag, A as obj)
-		switch(flag)
-			if (PROJECTILE_BULLET)
-				src.health -= 20
-			if (PROJECTILE_WEAKBULLET) //Detective's revolver fires marshmallows
-				src.health -= 2
-			if (PROJECTILE_LASER)
-				src.health -= 20
-			if (PROJECTILE_PULSE)
-				src.health -=50
-		if (src.health <= 0)
-			src.explode()
-These should not block bullets/N */
-
-
 	proc/explode()
 
-		for(var/mob/O in hearers(src, null))
-			O.show_message("\red <B>[src] blows apart!</B>", 1)
+		visible_message("\red <B>[src] blows apart!</B>")
 		var/turf/Tsec = get_turf(src)
 
 	/*	var/obj/item/stack/rods/ =*/
 		new /obj/item/stack/rods(Tsec)
 
-		var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
+		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 		s.set_up(3, 1, src)
 		s.start()
 

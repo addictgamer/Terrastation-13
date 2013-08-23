@@ -1,22 +1,23 @@
+//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
+
 /obj/machinery/implantchair
 	name = "Loyalty Implanter"
 	desc = "Used to implant occupants with loyalty implants."
-	icon = 'implantchair.dmi'
+	icon = 'icons/obj/machines/implantchair.dmi'
 	icon_state = "implantchair"
 	density = 1
 	opacity = 0
 	anchored = 1
 
-	var
-		ready = 1
-		malfunction = 0
-		list/obj/item/weapon/implant/loyalty/implant_list = list()
-		max_implants = 5
-		injection_cooldown = 600
-		replenish_cooldown = 6000
-		replenishing = 0
-		mob/living/carbon/occupant = null
-		injecting = 0
+	var/ready = 1
+	var/malfunction = 0
+	var/list/obj/item/weapon/implant/loyalty/implant_list = list()
+	var/max_implants = 5
+	var/injection_cooldown = 600
+	var/replenish_cooldown = 6000
+	var/replenishing = 0
+	var/mob/living/carbon/occupant = null
+	var/injecting = 0
 
 	proc
 		go_out()
@@ -31,7 +32,7 @@
 
 
 	attack_hand(mob/user as mob)
-		user.machine = src
+		user.set_machine(src)
 		var/health_text = ""
 		if(src.occupant)
 			if(src.occupant.health <= -100)
@@ -47,7 +48,7 @@
 		dat += "<B>Implants:</B> [src.implant_list.len ? "[implant_list.len]" : "<A href='?src=\ref[src];replenish=1'>Replenish</A>"]<BR>"
 		if(src.occupant)
 			dat += "[src.ready ? "<A href='?src=\ref[src];implant=1'>Implant</A>" : "Recharging"]<BR>"
-		user.machine = src
+		user.set_machine(src)
 		user << browse(dat, "window=implant")
 		onclose(user, "implant")
 
@@ -77,9 +78,9 @@
 		if(istype(G, /obj/item/weapon/grab))
 			if(!ismob(G:affecting))
 				return
-			for(var/mob/living/carbon/metroid/M in range(1,G:affecting))
+			for(var/mob/living/carbon/slime/M in range(1,G:affecting))
 				if(M.Victim == G:affecting)
-					usr << "[G:affecting:name] will not fit into the [src.name] because they have a Metroid latched onto their head."
+					usr << "[G:affecting:name] will not fit into the [src.name] because they have a slime latched onto their head."
 					return
 			var/mob/M = G:affecting
 			if(put_mob(M))
@@ -88,8 +89,10 @@
 		return
 
 
-	go_out()
+	go_out(var/mob/M)
 		if(!( src.occupant ))
+			return
+		if(M == occupant) // so that the guy inside can't eject himself -Agouri
 			return
 		if (src.occupant.client)
 			src.occupant.client.eye = src.occupant.client.mob
@@ -113,7 +116,7 @@
 		if(M.client)
 			M.client.perspective = EYE_PERSPECTIVE
 			M.client.eye = src
-		M.pulling = null
+		M.stop_pulling()
 		M.loc = src
 		src.occupant = M
 		src.add_fingerprint(usr)
@@ -130,10 +133,11 @@
 			if(istype(imp, /obj/item/weapon/implant/loyalty))
 				for (var/mob/O in viewers(M, null))
 					O.show_message("\red [M] has been implanted by the [src.name].", 1)
-				imp.loc = M
-				imp.imp_in = M
-				imp.implanted = 1
-				imp.implanted(M)
+
+				if(imp.implanted(M))
+					imp.loc = M
+					imp.imp_in = M
+					imp.implanted = 1
 				implant_list -= imp
 				break
 		return
@@ -152,7 +156,7 @@
 			set src in oview(1)
 			if(usr.stat != 0)
 				return
-			src.go_out()
+			src.go_out(usr)
 			add_fingerprint(usr)
 			return
 

@@ -2,39 +2,57 @@ var/CMinutes = null
 var/savefile/Banlist
 
 
-/proc/CheckBan(var/client/clientvar)
+/proc/CheckBan(var/ckey, var/id, var/address)
+	if(!Banlist)		// if Banlist cannot be located for some reason
+		LoadBans()		// try to load the bans
+		if(!Banlist)	// uh oh, can't find bans!
+			return 0	// ABORT ABORT ABORT
 
-	var/id = clientvar.computer_id
-	var/key = clientvar.ckey
-
+	. = list()
+	var/appeal
+	if(config && config.banappeals)
+		appeal = "\nFor more information on your ban, or to appeal, head to <a href='[config.banappeals]'>[config.banappeals]</a>"
 	Banlist.cd = "/base"
-	if (Banlist.dir.Find("[key][id]"))
-		Banlist.cd = "[key][id]"
+	if( "[ckey][id]" in Banlist.dir )
+		Banlist.cd = "[ckey][id]"
 		if (Banlist["temp"])
 			if (!GetExp(Banlist["minutes"]))
 				ClearTempbans()
 				return 0
 			else
-				return "[Banlist["reason"]]\n(This ban will be automatically removed in [GetExp(Banlist["minutes"])].)"
+				.["desc"] = "\nReason: [Banlist["reason"]]\nExpires: [GetExp(Banlist["minutes"])]\nBy: [Banlist["bannedby"]][appeal]"
 		else
-			Banlist.cd = "/base/[key][id]"
-			return "[Banlist["reason"]]\n(This is a permanent ban)"
+			Banlist.cd	= "/base/[ckey][id]"
+			.["desc"]	= "\nReason: [Banlist["reason"]]\nExpires: <B>PERMENANT</B>\nBy: [Banlist["bannedby"]][appeal]"
+		.["reason"]	= "ckey/id"
+		return .
+	else
+		for (var/A in Banlist.dir)
+			Banlist.cd = "/base/[A]"
+			var/matches
+			if( ckey == Banlist["key"] )
+				matches += "ckey"
+			if( id == Banlist["id"] )
+				if(matches)
+					matches += "/"
+				matches += "id"
+			if( address == Banlist["ip"] )
+				if(matches)
+					matches += "/"
+				matches += "ip"
 
-	Banlist.cd = "/base"
-	for (var/A in Banlist.dir)
-		Banlist.cd = "/base/[A]"
-		if (id == Banlist["id"] || key == Banlist["key"])
-			if(Banlist["temp"])
-				if (!GetExp(Banlist["minutes"]))
-					ClearTempbans()
-					return 0
+			if(matches)
+				if(Banlist["temp"])
+					if (!GetExp(Banlist["minutes"]))
+						ClearTempbans()
+						return 0
+					else
+						.["desc"] = "\nReason: [Banlist["reason"]]\nExpires: [GetExp(Banlist["minutes"])]\nBy: [Banlist["bannedby"]][appeal]"
 				else
-					return "[Banlist["reason"]]\n(This ban will be automatically removed in [GetExp(Banlist["minutes"])].)"
-			else
-				return "[Banlist["reason"]]\n(This is a permanent ban)"
-
+					.["desc"] = "\nReason: [Banlist["reason"]]\nExpires: <B>PERMENANT</B>\nBy: [Banlist["bannedby"]][appeal]"
+				.["reason"] = matches
+				return .
 	return 0
-
 
 /proc/UpdateTime() //No idea why i made this a proc.
 	CMinutes = (world.realtime / 10) / 60
@@ -75,7 +93,7 @@ var/savefile/Banlist
 	return 1
 
 
-/proc/AddBan(ckey, computerid, reason, bannedby, temp, minutes)
+/proc/AddBan(ckey, computerid, reason, bannedby, temp, minutes, address)
 
 	var/bantimestamp
 
@@ -92,12 +110,12 @@ var/savefile/Banlist
 		Banlist.cd = "/base/[ckey][computerid]"
 		Banlist["key"] << ckey
 		Banlist["id"] << computerid
+		Banlist["ip"] << address
 		Banlist["reason"] << reason
 		Banlist["bannedby"] << bannedby
 		Banlist["temp"] << temp
 		if (temp)
 			Banlist["minutes"] << bantimestamp
-
 	return 1
 
 /proc/RemoveBan(foldername)
@@ -118,10 +136,11 @@ var/savefile/Banlist
 		ban_unban_log_save("[key_name_admin(usr)] unbanned [key]")
 		log_admin("[key_name_admin(usr)] unbanned [key]")
 		message_admins("[key_name_admin(usr)] unbanned: [key]")
-
+		feedback_inc("ban_unban",1)
+		usr.client.holder.DB_ban_unban( ckey(key), BANTYPE_ANY_FULLBAN)
 	for (var/A in Banlist.dir)
 		Banlist.cd = "/base/[A]"
-		if (key == Banlist["key"] || id == Banlist["id"])
+		if (key == Banlist["key"] /*|| id == Banlist["id"]*/)
 			Banlist.cd = "/base"
 			Banlist.dir.Remove(A)
 			continue
@@ -143,7 +162,7 @@ var/savefile/Banlist
 			timeleftstring = "[exp] Minutes"
 		return timeleftstring
 
-/obj/admins/proc/unbanpanel()
+/datum/admins/proc/unbanpanel()
 	var/count = 0
 	var/dat
 	//var/dat = "<HR><B>Unban Player:</B> \blue(U) = Unban , (E) = Edit Ban\green (Total<HR><table border=1 rules=all frame=void cellspacing=0 cellpadding=3 >"
@@ -151,7 +170,19 @@ var/savefile/Banlist
 	for (var/A in Banlist.dir)
 		count++
 		Banlist.cd = "/base/[A]"
-		dat += text("<tr><td><A href='?src=\ref[src];unbanf=[Banlist["key"]][Banlist["id"]]'>(U)</A><A href='?src=\ref[src];unbane=[Banlist["key"]][Banlist["id"]]'>(E)</A> Key: <B>[Banlist["key"]]</B></td><td> ([Banlist["temp"] ? "[GetExp(Banlist["minutes"]) ? GetExp(Banlist["minutes"]) : "Removal pending" ]" : "Permaban"])</td><td>(By: [Banlist["bannedby"]])</td><td>(Reason: [Banlist["reason"]])</td></tr>")
+		var/ref		= "\ref[src]"
+		var/key		= Banlist["key"]
+		var/id		= Banlist["id"]
+		var/ip		= Banlist["ip"]
+		var/reason	= Banlist["reason"]
+		var/by		= Banlist["bannedby"]
+		var/expiry
+		if(Banlist["temp"])
+			expiry = GetExp(Banlist["minutes"])
+			if(!expiry)		expiry = "Removal Pending"
+		else				expiry = "Permaban"
+
+		dat += text("<tr><td><A href='?src=[ref];unbanf=[key][id]'>(U)</A><A href='?src=[ref];unbane=[key][id]'>(E)</A> Key: <B>[key]</B></td><td>ComputerID: <B>[id]</B></td><td>IP: <B>[ip]</B></td><td> [expiry]</td><td>(By: [by])</td><td>(Reason: [reason])</td></tr>")
 
 	dat += "</table>"
 	dat = "<HR><B>Bans:</B> <FONT COLOR=blue>(U) = Unban , (E) = Edit Ban</FONT> - <FONT COLOR=green>([count] Bans)</FONT><HR><table border=1 rules=all frame=void cellspacing=0 cellpadding=3 >[dat]"

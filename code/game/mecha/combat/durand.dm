@@ -2,16 +2,18 @@
 	desc = "An aging combat exosuit utilized by the Nanotrasen corporation. Originally developed to combat hostile alien lifeforms."
 	name = "Durand"
 	icon_state = "durand"
+	initial_icon = "durand"
 	step_in = 4
 	dir_in = 1 //Facing North.
 	health = 400
 	deflect_chance = 20
-	max_temperature = 3000
+	damage_absorption = list("brute"=0.5,"fire"=1.1,"bullet"=0.65,"laser"=0.85,"energy"=0.9,"bomb"=0.8)
+	max_temperature = 30000
 	infra_luminosity = 8
 	force = 40
 	var/defence = 0
 	var/defence_deflect = 35
-	wreckage = "/obj/decal/mecha_wreckage/durand"
+	wreckage = /obj/effect/decal/mecha_wreckage/durand
 
 /*
 /obj/mecha/combat/durand/New()
@@ -35,8 +37,9 @@
 /obj/mecha/combat/durand/verb/defence_mode()
 	set category = "Exosuit Interface"
 	set name = "Toggle defence mode"
-	set src in view(0)
-	if(usr!=src.occupant && usr != src.remote_controlled)
+	set src = usr.loc
+	set popup_menu = 0
+	if(usr!=src.occupant)
 		return
 	defence = !defence
 	if(defence)

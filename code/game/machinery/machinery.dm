@@ -91,32 +91,48 @@ Class Procs:
 	Compiled by Aygar
 */
 
+/obj/machinery
+	name = "machinery"
+	icon = 'icons/obj/stationobjs.dmi'
+	var/stat = 0
+	var/emagged = 0
+	var/use_power = 1
+		//0 = dont run the auto
+		//1 = run auto, use idle
+		//2 = run auto, use active
+	var/idle_power_usage = 0
+	var/active_power_usage = 0
+	var/power_channel = EQUIP
+		//EQUIP,ENVIRON or LIGHT
+	var/list/component_parts = null //list of all the parts used to build it, if made from certain kinds of frames.
+	var/uid
+	var/manual = 0
+	var/global/gl_uid = 1
 
 /obj/machinery/New()
 	..()
-	machines.Add(src)
+	machines += src
 
 /obj/machinery/Del()
-	machines.Remove(src)
+	machines -= src
 	..()
 
 /obj/machinery/process()//If you dont use process or power why are you here
-//	machines.Remove(src)Not going to do this till I test it a bit more
-	return
+	return PROCESS_KILL
 
 /obj/machinery/emp_act(severity)
 	if(use_power && stat == 0)
 		use_power(7500/severity)
 
-		var/obj/overlay/pulse2 = new/obj/overlay ( src.loc )
-		pulse2.icon = 'effects.dmi'
+		var/obj/effect/overlay/pulse2 = new/obj/effect/overlay ( src.loc )
+		pulse2.icon = 'icons/effects/effects.dmi'
 		pulse2.icon_state = "empdisable"
 		pulse2.name = "emp sparks"
 		pulse2.anchored = 1
 		pulse2.dir = pick(cardinal)
 
 		spawn(10)
-			del(pulse2)
+			pulse2.delete()
 	..()
 
 /obj/machinery/ex_act(severity)
@@ -159,13 +175,30 @@ Class Procs:
 			istype(usr, /mob/living/carbon/monkey) && ticker && ticker.mode.name == "monkey") )
 		usr << "\red You don't have the dexterity to do this!"
 		return 1
-	if ((!in_range(src, usr) || !istype(src.loc, /turf)) && !istype(usr, /mob/living/silicon))
-		return 1
+
+	var/norange = 0
+	if(istype(usr, /mob/living/carbon/human))
+		var/mob/living/carbon/human/H = usr
+		if(istype(H.l_hand, /obj/item/tk_grab))
+			norange = 1
+		else if(istype(H.r_hand, /obj/item/tk_grab))
+			norange = 1
+
+	if(!norange)
+		if ((!in_range(src, usr) || !istype(src.loc, /turf)) && !istype(usr, /mob/living/silicon))
+			return 1
+
 	src.add_fingerprint(usr)
 	return 0
 
 /obj/machinery/attack_ai(mob/user as mob)
-	return src.attack_hand(user)
+	if(isrobot(user))
+		// For some reason attack_robot doesn't work
+		// This is to stop robots from using cameras to remotely control machines.
+		if(user.client && user.client.eye == user)
+			return src.attack_hand(user)
+	else
+		return src.attack_hand(user)
 
 /obj/machinery/attack_paw(mob/user as mob)
 	return src.attack_hand(user)
@@ -186,11 +219,11 @@ Class Procs:
 		return 1
 */
 	if (ishuman(user))
-		if(user.brainloss >= 60)
-			for(var/mob/M in viewers(src, null))
-				M << "\red [user] stares cluelessly at [src] and drools."
+		var/mob/living/carbon/human/H = user
+		if(H.getBrainLoss() >= 60)
+			visible_message("\red [H] stares cluelessly at [src] and drools.")
 			return 1
-		else if(prob(user.brainloss))
+		else if(prob(H.getBrainLoss()))
 			user << "\red You momentarily forget how to use [src]."
 			return 1
 
@@ -204,3 +237,4 @@ Class Procs:
 /obj/machinery/proc/assign_uid()
 	uid = gl_uid
 	gl_uid++
+

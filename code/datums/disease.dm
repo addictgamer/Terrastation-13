@@ -1,10 +1,10 @@
-#define NON_CONTAGIOUS -1
-#define SPECIAL 0
-#define CONTACT_GENERAL 1
-#define CONTACT_HANDS 2
-#define CONTACT_FEET 3
-#define AIRBORNE 4
-#define BLOOD 5
+#define SPECIAL -1
+#define NON_CONTAGIOUS 0
+#define BLOOD 1
+#define CONTACT_FEET 2
+#define CONTACT_HANDS 3
+#define CONTACT_GENERAL 4
+#define AIRBORNE 5
 
 #define SCANNER 1
 #define PANDEMIC 2
@@ -17,6 +17,8 @@ to null does not delete the object itself. Thank you.
 
 */
 
+var/list/diseases = typesof(/datum/disease) - /datum/disease
+
 
 /datum/disease
 	var/form = "Virus" //During medscans, what the disease is referred to as
@@ -28,6 +30,7 @@ to null does not delete the object itself. Thank you.
 	var/cure_list = null // allows for multiple possible cure combinations
 	var/cure_chance = 8//chance for the cure to do its job
 	var/spread = null //spread type description
+	var/initial_spread = null
 	var/spread_type = AIRBORNE
 	var/contagious_period = 0//the disease stage when it can be spread
 	var/list/affected_species = list()
@@ -41,13 +44,16 @@ to null does not delete the object itself. Thank you.
 	var/permeability_mod = 1//permeability modifier coefficient.
 	var/desc = null//description. Leave it null and this disease won't show in med records.
 	var/severity = null//severity descr
-	var/longevity = 250//time in "ticks" the virus stays in inanimate object (blood stains, corpses, etc). In syringes, bottles and beakers it stays infinitely.
+	var/longevity = 150//time in "ticks" the virus stays in inanimate object (blood stains, corpses, etc). In syringes, bottles and beakers it stays infinitely.
 	var/list/hidden = list(0, 0)
+	var/can_carry = 1 // If the disease allows "carriers".
+	var/age = 0 // age of the disease in the current mob
+	var/stage_minimum_age = 0 // how old the disease must be to advance per stage
 	// if hidden[1] is true, then virus is hidden from medical scanners
 	// if hidden[2] is true, then virus is hidden from PANDEMIC machine
 
-
 /datum/disease/proc/stage_act()
+	age++
 	var/cure_present = has_cure()
 	//world << "[cure_present]"
 
@@ -55,16 +61,18 @@ to null does not delete the object itself. Thank you.
 		//world << "[affected_mob] is carrier"
 		return
 
-	spread = (cure_present?"Remissive":initial(spread))
-
+	spread = (cure_present?"Remissive":initial_spread)
 	if(stage > max_stages)
 		stage = max_stages
-	if(stage_prob != 0 && prob(stage_prob) && stage != max_stages && !cure_present) //now the disease shouldn't get back up to stage 4 in no time
-		stage++
-	if(stage != 1 && (prob(1) || (cure_present && prob(cure_chance))))
-		stage--
-	else if(stage <= 1 && ((prob(1) && curable) || (cure_present && prob(cure_chance))))
-//		world << "Cured as stage act"
+
+	if(!cure_present && prob(stage_prob) && age > stage_minimum_age) //now the disease shouldn't get back up to stage 4 in no time
+		stage = min(stage + 1, max_stages)
+		age = 0
+
+	else if(cure_present && prob(cure_chance))
+		stage = max(stage - 1, 1)
+
+	if(stage <= 1 && ((prob(1) && curable) || (cure_present && prob(cure_chance))))
 		cure()
 		return
 	return
@@ -90,199 +98,21 @@ to null does not delete the object itself. Thank you.
 
 	return result
 
+/datum/disease/proc/spread_by_touch()
+	switch(spread_type)
+		if(CONTACT_FEET, CONTACT_HANDS, CONTACT_GENERAL)
+			return 1
+	return 0
 
-/mob/proc/contract_disease(var/datum/disease/virus, var/skip_this = 0, var/force_species_check=1)
-//	world << "Contract_disease called by [src] with virus [virus]"
-	if(stat >=2) return
-	if(virus.type in resistances)
-		if(prob(99.9)) return
-		resistances.Remove(virus.type)//the resistance is futile
-
-	for(var/datum/disease/D in viruses)
-		if(istype(D, virus.type))
-			return // two viruses of the same kind can't infect a body at once!!
-
-
-	if(force_species_check)
-		var/fail = 1
-		for(var/name in virus.affected_species)
-			var/mob_type = text2path("/mob/living/carbon/[lowertext(name)]")
-			if(mob_type && istype(src, mob_type))
-				fail = 0
-				break
-		if(fail) return
-
-	if(skip_this == 1)
-		//if(src.virus)				< -- this used to replace the current disease. Not anymore!
-			//src.virus.cure(0)
-
-		var/datum/disease/v = new virus.type
-		src.viruses += v
-		v.affected_mob = src
-		v.strain_data = v.strain_data.Copy()
-		v.holder = src
-		if(prob(5))
-			v.carrier = 1
-		return
-
-	//if(src.virus) //
-		//return //
-
-
-/*
-	var/list/clothing_areas	= list()
-	var/list/covers = list(UPPER_TORSO,LOWER_TORSO,LEGS,FEET,ARMS,HANDS)
-	for(var/Covers in covers)
-		clothing_areas[Covers] = list()
-
-	for(var/obj/item/clothing/Clothing in src)
-		if(Clothing)
-			for(var/Covers in covers)
-				if(Clothing&Covers)
-					clothing_areas[Covers] += Clothing
-
-*/
-	if(prob(15/virus.permeability_mod)) return //the power of immunity compels this disease!
-
-	var/obj/item/clothing/Cl = null
-	var/passed = 1
-
-	//chances to target this zone
-	var/head_ch
-	var/body_ch
-	var/hands_ch
-	var/feet_ch
-
-	switch(virus.spread_type)
-		if(CONTACT_HANDS)
-			head_ch = 0
-			body_ch = 0
-			hands_ch = 100
-			feet_ch = 0
-		if(CONTACT_FEET)
-			head_ch = 0
-			body_ch = 0
-			hands_ch = 0
-			feet_ch = 100
-		else
-			head_ch = 100
-			body_ch = 100
-			hands_ch = 25
-			feet_ch = 25
-
-
-	var/target_zone = pick(head_ch;1,body_ch;2,hands_ch;3,feet_ch;4)//1 - head, 2 - body, 3 - hands, 4- feet
-
-	if(istype(src, /mob/living/carbon/human))
-		var/mob/living/carbon/human/H = src
-
-		switch(target_zone)
-			if(1)
-				if(isobj(H.head))
-					Cl = H.head
-					passed = prob(Cl.permeability_coefficient*100*virus.permeability_mod)
-//					world << "Head pass [passed]"
-				if(passed && isobj(H.wear_mask))
-					Cl = H.wear_mask
-					passed = prob(Cl.permeability_coefficient*100*virus.permeability_mod)
-//					world << "Mask pass [passed]"
-			if(2)//arms and legs included
-				if(isobj(H.wear_suit))
-					Cl = H.wear_suit
-					passed = prob(Cl.permeability_coefficient*100*virus.permeability_mod)
-//					world << "Suit pass [passed]"
-				if(passed && isobj(H.slot_w_uniform))
-					Cl = H.slot_w_uniform
-					passed = prob(Cl.permeability_coefficient*100*virus.permeability_mod)
-//					world << "Uniform pass [passed]"
-			if(3)
-				if(isobj(H.wear_suit) && H.wear_suit.body_parts_covered&HANDS)
-					Cl = H.wear_suit
-					passed = prob(Cl.permeability_coefficient*100*virus.permeability_mod)
-//					world << "Suit pass [passed]"
-
-				if(passed && isobj(H.gloves))
-					Cl = H.gloves
-					passed = prob(Cl.permeability_coefficient*100*virus.permeability_mod)
-//					world << "Gloves pass [passed]"
-			if(4)
-				if(isobj(H.wear_suit) && H.wear_suit.body_parts_covered&FEET)
-					Cl = H.wear_suit
-					passed = prob(Cl.permeability_coefficient*100*virus.permeability_mod)
-//					world << "Suit pass [passed]"
-
-				if(passed && isobj(H.shoes))
-					Cl = H.shoes
-					passed = prob(Cl.permeability_coefficient*100*virus.permeability_mod)
-//					world << "Shoes pass [passed]"
-			else
-				src << "Something strange's going on, something's wrong."
-
-			/*if("feet")
-				if(H.shoes && istype(H.shoes, /obj/item/clothing/))
-					Cl = H.shoes
-					passed = prob(Cl.permeability_coefficient*100)
-					//
-					world << "Shoes pass [passed]"
-			*/		//
-	else if(istype(src, /mob/living/carbon/monkey))
-		var/mob/living/carbon/monkey/M = src
-		switch(target_zone)
-			if(1)
-				if(M.wear_mask && isobj(M.wear_mask))
-					Cl = M.wear_mask
-					passed = prob(Cl.permeability_coefficient*100+virus.permeability_mod)
-					//world << "Mask pass [passed]"
-
-	if(passed && virus.spread_type == AIRBORNE && internals)
-		passed = (prob(50*virus.permeability_mod))
-
-	if(passed)
-		//world << "Infection in the mob [src]. YAY"
-
-
-/*
-	var/score = 0
-	if(istype(src, /mob/living/carbon/human))
-		if(src:gloves) score += 5
-		if(istype(src:wear_suit, /obj/item/clothing/suit/space)) score += 10
-		if(istype(src:wear_suit, /obj/item/clothing/suit/bio_suit)) score += 10
-		if(istype(src:head, /obj/item/clothing/head/helmet/space)) score += 5
-		if(istype(src:head, /obj/item/clothing/head/bio_hood)) score += 5
-	if(wear_mask)
-		score += 5
-		if((istype(src:wear_mask, /obj/item/clothing/mask) || istype(src:wear_mask, /obj/item/clothing/mask/surgical)) && !internal)
-			score += 5
-		if(internal)
-			score += 5
-	if(score > 20)
-		return
-	else if(score == 20 && prob(95))
-		return
-	else if(score >= 15 && prob(75))
-		return
-	else if(score >= 10 && prob(55))
-		return
-	else if(score >= 5 && prob(35))
-		return
-	else if(prob(15))
-		return
-	else*/
-		var/datum/disease/v = new virus.type
-		src.viruses += v
-		v.affected_mob = src
-		v.strain_data = v.strain_data.Copy()
-		v.holder = src
-		if(prob(5))
-			v.carrier = 1
-		return
-	return
-
-
-/datum/disease/proc/spread(var/atom/source=null)
+/datum/disease/proc/spread(var/atom/source=null, var/airborne_range = 2,  var/force_spread)
 	//world << "Disease [src] proc spread was called from holder [source]"
 
-	if(spread_type == SPECIAL || spread_type == NON_CONTAGIOUS)//does not spread
+	// If we're overriding how we spread, say so here
+	var/how_spread = spread_type
+	if(force_spread)
+		how_spread = force_spread
+
+	if(how_spread == SPECIAL || how_spread == NON_CONTAGIOUS || how_spread == BLOOD)//does not spread
 		return
 
 	if(stage < contagious_period) //the disease is not contagious at this stage
@@ -294,31 +124,40 @@ to null does not delete the object itself. Thank you.
 		else //no source and no mob affected. Rogue disease. Break
 			return
 
+	if(affected_mob)
+		if(affected_mob.reagents.has_reagent("spaceacillin"))
+			return // Don't spread if we have spaceacillin in our system.
 
-	var/check_range = AIRBORNE//defaults to airborne - range 4
+	var/check_range = airborne_range//defaults to airborne - range 2
 
-	if(spread_type != AIRBORNE && spread_type != SPECIAL)
-		check_range = 0 // everything else, like infect-on-contact things, only infect things on top of it
+	if(how_spread != AIRBORNE && how_spread != SPECIAL)
+		check_range = 1 // everything else, like infect-on-contact things, only infect things on top of it
 
-	for(var/mob/living/carbon/M in oviewers(check_range, source))
-		M.contract_disease(src)
+	if(isturf(source.loc))
+		for(var/mob/living/carbon/M in oview(check_range, source))
+			if(isturf(M.loc))
+				if(AStar(source.loc, M.loc, /turf/proc/AdjacentTurfs, /turf/proc/Distance, check_range))
+					M.contract_disease(src, 0, 1, force_spread)
 
 	return
 
 
 /datum/disease/proc/process()
-	if(!holder) return
+	if(!holder)
+		active_diseases -= src
+		return
 	if(prob(65))
 		spread(holder)
 
 	if(affected_mob)
 		for(var/datum/disease/D in affected_mob.viruses)
 			if(D != src)
-				if(istype(src, D.type))
+				if(IsSame(D))
+					//error("Deleting [D.name] because it's the same as [src.name].")
 					del(D) // if there are somehow two viruses of the same kind in the system, delete the other one
 
 	if(holder == affected_mob)
-		if(affected_mob.stat < 2) //he's alive
+		if(affected_mob.stat != DEAD) //he's alive
 			stage_act()
 		else //he's dead.
 			if(spread_type!=SPECIAL)
@@ -333,22 +172,30 @@ to null does not delete the object itself. Thank you.
 	return
 
 /datum/disease/proc/cure(var/resistance=1)//if resistance = 0, the mob won't develop resistance to disease
-	if(resistance && affected_mob && !(type in affected_mob.resistances))
-//		world << "Setting res to [src]"
-		var/saved_type = "[type]"//copy the value, not create the reference to it, so when the object is deleted, the value remains.
-		affected_mob.resistances += text2path(saved_type)
-	if((affected_mob) && (istype(src, /datum/disease/alien_embryo)))//Get rid of the flag.
-		affected_mob.alien_egg_flag = 0
-//	world << "Removing [src]"
-	spawn(0)
-		del(src)
+	if(affected_mob)
+		if(resistance && !(type in affected_mob.resistances))
+			var/saved_type = "[type]"
+			affected_mob.resistances += text2path(saved_type)
+		/*if(istype(src, /datum/disease/alien_embryo))	//Get rid of the infection flag if it's a xeno embryo.
+			affected_mob.status_flags &= ~(XENO_HOST)*/
+		affected_mob.viruses -= src		//remove the datum from the list
+	del(src)	//delete the datum to stop it processing
 	return
 
 
-/datum/disease/New(var/process=1)//process = 1 - adding the object to global list. List is processed by master controller.
+/datum/disease/New(var/process=1, var/datum/disease/D)//process = 1 - adding the object to global list. List is processed by master controller.
 	cure_list = list(cure_id) // to add more cures, add more vars to this list in the actual disease's New()
-	if(process)					 // Viruses in list are considered active.
+	if(process)				 // Viruses in list are considered active.
 		active_diseases += src
+	initial_spread = spread
+
+/datum/disease/proc/IsSame(var/datum/disease/D)
+	if(istype(src, D.type))
+		return 1
+	return 0
+
+/datum/disease/proc/Copy(var/process = 0)
+	return new type(process, src)
 
 /*
 /datum/disease/Del()

@@ -1,31 +1,45 @@
 /mob/living/carbon/monkey/examine()
 	set src in oview()
 
-	usr << "\blue *---------*"
-	usr << text("\blue This is \icon[] <B>[]</B>!", src, src.name)
+	if(!usr || !src)	return
+	if( (usr.sdisabilities & BLIND || usr.blinded || usr.stat) && !istype(usr,/mob/dead/observer) )
+		usr << "<span class='notice'>Something is there but you can't see it.</span>"
+		return
+
+	var/msg = "<span class='info'>*---------*\nThis is \icon[src] \a <EM>[src]</EM>!\n"
+
 	if (src.handcuffed)
-		usr << text("\blue [] is handcuffed! \icon[]", src.name, src.handcuffed)
+		msg += "It is \icon[src.handcuffed] handcuffed!\n"
 	if (src.wear_mask)
-		usr << text("\blue [] has a \icon[] [] on \his[] head!", src.name, src.wear_mask, src.wear_mask.name, src)
+		msg += "It has \icon[src.wear_mask] \a [src.wear_mask] on its head.\n"
 	if (src.l_hand)
-		usr << text("\blue [] has a \icon[] [] in \his[] left hand!", src.name, src.l_hand, src.l_hand.name, src)
+		msg += "It has \icon[src.l_hand] \a [src.l_hand] in its left hand.\n"
 	if (src.r_hand)
-		usr << text("\blue [] has a \icon[] [] in \his[] right hand!", src.name, src.r_hand, src.r_hand.name, src)
+		msg += "It has \icon[src.r_hand] \a [src.r_hand] in its right hand.\n"
 	if (src.back)
-		usr << text("\blue [] has a \icon[] [] on \his[] back!", src.name, src.back, src.back.name, src)
-	if (src.stat == 2)
-		usr << text("\red [] is limp and unresponsive, a dull lifeless look in their eyes.", src.name)
+		msg += "It has \icon[src.back] \a [src.back] on its back.\n"
+	if (src.stat == DEAD)
+		msg += "<span class='deadsay'>It is limp and unresponsive, with no signs of life.</span>\n"
 	else
-		if (src.bruteloss)
-			if (src.bruteloss < 30)
-				usr << text("\red [] looks slightly bruised!", src.name)
+		msg += "<span class='warning'>"
+		if (src.getBruteLoss())
+			if (src.getBruteLoss() < 30)
+				msg += "It has minor bruising.\n"
 			else
-				usr << text("\red <B>[] looks severely bruised!</B>", src.name)
-		if (src.fireloss)
-			if (src.fireloss < 30)
-				usr << text("\red [] looks slightly burnt!", src.name)
+				msg += "<B>It has severe bruising!</B>\n"
+		if (src.getFireLoss())
+			if (src.getFireLoss() < 30)
+				msg += "It has minor burns.\n"
 			else
-				usr << text("\red <B>[] looks severely burnt!</B>", src.name)
-		if (src.stat == 1)
-			usr << text("\red [] doesn't seem to be responding to anything around them, their eyes closed as though asleep.", src.name)
+				msg += "<B>It has severe burns!</B>\n"
+		if (src.stat == UNCONSCIOUS)
+			msg += "It isn't responding to anything around it; it seems to be asleep.\n"
+		msg += "</span>"
+
+	if (src.digitalcamo)
+		msg += "It is repulsively uncanny!\n"
+
+	msg += "*---------*</span>"
+
+	usr << msg
 	return

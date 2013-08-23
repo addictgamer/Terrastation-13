@@ -17,73 +17,15 @@
 		if(!directwired)		// only for attaching to directwired machines
 			return
 
-		var/dirn = get_dir(user, src)
-
-		for(var/obj/cable/LC in T)
-			if( (LC.d1 == dirn && LC.d2 == 0 ) || ( LC.d2 == dirn && LC.d1 == 0) )
-				user << "There's already a cable at that position."
-				return
-
-		var/obj/cable/NC = new(T)
-
-		NC.cableColor(coil.color)
-
-		NC.d1 = 0
-		NC.d2 = dirn
-		NC.add_fingerprint()
-		NC.updateicon()
-
-		NC.mergeConnectedNetworks(NC.d2)
-		NC.mergeConnectedNetworksOnTurf()
-		if(netnum == 0 && NC.netnum == 0)
-			var/datum/powernet/PN = new()
-
-			PN.number = powernets.len + 1
-			powernets += PN
-			NC.netnum = PN.number
-			netnum = PN.number
-			PN.cables += NC
-			PN.nodes += src
-			powernet = PN
-		else if(netnum == 0)
-			netnum = NC.netnum
-			var/datum/powernet/PN = powernets[netnum]
-			powernet = PN
-			PN.nodes += src
-		NC.mergeConnectedNetworksOnTurf()
-
-		coil.use(1)
-		if (NC.shock(user, 50))
-			if (prob(50)) //fail
-				new/obj/item/weapon/cable_coil(NC.loc, 1, NC.color)
-				del(NC)
+		coil.turf_place(T, user)
 		return
-	else
-		..()
-	return
-
-
-/obj/item/clothing/gloves/attackby(obj/item/weapon/W, mob/user)
-	if(istype(W, /obj/item/weapon/cable_coil))
-		var/obj/item/weapon/cable_coil/C = W
-		if(!istype(src, /obj/item/clothing/gloves/yellow))
-			if(!wired)
-				if(C.amount >= 2)
-					C.amount -= 2
-					wired = 1
-					user << "You wrap some wires around [src]."
-				else
-					user << "There is not enough wire to cover [src]."
-			else
-				user << "[src] is already wired."
-
 	else
 		..()
 	return
 
 // the power cable object
 
-/obj/cable/New()
+/obj/structure/cable/New()
 	..()
 
 
@@ -98,26 +40,23 @@
 	var/turf/T = src.loc			// hide if turf is not intact
 
 	if(level==1) hide(T.intact)
+	cable_list += src
 
 
-/obj/cable/Del()		// called when a cable is deleted
-
-	if(!defer_powernet_rebuild)	// set if network will be rebuilt manually
-
-		if(netnum && powernets && powernets.len >= netnum)		// make sure cable & powernet data is valid
-			var/datum/powernet/PN = powernets[netnum]
-			PN.cut_cable(src)									// updated the powernets
-	else
-		if(Debug) diary << "Defered cable deletion at [x],[y]: #[netnum]"
+/obj/structure/cable/Del()						// called when a cable is deleted
+	if(!defer_powernet_rebuild)					// set if network will be rebuilt manually
+		if(powernet)
+			powernet.cut_cable(src)				// update the powernets
+	cable_list -= src
 	..()													// then go ahead and delete the cable
 
-/obj/cable/hide(var/i)
+/obj/structure/cable/hide(var/i)
 
 	if(level == 1 && istype(loc, /turf))
 		invisibility = i ? 101 : 0
 	updateicon()
 
-/obj/cable/proc/updateicon()
+/obj/structure/cable/proc/updateicon()
 	if(invisibility)
 		icon_state = "[d1]-[d2]-f"
 	else
@@ -125,25 +64,26 @@
 
 
 // returns the powernet this cable belongs to
-/obj/cable/proc/get_powernet()
-	var/datum/powernet/PN			// find the powernet
-	if(netnum && powernets && powernets.len >= netnum)
-		PN = powernets[netnum]
-	return PN
+/obj/structure/cable/proc/get_powernet()			//TODO: remove this as it is obsolete
+	return powernet
 
-/obj/cable/attack_hand(mob/user)
+/obj/structure/cable/attack_hand(mob/user)
 	if(ishuman(user))
 		if(istype(user:gloves, /obj/item/clothing/gloves/space_ninja)&&user:gloves:candrain&&!user:gloves:draining)
 			call(/obj/item/clothing/gloves/space_ninja/proc/drain)("WIRE",src,user:wear_suit)
 	return
 
-/obj/cable/attackby(obj/item/W, mob/user)
+/obj/structure/cable/attackby(obj/item/W, mob/user)
 
 	var/turf/T = src.loc
 	if(T.intact)
 		return
 
 	if(istype(W, /obj/item/weapon/wirecutters))
+
+//		if(power_switch)
+//			user << "\red This piece of cable is tied to a power switch. Flip the switch to remove it."
+//			return
 
 		if (shock(user, 50))
 			return
@@ -156,10 +96,6 @@
 		for(var/mob/O in viewers(src, null))
 			O.show_message("\red [user] cuts the cable.", 1)
 
-		if(defer_powernet_rebuild)
-			if(netnum && powernets && powernets.len >= netnum)
-				var/datum/powernet/PN = powernets[netnum]
-				PN.cut_cable(src)
 		del(src)
 
 		return	// not needed, but for clarity
@@ -189,18 +125,18 @@
 
 // shock the user with probability prb
 
-/obj/cable/proc/shock(mob/user, prb, var/siemens_coeff = 1.0)
+/obj/structure/cable/proc/shock(mob/user, prb, var/siemens_coeff = 1.0)
 	if(!prob(prb))
 		return 0
-	if (electrocute_mob(user, powernets[src.netnum], src, siemens_coeff))
-		var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
+	if (electrocute_mob(user, powernet, src, siemens_coeff))
+		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 		s.set_up(5, 1, src)
 		s.start()
 		return 1
 	else
 		return 0
 
-/obj/cable/ex_act(severity)
+/obj/structure/cable/ex_act(severity)
 	switch(severity)
 		if(1.0)
 			del(src)
@@ -217,19 +153,35 @@
 
 // the cable coil object, used for laying cable
 
+#define MAXCOIL 30
+/obj/item/weapon/cable_coil
+	name = "cable coil"
+	icon = 'icons/obj/power.dmi'
+	icon_state = "coil_red"
+	var/amount = MAXCOIL
+	color = "red"
+	desc = "A coil of power cable."
+	throwforce = 10
+	w_class = 2.0
+	throw_speed = 2
+	throw_range = 5
+	m_amt = 50
+	g_amt = 20
+	flags = TABLEPASS | USEDELAY | FPRINT | CONDUCT
+	slot_flags = SLOT_BELT
+	item_state = "coil_red"
+	attack_verb = list("whipped", "lashed", "disciplined", "flogged")
+
+	suicide_act(mob/user)
+		viewers(user) << "\red <b>[user] is strangling \himself with the [src.name]! It looks like \he's trying to commit suicide.</b>"
+		return(OXYLOSS)
+
+
 /obj/item/weapon/cable_coil/New(loc, length = MAXCOIL, var/param_color = null)
 	..()
 	src.amount = length
 	if (param_color)
 		color = param_color
-	pixel_x = rand(-2,2)
-	pixel_y = rand(-2,2)
-	updateicon()
-
-
-/obj/item/weapon/cable_coil/cut/New(loc)
-	..()
-	src.amount = rand(1,2)
 	pixel_x = rand(-2,2)
 	pixel_y = rand(-2,2)
 	updateicon()
@@ -256,6 +208,24 @@
 		usr << "A piece of power cable."
 	else
 		usr << "A coil of power cable. There are [amount] lengths of cable in the coil."
+
+/obj/item/weapon/cable_coil/verb/make_restraint()
+	set name = "Make Cable Restraints"
+	set category = "Object"
+	var/mob/M = usr
+
+	if(ishuman(M) && !M.restrained() && !M.stat && !M.paralysis && ! M.stunned)
+		if(!istype(usr.loc,/turf)) return
+		if(src.amount <= 14)
+			usr << "\red You need at least 15 lengths to make restraints!"
+			return
+		var/obj/item/weapon/handcuffs/cable/B = new /obj/item/weapon/handcuffs/cable(usr.loc)
+		B.icon_state = "cuff_[color]"
+		usr << "\blue You wind some cable together to make some restraints."
+		src.use(15)
+	else
+		usr << "\blue You cannot do that."
+	..()
 
 /obj/item/weapon/cable_coil/attackby(obj/item/weapon/W, mob/user)
 	..()
@@ -320,12 +290,12 @@
 		else
 			dirn = get_dir(F, user)
 
-		for(var/obj/cable/LC in F)
+		for(var/obj/structure/cable/LC in F)
 			if((LC.d1 == dirn && LC.d2 == 0 ) || ( LC.d2 == dirn && LC.d1 == 0))
 				user << "There's already a cable at that position."
 				return
 
-		var/obj/cable/C = new(F)
+		var/obj/structure/cable/C = new(F)
 
 		C.cableColor(color)
 
@@ -334,11 +304,9 @@
 		C.add_fingerprint(user)
 		C.updateicon()
 
-		var/datum/powernet/PN = new()
-		PN.number = powernets.len + 1
-		powernets += PN
-		C.netnum = PN.number
-		PN.cables += C
+		C.powernet = new()
+		powernets += C.powernet
+		C.powernet.cables += C
 
 		C.mergeConnectedNetworks(C.d2)
 		C.mergeConnectedNetworksOnTurf()
@@ -355,7 +323,7 @@
 
 // called when cable_coil is click on an installed obj/cable
 
-/obj/item/weapon/cable_coil/proc/cable_join(obj/cable/C, mob/user)
+/obj/item/weapon/cable_coil/proc/cable_join(obj/structure/cable/C, mob/user)
 
 	var/turf/U = user.loc
 	if(!isturf(U))
@@ -386,12 +354,12 @@
 
 			var/fdirn = turn(dirn, 180)		// the opposite direction
 
-			for(var/obj/cable/LC in U)		// check to make sure there's not a cable there already
+			for(var/obj/structure/cable/LC in U)		// check to make sure there's not a cable there already
 				if(LC.d1 == fdirn || LC.d2 == fdirn)
 					user << "There's already a cable at that position."
 					return
 
-			var/obj/cable/NC = new(U)
+			var/obj/structure/cable/NC = new(U)
 			NC.cableColor(color)
 
 			NC.d1 = 0
@@ -399,11 +367,11 @@
 			NC.add_fingerprint()
 			NC.updateicon()
 
-			NC.netnum = C.netnum
-			var/datum/powernet/PN = powernets[C.netnum]
-			PN.cables += NC
-			NC.mergeConnectedNetworks(NC.d2)
-			NC.mergeConnectedNetworksOnTurf()
+			if(C.powernet)
+				NC.powernet = C.powernet
+				NC.powernet.cables += NC
+				NC.mergeConnectedNetworks(NC.d2)
+				NC.mergeConnectedNetworksOnTurf()
 			use(1)
 			if (NC.shock(user, 50))
 				if (prob(50)) //fail
@@ -422,7 +390,7 @@
 			nd2 = C.d2
 
 
-		for(var/obj/cable/LC in T)		// check to make sure there's no matching cable
+		for(var/obj/structure/cable/LC in T)		// check to make sure there's no matching cable
 			if(LC == C)			// skip the cable we're interacting with
 				continue
 			if((LC.d1 == nd1 && LC.d2 == nd2) || (LC.d1 == nd2 && LC.d2 == nd1) )	// make sure no cable matches either direction
@@ -451,13 +419,13 @@
 
 		return
 
-/obj/cable/proc/mergeConnectedNetworks(var/direction)
+/obj/structure/cable/proc/mergeConnectedNetworks(var/direction)
 	var/turf/TB
-	if((d1 == direction || d2 == direction) != 1)
+	if(!(d1 == direction || d2 == direction))
 		return
 	TB = get_step(src, direction)
 
-	for(var/obj/cable/TC in TB)
+	for(var/obj/structure/cable/TC in TB)
 
 		if(!TC)
 			continue
@@ -469,93 +437,137 @@
 
 		if(TC.d1 == fdir || TC.d2 == fdir)
 
-			if(!netnum)
-				var/datum/powernet/PN = powernets[TC.netnum]
-				netnum = TC.netnum
-				PN = powernets[netnum]
-				PN.cables += src
-				continue
+			if(!TC.powernet)
+				TC.powernet = new()
+				powernets += TC.powernet
+				TC.powernet.cables += TC
 
-			if(TC.netnum != netnum)
-				var/datum/powernet/PN = powernets[netnum]
-				var/datum/powernet/TPN = powernets[TC.netnum]
-
-				PN.merge_powernets(TPN)
-
-/obj/cable/proc/mergeConnectedNetworksOnTurf()
+			if(powernet)
+				merge_powernets(powernet,TC.powernet)
+			else
+				powernet = TC.powernet
+				powernet.cables += src
 
 
-	for(var/obj/cable/C in loc)
 
 
-		if(!C)
-			continue
+/obj/structure/cable/proc/mergeConnectedNetworksOnTurf()
+	if(!powernet)
+		powernet = new()
+		powernets += powernet
+		powernet.cables += src
 
-		if(C == src)
-			continue
-		if(netnum == 0)
-			var/datum/powernet/PN = powernets[C.netnum]
-			netnum = C.netnum
-			PN.cables += src
-			continue
+	for(var/AM in loc)
+		if(istype(AM,/obj/structure/cable))
+			var/obj/structure/cable/C = AM
+			if(C.powernet == powernet)	continue
+			if(C.powernet)
+				merge_powernets(powernet, C.powernet)
+			else
+				C.powernet = powernet
+				powernet.cables += C
 
-		var/datum/powernet/PN = powernets[netnum]
-		var/datum/powernet/TPN = powernets[C.netnum]
+		else if(istype(AM,/obj/machinery/power/apc))
+			var/obj/machinery/power/apc/N = AM
+			if(!N.terminal)	continue
+			if(N.terminal.powernet)
+				merge_powernets(powernet, N.terminal.powernet)
+			else
+				N.terminal.powernet = powernet
+				powernet.nodes[N.terminal] = N.terminal
 
-		PN.merge_powernets(TPN)
+		else if(istype(AM,/obj/machinery/power))
+			var/obj/machinery/power/M = AM
+			if(M.powernet == powernet)	continue
+			if(M.powernet)
+				merge_powernets(powernet, M.powernet)
+			else
+				M.powernet = powernet
+				powernet.nodes[M] = M
 
-	for(var/obj/machinery/power/M in loc)
 
-		if(!M)
-			continue
-
-		if(!M.netnum)
-			var/datum/powernet/PN = powernets[netnum]
-			PN.nodes += M
-			M.netnum = netnum
-			M.powernet = powernets[M.netnum]
-
-		if(M.netnum < 0)
-			continue
-
-		var/datum/powernet/PN = powernets[netnum]
-		var/datum/powernet/TPN = powernets[M.netnum]
-
-		PN.merge_powernets(TPN)
-
-	for(var/obj/machinery/power/apc/N in loc)
-
-		if(!N)
-			continue
-
-		var/obj/machinery/power/M
-		M = N.terminal
-
-		if(M.netnum == 0)
-			if(netnum == 0)
-				continue
-			var/datum/powernet/PN = powernets[netnum]
-			PN.nodes += M
-			M.netnum = netnum
-			M.powernet = powernets[M.netnum]
-			continue
-
-		var/datum/powernet/PN = powernets[netnum]
-		var/datum/powernet/TPN = powernets[M.netnum]
-
-		PN.merge_powernets(TPN)
-
-obj/cable/proc/cableColor(var/colorC)
+obj/structure/cable/proc/cableColor(var/colorC)
 	var/color_n = "red"
 	if(colorC)
 		color_n = colorC
 	color = color_n
 	switch(colorC)
 		if("red")
-			icon = 'power_cond_red.dmi'
+			icon = 'icons/obj/power_cond_red.dmi'
 		if("yellow")
-			icon = 'power_cond_yellow.dmi'
+			icon = 'icons/obj/power_cond_yellow.dmi'
 		if("green")
-			icon = 'power_cond_green.dmi'
+			icon = 'icons/obj/power_cond_green.dmi'
 		if("blue")
-			icon = 'power_cond_blue.dmi'
+			icon = 'icons/obj/power_cond_blue.dmi'
+		if("pink")
+			icon = 'icons/obj/power_cond_pink.dmi'
+		if("orange")
+			icon = 'icons/obj/power_cond_orange.dmi'
+		if("cyan")
+			icon = 'icons/obj/power_cond_cyan.dmi'
+		if("white")
+			icon = 'icons/obj/power_cond_white.dmi'
+
+/obj/item/weapon/cable_coil/cut
+	item_state = "coil_red2"
+
+/obj/item/weapon/cable_coil/cut/New(loc)
+	..()
+	src.amount = rand(1,2)
+	pixel_x = rand(-2,2)
+	pixel_y = rand(-2,2)
+	updateicon()
+
+/obj/item/weapon/cable_coil/yellow
+	color = "yellow"
+	icon_state = "coil_yellow"
+
+/obj/item/weapon/cable_coil/blue
+	color = "blue"
+	icon_state = "coil_blue"
+
+/obj/item/weapon/cable_coil/green
+	color = "green"
+	icon_state = "coil_green"
+
+/obj/item/weapon/cable_coil/pink
+	color = "pink"
+	icon_state = "coil_pink"
+
+/obj/item/weapon/cable_coil/orange
+	color = "orange"
+	icon_state = "coil_orange"
+
+/obj/item/weapon/cable_coil/cyan
+	color = "cyan"
+	icon_state = "coil_cyan"
+
+/obj/item/weapon/cable_coil/white
+	color = "white"
+	icon_state = "coil_white"
+
+/obj/item/weapon/cable_coil/random/New()
+	color = pick("red","yellow","green","blue","pink")
+	icon_state = "coil_[color]"
+	..()
+
+/obj/item/weapon/cable_coil/attack(mob/M as mob, mob/user as mob)
+	if(hasorgans(M))
+		var/datum/organ/external/S = M:get_organ(user.zone_sel.selecting)
+		if(!(S.status & ORGAN_ROBOT) || user.a_intent != "help")
+			return ..()
+		if(S.burn_dam > 0 && use(1))
+			S.heal_damage(0,15,0,1)
+			if(user != M)
+				user.visible_message("\red \The [user] repairs some burn damage on their [S.display_name] with \the [src]",\
+				"\red You repair some burn damage on your [S.display_name]",\
+				"You hear wires being cut.")
+			else
+				user.visible_message("\red \The [user] repairs some burn damage on their [S.display_name] with \the [src]",\
+				"\red You repair some burn damage on your [S.display_name]",\
+				"You hear wires being cut.")
+		else
+			user << "Nothing to fix!"
+	else
+		return ..()

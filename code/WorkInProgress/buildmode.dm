@@ -1,4 +1,4 @@
-/proc/togglebuildmode(mob/M as mob in world)
+/proc/togglebuildmode(mob/M as mob in player_list)
 	set name = "Toggle Build Mode"
 	set category = "Special Verbs"
 	if(M.client)
@@ -6,7 +6,7 @@
 			log_admin("[key_name(usr)] has left build mode.")
 			M.client.buildmode = 0
 			M.client.show_popup_menus = 1
-			for(var/obj/bmode/buildholder/H)
+			for(var/obj/effect/bmode/buildholder/H)
 				if(H.cl == M.client)
 					del(H)
 		else
@@ -14,14 +14,14 @@
 			M.client.buildmode = 1
 			M.client.show_popup_menus = 0
 
-			var/obj/bmode/buildholder/H = new/obj/bmode/buildholder()
-			var/obj/bmode/builddir/A = new/obj/bmode/builddir(H)
+			var/obj/effect/bmode/buildholder/H = new/obj/effect/bmode/buildholder()
+			var/obj/effect/bmode/builddir/A = new/obj/effect/bmode/builddir(H)
 			A.master = H
-			var/obj/bmode/buildhelp/B = new/obj/bmode/buildhelp(H)
+			var/obj/effect/bmode/buildhelp/B = new/obj/effect/bmode/buildhelp(H)
 			B.master = H
-			var/obj/bmode/buildmode/C = new/obj/bmode/buildmode(H)
+			var/obj/effect/bmode/buildmode/C = new/obj/effect/bmode/buildmode(H)
 			C.master = H
-			var/obj/bmode/buildquit/D = new/obj/bmode/buildquit(H)
+			var/obj/effect/bmode/buildquit/D = new/obj/effect/bmode/buildquit(H)
 			D.master = H
 
 			H.builddir = A
@@ -34,15 +34,15 @@
 			M.client.screen += D
 			H.cl = M.client
 
-/obj/bmode//Cleaning up the tree a bit
+/obj/effect/bmode//Cleaning up the tree a bit
 	density = 1
 	anchored = 1
 	layer = 20
 	dir = NORTH
-	icon = 'buildmode.dmi'
-	var/obj/bmode/buildholder/master = null
+	icon = 'icons/misc/buildmode.dmi'
+	var/obj/effect/bmode/buildholder/master = null
 
-/obj/bmode/builddir
+/obj/effect/bmode/builddir
 	icon_state = "build"
 	screen_loc = "NORTH,WEST"
 	Click()
@@ -59,8 +59,8 @@
 				dir = NORTH
 		return
 
-/obj/bmode/buildhelp
-	icon = 'buildmode.dmi'
+/obj/effect/bmode/buildhelp
+	icon = 'icons/misc/buildmode.dmi'
 	icon_state = "buildhelp"
 	screen_loc = "NORTH,WEST+1"
 	Click()
@@ -92,34 +92,34 @@
 				usr << "\blue ***********************************************************"
 			if(4)
 				usr << "\blue ***********************************************************"
-				usr << "\blue Left Mouse Button on turf/obj/mob      = Throw"
-				usr << "\blue Right Mouse Button on turf/obj/mob     = Select"
+				usr << "\blue Left Mouse Button on turf/obj/mob      = Select"
+				usr << "\blue Right Mouse Button on turf/obj/mob     = Throw"
 				usr << "\blue ***********************************************************"
 		return
 
-/obj/bmode/buildquit
+/obj/effect/bmode/buildquit
 	icon_state = "buildquit"
 	screen_loc = "NORTH,WEST+3"
 
 	Click()
 		togglebuildmode(master.cl.mob)
 
-/obj/bmode/buildholder
+/obj/effect/bmode/buildholder
 	density = 0
 	anchored = 1
 	var/client/cl = null
-	var/obj/bmode/builddir/builddir = null
-	var/obj/bmode/buildhelp/buildhelp = null
-	var/obj/bmode/buildmode/buildmode = null
-	var/obj/bmode/buildquit/buildquit = null
+	var/obj/effect/bmode/builddir/builddir = null
+	var/obj/effect/bmode/buildhelp/buildhelp = null
+	var/obj/effect/bmode/buildmode/buildmode = null
+	var/obj/effect/bmode/buildquit/buildquit = null
 	var/atom/movable/throw_atom = null
 
-/obj/bmode/buildmode
+/obj/effect/bmode/buildmode
 	icon_state = "buildmode1"
 	screen_loc = "NORTH,WEST+2"
 	var/varholder = "name"
 	var/valueholder = "derp"
-	var/objholder = "/obj/closet"
+	var/objholder = "/obj/structure/closet"
 
 	Click(location, control, params)
 		var/list/pa = params2list(params)
@@ -144,18 +144,18 @@
 				if(1)
 					return
 				if(2)
-					objholder = input(usr,"Enter typepath:" ,"Typepath","/obj/closet")
-					var/list/removed_paths = list("/obj/bhole")
+					objholder = input(usr,"Enter typepath:" ,"Typepath","/obj/structure/closet")
+					var/list/removed_paths = list("/obj/effect/bhole")
 					if(objholder in removed_paths)
 						alert("That path is not allowed.")
-						objholder = "/obj/closet"
-					else if (dd_hasprefix(objholder, "/mob") && !(usr.client.holder.rank in list("Game Master", "Game Admin", "Badmin")))
-						objholder = "/obj/closet"
+						objholder = "/obj/structure/closet"
+					else if (dd_hasprefix(objholder, "/mob") && !check_rights(R_DEBUG,0))
+						objholder = "/obj/structure/closet"
 				if(3)
 					var/list/locked = list("vars", "key", "ckey", "client", "firemut", "ishulk", "telekinesis", "xray", "virus", "viruses", "cuffed", "ka", "last_eaten", "urine")
 
 					master.buildmode.varholder = input(usr,"Enter variable name:" ,"Name", "name")
-					if(master.buildmode.varholder in locked && !(usr.client.holder.rank in list("Game Master", "Game Admin")))
+					if(master.buildmode.varholder in locked && !check_rights(R_DEBUG,0))
 						return
 					var/thetype = input(usr,"Select variable type:" ,"Type") in list("text","number","mob-reference","obj-reference","turf-reference")
 					if(!thetype) return
@@ -165,7 +165,7 @@
 						if("number")
 							master.buildmode.valueholder = input(usr,"Enter variable value:" ,"Value", 123) as num
 						if("mob-reference")
-							master.buildmode.valueholder = input(usr,"Enter variable value:" ,"Value") as mob in world
+							master.buildmode.valueholder = input(usr,"Enter variable value:" ,"Value") as mob in mob_list
 						if("obj-reference")
 							master.buildmode.valueholder = input(usr,"Enter variable value:" ,"Value") as obj in world
 						if("turf-reference")
@@ -173,8 +173,8 @@
 
 
 /proc/build_click(var/mob/user, buildmode, location, control, params, var/obj/object)
-	var/obj/bmode/buildholder/holder = null
-	for(var/obj/bmode/buildholder/H)
+	var/obj/effect/bmode/buildholder/holder = null
+	for(var/obj/effect/bmode/buildholder/H)
 		if(H.cl == user.client)
 			holder = H
 			break
@@ -186,28 +186,28 @@
 			if(istype(object,/turf) && pa.Find("left") && !pa.Find("alt") && !pa.Find("ctrl") )
 				if(istype(object,/turf/space))
 					var/turf/T = object
-					T.ReplaceWithFloor()
+					T.ChangeTurf(/turf/simulated/floor)
 					return
 				else if(istype(object,/turf/simulated/floor))
 					var/turf/T = object
-					T.ReplaceWithWall()
+					T.ChangeTurf(/turf/simulated/wall)
 					return
 				else if(istype(object,/turf/simulated/wall))
 					var/turf/T = object
-					T.ReplaceWithRWall()
+					T.ChangeTurf(/turf/simulated/wall/r_wall)
 					return
 			else if(pa.Find("right"))
 				if(istype(object,/turf/simulated/wall))
 					var/turf/T = object
-					T.ReplaceWithFloor()
+					T.ChangeTurf(/turf/simulated/floor)
 					return
 				else if(istype(object,/turf/simulated/floor))
 					var/turf/T = object
-					T.ReplaceWithSpace()
+					T.ChangeTurf(/turf/space)
 					return
 				else if(istype(object,/turf/simulated/wall/r_wall))
 					var/turf/T = object
-					T.ReplaceWithWall()
+					T.ChangeTurf(/turf/simulated/wall)
 					return
 				else if(istype(object,/obj))
 					del(object)
@@ -217,25 +217,24 @@
 			else if(istype(object,/turf) && pa.Find("ctrl") && pa.Find("left"))
 				switch(holder.builddir.dir)
 					if(NORTH)
-						var/obj/window/reinforced/WIN = new/obj/window/reinforced(get_turf(object))
+						var/obj/structure/window/reinforced/WIN = new/obj/structure/window/reinforced(get_turf(object))
 						WIN.dir = NORTH
 					if(SOUTH)
-						var/obj/window/reinforced/WIN = new/obj/window/reinforced(get_turf(object))
+						var/obj/structure/window/reinforced/WIN = new/obj/structure/window/reinforced(get_turf(object))
 						WIN.dir = SOUTH
 					if(EAST)
-						var/obj/window/reinforced/WIN = new/obj/window/reinforced(get_turf(object))
+						var/obj/structure/window/reinforced/WIN = new/obj/structure/window/reinforced(get_turf(object))
 						WIN.dir = EAST
 					if(WEST)
-						var/obj/window/reinforced/WIN = new/obj/window/reinforced(get_turf(object))
+						var/obj/structure/window/reinforced/WIN = new/obj/structure/window/reinforced(get_turf(object))
 						WIN.dir = WEST
 					if(NORTHWEST)
-						var/obj/window/reinforced/WIN = new/obj/window/reinforced(get_turf(object))
+						var/obj/structure/window/reinforced/WIN = new/obj/structure/window/reinforced(get_turf(object))
 						WIN.dir = NORTHWEST
 		if(2)
 			if(pa.Find("left"))
 				var/obj/A = new holder.buildmode.objholder (get_turf(object))
 				A.dir = holder.builddir.dir
-				blink(A)
 			else if(pa.Find("right"))
 				if(isobj(object)) del(object)
 
@@ -244,14 +243,12 @@
 				if(object.vars.Find(holder.buildmode.varholder))
 					log_admin("[key_name(usr)] modified [object.name]'s [holder.buildmode.varholder] to [holder.buildmode.valueholder]")
 					object.vars[holder.buildmode.varholder] = holder.buildmode.valueholder
-					blink(object)
 				else
 					usr << "\red [initial(object.name)] does not have a var called '[holder.buildmode.varholder]'"
 			if(pa.Find("right"))
 				if(object.vars.Find(holder.buildmode.varholder))
 					log_admin("[key_name(usr)] modified [object.name]'s [holder.buildmode.varholder] to [holder.buildmode.valueholder]")
 					object.vars[holder.buildmode.varholder] = initial(object.vars[holder.buildmode.varholder])
-					blink(object)
 				else
 					usr << "\red [initial(object.name)] does not have a var called '[holder.buildmode.varholder]'"
 
@@ -262,8 +259,3 @@
 				if(holder.throw_atom)
 					holder.throw_atom.throw_at(object, 10, 1)
 
-/proc/blink(atom/A)
-	A.icon += rgb(0,75,75)
-	spawn(5)
-		if(A)
-			A.icon = initial(A.icon)

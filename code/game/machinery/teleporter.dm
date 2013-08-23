@@ -1,38 +1,66 @@
+/obj/machinery/computer/teleporter
+	name = "Teleporter"
+	desc = "Used to control a linked teleportation Hub and Station."
+	icon_state = "teleport"
+	circuit = "/obj/item/weapon/circuitboard/teleporter"
+	var/obj/item/locked = null
+	var/id = null
+	var/one_time_use = 0 //Used for one-time-use teleport cards (such as clown planet coordinates.)
+						 //Setting this to 1 will set src.locked to null after a player enters the portal and will not allow hand-teles to open portals to that location.
+
 /obj/machinery/computer/teleporter/New()
-	src.id = text("[]", rand(1000, 9999))
+	src.id = "[rand(1000, 9999)]"
 	..()
 	return
 
-/obj/machinery/computer/teleporter/attackby(I as obj, user as mob)
-	if (istype(I, /obj/item/weapon/card/data/))
-		if(stat & (NOPOWER|BROKEN))
+
+/obj/machinery/computer/teleporter/attackby(I as obj, mob/living/user as mob)
+	if(istype(I, /obj/item/weapon/card/data/))
+		var/obj/item/weapon/card/data/C = I
+		if(stat & (NOPOWER|BROKEN) & (C.function != "teleporter"))
 			src.attack_hand()
 
-		var/obj/S = null
-		for(var/obj/landmark/sloc in world)
-			if (sloc.name != "Clown Land")
-				continue
-			if (locate(/mob) in sloc.loc)
-				continue
-			S = sloc
+		var/obj/L = null
+
+		for(var/obj/effect/landmark/sloc in landmarks_list)
+			if(sloc.name != C.data) continue
+			if(locate(/mob/living) in sloc.loc) continue
+			L = sloc
 			break
-		if (!S)
-			S = locate("landmark*["Clown Land"]") // use old stype
-		if (istype(S, /obj/landmark/) && istype(S.loc, /turf))
-			usr.loc = S.loc
+
+		if(!L)
+			L = locate("landmark*[C.data]") // use old stype
+
+
+		if(istype(L, /obj/effect/landmark/) && istype(L.loc, /turf))
+			usr << "You insert the coordinates into the machine."
+			usr << "A message flashes across the screen reminding the traveller that the nuclear authentication disk is to remain on the station at all times."
+			user.drop_item()
 			del(I)
-		return
+
+			if(C.data == "Clown Land")
+				//whoops
+				for(var/mob/O in hearers(src, null))
+					O.show_message("\red Incoming bluespace portal detected, unable to lock in.", 2)
+
+				for(var/obj/machinery/teleport/hub/H in range(1))
+					var/amount = rand(2,5)
+					for(var/i=0;i<amount;i++)
+						new /mob/living/simple_animal/hostile/carp(get_turf(H))
+				//
+			else
+				for(var/mob/O in hearers(src, null))
+					O.show_message("\blue Locked In", 2)
+				src.locked = L
+				one_time_use = 1
+
+			src.add_fingerprint(usr)
 	else
 		..()
+
 	return
 
 /obj/machinery/computer/teleporter/attack_paw()
-	src.attack_hand()
-
-/obj/machinery/computer/teleporter/security/attackby(obj/item/weapon/W)
-	src.attack_hand()
-
-/obj/machinery/computer/teleporter/security/attack_paw()
 	src.attack_hand()
 
 /obj/machinery/teleport/station/attack_ai()
@@ -47,8 +75,10 @@
 
 	for(var/obj/item/device/radio/beacon/R in world)
 		var/turf/T = get_turf(R)
-		if (!T)	continue
-		if(T.z == 2)	continue
+		if (!T)
+			continue
+		if(T.z == 2 || T.z > 7)
+			continue
 		var/tmpname = T.loc.name
 		if(areaindex[tmpname])
 			tmpname = "[tmpname] ([++areaindex[tmpname]])"
@@ -101,36 +131,28 @@
 		if(!T || istype(T, /area))	return null
 	return T
 
-/obj/machinery/computer/teleporter/security/attack_hand()
-	if(stat & (NOPOWER|BROKEN))
-		return
+/obj/machinery/teleport
+	name = "teleport"
+	icon = 'icons/obj/stationobjs.dmi'
+	density = 1
+	anchored = 1.0
+	var/lockeddown = 0
 
-	var/list/L = list()
-	var/list/areaindex = list()
 
-	for(var/obj/item/device/radio/courtroom_beacon/R in world)
-		var/turf/T = find_loc(R)
-		if (!T)	continue
-		var/tmpname = T.loc.name
-		if(areaindex[tmpname])
-			tmpname = "[tmpname] ([++areaindex[tmpname]])"
-		else
-			areaindex[tmpname] = 1
-		L[tmpname] = R
-
-	var/desc = input("Please select a location to lock in.", "Locking Computer") in L
-	src.locked = L[desc]
-	for(var/mob/O in hearers(src, null))
-		O.show_message("\blue Locked In", 2)
-	src.add_fingerprint(usr)
-	return
+/obj/machinery/teleport/hub
+	name = "teleporter hub"
+	desc = "It's the hub of a teleporting machine."
+	icon_state = "tele0"
+	var/accurate = 0
+	use_power = 1
+	idle_power_usage = 10
+	active_power_usage = 2000
 
 /obj/machinery/teleport/hub/Bumped(M as mob|obj)
-	spawn( 0 )
+	spawn()
 		if (src.icon_state == "tele1")
 			teleport(M)
 			use_power(5000)
-		return
 	return
 
 /obj/machinery/teleport/hub/proc/teleport(atom/movable/M as mob|obj)
@@ -144,19 +166,23 @@
 		return
 	if (istype(M, /atom/movable))
 		if(prob(5) && !accurate) //oh dear a problem, put em in deep space
-			do_teleport(M, locate(rand(5, world.maxx - 5), rand(5, world.maxy - 5), 3), 2)
+			do_teleport(M, locate(rand((2*TRANSITIONEDGE), world.maxx - (2*TRANSITIONEDGE)), rand((2*TRANSITIONEDGE), world.maxy - (2*TRANSITIONEDGE)), 3), 2)
 		else
-			do_teleport(M, com.locked, 0) //dead-on precision
+			do_teleport(M, com.locked) //dead-on precision
+
+		if(com.one_time_use) //Make one-time-use cards only usable one time!
+			com.one_time_use = 0
+			com.locked = null
 	else
-		var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
+		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 		s.set_up(5, 1, src)
 		s.start()
 		for(var/mob/B in hearers(src, null))
 			B.show_message("\blue Test fire completed.")
 	return
-
+/*
 /proc/do_teleport(atom/movable/M as mob|obj, atom/destination, precision)
-	if(istype(M, /obj/effects))
+	if(istype(M, /obj/effect))
 		del(M)
 		return
 	if (istype(M, /obj/item/weapon/disk/nuclear)) // Don't let nuke disks get teleported --NeoFite
@@ -226,7 +252,7 @@
 	else
 		tmploc = locate(tx, ty, destination.z)
 
-	if(tx == destturf.x && ty == destturf.y && (istype(destination.loc, /obj/closet) || istype(destination.loc, /obj/secure_closet)))
+	if(tx == destturf.x && ty == destturf.y && (istype(destination.loc, /obj/structure/closet) || istype(destination.loc, /obj/structure/closet/secure_closet)))
 		tmploc = destination.loc
 
 	if(tmploc==null)
@@ -235,10 +261,21 @@
 	M.loc = tmploc
 	sleep(2)
 
-	var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
+	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 	s.set_up(5, 1, M)
 	s.start()
 	return
+*/
+
+/obj/machinery/teleport/station
+	name = "station"
+	desc = "It's the station thingy of a teleport thingy." //seriously, wtf.
+	icon_state = "controller"
+	var/active = 0
+	var/engaged = 0
+	use_power = 1
+	idle_power_usage = 10
+	active_power_usage = 2000
 
 /obj/machinery/teleport/station/attackby(var/obj/item/weapon/W)
 	src.attack_hand()
@@ -318,87 +355,13 @@
 		icon_state = "controller"
 
 
-/obj/laser/Bump()
+/obj/effect/laser/Bump()
 	src.range--
 	return
 
-/obj/laser/Move()
+/obj/effect/laser/Move()
 	src.range--
 	return
 
 /atom/proc/laserhit(L as obj)
 	return 1
-
-/obj/machinery/computer/data/weapon/log/New()
-	..()
-	src.topics["Super-heater"] = "This turns a can of semi-liquid plasma into a super-heated ball of plasma."
-	src.topics["Amplifier"] = "This increases the intensity of a laser."
-	src.topics["Class 11 Laser"] = "This creates a very slow laser that is capable of penetrating most objects."
-	src.topics["Plasma Energizer"] = "This combines super-heated plasma with a laser beam."
-	src.topics["Generator"] = "This controls the entire power grid."
-	src.topics["Mirror"] = "this can reflect LOW power lasers. HIGH power goes through it!"
-	src.topics["Targetting Prism"] = "This focuses a laser coming from any direction forward."
-	return
-
-/obj/machinery/computer/data/weapon/log/display()
-	set src in oview(1)
-
-	usr << "<B>Research Log:</B>"
-	..()
-	return
-
-/obj/machinery/computer/data/weapon/info/New()
-	..()
-	src.topics["LOG(001)"] = "System: Deployment successful"
-	src.topics["LOG(002)"] = "System: Safe orbit at inclination .003 established"
-	src.topics["LOG(003)"] = "CenCom: Attempting test fire...ALERT(001)"
-	src.topics["ALERT(001)"] = "System: Cannot attempt test fire"
-	src.topics["LOG(004)"] = "System: Airlock accessed..."
-	src.topics["LOG(005)"] = "System: System successfully reset...Generator engaged"
-	src.topics["LOG(006)"] = "Physical: Super-heater (W005) added to power grid"
-	src.topics["LOG(007)"] = "Physical: Amplifier (W007) added to power grid"
-	src.topics["LOG(008)"] = "Physical: Plasma Energizer (W006) added to power grid"
-	src.topics["LOG(009)"] = "Physical: Laser (W004) added to power grid"
-	src.topics["LOG(010)"] = "Physical: Laser test firing"
-	src.topics["LOG(011)"] = "Physical: Plasma added to Super-heater"
-	src.topics["LOG(012)"] = "Physical: Orient N12.525,E22.124"
-	src.topics["LOG(013)"] = "System: Location N12.525,E22.124"
-	src.topics["LOG(014)"] = "Physical: Test fire...successful"
-	src.topics["LOG(015)"] = "Physical: Airlock accessed..."
-	src.topics["LOG(016)"] = "******: Disable locater systems"
-	src.topics["LOG(017)"] = "System: Locater Beacon-Disengaged,CenCom link-Cut...ALERT(002)"
-	src.topics["ALERT(002)"] = "System: Cannot seem to establish contact with Central Command"
-	src.topics["LOG(018)"] = "******: Shutting down all systems...ALERT(003)"
-	src.topics["ALERT(003)"] = "System: Power grid failure-Activating back-up power...ALERT(004)"
-	src.topics["ALERT(004)"] = "System: Engine failure...All systems deactivated."
-	return
-
-/obj/machinery/computer/data/weapon/info/display()
-	set src in oview(1)
-
-	usr << "<B>Research Information:</B>"
-	..()
-	return
-
-/obj/machinery/computer/data/verb/display()
-	set name = "Display"
-	set category = "Object"
-	set src in oview(1)
-
-	for(var/x in src.topics)
-		usr << text("[], \...", x)
-	usr << ""
-	src.add_fingerprint(usr)
-	return
-
-/obj/machinery/computer/data/verb/read(topic as text)
-	set name = "Read"
-	set category = "Object"
-	set src in oview(1)
-
-	if (src.topics[text("[]", topic)])
-		usr << text("<B>[]</B>\n\t []", topic, src.topics[text("[]", topic)])
-	else
-		usr << text("Unable to find- []", topic)
-	src.add_fingerprint(usr)
-	return

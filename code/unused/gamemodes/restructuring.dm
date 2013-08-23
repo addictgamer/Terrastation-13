@@ -1,23 +1,24 @@
 /datum/game_mode/restructuring
 	name = "Corporate Restructuring"
-	var/mob/target
 	config_tag = "restructuring"
-
+/*
 /datum/game_mode/restructuring/announce()
 	world << "\red <B>GLOBAL TRANSMISSION FROM HEAD OFFICE: A CORPORATE RESTRUCTURING IS TO TAKE PLACE</B>"
 	world << "\red <B>Stay tuned for further news; note that we do care for our employees and any layoffs will be dealt with discretion and compassion</B>"
 
 
 /datum/game_mode/restructuring/post_setup()
-	//setup_game()
+	setup_game()
 	var/list/mobs = get_mob_list()
 	while (mobs.len == 0)
 		sleep 30
 		mobs = get_mob_list()
 	spawn (120)
 		pick_target()
+	..()
 
 /datum/game_mode/restructuring/proc/pick_target(who)
+	var/mob/target
 	var/mob/target_desc
 
 	if (!who)
@@ -28,8 +29,7 @@
 		target = who
 		target_desc = get_target_desc(target)
 		world << "\red <B>HEAD OFFICE: [target_desc] is accused of fornicating with staff of the same sex. Terminate the employee immediately.</b>"
-	//ticker.target = target
-	target = target
+	ticker.target = target
 
 	target.store_memory("Head office has ordered your downsizing. Ruh roh", 0)
 
@@ -48,8 +48,7 @@
 		world << "\red <B>HEAD OFFICE: Cost cutting measures have achieved 100% efficiency. Thank you for understanding our position during this volatile economic downturn."
 		return 1
 	else
-		//if(ticker.target.stat != 2)
-		if(target.stat != 2)
+		if(ticker.target.stat != 2)
 			return 0
 		world << "\red <B>HEAD OFFICE: It seems we have made a mistake in our paperwork. The previous target for termination was chosen based on race, sex, and/or religious beliefs, which is against company policy. Please cancel previous termination request."
 		pick_target()
@@ -75,3 +74,4 @@
 	if(!targetrank)
 		return "[target.name]"
 	return "[target.name] the [targetrank]"
+*/

@@ -34,12 +34,13 @@
 			var/starting_loc = pick(wizardstart)
 			wizard.current.loc = starting_loc
 
-	for (var/obj/landmark/A in world)
+	for (var/obj/effect/landmark/A in world)
 		if (A.name == "Teleport-Scroll")
 			new /obj/item/weapon/teleportation_scroll(A.loc)
 			del(A)
 			continue
 	*/
+	..()
 
 /datum/game_mode/ruby/check_finished()
 	if(!macguffin || abominationwins)
@@ -49,8 +50,10 @@
 
 /datum/game_mode/ruby/declare_completion()
 	if(abominationwins)
+		feedback_set_details("round_end_result","win - abomination win")
 		world << "<B>The Abomination has murdered the station and sacrificed himself to Cjopaze!</B> (played by [winnerkey])"
 	else
+		feedback_set_details("round_end_result","loss - abomination killed")
 		world << "<B>The Abomination has been stopped and Cjopaze's influence resisted! The station lives another day,</B>"
 		if(killed.len > 0)
 			world << "Those who were sacrificed shall be remembered: "
@@ -82,6 +85,7 @@
 		else
 			world << "<B>The traitor has failed!<B>"
 	*/
+	..()
 	return 1
 
 
@@ -168,7 +172,7 @@
 	set category = "Abomination"
 	set desc = "Everything must come to an end. After you have freed them, you must free yourself."
 
-	for(var/mob/living/carbon/human/H in world)
+	for(var/mob/living/carbon/human/H in player_list)
 		if(!H.client || H.client == src)
 			continue
 		src << "Your work is not done. You will not find release until they are all free."
@@ -183,7 +187,7 @@
 
 	var/list/candidates = list()
 
-	for(var/mob/living/carbon/human/H in world)
+	for(var/mob/living/carbon/human/H in player_list)
 		if(!H.client || H.client == src) continue
 		//if(!H.client) continue
 		candidates.Add(H)
@@ -215,7 +219,7 @@
 			var/turf/T=locate(x,y,H.z)
 			if (!T) continue
 			var/icon/I=icon(T.icon,T.icon_state)
-			var/imgstring=dd_replacetext("[T.type]-[T.icon_state]","/","_")
+			var/imgstring=replacetext("[T.type]-[T.icon_state]","/","_")
 
 			//Movable atoms
 			for (var/atom/movable/A in T)
@@ -228,7 +232,7 @@
 				if (!allowed) continue
 
 				if (A.icon) I.Blend(icon(A.icon,A.icon_state,A.dir),ICON_OVERLAY)
-				imgstring+=dd_replacetext("__[A.type]_[A.icon_state]","/","_")
+				imgstring+=replacetext("__[A.type]_[A.icon_state]","/","_")
 
 			//Output it
 			src << browse_rsc(I,"[imgstring].dmi")
@@ -273,10 +277,10 @@
 
 	proc/search_for_new_owner()
 		var/list/possible_owners = list()
-		for(var/mob/living/carbon/human/H in world)
+		for(var/mob/living/carbon/human/H in mob_list)
 			possible_owners.Add(H)
 
-		//var/mob/living/carbon/human/H = pick(possible_owners)
+		var/mob/living/carbon/human/H = pick(possible_owners)
 		// Send message to H
 		// Take a snapshot of the item's location, browse it to H
 		spawn(rand(600,1800)) search_for_new_owner()

@@ -46,7 +46,7 @@
 	var/strength = convert2energy(mass)
 
 	if (strength < 773.0)
-		var/turf/T = get_turf(src.loc)
+		var/turf/T = get_turf(src)
 
 		if (strength > (450+T0C))
 			explosion(T, 0, 1, 2, 4)
@@ -75,7 +75,7 @@
 /obj/item/weapon/fuel/proc/injest(mob/M as mob)
 	switch(content)
 		if("Anti-Hydrogen")
-			M.gib(1)
+			M.gib()
 		if("Hydrogen")
 			M << "\blue You feel very light, as if you might just float away..."
 	del(src)
@@ -83,7 +83,7 @@
 
 /obj/item/weapon/fuel/attack(mob/M as mob, mob/user as mob)
 	if (user != M)
-		var/obj/equip_e/human/O = new /obj/equip_e/human(  )
+		var/obj/effect/equip_e/human/O = new /obj/effect/equip_e/human(  )
 		O.source = user
 		O.target = M
 		O.item = src

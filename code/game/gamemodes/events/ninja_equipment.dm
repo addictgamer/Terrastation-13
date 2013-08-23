@@ -1,3 +1,7 @@
+//For the love of god,space out your code! This is a nightmare to read.
+
+//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
+
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 +++++++++++++++++++++++++++++++++//                    //++++++++++++++++++++++++++++++++++
@@ -133,7 +137,7 @@ ________________________________________________________________________________
 				A += s_acost
 		else
 			if(prob(s_delay))//Suit delay is used as probability. May change later.
-				U.bruteloss += k_damage//Default damage done, usually 1.
+				U.adjustBruteLoss(k_damage)//Default damage done, usually 1.
 			A = k_cost//kamikaze cost.
 		cell.charge-=A
 		if(cell.charge<=0)
@@ -149,7 +153,7 @@ ________________________________________________________________________________
 //=======//INITIALIZE//=======//
 
 /obj/item/clothing/suit/space/space_ninja/proc/ninitialize(delay = s_delay, mob/living/carbon/human/U = loc)
-	if(U.mind&&U.mind.assigned_role=="MODE"&&!s_initialized&&!s_busy)//Shouldn't be busy... but anything is possible I guess.
+	if(U.mind && U.mind.assigned_role=="MODE" && !s_initialized && !s_busy)//Shouldn't be busy... but anything is possible I guess.
 		s_busy = 1
 		for(var/i,i<7,i++)
 			switch(i)
@@ -163,11 +167,11 @@ ________________________________________________________________________________
 					U << "\blue Extending neural-net interface...\nNow monitoring brain wave pattern..."
 				if(3)
 					if(U.stat==2||U.health<=0)
-						U << "\red <B>FÄ†AL ÈRrÖR</B>: 344--93#†&&21 BRÄÌN |/|/aVÈ PATT$RN <B>RED</B>\nA-A-aBÖrTÌNG..."
+						U << "\red <B>FÄ†AL ï¿½Rrï¿½R</B>: 344--93#ï¿½&&21 BRï¿½ï¿½N |/|/aVï¿½ PATT$RN <B>RED</B>\nA-A-aBï¿½rTï¿½NG..."
 						unlock_suit()
 						break
 					lock_suit(U,1)//Check for icons.
-					U.update_clothing()
+					U.regenerate_icons()
 					U << "\blue Linking neural-net interface...\nPattern \green <B>GREEN</B>\blue, continuing operation."
 				if(4)
 					U << "\blue VOID-shift device status: <B>ONLINE</B>.\nCLOAK-tech device status: <B>ONLINE</B>."
@@ -226,7 +230,7 @@ ________________________________________________________________________________
 					blade_check(U,2)
 					remove_equip_verbs()
 					unlock_suit()
-					U.update_clothing()
+					U.regenerate_icons()
 			sleep(delay)
 		s_busy = 0
 	return
@@ -239,7 +243,7 @@ ________________________________________________________________________________
 	var/mob/living/silicon/ai/A = AI
 	var/display_to = s_control ? U : A//Who do we want to display certain messages to?
 
-	var/dat = "<html><head><title>SpiderOS</title></head><body bgcolor=\"#3D5B43\" text=\"#DB2929\"><style>a, a:link, a:visited, a:active, a:hover { color: #DB2929; }img {border-style:none;}</style>"
+	var/dat = "<html><head><title>SpiderOS</title></head><body bgcolor=\"#3D5B43\" text=\"#B65B5B\"><style>a, a:link, a:visited, a:active, a:hover { color: #B65B5B; }img {border-style:none;}</style>"
 	dat += "<a href='byond://?src=\ref[src];choice=Refresh'><img src=sos_7.png> Refresh</a>"
 	if(spideros)
 		dat += " | <a href='byond://?src=\ref[src];choice=Return'><img src=sos_1.png> Return</a>"
@@ -251,7 +255,7 @@ ________________________________________________________________________________
 	else
 		dat += "<h2 ALIGN=CENTER>SpiderOS v.<b>ERR-RR00123</b></h2>"
 	dat += "<br>"
-	dat += "<img src=sos_10.png> Current Time: [round(world.time / 36000)+12]:[(world.time / 600 % 60) < 10 ? add_zero(world.time / 600 % 60, 1) : world.time / 600 % 60]<br>"
+	dat += "<img src=sos_10.png> Current Time: [worldtime2text()]<br>"
 	dat += "<img src=sos_9.png> Battery Life: [round(cell.charge/100)]%<br>"
 	dat += "<img src=sos_11.png> Smoke Bombs: \Roman [s_bombs]<br>"
 	dat += "<img src=sos_14.png> pai Device: "
@@ -287,10 +291,10 @@ ________________________________________________________________________________
 				dat += "<b>Unique identity</b>: <i>[U.dna.unique_enzymes]</i><br>"
 			dat += "<h4>Overall Status: [U.stat > 1 ? "dead" : "[U.health]% healthy"]</h4>"
 			dat += "<h4>Nutrition Status: [U.nutrition]</h4>"
-			dat += "Oxygen loss: [U.oxyloss]"
-			dat += " | Toxin levels: [U.toxloss]<br>"
-			dat += "Burn severity: [U.fireloss]"
-			dat += " | Brute trauma: [U.bruteloss]<br>"
+			dat += "Oxygen loss: [U.getOxyLoss()]"
+			dat += " | Toxin levels: [U.getToxLoss()]<br>"
+			dat += "Burn severity: [U.getFireLoss()]"
+			dat += " | Brute trauma: [U.getBruteLoss()]<br>"
 			dat += "Radiation Level: [U.radiation] rad<br>"
 			dat += "Body Temperature: [U.bodytemperature-T0C]&deg;C ([U.bodytemperature*1.8-459.67]&deg;F)<br>"
 
@@ -376,7 +380,7 @@ ________________________________________________________________________________
 					<h5>Their playstyle:</h5>
 					A mix of traitor, changeling, and wizard. Ninjas rely on energy, or electricity to be precise, to keep their suits running (when out of energy, a suit hibernates). Suits gain energy from objects or creatures that contain electrical charge. APCs, cell batteries, rechargers, SMES batteries, cyborgs, mechs, and exposed wires are currently supported. Through energy ninjas gain access to special powers--while all powers are tied to the ninja suit, the most useful of them are verb activated--to help them in their mission.<br>It is a constant struggle for a ninja to remain hidden long enough to recharge the suit and accomplish their objective; despite their arsenal of abilities, ninjas can die like any other. Unlike wizards, ninjas do not possess good crowd control and are typically forced to play more subdued in order to achieve their goals. Some of their abilities are specifically designed to confuse and disorient others.<br>With that said, it should be perfectly possible to completely flip the fuck out and rampage as a ninja.
 					<h5>Their powers:</h5>
-					There are two primary types: Equipment and Abilties. Passive effects are always on. Active effects must be turned on and remain active only when there is energy to do so. Ability costs are listed next to them.
+					There are two primary types: Equipment and Abilties. Passive effect are always on. Active effect must be turned on and remain active only when there is energy to do so. Ability costs are listed next to them.
 					<b>Equipment</b>: cannot be tracked by AI (passive), faster speed (passive), stealth (active), vision switch (passive if toggled), voice masking (passive), SpiderOS (passive if toggled), energy drain (passive if toggled).
 					<ul>
 					<li><i>Voice masking</i> generates a random name the ninja can use over the radio and in-person. Although, the former use is recommended.</li>
@@ -398,7 +402,7 @@ ________________________________________________________________________________
 					<h4>IMPORTANT:</h4>
 					<ul>
 					<li>*Make sure to toggle Special Interaction from the Ninja Equipment menu to interact differently with certain objects.</li>
-					<li>*Your starting power cell can be replaced if you find one with higher maximum energy capacity by clicking on the new cell with the same hand (super and hyper cells).</li>
+					<li>*Your starting power cell can be replaced if you find one with higher maximum energy capacity by clicking on your suit with the higher capacity cell.</li>
 					<li>*Conserve your energy. Without it, you are very vulnerable.</li>
 					</ul>
 					That is all you will need to know. The rest will come with practice and talent. Good luck!
@@ -461,7 +465,7 @@ ________________________________________________________________________________
 			if(t_disk)
 				dat += "<a href='byond://?src=\ref[src];choice=Eject Disk'>Eject Disk</a><br>"
 			dat += "<ul>"
-			if(stored_research.len)//If there is stored research. Should be but just in case.
+			if(istype(stored_research,/list))//If there is stored research. Should be but just in case.
 				for(var/datum/tech/current_data in stored_research)
 					dat += "<li>"
 					dat += "[current_data.name]: [current_data.level]"
@@ -533,11 +537,11 @@ ________________________________________________________________________________
 				return
 			P.tnote += "<i><b>&larr; From [!s_control?(A):"an unknown source"]:</b></i><br>[t]<br>"
 			if (!P.silent)
-				playsound(P.loc, 'twobeep.ogg', 50, 1)
+				playsound(P.loc, 'sound/machines/twobeep.ogg', 50, 1)
 				for (var/mob/O in hearers(3, P.loc))
 					O.show_message(text("\icon[P] *[P.ttone]*"))
-			P.overlays = null
-			P.overlays += image('pda.dmi', "pda-r")
+			P.overlays.Cut()
+			P.overlays += image('icons/obj/pda.dmi', "pda-r")
 
 		if("Inject")
 			if( (href_list["tag"]=="radium"? (reagents.get_reagent_amount("radium"))<=(a_boost*a_transfer) : !reagents.get_reagent_amount(href_list["tag"])) )//Special case for radium. If there are only a_boost*a_transfer radium units left.
@@ -587,9 +591,9 @@ ________________________________________________________________________________
 									U << "\blue Power nodes re-routed. \nLimiter unlocked."
 								if(3)
 									grant_kamikaze(U)//Give them verbs and change variables as necessary.
-									U.update_clothing()//Update their clothing.
+									U.regenerate_icons()//Update their clothing.
 									ninjablade()//Summon two energy blades.
-									message_admins("\blue [U.key] used KAMIKAZE mode.", 1)//Let the admins know.
+									message_admins("\blue [key_name_admin(U)] used KAMIKAZE mode.")//Let the admins know.
 									s_busy = 0
 									return
 							sleep(s_delay)
@@ -608,7 +612,7 @@ ________________________________________________________________________________
 		if("Eject Disk")
 			var/turf/T = get_turf(loc)
 			if(!U.get_active_hand())
-				U.put_in_hand(t_disk)
+				U.put_in_hands(t_disk)
 				t_disk.add_fingerprint(U)
 				t_disk = null
 			else
@@ -629,7 +633,7 @@ ________________________________________________________________________________
 		if("Eject pAI")
 			var/turf/T = get_turf(loc)
 			if(!U.get_active_hand())
-				U.put_in_hand(pai)
+				U.put_in_hands(pai)
 				pai.add_fingerprint(U)
 				pai = null
 			else
@@ -659,24 +663,24 @@ ________________________________________________________________________________
 							switch(i)
 								if(0)
 									A << "\red <b>WARNING</b>: \black purge procedure detected. \nNow hacking host..."
-									U << "\red <b>WARNING</b>: HACKING AT††TEMP† IN PR0GRESs!"
+									U << "\red <b>WARNING</b>: HACKING ATï¿½ï¿½TEMPï¿½ IN PR0GRESs!"
 									spideros = 0
 									k_unlock = 0
 									U << browse(null, "window=spideros")
 								if(1)
 									A << "Disconnecting neural interface..."
-									U << "\red <b>WAR†NING</b>: þR†O0†GrÈ--S 2&3%"
+									U << "\red <b>WARï¿½NING</b>: ï¿½Rï¿½O0ï¿½Grï¿½--S 2&3%"
 								if(2)
 									A << "Shutting down external protocol..."
-									U << "\red <b>WARNING</b>: PþþþþRÖ†GrÈ5S 677^%"
+									U << "\red <b>WARNING</b>: Pï¿½ï¿½ï¿½ï¿½RÖ†Grï¿½5S 677^%"
 									cancel_stealth()
 								if(3)
 									A << "Connecting to kernel..."
-									U << "\red <b>WARNING</b>: ÈR†rÖR_404"
+									U << "\red <b>WARNING</b>: ï¿½Rï¿½rï¿½R_404"
 									A.control_disabled = 0
 								if(4)
 									A << "Connection established and secured. Menu updated."
-									U << "\red <b>WÄr#nING</b>: #%@!!WÈ†|_4þ54@ \nUnÄB88l3 TÖ LÖ-†o-LÖCaT2 ##$!ÈRNÈ0..%.."
+									U << "\red <b>Wï¿½r#nING</b>: #%@!!WÈ†|_4ï¿½54@ \nUnï¿½B88l3 Tï¿½ Lï¿½-ï¿½o-Lï¿½CaT2 ##$!ï¿½RNï¿½0..%.."
 									grant_AI_verbs()
 									return
 							sleep(s_delay)
@@ -690,7 +694,7 @@ ________________________________________________________________________________
 					spawn(0)
 						display_spideros()//To refresh the screen and let this finish.
 					while (A.stat != 2)
-						A.oxyloss += 2
+						A.adjustOxyLoss(2)
 						A.updatehealth()
 						sleep(10)
 					killai()
@@ -830,7 +834,7 @@ ________________________________________________________________________________
 					I:charge = min(I:charge+cell.charge, I:maxcharge)
 					var/obj/item/weapon/cell/old_cell = cell
 					old_cell.charge = 0
-					U.put_in_hand(old_cell)
+					U.put_in_hands(old_cell)
 					old_cell.add_fingerprint(U)
 					old_cell.corrupt()
 					old_cell.updateicon()
@@ -840,15 +844,16 @@ ________________________________________________________________________________
 					U << "\red Procedure interrupted. Protocol terminated."
 			return
 		else if(istype(I, /obj/item/weapon/disk/tech_disk))//If it's a data disk, we want to copy the research on to the suit.
-			if(I:stored)//If it has something on it.
+			var/obj/item/weapon/disk/tech_disk/TD = I
+			if(TD.stored)//If it has something on it.
 				U << "Research information detected, processing..."
 				if(do_after(U,s_delay))
 					for(var/datum/tech/current_data in stored_research)
-						if(current_data.id==I:stored.id)
-							if(current_data.level<I:stored.level)
-								current_data.level=I:stored.level
+						if(current_data.id==TD.stored.id)
+							if(current_data.level<TD.stored.level)
+								current_data.level=TD.stored.level
 							break
-					I:stored = null
+					TD.stored = null
 					U << "\blue Data analyzed and updated. Disk erased."
 				else
 					U << "\red <b>ERROR</b>: \black Procedure interrupted. Process terminated."
@@ -864,23 +869,27 @@ ________________________________________________________________________________
 	if(s_active)
 		cancel_stealth()
 	else
-		spawn(0)
-			anim(U.loc,U,'mob.dmi',,"cloak",,U.dir)
+		anim(U.loc,U,'icons/mob/mob.dmi',,"cloak",,U.dir)
 		s_active=!s_active
+		icon_state = U.gender==FEMALE ? "s-ninjasf" : "s-ninjas"
+		U.regenerate_icons()	//update their icons
 		U << "\blue You are now invisible to normal detection."
 		for(var/mob/O in oviewers(U))
 			O.show_message("[U.name] vanishes into thin air!",1)
+		U.invisibility = INVISIBILITY_OBSERVER
 	return
 
 /obj/item/clothing/suit/space/space_ninja/proc/cancel_stealth()
 	var/mob/living/carbon/human/U = affecting
 	if(s_active)
-		spawn(0)
-			anim(U.loc,U,'mob.dmi',,"uncloak",,U.dir)
+		anim(U.loc,U,'icons/mob/mob.dmi',,"uncloak",,U.dir)
 		s_active=!s_active
 		U << "\blue You are now visible."
+		U.invisibility = 0
 		for(var/mob/O in oviewers(U))
 			O.show_message("[U.name] appears from thin air!",1)
+		icon_state = U.gender==FEMALE ? "s-ninjanf" : "s-ninjan"
+		U.regenerate_icons()	//update their icons
 		return 1
 	return 0
 
@@ -918,7 +927,7 @@ ________________________________________________________________________________
 			U << "There are <B>[s_bombs]</B> smoke bombs remaining."
 			U << "There are <B>[a_boost]</B> adrenaline boosters remaining."
 		else
-			U <<  "ÈrrÖR Ða†Ða†Ä No-†-† fÖÚNÐ 3RRÖr"
+			U <<  "ï¿½rrï¿½R ï¿½aï¿½ï¿½aï¿½ï¿½ No-ï¿½-ï¿½ fï¿½ï¿½Nï¿½ 3RRï¿½r"
 
 /*
 ===================================================================================
@@ -948,7 +957,7 @@ ________________________________________________________________________________
 		if("APC")
 			var/obj/machinery/power/apc/A = target
 			if(A.cell&&A.cell.charge)
-				var/datum/effects/system/spark_spread/spark_system = new /datum/effects/system/spark_spread()
+				var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 				spark_system.set_up(5, 0, A.loc)
 				while(G.candrain&&A.cell.charge>0&&!maxcapacity)
 					drain = rand(G.mindrain,G.maxdrain)
@@ -969,14 +978,14 @@ ________________________________________________________________________________
 					flick("apc-spark", src)
 					A.emagged = 1
 					A.locked = 0
-					A.updateicon()
+					A.update_icon()
 			else
 				U << "\red This APC has run dry of power. You must find another source."
 
 		if("SMES")
 			var/obj/machinery/power/smes/A = target
 			if(A.charge)
-				var/datum/effects/system/spark_spread/spark_system = new /datum/effects/system/spark_spread()
+				var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 				spark_system.set_up(5, 0, A.loc)
 				while(G.candrain&&A.charge>0&&!maxcapacity)
 					drain = rand(G.mindrain,G.maxdrain)
@@ -1018,7 +1027,7 @@ ________________________________________________________________________________
 			var/obj/machinery/A = target
 			if(A.powered())//If powered.
 
-				var/datum/effects/system/spark_spread/spark_system = new /datum/effects/system/spark_spread()
+				var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 				spark_system.set_up(5, 0, A.loc)
 
 				var/obj/machinery/power/apc/B = A.loc.loc:get_apc()//Object.turf.area find APC
@@ -1058,7 +1067,7 @@ ________________________________________________________________________________
 			U << "\blue Hacking \the [A]..."
 			spawn(0)
 				var/turf/location = get_turf(U)
-				for(var/mob/living/silicon/ai/AI in world)
+				for(var/mob/living/silicon/ai/AI in player_list)
 					AI << "\red <b>Network Alert: Hacking attempt detected[location?" in [location]":". Unable to pinpoint location"]</b>."
 			if(A:files&&A:files.known_tech.len)
 				for(var/datum/tech/current_data in S.stored_research)
@@ -1074,7 +1083,7 @@ ________________________________________________________________________________
 			U << "\blue Data analyzed. Process finished."
 
 		if("WIRE")
-			var/obj/cable/A = target
+			var/obj/structure/cable/A = target
 			var/datum/powernet/PN = A.get_powernet()
 			while(G.candrain&&!maxcapacity&&!isnull(A))
 				drain = (round((rand(G.mindrain,G.maxdrain))/2))
@@ -1121,7 +1130,7 @@ ________________________________________________________________________________
 					else	break
 				U << "\blue Gained <B>[totaldrain]</B> energy from [src]."
 			else
-				U << "\red The exosuit's battery has run dry of power. You must find another source."
+				U << "\red The exosuit's battery has run dry. You must find another source of power."
 
 		if("CYBORG")
 			var/mob/living/silicon/robot/A = target
@@ -1182,7 +1191,7 @@ ________________________________________________________________________________
 
 //This proc is linked to human life.dm. It determines what hud icons to display based on mind special role for most mobs.
 /obj/item/clothing/mask/gas/voice/space_ninja/proc/assess_targets(list/target_list, mob/living/carbon/U)
-	var/icon/tempHud = 'hud.dmi'
+	var/icon/tempHud = 'icons/mob/hud.dmi'
 	for(var/mob/living/target in target_list)
 		if(iscarbon(target))
 			switch(target.mind.special_role)
@@ -1202,7 +1211,7 @@ ________________________________________________________________________________
 					U.client.images += image(tempHud,target,"hudoperative")
 				if("Death Commando")
 					U.client.images += image(tempHud,target,"huddeathsquad")
-				if("Space Ninja")
+				if("Ninja")
 					U.client.images += image(tempHud,target,"hudninja")
 				else//If we don't know what role they have but they have one.
 					U.client.images += image(tempHud,target,"hudunknown1")
@@ -1233,7 +1242,7 @@ ________________________________________________________________________________
 				voice = "[pick(wizard_first)] [pick(wizard_second)]"
 			if(91 to 100)//Small chance of an existing crew name.
 				var/names[] = new()
-				for(var/mob/living/carbon/human/M in world)
+				for(var/mob/living/carbon/human/M in player_list)
 					if(M==U||!M.client||!M.real_name)	continue
 					names.Add(M.real_name)
 				voice = !names.len ? "Cuban Pete" : pick(names)
@@ -1260,7 +1269,7 @@ ________________________________________________________________________________
 			U << "Switching mode to <B>Thermal Scanner</B>."
 		if(2)
 			mode=3
-			U.see_invisible = 0
+			U.see_invisible = SEE_INVISIBLE_LIVING
 			U.sight &= ~SEE_MOBS
 			U << "Switching mode to <B>Meson Scanner</B>."
 		if(3)
@@ -1296,10 +1305,10 @@ It will teleport people to a holding facility after 30 seconds. (Check the proce
 It is possible to destroy the net by the occupant or someone else.
 */
 
-/obj/effects/energy_net
+/obj/effect/energy_net
 	name = "energy net"
 	desc = "It's a net made of green energy."
-	icon = 'effects.dmi'
+	icon = 'icons/effects/effects.dmi'
 	icon_state = "energynet"
 
 	density = 1//Can't pass through.
@@ -1307,10 +1316,9 @@ It is possible to destroy the net by the occupant or someone else.
 	mouse_opacity = 1//So you can hit it with stuff.
 	anchored = 1//Can't drag/grab the trapped mob.
 
-	var
-		health = 25//How much health it has.
-		mob/living/affecting = null//Who it is currently affecting, if anyone.
-		mob/living/master = null//Who shot web. Will let this person know if the net was successful or failed.
+	var/health = 25//How much health it has.
+	var/mob/living/affecting = null//Who it is currently affecting, if anyone.
+	var/mob/living/master = null//Who shot web. Will let this person know if the net was successful or failed.
 
 	proc
 		healthcheck()
@@ -1327,10 +1335,10 @@ It is possible to destroy the net by the occupant or someone else.
 			return
 
 	process(var/mob/living/carbon/M as mob)
-		var/check = 30//30 seconds before teleportation. Could be extended I guess.
+		var/check = 60//30 seconds before teleportation. Could be extended I guess. - Extended to one minute
 		var/mob_name = affecting.name//Since they will report as null if terminated before teleport.
 		//The person can still try and attack the net when inside.
-		while(!isnull(M)&&!isnull(src)&&check>0)//While M and net exist, and 30 seconds have not passed.
+		while(!isnull(M)&&!isnull(src)&&check>0)//While M and net exist, and 60 seconds have not passed.
 			check--
 			sleep(10)
 
@@ -1350,22 +1358,22 @@ It is possible to destroy the net by the occupant or someone else.
 				if(istype(M,/mob/living/carbon/human))
 					if(W==M:w_uniform)	continue//So all they're left with are shoes and uniform.
 					if(W==M:shoes)	continue
-				M.drop_from_slot(W)
+				M.drop_from_inventory(W)
 
 			spawn(0)
-				playsound(M.loc, 'sparks4.ogg', 50, 1)
-				anim(M.loc,M,'mob.dmi',,"phaseout",,M.dir)
+				playsound(M.loc, 'sound/effects/sparks4.ogg', 50, 1)
+				anim(M.loc,M,'icons/mob/mob.dmi',,"phaseout",,M.dir)
 
 			M.loc = pick(holdingfacility)//Throw mob in to the holding facility.
 			M << "\red You appear in a strange place!"
 
 			spawn(0)
-				var/datum/effects/system/spark_spread/spark_system = new /datum/effects/system/spark_spread()
+				var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 				spark_system.set_up(5, 0, M.loc)
 				spark_system.start()
-				playsound(M.loc, 'phasein.ogg', 25, 1)
-				playsound(M.loc, 'sparks2.ogg', 50, 1)
-				anim(M.loc,M,'mob.dmi',,"phasein",,M.dir)
+				playsound(M.loc, 'sound/effects/phasein.ogg', 25, 1)
+				playsound(M.loc, 'sound/effects/sparks2.ogg', 50, 1)
+				anim(M.loc,M,'icons/mob/mob.dmi',,"phasein",,M.dir)
 				del(src)//Wait for everything to finish, delete the net. Else it will stop everything once net is deleted, including the spawn(0).
 
 			for(var/mob/O in viewers(src, 3))
@@ -1382,9 +1390,8 @@ It is possible to destroy the net by the occupant or someone else.
 
 	bullet_act(var/obj/item/projectile/Proj)
 		health -= Proj.damage
-		..()
 		healthcheck()
-		return
+		return 0
 
 	ex_act(severity)
 		switch(severity)
@@ -1416,14 +1423,14 @@ It is possible to destroy the net by the occupant or someone else.
 			tforce = 10
 		else
 			tforce = AM:throwforce
-		playsound(src.loc, 'slash.ogg', 80, 1)
+		playsound(src.loc, 'sound/weapons/slash.ogg', 80, 1)
 		health = max(0, health - tforce)
 		healthcheck()
 		..()
 		return
 
 	attack_hand()
-		if ((usr.mutations & HULK))
+		if (HULK in usr.mutations)
 			usr << text("\blue You easily destroy the energy net.")
 			for(var/mob/O in oviewers(src))
 				O.show_message(text("\red [] rips the energy net apart!", usr), 1)
@@ -1440,7 +1447,7 @@ It is possible to destroy the net by the occupant or someone else.
 		usr << text("\green You claw at the net.")
 		for(var/mob/O in oviewers(src))
 			O.show_message(text("\red [] claws at the energy net!", usr), 1)
-		playsound(src.loc, 'slash.ogg', 80, 1)
+		playsound(src.loc, 'sound/weapons/slash.ogg', 80, 1)
 		health -= rand(10, 20)
 		if(health <= 0)
 			usr << text("\green You slice the energy net to pieces.")

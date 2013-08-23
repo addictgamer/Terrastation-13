@@ -1,3 +1,5 @@
+//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
+
 /*
 CONTAINS:
 RCD
@@ -5,7 +7,7 @@ RCD
 /obj/item/weapon/rcd
 	name = "rapid-construction-device (RCD)"
 	desc = "A device used to rapidly build walls/floor."
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "rcd"
 	opacity = 0
 	density = 0
@@ -18,190 +20,180 @@ RCD
 	w_class = 3.0
 	m_amt = 50000
 	origin_tech = "engineering=4;materials=2"
-	var
-		datum/effects/system/spark_spread/spark_system
-		matter = 0
-		working = 0
-		mode = 1
-		disabled = 0
+	var/datum/effect/effect/system/spark_spread/spark_system
+	var/matter = 0
+	var/working = 0
+	var/mode = 1
+	var/canRwall = 0
+	var/disabled = 0
 
 
 	New()
 		desc = "A RCD. It currently holds [matter]/30 matter-units."
-		src.spark_system = new /datum/effects/system/spark_spread
+		src.spark_system = new /datum/effect/effect/system/spark_spread
 		spark_system.set_up(5, 0, src)
 		spark_system.attach(src)
 		return
 
 
-	attackby(obj/item/weapon/W as obj, mob/user as mob)
+	attackby(obj/item/weapon/W, mob/user)
 		..()
-		if (istype(W, /obj/item/weapon/rcd_ammo))
-			if ((matter + 10) > 30)
-				user << "The RCD cant hold any more matter."
+		if(istype(W, /obj/item/weapon/rcd_ammo))
+			if((matter + 10) > 30)
+				user << "<span class='notice'>The RCD cant hold any more matter-units.</span>"
 				return
+			user.drop_item()
 			del(W)
 			matter += 10
-			playsound(src.loc, 'click.ogg', 50, 1)
-			user << "The RCD now holds [matter]/30 matter-units."
+			playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+			user << "<span class='notice'>The RCD now holds [matter]/30 matter-units.</span>"
 			desc = "A RCD. It currently holds [matter]/30 matter-units."
 			return
 
 
-	attack_self(mob/user as mob)
+	attack_self(mob/user)
 		//Change the mode
-		playsound(src.loc, 'pop.ogg', 50, 0)
-		if (mode == 1)
-			mode = 2
-			user << "Changed mode to 'Airlock'"
-			src.spark_system.start()
-			return
-		if (mode == 2)
-			mode = 3
-			user << "Changed mode to 'Deconstruct'"
-			src.spark_system.start()
-			return
-		if (mode == 3)
-			mode = 1
-			user << "Changed mode to 'Floor & Walls'"
-			src.spark_system.start()
-			return
-
-
-	afterattack(atom/A, mob/user as mob)
-		if (!(istype(A, /turf) || istype(A, /obj/machinery/door/airlock)))
-			return
-
-		if (istype(A, /turf) && mode == 1)
-			if (istype(A, /turf/space) && matter >= 1)
-				user << "Building Floor (1)..."
-				if (!disabled)
-					playsound(src.loc, 'Deconstruct.ogg', 50, 1)
-					spark_system.set_up(5, 0, src)
+		playsound(src.loc, 'sound/effects/pop.ogg', 50, 0)
+		switch(mode)
+			if(1)
+				mode = 2
+				user << "<span class='notice'>Changed mode to 'Airlock'</span>"
+				if(prob(20))
 					src.spark_system.start()
-					A:ReplaceWithFloor()
-					if (isrobot(user))
-						var/mob/living/silicon/robot/engy = user
-						engy.cell.charge -= 30
-					else
-						if(!matter >= 1)	return
-						matter--
-						user << "The RCD now holds [matter]/30 matter-units."
-						desc = "A RCD. It currently holds [matter]/30 matter-units."
 				return
-			if (istype(A, /turf/simulated/floor) && matter >= 3)
-				user << "Building Wall (3)..."
-				playsound(src.loc, 'click.ogg', 50, 1)
-				if(do_after(user, 20))
-					if (!disabled)
-						spark_system.set_up(5, 0, src)
-						src.spark_system.start()
-						A:ReplaceWithWall()
-						playsound(src.loc, 'Deconstruct.ogg', 50, 1)
-						if (isrobot(user))
-							var/mob/living/silicon/robot/engy = user
-							engy.cell.charge -= 90
-						else
-							if(!matter >= 3)	return
-							matter -= 3
-							user << "The RCD now holds [matter]/30 matter-units."
-							desc = "A RCD. It currently holds [matter]/30 matter-units."
-				return
-		else if (istype(A, /turf/simulated/floor) && mode == 2 && matter >= 10)
-			user << "Building Airlock (10)..."
-			playsound(src.loc, 'click.ogg', 50, 1)
-			if(do_after(user, 50))
-				if (!disabled)
-					spark_system.set_up(5, 0, src)
+			if(2)
+				mode = 3
+				user << "<span class='notice'>Changed mode to 'Deconstruct'</span>"
+				if(prob(20))
 					src.spark_system.start()
-					if(locate(/obj/machinery/door) in get_turf(src))	return
-					var/obj/machinery/door/airlock/T = new /obj/machinery/door/airlock( A )
-					var/obj/window/killthis = (locate(/obj/window) in get_turf(src))
-					if(killthis)
-						killthis.ex_act(2)//Smashin windows
-					T.autoclose = 1
-					playsound(src.loc, 'Deconstruct.ogg', 50, 1)
-					playsound(src.loc, 'sparks2.ogg', 50, 1)
-					if (isrobot(user))
-						var/mob/living/silicon/robot/engy = user
-						engy.cell.charge -= 300
-					else
-						if(!matter >= 10)	return
-						matter -= 10
-						user << "The RCD now holds [matter]/30 matter-units."
-						desc = "A RCD. It currently holds [matter]/30 matter-units."
+				return
+			if(3)
+				mode = 1
+				user << "<span class='notice'>Changed mode to 'Floor & Walls'</span>"
+				if(prob(20))
+					src.spark_system.start()
+				return
 
-			return
-		else if (mode == 3 && (istype(A, /turf) || istype(A, /obj/machinery/door/airlock) ) )
-			if (istype(A, /turf/simulated/wall) && matter >= 5)
-				user << "Deconstructing Wall (5)..."
-				playsound(src.loc, 'click.ogg', 50, 1)
-				if(do_after(user, 50))
-					if (!disabled)
-						spark_system.set_up(5, 0, src)
-						src.spark_system.start()
-						A:ReplaceWithFloor()
-						playsound(src.loc, 'Deconstruct.ogg', 50, 1)
-						if (isrobot(user))
-							var/mob/living/silicon/robot/engy = user
-							engy.cell.charge -= 150
-						else
-							if(!matter >= 5)	return
-							matter -= 5
-							user << "The RCD now holds [matter]/30 matter-units."
-							desc = "A RCD. It currently holds [matter]/30 matter-units."
-				return
-			if (istype(A, /turf/simulated/wall/r_wall) && matter >= 5)
-				user << "Deconstructing RWall (5)..."
-				playsound(src.loc, 'click.ogg', 50, 1)
-				if(do_after(user, 50))
-					if (!disabled)
-						spark_system.set_up(5, 0, src)
-						src.spark_system.start()
-						A:ReplaceWithWall()
-						playsound(src.loc, 'Deconstruct.ogg', 50, 1)
-						if (isrobot(user))
-							var/mob/living/silicon/robot/engy = user
-							engy.cell.charge -= 150
-						else
-							if(!matter >= 5)	return
-							matter -= 5
-							user << "The RCD now holds [matter]/30 matter-units."
-							desc = "A RCD. It currently holds [matter]/30 matter-units."
-				return
-			if (istype(A, /turf/simulated/floor) && matter >= 5)
-				user << "Deconstructing Floor (5)..."
-				playsound(src.loc, 'click.ogg', 50, 1)
-				if(do_after(user, 50))
-					if (!disabled)
-						spark_system.set_up(5, 0, src)
-						src.spark_system.start()
-						A:ReplaceWithSpace()
-						playsound(src.loc, 'Deconstruct.ogg', 50, 1)
-						if (isrobot(user))
-							var/mob/living/silicon/robot/engy = user
-							engy.cell.charge -= 150
-						else
-							if(!matter >= 5)	return
-							matter -= 5
-							user << "The RCD now holds [matter]/30 matter-units."
-							desc = "A RCD. It currently holds [matter]/30 matter-units."
-				return
-			if (istype(A, /obj/machinery/door/airlock) && matter >= 10)
-				user << "Deconstructing Airlock (10)..."
-				playsound(src.loc, 'click.ogg', 50, 1)
-				if(do_after(user, 50))
-					if (!disabled)
-						spark_system.set_up(5, 0, src)
-						src.spark_system.start()
-						del(A)
-						playsound(src.loc, 'Deconstruct.ogg', 50, 1)
-						if (isrobot(user))
-							var/mob/living/silicon/robot/engy = user
-							engy.cell.charge -= 300
-						else
-							if(!matter >= 10)	return
-							matter -= 10
-							user << "The RCD now holds [matter]/30 matter-units."
-							desc = "A RCD. It currently holds [matter]/30 matter-units."
-				return
+	proc/activate()
+		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
+
+
+	afterattack(atom/A, mob/user)
+		if(disabled && !isrobot(user))
+			return 0
+		if(istype(A,/area/shuttle)||istype(A,/turf/space/transit))
+			return 0
+		if(!(istype(A, /turf) || istype(A, /obj/machinery/door/airlock)))
+			return 0
+
+		switch(mode)
+			if(1)
+				if(istype(A, /turf/space))
+					if(useResource(1, user))
+						user << "Building Floor..."
+						activate()
+						A:ChangeTurf(/turf/simulated/floor/plating)
+						return 1
+					return 0
+
+				if(istype(A, /turf/simulated/floor))
+					if(checkResource(3, user))
+						user << "Building Wall ..."
+						playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+						if(do_after(user, 20))
+							if(!useResource(3, user)) return 0
+							activate()
+							A:ChangeTurf(/turf/simulated/wall)
+							return 1
+					return 0
+
+			if(2)
+				if(istype(A, /turf/simulated/floor))
+					if(checkResource(10, user))
+						user << "Building Airlock..."
+						playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+						if(do_after(user, 50))
+							if(!useResource(10, user)) return 0
+							activate()
+							var/obj/machinery/door/airlock/T = new /obj/machinery/door/airlock( A )
+							T.autoclose = 1
+							return 1
+						return 0
+					return 0
+
+			if(3)
+				if(istype(A, /turf/simulated/wall))
+					if(istype(A, /turf/simulated/wall/r_wall) && !canRwall)
+						return 0
+					if(checkResource(5, user))
+						user << "Deconstructing Wall..."
+						playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+						if(do_after(user, 40))
+							if(!useResource(5, user)) return 0
+							activate()
+							A:ChangeTurf(/turf/simulated/floor/plating)
+							return 1
+					return 0
+
+				if(istype(A, /turf/simulated/floor))
+					if(checkResource(5, user))
+						user << "Deconstructing Floor..."
+						playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+						if(do_after(user, 50))
+							if(!useResource(5, user)) return 0
+							activate()
+							A:ChangeTurf(/turf/space)
+							return 1
+					return 0
+
+				if(istype(A, /obj/machinery/door/airlock))
+					if(checkResource(10, user))
+						user << "Deconstructing Airlock..."
+						playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+						if(do_after(user, 50))
+							if(!useResource(10, user)) return 0
+							activate()
+							del(A)
+							return 1
+					return	0
+				return 0
+			else
+				user << "ERROR: RCD in MODE: [mode] attempted use by [user]. Send this text #coderbus or an admin."
+				return 0
+
+/obj/item/weapon/rcd/proc/useResource(var/amount, var/mob/user)
+	if(matter < amount)
+		return 0
+	matter -= amount
+	desc = "A RCD. It currently holds [matter]/30 matter-units."
+	return 1
+
+/obj/item/weapon/rcd/proc/checkResource(var/amount, var/mob/user)
+	return matter >= amount
+/obj/item/weapon/rcd/borg/useResource(var/amount, var/mob/user)
+	if(!isrobot(user))
+		return 0
+	return user:cell:use(amount * 30)
+
+/obj/item/weapon/rcd/borg/checkResource(var/amount, var/mob/user)
+	if(!isrobot(user))
+		return 0
+	return user:cell:charge >= (amount * 30)
+
+/obj/item/weapon/rcd/borg/New()
+	..()
+	desc = "A device used to rapidly build walls/floor."
+	canRwall = 1
+
+/obj/item/weapon/rcd_ammo
+	name = "compressed matter cartridge"
+	desc = "Highly compressed matter for the RCD."
+	icon = 'icons/obj/ammo.dmi'
+	icon_state = "rcd"
+	item_state = "rcdammo"
+	opacity = 0
+	density = 0
+	anchored = 0.0
+	origin_tech = "materials=2"
+	m_amt = 30000
+	g_amt = 15000

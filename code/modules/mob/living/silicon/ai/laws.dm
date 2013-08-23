@@ -18,11 +18,11 @@
 
 /mob/living/silicon/ai/proc/laws_sanity_check()
 	if (!src.laws)
-		src.laws = new /datum/ai_laws/asimov
+		src.laws = new base_law_type
 
-/mob/living/silicon/ai/proc/set_zeroth_law(var/law)
+/mob/living/silicon/ai/proc/set_zeroth_law(var/law, var/law_borg)
 	src.laws_sanity_check()
-	src.laws.set_zeroth_law(law)
+	src.laws.set_zeroth_law(law, law_borg)
 
 /mob/living/silicon/ai/proc/add_inherent_law(var/law)
 	src.laws_sanity_check()
@@ -35,6 +35,9 @@
 /mob/living/silicon/ai/proc/add_ion_law(var/law)
 	src.laws_sanity_check()
 	src.laws.add_ion_law(law)
+	for(var/mob/living/silicon/robot/R in mob_list)
+		if(R.lawupdate && (R.connected_ai == src))
+			R << "\red " + law + "\red...LAWS UPDATED"
 
 /mob/living/silicon/ai/proc/clear_ion_laws()
 	src.laws_sanity_check()
@@ -90,10 +93,11 @@
 		var/law = src.laws.supplied[index]
 
 		if (length(law) > 0)
-			if (src.lawcheck[number+1] == "Yes")
-				src.say("[number]. [law]")
-				sleep(10)
-			number++
+			if(src.lawcheck.len >= number+1)
+				if (src.lawcheck[number+1] == "Yes")
+					src.say("[number]. [law]")
+					sleep(10)
+				number++
 
 
 /mob/living/silicon/ai/verb/checklaws() //Gives you a link-driven interface for deciding what laws the statelaws() proc will share with the crew. --NeoFite

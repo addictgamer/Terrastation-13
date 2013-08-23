@@ -1,7 +1,7 @@
 
 /obj/machinery/microwave
 	name = "Microwave"
-	icon = 'kitchen.dmi'
+	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "mw"
 	layer = 2.9
 	density = 1
@@ -78,7 +78,7 @@
 			user << "\red It's broken!"
 			return 1
 	else if(src.dirty==100) // The microwave is all dirty so can't be used!
-		if(istype(O, /obj/item/weapon/cleaner)) // If they're trying to clean it then let them
+		if(istype(O, /obj/item/weapon/reagent_containers/spray/cleaner)) // If they're trying to clean it then let them
 			user.visible_message( \
 				"\blue [user] starts to clean the microwave.", \
 				"\blue You start to clean the microwave." \
@@ -88,7 +88,7 @@
 					"\blue [user]  has cleaned  the microwave.", \
 					"\blue You have cleaned the microwave." \
 				)
-				src.dirty = 0 // It's cleaned!
+				src.dirty = 0 // It's clean!
 				src.broken = 0 // just to be sure
 				src.icon_state = "mw"
 				src.flags = OPENCONTAINER
@@ -106,7 +106,8 @@
 				"\blue [user] has added one of [O] to \the [src].", \
 				"\blue You add one of [O] to \the [src].")
 		else
-			user.before_take_item(O)
+		//	user.before_take_item(O)	//This just causes problems so far as I can tell. -Pete
+			user.drop_item()
 			O.loc = src
 			user.visible_message( \
 				"\blue [user] has added \the [O] to \the [src].", \
@@ -138,14 +139,14 @@
 	return 0
 
 /obj/machinery/microwave/attack_hand(mob/user as mob)
-	user.machine = src
+	user.set_machine(src)
 	interact(user)
 
 /*******************
 *   Microwave Menu
 ********************/
 
-/obj/machinery/microwave/proc/interact(mob/user as mob) // The microwave Menu
+/obj/machinery/microwave/interact(mob/user as mob) // The microwave Menu
 	var/dat = ""
 	if(src.broken > 0)
 		dat = {"<TT>Bzzzzttttt</TT>"}
@@ -162,9 +163,6 @@
 			if (istype(O,/obj/item/weapon/reagent_containers/food/snacks/egg))
 				items_measures[display_name] = "egg"
 				items_measures_p[display_name] = "eggs"
-			if (istype(O,/obj/item/weapon/reagent_containers/food/snacks/flour))
-				items_measures[display_name] = "cup of flour"
-				items_measures_p[display_name] = "cups of flour"
 			if (istype(O,/obj/item/weapon/reagent_containers/food/snacks/tofu))
 				items_measures[display_name] = "tofu chunk"
 				items_measures_p[display_name] = "tofu chunks"
@@ -196,7 +194,7 @@
 			if (R.id == "frostoil")
 				display_name = "Coldsauce"
 			dat += {"<B>[display_name]:</B> [R.volume] unit\s<BR>"}
-			
+
 		if (items_counts.len==0 && reagents.reagent_list.len==0)
 			dat = {"<B>The microwave is empty</B><BR>"}
 		else
@@ -226,7 +224,7 @@
 			return
 		stop()
 		return
-		
+
 	var/datum/recipe/recipe = select_recipe(available_recipes,src)
 	var/obj/cooked
 	if (!recipe)
@@ -249,7 +247,7 @@
 			cooked = fail()
 			cooked.loc = src.loc
 			return
-		else 
+		else
 			if (!wzhzhzh(10))
 				abort()
 				return
@@ -269,7 +267,8 @@
 			return
 		cooked = recipe.make_food(src)
 		stop()
-		cooked.loc = src.loc
+		if(cooked)
+			cooked.loc = src.loc
 		return
 
 /obj/machinery/microwave/proc/wzhzhzh(var/seconds as num)
@@ -301,7 +300,7 @@
 	src.updateUsrDialog()
 
 /obj/machinery/microwave/proc/stop()
-	playsound(src.loc, 'ding.ogg', 50, 1)
+	playsound(src.loc, 'sound/machines/ding.ogg', 50, 1)
 	src.operating = 0 // Turn it off again aferwards
 	src.icon_state = "mw"
 	src.updateUsrDialog()
@@ -316,11 +315,11 @@
 	src.updateUsrDialog()
 
 /obj/machinery/microwave/proc/muck_start()
-	playsound(src.loc, 'splat.ogg', 50, 1) // Play a splat sound
+	playsound(src.loc, 'sound/effects/splat.ogg', 50, 1) // Play a splat sound
 	src.icon_state = "mwbloody1" // Make it look dirty!!
 
 /obj/machinery/microwave/proc/muck_finish()
-	playsound(src.loc, 'ding.ogg', 50, 1)
+	playsound(src.loc, 'sound/machines/ding.ogg', 50, 1)
 	src.visible_message("\red The microwave gets covered in muck!")
 	src.dirty = 100 // Make it dirty so it can't be used util cleaned
 	src.flags = null //So you can't add condiments
@@ -329,7 +328,7 @@
 	src.updateUsrDialog()
 
 /obj/machinery/microwave/proc/broke()
-	var/datum/effects/system/spark_spread/s = new
+	var/datum/effect/effect/system/spark_spread/s = new
 	s.set_up(2, 1, src)
 	s.start()
 	src.icon_state = "mwb" // Make it look all busted up and shit
@@ -358,7 +357,7 @@
 	if(..())
 		return
 
-	usr.machine = src
+	usr.set_machine(src)
 	if(src.operating)
 		src.updateUsrDialog()
 		return
@@ -366,7 +365,7 @@
 	switch(href_list["action"])
 		if ("cook")
 			cook()
-		
+
 		if ("dispose")
 			dispose()
 	return
