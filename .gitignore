@@ -1,0 +1,7 @@
+.directory
+baystation12.dmb
+baystation12.int
+*.lk
+*.rsc
+config/admins.txt
+data/logs/
