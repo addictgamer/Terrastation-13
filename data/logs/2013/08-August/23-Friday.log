@@ -93,3 +93,26 @@ Database connection failed. Reverting to the legacy ban system.
 [15:55:55]DEBUG: Next event in 22.52 minutes.
 [16:18:27]DEBUG: Next event in 18.278 minutes.
 [16:36:45]DEBUG: Next event in 24.698 minutes.
+
+
+Starting up. 22:36.51
+---------------------
+Adding game mode AutoTraitor (extend-a-traitormongous) to configuration.
+Adding game mode traitor+changeling (traitorchan) to configuration.
+Adding game mode traitor (traitor) to configuration.
+Adding game mode changeling (changeling) to configuration.
+Adding game mode cult (cult) to configuration.
+Adding game mode extended (extended) to configuration.
+Adding game mode heist (heist) to configuration.
+Adding game mode AI malfunction (malfunction) to configuration.
+Adding game mode meteor (meteor) to configuration.
+Adding game mode nuclear emergency (nuclear) to configuration.
+Adding game mode rp-revolution (rp-revolution) to configuration.
+Adding game mode revolution (revolution) to configuration.
+Adding game mode wizard (wizard) to configuration.
+Saved mode is 'extended'
+Failed to connect to database in load_admins(). Reverting to legacy system.
+Failed to load config/mods.txt
+
+Database connection failed. Reverting to the legacy ban system.
+[22:39:58]DEBUG: Next event in 23.558 minutes.
