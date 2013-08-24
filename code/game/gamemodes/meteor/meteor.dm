@@ -26,8 +26,8 @@
 
 
 /datum/game_mode/meteor/process()
-	if(nometeors) return
-	/*if(prob(80))
+	if (nometeors) return
+	/*if (prob(80))
 		spawn()
 			dust_swarm("norm")
 	else
@@ -40,19 +40,19 @@
 	var/text
 	var/survivors = 0
 	for(var/mob/living/player in player_list)
-		if(player.stat != DEAD)
+		if (player.stat != DEAD)
 			var/turf/location = get_turf(player.loc)
-			if(!location)	continue
+			if (!location)	continue
 			switch(location.loc.type)
-				if( /area/shuttle/escape/centcom )
+				if ( /area/shuttle/escape/centcom )
 					text += "<br><b><font size=2>[player.real_name] escaped on the emergency shuttle</font></b>"
-				if( /area/shuttle/escape_pod1/centcom, /area/shuttle/escape_pod2/centcom, /area/shuttle/escape_pod3/centcom, /area/shuttle/escape_pod5/centcom )
+				if ( /area/shuttle/escape_pod1/centcom, /area/shuttle/escape_pod2/centcom, /area/shuttle/escape_pod3/centcom, /area/shuttle/escape_pod5/centcom )
 					text += "<br><font size=2>[player.real_name] escaped in a life pod.</font>"
 				else
 					text += "<br><font size=1>[player.real_name] survived but is stranded without any hope of rescue.</font>"
 			survivors++
 
-	if(survivors)
+	if (survivors)
 		world << "\blue <B>The following survived the meteor storm</B>:[text]"
 	else
 		world << "\blue <B>Nobody survived the meteor storm!</B>"

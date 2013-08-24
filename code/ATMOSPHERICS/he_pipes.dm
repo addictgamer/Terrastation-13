@@ -20,18 +20,18 @@ obj/machinery/atmospherics/pipe/simple/heat_exchanging
 		var/node2_dir
 
 		for(var/direction in cardinal)
-			if(direction&initialize_directions_he)
+			if (direction&initialize_directions_he)
 				if (!node1_dir)
 					node1_dir = direction
 				else if (!node2_dir)
 					node2_dir = direction
 
 		for(var/obj/machinery/atmospherics/pipe/simple/heat_exchanging/target in get_step(src,node1_dir))
-			if(target.initialize_directions_he & get_dir(target,src))
+			if (target.initialize_directions_he & get_dir(target,src))
 				node1 = target
 				break
 		for(var/obj/machinery/atmospherics/pipe/simple/heat_exchanging/target in get_step(src,node2_dir))
-			if(target.initialize_directions_he & get_dir(target,src))
+			if (target.initialize_directions_he & get_dir(target,src))
 				node2 = target
 				break
 		update_icon()
@@ -39,12 +39,12 @@ obj/machinery/atmospherics/pipe/simple/heat_exchanging
 
 
 	process()
-		if(!parent)
+		if (!parent)
 			..()
 		else
 			var/environment_temperature = 0
-			if(istype(loc, /turf/simulated/))
-				if(loc:blocks_air)
+			if (istype(loc, /turf/simulated/))
+				if (loc:blocks_air)
 					environment_temperature = loc:temperature
 				else
 					var/datum/gas_mixture/environment = loc.return_air()
@@ -52,7 +52,7 @@ obj/machinery/atmospherics/pipe/simple/heat_exchanging
 			else
 				environment_temperature = loc:temperature
 			var/datum/gas_mixture/pipe_air = return_air()
-			if(abs(environment_temperature-pipe_air.temperature) > minimum_temperature_difference)
+			if (abs(environment_temperature-pipe_air.temperature) > minimum_temperature_difference)
 				parent.temperature_interact(loc, volume, thermal_conductivity)
 
 
@@ -83,22 +83,22 @@ obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction
 	// BubbleWrap END
 
 	update_icon()
-		if(node1&&node2)
+		if (node1&&node2)
 			icon_state = "intact"
 		else
 			var/have_node1 = node1?1:0
 			var/have_node2 = node2?1:0
 			icon_state = "exposed[have_node1][have_node2]"
-		if(!node1&&!node2)
+		if (!node1&&!node2)
 			del(src)
 
 	initialize()
 		for(var/obj/machinery/atmospherics/target in get_step(src,initialize_directions))
-			if(target.initialize_directions & get_dir(target,src))
+			if (target.initialize_directions & get_dir(target,src))
 				node1 = target
 				break
 		for(var/obj/machinery/atmospherics/pipe/simple/heat_exchanging/target in get_step(src,initialize_directions_he))
-			if(target.initialize_directions_he & get_dir(target,src))
+			if (target.initialize_directions_he & get_dir(target,src))
 				node2 = target
 				break
 

@@ -10,26 +10,26 @@ obj/machinery/door/airlock
 
 
 obj/machinery/door/airlock/receive_signal(datum/signal/signal)
-	if(!signal || signal.encryption) return
+	if (!signal || signal.encryption) return
 
-	if(id_tag != signal.data["tag"] || !signal.data["command"]) return
+	if (id_tag != signal.data["tag"] || !signal.data["command"]) return
 
 	switch(signal.data["command"])
-		if("open")
+		if ("open")
 			open(1)
 
-		if("close")
+		if ("close")
 			close(1)
 
-		if("unlock")
+		if ("unlock")
 			locked = 0
 			update_icon()
 
-		if("lock")
+		if ("lock")
 			locked = 1
 			update_icon()
 
-		if("secure_open")
+		if ("secure_open")
 			locked = 0
 			update_icon()
 
@@ -39,7 +39,7 @@ obj/machinery/door/airlock/receive_signal(datum/signal/signal)
 			locked = 1
 			update_icon()
 
-		if("secure_close")
+		if ("secure_close")
 			locked = 0
 			close(1)
 
@@ -51,7 +51,7 @@ obj/machinery/door/airlock/receive_signal(datum/signal/signal)
 
 
 obj/machinery/door/airlock/proc/send_status()
-	if(radio_connection)
+	if (radio_connection)
 		var/datum/signal/signal = new
 		signal.transmission_method = 1 //radio signal
 		signal.data["tag"] = id_tag
@@ -65,19 +65,19 @@ obj/machinery/door/airlock/proc/send_status()
 
 obj/machinery/door/airlock/open(surpress_send)
 	. = ..()
-	if(!surpress_send) send_status()
+	if (!surpress_send) send_status()
 
 
 obj/machinery/door/airlock/close(surpress_send)
 	. = ..()
-	if(!surpress_send) send_status()
+	if (!surpress_send) send_status()
 
 
 obj/machinery/door/airlock/Bumped(atom/AM)
 	..(AM)
-	if(istype(AM, /obj/mecha))
+	if (istype(AM, /obj/mecha))
 		var/obj/mecha/mecha = AM
-		if(density && radio_connection && mecha.occupant && (src.allowed(mecha.occupant) || src.check_access_list(mecha.operation_req_access)))
+		if (density && radio_connection && mecha.occupant && (src.allowed(mecha.occupant) || src.check_access_list(mecha.operation_req_access)))
 			var/datum/signal/signal = new
 			signal.transmission_method = 1 //radio signal
 			signal.data["tag"] = id_tag
@@ -93,13 +93,13 @@ obj/machinery/door/airlock/Bumped(atom/AM)
 		
 obj/machinery/door/airlock/proc/set_frequency(new_frequency)
 	radio_controller.remove_object(src, frequency)
-	if(new_frequency)
+	if (new_frequency)
 		frequency = new_frequency
 		radio_connection = radio_controller.add_object(src, frequency, RADIO_AIRLOCK)
 
 
 obj/machinery/door/airlock/initialize()
-	if(frequency)
+	if (frequency)
 		set_frequency(frequency)
 
 	update_icon()
@@ -108,7 +108,7 @@ obj/machinery/door/airlock/initialize()
 obj/machinery/door/airlock/New()
 	..()
 
-	if(radio_controller)
+	if (radio_controller)
 		set_frequency(frequency)
 
 
@@ -133,8 +133,8 @@ obj/machinery/airlock_sensor
 
 
 obj/machinery/airlock_sensor/update_icon()
-	if(on)
-		if(alert)
+	if (on)
+		if (alert)
 			icon_state = "airlock_sensor_alert"
 		else
 			icon_state = "airlock_sensor_standby"
@@ -151,7 +151,7 @@ obj/machinery/airlock_sensor/attack_hand(mob/user)
 	flick("airlock_sensor_cycle", src)
 
 obj/machinery/airlock_sensor/process()
-	if(on)
+	if (on)
 		var/datum/signal/signal = new
 		signal.transmission_method = 1 //radio signal
 		signal.data["tag"] = id_tag
@@ -179,7 +179,7 @@ obj/machinery/airlock_sensor/initialize()
 obj/machinery/airlock_sensor/New()
 	..()
 
-	if(radio_controller)
+	if (radio_controller)
 		set_frequency(frequency)
 
 
@@ -203,7 +203,7 @@ obj/machinery/access_button
 
 
 obj/machinery/access_button/update_icon()
-	if(on)
+	if (on)
 		icon_state = "access_button_standby"
 	else
 		icon_state = "access_button_off"
@@ -211,10 +211,10 @@ obj/machinery/access_button/update_icon()
 
 obj/machinery/access_button/attack_hand(mob/user)
 	add_fingerprint(usr)
-	if(!allowed(user))
+	if (!allowed(user))
 		user << "\red Access Denied"
 
-	else if(radio_connection)
+	else if (radio_connection)
 		var/datum/signal/signal = new
 		signal.transmission_method = 1 //radio signal
 		signal.data["tag"] = master_tag
@@ -237,5 +237,5 @@ obj/machinery/access_button/initialize()
 obj/machinery/access_button/New()
 	..()
 
-	if(radio_controller)
+	if (radio_controller)
 		set_frequency(frequency)

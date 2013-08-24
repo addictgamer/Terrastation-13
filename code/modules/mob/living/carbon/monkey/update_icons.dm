@@ -29,7 +29,7 @@
 	lying_prev = lying	//so we don't update overlays for lying/standing unless our stance changes again
 	overlays.Cut()
 
-	if(lying)
+	if (lying)
 		icon_state = ico + "0"
 		for(var/image/I in overlays_lying)
 			overlays += I
@@ -41,53 +41,53 @@
 
 ////////
 /mob/living/carbon/monkey/update_inv_wear_mask(var/update_icons=1)
-	if( wear_mask && istype(wear_mask, /obj/item/clothing/mask) )
+	if ( wear_mask && istype(wear_mask, /obj/item/clothing/mask) )
 		overlays_lying[M_MASK_LAYER]	= image("icon" = 'icons/mob/monkey.dmi', "icon_state" = "[wear_mask.icon_state]2")
 		overlays_standing[M_MASK_LAYER]	= image("icon" = 'icons/mob/monkey.dmi', "icon_state" = "[wear_mask.icon_state]")
 		wear_mask.screen_loc = ui_monkey_mask
 	else
 		overlays_lying[M_MASK_LAYER]	= null
 		overlays_standing[M_MASK_LAYER]	= null
-	if(update_icons)		update_icons()
+	if (update_icons)		update_icons()
 
 
 /mob/living/carbon/monkey/update_inv_r_hand(var/update_icons=1)
-	if(r_hand)
+	if (r_hand)
 		var/t_state = r_hand.item_state
-		if(!t_state)	t_state = r_hand.icon_state
+		if (!t_state)	t_state = r_hand.icon_state
 		overlays_standing[M_R_HAND_LAYER]	= image("icon" = 'icons/mob/items_righthand.dmi', "icon_state" = t_state)
 		r_hand.screen_loc = ui_rhand
 		if (handcuffed) drop_r_hand()
 	else
 		overlays_standing[M_R_HAND_LAYER]	= null
-	if(update_icons)		update_icons()
+	if (update_icons)		update_icons()
 
 
 /mob/living/carbon/monkey/update_inv_l_hand(var/update_icons=1)
-	if(l_hand)
+	if (l_hand)
 		var/t_state = l_hand.item_state
-		if(!t_state)	 t_state = l_hand.icon_state
+		if (!t_state)	 t_state = l_hand.icon_state
 		overlays_standing[M_L_HAND_LAYER]	= image("icon" = 'icons/mob/items_lefthand.dmi', "icon_state" = t_state)
 		l_hand.screen_loc = ui_lhand
 		if (handcuffed) drop_l_hand()
 	else
 		overlays_standing[M_L_HAND_LAYER]	= null
-	if(update_icons)		update_icons()
+	if (update_icons)		update_icons()
 
 
 /mob/living/carbon/monkey/update_inv_back(var/update_icons=1)
-	if(back)
+	if (back)
 		overlays_lying[M_BACK_LAYER]	= image("icon" = 'icons/mob/back.dmi', "icon_state" = "[back.icon_state]2")
 		overlays_standing[M_BACK_LAYER]	= image("icon" = 'icons/mob/back.dmi', "icon_state" = "[back.icon_state]")
 		back.screen_loc = ui_monkey_back
 	else
 		overlays_lying[M_BACK_LAYER]	= null
 		overlays_standing[M_BACK_LAYER]	= null
-	if(update_icons)		update_icons()
+	if (update_icons)		update_icons()
 
 
 /mob/living/carbon/monkey/update_inv_handcuffed(var/update_icons=1)
-	if(handcuffed)
+	if (handcuffed)
 		drop_r_hand()
 		drop_l_hand()
 		stop_pulling()
@@ -96,7 +96,7 @@
 	else
 		overlays_lying[M_HANDCUFF_LAYER]	= null
 		overlays_standing[M_HANDCUFF_LAYER]	= null
-	if(update_icons)		update_icons()
+	if (update_icons)		update_icons()
 
 
 /mob/living/carbon/monkey/update_hud()
@@ -113,7 +113,7 @@
 	if (!targeted_by)
 		overlays_lying[TARGETED_LAYER]		= null
 		overlays_standing[TARGETED_LAYER]	= null
-	if(update_icons)		update_icons()
+	if (update_icons)		update_icons()
 
 //Monkey Overlays Indexes////////
 #undef M_MASK_LAYER

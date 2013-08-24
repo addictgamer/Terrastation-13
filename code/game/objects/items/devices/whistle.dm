@@ -14,8 +14,8 @@
 	if (spamcheck)
 		return
 
-	if(emagged)
-		if(insults >= 1)
+	if (emagged)
+		if (insults >= 1)
 			playsound(get_turf(src), 'sound/voice/binsult.ogg', 100, 1, vary = 0)//hueheuheuheuheuheuhe
 			user.visible_message("<span class='warning'>[user]'s [name] gurgles, \"FUCK YOUR CUNT YOU SHIT EATING CUNT TILL YOU ARE A MASS EATING SHIT CUNT. EAT PENISES IN YOUR FUCK FACE AND SHIT OUT ABORTIONS TO FUCK UP SHIT IN YOUR ASS YOU COCK FUCK SHIT MONKEY FROM THE DEPTHS OF SHIT\"</span>")
 			insults--
@@ -30,7 +30,7 @@
 		spamcheck = 0
 
 /obj/item/device/hailer/attackby(obj/item/I, mob/user)
-	if(istype(I, /obj/item/weapon/card/emag) && !emagged)
+	if (istype(I, /obj/item/weapon/card/emag) && !emagged)
 		user << "\red You overload \the [src]'s voice synthesizer."
 		emagged = 1
 		insults = rand(1, 3)//to prevent dickflooding

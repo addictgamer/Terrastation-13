@@ -26,14 +26,14 @@ BONUS
 
 /datum/symptom/cough/Activate(var/datum/disease/advance/A)
 	..()
-	if(prob(SYMPTOM_ACTIVATION_PROB))
+	if (prob(SYMPTOM_ACTIVATION_PROB))
 		var/mob/living/M = A.affected_mob
 		switch(A.stage)
-			if(1, 2, 3)
+			if (1, 2, 3)
 				M << "<span notice='notice'>[pick("You swallow excess mucus.", "You lightly cough.")]</span>"
 			else
 				M.emote("cough")
 				var/obj/item/I = M.get_active_hand()
-				if(I && I.w_class < 3)
+				if (I && I.w_class < 3)
 					M.drop_item()
 	return

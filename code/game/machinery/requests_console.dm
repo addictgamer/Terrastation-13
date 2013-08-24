@@ -61,11 +61,11 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	update_icon()
 
 /obj/machinery/requests_console/update_icon()
-	if(stat & NOPOWER)
-		if(icon_state != "req_comp_off")
+	if (stat & NOPOWER)
+		if (icon_state != "req_comp_off")
 			icon_state = "req_comp_off"
 	else
-		if(icon_state == "req_comp_off")
+		if (icon_state == "req_comp_off")
 			icon_state = "req_comp0"
 
 /obj/machinery/requests_console/New()
@@ -74,47 +74,47 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	allConsoles += src
 	//req_console_departments += department
 	switch(departmentType)
-		if(1)
-			if(!("[department]" in req_console_assistance))
+		if (1)
+			if (!("[department]" in req_console_assistance))
 				req_console_assistance += department
-		if(2)
-			if(!("[department]" in req_console_supplies))
+		if (2)
+			if (!("[department]" in req_console_supplies))
 				req_console_supplies += department
-		if(3)
-			if(!("[department]" in req_console_information))
+		if (3)
+			if (!("[department]" in req_console_information))
 				req_console_information += department
-		if(4)
-			if(!("[department]" in req_console_assistance))
+		if (4)
+			if (!("[department]" in req_console_assistance))
 				req_console_assistance += department
-			if(!("[department]" in req_console_supplies))
+			if (!("[department]" in req_console_supplies))
 				req_console_supplies += department
-		if(5)
-			if(!("[department]" in req_console_assistance))
+		if (5)
+			if (!("[department]" in req_console_assistance))
 				req_console_assistance += department
-			if(!("[department]" in req_console_information))
+			if (!("[department]" in req_console_information))
 				req_console_information += department
-		if(6)
-			if(!("[department]" in req_console_supplies))
+		if (6)
+			if (!("[department]" in req_console_supplies))
 				req_console_supplies += department
-			if(!("[department]" in req_console_information))
+			if (!("[department]" in req_console_information))
 				req_console_information += department
-		if(7)
-			if(!("[department]" in req_console_assistance))
+		if (7)
+			if (!("[department]" in req_console_assistance))
 				req_console_assistance += department
-			if(!("[department]" in req_console_supplies))
+			if (!("[department]" in req_console_supplies))
 				req_console_supplies += department
-			if(!("[department]" in req_console_information))
+			if (!("[department]" in req_console_information))
 				req_console_information += department
 
 
 /obj/machinery/requests_console/attack_hand(user as mob)
-	if(..(user))
+	if (..(user))
 		return
 	var/dat
 	dat = text("<HEAD><TITLE>Requests Console</TITLE></HEAD><H3>[department] Requests Console</H3>")
-	if(!open)
+	if (!open)
 		switch(screen)
-			if(1)	//req. assistance
+			if (1)	//req. assistance
 				dat += text("Which department do you need assistance from?<BR><BR>")
 				for(var/dpt in req_console_assistance)
 					if (dpt != department)
@@ -125,7 +125,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 						dat += text(")<BR>")
 				dat += text("<BR><A href='?src=\ref[src];setScreen=0'>Back</A><BR>")
 
-			if(2)	//req. supplies
+			if (2)	//req. supplies
 				dat += text("Which department do you need supplies from?<BR><BR>")
 				for(var/dpt in req_console_supplies)
 					if (dpt != department)
@@ -136,7 +136,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 						dat += text(")<BR>")
 				dat += text("<BR><A href='?src=\ref[src];setScreen=0'>Back</A><BR>")
 
-			if(3)	//relay information
+			if (3)	//relay information
 				dat += text("Which department would you like to send information to?<BR><BR>")
 				for(var/dpt in req_console_information)
 					if (dpt != department)
@@ -147,15 +147,15 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 						dat += text(")<BR>")
 				dat += text("<BR><A href='?src=\ref[src];setScreen=0'>Back</A><BR>")
 
-			if(6)	//sent successfully
+			if (6)	//sent successfully
 				dat += text("<FONT COLOR='GREEN'>Message sent</FONT><BR><BR>")
 				dat += text("<A href='?src=\ref[src];setScreen=0'>Continue</A><BR>")
 
-			if(7)	//unsuccessful; not sent
+			if (7)	//unsuccessful; not sent
 				dat += text("<FONT COLOR='RED'>An error occurred. </FONT><BR><BR>")
 				dat += text("<A href='?src=\ref[src];setScreen=0'>Continue</A><BR>")
 
-			if(8)	//view messages
+			if (8)	//view messages
 				for (var/obj/machinery/requests_console/Console in allConsoles)
 					if (Console.department == department)
 						Console.newmessagepriority = 0
@@ -167,7 +167,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 					dat += text("[msg]<BR>")
 				dat += text("<A href='?src=\ref[src];setScreen=0'>Back to main menu</A><BR>")
 
-			if(9)	//authentication before sending
+			if (9)	//authentication before sending
 				dat += text("<B>Message Authentication</B><BR><BR>")
 				dat += text("<b>Message for [dpt]: </b>[message]<BR><BR>")
 				dat += text("You may authenticate your message now by scanning your ID or your stamp<BR><BR>")
@@ -176,9 +176,9 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 				dat += text("<A href='?src=\ref[src];department=[dpt]'>Send</A><BR>");
 				dat += text("<BR><A href='?src=\ref[src];setScreen=0'>Back</A><BR>")
 
-			if(10)	//send announcement
+			if (10)	//send announcement
 				dat += text("<B>Station wide announcement</B><BR><BR>")
-				if(announceAuth)
+				if (announceAuth)
 					dat += text("<b>Authentication accepted</b><BR><BR>")
 				else
 					dat += text("Swipe your card to authenticate yourself.<BR><BR>")
@@ -199,7 +199,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 				dat += text("<A href='?src=\ref[src];setScreen=1'>Request Assistance</A><BR>")
 				dat += text("<A href='?src=\ref[src];setScreen=2'>Request Supplies</A><BR>")
 				dat += text("<A href='?src=\ref[src];setScreen=3'>Relay Anonymous Information</A><BR><BR>")
-				if(announcementConsole)
+				if (announcementConsole)
 					dat += text("<A href='?src=\ref[src];setScreen=10'>Send station-wide announcement</A><BR><BR>")
 				if (silent)
 					dat += text("Speaker <A href='?src=\ref[src];setSilent=0'>OFF</A>")
@@ -211,19 +211,19 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	return
 
 /obj/machinery/requests_console/Topic(href, href_list)
-	if(..())	return
+	if (..())	return
 	usr.set_machine(src)
 	add_fingerprint(usr)
 
-	if(reject_bad_text(href_list["write"]))
+	if (reject_bad_text(href_list["write"]))
 		dpt = ckey(href_list["write"]) //write contains the string of the receiving department's name
 
 		var/new_message = copytext(reject_bad_text(input(usr, "Write your message:", "Awaiting Input", "")),1,MAX_MESSAGE_LEN)
-		if(new_message)
+		if (new_message)
 			message = new_message
 			screen = 9
 			switch(href_list["priority"])
-				if("2")	priority = 2
+				if ("2")	priority = 2
 				else	priority = -1
 		else
 			dpt = "";
@@ -232,28 +232,28 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 			screen = 0
 			priority = -1
 
-	if(href_list["writeAnnouncement"])
+	if (href_list["writeAnnouncement"])
 		var/new_message = copytext(reject_bad_text(input(usr, "Write your message:", "Awaiting Input", "")),1,MAX_MESSAGE_LEN)
-		if(new_message)
+		if (new_message)
 			message = new_message
 			switch(href_list["priority"])
-				if("2")	priority = 2
+				if ("2")	priority = 2
 				else	priority = -1
 		else
 			message = ""
 			announceAuth = 0
 			screen = 0
 
-	if(href_list["sendAnnouncement"])
-		if(!announcementConsole)	return
+	if (href_list["sendAnnouncement"])
+		if (!announcementConsole)	return
 		for(var/mob/M in player_list)
-			if(!istype(M,/mob/new_player))
+			if (!istype(M,/mob/new_player))
 				M << "<b><font size = 3><font color = red>[department] announcement:</font color> [message]</font size></b>"
 		announceAuth = 0
 		message = ""
 		screen = 0
 
-	if( href_list["department"] && message )
+	if ( href_list["department"] && message )
 		var/log_msg = message
 		var/sending = message
 		sending += "<br>"
@@ -267,41 +267,41 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 		if (sending)
 			var/pass = 0
 			for (var/obj/machinery/message_server/MS in world)
-				if(!MS.active) continue
+				if (!MS.active) continue
 				MS.send_rc_message(href_list["department"],department,log_msg,msgStamped,msgVerified,priority)
 				pass = 1
 
-			if(pass)
+			if (pass)
 
 				for (var/obj/machinery/requests_console/Console in allConsoles)
 					if (ckey(Console.department) == ckey(href_list["department"]))
 
 						switch(priority)
-							if("2")		//High priority
-								if(Console.newmessagepriority < 2)
+							if ("2")		//High priority
+								if (Console.newmessagepriority < 2)
 									Console.newmessagepriority = 2
 									Console.icon_state = "req_comp2"
-								if(!Console.silent)
+								if (!Console.silent)
 									playsound(Console.loc, 'sound/machines/twobeep.ogg', 50, 1)
 									for (var/mob/O in hearers(5, Console.loc))
 										O.show_message(text("\icon[Console] *The Requests Console beeps: 'PRIORITY Alert in [department]'"))
 								Console.messages += "<B><FONT color='red'>High Priority message from <A href='?src=\ref[Console];write=[ckey(department)]'>[department]</A></FONT></B><BR>[sending]"
 
-		//					if("3")		//Not implemanted, but will be 		//Removed as it doesn't look like anybody intends on implimenting it ~Carn
-		//						if(Console.newmessagepriority < 3)
+		//					if ("3")		//Not implemanted, but will be 		//Removed as it doesn't look like anybody intends on implimenting it ~Carn
+		//						if (Console.newmessagepriority < 3)
 		//							Console.newmessagepriority = 3
 		//							Console.icon_state = "req_comp3"
-		//						if(!Console.silent)
+		//						if (!Console.silent)
 		//							playsound(Console.loc, 'sound/machines/twobeep.ogg', 50, 1)
 		//							for (var/mob/O in hearers(7, Console.loc))
 		//								O.show_message(text("\icon[Console] *The Requests Console yells: 'EXTREME PRIORITY alert in [department]'"))
 		//						Console.messages += "<B><FONT color='red'>Extreme Priority message from [ckey(department)]</FONT></B><BR>[message]"
 
 							else		// Normal priority
-								if(Console.newmessagepriority < 1)
+								if (Console.newmessagepriority < 1)
 									Console.newmessagepriority = 1
 									Console.icon_state = "req_comp1"
-								if(!Console.silent)
+								if (!Console.silent)
 									playsound(Console.loc, 'sound/machines/twobeep.ogg', 50, 1)
 									for (var/mob/O in hearers(4, Console.loc))
 										O.show_message(text("\icon[Console] *The Requests Console beeps: 'Message from [department]'"))
@@ -317,27 +317,27 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 
 	//Handle screen switching
 	switch(text2num(href_list["setScreen"]))
-		if(null)	//skip
-		if(1)		//req. assistance
+		if (null)	//skip
+		if (1)		//req. assistance
 			screen = 1
-		if(2)		//req. supplies
+		if (2)		//req. supplies
 			screen = 2
-		if(3)		//relay information
+		if (3)		//relay information
 			screen = 3
-//		if(4)		//write message
+//		if (4)		//write message
 //			screen = 4
-		if(5)		//choose priority
+		if (5)		//choose priority
 			screen = 5
-		if(6)		//sent successfully
+		if (6)		//sent successfully
 			screen = 6
-		if(7)		//unsuccessfull; not sent
+		if (7)		//unsuccessfull; not sent
 			screen = 7
-		if(8)		//view messages
+		if (8)		//view messages
 			screen = 8
-		if(9)		//authentication
+		if (9)		//authentication
 			screen = 9
-		if(10)		//send announcement
-			if(!announcementConsole)	return
+		if (10)		//send announcement
+			if (!announcementConsole)	return
 			screen = 10
 		else		//main menu
 			dpt = ""
@@ -349,8 +349,8 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 
 	//Handle silencing the console
 	switch( href_list["setSilent"] )
-		if(null)	//skip
-		if("1")	silent = 1
+		if (null)	//skip
+		if ("1")	silent = 1
 		else	silent = 0
 
 	updateUsrDialog()
@@ -360,32 +360,32 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 /obj/machinery/requests_console/attackby(var/obj/item/weapon/O as obj, var/mob/user as mob)
 	/*
 	if (istype(O, /obj/item/weapon/crowbar))
-		if(open)
+		if (open)
 			open = 0
 			icon_state="req_comp0"
 		else
 			open = 1
-			if(hackState == 0)
+			if (hackState == 0)
 				icon_state="req_comp_open"
-			else if(hackState == 1)
+			else if (hackState == 1)
 				icon_state="req_comp_rewired"
 	if (istype(O, /obj/item/weapon/screwdriver))
-		if(open)
-			if(hackState == 0)
+		if (open)
+			if (hackState == 0)
 				hackState = 1
 				icon_state="req_comp_rewired"
-			else if(hackState == 1)
+			else if (hackState == 1)
 				hackState = 0
 				icon_state="req_comp_open"
 		else
 			user << "You can't do much with that."*/
 
 	if (istype(O, /obj/item/weapon/card/id))
-		if(screen == 9)
+		if (screen == 9)
 			var/obj/item/weapon/card/id/T = O
 			msgVerified = text("<font color='green'><b>Verified by [T.registered_name] ([T.assignment])</b></font>")
 			updateUsrDialog()
-		if(screen == 10)
+		if (screen == 10)
 			var/obj/item/weapon/card/id/ID = O
 			if (access_RC_announce in ID.GetAccess())
 				announceAuth = 1
@@ -394,7 +394,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 				user << "\red You are not authorized to send announcements."
 			updateUsrDialog()
 	if (istype(O, /obj/item/weapon/stamp))
-		if(screen == 9)
+		if (screen == 9)
 			var/obj/item/weapon/stamp/T = O
 			msgStamped = text("<font color='blue'><b>Stamped with the [T.name]</b></font>")
 			updateUsrDialog()

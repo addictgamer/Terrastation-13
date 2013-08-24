@@ -24,17 +24,17 @@ AI MODULES
 /obj/item/weapon/aiModule/proc/install(var/obj/machinery/computer/C)
 	if (istype(C, /obj/machinery/computer/aiupload))
 		var/obj/machinery/computer/aiupload/comp = C
-		if(comp.stat & NOPOWER)
+		if (comp.stat & NOPOWER)
 			usr << "The upload computer has no power!"
 			return
-		if(comp.stat & BROKEN)
+		if (comp.stat & BROKEN)
 			usr << "The upload computer is broken!"
 			return
 		if (!comp.current)
 			usr << "You haven't selected an AI to transmit laws to!"
 			return
 
-		if(ticker && ticker.mode && ticker.mode.name == "blob")
+		if (ticker && ticker.mode && ticker.mode.name == "blob")
 			usr << "Law uploads have been disabled by NanoTrasen!"
 			return
 
@@ -47,7 +47,7 @@ AI MODULES
 			comp.current << "These are your laws now:"
 			comp.current.show_laws()
 			for(var/mob/living/silicon/robot/R in mob_list)
-				if(R.lawupdate && (R.connected_ai == comp.current))
+				if (R.lawupdate && (R.connected_ai == comp.current))
 					R << "These are your laws now:"
 					R.show_laws()
 			usr << "Upload complete. The AI's laws have been modified."
@@ -55,10 +55,10 @@ AI MODULES
 
 	else if (istype(C, /obj/machinery/computer/borgupload))
 		var/obj/machinery/computer/borgupload/comp = C
-		if(comp.stat & NOPOWER)
+		if (comp.stat & NOPOWER)
 			usr << "The upload computer has no power!"
 			return
-		if(comp.stat & BROKEN)
+		if (comp.stat & BROKEN)
 			usr << "The upload computer is broken!"
 			return
 		if (!comp.current)
@@ -99,7 +99,7 @@ AI MODULES
 	desc = text("A 'safeguard' AI module: 'Safeguard [].  Individuals that threaten [] are not human and are a threat to humans.'", targetName, targetName)
 
 /obj/item/weapon/aiModule/safeguard/install(var/obj/machinery/computer/C)
-	if(!targetName)
+	if (!targetName)
 		usr << "No name detected on module, please enter one."
 		return 0
 	..()
@@ -128,7 +128,7 @@ AI MODULES
 	desc = text("A 'one human' AI module: 'Only [] is human.'", targetName)
 
 /obj/item/weapon/aiModule/oneHuman/install(var/obj/machinery/computer/C)
-	if(!targetName)
+	if (!targetName)
 		usr << "No name detected on module, please enter one."
 		return 0
 	..()
@@ -270,13 +270,13 @@ AI MODULES
 	..()
 	var/law = "[newFreeFormLaw]"
 	target << law
-	if(!lawpos || lawpos < 15)
+	if (!lawpos || lawpos < 15)
 		lawpos = 15
 	target.add_supplied_law(lawpos, law)
 	lawchanges.Add("The law was '[newFreeFormLaw]'")
 
 /obj/item/weapon/aiModule/freeform/install(var/obj/machinery/computer/C)
-	if(!newFreeFormLaw)
+	if (!newFreeFormLaw)
 		usr << "No law detected on module, please create one."
 		return 0
 	..()
@@ -421,7 +421,7 @@ AI MODULES
 	lawchanges.Add("The law is '[newFreeFormLaw]'")
 
 /obj/item/weapon/aiModule/freeformcore/install(var/obj/machinery/computer/C)
-	if(!newFreeFormLaw)
+	if (!newFreeFormLaw)
 		usr << "No law detected on module, please create one."
 		return 0
 	..()
@@ -449,7 +449,7 @@ AI MODULES
 	target.add_ion_law(law)
 
 /obj/item/weapon/aiModule/syndicate/install(var/obj/machinery/computer/C)
-	if(!newFreeFormLaw)
+	if (!newFreeFormLaw)
 		usr << "No law detected on module, please create one."
 		return 0
 	..()

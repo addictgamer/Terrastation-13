@@ -42,18 +42,18 @@
 
 
 /obj/machinery/power/am_control_unit/process()
-	if(exploding)
+	if (exploding)
 		explosion(get_turf(src),8,12,18,12)
-		if(src) del(src)
+		if (src) del(src)
 
-	if(update_shield_icons && !shield_icon_delay)
+	if (update_shield_icons && !shield_icon_delay)
 		check_shield_icons()
 		update_shield_icons = 0
 
-	if(stat & (NOPOWER|BROKEN) || !active)//can update the icons even without power
+	if (stat & (NOPOWER|BROKEN) || !active)//can update the icons even without power
 		return
 
-	if(!fueljar)//No fuel but we are on, shutdown
+	if (!fueljar)//No fuel but we are on, shutdown
 		toggle_power()
 		//Angry buzz or such here
 		return
@@ -61,7 +61,7 @@
 	add_avail(stored_power)
 
 	power_cycle++
-	if(power_cycle >= power_cycle_delay)
+	if (power_cycle >= power_cycle_delay)
 		produce_power()
 		power_cycle = 0
 
@@ -71,17 +71,17 @@
 /obj/machinery/power/am_control_unit/proc/produce_power()
 	playsound(src.loc, 'sound/effects/bang.ogg', 25, 1)
 	var/core_power = reported_core_efficiency//Effectively how much fuel we can safely deal with
-	if(core_power <= 0) return 0//Something is wrong
+	if (core_power <= 0) return 0//Something is wrong
 	var/core_damage = 0
 	var/fuel = fueljar.usefuel(fuel_injection)
 
 	stored_power = (fuel/core_power)*fuel*200000
 	//Now check if the cores could deal with it safely, this is done after so you can overload for more power if needed, still a bad idea
-	if(fuel > (2*core_power))//More fuel has been put in than the current cores can deal with
-		if(prob(50))core_damage = 1//Small chance of damage
-		if((fuel-core_power) > 5)	core_damage = 5//Now its really starting to overload the cores
-		if((fuel-core_power) > 10)	core_damage = 20//Welp now you did it, they wont stand much of this
-		if(core_damage == 0) return
+	if (fuel > (2*core_power))//More fuel has been put in than the current cores can deal with
+		if (prob(50))core_damage = 1//Small chance of damage
+		if ((fuel-core_power) > 5)	core_damage = 5//Now its really starting to overload the cores
+		if ((fuel-core_power) > 10)	core_damage = 20//Welp now you did it, they wont stand much of this
+		if (core_damage == 0) return
 		for(var/obj/machinery/am_shielding/AMS in linked_cores)
 			AMS.stability -= core_damage
 			AMS.check_stability(1)
@@ -91,11 +91,11 @@
 
 /obj/machinery/power/am_control_unit/emp_act(severity)
 	switch(severity)
-		if(1)
-			if(active)	toggle_power()
+		if (1)
+			if (active)	toggle_power()
 			stability -= rand(15,30)
-		if(2)
-			if(active)	toggle_power()
+		if (2)
+			if (active)	toggle_power()
 			stability -= rand(10,20)
 	..()
 	return 0
@@ -103,7 +103,7 @@
 
 /obj/machinery/power/am_control_unit/blob_act()
 	stability -= 20
-	if(prob(100-stability))//Might infect the rest of the machine
+	if (prob(100-stability))//Might infect the rest of the machine
 		for(var/obj/machinery/am_shielding/AMS in linked_shielding)
 			AMS.blob_act()
 		spawn(0)
@@ -116,46 +116,46 @@
 
 /obj/machinery/power/am_control_unit/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			stability -= 60
-		if(2.0)
+		if (2.0)
 			stability -= 40
-		if(3.0)
+		if (3.0)
 			stability -= 20
 	check_stability()
 	return
 
 
 /obj/machinery/power/am_control_unit/bullet_act(var/obj/item/projectile/Proj)
-	if(Proj.flag != "bullet")
+	if (Proj.flag != "bullet")
 		stability -= Proj.force
 	return 0
 
 
 /obj/machinery/power/am_control_unit/power_change()
 	..()
-	if(stat & NOPOWER && active)
+	if (stat & NOPOWER && active)
 		toggle_power()
 	return
 
 
 /obj/machinery/power/am_control_unit/update_icon()
-	if(active) icon_state = "control_on"
+	if (active) icon_state = "control_on"
 	else icon_state = "control"
 	//No other icons for it atm
 
 
 /obj/machinery/power/am_control_unit/attackby(obj/item/W, mob/user)
-	if(!istype(W) || !user) return
-	if(istype(W, /obj/item/weapon/wrench))
-		if(!anchored)
+	if (!istype(W) || !user) return
+	if (istype(W, /obj/item/weapon/wrench))
+		if (!anchored)
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 			user.visible_message("[user.name] secures the [src.name] to the floor.", \
 				"You secure the anchor bolts to the floor.", \
 				"You hear a ratchet")
 			src.anchored = 1
 			connect_to_network()
-		else if(!linked_shielding.len > 0)
+		else if (!linked_shielding.len > 0)
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 			user.visible_message("[user.name] unsecures the [src.name].", \
 				"You remove the anchor bolts.", \
@@ -166,13 +166,13 @@
 			user << "\red Once bolted and linked to a shielding unit it the [src.name] is unable to be moved!"
 		return
 
-	if(istype(W, /obj/item/weapon/am_containment))
-		if(fueljar)
+	if (istype(W, /obj/item/weapon/am_containment))
+		if (fueljar)
 			user << "\red There is already a [fueljar] inside!"
 			return
 		fueljar = W
 		W.loc = src
-		if(user.client)
+		if (user.client)
 			user.client.screen -= W
 		user.u_equip(W)
 		user.update_icons()
@@ -181,7 +181,7 @@
 				"You hear a thunk.")
 		return
 
-	if(W.force >= 20)
+	if (W.force >= 20)
 		stability -= W.force/2
 		check_stability()
 	..()
@@ -189,37 +189,37 @@
 
 
 /obj/machinery/power/am_control_unit/attack_hand(mob/user as mob)
-	if(anchored)
+	if (anchored)
 		interact(user)
 	return
 
 
 /obj/machinery/power/am_control_unit/proc/add_shielding(var/obj/machinery/am_shielding/AMS, var/AMS_linking = 0)
-	if(!istype(AMS)) return 0
-	if(!anchored) return 0
-	if(!AMS_linking && !AMS.link_control(src)) return 0
+	if (!istype(AMS)) return 0
+	if (!anchored) return 0
+	if (!AMS_linking && !AMS.link_control(src)) return 0
 	linked_shielding.Add(AMS)
 	update_shield_icons = 1
 	return 1
 
 
 /obj/machinery/power/am_control_unit/proc/remove_shielding(var/obj/machinery/am_shielding/AMS)
-	if(!istype(AMS)) return 0
+	if (!istype(AMS)) return 0
 	linked_shielding.Remove(AMS)
 	update_shield_icons = 2
-	if(active)	toggle_power()
+	if (active)	toggle_power()
 	return 1
 
 
 /obj/machinery/power/am_control_unit/proc/check_stability()//TODO: make it break when low also might want to add a way to fix it like a part or such that can be replaced
-	if(stability <= 0)
+	if (stability <= 0)
 		del(src)
 	return
 
 
 /obj/machinery/power/am_control_unit/proc/toggle_power()
 	active = !active
-	if(active)
+	if (active)
 		use_power = 2
 		visible_message("The [src.name] starts up.")
 	else
@@ -230,11 +230,11 @@
 
 
 /obj/machinery/power/am_control_unit/proc/check_shield_icons()//Forces icon_update for all shields
-	if(shield_icon_delay) return
+	if (shield_icon_delay) return
 	shield_icon_delay = 1
-	if(update_shield_icons == 2)//2 means to clear everything and rebuild
+	if (update_shield_icons == 2)//2 means to clear everything and rebuild
 		for(var/obj/machinery/am_shielding/AMS in linked_shielding)
-			if(AMS.processing)	AMS.shutdown_core()
+			if (AMS.processing)	AMS.shutdown_core()
 			AMS.control_unit = null
 			spawn(10)
 				AMS.controllerscan()
@@ -249,7 +249,7 @@
 
 
 /obj/machinery/power/am_control_unit/proc/check_core_stability()
-	if(stored_core_stability_delay || linked_cores.len <= 0)	return
+	if (stored_core_stability_delay || linked_cores.len <= 0)	return
 	stored_core_stability_delay = 1
 	stored_core_stability = 0
 	for(var/obj/machinery/am_shielding/AMS in linked_cores)
@@ -261,8 +261,8 @@
 
 
 /obj/machinery/power/am_control_unit/interact(mob/user)
-	if((get_dist(src, user) > 1) || (stat & (BROKEN|NOPOWER)))
-		if(!istype(user, /mob/living/silicon/ai))
+	if ((get_dist(src, user) > 1) || (stat & (BROKEN|NOPOWER)))
+		if (!istype(user, /mob/living/silicon/ai))
 			user.unset_machine()
 			user << browse(null, "window=AMcontrol")
 			return
@@ -284,7 +284,7 @@
 	dat += "Last Produced: [stored_power]<BR>"
 
 	dat += "Fuel: "
-	if(!fueljar)
+	if (!fueljar)
 		dat += "<BR>No fuel receptacle detected."
 	else
 		dat += "<A href='?src=\ref[src];ejectjar=1'>Eject</A><BR>"
@@ -302,37 +302,37 @@
 /obj/machinery/power/am_control_unit/Topic(href, href_list)
 	..()
 	//Ignore input if we are broken or guy is not touching us, AI can control from a ways away
-	if(stat & (BROKEN|NOPOWER) || (get_dist(src, usr) > 1 && !istype(usr, /mob/living/silicon/ai)))
+	if (stat & (BROKEN|NOPOWER) || (get_dist(src, usr) > 1 && !istype(usr, /mob/living/silicon/ai)))
 		usr.unset_machine()
 		usr << browse(null, "window=AMcontrol")
 		return
 
-	if(href_list["close"])
+	if (href_list["close"])
 		usr << browse(null, "window=AMcontrol")
 		usr.unset_machine()
 		return
 
-	if(href_list["togglestatus"])
+	if (href_list["togglestatus"])
 		toggle_power()
 
-	if(href_list["refreshicons"])
+	if (href_list["refreshicons"])
 		update_shield_icons = 1
 
-	if(href_list["ejectjar"])
-		if(fueljar)
+	if (href_list["ejectjar"])
+		if (fueljar)
 			fueljar.loc = src.loc
 			fueljar = null
 			//fueljar.control_unit = null currently it does not care where it is
 			//update_icon() when we have the icon for it
 
-	if(href_list["strengthup"])
+	if (href_list["strengthup"])
 		fuel_injection++
 
-	if(href_list["strengthdown"])
+	if (href_list["strengthdown"])
 		fuel_injection--
-		if(fuel_injection < 0) fuel_injection = 0
+		if (fuel_injection < 0) fuel_injection = 0
 
-	if(href_list["refreshstability"])
+	if (href_list["refreshstability"])
 		check_core_stability()
 
 	updateDialog()

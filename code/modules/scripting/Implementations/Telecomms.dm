@@ -29,7 +29,7 @@
 		returnerrors += scanner.errors
 		returnerrors += parser.errors
 
-		if(returnerrors.len)
+		if (returnerrors.len)
 			return returnerrors
 
 		interpreter 		= new(program)
@@ -42,10 +42,10 @@
 
 	proc/Run(var/datum/signal/signal)
 
-		if(!ready)
+		if (!ready)
 			return
 
-		if(!interpreter)
+		if (!interpreter)
 			return
 
 		interpreter.container = src
@@ -189,19 +189,19 @@
 
 		var/setname = ""
 		var/obj/machinery/telecomms/server/S = signal.data["server"]
-		if(interpreter.GetVar("$source") in S.stored_names)
+		if (interpreter.GetVar("$source") in S.stored_names)
 			setname = interpreter.GetVar("$source")
 		else
 			setname = "<i>[interpreter.GetVar("$source")]</i>"
 
-		if(signal.data["name"] != setname)
+		if (signal.data["name"] != setname)
 			signal.data["realname"] = setname
 		signal.data["name"]		= setname
 		signal.data["job"]		= interpreter.GetVar("$job")
 		signal.data["reject"]	= !(interpreter.GetVar("$pass")) // set reject to the opposite of $pass
 
 		// If the message is invalid, just don't broadcast it!
-		if(signal.data["message"] == "" || !signal.data["message"])
+		if (signal.data["message"] == "" || !signal.data["message"])
 			signal.data["reject"] = 1
 
 /*  -- Actual language proc code --  */
@@ -210,10 +210,10 @@ datum/signal
 
 	proc/mem(var/address, var/value)
 
-		if(istext(address))
+		if (istext(address))
 			var/obj/machinery/telecomms/server/S = data["server"]
 
-			if(!value && value != 0)
+			if (!value && value != 0)
 				return S.memory[address]
 
 			else
@@ -226,26 +226,26 @@ datum/signal
 		var/obj/machinery/telecomms/server/S = data["server"]
 		var/obj/item/device/radio/hradio = S.server_radio
 
-		if(!hradio)
+		if (!hradio)
 			error("[src] has no radio.")
 			return
 
-		if((!message || message == "") && message != 0)
+		if ((!message || message == "") && message != 0)
 			message = "*beep*"
-		if(!source)
+		if (!source)
 			source = "[html_encode(uppertext(S.id))]"
 			hradio = new // sets the hradio as a radio intercom
-		if(!freq)
+		if (!freq)
 			freq = 1459
-		if(findtext(num2text(freq), ".")) // if the frequency has been set as a decimal
+		if (findtext(num2text(freq), ".")) // if the frequency has been set as a decimal
 			freq *= 10 // shift the decimal one place
 
-		if(!job)
+		if (!job)
 			job = "?"
 
 		newsign.data["mob"] = null
 		newsign.data["mobtype"] = /mob/living/carbon/human
-		if(source in S.stored_names)
+		if (source in S.stored_names)
 			newsign.data["name"] = source
 		else
 			newsign.data["name"] = "<i>[html_encode(uppertext(source))]<i>"
@@ -254,7 +254,7 @@ datum/signal
 		newsign.data["compression"] = 0
 		newsign.data["message"] = message
 		newsign.data["type"] = 2 // artificial broadcast
-		if(!isnum(freq))
+		if (!isnum(freq))
 			freq = text2num(freq)
 		newsign.frequency = freq
 
@@ -269,6 +269,6 @@ datum/signal
 		newsign.data["level"] = list()
 
 		var/pass = S.relay_information(newsign, "/obj/machinery/telecomms/hub")
-		if(!pass)
+		if (!pass)
 			S.relay_information(newsign, "/obj/machinery/telecomms/broadcaster") // send this simple message to broadcasters
 

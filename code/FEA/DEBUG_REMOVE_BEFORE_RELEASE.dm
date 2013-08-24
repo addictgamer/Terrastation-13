@@ -12,14 +12,14 @@ turf/simulated
 	New()
 		..()
 
-		if(air)
+		if (air)
 			air.parent = src
 */
 obj/machinery/door
 	verb
 		toggle_door()
 			set src in world
-			if(density)
+			if (density)
 				open()
 			else
 				close()
@@ -47,7 +47,7 @@ obj/item/weapon/tank
 	verb
 		adjust_mixture(temperature as num, target_toxin_pressure as num, target_oxygen_pressure as num)
 			set src in world
-			if(!air_contents)
+			if (!air_contents)
 				usr << "\red ERROR: no gas_mixture associated with this tank"
 				return null
 
@@ -59,17 +59,17 @@ turf/simulated/floor
 	verb
 		parent_info()
 			set src in world
-			if(parent)
+			if (parent)
 				usr << "<B>[x],[y] parent:</B> Processing: [parent.group_processing]"
-				if(parent.members)
+				if (parent.members)
 					usr << "Members: [parent.members.len]"
 				else
 					usr << "Members: None?"
-				if(parent.borders)
+				if (parent.borders)
 					usr << "Borders: [parent.borders.len]"
 				else
 					usr << "Borders: None"
-				if(parent.length_space_border)
+				if (parent.length_space_border)
 					usr << "Space Borders: [parent.space_borders.len], Space Length: [parent.length_space_border]"
 				else
 					usr << "Space Borders: None"
@@ -96,7 +96,7 @@ turf/simulated/floor
 	verb
 		flag_parent()
 			set src in world
-			if(parent)
+			if (parent)
 				parent.debugging = !parent.debugging
 				usr << "[parent.members.len] set to [parent.debugging]"
 	verb
@@ -174,10 +174,10 @@ obj/machinery/atmospherics
 					var/mode = input(usr, "Select an option:") in list("Bound External", "Bound Internal", "Bound Both")
 
 					switch(mode)
-						if("Bound External")
+						if ("Bound External")
 							pressure_checks = 1
 							external_pressure_bound = input(usr, "External Pressure Bound?") as num
-						if("Bound Internal")
+						if ("Bound Internal")
 							pressure_checks = 2
 							internal_pressure_bound = input(usr, "Internal Pressure Bound?") as num
 						else
@@ -245,7 +245,7 @@ obj/machinery/atmospherics
 				set src in world
 				set category = "Minor"
 
-				if(node_in1)
+				if (node_in1)
 					var/node_ratio = input(usr, "Node 1 Ratio? ([dir2text(get_dir(src, node_in1))])") as num
 					node_ratio = min(max(0,node_ratio),1)
 
@@ -297,9 +297,9 @@ obj/machinery/atmospherics
 
 				world << "Debugging: [x],[y]"
 
-				if(node1)
+				if (node1)
 					world << "Input node: [node1.x],[node1.y] [network1]"
-				if(node2)
+				if (node2)
 					world << "Output node: [node2.x],[node2.y] [network2]"
 
 			toggle()
@@ -321,7 +321,7 @@ obj/machinery/atmospherics
 				set src in world
 				set category = "Minor"
 
-				if(open)
+				if (open)
 					close()
 				else
 					open()
@@ -348,7 +348,7 @@ obj/machinery/atmospherics
 				set src in world
 				set category = "Minor"
 
-				if(parent)
+				if (parent)
 					usr << "[x],[y] is in a pipeline with [parent.members.len] members ([parent.edges.len] edges)! Volume: [parent.air.volume]"
 					usr << "Pressure: [parent.air.return_pressure()], Temperature: [parent.air.temperature]"
 					usr << "[parent.air.oxygen], [parent.air.toxins], [parent.air.nitrogen], [parent.air.carbon_dioxide] .. [parent.alert_pressure]"
@@ -371,7 +371,7 @@ mob
 				P.overlays.Cut()
 
 				var/datum/pipe_network/master = P.return_network()
-				if(master)
+				if (master)
 					P.overlays += icon('icons/Testing/atmos_testing.dmi',"marker[master.marker]")
 				else
 					world << "error"
@@ -380,12 +380,12 @@ mob
 			for(var/obj/machinery/atmospherics/valve/V in world)
 				V.overlays.Cut()
 
-				if(V.network_node1)
+				if (V.network_node1)
 					V.overlays += icon('icons/Testing/atmos_testing.dmi',"marker[V.network_node1.marker]")
 				else
 					V.overlays += icon('icons/Testing/atmos_testing.dmi',"marker0")
 
-				if(V.network_node2)
+				if (V.network_node2)
 					V.overlays += icon('icons/Testing/atmos_testing.dmi',"marker[V.network_node2.marker]")
 				else
 					V.overlays += icon('icons/Testing/atmos_testing.dmi',"marker0")
@@ -398,9 +398,9 @@ turf/simulated
 			set src in world
 			overlays.Cut()
 			for(var/direction in list(NORTH,SOUTH,EAST,WEST))
-				if(group_border&direction)
+				if (group_border&direction)
 					overlays += icon('icons/Testing/turf_analysis.dmi',"red_arrow",direction)
-				else if(air_check_directions&direction)
+				else if (air_check_directions&direction)
 					overlays += icon('icons/Testing/turf_analysis.dmi',"arrow",direction)
 		air_status()
 			set src in world
@@ -413,7 +413,7 @@ turf/simulated
 		force_temperature(temp as num)
 			set src in world
 			set category = "Minor"
-			if(parent&&parent.group_processing)
+			if (parent&&parent.group_processing)
 				parent.suspend_group_processing()
 
 			air.temperature = temp
@@ -435,7 +435,7 @@ turf/simulated
 			set src in world
 			set category = "Minor"
 
-			if(amount>1)
+			if (amount>1)
 				var/datum/gas_mixture/adding = new
 				var/datum/gas/sleeping_agent/trace_gas = new
 
@@ -455,23 +455,23 @@ obj/indicator
 
 	proc/measurement()
 		var/turf/T = loc
-		if(!isturf(T)) return
+		if (!isturf(T)) return
 		var/datum/gas_mixture/GM = T.return_air()
 		switch(measure)
-			if("temperature")
-				if(GM.temperature < 0)
+			if ("temperature")
+				if (GM.temperature < 0)
 					return "error"
 				return "[round(GM.temperature/100+0.5)]"
-			if("oxygen")
-				if(GM.oxygen < 0)
+			if ("oxygen")
+				if (GM.oxygen < 0)
 					return "error"
 				return "[round(GM.oxygen/MOLES_CELLSTANDARD*10+0.5)]"
-			if("plasma")
-				if(GM.toxins < 0)
+			if ("plasma")
+				if (GM.toxins < 0)
 					return "error"
 				return "[round(GM.toxins/MOLES_CELLSTANDARD*10+0.5)]"
-			if("nitrogen")
-				if(GM.nitrogen < 0)
+			if ("nitrogen")
+				if (GM.nitrogen < 0)
 					return "error"
 				return "[round(GM.nitrogen/MOLES_CELLSTANDARD*10+0.5)]"
 			else
@@ -495,7 +495,7 @@ mob
 	verb
 		update_indicators()
 			set category = "Debug"
-			if(!air_master)
+			if (!air_master)
 				usr << "Cannot find air_system"
 				return
 
@@ -503,7 +503,7 @@ mob
 				T.process()
 		change_indicators()
 			set category = "Debug"
-			if(!air_master)
+			if (!air_master)
 				usr << "Cannot find air_system"
 				return
 
@@ -521,7 +521,7 @@ mob
 
 		process_cycle()
 			set category = "Debug"
-			if(!master_controller)
+			if (!master_controller)
 				usr << "Cannot find master_controller"
 				return
 
@@ -530,7 +530,7 @@ mob
 
 		process_cycles(amount as num)
 			set category = "Debug"
-			if(!master_controller)
+			if (!master_controller)
 				usr << "Cannot find master_controller"
 				return
 
@@ -545,7 +545,7 @@ mob
 
 		process_updates_early()
 			set category = "Debug"
-			if(!air_master)
+			if (!air_master)
 				usr << "Cannot find air_system"
 				return
 
@@ -554,7 +554,7 @@ mob
 
 		mark_group_delay()
 			set category = "Debug"
-			if(!air_master)
+			if (!air_master)
 				usr << "Cannot find air_system"
 				return
 
@@ -563,8 +563,8 @@ mob
 
 			for(var/turf/simulated/floor/S in world)
 				S.icon = 'icons/Testing/turf_analysis.dmi'
-				if(S.parent)
-					if(S.parent.group_processing)
+				if (S.parent)
+					if (S.parent.group_processing)
 						if (S.parent.check_delay < 2)
 							S.parent.marker=1
 						else if (S.parent.check_delay < 5)
@@ -575,7 +575,7 @@ mob
 							S.parent.marker=4
 						else
 							S.parent.marker=5
-						if(S.parent.borders && S.parent.borders.Find(S))
+						if (S.parent.borders && S.parent.borders.Find(S))
 							S.icon_state = "on[S.parent.marker]_border"
 						else
 							S.icon_state = "on[S.parent.marker]"
@@ -592,7 +592,7 @@ mob
 						else
 							S.icon_state = "suspended"
 				else
-					if(S.processing)
+					if (S.processing)
 						S.icon_state = "individual_on"
 					else
 						S.icon_state = "individual_off"
@@ -600,7 +600,7 @@ mob
 
 		mark_groups()
 			set category = "Debug"
-			if(!air_master)
+			if (!air_master)
 				usr << "Cannot find air_system"
 				return
 
@@ -609,11 +609,11 @@ mob
 
 			for(var/turf/simulated/floor/S in world)
 				S.icon = 'icons/Testing/turf_analysis.dmi'
-				if(S.parent)
-					if(S.parent.group_processing)
-						if(S.parent.marker == 0)
+				if (S.parent)
+					if (S.parent.group_processing)
+						if (S.parent.marker == 0)
 							S.parent.marker = rand(1,5)
-						if(S.parent.borders && S.parent.borders.Find(S))
+						if (S.parent.borders && S.parent.borders.Find(S))
 							S.icon_state = "on[S.parent.marker]_border"
 						else
 							S.icon_state = "on[S.parent.marker]"
@@ -621,7 +621,7 @@ mob
 					else
 						S.icon_state = "suspended"
 				else
-					if(S.processing)
+					if (S.processing)
 						S.icon_state = "individual_on"
 					else
 						S.icon_state = "individual_off"
@@ -633,7 +633,7 @@ mob
 
 /*		jump_to_dead_group() Currently in the normal admin commands but fits here
 			set category = "Debug"
-			if(!air_master)
+			if (!air_master)
 				usr << "Cannot find air_system"
 				return
 

@@ -7,5 +7,5 @@
 	command += "<br><span class='alert'>[html_encode(text)]</span><br>"
 	command += "<br>"
 	for(var/mob/M in player_list)
-		if(!istype(M,/mob/new_player))
+		if (!istype(M,/mob/new_player))
 			M << command

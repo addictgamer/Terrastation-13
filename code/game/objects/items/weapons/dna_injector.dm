@@ -22,7 +22,7 @@
 
 
 /obj/item/weapon/dnainjector/proc/inject(mob/M as mob, mob/user as mob)
-	if(istype(M,/mob/living))
+	if (istype(M,/mob/living))
 		M.radiation += rand(5,20)
 
 	if (!(NOCLONE in M.mutations)) // prevents drained people from having their DNA changed
@@ -51,7 +51,7 @@
 				M.dna.struc_enzymes = setblock(M.dna.struc_enzymes,block,dna,3)
 				domutcheck(M, null,1)
 				uses--
-			if(prob(5))
+			if (prob(5))
 				trigger_side_effect(M)
 
 	spawn(0)//this prevents the collapse of space-time continuum
@@ -73,7 +73,7 @@
 
 	if (user)
 		if (istype(M, /mob/living/carbon/human))
-			if(!inuse)
+			if (!inuse)
 				var/obj/effect/equip_e/human/O = new /obj/effect/equip_e/human(  )
 				O.source = user
 				O.target = M
@@ -100,7 +100,7 @@
 					O.process()
 					return
 		else
-			if(!inuse)
+			if (!inuse)
 
 				for(var/mob/O in viewers(M, null))
 					O.show_message(text("\red [] has been injected with [] by [].", M, src, user), 1)
@@ -127,8 +127,8 @@
 				I don't have the time to figure out how this code works so this will do for now.
 				I did rearrange things a bit.
 				*/
-				if(user)//If the user still exists. Their mob may not.
-					if(M)//Runtime fix: If the mob doesn't exist, mob.name doesnt work. - Nodrak
+				if (user)//If the user still exists. Their mob may not.
+					if (M)//Runtime fix: If the mob doesn't exist, mob.name doesnt work. - Nodrak
 						user.show_message(text("\red You inject [M.name]"))
 					else
 						user.show_message(text("\red You finish the injection."))

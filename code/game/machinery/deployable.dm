@@ -69,7 +69,7 @@ for reference:
 		if (istype(W, /obj/item/stack/sheet/wood))
 			if (src.health < src.maxhealth)
 				visible_message("\red [user] begins to repair the [src]!")
-				if(do_after(user,20))
+				if (do_after(user,20))
 					src.health = src.maxhealth
 					W:use(1)
 					visible_message("\red [user] repairs the [src]!")
@@ -79,9 +79,9 @@ for reference:
 			return
 		else
 			switch(W.damtype)
-				if("fire")
+				if ("fire")
 					src.health -= W.force * 1
-				if("brute")
+				if ("brute")
 					src.health -= W.force * 0.75
 				else
 			if (src.health <= 0)
@@ -94,11 +94,11 @@ for reference:
 
 	ex_act(severity)
 		switch(severity)
-			if(1.0)
+			if (1.0)
 				visible_message("\red <B>The barricade is blown apart!</B>")
 				del(src)
 				return
-			if(2.0)
+			if (2.0)
 				src.health -= 25
 				if (src.health <= 0)
 					visible_message("\red <B>The barricade is blown apart!</B>")
@@ -124,9 +124,9 @@ for reference:
 		return
 
 	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)//So bullets will fly over and stuff.
-		if(air_group || (height==0))
+		if (air_group || (height==0))
 			return 1
-		if(istype(mover) && mover.checkpass(PASSTABLE))
+		if (istype(mover) && mover.checkpass(PASSTABLE))
 			return 1
 		else
 			return 0
@@ -210,9 +210,9 @@ for reference:
 			return
 		else
 			switch(W.damtype)
-				if("fire")
+				if ("fire")
 					src.health -= W.force * 0.75
-				if("brute")
+				if ("brute")
 					src.health -= W.force * 0.5
 				else
 			if (src.health <= 0)
@@ -221,18 +221,18 @@ for reference:
 
 	ex_act(severity)
 		switch(severity)
-			if(1.0)
+			if (1.0)
 				src.explode()
 				return
-			if(2.0)
+			if (2.0)
 				src.health -= 25
 				if (src.health <= 0)
 					src.explode()
 				return
 	emp_act(severity)
-		if(stat & (BROKEN|NOPOWER))
+		if (stat & (BROKEN|NOPOWER))
 			return
-		if(prob(50/severity))
+		if (prob(50/severity))
 			locked = !locked
 			anchored = !anchored
 			icon_state = "barrier[src.locked]"
@@ -248,9 +248,9 @@ for reference:
 		return
 
 	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)//So bullets will fly over and stuff.
-		if(air_group || (height==0))
+		if (air_group || (height==0))
 			return 1
-		if(istype(mover) && mover.checkpass(PASSTABLE))
+		if (istype(mover) && mover.checkpass(PASSTABLE))
 			return 1
 		else
 			return 0
@@ -268,5 +268,5 @@ for reference:
 		s.start()
 
 		explosion(src.loc,-1,-1,0)
-		if(src)
+		if (src)
 			del(src)

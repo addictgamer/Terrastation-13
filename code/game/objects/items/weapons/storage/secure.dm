@@ -33,7 +33,7 @@
 		usr << text("The service panel is [src.open ? "open" : "closed"].")
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(locked)
+		if (locked)
 			if ( (istype(W, /obj/item/weapon/card/emag)||istype(W, /obj/item/weapon/melee/energy/blade)) && (!src.emagged))
 				emagged = 1
 				src.overlays += image('icons/obj/storage.dmi', icon_sparking)
@@ -41,7 +41,7 @@
 				src.overlays = null
 				overlays += image('icons/obj/storage.dmi', icon_locking)
 				locked = 0
-				if(istype(W, /obj/item/weapon/melee/energy/blade))
+				if (istype(W, /obj/item/weapon/melee/energy/blade))
 					var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 					spark_system.set_up(5, 0, src.loc)
 					spark_system.start()
@@ -189,7 +189,7 @@
 
 		var/t = user:zone_sel.selecting
 		if (t == "head")
-			if(ishuman(M))
+			if (ishuman(M))
 				var/mob/living/carbon/human/H = M
 				if (H.stat < 2 && H.health < 50 && prob(90))
 				// ******* Check
@@ -201,7 +201,7 @@
 						H.Paralyse(time)
 					else
 						H.Stun(time)
-					if(H.stat != 2)	H.stat = 1
+					if (H.stat != 2)	H.stat = 1
 					for(var/mob/O in viewers(H, null))
 						O.show_message(text("\red <B>[] has been knocked unconscious!</B>", H), 1, "\red You hear someone fall.", 2)
 				else

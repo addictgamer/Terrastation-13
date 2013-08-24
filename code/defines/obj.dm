@@ -9,11 +9,11 @@
 
 	attack_hand(mob/user as mob)
 		switch(alert("Travel back to ss13?",,"Yes","No"))
-			if("Yes")
-				if(user.z != src.z)	return
+			if ("Yes")
+				if (user.z != src.z)	return
 				user.loc.loc.Exited(user)
 				user.loc = pick(latejoin)
-			if("No")
+			if ("No")
 				return
 
 /obj/effect/mark
@@ -80,10 +80,10 @@
 			var/name = t.fields["name"]
 			var/rank = t.fields["rank"]
 			var/real_rank = t.fields["real_rank"]
-			if(OOC)
+			if (OOC)
 				var/active = 0
 				for(var/mob/M in player_list)
-					if(M.real_name == name && M.client && M.client.inactivity <= 10 * 60 * 10)
+					if (M.real_name == name && M.client && M.client.inactivity <= 10 * 60 * 10)
 						active = 1
 						break
 				isactive[name] = active ? "Active" : "Inactive"
@@ -94,69 +94,69 @@
 
 			//cael - to prevent multiple appearances of a player/job combination, add a continue after each line
 			var/department = 0
-			if(real_rank in command_positions)
+			if (real_rank in command_positions)
 				heads[name] = rank
 				department = 1
-			if(real_rank in security_positions)
+			if (real_rank in security_positions)
 				sec[name] = rank
 				department = 1
-			if(real_rank in engineering_positions)
+			if (real_rank in engineering_positions)
 				eng[name] = rank
 				department = 1
-			if(real_rank in medical_positions)
+			if (real_rank in medical_positions)
 				med[name] = rank
 				department = 1
-			if(real_rank in science_positions)
+			if (real_rank in science_positions)
 				sci[name] = rank
 				department = 1
-			if(real_rank in civilian_positions)
+			if (real_rank in civilian_positions)
 				civ[name] = rank
 				department = 1
-			if(real_rank in nonhuman_positions)
+			if (real_rank in nonhuman_positions)
 				bot[name] = rank
 				department = 1
 
-			if(!department && !(name in heads))
+			if (!department && !(name in heads))
 				misc[name] = rank
 
-		if(heads.len > 0)
+		if (heads.len > 0)
 			dat += "<tr><th colspan=3>Heads</th></tr>"
 			for(name in heads)
 				dat += "<tr[even ? " class='alt'" : ""]><td>[name]</td><td>[heads[name]]</td><td>[isactive[name]]</td></tr>"
 				even = !even
-		if(sec.len > 0)
+		if (sec.len > 0)
 			dat += "<tr><th colspan=3>Security</th></tr>"
 			for(name in sec)
 				dat += "<tr[even ? " class='alt'" : ""]><td>[name]</td><td>[sec[name]]</td><td>[isactive[name]]</td></tr>"
 				even = !even
-		if(eng.len > 0)
+		if (eng.len > 0)
 			dat += "<tr><th colspan=3>Engineering</th></tr>"
 			for(name in eng)
 				dat += "<tr[even ? " class='alt'" : ""]><td>[name]</td><td>[eng[name]]</td><td>[isactive[name]]</td></tr>"
 				even = !even
-		if(med.len > 0)
+		if (med.len > 0)
 			dat += "<tr><th colspan=3>Medical</th></tr>"
 			for(name in med)
 				dat += "<tr[even ? " class='alt'" : ""]><td>[name]</td><td>[med[name]]</td><td>[isactive[name]]</td></tr>"
 				even = !even
-		if(sci.len > 0)
+		if (sci.len > 0)
 			dat += "<tr><th colspan=3>Science</th></tr>"
 			for(name in sci)
 				dat += "<tr[even ? " class='alt'" : ""]><td>[name]</td><td>[sci[name]]</td><td>[isactive[name]]</td></tr>"
 				even = !even
-		if(civ.len > 0)
+		if (civ.len > 0)
 			dat += "<tr><th colspan=3>Civilian</th></tr>"
 			for(name in civ)
 				dat += "<tr[even ? " class='alt'" : ""]><td>[name]</td><td>[civ[name]]</td><td>[isactive[name]]</td></tr>"
 				even = !even
 		// in case somebody is insane and added them to the manifest, why not
-		if(bot.len > 0)
+		if (bot.len > 0)
 			dat += "<tr><th colspan=3>Silicon</th></tr>"
 			for(name in bot)
 				dat += "<tr[even ? " class='alt'" : ""]><td>[name]</td><td>[bot[name]]</td><td>[isactive[name]]</td></tr>"
 				even = !even
 		// misc guys
-		if(misc.len > 0)
+		if (misc.len > 0)
 			dat += "<tr><th colspan=3>Miscellaneous</th></tr>"
 			for(name in misc)
 				dat += "<tr[even ? " class='alt'" : ""]><td>[name]</td><td>[misc[name]]</td><td>[isactive[name]]</td></tr>"

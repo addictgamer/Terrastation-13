@@ -6,14 +6,14 @@
 	icon_state = "portalathe"
 
 	afterattack(var/atom/target, mob/user as mob)
-		if(!target || !user)
+		if (!target || !user)
 			return
-		if(!istype(target))
+		if (!istype(target))
 			return
-		if(!istype(target, /obj/machinery/light))
+		if (!istype(target, /obj/machinery/light))
 			return
 		var/obj/machinery/light/L = target
-		if(L.status > 1) //Burned or broke
+		if (L.status > 1) //Burned or broke
 			L.status = 0
 			L.on = 1
 			L.update()

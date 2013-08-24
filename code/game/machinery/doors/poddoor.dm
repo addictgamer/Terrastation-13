@@ -7,7 +7,7 @@
 	explosion_resistance = 25
 
 /obj/machinery/door/poddoor/Bumped(atom/AM)
-	if(!density)
+	if (!density)
 		return ..()
 	else
 		return 0
@@ -33,7 +33,7 @@
 		return
 	if (!ticker)
 		return 0
-	if(!src.operating) //in case of emag
+	if (!src.operating) //in case of emag
 		src.operating = 1
 	flick("pdoorc0", src)
 	src.icon_state = "pdoor0"
@@ -42,9 +42,9 @@
 	src.density = 0
 	update_nearby_tiles()
 
-	if(operating == 1) //emag again
+	if (operating == 1) //emag again
 		src.operating = 0
-	if(autoclose)
+	if (autoclose)
 		spawn(150)
 			autoclose()
 	return 1
@@ -69,7 +69,7 @@
 		return
 	if (!ticker)
 		return 0
-	if(!src.operating) //in case of emag
+	if (!src.operating) //in case of emag
 		src.operating = 1
 	flick("pdoorc0", src)
 	src.icon_state = "pdoor0"
@@ -84,9 +84,9 @@
 
 	update_nearby_tiles()
 
-	if(operating == 1) //emag again
+	if (operating == 1) //emag again
 		src.operating = 0
-	if(autoclose)
+	if (autoclose)
 		spawn(150)
 			autoclose()
 	return 1
@@ -117,7 +117,7 @@
 		return
 	if (!ticker)
 		return 0
-	if(!src.operating) //in case of emag
+	if (!src.operating) //in case of emag
 		src.operating = 1
 	flick("pdoorc0", src)
 	src.icon_state = "pdoor0"
@@ -136,9 +136,9 @@
 
 	update_nearby_tiles()
 
-	if(operating == 1) //emag again
+	if (operating == 1) //emag again
 		src.operating = 0
-	if(autoclose)
+	if (autoclose)
 		spawn(150)
 			autoclose()
 	return 1
@@ -173,7 +173,7 @@
 		return
 	if (!ticker)
 		return 0
-	if(!src.operating) //in case of emag
+	if (!src.operating) //in case of emag
 		src.operating = 1
 	flick("pdoorc0", src)
 	src.icon_state = "pdoor0"
@@ -188,9 +188,9 @@
 
 	update_nearby_tiles()
 
-	if(operating == 1) //emag again
+	if (operating == 1) //emag again
 		src.operating = 0
-	if(autoclose)
+	if (autoclose)
 		spawn(150)
 			autoclose()
 	return 1
@@ -221,7 +221,7 @@
 		return
 	if (!ticker)
 		return 0
-	if(!src.operating) //in case of emag
+	if (!src.operating) //in case of emag
 		src.operating = 1
 	flick("pdoorc0", src)
 	src.icon_state = "pdoor0"
@@ -240,9 +240,9 @@
 
 	update_nearby_tiles()
 
-	if(operating == 1) //emag again
+	if (operating == 1) //emag again
 		src.operating = 0
-	if(autoclose)
+	if (autoclose)
 		spawn(150)
 			autoclose()
 	return 1

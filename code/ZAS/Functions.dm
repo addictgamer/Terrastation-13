@@ -4,7 +4,7 @@
 //Floods outward from an initial turf to fill everywhere it's zone would reach.
 proc/FloodFill(turf/simulated/start)
 
-	if(!istype(start))
+	if (!istype(start))
 		return list()
 
 	//The list of tiles waiting to be evaulated.
@@ -17,7 +17,7 @@ proc/FloodFill(turf/simulated/start)
 		var/turf/simulated/T = pick(open)
 
 		//sanity!
-		if(!istype(T))
+		if (!istype(T))
 			open -= T
 			continue
 
@@ -26,16 +26,16 @@ proc/FloodFill(turf/simulated/start)
 			var/turf/simulated/O = get_step(T,d)
 
 			//Ensure the turf is of proper type, that it is not in either list, and that air can reach it.
-			if(istype(O) && !(O in open) && !(O in closed) && O.ZCanPass(T))
+			if (istype(O) && !(O in open) && !(O in closed) && O.ZCanPass(T))
 
 				//Handle connections from a tile with a door.
-				if(T.HasDoor())
+				if (T.HasDoor())
 					//If they both have doors, then they are not able to connect period.
-					if(O.HasDoor())
+					if (O.HasDoor())
 						continue
 
 					//Connect first to north and west
-					if(d == NORTH || d == WEST)
+					if (d == NORTH || d == WEST)
 						open += O
 
 					//If that fails, and north/west cannot be connected to, see if west or south can be connected instead.
@@ -43,17 +43,17 @@ proc/FloodFill(turf/simulated/start)
 						var/turf/simulated/W = get_step(O, WEST)
 						var/turf/simulated/N = get_step(O, NORTH)
 
-						if( !O.ZCanPass(N) && !O.ZCanPass(W) )
+						if ( !O.ZCanPass(N) && !O.ZCanPass(W) )
 							//If it cannot connect either to the north or west, connect it!
 							open += O
 
 				//If no doors are involved, add it immediately.
-				else if(!O.HasDoor())
+				else if (!O.HasDoor())
 					open += O
 
 				//Handle connecting to a tile with a door.
 				else
-					if(d == SOUTH || d == EAST)
+					if (d == SOUTH || d == EAST)
 						//doors prefer connecting to zones to the north  or west
 						closed += O
 
@@ -63,7 +63,7 @@ proc/FloodFill(turf/simulated/start)
 						var/turf/simulated/W = get_step(O, WEST)
 						var/turf/simulated/N = get_step(O, NORTH)
 
-						if( !O.ZCanPass(N) && !O.ZCanPass(W) )
+						if ( !O.ZCanPass(N) && !O.ZCanPass(W) )
 							//If it cannot connect either to the north or west, connect it!
 							closed += O
 
@@ -78,7 +78,7 @@ proc/FloodFill(turf/simulated/start)
 proc/ZMerge(zone/A,zone/B)
 
 	//Sanity~
-	if(!istype(A) || !istype(B))
+	if (!istype(A) || !istype(B))
 		return
 
 	var/new_contents = A.contents + B.contents
@@ -87,7 +87,7 @@ proc/ZMerge(zone/A,zone/B)
 	for(var/turf/simulated/T in B.contents)
 		T.zone = A
 
-	if(istype(A.air) && istype(B.air))
+	if (istype(A.air) && istype(B.air))
 		//Merges two zones so that they are one.
 		var/a_size = A.air.group_multiplier
 		var/b_size = B.air.group_multiplier
@@ -107,11 +107,11 @@ proc/ZMerge(zone/A,zone/B)
 
 	//I hate when the air datum somehow disappears.
 	//  Try to make it sorta work anyways.  Fakit
-	else if(istype(B.air))
+	else if (istype(B.air))
 		A.air = B.air
 		A.air.group_multiplier = A.contents.len
 
-	else if(istype(A.air))
+	else if (istype(A.air))
 		A.air.group_multiplier = A.contents.len
 
 	//Doublefakit.
@@ -125,7 +125,7 @@ proc/ZMerge(zone/A,zone/B)
 		C.Cleanup()
 
 	//Add space tiles.
-	if(A.unsimulated_tiles && B.unsimulated_tiles)
+	if (A.unsimulated_tiles && B.unsimulated_tiles)
 		A.unsimulated_tiles |= B.unsimulated_tiles
 	else if (B.unsimulated_tiles)
 		A.unsimulated_tiles = B.unsimulated_tiles
@@ -141,30 +141,30 @@ proc/ZMerge(zone/A,zone/B)
 proc/ZConnect(turf/simulated/A,turf/simulated/B)
 
 	//Make sure that if it's space, it gets added to unsimulated_tiles instead.
-	if(!istype(B))
-		if(A.zone)
+	if (!istype(B))
+		if (A.zone)
 			A.zone.AddTurf(B)
 		return
-	if(!istype(A))
-		if(B.zone)
+	if (!istype(A))
+		if (B.zone)
 			B.zone.AddTurf(A)
 		return
 
-	if(!istype(A) || !istype(B))
+	if (!istype(A) || !istype(B))
 		return
 
 	//Make some preliminary checks to see if the connection is valid.
-	if(!A.zone || !B.zone) return
-	if(A.zone == B.zone) return
+	if (!A.zone || !B.zone) return
+	if (A.zone == B.zone) return
 
-	if(A.CanPass(null,B,0,1))
+	if (A.CanPass(null,B,0,1))
 		return ZMerge(A.zone,B.zone)
 
 	//Ensure the connection isn't already made.
-	if("\ref[A]" in air_master.turfs_with_connections)
+	if ("\ref[A]" in air_master.turfs_with_connections)
 		for(var/connection/C in air_master.turfs_with_connections["\ref[A]"])
 			C.Cleanup()
-			if(C && (C.B == B || C.A == B))
+			if (C && (C.B == B || C.A == B))
 				return
 
 	//Make the connection.

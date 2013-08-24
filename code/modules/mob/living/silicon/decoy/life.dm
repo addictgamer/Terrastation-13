@@ -8,7 +8,7 @@
 
 
 /mob/living/silicon/decoy/updatehealth()
-	if(status_flags & GODMODE)
+	if (status_flags & GODMODE)
 		health = 100
 		stat = CONSCIOUS
 	else

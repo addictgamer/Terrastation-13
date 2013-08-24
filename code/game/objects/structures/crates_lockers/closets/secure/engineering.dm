@@ -12,7 +12,7 @@
 	New()
 		..()
 		sleep(2)
-		if(prob(50))
+		if (prob(50))
 			new /obj/item/weapon/storage/backpack/industrial(src)
 		else
 			new /obj/item/weapon/storage/backpack/satchel_eng(src)
@@ -105,7 +105,7 @@
 	New()
 		..()
 		sleep(2)
-		if(prob(50))
+		if (prob(50))
 			new /obj/item/weapon/storage/backpack/industrial(src)
 		else
 			new /obj/item/weapon/storage/backpack/satchel_eng(src)

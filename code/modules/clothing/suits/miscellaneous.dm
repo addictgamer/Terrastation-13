@@ -201,14 +201,14 @@
 	set category = "Object"
 	set src in usr
 
-	if(!usr.canmove || usr.stat || usr.restrained())
+	if (!usr.canmove || usr.stat || usr.restrained())
 		return 0
 
-	if(src.icon_state == "suitjacket_blue_open")
+	if (src.icon_state == "suitjacket_blue_open")
 		src.icon_state = "suitjacket_blue"
 		src.item_state = "suitjacket_blue"
 		usr << "You button up the suit jacket."
-	else if(src.icon_state == "suitjacket_blue")
+	else if (src.icon_state == "suitjacket_blue")
 		src.icon_state = "suitjacket_blue_open"
 		src.item_state = "suitjacket_blue_open"
 		usr << "You unbutton the suit jacket."

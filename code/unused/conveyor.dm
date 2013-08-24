@@ -32,7 +32,7 @@
 	// set the dir and target turf depending on the operating direction
 
 /obj/machinery/conveyor/proc/setdir()
-	if(operating == -1)
+	if (operating == -1)
 		dir = turn(basedir,180)
 	else
 		dir = basedir
@@ -42,11 +42,11 @@
 	// update the icon depending on the operating condition
 
 /obj/machinery/conveyor/proc/update()
-	if(stat & BROKEN)
+	if (stat & BROKEN)
 		icon_state = "conveyor-b"
 		operating = 0
 		return
-	if(!operable)
+	if (!operable)
 		operating = 0
 	icon_state = "conveyor[(operating != 0) && !(stat & NOPOWER)]"
 
@@ -54,14 +54,14 @@
 	// machine process
 	// move items to the target location
 /obj/machinery/conveyor/process()
-	if(stat & (BROKEN | NOPOWER))
+	if (stat & (BROKEN | NOPOWER))
 		return
-	if(!operating)
+	if (!operating)
 		return
 	use_power(100)
 
 	var/movedir = dir	// base movement dir
-	if(divert && dir==divdir)	// update if diverter present
+	if (divert && dir==divdir)	// update if diverter present
 		movedir = divert
 
 
@@ -69,15 +69,15 @@
 	spawn(1)	// slight delay to prevent infinite propagation due to map order
 		var/items_moved = 0
 		for(var/atom/movable/A in affecting)
-			if(!A.anchored)
-				if(isturf(A.loc)) // this is to prevent an ugly bug that forces a player to drop what they're holding if they recently pick it up from the conveyer belt
-					if(ismob(A))
+			if (!A.anchored)
+				if (isturf(A.loc)) // this is to prevent an ugly bug that forces a player to drop what they're holding if they recently pick it up from the conveyer belt
+					if (ismob(A))
 						var/mob/M = A
-						if(M.buckled == src)
+						if (M.buckled == src)
 							var/obj/machinery/conveyor/C = locate() in get_step(src, dir)
 							M.buckled = null
 							step(M,dir)
-							if(C)
+							if (C)
 								M.buckled = C
 							else
 								new/obj/item/weapon/cable_coil/cut(M.loc)
@@ -86,25 +86,25 @@
 					else
 						step(A,movedir)
 						items_moved++
-			if(items_moved >= 10)
+			if (items_moved >= 10)
 				break
 
 // attack with item, place item on conveyor
 
 /obj/machinery/conveyor/attackby(var/obj/item/I, mob/user)
-	if(istype(I, /obj/item/weapon/grab))	// special handling if grabbing a mob
+	if (istype(I, /obj/item/weapon/grab))	// special handling if grabbing a mob
 		var/obj/item/weapon/grab/G = I
 		G.affecting.Move(src.loc)
 		del(G)
 		return
-	else if(istype(I, /obj/item/weapon/cable_coil))	// if cable, see if a mob is present
+	else if (istype(I, /obj/item/weapon/cable_coil))	// if cable, see if a mob is present
 		var/mob/M = locate() in src.loc
-		if(M)
+		if (M)
 			if (M == user)
 				src.visible_message("\blue [M] ties \himself to the conveyor.")
 				// note don't check for lying if self-tying
 			else
-				if(M.lying)
+				if (M.lying)
 					user.visible_message("\blue [M] has been tied to the conveyor by [user].", "\blue You tie [M] to the converyor!")
 				else
 					user << "\blue [M] must be lying down to be tied to the converyor!"
@@ -117,9 +117,9 @@
 
 			// else if no mob in loc, then allow coil to be placed
 
-	else if(istype(I, /obj/item/weapon/wirecutters))
+	else if (istype(I, /obj/item/weapon/wirecutters))
 		var/mob/M = locate() in src.loc
-		if(M && M.buckled == src)
+		if (M && M.buckled == src)
 			M.buckled = null
 			src.add_fingerprint(user)
 			if (M == user)
@@ -128,12 +128,12 @@
 				src.visible_message("\blue [M] had been cut free from the conveyor by [user].")
 			return
 
-	if(isrobot(user))
+	if (isrobot(user))
 		return
 
 	// otherwise drop and place on conveyor
 	user.drop_item()
-	if(I && I.loc)	I.loc = src.loc
+	if (I && I.loc)	I.loc = src.loc
 	return
 
 // attack with hand, move pulled object onto conveyor
@@ -163,11 +163,11 @@
 	update()
 
 	var/obj/machinery/conveyor/C = locate() in get_step(src, basedir)
-	if(C)
+	if (C)
 		C.set_operable(basedir, id, 0)
 
 	C = locate() in get_step(src, turn(basedir,180))
-	if(C)
+	if (C)
 		C.set_operable(turn(basedir,180), id, 0)
 
 
@@ -175,13 +175,13 @@
 
 /obj/machinery/conveyor/proc/set_operable(stepdir, match_id, op)
 
-	if(id != match_id)
+	if (id != match_id)
 		return
 	operable = op
 
 	update()
 	var/obj/machinery/conveyor/C = locate() in get_step(src, stepdir)
-	if(C)
+	if (C)
 		C.set_operable(stepdir, id, op)
 
 /*
@@ -222,35 +222,35 @@
 	..()
 
 	switch(dir)
-		if(NORTH)
+		if (NORTH)
 			divert_to = WEST			// stuff will be moved to the west
 			divert_from = NORTH			// if entering from the north
-		if(SOUTH)
+		if (SOUTH)
 			divert_to = EAST
 			divert_from = NORTH
-		if(EAST)
+		if (EAST)
 			divert_to = EAST
 			divert_from = SOUTH
-		if(WEST)
+		if (WEST)
 			divert_to = WEST
 			divert_from = SOUTH
-		if(NORTHEAST)
+		if (NORTHEAST)
 			divert_to = NORTH
 			divert_from = EAST
-		if(NORTHWEST)
+		if (NORTHWEST)
 			divert_to = NORTH
 			divert_from = WEST
-		if(SOUTHEAST)
+		if (SOUTHEAST)
 			divert_to = SOUTH
 			divert_from = EAST
-		if(SOUTHWEST)
+		if (SOUTHWEST)
 			divert_to = SOUTH
 			divert_from = WEST
 	spawn(2)
 		// wait for map load then find the conveyor in this turf
 		conv = locate() in src.loc
-		if(conv)	// divert_from dir must match possible conveyor movement
-			if(conv.basedir != divert_from && conv.basedir != turn(divert_from,180) )
+		if (conv)	// divert_from dir must match possible conveyor movement
+			if (conv.basedir != divert_from && conv.basedir != turn(divert_from,180) )
 				del(src)	// if no dir match, then delete self
 		set_divert()
 		update()
@@ -261,8 +261,8 @@
 
 // call to set the diversion vars of underlying conveyor
 /obj/machinery/diverter/proc/set_divert()
-	if(conv)
-		if(deployed)
+	if (conv)
+		if (deployed)
 			conv.divert = divert_to
 			conv.divdir = divert_from
 		else
@@ -277,15 +277,15 @@
 // toggle between arm deployed and not deployed, showing animation
 //
 /obj/machinery/diverter/proc/toggle()
-	if( stat & (NOPOWER|BROKEN))
+	if ( stat & (NOPOWER|BROKEN))
 		return
 
-	if(operating)
+	if (operating)
 		return
 
 	use_power(50)
 	operating = 1
-	if(deployed)
+	if (deployed)
 		flick("diverter10",src)
 		icon_state = "diverter0"
 		sleep(10)
@@ -302,18 +302,18 @@
 // don't allow movement into the 'backwards' direction if deployed
 /obj/machinery/diverter/CanPass(atom/movable/O, var/turf/target)
 	var/direct = get_dir(O, target)
-	if(direct == divert_to)	// prevent movement through body of diverter
+	if (direct == divert_to)	// prevent movement through body of diverter
 		return 0
-	if(!deployed)
+	if (!deployed)
 		return 1
 	return(direct != turn(divert_from,180))
 
 // don't allow movement through the arm if deployed
 /obj/machinery/diverter/CheckExit(atom/movable/O, var/turf/target)
 	var/direct = get_dir(O, target)
-	if(direct == turn(divert_to,180))	// prevent movement through body of diverter
+	if (direct == turn(divert_to,180))	// prevent movement through body of diverter
 		return 0
-	if(!deployed)
+	if (!deployed)
 		return 1
 	return(direct != divert_from)
 
@@ -349,15 +349,15 @@
 	spawn(5)		// allow map load
 		conveyors = list()
 		for(var/obj/machinery/conveyor/C in world)
-			if(C.id == id)
+			if (C.id == id)
 				conveyors += C
 
 // update the icon depending on the position
 
 /obj/machinery/conveyor_switch/proc/update()
-	if(position<0)
+	if (position<0)
 		icon_state = "switch-rev"
-	else if(position>0)
+	else if (position>0)
 		icon_state = "switch-fwd"
 	else
 		icon_state = "switch-off"
@@ -367,7 +367,7 @@
 // if the switch changed, update the linked conveyors
 
 /obj/machinery/conveyor_switch/process()
-	if(!operated)
+	if (!operated)
 		return
 	operated = 0
 
@@ -377,8 +377,8 @@
 
 // attack with hand, switch position
 /obj/machinery/conveyor_switch/attack_hand(mob/user)
-	if(position == 0)
-		if(last_pos < 0)
+	if (position == 0)
+		if (last_pos < 0)
 			position = 1
 			last_pos = 0
 		else
@@ -393,6 +393,6 @@
 
 	// find any switches with same id as this one, and set their positions to match us
 	for(var/obj/machinery/conveyor_switch/S in world)
-		if(S.id == src.id)
+		if (S.id == src.id)
 			S.position = position
 			S.update()

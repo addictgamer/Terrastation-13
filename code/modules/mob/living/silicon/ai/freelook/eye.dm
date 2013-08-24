@@ -38,16 +38,16 @@
 
 /mob/aiEye/proc/setLoc(var/T)
 
-	if(ai)
-		if(!isturf(ai.loc))
+	if (ai)
+		if (!isturf(ai.loc))
 			return
 		T = get_turf(T)
 		loc = T
 		cameranet.visibility(src)
-		if(ai.client)
+		if (ai.client)
 			ai.client.eye = src
 		//Holopad
-		if(istype(ai.current, /obj/machinery/hologram/holopad))
+		if (istype(ai.current, /obj/machinery/hologram/holopad))
 			var/obj/machinery/hologram/holopad/H = ai.current
 			H.move_hologram()
 
@@ -77,19 +77,19 @@
 	..()
 
 /atom/proc/move_camera_by_click()
-	if(istype(usr, /mob/living/silicon/ai))
+	if (istype(usr, /mob/living/silicon/ai))
 		var/mob/living/silicon/ai/AI = usr
-		if(AI.eyeobj && AI.client.eye == AI.eyeobj)
+		if (AI.eyeobj && AI.client.eye == AI.eyeobj)
 			AI.cameraFollow = null
 			AI.eyeobj.setLoc(src)
 
 /mob/living/Click()
-	if(isAI(usr))
+	if (isAI(usr))
 		return
 	..()
 
 /mob/living/DblClick()
-	if(isAI(usr) && usr != src)
+	if (isAI(usr) && usr != src)
 		var/mob/living/silicon/ai/A = usr
 		A.ai_actual_track(src)
 		return
@@ -103,16 +103,16 @@
 	var/initial = initial(user.sprint)
 	var/max_sprint = 50
 
-	if(user.cooldown && user.cooldown < world.timeofday) // 3 seconds
+	if (user.cooldown && user.cooldown < world.timeofday) // 3 seconds
 		user.sprint = initial
 
 	for(var/i = 0; i < max(user.sprint, initial); i += 20)
 		var/turf/step = get_turf(get_step(user.eyeobj, direct))
-		if(step)
+		if (step)
 			user.eyeobj.setLoc(step)
 
 	user.cooldown = world.timeofday + 5
-	if(user.acceleration)
+	if (user.acceleration)
 		user.sprint = min(user.sprint + 0.5, max_sprint)
 	else
 		user.sprint = initial
@@ -138,7 +138,7 @@
 	cameraFollow = null
 	unset_machine()
 
-	if(src.eyeobj && src.loc)
+	if (src.eyeobj && src.loc)
 		src.eyeobj.loc = src.loc
 	else
 		src << "ERROR: Eyeobj not found. Creating new eye..."
@@ -146,7 +146,7 @@
 		src.eyeobj.ai = src
 		src.eyeobj.name = "[src.name] (AI Eye)" // Give it a name
 
-	if(client && client.eye)
+	if (client && client.eye)
 		client.eye = src
 	for(var/datum/camerachunk/c in eyeobj.visibleCameraChunks)
 		c.remove(eyeobj)

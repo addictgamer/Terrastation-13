@@ -76,54 +76,54 @@ var/list/artifact_spawning_turfs = list()
 
 //this should only need to be called once
 /datum/geosample/proc/UpdateTurf(var/turf/simulated/mineral/container)
-	if(!container || !istype(container))
+	if (!container || !istype(container))
 		return
 
 	age = rand(1,999)
 	total_spread = 0
 
 	switch(container.mineralName)
-		if("Uranium")
+		if ("Uranium")
 			age_million = rand(1, 704)
 			age_thousand = rand(1,999)
 			find_presence["potassium"] = rand(1,1000) / 100
 			source_mineral = "potassium"
-		if("Iron")
+		if ("Iron")
 			age_thousand = rand(1, 999)
 			age_million = rand(1, 999)
 			find_presence["iron"] = rand(1,1000) / 100
 			source_mineral = "iron"
-		if("Diamond")
+		if ("Diamond")
 			age_thousand = rand(1,999)
 			age_million = rand(1,999)
 			find_presence["nitrogen"] = rand(1,1000) / 100
 			source_mineral = "nitrogen"
-		if("Gold")
+		if ("Gold")
 			age_thousand = rand(1,999)
 			age_million = rand(1,999)
 			age_billion = rand(3,4)
 			find_presence["iron"] = rand(1,1000) / 100
 			source_mineral = "iron"
-		if("Silver")
+		if ("Silver")
 			age_thousand = rand(1,999)
 			age_million = rand(1,999)
 			find_presence["iron"] = rand(1,1000) / 100
 			source_mineral = "iron"
-		if("Plasma")
+		if ("Plasma")
 			age_thousand = rand(1,999)
 			age_million = rand(1,999)
 			age_billion = rand(10, 13)
 			find_presence["plasma"] = rand(1,1000) / 100
 			source_mineral = "plasma"
-		if("Clown")
+		if ("Clown")
 			age = rand(-1,-999)				//thats the joke
 			age_thousand = rand(-1,-999)
 			find_presence["plasma"] = rand(1,1000) / 100
 			source_mineral = "plasma"
 
-	if(prob(75))
+	if (prob(75))
 		find_presence["phosphorus"] = rand(1,500) / 100
-	if(prob(25))
+	if (prob(25))
 		find_presence["mercury"] = rand(1,500) / 100
 	find_presence["chlorine"] = rand(500,2500) / 100
 
@@ -137,17 +137,17 @@ var/list/artifact_spawning_turfs = list()
 
 //have this separate from UpdateTurf() so that we dont have a billion turfs being updated (redundantly) every time an artifact spawns
 /datum/geosample/proc/UpdateNearbyArtifactInfo(var/turf/simulated/mineral/container)
-	if(!container || !istype(container))
+	if (!container || !istype(container))
 		return
 
-	if(container.artifact_find)
+	if (container.artifact_find)
 		artifact_distance = rand()
 		artifact_id = container.artifact_find.artifact_id
 	else
 		for(var/turf/simulated/mineral/holder in artifact_spawning_turfs)
-			if(holder.artifact_find)
+			if (holder.artifact_find)
 				var/dist = get_dist(container, holder)
-				if(dist < holder.artifact_find.artifact_detect_range && dist < src.artifact_distance)
+				if (dist < holder.artifact_find.artifact_detect_range && dist < src.artifact_distance)
 					src.artifact_distance = dist
 					src.artifact_id = holder.artifact_find.artifact_id
 			else

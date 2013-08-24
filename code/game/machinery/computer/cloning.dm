@@ -39,9 +39,9 @@
 	active_power_usage = 400
 
 /obj/machinery/computer/scan_consolenew/attackby(obj/item/I as obj, mob/user as mob)
-	if(istype(I, /obj/item/weapon/screwdriver))
+	if (istype(I, /obj/item/weapon/screwdriver))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
-		if(do_after(user, 20))
+		if (do_after(user, 20))
 			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
@@ -158,7 +158,7 @@
 	user.set_machine(src)
 	add_fingerprint(user)
 
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		return
 
 	updatemodules()
@@ -169,7 +169,7 @@
 	dat += "<br><tt>[temp]</tt><br>"
 
 	switch(src.menu)
-		if(1)
+		if (1)
 			// Modules
 			dat += "<h4>Modules</h4>"
 			//dat += "<a href='byond://?src=\ref[src];relmodules=1'>Reload Modules</a>"
@@ -185,7 +185,7 @@
 			// Scanner
 			dat += "<h4>Scanner Functions</h4>"
 
-			if(loading)
+			if (loading)
 				dat += "<b>Scanning...</b><br>"
 			else
 				dat += "<b>[scantemp]</b><br>"
@@ -194,7 +194,7 @@
 				dat += "No scanner connected!<br>"
 			else
 				if (src.scanner.occupant)
-					if(scantemp == "Scanner unoccupied") scantemp = "" // Stupid check to remove the text
+					if (scantemp == "Scanner unoccupied") scantemp = "" // Stupid check to remove the text
 
 					dat += "<a href='byond://?src=\ref[src];scan=1'>Scan - [src.scanner.occupant]</a><br>"
 				else
@@ -212,13 +212,13 @@
 				dat += "<a href='byond://?src=\ref[src];disk=eject'>Eject Disk</a>"
 
 
-		if(2)
+		if (2)
 			dat += "<h4>Current records</h4>"
 			dat += "<a href='byond://?src=\ref[src];menu=1'>Back</a><br><br>"
 			for(var/datum/data/record/R in src.records)
 				dat += "<a href='byond://?src=\ref[src];view_rec=\ref[R]'>[R.fields["id"]]-[R.fields["name"]]</a><br>"
 
-		if(3)
+		if (3)
 			dat += "<h4>Selected Record</h4>"
 			dat += "<a href='byond://?src=\ref[src];menu=2'>Back</a><br>"
 
@@ -248,12 +248,12 @@
 				dat += {"<b>UI:</b> [src.active_record.fields["UI"]]<br>
 				<b>SE:</b> [src.active_record.fields["SE"]]<br><br>"}
 
-				if(pod1 && pod1.biomass >= CLONE_BIOMASS)
+				if (pod1 && pod1.biomass >= CLONE_BIOMASS)
 					dat += {"<a href='byond://?src=\ref[src];clone=\ref[src.active_record]'>Clone</a><br>"}
 				else
 					dat += {"<b>Unsufficient biomass</b><br>"}
 
-		if(4)
+		if (4)
 			if (!src.active_record)
 				src.menu = 2
 			dat = "[src.temp]<br>"
@@ -268,10 +268,10 @@
 	return
 
 /obj/machinery/computer/cloning/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 
-	if(loading)
+	if (loading)
 		return
 
 	if ((href_list["scan"]) && (!isnull(src.scanner)))
@@ -296,7 +296,7 @@
 
 	else if (href_list["view_rec"])
 		src.active_record = locate(href_list["view_rec"])
-		if(istype(src.active_record,/datum/data/record))
+		if (istype(src.active_record,/datum/data/record))
 			if ((isnull(src.active_record.fields["ckey"])) || (src.active_record.fields["ckey"] == ""))
 				del(src.active_record)
 				src.temp = "ERROR: Record Corrupt"
@@ -316,7 +316,7 @@
 		else if (src.menu == 4)
 			var/obj/item/weapon/card/id/C = usr.get_active_hand()
 			if (istype(C)||istype(C, /obj/item/device/pda))
-				if(src.check_access(C))
+				if (src.check_access(C))
 					src.records.Remove(src.active_record)
 					del(src.active_record)
 					src.temp = "Record deleted."
@@ -326,7 +326,7 @@
 
 	else if (href_list["disk"]) //Load or eject.
 		switch(href_list["disk"])
-			if("load")
+			if ("load")
 				if ((isnull(src.diskette)) || (src.diskette.data == ""))
 					src.temp = "Load error."
 					src.updateUsrDialog()
@@ -345,7 +345,7 @@
 					src.active_record.fields["SE"] = src.diskette.data
 
 				src.temp = "Load successful."
-			if("eject")
+			if ("eject")
 				if (!isnull(src.diskette))
 					src.diskette.loc = src.loc
 					src.diskette = null
@@ -357,15 +357,15 @@
 			return
 
 		switch(href_list["save_disk"]) //Save as Ui/Ui+Ue/Se
-			if("ui")
+			if ("ui")
 				src.diskette.data = src.active_record.fields["UI"]
 				src.diskette.ue = 0
 				src.diskette.data_type = "ui"
-			if("ue")
+			if ("ue")
 				src.diskette.data = src.active_record.fields["UI"]
 				src.diskette.ue = 1
 				src.diskette.data_type = "ui"
-			if("se")
+			if ("se")
 				src.diskette.data = src.active_record.fields["SE"]
 				src.diskette.ue = 0
 				src.diskette.data_type = "se"
@@ -379,20 +379,20 @@
 	else if (href_list["clone"])
 		var/datum/data/record/C = locate(href_list["clone"])
 		//Look for that player! They better be dead!
-		if(istype(C))
+		if (istype(C))
 			//Can't clone without someone to clone.  Or a pod.  Or if the pod is busy. Or full of gibs.
-			if(!pod1)
+			if (!pod1)
 				temp = "Error: No Clonepod detected."
-			else if(pod1.occupant)
+			else if (pod1.occupant)
 				temp = "Error: Clonepod is currently occupied."
-			else if(pod1.biomass < CLONE_BIOMASS)
+			else if (pod1.biomass < CLONE_BIOMASS)
 				temp = "Error: Not enough biomass."
-			else if(pod1.mess)
+			else if (pod1.mess)
 				temp = "Error: Clonepod malfunction."
-			else if(!config.revival_cloning)
+			else if (!config.revival_cloning)
 				temp = "Error: Unable to initiate cloning cycle."
 
-			else if(pod1.growclone(C.fields["ckey"], C.fields["name"], C.fields["UI"], C.fields["SE"], C.fields["mind"], C.fields["mrace"]))
+			else if (pod1.growclone(C.fields["ckey"], C.fields["name"], C.fields["UI"], C.fields["SE"], C.fields["mind"], C.fields["mrace"]))
 				temp = "Initiating cloning cycle..."
 				records.Remove(C)
 				del(C)
@@ -402,7 +402,7 @@
 				var/mob/selected = find_dead_player("[C.fields["ckey"]]")
 				selected << 'chime.ogg'	//probably not the best sound but I think it's reasonable
 				var/answer = alert(selected,"Do you want to return to life?","Cloning","Yes","No")
-				if(answer != "No" && pod1.growclone(C.fields["ckey"], C.fields["name"], C.fields["UI"], C.fields["SE"], C.fields["mind"], C.fields["mrace"], C.fields["interface"]))
+				if (answer != "No" && pod1.growclone(C.fields["ckey"], C.fields["name"], C.fields["UI"], C.fields["SE"], C.fields["mind"], C.fields["mrace"], C.fields["interface"]))
 					temp = "Initiating cloning cycle..."
 					records.Remove(C)
 					del(C)
@@ -477,10 +477,10 @@
 
 /obj/machinery/computer/cloning/update_icon()
 
-	if(stat & BROKEN)
+	if (stat & BROKEN)
 		icon_state = "commb"
 	else
-		if(stat & NOPOWER)
+		if (stat & NOPOWER)
 			src.icon_state = "c_unpowered"
 			stat |= NOPOWER
 		else

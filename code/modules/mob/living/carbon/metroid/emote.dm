@@ -6,12 +6,12 @@
 		//param = copytext(act, t1 + 1, length(act) + 1)
 		act = copytext(act, 1, t1)
 
-	if(findtext(act,"s",-1) && !findtext(act,"_",-2))//Removes ending s's unless they are prefixed with a '_'
+	if (findtext(act,"s",-1) && !findtext(act,"_",-2))//Removes ending s's unless they are prefixed with a '_'
 		act = copytext(act,1,length(act))
 
 	switch(act)
 		if ("me")
-			if(silent)
+			if (silent)
 				return
 			if (src.client)
 				if (client.prefs.muted & MUTE_IC)
@@ -21,34 +21,34 @@
 					return
 			if (stat)
 				return
-			if(!(message))
+			if (!(message))
 				return
 			return custom_emote(m_type, message)
 
 		if ("custom")
 			return custom_emote(m_type, message)
-		if("moan")
+		if ("moan")
 			message = "<B>The [src.name]</B> moans."
 			m_type = 2
-		if("shiver")
+		if ("shiver")
 			message = "<B>The [src.name]</B> shivers."
 			m_type = 2
-		if("sway")
+		if ("sway")
 			message = "<B>The [src.name]</B> sways around dizzily."
 			m_type = 1
-		if("twitch")
+		if ("twitch")
 			message = "<B>The [src.name]</B> twitches."
 			m_type = 1
-		if("vibrate")
+		if ("vibrate")
 			message = "<B>The [src.name]</B> vibrates!"
 			m_type = 1
-		if("light")
+		if ("light")
 			message = "<B>The [src.name]</B> lights up for a bit, then stops."
 			m_type = 1
-		if("jiggle")
+		if ("jiggle")
 			message = "<B>The [src.name]</B> jiggles!"
 			m_type = 1
-		if("bounce")
+		if ("bounce")
 			message = "<B>The [src.name]</B> bounces in place."
 			m_type = 1
 		else

@@ -126,7 +126,7 @@
 	using.dir = WEST
 	using.icon = ui_style
 	using.icon_state = "hand_inactive"
-	if(mymob && !mymob.hand)	//This being 0 or null means the right hand is in use
+	if (mymob && !mymob.hand)	//This being 0 or null means the right hand is in use
 		using.icon_state = "hand_active"
 	using.screen_loc = ui_rhand
 	using.layer = 19
@@ -138,7 +138,7 @@
 	using.dir = EAST
 	using.icon = ui_style
 	using.icon_state = "hand_inactive"
-	if(mymob && mymob.hand)	//This being 1 means the left hand is in use
+	if (mymob && mymob.hand)	//This being 1 means the left hand is in use
 		using.icon_state = "hand_active"
 	using.screen_loc = ui_lhand
 	using.layer = 19
@@ -313,6 +313,6 @@
 	mymob.client.screen += list( mymob.throw_icon, mymob.zone_sel, mymob.oxygen, mymob.pressure, mymob.toxin, mymob.bodytemp, mymob.internals, mymob.fire, mymob.healths, mymob.pullin, mymob.blind, mymob.flash, mymob.gun_setting_icon) //, mymob.hands, mymob.rest, mymob.sleep, mymob.mach, mymob.hands, )
 	mymob.client.screen += src.adding + src.other
 
-	//if(istype(mymob,/mob/living/carbon/monkey)) mymob.client.screen += src.mon_blo
+	//if (istype(mymob,/mob/living/carbon/monkey)) mymob.client.screen += src.mon_blo
 
 	return

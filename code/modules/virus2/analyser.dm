@@ -11,14 +11,14 @@
 	var/obj/item/weapon/virusdish/dish = null
 
 /obj/machinery/disease2/diseaseanalyser/attackby(var/obj/I as obj, var/mob/user as mob)
-	if(istype(I,/obj/item/weapon/virusdish))
+	if (istype(I,/obj/item/weapon/virusdish))
 		var/mob/living/carbon/c = user
-		if(!dish)
+		if (!dish)
 			dish = I
 			c.drop_item()
 			I.loc = src
 			for(var/mob/M in viewers(src))
-				if(M == user)	continue
+				if (M == user)	continue
 				M.show_message("\blue [user.name] inserts the [dish.name] in the [src.name]", 3)
 		else
 			user << "There is already a dish inserted"
@@ -26,13 +26,13 @@
 
 
 /obj/machinery/disease2/diseaseanalyser/process()
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 	use_power(500)
 
-	if(scanning)
+	if (scanning)
 		scanning -= 1
-		if(scanning == 0)
+		if (scanning == 0)
 			var/r = dish.virus2.get_info()
 
 			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(src.loc)
@@ -47,8 +47,8 @@
 
 			src.state("\The [src.name] prints a sheet of paper")
 
-	else if(dish && !scanning && !pause)
-		if(dish.virus2 && dish.growth > 50)
+	else if (dish && !scanning && !pause)
+		if (dish.virus2 && dish.growth > 50)
 			dish.growth -= 10
 			scanning = 5
 			icon_state = "analyser_processing"

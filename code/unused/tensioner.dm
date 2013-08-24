@@ -57,7 +57,7 @@ var/global/datum/tension/tension_master
 		adminhelps=0
 		air_alarms=0
 
-		if(FLAT_PERCENT)						// I cannot into balance
+		if (FLAT_PERCENT)						// I cannot into balance
 			antagonistmodes = list (
 			"POINTS_FOR_TRATIOR" 		=	6,
 			"POINTS_FOR_CHANGLING"		=	6,
@@ -90,109 +90,109 @@ var/global/datum/tension/tension_master
 	proc/process()
 		score += get_num_players()*PLAYER_WEIGHT
 
-		if(config.Tensioner_Active)
-			if(world.time > MIN_ROUND_TIME)
+		if (config.Tensioner_Active)
+			if (world.time > MIN_ROUND_TIME)
 				round1++
-				if(!supress && !cooldown)
-					if(prob(1) || forcenexttick)
+				if (!supress && !cooldown)
+					if (prob(1) || forcenexttick)
 						round2++
-						if(prob(10) || forcenexttick)
+						if (prob(10) || forcenexttick)
 							round3++
-							if(forcenexttick)
+							if (forcenexttick)
 								forcenexttick = 0
 
 							for (var/client/C in admin_list)
 								C << "<font color='red' size='3'><b> The tensioner wishes to create additional antagonists!  Press (<a href='?src=\ref[tension_master];Supress=1'>this</a>) in 60 seconds to abort!</b></font>"
 
 							spawn(600)
-								if(!supress)
+								if (!supress)
 									cooldown = 1
 									spawn(COOLDOWN_TIME)
 										cooldown = 0
 									round4++
 
-									if(!antagonistmodes.len)
+									if (!antagonistmodes.len)
 										return
 
 									var/thegame = null
 
-									if(FLAT_PERCENT)
+									if (FLAT_PERCENT)
 										thegame = pickweight(antagonistmodes)
 										antagonistmodes.Remove(thegame)
 
 									else
 										for(var/V in antagonistmodes)			// OH SHIT SOMETHING IS GOING TO HAPPEN NOW
-											if(antagonistmodes[V] < score)
+											if (antagonistmodes[V] < score)
 												potentialgames.Add(V)
 												antagonistmodes.Remove(V)
-										if(potentialgames.len)
+										if (potentialgames.len)
 											thegame = pick(potentialgames)
 
 
-									if(thegame)
+									if (thegame)
 
 
 										log_admin("The tensioner fired, and decided on [thegame]")
 
 										switch(thegame)
-											if("POINTS_FOR_TRATIOR")
-												if(!makeTratiors())
+											if ("POINTS_FOR_TRATIOR")
+												if (!makeTratiors())
 													forcenexttick = 1
 												else
 													potentialgames.Remove(thegame)
-											if("POINTS_FOR_CHANGLING")
-												if(!makeChanglings())
+											if ("POINTS_FOR_CHANGLING")
+												if (!makeChanglings())
 													forcenexttick = 1
 												else
 													potentialgames.Remove(thegame)
-											if("POINTS_FOR_REVS")
-												if(!makeRevs())
+											if ("POINTS_FOR_REVS")
+												if (!makeRevs())
 													forcenexttick = 1
 												else
 													potentialgames.Remove(thegame)
-											if("POINTS_FOR_MALF")
-												if(!makeMalfAImode())
+											if ("POINTS_FOR_MALF")
+												if (!makeMalfAImode())
 													forcenexttick = 1
 												else
 													potentialgames.Remove(thegame)
-											if("POINTS_FOR_WIZARD")
-												if(!makeWizard())
-													forcenexttick = 1
-												else
-													potentialgames.Remove(thegame)
-
-											if("POINTS_FOR_CULT")
-												if(!makeCult())
+											if ("POINTS_FOR_WIZARD")
+												if (!makeWizard())
 													forcenexttick = 1
 												else
 													potentialgames.Remove(thegame)
 
-											if("POINTS_FOR_NUKETEAM")
-												if(!makeNukeTeam())
+											if ("POINTS_FOR_CULT")
+												if (!makeCult())
 													forcenexttick = 1
 												else
 													potentialgames.Remove(thegame)
 
-											if("POINTS_FOR_ALIEN")
-												if(!makeAliens())
+											if ("POINTS_FOR_NUKETEAM")
+												if (!makeNukeTeam())
 													forcenexttick = 1
 												else
 													potentialgames.Remove(thegame)
 
-											if("POINTS_FOR_NINJA")
-												if(!makeSpaceNinja())
+											if ("POINTS_FOR_ALIEN")
+												if (!makeAliens())
 													forcenexttick = 1
 												else
 													potentialgames.Remove(thegame)
 
-											if("POINTS_FOR_DEATHSQUAD")
-												if(!makeDeathsquad())
+											if ("POINTS_FOR_NINJA")
+												if (!makeSpaceNinja())
 													forcenexttick = 1
 												else
 													potentialgames.Remove(thegame)
 
-											if("POINTS_FOR_BORG_DEATHSQUAD")
-												if(!makeBorgDeathsquad())
+											if ("POINTS_FOR_DEATHSQUAD")
+												if (!makeDeathsquad())
+													forcenexttick = 1
+												else
+													potentialgames.Remove(thegame)
+
+											if ("POINTS_FOR_BORG_DEATHSQUAD")
+												if (!makeBorgDeathsquad())
 													forcenexttick = 1
 												else
 													potentialgames.Remove(thegame)
@@ -231,10 +231,10 @@ var/global/datum/tension/tension_master
 
 	Topic(href, href_list)
 
-		if(!usr || !usr.client)
+		if (!usr || !usr.client)
 			return //This shouldnt happen
 
-		if(!usr.client.holder)
+		if (!usr.client.holder)
 			message_admins("\red [key_name(usr)] tried to use the tensioner without authorization.")
 			log_admin("[key_name(usr)] tried to use the tensioner without authorization.")
 			return
@@ -243,7 +243,7 @@ var/global/datum/tension/tension_master
 		message_admins("[key_name(usr)] used a tensioner override.  The override was [href]")
 
 
-		if(href_list["addScore"])
+		if (href_list["addScore"])
 			score += 50000
 
 		if (href_list["makeTratior"])
@@ -296,32 +296,32 @@ var/global/datum/tension/tension_master
 		var/datum/mind/themind = null
 
 		for(var/mob/living/silicon/ai/ai in player_list)
-			if(ai.client)
+			if (ai.client)
 				AIs += ai
 
-		if(AIs.len)
+		if (AIs.len)
 			malfAI = pick(AIs)
 
 		else
 			return 0
 
-		if(malfAI)
+		if (malfAI)
 			themind = malfAI.mind
 			themind.make_AI_Malf()
 			return 1
 
 /*
-		if(BE_CHANGELING)	roletext="changeling"
-		if(BE_TRAITOR)		roletext="traitor"
-		if(BE_OPERATIVE)	roletext="operative"
-		if(BE_WIZARD)		roletext="wizard"
-		if(BE_REV)			roletext="revolutionary"
-		if(BE_CULTIST)		roletext="cultist"
+		if (BE_CHANGELING)	roletext="changeling"
+		if (BE_TRAITOR)		roletext="traitor"
+		if (BE_OPERATIVE)	roletext="operative"
+		if (BE_WIZARD)		roletext="wizard"
+		if (BE_REV)			roletext="revolutionary"
+		if (BE_CULTIST)		roletext="cultist"
 
 
 	for(var/mob/new_player/player in world)
-		if(player.client && player.ready)
-			if(player.preferences.be_special & role)
+		if (player.client && player.ready)
+			if (player.preferences.be_special & role)
 */
 
 
@@ -329,7 +329,7 @@ var/global/datum/tension/tension_master
 
 		var/datum/game_mode/traitor/temp = new
 
-		if(config.protect_roles_from_antagonist)
+		if (config.protect_roles_from_antagonist)
 			temp.restricted_jobs += temp.protected_jobs
 
 		var/list/mob/living/carbon/human/candidates = list()
@@ -339,17 +339,17 @@ var/global/datum/tension/tension_master
 
 			var/datum/preferences/preferences = new
 
-			if(applicant.stat < 2)
-				if(applicant.mind)
+			if (applicant.stat < 2)
+				if (applicant.mind)
 					if (!applicant.mind.special_role)
-						if(!jobban_isbanned(applicant, "traitor") && !jobban_isbanned(applicant, "Syndicate"))
-							if(!(applicant.job in temp.restricted_jobs))
-								if(applicant.client)
-									if(preferences.savefile_load(applicant, 0))
-										if(preferences.be_special & BE_TRAITOR)
+						if (!jobban_isbanned(applicant, "traitor") && !jobban_isbanned(applicant, "Syndicate"))
+							if (!(applicant.job in temp.restricted_jobs))
+								if (applicant.client)
+									if (preferences.savefile_load(applicant, 0))
+										if (preferences.be_special & BE_TRAITOR)
 											candidates += applicant
 
-		if(candidates.len)
+		if (candidates.len)
 			var/numTratiors = min(candidates.len, 3)
 
 			for(var/i = 0, i<numTratiors, i++)
@@ -366,7 +366,7 @@ var/global/datum/tension/tension_master
 	proc/makeChanglings()
 
 		var/datum/game_mode/changeling/temp = new
-		if(config.protect_roles_from_antagonist)
+		if (config.protect_roles_from_antagonist)
 			temp.restricted_jobs += temp.protected_jobs
 
 		var/list/mob/living/carbon/human/candidates = list()
@@ -376,17 +376,17 @@ var/global/datum/tension/tension_master
 
 			var/datum/preferences/preferences = new
 
-			if(applicant.stat < 2)
-				if(applicant.mind)
+			if (applicant.stat < 2)
+				if (applicant.mind)
 					if (!applicant.mind.special_role)
-						if(!jobban_isbanned(applicant, "changeling") && !jobban_isbanned(applicant, "Syndicate"))
-							if(!(applicant.job in temp.restricted_jobs))
-								if(applicant.client)
-									if(preferences.savefile_load(applicant, 0))
-										if(preferences.be_special & BE_CHANGELING)
+						if (!jobban_isbanned(applicant, "changeling") && !jobban_isbanned(applicant, "Syndicate"))
+							if (!(applicant.job in temp.restricted_jobs))
+								if (applicant.client)
+									if (preferences.savefile_load(applicant, 0))
+										if (preferences.be_special & BE_CHANGELING)
 											candidates += applicant
 
-		if(candidates.len)
+		if (candidates.len)
 			var/numChanglings = min(candidates.len, 3)
 
 			for(var/i = 0, i<numChanglings, i++)
@@ -402,7 +402,7 @@ var/global/datum/tension/tension_master
 	proc/makeRevs()
 
 		var/datum/game_mode/revolution/temp = new
-		if(config.protect_roles_from_antagonist)
+		if (config.protect_roles_from_antagonist)
 			temp.restricted_jobs += temp.protected_jobs
 
 		var/list/mob/living/carbon/human/candidates = list()
@@ -412,17 +412,17 @@ var/global/datum/tension/tension_master
 
 			var/datum/preferences/preferences = new
 
-			if(applicant.stat < 2)
-				if(applicant.mind)
+			if (applicant.stat < 2)
+				if (applicant.mind)
 					if (!applicant.mind.special_role)
-						if(!jobban_isbanned(applicant, "revolutionary") && !jobban_isbanned(applicant, "Syndicate"))
-							if(!(applicant.job in temp.restricted_jobs))
-								if(applicant.client)
-									if(preferences.savefile_load(applicant, 0))
-										if(preferences.be_special & BE_REV)
+						if (!jobban_isbanned(applicant, "revolutionary") && !jobban_isbanned(applicant, "Syndicate"))
+							if (!(applicant.job in temp.restricted_jobs))
+								if (applicant.client)
+									if (preferences.savefile_load(applicant, 0))
+										if (preferences.be_special & BE_REV)
 											candidates += applicant
 
-		if(candidates.len)
+		if (candidates.len)
 			var/numRevs = min(candidates.len, 3)
 
 			for(var/i = 0, i<numRevs, i++)
@@ -440,28 +440,28 @@ var/global/datum/tension/tension_master
 		var/time_passed = world.time
 
 		for(var/mob/dead/observer/G in player_list)
-			if(!jobban_isbanned(G, "wizard") && !jobban_isbanned(G, "Syndicate"))
+			if (!jobban_isbanned(G, "wizard") && !jobban_isbanned(G, "Syndicate"))
 				spawn(0)
 					switch(alert(G, "Do you wish to be considered for the position of Space Wizard Foundation 'diplomat'?","Please answer in 30 seconds!","Yes","No"))
-						if("Yes")
-							if((world.time-time_passed)>300)//If more than 30 game seconds passed.
+						if ("Yes")
+							if ((world.time-time_passed)>300)//If more than 30 game seconds passed.
 								return
 							candidates += G
-						if("No")
+						if ("No")
 							return
 
 		sleep(300)
 
 		for(var/mob/dead/observer/G in candidates)
-			if(!G.client)
+			if (!G.client)
 				candidates.Remove(G)
 
 		spawn(0)
-			if(candidates.len)
+			if (candidates.len)
 				while((!theghost || !theghost.client) && candidates.len)
 					theghost = pick(candidates)
 					candidates.Remove(theghost)
-				if(!theghost)
+				if (!theghost)
 					return 0
 				var/mob/living/carbon/human/new_character=makeBody(theghost)
 				new_character.mind.make_Wizard()
@@ -472,7 +472,7 @@ var/global/datum/tension/tension_master
 	proc/makeCult()
 
 		var/datum/game_mode/cult/temp = new
-		if(config.protect_roles_from_antagonist)
+		if (config.protect_roles_from_antagonist)
 			temp.restricted_jobs += temp.protected_jobs
 
 		var/list/mob/living/carbon/human/candidates = list()
@@ -482,17 +482,17 @@ var/global/datum/tension/tension_master
 
 			var/datum/preferences/preferences = new
 
-			if(applicant.stat < 2)
-				if(applicant.mind)
+			if (applicant.stat < 2)
+				if (applicant.mind)
 					if (!applicant.mind.special_role)
-						if(!jobban_isbanned(applicant, "cultist") && !jobban_isbanned(applicant, "Syndicate"))
-							if(!(applicant.job in temp.restricted_jobs))
-								if(applicant.client)
-									if(preferences.savefile_load(applicant, 0))
-										if(preferences.be_special & BE_CULTIST)
+						if (!jobban_isbanned(applicant, "cultist") && !jobban_isbanned(applicant, "Syndicate"))
+							if (!(applicant.job in temp.restricted_jobs))
+								if (applicant.client)
+									if (preferences.savefile_load(applicant, 0))
+										if (preferences.be_special & BE_CULTIST)
 											candidates += applicant
 
-		if(candidates.len)
+		if (candidates.len)
 			var/numCultists = min(candidates.len, 4)
 //			var/list/runeWords = list()
 
@@ -520,24 +520,24 @@ var/global/datum/tension/tension_master
 		var/time_passed = world.time
 
 		for(var/mob/dead/observer/G in player_list)
-			if(!jobban_isbanned(G, "operative") && !jobban_isbanned(G, "Syndicate"))
+			if (!jobban_isbanned(G, "operative") && !jobban_isbanned(G, "Syndicate"))
 				spawn(0)
 					switch(alert(G,"Do you wish to be considered for a nuke team being sent in?","Please answer in 30 seconds!","Yes","No"))
-						if("Yes")
-							if((world.time-time_passed)>300)//If more than 30 game seconds passed.
+						if ("Yes")
+							if ((world.time-time_passed)>300)//If more than 30 game seconds passed.
 								return
 							candidates += G
-						if("No")
+						if ("No")
 							return
 
 		sleep(300)
 
 		for(var/mob/dead/observer/G in candidates)
-			if(!G.client)
+			if (!G.client)
 				candidates.Remove(G)
 
 		spawn(0)
-			if(candidates.len)
+			if (candidates.len)
 				var/numagents = 5
 				syndicate_begin()
 
@@ -545,7 +545,7 @@ var/global/datum/tension/tension_master
 					while((!theghost || !theghost.client) && candidates.len)
 						theghost = pick(candidates)
 						candidates.Remove(theghost)
-					if(!theghost)
+					if (!theghost)
 						break
 					var/mob/living/carbon/human/new_character=makeBody(theghost)
 					new_character.mind.make_Nuke()
@@ -556,13 +556,13 @@ var/global/datum/tension/tension_master
 
 				var/nuke_code = "[rand(10000, 99999)]"
 
-				if(nuke_spawn)
+				if (nuke_spawn)
 					var/obj/item/weapon/paper/P = new
 					P.info = "Sadly, the Syndicate could not get you a nuclear bomb.  We have, however, acquired the arming code for the station's onboard nuke.  The nuclear authorization code is: <b>[nuke_code]</b>"
 					P.name = "nuclear bomb code and instructions"
 					P.loc = nuke_spawn.loc
 
-				if(closet_spawn)
+				if (closet_spawn)
 					new /obj/structure/closet/syndicate/nuclear(closet_spawn.loc)
 
 				for (var/obj/effect/landmark/A in /area/syndicate_station/start)//Because that's the only place it can BE -Sieve
@@ -579,17 +579,17 @@ var/global/datum/tension/tension_master
 
 				spawn(0)
 					for(var/datum/mind/synd_mind in ticker.mode.syndicates)
-						if(synd_mind.current)
-							if(synd_mind.current.client)
+						if (synd_mind.current)
+							if (synd_mind.current.client)
 								for(var/image/I in synd_mind.current.client.images)
-									if(I.icon_state == "synd")
+									if (I.icon_state == "synd")
 										del(I)
 
 					for(var/datum/mind/synd_mind in ticker.mode.syndicates)
-						if(synd_mind.current)
-							if(synd_mind.current.client)
+						if (synd_mind.current)
+							if (synd_mind.current.client)
 								for(var/datum/mind/synd_mind_1 in ticker.mode.syndicates)
-									if(synd_mind_1.current)
+									if (synd_mind_1.current)
 										var/I = image('icons/mob/mob.dmi', loc = synd_mind_1.current, icon_state = "synd")
 										synd_mind.current.client.images += I
 
@@ -615,7 +615,7 @@ var/global/datum/tension/tension_master
 		var/mob/dead/observer/theghost = null
 		var/time_passed = world.time
 		var/input = "Purify the station."
-		if(prob(10))
+		if (prob(10))
 			input = "Save Runtime and any other cute things on the station."
 	/*
 		if (emergency_shuttle.direction == 1 && emergency_shuttle.online == 1)
@@ -633,23 +633,23 @@ var/global/datum/tension/tension_master
 		for(var/mob/dead/observer/G in player_list)
 			spawn(0)
 				switch(alert(G,"Do you wish to be considered for an elite syndicate strike team being sent in?","Please answer in 30 seconds!","Yes","No"))
-					if("Yes")
-						if((world.time-time_passed)>300)//If more than 30 game seconds passed.
+					if ("Yes")
+						if ((world.time-time_passed)>300)//If more than 30 game seconds passed.
 							return
 						candidates += G
-					if("No")
+					if ("No")
 						return
 		sleep(300)
 
 		for(var/mob/dead/observer/G in candidates)
-			if(!G.key)
+			if (!G.key)
 				candidates.Remove(G)
 
-		if(candidates.len)
+		if (candidates.len)
 			var/numagents = 6
 			//Spawns commandos and equips them.
 			for (var/obj/effect/landmark/L in /area/syndicate_mothership/elite_squad)
-				if(numagents<=0)
+				if (numagents<=0)
 					break
 				if (L.name == "Syndicate-Commando")
 					syndicate_leader_selected = numagents == 1?1:0
@@ -661,7 +661,7 @@ var/global/datum/tension/tension_master
 						theghost = pick(candidates)
 						candidates.Remove(theghost)
 
-					if(!theghost)
+					if (!theghost)
 						del(new_syndicate_commando)
 						break
 
@@ -703,24 +703,24 @@ var/global/datum/tension/tension_master
 		for(var/mob/dead/observer/G in player_list)
 			spawn(0)
 				switch(alert(G,"Do you wish to be considered for a cyborg strike team being sent in?","Please answer in 30 seconds!","Yes","No"))
-					if("Yes")
-						if((world.time-time_passed)>300)//If more than 30 game seconds passed.
+					if ("Yes")
+						if ((world.time-time_passed)>300)//If more than 30 game seconds passed.
 							return
 						candidates += G
-					if("No")
+					if ("No")
 						return
 		sleep(300)
 
 		for(var/mob/dead/observer/G in candidates)
-			if(!G.client || !G.key)
+			if (!G.client || !G.key)
 				candidates.Remove(G)
 
-		if(candidates.len)
+		if (candidates.len)
 			var/numagents = 3
 
 			//Spawns commandos and equips them.
 			for (var/obj/effect/landmark/L in /area/borg_deathsquad)
-				if(numagents<=0)
+				if (numagents<=0)
 					break
 				if (L.name == "Borg-Deathsquad")
 
@@ -735,7 +735,7 @@ var/global/datum/tension/tension_master
 						theghost = pick(candidates)
 						candidates.Remove(theghost)
 
-					if(!theghost)
+					if (!theghost)
 						del(new_borg_deathsquad)
 						break
 
@@ -760,7 +760,7 @@ var/global/datum/tension/tension_master
 
 
 	proc/makeBody(var/mob/dead/observer/G_found) // Uses stripped down and bastardized code from respawn character
-		if(!G_found || !G_found.key)	return
+		if (!G_found || !G_found.key)	return
 
 		//First we spawn a dude.
 		var/mob/living/carbon/human/new_character = new(pick(latejoin))//The mob being spawned.
@@ -769,7 +769,7 @@ var/global/datum/tension/tension_master
 
 		var/datum/preferences/A = new()
 		A.randomize_appearance_for(new_character)
-		if(new_character.gender == MALE)
+		if (new_character.gender == MALE)
 			new_character.real_name = "[pick(first_names_male)] [pick(last_names)]"
 		else
 			new_character.real_name = "[pick(first_names_female)] [pick(last_names)]"
@@ -844,9 +844,9 @@ var/global/datum/tension/tension_master
 	var/jumpcomplete = 0
 
 /obj/machinery/computer/Borg_station/attack_hand()
-	if(jumpcomplete)
+	if (jumpcomplete)
 		return
-	if(alert(usr, "Are you sure you want to send a cyborg deathsquad?", "Confirmation", "Yes", "No") == "Yes")
+	if (alert(usr, "Are you sure you want to send a cyborg deathsquad?", "Confirmation", "Yes", "No") == "Yes")
 		var/area/start_location = locate(/area/borg_deathsquad/start)
 		var/area/end_location = locate(/area/borg_deathsquad/station)
 
@@ -855,7 +855,7 @@ var/global/datum/tension/tension_master
 
 		for(var/turf/T in end_location)
 			dstturfs += T
-			if(T.y < throwy)
+			if (T.y < throwy)
 				throwy = T.y
 
 					// hey you, get out of the way!
@@ -865,7 +865,7 @@ var/global/datum/tension/tension_master
 						//var/turf/E = get_step(D, SOUTH)
 			for(var/atom/movable/AM as mob|obj in T)
 				AM.Move(D)
-			if(istype(T, /turf/simulated))
+			if (istype(T, /turf/simulated))
 				del(T)
 
 		start_location.move_contents_to(end_location)

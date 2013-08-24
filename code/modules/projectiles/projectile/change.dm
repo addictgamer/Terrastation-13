@@ -11,20 +11,20 @@
 
 
 /obj/item/projectile/change/proc/wabbajack (mob/M as mob in living_mob_list)
-	if(istype(M, /mob/living) && M.stat != DEAD)
-		if(M.monkeyizing)	return
+	if (istype(M, /mob/living) && M.stat != DEAD)
+		if (M.monkeyizing)	return
 		M.monkeyizing = 1
 		M.canmove = 0
 		M.icon = null
 		M.overlays.Cut()
 		M.invisibility = 101
 
-		if(istype(M, /mob/living/silicon/robot))
+		if (istype(M, /mob/living/silicon/robot))
 			var/mob/living/silicon/robot/Robot = M
-			if(Robot.mmi)	del(Robot.mmi)
+			if (Robot.mmi)	del(Robot.mmi)
 		else
 			for(var/obj/item/W in M)
-				if(istype(W, /obj/item/weapon/implant))	//TODO: Carn. give implants a dropped() or something
+				if (istype(W, /obj/item/weapon/implant))	//TODO: Carn. give implants a dropped() or something
 					del(W)
 					continue
 				W.layer = initial(W.layer)
@@ -35,10 +35,10 @@
 
 		var/randomize = pick("monkey","robot","slime","xeno","human")
 		switch(randomize)
-			if("monkey")
+			if ("monkey")
 				new_mob = new /mob/living/carbon/monkey(M.loc)
 				new_mob.universal_speak = 1
-			if("robot")
+			if ("robot")
 				new_mob = new /mob/living/silicon/robot(M.loc)
 				new_mob.gender = M.gender
 				new_mob.invisibility = 0
@@ -46,21 +46,21 @@
 				var/mob/living/silicon/robot/Robot = new_mob
 				Robot.mmi = new /obj/item/device/mmi(new_mob)
 				Robot.mmi.transfer_identity(M)	//Does not transfer key/client.
-			if("slime")
-				if(prob(50))		new_mob = new /mob/living/carbon/slime/adult(M.loc)
+			if ("slime")
+				if (prob(50))		new_mob = new /mob/living/carbon/slime/adult(M.loc)
 				else				new_mob = new /mob/living/carbon/slime(M.loc)
 				new_mob.universal_speak = 1
-			if("xeno")
+			if ("xeno")
 				var/alien_caste = pick("Hunter","Sentinel","Drone","Larva")
 				switch(alien_caste)
-					if("Hunter")	new_mob = new /mob/living/carbon/alien/humanoid/hunter(M.loc)
-					if("Sentinel")	new_mob = new /mob/living/carbon/alien/humanoid/sentinel(M.loc)
-					if("Drone")		new_mob = new /mob/living/carbon/alien/humanoid/drone(M.loc)
+					if ("Hunter")	new_mob = new /mob/living/carbon/alien/humanoid/hunter(M.loc)
+					if ("Sentinel")	new_mob = new /mob/living/carbon/alien/humanoid/sentinel(M.loc)
+					if ("Drone")		new_mob = new /mob/living/carbon/alien/humanoid/drone(M.loc)
 					else			new_mob = new /mob/living/carbon/alien/larva(M.loc)
 				new_mob.universal_speak = 1
-			if("human")
+			if ("human")
 				new_mob = new /mob/living/carbon/human(M.loc)
-				if(M.gender == MALE)
+				if (M.gender == MALE)
 					new_mob.gender = MALE
 					new_mob.name = pick(first_names_male)
 				else
@@ -82,7 +82,7 @@
 			new_mob.spell_list += new S.type
 
 		new_mob.a_intent = "hurt"
-		if(M.mind)
+		if (M.mind)
 			M.mind.transfer_to(new_mob)
 		else
 			new_mob.key = M.key

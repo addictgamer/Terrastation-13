@@ -41,9 +41,9 @@ obj/item/weapon/gun/energy/laser/retro
 
 	process()
 		charge_tick++
-		if(charge_tick < 4) return 0
+		if (charge_tick < 4) return 0
 		charge_tick = 0
-		if(!power_supply) return 0
+		if (!power_supply) return 0
 		power_supply.give(100)
 		update_icon()
 		return 1
@@ -51,11 +51,11 @@ obj/item/weapon/gun/energy/laser/retro
 
 
 /obj/item/weapon/gun/energy/laser/cyborg/load_into_chamber()
-	if(in_chamber)
+	if (in_chamber)
 		return 1
-	if(isrobot(src.loc))
+	if (isrobot(src.loc))
 		var/mob/living/silicon/robot/R = src.loc
-		if(R && R.cell)
+		if (R && R.cell)
 			R.cell.use(100)
 			in_chamber = new/obj/item/projectile/beam(src)
 			return 1
@@ -77,11 +77,11 @@ obj/item/weapon/gun/energy/laser/retro
 		return 0
 
 /obj/item/weapon/gun/energy/lasercannon/cyborg/load_into_chamber()
-	if(in_chamber)
+	if (in_chamber)
 		return 1
-	if(isrobot(src.loc))
+	if (isrobot(src.loc))
 		var/mob/living/silicon/robot/R = src.loc
-		if(R && R.cell)
+		if (R && R.cell)
 			R.cell.use(250)
 			in_chamber = new/obj/item/projectile/beam(src)
 			return 1
@@ -109,8 +109,8 @@ obj/item/weapon/gun/energy/laser/retro
 	var/charge_tick = 0
 
 	special_check(var/mob/living/carbon/human/M)
-		if(ishuman(M))
-			if(istype(M.wear_suit, /obj/item/clothing/suit/bluetag))
+		if (ishuman(M))
+			if (istype(M.wear_suit, /obj/item/clothing/suit/bluetag))
 				return 1
 			M << "\red You need to be wearing your laser tag vest!"
 		return 0
@@ -127,9 +127,9 @@ obj/item/weapon/gun/energy/laser/retro
 
 	process()
 		charge_tick++
-		if(charge_tick < 4) return 0
+		if (charge_tick < 4) return 0
 		charge_tick = 0
-		if(!power_supply) return 0
+		if (!power_supply) return 0
 		power_supply.give(100)
 		update_icon()
 		return 1
@@ -146,8 +146,8 @@ obj/item/weapon/gun/energy/laser/retro
 	var/charge_tick = 0
 
 	special_check(var/mob/living/carbon/human/M)
-		if(ishuman(M))
-			if(istype(M.wear_suit, /obj/item/clothing/suit/redtag))
+		if (ishuman(M))
+			if (istype(M.wear_suit, /obj/item/clothing/suit/redtag))
 				return 1
 			M << "\red You need to be wearing your laser tag vest!"
 		return 0
@@ -164,9 +164,9 @@ obj/item/weapon/gun/energy/laser/retro
 
 	process()
 		charge_tick++
-		if(charge_tick < 4) return 0
+		if (charge_tick < 4) return 0
 		charge_tick = 0
-		if(!power_supply) return 0
+		if (!power_supply) return 0
 		power_supply.give(100)
 		update_icon()
 		return 1

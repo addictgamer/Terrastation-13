@@ -44,40 +44,40 @@
 
 //BubbleWrap - Should stop you pushing a restrained person out of the way
 
-		if(istype(tmob, /mob/living/carbon/human))
+		if (istype(tmob, /mob/living/carbon/human))
 
 			for(var/mob/M in range(tmob, 1))
-				if( ((M.pulling == tmob && ( tmob.restrained() && !( M.restrained() ) && M.stat == 0)) || locate(/obj/item/weapon/grab, tmob.grabbed_by.len)) )
+				if ( ((M.pulling == tmob && ( tmob.restrained() && !( M.restrained() ) && M.stat == 0)) || locate(/obj/item/weapon/grab, tmob.grabbed_by.len)) )
 					if ( !(world.time % 5) )
 						src << "\red [tmob] is restrained, you cannot push past"
 					now_pushing = 0
 					return
-				if( tmob.pulling == M && ( M.restrained() && !( tmob.restrained() ) && tmob.stat == 0) )
+				if ( tmob.pulling == M && ( M.restrained() && !( tmob.restrained() ) && tmob.stat == 0) )
 					if ( !(world.time % 5) )
 						src << "\red [tmob] is restraining [M], you cannot push past"
 					now_pushing = 0
 					return
 
 		//BubbleWrap: people in handcuffs are always switched around as if they were on 'help' intent to prevent a person being pulled from being seperated from their puller
-		if((tmob.a_intent == "help" || tmob.restrained()) && (a_intent == "help" || src.restrained()) && tmob.canmove && canmove) // mutual brohugs all around!
+		if ((tmob.a_intent == "help" || tmob.restrained()) && (a_intent == "help" || src.restrained()) && tmob.canmove && canmove) // mutual brohugs all around!
 			var/turf/oldloc = loc
 			loc = tmob.loc
 			tmob.loc = oldloc
 			now_pushing = 0
 			for(var/mob/living/carbon/metroid/Metroid in view(1,tmob))
-				if(Metroid.Victim == tmob)
+				if (Metroid.Victim == tmob)
 					Metroid.UpdateFeed()
 			return
 
-		if(tmob.r_hand && istype(tmob.r_hand, /obj/item/weapon/shield/riot))
-			if(prob(99))
+		if (tmob.r_hand && istype(tmob.r_hand, /obj/item/weapon/shield/riot))
+			if (prob(99))
 				now_pushing = 0
 				return
-		if(tmob.l_hand && istype(tmob.l_hand, /obj/item/weapon/shield/riot))
-			if(prob(99))
+		if (tmob.l_hand && istype(tmob.l_hand, /obj/item/weapon/shield/riot))
+			if (prob(99))
 				now_pushing = 0
 				return
-		if(tmob.nopush)
+		if (tmob.nopush)
 			now_pushing = 0
 			return
 
@@ -94,7 +94,7 @@
 			if (!AM.anchored)
 				var/t = get_dir(src, AM)
 				if (istype(AM, /obj/structure/window))
-					if(AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
+					if (AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
 						for(var/obj/structure/window/win in get_step(AM,t))
 							now_pushing = 0
 							return
@@ -107,16 +107,16 @@
 	var/tally = 2 // amorphs are a bit slower than humans
 	var/mob/M = pulling
 
-	if(reagents.has_reagent("hyperzine")) return -1
+	if (reagents.has_reagent("hyperzine")) return -1
 
-	if(reagents.has_reagent("nuka_cola")) return -1
+	if (reagents.has_reagent("nuka_cola")) return -1
 
-	if(analgesic) return -1
+	if (analgesic) return -1
 
 	if (istype(loc, /turf/space)) return -1 // It's hard to be slowed down in space by... anything
 
 	var/health_deficiency = traumatic_shock
-	if(health_deficiency >= 40) tally += (health_deficiency / 25)
+	if (health_deficiency >= 40) tally += (health_deficiency / 25)
 
 	var/hungry = (500 - nutrition)/5 // So overeat would be 100 and default level would be 80
 	if (hungry >= 70) tally += hungry/300
@@ -126,15 +126,15 @@
 		if (stuttering < 10)
 			stuttering = 10
 
-	if(shock_stage >= 10) tally += 3
+	if (shock_stage >= 10) tally += 3
 
-	if(tally < 0)
+	if (tally < 0)
 		tally = 0
 
-	if(istype(M) && M.lying) //Pulling lying down people is slower
+	if (istype(M) && M.lying) //Pulling lying down people is slower
 		tally += 3
 
-	if(mRun in mutations)
+	if (mRun in mutations)
 		tally = 0
 
 	return tally
@@ -145,11 +145,11 @@
 
 	stat(null, "Intent: [a_intent]")
 	stat(null, "Move Mode: [m_intent]")
-	if(ticker && ticker.mode && ticker.mode.name == "AI malfunction")
-		if(ticker.mode:malf_mode_declared)
+	if (ticker && ticker.mode && ticker.mode.name == "AI malfunction")
+		if (ticker.mode:malf_mode_declared)
 			stat(null, "Time left: [max(ticker.mode:AI_win_timeleft/(ticker.mode:apcs/3), 0)]")
-	if(emergency_shuttle)
-		if(emergency_shuttle.online && emergency_shuttle.location < 2)
+	if (emergency_shuttle)
+		if (emergency_shuttle.online && emergency_shuttle.location < 2)
 			var/timeleft = emergency_shuttle.timeleft()
 			if (timeleft)
 				stat(null, "ETA-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
@@ -193,7 +193,7 @@
 				b_loss = b_loss/1.5
 				f_loss = f_loss/1.5
 
-		if(3.0)
+		if (3.0)
 			b_loss += 30
 			if (!prob(getarmor(null, "bomb")))
 				b_loss = b_loss/2
@@ -207,7 +207,7 @@
 
 
 /mob/living/carbon/amorph/blob_act()
-	if(stat == 2)	return
+	if (stat == 2)	return
 	show_message("\red The blob attacks you!")
 	src.bruteloss += rand(30,40)
 	UpdateDamageIcon()
@@ -231,12 +231,12 @@
 		usr.next_move = usr.prev_move
 		usr:lastDblClick -= 3	//permit the double-click redirection to proceed.
 	switch(text)
-		if("l_ear")
+		if ("l_ear")
 			if (l_ear)
 				if (emptyHand)
 					l_ear.DblClick()
 				return
-			else if(emptyHand)
+			else if (emptyHand)
 				return
 			if (!( istype(W, /obj/item/clothing/ears) ) && !( istype(W, /obj/item/device/radio/headset) ) && W.w_class != 1)
 				return
@@ -280,16 +280,16 @@
 		. = ..()
 
 		if (pulling && pulling.loc)
-			if(!( isturf(pulling.loc) ))
+			if (!( isturf(pulling.loc) ))
 				pulling = null
 				return
 			else
-				if(Debug)
+				if (Debug)
 					diary <<"pulling disappeared? at [__LINE__] in mob.dm - pulling = [pulling]"
 					diary <<"REPORT THIS"
 
 		/////
-		if(pulling && pulling.anchored)
+		if (pulling && pulling.anchored)
 			pulling = null
 			return
 
@@ -323,25 +323,25 @@
 							var/turf/location = M.loc
 							if (istype(location, /turf/simulated))
 								location.add_blood(M)
-								if(ishuman(M))
+								if (ishuman(M))
 									var/mob/living/carbon/H = M
 									var/blood_volume = round(H:vessel.get_reagent_amount("blood"))
-									if(blood_volume > 0)
+									if (blood_volume > 0)
 										H:vessel.remove_reagent("blood",1)
-							if(prob(5))
+							if (prob(5))
 								M.adjustBruteLoss(1)
 								visible_message("\red \The [M]'s wounds open more from being dragged!")
-						if(M.pull_damage())
-							if(prob(25))
+						if (M.pull_damage())
+							if (prob(25))
 								M.adjustBruteLoss(2)
 								visible_message("\red \The [M]'s wounds worsen terribly from being dragged!")
 								var/turf/location = M.loc
 								if (istype(location, /turf/simulated))
 									location.add_blood(M)
-									if(ishuman(M))
+									if (ishuman(M))
 										var/mob/living/carbon/H = M
 										var/blood_volume = round(H:vessel.get_reagent_amount("blood"))
-										if(blood_volume > 0)
+										if (blood_volume > 0)
 											H:vessel.remove_reagent("blood",1)
 
 						step(pulling, get_dir(pulling.loc, T))
@@ -349,7 +349,7 @@
 				else
 					if (pulling)
 						if (istype(pulling, /obj/structure/window))
-							if(pulling:ini_dir == NORTHWEST || pulling:ini_dir == NORTHEAST || pulling:ini_dir == SOUTHWEST || pulling:ini_dir == SOUTHEAST)
+							if (pulling:ini_dir == NORTHWEST || pulling:ini_dir == NORTHEAST || pulling:ini_dir == SOUTHWEST || pulling:ini_dir == SOUTHEAST)
 								for(var/obj/structure/window/win in get_step(pulling,get_dir(pulling.loc, T)))
 									pulling = null
 					if (pulling)
@@ -405,7 +405,7 @@
 
 	misc_clothing_updates() // silly stuff
 
-	if(lying)
+	if (lying)
 		icon_state = "lying"
 	else
 		icon_state = "standing"
@@ -413,7 +413,7 @@
 /mob/living/carbon/amorph/update_lying()
 	// Should be called whenever something about the lying status of the mob might have changed.
 
-	if(lying)
+	if (lying)
 		icon_state = "lying"
 	else
 		icon_state = "standing"
@@ -437,7 +437,7 @@
 // this could be made more general, but for now just handle mulebot
 /mob/living/carbon/amorph/HasEntered(var/atom/movable/AM)
 	var/obj/machinery/bot/mulebot/MB = AM
-	if(istype(MB))
+	if (istype(MB))
 		MB.RunOver(src)
 
 //gets assignment from ID or ID inside PDA or PDA itself
@@ -488,7 +488,7 @@
 
 /mob/living/carbon/amorph/Topic(href, href_list)
 	if (href_list["refresh"])
-		if((machine)&&(in_range(src, usr)))
+		if ((machine)&&(in_range(src, usr)))
 			show_inv(machine)
 
 	if (href_list["mach_close"])
@@ -504,7 +504,7 @@
 		O.s_loc = usr.loc
 		O.t_loc = loc
 		O.place = href_list["item"]
-		if(href_list["loc"])
+		if (href_list["loc"])
 			O.internalloc = href_list["loc"]
 		requests += O
 		spawn( 0 )
@@ -512,16 +512,16 @@
 			return
 
 	if (href_list["criminal"])
-		if(istype(usr, /mob/living/carbon/human))
+		if (istype(usr, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = usr
-			if(istype(H.glasses, /obj/item/clothing/glasses/hud/security) || istype(H.glasses, /obj/item/clothing/glasses/sunglasses/sechud))
+			if (istype(H.glasses, /obj/item/clothing/glasses/hud/security) || istype(H.glasses, /obj/item/clothing/glasses/sunglasses/sechud))
 				var/perpname = "wot"
 				var/modified = 0
 
-				/*if(wear_id)
-					if(istype(wear_id,/obj/item/weapon/card/id))
+				/*if (wear_id)
+					if (istype(wear_id,/obj/item/weapon/card/id))
 						perpname = wear_id:registered_name
-					else if(istype(wear_id,/obj/item/device/pda))
+					else if (istype(wear_id,/obj/item/device/pda))
 						var/obj/item/device/pda/tempPda = wear_id
 						perpname = tempPda.owner
 				else*/
@@ -534,15 +534,15 @@
 
 								var/setcriminal = input(usr, "Specify a new criminal status for this person.", "Security HUD", R.fields["criminal"]) in list("None", "*Arrest*", "Incarcerated", "Parolled", "Released", "Cancel")
 
-								if(istype(H.glasses, /obj/item/clothing/glasses/hud/security) || istype(H.glasses, /obj/item/clothing/glasses/sunglasses/sechud))
-									if(setcriminal != "Cancel")
+								if (istype(H.glasses, /obj/item/clothing/glasses/hud/security) || istype(H.glasses, /obj/item/clothing/glasses/sunglasses/sechud))
+									if (setcriminal != "Cancel")
 										R.fields["criminal"] = setcriminal
 										modified = 1
 
 										spawn()
 											H.handle_regular_hud_updates()
 
-				if(!modified)
+				if (!modified)
 					usr << "\red Unable to locate a data core entry for this person."
 	..()
 	return
@@ -559,7 +559,7 @@
 
 
 /mob/living/carbon/amorph/updatehealth()
-	if(src.nodamage)
+	if (src.nodamage)
 		src.health = 100
 		src.stat = 0
 		return
@@ -577,14 +577,14 @@
 
 /mob/living/carbon/amorph/adjustBruteLoss(var/amount, var/used_weapon = null)
 	src.bruteloss += amount
-	if(bruteloss < 0) bruteloss = 0
+	if (bruteloss < 0) bruteloss = 0
 
 /mob/living/carbon/amorph/getFireLoss()
 	return src.fireloss
 
 /mob/living/carbon/amorph/adjustFireLoss(var/amount,var/used_weapon = null)
 	src.fireloss += amount
-	if(fireloss < 0) fireloss = 0
+	if (fireloss < 0) fireloss = 0
 
 /mob/living/carbon/amorph/get_visible_gender()
 	return gender

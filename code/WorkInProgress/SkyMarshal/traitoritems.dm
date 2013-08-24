@@ -28,17 +28,17 @@
 
 /obj/item/device/jammer/attack_self(mob/user)
 
-	if(time_remaining > 0)
+	if (time_remaining > 0)
 		on = !on
 		icon_state = "t-ray[on]"
 
-		if(on)
+		if (on)
 			processing_objects.Add(src)
 	else
 		on = 0
 		icon_state = "t-ray0"
 		user << "It's fried itself from overuse!"
-		if(Old)
+		if (Old)
 			for(var/obj/item/device/radio/T in Old)
 				T.scrambleoverride = 0
 			Old = null
@@ -46,7 +46,7 @@
 
 
 /obj/item/device/jammer/process()
-	if(!on)
+	if (!on)
 		processing_objects.Remove(src)
 		return null
 
@@ -58,7 +58,7 @@
 		T.scrambleoverride = 1
 		Curr |= T
 		for(var/obj/item/device/radio/V in Old)
-			if(V == T)
+			if (V == T)
 				Old -= V
 				break
 
@@ -66,7 +66,7 @@
 		T.scrambleoverride = 0
 
 	time_remaining--
-	if(time_remaining <= 0)
+	if (time_remaining <= 0)
 		for(var/mob/O in viewers(src))
 			O.show_message("\red You hear a loud pop, like circuits frying.", 1)
 		on = 0

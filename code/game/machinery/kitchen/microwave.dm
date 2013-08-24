@@ -48,8 +48,8 @@
 ********************/
 
 /obj/machinery/microwave/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	if(src.broken > 0)
-		if(src.broken == 2 && istype(O, /obj/item/weapon/screwdriver)) // If it's broken and they're using a screwdriver
+	if (src.broken > 0)
+		if (src.broken == 2 && istype(O, /obj/item/weapon/screwdriver)) // If it's broken and they're using a screwdriver
 			user.visible_message( \
 				"\blue [user] starts to fix part of the microwave.", \
 				"\blue You start to fix part of the microwave." \
@@ -60,7 +60,7 @@
 					"\blue You have fixed part of the microwave." \
 				)
 				src.broken = 1 // Fix it a bit
-		else if(src.broken == 1 && istype(O, /obj/item/weapon/wrench)) // If it's broken and they're doing the wrench
+		else if (src.broken == 1 && istype(O, /obj/item/weapon/wrench)) // If it's broken and they're doing the wrench
 			user.visible_message( \
 				"\blue [user] starts to fix part of the microwave.", \
 				"\blue You start to fix part of the microwave." \
@@ -77,8 +77,8 @@
 		else
 			user << "\red It's broken!"
 			return 1
-	else if(src.dirty==100) // The microwave is all dirty so can't be used!
-		if(istype(O, /obj/item/weapon/reagent_containers/spray/cleaner)) // If they're trying to clean it then let them
+	else if (src.dirty==100) // The microwave is all dirty so can't be used!
+		if (istype(O, /obj/item/weapon/reagent_containers/spray/cleaner)) // If they're trying to clean it then let them
 			user.visible_message( \
 				"\blue [user] starts to clean the microwave.", \
 				"\blue You start to clean the microwave." \
@@ -95,7 +95,7 @@
 		else //Otherwise bad luck!!
 			user << "\red It's dirty!"
 			return 1
-	else if(is_type_in_list(O,acceptable_items))
+	else if (is_type_in_list(O,acceptable_items))
 		if (contents.len>=max_n_of_items)
 			user << "\red This [src] is full of ingredients, you cannot put more."
 			return 1
@@ -112,7 +112,7 @@
 			user.visible_message( \
 				"\blue [user] has added \the [O] to \the [src].", \
 				"\blue You add \the [O] to \the [src].")
-	else if(istype(O,/obj/item/weapon/reagent_containers/glass) || \
+	else if (istype(O,/obj/item/weapon/reagent_containers/glass) || \
 	        istype(O,/obj/item/weapon/reagent_containers/food/drinks) || \
 	        istype(O,/obj/item/weapon/reagent_containers/food/condiment) \
 		)
@@ -123,7 +123,7 @@
 				user << "\red Your [O] contains components unsuitable for cookery."
 				return 1
 		//G.reagents.trans_to(src,G.amount_per_transfer_from_this)
-	else if(istype(O,/obj/item/weapon/grab))
+	else if (istype(O,/obj/item/weapon/grab))
 		var/obj/item/weapon/grab/G = O
 		user << "\red This is ridiculous. You can not fit \the [G.affecting] in this [src]."
 		return 1
@@ -148,11 +148,11 @@
 
 /obj/machinery/microwave/interact(mob/user as mob) // The microwave Menu
 	var/dat = ""
-	if(src.broken > 0)
+	if (src.broken > 0)
 		dat = {"<TT>Bzzzzttttt</TT>"}
-	else if(src.operating)
+	else if (src.operating)
 		dat = {"<TT>Microwaving in progress!<BR>Please wait...!</TT>"}
-	else if(src.dirty==100)
+	else if (src.dirty==100)
 		dat = {"<TT>This microwave is dirty!<BR>Please clean it before use!</TT>"}
 	else
 		var/list/items_counts = new
@@ -215,7 +215,7 @@
 ************************************/
 
 /obj/machinery/microwave/proc/cook()
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 	start()
 	if (reagents.total_volume==0 && !(locate(/obj) in contents)) //dry run
@@ -267,7 +267,7 @@
 			return
 		cooked = recipe.make_food(src)
 		stop()
-		if(cooked)
+		if (cooked)
 			cooked.loc = src.loc
 		return
 
@@ -354,11 +354,11 @@
 	return ffuu
 
 /obj/machinery/microwave/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 
 	usr.set_machine(src)
-	if(src.operating)
+	if (src.operating)
 		src.updateUsrDialog()
 		return
 

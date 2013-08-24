@@ -4,7 +4,7 @@
 
 	receive_user_command(command)
 		switch(command)
-			if("vent_inactive")
+			if ("vent_inactive")
 				var/datum/signal/signal = new
 				signal.data = list(
 					"tag" = airpump_tag,
@@ -13,7 +13,7 @@
 				signal.data["power"] = 0
 				post_signal(signal)
 
-			if("vent_pump")
+			if ("vent_pump")
 				var/datum/signal/signal = new
 				signal.data = list(
 					"tag" = airpump_tag,
@@ -23,7 +23,7 @@
 				signal.data["power"] = 1
 				post_signal(signal)
 
-			if("vent_clear")
+			if ("vent_clear")
 				var/datum/signal/signal = new
 				signal.transmission_method = 1 //radio signal
 				signal.data = list(
@@ -62,7 +62,7 @@
 		program = new_prog
 
 	update_icon()
-		if(on && program)
+		if (on && program)
 			icon_state = "airlock_control_standby"
 		else
 			icon_state = "airlock_control_off"

@@ -61,12 +61,12 @@
 		owned_pad = locate() in orange(1, src)
 
 /obj/machinery/artifact_analyser/attack_hand(var/mob/user as mob)
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 	user.machine = src
 	var/dat = "<B>Artifact Analyser</B><BR>"
 	dat += "<HR><BR>"
-	if(!owned_pad)
+	if (!owned_pad)
 		dat += "<B><font color=red>Unable to locate analysis pad.</font><BR></b>"
 		dat += "<HR><BR>"
 	else if (!src.working)
@@ -89,32 +89,32 @@
 	onclose(user, "artanalyser")
 
 /obj/machinery/artifact_analyser/process()
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 	use_power(350)
 	//
-	if(!owned_pad)
+	if (!owned_pad)
 		for(var/obj/machinery/analyser_pad/pad in range(1))
 			owned_pad = pad
 			break
 
 /obj/machinery/artifact_analyser/proc/AA_FailedAnalysis(var/failtype)
 	switch(failtype)
-		if(1)
+		if (1)
 			src.aorigin = "Failed to Identify"
 			if (prob(20)) src.aorigin = pick(src.allorigins)
-		if(2)
+		if (2)
 			src.atrigger = "Failed to Identify"
 			if (prob(20)) src.atrigger = pick(src.alltriggers)
-		if(3)
+		if (3)
 			src.aeffect1 = "Failed to Identify"
 			if (prob(20)) src.aeffect1 = pick(src.alleffects)
-		if(4)
+		if (4)
 			src.aeffect2 = "Failed to Identify"
 			if (prob(20)) src.aeffect2 = pick(src.allranges)
 
 /obj/machinery/artifact_analyser/proc/AA_Analyse()
-	if(!cur_artifact)
+	if (!cur_artifact)
 		return
 	src.accuO = 5 + rand(0,10) + origin_bonuses[cur_artifact.origin] + cur_artifact.activated * 50
 	src.accuT = 5 + rand(0,10) + trigger_bonuses[cur_artifact.origin] + cur_artifact.activated * 50
@@ -126,19 +126,19 @@
 	var/trigger_correct = 0
 	var/function_correct = 0
 	var/range_correct = 0
-	if(cur_id == cur_artifact.display_id)
-		if(src.aorigin == cur_artifact.origin)
+	if (cur_id == cur_artifact.display_id)
+		if (src.aorigin == cur_artifact.origin)
 			origin_correct = 1
 
-		if(src.atrigger == cur_artifact.my_effect.trigger)
+		if (src.atrigger == cur_artifact.my_effect.trigger)
 			trigger_correct = 1
-		else if(src.atrigger == cur_artifact.my_effect.triggerX)
+		else if (src.atrigger == cur_artifact.my_effect.triggerX)
 			trigger_correct = 1
 
-		if(src.aeffect1 == cur_artifact.my_effect.effecttype)
+		if (src.aeffect1 == cur_artifact.my_effect.effecttype)
 			function_correct = 1
 
-		if(src.aeffect2 == cur_artifact.my_effect.effectmode)
+		if (src.aeffect2 == cur_artifact.my_effect.effectmode)
 			range_correct = 1
 
 	if (src.accuO > 100) src.accuO = 100
@@ -148,11 +148,11 @@
 	// Roll to generate report
 	if (prob(accuO) || origin_correct)
 		switch(cur_artifact.origin)
-			if("ancient") src.aorigin = "Ancient Robots"
-			if("martian") src.aorigin = "Martian"
-			if("wizard") src.aorigin = "Wizard Federation"
-			if("eldritch") src.aorigin = "Extradimensional"
-			if("precursor") src.aorigin = "Precursor"
+			if ("ancient") src.aorigin = "Ancient Robots"
+			if ("martian") src.aorigin = "Martian"
+			if ("wizard") src.aorigin = "Wizard Federation"
+			if ("eldritch") src.aorigin = "Extradimensional"
+			if ("precursor") src.aorigin = "Precursor"
 			else src.aorigin = "Unknown Origin"
 		origin_bonuses[cur_artifact.origin] += 10
 	else
@@ -160,16 +160,16 @@
 		origin_bonuses[cur_artifact.origin] += 5
 	if (prob(accuT) || trigger_correct)
 		switch(cur_artifact.my_effect.trigger)
-			if("touch") src.atrigger = "Contact with Living Organism"
-			if("force") src.atrigger = "Heavy Impact"
-			if("energy") src.atrigger = "Contact with Energy Source"
-			if("chemical")
+			if ("touch") src.atrigger = "Contact with Living Organism"
+			if ("force") src.atrigger = "Heavy Impact"
+			if ("energy") src.atrigger = "Contact with Energy Source"
+			if ("chemical")
 				switch(cur_artifact.my_effect.triggerX)
-					if("hydrogen") src.atrigger = "Contact with Hydrogen"
-					if("corrosive") src.atrigger = "Contact with Corrosive Substance"
-					if("volatile") src.atrigger = "Contact with Volatile Substance"
-					if("toxin") src.atrigger = "Contact with Toxins"
-			if("heat") src.atrigger = "Exposure to Heat"
+					if ("hydrogen") src.atrigger = "Contact with Hydrogen"
+					if ("corrosive") src.atrigger = "Contact with Corrosive Substance"
+					if ("volatile") src.atrigger = "Contact with Volatile Substance"
+					if ("toxin") src.atrigger = "Contact with Toxins"
+			if ("heat") src.atrigger = "Exposure to Heat"
 			else src.atrigger = "Unknown Trigger"
 		trigger_bonuses[cur_artifact.origin] += 5
 	else
@@ -177,16 +177,16 @@
 		trigger_bonuses[cur_artifact.origin] += 1
 	if (prob(accuE1) || function_correct)
 		switch(cur_artifact.my_effect.effecttype)
-			if("healing")  src.aeffect1 = "Healing Device"
-			if("injure") src.aeffect1 = "Anti-biological Weapon"
-			// if("stun") src.aeffect1 = "Non-lethal Stunning Trap"
-			if("roboheal") src.aeffect1 = "Mechanoid Repair Module"
-			if("robohurt") src.aeffect1 = "Mechanoid Deconstruction Device"
-			if("cellcharge") src.aeffect1 = "Power Generator"
-			if("celldrain") src.aeffect1 = "Power Drain"
-			if("planthelper") src.aeffect1 = "Agriculture Regulator"
-			if("forcefield") src.aeffect1 = "Shield Generator"
-			if("teleport") src.aeffect1 = "Space-Time Displacer"
+			if ("healing")  src.aeffect1 = "Healing Device"
+			if ("injure") src.aeffect1 = "Anti-biological Weapon"
+			// if ("stun") src.aeffect1 = "Non-lethal Stunning Trap"
+			if ("roboheal") src.aeffect1 = "Mechanoid Repair Module"
+			if ("robohurt") src.aeffect1 = "Mechanoid Deconstruction Device"
+			if ("cellcharge") src.aeffect1 = "Power Generator"
+			if ("celldrain") src.aeffect1 = "Power Drain"
+			if ("planthelper") src.aeffect1 = "Agriculture Regulator"
+			if ("forcefield") src.aeffect1 = "Shield Generator"
+			if ("teleport") src.aeffect1 = "Space-Time Displacer"
 			else src.aeffect1 = "Unknown Effect"
 		function_bonuses[cur_artifact.origin] += 5
 	else
@@ -194,12 +194,12 @@
 		function_bonuses[cur_artifact.origin] += 1
 	if (prob(accuE2) || range_correct)
 		switch(cur_artifact.my_effect.effectmode)
-			if("aura") src.aeffect2 = "Constant Short-Range Energy Field"
-			if("pulse")
-				if(cur_artifact.my_effect.aurarange > 7) src.aeffect2 = "Long Range Energy Pulses"
+			if ("aura") src.aeffect2 = "Constant Short-Range Energy Field"
+			if ("pulse")
+				if (cur_artifact.my_effect.aurarange > 7) src.aeffect2 = "Long Range Energy Pulses"
 				else src.aeffect2 = "Medium Range Energy Pulses"
-			if("worldpulse") src.aeffect2 = "Extreme Range Energy Pulses"
-			if("contact") src.aeffect2 = "Requires contact with subject"
+			if ("worldpulse") src.aeffect2 = "Extreme Range Energy Pulses"
+			if ("contact") src.aeffect2 = "Requires contact with subject"
 			else src.aeffect2 = "Unknown Range"
 		range_bonuses[cur_artifact.origin] += 5
 	else
@@ -213,15 +213,15 @@
 
 /obj/machinery/artifact_analyser/Topic(href, href_list)
 
-	if(href_list["analyse"])
-		if(owned_pad)
+	if (href_list["analyse"])
+		if (owned_pad)
 			var/turf/pad_turf = get_turf(owned_pad)
 			var/findarti = 0
 			for(var/obj/machinery/artifact/A in pad_turf.contents)
 				findarti++
 				cur_artifact = A
 			if (findarti == 1)
-				if(cur_artifact && cur_artifact.being_used)
+				if (cur_artifact && cur_artifact.being_used)
 					var/message = "<b>[src]</b> states, \"Cannot analyse. Excess energy drain is disrupting signal.\""
 					src.visible_message(message, message)
 				else
@@ -242,7 +242,7 @@
 						icon_state = "analyser"
 						cur_artifact.anchored = 0
 						cur_artifact.being_used = 0
-						if(cur_artifact.loc == pad_turf)
+						if (cur_artifact.loc == pad_turf)
 							AA_Analyse()
 							scan_num++
 							message = "<b>[src]</b> states, \"Analysis complete.\""
@@ -255,19 +255,19 @@
 				var/message = "<b>[src]</b> states, \"Cannot analyse. No noteworthy energy signature isolated.\""
 				src.visible_message(message, message)
 
-	if(href_list["upload"] && cur_id != "")
+	if (href_list["upload"] && cur_id != "")
 		//add new datum to every DB in the world
 		for(var/obj/machinery/computer/artifact_database/DB in world)
 			var/update = 0
 			for(var/datum/catalogued_artifact/CA in DB.catalogued_artifacts)
-				if(CA.display_id == cur_id)
+				if (CA.display_id == cur_id)
 					//already there, so update it
 					update = 1
 					CA.origin = aorigin + " ([accuO]%)"
 					CA.trigger = atrigger + " ([accuT]%)"
 					CA.effecttype = aeffect1 + " ([accuE1]%)"
 					CA.effectmode = aeffect2 + " ([accuE2]%)"
-			if(!update)
+			if (!update)
 				//not there, so add it
 				var/datum/catalogued_artifact/CA = new()
 				CA.display_id = cur_id
@@ -278,7 +278,7 @@
 				DB.catalogued_artifacts.Add(CA)
 			use_power(100)
 
-	if(href_list["print"])
+	if (href_list["print"])
 		var/r = "Artifact Analysis Report (Scan #[scan_num])<hr>"
 		r += "<B>Artifact ID:</B> [cur_id] (determined from unique energy emission signatures)<BR>"
 		r += "<B>Artifact Origin:</B> [aorigin] ([accuO]%)<BR>"
@@ -292,7 +292,7 @@
 			O.show_message("\icon[src] \blue The [src.name] prints a sheet of paper", 3)
 		use_power(10)
 
-	if(href_list["close"])
+	if (href_list["close"])
 		usr << browse(null, "window=artanalyser")
 		usr.machine = null
 
@@ -312,7 +312,7 @@
 	/*spawn(10)
 		for(var/obj/machinery/artifact_analyser/analyser in orange(1))
 			world << "pad found analyser"
-			if(!analyser.owned_pad)
+			if (!analyser.owned_pad)
 				analyser.owned_pad = src
 				world << "pad set analyser to self"
 				break*/

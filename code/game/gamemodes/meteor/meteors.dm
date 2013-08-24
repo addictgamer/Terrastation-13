@@ -7,7 +7,7 @@
 /var/const/meteors_in_small_wave = 10
 
 /proc/meteor_wave(var/number = meteors_in_wave)
-	if(!ticker || wavesecret)
+	if (!ticker || wavesecret)
 		return
 
 	wavesecret = 1
@@ -35,22 +35,22 @@
 
 	do
 		switch(pick(1,2,3,4))
-			if(1) //NORTH
+			if (1) //NORTH
 				starty = world.maxy-(TRANSITIONEDGE+1)
 				startx = rand((TRANSITIONEDGE+1), world.maxx-(TRANSITIONEDGE+1))
 				endy = TRANSITIONEDGE
 				endx = rand(TRANSITIONEDGE, world.maxx-TRANSITIONEDGE)
-			if(2) //EAST
+			if (2) //EAST
 				starty = rand((TRANSITIONEDGE+1),world.maxy-(TRANSITIONEDGE+1))
 				startx = world.maxx-(TRANSITIONEDGE+1)
 				endy = rand(TRANSITIONEDGE, world.maxy-TRANSITIONEDGE)
 				endx = TRANSITIONEDGE
-			if(3) //SOUTH
+			if (3) //SOUTH
 				starty = (TRANSITIONEDGE+1)
 				startx = rand((TRANSITIONEDGE+1), world.maxx-(TRANSITIONEDGE+1))
 				endy = world.maxy-TRANSITIONEDGE
 				endx = rand(TRANSITIONEDGE, world.maxx-TRANSITIONEDGE)
-			if(4) //WEST
+			if (4) //WEST
 				starty = rand((TRANSITIONEDGE+1), world.maxy-(TRANSITIONEDGE+1))
 				startx = (TRANSITIONEDGE+1)
 				endy = rand(TRANSITIONEDGE,world.maxy-TRANSITIONEDGE)
@@ -59,7 +59,7 @@
 		pickedstart = locate(startx, starty, 1)
 		pickedgoal = locate(endx, endy, 1)
 		max_i--
-		if(max_i<=0) return
+		if (max_i<=0) return
 
 	while (!istype(pickedstart, /turf/space) || pickedstart.loc.name != "Space" ) //FUUUCK, should never happen.
 
@@ -67,11 +67,11 @@
 	var/obj/effect/meteor/M
 	switch(rand(1, 100))
 
-		if(1 to 10)
+		if (1 to 10)
 			M = new /obj/effect/meteor/big( pickedstart )
-		if(11 to 75)
+		if (11 to 75)
 			M = new /obj/effect/meteor( pickedstart )
-		if(76 to 100)
+		if (76 to 100)
 			M = new /obj/effect/meteor/small( pickedstart )
 
 	M.dest = pickedgoal
@@ -105,7 +105,7 @@
 /obj/effect/meteor/Bump(atom/A)
 	spawn(0)
 		for(var/mob/M in range(10, src))
-			if(!M.stat && !istype(M, /mob/living/silicon/ai)) //bad idea to shake an ai's view
+			if (!M.stat && !istype(M, /mob/living/silicon/ai)) //bad idea to shake an ai's view
 				shake_camera(M, 3, 1)
 		if (A)
 			A.meteorhit(src)
@@ -114,7 +114,7 @@
 
 			//Prevent meteors from blowing up the singularity's containment.
 			//Changing emitter and generator ex_act would result in them being bomb and C4 proof.
-			if(!istype(A,/obj/machinery/power/emitter) && \
+			if (!istype(A,/obj/machinery/power/emitter) && \
 				!istype(A,/obj/machinery/field_generator) && \
 				prob(15))
 
@@ -141,26 +141,26 @@
 		spawn(0)
 			//Prevent meteors from blowing up the singularity's containment.
 			//Changing emitter and generator ex_act would result in them being bomb and C4 proof
-			if(!istype(A,/obj/machinery/power/emitter) && \
+			if (!istype(A,/obj/machinery/power/emitter) && \
 				!istype(A,/obj/machinery/field_generator))
-				if(--src.hits <= 0)
+				if (--src.hits <= 0)
 					del(src) //Dont blow up singularity containment if we get stuck there.
 
 			for(var/mob/M in range(10, src))
-				if(!M.stat && !istype(M, /mob/living/silicon/ai)) //bad idea to shake an ai's view
+				if (!M.stat && !istype(M, /mob/living/silicon/ai)) //bad idea to shake an ai's view
 					shake_camera(M, 3, 1)
 			if (A)
 				explosion(src.loc, 0, 1, 2, 3, 0)
 				playsound(src.loc, 'sound/effects/meteorimpact.ogg', 40, 1)
 			if (--src.hits <= 0)
-				if(prob(15) && !istype(A, /obj/structure/grille))
+				if (prob(15) && !istype(A, /obj/structure/grille))
 					explosion(src.loc, 1, 2, 3, 4, 0)
 					playsound(src.loc, "explosion", 50, 1)
 				del(src)
 		return
 
 /obj/effect/meteor/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/pickaxe))
+	if (istype(W, /obj/item/weapon/pickaxe))
 		del(src)
 		return
 	..()

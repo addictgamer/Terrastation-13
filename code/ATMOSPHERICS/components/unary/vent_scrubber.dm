@@ -33,14 +33,14 @@
 		if (!id_tag)
 			assign_uid()
 			id_tag = num2text(uid)
-		if(ticker && ticker.current_state == 3)//if the game is running
+		if (ticker && ticker.current_state == 3)//if the game is running
 			src.initialize()
 			src.broadcast_status()
 		..()
 
 	update_icon()
-		if(node && on && !(stat & (NOPOWER|BROKEN)))
-			if(scrubbing)
+		if (node && on && !(stat & (NOPOWER|BROKEN)))
+			if (scrubbing)
 				icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]on"
 			else
 				icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]in"
@@ -55,7 +55,7 @@
 			radio_connection = radio_controller.add_object(src, frequency, radio_filter_in)
 
 		broadcast_status()
-			if(!radio_connection)
+			if (!radio_connection)
 				return 0
 
 			var/datum/signal/signal = new
@@ -74,7 +74,7 @@
 				"filter_n2o" = scrub_N2O,
 				"sigtype" = "status"
 			)
-			if(!initial_loc.air_scrub_names[id_tag])
+			if (!initial_loc.air_scrub_names[id_tag])
 				var/new_name = "[initial_loc.name] Air Scrubber #[initial_loc.air_scrub_names.len+1]"
 				initial_loc.air_scrub_names[id_tag] = new_name
 				src.name = new_name
@@ -92,19 +92,19 @@
 
 	process()
 		..()
-		if(stat & (NOPOWER|BROKEN))
+		if (stat & (NOPOWER|BROKEN))
 			return
 		if (!node)
 			on = 0
 		//broadcast_status()
-		if(!on)
+		if (!on)
 			return 0
 
 
 		var/datum/gas_mixture/environment = loc.return_air()
 
-		if(scrubbing)
-			if((environment.toxins>0) || (environment.carbon_dioxide>0) || (environment.trace_gases.len>0))
+		if (scrubbing)
+			if ((environment.toxins>0) || (environment.carbon_dioxide>0) || (environment.trace_gases.len>0))
 				var/transfer_moles = min(1, volume_rate/environment.volume)*environment.total_moles()
 
 				//Take a gas sample
@@ -115,19 +115,19 @@
 				//Filter it
 				var/datum/gas_mixture/filtered_out = new
 				filtered_out.temperature = removed.temperature
-				if(scrub_Toxins)
+				if (scrub_Toxins)
 					filtered_out.toxins = removed.toxins
 					removed.toxins = 0
-				if(scrub_CO2)
+				if (scrub_CO2)
 					filtered_out.carbon_dioxide = removed.carbon_dioxide
 					removed.carbon_dioxide = 0
 
-				if(removed.trace_gases.len>0)
+				if (removed.trace_gases.len>0)
 					for(var/datum/gas/trace_gas in removed.trace_gases)
-						if(istype(trace_gas, /datum/gas/oxygen_agent_b))
+						if (istype(trace_gas, /datum/gas/oxygen_agent_b))
 							removed.trace_gases -= trace_gas
 							filtered_out.trace_gases += trace_gas
-						else if(istype(trace_gas, /datum/gas/sleeping_agent) && scrub_N2O)
+						else if (istype(trace_gas, /datum/gas/sleeping_agent) && scrub_N2O)
 							removed.trace_gases -= trace_gas
 							filtered_out.trace_gases += trace_gas
 
@@ -137,7 +137,7 @@
 
 				loc.assume_air(removed)
 
-				if(network)
+				if (network)
 					network.update = 1
 
 		else //Just siphoning all air
@@ -150,14 +150,14 @@
 
 			air_contents.merge(removed)
 
-			if(network)
+			if (network)
 				network.update = 1
 
 		return 1
 /* //unused piece of code
 	hide(var/i) //to make the little pipe section invisible, the icon changes.
-		if(on&&node)
-			if(scrubbing)
+		if (on&&node)
+			if (scrubbing)
 				icon_state = "[i == 1 && istype(loc, /turf/simulated) ? "h" : "" ]on"
 			else
 				icon_state = "[i == 1 && istype(loc, /turf/simulated) ? "h" : "" ]in"
@@ -168,28 +168,28 @@
 */
 
 	receive_signal(datum/signal/signal)
-		if(stat & (NOPOWER|BROKEN))
+		if (stat & (NOPOWER|BROKEN))
 			return
-		if(!signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
+		if (!signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
 			return 0
 
-		if(signal.data["power"] != null)
+		if (signal.data["power"] != null)
 			on = text2num(signal.data["power"])
-		if(signal.data["power_toggle"] != null)
+		if (signal.data["power_toggle"] != null)
 			on = !on
 
-		if(signal.data["panic_siphon"]) //must be before if("scrubbing" thing
+		if (signal.data["panic_siphon"]) //must be before if ("scrubbing" thing
 			panic = text2num(signal.data["panic_siphon"] != null)
-			if(panic)
+			if (panic)
 				on = 1
 				scrubbing = 0
 				volume_rate = 2000
 			else
 				scrubbing = 1
 				volume_rate = initial(volume_rate)
-		if(signal.data["toggle_panic_siphon"] != null)
+		if (signal.data["toggle_panic_siphon"] != null)
 			panic = !panic
-			if(panic)
+			if (panic)
 				on = 1
 				scrubbing = 0
 				volume_rate = 2000
@@ -197,31 +197,31 @@
 				scrubbing = 1
 				volume_rate = initial(volume_rate)
 
-		if(signal.data["scrubbing"] != null)
+		if (signal.data["scrubbing"] != null)
 			scrubbing = text2num(signal.data["scrubbing"])
-		if(signal.data["toggle_scrubbing"])
+		if (signal.data["toggle_scrubbing"])
 			scrubbing = !scrubbing
 
-		if(signal.data["co2_scrub"] != null)
+		if (signal.data["co2_scrub"] != null)
 			scrub_CO2 = text2num(signal.data["co2_scrub"])
-		if(signal.data["toggle_co2_scrub"])
+		if (signal.data["toggle_co2_scrub"])
 			scrub_CO2 = !scrub_CO2
 
-		if(signal.data["tox_scrub"] != null)
+		if (signal.data["tox_scrub"] != null)
 			scrub_Toxins = text2num(signal.data["tox_scrub"])
-		if(signal.data["toggle_tox_scrub"])
+		if (signal.data["toggle_tox_scrub"])
 			scrub_Toxins = !scrub_Toxins
 
-		if(signal.data["n2o_scrub"] != null)
+		if (signal.data["n2o_scrub"] != null)
 			scrub_N2O = text2num(signal.data["n2o_scrub"])
-		if(signal.data["toggle_n2o_scrub"])
+		if (signal.data["toggle_n2o_scrub"])
 			scrub_N2O = !scrub_N2O
 
-		if(signal.data["init"] != null)
+		if (signal.data["init"] != null)
 			name = signal.data["init"]
 			return
 
-		if(signal.data["status"] != null)
+		if (signal.data["status"] != null)
 			spawn(2)
 				broadcast_status()
 			return //do not update_icon
@@ -233,7 +233,7 @@
 		return
 
 	power_change()
-		if(powered(power_channel))
+		if (powered(power_channel))
 			stat &= ~NOPOWER
 		else
 			stat |= NOPOWER
@@ -266,7 +266,7 @@
 			del(src)
 
 /obj/machinery/atmospherics/unary/vent_scrubber/Del()
-	if(initial_loc)
+	if (initial_loc)
 		initial_loc.air_scrub_info -= id_tag
 		initial_loc.air_scrub_names -= id_tag
 	..()

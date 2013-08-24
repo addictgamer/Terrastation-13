@@ -14,7 +14,7 @@
 
 	New()
 		..()
-		if(projectile_type)
+		if (projectile_type)
 			BB = new projectile_type(src)
 		pixel_x = rand(-10.0, 10)
 		pixel_y = rand(-10.0, 10)
@@ -49,6 +49,6 @@
 
 
 	update_icon()
-		if(multiple_sprites)
+		if (multiple_sprites)
 			icon_state = "[initial(icon_state)]-[stored_ammo.len]"
 		desc = "There are [stored_ammo.len] shell\s left!"

@@ -26,28 +26,28 @@
 	stat = DEAD
 
 	var/turf/T
-	if(ismob(body))
+	if (ismob(body))
 		T = get_turf(body)				//Where is the body located?
 		attack_log = body.attack_log	//preserve our attack logs by copying them to our ghost
 
 		gender = body.gender
-		if(body.mind && body.mind.name)
+		if (body.mind && body.mind.name)
 			name = body.mind.name
 		else
-			if(body.real_name)
+			if (body.real_name)
 				name = body.real_name
 			else
-				if(gender == MALE)
+				if (gender == MALE)
 					name = capitalize(pick(first_names_male)) + " " + capitalize(pick(last_names))
 				else
 					name = capitalize(pick(first_names_female)) + " " + capitalize(pick(last_names))
 
 		mind = body.mind	//we don't transfer the mind but we keep a reference to it.
 
-	if(!T)	T = pick(latejoin)			//Safety in case we cannot find the body's position
+	if (!T)	T = pick(latejoin)			//Safety in case we cannot find the body's position
 	loc = T
 
-	if(!name)							//To prevent nameless ghosts
+	if (!name)							//To prevent nameless ghosts
 		name = capitalize(pick(first_names_male)) + " " + capitalize(pick(last_names))
 	real_name = name
 	..()
@@ -60,7 +60,7 @@ Works together with spawning an observer, noted above.
 */
 
 /mob/proc/ghostize(var/can_reenter_corpse = 1)
-	if(key)
+	if (key)
 		var/mob/dead/observer/ghost = new(src)	//Transfer safety to observer spawning proc.
 		ghost.can_reenter_corpse = can_reenter_corpse
 		ghost.timeofdeath = timeofdeath //BS12 EDIT
@@ -75,38 +75,38 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Ghost"
 	set desc = "Relinquish your life and enter the land of the dead."
 
-	if(stat == DEAD)
+	if (stat == DEAD)
 		ghostize(1)
 	else
 		var/response = alert(src, "Are you -sure- you want to ghost?\n(You are alive. If you ghost whilst still alive you may not play again this round! You can't change your mind so choose wisely!!)","Are you sure you want to ghost?","Ghost","Stay in body")
-		if(response != "Ghost")	return	//didn't want to ghost after-all
+		if (response != "Ghost")	return	//didn't want to ghost after-all
 		resting = 1
 		ghostize(0)						//0 parameter is so we can never re-enter our body, "Charlie, you can never come baaaack~" :3
 	return
 
 
 /mob/dead/observer/Move(NewLoc, direct)
-	if(NewLoc)
+	if (NewLoc)
 		loc = NewLoc
 		for(var/obj/effect/step_trigger/S in NewLoc)
 			S.HasEntered(src)
 
 		return
 	loc = get_turf(src) //Get out of closets and such as a ghost
-	if((direct & NORTH) && y < world.maxy)
+	if ((direct & NORTH) && y < world.maxy)
 		y++
-	else if((direct & SOUTH) && y > 1)
+	else if ((direct & SOUTH) && y > 1)
 		y--
-	if((direct & EAST) && x < world.maxx)
+	if ((direct & EAST) && x < world.maxx)
 		x++
-	else if((direct & WEST) && x > 1)
+	else if ((direct & WEST) && x > 1)
 		x--
 
 	for(var/obj/effect/step_trigger/S in locate(x, y, z))	//<-- this is dumb
 		S.HasEntered(src)
 
 /mob/dead/observer/examine()
-	if(usr)
+	if (usr)
 		usr << desc
 
 /mob/dead/observer/can_use_hands()	return 0
@@ -117,15 +117,15 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	statpanel("Status")
 	if (client.statpanel == "Status")
 		stat(null, "Station Time: [worldtime2text()]")
-		if(ticker)
-			if(ticker.mode)
+		if (ticker)
+			if (ticker.mode)
 				//world << "DEBUG: ticker not null"
-				if(ticker.mode.name == "AI malfunction")
+				if (ticker.mode.name == "AI malfunction")
 					//world << "DEBUG: malf mode ticker test"
-					if(ticker.mode:malf_mode_declared)
+					if (ticker.mode:malf_mode_declared)
 						stat(null, "Time left: [max(ticker.mode:AI_win_timeleft/(ticker.mode:apcs/3), 0)]")
-		if(emergency_shuttle)
-			if(emergency_shuttle.online && emergency_shuttle.location < 2)
+		if (emergency_shuttle)
+			if (emergency_shuttle.online && emergency_shuttle.location < 2)
 				var/timeleft = emergency_shuttle.timeleft()
 				if (timeleft)
 					stat(null, "ETA-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
@@ -133,16 +133,16 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/dead/observer/verb/reenter_corpse()
 	set category = "Ghost"
 	set name = "Re-enter Corpse"
-	if(!client)	return
-	if(!(mind && mind.current && can_reenter_corpse))
+	if (!client)	return
+	if (!(mind && mind.current && can_reenter_corpse))
 		src << "<span class='warning'>You have no body.</span>"
 		return
-	if(mind.current.key && copytext(mind.current.key,1,2)!="@")	//makes sure we don't accidentally kick any clients
+	if (mind.current.key && copytext(mind.current.key,1,2)!="@")	//makes sure we don't accidentally kick any clients
 		usr << "<span class='warning'>Another consciousness is in your body...It is resisting you.</span>"
 		return
-	if(mind.current.ajourn && mind.current.stat != DEAD) 	//check if the corpse is astral-journeying (it's client ghosted using a cultist rune).
+	if (mind.current.ajourn && mind.current.stat != DEAD) 	//check if the corpse is astral-journeying (it's client ghosted using a cultist rune).
 		var/obj/effect/rune/R = locate() in mind.current.loc	//whilst corpse is alive, we can only reenter the body if it's on the rune
-		if(!(R && R.word1 == cultwords["hell"] && R.word2 == cultwords["travel"] && R.word3 == cultwords["self"]))	//astral journeying rune
+		if (!(R && R.word1 == cultwords["hell"] && R.word2 == cultwords["travel"] && R.word3 == cultwords["self"]))	//astral journeying rune
 			usr << "<span class='warning'>The astral cord that ties your body and your spirit has been severed. You are likely to wander the realm beyond until your body is finally dead and thus reunited with you.</span>"
 			return
 	mind.current.ajourn=0
@@ -153,7 +153,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set category = "Ghost"
 	set name = "Teleport"
 	set desc= "Teleport to a location"
-	if(!istype(usr, /mob/dead/observer))
+	if (!istype(usr, /mob/dead/observer))
 		usr << "Not when you're not dead!"
 		return
 	usr.verbs -= /mob/dead/observer/proc/dead_tele
@@ -162,13 +162,13 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	var/A
 	A = input("Area to jump to", "BOOYEA", A) as null|anything in ghostteleportlocs
 	var/area/thearea = ghostteleportlocs[A]
-	if(!thearea)	return
+	if (!thearea)	return
 
 	var/list/L = list()
 	for(var/turf/T in get_area_turfs(thearea.type))
 		L+=T
 
-	if(!L || !L.len)
+	if (!L || !L.len)
 		usr << "No area available."
 
 	usr.loc = pick(L)
@@ -178,22 +178,22 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Follow" // "Haunt"
 	set desc = "Follow and haunt a mob."
 
-	if(istype(usr, /mob/dead/observer))
+	if (istype(usr, /mob/dead/observer))
 		var/list/mobs = getmobs()
 		var/input = input("Please, select a mob!", "Haunt", null, null) as null|anything in mobs
 		var/mob/target = mobs[input]
-		if(target && target != usr)
+		if (target && target != usr)
 			following = target
 			spawn(0)
 				var/turf/pos = get_turf(src)
 				while(src.loc == pos)
 
 					var/turf/T = get_turf(target)
-					if(!T)
+					if (!T)
 						break
-					if(following != target)
+					if (following != target)
 						break
-					if(!client)
+					if (!client)
 						break
 					src.loc = T
 					pos = src.loc
@@ -206,7 +206,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Jump to Mob"
 	set desc = "Teleport to a mob"
 
-	if(istype(usr, /mob/dead/observer)) //Make sure they're an observer!
+	if (istype(usr, /mob/dead/observer)) //Make sure they're an observer!
 
 
 		var/list/dest = list() //List of possible destinations (mobs)
@@ -222,7 +222,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 			var/mob/A = src			 //Source mob
 			var/turf/T = get_turf(M) //Turf of the destination mob
 
-			if(T && isturf(T))	//Make sure the turf exists, then move the source to that destination.
+			if (T && isturf(T))	//Make sure the turf exists, then move the source to that destination.
 				A.loc = T
 			else
 				A << "This mob is not located in the game world."
@@ -232,9 +232,9 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Boo!"
 	set desc= "Scare your crew members because of boredom!"
 
-	if(bootime > world.time) return
+	if (bootime > world.time) return
 	var/obj/machinery/light/L = locate(/obj/machinery/light) in view(1, src)
-	if(L)
+	if (L)
 		L.flicker()
 		bootime = world.time + 600
 		return
@@ -264,7 +264,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set category = "Ghost"
 
 	var/timedifference = world.time - client.time_died_as_mouse
-	if(client.time_died_as_mouse && timedifference <= mouse_respawn_time * 600)
+	if (client.time_died_as_mouse && timedifference <= mouse_respawn_time * 600)
 		var/timedifference_text
 		timedifference_text = time2text(mouse_respawn_time * 600 - timedifference,"mm:ss")
 		src << "<span class='warning'>You may only spawn again as a mouse more than [mouse_respawn_time] minutes after your death. You have [timedifference_text] left.</span>"
@@ -275,15 +275,15 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	var/obj/machinery/atmospherics/unary/vent_pump/vent_found
 	var/list/found_vents = list()
 	for(var/obj/machinery/atmospherics/unary/vent_pump/v in world)
-		if(!v.welded && v.z == src.z)
+		if (!v.welded && v.z == src.z)
 			found_vents.Add(v)
-	if(found_vents.len)
+	if (found_vents.len)
 		vent_found = pick(found_vents)
 		host = new /mob/living/simple_animal/mouse(vent_found.loc)
 	else
 		src << "<span class='warning'>Unable to find any unwelded vents to spawn mice at.</span>"
 
-	if(host)
+	if (host)
 		host.ckey = src.ckey
 		host << "<span class='info'>You are now a mouse. Try to avoid interaction with players, and do not give hints away that you are more than a simple rodent.</span>"
 

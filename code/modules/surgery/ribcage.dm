@@ -70,7 +70,7 @@
 		target.op_stage.ribcage = 2
 
 		// Whoops!
-		if(prob(10))
+		if (prob(10))
 			var/datum/organ/external/affected = target.get_organ(target_zone)
 			affected.fracture()
 
@@ -199,7 +199,7 @@
 	can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/is_chest_organ_damaged = 0
 		var/datum/organ/external/chest/chest = target.get_organ("chest")
-		for(var/datum/organ/internal/I in chest.internal_organs) if(I.damage > 0)
+		for(var/datum/organ/internal/I in chest.internal_organs) if (I.damage > 0)
 			is_chest_organ_damaged = 1
 			break
 		return ..() && is_chest_organ_damaged && target.op_stage.ribcage == 2
@@ -210,16 +210,16 @@
 		var/datum/organ/internal/liver/liver = target.internal_organs["liver"]
 		var/datum/organ/internal/liver/kidney = target.internal_organs["kidney"]
 
-		if(lungs.damage > 0)
+		if (lungs.damage > 0)
 			user.visible_message("[user] starts mending the rupture in [target]'s lungs with \the [tool].", \
 			"You start mending the rupture in [target]'s lungs with \the [tool]." )
-		if(heart.damage > 0)
+		if (heart.damage > 0)
 			user.visible_message("[user] starts mending the bruises on [target]'s heart with \the [tool].", \
 			"You start mending the bruises on [target]'s heart with \the [tool]." )
-		if(liver.damage > 0)
+		if (liver.damage > 0)
 			user.visible_message("[user] starts mending the bruises on [target]'s liver with \the [tool].", \
 			"You start mending the bruises on [target]'s liver with \the [tool]." )
-		if(kidney.damage > 0)
+		if (kidney.damage > 0)
 			user.visible_message("[user] starts mending the bruises on [target]'s kidney with \the [tool].", \
 			"You start mending the bruises on [target]'s kidney with \the [tool]." )
 		target.custom_pain("The pain in your chest is living hell!",1)
@@ -231,22 +231,22 @@
 		var/datum/organ/internal/liver/liver = target.internal_organs["liver"]
 		var/datum/organ/internal/liver/kidney = target.internal_organs["kidney"]
 
-		if(lungs.damage > 0)
+		if (lungs.damage > 0)
 			user.visible_message("\blue [user] mends the rupture in [target]'s lungs with \the [tool].", \
 			"\blue You mend the rupture in [target]'s lungs with \the [tool]." )
 			lungs.damage = 0
 
-		if(heart.damage > 0)
+		if (heart.damage > 0)
 			user.visible_message("\blue [user] treats the bruises on [target]'s heart with \the [tool].", \
 			"\blue You treats the bruises on [target]'s heart with \the [tool]." )
 			heart.damage = 0
 
-		if(liver.damage > 0)
+		if (liver.damage > 0)
 			user.visible_message("\blue [user] treats the bruises on [target]'s liver with \the [tool].", \
 			"\blue You treats the bruises on [target]'s liver with \the [tool]." )
 			liver.damage = 0
 
-		if(kidney.damage > 0)
+		if (kidney.damage > 0)
 			user.visible_message("\blue [user] treats the bruises on [target]'s kidney with \the [tool].", \
 			"\blue You treats the bruises on [target]'s kidney with \the [tool]." )
 			kidney.damage = 0

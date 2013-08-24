@@ -67,7 +67,7 @@
 
 		var/turf/L = loc
 
-		if(!istype(L)) //If we are not on a turf, uh oh.
+		if (!istype(L)) //If we are not on a turf, uh oh.
 			del src
 
 		//Ok, get the air from the turf
@@ -79,27 +79,27 @@
 		if (!removed)
 			return 1
 
-		if(damage > warning_point) // while the core is still damaged and it's still worth noting its status
-			if((world.timeofday - lastwarning) / 10 >= WARNING_DELAY)
+		if (damage > warning_point) // while the core is still damaged and it's still worth noting its status
+			if ((world.timeofday - lastwarning) / 10 >= WARNING_DELAY)
 
-				if(damage > emergency_point)
+				if (damage > emergency_point)
 					//radioalert("states, \"[emergency_alert]\"","Supermatter Monitor")
 					lastwarning = world.timeofday
-				else if(damage >= damage_archived)   // The damage is still going up
+				else if (damage >= damage_archived)   // The damage is still going up
 					//radioalert("states, \"[warning_alert]\"","Supermatter Monitor")
 					lastwarning = world.timeofday-150
 				else						  // Phew, we're safe
 					//radioalert("states, \"[safe_alert]\"","Supermatter Monitor")
 					lastwarning = world.timeofday
 
-			if(damage > explosion_point)
+			if (damage > explosion_point)
 				explosion(loc,explosion_power,explosion_power*2,explosion_power*3,explosion_power*4,1)
 				del src
 
 		damage_archived = damage
 		damage = max( damage + ( (removed.temperature - 800) / 150 ) , 0 )
 
-		if(!removed.total_moles)
+		if (!removed.total_moles)
 			damage += max((power-1600)/10,0)
 			power = max(power,1600)
 			return 1
@@ -108,7 +108,7 @@
 		var/oxygen = max(min(removed.oxygen / removed.total_moles - nitrogen_mod, 1), 0)
 
 		var/temp_factor = 0
-		if(oxygen > 0.8)
+		if (oxygen > 0.8)
 			// with a perfect gas mix, make the power less based on heat
 			temp_factor = 100
 			icon_state = "[base_icon_state]_glow"
@@ -138,14 +138,14 @@
 		var/other_energy = device_energy * (1- (OXYGEN_RELEASE_MODIFIER + PLASMA_RELEASE_MODIFIER))
 
 		//Put as much plasma out as is permitted.
-		if( plasma_energy > removed.total_moles * PLASMA_CONVERSION_FACTOR * MAX_PLASMA_RELATIVE_INCREASE / gasefficency)
+		if ( plasma_energy > removed.total_moles * PLASMA_CONVERSION_FACTOR * MAX_PLASMA_RELATIVE_INCREASE / gasefficency)
 			removed.toxins += (MAX_PLASMA_RELATIVE_INCREASE * removed.total_moles / gasefficency)
 			other_energy += plasma_energy - (removed.total_moles * PLASMA_CONVERSION_FACTOR * MAX_PLASMA_RELATIVE_INCREASE / gasefficency)
 		else
 			removed.toxins += plasma_energy/PLASMA_CONVERSION_FACTOR
 
 		//Put as much plasma out as is permitted.
-		if( oxygen_energy > removed.total_moles * OXYGEN_CONVERSION_FACTOR * MAX_OXYGEN_RELATIVE_INCREASE / gasefficency)
+		if ( oxygen_energy > removed.total_moles * OXYGEN_CONVERSION_FACTOR * MAX_OXYGEN_RELATIVE_INCREASE / gasefficency)
 			removed.oxygen += (MAX_OXYGEN_RELATIVE_INCREASE * removed.total_moles / gasefficency)
 			other_energy += oxygen_energy - (removed.total_moles * OXYGEN_CONVERSION_FACTOR * MAX_OXYGEN_RELATIVE_INCREASE / gasefficency)
 		else
@@ -157,7 +157,7 @@
 		var/rad_energy = (other_energy*RADIATION_POWER_MODIFIER*RADIATION_FACTOR)/(1-(OXYGEN_RELEASE_MODIFIER + PLASMA_RELEASE_MODIFIER))
 
 		var/heat_applied = max(heat_energy,0)
-		if(heat_applied + removed.temperature > 800)
+		if (heat_applied + removed.temperature > 800)
 			removed.temperature = 800
 			var/energy_to_reconsider = (heat_applied + removed.temperature - 800)
 			hallucination_energy += (energy_to_reconsider*HALLUCINATION_POWER_MODIFIER)/(HALLUCINATION_POWER_MODIFIER+RADIATION_POWER_MODIFIER)
@@ -170,7 +170,7 @@
 		env.merge(removed)
 
 		for(var/mob/living/carbon/human/l in view(src, round(hallucination_energy**0.25))) // you have to be seeing the core to get hallucinations
-			if(prob(10) && !istype(l.glasses, /obj/item/clothing/glasses/meson))
+			if (prob(10) && !istype(l.glasses, /obj/item/clothing/glasses/meson))
 				l.hallucination += hallucination_energy/((get_dist(l,src)**2))
 
 		for(var/mob/living/l in range(src,round(rad_energy**0.25)))
@@ -181,6 +181,6 @@
 
 
 	bullet_act(var/obj/item/projectile/Proj)
-		if(Proj.flag != "bullet")
+		if (Proj.flag != "bullet")
 			power += Proj.damage
 		return 0

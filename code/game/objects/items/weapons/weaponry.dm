@@ -52,13 +52,13 @@
 		return
 
 	if (M.stat !=2)
-		if((M.mind in ticker.mode.cult) && prob(33))
+		if ((M.mind in ticker.mode.cult) && prob(33))
 			M << "\red The power of [src] clears your mind of the cult's influence!"
 			user << "\red You wave [src] over [M]'s head and see their eyes become clear, their mind returning to normal."
 			ticker.mode.remove_cultist(M.mind)
 			for(var/mob/O in viewers(M, null))
 				O.show_message(text("\red [] waves [] over []'s head.", user, src, M), 1)
-		else if(prob(10))
+		else if (prob(10))
 			user << "\red The rod slips in your hand."
 			..()
 		else

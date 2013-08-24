@@ -38,10 +38,10 @@
 		user << "*** <B>[plantname]</B> ***"
 		user << "-Plant Endurance: \blue [endurance]"
 		user << "-Plant Lifespan: \blue [lifespan]"
-		if(yield != -1)
+		if (yield != -1)
 			user << "-Plant Yield: \blue [yield]"
 		user << "-Plant Production: \blue [production]"
-		if(potency != -1)
+		if (potency != -1)
 			user << "-Plant Potency: \blue [potency]"
 		return
 	..() // Fallthrough to item/attackby() so that bags can pick seeds up
@@ -1038,7 +1038,7 @@
 	plant_type = 1
 
 /obj/item/seeds/kudzuseed/attack_self(mob/user as mob)
-	if(istype(user.loc,/turf/space))
+	if (istype(user.loc,/turf/space))
 		return
 	user << "<span class='notice'>You plant the kudzu. You monster.</span>"
 	new /obj/effect/spacevine_controller(user.loc)
@@ -1132,14 +1132,14 @@
 	attack_verb = list("bashed", "battered", "bludgeoned", "whacked")
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon/circular_saw) || istype(W, /obj/item/weapon/hatchet) || (istype(W, /obj/item/weapon/twohanded/fireaxe) && W:wielded) || istype(W, /obj/item/weapon/melee/energy))
+		if (istype(W, /obj/item/weapon/circular_saw) || istype(W, /obj/item/weapon/hatchet) || (istype(W, /obj/item/weapon/twohanded/fireaxe) && W:wielded) || istype(W, /obj/item/weapon/melee/energy))
 			user.show_message("<span class='notice'>You make planks out of the [src]!</span>", 1)
 			for(var/i=0,i<2,i++)
 				var/obj/item/stack/sheet/wood/NG = new (user.loc)
 				for (var/obj/item/stack/sheet/wood/G in user.loc)
-					if(G==NG)
+					if (G==NG)
 						continue
-					if(G.amount>=G.max_amount)
+					if (G.amount>=G.max_amount)
 						continue
 					G.attackby(NG, user)
 					usr << "You add the newly-formed wood to the stack. It now contains [NG.amount] planks."

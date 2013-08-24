@@ -69,45 +69,45 @@
 		var/pickednum = rand(1, 50)
 
 		//Sad trombone
-		if(pickednum == 1)
+		if (pickednum == 1)
 			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(src)
 			P.name = "IOU"
 			P.info = "Sorry man, we needed the money so we sold your stash. It's ok, we'll double our money for sure this time!"
 
 		//Metal (common ore)
-		if(pickednum >= 2)
+		if (pickednum >= 2)
 			new /obj/item/stack/sheet/metal(src, rand(common_min, common_max))
 
 		//Glass (common ore)
-		if(pickednum >= 5)
+		if (pickednum >= 5)
 			new /obj/item/stack/sheet/glass(src, rand(common_min, common_max))
 
 		//Plasteel (common ore) Because it has a million more uses then plasma
-		if(pickednum >= 10)
+		if (pickednum >= 10)
 			new /obj/item/stack/sheet/plasteel(src, rand(common_min, common_max))
 
 		//Plasma (rare ore)
-		if(pickednum >= 15)
+		if (pickednum >= 15)
 			new /obj/item/stack/sheet/mineral/plasma(src, rand(rare_min, rare_max))
 
 		//Silver (rare ore)
-		if(pickednum >= 20)
+		if (pickednum >= 20)
 			new /obj/item/stack/sheet/mineral/silver(src, rand(rare_min, rare_max))
 
 		//Gold (rare ore)
-		if(pickednum >= 30)
+		if (pickednum >= 30)
 			new /obj/item/stack/sheet/mineral/gold(src, rand(rare_min, rare_max))
 
 		//Uranium (rare ore)
-		if(pickednum >= 40)
+		if (pickednum >= 40)
 			new /obj/item/stack/sheet/mineral/uranium(src, rand(rare_min, rare_max))
 
 		//Diamond (rare HONK)
-		if(pickednum >= 45)
+		if (pickednum >= 45)
 			new /obj/item/stack/sheet/mineral/diamond(src, rand(rare_min, rare_max))
 
 		//Jetpack (You hit the jackpot!)
-		if(pickednum == 50)
+		if (pickednum == 50)
 			new /obj/item/weapon/tank/jetpack/carbondioxide(src)
 
 		return

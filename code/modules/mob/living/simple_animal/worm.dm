@@ -70,9 +70,9 @@
 				current = newSegment
 
 		update_icon()
-			if(stat == CONSCIOUS || stat == UNCONSCIOUS)
+			if (stat == CONSCIOUS || stat == UNCONSCIOUS)
 				icon_state = "spacewormhead[previous?1:0]"
-				if(previous)
+				if (previous)
 					dir = get_dir(previous,src)
 			else
 				icon_state = "spacewormheaddead"
@@ -80,16 +80,16 @@
 	Life()
 		..()
 
-		if(next && !(next in view(src,1)))
+		if (next && !(next in view(src,1)))
 			Detach()
 
-		if(stat == DEAD) //dead chunks fall off and die immediately
-			if(previous)
+		if (stat == DEAD) //dead chunks fall off and die immediately
+			if (previous)
 				previous.Detach()
-			if(next)
+			if (next)
 				Detach(1)
 
-		if(prob(stomachProcessProbability))
+		if (prob(stomachProcessProbability))
 			ProcessStomach()
 
 		update_icon()
@@ -97,23 +97,23 @@
 		return
 
 	Del() //if a chunk a destroyed, make a new worm out of the split halves
-		if(previous)
+		if (previous)
 			previous.Detach()
 		..()
 
 	Move()
 		var/attachementNextPosition = loc
-		if(..())
-			if(previous)
+		if (..())
+			if (previous)
 				previous.Move(attachementNextPosition)
 			update_icon()
 
 	Bump(atom/obstacle)
-		if(currentlyEating != obstacle)
+		if (currentlyEating != obstacle)
 			currentlyEating = obstacle
 			eatingDuration = 0
 
-		if(!AttemptToEat(obstacle))
+		if (!AttemptToEat(obstacle))
 			eatingDuration++
 		else
 			currentlyEating = null
@@ -122,8 +122,8 @@
 		return
 
 	proc/update_icon() //only for the sake of consistency with the other update icon procs
-		if(stat == CONSCIOUS || stat == UNCONSCIOUS)
-			if(previous) //midsection
+		if (stat == CONSCIOUS || stat == UNCONSCIOUS)
+			if (previous) //midsection
 				icon_state = "spaceworm[get_dir(src,previous) | get_dir(src,next)]" //see 3 lines below
 			else //tail
 				icon_state = "spacewormtail"
@@ -134,14 +134,14 @@
 		return
 
 	proc/AttemptToEat(var/atom/target)
-		if(istype(target,/turf/simulated/wall))
-			if((!istype(target,/turf/simulated/wall/r_wall) && eatingDuration >= 100) || eatingDuration >= 200) //need 20 ticks to eat an rwall, 10 for a regular one
+		if (istype(target,/turf/simulated/wall))
+			if ((!istype(target,/turf/simulated/wall/r_wall) && eatingDuration >= 100) || eatingDuration >= 200) //need 20 ticks to eat an rwall, 10 for a regular one
 				var/turf/simulated/wall/wall = target
 				wall.ChangeTurf(/turf/simulated/floor)
 				new /obj/item/stack/sheet/metal(src, flatPlasmaValue)
 				return 1
-		else if(istype(target,/atom/movable))
-			if(istype(target,/mob) || eatingDuration >= 50) //5 ticks to eat stuff like airlocks
+		else if (istype(target,/atom/movable))
+			if (istype(target,/mob) || eatingDuration >= 50) //5 ticks to eat stuff like airlocks
 				var/atom/movable/objectOrMob = target
 				contents += objectOrMob
 				return 1
@@ -149,7 +149,7 @@
 		return 0
 
 	proc/Attach(var/mob/living/simple_animal/space_worm/attachement)
-		if(!attachement)
+		if (!attachement)
 			return
 
 		previous = attachement
@@ -165,21 +165,21 @@
 
 		newHead.Attach(newHeadPrevious)
 
-		if(die)
+		if (die)
 			newHead.Die()
 
 		del(src)
 
 	proc/ProcessStomach()
 		for(var/atom/movable/stomachContent in contents)
-			if(prob(digestionProbability))
-				if(istype(stomachContent,/obj/item/stack)) //converts to plasma, keeping the stack value
-					if(!istype(stomachContent,/obj/item/stack/sheet/mineral/plasma))
+			if (prob(digestionProbability))
+				if (istype(stomachContent,/obj/item/stack)) //converts to plasma, keeping the stack value
+					if (!istype(stomachContent,/obj/item/stack/sheet/mineral/plasma))
 						var/obj/item/stack/oldStack = stomachContent
 						new /obj/item/stack/sheet/mineral/plasma(src, oldStack.amount)
 						del(oldStack)
 						continue
-				else if(istype(stomachContent,/obj/item)) //converts to plasma, keeping the w_class
+				else if (istype(stomachContent,/obj/item)) //converts to plasma, keeping the w_class
 					var/obj/item/oldItem = stomachContent
 					new /obj/item/stack/sheet/mineral/plasma(src, oldItem.w_class)
 					del(oldItem)
@@ -189,7 +189,7 @@
 					del(stomachContent)
 					continue
 
-		if(previous)
+		if (previous)
 			for(var/atom/movable/stomachContent in contents) //transfer it along the digestive tract
 				previous.contents += stomachContent
 		else

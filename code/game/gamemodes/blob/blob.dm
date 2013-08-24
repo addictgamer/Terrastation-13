@@ -42,19 +42,19 @@ var/list/blob_nodes = list()
 
 		spawn(rand(waittime_l, waittime_h))//3-5 minutes currently
 			message_admins("Blob spawned and expanding, report created")
-			if(!kill_air)
+			if (!kill_air)
 				kill_air = 1
 				message_admins("Kill air has been set to true by Blob, testing to see how laggy it is without the extra processing from hullbreaches. Note: the blob is fireproof so plasma does not help anyways")
 
-			if(ticker && ticker.minds && ticker.minds.len)
+			if (ticker && ticker.minds && ticker.minds.len)
 				var/player_based_cores = round(ticker.minds.len/players_per_core, 1)
-				if(player_based_cores > cores_to_spawn)
+				if (player_based_cores > cores_to_spawn)
 					cores_to_spawn = player_based_cores
 
 			blobs = list()
 			for(var/i = 0 to cores_to_spawn)
 				var/turf/location = pick(blobstart)
-				if(location && !locate(/obj/effect/blob in location))
+				if (location && !locate(/obj/effect/blob in location))
 					blobstart -= location
 					new/obj/effect/blob/core(location)
 
@@ -65,24 +65,24 @@ var/list/blob_nodes = list()
 
 
 	process()
-		if(!declared)	return
+		if (!declared)	return
 		stage()
-//		if(!autoexpand)	return
+//		if (!autoexpand)	return
 //		spawn(0)
 //			expandBlob()
 		return
 
 
 	proc/expandBlob()//Currently disabled
-		if(expanding)	return
-		if(!blobs.len)	return
+		if (expanding)	return
+		if (!blobs.len)	return
 		expanding = 1
 
 		for(var/i = 1 to 2)
 			sleep(-1)
-			if(!blobs.len)	break
+			if (!blobs.len)	break
 			var/obj/effect/blob/B = pick(blobs)
-			if(B.z != 1)
+			if (B.z != 1)
 				continue
 			B.Life()
 
@@ -110,7 +110,7 @@ var/list/blob_nodes = list()
 			if (1)
 				command_alert("Confirmed outbreak of level 5 biohazard aboard [station_name()]. All personnel must contain the outbreak.", "Biohazard Alert")
 				for(var/mob/M in player_list)
-					if(!istype(M,/mob/new_player))
+					if (!istype(M,/mob/new_player))
 						M << sound('sound/AI/outbreak5.ogg')
 				autoexpand = 0//No more extra pulses
 				stage = -1
@@ -120,13 +120,13 @@ var/list/blob_nodes = list()
 				return
 
 			if (2)
-				if((blobs.len > blobnukecount) && (declared == 1))
+				if ((blobs.len > blobnukecount) && (declared == 1))
 					command_alert("Uncontrolled spread of the biohazard onboard the station. We have issued directive 7-12 for [station_name()].  Any living Heads of Staff are ordered to enact directive 7-12 at any cost, a print out with detailed instructions has been sent to your communications computers.", "Biohazard Alert")
 					send_intercept(2)
 					declared = 2
 					spawn(20)
 						set_security_level("delta")
-				if(blobs.len > blobwincount)
+				if (blobs.len > blobwincount)
 					stage = 3
 		return
 

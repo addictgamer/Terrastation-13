@@ -30,11 +30,11 @@
 /datum/game_mode/epidemic/pre_setup()
 	doctors = 0
 	for(var/mob/new_player/player in world)
-		if(player.mind.assigned_role in list("Chief Medical Officer","Medical Doctor"))
+		if (player.mind.assigned_role in list("Chief Medical Officer","Medical Doctor"))
 			doctors++
 			break
 
-	if(doctors < 1)
+	if (doctors < 1)
 		return 0
 
 	return 1
@@ -98,16 +98,16 @@
 
 	// scan the crew for possible infectees
 	var/list/crew = list()
-	for(var/mob/living/carbon/human/H in world) if(H.client)
+	for(var/mob/living/carbon/human/H in world) if (H.client)
 		// heads should not be infected
-		if(H.mind.assigned_role in command_positions) continue
+		if (H.mind.assigned_role in command_positions) continue
 		crew += H
 
-	if(crew.len < 2)
+	if (crew.len < 2)
 		world << "\red There aren't enough players for this mode!"
 		world << "\red Rebooting world in 5 seconds."
 
-		if(blackbox)
+		if (blackbox)
 			blackbox.save_all_data_to_sql()
 		sleep(50)
 		world.Reboot()
@@ -124,7 +124,7 @@
 
 	for(var/i = 0, i < lethal_amount, i++)
 		var/mob/living/carbon/human/H = pick(crew)
-		if(lethal.uniqueID in H.virus2)
+		if (lethal.uniqueID in H.virus2)
 			i--
 			continue
 		H.virus2["[lethal.uniqueID]"] = lethal.getcopy()
@@ -145,19 +145,19 @@
 
 
 /datum/game_mode/epidemic/process()
-	if(stage == 1 && cruiser_seconds() < 60 * 30)
+	if (stage == 1 && cruiser_seconds() < 60 * 30)
 		announce_to_kill_crew()
 		stage = 2
-	else if(stage == 2 && cruiser_seconds() <= 60 * 5)
+	else if (stage == 2 && cruiser_seconds() <= 60 * 5)
 		command_alert("Inbound cruiser detected on collision course. Scans indicate the ship to be armed and ready to fire. Estimated time of arrival: 5 minutes.", "[station_name()] Early Warning System")
 		stage = 3
-	else if(stage == 3 && cruiser_seconds() <= 0)
+	else if (stage == 3 && cruiser_seconds() <= 0)
 		crew_lose()
 		stage = 4
 
 	checkwin_counter++
-	if(checkwin_counter >= 20)
-		if(!finished)
+	if (checkwin_counter >= 20)
+		if (!finished)
 			ticker.mode.check_win()
 		checkwin_counter = 0
 	return 0
@@ -169,12 +169,12 @@
 	var/alive = 0
 	var/sick = 0
 	for(var/mob/living/carbon/human/H in world)
-		if(H.key && H.stat != 2) alive++
-		if(H.virus2.len && H.stat != 2) sick++
+		if (H.key && H.stat != 2) alive++
+		if (H.virus2.len && H.stat != 2) sick++
 
-	if(alive == 0)
+	if (alive == 0)
 		finished = 2
-	if(sick == 0)
+	if (sick == 0)
 		finished = 1
 	return
 
@@ -182,7 +182,7 @@
 //Checks if the round is over//
 ///////////////////////////////
 /datum/game_mode/epidemic/check_finished()
-	if(finished != 0)
+	if (finished != 0)
 		return 1
 	else
 		return 0
@@ -193,7 +193,7 @@
 /datum/game_mode/epidemic/proc/crew_lose()
 	ticker.mode:explosion_in_progress = 1
 	for(var/mob/M in world)
-		if(M.client)
+		if (M.client)
 			M << 'Alarm.ogg'
 	world << "\blue<b>Incoming missile detected.. Impact in 10..</b>"
 	for (var/i=9 to 1 step -1)
@@ -201,9 +201,9 @@
 		world << "\blue<b>[i]..</b>"
 	sleep(10)
 	enter_allowed = 0
-	if(ticker)
+	if (ticker)
 		ticker.station_explosion_cinematic(0,null)
-		if(ticker.mode)
+		if (ticker.mode)
 			ticker.mode:station_was_nuked = 1
 			ticker.mode:explosion_in_progress = 0
 	finished = 2
@@ -214,10 +214,10 @@
 //Announces the end of the game with all relavent information stated//
 //////////////////////////////////////////////////////////////////////
 /datum/game_mode/epidemic/declare_completion()
-	if(finished == 1)
+	if (finished == 1)
 		feedback_set_details("round_end_result","win - epidemic cured")
 		world << "\red <FONT size = 3><B> The virus outbreak was contained! The crew wins!</B></FONT>"
-	else if(finished == 2)
+	else if (finished == 2)
 		feedback_set_details("round_end_result","loss - rev heads killed")
 		world << "\red <FONT size = 3><B> The crew succumbed to the epidemic!</B></FONT>"
 	..()

@@ -21,29 +21,29 @@
 
 	for(var/mob/living/target in targets)
 		switch(destroys)
-			if("gib")
+			if ("gib")
 				target.gib()
-			if("gib_brain")
-				if(ishuman(target) || ismonkey(target))
+			if ("gib_brain")
+				if (ishuman(target) || ismonkey(target))
 					var/mob/living/carbon/C = target
-					if(C.brain_op_stage != 4) // Their brain is already taken out
+					if (C.brain_op_stage != 4) // Their brain is already taken out
 						var/obj/item/brain/B = new(C.loc)
 						B.transfer_identity(C)
 				target.gib()
-			if("disintegrate")
+			if ("disintegrate")
 				target.dust()
 
-		if(!target)
+		if (!target)
 			continue
 		//damage
-		if(amt_dam_brute > 0)
-			if(amt_dam_fire >= 0)
+		if (amt_dam_brute > 0)
+			if (amt_dam_fire >= 0)
 				target.take_overall_damage(amt_dam_brute,amt_dam_fire)
 			else if (amt_dam_fire < 0)
 				target.take_overall_damage(amt_dam_brute,0)
 				target.heal_overall_damage(0,amt_dam_fire)
-		else if(amt_dam_brute < 0)
-			if(amt_dam_fire > 0)
+		else if (amt_dam_brute < 0)
+			if (amt_dam_fire > 0)
 				target.take_overall_damage(0,amt_dam_fire)
 				target.heal_overall_damage(amt_dam_brute,0)
 			else if (amt_dam_fire <= 0)

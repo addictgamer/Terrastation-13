@@ -17,15 +17,15 @@
 
 
 	proc/drive(amount)
-		if(stat & (BROKEN|NOPOWER))
+		if (stat & (BROKEN|NOPOWER))
 			return
 		use_power(500)
 		var/O_limit
 		var/atom/target = get_edge_target_turf(src, dir)
 		for(var/atom/movable/O in loc)
-			if(!O.anchored||istype(O, /obj/mecha))//Mechs need their launch platforms.
+			if (!O.anchored||istype(O, /obj/mecha))//Mechs need their launch platforms.
 				O_limit++
-				if(O_limit >= 20)
+				if (O_limit >= 20)
 					for(var/mob/M in hearers(src, null))
 						M << "\blue The mass driver lets out a screech, it mustn't be able to handle any more items."
 					break
@@ -36,7 +36,7 @@
 		return
 
 	emp_act(severity)
-		if(stat & (BROKEN|NOPOWER))
+		if (stat & (BROKEN|NOPOWER))
 			return
 		drive()
 		..(severity)

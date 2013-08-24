@@ -5,8 +5,8 @@
 	effect_type = 3
 
 /datum/artifact_effect/cellcharge/DoEffectTouch(var/mob/user)
-	if(user)
-		if(istype(user, /mob/living/silicon/robot))
+	if (user)
+		if (istype(user, /mob/living/silicon/robot))
 			var/mob/living/silicon/robot/R = user
 			for (var/obj/item/weapon/cell/D in R.contents)
 				D.charge += rand() * 100 + 50
@@ -14,7 +14,7 @@
 			return 1
 
 /datum/artifact_effect/cellcharge/DoEffectAura()
-	if(holder)
+	if (holder)
 		for (var/obj/machinery/power/apc/C in range(200, holder))
 			for (var/obj/item/weapon/cell/B in C.contents)
 				B.charge += 25
@@ -27,7 +27,7 @@
 		return 1
 
 /datum/artifact_effect/cellcharge/DoEffectPulse()
-	if(holder)
+	if (holder)
 		for (var/obj/machinery/power/apc/C in range(200, holder))
 			for (var/obj/item/weapon/cell/B in C.contents)
 				B.charge += rand() * 100

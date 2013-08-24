@@ -9,11 +9,11 @@
 
 	var/mob/M = input(usr, "Who do you wish to blind?") as mob in oview()
 
-	if(M)
-		if(usr.stat)
+	if (M)
+		if (usr.stat)
 			src << "Not when you are incapacitated."
 			return
-	//	if(!usr.casting()) return
+	//	if (!usr.casting()) return
 		usr.verbs -= /client/proc/blind
 		spawn(300)
 			usr.verbs += /client/proc/blind
@@ -45,10 +45,10 @@
 	set category = "Spells"
 	set name = "Magic missile"
 	set desc = "This spell fires several, slow moving, magic projectiles at nearby targets."
-	if(usr.stat)
+	if (usr.stat)
 		src << "Not when you are incapacitated."
 		return
-	if(!usr.casting()) return
+	if (!usr.casting()) return
 
 	usr.say("FORTI GY AMA")
 
@@ -94,10 +94,10 @@
 	set category = "Spells"
 	set name = "Smoke"
 	set desc = "This spell spawns a cloud of choking smoke at your location and does not require wizard garb."
-	if(usr.stat)
+	if (usr.stat)
 		src << "Not when you are incapacitated."
 		return
-//	if(!usr.casting()) return
+//	if (!usr.casting()) return
 	usr.verbs -= /client/proc/smokecloud
 	spawn(120)
 		usr.verbs += /client/proc/smokecloud
@@ -113,10 +113,10 @@
 //	set category = "Spells"
 //	set name = "Sleep Smoke"
 //	set desc = "This spell spawns a cloud of choking smoke at your location and does not require wizard garb. But, without the robes, you have no protection against the magic."
-//	if(usr.stat)
+//	if (usr.stat)
 //		src << "Not when you are incapacitated."
 //		return
-//	if(!usr.casting()) return
+//	if (!usr.casting()) return
 //	usr.verbs -= /client/proc/smokecloud
 //	spawn(120)
 //		usr.verbs += /client/proc/smokecloud
@@ -139,7 +139,7 @@
 
 	bullet_act(var/obj/item/projectile/Proj, var/def_zone)
 		var/turf/T = get_turf(src.loc)
-		if(T)
+		if (T)
 			for(var/mob/M in T)
 				Proj.on_hit(M,M.bullet_act(Proj, def_zone))
 		return
@@ -151,10 +151,10 @@
 	set category = "Spells"
 	set name = "Forcewall"
 	set desc = "This spell creates an unbreakable wall that lasts for 30 seconds and does not need wizard garb."
-	if(usr.stat)
+	if (usr.stat)
 		src << "Not when you are incapacitated."
 		return
-//	if(!usr.casting()) return
+//	if (!usr.casting()) return
 
 	usr.verbs -= /client/proc/forcewall
 	spawn(100)
@@ -174,10 +174,10 @@
 	set category = "Spells"
 	set name = "Fireball"
 	set desc = "This spell fires a fireball at a target and does not require wizard garb."
-	if(usr.stat)
+	if (usr.stat)
 		src << "Not when you are incapacitated."
 		return
-//	if(!usr.casting()) return
+//	if (!usr.casting()) return
 
 	usr.verbs -= /client/proc/fireball
 	spawn(100)
@@ -186,7 +186,7 @@
 	usr.say("ONI SOMA")
 
 	var/mob/living/user = src
-	if(!istype(user))
+	if (!istype(user))
 		return
 
 	var/i
@@ -198,13 +198,13 @@
 	var/z = user.loc.z
 
 	switch(user.dir)
-		if(NORTH)
+		if (NORTH)
 			T = get_turf(locate(x, y + range, z))
-		if(EAST)
+		if (EAST)
 			T = get_turf(locate(x + range, y, z))
-		if(SOUTH)
+		if (SOUTH)
 			T = get_turf(locate(x, y - range, z))
-		if(WEST)
+		if (WEST)
 			T = get_turf(locate(x - range, y, z))
 		else
 			return
@@ -225,16 +225,16 @@
 		for(var/mob/living/target in range(1, A))
 			hit = 1
 			target.take_overall_damage(20,25)
-		if(hit)
+		if (hit)
 			explosion(A.loc, -1, -1, 2, 2)
 			del(A)
 			return
-		if(!moving)
+		if (!moving)
 			explosion(A.loc, -1, -1, 2, 2)
 			del(A)
 			return
 		sleep(2)
-	if(A)
+	if (A)
 		explosion(A.loc, -1, -1, 2, 2)
 		del(A)
 	return
@@ -245,10 +245,10 @@
 	set category = "Spells"
 	set name = "Knock"
 	set desc = "This spell opens nearby doors and does not require wizard garb."
-	if(usr.stat)
+	if (usr.stat)
 		src << "Not when you are incapacitated."
 		return
-//	if(!usr.casting()) return
+//	if (!usr.casting()) return
 	usr.verbs -= /client/proc/knock
 	spawn(100)
 		usr.verbs += /client/proc/knock
@@ -266,10 +266,10 @@
 	set category = "Spells"
 	set name = "Disintegrate"
 	set desc = "This spell instantly kills somebody adjacent to you with the vilest of magick."
-	if(usr.stat)
+	if (usr.stat)
 		src << "Not when you are incapacitated."
 		return
-	if(!usr.casting()) return
+	if (!usr.casting()) return
 	usr.verbs -= /mob/proc/kill
 	spawn(600)
 		usr.verbs += /mob/proc/kill
@@ -288,10 +288,10 @@
 	set category = "Spells"
 	set name = "Disable Technology"
 	set desc = "This spell disables all weapons, cameras and most other technology in range."
-	if(usr.stat)
+	if (usr.stat)
 		src << "Not when you are incapacitated."
 		return
-	if(!usr.casting()) return
+	if (!usr.casting()) return
 	usr.verbs -= /mob/proc/tech
 	spawn(400)
 		usr.verbs += /mob/proc/tech
@@ -306,23 +306,23 @@
 	set category = "Spells"
 	set name = "Blink"
 	set desc = "This spell randomly teleports you a short distance."
-	if(usr.stat)
+	if (usr.stat)
 		src << "Not when you are incapacitated."
 		return
-	if(!usr.casting()) return
+	if (!usr.casting()) return
 	var/list/turfs = new/list()
 	for(var/turf/T in orange(6))
-		if(istype(T,/turf/space)) continue
-		if(T.density) continue
-		if(T.x>world.maxx-4 || T.x<4)	continue	//putting them at the edge is dumb
-		if(T.y>world.maxy-4 || T.y<4)	continue
+		if (istype(T,/turf/space)) continue
+		if (T.density) continue
+		if (T.x>world.maxx-4 || T.x<4)	continue	//putting them at the edge is dumb
+		if (T.y>world.maxy-4 || T.y<4)	continue
 		turfs += T
-	if(!turfs.len) turfs += pick(/turf in orange(6))
+	if (!turfs.len) turfs += pick(/turf in orange(6))
 	var/datum/effect/effect/system/harmless_smoke_spread/smoke = new /datum/effect/effect/system/harmless_smoke_spread()
 	smoke.set_up(10, 0, usr.loc)
 	smoke.start()
 	var/turf/picked = pick(turfs)
-	if(!isturf(picked)) return
+	if (!isturf(picked)) return
 	usr.loc = picked
 	usr.verbs -= /client/proc/blink
 	spawn(40)
@@ -334,17 +334,17 @@
 	set category = "Spells"
 	set name = "Teleport"
 	set desc = "This spell teleports you to a type of area of your selection."
-	if(usr.stat)
+	if (usr.stat)
 		src << "Not when you are incapacitated."
 		return
-	if(!usr.casting()) return
+	if (!usr.casting()) return
 	var/A
 	usr.verbs -= /mob/proc/teleport
 /*
 	var/list/theareas = new/list()
 	for(var/area/AR in world)
-		if(istype(AR, /area/shuttle) || istype(AR, /area/syndicate_station)) continue
-		if(theareas.Find(AR.name)) continue
+		if (istype(AR, /area/shuttle) || istype(AR, /area/syndicate_station)) continue
+		if (theareas.Find(AR.name)) continue
 		var/turf/picked = pick(get_area_turfs(AR.type))
 		if (picked.z == src.z)
 			theareas += AR.name
@@ -366,16 +366,16 @@
 	smoke.start()
 	var/list/L = list()
 	for(var/turf/T in get_area_turfs(thearea.type))
-		if(!T.density)
+		if (!T.density)
 			var/clear = 1
 			for(var/obj/O in T)
-				if(O.density)
+				if (O.density)
 					clear = 0
 					break
-			if(clear)
+			if (clear)
 				L+=T
 
-	if(!L.len)
+	if (!L.len)
 		usr <<"The spell matrix was unable to locate a suitable teleport destination for an unknown reason. Sorry."
 		return
 
@@ -383,8 +383,8 @@
 	var/success = 0
 	while(!success)
 		success = Move(pick(L))
-		if(attempt > 20) break	//Failsafe
-	if(!success)
+		if (attempt > 20) break	//Failsafe
+	if (!success)
 		usr.loc = pick(L)
 
 	smoke.start()
@@ -396,17 +396,17 @@
 	set category = "Spells"
 	set name = "Ethereal Jaunt"
 	set desc = "This spell creates your ethereal form, temporarily making you invisible and able to pass through walls."
-	if(usr.stat)
+	if (usr.stat)
 		src << "Not when you are incapacitated."
 		return
-	if(!usr.casting()) return
+	if (!usr.casting()) return
 	usr.verbs -= /client/proc/jaunt
 	spawn(300)
 		usr.verbs += /client/proc/jaunt
 	spell_jaunt(usr)
 
 /proc/spell_jaunt(var/mob/H, time = 50)
-	if(H.stat) return
+	if (H.stat) return
 	spawn(0)
 		var/mobloc = get_turf(H.loc)
 		var/obj/effect/dummy/spell_jaunt/holder = new /obj/effect/dummy/spell_jaunt( mobloc )
@@ -433,11 +433,11 @@
 		sleep(20)
 		flick("reappear",animation)
 		sleep(5)
-		if(!H.Move(mobloc))
+		if (!H.Move(mobloc))
 			for(var/direction in list(1,2,4,8,5,6,9,10))
 				var/turf/T = get_step(mobloc, direction)
-				if(T)
-					if(H.Move(T))
+				if (T)
+					if (H.Move(T))
 						break
 		H.canmove = 1
 		H.client.eye = H
@@ -455,24 +455,24 @@
 /obj/effect/dummy/spell_jaunt/relaymove(var/mob/user, direction)
 	if (!src.canmove) return
 	switch(direction)
-		if(NORTH)
+		if (NORTH)
 			src.y++
-		if(SOUTH)
+		if (SOUTH)
 			src.y--
-		if(EAST)
+		if (EAST)
 			src.x++
-		if(WEST)
+		if (WEST)
 			src.x--
-		if(NORTHEAST)
+		if (NORTHEAST)
 			src.y++
 			src.x++
-		if(NORTHWEST)
+		if (NORTHWEST)
 			src.y++
 			src.x--
-		if(SOUTHEAST)
+		if (SOUTHEAST)
 			src.y--
 			src.x++
-		if(SOUTHWEST)
+		if (SOUTHWEST)
 			src.y--
 			src.x--
 	src.canmove = 0
@@ -489,10 +489,10 @@
 	set category = "Spells"
 	set name = "Mutate"
 	set desc = "This spell causes you to turn into a hulk and gain laser vision for a short while."
-	if(usr.stat)
+	if (usr.stat)
 		src << "Not when you are incapacitated."
 		return
-	if(!usr.casting()) return
+	if (!usr.casting()) return
 	usr.verbs -= /client/proc/mutate
 	spawn(400)
 		usr.verbs += /client/proc/mutate
@@ -515,23 +515,23 @@
 	set category = "Spells"
 	set name = "Mind Transfer"
 	set desc = "This spell allows the user to switch bodies with a target."
-	if(usr.stat)
+	if (usr.stat)
 		src << "Not when you are incapacitated."
 		return
 
-	if(M.client && M.mind)
-		if(M.mind.special_role != "Wizard" || "Fake Wizard" || "Changeling" || "Cultist" || "Space Ninja")//Wizards, changelings, ninjas, and cultists are protected.
-			if( (istype(M, /mob/living/carbon/human)) || (istype(M, /mob/living/carbon/monkey)) && M.stat != 2)
+	if (M.client && M.mind)
+		if (M.mind.special_role != "Wizard" || "Fake Wizard" || "Changeling" || "Cultist" || "Space Ninja")//Wizards, changelings, ninjas, and cultists are protected.
+			if ( (istype(M, /mob/living/carbon/human)) || (istype(M, /mob/living/carbon/monkey)) && M.stat != 2)
 				var/mob/living/carbon/human/H = M //so it does not freak out when looking at the variables.
 				var/mob/living/carbon/human/U = src
 
 				U.whisper("GIN'YU CAPAN")
 				U.verbs -= /mob/proc/swap
 				//Remove special verbs from both mobs
-				if(U.mind.special_verbs.len)
+				if (U.mind.special_verbs.len)
 					for(var/V in U.mind.special_verbs)
 						U.verbs -= V
-				if(H.mind.special_verbs.len)
+				if (H.mind.special_verbs.len)
 					for(var/V in H.mind.special_verbs)
 						H.verbs -= V
 
@@ -544,14 +544,14 @@
 				U.key = G.key			//has to be called explicitly since ghostize() set the datum/mind/var/active = 0
 
 				//Re-add those special verbs and stuff
-				if(H.mind.special_verbs.len)
+				if (H.mind.special_verbs.len)
 					var/spell_loss = 1//Can lose only one spell during transfer.
 					var/probability = 95 //To determine the chance of wizard losing their spell.
 					for(var/V in H.mind.special_verbs)
-						if(spell_loss == 0)
+						if (spell_loss == 0)
 							H.verbs += V
 						else
-							if(prob(probability))
+							if (prob(probability))
 								H.verbs += V
 								probability -= 7//Chance of of keeping spells goes down each time a spell is added. Less spells means less chance of losing them.
 							else
@@ -560,7 +560,7 @@
 								spawn(500)
 									H << "The mind transfer has robbed you of a spell."
 
-				if(U.mind.special_verbs.len)//Basic fix to swap verbs for any mob if needed.
+				if (U.mind.special_verbs.len)//Basic fix to swap verbs for any mob if needed.
 					for(var/V in U.mind.special_verbs)
 						U.verbs += V
 

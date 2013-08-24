@@ -19,7 +19,7 @@
 	diaryofmeanpeople << "\n\nStarting up. [time2text(world.timeofday, "hh:mm.ss")]\n---------------------"
 	changelog_hash = md5('html/changelog.html')					//used for telling if the changelog has changed recently
 
-	if(byond_version < RECOMMENDED_VERSION)
+	if (byond_version < RECOMMENDED_VERSION)
 		world.log << "Your server's byond version does not meet the recommended requirements for TGstation code. Please update BYOND"
 
 	make_datum_references_lists()	//initialises global lists for referencing frequently used datums (so that we only ever do it once)
@@ -30,15 +30,15 @@
 	load_admins()
 	load_mods()
 	LoadBansjob()
-	if(config.usewhitelist)
+	if (config.usewhitelist)
 		load_whitelist()
-	if(config.usealienwhitelist)
+	if (config.usealienwhitelist)
 		load_alienwhitelist()
 	jobban_loadbanfile()
 	jobban_updatelegacybans()
 	LoadBans()
 
-	if(config && config.server_name != null && config.server_suffix && world.port > 0)
+	if (config && config.server_name != null && config.server_suffix && world.port > 0)
 		// dumb and hardcoded but I don't care~
 		config.server_name += " #[(world.port % 1000) / 100]"
 
@@ -54,12 +54,12 @@
 	data_core = new /obj/effect/datacore()
 	paiController = new /datum/paiController()
 
-	if(!setup_database_connection())
+	if (!setup_database_connection())
 		world.log << "Your server failed to establish a connection with the feedback database."
 	else
 		world.log << "Feedback database connection established."
 
-	if(!setup_old_database_connection())
+	if (!setup_old_database_connection())
 		world.log << "Your server failed to establish a connection with the tgstation database."
 	else
 		world.log << "Tgstation database connection established."
@@ -92,9 +92,9 @@
 	process_ghost_teleport_locs()	//Sets up ghost teleport locations.
 
 	spawn(3000)		//so we aren't adding to the round-start lag
-		if(config.ToRban)
+		if (config.ToRban)
 			ToRban_autoupdate()
-		if(config.kick_inactive)
+		if (config.kick_inactive)
 			KickInactiveClients()
 
 #undef RECOMMENDED_VERSION
@@ -106,7 +106,7 @@
 //		world << "[href]"
 //		for(var/a in href_list)
 //			world << "[a]"
-//		if(href_list["hello"])
+//		if (href_list["hello"])
 //			world << "Hello world!"
 //			return "Hello world!"
 //		world << "End of Topic() call."
@@ -121,10 +121,10 @@
 			x++
 		return x
 
-	else if(T == "players")
+	else if (T == "players")
 		var/n = 0
 		for(var/mob/M in player_list)
-			if(M.client)
+			if (M.client)
 				n++
 		return n
 
@@ -142,15 +142,15 @@
 		var/admins = 0
 
 		for(var/client/C in clients)
-			if(C.holder)
-				if(C.holder.fakekey)
+			if (C.holder)
+				if (C.holder.fakekey)
 					continue	//so stealthmins aren't revealed by the hub
 				admins++
 			s["player[n]"] = C.key
 			n++
 		s["players"] = n
 
-		if(revdata)	s["revision"] = revdata.revision
+		if (revdata)	s["revision"] = revdata.revision
 		s["admins"] = admins
 
 		return list2params(s)
@@ -161,7 +161,7 @@
 		world << sound(pick('sound/AI/newroundsexy.ogg','sound/misc/apcdestroyed.ogg','sound/misc/bangindonk.ogg')) // random end sounds!! - LastyBatsy
 		*/
 	for(var/client/C in clients)
-		if(config.server)	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
+		if (config.server)	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
 			C << link("byond://[config.server]")
 		else
 			C << link("byond://[world.address]:[world.port]")
@@ -176,8 +176,8 @@
 		while(1)
 			sleep(INACTIVITY_KICK)
 			for(var/client/C in clients)
-				if(C.is_afk(INACTIVITY_KICK))
-					if(!istype(C.mob, /mob/dead))
+				if (C.is_afk(INACTIVITY_KICK))
+					if (!istype(C.mob, /mob/dead))
 						log_access("AFK: [key_name(C)]")
 						C << "\red You have been inactive for more than 10 minutes and have been disconnected."
 						del(C)
@@ -186,8 +186,8 @@
 
 /world/proc/load_mode()
 	var/list/Lines = file2list("data/mode.txt")
-	if(Lines.len)
-		if(Lines[1])
+	if (Lines.len)
+		if (Lines[1])
 			master_mode = Lines[1]
 			diary << "Saved mode is '[master_mode]'"
 
@@ -209,7 +209,7 @@
 	abandon_allowed = config.respawn
 
 /world/proc/load_mods()
-	if(config.admin_legacy_system)
+	if (config.admin_legacy_system)
 		var/text = file2text("config/moderators.txt")
 		if (!text)
 			diary << "Failed to load config/mods.txt\n"
@@ -243,8 +243,8 @@
 
 	var/list/features = list()
 
-	if(ticker)
-		if(master_mode)
+	if (ticker)
+		if (master_mode)
 			features += master_mode
 	else
 		features += "<b>STARTING</b>"
@@ -292,10 +292,10 @@ var/failed_old_db_connections = 0
 
 proc/setup_database_connection()
 
-	if(failed_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to conenct anymore.
+	if (failed_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to conenct anymore.
 		return 0
 
-	if(!dbcon)
+	if (!dbcon)
 		dbcon = new()
 
 	var/user = sqlfdbklogin
@@ -316,10 +316,10 @@ proc/setup_database_connection()
 
 //This proc ensures that the connection to the feedback database (global variable dbcon) is established
 proc/establish_db_connection()
-	if(failed_db_connections > FAILED_DB_CONNECTION_CUTOFF)
+	if (failed_db_connections > FAILED_DB_CONNECTION_CUTOFF)
 		return 0
 
-	if(!dbcon || !dbcon.IsConnected())
+	if (!dbcon || !dbcon.IsConnected())
 		return setup_database_connection()
 	else
 		return 1
@@ -330,10 +330,10 @@ proc/establish_db_connection()
 //These two procs are for the old database, while it's being phased out. See the tgstation.sql file in the SQL folder for more information.
 proc/setup_old_database_connection()
 
-	if(failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to conenct anymore.
+	if (failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)	//If it failed to establish a connection more than 5 times in a row, don't bother attempting to conenct anymore.
 		return 0
 
-	if(!dbcon_old)
+	if (!dbcon_old)
 		dbcon_old = new()
 
 	var/user = sqllogin
@@ -354,10 +354,10 @@ proc/setup_old_database_connection()
 
 //This proc ensures that the connection to the feedback database (global variable dbcon) is established
 proc/establish_old_db_connection()
-	if(failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)
+	if (failed_old_db_connections > FAILED_DB_CONNECTION_CUTOFF)
 		return 0
 
-	if(!dbcon_old || !dbcon_old.IsConnected())
+	if (!dbcon_old || !dbcon_old.IsConnected())
 		return setup_old_database_connection()
 	else
 		return 1

@@ -51,7 +51,7 @@
 	//desc = "Sunglasses with duct tape." // Why?  D:
 
 /obj/item/borg/upgrade/flashproof/action(var/mob/living/silicon/robot/R)
-	if(R.module)
+	if (R.module)
 		R.module += src
 
 	return 1
@@ -64,12 +64,12 @@
 
 
 /obj/item/borg/upgrade/restart/action(var/mob/living/silicon/robot/R)
-	if(!R.key)
+	if (!R.key)
 		for(var/mob/dead/observer/ghost in world)
-			if(ghost.corpse == R && ghost.client)
+			if (ghost.corpse == R && ghost.client)
 				ghost.client.mob = ghost.corpse
 
-	if(R.health < 0)
+	if (R.health < 0)
 		usr << "You have to repair the borg before using this module!"
 		return 0
 
@@ -85,7 +85,7 @@
 	require_module = 1
 
 /obj/item/borg/upgrade/vtec/action(var/mob/living/silicon/robot/R)
-	if(R.speed == -1)
+	if (R.speed == -1)
 		return 0
 
 	R.speed--
@@ -101,21 +101,21 @@
 
 
 /obj/item/borg/upgrade/tasercooler/action(var/mob/living/silicon/robot/R)
-	if(!istype(R.module, /obj/item/weapon/robot_module/security))
+	if (!istype(R.module, /obj/item/weapon/robot_module/security))
 		R << "Upgrade mounting error!  No suitable hardpoint detected!"
 		usr << "There's no mounting point for the module!"
 		return 0
 
 	var/obj/item/weapon/gun/energy/taser/cyborg/T = locate() in R.module
-	if(!T)
+	if (!T)
 		T = locate() in R.module.contents
-	if(!T)
+	if (!T)
 		T = locate() in R.module.modules
-	if(!T)
+	if (!T)
 		usr << "This cyborg has had its taser removed!"
 		return 0
 
-	if(T.recharge_time <= 2)
+	if (T.recharge_time <= 2)
 		R << "Maximum cooling achieved for this hardpoint!"
 		usr << "There's no room for another cooling unit!"
 		return 0
@@ -133,7 +133,7 @@
 	require_module = 1
 
 /obj/item/borg/upgrade/jetpack/action(var/mob/living/silicon/robot/R)
-	if(!istype(R.module, /obj/item/weapon/robot_module/miner))
+	if (!istype(R.module, /obj/item/weapon/robot_module/miner))
 		R << "Upgrade mounting error!  No suitable hardpoint detected!"
 		usr << "There's no mounting point for the module!"
 		return 0

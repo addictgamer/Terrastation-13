@@ -59,7 +59,7 @@
 	return
 
 /obj/structure/lamarr/update_icon()
-	if(src.destroyed)
+	if (src.destroyed)
 		src.icon_state = "labcageb[src.occupied]"
 	else
 		src.icon_state = "labcage[src.occupied]"
@@ -88,7 +88,7 @@
 		return
 
 /obj/structure/lamarr/proc/Break()
-	if(occupied)
+	if (occupied)
 		new /obj/item/clothing/mask/facehugger/lamarr(src.loc)
 		occupied = 0
 	update_icon()

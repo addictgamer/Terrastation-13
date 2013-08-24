@@ -6,9 +6,9 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 	spawn(0)
 		var/start = world.timeofday
 		epicenter = get_turf(epicenter)
-		if(!epicenter) return
+		if (!epicenter) return
 
-		if(adminlog)
+		if (adminlog)
 			message_admins("Explosion with size ([devastation_range], [heavy_impact_range], [light_impact_range]) in area [epicenter.loc.name] ([epicenter.x],[epicenter.y],[epicenter.z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[epicenter.x];Y=[epicenter.y];Z=[epicenter.z]'>JMP</a>)")
 			log_game("Explosion with size ([devastation_range], [heavy_impact_range], [light_impact_range]) in area [epicenter.loc.name] ")
 
@@ -17,10 +17,10 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 
 		tension_master.explosion()
 
-		if(defer_powernet_rebuild != 2)
+		if (defer_powernet_rebuild != 2)
 			defer_powernet_rebuild = 1
 
-		if(heavy_impact_range > 1)
+		if (heavy_impact_range > 1)
 			var/datum/effect/system/explosion/E = new/datum/effect/system/explosion()
 			E.set_up(epicenter)
 			E.start()
@@ -31,15 +31,15 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 
 		var/counter = 0
 
-		if(devastation_range > 0)
+		if (devastation_range > 0)
 			counter += explosion_turf(x,y,z,1)
 		else
 			devastation_range = 0
-			if(heavy_impact_range > 0)
+			if (heavy_impact_range > 0)
 				counter += explosion_turf(x,y,z,2)
 			else
 				heavy_impact_range = 0
-				if(light_impact_range > 0)
+				if (light_impact_range > 0)
 					counter += explosion_turf(x,y,z,3)
 				else
 					return
@@ -92,7 +92,7 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 				sleep(1)
 */
 
-		if(defer_powernet_rebuild != 2)
+		if (defer_powernet_rebuild != 2)
 			defer_powernet_rebuild = 0
 
 		world.log << "## Explosion([x],[y],[z])(d[devastation_range],h[heavy_impact_range],l[light_impact_range]): Took [(world.timeofday-start)/10] seconds. Processed [counter] atoms."
@@ -101,9 +101,9 @@ proc/explosion(turf/epicenter, devastation_range, heavy_impact_range, light_impa
 proc/explosion_turf(var/x,var/y,var/z,var/force)
 	var/counter = 1
 	var/turf/T = locate(x,y,z)
-	if(T)
+	if (T)
 		T.ex_act(force)
-		if(T)
+		if (T)
 			for(var/atom/movable/AM in T.contents)
 				counter++
 				AM.ex_act(force)

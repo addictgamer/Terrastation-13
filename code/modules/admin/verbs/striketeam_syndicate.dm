@@ -6,30 +6,30 @@ var/global/sent_syndicate_strike_team = 0
 	set category = "Fun"
 	set name = "Spawn Syndicate Strike Team"
 	set desc = "Spawns a squad of commandos in the Syndicate Mothership if you want to run an admin event."
-	if(!src.holder)
+	if (!src.holder)
 		src << "Only administrators may use this command."
 		return
-	if(!ticker)
+	if (!ticker)
 		alert("The game hasn't started yet!")
 		return
-//	if(world.time < 6000)
+//	if (world.time < 6000)
 //		alert("Not so fast, buddy. Wait a few minutes until the game gets going. There are [(6000-world.time)/10] seconds remaining.")
 //		return
-	if(sent_syndicate_strike_team == 1)
+	if (sent_syndicate_strike_team == 1)
 		alert("The Syndicate are already sending a team, Mr. Dumbass.")
 		return
-	if(alert("Do you want to send in the Syndicate Strike Team? Once enabled, this is irreversible.",,"Yes","No")=="No")
+	if (alert("Do you want to send in the Syndicate Strike Team? Once enabled, this is irreversible.",,"Yes","No")=="No")
 		return
 	alert("This 'mode' will go on until everyone is dead or the station is destroyed. You may also admin-call the evac shuttle when appropriate. Spawned syndicates have internals cameras which are viewable through a monitor inside the Syndicate Mothership Bridge. Assigning the team's detailed task is recommended from there. While you will be able to manually pick the candidates from active ghosts, their assignment in the squad will be random.")
 
 	var/input = null
 	while(!input)
 		input = copytext(sanitize(input(src, "Please specify which mission the syndicate strike team shall undertake.", "Specify Mission", "")),1,MAX_MESSAGE_LEN)
-		if(!input)
-			if(alert("Error, no mission set. Do you want to exit the setup process?",,"Yes","No")=="Yes")
+		if (!input)
+			if (alert("Error, no mission set. Do you want to exit the setup process?",,"Yes","No")=="Yes")
 				return
 
-	if(sent_syndicate_strike_team)
+	if (sent_syndicate_strike_team)
 		src << "Looks like someone beat you to it."
 		return
 
@@ -46,7 +46,7 @@ var/global/sent_syndicate_strike_team = 0
 	var/temp_code
 	for(var/obj/machinery/nuclearbomb/N in world)
 		temp_code = text2num(N.r_code)
-		if(temp_code)//if it's actually a number. It won't convert any non-numericals.
+		if (temp_code)//if it's actually a number. It won't convert any non-numericals.
 			nuke_code = N.r_code
 			break
 
@@ -54,8 +54,8 @@ var/global/sent_syndicate_strike_team = 0
 	var/list/candidates = list()	//candidates for being a commando out of all the active ghosts in world.
 	var/list/commandos = list()			//actual commando ghosts as picked by the user.
 	for(var/mob/dead/observer/G	 in player_list)
-		if(!G.client.holder && !G.client.is_afk())	//Whoever called/has the proc won't be added to the list.
-			if(!(G.mind && G.mind.current && G.mind.current.stat != DEAD))
+		if (!G.client.holder && !G.client.is_afk())	//Whoever called/has the proc won't be added to the list.
+			if (!(G.mind && G.mind.current && G.mind.current.stat != DEAD))
 				candidates += G.key
 	for(var/i=commandos_possible,(i>0&&candidates.len),i--)//Decrease with every commando selected.
 		var/candidate = input("Pick characters to spawn as the commandos. This will go on until there either no more ghosts to pick from or the slots are full.", "Active Players") as null|anything in candidates	//It will auto-pick a person when there is only one candidate.
@@ -64,20 +64,20 @@ var/global/sent_syndicate_strike_team = 0
 
 //Spawns commandos and equips them.
 	for(var/obj/effect/landmark/L in landmarks_list)
-		if(syndicate_commando_number<=0)	break
+		if (syndicate_commando_number<=0)	break
 		if (L.name == "Syndicate-Commando")
 			syndicate_leader_selected = syndicate_commando_number == 1?1:0
 
 			var/mob/living/carbon/human/new_syndicate_commando = create_syndicate_death_commando(L, syndicate_leader_selected)
 
-			if(commandos.len)
+			if (commandos.len)
 				new_syndicate_commando.key = pick(commandos)
 				commandos -= new_syndicate_commando.key
 				new_syndicate_commando.internal = new_syndicate_commando.s_store
 				new_syndicate_commando.internals.icon_state = "internal1"
 
 			//So they don't forget their code or mission.
-			if(nuke_code)
+			if (nuke_code)
 				new_syndicate_commando.mind.store_memory("<B>Nuke Code:</B> \red [nuke_code].")
 			new_syndicate_commando.mind.store_memory("<B>Mission:</B> \red [input].")
 

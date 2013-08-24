@@ -5,9 +5,9 @@
 	icon_state = "changerock"
 
 obj/item/changestone/attack_hand(var/mob/user as mob)
-	if(istype(user,/mob/living/carbon/human))
+	if (istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
-		if(!H.gloves)
+		if (!H.gloves)
 			if (H.gender == FEMALE)
 				H.gender = MALE
 			else

@@ -33,7 +33,7 @@
 
 /obj/item/clothing/suit/storage/proc/hide_from(mob/user as mob)
 
-	if(!user.client)
+	if (!user.client)
 		return
 	user.client.screen -= src.boxes
 	user.client.screen -= src.closer
@@ -89,33 +89,33 @@
 
 //This proc is called when you want to place an item into the storage item.
 /obj/item/clothing/suit/storage/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W,/obj/item/weapon/evidencebag) && src.loc != user)
+	if (istype(W,/obj/item/weapon/evidencebag) && src.loc != user)
 		return
 
 	..()
-	if(isrobot(user))
+	if (isrobot(user))
 		user << "\blue You're a robot. No."
 		return //Robots can't interact with storage items.
 
-	if(src.loc == W)
+	if (src.loc == W)
 		return //Means the item is already in the storage item
 
-	if(contents.len >= storage_slots)
+	if (contents.len >= storage_slots)
 		user << "\red \The [src] is full, make some space."
 		return //Storage item is full
 
-	if(can_hold.len)
+	if (can_hold.len)
 		var/ok = 0
 		for(var/A in can_hold)
-			if(istype(W, text2path(A) ))
+			if (istype(W, text2path(A) ))
 				ok = 1
 				break
-		if(!ok)
+		if (!ok)
 			user << "\red \The [src] cannot hold \the [W]."
 			return
 
 	for(var/A in cant_hold) //Check for specific items which this container can't hold.
-		if(istype(W, text2path(A) ))
+		if (istype(W, text2path(A) ))
 			user << "\red \The [src] cannot hold \the [W]."
 			return
 
@@ -127,12 +127,12 @@
 	for(var/obj/item/I in contents)
 		sum_w_class += I.w_class //Adds up the combined w_classes which will be in the storage item if the item is added to it.
 
-	if(sum_w_class > max_combined_w_class)
+	if (sum_w_class > max_combined_w_class)
 		user << "\red \The [src] is full, make some space."
 		return
 
-	if(W.w_class >= src.w_class && (istype(W, /obj/item/weapon/storage)))
-		if(!istype(src, /obj/item/weapon/storage/backpack/holding))	//bohs should be able to hold backpacks again. The override for putting a boh in a boh is in backpack.dm.
+	if (W.w_class >= src.w_class && (istype(W, /obj/item/weapon/storage)))
+		if (!istype(src, /obj/item/weapon/storage/backpack/holding))	//bohs should be able to hold backpacks again. The override for putting a boh in a boh is in backpack.dm.
 			user << "\red \The [src] cannot hold \the [W] as it's a storage item of the same size."
 			return //To prevent the stacking of the same sized items.
 
@@ -151,7 +151,7 @@
 	return
 
 /obj/item/clothing/suit/storage/MouseDrop(atom/over_object)
-	if(ishuman(usr))
+	if (ishuman(usr))
 		var/mob/living/carbon/human/M = usr
 		if (!( istype(over_object, /obj/screen) ))
 			return ..()
@@ -172,7 +172,7 @@
 			M.update_inv_wear_suit()
 			src.add_fingerprint(usr)
 			return
-		if( (over_object == usr && in_range(src, usr) || usr.contents.Find(src)) && usr.s_active)
+		if ( (over_object == usr && in_range(src, usr) || usr.contents.Find(src)) && usr.s_active)
 			usr.s_active.close(usr)
 		src.show_to(usr)
 	return
@@ -212,13 +212,13 @@
 	return
 
 /obj/item/clothing/suit/emp_act(severity)
-	if(!istype(src.loc, /mob/living))
+	if (!istype(src.loc, /mob/living))
 		for(var/obj/O in contents)
 			O.emp_act(severity)
 	..()
 
 /obj/item/clothing/suit/hear_talk(mob/M, var/msg)
 	for (var/atom/A in src)
-		if(istype(A,/obj/))
+		if (istype(A,/obj/))
 			var/obj/O = A
 			O.hear_talk(M, msg)

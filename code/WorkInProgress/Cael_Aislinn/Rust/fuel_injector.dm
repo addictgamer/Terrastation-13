@@ -25,8 +25,8 @@
 	var/emergency_insert_ready = 0
 
 /obj/machinery/power/rust_fuel_injector/process()
-	if(injecting)
-		if(stat & (BROKEN|NOPOWER))
+	if (injecting)
+		if (stat & (BROKEN|NOPOWER))
 			StopInjecting()
 		else
 			Inject()
@@ -35,59 +35,59 @@
 
 /obj/machinery/power/rust_fuel_injector/attackby(obj/item/W, mob/user)
 
-	if(istype(W, /obj/item/weapon/wrench))
-		if(injecting)
+	if (istype(W, /obj/item/weapon/wrench))
+		if (injecting)
 			user << "Turn off the [src] first."
 			return
 		switch(state)
-			if(0)
+			if (0)
 				state = 1
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 				user.visible_message("[user.name] secures [src.name] to the floor.", \
 					"You secure the external reinforcing bolts to the floor.", \
 					"You hear a ratchet")
 				src.anchored = 1
-			if(1)
+			if (1)
 				state = 0
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 				user.visible_message("[user.name] unsecures [src.name] reinforcing bolts from the floor.", \
 					"You undo the external reinforcing bolts.", \
 					"You hear a ratchet")
 				src.anchored = 0
-			if(2)
+			if (2)
 				user << "\red The [src.name] needs to be unwelded from the floor."
 		return
 
-	if(istype(W, /obj/item/weapon/weldingtool))
+	if (istype(W, /obj/item/weapon/weldingtool))
 		var/obj/item/weapon/weldingtool/WT = W
-		if(injecting)
+		if (injecting)
 			user << "Turn off the [src] first."
 			return
 		switch(state)
-			if(0)
+			if (0)
 				user << "\red The [src.name] needs to be wrenched to the floor."
-			if(1)
+			if (1)
 				if (WT.remove_fuel(0,user))
 					playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
 					user.visible_message("[user.name] starts to weld the [src.name] to the floor.", \
 						"You start to weld the [src] to the floor.", \
 						"You hear welding")
 					if (do_after(user,20))
-						if(!src || !WT.isOn()) return
+						if (!src || !WT.isOn()) return
 						state = 2
 						user << "You weld the [src] to the floor."
 						connect_to_network()
 						//src.directwired = 1
 				else
 					user << "\red You need more welding fuel to complete this task."
-			if(2)
+			if (2)
 				if (WT.remove_fuel(0,user))
 					playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
 					user.visible_message("[user.name] starts to cut the [src.name] free from the floor.", \
 						"You start to cut the [src] free from the floor.", \
 						"You hear welding")
 					if (do_after(user,20))
-						if(!src || !WT.isOn()) return
+						if (!src || !WT.isOn()) return
 						state = 1
 						user << "You cut the [src] free from the floor."
 						disconnect_from_network()
@@ -96,25 +96,25 @@
 					user << "\red You need more welding fuel to complete this task."
 		return
 
-	if(istype(W, /obj/item/weapon/card/id) || istype(W, /obj/item/device/pda))
-		if(emagged)
+	if (istype(W, /obj/item/weapon/card/id) || istype(W, /obj/item/device/pda))
+		if (emagged)
 			user << "\red The lock seems to be broken"
 			return
-		if(src.allowed(user))
+		if (src.allowed(user))
 			src.locked = !src.locked
 			user << "The controls are now [src.locked ? "locked." : "unlocked."]"
 		else
 			user << "\red Access denied."
 		return
 
-	if(istype(W, /obj/item/weapon/card/emag) && !emagged)
+	if (istype(W, /obj/item/weapon/card/emag) && !emagged)
 		locked = 0
 		emagged = 1
 		user.visible_message("[user.name] emags the [src.name].","\red You short out the lock.")
 		return
 
-	if(istype(W, /obj/item/weapon/fuel_assembly) && !cur_assembly)
-		if(emergency_insert_ready)
+	if (istype(W, /obj/item/weapon/fuel_assembly) && !cur_assembly)
+		if (emergency_insert_ready)
 			cur_assembly = W
 			user.drop_item()
 			W.loc = src
@@ -132,11 +132,11 @@
 	interact(user)
 
 /obj/machinery/power/rust_fuel_injector/interact(mob/user)
-	if(stat & BROKEN)
+	if (stat & BROKEN)
 		user.unset_machine()
 		user << browse(null, "window=fuel_injector")
 		return
-	if(get_dist(src, user) > 1 )
+	if (get_dist(src, user) > 1 )
 		if (!istype(user, /mob/living/silicon))
 			user.unset_machine()
 			user << browse(null, "window=fuel_injector")
@@ -152,14 +152,14 @@
 		dat += "<b>Fuel usage:</b> [fuel_usage*100]% <a href='?src=\ref[src];fuel_usage=1'>\[Modify\]</a><br>"
 		dat += "<b>Fuel assembly port:</b> "
 		dat += "<a href='?src=\ref[src];fuel_assembly=1'>\[[cur_assembly ? "Eject assembly to port" : "Draw assembly from port"]\]</a> "
-		if(cur_assembly)
+		if (cur_assembly)
 			dat += "<a href='?src=\ref[src];emergency_fuel_assembly=1'>\[Emergency eject\]</a><br>"
 		else
 			dat += "<a href='?src=\ref[src];emergency_fuel_assembly=1'>\[[emergency_insert_ready ? "Cancel emergency insertion" : "Emergency insert"]\]</a><br>"
 		var/font_colour = "green"
-		if(cached_power_avail < active_power_usage)
+		if (cached_power_avail < active_power_usage)
 			font_colour = "red"
-		else if(cached_power_avail < active_power_usage * 2)
+		else if (cached_power_avail < active_power_usage * 2)
 			font_colour = "orange"
 		dat += "<b>Power status:</b> <font color=[font_colour]>[active_power_usage]/[cached_power_avail] W</font><br>"
 		dat += "<a href='?src=\ref[src];toggle_remote=1'>\[[remote_access_enabled ? "Disable remote access" : "Enable remote access"]\]</a><br>"
@@ -175,32 +175,32 @@
 /obj/machinery/power/rust_fuel_injector/Topic(href, href_list)
 	..()
 
-	if( href_list["modify_tag"] )
+	if ( href_list["modify_tag"] )
 		id_tag = input("Enter new ID tag", "Modifying ID tag") as text|null
 
-	if( href_list["fuel_assembly"] )
+	if ( href_list["fuel_assembly"] )
 		attempt_fuel_swap()
 
-	if( href_list["emergency_fuel_assembly"] )
-		if(cur_assembly)
+	if ( href_list["emergency_fuel_assembly"] )
+		if (cur_assembly)
 			cur_assembly.loc = src.loc
 			cur_assembly = null
 			//irradiate!
 		else
 			emergency_insert_ready = !emergency_insert_ready
 
-	if( href_list["toggle_injecting"] )
-		if(injecting)
+	if ( href_list["toggle_injecting"] )
+		if (injecting)
 			StopInjecting()
 		else
 			BeginInjecting()
 
-	if( href_list["toggle_remote"] )
+	if ( href_list["toggle_remote"] )
 		remote_access_enabled = !remote_access_enabled
 
-	if( href_list["fuel_usage"] )
+	if ( href_list["fuel_usage"] )
 		var/new_usage = text2num(input("Enter new fuel usage (0.01% - 100%)", "Modifying fuel usage", fuel_usage * 100))
-		if(!new_usage)
+		if (!new_usage)
 			usr << "\red That's not a valid number."
 			return
 		new_usage = max(new_usage, 0.01)
@@ -208,41 +208,41 @@
 		fuel_usage = new_usage / 100
 		active_power_usage = 500 + 1000 * fuel_usage
 
-	if( href_list["update_extern"] )
+	if ( href_list["update_extern"] )
 		var/obj/machinery/computer/rust_fuel_control/C = locate(href_list["update_extern"])
-		if(C)
+		if (C)
 			C.updateDialog()
 
-	if( href_list["close"] )
+	if ( href_list["close"] )
 		usr << browse(null, "window=fuel_injector")
 		usr.unset_machine()
 
 	updateDialog()
 
 /obj/machinery/power/rust_fuel_injector/proc/BeginInjecting()
-	if(!injecting && cur_assembly)
+	if (!injecting && cur_assembly)
 		icon_state = "injector1"
 		injecting = 1
 		use_power = 1
 
 /obj/machinery/power/rust_fuel_injector/proc/StopInjecting()
-	if(injecting)
+	if (injecting)
 		injecting = 0
 		icon_state = "injector0"
 		use_power = 0
 
 /obj/machinery/power/rust_fuel_injector/proc/Inject()
-	if(!injecting)
+	if (!injecting)
 		return
-	if(cur_assembly)
+	if (cur_assembly)
 		var/amount_left = 0
 		for(var/reagent in cur_assembly.rod_quantities)
 			//world << "checking [reagent]"
-			if(cur_assembly.rod_quantities[reagent] > 0)
+			if (cur_assembly.rod_quantities[reagent] > 0)
 				//world << "	rods left: [cur_assembly.rod_quantities[reagent]]"
 				var/amount = cur_assembly.rod_quantities[reagent] * fuel_usage
 				var/numparticles = round(amount * 1000)
-				if(numparticles < 1)
+				if (numparticles < 1)
 					numparticles = 1
 				//world << "	amount: [amount]"
 				//world << "	numparticles: [numparticles]"
@@ -265,15 +265,15 @@
 	var/turf/mid = get_step(src, rev_dir)
 	var/success = 0
 	for(var/obj/machinery/rust_fuel_assembly_port/check_port in get_step(mid, rev_dir))
-		if(cur_assembly)
-			if(!check_port.cur_assembly)
+		if (cur_assembly)
+			if (!check_port.cur_assembly)
 				check_port.cur_assembly = cur_assembly
 				cur_assembly.loc = check_port
 				cur_assembly = null
 				check_port.icon_state = "port1"
 				success = 1
 		else
-			if(check_port.cur_assembly)
+			if (check_port.cur_assembly)
 				cur_assembly = check_port.cur_assembly
 				cur_assembly.loc = src
 				check_port.cur_assembly = null
@@ -281,7 +281,7 @@
 				success = 1
 
 		break
-	if(success)
+	if (success)
 		src.visible_message("\blue \icon[src] a green light flashes on [src].")
 		updateDialog()
 	else

@@ -22,8 +22,8 @@
 
 	attackby(obj/item/I as obj, mob/user as mob)
 
-		if((istype(I, /obj/item/weapon/grenade)))
-			if(grenades.len < max_grenades)
+		if ((istype(I, /obj/item/weapon/grenade)))
+			if (grenades.len < max_grenades)
 				user.drop_item()
 				I.loc = src
 				grenades += I
@@ -40,10 +40,10 @@
 		else if (locate (/obj/structure/table, src.loc))
 			return
 
-		else if(target == user)
+		else if (target == user)
 			return
 
-		if(grenades.len)
+		if (grenades.len)
 			spawn(0) fire_grenade(target,user)
 		else
 			usr << "\red The grenade launcher is empty."

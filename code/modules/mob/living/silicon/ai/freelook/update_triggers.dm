@@ -8,7 +8,7 @@
 	var/image/obscured
 
 /turf/proc/visibilityChanged()
-	if(ticker)
+	if (ticker)
 		cameranet.updateVisibility(src)
 
 /turf/simulated/Del()
@@ -24,25 +24,25 @@
 // STRUCTURES
 
 /obj/structure/Del()
-	if(ticker)
+	if (ticker)
 		cameranet.updateVisibility(src)
 	..()
 
 /obj/structure/New()
 	..()
-	if(ticker)
+	if (ticker)
 		cameranet.updateVisibility(src)
 
 // EFFECTS
 
 /obj/effect/Del()
-	if(ticker)
+	if (ticker)
 		cameranet.updateVisibility(src)
 	..()
 
 /obj/effect/New()
 	..()
-	if(ticker)
+	if (ticker)
 		cameranet.updateVisibility(src)
 
 
@@ -53,7 +53,7 @@
 	. = ..(need_rebuild)
 	// Glass door glass = 1
 	// don't check then?
-	if(!glass && cameranet)
+	if (!glass && cameranet)
 		cameranet.updateVisibility(src, 0)
 
 
@@ -66,12 +66,12 @@
 /mob/living/silicon/robot/Move()
 	var/oldLoc = src.loc
 	. = ..()
-	if(.)
-		if(src.camera && src.camera.network.len)
-			if(!updating)
+	if (.)
+		if (src.camera && src.camera.network.len)
+			if (!updating)
 				updating = 1
 				spawn(BORG_CAMERA_BUFFER)
-					if(oldLoc != src.loc)
+					if (oldLoc != src.loc)
 						cameranet.updatePortableCamera(src.camera)
 					updating = 0
 
@@ -81,7 +81,7 @@
 
 /obj/machinery/camera/deactivate(user as mob, var/choice = 1)
 	..(user, choice)
-	if(src.can_use())
+	if (src.can_use())
 		cameranet.addCamera(src)
 	else
 		src.SetLuminosity(0)
@@ -91,13 +91,13 @@
 	..()
 	cameranet.cameras += src //Camera must be added to global list of all cameras no matter what...
 	var/list/open_networks = difflist(network,RESTRICTED_CAMERA_NETWORKS) //...but if all of camera's networks are restricted, it only works for specific camera consoles.
-	if(open_networks.len) //If there is at least one open network, chunk is available for AI usage.
+	if (open_networks.len) //If there is at least one open network, chunk is available for AI usage.
 		cameranet.addCamera(src)
 
 /obj/machinery/camera/Del()
 	cameranet.cameras -= src
 	var/list/open_networks = difflist(network,RESTRICTED_CAMERA_NETWORKS)
-	if(open_networks.len)
+	if (open_networks.len)
 		cameranet.removeCamera(src)
 	..()
 

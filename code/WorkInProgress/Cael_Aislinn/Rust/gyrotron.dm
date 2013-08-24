@@ -29,13 +29,13 @@
 
 	Topic(href, href_list)
 		..()
-		if( href_list["close"] )
+		if ( href_list["close"] )
 			usr << browse(null, "window=gyro_monitor")
 			usr.machine = null
 			return
-		if( href_list["modifypower"] )
+		if ( href_list["modifypower"] )
 			var/new_val = text2num(input("Enter new emission power level (0.001 - 0.01)", "Modifying power level (MeV)", mega_energy))
-			if(!new_val)
+			if (!new_val)
 				usr << "\red That's not a valid number."
 				return
 			new_val = min(new_val,0.01)
@@ -44,9 +44,9 @@
 			for(var/obj/machinery/computer/rust_gyrotron_controller/comp in range(25))
 				comp.updateDialog()
 			return
-		if( href_list["modifyrate"] )
+		if ( href_list["modifyrate"] )
 			var/new_val = text2num(input("Enter new emission rate (1 - 10)", "Modifying emission rate (sec)", rate))
-			if(!new_val)
+			if (!new_val)
 				usr << "\red That's not a valid number."
 				return
 			new_val = min(new_val,1)
@@ -55,9 +55,9 @@
 			for(var/obj/machinery/computer/rust_gyrotron_controller/comp in range(25))
 				comp.updateDialog()
 			return
-		if( href_list["modifyfreq"] )
+		if ( href_list["modifyfreq"] )
 			var/new_val = text2num(input("Enter new emission frequency (1 - 50000)", "Modifying emission frequency (GHz)", frequency))
-			if(!new_val)
+			if (!new_val)
 				usr << "\red That's not a valid number."
 				return
 			new_val = min(new_val,1)
@@ -66,24 +66,24 @@
 			for(var/obj/machinery/computer/rust_gyrotron_controller/comp in range(25))
 				comp.updateDialog()
 			return
-		if( href_list["activate"] )
+		if ( href_list["activate"] )
 			emitting = 1
 			spawn(rate)
 				Emit()
 			for(var/obj/machinery/computer/rust_gyrotron_controller/comp in range(25))
 				comp.updateDialog()
 			return
-		if( href_list["deactivate"] )
+		if ( href_list["deactivate"] )
 			emitting = 0
 			for(var/obj/machinery/computer/rust_gyrotron_controller/comp in range(25))
 				comp.updateDialog()
 			return
-		if( href_list["enableremote"] )
+		if ( href_list["enableremote"] )
 			remoteenabled = 1
 			for(var/obj/machinery/computer/rust_gyrotron_controller/comp in range(25))
 				comp.updateDialog()
 			return
-		if( href_list["disableremote"] )
+		if ( href_list["disableremote"] )
 			remoteenabled = 0
 			for(var/obj/machinery/computer/rust_gyrotron_controller/comp in range(25))
 				comp.updateDialog()
@@ -91,21 +91,21 @@
 /*
 			var/obj/item/projectile/beam/emitter/A = new /obj/item/projectile/beam/emitter( src.loc )
 			playsound(src.loc, 'emitter.ogg', 25, 1)
-			if(prob(35))
+			if (prob(35))
 				var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 				s.set_up(5, 1, src)
 				s.start()
 			A.dir = src.dir
-			if(src.dir == 1)//Up
+			if (src.dir == 1)//Up
 				A.yo = 20
 				A.xo = 0
-			else if(src.dir == 2)//Down
+			else if (src.dir == 2)//Down
 				A.yo = -20
 				A.xo = 0
-			else if(src.dir == 4)//Right
+			else if (src.dir == 4)//Right
 				A.yo = 0
 				A.xo = 20
-			else if(src.dir == 8)//Left
+			else if (src.dir == 8)//Left
 				A.yo = 0
 				A.xo = -20
 			else // Any other
@@ -121,21 +121,21 @@
 		A.icon_state = "emitter"
 		playsound(src.loc, 'emitter.ogg', 25, 1)
 		use_power(100 * mega_energy + 500)
-		/*if(prob(35))
+		/*if (prob(35))
 			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 			s.set_up(5, 1, src)
 			s.start()*/
 		A.dir = src.dir
-		if(src.dir == 1)//Up
+		if (src.dir == 1)//Up
 			A.yo = 20
 			A.xo = 0
-		else if(src.dir == 2)//Down
+		else if (src.dir == 2)//Down
 			A.yo = -20
 			A.xo = 0
-		else if(src.dir == 4)//Right
+		else if (src.dir == 4)//Right
 			A.yo = 0
 			A.xo = 20
-		else if(src.dir == 8)//Left
+		else if (src.dir == 8)//Left
 			A.yo = 0
 			A.xo = -20
 		else // Any other
@@ -144,12 +144,12 @@
 		A.process()
 		//
 		flick("emitter-active",src)
-		if(emitting)
+		if (emitting)
 			spawn(rate)
 				Emit()
 
 	proc/UpdateIcon()
-		if(on)
+		if (on)
 			icon_state = "emitter-on"
 		else
 			icon_state = "emitter-off"
@@ -170,10 +170,10 @@
 				user << browse(null, "window=gyro_monitor")
 				return
 		var/t = "<B>Free electron MASER (Gyrotron) Control Panel</B><BR>"
-		if(owned_gyrotron && owned_gyrotron.on)
+		if (owned_gyrotron && owned_gyrotron.on)
 			t += "<font color=green>Gyrotron operational</font><br>"
 			t += "Operational mode: <font color=blue>"
-			if(owned_gyrotron.emitting)
+			if (owned_gyrotron.emitting)
 				t += "Emitting</font> <a href='?src=\ref[owned_gyrotron];deactivate=1'>\[Deactivate\]</a><br>"
 			else
 				t += "Not emitting</font> <a href='?src=\ref[owned_gyrotron];activate=1'>\[Activate\]</a><br>"

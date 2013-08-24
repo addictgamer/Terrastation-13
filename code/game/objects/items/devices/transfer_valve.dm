@@ -16,17 +16,17 @@
 	return 1
 
 /obj/item/device/transfer_valve/attackby(obj/item/item, mob/user)
-	if(istype(item, /obj/item/weapon/tank))
-		if(tank_one && tank_two)
+	if (istype(item, /obj/item/weapon/tank))
+		if (tank_one && tank_two)
 			user << "<span class='warning'>There are already two tanks attached, remove one first.</span>"
 			return
 
-		if(!tank_one)
+		if (!tank_one)
 			tank_one = item
 			user.drop_item()
 			item.loc = src
 			user << "<span class='notice'>You attach the tank to the transfer valve.</span>"
-		else if(!tank_two)
+		else if (!tank_two)
 			tank_two = item
 			user.drop_item()
 			item.loc = src
@@ -34,12 +34,12 @@
 
 		update_icon()
 //TODO: Have this take an assemblyholder
-	else if(isassembly(item))
+	else if (isassembly(item))
 		var/obj/item/device/assembly/A = item
-		if(A.secured)
+		if (A.secured)
 			user << "<span class='notice'>The device is secured.</span>"
 			return
-		if(attached_device)
+		if (attached_device)
 			user << "<span class='warning'>There is already an device attached to the valve, remove it first.</span>"
 			return
 		user.remove_from_mob(item)
@@ -57,7 +57,7 @@
 
 
 /obj/item/device/transfer_valve/HasProximity(atom/movable/AM as mob|obj)
-	if(!attached_device)	return
+	if (!attached_device)	return
 	attached_device.HasProximity(AM)
 	return
 
@@ -79,27 +79,27 @@
 	if ( usr.stat || usr.restrained() )
 		return
 	if (src.loc == usr)
-		if(tank_one && href_list["tankone"])
+		if (tank_one && href_list["tankone"])
 			split_gases()
 			valve_open = 0
 			tank_one.loc = get_turf(src)
 			tank_one = null
 			update_icon()
-		else if(tank_two && href_list["tanktwo"])
+		else if (tank_two && href_list["tanktwo"])
 			split_gases()
 			valve_open = 0
 			tank_two.loc = get_turf(src)
 			tank_two = null
 			update_icon()
-		else if(href_list["open"])
+		else if (href_list["open"])
 			toggle_valve()
-		else if(attached_device)
-			if(href_list["rem_device"])
+		else if (attached_device)
+			if (href_list["rem_device"])
 				attached_device.loc = get_turf(src)
 				attached_device:holder = null
 				attached_device = null
 				update_icon()
-			if(href_list["device"])
+			if (href_list["device"])
 				attached_device.attack_self(usr)
 
 		src.attack_self(usr)
@@ -108,7 +108,7 @@
 	return
 
 /obj/item/device/transfer_valve/process_activation(var/obj/item/device/D)
-	if(toggle)
+	if (toggle)
 		toggle = 0
 		toggle_valve()
 		spawn(50) // To stop a signal being spammed from a proxy sensor constantly going off or whatever
@@ -118,18 +118,18 @@
 	overlays.Cut()
 	underlays = null
 
-	if(!tank_one && !tank_two && !attached_device)
+	if (!tank_one && !tank_two && !attached_device)
 		icon_state = "valve_1"
 		return
 	icon_state = "valve"
 
-	if(tank_one)
+	if (tank_one)
 		overlays += "[tank_one.icon_state]"
-	if(tank_two)
+	if (tank_two)
 		var/icon/J = new(icon, icon_state = "[tank_two.icon_state]")
 		J.Shift(WEST, 13)
 		underlays += J
-	if(attached_device)
+	if (attached_device)
 		overlays += "device"
 
 /obj/item/device/transfer_valve/proc/merge_gases()
@@ -153,13 +153,13 @@
 	*/
 
 /obj/item/device/transfer_valve/proc/toggle_valve()
-	if(valve_open==0 && (tank_one && tank_two))
+	if (valve_open==0 && (tank_one && tank_two))
 		valve_open = 1
 		var/turf/bombturf = get_turf(src)
 		var/area/A = get_area(bombturf)
 
 		var/attacher_name = ""
-		if(!attacher)
+		if (!attacher)
 			attacher_name = "Unknown"
 		else
 			attacher_name = "[attacher.name]([attacher.ckey])"
@@ -167,12 +167,12 @@
 		var/log_str = "Bomb valve opened in <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[bombturf.x];Y=[bombturf.y];Z=[bombturf.z]'>[A.name]</a> "
 		log_str += "with [attached_device ? attached_device : "no device"] attacher: [attacher_name]"
 
-		if(attacher)
+		if (attacher)
 			log_str += "(<A HREF='?_src_=holder;adminmoreinfo=\ref[attacher]'>?</A>)"
 
 		var/mob/mob = get_mob_by_key(src.fingerprintslast)
 		var/last_touch_info = ""
-		if(mob)
+		if (mob)
 			last_touch_info = "(<A HREF='?_src_=holder;adminmoreinfo=\ref[mob]'>?</A>)"
 
 		log_str += " Last touched by: [src.fingerprintslast][last_touch_info]"
@@ -186,7 +186,7 @@
 				sleep(10)
 			src.update_icon()
 
-	else if(valve_open==1 && (tank_one && tank_two))
+	else if (valve_open==1 && (tank_one && tank_two))
 		split_gases()
 		valve_open = 0
 		src.update_icon()

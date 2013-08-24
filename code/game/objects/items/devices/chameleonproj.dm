@@ -20,19 +20,19 @@
 		toggle()
 
 	afterattack(atom/target, mob/user , flag)
-		if(istype(target,/obj/item))
+		if (istype(target,/obj/item))
 			playsound(src, 'sound/weapons/flash.ogg', 100, 1, 1)
 			user << "\blue Scanned [target]."
 			saved_item = target.type
 
 	proc/toggle()
-		if(!can_use || !saved_item) return
-		if(active_dummy)
+		if (!can_use || !saved_item) return
+		if (active_dummy)
 			playsound(src, 'sound/effects/pop.ogg', 100, 1, 1)
 			for(var/atom/movable/A in active_dummy)
 				A.loc = active_dummy.loc
-				if(ismob(A))
-					if(A:client)
+				if (ismob(A))
+					if (A:client)
 						A:client:eye = A
 			del(active_dummy)
 			active_dummy = null
@@ -44,7 +44,7 @@
 		else
 			playsound(src, 'sound/effects/pop.ogg', 100, 1, 1)
 			var/obj/O = new saved_item(src)
-			if(!O) return
+			if (!O) return
 			var/obj/effect/dummy/chameleon/C = new/obj/effect/dummy/chameleon(usr.loc)
 			C.name = O.name
 			C.desc = O.desc
@@ -62,15 +62,15 @@
 			spawn(8) T.delete()
 
 	proc/disrupt()
-		if(active_dummy)
+		if (active_dummy)
 			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread
 			spark_system.set_up(5, 0, src)
 			spark_system.attach(src)
 			spark_system.start()
 			for(var/atom/movable/A in active_dummy)
 				A.loc = active_dummy.loc
-				if(ismob(A))
-					if(A:client)
+				if (ismob(A))
+					if (A:client)
 						A:client:eye = A
 			del(active_dummy)
 			active_dummy = null
@@ -103,18 +103,18 @@
 		..()
 		master.disrupt()
 	relaymove(var/mob/user, direction)
-		if(istype(loc, /turf/space)) return //No magical space movement!
+		if (istype(loc, /turf/space)) return //No magical space movement!
 
-		if(can_move)
+		if (can_move)
 			can_move = 0
 			switch(usr.bodytemperature)
-				if(300 to INFINITY)
+				if (300 to INFINITY)
 					spawn(10) can_move = 1
-				if(295 to 300)
+				if (295 to 300)
 					spawn(13) can_move = 1
-				if(280 to 295)
+				if (280 to 295)
 					spawn(16) can_move = 1
-				if(260 to 280)
+				if (260 to 280)
 					spawn(20) can_move = 1
 				else
 					spawn(25) can_move = 1

@@ -22,16 +22,16 @@
 
 /obj/item/stack/sheet/glass/attackby(obj/item/W, mob/user)
 	..()
-	if(istype(W,/obj/item/weapon/cable_coil))
+	if (istype(W,/obj/item/weapon/cable_coil))
 		var/obj/item/weapon/cable_coil/CC = W
-		if(CC.amount < 5)
+		if (CC.amount < 5)
 			user << "\b There is not enough wire in this coil. You need 5 lengths."
 			return
 		CC.use(5)
 		user << "\blue You attach wire to the [name]."
 		new /obj/item/stack/light_w(user.loc)
 		src.use(1)
-	else if( istype(W, /obj/item/stack/rods) )
+	else if ( istype(W, /obj/item/stack/rods) )
 		var/obj/item/stack/rods/V  = W
 		var/obj/item/stack/sheet/rglass/RG = new (user.loc)
 		RG.add_fingerprint(user)
@@ -47,27 +47,27 @@
 		return ..()
 
 /obj/item/stack/sheet/glass/proc/construct_window(mob/user as mob)
-	if(!user || !src)	return 0
-	if(!istype(user.loc,/turf)) return 0
-	if(!user.IsAdvancedToolUser())
+	if (!user || !src)	return 0
+	if (!istype(user.loc,/turf)) return 0
+	if (!user.IsAdvancedToolUser())
 		user << "\red You don't have the dexterity to do this!"
 		return 0
 	var/title = "Sheet-Glass"
 	title += " ([src.amount] sheet\s left)"
 	switch(alert(title, "Would you like full tile glass or one direction?", "One Direction", "Full Window", "Cancel", null))
-		if("One Direction")
-			if(!src)	return 1
-			if(src.loc != user)	return 1
+		if ("One Direction")
+			if (!src)	return 1
+			if (src.loc != user)	return 1
 
 			var/list/directions = new/list(cardinal)
 			var/i = 0
 			for (var/obj/structure/window/win in user.loc)
 				i++
-				if(i >= 4)
+				if (i >= 4)
 					user << "\red There are too many windows in this location."
 					return 1
 				directions-=win.dir
-				if(!(win.ini_dir in cardinal))
+				if (!(win.ini_dir in cardinal))
 					user << "\red Can't let you do that."
 					return 1
 
@@ -76,9 +76,9 @@
 			for(var/direction in list( user.dir, turn(user.dir,90), turn(user.dir,180), turn(user.dir,270) ))
 				var/found = 0
 				for(var/obj/structure/window/WT in user.loc)
-					if(WT.dir == direction)
+					if (WT.dir == direction)
 						found = 1
-				if(!found)
+				if (!found)
 					dir_to_set = direction
 					break
 
@@ -88,13 +88,13 @@
 			W.ini_dir = W.dir
 			W.anchored = 0
 			src.use(1)
-		if("Full Window")
-			if(!src)	return 1
-			if(src.loc != user)	return 1
-			if(src.amount < 2)
+		if ("Full Window")
+			if (!src)	return 1
+			if (src.loc != user)	return 1
+			if (src.amount < 2)
 				user << "\red You need more glass to do that."
 				return 1
-			if(locate(/obj/structure/window) in user.loc)
+			if (locate(/obj/structure/window) in user.loc)
 				user << "\red There is a window in the way."
 				return 1
 			var/obj/structure/window/W
@@ -130,26 +130,26 @@
 	construct_window(user)
 
 /obj/item/stack/sheet/rglass/proc/construct_window(mob/user as mob)
-	if(!user || !src)	return 0
-	if(!istype(user.loc,/turf)) return 0
-	if(!user.IsAdvancedToolUser())
+	if (!user || !src)	return 0
+	if (!istype(user.loc,/turf)) return 0
+	if (!user.IsAdvancedToolUser())
 		user << "\red You don't have the dexterity to do this!"
 		return 0
 	var/title = "Sheet Reinf. Glass"
 	title += " ([src.amount] sheet\s left)"
 	switch(input(title, "Would you like full tile glass a one direction glass pane or a windoor?") in list("One Direction", "Full Window", "Windoor", "Cancel"))
-		if("One Direction")
-			if(!src)	return 1
-			if(src.loc != user)	return 1
+		if ("One Direction")
+			if (!src)	return 1
+			if (src.loc != user)	return 1
 			var/list/directions = new/list(cardinal)
 			var/i = 0
 			for (var/obj/structure/window/win in user.loc)
 				i++
-				if(i >= 4)
+				if (i >= 4)
 					user << "\red There are too many windows in this location."
 					return 1
 				directions-=win.dir
-				if(!(win.ini_dir in cardinal))
+				if (!(win.ini_dir in cardinal))
 					user << "\red Can't let you do that."
 					return 1
 
@@ -158,9 +158,9 @@
 			for(var/direction in list( user.dir, turn(user.dir,90), turn(user.dir,180), turn(user.dir,270) ))
 				var/found = 0
 				for(var/obj/structure/window/WT in user.loc)
-					if(WT.dir == direction)
+					if (WT.dir == direction)
 						found = 1
-				if(!found)
+				if (!found)
 					dir_to_set = direction
 					break
 
@@ -172,13 +172,13 @@
 			W.anchored = 0
 			src.use(1)
 
-		if("Full Window")
-			if(!src)	return 1
-			if(src.loc != user)	return 1
-			if(src.amount < 2)
+		if ("Full Window")
+			if (!src)	return 1
+			if (src.loc != user)	return 1
+			if (src.amount < 2)
 				user << "\red You need more glass to do that."
 				return 1
-			if(locate(/obj/structure/window) in user.loc)
+			if (locate(/obj/structure/window) in user.loc)
 				user << "\red There is a window in the way."
 				return 1
 			var/obj/structure/window/W
@@ -189,18 +189,18 @@
 			W.anchored = 0
 			src.use(2)
 
-		if("Windoor")
-			if(!src || src.loc != user) return 1
+		if ("Windoor")
+			if (!src || src.loc != user) return 1
 
-			if(isturf(user.loc) && locate(/obj/structure/windoor_assembly/, user.loc))
+			if (isturf(user.loc) && locate(/obj/structure/windoor_assembly/, user.loc))
 				user << "\red There is already a windoor assembly in that location."
 				return 1
 
-			if(isturf(user.loc) && locate(/obj/machinery/door/window/, user.loc))
+			if (isturf(user.loc) && locate(/obj/machinery/door/window/, user.loc))
 				user << "\red There is already a windoor in that location."
 				return 1
 
-			if(src.amount < 5)
+			if (src.amount < 5)
 				user << "\red You need more glass to do that."
 				return 1
 
@@ -210,13 +210,13 @@
 			WD.anchored = 0
 			src.use(5)
 			switch(user.dir)
-				if(SOUTH)
+				if (SOUTH)
 					WD.dir = SOUTH
 					WD.ini_dir = SOUTH
-				if(EAST)
+				if (EAST)
 					WD.dir = EAST
 					WD.ini_dir = EAST
-				if(WEST)
+				if (WEST)
 					WD.dir = WEST
 					WD.ini_dir = WEST
 				else//If the user is facing northeast. northwest, southeast, southwest or north, default to north
@@ -246,13 +246,13 @@
 
 	src.icon_state = pick("large", "medium", "small")
 	switch(src.icon_state)
-		if("small")
+		if ("small")
 			src.pixel_x = rand(-12, 12)
 			src.pixel_y = rand(-12, 12)
-		if("medium")
+		if ("medium")
 			src.pixel_x = rand(-8, 8)
 			src.pixel_y = rand(-8, 8)
-		if("large")
+		if ("large")
 			src.pixel_x = rand(-5, 5)
 			src.pixel_y = rand(-5, 5)
 		else
@@ -262,12 +262,12 @@
 	..()
 	if ( istype(W, /obj/item/weapon/weldingtool))
 		var/obj/item/weapon/weldingtool/WT = W
-		if(WT.remove_fuel(0, user))
+		if (WT.remove_fuel(0, user))
 			var/obj/item/stack/sheet/glass/NG = new (user.loc)
 			for (var/obj/item/stack/sheet/glass/G in user.loc)
-				if(G==NG)
+				if (G==NG)
 					continue
-				if(G.amount>=G.max_amount)
+				if (G.amount>=G.max_amount)
 					continue
 				G.attackby(NG, user)
 				usr << "You add the newly-formed glass to the stack. It now contains [NG.amount] sheets."
@@ -277,19 +277,19 @@
 	return ..()
 
 /obj/item/weapon/shard/HasEntered(AM as mob|obj)
-	if(ismob(AM))
+	if (ismob(AM))
 		var/mob/M = AM
 		M << "\red <B>You step in the broken glass!</B>"
 		playsound(src.loc, 'sound/effects/glass_step.ogg', 50, 1)
-		if(ishuman(M))
+		if (ishuman(M))
 			var/mob/living/carbon/human/H = M
-			if(!H.shoes)
+			if (!H.shoes)
 				var/datum/organ/external/affecting = H.get_organ(pick("l_foot", "r_foot"))
-				if(affecting.status & ORGAN_ROBOT)
+				if (affecting.status & ORGAN_ROBOT)
 					return
 
 				H.Weaken(3)
-				if(affecting.take_damage(5, 0))
+				if (affecting.take_damage(5, 0))
 					H.UpdateDamageIcon()
 				H.updatehealth()
 	..()

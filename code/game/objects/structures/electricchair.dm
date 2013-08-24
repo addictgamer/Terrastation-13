@@ -12,7 +12,7 @@
 	return
 
 /obj/structure/stool/bed/chair/e_chair/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/wrench))
+	if (istype(W, /obj/item/weapon/wrench))
 		var/obj/structure/stool/bed/chair/C = new /obj/structure/stool/bed/chair(loc)
 		playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
 		C.dir = dir
@@ -28,7 +28,7 @@
 	set category = "Object"
 	set src in oview(1)
 
-	if(on)
+	if (on)
 		on = 0
 		icon_state = "echair0"
 	else
@@ -44,17 +44,17 @@
 	return
 
 /obj/structure/stool/bed/chair/e_chair/proc/shock()
-	if(!on)
+	if (!on)
 		return
-	if(last_time + 50 > world.time)
+	if (last_time + 50 > world.time)
 		return
 	last_time = world.time
 
 	// special power handling
 	var/area/A = get_area(src)
-	if(!isarea(A))
+	if (!isarea(A))
 		return
-	if(!A.powered(EQUIP))
+	if (!A.powered(EQUIP))
 		return
 	A.use_power(EQUIP, 5000)
 	var/light = A.power_light
@@ -64,7 +64,7 @@
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 	s.set_up(12, 1, src)
 	s.start()
-	if(buckled_mob)
+	if (buckled_mob)
 		buckled_mob.burn_skin(85)
 		buckled_mob << "<span class='danger'>You feel a deep shock course through your body!</span>"
 		sleep(1)

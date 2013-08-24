@@ -65,21 +65,21 @@ atom/proc/CanPass(atom/movable/mover, turf/target, height=1.5, air_group = 0)
 	return (!density || !height || air_group)
 
 /turf/CanPass(atom/movable/mover, turf/target, height=1.5,air_group=0)
-	if(!target) return 0
+	if (!target) return 0
 
-	if(istype(mover)) // turf/Enter(...) will perform more advanced checks
+	if (istype(mover)) // turf/Enter(...) will perform more advanced checks
 		return !density
 
 	else // Now, doing more detailed checks for air movement and air group formation
-		if(target.blocks_air||blocks_air)
+		if (target.blocks_air||blocks_air)
 			return 0
 
 		for(var/obj/obstacle in src)
-			if(!obstacle.CanPass(mover, target, height, air_group))
+			if (!obstacle.CanPass(mover, target, height, air_group))
 				return 0
-		if(target != src)
+		if (target != src)
 			for(var/obj/obstacle in target)
-				if(!obstacle.CanPass(mover, src, height, air_group))
+				if (!obstacle.CanPass(mover, src, height, air_group))
 					return 0
 
 		return 1
@@ -136,8 +136,8 @@ var/datum/controller/air_system/air_master
 
 	for(var/turf/simulated/S in world)
 		simulated_turf_count++
-		if(!S.zone && !S.blocks_air)
-			if(S.CanPass(null, S, 0, 0))
+		if (!S.zone && !S.blocks_air)
+			if (S.CanPass(null, S, 0, 0))
 				new/zone(S)
 
 	for(var/turf/simulated/S in world)
@@ -160,12 +160,12 @@ Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_coun
 	set background = 1
 
 	while(1)
-		if(!kill_air)
+		if (!kill_air)
 			current_cycle++
 			var/success = tick() //Changed so that a runtime does not crash the ticker.
-			if(!success) //Runtimed.
+			if (!success) //Runtimed.
 				failed_ticks++
-				if(failed_ticks > 20)
+				if (failed_ticks > 20)
 					world << "<font color='red'><b>ERROR IN ATMOS TICKER.  Killing air simulation!</font></b>"
 					kill_air = 1
 		sleep(max(5,update_delay*tick_multiplier))
@@ -175,47 +175,47 @@ Total Unsimulated Turfs: [world.maxx*world.maxy*world.maxz - simulated_turf_coun
 	. = 1 //Set the default return value, for runtime detection.
 
 	tick_progress = "update_air_properties"
-	if(tiles_to_update.len) //If there are tiles to update, do so.
+	if (tiles_to_update.len) //If there are tiles to update, do so.
 		for(var/turf/simulated/T in tiles_to_update)
-			if(. && T && !T.update_air_properties())
+			if (. && T && !T.update_air_properties())
 				. = 0 //If a runtime occured, make sure we can sense it.
 				//message_admins("ZASALERT: Unable run turf/simualted/update_air_properties()")
-		if(.)
+		if (.)
 			tiles_to_update = list()
 
 	//Check sanity on connection objects.
-	if(.)
+	if (.)
 		tick_progress = "connections_to_check"
-	if(connections_to_check.len)
+	if (connections_to_check.len)
 		for(var/connection/C in connections_to_check)
 			C.CheckPassSanity()
 		connections_to_check = list()
 
 	//Ensure tiles still have zones.
-	if(.)
+	if (.)
 		tick_progress = "tiles_to_reconsider_zones"
-	if(tiles_to_reconsider_zones.len)
+	if (tiles_to_reconsider_zones.len)
 		for(var/turf/simulated/T in tiles_to_reconsider_zones)
-			if(!T.zone)
+			if (!T.zone)
 				new /zone(T)
 		tiles_to_reconsider_zones = list()
 
 	//Process zones.
-	if(.)
+	if (.)
 		tick_progress = "zone/process()"
 	for(var/zone/Z in zones)
-		if(Z.last_update < current_cycle)
+		if (Z.last_update < current_cycle)
 			var/output = Z.process()
-			if(Z)
+			if (Z)
 				Z.last_update = current_cycle
-			if(. && Z && !output)
+			if (. && Z && !output)
 				. = 0
 	//Process fires.
-	if(.)
+	if (.)
 		tick_progress = "active_hotspots (fire)"
 	for(var/obj/fire/F in active_hotspots)
-		if(. && F && !F.process())
+		if (. && F && !F.process())
 			. = 0
 
-	if(.)
+	if (.)
 		tick_progress = "success"

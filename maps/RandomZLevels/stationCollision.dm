@@ -73,7 +73,7 @@ obj/item/weapon/gun/energy/laser/retro/sc_retro
 //Make it so that these guns only spawn with a couple bullets... if any
 /obj/item/weapon/gun/projectile/silenced/sc_silenced/New()
 	for(var/ammo in loaded)
-		if(prob(95)) //95% chance
+		if (prob(95)) //95% chance
 			loaded -= ammo
 
 //Syndicate sub-machine guns.
@@ -81,7 +81,7 @@ obj/item/weapon/gun/energy/laser/retro/sc_retro
 
 /obj/item/weapon/gun/projectile/automatic/c20r/sc_c20r/New()
 	for(var/ammo in loaded)
-		if(prob(95)) //95% chance
+		if (prob(95)) //95% chance
 			loaded -= ammo
 
 //Barman's shotgun
@@ -89,7 +89,7 @@ obj/item/weapon/gun/energy/laser/retro/sc_retro
 
 /obj/item/weapon/gun/projectile/shotgun/pump/sc_pump/New()
 	for(var/ammo in loaded)
-		if(prob(95)) //95% chance
+		if (prob(95)) //95% chance
 			loaded -= ammo
 
 //Lasers
@@ -177,26 +177,26 @@ var/sc_safecode5 = "[rand(0,9)]"
 
 /obj/machinery/singularity/narsie/sc_Narsie/process()
 	eat()
-	if(prob(25))
+	if (prob(25))
 		mezzer()
 
 /obj/machinery/singularity/narsie/sc_Narsie/consume(var/atom/A)
-	if(is_type_in_list(A, uneatable))
+	if (is_type_in_list(A, uneatable))
 		return 0
 	if (istype(A,/mob/living))
 		var/mob/living/L = A
 		L.gib()
-	else if(istype(A,/obj/))
+	else if (istype(A,/obj/))
 		var/obj/O = A
 		O.ex_act(1.0)
-		if(O) del(O)
-	else if(isturf(A))
+		if (O) del(O)
+	else if (isturf(A))
 		var/turf/T = A
-		if(T.intact)
+		if (T.intact)
 			for(var/obj/O in T.contents)
-				if(O.level != 1)
+				if (O.level != 1)
 					continue
-				if(O.invisibility == 101)
+				if (O.invisibility == 101)
 					src.consume(O)
 		T.ChangeTurf(/turf/space)
 	return

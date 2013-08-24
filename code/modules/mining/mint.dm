@@ -29,10 +29,10 @@
 	spawn( 5 )
 		for (var/dir in cardinal)
 			src.input = locate(/obj/machinery/mineral/input, get_step(src, dir))
-			if(src.input) break
+			if (src.input) break
 		for (var/dir in cardinal)
 			src.output = locate(/obj/machinery/mineral/output, get_step(src, dir))
-			if(src.output) break
+			if (src.output) break
 		processing_objects.Add(src)
 		return
 	return
@@ -42,7 +42,7 @@
 	if ( src.input)
 		var/obj/item/stack/sheet/O
 		O = locate(/obj/item/stack/sheet, input.loc)
-		if(O)
+		if (O)
 			if (istype(O,/obj/item/stack/sheet/mineral/gold))
 				amt_gold += 100 * O.amount
 				del(O)
@@ -110,7 +110,7 @@
 		dat += text("chosen")
 	else
 		dat += text("<A href='?src=\ref[src];choose=uranium'>Choose</A>")
-	if(amt_clown > 0)
+	if (amt_clown > 0)
 		dat += text("<br><font color='#AAAA00'><b>Bananium inserted: </b>[amt_clown]</font> ")
 		if (chosen == "clown")
 			dat += text("chosen")
@@ -136,25 +136,25 @@
 	user << browse("[dat]", "window=mint")
 
 /obj/machinery/mineral/mint/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	usr.set_machine(src)
 	src.add_fingerprint(usr)
-	if(processing==1)
+	if (processing==1)
 		usr << "\blue The machine is processing."
 		return
-	if(href_list["choose"])
+	if (href_list["choose"])
 		chosen = href_list["choose"]
-	if(href_list["chooseAmt"])
+	if (href_list["chooseAmt"])
 		coinsToProduce = between(0, coinsToProduce + text2num(href_list["chooseAmt"]), 1000)
-	if(href_list["makeCoins"])
+	if (href_list["makeCoins"])
 		var/temp_coins = coinsToProduce
 		if (src.output)
 			processing = 1;
 			icon_state = "coinpress1"
 			var/obj/item/weapon/moneybag/M
 			switch(chosen)
-				if("metal")
+				if ("metal")
 					while(amt_iron > 0 && coinsToProduce > 0)
 						if (locate(/obj/item/weapon/moneybag,output.loc))
 							M = locate(/obj/item/weapon/moneybag,output.loc)
@@ -166,7 +166,7 @@
 						newCoins++
 						src.updateUsrDialog()
 						sleep(5);
-				if("gold")
+				if ("gold")
 					while(amt_gold > 0 && coinsToProduce > 0)
 						if (locate(/obj/item/weapon/moneybag,output.loc))
 							M = locate(/obj/item/weapon/moneybag,output.loc)
@@ -178,7 +178,7 @@
 						newCoins++
 						src.updateUsrDialog()
 						sleep(5);
-				if("silver")
+				if ("silver")
 					while(amt_silver > 0 && coinsToProduce > 0)
 						if (locate(/obj/item/weapon/moneybag,output.loc))
 							M = locate(/obj/item/weapon/moneybag,output.loc)
@@ -190,7 +190,7 @@
 						newCoins++
 						src.updateUsrDialog()
 						sleep(5);
-				if("diamond")
+				if ("diamond")
 					while(amt_diamond > 0 && coinsToProduce > 0)
 						if (locate(/obj/item/weapon/moneybag,output.loc))
 							M = locate(/obj/item/weapon/moneybag,output.loc)
@@ -202,7 +202,7 @@
 						newCoins++
 						src.updateUsrDialog()
 						sleep(5);
-				if("plasma")
+				if ("plasma")
 					while(amt_plasma > 0 && coinsToProduce > 0)
 						if (locate(/obj/item/weapon/moneybag,output.loc))
 							M = locate(/obj/item/weapon/moneybag,output.loc)
@@ -214,7 +214,7 @@
 						newCoins++
 						src.updateUsrDialog()
 						sleep(5);
-				if("uranium")
+				if ("uranium")
 					while(amt_uranium > 0 && coinsToProduce > 0)
 						if (locate(/obj/item/weapon/moneybag,output.loc))
 							M = locate(/obj/item/weapon/moneybag,output.loc)
@@ -226,7 +226,7 @@
 						newCoins++
 						src.updateUsrDialog()
 						sleep(5)
-				if("clown")
+				if ("clown")
 					while(amt_clown > 0 && coinsToProduce > 0)
 						if (locate(/obj/item/weapon/moneybag,output.loc))
 							M = locate(/obj/item/weapon/moneybag,output.loc)
@@ -238,7 +238,7 @@
 						newCoins++
 						src.updateUsrDialog()
 						sleep(5);
-				if("adamantine")
+				if ("adamantine")
 					while(amt_adamantine > 0 && coinsToProduce > 0)
 						if (locate(/obj/item/weapon/moneybag,output.loc))
 							M = locate(/obj/item/weapon/moneybag,output.loc)
@@ -250,7 +250,7 @@
 						newCoins++
 						src.updateUsrDialog()
 						sleep(5);
-				if("mythril")
+				if ("mythril")
 					while(amt_adamantine > 0 && coinsToProduce > 0)
 						if (locate(/obj/item/weapon/moneybag,output.loc))
 							M = locate(/obj/item/weapon/moneybag,output.loc)

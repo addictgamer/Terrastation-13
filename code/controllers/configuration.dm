@@ -135,7 +135,7 @@
 		var/datum/game_mode/M = new T()
 
 		if (M.config_tag)
-			if(!(M.config_tag in modes))		// ensure each mode is added only once
+			if (!(M.config_tag in modes))		// ensure each mode is added only once
 				diary << "Adding game mode [M.name] ([M.config_tag]) to configuration."
 				src.modes += M.config_tag
 				src.mode_names[M.config_tag] = M.name
@@ -149,7 +149,7 @@
 	var/list/Lines = file2list(filename)
 
 	for(var/t in Lines)
-		if(!t)	continue
+		if (!t)	continue
 
 		t = trim(t)
 		if (length(t) == 0)
@@ -170,7 +170,7 @@
 		if (!name)
 			continue
 
-		if(type == "config")
+		if (type == "config")
 			switch (name)
 				if ("resource_urls")
 					config.resource_urls = stringsplit(value, " ")
@@ -235,7 +235,7 @@
 				if ("log_hrefs")
 					config.log_hrefs = 1
 
-				if("allow_admin_ooccolor")
+				if ("allow_admin_ooccolor")
 					config.allow_admin_ooccolor = 1
 
 				if ("allow_vote_restart")
@@ -247,7 +247,7 @@
 				if ("allow_admin_jump")
 					config.allow_admin_jump = 1
 
-				if("allow_admin_rev")
+				if ("allow_admin_rev")
 					config.allow_admin_rev = 1
 
 				if ("allow_admin_spawning")
@@ -316,7 +316,7 @@
 				if ("traitor_scaling")
 					config.traitor_scaling = 1
 
-				if("protect_roles_from_antagonist")
+				if ("protect_roles_from_antagonist")
 					config.protect_roles_from_antagonist = 1
 
 				if ("probability")
@@ -334,99 +334,99 @@
 					else
 						diary << "Incorrect probability configuration definition: [prob_name]  [prob_value]."
 
-				if("allow_random_events")
+				if ("allow_random_events")
 					config.allow_random_events = 1
 
-				if("kick_inactive")
+				if ("kick_inactive")
 					config.kick_inactive = 1
 
-				if("load_jobs_from_txt")
+				if ("load_jobs_from_txt")
 					load_jobs_from_txt = 1
 
-				if("alert_red_upto")
+				if ("alert_red_upto")
 					config.alert_desc_red_upto = value
 
-				if("alert_red_downto")
+				if ("alert_red_downto")
 					config.alert_desc_red_downto = value
 
-				if("alert_blue_downto")
+				if ("alert_blue_downto")
 					config.alert_desc_blue_downto = value
 
-				if("alert_blue_upto")
+				if ("alert_blue_upto")
 					config.alert_desc_blue_upto = value
 
-				if("alert_green")
+				if ("alert_green")
 					config.alert_desc_green = value
 
-				if("alert_delta")
+				if ("alert_delta")
 					config.alert_desc_delta = value
 
-				if("forbid_singulo_possession")
+				if ("forbid_singulo_possession")
 					forbid_singulo_possession = 1
 
-				if("popup_admin_pm")
+				if ("popup_admin_pm")
 					config.popup_admin_pm = 1
 
-				if("allow_holidays")
+				if ("allow_holidays")
 					Holiday = 1
 
-				if("use_irc_bot")
+				if ("use_irc_bot")
 					use_irc_bot = 1
 
-				if("ticklag")
+				if ("ticklag")
 					Ticklag = text2num(value)
 
-				if("socket_talk")
+				if ("socket_talk")
 					socket_talk = text2num(value)
 
-				if("tickcomp")
+				if ("tickcomp")
 					Tickcomp = 1
 
-				if("humans_need_surnames")
+				if ("humans_need_surnames")
 					humans_need_surnames = 1
 
-				if("tor_ban")
+				if ("tor_ban")
 					ToRban = 1
 
-				if("automute_on")
+				if ("automute_on")
 					automute_on = 1
 
-				if("usealienwhitelist")
+				if ("usealienwhitelist")
 					usealienwhitelist = 1
 
-				if("alien_player_ratio")
+				if ("alien_player_ratio")
 					limitalienplayers = 1
 					alien_to_human_ratio = text2num(value)
 
-				if("assistant_maint")
+				if ("assistant_maint")
 					config.assistant_maint = 1
 
-				if("gateway_delay")
+				if ("gateway_delay")
 					config.gateway_delay = text2num(value)
 
-				if("continuous_rounds")
+				if ("continuous_rounds")
 					config.continous_rounds = 1
 
-				if("ghost_interaction")
+				if ("ghost_interaction")
 					config.ghost_interaction = 1
 
-				if("comms_password")
+				if ("comms_password")
 					config.comms_password = value
 
-				if("irc_bot_host")
+				if ("irc_bot_host")
 					config.irc_bot_host = value
 
-				if("main_irc")
+				if ("main_irc")
 					config.main_irc = value
 
-				if("admin_irc")
+				if ("admin_irc")
 					config.admin_irc = value
 
-				if("python_path")
-					if(value)
+				if ("python_path")
+					if (value)
 						config.python_path = value
 					else
-						if(world.system_type == UNIX)
+						if (world.system_type == UNIX)
 							config.python_path = "/usr/bin/env python2"
 						else //probably windows, if not this should work anyway
 							config.python_path = "python"
@@ -435,45 +435,45 @@
 					diary << "Unknown setting in configuration: '[name]'"
 
 
-		else if(type == "game_options")
-			if(!value)
+		else if (type == "game_options")
+			if (!value)
 				diary << "Unknown value for setting [name] in [filename]."
 			value = text2num(value)
 
 			switch(name)
-				if("health_threshold_crit")
+				if ("health_threshold_crit")
 					config.health_threshold_crit = value
-				if("health_threshold_dead")
+				if ("health_threshold_dead")
 					config.health_threshold_dead = value
-				if("revival_pod_plants")
+				if ("revival_pod_plants")
 					config.revival_pod_plants = value
-				if("revival_cloning")
+				if ("revival_cloning")
 					config.revival_cloning = value
-				if("revival_brain_life")
+				if ("revival_brain_life")
 					config.revival_brain_life = value
-				if("run_speed")
+				if ("run_speed")
 					config.run_speed = value
-				if("walk_speed")
+				if ("walk_speed")
 					config.walk_speed = value
-				if("human_delay")
+				if ("human_delay")
 					config.human_delay = value
-				if("robot_delay")
+				if ("robot_delay")
 					config.robot_delay = value
-				if("monkey_delay")
+				if ("monkey_delay")
 					config.monkey_delay = value
-				if("alien_delay")
+				if ("alien_delay")
 					config.alien_delay = value
-				if("slime_delay")
+				if ("slime_delay")
 					config.slime_delay = value
-				if("animal_delay")
+				if ("animal_delay")
 					config.animal_delay = value
-				if("organ_health_multiplier")
+				if ("organ_health_multiplier")
 					config.organ_health_multiplier = value / 100
-				if("organ_regeneration_multiplier")
+				if ("organ_regeneration_multiplier")
 					config.organ_regeneration_multiplier = value / 100
-				if("bones_can_break")
+				if ("bones_can_break")
 					config.bones_can_break = value
-				if("limbs_can_break")
+				if ("limbs_can_break")
 					config.limbs_can_break = value
 				else
 					diary << "Unknown setting in configuration: '[name]'"
@@ -481,7 +481,7 @@
 /datum/configuration/proc/loadsql(filename)  // -- TLE
 	var/list/Lines = file2list(filename)
 	for(var/t in Lines)
-		if(!t)	continue
+		if (!t)	continue
 
 		t = trim(t)
 		if (length(t) == 0)
@@ -527,7 +527,7 @@
 /datum/configuration/proc/loadforumsql(filename)  // -- TLE
 	var/list/Lines = file2list(filename)
 	for(var/t in Lines)
-		if(!t)	continue
+		if (!t)	continue
 
 		t = trim(t)
 		if (length(t) == 0)

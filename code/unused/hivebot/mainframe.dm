@@ -11,9 +11,9 @@
 			death()
 			return
 
-	if(src.force_mind)
-		if(!src.mind)
-			if(src.client)
+	if (src.force_mind)
+		if (!src.mind)
+			if (src.client)
 				src.mind = new
 				src.mind.key = src.key
 				src.mind.current = src
@@ -23,12 +23,12 @@
 	..()
 	statpanel("Status")
 	if (src.client.statpanel == "Status")
-		if(emergency_shuttle.online && emergency_shuttle.location < 2)
+		if (emergency_shuttle.online && emergency_shuttle.location < 2)
 			var/timeleft = emergency_shuttle.timeleft()
 			if (timeleft)
 				stat(null, "ETA-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
 /*
-		if(ticker.mode.name == "AI malfunction")
+		if (ticker.mode.name == "AI malfunction")
 			stat(null, "Points left until the AI takes over: [AI_points]/[AI_points_win]")
 */
 
@@ -42,7 +42,7 @@
 /mob/living/silicon/hive_mainframe/death(gibbed)
 	src.stat = 2
 	src.canmove = 0
-	if(src.blind)
+	if (src.blind)
 		src.blind.layer = 0
 	src.sight |= SEE_TURFS
 	src.sight |= SEE_MOBS
@@ -57,7 +57,7 @@
 
 	if (src.key)
 		spawn(50)
-			if(src.key && src.stat == 2)
+			if (src.key && src.stat == 2)
 				src.verbs += /client/proc/ghost
 	return ..(gibbed)
 
@@ -87,7 +87,7 @@
 
 
 /mob/living/silicon/hive_mainframe/proc/return_to(var/mob/user)
-	if(user.mind)
+	if (user.mind)
 		user.mind.transfer_to(src)
 		spawn(20)
 			user:shell = 1
@@ -104,16 +104,16 @@
 
 /mob/living/silicon/hive_mainframe/verb/deploy_to()
 
-	if(usr.stat == 2)
+	if (usr.stat == 2)
 		usr << "You can't deploy because you are dead!"
 		return
 
 	var/list/bodies = new/list()
 
 	for(var/mob/living/silicon/hivebot/H in mob_list)
-		if(H.z == src.z)
-			if(H.shell)
-				if(!H.stat)
+		if (H.z == src.z)
+			if (H.shell)
+				if (!H.stat)
 					bodies += H
 
 	var/target_shell = input(usr, "Which body to control?") as null|anything in bodies
@@ -121,7 +121,7 @@
 	if (!target_shell)
 		return
 
-	else if(src.mind)
+	else if (src.mind)
 		spawn(30)
 			target_shell:mainframe = src
 			target_shell:dependent = 1
@@ -156,7 +156,7 @@
 	src.blind.screen_loc = "1,1 to 15,15"
 	src.blind.layer = 0
 	src.client.screen += list( src.blind, src.flash )
-	if(!isturf(src.loc))
+	if (!isturf(src.loc))
 		src.client.eye = src.loc
 		src.client.perspective = EYE_PERSPECTIVE
 	if (src.stat == 2)

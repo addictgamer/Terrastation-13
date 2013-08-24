@@ -27,17 +27,17 @@
 	input_line = " " + src.input_line + " "
 	// remove apostrophes
 	for(var/i = -1, i != 0, i = findtext(input_line, "'"))
-		if(i == -1)
+		if (i == -1)
 			continue
 		input_line = copytext(input_line, 1, i) + copytext(input_line, i + 1, 0)
 
 	// did user insult us? (i don't really want cursing in the source code,
 	// so keep it the simple original check from the 70's code :p)
-	if(findtext(input_line, "shut"))
+	if (findtext(input_line, "shut"))
 		// sssh
 		return
 
-	if(input_line == prev_reply)
+	if (input_line == prev_reply)
 		print("Please don't repeat yourself!")
 
 	// find a keyword
@@ -49,18 +49,18 @@
 		keyword = keywords[i]
 		for(var/j = 1, j <= keyword.phrases.len, j++)
 			keypos = findtext(input_line, " " + keyword.phrases[j])
-			if(keypos != 0)
+			if (keypos != 0)
 				// found it!
 				keyphrase = keyword.phrases[j]
 				break
-		if(keyphrase != "")
+		if (keyphrase != "")
 			break
 
 	//world << "keyphrase: " + keyphrase + " " + num2text(keypos)
 
 	var/conjugated = ""
 	// was it not recognized? then make it nokeyfound
-	if(keyphrase == "")
+	if (keyphrase == "")
 		keyword = keywords[keywords.len] // nokeyfound
 	else
 		// otherwise, business as usual
@@ -69,37 +69,37 @@
 		conjugated = copytext(input_line, 1 + keypos + lentext(keyphrase))
 
 		// go ahead and strip punctuation
-		if(lentext(conjugated) > 0 && copytext(conjugated, lentext(conjugated)) == " ")
+		if (lentext(conjugated) > 0 && copytext(conjugated, lentext(conjugated)) == " ")
 			conjugated = copytext(conjugated, 1, lentext(conjugated))
-		if(lentext(conjugated) > 0)
+		if (lentext(conjugated) > 0)
 			var/final_punc = copytext(conjugated, lentext(conjugated))
-			if(final_punc == "." || final_punc == "?" || final_punc == "!")
+			if (final_punc == "." || final_punc == "?" || final_punc == "!")
 				conjugated = copytext(conjugated, 1, lentext(conjugated))
 
 		conjugated += " "
 
-		if(keyword.conjugate)
+		if (keyword.conjugate)
 			// now run through conjugation pairs
 			for(var/i = 1, i <= lentext(conjugated), i++)
 				for(var/x = 1, x <= conjugs.len, x += 2)
 					var/cx = conjugs[x]
 					var/cxa = conjugs[x + 1]
-					if(i + lentext(cx) <= lentext(conjugated) + 1 && cmptext(cx, copytext(conjugated, i, i + lentext(cx))))
+					if (i + lentext(cx) <= lentext(conjugated) + 1 && cmptext(cx, copytext(conjugated, i, i + lentext(cx))))
 						// world << cx
 
 						conjugated = copytext(conjugated, 1, i) + cxa + copytext(conjugated, i + lentext(cx))
 						i = i + lentext(cx)
 						// don't count right padding
-						if(copytext(cx, lentext(cx)) == " ")
+						if (copytext(cx, lentext(cx)) == " ")
 							i--
 						break
-					else if(i + lentext(cxa) <= lentext(conjugated) + 1 && cmptext(cxa, copytext(conjugated, i, i + lentext(cxa))))
+					else if (i + lentext(cxa) <= lentext(conjugated) + 1 && cmptext(cxa, copytext(conjugated, i, i + lentext(cxa))))
 						// world << cxa
 
 						conjugated = copytext(conjugated, 1, i) + cx + copytext(conjugated, i + lentext(cxa))
 						i = i + lentext(cxa)
 						// don't count right padding
-						if(copytext(cxa, lentext(cxa)) == " ")
+						if (copytext(cxa, lentext(cxa)) == " ")
 							i--
 						break
 
@@ -127,26 +127,26 @@
 		eliza.yesno_state = ""
 		eliza.yesno_param = ""
 		var/reply = pick(replies)
-		if(copytext(reply, lentext(reply)) == "*")
+		if (copytext(reply, lentext(reply)) == "*")
 			// add object of statement (hopefully not actually mess :p)
-			if(object == "")
+			if (object == "")
 				object = pick(generic_objects)
 			// possibly add name or just ?
-			if(eliza.username != "" && rand(3) == 0)
+			if (eliza.username != "" && rand(3) == 0)
 				object += ", " + eliza.username
 			return copytext(reply, 1, lentext(reply)) + object + "?"
 		else
 			// get punct
 			var/final_punc = ""
-			if(lentext(reply) > 0)
+			if (lentext(reply) > 0)
 				final_punc = copytext(reply, lentext(reply))
-				if(final_punc == "." || final_punc == "?" || final_punc == "!")
+				if (final_punc == "." || final_punc == "?" || final_punc == "!")
 					reply = copytext(reply, 1, lentext(reply))
 				else
 					final_punc = ""
 
 			// possibly add name or just ?/./!
-			if(eliza.username != "" && rand(2) == 0)
+			if (eliza.username != "" && rand(2) == 0)
 				reply += ", " + eliza.username
 
 			return reply + final_punc

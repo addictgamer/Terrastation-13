@@ -251,9 +251,9 @@
 		user.visible_message("\blue [user] cuts out one of [target]'s cores with \the [tool].",,	\
 		"\blue You cut out one of [target]'s cores with \the [tool]. [target.cores] cores left.")
 
-		if(target.cores >= 0)
+		if (target.cores >= 0)
 			new target.coretype(target.loc)
-		if(target.cores <= 0)
+		if (target.cores <= 0)
 			var/origstate = initial(target.icon_state)
 			target.icon_state = "[origstate] dead-nocore"
 

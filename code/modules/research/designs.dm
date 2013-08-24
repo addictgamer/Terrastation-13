@@ -59,7 +59,7 @@ datum/design						//Datum for object designs, used in construction
 datum/design/proc/CalcReliability(var/list/temp_techs)
 	var/new_reliability = reliability_mod + reliability_base
 	for(var/datum/tech/T in temp_techs)
-		if(T.id in req_tech)
+		if (T.id in req_tech)
 			new_reliability += T.level
 	new_reliability = between(reliability_base, new_reliability, 100)
 	reliability = new_reliability

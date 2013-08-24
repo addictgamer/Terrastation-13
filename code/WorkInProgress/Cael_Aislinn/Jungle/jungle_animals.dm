@@ -7,7 +7,7 @@
 	invisibility = 101
 
 /obj/effect/landmark/animal_spawner/New()
-	if(!spawn_type)
+	if (!spawn_type)
 		var/new_type = pick(typesof(/obj/effect/landmark/animal_spawner) - /obj/effect/landmark/animal_spawner)
 		new new_type(get_turf(src))
 		del(src)
@@ -17,7 +17,7 @@
 
 /obj/effect/landmark/animal_spawner/process()
 	//if any of our animals are killed, spawn new ones
-	if(!spawned_animal || spawned_animal.stat == DEAD)
+	if (!spawned_animal || spawned_animal.stat == DEAD)
 		spawned_animal = new spawn_type(src)
 		//after a random timeout, and in a random position (6-30 seconds)
 		spawn(rand(1200,2400))
@@ -82,22 +82,22 @@
 
 /mob/living/simple_animal/hostile/panther/FindTarget()
 	. = ..()
-	if(.)
+	if (.)
 		emote("nashes at [.]")
 
 /mob/living/simple_animal/hostile/panther/AttackingTarget()
 	. =..()
 	var/mob/living/L = .
-	if(istype(L))
-		if(prob(15))
+	if (istype(L))
+		if (prob(15))
 			L.Weaken(3)
 			L.visible_message("<span class='danger'>\the [src] knocks down \the [L]!</span>")
 
 /mob/living/simple_animal/hostile/panther/AttackTarget()
 	..()
-	if(stance == HOSTILE_STANCE_ATTACKING && get_dist(src, target_mob))
+	if (stance == HOSTILE_STANCE_ATTACKING && get_dist(src, target_mob))
 		stalk_tick_delay -= 1
-		if(stalk_tick_delay <= 0)
+		if (stalk_tick_delay <= 0)
 			src.loc = get_step_towards(src, target_mob)
 			stalk_tick_delay = 3
 
@@ -140,19 +140,19 @@
 
 /mob/living/simple_animal/hostile/snake/FindTarget()
 	. = ..()
-	if(.)
+	if (.)
 		emote("hisses wickedly")
 
 /mob/living/simple_animal/hostile/snake/AttackingTarget()
 	. =..()
 	var/mob/living/L = .
-	if(istype(L))
+	if (istype(L))
 		L.apply_damage(rand(3,12), TOX)
 
 /mob/living/simple_animal/hostile/snake/AttackTarget()
 	..()
-	if(stance == HOSTILE_STANCE_ATTACKING && get_dist(src, target_mob))
+	if (stance == HOSTILE_STANCE_ATTACKING && get_dist(src, target_mob))
 		stalk_tick_delay -= 1
-		if(stalk_tick_delay <= 0)
+		if (stalk_tick_delay <= 0)
 			src.loc = get_step_towards(src, target_mob)
 			stalk_tick_delay = 3

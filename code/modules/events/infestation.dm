@@ -27,34 +27,34 @@
 	var/list/turf/simulated/floor/turfs = list()
 	var/spawn_area_type
 	switch(location)
-		if(LOC_KITCHEN)
+		if (LOC_KITCHEN)
 			spawn_area_type = /area/crew_quarters/kitchen
 			locstring = "the kitchen"
-		if(LOC_ATMOS)
+		if (LOC_ATMOS)
 			spawn_area_type = /area/atmos
 			locstring = "atmospherics"
-		if(LOC_INCIN)
+		if (LOC_INCIN)
 			spawn_area_type = /area/maintenance/incinerator
 			locstring = "the incinerator"
-		if(LOC_CHAPEL)
+		if (LOC_CHAPEL)
 			spawn_area_type = /area/chapel/main
 			locstring = "the chapel"
-		if(LOC_LIBRARY)
+		if (LOC_LIBRARY)
 			spawn_area_type = /area/library
 			locstring = "the library"
-		if(LOC_HYDRO)
+		if (LOC_HYDRO)
 			spawn_area_type = /area/hydroponics
 			locstring = "hydroponics"
-		if(LOC_VAULT)
+		if (LOC_VAULT)
 			spawn_area_type = /area/security/nuke_storage
 			locstring = "the vault"
-		if(LOC_CONSTR)
+		if (LOC_CONSTR)
 			spawn_area_type = /area/construction
 			locstring = "the construction area"
-		if(LOC_TECH)
+		if (LOC_TECH)
 			spawn_area_type = /area/storage/tech
 			locstring = "technical storage"
-		if(LOC_ASSEMBLY)
+		if (LOC_ASSEMBLY)
 			spawn_area_type = /area/assembly/assembly_line
 			locstring = "the unused assembly line"
 
@@ -66,22 +66,22 @@
 		for(var/area/B in A.related)
 			//world << "	B: [B], contents.len: [B.contents.len]"
 			for(var/turf/simulated/floor/F in B.contents)
-				if(!F.contents.len)
+				if (!F.contents.len)
 					turfs += F
 
 	var/list/spawn_types = list()
 	var/max_number
 	vermin = rand(0,2)
 	switch(vermin)
-		if(VERM_MICE)
+		if (VERM_MICE)
 			spawn_types = list(/mob/living/simple_animal/mouse/gray, /mob/living/simple_animal/mouse/brown, /mob/living/simple_animal/mouse/white)
 			max_number = 12
 			vermstring = "mice"
-		if(VERM_LIZARDS)
+		if (VERM_LIZARDS)
 			spawn_types = list(/mob/living/simple_animal/lizard)
 			max_number = 6
 			vermstring = "lizards"
-		if(VERM_SPIDERS)
+		if (VERM_SPIDERS)
 			spawn_types = list(/obj/effect/spider/spiderling)
 			vermstring = "spiders"
 
@@ -93,7 +93,7 @@
 			num--
 
 			
-			if(vermin == VERM_SPIDERS)
+			if (vermin == VERM_SPIDERS)
 				var/obj/effect/spider/spiderling/S = new(T)
 				S.amount_grown = -1
 			else

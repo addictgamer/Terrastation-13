@@ -15,8 +15,8 @@
 	gibs(loc, viruses, dna)
 
 	spawn(15)
-		if(animation)	del(animation)
-		if(src)			del(src)
+		if (animation)	del(animation)
+		if (src)			del(src)
 
 /mob/living/carbon/monkey/dust()
 	death(1)
@@ -35,21 +35,21 @@
 	new /obj/effect/decal/cleanable/ash(loc)
 
 	spawn(15)
-		if(animation)	del(animation)
-		if(src)			del(src)
+		if (animation)	del(animation)
+		if (src)			del(src)
 
 
 /mob/living/carbon/monkey/death(gibbed)
-	if(stat == DEAD)	return
-	if(healths)			healths.icon_state = "health5"
+	if (stat == DEAD)	return
+	if (healths)			healths.icon_state = "health5"
 	stat = DEAD
 
-	if(!gibbed)
+	if (!gibbed)
 		for(var/mob/O in viewers(src, null))
 			O.show_message("<b>The [name]</b> lets out a faint chimper as it collapses and stops moving...", 1) //ded -- Urist
 
 	update_canmove()
-	if(blind)	blind.layer = 0
+	if (blind)	blind.layer = 0
 
 	ticker.mode.check_win()
 

@@ -1,13 +1,13 @@
 /obj/machinery/coatrack/attack_hand(mob/user as mob)
 	switch(alert("What do you want from the coat rack?",,"Coat","Hat"))
-		if("Coat")
-			if(coat)
-				if(!user.get_active_hand())
+		if ("Coat")
+			if (coat)
+				if (!user.get_active_hand())
 					user.put_in_hand(coat)
 				else
 					coat.loc = get_turf(user)
 				coat = null
-				if(!hat)
+				if (!hat)
 					icon_state = "coatrack0"
 				else
 					icon_state = "coatrack1"
@@ -15,14 +15,14 @@
 			else
 				user << "\blue There is no coat to take!"
 				return
-		if("Hat")
-			if(hat)
-				if(!user.get_active_hand())
+		if ("Hat")
+			if (hat)
+				if (!user.get_active_hand())
 					user.put_in_hand(hat)
 				else
 					hat.loc = get_turf(user)
 				hat = null
-				if(!coat)
+				if (!coat)
 					icon_state = "coatrack0"
 				else
 					icon_state = "coatrack2"
@@ -39,24 +39,24 @@
 		user.drop_item()
 		I.loc = src
 		hat = I
-		if(!coat)
+		if (!coat)
 			icon_state = "coatrack1"
 		else
 			icon_state = "coatrack3"
 		for(var/mob/M in viewers(src, null))
-			if(M.client)
+			if (M.client)
 				M.show_message(text("\blue [user] puts his hat onto the rack."), 2)
 		return
 	if ( istype(I,/obj/item/clothing/suit/storage/det_suit) && !coat)
 		user.drop_item()
 		I.loc = src
 		coat = I
-		if(!hat)
+		if (!hat)
 			icon_state = "coatrack2"
 		else
 			icon_state = "coatrack3"
 		for(var/mob/M in viewers(src, null))
-			if(M.client)
+			if (M.client)
 				M.show_message(text("\blue [user] puts his coat onto the rack."), 2)
 		return
 	if ( istype(I,/obj/item/clothing/head/det_hat) && hat)
@@ -73,23 +73,23 @@
 	if ( istype(mover,/obj/item/clothing/head/det_hat) && !hat)
 		mover.loc = src
 		hat = mover
-		if(!coat)
+		if (!coat)
 			icon_state = "coatrack1"
 		else
 			icon_state = "coatrack3"
 		for(var/mob/M in viewers(src, null))
-			if(M.client)
+			if (M.client)
 				M.show_message(text("\blue The hat lands perfectly atop its hanger!"), 2)
 		return 0
 	if ( istype(mover,/obj/item/clothing/suit/storage/det_suit) && !coat)
 		mover.loc = src
 		coat = mover
-		if(!hat)
+		if (!hat)
 			icon_state = "coatrack2"
 		else
 			icon_state = "coatrack3"
 		for(var/mob/M in viewers(src, null))
-			if(M.client)
+			if (M.client)
 				M.show_message(text("\blue The coat lands perfectly atop its hanger!"), 2)
 		return 0
 	else

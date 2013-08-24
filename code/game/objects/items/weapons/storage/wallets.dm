@@ -31,32 +31,32 @@
 
 /obj/item/weapon/storage/wallet/remove_from_storage(obj/item/W as obj, atom/new_location)
 	. = ..(W, new_location)
-	if(.)
-		if(W == front_id)
+	if (.)
+		if (W == front_id)
 			front_id = null
 			update_icon()
 
 /obj/item/weapon/storage/wallet/handle_item_insertion(obj/item/W as obj, prevent_warning = 0)
 	. = ..(W, prevent_warning)
-	if(.)
-		if(!front_id && istype(W, /obj/item/weapon/card/id))
+	if (.)
+		if (!front_id && istype(W, /obj/item/weapon/card/id))
 			front_id = W
 			update_icon()
 
 /obj/item/weapon/storage/wallet/update_icon()
 
-	if(front_id)
+	if (front_id)
 		switch(front_id.icon_state)
-			if("id")
+			if ("id")
 				icon_state = "walletid"
 				return
-			if("silver")
+			if ("silver")
 				icon_state = "walletid_silver"
 				return
-			if("gold")
+			if ("gold")
 				icon_state = "walletid_gold"
 				return
-			if("centcom")
+			if ("centcom")
 				icon_state = "walletid_centcom"
 				return
 	icon_state = "wallet"
@@ -67,7 +67,7 @@
 
 /obj/item/weapon/storage/wallet/GetAccess()
 	var/obj/item/I = GetID()
-	if(I)
+	if (I)
 		return I.GetAccess()
 	else
 		return ..()
@@ -76,14 +76,14 @@
 	..()
 	var/item1_type = pick( /obj/item/weapon/spacecash/c10,/obj/item/weapon/spacecash/c100,/obj/item/weapon/spacecash/c1000,/obj/item/weapon/spacecash/c20,/obj/item/weapon/spacecash/c200,/obj/item/weapon/spacecash/c50, /obj/item/weapon/spacecash/c500)
 	var/item2_type
-	if(prob(50))
+	if (prob(50))
 		item2_type = pick( /obj/item/weapon/spacecash/c10,/obj/item/weapon/spacecash/c100,/obj/item/weapon/spacecash/c1000,/obj/item/weapon/spacecash/c20,/obj/item/weapon/spacecash/c200,/obj/item/weapon/spacecash/c50, /obj/item/weapon/spacecash/c500)
 	var/item3_type = pick( /obj/item/weapon/coin/silver, /obj/item/weapon/coin/silver, /obj/item/weapon/coin/gold, /obj/item/weapon/coin/iron, /obj/item/weapon/coin/iron, /obj/item/weapon/coin/iron )
 
 	spawn(2)
-		if(item1_type)
+		if (item1_type)
 			new item1_type(src)
-		if(item2_type)
+		if (item2_type)
 			new item2_type(src)
-		if(item3_type)
+		if (item3_type)
 			new item3_type(src)

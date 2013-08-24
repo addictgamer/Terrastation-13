@@ -13,7 +13,7 @@
 		freelook()
 
 /mob/living/silicon/ai/death(gibbed)
-	if(client && client.eye == eyeobj)
+	if (client && client.eye == eyeobj)
 		for(var/datum/camerachunk/c in eyeobj.visibleCameraChunks)
 			c.remove(eyeobj)
 		client.eye = src
@@ -24,7 +24,7 @@
 	set name = "freelook"
 	current = null	//cancel camera view first, it causes problems
 	cameraFollow = null
-	if(!eyeobj)	//if it got deleted somehow (like an admin trying to fix things <.<')
+	if (!eyeobj)	//if it got deleted somehow (like an admin trying to fix things <.<')
 		eyeobj = new()
 		eyeobj.ai = src
 	client.eye = eyeobj
@@ -33,11 +33,11 @@
 
 /mob/aiEye/Move()
 	. = ..()
-	if(.)
+	if (.)
 		cameranet.visibility(src)
 
 /client/AIMove(n, direct, var/mob/living/silicon/ai/user)
-	if(eye == user.eyeobj)
+	if (eye == user.eyeobj)
 		user.eyeobj.loc = get_step(user.eyeobj, direct)
 		cameranet.visibility(user.eyeobj)
 
@@ -45,9 +45,9 @@
 		return ..()
 
 /turf/move_camera_by_click()
-	if(istype(usr, /mob/living/silicon/ai))
+	if (istype(usr, /mob/living/silicon/ai))
 		var/mob/living/silicon/ai/AI = usr
-		if(AI.client.eye == AI.eyeobj)
+		if (AI.client.eye == AI.eyeobj)
 			return
 	return ..()
 
@@ -91,7 +91,7 @@
 
 /mob/living/silicon/ai/reset_view(atom/A)
 	if (client)
-		if(!eyeobj)
+		if (!eyeobj)
 			eyeobj = new()
 			eyeobj.ai = src
 

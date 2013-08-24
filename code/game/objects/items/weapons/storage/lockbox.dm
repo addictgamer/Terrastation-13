@@ -19,12 +19,12 @@
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
 		if (istype(W, /obj/item/weapon/card/id))
-			if(src.broken)
+			if (src.broken)
 				user << "\red It appears to be broken."
 				return
-			if(src.allowed(user))
+			if (src.allowed(user))
 				src.locked = !( src.locked )
-				if(src.locked)
+				if (src.locked)
 					src.icon_state = src.icon_locked
 					user << "\red You lock the [src.name]!"
 					return
@@ -34,12 +34,12 @@
 					return
 			else
 				user << "\red Access Denied"
-		else if((istype(W, /obj/item/weapon/card/emag)||istype(W, /obj/item/weapon/melee/energy/blade)) && !src.broken)
+		else if ((istype(W, /obj/item/weapon/card/emag)||istype(W, /obj/item/weapon/melee/energy/blade)) && !src.broken)
 			broken = 1
 			locked = 0
 			desc = "It appears to be broken."
 			icon_state = src.icon_broken
-			if(istype(W, /obj/item/weapon/melee/energy/blade))
+			if (istype(W, /obj/item/weapon/melee/energy/blade))
 				var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 				spark_system.set_up(5, 0, src.loc)
 				spark_system.start()
@@ -51,7 +51,7 @@
 				for(var/mob/O in viewers(user, 3))
 					O.show_message(text("\blue The locker has been broken by [] with an electromagnetic card!", user), 1, text("You hear a faint electrical spark."), 2)
 
-		if(!locked)
+		if (!locked)
 			..()
 		else
 			user << "\red Its locked!"
@@ -59,7 +59,7 @@
 
 
 	show_to(mob/user as mob)
-		if(locked)
+		if (locked)
 			user << "\red Its locked!"
 		else
 			..()

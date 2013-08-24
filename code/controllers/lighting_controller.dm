@@ -18,8 +18,8 @@ datum/controller/lighting
 
 datum/controller/lighting/New()
 	lighting_states = max( 0, length(icon_states(LIGHTING_ICON))-1 )
-	if(lighting_controller != src)
-		if(istype(lighting_controller,/datum/controller/lighting))
+	if (lighting_controller != src)
+		if (istype(lighting_controller,/datum/controller/lighting))
 			Recover()	//if we are replacing an existing lighting_controller (due to a crash) we attempt to preserve as much as we can
 			del(lighting_controller)
 		lighting_controller = src
@@ -35,14 +35,14 @@ datum/controller/lighting/proc/process()
 	spawn(0)
 		set background = 1
 		while(1)
-			if(processing)
+			if (processing)
 				iteration++
 				var/started = world.timeofday
 
 				lights_workload_max = max(lights_workload_max,lights.len)
 				for(var/i=1, i<=lights.len, i++)
 					var/datum/light_source/L = lights[i]
-					if(L && !L.check())
+					if (L && !L.check())
 						continue
 					lights.Cut(i,i+1)
 					i--
@@ -52,7 +52,7 @@ datum/controller/lighting/proc/process()
 				changed_turfs_workload_max = max(changed_turfs_workload_max,changed_turfs.len)
 				for(var/i=1, i<=changed_turfs.len, i++)
 					var/turf/T = changed_turfs[i]
-					if(T && T.lighting_changed)
+					if (T && T.lighting_changed)
 						T.shift_to_subarea()
 				changed_turfs.Cut()		// reset the changed list
 
@@ -70,15 +70,15 @@ datum/controller/lighting/proc/Initialize(var/z_level)
 		set background = 1
 		for(var/i=1, i<=lights.len, i++)
 			var/datum/light_source/L = lights[i]
-			if(L.check())
+			if (L.check())
 				lights.Cut(i,i+1)
 				i--
 
 		var/z_start = 1
 		var/z_finish = world.maxz
-		if(z_level)
+		if (z_level)
 			z_level = round(z_level,1)
-			if(z_level > 0 && z_level <= world.maxz)
+			if (z_level > 0 && z_level <= world.maxz)
 				z_start = z_level
 				z_finish = z_level
 
@@ -86,7 +86,7 @@ datum/controller/lighting/proc/Initialize(var/z_level)
 			for(var/i=1,i<=world.maxx,i++)
 				for(var/j=1,j<=world.maxy,j++)
 					var/turf/T = locate(i,j,k)
-					if(T)	T.shift_to_subarea()
+					if (T)	T.shift_to_subarea()
 
 		changed_turfs.Cut()		// reset the changed list
 
@@ -95,32 +95,32 @@ datum/controller/lighting/proc/Initialize(var/z_level)
 //It works by using spawn(-1) to transfer the data, if there is a runtime the data does not get transfered but the loop
 //does not crash
 datum/controller/lighting/proc/Recover()
-	if(!istype(lighting_controller.changed_turfs,/list))
+	if (!istype(lighting_controller.changed_turfs,/list))
 		lighting_controller.changed_turfs = list()
-	if(!istype(lighting_controller.lights,/list))
+	if (!istype(lighting_controller.lights,/list))
 		lighting_controller.lights = list()
 
 	for(var/i=1, i<=lighting_controller.lights.len, i++)
 		var/datum/light_source/L = lighting_controller.lights[i]
-		if(istype(L))
+		if (istype(L))
 			spawn(-1)			//so we don't crash the loop (inefficient)
 				L.check()
 				lights += L		//If we didn't runtime then this will get transferred over
 
 	for(var/i=1, i<=lighting_controller.changed_turfs.len, i++)
 		var/turf/T = lighting_controller.changed_turfs[i]
-		if(istype(T) && T.lighting_changed)
+		if (istype(T) && T.lighting_changed)
 			spawn(-1)
 				T.shift_to_subarea()
 
 	var/msg = "## DEBUG: [time2text(world.timeofday)] lighting_controller restarted. Reports:\n"
 	for(var/varname in lighting_controller.vars)
 		switch(varname)
-			if("tag","bestF","type","parent_type","vars")	continue
+			if ("tag","bestF","type","parent_type","vars")	continue
 			else
 				var/varval1 = lighting_controller.vars[varname]
 				var/varval2 = vars[varname]
-				if(istype(varval1,/list))
+				if (istype(varval1,/list))
 					varval1 = "/list([length(varval1)])"
 					varval2 = "/list([length(varval2)])"
 				msg += "\t [varname] = [varval1] -> [varval2]\n"

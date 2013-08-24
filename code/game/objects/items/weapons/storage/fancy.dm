@@ -27,9 +27,9 @@
 /obj/item/weapon/storage/fancy/examine()
 	set src in oview(1)
 
-	if(contents.len <= 0)
+	if (contents.len <= 0)
 		usr << "There are no [src.icon_type]s left in the box."
-	else if(contents.len == 1)
+	else if (contents.len == 1)
 		usr << "There is one [src.icon_type] left in the box."
 	else
 		usr << "There are [src.contents.len] [src.icon_type]s in the box."
@@ -131,12 +131,12 @@
 		overlays += image('icons/obj/crayons.dmi',crayon.colourName)
 
 /obj/item/weapon/storage/fancy/crayons/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W,/obj/item/toy/crayon))
+	if (istype(W,/obj/item/toy/crayon))
 		switch(W:colourName)
-			if("mime")
+			if ("mime")
 				usr << "This crayon is too sad to be contained in this box."
 				return
-			if("rainbow")
+			if ("rainbow")
 				usr << "This crayon is too powerful to be contained in this box."
 				return
 	..()
@@ -177,15 +177,15 @@
 
 /obj/item/weapon/storage/fancy/cigarettes/remove_from_storage(obj/item/W as obj, atom/new_location)
 		var/obj/item/clothing/mask/cigarette/C = W
-		if(!istype(C)) return // what
+		if (!istype(C)) return // what
 		reagents.trans_to(C, (reagents.total_volume/contents.len))
 		..()
 
 /obj/item/weapon/storage/fancy/cigarettes/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if(!istype(M, /mob))
+	if (!istype(M, /mob))
 		return
 
-	if(M == user && user.zone_sel.selecting == "mouth" && contents.len > 0 && !user.wear_mask)
+	if (M == user && user.zone_sel.selecting == "mouth" && contents.len > 0 && !user.wear_mask)
 		var/obj/item/clothing/mask/cigarette/W = new /obj/item/clothing/mask/cigarette(user)
 		reagents.trans_to(W, (reagents.total_volume/contents.len))
 		user.equip_to_slot_if_possible(W, slot_wear_mask)
@@ -244,7 +244,7 @@
 	src.overlays.Cut()
 	if (!broken)
 		overlays += image(icon, src, "led[locked]")
-		if(locked)
+		if (locked)
 			overlays += image(icon, src, "cover")
 	else
 		overlays += image(icon, src, "ledb")

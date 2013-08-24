@@ -11,7 +11,7 @@
 
 	solars = solars_list
 	rate = rand(750,1250)/1000			// 75.0% - 125.0% of standard rotation
-	if(prob(50))
+	if (prob(50))
 		rate = -rate
 
 // calculate the sun's position given the time of day
@@ -19,7 +19,7 @@
 /datum/sun/proc/calc_position()
 
 /*	counter++
-	if(counter<50)		// count 50 pticks (50 seconds, roughly - about a 5deg change)
+	if (counter<50)		// count 50 pticks (50 seconds, roughly - about a 5deg change)
 		return
 	counter = 0 */
 
@@ -30,7 +30,7 @@
 	*/
 
 	//  To prevent excess server load the server only updates the sun's sight lines every 6 minutes
-	if(nexttime < world.time)
+	if (nexttime < world.time)
 		return
 	nexttime = nexttime + 3600	// 600 world.time ticks = 1 minute, 3600 = 6 minutes.
 
@@ -39,12 +39,12 @@
 	var/s = sin(angle)
 	var/c = cos(angle)
 
-	if(c == 0)
+	if (c == 0)
 
 		dx = 0
 		dy = s
 
-	else if( abs(s) < abs(c))
+	else if ( abs(s) < abs(c))
 
 		dx = s / abs(c)
 		dy = c / abs(c)
@@ -56,19 +56,19 @@
 
 	for(var/obj/machinery/power/M in solars_list)
 
-		if(!M.powernet)
+		if (!M.powernet)
 			solars_list.Remove(M)
 			continue
 
 		// Solar Tracker
-		if(istype(M, /obj/machinery/power/tracker))
+		if (istype(M, /obj/machinery/power/tracker))
 			var/obj/machinery/power/tracker/T = M
 			T.set_angle(angle)
 
 		// Solar Panel
-		else if(istype(M, /obj/machinery/power/solar))
+		else if (istype(M, /obj/machinery/power/solar))
 			var/obj/machinery/power/solar/S = M
-			if(S.control)
+			if (S.control)
 				occlusion(S)
 
 
@@ -86,10 +86,10 @@
 
 		var/turf/T = locate( round(ax,0.5),round(ay,0.5),S.z)
 
-		if(T.x == 1 || T.x==world.maxx || T.y==1 || T.y==world.maxy)		// not obscured if we reach the edge
+		if (T.x == 1 || T.x==world.maxx || T.y==1 || T.y==world.maxy)		// not obscured if we reach the edge
 			break
 
-		if(T.density)			// if we hit a solid turf, panel is obscured
+		if (T.density)			// if we hit a solid turf, panel is obscured
 			S.obscured = 1
 			return
 

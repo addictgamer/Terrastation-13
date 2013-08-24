@@ -15,7 +15,7 @@
 		max_power = 0
 
 	proc/save_power_if_larger(power)
-		if(power > max_power)
+		if (power > max_power)
 			max_power = power
 			return 1
 		return 0
@@ -25,7 +25,7 @@ var/explosion_in_progress = 0
 
 proc/get_explosion_turf(var/turf/T)
 	for( var/datum/explosion_turf/ET in explosion_turfs )
-		if( T == ET.turf )
+		if ( T == ET.turf )
 			return ET
 	var/datum/explosion_turf/ET = new()
 	ET.turf = T
@@ -36,13 +36,13 @@ proc/explosion_rec(turf/epicenter, power)
 
 	var/loopbreak = 0
 	while(explosion_in_progress)
-		if(loopbreak >= 15) return
+		if (loopbreak >= 15) return
 		sleep(10)
 		loopbreak++
 
-	if(power <= 0) return
+	if (power <= 0) return
 	epicenter = get_turf(epicenter)
-	if(!epicenter) return
+	if (!epicenter) return
 
 	message_admins("Explosion with size ([power]) in area [epicenter.loc.name] ([epicenter.x],[epicenter.y],[epicenter.z])")
 	log_game("Explosion with size ([power]) in area [epicenter.loc.name] ")
@@ -63,8 +63,8 @@ proc/explosion_rec(turf/epicenter, power)
 
 	//This step applies the ex_act effects for the explosion, as planned in the previous step.
 	for( var/datum/explosion_turf/ET in explosion_turfs )
-		if(ET.max_power <= 0) continue
-		if(!ET.turf) continue
+		if (ET.max_power <= 0) continue
+		if (!ET.turf) continue
 
 		//Wow severity looks confusing to calculate... Fret not, I didn't leave you with any additional instructions or help. (just kidding, see the line under the calculation)
 		var/severity = 4 - round(max(min( 3, ((ET.max_power - ET.turf.explosion_resistance) / (max(3,(power/3)))) ) ,1), 1)
@@ -75,7 +75,7 @@ proc/explosion_rec(turf/epicenter, power)
 		var/y = ET.turf.y
 		var/z = ET.turf.z
 		ET.turf.ex_act(severity)
-		if(!ET.turf)
+		if (!ET.turf)
 			ET.turf = locate(x,y,z)
 		for( var/atom/A in ET.turf )
 			A.ex_act(severity)
@@ -115,7 +115,7 @@ proc/explosion_rec(turf/epicenter, power)
 //Code-wise, a safe value for power is something up to ~25 or ~30.. This does quite a bit of damage to the station.
 //direction is the direction that the spread took to come to this tile. So it is pointing in the main blast direction - meaning where this tile should spread most of it's force.
 /turf/proc/explosion_spread(power, direction)
-	if(power <= 0)
+	if (power <= 0)
 		return
 
 	/*
@@ -124,14 +124,14 @@ proc/explosion_rec(turf/epicenter, power)
 	*/
 
 	var/datum/explosion_turf/ET = get_explosion_turf(src)
-	if(ET.max_power >= power)
+	if (ET.max_power >= power)
 		return //The turf already sustained and spread a power greated than what we are dealing with. No point spreading again.
 	ET.max_power = power
 
 	var/spread_power = power - src.explosion_resistance //This is the amount of power that will be spread to the tile in the direction of the blast
 	var/side_spread_power = power - 2 * src.explosion_resistance //This is the amount of power that will be spread to the side tiles
 	for(var/obj/O in src)
-		if(O.explosion_resistance)
+		if (O.explosion_resistance)
 			spread_power -= O.explosion_resistance
 			side_spread_power -= O.explosion_resistance
 

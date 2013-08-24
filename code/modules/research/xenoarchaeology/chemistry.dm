@@ -90,9 +90,9 @@ datum
 	flags = FPRINT | OPENCONTAINER
 
 obj/item/weapon/reagent_containers/glass/solution_tray/attackby(obj/item/weapon/W as obj, mob/living/user as mob)
-	if(istype(W, /obj/item/weapon/pen))
+	if (istype(W, /obj/item/weapon/pen))
 		var/new_label = input("What should the new label be?","Label solution tray")
-		if(new_label)
+		if (new_label)
 			name = "solution tray ([new_label])"
 			user << "\blue You write on the label of the solution tray."
 	else

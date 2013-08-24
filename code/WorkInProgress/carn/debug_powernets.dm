@@ -1,6 +1,6 @@
 /*
 client/verb/powernets_debug()
-	if(!holder)	return
+	if (!holder)	return
 	var/ref_holder = "\ref[holder]"
 	for(var/i=1,i<=powernets.len,i++)
 		src << "<a href='?[ref_holder];adminplayervars=\ref[powernets[i]]'>[copytext("\ref[powernets[i]]",8,12)]</A>"

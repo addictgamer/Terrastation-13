@@ -14,7 +14,7 @@
 	var/datum/reagents/R = new/datum/reagents(100)
 	reagents = R
 	R.my_atom = src
-	if(name == "alien")
+	if (name == "alien")
 		name = text("alien ([rand(1, 1000)])")
 	real_name = name
 	..()
@@ -38,7 +38,7 @@
 			if (!AM.anchored)
 				var/t = get_dir(src, AM)
 				if (istype(AM, /obj/structure/window))
-					if(AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
+					if (AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
 						for(var/obj/structure/window/win in get_step(AM,t))
 							now_pushing = 0
 							return
@@ -62,14 +62,14 @@
 ///mob/living/carbon/alien/humanoid/bullet_act(var/obj/item/projectile/Proj) taken care of in living
 
 /mob/living/carbon/alien/humanoid/emp_act(severity)
-	if(wear_suit) wear_suit.emp_act(severity)
-	if(head) head.emp_act(severity)
-	if(r_store) r_store.emp_act(severity)
-	if(l_store) l_store.emp_act(severity)
+	if (wear_suit) wear_suit.emp_act(severity)
+	if (head) head.emp_act(severity)
+	if (r_store) r_store.emp_act(severity)
+	if (l_store) l_store.emp_act(severity)
 	..()
 
 /mob/living/carbon/alien/humanoid/ex_act(severity)
-	if(!blinded)
+	if (!blinded)
 		flick("flash", flash)
 
 	var/shielded = 0
@@ -91,7 +91,7 @@
 			ear_damage += 30
 			ear_deaf += 120
 
-		if(3.0)
+		if (3.0)
 			b_loss += 30
 			if (prob(50) && !shielded)
 				Paralyse(1)
@@ -111,7 +111,7 @@
 	if (stat != 2)
 		damage = rand(30,40)
 
-	if(shielded)
+	if (shielded)
 		damage /= 4
 
 
@@ -152,7 +152,7 @@
 	return
 
 /mob/living/carbon/alien/humanoid/attack_paw(mob/living/carbon/monkey/M as mob)
-	if(!ismonkey(M))	return//Fix for aliens receiving double messages when attacking other aliens.
+	if (!ismonkey(M))	return//Fix for aliens receiving double messages when attacking other aliens.
 
 	if (!ticker)
 		M << "You cannot attack people before the game has started."
@@ -185,7 +185,7 @@
 		M << "You cannot attack people before the game has started."
 		return
 
-	if(M.Victim) return // can't attack while eating!
+	if (M.Victim) return // can't attack while eating!
 
 	if (health > -100)
 
@@ -195,28 +195,28 @@
 
 		var/damage = rand(1, 3)
 
-		if(istype(M, /mob/living/carbon/slime/adult))
+		if (istype(M, /mob/living/carbon/slime/adult))
 			damage = rand(10, 40)
 		else
 			damage = rand(5, 35)
 
 		adjustBruteLoss(damage)
 
-		if(M.powerlevel > 0)
+		if (M.powerlevel > 0)
 			var/stunprob = 10
 			var/power = M.powerlevel + rand(0,3)
 
 			switch(M.powerlevel)
-				if(1 to 2) stunprob = 20
-				if(3 to 4) stunprob = 30
-				if(5 to 6) stunprob = 40
-				if(7 to 8) stunprob = 60
-				if(9) 	   stunprob = 70
-				if(10) 	   stunprob = 95
+				if (1 to 2) stunprob = 20
+				if (3 to 4) stunprob = 30
+				if (5 to 6) stunprob = 40
+				if (7 to 8) stunprob = 60
+				if (9) 	   stunprob = 70
+				if (10) 	   stunprob = 95
 
-			if(prob(stunprob))
+			if (prob(stunprob))
 				M.powerlevel -= 3
-				if(M.powerlevel < 0)
+				if (M.powerlevel < 0)
 					M.powerlevel = 0
 
 				for(var/mob/O in viewers(src, null))
@@ -241,10 +241,10 @@
 	return
 
 /mob/living/carbon/alien/humanoid/attack_animal(mob/living/simple_animal/M as mob)
-	if(M.melee_damage_upper == 0)
+	if (M.melee_damage_upper == 0)
 		M.emote("[M.friendly] [src]")
 	else
-		if(M.attack_sound)
+		if (M.attack_sound)
 			playsound(loc, M.attack_sound, 50, 1, 1)
 		for(var/mob/O in viewers(src, null))
 			O.show_message("\red <B>[M]</B> [M.attacktext] [src]!", 1)
@@ -263,11 +263,11 @@
 
 	..()
 
-	if(M.gloves && istype(M.gloves,/obj/item/clothing/gloves))
+	if (M.gloves && istype(M.gloves,/obj/item/clothing/gloves))
 		var/obj/item/clothing/gloves/G = M.gloves
-		if(G.cell)
-			if(M.a_intent == "hurt")//Stungloves. Any contact will stun the alien.
-				if(G.cell.charge >= 2500)
+		if (G.cell)
+			if (M.a_intent == "hurt")//Stungloves. Any contact will stun the alien.
+				if (G.cell.charge >= 2500)
 					G.cell.charge -= 2500
 
 					Weaken(5)

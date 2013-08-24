@@ -37,7 +37,7 @@
 
 /obj/item/weapon/twohanded/mob_can_equip(M as mob, slot)
 	//Cannot equip wielded items.
-	if(wielded)
+	if (wielded)
 		M << "<span class='warning'>Unwield the [initial(name)] first!</span>"
 		return 0
 
@@ -45,9 +45,9 @@
 
 /obj/item/weapon/twohanded/dropped(mob/user as mob)
 	//handles unwielding a twohanded weapon when dropped as well as clearing up the offhand
-	if(user)
+	if (user)
 		var/obj/item/weapon/twohanded/O = user.get_inactive_hand()
-		if(istype(O))
+		if (istype(O))
 			O.unwield()
 	return	unwield()
 
@@ -58,24 +58,24 @@
 	unwield()
 
 /obj/item/weapon/twohanded/attack_self(mob/user as mob)
-	if( istype(user,/mob/living/carbon/monkey) )
+	if ( istype(user,/mob/living/carbon/monkey) )
 		user << "<span class='warning'>It's too heavy for you to wield fully.</span>"
 		return
 
 	..()
-	if(wielded) //Trying to unwield it
+	if (wielded) //Trying to unwield it
 		unwield()
 		user << "<span class='notice'>You are now carrying the [name] with one hand.</span>"
 		if (src.unwieldsound)
 			playsound(src.loc, unwieldsound, 50, 1)
 
 		var/obj/item/weapon/twohanded/offhand/O = user.get_inactive_hand()
-		if(O && istype(O))
+		if (O && istype(O))
 			O.unwield()
 		return
 
 	else //Trying to wield it
-		if(user.get_inactive_hand())
+		if (user.get_inactive_hand())
 			user << "<span class='warning'>You need your other hand to be empty</span>"
 			return
 		wield()
@@ -121,16 +121,16 @@
 
 /obj/item/weapon/twohanded/fireaxe/afterattack(atom/A as mob|obj|turf|area, mob/user as mob)
 	..()
-	if(A && wielded && (istype(A,/obj/structure/window) || istype(A,/obj/structure/grille))) //destroys windows and grilles in one hit
-		if(istype(A,/obj/structure/window)) //should just make a window.Break() proc but couldn't bother with it
+	if (A && wielded && (istype(A,/obj/structure/window) || istype(A,/obj/structure/grille))) //destroys windows and grilles in one hit
+		if (istype(A,/obj/structure/window)) //should just make a window.Break() proc but couldn't bother with it
 			var/obj/structure/window/W = A
 
 			new /obj/item/weapon/shard( W.loc )
-			if(W.reinf) new /obj/item/stack/rods( W.loc)
+			if (W.reinf) new /obj/item/stack/rods( W.loc)
 
 			if (W.dir == SOUTHWEST)
 				new /obj/item/weapon/shard( W.loc )
-				if(W.reinf) new /obj/item/stack/rods( W.loc)
+				if (W.reinf) new /obj/item/stack/rods( W.loc)
 		del(A)
 
 
@@ -160,18 +160,18 @@
 
 /obj/item/weapon/twohanded/dualsaber/attack(target as mob, mob/living/user as mob)
 	..()
-	if((CLUMSY in user.mutations) && (wielded) &&prob(40))
+	if ((CLUMSY in user.mutations) && (wielded) &&prob(40))
 		user << "\red You twirl around a bit before losing your balance and impaling yourself on the [src]."
 		user.take_organ_damage(20,25)
 		return
-	if((wielded) && prob(50))
+	if ((wielded) && prob(50))
 		spawn(0)
 			for(var/i in list(1,2,4,8,4,2,1,2,4,8,4,2))
 				user.dir = i
 				sleep(1)
 
 /obj/item/weapon/twohanded/dualsaber/IsShield()
-	if(wielded)
+	if (wielded)
 		return 1
 	else
 		return 0

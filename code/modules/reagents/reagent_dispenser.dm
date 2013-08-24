@@ -29,7 +29,7 @@
 		..()
 		if (!(usr in view(2)) && usr!=src.loc) return
 		usr << "\blue It contains:"
-		if(reagents && reagents.reagent_list.len)
+		if (reagents && reagents.reagent_list.len)
 			for(var/datum/reagent/R in reagents.reagent_list)
 				usr << "\blue [R.volume] units of [R.name]"
 		else
@@ -45,15 +45,15 @@
 
 	ex_act(severity)
 		switch(severity)
-			if(1.0)
+			if (1.0)
 				del(src)
 				return
-			if(2.0)
+			if (2.0)
 				if (prob(50))
 					new /obj/effect/effect/water(src.loc)
 					del(src)
 					return
-			if(3.0)
+			if (3.0)
 				if (prob(5))
 					new /obj/effect/effect/water(src.loc)
 					del(src)
@@ -62,7 +62,7 @@
 		return
 
 	blob_act()
-		if(prob(50))
+		if (prob(50))
 			new /obj/effect/effect/water(src.loc)
 			del(src)
 
@@ -101,13 +101,13 @@
 		if (!(usr in view(2)) && usr!=src.loc) return
 		if (modded)
 			usr << "\red Fuel faucet is wrenched open, leaking the fuel!"
-		if(rig)
+		if (rig)
 			usr << "<span class='notice'>There is some kind of device rigged to the tank."
 
 	attack_hand()
 		if (rig)
 			usr.visible_message("[usr] begins to detach [rig] from \the [src].", "You begin to detach [rig] from \the [src]")
-			if(do_after(usr, 20))
+			if (do_after(usr, 20))
 				usr.visible_message("\blue [usr] detaches [rig] from \the [src].", "\blue  You detach [rig] from \the [src]")
 				rig.loc = get_turf(usr)
 				rig = null
@@ -123,7 +123,7 @@
 				user << "\red There is another device in the way."
 				return ..()
 			user.visible_message("[user] begins rigging [W] to \the [src].", "You begin rigging [W] to \the [src]")
-			if(do_after(user, 20))
+			if (do_after(user, 20))
 				user.visible_message("\blue [user] rigs [W] to \the [src].", "\blue  You rig [W] to \the [src]")
 
 				var/obj/item/device/assembly_holder/H = W
@@ -144,8 +144,8 @@
 
 
 	bullet_act(var/obj/item/projectile/Proj)
-		if(istype(Proj ,/obj/item/projectile/beam)||istype(Proj,/obj/item/projectile/bullet))
-			if(!istype(Proj ,/obj/item/projectile/beam/lastertag) && !istype(Proj ,/obj/item/projectile/beam/practice) )
+		if (istype(Proj ,/obj/item/projectile/beam)||istype(Proj,/obj/item/projectile/bullet))
+			if (!istype(Proj ,/obj/item/projectile/beam/lastertag) && !istype(Proj ,/obj/item/projectile/beam/practice) )
 				explode()
 
 	blob_act()
@@ -161,7 +161,7 @@
 			explosion(src.loc,0,1,3)
 		else
 			explosion(src.loc,-1,1,2)
-		if(src)
+		if (src)
 			del(src)
 
 /obj/structure/reagent_dispensers/peppertank

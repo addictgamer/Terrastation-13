@@ -2,14 +2,14 @@
 	spawn()
 		var/list/pick_turfs = list()
 		for(var/turf/simulated/floor/T in world)
-			if(T.z == 1)
+			if (T.z == 1)
 				pick_turfs += T
 
-		if(pick_turfs.len)
+		if (pick_turfs.len)
 			//All ready. Announce that bad juju is afoot.
 			command_alert("Space-time anomalies detected on the station. There is no additional data.", "Anomaly Alert")
 			for(var/mob/M in player_list)
-				if(!istype(M,/mob/new_player))
+				if (!istype(M,/mob/new_player))
 					M << sound('sound/AI/spanomalies.ogg')
 
 			//prob(20) can be approximated to 1 wormhole every 5 turfs!
@@ -26,10 +26,10 @@
 			while( 1 )
 
 				//we've run into overtime. End the event
-				if( end_time < world.time )
+				if ( end_time < world.time )
 //					world << "DEBUG: we've run into overtime. End the event"
 					return
-				if( !pick_turfs.len )
+				if ( !pick_turfs.len )
 //					world << "DEBUG: we've run out of turfs to pick. End the event"
 					return
 
@@ -41,11 +41,11 @@
 				//get our enter and exit locations
 				var/turf/simulated/floor/enter = pick_turfs[i]
 				pick_turfs -= enter							//remove it from pickable turfs list
-				if( !enter || !istype(enter) )	continue	//sanity
+				if ( !enter || !istype(enter) )	continue	//sanity
 
 				var/turf/simulated/floor/exit = pick(pick_turfs)
 				pick_turfs -= exit
-				if( !exit || !istype(exit) )	continue	//sanity
+				if ( !exit || !istype(exit) )	continue	//sanity
 
 				create_wormhole(enter,exit)
 

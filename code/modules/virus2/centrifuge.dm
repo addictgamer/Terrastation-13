@@ -10,12 +10,12 @@
 	var/datum/disease2/disease/virus2 = null
 
 /obj/machinery/computer/centrifuge/attackby(var/obj/I as obj, var/mob/user as mob)
-	if(istype(I, /obj/item/weapon/screwdriver))
+	if (istype(I, /obj/item/weapon/screwdriver))
 		return ..(I,user)
 
-	if(istype(I,/obj/item/weapon/reagent_containers/glass/beaker/vial))
+	if (istype(I,/obj/item/weapon/reagent_containers/glass/beaker/vial))
 		var/mob/living/carbon/C = user
-		if(!sample)
+		if (!sample)
 			sample = I
 			C.drop_item()
 			I.loc = src
@@ -25,24 +25,24 @@
 
 /obj/machinery/computer/centrifuge/update_icon()
 	..()
-	if(! (stat & (BROKEN|NOPOWER)) && (isolating || curing))
+	if (! (stat & (BROKEN|NOPOWER)) && (isolating || curing))
 		icon_state = "centrifuge_moving"
 
 /obj/machinery/computer/centrifuge/attack_hand(var/mob/user as mob)
-	if(..())
+	if (..())
 		return
 	user.set_machine(src)
 	var/dat= ""
-	if(curing)
+	if (curing)
 		dat = "Antibody isolation in progress"
-	else if(isolating)
+	else if (isolating)
 		dat = "Pathogen isolation in progress"
 	else
 		dat += "<BR>Blood sample:"
 		dat += "<br><table cellpadding='10'><tr><td>"
-		if(sample)
+		if (sample)
 			var/datum/reagent/blood/B = locate(/datum/reagent/blood) in sample.reagents.reagent_list
-			if(B)
+			if (B)
 				dat += "Sample inserted."
 				if (B.data["antibodies"])
 					dat += "</td></tr><tr><td>"
@@ -70,20 +70,20 @@
 /obj/machinery/computer/centrifuge/process()
 	..()
 
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 	use_power(500)
 
-	if(curing)
+	if (curing)
 		curing -= 1
-		if(curing == 0)
-			if(sample)
+		if (curing == 0)
+			if (sample)
 				cure()
 			update_icon()
-	if(isolating)
+	if (isolating)
 		isolating -= 1
-		if(isolating == 0)
-			if(sample)
+		if (isolating == 0)
+			if (sample)
 				isolate()
 			update_icon()
 
@@ -91,19 +91,19 @@
 	return
 
 /obj/machinery/computer/centrifuge/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 
-	if(usr) usr.set_machine(src)
+	if (usr) usr.set_machine(src)
 
 	switch(href_list["action"])
-		if("antibody")
+		if ("antibody")
 			var/delay = 20
 			var/datum/reagent/blood/B = locate(/datum/reagent/blood) in sample.reagents.reagent_list
 			if (!B)
 				state("\The [src.name] buzzes, \"No antibody carrier detected.\"", "blue")
 
-			else if(sample.reagents.has_reagent("toxins"))
+			else if (sample.reagents.has_reagent("toxins"))
 				state("\The [src.name] beeps, \"Pathogen purging speed above nominal.\"", "blue")
 				delay = delay/2
 
@@ -112,7 +112,7 @@
 				playsound(src.loc, 'sound/machines/juicer.ogg', 50, 1)
 				update_icon()
 
-		if("isolate")
+		if ("isolate")
 			var/datum/reagent/blood/B = locate(/datum/reagent/blood) in sample.reagents.reagent_list
 			if (B)
 				var/list/virus = virus_copylist(B.data["virus2"])
@@ -124,8 +124,8 @@
 				else
 					state("\The [src.name] buzzes, \"No such pathogen detected.\"", "blue")
 
-		if("sample")
-			if(sample)
+		if ("sample")
+			if (sample)
 				sample.loc = src.loc
 				sample = null
 

@@ -13,24 +13,24 @@
 	siemens_coefficient = 0.9
 
 	attack_self(mob/user)
-		if(!isturf(user.loc))
+		if (!isturf(user.loc))
 			user << "You cannot turn the light on while in this [user.loc]" //To prevent some lighting anomalities.
 			return
 		on = !on
 		icon_state = "hardhat[on]_[color]"
 		item_state = "hardhat[on]_[color]"
 
-		if(on)	user.SetLuminosity(user.luminosity + brightness_on)
+		if (on)	user.SetLuminosity(user.luminosity + brightness_on)
 		else	user.SetLuminosity(user.luminosity - brightness_on)
 
 	pickup(mob/user)
-		if(on)
+		if (on)
 			user.SetLuminosity(user.luminosity + brightness_on)
 //			user.UpdateLuminosity()	//TODO: Carn
 			SetLuminosity(0)
 
 	dropped(mob/user)
-		if(on)
+		if (on)
 			user.SetLuminosity(user.luminosity - brightness_on)
 //			user.UpdateLuminosity()
 			SetLuminosity(brightness_on)

@@ -156,12 +156,12 @@ datum/attribute/var
 
 
 proc/setup_skills()
-	if(SKILLS == null)
+	if (SKILLS == null)
 		SKILLS = list()
 		for(var/T in (typesof(/datum/skill)-/datum/skill))
 			var/datum/skill/S = new T
-			if(S.ID != "none")
-				if(!SKILLS.Find(S.field))
+			if (S.ID != "none")
+				if (!SKILLS.Find(S.field))
 					SKILLS[S.field] = list()
 				var/list/L = SKILLS[S.field]
 				L += S
@@ -171,34 +171,34 @@ mob/living/carbon/human/proc/GetSkillClass(points)
 	// skill classes describe how your character compares in total points
 	var/original_points = points
 	points -= min(round((age - 20) / 2.5), 4) // every 2.5 years after 20, one extra skillpoint
-	if(age > 30)
+	if (age > 30)
 		points -= round((age - 30) / 5) // every 5 years after 30, one extra skillpoint
-	if(original_points > 0 && points <= 0) points = 1
+	if (original_points > 0 && points <= 0) points = 1
 	switch(points)
-		if(0)
+		if (0)
 			return "Unconfigured"
-		if(1 to 3)
+		if (1 to 3)
 			return "Terrifying"
-		if(4 to 6)
+		if (4 to 6)
 			return "Below Average"
-		if(7 to 10)
+		if (7 to 10)
 			return "Average"
-		if(11 to 14)
+		if (11 to 14)
 			return "Above Average"
-		if(15 to 18)
+		if (15 to 18)
 			return "Exceptional"
-		if(19 to 24)
+		if (19 to 24)
 			return "Genius"
-		if(24 to 1000)
+		if (24 to 1000)
 			return "God"
 
 
 proc/show_skill_window(var/mob/user, var/mob/living/carbon/human/M)
-	if(!istype(M)) return
-	if(SKILLS == null)
+	if (!istype(M)) return
+	if (SKILLS == null)
 		setup_skills()
 
-	if(!M.skills || M.skills.len == 0)
+	if (!M.skills || M.skills.len == 0)
 		user << "There are no skills to display."
 		return
 
@@ -215,7 +215,7 @@ proc/show_skill_window(var/mob/user, var/mob/living/carbon/human/M)
 			HTML += "<th>[S.name]</th>"
 			HTML += "<th><font color=[(level == SKILL_NONE) ? "red" : "black"]>\[Untrained\]</font></th>"
 			// secondary skills don't have an amateur level
-			if(S.secondary)
+			if (S.secondary)
 				HTML += "<th></th>"
 			else
 				HTML += "<th><font color=[(level == SKILL_BASIC) ? "red" : "black"]>\[Amateur\]</font></th>"

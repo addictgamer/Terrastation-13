@@ -17,10 +17,10 @@
 	spawn(5)
 		src.area = src.loc.loc
 
-		if(otherarea)
+		if (otherarea)
 			src.area = locate(text2path("/area/[otherarea]"))
 
-		if(!name)
+		if (!name)
 			name = "light switch ([area.name])"
 
 		src.on = src.area.lightswitch
@@ -29,17 +29,17 @@
 
 
 /obj/machinery/light_switch/proc/updateicon()
-	if(stat & NOPOWER)
+	if (stat & NOPOWER)
 		icon_state = "light-p"
 	else
-		if(on)
+		if (on)
 			icon_state = "light1"
 		else
 			icon_state = "light0"
 
 /obj/machinery/light_switch/examine()
 	set src in oview(1)
-	if(usr && !usr.stat)
+	if (usr && !usr.stat)
 		usr << "A light switch. It is [on? "on" : "off"]."
 
 
@@ -62,8 +62,8 @@
 
 /obj/machinery/light_switch/power_change()
 
-	if(!otherarea)
-		if(powered(LIGHT))
+	if (!otherarea)
+		if (powered(LIGHT))
 			stat &= ~NOPOWER
 		else
 			stat |= NOPOWER
@@ -71,7 +71,7 @@
 		updateicon()
 
 /obj/machinery/light_switch/emp_act(severity)
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		..(severity)
 		return
 	power_change()

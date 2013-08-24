@@ -16,10 +16,10 @@
 		return src.attack_hand(usr)
 
 	attackby(obj/item/weapon/grab/G as obj, mob/user as mob)
-		if(!istype(G, /obj/item/weapon/grab))
+		if (!istype(G, /obj/item/weapon/grab))
 			return
-		if(istype(G.affecting, /mob/living/carbon/monkey))
-			if(src.occupied == 0)
+		if (istype(G.affecting, /mob/living/carbon/monkey))
+			if (src.occupied == 0)
 				src.icon_state = "spikebloody"
 				src.occupied = 1
 				src.meat = 5
@@ -31,8 +31,8 @@
 
 			else
 				user << "\red The spike already has something on it, finish collecting its meat first!"
-		else if(istype(G.affecting, /mob/living/carbon/alien))
-			if(src.occupied == 0)
+		else if (istype(G.affecting, /mob/living/carbon/alien))
+			if (src.occupied == 0)
 				src.icon_state = "spikebloodygreen"
 				src.occupied = 1
 				src.meat = 5
@@ -48,31 +48,31 @@
 			return
 
 //	MouseDrop_T(var/atom/movable/C, mob/user)
-//		if(istype(C, /obj/mob/carbon/monkey)
-//		else if(istype(C, /obj/mob/carbon/alien) && !istype(C, /mob/living/carbon/alien/larva/slime))
-//		else if(istype(C, /obj/livestock/spesscarp
+//		if (istype(C, /obj/mob/carbon/monkey)
+//		else if (istype(C, /obj/mob/carbon/alien) && !istype(C, /mob/living/carbon/alien/larva/slime))
+//		else if (istype(C, /obj/livestock/spesscarp
 
 	attack_hand(mob/user as mob)
-		if(..())
+		if (..())
 			return
-		if(src.occupied)
-			if(src.meattype == 1)
-				if(src.meat > 1)
+		if (src.occupied)
+			if (src.meattype == 1)
+				if (src.meat > 1)
 					src.meat--
 					new /obj/item/weapon/reagent_containers/food/snacks/meat/monkey( src.loc )
 					usr << "You remove some meat from the monkey."
-				else if(src.meat == 1)
+				else if (src.meat == 1)
 					src.meat--
 					new /obj/item/weapon/reagent_containers/food/snacks/meat/monkey(src.loc)
 					usr << "You remove the last piece of meat from the monkey!"
 					src.icon_state = "spike"
 					src.occupied = 0
-			else if(src.meattype == 2)
-				if(src.meat > 1)
+			else if (src.meattype == 2)
+				if (src.meat > 1)
 					src.meat--
 					new /obj/item/weapon/reagent_containers/food/snacks/xenomeat( src.loc )
 					usr << "You remove some meat from the alien."
-				else if(src.meat == 1)
+				else if (src.meat == 1)
 					src.meat--
 					new /obj/item/weapon/reagent_containers/food/snacks/xenomeat(src.loc)
 					usr << "You remove the last piece of meat from the alien!"

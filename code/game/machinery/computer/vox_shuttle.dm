@@ -19,15 +19,15 @@ var/global/vox_shuttle_location
 
 
 /obj/machinery/computer/vox_station/proc/vox_move_to(area/destination as area)
-	if(moving)	return
-	if(lastMove + VOX_SHUTTLE_COOLDOWN > world.time)	return
+	if (moving)	return
+	if (lastMove + VOX_SHUTTLE_COOLDOWN > world.time)	return
 	var/area/dest_location = locate(destination)
-	if(curr_location == dest_location)	return
+	if (curr_location == dest_location)	return
 
 	moving = 1
 	lastMove = world.time
 
-	if(curr_location.z != dest_location.z)
+	if (curr_location.z != dest_location.z)
 		var/area/transit_location = locate(/area/vox_station/transit)
 		curr_location.move_contents_to(transit_location)
 		curr_location = transit_location
@@ -50,7 +50,7 @@ var/global/vox_shuttle_location
 	return attack_hand(user)
 
 /obj/machinery/computer/vox_station/attack_hand(mob/user as mob)
-	if(!allowed(user))
+	if (!allowed(user))
 		user << "\red Access Denied"
 		return
 
@@ -72,30 +72,30 @@ var/global/vox_shuttle_location
 
 
 /obj/machinery/computer/vox_station/Topic(href, href_list)
-	if(!isliving(usr))	return
+	if (!isliving(usr))	return
 	var/mob/living/user = usr
 
-	if(in_range(src, user) || istype(user, /mob/living/silicon))
+	if (in_range(src, user) || istype(user, /mob/living/silicon))
 		user.set_machine(src)
 
 	vox_shuttle_location = "station"
-	if(href_list["start"])
-		if(ticker && (istype(ticker.mode,/datum/game_mode/heist)))
-			if(!warning)
+	if (href_list["start"])
+		if (ticker && (istype(ticker.mode,/datum/game_mode/heist)))
+			if (!warning)
 				user << "\red Returning to dark space will end your raid and report your success or failure. If you are sure, press the button again."
 				warning = 1
 				return
 		vox_move_to(/area/shuttle/vox/station)
 		vox_shuttle_location = "start"
-	else if(href_list["solars_fore_starboard"])
+	else if (href_list["solars_fore_starboard"])
 		vox_move_to(/area/vox_station/northeast_solars)
-	else if(href_list["solars_fore_port"])
+	else if (href_list["solars_fore_port"])
 		vox_move_to(/area/vox_station/northwest_solars)
-	else if(href_list["solars_aft_starboard"])
+	else if (href_list["solars_aft_starboard"])
 		vox_move_to(/area/vox_station/southeast_solars)
-	else if(href_list["solars_aft_port"])
+	else if (href_list["solars_aft_port"])
 		vox_move_to(/area/vox_station/southwest_solars)
-	else if(href_list["mining"])
+	else if (href_list["mining"])
 		vox_move_to(/area/vox_station/mining)
 
 	add_fingerprint(usr)

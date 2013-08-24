@@ -15,14 +15,14 @@
 	var/hasShocked = 0 //Used to add a delay between shocks. In some cases this used to crash servers by spawning hundreds of sparks every second.
 
 /obj/machinery/containment_field/Del()
-	if(FG1 && !FG1.clean_up)
+	if (FG1 && !FG1.clean_up)
 		FG1.cleanup()
-	if(FG2 && !FG2.clean_up)
+	if (FG2 && !FG2.clean_up)
 		FG2.cleanup()
 	..()
 
 /obj/machinery/containment_field/attack_hand(mob/user as mob)
-	if(get_dist(src, user) > 1)
+	if (get_dist(src, user) > 1)
 		return 0
 	else
 		shock(user)
@@ -40,10 +40,10 @@
 	return 0
 
 /obj/machinery/containment_field/HasProximity(atom/movable/AM as mob|obj)
-	if(istype(AM,/mob/living/silicon) && prob(40))
+	if (istype(AM,/mob/living/silicon) && prob(40))
 		shock(AM)
 		return 1
-	if(istype(AM,/mob/living/carbon) && prob(50))
+	if (istype(AM,/mob/living/carbon) && prob(50))
 		shock(AM)
 		return 1
 	return 0
@@ -51,12 +51,12 @@
 
 
 /obj/machinery/containment_field/proc/shock(mob/living/user as mob)
-	if(hasShocked)
+	if (hasShocked)
 		return 0
-	if(!FG1 || !FG2)
+	if (!FG1 || !FG2)
 		del(src)
 		return 0
-	if(iscarbon(user))
+	if (iscarbon(user))
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 		s.set_up(5, 1, user.loc)
 		s.start()
@@ -81,7 +81,7 @@
 		hasShocked = 0
 		return
 
-	else if(issilicon(user))
+	else if (issilicon(user))
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 		s.set_up(5, 1, user.loc)
 		s.start()
@@ -92,7 +92,7 @@
 		user.visible_message("\red [user.name] was shocked by the [src.name]!", \
 			"\red <B>Energy pulse detected, system damaged!</B>", \
 			"\red You hear an electrical crack")
-		if(prob(20))
+		if (prob(20))
 			user.Stun(2)
 
 		sleep(20)
@@ -102,7 +102,7 @@
 	return
 
 /obj/machinery/containment_field/proc/set_master(var/master1,var/master2)
-	if(!master1 || !master2)
+	if (!master1 || !master2)
 		return 0
 	FG1 = master1
 	FG2 = master2

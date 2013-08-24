@@ -47,7 +47,7 @@ var/datum/cameranet/cameranet = new()
 /datum/cameranet/proc/getCameraChunk(x, y, z)
 	var/key = "[x],[y],[z]"
 
-	if(!(key in chunks))
+	if (!(key in chunks))
 		chunks[key] = new /datum/camerachunk(null, x, y, z)
 
 	return chunks[key]
@@ -102,7 +102,7 @@ var/datum/cameranet/cameranet = new()
 // general area.
 
 /datum/cameranet/proc/updateVisibility(turf/loc)
-	if(!chunkGenerated(loc.x & ~0xf, loc.y & ~0xf, loc.z))
+	if (!chunkGenerated(loc.x & ~0xf, loc.y & ~0xf, loc.z))
 		return
 
 	var/datum/camerachunk/chunk = getCameraChunk(loc.x & ~0xf, loc.y & ~0xf, loc.z)
@@ -123,10 +123,10 @@ var/datum/cameranet/cameranet = new()
 
 	for(var/x = x1; x <= x2; x += 16)
 		for(var/y = y1; y <= y2; y += 16)
-			if(chunkGenerated(x, y, c.z))
+			if (chunkGenerated(x, y, c.z))
 				var/datum/camerachunk/chunk = getCameraChunk(x, y, c.z)
 
-				if(!(c in chunk.cameras))
+				if (!(c in chunk.cameras))
 					chunk.cameras += c
 					chunk.hasChanged()
 
@@ -145,12 +145,12 @@ var/datum/cameranet/cameranet = new()
 
 	for(var/x = x1; x <= x2; x += 16)
 		for(var/y = y1; y <= y2; y += 16)
-			if(chunkGenerated(x, y, c.z))
+			if (chunkGenerated(x, y, c.z))
 				var/datum/camerachunk/chunk = getCameraChunk(x, y, c.z)
 
-				if(!c)
+				if (!c)
 					chunk.hasChanged()
 
-				if(c in chunk.cameras)
+				if (c in chunk.cameras)
 					chunk.cameras -= c
 					chunk.hasChanged()

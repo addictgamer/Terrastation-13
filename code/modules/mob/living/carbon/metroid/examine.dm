@@ -1,8 +1,8 @@
 /mob/living/carbon/slime/examine()
 	set src in oview()
 
-	if(!usr || !src)	return
-	if( (usr.sdisabilities & BLIND || usr.blinded || usr.stat) && !istype(usr,/mob/dead/observer) )
+	if (!usr || !src)	return
+	if ( (usr.sdisabilities & BLIND || usr.blinded || usr.stat) && !istype(usr,/mob/dead/observer) )
 		usr << "<span class='notice'>Something is there but you can't see it.</span>"
 		return
 
@@ -20,16 +20,16 @@
 
 		switch(powerlevel)
 
-			if(2 to 3)
+			if (2 to 3)
 				msg += "It is flickering gently with a little electrical activity.\n"
 
-			if(4 to 5)
+			if (4 to 5)
 				msg += "It is glowing gently with moderate levels of electrical activity.\n"
 
-			if(6 to 9)
+			if (6 to 9)
 				msg += "<span class='warning'>It is glowing brightly with high levels of electrical activity.</span>\n"
 
-			if(10)
+			if (10)
 				msg += "<span class='warning'><B>It is radiating with massive levels of electrical activity!</B></span>\n"
 
 	msg += "*---------*</span>"

@@ -30,9 +30,9 @@
 		if (src.z > 6)
 			user << "\red <b>Unable to establish a connection</b>: \black You're too far away from the station!"
 			return
-		if(stat & (NOPOWER|BROKEN))	return
+		if (stat & (NOPOWER|BROKEN))	return
 
-		if(!isAI(user))
+		if (!isAI(user))
 			user.set_machine(src)
 
 		var/list/L = list()
@@ -44,21 +44,21 @@
 		var/list/D = list()
 		D["Cancel"] = "Cancel"
 		for(var/obj/machinery/camera/C in L)
-			if(can_access_camera(C))
+			if (can_access_camera(C))
 				D[text("[][]", C.c_tag, (C.status ? null : " (Deactivated)"))] = C
 
 		var/t = input(user, "Which camera should you change to?") as null|anything in D
-		if(!t)
+		if (!t)
 			user.unset_machine()
 			return 0
 
 		var/obj/machinery/camera/C = D[t]
 
-		if(t == "Cancel")
+		if (t == "Cancel")
 			user.unset_machine()
 			return 0
 
-		if(C)
+		if (C)
 			switch_to_camera(user, C)
 			spawn(5)
 				attack_hand(user)
@@ -66,17 +66,17 @@
 
 	proc/can_access_camera(var/obj/machinery/camera/C)
 		var/list/shared_networks = src.network & C.network
-		if(shared_networks.len)
+		if (shared_networks.len)
 			return 1
 		return 0
 
 	proc/switch_to_camera(var/mob/user, var/obj/machinery/camera/C)
 		if ((get_dist(user, src) > 1 || user.machine != src || user.blinded || !( user.canmove ) || !( C.can_use() )) && (!istype(user, /mob/living/silicon/ai)))
-			if(!C.can_use() && !isAI(user))
+			if (!C.can_use() && !isAI(user))
 				src.current = null
 			return 0
 		else
-			if(isAI(user))
+			if (isAI(user))
 				var/mob/living/silicon/ai/A = user
 				A.eyeobj.setLoc(get_turf(C))
 				A.client.eye = A.eyeobj
@@ -86,9 +86,9 @@
 			return 1
 
 	attackby(I as obj, user as mob)
-		if(istype(I, /obj/item/weapon/screwdriver))
+		if (istype(I, /obj/item/weapon/screwdriver))
 			playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
-			if(do_after(user, 20))
+			if (do_after(user, 20))
 				if (stat & BROKEN)
 					user << "\blue The broken glass falls out."
 					var/obj/structure/computerframe/CF = new /obj/structure/computerframe(loc)
@@ -120,42 +120,42 @@
 
 //Camera control: moving.
 	proc/jump_on_click(var/mob/user,var/A)
-		if(user.machine != src)
+		if (user.machine != src)
 			return
 		var/obj/machinery/camera/jump_to
-		if(istype(A,/obj/machinery/camera))
+		if (istype(A,/obj/machinery/camera))
 			jump_to = A
-		else if(ismob(A))
-			if(ishuman(A))
+		else if (ismob(A))
+			if (ishuman(A))
 				jump_to = locate() in A:head
-			else if(isrobot(A))
+			else if (isrobot(A))
 				jump_to = A:camera
-		else if(isobj(A))
+		else if (isobj(A))
 			jump_to = locate() in A
-		else if(isturf(A))
+		else if (isturf(A))
 			var/best_dist = INFINITY
 			for(var/obj/machinery/camera/camera in get_area(A))
-				if(!camera.can_use())
+				if (!camera.can_use())
 					continue
-				if(!can_access_camera(camera))
+				if (!can_access_camera(camera))
 					continue
 				var/dist = get_dist(camera,A)
-				if(dist < best_dist)
+				if (dist < best_dist)
 					best_dist = dist
 					jump_to = camera
-		if(isnull(jump_to))
+		if (isnull(jump_to))
 			return
-		if(can_access_camera(jump_to))
+		if (can_access_camera(jump_to))
 			switch_to_camera(user,jump_to)
 //Camera control: mouse.
 /atom/DblClick()
 	..()
-	if(istype(usr.machine,/obj/machinery/computer/security))
+	if (istype(usr.machine,/obj/machinery/computer/security))
 		var/obj/machinery/computer/security/console = usr.machine
 		console.jump_on_click(usr,src)
 //Camera control: arrow keys.
 /mob/Move(n,direct)
-	if(istype(machine,/obj/machinery/computer/security))
+	if (istype(machine,/obj/machinery/computer/security))
 		var/obj/machinery/computer/security/console = machine
 		var/turf/T = get_turf(console.current)
 		for(var/i;i<10;i++)
@@ -174,7 +174,7 @@
 
 /obj/machinery/computer/security/telescreen/update_icon()
 	icon_state = initial(icon_state)
-	if(stat & BROKEN)
+	if (stat & BROKEN)
 		icon_state += "b"
 	return
 

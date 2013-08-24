@@ -10,7 +10,7 @@
 
 
 	update_icon()
-		if(health <= 0)
+		if (health <= 0)
 			playsound(src.loc, 'sound/effects/splat.ogg', 50, 1)
 			del(src)
 			return
@@ -18,7 +18,7 @@
 
 
 	run_action()
-		if(spores.len >= max_spores)	return 0
+		if (spores.len >= max_spores)	return 0
 		new/mob/living/simple_animal/hostile/blobspore(src.loc, src)
 		return 1
 
@@ -52,14 +52,14 @@
 
 	New(loc, var/obj/effect/blob/factory/linked_node)
 		..()
-		if(istype(linked_node))
+		if (istype(linked_node))
 			factory = linked_node
 			factory.spores += src
 		..(loc)
 		return
 	Die()
 		..()
-		if(factory)
+		if (factory)
 			factory.spores -= src
 		..()
 		del(src)

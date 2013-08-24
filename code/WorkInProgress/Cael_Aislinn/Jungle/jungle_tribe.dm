@@ -33,7 +33,7 @@
 /obj/effect/jungle_tribe_spawn/process()
 	set background = 1
 	for(var/mob/living/simple_animal/hostile/tribesman/T in tribesmen)
-		if(T.stat == DEAD)
+		if (T.stat == DEAD)
 			tribesmen.Remove(T)
 			spawn(rand(50,300))
 				var/mob/living/simple_animal/hostile/tribesman/B = new(src.loc)
@@ -62,7 +62,7 @@
 	var/my_type = 1
 
 /mob/living/simple_animal/hostile/tribesman/New()
-	if(prob(33))
+	if (prob(33))
 		ranged = 1
 
 	spawn(8)
@@ -73,14 +73,14 @@
 /mob/living/simple_animal/hostile/tribesman/ListTargets()
 	var/list/targets = list()
 	for(var/mob/living/simple_animal/hostile/H in view(src, 10))
-		if(istype(H, /mob/living/simple_animal/hostile/tribesman))
+		if (istype(H, /mob/living/simple_animal/hostile/tribesman))
 			continue
 		targets += H
 	return targets
 
 /mob/living/simple_animal/hostile/tribesman/FindTarget()
 	. = ..()
-	if(.)
+	if (.)
 		emote("waves a spear at [.]")
 
 /mob/living/simple_animal/hostile/tribesman/OpenFire(target_mob)

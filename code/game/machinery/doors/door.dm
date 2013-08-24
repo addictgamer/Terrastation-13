@@ -26,7 +26,7 @@
 
 /obj/machinery/door/New()
 	. = ..()
-	if(density)
+	if (density)
 		layer = 3.1 //Above most items if closed
 		explosion_resistance = initial(explosion_resistance)
 		update_heat_protection(get_turf(src))
@@ -35,8 +35,8 @@
 		explosion_resistance = 0
 
 
-	if(width > 1)
-		if(dir in list(EAST, WEST))
+	if (width > 1)
+		if (dir in list(EAST, WEST))
 			bound_width = width * world.icon_size
 			bound_height = world.icon_size
 		else
@@ -57,26 +57,26 @@
 	//return
 
 /obj/machinery/door/Bumped(atom/AM)
-	if(p_open || operating) return
-	if(ismob(AM))
+	if (p_open || operating) return
+	if (ismob(AM))
 		var/mob/M = AM
-		if(world.time - M.last_bumped <= 10) return	//Can bump-open one airlock per second. This is to prevent shock spam.
+		if (world.time - M.last_bumped <= 10) return	//Can bump-open one airlock per second. This is to prevent shock spam.
 		M.last_bumped = world.time
-		if(!M.restrained() && !M.small)
+		if (!M.restrained() && !M.small)
 			bumpopen(M)
 		return
 
-	if(istype(AM, /obj/machinery/bot))
+	if (istype(AM, /obj/machinery/bot))
 		var/obj/machinery/bot/bot = AM
-		if(src.check_access(bot.botcard))
-			if(density)
+		if (src.check_access(bot.botcard))
+			if (density)
 				open()
 		return
 
-	if(istype(AM, /obj/mecha))
+	if (istype(AM, /obj/mecha))
 		var/obj/mecha/mecha = AM
-		if(density)
-			if(mecha.occupant && (src.allowed(mecha.occupant) || src.check_access_list(mecha.operation_req_access)))
+		if (density)
+			if (mecha.occupant && (src.allowed(mecha.occupant) || src.check_access_list(mecha.operation_req_access)))
 				open()
 			else
 				flick("door_deny", src)
@@ -85,22 +85,22 @@
 
 
 /obj/machinery/door/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group) return 0
-	if(istype(mover) && mover.checkpass(PASSGLASS))
+	if (air_group) return 0
+	if (istype(mover) && mover.checkpass(PASSGLASS))
 		return !opacity
 	return !density
 
 
 /obj/machinery/door/proc/bumpopen(mob/user as mob)
-	if(operating)	return
-	if(user.last_airflow > world.time - vsc.airflow_delay) //Fakkit
+	if (operating)	return
+	if (user.last_airflow > world.time - vsc.airflow_delay) //Fakkit
 		return
 	src.add_fingerprint(user)
-	if(!src.requiresID())
+	if (!src.requiresID())
 		user = null
 
-	if(density)
-		if(allowed(user))	open()
+	if (density)
+		if (allowed(user))	open()
 		else				flick("door_deny", src)
 	return
 
@@ -122,40 +122,40 @@
 
 
 /obj/machinery/door/attackby(obj/item/I as obj, mob/user as mob)
-	if(istype(I, /obj/item/device/detective_scanner))
+	if (istype(I, /obj/item/device/detective_scanner))
 		return
-	if(src.operating || isrobot(user))	return //borgs can't attack doors open because it conflicts with their AI-like interaction with them.
+	if (src.operating || isrobot(user))	return //borgs can't attack doors open because it conflicts with their AI-like interaction with them.
 	src.add_fingerprint(user)
-	if(!src.requiresID())
+	if (!src.requiresID())
 		user = null
-	if(src.density && (istype(I, /obj/item/weapon/card/emag)||istype(I, /obj/item/weapon/melee/energy/blade)))
+	if (src.density && (istype(I, /obj/item/weapon/card/emag)||istype(I, /obj/item/weapon/melee/energy/blade)))
 		flick("door_spark", src)
 		sleep(6)
 		open()
 		operating = -1
 		return 1
-	if(src.allowed(user))
-		if(src.density)
+	if (src.allowed(user))
+		if (src.density)
 			open()
 		else
 			close()
 		return
-	if(src.density)
+	if (src.density)
 		flick("door_deny", src)
 	return
 
 
 /obj/machinery/door/blob_act()
-	if(prob(40))
+	if (prob(40))
 		del(src)
 	return
 
 
 /obj/machinery/door/emp_act(severity)
-	if(prob(20/severity) && (istype(src,/obj/machinery/door/airlock) || istype(src,/obj/machinery/door/window)) )
+	if (prob(20/severity) && (istype(src,/obj/machinery/door/airlock) || istype(src,/obj/machinery/door/window)) )
 		open()
-	if(prob(40/severity))
-		if(secondsElectrified == 0)
+	if (prob(40/severity))
+		if (secondsElectrified == 0)
 			secondsElectrified = -1
 			spawn(300)
 				secondsElectrified = 0
@@ -164,13 +164,13 @@
 
 /obj/machinery/door/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			del(src)
-		if(2.0)
-			if(prob(25))
+		if (2.0)
+			if (prob(25))
 				del(src)
-		if(3.0)
-			if(prob(80))
+		if (3.0)
+			if (prob(80))
 				var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 				s.set_up(2, 1, src)
 				s.start()
@@ -178,7 +178,7 @@
 
 
 /obj/machinery/door/update_icon()
-	if(density)
+	if (density)
 		icon_state = "door1"
 	else
 		icon_state = "door0"
@@ -187,26 +187,26 @@
 
 /obj/machinery/door/proc/animate(animation)
 	switch(animation)
-		if("opening")
-			if(p_open)
+		if ("opening")
+			if (p_open)
 				flick("o_doorc0", src)
 			else
 				flick("doorc0", src)
-		if("closing")
-			if(p_open)
+		if ("closing")
+			if (p_open)
 				flick("o_doorc1", src)
 			else
 				flick("doorc1", src)
-		if("deny")
+		if ("deny")
 			flick("door_deny", src)
 	return
 
 
 /obj/machinery/door/proc/open()
-	if(!density)		return 1
-	if(operating > 0)	return
-	if(!ticker)			return 0
-	if(!operating)		operating = 1
+	if (!density)		return 1
+	if (operating > 0)	return
+	if (!ticker)			return 0
+	if (!operating)		operating = 1
 
 	animate("opening")
 	icon_state = "door0"
@@ -219,12 +219,12 @@
 	SetOpacity(0)
 	update_nearby_tiles()
 
-	if(operating)	operating = 0
+	if (operating)	operating = 0
 
-	if(autoclose  && normalspeed)
+	if (autoclose  && normalspeed)
 		spawn(150)
 			autoclose()
-	if(autoclose && !normalspeed)
+	if (autoclose && !normalspeed)
 		spawn(5)
 			autoclose()
 
@@ -232,8 +232,8 @@
 
 
 /obj/machinery/door/proc/close()
-	if(density)	return 1
-	if(operating > 0)	return
+	if (density)	return 1
+	if (operating > 0)	return
 	operating = 1
 
 	animate("closing")
@@ -242,14 +242,14 @@
 	src.layer = 3.1
 	sleep(10)
 	update_icon()
-	if(visible && !glass)
+	if (visible && !glass)
 		SetOpacity(1)	//caaaaarn!
 	operating = 0
 	update_nearby_tiles()
 
 	//I shall not add a check every x ticks if a door has closed over some fire.
 	var/obj/fire/fire = locate() in loc
-	if(fire)
+	if (fire)
 		del fire
 	return
 
@@ -257,7 +257,7 @@
 	return 1
 
 /obj/machinery/door/proc/update_nearby_tiles(need_rebuild)
-	if(!air_master) return 0
+	if (!air_master) return 0
 
 	var/turf/simulated/source = loc
 	var/turf/simulated/north = get_step(source,NORTH)
@@ -267,13 +267,13 @@
 
 	update_heat_protection(loc)
 
-	if(istype(source)) air_master.tiles_to_update += source
-	if(istype(north)) air_master.tiles_to_update += north
-	if(istype(south)) air_master.tiles_to_update += south
-	if(istype(east)) air_master.tiles_to_update += east
-	if(istype(west)) air_master.tiles_to_update += west
+	if (istype(source)) air_master.tiles_to_update += source
+	if (istype(north)) air_master.tiles_to_update += north
+	if (istype(south)) air_master.tiles_to_update += south
+	if (istype(east)) air_master.tiles_to_update += east
+	if (istype(west)) air_master.tiles_to_update += west
 
-	if(width > 1)
+	if (width > 1)
 		var/turf/simulated/next_turf = src
 		var/step_dir = turn(dir, 180)
 		for(var/current_step = 2, current_step <= width, current_step++)
@@ -284,30 +284,30 @@
 
 			update_heat_protection(next_turf)
 
-			if(istype(north)) air_master.tiles_to_update |= north
-			if(istype(south)) air_master.tiles_to_update |= south
-			if(istype(east)) air_master.tiles_to_update |= east
+			if (istype(north)) air_master.tiles_to_update |= north
+			if (istype(south)) air_master.tiles_to_update |= south
+			if (istype(east)) air_master.tiles_to_update |= east
 
 	return 1
 
 /obj/machinery/door/proc/update_heat_protection(var/turf/simulated/source)
-	if(istype(source))
-		if(src.density && (src.opacity || src.heat_proof))
+	if (istype(source))
+		if (src.density && (src.opacity || src.heat_proof))
 			source.thermal_conductivity = DOOR_HEAT_TRANSFER_COEFFICIENT
 		else
 			source.thermal_conductivity = initial(source.thermal_conductivity)
 
 /obj/machinery/door/proc/autoclose()
 	var/obj/machinery/door/airlock/A = src
-	if(!A.density && !A.operating && !A.locked && !A.welded && A.autoclose)
+	if (!A.density && !A.operating && !A.locked && !A.welded && A.autoclose)
 		close()
 	return
 
 /obj/machinery/door/Move(new_loc, new_dir)
 	update_nearby_tiles()
 	. = ..()
-	if(width > 1)
-		if(dir in list(EAST, WEST))
+	if (width > 1)
+		if (dir in list(EAST, WEST))
 			bound_width = width * world.icon_size
 			bound_height = world.icon_size
 		else

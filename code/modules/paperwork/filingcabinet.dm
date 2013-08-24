@@ -29,12 +29,12 @@
 
 /obj/structure/filingcabinet/initialize()
 	for(var/obj/item/I in loc)
-		if(istype(I, /obj/item/weapon/paper) || istype(I, /obj/item/weapon/folder) || istype(I, /obj/item/weapon/photo))
+		if (istype(I, /obj/item/weapon/paper) || istype(I, /obj/item/weapon/folder) || istype(I, /obj/item/weapon/photo))
 			I.loc = src
 
 
 /obj/structure/filingcabinet/attackby(obj/item/P as obj, mob/user as mob)
-	if(istype(P, /obj/item/weapon/paper) || istype(P, /obj/item/weapon/folder) || istype(P, /obj/item/weapon/photo))
+	if (istype(P, /obj/item/weapon/paper) || istype(P, /obj/item/weapon/folder) || istype(P, /obj/item/weapon/photo))
 		user << "<span class='notice'>You put [P] in [src].</span>"
 		user.drop_item()
 		P.loc = src
@@ -42,7 +42,7 @@
 		sleep(5)
 		icon_state = initial(icon_state)
 		updateUsrDialog()
-	else if(istype(P, /obj/item/weapon/wrench))
+	else if (istype(P, /obj/item/weapon/wrench))
 		playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
 		anchored = !anchored
 		user << "<span class='notice'>You [anchored ? "wrench" : "unwrench"] \the [src].</span>"
@@ -51,7 +51,7 @@
 
 
 /obj/structure/filingcabinet/attack_hand(mob/user as mob)
-	if(contents.len <= 0)
+	if (contents.len <= 0)
 		user << "<span class='notice'>\The [src] is empty.</span>"
 		return
 
@@ -68,12 +68,12 @@
 
 
 /obj/structure/filingcabinet/Topic(href, href_list)
-	if(href_list["retrieve"])
+	if (href_list["retrieve"])
 		usr << browse("", "window=filingcabinet") // Close the menu
 
 		//var/retrieveindex = text2num(href_list["retrieve"])
 		var/obj/item/P = locate(href_list["retrieve"])//contents[retrieveindex]
-		if(P && in_range(src, usr))
+		if (P && in_range(src, usr))
 			usr.put_in_hands(P)
 			updateUsrDialog()
 			icon_state = "[initial(icon_state)]-open"
@@ -89,11 +89,11 @@
 
 
 /obj/structure/filingcabinet/security/attack_hand(mob/user as mob)
-	if(virgin)
+	if (virgin)
 		for(var/datum/data/record/G in data_core.general)
 			var/datum/data/record/S
 			for(var/datum/data/record/R in data_core.security)
-				if((R.fields["name"] == G.fields["name"] || R.fields["id"] == G.fields["id"]))
+				if ((R.fields["name"] == G.fields["name"] || R.fields["id"] == G.fields["id"]))
 					S = R
 					break
 			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(src)
@@ -118,11 +118,11 @@
 	var/virgin = 1
 
 /obj/structure/filingcabinet/medical/attack_hand(mob/user as mob)
-	if(virgin)
+	if (virgin)
 		for(var/datum/data/record/G in data_core.general)
 			var/datum/data/record/M
 			for(var/datum/data/record/R in data_core.medical)
-				if((R.fields["name"] == G.fields["name"] || R.fields["id"] == G.fields["id"]))
+				if ((R.fields["name"] == G.fields["name"] || R.fields["id"] == G.fields["id"]))
 					M = R
 					break
 			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(src)

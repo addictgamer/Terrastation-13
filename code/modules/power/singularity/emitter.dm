@@ -35,7 +35,7 @@
 
 /obj/machinery/power/emitter/initialize()
 	..()
-	if(state == 2 && anchored)
+	if (state == 2 && anchored)
 		connect_to_network()
 		src.directwired = 1
 
@@ -54,12 +54,12 @@
 
 /obj/machinery/power/emitter/attack_hand(mob/user as mob)
 	src.add_fingerprint(user)
-	if(state == 2)
-		if(!powernet)
+	if (state == 2)
+		if (!powernet)
 			user << "The emitter isn't connected to a wire."
 			return 1
-		if(!src.locked)
-			if(src.active==1)
+		if (!src.locked)
+			if (src.active==1)
 				src.active = 0
 				user << "You turn off the [src]."
 				message_admins("Emitter turned off by [key_name(user, user.client)](<A HREF='?_src_=holder;adminmoreinfo=\ref[user]'>?</A>) in ([x],[y],[z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>)",0,1)
@@ -83,8 +83,8 @@
 
 /obj/machinery/power/emitter/emp_act(var/severity)//Emitters are hardened but still might have issues
 //	add_load(1000)
-/*	if((severity == 1)&&prob(1)&&prob(1))
-		if(src.active)
+/*	if ((severity == 1)&&prob(1)&&prob(1))
+		if (src.active)
 			src.active = 0
 			src.use_power = 1	*/
 	return 1
@@ -93,29 +93,29 @@
 	return 0
 
 /obj/machinery/power/emitter/process()
-	if(stat & (BROKEN))
+	if (stat & (BROKEN))
 		return
-	if(src.state != 2 || (!powernet && active_power_usage))
+	if (src.state != 2 || (!powernet && active_power_usage))
 		src.active = 0
 		update_icon()
 		return
-	if(((src.last_shot + src.fire_delay) <= world.time) && (src.active == 1))
+	if (((src.last_shot + src.fire_delay) <= world.time) && (src.active == 1))
 
-		if(!active_power_usage || avail(active_power_usage))
+		if (!active_power_usage || avail(active_power_usage))
 			add_load(active_power_usage)
-			if(!powered)
+			if (!powered)
 				powered = 1
 				update_icon()
 				investigate_log("regained power and turned <font color='green'>on</font>","singulo")
 		else
-			if(powered)
+			if (powered)
 				powered = 0
 				update_icon()
 				investigate_log("lost power and turned <font color='red'>off</font>","singulo")
 			return
 
 		src.last_shot = world.time
-		if(src.shot_number < 3)
+		if (src.shot_number < 3)
 			src.fire_delay = 2
 			src.shot_number ++
 		else
@@ -123,19 +123,19 @@
 			src.shot_number = 0
 		var/obj/item/projectile/beam/emitter/A = new /obj/item/projectile/beam/emitter( src.loc )
 		playsound(src.loc, 'sound/weapons/emitter.ogg', 25, 1)
-		if(prob(35))
+		if (prob(35))
 			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 			s.set_up(5, 1, src)
 			s.start()
 		A.dir = src.dir
 		switch(dir)
-			if(NORTH)
+			if (NORTH)
 				A.yo = 20
 				A.xo = 0
-			if(EAST)
+			if (EAST)
 				A.yo = 0
 				A.xo = 20
-			if(WEST)
+			if (WEST)
 				A.yo = 0
 				A.xo = -20
 			else // Any other
@@ -146,59 +146,59 @@
 
 /obj/machinery/power/emitter/attackby(obj/item/W, mob/user)
 
-	if(istype(W, /obj/item/weapon/wrench))
-		if(active)
+	if (istype(W, /obj/item/weapon/wrench))
+		if (active)
 			user << "Turn off the [src] first."
 			return
 		switch(state)
-			if(0)
+			if (0)
 				state = 1
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 				user.visible_message("[user.name] secures [src.name] to the floor.", \
 					"You secure the external reinforcing bolts to the floor.", \
 					"You hear a ratchet")
 				src.anchored = 1
-			if(1)
+			if (1)
 				state = 0
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 				user.visible_message("[user.name] unsecures [src.name] reinforcing bolts from the floor.", \
 					"You undo the external reinforcing bolts.", \
 					"You hear a ratchet")
 				src.anchored = 0
-			if(2)
+			if (2)
 				user << "\red The [src.name] needs to be unwelded from the floor."
 		return
 
-	if(istype(W, /obj/item/weapon/weldingtool))
+	if (istype(W, /obj/item/weapon/weldingtool))
 		var/obj/item/weapon/weldingtool/WT = W
-		if(active)
+		if (active)
 			user << "Turn off the [src] first."
 			return
 		switch(state)
-			if(0)
+			if (0)
 				user << "\red The [src.name] needs to be wrenched to the floor."
-			if(1)
+			if (1)
 				if (WT.remove_fuel(0,user))
 					playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
 					user.visible_message("[user.name] starts to weld the [src.name] to the floor.", \
 						"You start to weld the [src] to the floor.", \
 						"You hear welding")
 					if (do_after(user,20))
-						if(!src || !WT.isOn()) return
+						if (!src || !WT.isOn()) return
 						state = 2
 						user << "You weld the [src] to the floor."
 						connect_to_network()
 						src.directwired = 1
 				else
 					user << "\red You need more welding fuel to complete this task."
-			if(2)
+			if (2)
 				if (WT.remove_fuel(0,user))
 					playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
 					user.visible_message("[user.name] starts to cut the [src.name] free from the floor.", \
 						"You start to cut the [src] free from the floor.", \
 						"You hear welding")
 					if (do_after(user,20))
-						if(!src || !WT.isOn()) return
+						if (!src || !WT.isOn()) return
 						state = 1
 						user << "You cut the [src] free from the floor."
 						disconnect_from_network()
@@ -207,12 +207,12 @@
 					user << "\red You need more welding fuel to complete this task."
 		return
 
-	if(istype(W, /obj/item/weapon/card/id) || istype(W, /obj/item/device/pda))
-		if(emagged)
+	if (istype(W, /obj/item/weapon/card/id) || istype(W, /obj/item/device/pda))
+		if (emagged)
 			user << "\red The lock seems to be broken"
 			return
-		if(src.allowed(user))
-			if(active)
+		if (src.allowed(user))
+			if (active)
 				src.locked = !src.locked
 				user << "The controls are now [src.locked ? "locked." : "unlocked."]"
 			else
@@ -223,7 +223,7 @@
 		return
 
 
-	if(istype(W, /obj/item/weapon/card/emag) && !emagged)
+	if (istype(W, /obj/item/weapon/card/emag) && !emagged)
 		locked = 0
 		emagged = 1
 		user.visible_message("[user.name] emags the [src.name].","\red You short out the lock.")

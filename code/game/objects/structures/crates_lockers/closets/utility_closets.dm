@@ -91,7 +91,7 @@
 	new /obj/item/clothing/head/hardhat/red(src)
 
 /obj/structure/closet/firecloset/update_icon()
-	if(!opened)
+	if (!opened)
 		icon_state = icon_closed
 	else
 		icon_state = icon_opened
@@ -108,35 +108,35 @@
 	icon_opened = "toolclosetopen"
 
 /obj/structure/closet/toolcloset/New()
-	if(prob(40))
+	if (prob(40))
 		new /obj/item/clothing/suit/storage/hazardvest(src)
-	if(prob(70))
+	if (prob(70))
 		new /obj/item/device/flashlight(src)
-	if(prob(70))
+	if (prob(70))
 		new /obj/item/weapon/screwdriver(src)
-	if(prob(70))
+	if (prob(70))
 		new /obj/item/weapon/wrench(src)
-	if(prob(70))
+	if (prob(70))
 		new /obj/item/weapon/weldingtool(src)
-	if(prob(70))
+	if (prob(70))
 		new /obj/item/weapon/crowbar(src)
-	if(prob(70))
+	if (prob(70))
 		new /obj/item/weapon/wirecutters(src)
-	if(prob(70))
+	if (prob(70))
 		new /obj/item/device/t_scanner(src)
-	if(prob(20))
+	if (prob(20))
 		new /obj/item/weapon/storage/belt/utility(src)
-	if(prob(30))
+	if (prob(30))
 		new /obj/item/weapon/cable_coil/random(src)
-	if(prob(30))
+	if (prob(30))
 		new /obj/item/weapon/cable_coil/random(src)
-	if(prob(30))
+	if (prob(30))
 		new /obj/item/weapon/cable_coil/random(src)
-	if(prob(20))
+	if (prob(20))
 		new /obj/item/device/multitool(src)
-	if(prob(5))
+	if (prob(5))
 		new /obj/item/clothing/gloves/yellow(src)
-	if(prob(40))
+	if (prob(40))
 		new /obj/item/clothing/head/hardhat(src)
 
 
@@ -216,7 +216,7 @@
 	wall_mounted = 1
 
 /obj/structure/closet/medical_wall/update_icon()
-	if(!opened)
+	if (!opened)
 		icon_state = icon_closed
 	else
 		icon_state = icon_opened

@@ -20,7 +20,7 @@
 			return ..(user)
 
 		var/mob/living/carbon/human/H = user
-		if(H.getBrainLoss() >= 60)
+		if (H.getBrainLoss() >= 60)
 			return
 
 		var/t1 = text("<B>Access control</B><br>\n")
@@ -47,7 +47,7 @@
 
 				if (!conf_access || !conf_access.len || !(acc in conf_access))
 					t1 += "<a href='?src=\ref[src];access=[acc]'>[aname]</a><br>"
-				else if(one_access)
+				else if (one_access)
 					t1 += "<a style='color: green' href='?src=\ref[src];access=[acc]'>[aname]</a><br>"
 				else
 					t1 += "<a style='color: red' href='?src=\ref[src];access=[acc]'>[aname]</a><br>"

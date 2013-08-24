@@ -93,7 +93,7 @@
 /obj/machinery/rail_switch/New()
 	spawn(10)
 		src.track = locate(/obj/machinery/rail_track, get_step(src, NORTH))
-		if(track)
+		if (track)
 			id = track.id
 	return
 
@@ -104,54 +104,54 @@
 			var/obj/machinery/rail_car/C = locate(/obj/machinery/rail_car, T.loc)
 			if (C)
 				switch (T.dir)
-					if(1)
+					if (1)
 						switch(C.direction)
-							if("N") C.direction = "S"
-							if("S") C.direction = "N"
-							if("E") C.direction = "S"
-							if("W") C.direction = "S"
-					if(2)
+							if ("N") C.direction = "S"
+							if ("S") C.direction = "N"
+							if ("E") C.direction = "S"
+							if ("W") C.direction = "S"
+					if (2)
 						switch(C.direction)
-							if("N") C.direction = "S"
-							if("S") C.direction = "N"
-							if("E") C.direction = "S"
-							if("W") C.direction = "S"
-					if(4)
+							if ("N") C.direction = "S"
+							if ("S") C.direction = "N"
+							if ("E") C.direction = "S"
+							if ("W") C.direction = "S"
+					if (4)
 						switch(C.direction)
-							if("N") C.direction = "E"
-							if("S") C.direction = "E"
-							if("E") C.direction = "W"
-							if("W") C.direction = "E"
-					if(8)
+							if ("N") C.direction = "E"
+							if ("S") C.direction = "E"
+							if ("E") C.direction = "W"
+							if ("W") C.direction = "E"
+					if (8)
 						switch(C.direction)
-							if("N") C.direction = "E"
-							if("S") C.direction = "E"
-							if("E") C.direction = "W"
-							if("W") C.direction = "E"
-					if(5)
+							if ("N") C.direction = "E"
+							if ("S") C.direction = "E"
+							if ("E") C.direction = "W"
+							if ("W") C.direction = "E"
+					if (5)
 						switch(C.direction)
-							if("N") C.direction = "S"
-							if("S") C.direction = "E"
-							if("E") C.direction = "S"
-							if("W") C.direction = "S"
-					if(6)
+							if ("N") C.direction = "S"
+							if ("S") C.direction = "E"
+							if ("E") C.direction = "S"
+							if ("W") C.direction = "S"
+					if (6)
 						switch(C.direction)
-							if("N") C.direction = "S"
-							if("S") C.direction = "W"
-							if("E") C.direction = "S"
-							if("W") C.direction = "S"
-					if(9)
+							if ("N") C.direction = "S"
+							if ("S") C.direction = "W"
+							if ("E") C.direction = "S"
+							if ("W") C.direction = "S"
+					if (9)
 						switch(C.direction)
-							if("N") C.direction = "E"
-							if("S") C.direction = "E"
-							if("E") C.direction = "N"
-							if("W") C.direction = "E"
-					if(10)
+							if ("N") C.direction = "E"
+							if ("S") C.direction = "E"
+							if ("E") C.direction = "N"
+							if ("W") C.direction = "E"
+					if (10)
 						switch(C.direction)
-							if("N") C.direction = "W"
-							if("S") C.direction = "W"
-							if("E") C.direction = "W"
-							if("W") C.direction = "N"
+							if ("N") C.direction = "W"
+							if ("S") C.direction = "W"
+							if ("E") C.direction = "W"
+							if ("W") C.direction = "N"
 	return
 
 /**********************Rail car**************************/
@@ -184,19 +184,19 @@ for (var/client/C)
 
 /obj/machinery/rail_car/MouseDrop_T(var/atom/movable/C, mob/user)
 
-	if(user.stat)
+	if (user.stat)
 		return
 
 	if (!istype(C) || C.anchored || get_dist(user, src) > 1 || get_dist(src,C) > 1 )
 		return
 
-	if(ismob(C))
+	if (ismob(C))
 		load(C)
 
 
 /obj/machinery/rail_car/proc/load(var/atom/movable/C)
 
-	if(get_dist(C, src) > 1)
+	if (get_dist(C, src) > 1)
 		return
 	//mode = 1
 
@@ -206,13 +206,13 @@ for (var/client/C)
 	load = C
 
 	C.pixel_y += 9
-	if(C.layer < layer)
+	if (C.layer < layer)
 		C.layer = layer + 0.1
 	overlays += C
 
-	if(ismob(C))
+	if (ismob(C))
 		var/mob/M = C
-		if(M.client)
+		if (M.client)
 			M.client.perspective = EYE_PERSPECTIVE
 			M.client.eye = src
 
@@ -220,7 +220,7 @@ for (var/client/C)
 	//send_status()
 
 /obj/machinery/rail_car/proc/unload(var/dirn = 0)
-	if(!load)
+	if (!load)
 		return
 
 	overlays.Cut()
@@ -228,14 +228,14 @@ for (var/client/C)
 	load.loc = src.loc
 	load.pixel_y -= 9
 	load.layer = initial(load.layer)
-	if(ismob(load))
+	if (ismob(load))
 		var/mob/M = load
-		if(M.client)
+		if (M.client)
 			M.client.perspective = MOB_PERSPECTIVE
 			M.client.eye = src
 
 
-	if(dirn)
+	if (dirn)
 		step(load, dirn)
 
 	load = null
@@ -248,16 +248,16 @@ for (var/client/C)
 		AM.loc = src.loc
 		AM.layer = initial(AM.layer)
 		AM.pixel_y = initial(AM.pixel_y)
-		if(ismob(AM))
+		if (ismob(AM))
 			var/mob/M = AM
-			if(M.client)
+			if (M.client)
 				M.client.perspective = MOB_PERSPECTIVE
 				M.client.eye = src
 
 /obj/machinery/rail_car/relaymove(var/mob/user)
-	if(user.stat)
+	if (user.stat)
 		return
-	if(load == user)
+	if (load == user)
 		unload(0)
 	return
 

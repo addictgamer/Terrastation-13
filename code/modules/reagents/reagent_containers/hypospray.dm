@@ -24,7 +24,7 @@
 	return
 
 /obj/item/weapon/reagent_containers/hypospray/attack(mob/M as mob, mob/user as mob)
-	if(!reagents.total_volume)
+	if (!reagents.total_volume)
 		user << "\red [src] is empty."
 		return
 	if (!( istype(M, /mob) ))
@@ -34,7 +34,7 @@
 		M << "\red You feel a tiny prick!"
 
 		src.reagents.reaction(M, INGEST)
-		if(M.reagents)
+		if (M.reagents)
 
 			var/list/injected = list()
 			for(var/datum/reagent/R in src.reagents.reagent_list)
@@ -68,20 +68,20 @@
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/attack(mob/M as mob, mob/user as mob)
 	..()
-	if(reagents.total_volume <= 0) //Prevents autoinjectors to be refilled.
+	if (reagents.total_volume <= 0) //Prevents autoinjectors to be refilled.
 		flags &= ~OPENCONTAINER
 	update_icon()
 	return
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/update_icon()
-	if(reagents.total_volume > 0)
+	if (reagents.total_volume > 0)
 		icon_state = "[initial(icon_state)]1"
 	else
 		icon_state = "[initial(icon_state)]0"
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/examine()
 	..()
-	if(reagents && reagents.reagent_list.len)
+	if (reagents && reagents.reagent_list.len)
 		usr << "\blue It is currently loaded."
 	else
 		usr << "\blue It is spent."

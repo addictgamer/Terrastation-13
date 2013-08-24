@@ -9,7 +9,7 @@
 /client/verb/Debug()
 	set category = "Debug"
 	set name = "Debug-Debug"
-	if(src.holder.rank == "Game Admin")
+	if (src.holder.rank == "Game Admin")
 		Debug = !Debug
 
 		world << "Debugging [Debug ? "On" : "Off"]"
@@ -20,21 +20,21 @@
 /turf/verb/Flow()
 	set category = "Debug"
 	//set hidden = 1
-	if(Debug)
+	if (Debug)
 		for(var/turf/T in range(5))
 
 			var/obj/effect/mark/O = locate(/obj/effect/mark/, T)
 
-			if(!O)
+			if (!O)
 				O = new /obj/effect/mark(T)
 			else
 				O.overlays.Cut()
 
 			var/obj/move/OM = locate(/obj/move/, T)
 
-			if(OM)
+			if (OM)
 
-				if(! OM.updatecell)
+				if (! OM.updatecell)
 					O.icon_state = "x2"
 				else
 					O.icon_state = "blank"
@@ -42,45 +42,45 @@
 Doing this because FindTurfs() isn't even used
 				for(var/atom/U in OM.FindTurfs() )
 					var/dirn = get_dir(OM, U)
-					if(dirn == 1)
+					if (dirn == 1)
 						O.overlays += image('icons/misc/mark.dmi', OM.airdir==1?"up":"fup")
-					else if(dirn == 2)
+					else if (dirn == 2)
 						O.overlays += image('icons/misc/mark.dmi', OM.airdir==2?"dn":"fdn")
-					else if(dirn == 4)
+					else if (dirn == 4)
 						O.overlays += image('icons/misc/mark.dmi', OM.airdir==4?"rt":"frt")
-					else if(dirn == 8)
+					else if (dirn == 8)
 						O.overlays += image('icons/misc/mark.dmi', OM.airdir==8?"lf":"flf")
 */
 			else
 
-				if(!(T.updatecell))
+				if (!(T.updatecell))
 					O.icon_state = "x2"
 				else
 					O.icon_state = "blank"
 
-				if(T.airN)
+				if (T.airN)
 					O.overlays += image('icons/misc/mark.dmi', T.airdir==1?"up":"fup")
 
-				if(T.airS)
+				if (T.airS)
 					O.overlays += image('icons/misc/mark.dmi', T.airdir==2?"dn":"fdn")
 
-				if(T.airW)
+				if (T.airW)
 					O.overlays += image('icons/misc/mark.dmi', T.airdir==8?"lf":"flf")
 
-				if(T.airE)
+				if (T.airE)
 					O.overlays += image('icons/misc/mark.dmi', T.airdir==4?"rt":"frt")
 
 
-				if(T.condN)
+				if (T.condN)
 					O.overlays += image('icons/misc/mark.dmi', T.condN == 1?"yup":"rup")
 
-				if(T.condS)
+				if (T.condS)
 					O.overlays += image('icons/misc/mark.dmi', T.condS == 1?"ydn":"rdn")
 
-				if(T.condE)
+				if (T.condE)
 					O.overlays += image('icons/misc/mark.dmi', T.condE == 1?"yrt":"rrt")
 
-				if(T.condW)
+				if (T.condW)
 					O.overlays += image('icons/misc/mark.dmi', T.condW == 1?"ylf":"rlf")
 	else
 		alert("Debugging off")
@@ -89,7 +89,7 @@ Doing this because FindTurfs() isn't even used
 /turf/verb/Clear()
 	set category = "Debug"
 	//set hidden = 1
-	if(Debug)
+	if (Debug)
 		for(var/obj/effect/mark/O in world)
 			del(O)
 	else
@@ -97,10 +97,10 @@ Doing this because FindTurfs() isn't even used
 		return
 
 /proc/numbericon(var/tn as text,var/s = 0)
-	if(Debug)
+	if (Debug)
 		var/image/I = image('icons/misc/mark.dmi', "blank")
 
-		if(lentext(tn)>8)
+		if (lentext(tn)>8)
 			tn = "*"
 
 		var/len = lentext(tn)
@@ -110,14 +110,14 @@ Doing this because FindTurfs() isn't even used
 
 			var/char = copytext(tn, len-d+1, len-d+2)
 
-			if(char == " ")
+			if (char == " ")
 				continue
 
 			var/image/ID = image('icons/misc/mark.dmi', char)
 
 			ID.pixel_x = -(d-1)*4
 			ID.pixel_y = s
-			//if(d>1) I.Shift(WEST, (d-1)*8)
+			//if (d>1) I.Shift(WEST, (d-1)*8)
 
 			I.overlays += ID
 
@@ -134,7 +134,7 @@ Doing this because FindTurfs() isn't even used
 
 		var/obj/effect/mark/O = locate(/obj/effect/mark/, T)
 
-		if(!O)
+		if (!O)
 			O = new /obj/effect/mark(T)
 		else
 			O.overlays.Cut()
@@ -160,17 +160,17 @@ Doing this because FindTurfs() isn't even used
 		for(var/obj/machinery/M in T)
 			//world <<" Mach [M] with pdir=[M.p_dir]"
 
-			if(M && M.p_dir)
+			if (M && M.p_dir)
 
 				//world << "Accepted"
 				var/obj/effect/mark/O = locate(/obj/effect/mark/, T)
 
-				if(!O)
+				if (!O)
 					O = new /obj/effect/mark(T)
 				else
 					O.overlays.Cut()
 
-				if(istype(M, /obj/machinery/pipes))
+				if (istype(M, /obj/machinery/pipes))
 					var/obj/machinery/pipes/P = M
 					O.overlays += numbericon("[P.plnum]    ", -20)
 					M = P.pl
@@ -178,7 +178,7 @@ Doing this because FindTurfs() isn't even used
 
 				var/obj/substance/gas/G = M.get_gas()
 
-				if(G)
+				if (G)
 
 					var/cap = round( 100*(G.tot_gas()/ M.capmult / 6e6), 0.1)
 					var/temp = round(G.temperature - T0C, 0.1)
@@ -189,14 +189,14 @@ Doing this because FindTurfs() isn't even used
 */
 /turf/verb/Cables()
 	set category = "Debug"
-	if(Debug)
+	if (Debug)
 		for(var/turf/T in range(6))
 
 			//world << "Turf [T] at ([T.x],[T.y])"
 
 			var/obj/effect/mark/O = locate(/obj/effect/mark/, T)
 
-			if(!O)
+			if (!O)
 				O = new /obj/effect/mark(T)
 			else
 				O.overlays.Cut()
@@ -206,7 +206,7 @@ Doing this because FindTurfs() isn't even used
 				//world <<" Mach [M] with pdir=[M.p_dir]"
 
 
-				if(M && istype(M, /obj/structure/cable/))
+				if (M && istype(M, /obj/structure/cable/))
 
 
 					var/obj/structure/cable/C = M
@@ -216,13 +216,13 @@ Doing this because FindTurfs() isn't even used
 
 					marked -= 8
 
-				else if(M && istype(M, /obj/machinery/power/))
+				else if (M && istype(M, /obj/machinery/power/))
 
 					var/obj/machinery/power/P = M
 					O.overlays += numbericon("*[P.netnum]  " ,  marked)
 					marked -= 8
 
-			if(!marked)
+			if (!marked)
 				del(O)
 	else
 		alert("Debugging off")
@@ -231,7 +231,7 @@ Doing this because FindTurfs() isn't even used
 
 /turf/verb/Solar()
 	set category = "Debug"
-	if(Debug)
+	if (Debug)
 
 		for(var/turf/T in range(6))
 
@@ -239,7 +239,7 @@ Doing this because FindTurfs() isn't even used
 
 			var/obj/effect/mark/O = locate(/obj/effect/mark/, T)
 
-			if(!O)
+			if (!O)
 				O = new /obj/effect/mark(T)
 			else
 				O.overlays.Cut()
@@ -249,7 +249,7 @@ Doing this because FindTurfs() isn't even used
 
 			S = locate(/obj/machinery/power/solar, T)
 
-			if(S)
+			if (S)
 
 				O.overlays += numbericon("[S.obscured]  " ,  0)
 				O.overlays += numbericon("[round(S.sunfrac*100,0.1)]  " ,  -12)
@@ -263,7 +263,7 @@ Doing this because FindTurfs() isn't even used
 
 /mob/verb/Showports()
 	set category = "Debug"
-	if(Debug)
+	if (Debug)
 		var/turf/T
 		var/obj/machinery/pipes/P
 		var/list/ndirs
@@ -299,7 +299,7 @@ Doing this because FindTurfs() isn't even used
 /atom/verb/delete()
 	set category = "Debug"
 	set src in view()
-	if(Debug)
+	if (Debug)
 		del(src)
 	else
 		alert("Debugging off")
@@ -308,8 +308,8 @@ Doing this because FindTurfs() isn't even used
 
 /area/verb/dark()
 	set category = "Debug"
-	if(Debug)
-		if(src.icon_state == "dark")
+	if (Debug)
+		if (src.icon_state == "dark")
 			icon_state = null
 		else
 			icon_state = "dark"
@@ -319,7 +319,7 @@ Doing this because FindTurfs() isn't even used
 
 /area/verb/power()
 	set category = "Debug"
-	if(Debug)
+	if (Debug)
 		power_equip = !power_equip
 		power_environ = !power_environ
 
@@ -337,7 +337,7 @@ Doing this because FindTurfs() isn't even used
 
 /mob/verb/ShowPlasma()
 	set category = "Debug"
-	if(Debug)
+	if (Debug)
 		Plasma()
 	else
 		alert("Debugging off")
@@ -345,7 +345,7 @@ Doing this because FindTurfs() isn't even used
 
 /mob/verb/Blobcount()
 	set category = "Debug"
-	if(Debug)
+	if (Debug)
 		world << "Blob count: [blobs.len]"
 	else
 		alert("Debugging off")
@@ -354,7 +354,7 @@ Doing this because FindTurfs() isn't even used
 
 /mob/verb/Blobkill()
 	set category = "Debug"
-	if(Debug)
+	if (Debug)
 		blobs = list()
 		world << "Blob killed."
 	else
@@ -363,7 +363,7 @@ Doing this because FindTurfs() isn't even used
 
 /mob/verb/Blobmode()
 	set category = "Debug"
-	if(Debug)
+	if (Debug)
 		world << "Event=[ticker.event]"
 		world << "Time =[(ticker.event_time - world.realtime)/10]s"
 	else
@@ -372,7 +372,7 @@ Doing this because FindTurfs() isn't even used
 
 /mob/verb/Blobnext()
 	set category = "Debug"
-	if(Debug)
+	if (Debug)
 		ticker.event_time = world.realtime
 	else
 		alert("Debugging off")
@@ -381,7 +381,7 @@ Doing this because FindTurfs() isn't even used
 
 /mob/verb/callshuttle()
 	set category = "Debug"
-	if(Debug)
+	if (Debug)
 		ticker.timeleft = 300
 		ticker.timing = 1
 	else
@@ -390,7 +390,7 @@ Doing this because FindTurfs() isn't even used
 
 /mob/verb/apcs()
 	set category = "Debug"
-	if(Debug)
+	if (Debug)
 		for(var/obj/machinery/power/apc/APC in world)
 			world << APC.report()
 	else
@@ -399,7 +399,7 @@ Doing this because FindTurfs() isn't even used
 
 /mob/verb/Globals()
 	set category = "Debug"
-	if(Debug)
+	if (Debug)
 		debugobj = new()
 
 		debugobj.debuglist = list( powernets, plines, vote, config, admins, ticker, SS13_airtunnel, sun )
@@ -419,11 +419,11 @@ Doing this because FindTurfs() isn't even used
 
 /mob/verb/Mach()
 	set category = "Debug"
-	if(Debug)
+	if (Debug)
 		var/n = 0
 		for(var/obj/machinery/M in world)
 			n++
-			if(! (M in machines) )
+			if (! (M in machines) )
 				world << "[M] [M.type]: not in list"
 
 		world << "in world: [n]; in list:[machines.len]"
@@ -448,17 +448,17 @@ Doing this because FindTurfs() isn't even used
 
 	var/ptot = 0
 	for(var/obj/machinery/pipeline/PL in plines)
-		if(PL.suffix == "d")
+		if (PL.suffix == "d")
 			ptot += PL.ngas.tot_gas()
 
 	var/vtot = 0
 	for(var/obj/machinery/atmoalter/V in machines)
-		if(V.suffix == "d")
+		if (V.suffix == "d")
 			vtot += V.gas.tot_gas()
 
 	var/ctot = 0
 	for(var/obj/machinery/connector/C in machines)
-		if(C.suffix == "d")
+		if (C.suffix == "d")
 			ctot += C.ngas.tot_gas()
 
 
@@ -468,7 +468,7 @@ Doing this because FindTurfs() isn't even used
 */
 /mob/verb/Revive()
 	set category = "Debug"
-	if(Debug)
+	if (Debug)
 		adjustFireLoss(0 - getBruteLoss())
 		setToxLoss(0)
 		adjustBruteLoss(0 - getBruteLoss())
@@ -477,7 +477,7 @@ Doing this because FindTurfs() isn't even used
 		stunned = 0
 		weakened = 0
 		health = 100
-		if(stat > 1) stat=0
+		if (stat > 1) stat=0
 		disabilities = initial(disabilities)
 		sdisabilities = initial(sdisabilities)
 		for(var/datum/organ/external/e in src)
@@ -490,7 +490,7 @@ Doing this because FindTurfs() isn't even used
 			e.destroyed = 0
 			e.perma_injury = 0
 			e.update_icon()
-		if(src.type == /mob/living/carbon/human)
+		if (src.type == /mob/living/carbon/human)
 			var/mob/living/carbon/human/H = src
 			H.update_body()
 			H.UpdateDamageIcon()
@@ -500,7 +500,7 @@ Doing this because FindTurfs() isn't even used
 
 /mob/verb/Smoke()
 	set category = "Debug"
-	if(Debug)
+	if (Debug)
 		var/obj/effect/smoke/O = new /obj/effect/smoke( src.loc )
 		O.dir = pick(NORTH, SOUTH, EAST, WEST)
 		spawn( 0 )
@@ -512,10 +512,10 @@ Doing this because FindTurfs() isn't even used
 /mob/verb/revent(number as num)
 	set category = "Debug"
 	set name = "Change event %"
-	if(!src.holder)
+	if (!src.holder)
 		src << "Only administrators may use this command."
 		return
-	if(src.holder)
+	if (src.holder)
 		eventchance = number
 		log_admin("[src.key] set the random event chance to [eventchance]%")
 		message_admins("[src.key] set the random event chance to [eventchance]%")
@@ -524,11 +524,11 @@ Doing this because FindTurfs() isn't even used
 /mob/verb/funbutton()
 	set category = "Admin"
 	set name = "Random Expl.(REMOVE ME)"
-	if(!src.holder)
+	if (!src.holder)
 		src << "Only administrators may use this command."
 		return
 	for(var/turf/T in world)
-		if(prob(4) && T.z == 1 && istype(T,/turf/station/floor))
+		if (prob(4) && T.z == 1 && istype(T,/turf/station/floor))
 			spawn(50+rand(0,3000))
 				var/obj/item/weapon/tank/plasmatank/pt = new /obj/item/weapon/tank/plasmatank( T )
 				pt.gas.temperature = 400+T0C
@@ -548,7 +548,7 @@ Doing this because FindTurfs() isn't even used
 /mob/verb/removeplasma()
 	set category = "Debug"
 	set name = "Stabilize Atmos."
-	if(!src.holder)
+	if (!src.holder)
 		src << "Only administrators may use this command."
 		return
 	spawn(0)
@@ -575,7 +575,7 @@ Doing this because FindTurfs() isn't even used
 /mob/verb/fire(turf/T as turf in world)
 	set category = "Special Verbs"
 	set name = "Create Fire"
-	if(!src.holder)
+	if (!src.holder)
 		src << "Only administrators may use this command."
 		return
 	world << "[usr.key] created fire"
@@ -586,7 +586,7 @@ Doing this because FindTurfs() isn't even used
 /mob/verb/co2(turf/T as turf in world)
 	set category = "Special Verbs"
 	set name = "Create CO2"
-	if(!src.holder)
+	if (!src.holder)
 		src << "Only administrators may use this command."
 		return
 	world << "[usr.key] created CO2"
@@ -596,7 +596,7 @@ Doing this because FindTurfs() isn't even used
 /mob/verb/n2o(turf/T as turf in world)
 	set category = "Special Verbs"
 	set name = "Create N2O"
-	if(!src.holder)
+	if (!src.holder)
 		src << "Only administrators may use this command."
 		return
 	world << "[usr.key] created N2O"
@@ -606,7 +606,7 @@ Doing this because FindTurfs() isn't even used
 /mob/verb/explosion(T as obj|mob|turf in world)
 	set category = "Special Verbs"
 	set name = "Create Explosion"
-	if(!src.holder)
+	if (!src.holder)
 		src << "Only administrators may use this command."
 		return
 	world << "[usr.key] created an explosion"

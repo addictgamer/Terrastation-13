@@ -88,11 +88,11 @@
 		while(bot_amt > 0)
 			bot_amt--
 			switch(bot_type)
-				if("norm")
+				if ("norm")
 					new /mob/living/simple_animal/hostile/hivebot(get_turf(src))
-				if("range")
+				if ("range")
 					new /mob/living/simple_animal/hostile/hivebot/range(get_turf(src))
-				if("rapid")
+				if ("rapid")
 					new /mob/living/simple_animal/hostile/hivebot/rapid(get_turf(src))
 		spawn(100)
 			del(src)
@@ -101,7 +101,7 @@
 
 	Life()
 		..()
-		if(stat == 0)
-			if(prob(2))//Might be a bit low, will mess with it likely
+		if (stat == 0)
+			if (prob(2))//Might be a bit low, will mess with it likely
 				warpbots()
 

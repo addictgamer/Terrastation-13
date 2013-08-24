@@ -13,50 +13,50 @@
 		set category = "Object"
 		set src in usr
 
-		if(!usr.canmove || usr.stat || usr.restrained())
+		if (!usr.canmove || usr.stat || usr.restrained())
 			return 0
 
 		switch(icon_state)
-			if("labcoat_open")
+			if ("labcoat_open")
 				src.icon_state = "labcoat"
 				usr << "You button up the labcoat."
-			if("labcoat")
+			if ("labcoat")
 				src.icon_state = "labcoat_open"
 				usr << "You unbutton the labcoat."
-			if("labcoat_cmo_open")
+			if ("labcoat_cmo_open")
 				src.icon_state = "labcoat_cmo"
 				usr << "You button up the labcoat."
-			if("labcoat_cmo")
+			if ("labcoat_cmo")
 				src.icon_state = "labcoat_cmo_open"
 				usr << "You unbutton the labcoat."
-			if("labcoat_gen_open")
+			if ("labcoat_gen_open")
 				src.icon_state = "labcoat_gen"
 				usr << "You button up the labcoat."
-			if("labcoat_gen")
+			if ("labcoat_gen")
 				src.icon_state = "labcoat_gen_open"
 				usr << "You unbutton the labcoat."
-			if("labcoat_chem_open")
+			if ("labcoat_chem_open")
 				src.icon_state = "labcoat_chem"
 				usr << "You button up the labcoat."
-			if("labcoat_chem")
+			if ("labcoat_chem")
 				src.icon_state = "labcoat_chem_open"
 				usr << "You unbutton the labcoat."
-			if("labcoat_vir_open")
+			if ("labcoat_vir_open")
 				src.icon_state = "labcoat_vir"
 				usr << "You button up the labcoat."
-			if("labcoat_vir")
+			if ("labcoat_vir")
 				src.icon_state = "labcoat_vir_open"
 				usr << "You unbutton the labcoat."
-			if("labcoat_tox_open")
+			if ("labcoat_tox_open")
 				src.icon_state = "labcoat_tox"
 				usr << "You button up the labcoat."
-			if("labcoat_tox")
+			if ("labcoat_tox")
 				src.icon_state = "labcoat_tox_open"
 				usr << "You unbutton the labcoat."
-			if("labgreen_open")
+			if ("labgreen_open")
 				src.icon_state = "labgreen"
 				usr << "You button up the labcoat."
-			if("labgreen")
+			if ("labgreen")
 				src.icon_state = "labgreen_open"
 				usr << "You unbutton the labcoat."
 			else

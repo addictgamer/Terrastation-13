@@ -17,7 +17,7 @@ datum/pipe_network
 
 	proc/process()
 		//Equalize gases amongst pipe if called for
-		if(update)
+		if (update)
 			update = 0
 			reconcile_air() //equalize_gases(gases)
 
@@ -29,20 +29,20 @@ datum/pipe_network
 		//Purpose: Generate membership roster
 		//Notes: Assuming that members will add themselves to appropriate roster in network_expand()
 
-		if(!start_normal)
+		if (!start_normal)
 			del(src)
 
 		start_normal.network_expand(src, reference)
 
 		update_network_gases()
 
-		if((normal_members.len>0)||(line_members.len>0))
+		if ((normal_members.len>0)||(line_members.len>0))
 			pipe_networks += src
 		else
 			del(src)
 
 	proc/merge(datum/pipe_network/giver)
-		if(giver==src) return 0
+		if (giver==src) return 0
 
 		normal_members |= giver.normal_members
 
@@ -66,7 +66,7 @@ datum/pipe_network
 
 		for(var/obj/machinery/atmospherics/normal_member in normal_members)
 			var/result = normal_member.return_network_air(src)
-			if(result) gases += result
+			if (result) gases += result
 
 		for(var/datum/pipeline/line_member in line_members)
 			gases += line_member.air
@@ -99,22 +99,22 @@ datum/pipe_network
 			air_transient.toxins += gas.toxins
 			air_transient.carbon_dioxide += gas.carbon_dioxide
 
-			if(gas.trace_gases.len)
+			if (gas.trace_gases.len)
 				for(var/datum/gas/trace_gas in gas.trace_gases)
 					var/datum/gas/corresponding = locate(trace_gas.type) in air_transient.trace_gases
-					if(!corresponding)
+					if (!corresponding)
 						corresponding = new trace_gas.type()
 						air_transient.trace_gases += corresponding
 
 					corresponding.moles += trace_gas.moles
 
-		if(air_transient.volume > 0)
+		if (air_transient.volume > 0)
 
-			if(total_heat_capacity > 0)
+			if (total_heat_capacity > 0)
 				air_transient.temperature = total_thermal_energy/total_heat_capacity
 
 				//Allow air mixture to react
-				if(air_transient.react())
+				if (air_transient.react())
 					update = 1
 
 			else
@@ -129,10 +129,10 @@ datum/pipe_network
 
 				gas.temperature = air_transient.temperature
 
-				if(air_transient.trace_gases.len)
+				if (air_transient.trace_gases.len)
 					for(var/datum/gas/trace_gas in air_transient.trace_gases)
 						var/datum/gas/corresponding = locate(trace_gas.type) in gas.trace_gases
-						if(!corresponding)
+						if (!corresponding)
 							corresponding = new trace_gas.type()
 							gas.trace_gases += corresponding
 
@@ -167,21 +167,21 @@ proc/equalize_gases(datum/gas_mixture/list/gases)
 		total_toxins += gas.toxins
 		total_carbon_dioxide += gas.carbon_dioxide
 
-		if(gas.trace_gases.len)
+		if (gas.trace_gases.len)
 			for(var/datum/gas/trace_gas in gas.trace_gases)
 				var/datum/gas/corresponding = locate(trace_gas.type) in total_trace_gases
-				if(!corresponding)
+				if (!corresponding)
 					corresponding = new trace_gas.type()
 					total_trace_gases += corresponding
 
 				corresponding.moles += trace_gas.moles
 
-	if(total_volume > 0)
+	if (total_volume > 0)
 
 		//Calculate temperature
 		var/temperature = 0
 
-		if(total_heat_capacity > 0)
+		if (total_heat_capacity > 0)
 			temperature = total_thermal_energy/total_heat_capacity
 
 		//Update individual gas_mixtures by volume ratio
@@ -193,10 +193,10 @@ proc/equalize_gases(datum/gas_mixture/list/gases)
 
 			gas.temperature = temperature
 
-			if(total_trace_gases.len)
+			if (total_trace_gases.len)
 				for(var/datum/gas/trace_gas in total_trace_gases)
 					var/datum/gas/corresponding = locate(trace_gas.type) in gas.trace_gases
-					if(!corresponding)
+					if (!corresponding)
 						corresponding = new trace_gas.type()
 						gas.trace_gases += corresponding
 

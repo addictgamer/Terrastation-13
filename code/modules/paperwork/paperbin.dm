@@ -13,9 +13,9 @@
 
 
 /obj/item/weapon/paper_bin/MouseDrop(mob/user as mob)
-	if((user == usr && (!( usr.restrained() ) && (!( usr.stat ) && (usr.contents.Find(src) || in_range(src, usr))))))
-		if(!istype(usr, /mob/living/carbon/slime) && !istype(usr, /mob/living/simple_animal))
-			if( !usr.get_active_hand() )		//if active hand is empty
+	if ((user == usr && (!( usr.restrained() ) && (!( usr.stat ) && (usr.contents.Find(src) || in_range(src, usr))))))
+		if (!istype(usr, /mob/living/carbon/slime) && !istype(usr, /mob/living/simple_animal))
+			if ( !usr.get_active_hand() )		//if active hand is empty
 				attack_hand(usr, 1, 1)
 
 	return
@@ -26,19 +26,19 @@
 
 
 /obj/item/weapon/paper_bin/attack_hand(mob/user as mob)
-	if(amount >= 1)
+	if (amount >= 1)
 		amount--
-		if(amount==0)
+		if (amount==0)
 			update_icon()
 
 		var/obj/item/weapon/paper/P
-		if(papers.len > 0)	//If there's any custom paper on the stack, use that instead of creating a new paper.
+		if (papers.len > 0)	//If there's any custom paper on the stack, use that instead of creating a new paper.
 			P = papers[papers.len]
 			papers.Remove(P)
 		else
 			P = new /obj/item/weapon/paper
-			if(Holiday == "April Fool's Day")
-				if(prob(30))
+			if (Holiday == "April Fool's Day")
+				if (prob(30))
 					P.info = "<font face=\"[P.crayonfont]\" color=\"red\"><b>HONK HONK HONK HONK HONK HONK HONK<br>HOOOOOOOOOOOOOOOOOOOOOONK<br>APRIL FOOLS</b></font>"
 					P.rigged = 1
 					P.updateinfolinks()
@@ -54,7 +54,7 @@
 
 
 /obj/item/weapon/paper_bin/attackby(obj/item/weapon/paper/i as obj, mob/user as mob)
-	if(!istype(i))
+	if (!istype(i))
 		return
 
 	user.drop_item()
@@ -67,7 +67,7 @@
 /obj/item/weapon/paper_bin/examine()
 	set src in oview(1)
 
-	if(amount)
+	if (amount)
 		usr << "<span class='notice'>There " + (amount > 1 ? "are [amount] papers" : "is one paper") + " in the bin.</span>"
 	else
 		usr << "<span class='notice'>There are no papers in the bin.</span>"
@@ -75,7 +75,7 @@
 
 
 /obj/item/weapon/paper_bin/update_icon()
-	if(amount < 1)
+	if (amount < 1)
 		icon_state = "paper_bin0"
 	else
 		icon_state = "paper_bin1"

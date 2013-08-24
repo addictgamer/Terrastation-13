@@ -166,7 +166,7 @@
 	if (src.amount<=0)
 		var/oldsrc = src
 		src = null //dont kill proc after del()
-		if(usr)
+		if (usr)
 			usr.before_take_item(oldsrc)
 		del(oldsrc)
 	return
@@ -183,7 +183,7 @@
 			continue
 		oldsrc.attackby(item, usr)
 		usr << "You add new [item.singular_name] to the stack. It now contains [item.amount] [item.singular_name]\s."
-		if(!oldsrc)
+		if (!oldsrc)
 			break
 
 /obj/item/stack/attack_hand(mob/user as mob)

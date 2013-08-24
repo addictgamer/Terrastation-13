@@ -1,5 +1,5 @@
 /mob/living/silicon/ai/say(var/message)
-	if(parent && istype(parent) && parent.stat != 2)
+	if (parent && istype(parent) && parent.stat != 2)
 		parent.say(message)
 		return
 		//If there is a defined "parent" AI, it is actually an AI, and it is alive, anything the AI tries to say is said by the parent instead.
@@ -47,7 +47,7 @@ var/const/VOX_VOLUME = 75
 	for(var/word in vox_sounds)
 		index++
 		dat += "<A href='?src=\ref[src];say_word=[word]'>[capitalize(word)]</A>"
-		if(index != vox_sounds.len)
+		if (index != vox_sounds.len)
 			dat += " / "
 
 	src << browse(dat, "window=announce_help;size=500x400")*/
@@ -62,9 +62,9 @@ var/const/VOX_VOLUME = 75
 	src << "\red VOX is disabled until issues with the code can be sorted."
 	return
 /*
-	if(!message)
+	if (!message)
 		return
-	//if(!announcing_vox > world.time)
+	//if (!announcing_vox > world.time)
 	//	return
 
 	log_game("[key_name_admin(src)] made a vocal announcement with the following message: [message].")
@@ -74,23 +74,23 @@ var/const/VOX_VOLUME = 75
 	var/list/words = stringsplit(trim(message), " ")
 	var/list/incorrect_words = list()
 
-	if(words.len > 32)
+	if (words.len > 32)
 		words.len = 32
 	for(var/word in words)
 		word = trim(word)
-		if(!word)
+		if (!word)
 			continue
-		if(!play_vox_word(word, src.z)) // If the word isn't speakable
+		if (!play_vox_word(word, src.z)) // If the word isn't speakable
 			incorrect_words += word
 
-	if(incorrect_words.len)
+	if (incorrect_words.len)
 		src << "<span class='notice'>These words are not available on the announcement system: [english_list(incorrect_words)].</span>"
 */
 /proc/play_vox_word(var/word, var/z_level)
 /*
 	word = lowertext(word)
 
-	if(vox_sounds[word])
+	if (vox_sounds[word])
 
 		var/sound_file = vox_sounds[word]
 		var/sound/voice = sound(sound_file, wait = 1, channel = VOX_CHANNEL, volume = VOX_VOLUME)
@@ -98,9 +98,9 @@ var/const/VOX_VOLUME = 75
 
 		// Play voice for all mobs in the z level
 		for(var/mob/M in player_list)
-			if(M.client)
+			if (M.client)
 				var/turf/T = get_turf(M)
-				if(T.z == z_level)
+				if (T.z == z_level)
 					M << voice
 		return 1
 	return 0*/

@@ -147,7 +147,7 @@ datum/controller/radio
 		var/f_text = num2text(new_frequency)
 		var/datum/radio_frequency/frequency = frequencies[f_text]
 
-		if(!frequency)
+		if (!frequency)
 			frequency = new
 			frequency.frequency = new_frequency
 			frequencies[f_text] = frequency
@@ -159,10 +159,10 @@ datum/controller/radio
 		var/f_text = num2text(old_frequency)
 		var/datum/radio_frequency/frequency = frequencies[f_text]
 
-		if(frequency)
+		if (frequency)
 			frequency.remove_listener(device)
 
-			if(frequency.devices.len == 0)
+			if (frequency.devices.len == 0)
 				del(frequency)
 				frequencies -= f_text
 
@@ -172,7 +172,7 @@ datum/controller/radio
 		var/f_text = num2text(new_frequency)
 		var/datum/radio_frequency/frequency = frequencies[f_text]
 
-		if(!frequency)
+		if (!frequency)
 			frequency = new
 			frequency.frequency = new_frequency
 			frequencies[f_text] = frequency
@@ -190,32 +190,32 @@ datum/radio_frequency
 //			var/N_nf=0
 //			var/Nt=0
 			var/turf/start_point
-			if(range)
+			if (range)
 				start_point = get_turf(source)
-				if(!start_point)
+				if (!start_point)
 					del(signal)
 					return 0
 			if (filter) //here goes some copypasta. It is for optimisation. -rastaf0
 				for(var/obj/device in devices[filter])
-					if(device == source)
+					if (device == source)
 						continue
-					if(range)
+					if (range)
 						var/turf/end_point = get_turf(device)
-						if(!end_point)
+						if (!end_point)
 							continue
-						//if(max(abs(start_point.x-end_point.x), abs(start_point.y-end_point.y)) <= range)
-						if(start_point.z!=end_point.z || get_dist(start_point, end_point) > range)
+						//if (max(abs(start_point.x-end_point.x), abs(start_point.y-end_point.y)) <= range)
+						if (start_point.z!=end_point.z || get_dist(start_point, end_point) > range)
 							continue
 					device.receive_signal(signal, TRANSMISSION_RADIO, frequency)
 				for(var/obj/device in devices["_default"])
-					if(device == source)
+					if (device == source)
 						continue
-					if(range)
+					if (range)
 						var/turf/end_point = get_turf(device)
-						if(!end_point)
+						if (!end_point)
 							continue
-						//if(max(abs(start_point.x-end_point.x), abs(start_point.y-end_point.y)) <= range)
-						if(start_point.z!=end_point.z || get_dist(start_point, end_point) > range)
+						//if (max(abs(start_point.x-end_point.x), abs(start_point.y-end_point.y)) <= range)
+						if (start_point.z!=end_point.z || get_dist(start_point, end_point) > range)
 							continue
 					device.receive_signal(signal, TRANSMISSION_RADIO, frequency)
 //					N_f++
@@ -224,14 +224,14 @@ datum/radio_frequency
 //					var/list/obj/DDD = devices[next_filter]
 //					Nt+=DDD.len
 					for(var/obj/device in devices[next_filter])
-						if(device == source)
+						if (device == source)
 							continue
-						if(range)
+						if (range)
 							var/turf/end_point = get_turf(device)
-							if(!end_point)
+							if (!end_point)
 								continue
-							//if(max(abs(start_point.x-end_point.x), abs(start_point.y-end_point.y)) <= range)
-							if(start_point.z!=end_point.z || get_dist(start_point, end_point) > range)
+							//if (max(abs(start_point.x-end_point.x), abs(start_point.y-end_point.y)) <= range)
+							if (start_point.z!=end_point.z || get_dist(start_point, end_point) > range)
 								continue
 						device.receive_signal(signal, TRANSMISSION_RADIO, frequency)
 //						N_nf++
@@ -297,7 +297,7 @@ datum/signal
 			. = "signal = {source = '[source]' ()\n"
 		for (var/i in data)
 			. += "data\[\"[i]\"\] = \"[data[i]]\"\n"
-			if(islist(data[i]))
+			if (islist(data[i]))
 				var/list/L = data[i]
 				for(var/t in L)
 					. += "data\[\"[i]\"\] list has: [t]"

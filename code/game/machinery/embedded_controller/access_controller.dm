@@ -13,45 +13,45 @@ datum/computer/file/embedded_program/access_controller
 
 	receive_signal(datum/signal/signal, receive_method, receive_param)
 		var/receive_tag = signal.data["tag"]
-		if(!receive_tag) return
+		if (!receive_tag) return
 
-		if(receive_tag==exterior_door_tag)
-			if(signal.data["door_status"] == "closed")
-				if(signal.data["lock_status"] == "locked")
+		if (receive_tag==exterior_door_tag)
+			if (signal.data["door_status"] == "closed")
+				if (signal.data["lock_status"] == "locked")
 					memory["exterior_status"] = "locked"
 				else
 					memory["exterior_status"] = "closed"
 			else
 				memory["exterior_status"] = "open"
 
-		else if(receive_tag==interior_door_tag)
-			if(signal.data["door_status"] == "closed")
-				if(signal.data["lock_status"] == "locked")
+		else if (receive_tag==interior_door_tag)
+			if (signal.data["door_status"] == "closed")
+				if (signal.data["lock_status"] == "locked")
 					memory["interior_status"] = "locked"
 				else
 					memory["interior_status"] = "closed"
 			else
 				memory["interior_status"] = "open"
 
-		else if(receive_tag==id_tag)
+		else if (receive_tag==id_tag)
 			switch(signal.data["command"])
-				if("cycle_interior")
+				if ("cycle_interior")
 					target_state = ACCESS_STATE_INTERNAL
-				if("cycle_exterior")
+				if ("cycle_exterior")
 					target_state = ACCESS_STATE_EXTERNAL
-				if("cycle")
-					if(state < ACCESS_STATE_LOCKED)
+				if ("cycle")
+					if (state < ACCESS_STATE_LOCKED)
 						target_state = ACCESS_STATE_EXTERNAL
 					else
 						target_state = ACCESS_STATE_INTERNAL
 
 	receive_user_command(command)
 		switch(command)
-			if("cycle_closed")
+			if ("cycle_closed")
 				target_state = ACCESS_STATE_LOCKED
-			if("cycle_exterior")
+			if ("cycle_exterior")
 				target_state = ACCESS_STATE_EXTERNAL
-			if("cycle_interior")
+			if ("cycle_interior")
 				target_state = ACCESS_STATE_INTERNAL
 
 	process()
@@ -59,32 +59,32 @@ datum/computer/file/embedded_program/access_controller
 		while(process_again)
 			process_again = 0
 			switch(state)
-				if(ACCESS_STATE_INTERNAL) // state -1
-					if(target_state > state)
-						if(memory["interior_status"] == "locked")
+				if (ACCESS_STATE_INTERNAL) // state -1
+					if (target_state > state)
+						if (memory["interior_status"] == "locked")
 							state = ACCESS_STATE_LOCKED
 							process_again = 1
 						else
 							var/datum/signal/signal = new
 							signal.data["tag"] = interior_door_tag
-							if(memory["interior_status"] == "closed")
+							if (memory["interior_status"] == "closed")
 								signal.data["command"] = "lock"
 							else
 								signal.data["command"] = "secure_close"
 							post_signal(signal)
 
-				if(ACCESS_STATE_LOCKED)
-					if(target_state < state)
-						if(memory["exterior_status"] != "locked")
+				if (ACCESS_STATE_LOCKED)
+					if (target_state < state)
+						if (memory["exterior_status"] != "locked")
 							var/datum/signal/signal = new
 							signal.data["tag"] = exterior_door_tag
-							if(memory["exterior_status"] == "closed")
+							if (memory["exterior_status"] == "closed")
 								signal.data["command"] = "lock"
 							else
 								signal.data["command"] = "secure_close"
 							post_signal(signal)
 						else
-							if(memory["interior_status"] == "closed" || memory["interior_status"] == "open")
+							if (memory["interior_status"] == "closed" || memory["interior_status"] == "open")
 								state = ACCESS_STATE_INTERNAL
 								process_again = 1
 							else
@@ -92,17 +92,17 @@ datum/computer/file/embedded_program/access_controller
 								signal.data["tag"] = interior_door_tag
 								signal.data["command"] = "secure_open"
 								post_signal(signal)
-					else if(target_state > state)
-						if(memory["interior_status"] != "locked")
+					else if (target_state > state)
+						if (memory["interior_status"] != "locked")
 							var/datum/signal/signal = new
 							signal.data["tag"] = interior_door_tag
-							if(memory["interior_status"] == "closed")
+							if (memory["interior_status"] == "closed")
 								signal.data["command"] = "lock"
 							else
 								signal.data["command"] = "secure_close"
 							post_signal(signal)
 						else
-							if(memory["exterior_status"] == "closed" || memory["exterior_status"] == "open")
+							if (memory["exterior_status"] == "closed" || memory["exterior_status"] == "open")
 								state = ACCESS_STATE_EXTERNAL
 								process_again = 1
 							else
@@ -111,32 +111,32 @@ datum/computer/file/embedded_program/access_controller
 								signal.data["command"] = "secure_open"
 								post_signal(signal)
 					else
-						if(memory["interior_status"] != "locked")
+						if (memory["interior_status"] != "locked")
 							var/datum/signal/signal = new
 							signal.data["tag"] = interior_door_tag
-							if(memory["interior_status"] == "closed")
+							if (memory["interior_status"] == "closed")
 								signal.data["command"] = "lock"
 							else
 								signal.data["command"] = "secure_close"
 							post_signal(signal)
-						else if(memory["exterior_status"] != "locked")
+						else if (memory["exterior_status"] != "locked")
 							var/datum/signal/signal = new
 							signal.data["tag"] = exterior_door_tag
-							if(memory["exterior_status"] == "closed")
+							if (memory["exterior_status"] == "closed")
 								signal.data["command"] = "lock"
 							else
 								signal.data["command"] = "secure_close"
 							post_signal(signal)
 
-				if(ACCESS_STATE_EXTERNAL) //state 1
-					if(target_state < state)
-						if(memory["exterior_status"] == "locked")
+				if (ACCESS_STATE_EXTERNAL) //state 1
+					if (target_state < state)
+						if (memory["exterior_status"] == "locked")
 							state = ACCESS_STATE_LOCKED
 							process_again = 1
 						else
 							var/datum/signal/signal = new
 							signal.data["tag"] = exterior_door_tag
-							if(memory["exterior_status"] == "closed")
+							if (memory["exterior_status"] == "closed")
 								signal.data["command"] = "lock"
 							else
 								signal.data["command"] = "secure_close"
@@ -175,8 +175,8 @@ obj/machinery/embedded_controller/radio/access_controller
 		program = new_prog
 
 	update_icon()
-		if(on && program)
-			if(program.memory["processing"])
+		if (on && program)
+			if (program.memory["processing"])
 				icon_state = "access_control_process"
 			else
 				icon_state = "access_control_standby"
@@ -190,19 +190,19 @@ obj/machinery/embedded_controller/radio/access_controller
 		var/state = 0
 		var/exterior_status = "----"
 		var/interior_status = "----"
-		if(program)
+		if (program)
 			state = program.state
 			exterior_status = program.memory["exterior_status"]
 			interior_status = program.memory["interior_status"]
 
 		switch(state)
-			if(ACCESS_STATE_INTERNAL)
+			if (ACCESS_STATE_INTERNAL)
 				state_options = {"<A href='?src=\ref[src];command=cycle_closed'>Lock Interior Airlock</A><BR>
 <A href='?src=\ref[src];command=cycle_exterior'>Cycle to Exterior Airlock</A><BR>"}
-			if(ACCESS_STATE_LOCKED)
+			if (ACCESS_STATE_LOCKED)
 				state_options = {"<A href='?src=\ref[src];command=cycle_interior'>Unlock Interior Airlock</A><BR>
 <A href='?src=\ref[src];command=cycle_exterior'>Unlock Exterior Airlock</A><BR>"}
-			if(ACCESS_STATE_EXTERNAL)
+			if (ACCESS_STATE_EXTERNAL)
 				state_options = {"<A href='?src=\ref[src];command=cycle_interior'>Cycle to Interior Airlock</A><BR>
 <A href='?src=\ref[src];command=cycle_closed'>Lock Exterior Airlock</A><BR>"}
 

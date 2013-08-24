@@ -8,7 +8,7 @@
 	var/obj/machinery/camera/camera
 
 /obj/item/clothing/head/helmet/space/rig/ert/attack_self(mob/user)
-	if(camera)
+	if (camera)
 		..(user)
 	else
 		camera = new /obj/machinery/camera(src)
@@ -19,7 +19,7 @@
 
 /obj/item/clothing/head/helmet/space/rig/ert/examine()
 	..()
-	if(get_dist(usr,src) <= 1)
+	if (get_dist(usr,src) <= 1)
 		usr << "This helmet has a built-in camera. It's [camera ? "" : "in"]active."
 
 /obj/item/clothing/suit/space/rig/ert

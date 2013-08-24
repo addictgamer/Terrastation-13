@@ -49,13 +49,13 @@
 	var/obj/minimap_obj/minimap_obj = new()
 
 /obj/minimap_obj/Click(location, control, params)
-	if(!istype(usr, /mob/dead) && !istype(usr, /mob/living/silicon/ai) && !(usr.client && usr.client.holder && usr.client.holder.level >= 4))
+	if (!istype(usr, /mob/dead) && !istype(usr, /mob/living/silicon/ai) && !(usr.client && usr.client.holder && usr.client.holder.level >= 4))
 		return
 
 	var/list/par = params2list(params)
 	var/screen_loc = par["screen-loc"]
 
-	if(findtext(screen_loc, "minimap:") != 1)
+	if (findtext(screen_loc, "minimap:") != 1)
 		return
 
 	screen_loc = copytext(screen_loc, length("minimap:") + 1)
@@ -69,7 +69,7 @@
 	var/y = (text2num(copytext(y_text, 1, findtext(y_text, ":"))) - 1) * 16
 	y += round((text2num(copytext(y_text, findtext(y_text, ":") + 1)) + 1) / 2)
 
-	if(istype(usr, /mob/living/silicon/ai))
+	if (istype(usr, /mob/living/silicon/ai))
 		var/mob/living/silicon/ai/ai = usr
 		ai.freelook()
 		ai.eyeobj.loc = locate(max(1, x - 1), max(1, y - 1), ai.eyeobj.z)
@@ -83,7 +83,7 @@
 	winshow(src, "minimapwindow", 1)
 	client.screen |= cameranet.minimap
 
-	if(cameranet.generating_minimap)
+	if (cameranet.generating_minimap)
 		cameranet.minimap_viewers += src
 
 /mob/living/silicon/ai/verb/Open_Minimap()
@@ -91,7 +91,7 @@
 	winshow(src, "minimapwindow", 1)
 	client.screen |= cameranet.minimap
 
-	if(cameranet.generating_minimap)
+	if (cameranet.generating_minimap)
 		cameranet.minimap_viewers += src
 
 /client/proc/Open_Minimap()
@@ -99,11 +99,11 @@
 	winshow(src, "minimapwindow", 1)
 	screen |= cameranet.minimap
 
-	if(cameranet.generating_minimap)
+	if (cameranet.generating_minimap)
 		cameranet.minimap_viewers += src.mob
 
 /datum/camerachunk/proc/update_minimap()
-	if(changed && !updating)
+	if (changed && !updating)
 		update()
 
 	minimap_icon.Blend(rgb(255, 0, 0), ICON_MULTIPLY)
@@ -114,26 +114,26 @@
 		var/x = (turf.x & 0xf) * 2
 		var/y = (turf.y & 0xf) * 2
 
-		if(turf.density)
+		if (turf.density)
 			minimap_icon.DrawBox(rgb(100, 100, 100), x + 1, y + 1, x + 2, y + 2)
 			continue
 
-		else if(istype(turf, /turf/space))
+		else if (istype(turf, /turf/space))
 			minimap_icon.DrawBox(rgb(0, 0, 0), x + 1, y + 1, x + 2, y + 2)
 
 		else
 			minimap_icon.DrawBox(rgb(200, 200, 200), x + 1, y + 1, x + 2, y + 2)
 
 		for(var/obj/structure/o in turf)
-			if(o.density)
-				if(istype(o, /obj/structure/window) && (o.dir == NORTH || o.dir == SOUTH || o.dir == EAST || o.dir == WEST))
-					if(o.dir == NORTH)
+			if (o.density)
+				if (istype(o, /obj/structure/window) && (o.dir == NORTH || o.dir == SOUTH || o.dir == EAST || o.dir == WEST))
+					if (o.dir == NORTH)
 						minimap_icon.DrawBox(rgb(150, 150, 200), x + 1, y + 2, x + 2, y + 2)
-					else if(o.dir == SOUTH)
+					else if (o.dir == SOUTH)
 						minimap_icon.DrawBox(rgb(150, 150, 200), x + 1, y + 1, x + 2, y + 1)
-					else if(o.dir == EAST)
+					else if (o.dir == EAST)
 						minimap_icon.DrawBox(rgb(150, 150, 200), x + 3, y + 1, x + 2, y + 2)
-					else if(o.dir == WEST)
+					else if (o.dir == WEST)
 						minimap_icon.DrawBox(rgb(150, 150, 200), x + 1, y + 1, x + 1, y + 2)
 
 				else
@@ -141,14 +141,14 @@
 					break
 
 		for(var/obj/machinery/door/o in turf)
-			if(istype(o, /obj/machinery/door/window))
-				if(o.dir == NORTH)
+			if (istype(o, /obj/machinery/door/window))
+				if (o.dir == NORTH)
 					minimap_icon.DrawBox(rgb(100, 150, 100), x + 1, y + 2, x + 2, y + 2)
-				else if(o.dir == SOUTH)
+				else if (o.dir == SOUTH)
 					minimap_icon.DrawBox(rgb(100, 150, 100), x + 1, y + 1, x + 2, y + 1)
-				else if(o.dir == EAST)
+				else if (o.dir == EAST)
 					minimap_icon.DrawBox(rgb(100, 150, 100), x + 2, y + 1, x + 2, y + 2)
-				else if(o.dir == WEST)
+				else if (o.dir == WEST)
 					minimap_icon.DrawBox(rgb(100, 150, 100), x + 1, y + 1, x + 1, y + 2)
 
 			else
@@ -165,33 +165,33 @@
 
 /datum/camerachunk/proc/add(mob/aiEye/ai)
 	ai.visibleCameraChunks += src
-	if(ai.ai.client)
+	if (ai.ai.client)
 		ai.ai.client.images += obscured
 		ai.ai.client.images += dim
 	visible++
 	seenby += ai
-	if(changed && !updating)
+	if (changed && !updating)
 		update()
 		changed = 0
 
 /datum/camerachunk/proc/remove(mob/aiEye/ai)
 	ai.visibleCameraChunks -= src
-	if(ai.ai.client)
+	if (ai.ai.client)
 		ai.ai.client.images -= obscured
 		ai.ai.client.images -= dim
 	seenby -= ai
-	if(visible > 0)
+	if (visible > 0)
 		visible--
 
 /datum/camerachunk/proc/visibilityChanged(turf/loc)
-	if(!(loc in visibleTurfs))
+	if (!(loc in visibleTurfs))
 		return
 
 	hasChanged()
 
 /datum/camerachunk/proc/hasChanged()
-	if(visible)
-		if(!updating)
+	if (visible)
+		if (!updating)
 			updating = 1
 			spawn(10)//Batch large changes, such as many doors opening or closing at once
 				update()
@@ -199,11 +199,11 @@
 	else
 		changed = 1
 
-	if(!minimap_updating)
+	if (!minimap_updating)
 		minimap_updating = 1
 
 		spawn(MINIMAP_UPDATE_DELAY)
-			if(changed && !updating)
+			if (changed && !updating)
 				update()
 				changed = 0
 
@@ -235,53 +235,53 @@
 	dimTurfs -= visibleTurfs
 
 	for(var/turf/t in dimRemoved)
-		if(t.dim)
+		if (t.dim)
 			dim -= t.dim
 			for(var/mob/aiEye/m in seenby)
-				if(m.ai.client)
+				if (m.ai.client)
 					m.ai.client.images -= t.dim
 
-		if(!(t in visibleTurfs))
-			if(!t.obscured)
+		if (!(t in visibleTurfs))
+			if (!t.obscured)
 				t.obscured = image('cameravis.dmi', t, "black", 15)
 
 			obscured += t.obscured
 			for(var/mob/aiEye/m in seenby)
-				if(m.ai.client)
+				if (m.ai.client)
 					m.ai.client.images += t.obscured
 
 	for(var/turf/t in dimAdded)
-		if(!(t in visibleTurfs))
-			if(!t.dim)
+		if (!(t in visibleTurfs))
+			if (!t.dim)
 				t.dim = image('cameravis.dmi', t, "dim", 15)
 				t.mouse_opacity = 0
 
 			dim += t.dim
 			for(var/mob/aiEye/m in seenby)
-				if(m.ai.client)
+				if (m.ai.client)
 					m.ai.client.images += t.dim
 
-			if(t.obscured)
+			if (t.obscured)
 				obscured -= t.obscured
 				for(var/mob/aiEye/m in seenby)
-					if(m.ai.client)
+					if (m.ai.client)
 						m.ai.client.images -= t.obscured
 
 	for(var/turf/t in visAdded)
-		if(t.obscured)
+		if (t.obscured)
 			obscured -= t.obscured
 			for(var/mob/aiEye/m in seenby)
-				if(m.ai.client)
+				if (m.ai.client)
 					m.ai.client.images -= t.obscured
 
 	for(var/turf/t in visRemoved)
-		if(t in obscuredTurfs)
-			if(!t.obscured)
+		if (t in obscuredTurfs)
+			if (!t.obscured)
 				t.obscured = image('cameravis.dmi', t, "black", 15)
 
 			obscured += t.obscured
 			for(var/mob/aiEye/m in seenby)
-				if(m.ai.client)
+				if (m.ai.client)
 					m.ai.client.images += t.obscured
 
 
@@ -294,7 +294,7 @@
 	src.z = z
 
 	for(var/obj/machinery/camera/c in range(16, locate(x + 8, y + 8, z)))
-		if(c.status)
+		if (c.status)
 			cameras += c
 
 	turfs = block(locate(x, y, z), locate(min(world.maxx, x + 15), min(world.maxy, y + 15), z))
@@ -312,14 +312,14 @@
 	dimTurfs -= visibleTurfs
 
 	for(var/turf/t in obscuredTurfs)
-		if(!t.obscured)
+		if (!t.obscured)
 			t.obscured = image('cameravis.dmi', t, "black", 15)
 
 		obscured += t.obscured
 
 	for(var/turf/t in dimTurfs)
-		if(!(t in visibleTurfs))
-			if(!t.dim)
+		if (!(t in visibleTurfs))
+			if (!t.dim)
 				t.dim = image('cameravis.dmi', t, "dim", TURF_LAYER)
 				t.dim.mouse_opacity = 0
 
@@ -363,7 +363,7 @@ var/datum/cameranet/cameranet = new()
 /datum/cameranet/proc/getCameraChunk(x, y, z)
 	var/key = "[x],[y],[z]"
 
-	if(!(key in chunks))
+	if (!(key in chunks))
 		chunks[key] = new /datum/camerachunk(null, x, y, z)
 
 	return chunks[key]
@@ -390,7 +390,7 @@ var/datum/cameranet/cameranet = new()
 		c.add(ai)
 
 /datum/cameranet/proc/updateVisibility(turf/loc)
-	if(!chunkGenerated(loc.x & ~0xf, loc.y & ~0xf, loc.z))
+	if (!chunkGenerated(loc.x & ~0xf, loc.y & ~0xf, loc.z))
 		return
 
 	var/datum/camerachunk/chunk = getCameraChunk(loc.x & ~0xf, loc.y & ~0xf, loc.z)
@@ -404,9 +404,9 @@ var/datum/cameranet/cameranet = new()
 
 	for(var/x = x1; x <= x2; x += 16)
 		for(var/y = y1; y <= y2; y += 16)
-			if(chunkGenerated(x, y, c.z))
+			if (chunkGenerated(x, y, c.z))
 				var/datum/camerachunk/chunk = getCameraChunk(x, y, c.z)
-				if(!(c in chunk.cameras))
+				if (!(c in chunk.cameras))
 					chunk.cameras += c
 					chunk.hasChanged()
 
@@ -418,11 +418,11 @@ var/datum/cameranet/cameranet = new()
 
 	for(var/x = x1; x <= x2; x += 16)
 		for(var/y = y1; y <= y2; y += 16)
-			if(chunkGenerated(x, y, c.z))
+			if (chunkGenerated(x, y, c.z))
 				var/datum/camerachunk/chunk = getCameraChunk(x, y, c.z)
-				if(!c)
+				if (!c)
 					chunk.hasChanged()
-				if(c in chunk.cameras)
+				if (c in chunk.cameras)
 					chunk.cameras -= c
 					chunk.hasChanged()
 
@@ -435,7 +435,7 @@ var/datum/cameranet/cameranet = new()
 		freelook()
 
 /mob/living/silicon/ai/death(gibbed)
-	if(client && client.eye == eyeobj)
+	if (client && client.eye == eyeobj)
 		for(var/datum/camerachunk/c in eyeobj.visibleCameraChunks)
 			c.remove(eyeobj)
 		client.eye = src
@@ -447,7 +447,7 @@ var/datum/cameranet/cameranet = new()
 	current = null	//cancel camera view first, it causes problems
 	cameraFollow = null
 //	machine = null
-	if(!eyeobj)	//if it got deleted somehow (like an admin trying to fix things <.<')
+	if (!eyeobj)	//if it got deleted somehow (like an admin trying to fix things <.<')
 		eyeobj = new()
 		eyeobj.ai = src
 	client.eye = eyeobj
@@ -457,11 +457,11 @@ var/datum/cameranet/cameranet = new()
 
 /mob/aiEye/Move()
 	. = ..()
-	if(.)
+	if (.)
 		cameranet.visibility(src)
 
 /client/AIMove(n, direct, var/mob/living/silicon/ai/user)
-	if(eye == user.eyeobj)
+	if (eye == user.eyeobj)
 		user.eyeobj.loc = get_step(user.eyeobj, direct)
 		cameranet.visibility(user.eyeobj)
 
@@ -470,11 +470,11 @@ var/datum/cameranet/cameranet = new()
 
 /*
 /client/AIMoveZ(direct, var/mob/living/silicon/ai/user)
-	if(eye == user.eyeobj)
+	if (eye == user.eyeobj)
 		var/dif = 0
-		if(direct == UP && user.eyeobj.z > 1)
+		if (direct == UP && user.eyeobj.z > 1)
 			dif = -1
-		else if(direct == DOWN && user.eyeobj.z < 4)
+		else if (direct == DOWN && user.eyeobj.z < 4)
 			dif = 1
 		user.eyeobj.loc = locate(user.eyeobj.x, user.eyeobj.y, user.eyeobj.z + dif)
 		cameranet.visibility(user.eyeobj)
@@ -483,9 +483,9 @@ var/datum/cameranet/cameranet = new()
 */
 
 /turf/move_camera_by_click()
-	if(istype(usr, /mob/living/silicon/ai))
+	if (istype(usr, /mob/living/silicon/ai))
 		var/mob/living/silicon/ai/AI = usr
-		if(AI.client.eye == AI.eyeobj)
+		if (AI.client.eye == AI.eyeobj)
 			return
 	return ..()
 
@@ -504,15 +504,15 @@ var/datum/cameranet/cameranet = new()
 
 /obj/machinery/camera/attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
 	. = ..(W, user)
-	if(istype(W, /obj/item/weapon/wirecutters))
-		if(status)
+	if (istype(W, /obj/item/weapon/wirecutters))
+		if (status)
 			cameranet.addCamera(src)
 		else
 			cameranet.removeCamera(src)
 
 /proc/checkcameravis(atom/A)
 	for(var/obj/machinery/camera/C in view(A,7))
-		if(!C.status || C.stat == 2)
+		if (!C.status || C.stat == 2)
 			continue
 		return 1
 	return 0
@@ -557,7 +557,7 @@ var/datum/cameranet/cameranet = new()
 
 /mob/living/silicon/ai/reset_view(atom/A)
 	if (client)
-		if(!eyeobj)
+		if (!eyeobj)
 			eyeobj = new()
 			eyeobj.ai = src
 

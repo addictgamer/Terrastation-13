@@ -1,5 +1,5 @@
 /mob/living/carbon/human/attack_alien(mob/living/carbon/alien/humanoid/M as mob)
-	if(check_shields(0, M.name))
+	if (check_shields(0, M.name))
 		visible_message("\red <B>[M] attempted to touch [src]!</B>")
 		return 0
 
@@ -7,7 +7,7 @@
 		if ("help")
 			visible_message(text("\blue [M] caresses [src] with its scythe like arm."))
 		if ("grab")
-			if(M == src)	return
+			if (M == src)	return
 			if (w_uniform)
 				w_uniform.add_fingerprint(M)
 			var/obj/item/weapon/grab/G = new /obj/item/weapon/grab(M, M, src)
@@ -21,11 +21,11 @@
 			playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 			visible_message(text("\red [] has grabbed [] passively!", M, src))
 
-		if("hurt")
+		if ("hurt")
 			if (w_uniform)
 				w_uniform.add_fingerprint(M)
 			var/damage = rand(15, 30)
-			if(!damage)
+			if (!damage)
 				playsound(loc, 'sound/weapons/slashmiss.ogg', 50, 1, -1)
 				visible_message("\red <B>[M] has lunged at [src]!</B>")
 				return 0
@@ -41,7 +41,7 @@
 				apply_effect(rand(0.5,3), WEAKEN, armor_block)
 			updatehealth()
 
-		if("disarm")
+		if ("disarm")
 			if (prob(80))
 				playsound(loc, 'sound/weapons/pierce.ogg', 25, 1, -1)
 				Weaken(rand(0.5,3))

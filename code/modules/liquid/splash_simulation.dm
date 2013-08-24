@@ -15,7 +15,7 @@ datum/puddle/proc/process()
 	for(var/obj/effect/liquid/L in liquid_objects)
 		L.apply_calculated_effect()
 
-	if(liquid_objects.len == 0)
+	if (liquid_objects.len == 0)
 		del(src)
 
 datum/puddle/New()
@@ -30,16 +30,16 @@ datum/puddle/Del()
 
 client/proc/splash()
 	var/volume = input("Volume?","Volume?", 0 ) as num
-	if(!isnum(volume)) return
-	if(volume <= LIQUID_TRANSFER_THRESHOLD) return
+	if (!isnum(volume)) return
+	if (volume <= LIQUID_TRANSFER_THRESHOLD) return
 	var/turf/T = get_turf(src.mob)
-	if(!isturf(T)) return
+	if (!isturf(T)) return
 	trigger_splash(T, volume)
 
 proc/trigger_splash(turf/epicenter as turf, volume as num)
-	if(!epicenter)
+	if (!epicenter)
 		return
-	if(volume <= 0)
+	if (volume <= 0)
 		return
 
 	var/obj/effect/liquid/L = new/obj/effect/liquid(epicenter)
@@ -62,11 +62,11 @@ obj/effect/liquid
 
 obj/effect/liquid/New()
 	..()
-	if( !isturf(loc) )
+	if ( !isturf(loc) )
 		del(src)
 
 	for( var/obj/effect/liquid/L in loc )
-		if(L != src)
+		if (L != src)
 			del(L)
 
 obj/effect/liquid/proc/spread()
@@ -77,19 +77,19 @@ obj/effect/liquid/proc/spread()
 	var/turf/loc_turf = loc
 	for(var/direction in spread_directions)
 		var/turf/T = get_step(src,direction)
-		if(!T)
+		if (!T)
 			spread_directions.Remove(direction)
 			//world << "ERROR: Map edge!"
 			continue //Map edge
-		if(!loc_turf.can_leave_liquid(direction)) //Check if this liquid can leave the tile in the direction
+		if (!loc_turf.can_leave_liquid(direction)) //Check if this liquid can leave the tile in the direction
 			spread_directions.Remove(direction)
 			continue
-		if(!T.can_accept_liquid(turn(direction,180))) //Check if this liquid can enter the tile
+		if (!T.can_accept_liquid(turn(direction,180))) //Check if this liquid can enter the tile
 			spread_directions.Remove(direction)
 			continue
 		var/obj/effect/liquid/L = locate(/obj/effect/liquid) in T
-		if(L)
-			if(L.volume >= src.volume)
+		if (L)
+			if (L.volume >= src.volume)
 				spread_directions.Remove(direction)
 				continue
 			surrounding_volume += L.volume //If liquid already exists, add it's volume to our sum
@@ -98,13 +98,13 @@ obj/effect/liquid/proc/spread()
 			NL.controller = src.controller
 			controller.liquid_objects.Add(NL)
 
-	if(!spread_directions.len)
+	if (!spread_directions.len)
 		//world << "ERROR: No candidate to spread to."
 		return //No suitable candidate to spread to
 
 	var/average_volume = (src.volume + surrounding_volume) / (spread_directions.len + 1) //Average amount of volume on this and the surrounding tiles.
 	var/volume_difference = src.volume - average_volume //How much more/less volume this tile has than the surrounding tiles.
-	if(volume_difference <= (spread_directions.len*LIQUID_TRANSFER_THRESHOLD)) //If we have less than the threshold excess liquid - then there is nothing to do as other tiles will be giving us volume.or the liquid is just still.
+	if (volume_difference <= (spread_directions.len*LIQUID_TRANSFER_THRESHOLD)) //If we have less than the threshold excess liquid - then there is nothing to do as other tiles will be giving us volume.or the liquid is just still.
 		//world << "ERROR: transfer volume lower than THRESHOLD!"
 		return
 
@@ -112,18 +112,18 @@ obj/effect/liquid/proc/spread()
 
 	for(var/direction in spread_directions)
 		var/turf/T = get_step(src,direction)
-		if(!T)
+		if (!T)
 			//world << "ERROR: Map edge 2!"
 			continue //Map edge
 		var/obj/effect/liquid/L = locate(/obj/effect/liquid) in T
-		if(L)
+		if (L)
 			src.volume -= volume_per_tile //Remove the volume from this tile
 			L.new_volume = L.new_volume + volume_per_tile //Add it to the volume to the other tile
 
 obj/effect/liquid/proc/apply_calculated_effect()
 	volume += new_volume
 
-	if(volume < LIQUID_TRANSFER_THRESHOLD)
+	if (volume < LIQUID_TRANSFER_THRESHOLD)
 		del(src)
 	new_volume = 0
 	update_icon2()
@@ -139,21 +139,21 @@ obj/effect/liquid/proc/update_icon2()
 	//icon_state = num2text( max(1,min(7,(floor(volume),10)/10)) )
 
 	switch(volume)
-		if(0 to 0.1)
+		if (0 to 0.1)
 			del(src)
-		if(0.1 to 5)
+		if (0.1 to 5)
 			icon_state = "1"
-		if(5 to 10)
+		if (5 to 10)
 			icon_state = "2"
-		if(10 to 20)
+		if (10 to 20)
 			icon_state = "3"
-		if(20 to 30)
+		if (20 to 30)
 			icon_state = "4"
-		if(30 to 40)
+		if (30 to 40)
 			icon_state = "5"
-		if(40 to 50)
+		if (40 to 50)
 			icon_state = "6"
-		if(50 to INFINITY)
+		if (50 to INFINITY)
 			icon_state = "7"
 
 turf/proc/can_accept_liquid(from_direction)
@@ -168,23 +168,23 @@ turf/space/can_leave_liquid(from_direction)
 
 turf/simulated/floor/can_accept_liquid(from_direction)
 	for(var/obj/structure/window/W in src)
-		if(W.dir in list(5,6,9,10))
+		if (W.dir in list(5,6,9,10))
 			return 0
-		if(W.dir & from_direction)
+		if (W.dir & from_direction)
 			return 0
 	for(var/obj/O in src)
-		if(!O.liquid_pass())
+		if (!O.liquid_pass())
 			return 0
 	return 1
 
 turf/simulated/floor/can_leave_liquid(to_direction)
 	for(var/obj/structure/window/W in src)
-		if(W.dir in list(5,6,9,10))
+		if (W.dir in list(5,6,9,10))
 			return 0
-		if(W.dir & to_direction)
+		if (W.dir & to_direction)
 			return 0
 	for(var/obj/O in src)
-		if(!O.liquid_pass())
+		if (!O.liquid_pass())
 			return 0
 	return 1
 

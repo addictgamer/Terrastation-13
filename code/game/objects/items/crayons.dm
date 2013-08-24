@@ -43,7 +43,7 @@
 	uses = 0
 
 /obj/item/toy/crayon/mime/attack_self(mob/living/user as mob) //inversion
-	if(colour != "#FFFFFF" && shadeColour != "#000000")
+	if (colour != "#FFFFFF" && shadeColour != "#000000")
 		colour = "#FFFFFF"
 		shadeColour = "#000000"
 		user << "You will now draw in white and black with this crayon."
@@ -66,33 +66,33 @@
 	return
 
 /obj/item/toy/crayon/afterattack(atom/target, mob/user as mob)
-	if(istype(target,/turf/simulated/floor))
+	if (istype(target,/turf/simulated/floor))
 		var/drawtype = input("Choose what you'd like to draw.", "Crayon scribbles") in list("graffiti","rune","letter")
 		switch(drawtype)
-			if("letter")
+			if ("letter")
 				drawtype = input("Choose the letter.", "Crayon scribbles") in list("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z")
 				user << "You start drawing a letter on the [target.name]."
-			if("graffiti")
+			if ("graffiti")
 				user << "You start drawing graffiti on the [target.name]."
-			if("rune")
+			if ("rune")
 				user << "You start drawing a rune on the [target.name]."
-		if(instant || do_after(user, 50))
+		if (instant || do_after(user, 50))
 			new /obj/effect/decal/cleanable/crayon(target,colour,shadeColour,drawtype)
 			user << "You finish drawing."
-			if(uses)
+			if (uses)
 				uses--
-				if(!uses)
+				if (!uses)
 					user << "\red You used up your crayon!"
 					del(src)
 	return
 
 /obj/item/toy/crayon/attack(mob/M as mob, mob/user as mob)
-	if(M == user)
+	if (M == user)
 		user << "You take a bite of the crayon. Delicious!"
 		user.nutrition += 5
-		if(uses)
+		if (uses)
 			uses -= 5
-			if(uses <= 0)
+			if (uses <= 0)
 				user << "\red You ate your crayon!"
 				del(src)
 	else

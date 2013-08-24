@@ -8,12 +8,12 @@
 	var/obj/machinery/account_database/affected_db
 
 /datum/event/money_hacker/setup()
-	if(all_money_accounts.len)
+	if (all_money_accounts.len)
 		for(var/obj/machinery/account_database/DB in world)
-			if( DB.z == 1 && !(DB.stat&NOPOWER) && DB.activated )
+			if ( DB.z == 1 && !(DB.stat&NOPOWER) && DB.activated )
 				affected_db = DB
 				break
-	if(affected_db)
+	if (affected_db)
 		affected_account = pick(all_money_accounts)
 	else
 		kill()
@@ -36,31 +36,31 @@
 
 	var/pass = 0
 	for(var/obj/machinery/message_server/MS in world)
-		if(!MS.active) continue
+		if (!MS.active) continue
 		// /obj/machinery/message_server/proc/send_rc_message(var/recipient = "",var/sender = "",var/message = "",var/stamp = "", var/id_auth = "", var/priority = 1)
 		MS.send_rc_message("Engineering/Security/Bridge", my_department, message, "", "", 2)
 		pass = 1
 
-	if(pass)
+	if (pass)
 		var/keyed_dpt1 = ckey("Engineering")
 		var/keyed_dpt2 = ckey("Security")
 		var/keyed_dpt3 = ckey("Bridge")
 		for (var/obj/machinery/requests_console/Console in allConsoles)
 			var/keyed_department = ckey(Console.department)
-			if(keyed_department == keyed_dpt1 || keyed_department == keyed_dpt2 || keyed_department == keyed_dpt3)
-				if(Console.newmessagepriority < 2)
+			if (keyed_department == keyed_dpt1 || keyed_department == keyed_dpt2 || keyed_department == keyed_dpt3)
+				if (Console.newmessagepriority < 2)
 					Console.newmessagepriority = 2
 					Console.icon_state = "req_comp2"
-				if(!Console.silent)
+				if (!Console.silent)
 					playsound(Console.loc, 'sound/machines/twobeep.ogg', 50, 1)
 					for (var/mob/O in hearers(5, Console.loc))
 						O.show_message(text("\icon[Console] *The Requests Console beeps: 'PRIORITY Alert in [my_department]'"))
 				Console.messages += "<B><FONT color='red'>High Priority message from [my_department]</FONT></B><BR>[sending]"
 
 /datum/event/money_hacker/tick()
-	if(world.time > time_start + time_duration)
+	if (world.time > time_start + time_duration)
 		var/message
-		if(affected_account && affected_db && affected_db.activated && !(affected_db.stat & (NOPOWER|BROKEN)) )
+		if (affected_account && affected_db && affected_db.activated && !(affected_db.stat & (NOPOWER|BROKEN)) )
 			//hacker wins
 			message = "The hack attempt has succeeded."
 
@@ -92,22 +92,22 @@
 
 		var/pass = 0
 		for(var/obj/machinery/message_server/MS in world)
-			if(!MS.active) continue
+			if (!MS.active) continue
 			// /obj/machinery/message_server/proc/send_rc_message(var/recipient = "",var/sender = "",var/message = "",var/stamp = "", var/id_auth = "", var/priority = 1)
 			MS.send_rc_message("Engineering/Security/Bridge", my_department, message, "", "", 2)
 			pass = 1
 
-		if(pass)
+		if (pass)
 			var/keyed_dpt1 = ckey("Engineering")
 			var/keyed_dpt2 = ckey("Security")
 			var/keyed_dpt3 = ckey("Bridge")
 			for (var/obj/machinery/requests_console/Console in allConsoles)
 				var/keyed_department = ckey(Console.department)
-				if(keyed_department == keyed_dpt1 || keyed_department == keyed_dpt2 || keyed_department == keyed_dpt3)
-					if(Console.newmessagepriority < 2)
+				if (keyed_department == keyed_dpt1 || keyed_department == keyed_dpt2 || keyed_department == keyed_dpt3)
+					if (Console.newmessagepriority < 2)
 						Console.newmessagepriority = 2
 						Console.icon_state = "req_comp2"
-					if(!Console.silent)
+					if (!Console.silent)
 						playsound(Console.loc, 'sound/machines/twobeep.ogg', 50, 1)
 						for (var/mob/O in hearers(5, Console.loc))
 							O.show_message(text("\icon[Console] *The Requests Console beeps: 'PRIORITY Alert in [my_department]'"))
@@ -117,5 +117,5 @@
 
 //shouldn't ever hit this, but this is here just in case
 /datum/event/money_hacker/end()
-	if(affected_account && affected_db)
+	if (affected_account && affected_db)
 		endWhen += time_duration

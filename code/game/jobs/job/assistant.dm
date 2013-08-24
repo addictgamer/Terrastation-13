@@ -12,13 +12,13 @@
 	alt_titles = list("Technical Assistant","Medical Intern","Research Assistant","Security Cadet")
 
 /datum/job/assistant/equip(var/mob/living/carbon/human/H)
-	if(!H)	return 0
+	if (!H)	return 0
 	H.equip_to_slot_or_del(new /obj/item/clothing/under/color/grey(H), slot_w_uniform)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), slot_shoes)
 	return 1
 
 /datum/job/assistant/get_access()
-	if(config.assistant_maint)
+	if (config.assistant_maint)
 		return list(access_maint_tunnels)
 	else
 		return list()

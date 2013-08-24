@@ -15,9 +15,9 @@
 	return
 
 /obj/item/assembly/shock_kit/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/wrench) && !status)
+	if (istype(W, /obj/item/weapon/wrench) && !status)
 		var/turf/T = loc
-		if(ismob(T))
+		if (ismob(T))
 			T = T.loc
 		part1.loc = T
 		part2.loc = T
@@ -27,7 +27,7 @@
 		part2 = null
 		del(src)
 		return
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if (istype(W, /obj/item/weapon/screwdriver))
 		status = !status
 		user << "<span class='notice'>[src] is now [status ? "secured" : "unsecured"]!</span>"
 	add_fingerprint(user)
@@ -40,7 +40,7 @@
 	return
 
 /obj/item/assembly/shock_kit/receive_signal()
-	if(istype(loc, /obj/structure/stool/bed/chair/e_chair))
+	if (istype(loc, /obj/structure/stool/bed/chair/e_chair))
 		var/obj/structure/stool/bed/chair/e_chair/C = loc
 		C.shock()
 	return

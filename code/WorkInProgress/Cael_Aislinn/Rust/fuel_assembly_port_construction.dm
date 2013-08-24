@@ -54,11 +54,11 @@
 	if (istype(user, /mob/living/silicon) && get_dist(src,user)>1)
 		return src.attack_hand(user)
 	if (istype(W, /obj/item/weapon/crowbar))
-		if(opened)
-			if(has_electronics & 1)
+		if (opened)
+			if (has_electronics & 1)
 				playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
 				user << "You begin removing the circuitboard" //lpeters - fixed grammar issues
-				if(do_after(user, 50))
+				if (do_after(user, 50))
 					user.visible_message(\
 						"\red [user.name] has removed the circuitboard from [src.name]!",\
 						"\blue You remove the circuitboard.")
@@ -70,7 +70,7 @@
 				icon_state = "port0"
 				user << "\blue You close the maintenance cover."
 		else
-			if(cur_assembly)
+			if (cur_assembly)
 				user << "\red You cannot open the cover while there is a fuel assembly inside."
 			else
 				opened = 1
@@ -80,12 +80,12 @@
 
 	else if (istype(W, /obj/item/weapon/cable_coil) && opened && !(has_electronics & 2))
 		var/obj/item/weapon/cable_coil/C = W
-		if(C.amount < 10)
+		if (C.amount < 10)
 			user << "\red You need more wires."
 			return
 		user << "You start adding cables to the frame..."
 		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
-		if(do_after(user, 20) && C.amount >= 10)
+		if (do_after(user, 20) && C.amount >= 10)
 			C.use(10)
 			user.visible_message(\
 				"\red [user.name] has added cables to the port frame!",\
@@ -96,7 +96,7 @@
 	else if (istype(W, /obj/item/weapon/wirecutters) && opened && (has_electronics & 2))
 		user << "You begin to cut the cables..."
 		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
-		if(do_after(user, 50))
+		if (do_after(user, 50))
 			new /obj/item/weapon/cable_coil(loc,10)
 			user.visible_message(\
 				"\red [user.name] cut the cabling inside the port.",\
@@ -107,7 +107,7 @@
 	else if (istype(W, /obj/item/weapon/module/rust_fuel_port) && opened && !(has_electronics & 1))
 		user << "You trying to insert the port control board into the frame..."
 		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
-		if(do_after(user, 10))
+		if (do_after(user, 10))
 			has_electronics &= 1
 			user << "You place the port control board inside the frame."
 			del(W)
@@ -120,8 +120,8 @@
 			return
 		user << "You start welding the port frame..."
 		playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
-		if(do_after(user, 50))
-			if(!src || !WT.remove_fuel(3, user)) return
+		if (do_after(user, 50))
+			if (!src || !WT.remove_fuel(3, user)) return
 			new /obj/item/rust_fuel_assembly_port_frame(loc)
 			user.visible_message(\
 				"\red [src] has been cut away from the wall by [user.name].",\

@@ -47,7 +47,7 @@
 	icon_state = "x3"
 	invisibility = 101
 	New()
-		if(prob(10))
+		if (prob(10))
 			new /obj/effect/glowshroom(src.loc)
 		del(src)
 
@@ -76,9 +76,9 @@
 		25;"mimic", \
 		25;"viscerator", \
 		))
-			if("treasure")
+			if ("treasure")
 				var/obj/structure/closet/crate/C = new(src.loc)
-				if(prob(33))
+				if (prob(33))
 					//coins
 
 					var/amount = rand(2,6)
@@ -92,7 +92,7 @@
 					var/coin_type = pick(possible_spawns)
 					for(var/i=0,i<amount,i++)
 						new coin_type(C)
-				else if(prob(50))
+				else if (prob(50))
 					//bars
 
 					var/amount = rand(2,6)
@@ -116,37 +116,37 @@
 					var/cash_type = pick(possible_spawns)
 					for(var/i=0,i<amount,i++)
 						new cash_type(C)
-			if("remains")
-				if(prob(50))
+			if ("remains")
+				if (prob(50))
 					new /obj/effect/decal/remains/human(src.loc)
 				else
 					new /obj/effect/decal/remains/xeno(src.loc)
-			if("plants")
-				if(prob(25))
+			if ("plants")
+				if (prob(25))
 					new /obj/effect/glowshroom(src.loc)
-				else if(prob(33))
+				else if (prob(33))
 					new /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/libertycap(src.loc)
-				else if(prob(50))
+				else if (prob(50))
 					new /obj/item/weapon/reagent_containers/food/snacks/grown/ambrosiavulgaris(src.loc)
-			if("blob")
+			if ("blob")
 				new /obj/effect/blob/core(src.loc)
-			if("clothes")
+			if ("clothes")
 				var/obj/structure/closet/C = new(src.loc)
 				C.icon_state = "blue"
 				C.icon_closed = "blue"
-				if(prob(33))
+				if (prob(33))
 					new /obj/item/clothing/under/rainbow(C)
 					new /obj/item/clothing/shoes/rainbow(C)
 					new /obj/item/clothing/head/soft/rainbow(C)
 					new /obj/item/clothing/gloves/rainbow(C)
-				else if(prob(50))
+				else if (prob(50))
 					new /obj/item/clothing/under/psyche(C)
 				else
 					new /obj/item/clothing/under/syndicate/combat(C)
 					new /obj/item/clothing/shoes/swat(C)
 					new /obj/item/clothing/gloves/swat(C)
 					new /obj/item/clothing/mask/balaclava(C)
-			if("glasses")
+			if ("glasses")
 				var/obj/structure/closet/C = new(src.loc)
 				var/new_type = pick(
 				/obj/item/clothing/glasses/material, \
@@ -157,7 +157,7 @@
 				/obj/item/clothing/glasses/hud/health \
 				)
 				new new_type(C)
-			if("weapons")
+			if ("weapons")
 				var/obj/structure/closet/crate/secure/weapon/C = new(src.loc)
 				var/new_type = pick(
 				200; /obj/item/weapon/hatchet, \
@@ -166,19 +166,19 @@
 				/obj/item/weapon/gun/projectile/russian, \
 				)
 				new new_type(C)
-			if("spacesuit")
+			if ("spacesuit")
 				var/obj/structure/closet/syndicate/C = new(src.loc)
-				if(prob(25))
+				if (prob(25))
 					new /obj/item/clothing/suit/space/syndicate/black(C)
 					new /obj/item/clothing/head/helmet/space/syndicate/black(C)
 					new /obj/item/weapon/tank/oxygen/red(C)
 					new /obj/item/clothing/mask/breath(C)
-				else if(prob(33))
+				else if (prob(33))
 					new /obj/item/clothing/suit/space/syndicate/blue(C)
 					new /obj/item/clothing/head/helmet/space/syndicate/blue(C)
 					new /obj/item/weapon/tank/oxygen/red(C)
 					new /obj/item/clothing/mask/breath(C)
-				else if(prob(50))
+				else if (prob(50))
 					new /obj/item/clothing/suit/space/syndicate/green(C)
 					new /obj/item/clothing/head/helmet/space/syndicate/green(C)
 					new /obj/item/weapon/tank/oxygen/red(C)
@@ -188,18 +188,18 @@
 					new /obj/item/clothing/head/helmet/space/syndicate/orange(C)
 					new /obj/item/weapon/tank/oxygen/red(C)
 					new /obj/item/clothing/mask/breath(C)
-			if("health")
+			if ("health")
 				//hopefully won't be necessary, but there were an awful lot of traps to get through...
 				var/obj/structure/closet/crate/medical/C = new(src.loc)
-				if(prob(50))
+				if (prob(50))
 					new /obj/item/weapon/storage/firstaid/regular(C)
-				if(prob(50))
+				if (prob(50))
 					new /obj/item/weapon/storage/firstaid/fire(C)
-				if(prob(50))
+				if (prob(50))
 					new /obj/item/weapon/storage/firstaid/o2(C)
-				if(prob(50))
+				if (prob(50))
 					new /obj/item/weapon/storage/firstaid/toxin(C)
-			if("snacks")
+			if ("snacks")
 				//you're come so far, you must be in need of refreshment
 				var/obj/structure/closet/crate/freezer/C = new(src.loc)
 				var/num = rand(2,6)
@@ -215,55 +215,55 @@
 				)
 				for(var/i=0,i<num,i++)
 					new new_type(C)
-			if("alien")
+			if ("alien")
 				//ancient aliens
 				var/obj/structure/closet/acloset/C = new(src.loc)
-				if(prob(33))
+				if (prob(33))
 					//facehuggers
 					var/num = rand(1,3)
 					for(var/i=0,i<num,i++)
 						new /obj/item/clothing/mask/facehugger(C)
-				/*else if(prob(50))
+				/*else if (prob(50))
 					//something else very much alive and angry
 					var/spawn_type = pick(/mob/living/simple_animal/hostile/alien, /mob/living/simple_animal/hostile/alien/drone, /mob/living/simple_animal/hostile/alien/sentinel)
 					new spawn_type(C)*/
 
 				//33% chance of nothing
 
-			if("lights")
+			if ("lights")
 				//flares, candles, matches
 				var/obj/structure/closet/crate/secure/gear/C = new(src.loc)
 				var/num = rand(2,6)
 				for(var/i=0,i<num,i++)
 					var/spawn_type = pick(/obj/item/device/flashlight/flare, /obj/item/trash/candle, /obj/item/candle/, /obj/item/weapon/storage/box/matches)
 					new spawn_type(C)
-			if("engineering")
+			if ("engineering")
 				var/obj/structure/closet/crate/secure/gear/C = new(src.loc)
 
 				//chance to have any combination of up to two electrical/mechanical toolboxes and one cell
-				if(prob(33))
+				if (prob(33))
 					new /obj/item/weapon/storage/toolbox/electrical(C)
-				else if(prob(50))
+				else if (prob(50))
 					new /obj/item/weapon/storage/toolbox/mechanical(C)
 
-				if(prob(33))
+				if (prob(33))
 					new /obj/item/weapon/storage/toolbox/mechanical(C)
-				else if(prob(50))
+				else if (prob(50))
 					new /obj/item/weapon/storage/toolbox/electrical(C)
 
-				if(prob(25))
+				if (prob(25))
 					new /obj/item/weapon/cell(C)
 
-			if("coffin")
+			if ("coffin")
 				new /obj/structure/closet/coffin(src.loc)
-				if(prob(33))
+				if (prob(33))
 					new /obj/effect/decal/remains/human(src)
-				else if(prob(50))
+				else if (prob(50))
 					new /obj/effect/decal/remains/xeno(src)
-			/*if("mimic")
+			/*if ("mimic")
 				//a guardian of the tomb!
 				new /mob/living/simple_animal/hostile/mimic/crate(src.loc)*/
-			if("viscerator")
+			if ("viscerator")
 				//more tomb guardians!
 				var/num = rand(1,3)
 				var/obj/structure/closet/crate/secure/gear/C = new(src.loc)
@@ -290,21 +290,21 @@
 
 	New()
 		trap_type = pick(50;"thrower","sawburst","poison_dart","flame_burst",10;"plasma_gas",5;"n2_gas")
-		if( (trap_type == "plasma_gas" || trap_type == "n2_gas") && prob(10))
+		if ( (trap_type == "plasma_gas" || trap_type == "n2_gas") && prob(10))
 			new /obj/effect/glowshroom(src.loc)
 
 		//hint that this tile is dangerous
-		if(prob(90))
+		if (prob(90))
 			var/turf/T = get_turf(src)
 			T.desc = pick("There is a faint sheen of moisture over the top.","It looks a little unstable.","Something doesn't seem right.")
 
 /obj/effect/step_trigger/trap/Trigger(var/atom/A)
 	var/mob/living/M = A
-	if(!istype(M))
+	if (!istype(M))
 		return
 
 	switch(trap_type)
-		if("sawburst")
+		if ("sawburst")
 			M << "\red <b>A sawblade shoots out of the ground and strikes you!</b>"
 			M.apply_damage(rand(5,10), BRUTE)
 
@@ -315,7 +315,7 @@
 				myloc.overlays -= flicker
 				del(flicker)
 			//flick("sawblade",src)
-		if("poison_dart")
+		if ("poison_dart")
 			M << "\red <b>You feel something small and sharp strike you!</b>"
 			M.apply_damage(rand(5,10), TOX)
 
@@ -326,7 +326,7 @@
 				myloc.overlays -= flicker
 				del(flicker)
 			//flick("dart[rand(1,3)]",src)
-		if("flame_burst")
+		if ("flame_burst")
 			M << "\red <b>A jet of fire comes out of nowhere!</b>"
 			M.apply_damage(rand(5,10), BURN)
 
@@ -337,11 +337,11 @@
 				myloc.overlays -= flicker
 				del flicker
 			//flick("flameburst",src)
-		if("plasma_gas")
+		if ("plasma_gas")
 			//spawn a bunch of plasma
-		if("n2_gas")
+		if ("n2_gas")
 			//spawn a bunch of sleeping gas
-		if("thrower")
+		if ("thrower")
 			//edited version of obj/effect/step_trigger/thrower
 			var/throw_dir = pick(1,2,4,8)
 			M.visible_message("\red <b>The floor under [M] suddenly tips upward!</b>","\red <b>The floor tips upward under you!</b>")
@@ -350,7 +350,7 @@
 			var/image/flicker = image('jungle.dmi',"throw[throw_dir]")
 			myloc.overlays += flicker
 			var/turf/my_turf = get_turf(loc)
-			if(!my_turf.density)
+			if (!my_turf.density)
 				my_turf.density = 1
 				spawn(8)
 					my_turf.density = 0
@@ -361,9 +361,9 @@
 			var/dist = rand(1,5)
 			var/curtiles = 0
 			while(M)
-				if(curtiles >= dist)
+				if (curtiles >= dist)
 					break
-				if(M.z != src.z)
+				if (M.z != src.z)
 					break
 
 				curtiles++
@@ -379,9 +379,9 @@
 	name = "fake trap"
 
 	New()
-		if(prob(10))
+		if (prob(10))
 			new /obj/effect/glowshroom(src.loc)
-		if(prob(90))
+		if (prob(90))
 			var/turf/T = get_turf(src)
 			T.desc = pick("It looks a little dustier than the surrounding tiles.","It is somewhat ornate.","It looks a little darker than the surrounding tiles.")
 		del(src)
@@ -393,9 +393,9 @@
 	icon_state = "fiftytrap"
 
 	New()
-		if(prob(50))
+		if (prob(50))
 			..()
 		else
-			if(prob(10))
+			if (prob(10))
 				new /obj/effect/glowshroom(src.loc)
 			del(src)

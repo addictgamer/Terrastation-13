@@ -21,9 +21,9 @@
 	recalculateChannels()
 
 /obj/item/device/radio/headset/receive_range(freq, level)
-	if(ishuman(src.loc))
+	if (ishuman(src.loc))
 		var/mob/living/carbon/human/H = src.loc
-		if(H.ears == src)
+		if (H.ears == src)
 			return ..(freq, level)
 	return -1
 
@@ -170,8 +170,8 @@
 	if (!( istype(W, /obj/item/weapon/screwdriver) || (istype(W, /obj/item/device/encryptionkey/ ))))
 		return
 
-	if(istype(W, /obj/item/weapon/screwdriver))
-		if(keyslot1 || keyslot2)
+	if (istype(W, /obj/item/weapon/screwdriver))
+		if (keyslot1 || keyslot2)
 
 
 			for(var/ch_name in channels)
@@ -179,17 +179,17 @@
 				secure_radio_connections[ch_name] = null
 
 
-			if(keyslot1)
+			if (keyslot1)
 				var/turf/T = get_turf(user)
-				if(T)
+				if (T)
 					keyslot1.loc = T
 					keyslot1 = null
 
 
 
-			if(keyslot2)
+			if (keyslot2)
 				var/turf/T = get_turf(user)
-				if(T)
+				if (T)
 					keyslot2.loc = T
 					keyslot2 = null
 
@@ -199,12 +199,12 @@
 		else
 			user << "This headset doesn't have any encryption keys!  How useless..."
 
-	if(istype(W, /obj/item/device/encryptionkey/))
-		if(keyslot1 && keyslot2)
+	if (istype(W, /obj/item/device/encryptionkey/))
+		if (keyslot1 && keyslot2)
 			user << "The headset can't hold another key!"
 			return
 
-		if(!keyslot1)
+		if (!keyslot1)
 			user.drop_item()
 			W.loc = src
 			keyslot1 = W
@@ -226,43 +226,43 @@
 	src.translate_hive = 0
 	src.syndie = 0
 
-	if(keyslot1)
+	if (keyslot1)
 		for(var/ch_name in keyslot1.channels)
-			if(ch_name in src.channels)
+			if (ch_name in src.channels)
 				continue
 			src.channels += ch_name
 			src.channels[ch_name] = keyslot1.channels[ch_name]
 
-		if(keyslot1.translate_binary)
+		if (keyslot1.translate_binary)
 			src.translate_binary = 1
 
-		if(keyslot1.translate_hive)
+		if (keyslot1.translate_hive)
 			src.translate_hive = 1
 
-		if(keyslot1.syndie)
+		if (keyslot1.syndie)
 			src.syndie = 1
 
-	if(keyslot2)
+	if (keyslot2)
 		for(var/ch_name in keyslot2.channels)
-			if(ch_name in src.channels)
+			if (ch_name in src.channels)
 				continue
 			src.channels += ch_name
 			src.channels[ch_name] = keyslot2.channels[ch_name]
 
-		if(keyslot2.translate_binary)
+		if (keyslot2.translate_binary)
 			src.translate_binary = 1
 
-		if(keyslot2.translate_hive)
+		if (keyslot2.translate_hive)
 			src.translate_hive = 1
 
-		if(keyslot2.syndie)
+		if (keyslot2.syndie)
 			src.syndie = 1
 
 
 	for (var/ch_name in channels)
-		if(!radio_controller)
+		if (!radio_controller)
 			sleep(30) // Waiting for the radio_controller to be created.
-		if(!radio_controller)
+		if (!radio_controller)
 			src.name = "broken radio headset"
 			return
 

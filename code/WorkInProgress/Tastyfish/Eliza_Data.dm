@@ -270,7 +270,7 @@
 		// drop leading parts
 		for(var/leader in object_leaders)
 			var/i = findtext(object, leader)
-			if(i)
+			if (i)
 				object = copytext(object, i + lentext(leader))
 				break
 
@@ -278,9 +278,9 @@
 		object = trim(object)
 
 		// trim punctuation
-		if(lentext(object) > 0)
+		if (lentext(object) > 0)
 			var/final_punc = copytext(object, lentext(object))
-			if(final_punc == "." || final_punc == "?" || final_punc == "!")
+			if (final_punc == "." || final_punc == "?" || final_punc == "!")
 				object = copytext(object, 1, lentext(object))
 
 		return object
@@ -290,7 +290,7 @@
 		// drop leading parts
 		for(var/leader in object_leaders)
 			var/i = findtext(object, leader)
-			if(i)
+			if (i)
 				object = copytext(object, i + lentext(leader))
 				break
 
@@ -298,9 +298,9 @@
 		object = trim(object)
 
 		// trim punctuation
-		if(lentext(object) > 0)
+		if (lentext(object) > 0)
 			var/final_punc = copytext(object, lentext(object))
-			if(final_punc == "." || final_punc == "?" || final_punc == "!")
+			if (final_punc == "." || final_punc == "?" || final_punc == "!")
 				object = copytext(object, 1, lentext(object))
 
 		return dd_text2list(object, ",")
@@ -310,13 +310,13 @@
 		object = param(object)
 
 		// handle name
-		if(eliza.username == "")
+		if (eliza.username == "")
 			// new name
 			var/t = ..(object)
 			eliza.yesno_state = "username"
 			eliza.yesno_param = object
 			return t
-		else if(cmptext(eliza.username, object))
+		else if (cmptext(eliza.username, object))
 			// but wait!
 			return "You already told me your name was [eliza.username]."
 		else
@@ -329,13 +329,13 @@
 		object = param(object)
 
 		// handle name
-		if(eliza.callsign == "")
+		if (eliza.callsign == "")
 			// new name
 			var/t = ..(object)
 			eliza.yesno_state = "callsign"
 			eliza.yesno_param = object
 			return t
-		else if(cmptext(eliza.callsign, object))
+		else if (cmptext(eliza.callsign, object))
 			// but wait!
 			return "You already told me that I should answer to [eliza.callsign]."
 		else
@@ -355,12 +355,12 @@
 		// get name & message
 		var/i = findtext(object, ",")
 		var/sl = 1
-		if(!i || lentext(object) < i + sl)
+		if (!i || lentext(object) < i + sl)
 			return "Tell who that you what?"
 
 		var/name = trim(copytext(object, 1, i))
 		object = trim(copytext(object, i + sl))
-		if(!lentext(name) || !lentext(object))
+		if (!lentext(name) || !lentext(object))
 			return "Tell who that you what?"
 
 		// find PDA
@@ -371,21 +371,21 @@
 			else if (P.toff)
 				continue
 
-			if(!cmptext(name, P.owner))
+			if (!cmptext(name, P.owner))
 				continue
 
 			pda = P
 
-		if(!pda || pda.toff)
+		if (!pda || pda.toff)
 			return "I couldn't find [name]'s PDA."
 
 		// send message
-		if(!istype(eliza.speaker.loc.loc, /obj/item/device/pda))//Looking if we are in a PDA
+		if (!istype(eliza.speaker.loc.loc, /obj/item/device/pda))//Looking if we are in a PDA
 			pda.tnote += "<i><b>&larr; From [eliza.callsign]:</b></i><br>[object]<br>"
 
-			if(prob(15) && eliza.speaker) //Give the AI a chance of intercepting the message
+			if (prob(15) && eliza.speaker) //Give the AI a chance of intercepting the message
 				var/who = eliza.speaker
-				if(prob(50))
+				if (prob(50))
 					who = "[eliza.speaker:master] via [eliza.speaker]"
 				for(var/mob/living/silicon/ai/ai in world)
 					ai.show_message("<i>Intercepted message from <b>[who]</b>: [object]</i>")
@@ -411,13 +411,13 @@
 	process(object)
 		var/reply
 		switch(eliza.yesno_state)
-			if("username")
+			if ("username")
 				eliza.username = eliza.yesno_param
 				reply = pick(
 					"[eliza.username] - that's a nice name.",
 					"Hello, [eliza.username]!",
 					"You sound nice.")
-			if("callsign")
+			if ("callsign")
 				eliza.callsign = eliza.yesno_param
 				eliza.set_name(eliza.callsign)
 				reply = pick(

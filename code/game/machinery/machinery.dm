@@ -121,7 +121,7 @@ Class Procs:
 	return PROCESS_KILL
 
 /obj/machinery/emp_act(severity)
-	if(use_power && stat == 0)
+	if (use_power && stat == 0)
 		use_power(7500/severity)
 
 		var/obj/effect/overlay/pulse2 = new/obj/effect/overlay ( src.loc )
@@ -137,14 +137,14 @@ Class Procs:
 
 /obj/machinery/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				del(src)
 				return
-		if(3.0)
+		if (3.0)
 			if (prob(25))
 				del(src)
 				return
@@ -152,23 +152,23 @@ Class Procs:
 	return
 
 /obj/machinery/blob_act()
-	if(prob(50))
+	if (prob(50))
 		del(src)
 
 /obj/machinery/proc/auto_use_power()
-	if(!powered(power_channel))
+	if (!powered(power_channel))
 		return 0
-	if(src.use_power == 1)
+	if (src.use_power == 1)
 		use_power(idle_power_usage,power_channel)
-	else if(src.use_power >= 2)
+	else if (src.use_power >= 2)
 		use_power(active_power_usage,power_channel)
 	return 1
 
 /obj/machinery/Topic(href, href_list)
 	..()
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return 1
-	if(usr.restrained() || usr.lying || usr.stat)
+	if (usr.restrained() || usr.lying || usr.stat)
 		return 1
 	if ( ! (istype(usr, /mob/living/carbon/human) || \
 			istype(usr, /mob/living/silicon) || \
@@ -177,14 +177,14 @@ Class Procs:
 		return 1
 
 	var/norange = 0
-	if(istype(usr, /mob/living/carbon/human))
+	if (istype(usr, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = usr
-		if(istype(H.l_hand, /obj/item/tk_grab))
+		if (istype(H.l_hand, /obj/item/tk_grab))
 			norange = 1
-		else if(istype(H.r_hand, /obj/item/tk_grab))
+		else if (istype(H.r_hand, /obj/item/tk_grab))
 			norange = 1
 
-	if(!norange)
+	if (!norange)
 		if ((!in_range(src, usr) || !istype(src.loc, /turf)) && !istype(usr, /mob/living/silicon))
 			return 1
 
@@ -192,10 +192,10 @@ Class Procs:
 	return 0
 
 /obj/machinery/attack_ai(mob/user as mob)
-	if(isrobot(user))
+	if (isrobot(user))
 		// For some reason attack_robot doesn't work
 		// This is to stop robots from using cameras to remotely control machines.
-		if(user.client && user.client.eye == user)
+		if (user.client && user.client.eye == user)
 			return src.attack_hand(user)
 	else
 		return src.attack_hand(user)
@@ -204,9 +204,9 @@ Class Procs:
 	return src.attack_hand(user)
 
 /obj/machinery/attack_hand(mob/user as mob)
-	if(stat & (NOPOWER|BROKEN|MAINT))
+	if (stat & (NOPOWER|BROKEN|MAINT))
 		return 1
-	if(user.lying || user.stat)
+	if (user.lying || user.stat)
 		return 1
 	if ( ! (istype(usr, /mob/living/carbon/human) || \
 			istype(usr, /mob/living/silicon) || \
@@ -220,10 +220,10 @@ Class Procs:
 */
 	if (ishuman(user))
 		var/mob/living/carbon/human/H = user
-		if(H.getBrainLoss() >= 60)
+		if (H.getBrainLoss() >= 60)
 			visible_message("\red [H] stares cluelessly at [src] and drools.")
 			return 1
-		else if(prob(H.getBrainLoss()))
+		else if (prob(H.getBrainLoss()))
 			user << "\red You momentarily forget how to use [src]."
 			return 1
 

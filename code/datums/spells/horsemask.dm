@@ -14,17 +14,17 @@
 	var/list/compatible_mobs = list(/mob/living/carbon/human, /mob/living/carbon/monkey)
 
 /obj/effect/proc_holder/spell/targeted/horsemask/cast(list/targets, mob/user = usr)
-	if(!targets.len)
+	if (!targets.len)
 		user << "<span class='notice'>No target found in range.</span>"
 		return
 
 	var/mob/living/carbon/target = targets[1]
 
-	if(!(target.type in compatible_mobs))
+	if (!(target.type in compatible_mobs))
 		user << "<span class='notice'>It'd be stupid to curse [target] with a horse's head!</span>"
 		return
 
-	if(!(target in oview(range)))//If they are not  in overview after selection.
+	if (!(target in oview(range)))//If they are not  in overview after selection.
 		user << "<span class='notice'>They are too far away!</span>"
 		return
 

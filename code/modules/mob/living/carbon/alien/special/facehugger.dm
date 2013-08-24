@@ -27,7 +27,7 @@ var/const/MAX_ACTIVE_TIME = 400
 	var/attached = 0
 
 /obj/item/clothing/mask/facehugger/attack_paw(user as mob) //can be picked up by aliens
-	if(isalien(user))
+	if (isalien(user))
 		attack_hand(user)
 		return
 	else
@@ -35,7 +35,7 @@ var/const/MAX_ACTIVE_TIME = 400
 		return
 
 /obj/item/clothing/mask/facehugger/attack_hand(user as mob)
-	if((stat == CONSCIOUS && !sterile) && !isalien(user))
+	if ((stat == CONSCIOUS && !sterile) && !isalien(user))
 		Attach(user)
 		return
 	else
@@ -48,7 +48,7 @@ var/const/MAX_ACTIVE_TIME = 400
 	Attach(M)
 
 /obj/item/clothing/mask/facehugger/New()
-	if(aliens_allowed)
+	if (aliens_allowed)
 		..()
 	else
 		del(src)
@@ -56,9 +56,9 @@ var/const/MAX_ACTIVE_TIME = 400
 /obj/item/clothing/mask/facehugger/examine()
 	..()
 	switch(stat)
-		if(DEAD,UNCONSCIOUS)
+		if (DEAD,UNCONSCIOUS)
 			usr << "\red \b [src] is not moving."
-		if(CONSCIOUS)
+		if (CONSCIOUS)
 			usr << "\red \b [src] seems to be active."
 	if (sterile)
 		usr << "\red \b It looks like the proboscis has been removed."
@@ -73,7 +73,7 @@ var/const/MAX_ACTIVE_TIME = 400
 	return
 
 /obj/item/clothing/mask/facehugger/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
-	if(exposed_temperature > 300)
+	if (exposed_temperature > 300)
 		Die()
 	return
 
@@ -85,33 +85,33 @@ var/const/MAX_ACTIVE_TIME = 400
 	return
 
 /obj/item/clothing/mask/facehugger/on_found(mob/finder as mob)
-	if(stat == CONSCIOUS)
+	if (stat == CONSCIOUS)
 		HasProximity(finder)
 		return 1
 	return
 
 /obj/item/clothing/mask/facehugger/HasProximity(atom/movable/AM as mob|obj)
-	if(CanHug(AM))
+	if (CanHug(AM))
 		Attach(AM)
 
 /obj/item/clothing/mask/facehugger/throw_at(atom/target, range, speed)
 	..()
-	if(stat == CONSCIOUS)
+	if (stat == CONSCIOUS)
 		icon_state = "[initial(icon_state)]_thrown"
 		spawn(15)
-			if(icon_state == "[initial(icon_state)]_thrown")
+			if (icon_state == "[initial(icon_state)]_thrown")
 				icon_state = "[initial(icon_state)]"
 
 /obj/item/clothing/mask/facehugger/throw_impact(atom/hit_atom)
 	..()
-	if(stat == CONSCIOUS)
+	if (stat == CONSCIOUS)
 		icon_state = "[initial(icon_state)]"
 		Attach(hit_atom)
 
 /obj/item/clothing/mask/facehugger/proc/Attach(M as mob)
-	if( (!iscorgi(M) && !iscarbon(M)) || isalien(M))
+	if ( (!iscorgi(M) && !iscarbon(M)) || isalien(M))
 		return
-	if(attached)
+	if (attached)
 		return
 	else
 		attached++
@@ -120,33 +120,33 @@ var/const/MAX_ACTIVE_TIME = 400
 
 	var/mob/living/L = M //just so I don't need to use :
 
-	if(loc == L) return
-	if(stat != CONSCIOUS)	return
-	if(!sterile) L.take_organ_damage(strength,0) //done here so that even borgs and humans in helmets take damage
+	if (loc == L) return
+	if (stat != CONSCIOUS)	return
+	if (!sterile) L.take_organ_damage(strength,0) //done here so that even borgs and humans in helmets take damage
 
 	L.visible_message("\red \b [src] leaps at [L]'s face!")
 
-	if(ishuman(L))
+	if (ishuman(L))
 		var/mob/living/carbon/human/H = L
-		if(H.head && H.head.flags & HEADCOVERSMOUTH)
+		if (H.head && H.head.flags & HEADCOVERSMOUTH)
 			H.visible_message("\red \b [src] smashes against [H]'s [H.head]!")
 			Die()
 			return
 
-	if(iscarbon(M))
+	if (iscarbon(M))
 		var/mob/living/carbon/target = L
 
-		if(target.wear_mask)
-			if(prob(20))	return
+		if (target.wear_mask)
+			if (prob(20))	return
 			var/obj/item/clothing/W = target.wear_mask
-			if(!W.canremove)	return
+			if (!W.canremove)	return
 			target.drop_from_inventory(W)
 
 			target.visible_message("\red \b [src] tears [W] off of [target]'s face!")
 
 		target.equip_to_slot(src, slot_wear_mask)
 
-		if(!sterile) L.Paralyse(MAX_IMPREGNATION_TIME/6) //something like 25 ticks = 20 seconds with the default settings
+		if (!sterile) L.Paralyse(MAX_IMPREGNATION_TIME/6) //something like 25 ticks = 20 seconds with the default settings
 	else if (iscorgi(M))
 		var/mob/living/simple_animal/corgi/C = M
 		src.loc = C
@@ -162,10 +162,10 @@ var/const/MAX_ACTIVE_TIME = 400
 	return
 
 /obj/item/clothing/mask/facehugger/proc/Impregnate(mob/living/target as mob)
-	if(!target || target.wear_mask != src || target.stat == DEAD) //was taken off or something
+	if (!target || target.wear_mask != src || target.stat == DEAD) //was taken off or something
 		return
 
-	if(!sterile)
+	if (!sterile)
 		//target.contract_disease(new /datum/disease/alien_embryo(0)) //so infection chance is same as virus infection chance
 		new /obj/item/alien_embryo(target)
 		target.status_flags |= XENO_HOST
@@ -175,7 +175,7 @@ var/const/MAX_ACTIVE_TIME = 400
 		Die()
 		icon_state = "[initial(icon_state)]_impregnated"
 
-		if(iscorgi(target))
+		if (iscorgi(target))
 			var/mob/living/simple_animal/corgi/C = target
 			src.loc = get_turf(C)
 			C.facehugger = null
@@ -184,7 +184,7 @@ var/const/MAX_ACTIVE_TIME = 400
 	return
 
 /obj/item/clothing/mask/facehugger/proc/GoActive()
-	if(stat == DEAD || stat == CONSCIOUS)
+	if (stat == DEAD || stat == CONSCIOUS)
 		return
 
 	stat = CONSCIOUS
@@ -193,13 +193,13 @@ var/const/MAX_ACTIVE_TIME = 400
 /*		for(var/mob/living/carbon/alien/alien in world)
 		var/image/activeIndicator = image('icons/mob/alien.dmi', loc = src, icon_state = "facehugger_active")
 		activeIndicator.override = 1
-		if(alien && alien.client)
+		if (alien && alien.client)
 			alien.client.images += activeIndicator	*/
 
 	return
 
 /obj/item/clothing/mask/facehugger/proc/GoIdle()
-	if(stat == DEAD || stat == UNCONSCIOUS)
+	if (stat == DEAD || stat == UNCONSCIOUS)
 		return
 
 /*		RemoveActiveIndicators()	*/
@@ -212,7 +212,7 @@ var/const/MAX_ACTIVE_TIME = 400
 	return
 
 /obj/item/clothing/mask/facehugger/proc/Die()
-	if(stat == DEAD)
+	if (stat == DEAD)
 		return
 
 /*		RemoveActiveIndicators()	*/
@@ -226,14 +226,14 @@ var/const/MAX_ACTIVE_TIME = 400
 
 /proc/CanHug(var/mob/M)
 
-	if(iscorgi(M))
+	if (iscorgi(M))
 		return 1
 
-	if(!iscarbon(M) || isalien(M))
+	if (!iscarbon(M) || isalien(M))
 		return 0
 	var/mob/living/carbon/C = M
-	if(ishuman(C))
+	if (ishuman(C))
 		var/mob/living/carbon/human/H = C
-		if(H.head && H.head.flags & HEADCOVERSMOUTH)
+		if (H.head && H.head.flags & HEADCOVERSMOUTH)
 			return 0
 	return 1

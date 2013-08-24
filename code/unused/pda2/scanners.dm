@@ -10,14 +10,14 @@
 
 	proc/scan_atom(atom/A as mob|obj|turf|area)
 
-		if( !A || (!src.holder) || (!src.master))
+		if ( !A || (!src.holder) || (!src.master))
 			return 1
 
-		if((!istype(holder)) || (!istype(master)))
+		if ((!istype(holder)) || (!istype(master)))
 			return 1
 
-		if(!(holder in src.master.contents))
-			if(master.scan_program == src)
+		if (!(holder in src.master.contents))
+			if (master.scan_program == src)
 				master.scan_program = null
 			return 1
 
@@ -29,11 +29,11 @@
 		size = 8.0
 
 		scan_atom(atom/A as mob|obj|turf|area)
-			if(..())
+			if (..())
 				return
 
 			var/mob/living/carbon/C = A
-			if(!istype(C))
+			if (!istype(C))
 				return
 
 			var/dat = "\blue Analyzing Results for [C]:\n"
@@ -41,7 +41,7 @@
 			dat += "\blue \t Damage Specifics: [C.getOxyLoss() > 50 ? "\red" : "\blue"][C.getOxyLoss()]-[C.getToxLoss() > 50 ? "\red" : "\blue"][C.getToxLoss()]-[C.getFireLoss() > 50 ? "\red" : "\blue"][C.getFireLoss()]-[C.getBruteLoss() > 50 ? "\red" : "\blue"][C.getBruteLoss()]\n"
 			dat += "\blue \t Key: Suffocation/Toxin/Burns/Brute\n"
 			dat += "\blue \t Body Temperature: [C.bodytemperature-T0C]&deg;C ([C.bodytemperature*1.8-459.67]&deg;F)"
-			if(C.virus)
+			if (C.virus)
 				dat += "\red \n<b>Warning Virus Detected.</b>\nName: [C.virus.name].\nType: [C.virus.spread].\nStage: [C.virus.stage]/[C.virus.max_stages].\nPossible Cure: [C.virus.cure]"
 
 			return dat
@@ -52,11 +52,11 @@
 		size = 8.0
 
 		scan_atom(atom/A as mob|obj|turf|area)
-			if(..())
+			if (..())
 				return
 			var/dat = null
 
-			if(istype(A,/mob/living/carbon/human))
+			if (istype(A,/mob/living/carbon/human))
 				var/mob/living/carbon/human/H = A
 				if (!istype(H.dna, /datum/dna) || !isnull(H.gloves))
 					dat += "\blue Unable to scan [A]'s fingerprints.\n"
@@ -86,11 +86,11 @@
 		size = 6.0
 
 		scan_atom(atom/A as mob|obj|turf|area)
-			if(..())
+			if (..())
 				return
 			var/dat = null
-			if(!isnull(A.reagents))
-				if(A.reagents.reagent_list.len > 0)
+			if (!isnull(A.reagents))
+				if (A.reagents.reagent_list.len > 0)
 					var/reagents_length = A.reagents.reagent_list.len
 					dat += "\blue [reagents_length] chemical agent[reagents_length > 1 ? "s" : ""] found.\n"
 					for (var/datum/reagent/re in A.reagents.reagent_list)

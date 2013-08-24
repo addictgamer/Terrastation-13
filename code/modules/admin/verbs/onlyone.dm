@@ -1,11 +1,11 @@
 /client/proc/only_one()
-	if(!ticker)
+	if (!ticker)
 		alert("The game hasn't started yet!")
 		return
 
 	for(var/mob/living/carbon/human/H in player_list)
-		if(H.stat == 2 || !(H.client)) continue
-		if(is_special_character(H)) continue
+		if (H.stat == 2 || !(H.client)) continue
+		if (is_special_character(H)) continue
 
 		ticker.mode.traitors += H.mind
 		H.mind.special_role = "traitor"

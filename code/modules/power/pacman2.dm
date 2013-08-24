@@ -12,8 +12,8 @@
 	var/heat = 0
 /*
 	process()
-		if(P)
-			if(P.air_contents.toxins <= 0)
+		if (P)
+			if (P.air_contents.toxins <= 0)
 				P.air_contents.toxins = 0
 				eject()
 			else
@@ -22,7 +22,7 @@
 */
 
 	HasFuel()
-		if(P.air_contents.toxins >= 0.1)
+		if (P.air_contents.toxins >= 0.1)
 			return 1
 		return 0
 
@@ -45,9 +45,9 @@
 		var/temp_rating = 0
 		var/temp_reliability = 0
 		for(var/obj/item/weapon/stock_parts/SP in component_parts)
-			if(istype(SP, /obj/item/weapon/stock_parts/matter_bin))
+			if (istype(SP, /obj/item/weapon/stock_parts/matter_bin))
 				//max_coins = SP.rating * SP.rating * 1000
-			else if(istype(SP, /obj/item/weapon/stock_parts/micro_laser) || istype(SP, /obj/item/weapon/stock_parts/capacitor))
+			else if (istype(SP, /obj/item/weapon/stock_parts/micro_laser) || istype(SP, /obj/item/weapon/stock_parts/capacitor))
 				temp_rating += SP.rating
 		for(var/obj/item/weapon/CP in component_parts)
 			temp_reliability += CP.reliability
@@ -57,7 +57,7 @@
 	examine()
 		..()
 		usr << "\blue The generator has [P.air_contents.toxins] units of fuel left, producing [power_gen] per cycle."
-		if(crit_fail) usr << "\red The generator seems to have broken down."
+		if (crit_fail) usr << "\red The generator seems to have broken down."
 
 	handleInactive()
 		heat -= 2
@@ -73,8 +73,8 @@
 			explosion(get_turf(src), 2, 5, 2, -1)
 
 	attackby(var/obj/item/O as obj, var/mob/user as mob)
-		if(istype(O, /obj/item/weapon/tank/plasma))
-			if(P)
+		if (istype(O, /obj/item/weapon/tank/plasma))
+			if (P)
 				user << "\red The generator already has a plasma tank loaded!"
 				return
 			P = O
@@ -83,32 +83,32 @@
 			user << "\blue You add the plasma tank to the generator."
 		else if (istype(O, /obj/item/weapon/card/emag))
 			var/obj/item/weapon/card/emag/E = O
-			if(E.uses)
+			if (E.uses)
 				E.uses--
 			else
 				return
 			emagged = 1
 			emp_act(1)
-		else if(!active)
-			if(istype(O, /obj/item/weapon/wrench))
+		else if (!active)
+			if (istype(O, /obj/item/weapon/wrench))
 				anchored = !anchored
 				playsound(src.loc, 'Deconstruct.ogg', 50, 1)
-				if(anchored)
+				if (anchored)
 					user << "\blue You secure the generator to the floor."
 				else
 					user << "\blue You unsecure the generator from the floor."
 				makepowernets()
-			else if(istype(O, /obj/item/weapon/screwdriver))
+			else if (istype(O, /obj/item/weapon/screwdriver))
 				open = !open
 				playsound(src.loc, 'Screwdriver.ogg', 50, 1)
-				if(open)
+				if (open)
 					user << "\blue You open the access panel."
 				else
 					user << "\blue You close the access panel."
-			else if(istype(O, /obj/item/weapon/crowbar) && !open)
+			else if (istype(O, /obj/item/weapon/crowbar) && !open)
 				var/obj/machinery/constructable_frame/machine_frame/new_frame = new /obj/machinery/constructable_frame/machine_frame(src.loc)
 				for(var/obj/item/I in component_parts)
-					if(I.reliability < 100)
+					if (I.reliability < 100)
 						I.crit_fail = 1
 					I.loc = src.loc
 				new_frame.state = 2
@@ -143,7 +143,7 @@
 				dat += text("Generator: <A href='?src=\ref[src];action=disable'>On</A><br>")
 			else
 				dat += text("Generator: <A href='?src=\ref[src];action=enable'>Off</A><br>")
-			if(P)
+			if (P)
 				dat += text("Currently loaded plasma tank: [P.air_contents.toxins]<br>")
 			else
 				dat += text("No plasma tank currently loaded.<br>")
@@ -153,22 +153,22 @@
 			user << browse("[dat]", "window=port_gen")
 
 	Topic(href, href_list)
-		if(..())
+		if (..())
 			return
 
 		src.add_fingerprint(usr)
-		if(href_list["action"])
-			if(href_list["action"] == "enable")
-				if(!active && HasFuel() && !crit_fail)
+		if (href_list["action"])
+			if (href_list["action"] == "enable")
+				if (!active && HasFuel() && !crit_fail)
 					active = 1
 					icon_state = "portgen1"
 					src.updateUsrDialog()
-			if(href_list["action"] == "disable")
+			if (href_list["action"] == "disable")
 				if (active)
 					active = 0
 					icon_state = "portgen0"
 					src.updateUsrDialog()
-			if(href_list["action"] == "lower_power")
+			if (href_list["action"] == "lower_power")
 				if (power_output > 1)
 					power_output--
 					src.updateUsrDialog()

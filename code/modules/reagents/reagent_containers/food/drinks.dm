@@ -22,24 +22,24 @@
 		var/datum/reagents/R = src.reagents
 		var/fillevel = gulp_size
 
-		if(!R.total_volume || !R)
+		if (!R.total_volume || !R)
 			user << "\red None of [src] left, oh no!"
 			return 0
 
-		if(M == user)
+		if (M == user)
 			M << "\blue You swallow a gulp of [src]."
-			if(reagents.total_volume)
+			if (reagents.total_volume)
 				reagents.reaction(M, INGEST)
 				spawn(5)
 					reagents.trans_to(M, gulp_size)
 
 			playsound(M.loc,'sound/items/drink.ogg', rand(10,50), 1)
 			return 1
-		else if( istype(M, /mob/living/carbon/human) )
+		else if ( istype(M, /mob/living/carbon/human) )
 
 			for(var/mob/O in viewers(world.view, user))
 				O.show_message("\red [user] attempts to feed [M] [src].", 1)
-			if(!do_mob(user, M)) return
+			if (!do_mob(user, M)) return
 			for(var/mob/O in viewers(world.view, user))
 				O.show_message("\red [user] feeds [M] [src].", 1)
 
@@ -48,12 +48,12 @@
 
 			log_attack("<font color='red'>[user.name] ([user.ckey]) fed [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>")
 
-			if(reagents.total_volume)
+			if (reagents.total_volume)
 				reagents.reaction(M, INGEST)
 				spawn(5)
 					reagents.trans_to(M, gulp_size)
 
-			if(isrobot(user)) //Cyborg modules that include drinks automatically refill themselves, but drain the borg's cell
+			if (isrobot(user)) //Cyborg modules that include drinks automatically refill themselves, but drain the borg's cell
 				var/mob/living/silicon/robot/bro = user
 				bro.cell.use(30)
 				var/refill = R.get_master_reagent_id()
@@ -68,25 +68,25 @@
 
 	afterattack(obj/target, mob/user , flag)
 
-		if(istype(target, /obj/structure/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
+		if (istype(target, /obj/structure/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
 
-			if(!target.reagents.total_volume)
+			if (!target.reagents.total_volume)
 				user << "\red [target] is empty."
 				return
 
-			if(reagents.total_volume >= reagents.maximum_volume)
+			if (reagents.total_volume >= reagents.maximum_volume)
 				user << "\red [src] is full."
 				return
 
 			var/trans = target.reagents.trans_to(src, target:amount_per_transfer_from_this)
 			user << "\blue You fill [src] with [trans] units of the contents of [target]."
 
-		else if(target.is_open_container()) //Something like a glass. Player probably wants to transfer TO it.
-			if(!reagents.total_volume)
+		else if (target.is_open_container()) //Something like a glass. Player probably wants to transfer TO it.
+			if (!reagents.total_volume)
 				user << "\red [src] is empty."
 				return
 
-			if(target.reagents.total_volume >= target.reagents.maximum_volume)
+			if (target.reagents.total_volume >= target.reagents.maximum_volume)
 				user << "\red [target] is full."
 				return
 
@@ -94,14 +94,14 @@
 
 			var/datum/reagent/refill
 			var/datum/reagent/refillName
-			if(isrobot(user))
+			if (isrobot(user))
 				refill = reagents.get_master_reagent_id()
 				refillName = reagents.get_master_reagent_name()
 
 			var/trans = src.reagents.trans_to(target, amount_per_transfer_from_this)
 			user << "\blue You transfer [trans] units of the solution to [target]."
 
-			if(isrobot(user)) //Cyborg modules that include drinks automatically refill themselves, but drain the borg's cell
+			if (isrobot(user)) //Cyborg modules that include drinks automatically refill themselves, but drain the borg's cell
 				var/mob/living/silicon/robot/bro = user
 				var/chargeAmount = max(30,4*trans)
 				bro.cell.use(chargeAmount)
@@ -118,7 +118,7 @@
 		set src in view()
 		..()
 		if (!(usr in range(0)) && usr!=src.loc) return
-		if(!reagents || reagents.total_volume==0)
+		if (!reagents || reagents.total_volume==0)
 			usr << "\blue \The [src] is empty!"
 		else if (reagents.total_volume<=src.volume/4)
 			usr << "\blue \The [src] is almost empty!"
@@ -346,7 +346,7 @@
 		src.pixel_x = rand(-10.0, 10)
 		src.pixel_y = rand(-10.0, 10)
 	on_reagent_change()
-		if(reagents.total_volume)
+		if (reagents.total_volume)
 			icon_state = "water_cup"
 		else
 			icon_state = "water_cup_e"

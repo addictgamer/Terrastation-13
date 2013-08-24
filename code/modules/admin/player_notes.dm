@@ -10,8 +10,8 @@ datum/admins/proc/notes_show(var/ckey)
 
 datum/admins/proc/notes_gethtml(var/ckey)
 	var/savefile/notesfile = new(NOTESFILE)
-	if(!notesfile)	return "<font color='red'>Error: Cannot access [NOTESFILE]</font>"
-	if(ckey)
+	if (!notesfile)	return "<font color='red'>Error: Cannot access [NOTESFILE]</font>"
+	if (ckey)
 		. = "<b>Notes for <a href='?src=\ref[src];notes=show'>[ckey]</a>:</b> <a href='?src=\ref[src];notes=add;ckey=[ckey]'>\[+\]</a> <a href='?src=\ref[src];notes=remove;ckey=[ckey]'>\[-\]</a><br>"
 		notesfile.cd = "/[ckey]"
 		var/index = 1
@@ -32,16 +32,16 @@ datum/admins/proc/notes_gethtml(var/ckey)
 //originally had seperate entries such as var/by to record who left the note and when
 //but the current bansystem is a heap of dung.
 /proc/notes_add(var/ckey, var/note)
-	if(!ckey)
+	if (!ckey)
 		ckey = ckey(input(usr,"Who would you like to add notes for?","Enter a ckey",null) as text|null)
-		if(!ckey)	return
+		if (!ckey)	return
 
-	if(!note)
+	if (!note)
 		note = html_encode(input(usr,"Enter your note:","Enter some text",null) as message|null)
-		if(!note)	return
+		if (!note)	return
 
 	var/savefile/notesfile = new(NOTESFILE)
-	if(!notesfile)	return
+	if (!notesfile)	return
 	notesfile.cd = "/[ckey]"
 	notesfile.eof = 1		//move to the end of the buffer
 	notesfile << "[time2text(world.realtime,"DD-MMM-YYYY")] | [note][(usr && usr.ckey)?" ~[usr.ckey]":""]"
@@ -50,23 +50,23 @@ datum/admins/proc/notes_gethtml(var/ckey)
 //handles removing entries from the buffer, or removing the entire directory if no start_index is given
 /proc/notes_remove(var/ckey, var/start_index, var/end_index)
 	var/savefile/notesfile = new(NOTESFILE)
-	if(!notesfile)	return
+	if (!notesfile)	return
 
-	if(!ckey)
+	if (!ckey)
 		notesfile.cd = "/"
 		ckey = ckey(input(usr,"Who would you like to remove notes for?","Enter a ckey",null) as null|anything in notesfile.dir)
-		if(!ckey)	return
+		if (!ckey)	return
 
-	if(start_index)
+	if (start_index)
 		notesfile.cd = "/[ckey]"
 		var/list/noteslist = list()
-		if(!end_index)	end_index = start_index
+		if (!end_index)	end_index = start_index
 		var/index = 0
 		while( !notesfile.eof )
 			index++
 			var/temp
 			notesfile >> temp
-			if( (start_index <= index) && (index <= end_index) )
+			if ( (start_index <= index) && (index <= end_index) )
 				continue
 			noteslist += temp
 
@@ -76,7 +76,7 @@ datum/admins/proc/notes_gethtml(var/ckey)
 			notesfile << note
 	else
 		notesfile.cd = "/"
-		if(alert(usr,"Are you sure you want to remove all their notes?","Confirmation","No","Yes - Remove all notes") == "Yes - Remove all notes")
+		if (alert(usr,"Are you sure you want to remove all their notes?","Confirmation","No","Yes - Remove all notes") == "Yes - Remove all notes")
 			notesfile.dir.Remove(ckey)
 	return
 
@@ -93,19 +93,19 @@ datum/admins/proc/notes_gethtml(var/ckey)
 	var/savefile/info = new("data/player_saves/[copytext(key, 1, 2)]/[key]/info.sav")
 	var/list/infos
 	info >> infos
-	if(!infos) infos = list()
+	if (!infos) infos = list()
 
 	//Overly complex timestamp creation
 	var/modifyer = "th"
 	switch(time2text(world.timeofday, "DD"))
-		if("01","21","31")
+		if ("01","21","31")
 			modifyer = "st"
-		if("02","22",)
+		if ("02","22",)
 			modifyer = "nd"
-		if("03","23")
+		if ("03","23")
 			modifyer = "rd"
 	var/day_string = "[time2text(world.timeofday, "DD")][modifyer]"
-	if(copytext(day_string,1,2) == "0")
+	if (copytext(day_string,1,2) == "0")
 		day_string = copytext(day_string,2)
 	var/full_date = time2text(world.timeofday, "DDD, Month DD of YYYY")
 	var/day_loc = findtext(full_date, time2text(world.timeofday, "DD"))
@@ -132,8 +132,8 @@ datum/admins/proc/notes_gethtml(var/ckey)
 	var/savefile/note_list = new("data/player_notes.sav")
 	var/list/note_keys
 	note_list >> note_keys
-	if(!note_keys) note_keys = list()
-	if(!note_keys.Find(key)) note_keys += key
+	if (!note_keys) note_keys = list()
+	if (!note_keys.Find(key)) note_keys += key
 	note_list << note_keys
 	del note_list
 
@@ -142,7 +142,7 @@ datum/admins/proc/notes_gethtml(var/ckey)
 	var/savefile/info = new("data/player_saves/[copytext(key, 1, 2)]/[key]/info.sav")
 	var/list/infos
 	info >> infos
-	if(!infos || infos.len < index) return
+	if (!infos || infos.len < index) return
 
 	var/datum/player_info/item = infos[index]
 	infos.Remove(item)

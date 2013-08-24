@@ -23,12 +23,12 @@
 
 /obj/effect/spreader/Del()
 	for(var/obj/effect/spreader/spread in spreadList)
-		if(spread != src)
+		if (spread != src)
 			del(spread)
 	..()
 
 /obj/effect/spreader/New(location,var/amount = 1,obj/effects/spreader/source = src) //just a copypaste job from foam
-	if(amount <= 0)
+	if (amount <= 0)
 		del(src)
 		return
 	else
@@ -36,14 +36,14 @@
 
 		for(var/direction in cardinal)
 			var/turf/T = get_step(src,direction)
-			if(!T)
+			if (!T)
 				continue
 
-			if(!T.Enter(src))
+			if (!T.Enter(src))
 				continue
 
 			var/obj/effect/spreader/S = locate() in T
-			if(S)
+			if (S)
 				continue
 
 			new /obj/effect/spreader(T,amount-1,source)
@@ -52,7 +52,7 @@
 
 /*
 /obj/effect/foam/proc/process()
-	if(--amount < 0)
+	if (--amount < 0)
 		return
 
 
@@ -62,19 +62,19 @@
 
 
 			var/turf/T = get_step(src,direction)
-			if(!T)
+			if (!T)
 				continue
 
-			if(!T.Enter(src))
+			if (!T.Enter(src))
 				continue
 
 			var/obj/effect/foam/F = locate() in T
-			if(F)
+			if (F)
 				continue
 
 			F = new(T, metal)
 			F.amount = amount
-			if(!metal)
+			if (!metal)
 				F.create_reagents(10)
 				if (reagents)
 					for(var/datum/reagent/R in reagents.reagent_list)

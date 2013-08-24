@@ -12,9 +12,9 @@
 /obj/item/weapon/cell/proc/updateicon()
 	overlays.Cut()
 
-	if(charge < 0.01)
+	if (charge < 0.01)
 		return
-	else if(charge/maxcharge >=0.995)
+	else if (charge/maxcharge >=0.995)
 		overlays += image('icons/obj/power.dmi', "cell-o2")
 	else
 		overlays += image('icons/obj/power.dmi', "cell-o1")
@@ -24,26 +24,26 @@
 
 // use power from a cell
 /obj/item/weapon/cell/proc/use(var/amount)
-	if(rigged && amount > 0)
+	if (rigged && amount > 0)
 		explode()
 		return 0
 
-	if(charge < amount)	return 0
+	if (charge < amount)	return 0
 	charge = (charge - amount)
 	return 1
 
 // recharge the cell
 /obj/item/weapon/cell/proc/give(var/amount)
-	if(rigged && amount > 0)
+	if (rigged && amount > 0)
 		explode()
 		return 0
 
-	if(maxcharge < amount)	return 0
+	if (maxcharge < amount)	return 0
 	var/power_used = min(maxcharge-charge,amount)
-	if(crit_fail)	return 0
-	if(!prob(reliability))
+	if (crit_fail)	return 0
+	if (!prob(reliability))
 		minor_fault++
-		if(prob(minor_fault))
+		if (prob(minor_fault))
 			crit_fail = 1
 			return 0
 	charge += power_used
@@ -52,29 +52,29 @@
 
 /obj/item/weapon/cell/examine()
 	set src in view(1)
-	if(usr /*&& !usr.stat*/)
-		if(maxcharge <= 2500)
+	if (usr /*&& !usr.stat*/)
+		if (maxcharge <= 2500)
 			usr << "[desc]\nThe manufacturer's label states this cell has a power rating of [maxcharge], and that you should not swallow it.\nThe charge meter reads [round(src.percent() )]%."
 		else
 			usr << "This power cell has an exciting chrome finish, as it is an uber-capacity cell type! It has a power rating of [maxcharge]!\nThe charge meter reads [round(src.percent() )]%."
-	if(crit_fail)
+	if (crit_fail)
 		usr << "\red This power cell seems to be faulty."
 
 /obj/item/weapon/cell/attack_self(mob/user as mob)
 	src.add_fingerprint(user)
-	if(ishuman(user))
-		if(istype(user:gloves, /obj/item/clothing/gloves/space_ninja)&&user:gloves:candrain&&!user:gloves:draining)
+	if (ishuman(user))
+		if (istype(user:gloves, /obj/item/clothing/gloves/space_ninja)&&user:gloves:candrain&&!user:gloves:draining)
 			call(/obj/item/clothing/gloves/space_ninja/proc/drain)("CELL",src,user:wear_suit)
 	return
 
 /obj/item/weapon/cell/attackby(obj/item/W, mob/user)
 	..()
-	if(istype(W, /obj/item/weapon/reagent_containers/syringe))
+	if (istype(W, /obj/item/weapon/reagent_containers/syringe))
 		var/obj/item/weapon/reagent_containers/syringe/S = W
 
 		user << "You inject the solution into the power cell."
 
-		if(S.reagents.has_reagent("plasma", 5))
+		if (S.reagents.has_reagent("plasma", 5))
 
 			rigged = 1
 
@@ -122,23 +122,23 @@
 	charge -= 1000 / severity
 	if (charge < 0)
 		charge = 0
-	if(reliability != 100 && prob(50/severity))
+	if (reliability != 100 && prob(50/severity))
 		reliability -= 10 / severity
 	..()
 
 /obj/item/weapon/cell/ex_act(severity)
 
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				del(src)
 				return
 			if (prob(50))
 				corrupt()
-		if(3.0)
+		if (3.0)
 			if (prob(25))
 				del(src)
 				return
@@ -147,7 +147,7 @@
 	return
 
 /obj/item/weapon/cell/blob_act()
-	if(prob(75))
+	if (prob(75))
 		explode()
 
 /obj/item/weapon/cell/proc/get_electrocute_damage()

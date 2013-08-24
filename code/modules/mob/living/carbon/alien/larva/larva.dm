@@ -18,7 +18,7 @@
 	var/datum/reagents/R = new/datum/reagents(100)
 	reagents = R
 	R.my_atom = src
-	if(name == "alien larva")
+	if (name == "alien larva")
 		name = "alien larva ([rand(1, 1000)])"
 	real_name = name
 	regenerate_icons()
@@ -31,14 +31,14 @@
 		if ((!( yes ) || now_pushing))
 			return
 		now_pushing = 1
-		if(ismob(AM))
+		if (ismob(AM))
 			var/mob/tmob = AM
-			if(istype(tmob, /mob/living/carbon/human) && (FAT in tmob.mutations))
-				if(prob(70))
+			if (istype(tmob, /mob/living/carbon/human) && (FAT in tmob.mutations))
+				if (prob(70))
 					src << "\red <B>You fail to push [tmob]'s fat ass out of the way.</B>"
 					now_pushing = 0
 					return
-				if(!(tmob.status_flags & CANPUSH))
+				if (!(tmob.status_flags & CANPUSH))
 					now_pushing = 0
 					return
 			tmob.LAssailant = src
@@ -62,13 +62,13 @@
 	stat(null, "Progress: [amount_grown]/[max_grown]")
 
 /mob/living/carbon/alien/larva/adjustToxLoss(amount)
-	if(stat != DEAD)
+	if (stat != DEAD)
 		amount_grown = min(amount_grown + 1, max_grown)
 	..(amount)
 
 
 /mob/living/carbon/alien/larva/ex_act(severity)
-	if(!blinded)
+	if (!blinded)
 		flick("flash", flash)
 
 	var/b_loss = null
@@ -88,7 +88,7 @@
 			ear_damage += 30
 			ear_deaf += 120
 
-		if(3.0)
+		if (3.0)
 			b_loss += 30
 			if (prob(50))
 				Paralyse(1)
@@ -111,7 +111,7 @@
 	if (stat != 2)
 		damage = rand(10,30)
 
-	if(shielded)
+	if (shielded)
 		damage /= 4
 
 		//paralysis += 1
@@ -163,7 +163,7 @@
 
 
 /mob/living/carbon/alien/larva/attack_animal(mob/living/simple_animal/M as mob)
-	if(M.melee_damage_upper == 0)
+	if (M.melee_damage_upper == 0)
 		M.emote("[M.friendly] [src]")
 	else
 		for(var/mob/O in viewers(src, null))
@@ -177,7 +177,7 @@
 
 
 /mob/living/carbon/alien/larva/attack_paw(mob/living/carbon/monkey/M as mob)
-	if(!(istype(M, /mob/living/carbon/monkey)))	return//Fix for aliens receiving double messages when attacking other aliens.
+	if (!(istype(M, /mob/living/carbon/monkey)))	return//Fix for aliens receiving double messages when attacking other aliens.
 
 	if (!ticker)
 		M << "You cannot attack people before the game has started."
@@ -210,7 +210,7 @@
 		M << "You cannot attack people before the game has started."
 		return
 
-	if(M.Victim) return // can't attack while eating!
+	if (M.Victim) return // can't attack while eating!
 
 	if (health > -100)
 
@@ -220,7 +220,7 @@
 
 		var/damage = rand(1, 3)
 
-		if(istype(src, /mob/living/carbon/slime/adult))
+		if (istype(src, /mob/living/carbon/slime/adult))
 			damage = rand(20, 40)
 		else
 			damage = rand(5, 35)
@@ -243,11 +243,11 @@
 
 	..()
 
-	if(M.gloves && istype(M.gloves,/obj/item/clothing/gloves))
+	if (M.gloves && istype(M.gloves,/obj/item/clothing/gloves))
 		var/obj/item/clothing/gloves/G = M.gloves
-		if(G.cell)
-			if(M.a_intent == "hurt")//Stungloves. Any contact will stun the alien.
-				if(G.cell.charge >= 2500)
+		if (G.cell)
+			if (M.a_intent == "hurt")//Stungloves. Any contact will stun the alien.
+				if (G.cell.charge >= 2500)
 					G.cell.charge -= 2500
 
 					Weaken(5)
@@ -389,7 +389,7 @@
 
 /* Commented out because it's duplicated in life.dm
 /mob/living/carbon/alien/larva/proc/grow() // Larvae can grow into full fledged Xenos if they survive long enough -- TLE
-	if(icon_state == "larva_l" && !canmove) // This is a shit death check. It is made of shit and death. Fix later.
+	if (icon_state == "larva_l" && !canmove) // This is a shit death check. It is made of shit and death. Fix later.
 		return
 	else
 		var/mob/living/carbon/alien/humanoid/A = new(loc)

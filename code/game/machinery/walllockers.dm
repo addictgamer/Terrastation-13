@@ -8,10 +8,10 @@
 /obj/structure/walllocker/attack_hand(mob/user as mob)
 	if (istype(user, /mob/living/silicon/ai))	//Added by Strumpetplaya - AI shouldn't be able to
 		return									//activate emergency lockers.  This fixes that.  (Does this make sense, the AI can't call attack_hand, can it? --Mloc)
-	if(!amount)
+	if (!amount)
 		usr << "It's empty.."
 		return
-	if(amount)
+	if (amount)
 		for(var/path in spawnitems)
 			new path(src.loc)
 		amount--

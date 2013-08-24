@@ -8,29 +8,29 @@
 	var/real_name //Stores the real name of the person who originally got this dna datum. Used primarely for changelings,
 
 /datum/dna/proc/check_integrity(var/mob/living/carbon/human/character)
-	if(character)
-		if(length(uni_identity) != 39)
+	if (character)
+		if (length(uni_identity) != 39)
 			//Lazy.
 			var/temp
 
 			//Hair
 			var/hair	= 0
-			if(!character.h_style)
+			if (!character.h_style)
 				character.h_style = "Skinhead"
 
 			var/hrange = round(4095 / hair_styles_list.len)
 			var/index = hair_styles_list.Find(character.h_style)
-			if(index)
+			if (index)
 				hair = index * hrange - rand(1,hrange-1)
 
 			//Facial Hair
 			var/beard	= 0
-			if(!character.f_style)
+			if (!character.f_style)
 				character.f_style = "Shaved"
 
 			var/f_hrange = round(4095 / facial_hair_styles_list.len)
 			index = facial_hair_styles_list.Find(character.f_style)
-			if(index)
+			if (index)
 				beard = index * f_hrange - rand(1,f_hrange-1)
 
 			temp = add_zero2(num2hex((character.r_hair),1), 3)
@@ -56,39 +56,39 @@
 			temp += add_zero2(num2hex((hair),1), 3)
 
 			uni_identity = temp
-		if(length(struc_enzymes)!= 3*STRUCDNASIZE)
+		if (length(struc_enzymes)!= 3*STRUCDNASIZE)
 			var/mutstring = ""
 			for(var/i = 1, i <= STRUCDNASIZE, i++)
 				mutstring += add_zero2(num2hex(rand(1,1024)),3)
 
 			struc_enzymes = mutstring
-		if(length(unique_enzymes) != 32)
+		if (length(unique_enzymes) != 32)
 			unique_enzymes = md5(character.real_name)
 	else
-		if(length(uni_identity) != 39) uni_identity = "00600200A00E0110148FC01300B0095BD7FD3F4"
-		if(length(struc_enzymes)!= 3*STRUCDNASIZE) struc_enzymes = "43359156756131E13763334D1C369012032164D4FE4CD61544B6C03F251B6C60A42821D26BA3B0FD6"
+		if (length(uni_identity) != 39) uni_identity = "00600200A00E0110148FC01300B0095BD7FD3F4"
+		if (length(struc_enzymes)!= 3*STRUCDNASIZE) struc_enzymes = "43359156756131E13763334D1C369012032164D4FE4CD61544B6C03F251B6C60A42821D26BA3B0FD6"
 
 /datum/dna/proc/ready_dna(mob/living/carbon/human/character)
 	var/temp
 
 	//Hair
 	var/hair	= 0
-	if(!character.h_style)
+	if (!character.h_style)
 		character.h_style = "Bald"
 
 	var/hrange = round(4095 / hair_styles_list.len)
 	var/index = hair_styles_list.Find(character.h_style)
-	if(index)
+	if (index)
 		hair = index * hrange - rand(1,hrange-1)
 
 	//Facial Hair
 	var/beard	= 0
-	if(!character.f_style)
+	if (!character.f_style)
 		character.f_style = "Shaved"
 
 	var/f_hrange = round(4095 / facial_hair_styles_list.len)
 	index = facial_hair_styles_list.Find(character.f_style)
-	if(index)
+	if (index)
 		beard = index * f_hrange - rand(1,f_hrange-1)
 
 	temp = add_zero2(num2hex((character.r_hair),1), 3)
@@ -155,17 +155,17 @@
 
 		var/pushstring
 
-		if(subpos == subblock && blockpos == block) // if the current block/subblock is selected, mark it
+		if (subpos == subblock && blockpos == block) // if the current block/subblock is selected, mark it
 			pushstring = "</font color><b>[copytext(input, i, i+1)]</b><font color='blue'>"
 		else
-			if(ui) //This is for allowing block clicks to be differentiated
+			if (ui) //This is for allowing block clicks to be differentiated
 				pushstring = "<a href='?src=\ref[src];uimenuset=[num2text(blockpos)];uimenusubset=[num2text(subpos)]'>[copytext(input, i, i+1)]</a>"
 			else
 				pushstring = "<a href='?src=\ref[src];semenuset=[num2text(blockpos)];semenusubset=[num2text(subpos)]'>[copytext(input, i, i+1)]</a>"
 
 		string += pushstring // push the string to the return string
 
-		if(subpos >= blocksize) // add a line break for every block
+		if (subpos >= blocksize) // add a line break for every block
 			string += " </font color><font color='#285B5B'>|</font color><font color='blue'> "
 			subpos = 0
 			blockpos++
@@ -188,9 +188,9 @@
 	return result
 
 /proc/setblock(istring, blocknumber, replacement, blocksize)
-	if(!blocknumber)
+	if (!blocknumber)
 		return istring
-	if(!istring || !replacement || !blocksize)	return 0
+	if (!istring || !replacement || !blocksize)	return 0
 	var/result = getleftblocks(istring, blocknumber, blocksize) + replacement + getrightblocks(istring, blocknumber, blocksize)
 	return result
 
@@ -222,40 +222,40 @@
 /proc/miniscrambletarget(input,rs,rd)
 	var/output = null
 	switch(input)
-		if("0")
+		if ("0")
 			output = pick(prob((rs*10)+(rd));"0",prob((rs*10)+(rd));"1",prob((rs*10));"2",prob((rs*10)-(rd));"3")
-		if("1")
+		if ("1")
 			output = pick(prob((rs*10)+(rd));"0",prob((rs*10)+(rd));"1",prob((rs*10)+(rd));"2",prob((rs*10));"3",prob((rs*10)-(rd));"4")
-		if("2")
+		if ("2")
 			output = pick(prob((rs*10));"0",prob((rs*10)+(rd));"1",prob((rs*10)+(rd));"2",prob((rs*10)+(rd));"3",prob((rs*10));"4",prob((rs*10)-(rd));"5")
-		if("3")
+		if ("3")
 			output = pick(prob((rs*10)-(rd));"0",prob((rs*10));"1",prob((rs*10)+(rd));"2",prob((rs*10)+(rd));"3",prob((rs*10)+(rd));"4",prob((rs*10));"5",prob((rs*10)-(rd));"6")
-		if("4")
+		if ("4")
 			output = pick(prob((rs*10)-(rd));"1",prob((rs*10));"2",prob((rs*10)+(rd));"3",prob((rs*10)+(rd));"4",prob((rs*10)+(rd));"5",prob((rs*10));"6",prob((rs*10)-(rd));"7")
-		if("5")
+		if ("5")
 			output = pick(prob((rs*10)-(rd));"2",prob((rs*10));"3",prob((rs*10)+(rd));"4",prob((rs*10)+(rd));"5",prob((rs*10)+(rd));"6",prob((rs*10));"7",prob((rs*10)-(rd));"8")
-		if("6")
+		if ("6")
 			output = pick(prob((rs*10)-(rd));"3",prob((rs*10));"4",prob((rs*10)+(rd));"5",prob((rs*10)+(rd));"6",prob((rs*10)+(rd));"7",prob((rs*10));"8",prob((rs*10)-(rd));"9")
-		if("7")
+		if ("7")
 			output = pick(prob((rs*10)-(rd));"4",prob((rs*10));"5",prob((rs*10)+(rd));"6",prob((rs*10)+(rd));"7",prob((rs*10)+(rd));"8",prob((rs*10));"9",prob((rs*10)-(rd));"A")
-		if("8")
+		if ("8")
 			output = pick(prob((rs*10)-(rd));"5",prob((rs*10));"6",prob((rs*10)+(rd));"7",prob((rs*10)+(rd));"8",prob((rs*10)+(rd));"9",prob((rs*10));"A",prob((rs*10)-(rd));"B")
-		if("9")
+		if ("9")
 			output = pick(prob((rs*10)-(rd));"6",prob((rs*10));"7",prob((rs*10)+(rd));"8",prob((rs*10)+(rd));"9",prob((rs*10)+(rd));"A",prob((rs*10));"B",prob((rs*10)-(rd));"C")
-		if("10")//A
+		if ("10")//A
 			output = pick(prob((rs*10)-(rd));"7",prob((rs*10));"8",prob((rs*10)+(rd));"9",prob((rs*10)+(rd));"A",prob((rs*10)+(rd));"B",prob((rs*10));"C",prob((rs*10)-(rd));"D")
-		if("11")//B
+		if ("11")//B
 			output = pick(prob((rs*10)-(rd));"8",prob((rs*10));"9",prob((rs*10)+(rd));"A",prob((rs*10)+(rd));"B",prob((rs*10)+(rd));"C",prob((rs*10));"D",prob((rs*10)-(rd));"E")
-		if("12")//C
+		if ("12")//C
 			output = pick(prob((rs*10)-(rd));"9",prob((rs*10));"A",prob((rs*10)+(rd));"B",prob((rs*10)+(rd));"C",prob((rs*10)+(rd));"D",prob((rs*10));"E",prob((rs*10)-(rd));"F")
-		if("13")//D
+		if ("13")//D
 			output = pick(prob((rs*10)-(rd));"A",prob((rs*10));"B",prob((rs*10)+(rd));"C",prob((rs*10)+(rd));"D",prob((rs*10)+(rd));"E",prob((rs*10));"F")
-		if("14")//E
+		if ("14")//E
 			output = pick(prob((rs*10)-(rd));"B",prob((rs*10));"C",prob((rs*10)+(rd));"D",prob((rs*10)+(rd));"E",prob((rs*10)+(rd));"F")
-		if("15")//F
+		if ("15")//F
 			output = pick(prob((rs*10)-(rd));"C",prob((rs*10));"D",prob((rs*10)+(rd));"E",prob((rs*10)+(rd));"F")
 
-	if(!input || !output) //How did this happen?
+	if (!input || !output) //How did this happen?
 		output = "8"
 
 	return output
@@ -265,8 +265,8 @@
 	var/temp2
 	temp2 = hex2num(hnumber)
 
-	if(UI)
-		if(temp2 >= 2050)
+	if (UI)
+		if (temp2 >= 2050)
 			return 1
 		else
 			return 0
@@ -292,7 +292,7 @@
 	return isblockon(getblock(M.dna.struc_enzymes, block,3),block)
 
 /proc/randmutb(mob/M as mob)
-	if(!M)	return
+	if (!M)	return
 	var/num
 	var/newdna
 	num = pick(GLASSESBLOCK,COUGHBLOCK,FAKEBLOCK,NERVOUSBLOCK,CLUMSYBLOCK,TWITCHBLOCK,HEADACHEBLOCK,BLINDBLOCK,DEAFBLOCK,HALLUCINATIONBLOCK)
@@ -302,7 +302,7 @@
 	return
 
 /proc/randmutg(mob/M as mob)
-	if(!M)	return
+	if (!M)	return
 	var/num
 	var/newdna
 	num = pick(HULKBLOCK,XRAYBLOCK,FIREBLOCK,TELEBLOCK,NOBREATHBLOCK,REMOTEVIEWBLOCK,REGENERATEBLOCK,INCREASERUNBLOCK,REMOTETALKBLOCK,MORPHBLOCK,BLENDBLOCK,NOPRINTSBLOCK,SHOCKIMMUNITYBLOCK,SMALLSIZEBLOCK)
@@ -312,23 +312,23 @@
 	return
 
 /proc/scramble(var/type, mob/M as mob, var/p)
-	if(!M)	return
+	if (!M)	return
 	M.dna.check_integrity()
-	if(type)
+	if (type)
 		for(var/i = 1, i <= STRUCDNASIZE-1, i++)
-			if(prob(p))
+			if (prob(p))
 				M.dna.uni_identity = setblock(M.dna.uni_identity, i, add_zero2(num2hex(rand(1,4095), 1), 3), 3)
 		updateappearance(M, M.dna.uni_identity)
 
 	else
 		for(var/i = 1, i <= STRUCDNASIZE-1, i++)
-			if(prob(p))
+			if (prob(p))
 				M.dna.struc_enzymes = setblock(M.dna.struc_enzymes, i, add_zero2(num2hex(rand(1,4095), 1), 3), 3)
 		domutcheck(M, null)
 	return
 
 /proc/randmuti(mob/M as mob)
-	if(!M)	return
+	if (!M)	return
 	var/num
 	var/newdna
 	num = rand(1,UNIDNASIZE)
@@ -351,7 +351,7 @@
 
 /////////////////////////// DNA MISC-PROCS
 /proc/updateappearance(mob/M as mob , structure)
-	if(istype(M, /mob/living/carbon/human))
+	if (istype(M, /mob/living/carbon/human))
 		M.dna.check_integrity()
 		var/mob/living/carbon/human/H = M
 		H.r_hair = hex2num(getblock(structure,1,3))
@@ -373,13 +373,13 @@
 		//Hair
 		var/hairnum = hex2num(getblock(structure,13,3))
 		var/index = round(1 +(hairnum / 4096)*hair_styles_list.len)
-		if((0 < index) && (index <= hair_styles_list.len))
+		if ((0 < index) && (index <= hair_styles_list.len))
 			H.h_style = hair_styles_list[index]
 
 		//Facial Hair
 		var/beardnum = hex2num(getblock(structure,12,3))
 		index = round(1 +(beardnum / 4096)*facial_hair_styles_list.len)
-		if((0 < index) && (index <= facial_hair_styles_list.len))
+		if ((0 < index) && (index <= facial_hair_styles_list.len))
 			H.f_style = facial_hair_styles_list[index]
 
 		H.update_body(0)
@@ -405,64 +405,64 @@
 //	M.see_in_dark = 2
 //	M.see_invisible = 0
 
-	if(PLANT in old_mutations)
+	if (PLANT in old_mutations)
 		M.mutations.Add(PLANT)
-	if(SKELETON in old_mutations)
+	if (SKELETON in old_mutations)
 		M.mutations.Add(SKELETON)
-	if(FAT in old_mutations)
+	if (FAT in old_mutations)
 		M.mutations.Add(FAT)
-	if(HUSK in old_mutations)
+	if (HUSK in old_mutations)
 		M.mutations.Add(HUSK)
 
-	if(ismuton(NOBREATHBLOCK,M))
-		if(probinj(45,inj) || (mNobreath in old_mutations))
+	if (ismuton(NOBREATHBLOCK,M))
+		if (probinj(45,inj) || (mNobreath in old_mutations))
 			M << "\blue You feel no need to breathe."
 			M.mutations.Add(mNobreath)
-	if(ismuton(REMOTEVIEWBLOCK,M))
-		if(probinj(45,inj) || (mRemote in old_mutations))
+	if (ismuton(REMOTEVIEWBLOCK,M))
+		if (probinj(45,inj) || (mRemote in old_mutations))
 			M << "\blue Your mind expands"
 			M.mutations.Add(mRemote)
-	if(ismuton(REGENERATEBLOCK,M))
-		if(probinj(45,inj) || (mRegen in old_mutations))
+	if (ismuton(REGENERATEBLOCK,M))
+		if (probinj(45,inj) || (mRegen in old_mutations))
 			M << "\blue You feel strange"
 			M.mutations.Add(mRegen)
-	if(ismuton(INCREASERUNBLOCK,M))
-		if(probinj(45,inj) || (mRun in old_mutations))
+	if (ismuton(INCREASERUNBLOCK,M))
+		if (probinj(45,inj) || (mRun in old_mutations))
 			M << "\blue You feel quick"
 			M.mutations.Add(mRun)
-	if(ismuton(REMOTETALKBLOCK,M))
-		if(probinj(45,inj) || (mRemotetalk in old_mutations))
+	if (ismuton(REMOTETALKBLOCK,M))
+		if (probinj(45,inj) || (mRemotetalk in old_mutations))
 			M << "\blue You expand your mind outwards"
 			M.mutations.Add(mRemotetalk)
-	if(ismuton(MORPHBLOCK,M))
-		if(probinj(45,inj) || (mMorph in old_mutations))
+	if (ismuton(MORPHBLOCK,M))
+		if (probinj(45,inj) || (mMorph in old_mutations))
 			M.mutations.Add(mMorph)
 			M << "\blue Your skin feels strange"
-	if(ismuton(BLENDBLOCK,M))
-		if(probinj(45,inj) || (mBlend in old_mutations))
+	if (ismuton(BLENDBLOCK,M))
+		if (probinj(45,inj) || (mBlend in old_mutations))
 			M.mutations.Add(mBlend)
 			M << "\blue You feel alone"
-	if(ismuton(HALLUCINATIONBLOCK,M))
-		if(probinj(45,inj) || (mHallucination in old_mutations))
+	if (ismuton(HALLUCINATIONBLOCK,M))
+		if (probinj(45,inj) || (mHallucination in old_mutations))
 			M.mutations.Add(mHallucination)
 			M << "\blue Your mind says 'Hello'"
-	if(ismuton(NOPRINTSBLOCK,M))
-		if(probinj(45,inj) || (mFingerprints in old_mutations))
+	if (ismuton(NOPRINTSBLOCK,M))
+		if (probinj(45,inj) || (mFingerprints in old_mutations))
 			M.mutations.Add(mFingerprints)
 			M << "\blue Your fingers feel numb"
-	if(ismuton(SHOCKIMMUNITYBLOCK,M))
-		if(probinj(45,inj) || (mShock in old_mutations))
+	if (ismuton(SHOCKIMMUNITYBLOCK,M))
+		if (probinj(45,inj) || (mShock in old_mutations))
 			M.mutations.Add(mShock)
 			M << "\blue You feel strange"
-	if(ismuton(SMALLSIZEBLOCK,M))
-		if(probinj(45,inj) || (mSmallsize in old_mutations))
+	if (ismuton(SMALLSIZEBLOCK,M))
+		if (probinj(45,inj) || (mSmallsize in old_mutations))
 			M << "\blue Your skin feels rubbery"
 			M.mutations.Add(mSmallsize)
 
 
 
 	if (isblockon(getblock(M.dna.struc_enzymes, HULKBLOCK,3),HULKBLOCK))
-		if(probinj(5,inj) || (HULK in old_mutations))
+		if (probinj(5,inj) || (HULK in old_mutations))
 			M << "\blue Your muscles hurt."
 			M.mutations.Add(HULK)
 	if (isblockon(getblock(M.dna.struc_enzymes, HEADACHEBLOCK,3),HEADACHEBLOCK))
@@ -471,7 +471,7 @@
 	if (isblockon(getblock(M.dna.struc_enzymes, FAKEBLOCK,3),FAKEBLOCK))
 		M << "\red You feel strange."
 		if (prob(95))
-			if(prob(50))
+			if (prob(50))
 				randmutb(M)
 			else
 				randmuti(M)
@@ -487,7 +487,7 @@
 		M.disabilities |= TOURETTES
 		M << "\red You twitch."
 	if (isblockon(getblock(M.dna.struc_enzymes, XRAYBLOCK,3),XRAYBLOCK))
-		if(probinj(30,inj) || (XRAY in old_mutations))
+		if (probinj(30,inj) || (XRAY in old_mutations))
 			M << "\blue The walls suddenly disappear."
 //			M.sight |= (SEE_MOBS|SEE_OBJS|SEE_TURFS)
 //			M.see_in_dark = 8
@@ -497,14 +497,14 @@
 		M.disabilities |= NERVOUS
 		M << "\red You feel nervous."
 	if (isblockon(getblock(M.dna.struc_enzymes, FIREBLOCK,3),FIREBLOCK))
-		if(probinj(30,inj) || (COLD_RESISTANCE in old_mutations))
+		if (probinj(30,inj) || (COLD_RESISTANCE in old_mutations))
 			M << "\blue Your body feels warm."
 			M.mutations.Add(COLD_RESISTANCE)
 	if (isblockon(getblock(M.dna.struc_enzymes, BLINDBLOCK,3),BLINDBLOCK))
 		M.sdisabilities |= BLIND
 		M << "\red You can't seem to see anything."
 	if (isblockon(getblock(M.dna.struc_enzymes, TELEBLOCK,3),TELEBLOCK))
-		if(probinj(15,inj) || (TK in old_mutations))
+		if (probinj(15,inj) || (TK in old_mutations))
 			M << "\blue You feel smarter."
 			M.mutations.Add(TK)
 	if (isblockon(getblock(M.dna.struc_enzymes, DEAFBLOCK,3),DEAFBLOCK))
@@ -516,7 +516,7 @@
 		M << "Your eyes feel weird..."
 
 	/* If you want the new mutations to work, UNCOMMENT THIS.
-	if(istype(M, /mob/living/carbon))
+	if (istype(M, /mob/living/carbon))
 		for (var/datum/mutations/mut in global_mutations)
 			mut.check_mutation(M)
 	*/
@@ -531,7 +531,7 @@
 			implants += W
 			W.loc = null
 
-		if(!connected)
+		if (!connected)
 			for(var/obj/item/W in (H.contents-implants))
 				if (W==H.w_uniform) // will be teared
 					continue
@@ -550,13 +550,13 @@
 
 
 		var/mob/living/carbon/monkey/O = null
-		if(H.species.primitive)
+		if (H.species.primitive)
 			O = new H.species.primitive(src)
 		else
 			H.gib() //Trying to change the species of a creature with no primitive var set is messy.
 			return
 
-		if(M)
+		if (M)
 			if (M.dna)
 				O.dna = M.dna
 				M.dna = null
@@ -577,7 +577,7 @@
 
 		O.loc = M.loc
 
-		if(M.mind)
+		if (M.mind)
 			M.mind.transfer_to(O)	//transfer our mind to the cute little monkey
 
 		if (connected) //inside dna thing
@@ -606,7 +606,7 @@
 		for(var/obj/item/weapon/implant/W in Mo)
 			implants += W
 			W.loc = null
-		if(!connected)
+		if (!connected)
 			for(var/obj/item/W in (Mo.contents-implants))
 				Mo.drop_from_inventory(W)
 			M.monkeyizing = 1
@@ -622,7 +622,7 @@
 			del(animation)
 
 		var/mob/living/carbon/human/O = new( src )
-		if(Mo.greaterform)
+		if (Mo.greaterform)
 			O.set_species(Mo.greaterform)
 
 		if (isblockon(getblock(M.dna.uni_identity, 11,3),11))
@@ -649,7 +649,7 @@
 
 		O.loc = M.loc
 
-		if(M.mind)
+		if (M.mind)
 			M.mind.transfer_to(O)	//transfer our mind to the human
 
 		if (connected) //inside dna thing
@@ -682,7 +682,7 @@
 		del(M)
 		return
 //////////////////////////////////////////////////////////// Monkey Block
-	if(M)
+	if (M)
 		M.update_icon = 1	//queue a full icon update at next life() call
 	return null
 /////////////////////////// DNA MISC-PROCS
@@ -732,9 +732,9 @@
 		return
 	src.go_out()
 	for(var/obj/O in src)
-		if((!istype(O,/obj/item/weapon/circuitboard/clonescanner)) && (!istype(O,/obj/item/weapon/stock_parts)) && (!istype(O,/obj/item/weapon/cable_coil)))
+		if ((!istype(O,/obj/item/weapon/circuitboard/clonescanner)) && (!istype(O,/obj/item/weapon/stock_parts)) && (!istype(O,/obj/item/weapon/cable_coil)))
 			O.loc = get_turf(src)//Ejects items that manage to get in there (exluding the components)
-	if(!occupant)
+	if (!occupant)
 		for(var/mob/M in src)//Failsafe so you can get mobs out
 			M.loc = get_turf(src)
 	add_fingerprint(usr)
@@ -781,7 +781,7 @@
 		user << "\blue <B>Subject cannot have abiotic items on.</B>"
 		return
 	var/mob/M = G.affecting
-	if(M.client)
+	if (M.client)
 		M.client.perspective = EYE_PERSPECTIVE
 		M.client.eye = src
 	M.loc = src
@@ -791,14 +791,14 @@
 	src.add_fingerprint(user)
 
 	// search for ghosts, if the corpse is empty and the scanner is connected to a cloner
-	if(locate(/obj/machinery/computer/cloning, get_step(src, NORTH)) \
+	if (locate(/obj/machinery/computer/cloning, get_step(src, NORTH)) \
 		|| locate(/obj/machinery/computer/cloning, get_step(src, SOUTH)) \
 		|| locate(/obj/machinery/computer/cloning, get_step(src, EAST)) \
 		|| locate(/obj/machinery/computer/cloning, get_step(src, WEST)))
 
-		if(!M.client && M.mind)
+		if (!M.client && M.mind)
 			for(var/mob/dead/observer/ghost in player_list)
-				if(ghost.mind == M.mind)
+				if (ghost.mind == M.mind)
 					ghost << "<b><font color = #330033><font size = 3>Your corpse has been placed into a cloning scanner. Return to your body if you want to be resurrected/cloned!</b> (Verbs -> Ghost -> Re-enter corpse)</font color>"
 					break
 	del(G)
@@ -824,7 +824,7 @@
 
 /obj/machinery/dna_scannernew/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			for(var/atom/movable/A as mob|obj in src)
 				A.loc = src.loc
 				ex_act(severity)
@@ -832,7 +832,7 @@
 			//SN src = null
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
@@ -841,7 +841,7 @@
 				//SN src = null
 				del(src)
 				return
-		if(3.0)
+		if (3.0)
 			if (prob(25))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
@@ -855,7 +855,7 @@
 
 
 /obj/machinery/dna_scannernew/blob_act()
-	if(prob(75))
+	if (prob(75))
 		for(var/atom/movable/A as mob|obj in src)
 			A.loc = src.loc
 		del(src)
@@ -864,11 +864,11 @@
 /obj/machinery/computer/scan_consolenew/ex_act(severity)
 
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			//SN src = null
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				//SN src = null
 				del(src)
@@ -878,13 +878,13 @@
 
 /obj/machinery/computer/scan_consolenew/blob_act()
 
-	if(prob(75))
+	if (prob(75))
 		del(src)
 
 /obj/machinery/computer/scan_consolenew/power_change()
-	if(stat & BROKEN)
+	if (stat & BROKEN)
 		icon_state = "broken"
-	else if(powered())
+	else if (powered())
 		icon_state = initial(icon_state)
 		stat &= ~NOPOWER
 	else
@@ -897,7 +897,7 @@
 	spawn(5)
 		for(dir in list(NORTH,EAST,SOUTH,WEST))
 			connected = locate(/obj/machinery/dna_scannernew, get_step(src, dir))
-			if(!isnull(connected))
+			if (!isnull(connected))
 				break
 		spawn(250)
 			src.injectorready = 1
@@ -913,7 +913,7 @@
 		src.updateUsrDialog()
 /*
 /obj/machinery/computer/scan_consolenew/process() //not really used right now
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 	if (!( src.status )) //remove this
 		return
@@ -926,7 +926,7 @@
 	return src.attack_hand(user)
 
 /obj/machinery/computer/scan_consolenew/attack_hand(user as mob)
-	if(..())
+	if (..())
 		return
 	var/dat
 	if (src.delete && src.temphtml) //Window in buffer but its just simple message, so nothing
@@ -938,8 +938,8 @@
 		if (src.connected) //Is something connected?
 			var/mob/living/occupant = src.connected.occupant
 			dat = "<font color='blue'><B>Occupant Statistics:</B></FONT><BR>" //Blah obvious
-			if(occupant && occupant.dna) //is there REALLY someone in there?
-				if(NOCLONE in occupant.mutations)
+			if (occupant && occupant.dna) //is there REALLY someone in there?
+				if (NOCLONE in occupant.mutations)
 					dat += "The occupant's DNA structure is ruined beyond recognition, please insert a subject with an intact DNA structure.<BR><BR>" //NOPE. -Pete
 					dat += text("<A href='?src=\ref[];buffermenu=1'>View/Edit/Transfer Buffer</A><BR><BR>", src)
 					dat += text("<A href='?src=\ref[];radset=1'>Radiation Emitter Settings</A><BR><BR>", src)
@@ -948,9 +948,9 @@
 						sleep(1)
 					var/t1
 					switch(occupant.stat) // obvious, see what their status is
-						if(0)
+						if (0)
 							t1 = "Conscious"
-						if(1)
+						if (1)
 							t1 = "Unconscious"
 						else
 							t1 = "*dead*"
@@ -991,19 +991,19 @@
 
 /obj/machinery/computer/scan_consolenew/proc/setInjectorBlock(var/obj/item/weapon/dnainjector/I, var/blk, var/buffer)
 	var/pos = findtext(blk,":")
-	if(!pos) return 0
+	if (!pos) return 0
 	var/id = text2num(copytext(blk,1,pos))
-	if(!id) return 0
+	if (!id) return 0
 	I.block = id
 	I.dna = copytext(buffer,id*3-2,id*3+1)
 	return 1
 
 /obj/machinery/computer/scan_consolenew/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
-	if(!istype(usr.loc, /turf))
+	if (!istype(usr.loc, /turf))
 		return
-	if(!src || !src.connected)
+	if (!src || !src.connected)
 		return
 	if ((usr.contents.Find(src) || in_range(src, usr) && istype(src.loc, /turf)) || (istype(usr, /mob/living/silicon)))
 		usr.set_machine(src)
@@ -1012,7 +1012,7 @@
 				src.connected.locked = !( src.connected.locked )
 		////////////////////////////////////////////////////////
 		if (href_list["genpulse"])
-			if(!src.connected.occupant || !src.connected.occupant.dna)//Makes sure someone is in there (And valid) before trying anything
+			if (!src.connected.occupant || !src.connected.occupant.dna)//Makes sure someone is in there (And valid) before trying anything
 				src.temphtml = text("No viable occupant detected.")//More than anything, this just acts as a sanity check in case the option DOES appear for whatever reason
 				usr << browse(temphtml, "window=scannernew;size=550x650")
 				onclose(usr, "scannernew")
@@ -1029,12 +1029,12 @@
 					delete = 0
 					return null
 				if (prob(95))
-					if(prob(75))
+					if (prob(75))
 						randmutb(src.connected.occupant)
 					else
 						randmuti(src.connected.occupant)
 				else
-					if(prob(95))
+					if (prob(95))
 						randmutg(src.connected.occupant)
 					else
 						randmuti(src.connected.occupant)
@@ -1049,7 +1049,7 @@
 			src.temphtml += text("<A href='?src=\ref[];radinminus=1'>--</A> Intesity <A href='?src=\ref[];radinplus=1'>++</A><BR>", src, src)
 			src.delete = 0
 		if (href_list["radleplus"])
-			if(!src.connected.occupant || !src.connected.occupant.dna)
+			if (!src.connected.occupant || !src.connected.occupant.dna)
 				src.temphtml = text("No viable occupant detected.")
 				usr << browse(temphtml, "window=scannernew;size=550x650")
 				onclose(usr, "scannernew")
@@ -1058,7 +1058,7 @@
 				src.radduration++
 			dopage(src,"radset")
 		if (href_list["radleminus"])
-			if(!src.connected.occupant || !src.connected.occupant.dna)
+			if (!src.connected.occupant || !src.connected.occupant.dna)
 				src.temphtml = text("No viable occupant detected.")
 				usr << browse(temphtml, "window=scannernew;size=550x650")
 				onclose(usr, "scannernew")
@@ -1076,7 +1076,7 @@
 			dopage(src,"radset")
 		////////////////////////////////////////////////////////
 		if (href_list["unimenu"])
-			if(!src.connected.occupant || !src.connected.occupant.dna)
+			if (!src.connected.occupant || !src.connected.occupant.dna)
 				src.temphtml = text("No viable occupant detected.")
 				usr << browse(temphtml, "window=scannernew;size=550x650")
 				onclose(usr, "scannernew")
@@ -1125,17 +1125,17 @@
 				src.unitarget++
 				src.unitargethex = src.unitarget
 				switch(unitarget)
-					if(10)
+					if (10)
 						src.unitargethex = "A"
-					if(11)
+					if (11)
 						src.unitargethex = "B"
-					if(12)
+					if (12)
 						src.unitargethex = "C"
-					if(13)
+					if (13)
 						src.unitargethex = "D"
-					if(14)
+					if (14)
 						src.unitargethex = "E"
-					if(15)
+					if (15)
 						src.unitargethex = "F"
 			else
 				src.unitarget = 0
@@ -1146,15 +1146,15 @@
 				src.unitarget--
 				src.unitargethex = src.unitarget
 				switch(unitarget)
-					if(10)
+					if (10)
 						src.unitargethex = "A"
-					if(11)
+					if (11)
 						src.unitargethex = "B"
-					if(12)
+					if (12)
 						src.unitargethex = "C"
-					if(13)
+					if (13)
 						src.unitargethex = "D"
-					if(14)
+					if (14)
 						src.unitargethex = "E"
 			else
 				src.unitarget = 15
@@ -1169,7 +1169,7 @@
 				src.subblock = menusubset
 			dopage(src, "unimenu")
 		if (href_list["unipulse"])
-			if(src.connected.occupant)
+			if (src.connected.occupant)
 				var/block
 				var/newblock
 				var/tstructure2
@@ -1209,20 +1209,20 @@
 			src.delete = 0
 		////////////////////////////////////////////////////////
 		if (href_list["rejuv"])
-			if(!src.connected.occupant || !src.connected.occupant.dna)
+			if (!src.connected.occupant || !src.connected.occupant.dna)
 				src.temphtml = text("No viable occupant detected.")
 				usr << browse(temphtml, "window=scannernew;size=550x650")
 				onclose(usr, "scannernew")
 			else
 				var/mob/living/carbon/human/H = src.connected.occupant
-				if(H)
+				if (H)
 					if (H.reagents.get_reagent_amount("inaprovaline") < 60)
 						H.reagents.add_reagent("inaprovaline", 30)
 					usr << text("Occupant now has [] units of rejuvenation in his/her bloodstream.", H.reagents.get_reagent_amount("inaprovaline"))
 					src.delete = 0
 		////////////////////////////////////////////////////////
 		if (href_list["strucmenu"])
-			if(!src.connected.occupant || !src.connected.occupant.dna)
+			if (!src.connected.occupant || !src.connected.occupant.dna)
 				src.temphtml = text("No viable occupant detected.")
 				usr << browse(temphtml, "window=scannernew;size=550x650")
 				onclose(usr, "scannernew")
@@ -1293,7 +1293,7 @@
 				delete = 0
 				return null
 			///
-			if(src.connected.occupant)
+			if (src.connected.occupant)
 				if (prob((80 + (src.radduration / 2))))
 					if ((src.strucblock != 2 || src.strucblock != 12 || src.strucblock != 8 || src.strucblock || 10) && prob (20))
 						oldblock = src.strucblock
@@ -1379,7 +1379,7 @@
 			if (src.buffer3) src.temphtml += text("<A href='?src=\ref[];b3clear=1'>Clear Buffer</A><BR><BR>", src)
 			if (!src.buffer3) src.temphtml += "<BR>"
 		if (href_list["b1addui"])
-			if(src.connected.occupant && src.connected.occupant.dna)
+			if (src.connected.occupant && src.connected.occupant.dna)
 				src.buffer1iue = 0
 				src.buffer1 = src.connected.occupant.dna.uni_identity
 				if (!istype(src.connected.occupant,/mob/living/carbon/human))
@@ -1390,7 +1390,7 @@
 				src.buffer1type = "ui"
 				dopage(src,"buffermenu")
 		if (href_list["b1adduiue"])
-			if(src.connected.occupant && src.connected.occupant.dna)
+			if (src.connected.occupant && src.connected.occupant.dna)
 				src.buffer1 = src.connected.occupant.dna.uni_identity
 				if (!istype(src.connected.occupant,/mob/living/carbon/human))
 					src.buffer1owner = src.connected.occupant.name
@@ -1401,7 +1401,7 @@
 				src.buffer1iue = 1
 				dopage(src,"buffermenu")
 		if (href_list["b2adduiue"])
-			if(src.connected.occupant && src.connected.occupant.dna)
+			if (src.connected.occupant && src.connected.occupant.dna)
 				src.buffer2 = src.connected.occupant.dna.uni_identity
 				if (!istype(src.connected.occupant,/mob/living/carbon/human))
 					src.buffer2owner = src.connected.occupant.name
@@ -1412,7 +1412,7 @@
 				src.buffer2iue = 1
 				dopage(src,"buffermenu")
 		if (href_list["b3adduiue"])
-			if(src.connected.occupant && src.connected.occupant.dna)
+			if (src.connected.occupant && src.connected.occupant.dna)
 				src.buffer3 = src.connected.occupant.dna.uni_identity
 				if (!istype(src.connected.occupant,/mob/living/carbon/human))
 					src.buffer3owner = src.connected.occupant.name
@@ -1423,7 +1423,7 @@
 				src.buffer3iue = 1
 				dopage(src,"buffermenu")
 		if (href_list["b2addui"])
-			if(src.connected.occupant && src.connected.occupant.dna)
+			if (src.connected.occupant && src.connected.occupant.dna)
 				src.buffer2iue = 0
 				src.buffer2 = src.connected.occupant.dna.uni_identity
 				if (!istype(src.connected.occupant,/mob/living/carbon/human))
@@ -1434,7 +1434,7 @@
 				src.buffer2type = "ui"
 				dopage(src,"buffermenu")
 		if (href_list["b3addui"])
-			if(src.connected.occupant && src.connected.occupant.dna)
+			if (src.connected.occupant && src.connected.occupant.dna)
 				src.buffer3iue = 0
 				src.buffer3 = src.connected.occupant.dna.uni_identity
 				if (!istype(src.connected.occupant,/mob/living/carbon/human))
@@ -1445,7 +1445,7 @@
 				src.buffer3type = "ui"
 				dopage(src,"buffermenu")
 		if (href_list["b1addse"])
-			if(src.connected.occupant && src.connected.occupant.dna)
+			if (src.connected.occupant && src.connected.occupant.dna)
 				src.buffer1iue = 0
 				src.buffer1 = src.connected.occupant.dna.struc_enzymes
 				if (!istype(src.connected.occupant,/mob/living/carbon/human))
@@ -1456,7 +1456,7 @@
 				src.buffer1type = "se"
 				dopage(src,"buffermenu")
 		if (href_list["b2addse"])
-			if(src.connected.occupant && src.connected.occupant.dna)
+			if (src.connected.occupant && src.connected.occupant.dna)
 				src.buffer2iue = 0
 				src.buffer2 = src.connected.occupant.dna.struc_enzymes
 				if (!istype(src.connected.occupant,/mob/living/carbon/human))
@@ -1467,7 +1467,7 @@
 				src.buffer2type = "se"
 				dopage(src,"buffermenu")
 		if (href_list["b3addse"])
-			if(src.connected.occupant && src.connected.occupant.dna)
+			if (src.connected.occupant && src.connected.occupant.dna)
 				src.buffer3iue = 0
 				src.buffer3 = src.connected.occupant.dna.struc_enzymes
 				if (!istype(src.connected.occupant,/mob/living/carbon/human))
@@ -1554,12 +1554,12 @@
 				var/success = 1
 				var/obj/item/weapon/dnainjector/I = new /obj/item/weapon/dnainjector
 				I.dnatype = src.buffer1type
-				if(href_list["b1injector"]=="2")
+				if (href_list["b1injector"]=="2")
 					var/blk = input(usr,"Select Block","Block") in all_dna_blocks(src.buffer1)
 					success = setInjectorBlock(I,blk,src.buffer1)
 				else
 					I.dna = src.buffer1
-				if(success)
+				if (success)
 					I.loc = src.loc
 					I.name += " ([src.buffer1label])"
 					if (src.buffer1iue) I.ue = src.buffer1owner //lazy haw haw
@@ -1579,12 +1579,12 @@
 				var/success = 1
 				var/obj/item/weapon/dnainjector/I = new /obj/item/weapon/dnainjector
 				I.dnatype = src.buffer2type
-				if(href_list["b2injector"]=="2")
+				if (href_list["b2injector"]=="2")
 					var/blk = input(usr,"Select Block","Block") in all_dna_blocks(src.buffer2)
 					success = setInjectorBlock(I,blk,src.buffer2)
 				else
 					I.dna = src.buffer2
-				if(success)
+				if (success)
 					I.loc = src.loc
 					I.name += " ([src.buffer2label])"
 					if (src.buffer2iue) I.ue = src.buffer2owner //lazy haw haw
@@ -1604,12 +1604,12 @@
 				var/success = 1
 				var/obj/item/weapon/dnainjector/I = new /obj/item/weapon/dnainjector
 				I.dnatype = src.buffer3type
-				if(href_list["b3injector"]=="2")
+				if (href_list["b3injector"]=="2")
 					var/blk = input(usr,"Select Block","Block") in all_dna_blocks(src.buffer3)
 					success = setInjectorBlock(I,blk,src.buffer3)
 				else
 					I.dna = src.buffer3
-				if(success)
+				if (success)
 					I.loc = src.loc
 					I.name += " ([src.buffer3label])"
 					if (src.buffer3iue) I.ue = src.buffer3owner //lazy haw haw
@@ -1632,17 +1632,17 @@
 			if ((isnull(src.diskette)) || (!src.diskette.data) || (src.diskette.data == ""))
 				return
 			switch(buffernum)
-				if(1)
+				if (1)
 					src.buffer1 = src.diskette.data
 					src.buffer1type = src.diskette.data_type
 					src.buffer1iue = src.diskette.ue
 					src.buffer1owner = src.diskette.owner
-				if(2)
+				if (2)
 					src.buffer2 = src.diskette.data
 					src.buffer2type = src.diskette.data_type
 					src.buffer2iue = src.diskette.ue
 					src.buffer2owner = src.diskette.owner
-				if(3)
+				if (3)
 					src.buffer3 = src.diskette.data
 					src.buffer3type = src.diskette.data_type
 					src.buffer3iue = src.diskette.ue
@@ -1656,19 +1656,19 @@
 			if ((isnull(src.diskette)) || (src.diskette.read_only))
 				return
 			switch(buffernum)
-				if(1)
+				if (1)
 					src.diskette.data = buffer1
 					src.diskette.data_type = src.buffer1type
 					src.diskette.ue = src.buffer1iue
 					src.diskette.owner = src.buffer1owner
 					src.diskette.name = "data disk - '[src.buffer1owner]'"
-				if(2)
+				if (2)
 					src.diskette.data = buffer2
 					src.diskette.data_type = src.buffer2type
 					src.diskette.ue = src.buffer2iue
 					src.diskette.owner = src.buffer2owner
 					src.diskette.name = "data disk - '[src.buffer2owner]'"
-				if(3)
+				if (3)
 					src.diskette.data = buffer3
 					src.diskette.data_type = src.buffer3type
 					src.diskette.ue = src.buffer3iue

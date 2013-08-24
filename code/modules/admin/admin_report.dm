@@ -17,11 +17,11 @@ datum/report_topic_handler
 	Topic(href,href_list)
 		..()
 		var/client/C = locate(href_list["client"])
-		if(href_list["action"] == "show_reports")
+		if (href_list["action"] == "show_reports")
 			C.display_admin_reports()
-		else if(href_list["action"] == "remove")
+		else if (href_list["action"] == "remove")
 			C.mark_report_done(text2num(href_list["ID"]))
-		else if(href_list["action"] == "edit")
+		else if (href_list["action"] == "edit")
 			C.edit_report(text2num(href_list["ID"]))
 
 var/datum/report_topic_handler/report_topic_handler
@@ -39,8 +39,8 @@ proc/make_report(body, author, okey, cid)
 	Reports["reports"]   >> reports
 	Reports["lastID"] >> lastID
 
-	if(!reports) 	reports = list()
-	if(!lastID) 	lastID = 0
+	if (!reports) 	reports = list()
+	if (!lastID) 	lastID = 0
 
 	var/datum/admin_report/created = new()
 	created.ID 		= ++lastID
@@ -63,17 +63,17 @@ proc/load_reports()
 
 	Reports["reports"] >> reports
 
-	if(!reports) reports = list()
+	if (!reports) reports = list()
 
 	return reports
 
 // check if there are any unhandled reports
 client/proc/unhandled_reports()
-	if(!src.holder) return 0
+	if (!src.holder) return 0
 	var/list/reports = load_reports()
 
 	for(var/datum/admin_report/N in reports)
-		if(N.done)
+		if (N.done)
 			continue
 		else return 1
 
@@ -83,8 +83,8 @@ client/proc/unhandled_reports()
 client/proc/is_reported()
 	var/list/reports = load_reports()
 
-	for(var/datum/admin_report/N in reports) if(!N.done)
-		if(N.offender_key == src.key)
+	for(var/datum/admin_report/N in reports) if (!N.done)
+		if (N.offender_key == src.key)
 			return 1
 
 	return 0
@@ -93,22 +93,22 @@ client/proc/is_reported()
 client/proc/display_admin_reports()
 	set category = "Admin"
 	set name = "Display Admin Reports"
-	if(!src.holder) return
+	if (!src.holder) return
 
 	var/list/reports = load_reports()
 
 	var/output = ""
-	if(unhandled_reports())
+	if (unhandled_reports())
 		// load the list of unhandled reports
 		for(var/datum/admin_report/N in reports)
-			if(N.done)
+			if (N.done)
 				continue
 			output += "<b>Reported player:</b> [N.offender_key](CID: [N.offender_cid])<br>"
 			output += "<b>Offense:</b>[N.body]<br>"
 			output += "<small>Occured at [time2text(N.date,"MM/DD hh:mm:ss")]</small><br>"
 			output += "<small>authored by <i>[N.author]</i></small><br>"
 			output += " <a href='?src=\ref[report_topic_handler];client=\ref[src];action=remove;ID=[N.ID]'>Flag as Handled</a>"
-			if(src.key == N.author)
+			if (src.key == N.author)
 				output += " <a href='?src=\ref[report_topic_handler];client=\ref[src];action=edit;ID=[N.ID]'>Edit</a>"
 			output += "<br>"
 			output += "<br>"
@@ -120,15 +120,15 @@ client/proc/display_admin_reports()
 
 client/proc/Report(mob/M as mob in world)
 	set category = "Admin"
-	if(!src.holder)
+	if (!src.holder)
 		return
 
 	var/CID = "Unknown"
-	if(M.client)
+	if (M.client)
 		CID = M.client.computer_id
 
 	var/body = input(src.mob, "Describe in detail what you're reporting [M] for", "Report") as null|text
-	if(!body) return
+	if (!body) return
 
 
 	make_report(body, key, M.key, CID)
@@ -137,7 +137,7 @@ client/proc/Report(mob/M as mob in world)
 		display_admin_reports()
 
 client/proc/mark_report_done(ID as num)
-	if(!src.holder || src.holder.level < 0)
+	if (!src.holder || src.holder.level < 0)
 		return
 
 	var/savefile/Reports = new("data/reports.sav")
@@ -147,9 +147,9 @@ client/proc/mark_report_done(ID as num)
 
 	var/datum/admin_report/found
 	for(var/datum/admin_report/N in reports)
-		if(N.ID == ID)
+		if (N.ID == ID)
 			found = N
-	if(!found) src << "<b>* An error occured, sorry.</b>"
+	if (!found) src << "<b>* An error occured, sorry.</b>"
 
 	found.done = 1
 
@@ -157,7 +157,7 @@ client/proc/mark_report_done(ID as num)
 
 
 client/proc/edit_report(ID as num)
-	if(!src.holder || src.holder.level < 0)
+	if (!src.holder || src.holder.level < 0)
 		src << "<b>You tried to modify the news, but you're not an admin!"
 		return
 
@@ -168,12 +168,12 @@ client/proc/edit_report(ID as num)
 
 	var/datum/admin_report/found
 	for(var/datum/admin_report/N in reports)
-		if(N.ID == ID)
+		if (N.ID == ID)
 			found = N
-	if(!found) src << "<b>* An error occured, sorry.</b>"
+	if (!found) src << "<b>* An error occured, sorry.</b>"
 
 	var/body = input(src.mob, "Enter a body for the news", "Body") as null|message
-	if(!body) return
+	if (!body) return
 
 	found.body = body
 

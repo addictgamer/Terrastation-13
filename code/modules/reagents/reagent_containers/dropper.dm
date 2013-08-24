@@ -12,37 +12,37 @@
 	var/filled = 0
 
 	afterattack(obj/target, mob/user , flag)
-		if(!target.reagents) return
+		if (!target.reagents) return
 
-		if(filled)
+		if (filled)
 
-			if(target.reagents.total_volume >= target.reagents.maximum_volume)
+			if (target.reagents.total_volume >= target.reagents.maximum_volume)
 				user << "\red [target] is full."
 				return
 
-			if(!target.is_open_container() && !ismob(target) && !istype(target,/obj/item/weapon/reagent_containers/food) && !istype(target, /obj/item/clothing/mask/cigarette)) //You can inject humans and food but you cant remove the shit.
+			if (!target.is_open_container() && !ismob(target) && !istype(target,/obj/item/weapon/reagent_containers/food) && !istype(target, /obj/item/clothing/mask/cigarette)) //You can inject humans and food but you cant remove the shit.
 				user << "\red You cannot directly fill this object."
 				return
 
 			var/trans = 0
 
-			if(ismob(target))
-				if(istype(target , /mob/living/carbon/human))
+			if (ismob(target))
+				if (istype(target , /mob/living/carbon/human))
 					var/mob/living/carbon/human/victim = target
 
 					var/obj/item/safe_thing = null
-					if( victim.wear_mask )
+					if ( victim.wear_mask )
 						if ( victim.wear_mask.flags & MASKCOVERSEYES )
 							safe_thing = victim.wear_mask
-					if( victim.head )
+					if ( victim.head )
 						if ( victim.head.flags & MASKCOVERSEYES )
 							safe_thing = victim.head
-					if(victim.glasses)
+					if (victim.glasses)
 						if ( !safe_thing )
 							safe_thing = victim.glasses
 
-					if(safe_thing)
-						if(!safe_thing.reagents)
+					if (safe_thing)
+						if (!safe_thing.reagents)
 							safe_thing.create_reagents(100)
 						trans = src.reagents.trans_to(safe_thing, amount_per_transfer_from_this)
 
@@ -65,7 +65,7 @@
 				src.reagents.reaction(target, TOUCH)
 				var/mob/M = target
 				var/R
-				if(src.reagents)
+				if (src.reagents)
 					for(var/datum/reagent/A in src.reagents.reagent_list)
 						R += A.id + " ("
 						R += num2text(A.volume) + "),"
@@ -81,11 +81,11 @@
 
 		else
 
-			if(!target.is_open_container() && !istype(target,/obj/structure/reagent_dispensers))
+			if (!target.is_open_container() && !istype(target,/obj/structure/reagent_dispensers))
 				user << "\red You cannot directly remove reagents from [target]."
 				return
 
-			if(!target.reagents.total_volume)
+			if (!target.reagents.total_volume)
 				user << "\red [target] is empty."
 				return
 

@@ -20,7 +20,7 @@
 		var/n = name //just in case commands rename it in the ..() call
 		..()
 		spawn(4)
-			if(src)
+			if (src)
 				update_icon()
 				name = n
 
@@ -52,14 +52,14 @@
 	heat_capacity = 325000
 
 /turf/simulated/floor/engine/attackby(obj/item/weapon/C as obj, mob/user as mob)
-	if(!C)
+	if (!C)
 		return
-	if(!user)
+	if (!user)
 		return
-	if(istype(C, /obj/item/weapon/wrench))
+	if (istype(C, /obj/item/weapon/wrench))
 		user << "\blue Removing rods..."
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 80, 1)
-		if(do_after(user, 30))
+		if (do_after(user, 30))
 			new /obj/item/stack/rods(src, 2)
 			ChangeTurf(/turf/simulated/floor)
 			var/turf/simulated/floor/F = src
@@ -174,10 +174,10 @@
 		icon_state = "grass[pick("1","2","3","4")]"
 		..()
 		spawn(4)
-			if(src)
+			if (src)
 				update_icon()
 				for(var/direction in cardinal)
-					if(istype(get_step(src,direction),/turf/simulated/floor))
+					if (istype(get_step(src,direction),/turf/simulated/floor))
 						var/turf/simulated/floor/FF = get_step(src,direction)
 						FF.update_icon() //so siding get updated properly
 
@@ -188,14 +188,14 @@
 
 	New()
 		floor_tile.New() //I guess New() isn't ran on objects spawned without the definition of a turf to house them, ah well.
-		if(!icon_state)
+		if (!icon_state)
 			icon_state = "carpet"
 		..()
 		spawn(4)
-			if(src)
+			if (src)
 				update_icon()
 				for(var/direction in list(1,2,4,8,5,6,9,10))
-					if(istype(get_step(src,direction),/turf/simulated/floor))
+					if (istype(get_step(src,direction),/turf/simulated/floor))
 						var/turf/simulated/floor/FF = get_step(src,direction)
 						FF.update_icon() //so siding get updated properly
 

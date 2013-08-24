@@ -32,47 +32,47 @@
 
 //Returns list element or null. Should prevent "index out of bounds" error.
 proc/listgetindex(var/list/list,index)
-	if(istype(list) && list.len)
-		if(isnum(index))
-			if(InRange(index,1,list.len))
+	if (istype(list) && list.len)
+		if (isnum(index))
+			if (InRange(index,1,list.len))
 				return list[index]
-		else if(index in list)
+		else if (index in list)
 			return list[index]
 	return
 
 proc/islist(list/list)
-	if(istype(list))
+	if (istype(list))
 		return 1
 	return 0
 
 //Return either pick(list) or null if list is not of type /list or is empty
 proc/safepick(list/list)
-	if(!islist(list) || !list.len)
+	if (!islist(list) || !list.len)
 		return
 	return pick(list)
 
 //Checks if the list is empty
 proc/isemptylist(list/list)
-	if(!list.len)
+	if (!list.len)
 		return 1
 	return 0
 
 //Checks for specific types in a list
 /proc/is_type_in_list(var/atom/A, var/list/L)
 	for(var/type in L)
-		if(istype(A, type))
+		if (istype(A, type))
 			return 1
 	return 0
 
 //Empties the list by setting the length to 0. Hopefully the elements get garbage collected
 proc/clearlist(list/list)
-	if(istype(list))
+	if (istype(list))
 		list.len = 0
 	return
 
 //Removes any null entries from the list
 proc/listclearnulls(list/list)
-	if(istype(list))
+	if (istype(list))
 		while(null in list)
 			list -= null
 	return
@@ -83,12 +83,12 @@ proc/listclearnulls(list/list)
  * If either of arguments is not a list, returns null
  */
 /proc/difflist(var/list/first, var/list/second, var/skiprep=0)
-	if(!islist(first) || !islist(second))
+	if (!islist(first) || !islist(second))
 		return
 	var/list/result = new
-	if(skiprep)
+	if (skiprep)
 		for(var/e in first)
-			if(!(e in result) && !(e in second))
+			if (!(e in result) && !(e in second))
 				result += e
 	else
 		result = first - second
@@ -100,10 +100,10 @@ proc/listclearnulls(list/list)
  * If either of arguments is not a list, returns null
  */
 /proc/uniquemergelist(var/list/first, var/list/second, var/skiprep=0)
-	if(!islist(first) || !islist(second))
+	if (!islist(first) || !islist(second))
 		return
 	var/list/result = new
-	if(skiprep)
+	if (skiprep)
 		result = difflist(first, second, skiprep)+difflist(second, first, skiprep)
 	else
 		result = first ^ second
@@ -149,14 +149,14 @@ proc/listclearnulls(list/list)
 //Reverses the order of items in the list
 /proc/reverselist(list/L)
 	var/list/output = list()
-	if(L)
+	if (L)
 		for(var/i = L.len; i >= 1; i--)
 			output += L[i]
 	return output
 
 //Randomize: Return the list in a random order
 /proc/shuffle(var/list/shufflelist)
-	if(!shufflelist)
+	if (!shufflelist)
 		return
 	var/list/new_list = list()
 	var/list/old_list = shufflelist.Copy()
@@ -170,13 +170,13 @@ proc/listclearnulls(list/list)
 /proc/uniquelist(var/list/L)
 	var/list/K = list()
 	for(var/item in L)
-		if(!(item in K))
+		if (!(item in K))
 			K += item
 	return K
 
 //Mergesort: divides up the list into halves to begin the sort
 /proc/sortKey(var/list/client/L, var/order = 1)
-	if(isnull(L) || L.len < 2)
+	if (isnull(L) || L.len < 2)
 		return L
 	var/middle = L.len / 2 + 1
 	return mergeKey(sortKey(L.Copy(0,middle)), sortKey(L.Copy(middle)), order)
@@ -189,18 +189,18 @@ proc/listclearnulls(list/list)
 	while(Li <= L.len && Ri <= R.len)
 		var/client/rL = L[Li]
 		var/client/rR = R[Ri]
-		if(sorttext(rL.ckey, rR.ckey) == order)
+		if (sorttext(rL.ckey, rR.ckey) == order)
 			result += L[Li++]
 		else
 			result += R[Ri++]
 
-	if(Li <= L.len)
+	if (Li <= L.len)
 		return (result + L.Copy(Li, 0))
 	return (result + R.Copy(Ri, 0))
 
 //Mergesort: divides up the list into halves to begin the sort
 /proc/sortAtom(var/list/atom/L, var/order = 1)
-	if(isnull(L) || L.len < 2)
+	if (isnull(L) || L.len < 2)
 		return L
 	var/middle = L.len / 2 + 1
 	return mergeAtoms(sortAtom(L.Copy(0,middle)), sortAtom(L.Copy(middle)), order)
@@ -213,12 +213,12 @@ proc/listclearnulls(list/list)
 	while(Li <= L.len && Ri <= R.len)
 		var/atom/rL = L[Li]
 		var/atom/rR = R[Ri]
-		if(sorttext(rL.name, rR.name) == order)
+		if (sorttext(rL.name, rR.name) == order)
 			result += L[Li++]
 		else
 			result += R[Ri++]
 
-	if(Li <= L.len)
+	if (Li <= L.len)
 		return (result + L.Copy(Li, 0))
 	return (result + R.Copy(Ri, 0))
 
@@ -227,9 +227,9 @@ proc/listclearnulls(list/list)
 
 //Mergesort: Specifically for record datums in a list.
 /proc/sortRecord(var/list/datum/data/record/L, var/field = "name", var/order = 1)
-	if(isnull(L))
+	if (isnull(L))
 		return list()
-	if(L.len < 2)
+	if (L.len < 2)
 		return L
 	var/middle = L.len / 2 + 1
 	return mergeRecordLists(sortRecord(L.Copy(0, middle), field, order), sortRecord(L.Copy(middle), field, order), field, order)
@@ -239,22 +239,22 @@ proc/listclearnulls(list/list)
 	var/Li=1
 	var/Ri=1
 	var/list/result = new()
-	if(!isnull(L) && !isnull(R))
+	if (!isnull(L) && !isnull(R))
 		while(Li <= L.len && Ri <= R.len)
 			var/datum/data/record/rL = L[Li]
-			if(isnull(rL))
+			if (isnull(rL))
 				L -= rL
 				continue
 			var/datum/data/record/rR = R[Ri]
-			if(isnull(rR))
+			if (isnull(rR))
 				R -= rR
 				continue
-			if(sorttext(rL.fields[field], rR.fields[field]) == order)
+			if (sorttext(rL.fields[field], rR.fields[field]) == order)
 				result += L[Li++]
 			else
 				result += R[Ri++]
 
-		if(Li <= L.len)
+		if (Li <= L.len)
 			return (result + L.Copy(Li, 0))
 	return (result + R.Copy(Ri, 0))
 
@@ -263,7 +263,7 @@ proc/listclearnulls(list/list)
 
 //Mergesort: any value in a list
 /proc/sortList(var/list/L)
-	if(L.len < 2)
+	if (L.len < 2)
 		return L
 	var/middle = L.len / 2 + 1 // Copy is first,second-1
 	return mergeLists(sortList(L.Copy(0,middle)), sortList(L.Copy(middle))) //second parameter null = to end of list
@@ -280,12 +280,12 @@ proc/listclearnulls(list/list)
 	var/Ri=1
 	var/list/result = new()
 	while(Li <= L.len && Ri <= R.len)
-		if(sorttext(L[Li], R[Ri]) < 1)
+		if (sorttext(L[Li], R[Ri]) < 1)
 			result += R[Ri++]
 		else
 			result += L[Li++]
 
-	if(Li <= L.len)
+	if (Li <= L.len)
 		return (result + L.Copy(Li, 0))
 	return (result + R.Copy(Ri, 0))
 
@@ -293,16 +293,16 @@ proc/listclearnulls(list/list)
 //Converts a bitfield to a list of numbers (or words if a wordlist is provided)
 /proc/bitfield2list(bitfield = 0, list/wordlist)
 	var/list/r = list()
-	if(istype(wordlist,/list))
+	if (istype(wordlist,/list))
 		var/max = min(wordlist.len,16)
 		var/bit = 1
 		for(var/i=1, i<=max, i++)
-			if(bitfield & bit)
+			if (bitfield & bit)
 				r += wordlist[i]
 			bit = bit << 1
 	else
 		for(var/bit=1, bit<=65535, bit = bit << 1)
-			if(bitfield & bit)
+			if (bitfield & bit)
 				r += bit
 
 	return r
@@ -311,7 +311,7 @@ proc/listclearnulls(list/list)
 /proc/get_key_by_index(var/list/L, var/index)
 	var/i = 1
 	for(var/key in L)
-		if(index == i)
+		if (index == i)
 			return key
 		i++
 	return null
@@ -319,7 +319,7 @@ proc/listclearnulls(list/list)
 /proc/count_by_type(var/list/L, type)
 	var/i = 0
 	for(var/T in L)
-		if(istype(T, type))
+		if (istype(T, type))
 			i++
 	return i
 
@@ -328,14 +328,14 @@ proc/listclearnulls(list/list)
 	//world.log << "ascending len input: [L.len]"
 	var/list/out = list(pop(L))
 	for(var/entry in L)
-		if(isnum(entry))
+		if (isnum(entry))
 			var/success = 0
 			for(var/i=1, i<=out.len, i++)
-				if(entry <= out[i])
+				if (entry <= out[i])
 					success = 1
 					out.Insert(i, entry)
 					break
-			if(!success)
+			if (!success)
 				out.Add(entry)
 
 	//world.log << "	output: [out.len]"

@@ -12,7 +12,7 @@
 	var/seal_torn = 0
 
 	attack_self(mob/user)
-		if(!contents.len)
+		if (!contents.len)
 			user << "It's empty!"
 		else
 			user.visible_message("\blue [user] unwraps the clothing from the [src][seal_torn ? "" : ", tearing the seal"].")
@@ -24,14 +24,14 @@
 		return
 
 	attackby(var/obj/item/I as obj, var/mob/user as mob)
-		if(istype(I, /obj/item/wardrobe) || istype(I, /obj/item/weapon/evidencebag))
+		if (istype(I, /obj/item/wardrobe) || istype(I, /obj/item/weapon/evidencebag))
 			return
-		if(contents.len < 20)
-			if(istype(I, /obj/item/weapon/grab))
+		if (contents.len < 20)
+			if (istype(I, /obj/item/weapon/grab))
 				return
 			user.drop_item()
 
-			if(I)
+			if (I)
 				I.loc = src
 
 			update_icon()
@@ -40,23 +40,23 @@
 		return
 
 	afterattack(atom/A as obj|turf, mob/user as mob)
-		if(A in user)
+		if (A in user)
 			return
-		if(!istype(A.loc,/turf))
+		if (!istype(A.loc,/turf))
 			user << "It's got to be on the ground to do that!"
 			return
 		var/could_fill = 1
 		for (var/obj/O in locate(A.x,A.y,A.z))
 			if (contents.len < 20)
-				if(istype(O,/obj/item/wardrobe))
+				if (istype(O,/obj/item/wardrobe))
 					continue
-				if(O.anchored || O.density || istype(O,/obj/structure))
+				if (O.anchored || O.density || istype(O,/obj/structure))
 					continue
 				contents += O;
 			else
 				could_fill = 0
 				break
-		if(could_fill)
+		if (could_fill)
 			user << "\blue You pick up all the items."
 		else
 			user << "\blue You try to pick up all of the items, but run out of space in the bag."
@@ -66,16 +66,16 @@
 	examine()
 		set src in view()
 		..()
-		if(src in usr)
+		if (src in usr)
 			usr << "It claims to contain [contents.len ? descriptor : descriptor + "... but it looks empty"]."
-			if(seal_torn && !contents.len)
+			if (seal_torn && !contents.len)
 				usr << "The seal on the bag is broken."
 			else
 				usr << "The seal on the bag is[seal_torn ? ", however, not intact" : " intact"]."
 		return
 
 	update_icon()
-		if(contents.len)
+		if (contents.len)
 			icon_state = "wardrobe"
 		else
 			icon_state = "wardrobe_empty"
@@ -604,7 +604,7 @@
 		new /obj/item/device/detective_scanner(src)
 		new /obj/item/weapon/storage/briefcase(src)
 		new /obj/item/clothing/shoes/brown(src)
-		if(prob(50))
+		if (prob(50))
 			new /obj/item/clothing/under/lawyer/bluesuit(src)
 			new /obj/item/clothing/suit/storage/lawyer/bluejacket(src)
 		else

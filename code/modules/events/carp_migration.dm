@@ -13,12 +13,12 @@
 
 /datum/event/carp_migration/start()
 	for(var/obj/effect/landmark/C in landmarks_list)
-		if(C.name == "carpspawn")
+		if (C.name == "carpspawn")
 			spawned_carp.Add(new /mob/living/simple_animal/hostile/carp(C.loc))
 
 /datum/event/carp_migration/end()
 	for(var/mob/living/simple_animal/hostile/carp/C in spawned_carp)
-		if(!C.stat)
+		if (!C.stat)
 			var/turf/T = get_turf(C)
-			if(istype(T, /turf/space))
+			if (istype(T, /turf/space))
 				del(C)

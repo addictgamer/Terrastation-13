@@ -70,19 +70,19 @@ proc/sd_Alert(client/who, message, title, buttons = list("Ok"),\
 	default, duration = 0, unfocus = 1, size = "300x200", \
 	table = "width=100% height=100%", style, tag, select, flags = SD_ALERT_SCROLL)
 
-	if(ismob(who))
+	if (ismob(who))
 		var/mob/M = who
 		who = M.client
-	if(!istype(who)) CRASH("sd_Alert: Invalid target:[who] (\ref[who])")
+	if (!istype(who)) CRASH("sd_Alert: Invalid target:[who] (\ref[who])")
 
 	var/sd_alert/T = locate(tag)
-	if(T)
-		if(istype(T)) del(T)
+	if (T)
+		if (istype(T)) del(T)
 		else CRASH("sd_Alert: tag \"[tag]\" is already in use by datum '[T]' (type: [T.type])")
 	T = new(who, tag)
-	if(duration)
+	if (duration)
 		spawn(duration)
-			if(T) del(T)
+			if (T) del(T)
 			return
 	T.Display(message,title,buttons,default,unfocus,size,table,style,select,flags)
 	. = T.Response()
@@ -103,14 +103,14 @@ sd_alert
 		src.tag = tag
 
 	Topic(href,params[])
-		if(usr.client != target) return
+		if (usr.client != target) return
 		response = params["clk"]
 
 	proc/Display(message,title,list/buttons,default,unfocus,size,table,style,select,flags)
-		if(unfocus) spawn() target << browse(null,null)
-		if(istext(buttons)) buttons = list(buttons)
-		if(!default) default = buttons[1]
-		if(!(flags & SD_ALERT_NOVALIDATE)) validation = buttons.Copy()
+		if (unfocus) spawn() target << browse(null,null)
+		if (istext(buttons)) buttons = list(buttons)
+		if (!default) default = buttons[1]
+		if (!(flags & SD_ALERT_NOVALIDATE)) validation = buttons.Copy()
 
 		var/html = {"<head><title>[title]</title>[style]<script>\
 		function c(x) {document.location.href='BYOND://?src=\ref[src];'+x;}\
@@ -118,7 +118,7 @@ sd_alert
 		[(flags&SD_ALERT_SCROLL)?"":" scroll=no"]><table [table]><tr>\
 		<td>[message]</td></tr><tr><th>"}
 
-		if(select || (flags & SD_ALERT_SELECT_MULTI))	// select style choices
+		if (select || (flags & SD_ALERT_SELECT_MULTI))	// select style choices
 			html += {"<FORM ID=fcs ACTION='BYOND://?' METHOD=GET>\
 				<INPUT TYPE=HIDDEN NAME=src VALUE='\ref[src]'>
 				<SELECT NAME=clk SIZE=[select]\
@@ -127,13 +127,13 @@ sd_alert
 				html += "<OPTION[(b == default)?" SELECTED":""]>\
 					[html_encode(b)]</OPTION>"
 			html += "</SELECT><BR><INPUT TYPE=SUBMIT VALUE=Submit></FORM>"
-		else if(flags & SD_ALERT_LINKS)		// text link style
+		else if (flags & SD_ALERT_LINKS)		// text link style
 			for(var/b in buttons)
 				var/list/L = list()
 				L["clk"] = b
 				var/html_string=list2params(L)
 				var/focus
-				if(b == default) focus = " ID=fcs"
+				if (b == default) focus = " ID=fcs"
 				html += "<A[focus] href=# onClick=\"c('[html_string]')\">[html_encode(b)]</A>\
 					<BR>"
 		else	// button style choices
@@ -142,7 +142,7 @@ sd_alert
 				L["clk"] = b
 				var/html_string=list2params(L)
 				var/focus
-				if(b == default) focus = " ID=fcs"
+				if (b == default) focus = " ID=fcs"
 				html += "<INPUT[focus] TYPE=button VALUE='[html_encode(b)]' \
 					onClick=\"c('[html_string]')\"> "
 
@@ -156,12 +156,12 @@ sd_alert
 			while(target && !response)	// wait for a response
 				sleep(2)
 
-			if(response && validation)
-				if(istype(response, /list))
+			if (response && validation)
+				if (istype(response, /list))
 					var/list/L = response - validation
-					if(L.len) response = null
+					if (L.len) response = null
 					else validated = 1
-				else if(response in validation) validated = 1
+				else if (response in validation) validated = 1
 				else response=null
 			else validated = 1
 		spawn(2) del(src)

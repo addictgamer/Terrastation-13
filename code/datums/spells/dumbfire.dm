@@ -25,7 +25,7 @@
 	var/turf/T = get_turf(usr)
 	for(var/i = 1; i < range; i++)
 		var/turf/new_turf = get_step(T, usr.dir)
-		if(new_turf.density)
+		if (new_turf.density)
 			break
 		T = new_turf
 	perform(list(T))
@@ -35,10 +35,10 @@
 	for(var/turf/target in targets)
 		spawn(0)
 			var/obj/effect/proc_holder/spell/targeted/projectile
-			if(istext(proj_type))
+			if (istext(proj_type))
 				var/projectile_type = text2path(proj_type)
 				projectile = new projectile_type(user)
-			if(istype(proj_type,/obj/effect/proc_holder/spell))
+			if (istype(proj_type,/obj/effect/proc_holder/spell))
 				projectile = new /obj/effect/proc_holder/spell/targeted/trigger(user)
 				projectile:linked_spells += proj_type
 			projectile.icon = proj_icon
@@ -51,26 +51,26 @@
 			projectile.loc = current_loc
 
 			for(var/i = 0,i < proj_lifespan,i++)
-				if(!projectile)
+				if (!projectile)
 					break
 
-				if(proj_insubstantial)
+				if (proj_insubstantial)
 					projectile.loc = get_step(projectile, projectile.dir)
 				else
 					step(projectile, projectile.dir)
 
-				if(projectile.loc == current_loc || i == proj_lifespan)
+				if (projectile.loc == current_loc || i == proj_lifespan)
 					projectile.cast(current_loc)
 					break
 
 				var/mob/living/L = locate(/mob/living) in range(projectile, proj_trigger_range) - usr
-				if(L)
+				if (L)
 					projectile.cast(L.loc)
 					break
 
-				if(proj_trail && projectile)
+				if (proj_trail && projectile)
 					spawn(0)
-						if(projectile)
+						if (projectile)
 							var/obj/effect/overlay/trail = new /obj/effect/overlay(projectile.loc)
 							trail.icon = proj_trail_icon
 							trail.icon_state = proj_trail_icon_state
@@ -82,5 +82,5 @@
 
 				sleep(proj_step_delay)
 
-			if(projectile)
+			if (projectile)
 				del(projectile)

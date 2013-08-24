@@ -12,7 +12,7 @@
 
 /datum/event/blob/start()
 	var/turf/T = pick(blobstart)
-	if(!T)
+	if (!T)
 		kill()
 		return
 	Blob = new /obj/effect/blob/core(T, 200)
@@ -21,8 +21,8 @@
 
 
 /datum/event/blob/tick()
-	if(!Blob)
+	if (!Blob)
 		kill()
 		return
-	if(IsMultiple(activeFor, 3))
+	if (IsMultiple(activeFor, 3))
 		Blob.process()

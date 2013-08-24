@@ -27,32 +27,32 @@
 
 /datum/camerachunk/proc/add(mob/aiEye/ai)
 	ai.visibleCameraChunks += src
-	if(ai.ai.client)
+	if (ai.ai.client)
 		ai.ai.client.images += obscured
 		ai.ai.client.images += dim
 	visible++
 	seenby += ai
-	if(changed && !updating)
+	if (changed && !updating)
 		update()
 
 /datum/camerachunk/proc/remove(mob/aiEye/ai)
 	ai.visibleCameraChunks -= src
-	if(ai.ai.client)
+	if (ai.ai.client)
 		ai.ai.client.images -= obscured
 		ai.ai.client.images -= dim
 	seenby -= ai
-	if(visible > 0)
+	if (visible > 0)
 		visible--
 
 /datum/camerachunk/proc/visibilityChanged(turf/loc)
-	if(!(loc in visibleTurfs))
+	if (!(loc in visibleTurfs))
 		return
 
 	hasChanged()
 
 /datum/camerachunk/proc/hasChanged()
-	if(visible)
-		if(!updating)
+	if (visible)
+		if (!updating)
 			updating = 1
 			spawn(10)//Batch large changes, such as many doors opening or closing at once
 				update()
@@ -68,11 +68,11 @@
 		var/lum = c.luminosity
 		c.luminosity = 6
 		for(var/turf/t in view(7, c))
-			if(t in turfs)
+			if (t in turfs)
 				newDimTurfs += t
 
 		for(var/turf/t in view(6, c))
-			if(t in turfs)
+			if (t in turfs)
 				newVisibleTurfs += t
 
 		c.luminosity = lum
@@ -88,53 +88,53 @@
 	dimTurfs -= visibleTurfs
 
 	for(var/turf/t in dimRemoved)
-		if(t.dim)
+		if (t.dim)
 			dim -= t.dim
 			for(var/mob/aiEye/m in seenby)
-				if(m.ai.client)
+				if (m.ai.client)
 					m.ai.client.images -= t.dim
 
-		if(!(t in visibleTurfs))
-			if(!t.obscured)
+		if (!(t in visibleTurfs))
+			if (!t.obscured)
 				t.obscured = image('icons/effects/cameravis.dmi', t, "black", 15)
 
 			obscured += t.obscured
 			for(var/mob/aiEye/m in seenby)
-				if(m.ai.client)
+				if (m.ai.client)
 					m.ai.client.images += t.obscured
 
 	for(var/turf/t in dimAdded)
-		if(!(t in visibleTurfs))
-			if(!t.dim)
+		if (!(t in visibleTurfs))
+			if (!t.dim)
 				t.dim = image('icons/effects/cameravis.dmi', t, "dim", 15)
 				t.mouse_opacity = 0
 
 			dim += t.dim
 			for(var/mob/aiEye/m in seenby)
-				if(m.ai.client)
+				if (m.ai.client)
 					m.ai.client.images += t.dim
 
-			if(t.obscured)
+			if (t.obscured)
 				obscured -= t.obscured
 				for(var/mob/aiEye/m in seenby)
-					if(m.ai.client)
+					if (m.ai.client)
 						m.ai.client.images -= t.obscured
 
 	for(var/turf/t in visAdded)
-		if(t.obscured)
+		if (t.obscured)
 			obscured -= t.obscured
 			for(var/mob/aiEye/m in seenby)
-				if(m.ai.client)
+				if (m.ai.client)
 					m.ai.client.images -= t.obscured
 
 	for(var/turf/t in visRemoved)
-		if(t in obscuredTurfs)
-			if(!t.obscured)
+		if (t in obscuredTurfs)
+			if (!t.obscured)
 				t.obscured = image('icons/effects/cameravis.dmi', t, "black", 15)
 
 			obscured += t.obscured
 			for(var/mob/aiEye/m in seenby)
-				if(m.ai.client)
+				if (m.ai.client)
 					m.ai.client.images += t.obscured
 
 
@@ -144,22 +144,22 @@
 	y &= ~0xf
 
 	for(var/obj/machinery/camera/c in range(16, locate(x + 8, y + 8, z)))
-		if(c.status)
+		if (c.status)
 			cameras += c
 
 	for(var/turf/t in range(10, locate(x + 8, y + 8, z)))
-		if(t.x >= x && t.y >= y && t.x < x + 16 && t.y < y + 16)
+		if (t.x >= x && t.y >= y && t.x < x + 16 && t.y < y + 16)
 			turfs += t
 
 	for(var/obj/machinery/camera/c in cameras)
 		var/lum = c.luminosity
 		c.luminosity = 6
 		for(var/turf/t in view(7, c))
-			if(t in turfs)
+			if (t in turfs)
 				dimTurfs += t
 
 		for(var/turf/t in view(6, c))
-			if(t in turfs)
+			if (t in turfs)
 				visibleTurfs += t
 
 		c.luminosity = lum
@@ -168,14 +168,14 @@
 	dimTurfs -= visibleTurfs
 
 	for(var/turf/t in obscuredTurfs)
-		if(!t.obscured)
+		if (!t.obscured)
 			t.obscured = image('icons/effects/cameravis.dmi', t, "black", 15)
 
 		obscured += t.obscured
 
 	for(var/turf/t in dimTurfs)
-		if(!(t in visibleTurfs))
-			if(!t.dim)
+		if (!(t in visibleTurfs))
+			if (!t.dim)
 				t.dim = image('icons/effects/cameravis.dmi', t, "dim", TURF_LAYER)
 
 			dim += t.dim
@@ -198,7 +198,7 @@ var/datum/cameranet/cameranet = new()
 /datum/cameranet/proc/getCameraChunk(x, y, z)
 	var/key = "[x],[y],[z]"
 
-	if(!(key in chunks))
+	if (!(key in chunks))
 		chunks[key] = new /datum/camerachunk(null, x, y, z)
 
 	return chunks[key]
@@ -225,7 +225,7 @@ var/datum/cameranet/cameranet = new()
 		c.add(ai)
 
 /datum/cameranet/proc/updateVisibility(turf/loc)
-	if(!chunkGenerated(loc.x & ~0xf, loc.y & ~0xf, loc.z))
+	if (!chunkGenerated(loc.x & ~0xf, loc.y & ~0xf, loc.z))
 		return
 
 	var/datum/camerachunk/chunk = getCameraChunk(loc.x & ~0xf, loc.y & ~0xf, loc.z)
@@ -239,9 +239,9 @@ var/datum/cameranet/cameranet = new()
 
 	for(var/x = x1; x <= x2; x += 16)
 		for(var/y = y1; y <= y2; y += 16)
-			if(chunkGenerated(x, y, c.z))
+			if (chunkGenerated(x, y, c.z))
 				var/datum/camerachunk/chunk = getCameraChunk(x, y, c.z)
-				if(!(c in chunk.cameras))
+				if (!(c in chunk.cameras))
 					chunk.cameras += c
 					chunk.hasChanged()
 
@@ -258,7 +258,7 @@ var/datum/cameranet/cameranet = new()
 	current = null	//cancel camera view first, it causes problems
 	cameraFollow = null
 	machine = null
-	if(client.eye == eyeobj)
+	if (client.eye == eyeobj)
 		client.eye = src
 		for(var/datum/camerachunk/c in eyeobj.visibleCameraChunks)
 			c.remove(eyeobj)
@@ -269,11 +269,11 @@ var/datum/cameranet/cameranet = new()
 		cameraFollow = null
 /mob/aiEye/Move()
 	. = ..()
-	if(.)
+	if (.)
 		cameranet.visibility(src)
 
 /client/AIMove(n, direct, var/mob/living/silicon/ai/user)
-	if(eye == user.eyeobj)
+	if (eye == user.eyeobj)
 		user.eyeobj.loc = get_step(user.eyeobj, direct)
 		cameranet.visibility(user.eyeobj)
 
@@ -282,11 +282,11 @@ var/datum/cameranet/cameranet = new()
 
 /*
 /client/AIMoveZ(direct, var/mob/living/silicon/ai/user)
-	if(eye == user.eyeobj)
+	if (eye == user.eyeobj)
 		var/dif = 0
-		if(direct == UP && user.eyeobj.z > 1)
+		if (direct == UP && user.eyeobj.z > 1)
 			dif = -1
-		else if(direct == DOWN && user.eyeobj.z < 4)
+		else if (direct == DOWN && user.eyeobj.z < 4)
 			dif = 1
 		user.eyeobj.loc = locate(user.eyeobj.x, user.eyeobj.y, user.eyeobj.z + dif)
 		cameranet.visibility(user.eyeobj)
@@ -295,9 +295,9 @@ var/datum/cameranet/cameranet = new()
 */
 
 /turf/move_camera_by_click()
-	if(istype(usr, /mob/living/silicon/ai))
+	if (istype(usr, /mob/living/silicon/ai))
 		var/mob/living/silicon/ai/AI = usr
-		if(AI.client.eye == AI.eyeobj)
+		if (AI.client.eye == AI.eyeobj)
 			return
 	return ..()
 

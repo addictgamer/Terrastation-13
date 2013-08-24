@@ -101,8 +101,8 @@
 	set name = "Adjust welding goggles"
 	set src in usr
 
-	if(usr.canmove && !usr.stat && !usr.restrained())
-		if(src.up)
+	if (usr.canmove && !usr.stat && !usr.restrained())
+		if (src.up)
 			src.up = !src.up
 			src.flags |= GLASSESCOVERSEYES
 			flags_inv |= HIDEEYES
@@ -161,10 +161,10 @@
 	invisa_view = 2
 
 	emp_act(severity)
-		if(istype(src.loc, /mob/living/carbon/human))
+		if (istype(src.loc, /mob/living/carbon/human))
 			var/mob/living/carbon/human/M = src.loc
 			M << "\red The Optical Thermal Scanner overloads and blinds you!"
-			if(M.glasses == src)
+			if (M.glasses == src)
 				M.eye_blind = 3
 				M.eye_blurry = 5
 				M.disabilities |= NEARSIGHTED

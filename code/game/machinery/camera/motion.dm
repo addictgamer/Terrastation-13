@@ -8,7 +8,7 @@
 
 /obj/machinery/camera/process()
 	// motion camera event loop
-	if(!isMotion())
+	if (!isMotion())
 		. = PROCESS_KILL
 		return
 	if (detectTime > 0)
@@ -21,7 +21,7 @@
 			// If not detecting with motion camera...
 			if (!area_motion)
 				// See if the camera is still in range
-				if(!in_range(src, target))
+				if (!in_range(src, target))
 					// If they aren't in range, lose the target.
 					lostTarget(target)
 
@@ -56,6 +56,6 @@
 /obj/machinery/camera/HasProximity(atom/movable/AM as mob|obj)
 	// Motion cameras outside of an "ai monitored" area will use this to detect stuff.
 	if (!area_motion)
-		if(isliving(AM))
+		if (isliving(AM))
 			newTarget(AM)
 

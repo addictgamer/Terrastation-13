@@ -1,12 +1,12 @@
 client/verb/tcssave()
 	set hidden = 1
-	if(mob.machine || issilicon(mob))
-		if((istype(mob.machine, /obj/machinery/computer/telecomms/traffic) && mob.machine in view(1, mob)) || issilicon(mob))
+	if (mob.machine || issilicon(mob))
+		if ((istype(mob.machine, /obj/machinery/computer/telecomms/traffic) && mob.machine in view(1, mob)) || issilicon(mob))
 			var/obj/machinery/computer/telecomms/traffic/Machine = mob.machine
-			if(Machine.editingcode != mob)
+			if (Machine.editingcode != mob)
 				return
 
-			if(Machine.SelectedServer)
+			if (Machine.SelectedServer)
 				var/obj/machinery/telecomms/server/Server = Machine.SelectedServer
 				var/tcscode=winget(src, "tcscode", "text")
 				var/msg="[mob.name] is adding script to server [Server]: [tcscode]"
@@ -27,13 +27,13 @@ client/verb/tcssave()
 
 client/verb/tcscompile()
 	set hidden = 1
-	if(mob.machine || issilicon(mob))
-		if((istype(mob.machine, /obj/machinery/computer/telecomms/traffic) && mob.machine in view(1, mob)) || (issilicon(mob) && istype(mob.machine, /obj/machinery/computer/telecomms/traffic) ))
+	if (mob.machine || issilicon(mob))
+		if ((istype(mob.machine, /obj/machinery/computer/telecomms/traffic) && mob.machine in view(1, mob)) || (issilicon(mob) && istype(mob.machine, /obj/machinery/computer/telecomms/traffic) ))
 			var/obj/machinery/computer/telecomms/traffic/Machine = mob.machine
-			if(Machine.editingcode != mob)
+			if (Machine.editingcode != mob)
 				return
 
-			if(Machine.SelectedServer)
+			if (Machine.SelectedServer)
 				var/obj/machinery/telecomms/server/Server = Machine.SelectedServer
 				Server.setcode( winget(src, "tcscode", "text") ) // save code first
 				var/list/compileerrors = Server.compile() // then compile the code!
@@ -41,7 +41,7 @@ client/verb/tcscompile()
 				// Output all the compile-time errors
 				src << output(null, "tcserror")
 
-				if(compileerrors.len)
+				if (compileerrors.len)
 					src << output("<b>Compile Errors</b>", "tcserror")
 					for(var/scriptError/e in compileerrors)
 						src << output("<font color = red>\t>[e.message]</font color>", "tcserror")
@@ -49,7 +49,7 @@ client/verb/tcscompile()
 
 					// Output compile errors to all other people viewing the code too
 					for(var/mob/M in Machine.viewingcode)
-						if(M.client)
+						if (M.client)
 							M << output(null, "tcserror")
 							M << output("<b>Compile Errors</b>", "tcserror")
 							for(var/scriptError/e in compileerrors)
@@ -62,7 +62,7 @@ client/verb/tcscompile()
 					src << output("(0 errors)", "tcserror")
 
 					for(var/mob/M in Machine.viewingcode)
-						if(M.client)
+						if (M.client)
 							M << output("<font color = blue>TCS compilation successful!</font color>", "tcserror")
 							M << output("(0 errors)", "tcserror")
 
@@ -78,13 +78,13 @@ client/verb/tcscompile()
 
 client/verb/tcsrun()
 	set hidden = 1
-	if(mob.machine || issilicon(mob))
-		if((istype(mob.machine, /obj/machinery/computer/telecomms/traffic) && mob.machine in view(1, mob)) || (issilicon(mob) && istype(mob.machine, /obj/machinery/computer/telecomms/traffic) ))
+	if (mob.machine || issilicon(mob))
+		if ((istype(mob.machine, /obj/machinery/computer/telecomms/traffic) && mob.machine in view(1, mob)) || (issilicon(mob) && istype(mob.machine, /obj/machinery/computer/telecomms/traffic) ))
 			var/obj/machinery/computer/telecomms/traffic/Machine = mob.machine
-			if(Machine.editingcode != mob)
+			if (Machine.editingcode != mob)
 				return
 
-			if(Machine.SelectedServer)
+			if (Machine.SelectedServer)
 				var/obj/machinery/telecomms/server/Server = Machine.SelectedServer
 				Server.setcode( winget(src, "tcscode", "text") ) // save code first
 				var/list/compileerrors = Server.compile() // then compile the code!
@@ -92,7 +92,7 @@ client/verb/tcsrun()
 				// Output all the compile-time errors
 				src << output(null, "tcserror")
 
-				if(compileerrors.len)
+				if (compileerrors.len)
 					src << output("<b>Compile Errors</b>", "tcserror")
 					for(var/scriptError/e in compileerrors)
 						src << output("<font color = red>\t>[e.message]</font color>", "tcserror")
@@ -100,7 +100,7 @@ client/verb/tcsrun()
 
 					// Output compile errors to all other people viewing the code too
 					for(var/mob/M in Machine.viewingcode)
-						if(M.client)
+						if (M.client)
 							M << output(null, "tcserror")
 							M << output("<b>Compile Errors</b>", "tcserror")
 							for(var/scriptError/e in compileerrors)
@@ -113,13 +113,13 @@ client/verb/tcsrun()
 					src << output("(0 errors)", "tcserror")
 
 					for(var/mob/M in Machine.viewingcode)
-						if(M.client)
+						if (M.client)
 							M << output("<font color = blue>TCS compilation successful!</font color>", "tcserror")
 							M << output("(0 errors)", "tcserror")
 
 					var/datum/signal/signal = new()
 					signal.data["message"] = ""
-					if(Server.freq_listening.len > 0)
+					if (Server.freq_listening.len > 0)
 						signal.frequency = Server.freq_listening[1]
 					else
 						signal.frequency = 1459
@@ -144,25 +144,25 @@ client/verb/tcsrun()
 
 client/verb/exittcs()
 	set hidden = 1
-	if(mob.machine || issilicon(mob))
-		if((istype(mob.machine, /obj/machinery/computer/telecomms/traffic) && mob.machine in view(1, mob)) || (issilicon(mob) && istype(mob.machine, /obj/machinery/computer/telecomms/traffic) ))
+	if (mob.machine || issilicon(mob))
+		if ((istype(mob.machine, /obj/machinery/computer/telecomms/traffic) && mob.machine in view(1, mob)) || (issilicon(mob) && istype(mob.machine, /obj/machinery/computer/telecomms/traffic) ))
 			var/obj/machinery/computer/telecomms/traffic/Machine = mob.machine
-			if(Machine.editingcode == mob)
+			if (Machine.editingcode == mob)
 				Machine.storedcode = "[winget(mob, "tcscode", "text")]"
 				Machine.editingcode = null
 			else
-				if(mob in Machine.viewingcode)
+				if (mob in Machine.viewingcode)
 					Machine.viewingcode.Remove(mob)
 
 client/verb/tcsrevert()
 	set hidden = 1
-	if(mob.machine || issilicon(mob))
-		if((istype(mob.machine, /obj/machinery/computer/telecomms/traffic) && mob.machine in view(1, mob)) || (issilicon(mob) && istype(mob.machine, /obj/machinery/computer/telecomms/traffic) ))
+	if (mob.machine || issilicon(mob))
+		if ((istype(mob.machine, /obj/machinery/computer/telecomms/traffic) && mob.machine in view(1, mob)) || (issilicon(mob) && istype(mob.machine, /obj/machinery/computer/telecomms/traffic) ))
 			var/obj/machinery/computer/telecomms/traffic/Machine = mob.machine
-			if(Machine.editingcode != mob)
+			if (Machine.editingcode != mob)
 				return
 
-			if(Machine.SelectedServer)
+			if (Machine.SelectedServer)
 				var/obj/machinery/telecomms/server/Server = Machine.SelectedServer
 
 				// Replace quotation marks with quotation macros for proper winset() compatibility
@@ -185,20 +185,20 @@ client/verb/tcsrevert()
 
 client/verb/tcsclearmem()
 	set hidden = 1
-	if(mob.machine || issilicon(mob))
-		if((istype(mob.machine, /obj/machinery/computer/telecomms/traffic) && mob.machine in view(1, mob)) || (issilicon(mob) && istype(mob.machine, /obj/machinery/computer/telecomms/traffic) ))
+	if (mob.machine || issilicon(mob))
+		if ((istype(mob.machine, /obj/machinery/computer/telecomms/traffic) && mob.machine in view(1, mob)) || (issilicon(mob) && istype(mob.machine, /obj/machinery/computer/telecomms/traffic) ))
 			var/obj/machinery/computer/telecomms/traffic/Machine = mob.machine
-			if(Machine.editingcode != mob)
+			if (Machine.editingcode != mob)
 				return
 
-			if(Machine.SelectedServer)
+			if (Machine.SelectedServer)
 				var/obj/machinery/telecomms/server/Server = Machine.SelectedServer
 				Server.memory = list() // clear the memory
 				// Show results
 				src << output(null, "tcserror")
 				src << output("<font color = blue>Server memory cleared!</font color>", "tcserror")
 				for(var/mob/M in Machine.viewingcode)
-					if(M.client)
+					if (M.client)
 						M << output("<font color = blue>Server memory cleared!</font color>", "tcserror")
 			else
 				src << output(null, "tcserror")

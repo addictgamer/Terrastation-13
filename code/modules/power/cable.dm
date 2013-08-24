@@ -2,19 +2,19 @@
 
 /obj/machinery/power/attackby(obj/item/weapon/W, mob/user)
 
-	if(istype(W, /obj/item/weapon/cable_coil))
+	if (istype(W, /obj/item/weapon/cable_coil))
 
 		var/obj/item/weapon/cable_coil/coil = W
 
 		var/turf/T = user.loc
 
-		if(T.intact || !istype(T, /turf/simulated/floor))
+		if (T.intact || !istype(T, /turf/simulated/floor))
 			return
 
-		if(get_dist(src, user) > 1)
+		if (get_dist(src, user) > 1)
 			return
 
-		if(!directwired)		// only for attaching to directwired machines
+		if (!directwired)		// only for attaching to directwired machines
 			return
 
 		coil.turf_place(T, user)
@@ -39,25 +39,25 @@
 
 	var/turf/T = src.loc			// hide if turf is not intact
 
-	if(level==1) hide(T.intact)
+	if (level==1) hide(T.intact)
 	cable_list += src
 
 
 /obj/structure/cable/Del()						// called when a cable is deleted
-	if(!defer_powernet_rebuild)					// set if network will be rebuilt manually
-		if(powernet)
+	if (!defer_powernet_rebuild)					// set if network will be rebuilt manually
+		if (powernet)
 			powernet.cut_cable(src)				// update the powernets
 	cable_list -= src
 	..()													// then go ahead and delete the cable
 
 /obj/structure/cable/hide(var/i)
 
-	if(level == 1 && istype(loc, /turf))
+	if (level == 1 && istype(loc, /turf))
 		invisibility = i ? 101 : 0
 	updateicon()
 
 /obj/structure/cable/proc/updateicon()
-	if(invisibility)
+	if (invisibility)
 		icon_state = "[d1]-[d2]-f"
 	else
 		icon_state = "[d1]-[d2]"
@@ -68,27 +68,27 @@
 	return powernet
 
 /obj/structure/cable/attack_hand(mob/user)
-	if(ishuman(user))
-		if(istype(user:gloves, /obj/item/clothing/gloves/space_ninja)&&user:gloves:candrain&&!user:gloves:draining)
+	if (ishuman(user))
+		if (istype(user:gloves, /obj/item/clothing/gloves/space_ninja)&&user:gloves:candrain&&!user:gloves:draining)
 			call(/obj/item/clothing/gloves/space_ninja/proc/drain)("WIRE",src,user:wear_suit)
 	return
 
 /obj/structure/cable/attackby(obj/item/W, mob/user)
 
 	var/turf/T = src.loc
-	if(T.intact)
+	if (T.intact)
 		return
 
-	if(istype(W, /obj/item/weapon/wirecutters))
+	if (istype(W, /obj/item/weapon/wirecutters))
 
-//		if(power_switch)
+//		if (power_switch)
 //			user << "\red This piece of cable is tied to a power switch. Flip the switch to remove it."
 //			return
 
 		if (shock(user, 50))
 			return
 
-		if(src.d1)	// 0-X cables are 1 unit, X-X cables are 2 units long
+		if (src.d1)	// 0-X cables are 1 unit, X-X cables are 2 units long
 			new/obj/item/weapon/cable_coil(T, 2, color)
 		else
 			new/obj/item/weapon/cable_coil(T, 1, color)
@@ -101,15 +101,15 @@
 		return	// not needed, but for clarity
 
 
-	else if(istype(W, /obj/item/weapon/cable_coil))
+	else if (istype(W, /obj/item/weapon/cable_coil))
 		var/obj/item/weapon/cable_coil/coil = W
 		coil.cable_join(src, user)
 
-	else if(istype(W, /obj/item/device/multitool))
+	else if (istype(W, /obj/item/device/multitool))
 
 		var/datum/powernet/PN = get_powernet()		// find the powernet
 
-		if(PN && (PN.avail > 0))		// is it powered?
+		if (PN && (PN.avail > 0))		// is it powered?
 			user << "\red [PN.avail]W in power network."
 
 		else
@@ -126,7 +126,7 @@
 // shock the user with probability prb
 
 /obj/structure/cable/proc/shock(mob/user, prb, var/siemens_coeff = 1.0)
-	if(!prob(prb))
+	if (!prob(prb))
 		return 0
 	if (electrocute_mob(user, powernet, src, siemens_coeff))
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
@@ -138,14 +138,14 @@
 
 /obj/structure/cable/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			del(src)
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				new/obj/item/weapon/cable_coil(src.loc, src.d1 ? 2 : 1, color)
 				del(src)
 
-		if(3.0)
+		if (3.0)
 			if (prob(25))
 				new/obj/item/weapon/cable_coil(src.loc, src.d1 ? 2 : 1, color)
 				del(src)
@@ -189,10 +189,10 @@
 /obj/item/weapon/cable_coil/proc/updateicon()
 	if (!color)
 		color = pick("red", "yellow", "blue", "green")
-	if(amount == 1)
+	if (amount == 1)
 		icon_state = "coil_[color]1"
 		name = "cable piece"
-	else if(amount == 2)
+	else if (amount == 2)
 		icon_state = "coil_[color]2"
 		name = "cable piece"
 	else
@@ -202,9 +202,9 @@
 /obj/item/weapon/cable_coil/examine()
 	set src in view(1)
 
-	if(amount == 1)
+	if (amount == 1)
 		usr << "A short piece of power cable."
-	else if(amount == 2)
+	else if (amount == 2)
 		usr << "A piece of power cable."
 	else
 		usr << "A coil of power cable. There are [amount] lengths of cable in the coil."
@@ -214,9 +214,9 @@
 	set category = "Object"
 	var/mob/M = usr
 
-	if(ishuman(M) && !M.restrained() && !M.stat && !M.paralysis && ! M.stunned)
-		if(!istype(usr.loc,/turf)) return
-		if(src.amount <= 14)
+	if (ishuman(M) && !M.restrained() && !M.stat && !M.paralysis && ! M.stunned)
+		if (!istype(usr.loc,/turf)) return
+		if (src.amount <= 14)
 			usr << "\red You need at least 15 lengths to make restraints!"
 			return
 		var/obj/item/weapon/handcuffs/cable/B = new /obj/item/weapon/handcuffs/cable(usr.loc)
@@ -229,20 +229,20 @@
 
 /obj/item/weapon/cable_coil/attackby(obj/item/weapon/W, mob/user)
 	..()
-	if( istype(W, /obj/item/weapon/wirecutters) && src.amount > 1)
+	if ( istype(W, /obj/item/weapon/wirecutters) && src.amount > 1)
 		src.amount--
 		new/obj/item/weapon/cable_coil(user.loc, 1,color)
 		user << "You cut a piece off the cable coil."
 		src.updateicon()
 		return
 
-	else if( istype(W, /obj/item/weapon/cable_coil) )
+	else if ( istype(W, /obj/item/weapon/cable_coil) )
 		var/obj/item/weapon/cable_coil/C = W
-		if(C.amount == MAXCOIL)
+		if (C.amount == MAXCOIL)
 			user << "The coil is too long, you cannot add any more cable to it."
 			return
 
-		if( (C.amount + src.amount <= MAXCOIL) )
+		if ( (C.amount + src.amount <= MAXCOIL) )
 			C.amount += src.amount
 			user << "You join the cable coils together."
 			C.updateicon()
@@ -258,7 +258,7 @@
 			return
 
 /obj/item/weapon/cable_coil/proc/use(var/used)
-	if(src.amount < used)
+	if (src.amount < used)
 		return 0
 	else if (src.amount == used)
 		del(src)
@@ -271,27 +271,27 @@
 
 /obj/item/weapon/cable_coil/proc/turf_place(turf/simulated/floor/F, mob/user)
 
-	if(!isturf(user.loc))
+	if (!isturf(user.loc))
 		return
 
-	if(get_dist(F,user) > 1)
+	if (get_dist(F,user) > 1)
 		user << "You can't lay cable at a place that far away."
 		return
 
-	if(F.intact)		// if floor is intact, complain
+	if (F.intact)		// if floor is intact, complain
 		user << "You can't lay cable there unless the floor tiles are removed."
 		return
 
 	else
 		var/dirn
 
-		if(user.loc == F)
+		if (user.loc == F)
 			dirn = user.dir			// if laying on the tile we're on, lay in the direction we're facing
 		else
 			dirn = get_dir(F, user)
 
 		for(var/obj/structure/cable/LC in F)
-			if((LC.d1 == dirn && LC.d2 == 0 ) || ( LC.d2 == dirn && LC.d1 == 0))
+			if ((LC.d1 == dirn && LC.d2 == 0 ) || ( LC.d2 == dirn && LC.d1 == 0))
 				user << "There's already a cable at that position."
 				return
 
@@ -326,26 +326,26 @@
 /obj/item/weapon/cable_coil/proc/cable_join(obj/structure/cable/C, mob/user)
 
 	var/turf/U = user.loc
-	if(!isturf(U))
+	if (!isturf(U))
 		return
 
 	var/turf/T = C.loc
 
-	if(!isturf(T) || T.intact)		// sanity checks, also stop use interacting with T-scanner revealed cable
+	if (!isturf(T) || T.intact)		// sanity checks, also stop use interacting with T-scanner revealed cable
 		return
 
-	if(get_dist(C, user) > 1)		// make sure it's close enough
+	if (get_dist(C, user) > 1)		// make sure it's close enough
 		user << "You can't lay cable at a place that far away."
 		return
 
 
-	if(U == T)		// do nothing if we clicked a cable we're standing on
+	if (U == T)		// do nothing if we clicked a cable we're standing on
 		return		// may change later if can think of something logical to do
 
 	var/dirn = get_dir(C, user)
 
-	if(C.d1 == dirn || C.d2 == dirn)		// one end of the clicked cable is pointing towards us
-		if(U.intact)						// can't place a cable if the floor is complete
+	if (C.d1 == dirn || C.d2 == dirn)		// one end of the clicked cable is pointing towards us
+		if (U.intact)						// can't place a cable if the floor is complete
 			user << "You can't lay cable there unless the floor tiles are removed."
 			return
 		else
@@ -355,7 +355,7 @@
 			var/fdirn = turn(dirn, 180)		// the opposite direction
 
 			for(var/obj/structure/cable/LC in U)		// check to make sure there's not a cable there already
-				if(LC.d1 == fdirn || LC.d2 == fdirn)
+				if (LC.d1 == fdirn || LC.d2 == fdirn)
 					user << "There's already a cable at that position."
 					return
 
@@ -367,7 +367,7 @@
 			NC.add_fingerprint()
 			NC.updateicon()
 
-			if(C.powernet)
+			if (C.powernet)
 				NC.powernet = C.powernet
 				NC.powernet.cables += NC
 				NC.mergeConnectedNetworks(NC.d2)
@@ -379,21 +379,21 @@
 					del(NC)
 
 			return
-	else if(C.d1 == 0)		// exisiting cable doesn't point at our position, so see if it's a stub
+	else if (C.d1 == 0)		// exisiting cable doesn't point at our position, so see if it's a stub
 							// if so, make it a full cable pointing from it's old direction to our dirn
 		var/nd1 = C.d2	// these will be the new directions
 		var/nd2 = dirn
 
 
-		if(nd1 > nd2)		// swap directions to match icons/states
+		if (nd1 > nd2)		// swap directions to match icons/states
 			nd1 = dirn
 			nd2 = C.d2
 
 
 		for(var/obj/structure/cable/LC in T)		// check to make sure there's no matching cable
-			if(LC == C)			// skip the cable we're interacting with
+			if (LC == C)			// skip the cable we're interacting with
 				continue
-			if((LC.d1 == nd1 && LC.d2 == nd2) || (LC.d1 == nd2 && LC.d2 == nd1) )	// make sure no cable matches either direction
+			if ((LC.d1 == nd1 && LC.d2 == nd2) || (LC.d1 == nd2 && LC.d2 == nd1) )	// make sure no cable matches either direction
 				user << "There's already a cable at that position."
 				return
 
@@ -421,28 +421,28 @@
 
 /obj/structure/cable/proc/mergeConnectedNetworks(var/direction)
 	var/turf/TB
-	if(!(d1 == direction || d2 == direction))
+	if (!(d1 == direction || d2 == direction))
 		return
 	TB = get_step(src, direction)
 
 	for(var/obj/structure/cable/TC in TB)
 
-		if(!TC)
+		if (!TC)
 			continue
 
-		if(src == TC)
+		if (src == TC)
 			continue
 
 		var/fdir = (!direction)? 0 : turn(direction, 180)
 
-		if(TC.d1 == fdir || TC.d2 == fdir)
+		if (TC.d1 == fdir || TC.d2 == fdir)
 
-			if(!TC.powernet)
+			if (!TC.powernet)
 				TC.powernet = new()
 				powernets += TC.powernet
 				TC.powernet.cables += TC
 
-			if(powernet)
+			if (powernet)
 				merge_powernets(powernet,TC.powernet)
 			else
 				powernet = TC.powernet
@@ -452,34 +452,34 @@
 
 
 /obj/structure/cable/proc/mergeConnectedNetworksOnTurf()
-	if(!powernet)
+	if (!powernet)
 		powernet = new()
 		powernets += powernet
 		powernet.cables += src
 
 	for(var/AM in loc)
-		if(istype(AM,/obj/structure/cable))
+		if (istype(AM,/obj/structure/cable))
 			var/obj/structure/cable/C = AM
-			if(C.powernet == powernet)	continue
-			if(C.powernet)
+			if (C.powernet == powernet)	continue
+			if (C.powernet)
 				merge_powernets(powernet, C.powernet)
 			else
 				C.powernet = powernet
 				powernet.cables += C
 
-		else if(istype(AM,/obj/machinery/power/apc))
+		else if (istype(AM,/obj/machinery/power/apc))
 			var/obj/machinery/power/apc/N = AM
-			if(!N.terminal)	continue
-			if(N.terminal.powernet)
+			if (!N.terminal)	continue
+			if (N.terminal.powernet)
 				merge_powernets(powernet, N.terminal.powernet)
 			else
 				N.terminal.powernet = powernet
 				powernet.nodes[N.terminal] = N.terminal
 
-		else if(istype(AM,/obj/machinery/power))
+		else if (istype(AM,/obj/machinery/power))
 			var/obj/machinery/power/M = AM
-			if(M.powernet == powernet)	continue
-			if(M.powernet)
+			if (M.powernet == powernet)	continue
+			if (M.powernet)
 				merge_powernets(powernet, M.powernet)
 			else
 				M.powernet = powernet
@@ -488,25 +488,25 @@
 
 obj/structure/cable/proc/cableColor(var/colorC)
 	var/color_n = "red"
-	if(colorC)
+	if (colorC)
 		color_n = colorC
 	color = color_n
 	switch(colorC)
-		if("red")
+		if ("red")
 			icon = 'icons/obj/power_cond_red.dmi'
-		if("yellow")
+		if ("yellow")
 			icon = 'icons/obj/power_cond_yellow.dmi'
-		if("green")
+		if ("green")
 			icon = 'icons/obj/power_cond_green.dmi'
-		if("blue")
+		if ("blue")
 			icon = 'icons/obj/power_cond_blue.dmi'
-		if("pink")
+		if ("pink")
 			icon = 'icons/obj/power_cond_pink.dmi'
-		if("orange")
+		if ("orange")
 			icon = 'icons/obj/power_cond_orange.dmi'
-		if("cyan")
+		if ("cyan")
 			icon = 'icons/obj/power_cond_cyan.dmi'
-		if("white")
+		if ("white")
 			icon = 'icons/obj/power_cond_white.dmi'
 
 /obj/item/weapon/cable_coil/cut
@@ -553,13 +553,13 @@ obj/structure/cable/proc/cableColor(var/colorC)
 	..()
 
 /obj/item/weapon/cable_coil/attack(mob/M as mob, mob/user as mob)
-	if(hasorgans(M))
+	if (hasorgans(M))
 		var/datum/organ/external/S = M:get_organ(user.zone_sel.selecting)
-		if(!(S.status & ORGAN_ROBOT) || user.a_intent != "help")
+		if (!(S.status & ORGAN_ROBOT) || user.a_intent != "help")
 			return ..()
-		if(S.burn_dam > 0 && use(1))
+		if (S.burn_dam > 0 && use(1))
 			S.heal_damage(0,15,0,1)
-			if(user != M)
+			if (user != M)
 				user.visible_message("\red \The [user] repairs some burn damage on their [S.display_name] with \the [src]",\
 				"\red You repair some burn damage on your [S.display_name]",\
 				"You hear wires being cut.")

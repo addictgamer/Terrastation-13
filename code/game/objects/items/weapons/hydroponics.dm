@@ -35,9 +35,9 @@
 
 	mode = !mode
 	switch (mode)
-		if(1)
+		if (1)
 			usr << "The bag now picks up all seeds in a tile at once."
-		if(0)
+		if (0)
 			usr << "The bag now picks up one seed pouch at a time."
 
 /obj/item/seeds/attackby(var/obj/item/O as obj, var/mob/user as mob)
@@ -48,7 +48,7 @@
 			for (var/obj/item/seeds/G in locate(src.x,src.y,src.z))
 				if (S.contents.len < S.capacity)
 					S.contents += G;
-					if(S.item_quants[G.name])
+					if (S.item_quants[G.name])
 						S.item_quants[G.name]++
 					else
 						S.item_quants[G.name] = 1
@@ -60,7 +60,7 @@
 		else
 			if (S.contents.len < S.capacity)
 				S.contents += src;
-				if(S.item_quants[name])
+				if (S.item_quants[name])
 					S.item_quants[name]++
 				else
 					S.item_quants[name] = 1
@@ -77,7 +77,7 @@
 		dat += "<font color = 'red'>No seeds loaded!</font>"
 	else
 		for (var/O in item_quants)
-			if(item_quants[O] > 0)
+			if (item_quants[O] > 0)
 				var/N = item_quants[O]
 				dat += "<FONT color = 'blue'><B>[capitalize(O)]</B>:"
 				dat += " [N] </font>"
@@ -91,19 +91,19 @@
 	return
 
 /obj/item/weapon/seedbag/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 
 	usr.machine = src
 	if ( href_list["vend"] )
 		var/N = href_list["vend"]
 
-		if(item_quants[N] <= 0) // Sanity check, there are probably ways to press the button when it shouldn't be possible.
+		if (item_quants[N] <= 0) // Sanity check, there are probably ways to press the button when it shouldn't be possible.
 			return
 
 		item_quants[N] -= 1
 		for(var/obj/O in contents)
-			if(O.name == N)
+			if (O.name == N)
 				O.loc = get_turf(src)
 				usr.put_in_hands(O)
 				break
@@ -135,18 +135,18 @@
  * Nettle
  */
 /obj/item/weapon/grown/nettle/pickup(mob/living/carbon/human/user as mob)
-	if(!user.gloves)
+	if (!user.gloves)
 		user << "\red The nettle burns your bare hand!"
-		if(istype(user, /mob/living/carbon/human))
+		if (istype(user, /mob/living/carbon/human))
 			var/organ = ((user.hand ? "l_":"r_") + "arm")
 			var/datum/organ/external/affecting = user.get_organ(organ)
-			if(affecting.take_damage(0,force))
+			if (affecting.take_damage(0,force))
 				user.UpdateDamageIcon()
 		else
 			user.take_organ_damage(0,force)
 
 /obj/item/weapon/grown/nettle/afterattack(atom/A as mob|obj, mob/user as mob)
-	if(force > 0)
+	if (force > 0)
 		force -= rand(1,(force/3)+1) // When you whack someone with it, leaves fall off
 		playsound(loc, 'sound/weapons/bladeslice.ogg', 50, 1, -1)
 	else
@@ -162,21 +162,21 @@
  */
 
 /obj/item/weapon/grown/deathnettle/pickup(mob/living/carbon/human/user as mob)
-	if(!user.gloves)
-		if(istype(user, /mob/living/carbon/human))
+	if (!user.gloves)
+		if (istype(user, /mob/living/carbon/human))
 			var/organ = ((user.hand ? "l_":"r_") + "arm")
 			var/datum/organ/external/affecting = user.get_organ(organ)
-			if(affecting.take_damage(0,force))
+			if (affecting.take_damage(0,force))
 				user.UpdateDamageIcon()
 		else
 			user.take_organ_damage(0,force)
-		if(prob(50))
+		if (prob(50))
 			user.Paralyse(5)
 			user << "\red You are stunned by the Deathnettle when you try picking it up!"
 
 /obj/item/weapon/grown/deathnettle/attack(mob/living/carbon/M as mob, mob/user as mob)
-	if(!..()) return
-	if(istype(M, /mob/living))
+	if (!..()) return
+	if (istype(M, /mob/living))
 		M << "\red You are stunned by the powerful acid of the Deathnettle!"
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Had the [src.name] used on them by [user.name] ([user.ckey])</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] on [M.name] ([M.ckey])</font>")
@@ -186,7 +186,7 @@
 		playsound(loc, 'sound/weapons/bladeslice.ogg', 50, 1, -1)
 
 		M.eye_blurry += force/7
-		if(prob(20))
+		if (prob(20))
 			M.Paralyse(force/6)
 			M.Weaken(force/15)
 		M.drop_item()
@@ -209,7 +209,7 @@
  */
 /obj/item/weapon/corncob/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
-	if(istype(W, /obj/item/weapon/circular_saw) || istype(W, /obj/item/weapon/hatchet) || istype(W, /obj/item/weapon/kitchen/utensil/knife) || istype(W, /obj/item/weapon/kitchenknife) || istype(W, /obj/item/weapon/kitchenknife/ritual))
+	if (istype(W, /obj/item/weapon/circular_saw) || istype(W, /obj/item/weapon/hatchet) || istype(W, /obj/item/weapon/kitchen/utensil/knife) || istype(W, /obj/item/weapon/kitchenknife) || istype(W, /obj/item/weapon/kitchenknife/ritual))
 		user << "<span class='notice'>You use [W] to fashion a pipe out of the corn cob!</span>"
 		new /obj/item/clothing/mask/cigarette/pipe/cobpipe (user.loc)
 		del(src)

@@ -18,16 +18,16 @@
 	connected_traps = list() //emptying the list first
 	for(var/trap_name in connected_traps_names)
 		for(var/obj/effect/trap/the_trap in world)
-			if(the_trap.name == trap_name)
+			if (the_trap.name == trap_name)
 				connected_traps += the_trap //adding the trap with the matching name
 
 /obj/effect/pressure_plate/HasEntered(atom/victim as mob|obj)
-	if(victim.density && (trigger_type == "mob and obj" || (trigger_type == "mob" && istype(victim,/mob)) || (trigger_type == "obj" && istype(victim,/obj))))
+	if (victim.density && (trigger_type == "mob and obj" || (trigger_type == "mob" && istype(victim,/mob)) || (trigger_type == "obj" && istype(victim,/obj))))
 		for(var/obj/effect/trap/T in connected_traps)
 			T.trigger(victim)
 
 /obj/effect/pressure_plate/Bumped(atom/victim as mob|obj)
-	if(victim.density && (trigger_type == "mob and obj" || (trigger_type == "mob" && istype(victim,/mob)) || (trigger_type == "obj" && istype(victim,/obj))))
+	if (victim.density && (trigger_type == "mob and obj" || (trigger_type == "mob" && istype(victim,/mob)) || (trigger_type == "obj" && istype(victim,/obj))))
 		for(var/obj/effect/trap/T in connected_traps)
 			T.trigger(victim)
 
@@ -45,15 +45,15 @@
 	src:visibility = 0 //seriously, it keeps saying "undefined var" when I try to do it in the define
 
 /obj/effect/trap/HasEntered(victim as mob|obj)
-	if(trigger_type == "mob and obj" || (trigger_type == "mob" && istype(victim,/mob)) || (trigger_type == "obj" && istype(victim,/obj)))
+	if (trigger_type == "mob and obj" || (trigger_type == "mob" && istype(victim,/mob)) || (trigger_type == "obj" && istype(victim,/obj)))
 		trigger(victim)
 
 /obj/effect/trap/Bumped(victim as mob|obj)
-	if(trigger_type == "mob and obj" || (trigger_type == "mob" && istype(victim,/mob)) || (trigger_type == "obj" && istype(victim,/obj)))
+	if (trigger_type == "mob and obj" || (trigger_type == "mob" && istype(victim,/mob)) || (trigger_type == "obj" && istype(victim,/obj)))
 		trigger(victim)
 
 /obj/effect/trap/proc/trigger(victim)
-	if(!uses)
+	if (!uses)
 		return
 	uses--
 	activate(victim)
@@ -71,35 +71,35 @@
 	var/list/targets = list()
 
 	switch(target_type)
-		if("turf")
+		if ("turf")
 			switch(aoe_range_or_view)
-				if("view")
+				if ("view")
 					for(var/turf/T in view(src,aoe_radius))
-						if(!T.density || include_dense)
+						if (!T.density || include_dense)
 							targets += T
-				if("range")
+				if ("range")
 					for(var/turf/T in range(src,aoe_radius))
-						if(!T.density || include_dense)
+						if (!T.density || include_dense)
 							targets += T
-		if("mob")
+		if ("mob")
 			switch(aoe_range_or_view)
-				if("view")
+				if ("view")
 					for(var/mob/living/M in view(src,aoe_radius))
-						if(!M.density || include_dense)
+						if (!M.density || include_dense)
 							targets += M
-				if("range")
+				if ("range")
 					for(var/mob/living/M in range(src,aoe_radius))
-						if(!M.density || include_dense)
+						if (!M.density || include_dense)
 							targets += M
-		if("obj")
+		if ("obj")
 			switch(aoe_range_or_view)
-				if("view")
+				if ("view")
 					for(var/obj/O in view(src,aoe_radius))
-						if(!O.density || include_dense)
+						if (!O.density || include_dense)
 							targets += O
-				if("range")
+				if ("range")
 					for(var/obj/O in range(src,aoe_radius))
-						if(!O.density || include_dense)
+						if (!O.density || include_dense)
 							targets += O
 
 	return targets
@@ -137,22 +137,22 @@
 	var/list/targets = list()
 	targets = picktargets()
 
-	if(target_type == "turf")
+	if (target_type == "turf")
 		for(var/i=0,i<rocks_amt,i++)
 			var/turf/hit_loc = pick(targets)
 			var/rock_type = pick(rocks_type)
 			var/obj/item/weapon/ore/rock = new rock_type(hit_loc)
 			for(var/mob/living/M in hit_loc)
-				if(prob(rocks_hit_chance))
+				if (prob(rocks_hit_chance))
 					M.take_organ_damage(rand(rocks_min_dmg,rocks_max_dmg))
 					M << "A chunk of [lowertext(rock.name)] hits you in the head!"
 
-	if(target_type == "mob")
+	if (target_type == "mob")
 		for(var/i=0,i<rocks_amt,i++)
 			var/mob/living/hit_loc = pick(targets)
 			var/rock_type = pick(rocks_type)
 			var/obj/item/weapon/ore/rock = new rock_type(hit_loc.loc)
-			if(prob(rocks_hit_chance))
+			if (prob(rocks_hit_chance))
 				hit_loc.take_organ_damage(rand(rocks_min_dmg,rocks_max_dmg))
 				hit_loc << "A chunk of [lowertext(rock.name)] hits you in the head!"
 
@@ -191,7 +191,7 @@
 	var/obj/item/weapon/ore/rock = new rock_type(victim:loc)
 	if (istype(victim) && prob(rock_hit_chance))
 		var/dmg = rand(rock_min_dmg,rock_max_dmg)
-		if(istype(victim, /mob/living/carbon/human))
+		if (istype(victim, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = victim
 			var/datum/organ/external/affecting = H.organs["head"]
 			affecting.take_damage(dmg)
@@ -209,17 +209,17 @@
 	var/list/targets = list()
 
 	switch(target_type)
-		if("turf")
+		if ("turf")
 			for(var/turf/T in src.loc.loc)
-				if(!T.density || include_dense)
+				if (!T.density || include_dense)
 					targets += T
-		if("mob")
+		if ("mob")
 			for(var/mob/living/M in src.loc.loc)
-				if(!M.density || include_dense)
+				if (!M.density || include_dense)
 					targets += M
-		if("obj")
+		if ("obj")
 			for(var/obj/O in src.loc.loc)
-				if(!O.density || include_dense)
+				if (!O.density || include_dense)
 					targets += O
 
 	return targets

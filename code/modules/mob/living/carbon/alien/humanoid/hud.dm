@@ -100,7 +100,7 @@
 	inv_box.dir = WEST
 	inv_box.icon = 'icons/mob/screen1_alien.dmi'
 	inv_box.icon_state = "hand_inactive"
-	if(mymob && !mymob.hand)	//This being 0 or null means the right hand is in use
+	if (mymob && !mymob.hand)	//This being 0 or null means the right hand is in use
 		using.icon_state = "hand_active"
 	inv_box.screen_loc = ui_rhand
 	inv_box.layer = 19
@@ -113,7 +113,7 @@
 	inv_box.dir = EAST
 	inv_box.icon = 'icons/mob/screen1_alien.dmi'
 	inv_box.icon_state = "hand_inactive"
-	if(mymob && mymob.hand)	//This being 1 means the left hand is in use
+	if (mymob && mymob.hand)	//This being 1 means the left hand is in use
 		inv_box.icon_state = "hand_active"
 	inv_box.screen_loc = ui_lhand
 	inv_box.layer = 19

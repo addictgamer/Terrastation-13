@@ -30,9 +30,9 @@
 	return
 
 /obj/mecha/combat/phazon/Bump(var/atom/obstacle)
-	if(phasing && get_charge()>=phasing_energy_drain)
+	if (phasing && get_charge()>=phasing_energy_drain)
 		spawn()
-			if(can_move)
+			if (can_move)
 				can_move = 0
 				flick("phazon-phase", src)
 				src.loc = get_step(src,src.dir)
@@ -44,7 +44,7 @@
 	return
 
 /obj/mecha/combat/phazon/click_action(atom/target,mob/user)
-	if(phasing)
+	if (phasing)
 		src.occupant_message("Unable to interact with objects while phasing")
 		return
 	else
@@ -55,15 +55,15 @@
 	set name = "Change melee damage type"
 	set src = usr.loc
 	set popup_menu = 0
-	if(usr!=src.occupant)
+	if (usr!=src.occupant)
 		return
 	var/new_damtype = alert(src.occupant,"Melee Damage Type",null,"Brute","Fire","Toxic")
 	switch(new_damtype)
-		if("Brute")
+		if ("Brute")
 			damtype = "brute"
-		if("Fire")
+		if ("Fire")
 			damtype = "fire"
-		if("Toxic")
+		if ("Toxic")
 			damtype = "tox"
 	src.occupant_message("Melee damage type switched to [new_damtype ]")
 	return

@@ -168,7 +168,7 @@
 
 			var/obj/item/obj = affected.implants[1]
 
-			if(istype(obj,/obj/item/weapon/implant))
+			if (istype(obj,/obj/item/weapon/implant))
 				var/obj/item/weapon/implant/imp = obj
 				if (imp.islegal())
 					find_prob +=60
@@ -183,14 +183,14 @@
 				affected.implants -= obj
 
 				//Handle possessive brain borers.
-				if(istype(obj,/mob/living/simple_animal/borer))
+				if (istype(obj,/mob/living/simple_animal/borer))
 					var/mob/living/simple_animal/borer/worm = obj
-					if(worm.controlling)
+					if (worm.controlling)
 						target.release_control()
 					worm.detatch()
 
 				obj.loc = get_turf(target)
-				if(istype(obj,/obj/item/weapon/implant))
+				if (istype(obj,/obj/item/weapon/implant))
 					var/obj/item/weapon/implant/imp = obj
 					imp.imp_in = null
 					imp.implanted = 0
@@ -201,7 +201,7 @@
 			user.visible_message("\blue [user] takes something out of incision on [target]'s [affected.display_name] with \the [tool].", \
 			"\blue You take something out of incision on [target]'s [affected.display_name]s with \the [tool]." )
 			affected.hidden.loc = get_turf(target)
-			if(!affected.hidden.blood_DNA)
+			if (!affected.hidden.blood_DNA)
 				affected.hidden.blood_DNA = list()
 			affected.hidden.blood_DNA[target.dna.unique_enzymes] = target.dna.b_type
 			affected.hidden.update_icon()

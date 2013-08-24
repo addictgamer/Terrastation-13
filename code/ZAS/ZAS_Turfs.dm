@@ -24,7 +24,7 @@
 	var/datum/gas_mixture/GM = new
 
 	var/sum = oxygen + carbon_dioxide + nitrogen + toxins
-	if(sum>0)
+	if (sum>0)
 		GM.oxygen = (oxygen/sum)*amount
 		GM.carbon_dioxide = (carbon_dioxide/sum)*amount
 		GM.nitrogen = (nitrogen/sum)*amount
@@ -49,19 +49,19 @@
 	overlays = null
 
 	var/siding_icon_state = return_siding_icon_state()
-	if(siding_icon_state)
+	if (siding_icon_state)
 		overlays += image('floors.dmi',siding_icon_state)
 	var/datum/gas_mixture/model = return_air()
 	switch(model.graphic)
-		if(1)
+		if (1)
 			overlays.Add(plmaster) //TODO: Make invisible plasma an option
-		if(2)
+		if (2)
 			overlays.Add(slmaster)
 
 /turf/simulated/New()
 	..()
 
-	if(!blocks_air)
+	if (!blocks_air)
 		air = new
 
 		air.oxygen = oxygen
@@ -72,53 +72,53 @@
 		air.temperature = temperature
 		air.update_values()
 
-		if(air_master)
+		if (air_master)
 			air_master.tiles_to_update.Add(src)
 
 	else
-		if(air_master)
+		if (air_master)
 			for(var/direction in cardinal)
 				var/turf/simulated/floor/target = get_step(src,direction)
-				if(istype(target))
+				if (istype(target))
 					air_master.tiles_to_update |= target
 
 /turf/simulated/Del()
-	if(active_hotspot)
+	if (active_hotspot)
 		del(active_hotspot)
-	if(blocks_air)
+	if (blocks_air)
 		for(var/direction in list(NORTH, SOUTH, EAST, WEST))
 			var/turf/simulated/tile = get_step(src,direction)
-			if(istype(tile) && !tile.blocks_air)
+			if (istype(tile) && !tile.blocks_air)
 				air_master.tiles_to_update.Add(tile)
 	..()
 
 /turf/simulated/assume_air(datum/gas_mixture/giver)
-	if(!giver)	return 0
-	if(zone)
+	if (!giver)	return 0
+	if (zone)
 		zone.air.merge(giver)
 		return 1
 	else
 		return ..()
 
 /turf/simulated/return_air()
-	if(zone)
+	if (zone)
 		return zone.air
-	else if(air)
+	else if (air)
 		return air
 
 	else
 		return ..()
 
 /turf/simulated/remove_air(amount as num)
-	if(zone)
+	if (zone)
 		var/datum/gas_mixture/removed = null
 		removed = zone.air.remove(amount)
 		return removed
-	else if(air)
+	else if (air)
 		var/datum/gas_mixture/removed = null
 		removed = air.remove(amount)
 
-		if(air.check_tile_graphic())
+		if (air.check_tile_graphic())
 			update_visuals(air)
 		return removed
 
@@ -130,66 +130,66 @@
 	air_check_directions = 0
 
 	for(var/direction in cardinal)
-		if(ZAirPass(get_step(src,direction)))
+		if (ZAirPass(get_step(src,direction)))
 			air_check_directions |= direction
 
-	if(!zone && !blocks_air) //No zone, but not a wall.
+	if (!zone && !blocks_air) //No zone, but not a wall.
 		for(var/direction in DoorDirections) //Check door directions first.
-			if(air_check_directions&direction)
+			if (air_check_directions&direction)
 				var/turf/simulated/T = get_step(src,direction)
-				if(!istype(T))
+				if (!istype(T))
 					continue
-				if(T.zone)
+				if (T.zone)
 					T.zone.AddTurf(src)
 					break
-		if(!zone) //Still no zone
+		if (!zone) //Still no zone
 			for(var/direction in CounterDoorDirections) //Check the others second.
-				if(air_check_directions&direction)
+				if (air_check_directions&direction)
 					var/turf/simulated/T = get_step(src,direction)
-					if(!istype(T))
+					if (!istype(T))
 						continue
-					if(T.zone)
+					if (T.zone)
 						T.zone.AddTurf(src)
 						break
-		if(!zone) //No zone found, new zone!
+		if (!zone) //No zone found, new zone!
 			new/zone(src)
-		if(!zone) //Still no zone, the floodfill determined it is not part of a larger zone.  Force a zone on it.
+		if (!zone) //Still no zone, the floodfill determined it is not part of a larger zone.  Force a zone on it.
 			new/zone(list(src))
 
 	//Check pass sanity of the connections.
-	if("\ref[src]" in air_master.turfs_with_connections)
+	if ("\ref[src]" in air_master.turfs_with_connections)
 		for(var/connection/C in air_master.turfs_with_connections["\ref[src]"])
 			air_master.connections_to_check |= C
 
-	if(zone && !zone.rebuild)
+	if (zone && !zone.rebuild)
 		for(var/direction in cardinal)
 			var/turf/T = get_step(src,direction)
-			if(!istype(T))
+			if (!istype(T))
 				continue
 
 			//I can connect to air in this direction
-			if(air_check_directions&direction)
+			if (air_check_directions&direction)
 
 				//If either block air, we must look to see if the adjacent turfs need rebuilt.
-				if(!CanPass(null, T, 0, 0))
+				if (!CanPass(null, T, 0, 0))
 
 					//Target blocks air
-					if(!T.CanPass(null, T, 0, 0))
+					if (!T.CanPass(null, T, 0, 0))
 						var/turf/NT = get_step(T, direction)
 
 						//If that turf is in my zone still, rebuild.
-						if(istype(NT,/turf/simulated) && NT in zone.contents)
+						if (istype(NT,/turf/simulated) && NT in zone.contents)
 							zone.rebuild = 1
 
 						//If that is an unsimulated tile in my zone, see if we need to rebuild or just remove.
-						else if(istype(NT) && NT in zone.unsimulated_tiles)
+						else if (istype(NT) && NT in zone.unsimulated_tiles)
 							var/consider_rebuild = 0
 							for(var/d in cardinal)
 								var/turf/UT = get_step(NT,d)
-								if(istype(UT, /turf/simulated) && UT.zone == zone && UT.CanPass(null, NT, 0, 0)) //If we find a neighboring tile that is in the same zone, check if we need to rebuild
+								if (istype(UT, /turf/simulated) && UT.zone == zone && UT.CanPass(null, NT, 0, 0)) //If we find a neighboring tile that is in the same zone, check if we need to rebuild
 									consider_rebuild = 1
 									break
-							if(consider_rebuild)
+							if (consider_rebuild)
 								zone.rebuild = 1 //Gotta check if we need to rebuild, dammit
 							else
 								zone.RemoveTurf(NT) //Not adjacent to anything, and unsimulated.  Goodbye~
@@ -198,24 +198,24 @@
 						ZConnect(T, src)
 
 					//If I block air.
-					else if(T.zone && !T.zone.rebuild)
+					else if (T.zone && !T.zone.rebuild)
 						var/turf/NT = get_step(src, reverse_direction(direction))
 
 						//If I am splitting a zone, rebuild.
-						if(istype(NT,/turf/simulated) && (NT in T.zone.contents || (NT.zone && T in NT.zone.contents)))
+						if (istype(NT,/turf/simulated) && (NT in T.zone.contents || (NT.zone && T in NT.zone.contents)))
 							T.zone.rebuild = 1
 
 						//If NT is unsimulated, parse if I should remove it or rebuild.
-						else if(istype(NT) && NT in T.zone.unsimulated_tiles)
+						else if (istype(NT) && NT in T.zone.unsimulated_tiles)
 							var/consider_rebuild = 0
 							for(var/d in cardinal)
 								var/turf/UT = get_step(NT,d)
-								if(istype(UT, /turf/simulated) && UT.zone == T.zone && UT.CanPass(null, NT, 0, 0)) //If we find a neighboring tile that is in the same zone, check if we need to rebuild
+								if (istype(UT, /turf/simulated) && UT.zone == T.zone && UT.CanPass(null, NT, 0, 0)) //If we find a neighboring tile that is in the same zone, check if we need to rebuild
 									consider_rebuild = 1
 									break
 
 							//Needs rebuilt.
-							if(consider_rebuild)
+							if (consider_rebuild)
 								T.zone.rebuild = 1
 
 							//Not adjacent to anything, and unsimulated.  Goodbye~
@@ -227,15 +227,15 @@
 					ZConnect(src,T)
 
 			//Something like a wall was built, changing the geometry.
-			else if(air_directions_archived&direction)
+			else if (air_directions_archived&direction)
 				var/turf/NT = get_step(T, direction)
 
 				//If the tile is in our own zone, and we cannot connect to it, better rebuild.
-				if(istype(NT,/turf/simulated) && NT in zone.contents)
+				if (istype(NT,/turf/simulated) && NT in zone.contents)
 					zone.rebuild = 1
 
 				//Parse if we need to remove the tile, or rebuild the zone.
-				else if(istype(NT) && NT in zone.unsimulated_tiles)
+				else if (istype(NT) && NT in zone.unsimulated_tiles)
 					var/consider_rebuild = 0
 
 					//Loop through all neighboring turfs to see if we should remove the turf or just rebuild.
@@ -243,20 +243,20 @@
 						var/turf/UT = get_step(NT,d)
 
 						//If we find a neighboring tile that is in the same zone, rebuild
-						if(istype(UT, /turf/simulated) && UT.zone == zone && UT.CanPass(null, NT, 0, 0))
+						if (istype(UT, /turf/simulated) && UT.zone == zone && UT.CanPass(null, NT, 0, 0))
 							consider_rebuild = 1
 							break
 
 					//The unsimulated turf is adjacent to another one of our zone's turfs,
 					//  better rebuild to be sure we didn't get cut in twain
-					if(consider_rebuild)
+					if (consider_rebuild)
 						zone.rebuild = 1
 
 					//Not adjacent to anything, and unsimulated.  Goodbye~
 					else
 						zone.RemoveTurf(NT)
 
-	if(air_check_directions)
+	if (air_check_directions)
 		processing = 1
 	else
 		processing = 0
@@ -267,59 +267,59 @@
 	//A positive numerical argument checks only for closed doors.
 	//Another turf as an argument checks for windoors between here and there.
 	for(var/obj/machinery/door/D in src)
-		if(isnum(O) && O)
-			if(!D.density) continue
-		if(istype(D,/obj/machinery/door/window))
-			if(!istype(O))
+		if (isnum(O) && O)
+			if (!D.density) continue
+		if (istype(D,/obj/machinery/door/window))
+			if (!istype(O))
 				continue
-			if(D.dir == get_dir(D,O))
+			if (D.dir == get_dir(D,O))
 				return 1
 		else
 			return 1
 
 /turf/proc/ZCanPass(turf/simulated/T, var/include_space = 0)
 	//Fairly standard pass checks for turfs, objects and directional windows. Also stops at the edge of space.
-	if(!istype(T))
+	if (!istype(T))
 		return 0
 
-	if(!istype(T) && !include_space)
+	if (!istype(T) && !include_space)
 		return 0
 	else
-		if(T.blocks_air||blocks_air)
+		if (T.blocks_air||blocks_air)
 			return 0
 
 		for(var/obj/obstacle in src)
-			if(istype(obstacle, /obj/machinery/door) && !obstacle:air_properties_vary_with_direction)
+			if (istype(obstacle, /obj/machinery/door) && !obstacle:air_properties_vary_with_direction)
 				continue
-			if(!obstacle.CanPass(null, T, 1.5, 1))
+			if (!obstacle.CanPass(null, T, 1.5, 1))
 				return 0
 
 		for(var/obj/obstacle in T)
-			if(istype(obstacle, /obj/machinery/door) && !obstacle:air_properties_vary_with_direction)
+			if (istype(obstacle, /obj/machinery/door) && !obstacle:air_properties_vary_with_direction)
 				continue
-			if(!obstacle.CanPass(null, src, 1.5, 1))
+			if (!obstacle.CanPass(null, src, 1.5, 1))
 				return 0
 
 		return 1
 
 /turf/proc/ZAirPass(turf/T)
 	//Fairly standard pass checks for turfs, objects and directional windows.
-	if(!istype(T))
+	if (!istype(T))
 		return 0
 
-	if(T.blocks_air||blocks_air)
+	if (T.blocks_air||blocks_air)
 		return 0
 
 	for(var/obj/obstacle in src)
-		if(istype(obstacle, /obj/machinery/door) && !obstacle:air_properties_vary_with_direction)
+		if (istype(obstacle, /obj/machinery/door) && !obstacle:air_properties_vary_with_direction)
 			continue
-		if(!obstacle.CanPass(null, T, 0, 0))
+		if (!obstacle.CanPass(null, T, 0, 0))
 			return 0
 
 	for(var/obj/obstacle in T)
-		if(istype(obstacle, /obj/machinery/door) && !obstacle:air_properties_vary_with_direction)
+		if (istype(obstacle, /obj/machinery/door) && !obstacle:air_properties_vary_with_direction)
 			continue
-		if(!obstacle.CanPass(null, src, 0, 0))
+		if (!obstacle.CanPass(null, src, 0, 0))
 			return 0
 
 	return 1
@@ -329,15 +329,15 @@
 	//Checks for new connections that can be made.
 	for(var/d in cardinal)
 		var/turf/simulated/T = get_step(src,d)
-		if(istype(T) && ( !T.zone || !T.CanPass(0,src,0,0) ) )
+		if (istype(T) && ( !T.zone || !T.CanPass(0,src,0,0) ) )
 			continue
-		if(T.zone != zone)
+		if (T.zone != zone)
 			ZConnect(src,T)
 
 /turf/proc/check_for_space()
 	//Checks for space around the turf.
 	for(var/d in cardinal)
 		var/turf/T = get_step(src,d)
-		if(istype(T,/turf/space) && T.CanPass(0,src,0,0))
+		if (istype(T,/turf/space) && T.CanPass(0,src,0,0))
 			zone.AddSpace(T)
 			*/

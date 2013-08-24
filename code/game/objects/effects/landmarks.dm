@@ -12,64 +12,64 @@
 	invisibility = 101
 
 	switch(name)			//some of these are probably obsolete
-		if("shuttle")
+		if ("shuttle")
 			shuttle_z = z
 			del(src)
 
-		if("airtunnel_stop")
+		if ("airtunnel_stop")
 			airtunnel_stop = x
 
-		if("airtunnel_start")
+		if ("airtunnel_start")
 			airtunnel_start = x
 
-		if("airtunnel_bottom")
+		if ("airtunnel_bottom")
 			airtunnel_bottom = y
 
-		if("monkey")
+		if ("monkey")
 			monkeystart += loc
 			del(src)
-		if("start")
+		if ("start")
 			newplayer_start += loc
 			del(src)
 
-		if("wizard")
+		if ("wizard")
 			wizardstart += loc
 			del(src)
 
-		if("JoinLate")
+		if ("JoinLate")
 			latejoin += loc
 			del(src)
 
 		//prisoners
-		if("prisonwarp")
+		if ("prisonwarp")
 			prisonwarp += loc
 			del(src)
-	//	if("mazewarp")
+	//	if ("mazewarp")
 	//		mazewarp += loc
-		if("Holding Facility")
+		if ("Holding Facility")
 			holdingfacility += loc
-		if("tdome1")
+		if ("tdome1")
 			tdome1	+= loc
-		if("tdome2")
+		if ("tdome2")
 			tdome2 += loc
-		if("tdomeadmin")
+		if ("tdomeadmin")
 			tdomeadmin	+= loc
-		if("tdomeobserve")
+		if ("tdomeobserve")
 			tdomeobserve += loc
 		//not prisoners
-		if("prisonsecuritywarp")
+		if ("prisonsecuritywarp")
 			prisonsecuritywarp += loc
 			del(src)
 
-		if("blobstart")
+		if ("blobstart")
 			blobstart += loc
 			del(src)
 
-		if("xeno_spawn")
+		if ("xeno_spawn")
 			xeno_spawn += loc
 			del(src)
 
-		if("ninjastart")
+		if ("ninjastart")
 			ninjastart += loc
 			del(src)
 

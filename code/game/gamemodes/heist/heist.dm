@@ -33,16 +33,16 @@ var/global/vox_kills = 0 //Used to check the Inviolate.
 
 /datum/game_mode/heist/can_start()
 
-	if(!..())
+	if (!..())
 		return 0
 
 	var/list/candidates = get_players_for_role(BE_RAIDER)
 	var/raider_num = 0
 
 	//Check that we have enough vox.
-	if(candidates.len < required_enemies)
+	if (candidates.len < required_enemies)
 		return 0
-	else if(candidates.len < recommended_enemies)
+	else if (candidates.len < recommended_enemies)
 		raider_num = candidates.len
 	else
 		raider_num = recommended_enemies
@@ -68,7 +68,7 @@ var/global/vox_kills = 0 //Used to check the Inviolate.
 	var/list/turf/raider_spawn = list()
 
 	for(var/obj/effect/landmark/L in landmarks_list)
-		if(L.name == "voxstart")
+		if (L.name == "voxstart")
 			raider_spawn += get_turf(L)
 			del(L)
 			continue
@@ -81,7 +81,7 @@ var/global/vox_kills = 0 //Used to check the Inviolate.
 	//Spawn the vox!
 	for(var/datum/mind/raider in raiders)
 
-		if(index > raider_spawn.len)
+		if (index > raider_spawn.len)
 			index = 1
 
 		raider.current.loc = raider_spawn[index]
@@ -120,7 +120,7 @@ var/global/vox_kills = 0 //Used to check the Inviolate.
 
 /datum/game_mode/heist/proc/is_raider_crew_safe()
 
-	if(cortical_stacks.len == 0)
+	if (cortical_stacks.len == 0)
 		return 0
 
 	for(var/obj/stack in cortical_stacks)
@@ -131,8 +131,8 @@ var/global/vox_kills = 0 //Used to check the Inviolate.
 /datum/game_mode/heist/proc/is_raider_crew_alive()
 
 	for(var/datum/mind/raider in raiders)
-		if(raider.current)
-			if(istype(raider.current,/mob/living/carbon/human) && raider.current.stat != 2)
+		if (raider.current)
+			if (istype(raider.current,/mob/living/carbon/human) && raider.current.stat != 2)
 				return 1
 	return 0
 
@@ -148,10 +148,10 @@ var/global/vox_kills = 0 //Used to check the Inviolate.
 		var/goal = pick(goals)
 		var/datum/objective/heist/O
 
-		if(goal == "kidnap")
+		if (goal == "kidnap")
 			goals -= "kidnap"
 			O = new /datum/objective/heist/kidnap()
-		else if(goal == "loot")
+		else if (goal == "loot")
 			O = new /datum/objective/heist/loot()
 		else
 			O = new /datum/objective/heist/salvage()
@@ -189,7 +189,7 @@ var/global/vox_kills = 0 //Used to check the Inviolate.
 /datum/game_mode/heist/declare_completion()
 
 	//No objectives, go straight to the feedback.
-	if(!(raid_objectives.len)) return ..()
+	if (!(raid_objectives.len)) return ..()
 
 	var/win_type = "Major"
 	var/win_group = "Crew"
@@ -199,13 +199,13 @@ var/global/vox_kills = 0 //Used to check the Inviolate.
 
 	//Decrease success for failed objectives.
 	for(var/datum/objective/O in raid_objectives)
-		if(!(O.check_completion())) success--
+		if (!(O.check_completion())) success--
 
 	//Set result by objectives.
-	if(success == raid_objectives.len)
+	if (success == raid_objectives.len)
 		win_type = "Major"
 		win_group = "Vox"
-	else if(success > 2)
+	else if (success > 2)
 		win_type = "Minor"
 		win_group = "Vox"
 	else
@@ -213,15 +213,15 @@ var/global/vox_kills = 0 //Used to check the Inviolate.
 		win_group = "Crew"
 
 	//Now we modify that result by the state of the vox crew.
-	if(!is_raider_crew_alive())
+	if (!is_raider_crew_alive())
 
 		win_type = "Major"
 		win_group = "Crew"
 		win_msg += "<B>The Vox Raiders have been wiped out!</B>"
 
-	else if(!is_raider_crew_safe())
+	else if (!is_raider_crew_safe())
 
-		if(win_group == "Crew" && win_type == "Minor")
+		if (win_group == "Crew" && win_type == "Minor")
 			win_type = "Major"
 
 		win_group = "Crew"
@@ -229,8 +229,8 @@ var/global/vox_kills = 0 //Used to check the Inviolate.
 
 	else
 
-		if(win_group == "Vox")
-			if(win_type == "Minor")
+		if (win_group == "Vox")
+			if (win_type == "Minor")
 
 				win_type = "Major"
 			win_msg += "<B>The Vox Raiders escaped the station!</B>"
@@ -243,7 +243,7 @@ var/global/vox_kills = 0 //Used to check the Inviolate.
 
 	var/count = 1
 	for(var/datum/objective/objective in raid_objectives)
-		if(objective.check_completion())
+		if (objective.check_completion())
 			world << "<br><B>Objective #[count]</B>: [objective.explanation_text] <font color='green'><B>Success!</B></font>"
 			feedback_add_details("traitor_objective","[objective.type]|SUCCESS")
 		else

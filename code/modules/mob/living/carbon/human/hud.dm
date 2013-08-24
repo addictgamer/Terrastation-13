@@ -109,7 +109,7 @@
 	inv_box.dir = WEST
 	inv_box.icon = ui_style
 	inv_box.icon_state = "hand_inactive"
-	if(mymob && !mymob.hand)	//This being 0 or null means the right hand is in use
+	if (mymob && !mymob.hand)	//This being 0 or null means the right hand is in use
 		inv_box.icon_state = "hand_active"
 	inv_box.screen_loc = ui_rhand
 	inv_box.slot_id = slot_r_hand
@@ -122,7 +122,7 @@
 	inv_box.dir = EAST
 	inv_box.icon = ui_style
 	inv_box.icon_state = "hand_inactive"
-	if(mymob && mymob.hand)	//This being 1 means the left hand is in use
+	if (mymob && mymob.hand)	//This being 1 means the left hand is in use
 		inv_box.icon_state = "hand_active"
 	inv_box.screen_loc = ui_lhand
 	inv_box.slot_id = slot_l_hand
@@ -520,7 +520,7 @@
 	set name = "Toggle hotkey buttons"
 	set desc = "This disables or enables the user interface buttons which can be used with hotkeys."
 
-	if(hud_used.hotkey_ui_hidden)
+	if (hud_used.hotkey_ui_hidden)
 		client.screen += src.hud_used.hotkeybuttons
 		src.hud_used.hotkey_ui_hidden = 0
 	else
@@ -530,36 +530,36 @@
 
 /mob/living/carbon/human/update_action_buttons()
 	var/num = 1
-	if(!src.hud_used) return
-	if(!src.client) return
+	if (!src.hud_used) return
+	if (!src.client) return
 
-	if(!hud_used.hud_shown)	//Hud toggled to minimal
+	if (!hud_used.hud_shown)	//Hud toggled to minimal
 		return
 
 	src.client.screen -= src.hud_used.item_action_list
 	hud_used.item_action_list = list()
 
 	for(var/obj/item/I in src)
-		if(I.icon_action_button)
+		if (I.icon_action_button)
 			var/obj/screen/item_action/A = new(src.hud_used)
 			A.icon = 'icons/mob/screen1_action.dmi'
 			A.icon_state = I.icon_action_button
-			if(I.action_button_name)
+			if (I.action_button_name)
 				A.name = I.action_button_name
 			else
 				A.name = "Use [I.name]"
 			A.owner = I
 			hud_used.item_action_list += A
 			switch(num)
-				if(1)
+				if (1)
 					A.screen_loc = ui_action_slot1
-				if(2)
+				if (2)
 					A.screen_loc = ui_action_slot2
-				if(3)
+				if (3)
 					A.screen_loc = ui_action_slot3
-				if(4)
+				if (4)
 					A.screen_loc = ui_action_slot4
-				if(5)
+				if (5)
 					A.screen_loc = ui_action_slot5
 					break //5 slots available, so no more can be added.
 			num++

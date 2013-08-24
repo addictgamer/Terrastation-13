@@ -21,7 +21,7 @@
 	sleep(48)
 	//animation = null
 
-	if(!species.primitive) //If the creature in question has no primitive set, this is going to be messy.
+	if (!species.primitive) //If the creature in question has no primitive set, this is going to be messy.
 		gib()
 		return
 
@@ -40,7 +40,7 @@
 
 	if (client)
 		client.mob = O
-	if(mind)
+	if (mind)
 		mind.transfer_to(O)
 
 	O << "<B>You are now [O]. </B>"
@@ -75,13 +75,13 @@
 	return ..()
 
 /mob/proc/AIize()
-	if(client)
+	if (client)
 		src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // stop the jams for AIs
 	var/mob/living/silicon/ai/O = new (loc, base_law_type,,1)//No MMI but safety is in effect.
 	O.invisibility = 0
 	O.aiRestorePowerRoutine = 0
 
-	if(mind)
+	if (mind)
 		mind.transfer_to(O)
 		O.mind.original = O
 	else
@@ -97,7 +97,7 @@
 	if (!loc_landmark)
 		for(var/obj/effect/landmark/tripai in landmarks_list)
 			if (tripai.name == "tripai")
-				if(locate(/mob/living) in tripai.loc)
+				if (locate(/mob/living) in tripai.loc)
 					continue
 				loc_landmark = tripai
 	if (!loc_landmark)
@@ -160,11 +160,11 @@
 	O.invisibility = 0
 
 
-	if(mind)		//TODO
+	if (mind)		//TODO
 		mind.transfer_to(O)
-		if(O.mind.assigned_role == "Cyborg")
+		if (O.mind.assigned_role == "Cyborg")
 			O.mind.original = O
-		else if(mind.special_role)
+		else if (mind.special_role)
 			O.mind.store_memory("In case you look at this after being borged, the objectives are only here until I find a way to make them not show up for you, as I can't simply delete them without screwing up round-end reporting. --NeoFite")
 	else
 		O.key = key
@@ -198,11 +198,11 @@
 	var/alien_caste = pick("Hunter","Sentinel","Drone")
 	var/mob/living/carbon/alien/humanoid/new_xeno
 	switch(alien_caste)
-		if("Hunter")
+		if ("Hunter")
 			new_xeno = new /mob/living/carbon/alien/humanoid/hunter(loc)
-		if("Sentinel")
+		if ("Sentinel")
 			new_xeno = new /mob/living/carbon/alien/humanoid/sentinel(loc)
-		if("Drone")
+		if ("Drone")
 			new_xeno = new /mob/living/carbon/alien/humanoid/drone(loc)
 
 	new_xeno.a_intent = "hurt"
@@ -227,7 +227,7 @@
 		del(t)
 
 	var/mob/living/carbon/slime/new_slime
-	if(reproduce)
+	if (reproduce)
 		var/number = pick(14;2,3,4)	//reproduce (has a small chance of producing 3 or 4 offspring)
 		var/list/babies = list()
 		for(var/i=1,i<=number,i++)
@@ -237,7 +237,7 @@
 			babies += M
 		new_slime = pick(babies)
 	else
-		if(adult)
+		if (adult)
 			new_slime = new /mob/living/carbon/slime/adult(loc)
 		else
 			new_slime = new /mob/living/carbon/slime(loc)
@@ -276,11 +276,11 @@
 	var/list/mobtypes = typesof(/mob/living/simple_animal)
 	var/mobpath = input("Which type of mob should [src] turn into?", "Choose a type") in mobtypes
 
-	if(!safe_animal(mobpath))
+	if (!safe_animal(mobpath))
 		usr << "\red Sorry but this mob type is currently unavailable."
 		return
 
-	if(monkeyizing)
+	if (monkeyizing)
 		return
 	for(var/obj/item/W in src)
 		drop_from_inventory(W)
@@ -310,7 +310,7 @@
 	var/list/mobtypes = typesof(/mob/living/simple_animal)
 	var/mobpath = input("Which type of mob should [src] turn into?", "Choose a type") in mobtypes
 
-	if(!safe_animal(mobpath))
+	if (!safe_animal(mobpath))
 		usr << "\red Sorry but this mob type is currently unavailable."
 		return
 
@@ -330,44 +330,44 @@
 /mob/proc/safe_animal(var/MP)
 
 //Bad mobs! - Remember to add a comment explaining what's wrong with the mob
-	if(!MP)
+	if (!MP)
 		return 0	//Sanity, this should never happen.
 
-	if(ispath(MP, /mob/living/simple_animal/space_worm))
+	if (ispath(MP, /mob/living/simple_animal/space_worm))
 		return 0 //Unfinished. Very buggy, they seem to just spawn additional space worms everywhere and eating your own tail results in new worms spawning.
 
-	if(ispath(MP, /mob/living/simple_animal/construct/behemoth))
+	if (ispath(MP, /mob/living/simple_animal/construct/behemoth))
 		return 0 //I think this may have been an unfinished WiP or something. These constructs should really have their own class simple_animal/construct/subtype
 
-	if(ispath(MP, /mob/living/simple_animal/construct/armoured))
+	if (ispath(MP, /mob/living/simple_animal/construct/armoured))
 		return 0 //Verbs do not appear for players. These constructs should really have their own class simple_animal/construct/subtype
 
-	if(ispath(MP, /mob/living/simple_animal/construct/wraith))
+	if (ispath(MP, /mob/living/simple_animal/construct/wraith))
 		return 0 //Verbs do not appear for players. These constructs should really have their own class simple_animal/construct/subtype
 
-	if(ispath(MP, /mob/living/simple_animal/construct/builder))
+	if (ispath(MP, /mob/living/simple_animal/construct/builder))
 		return 0 //Verbs do not appear for players. These constructs should really have their own class simple_animal/construct/subtype
 
 //Good mobs!
-	if(ispath(MP, /mob/living/simple_animal/cat))
+	if (ispath(MP, /mob/living/simple_animal/cat))
 		return 1
-	if(ispath(MP, /mob/living/simple_animal/corgi))
+	if (ispath(MP, /mob/living/simple_animal/corgi))
 		return 1
-	if(ispath(MP, /mob/living/simple_animal/crab))
+	if (ispath(MP, /mob/living/simple_animal/crab))
 		return 1
-	if(ispath(MP, /mob/living/simple_animal/hostile/carp))
+	if (ispath(MP, /mob/living/simple_animal/hostile/carp))
 		return 1
-	if(ispath(MP, /mob/living/simple_animal/mushroom))
+	if (ispath(MP, /mob/living/simple_animal/mushroom))
 		return 1
-	if(ispath(MP, /mob/living/simple_animal/shade))
+	if (ispath(MP, /mob/living/simple_animal/shade))
 		return 1
-	if(ispath(MP, /mob/living/simple_animal/tomato))
+	if (ispath(MP, /mob/living/simple_animal/tomato))
 		return 1
-	if(ispath(MP, /mob/living/simple_animal/mouse))
+	if (ispath(MP, /mob/living/simple_animal/mouse))
 		return 1 //It is impossible to pull up the player panel for mice (Fixed! - Nodrak)
-	if(ispath(MP, /mob/living/simple_animal/hostile/bear))
+	if (ispath(MP, /mob/living/simple_animal/hostile/bear))
 		return 1 //Bears will auto-attack mobs, even if they're player controlled (Fixed! - Nodrak)
-	if(ispath(MP, /mob/living/simple_animal/parrot))
+	if (ispath(MP, /mob/living/simple_animal/parrot))
 		return 1 //Parrots are no longer unfinished! -Nodrak
 
 	//Not in here? Must be untested!

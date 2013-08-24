@@ -9,9 +9,9 @@
 
 
 	special_check(var/mob/living/carbon/human/M)
-		if(caliber == initial(caliber))
+		if (caliber == initial(caliber))
 			return 1
-		if(prob(70 - (loaded.len * 10)))	//minimum probability of 10, maximum of 60
+		if (prob(70 - (loaded.len * 10)))	//minimum probability of 10, maximum of 60
 			M << "<span class='danger'>[src] blows up in your face.</span>"
 			M.take_organ_damage(0,20)
 			M.drop_item()
@@ -25,30 +25,30 @@
 		set desc = "Click to rename your gun. If you're the detective."
 
 		var/mob/M = usr
-		if(!M.mind)	return 0
-		if(!M.mind.assigned_role == "Detective")
+		if (!M.mind)	return 0
+		if (!M.mind.assigned_role == "Detective")
 			M << "<span class='notice'>You don't feel cool enough to name this gun, chump.</span>"
 			return 0
 
 		var/input = stripped_input(usr,"What do you want to name the gun?", ,"", MAX_NAME_LEN)
 
-		if(src && input && !M.stat && in_range(M,src))
+		if (src && input && !M.stat && in_range(M,src))
 			name = input
 			M << "You name the gun [input]. Say hello to your new friend."
 			return 1
 
 	attackby(var/obj/item/A as obj, mob/user as mob)
 		..()
-		if(istype(A, /obj/item/weapon/screwdriver))
-			if(caliber == "38")
+		if (istype(A, /obj/item/weapon/screwdriver))
+			if (caliber == "38")
 				user << "<span class='notice'>You begin to reinforce the barrel of [src].</span>"
-				if(loaded.len)
+				if (loaded.len)
 					afterattack(user, user)	//you know the drill
 					playsound(user, fire_sound, 50, 1)
 					user.visible_message("<span class='danger'>[src] goes off!</span>", "<span class='danger'>[src] goes off in your face!</span>")
 					return
-				if(do_after(user, 30))
-					if(loaded.len)
+				if (do_after(user, 30))
+					if (loaded.len)
 						user << "<span class='notice'>You can't modify it!</span>"
 						return
 					caliber = "357"
@@ -56,13 +56,13 @@
 					user << "<span class='warning'>You reinforce the barrel of [src]! Now it will fire .357 rounds.</span>"
 			else
 				user << "<span class='notice'>You begin to revert the modifications to [src].</span>"
-				if(loaded.len)
+				if (loaded.len)
 					afterattack(user, user)	//and again
 					playsound(user, fire_sound, 50, 1)
 					user.visible_message("<span class='danger'>[src] goes off!</span>", "<span class='danger'>[src] goes off in your face!</span>")
 					return
-				if(do_after(user, 30))
-					if(loaded.len)
+				if (do_after(user, 30))
+					if (loaded.len)
 						user << "<span class='notice'>You can't modify it!</span>"
 						return
 					caliber = "38"
@@ -98,7 +98,7 @@
 	loaded = list()
 	var/random = rand(1, max_shells)
 	for(var/i = 1; i <= max_shells; i++)
-		if(i != random)
+		if (i != random)
 			loaded += i // Basically null
 		else
 			loaded += new ammo_type(src)
@@ -106,17 +106,17 @@
 
 /obj/item/weapon/gun/projectile/russian/attackby(var/obj/item/A as obj, mob/user as mob)
 
-	if(!A) return
+	if (!A) return
 
 	var/num_loaded = 0
-	if(istype(A, /obj/item/ammo_magazine))
+	if (istype(A, /obj/item/ammo_magazine))
 
-		if((load_method == 2) && loaded.len)	return
+		if ((load_method == 2) && loaded.len)	return
 		var/obj/item/ammo_magazine/AM = A
 		for(var/obj/item/ammo_casing/AC in AM.stored_ammo)
-			if(getAmmo() > 0 || loaded.len >= max_shells)
+			if (getAmmo() > 0 || loaded.len >= max_shells)
 				break
-			if(AC.caliber == caliber && loaded.len < max_shells)
+			if (AC.caliber == caliber && loaded.len < max_shells)
 				AC.loc = src
 				AM.stored_ammo -= AC
 				loaded += AC
@@ -124,11 +124,11 @@
 			break
 		A.update_icon()
 
-	if(num_loaded)
+	if (num_loaded)
 		user.visible_message("<span class='warning'>[user] loads a single bullet into the revolver and spins the chamber.</span>", "<span class='warning'>You load a single bullet into the chamber and spin it.</span>")
 	else
 		user.visible_message("<span class='warning'>[user] spins the chamber of the revolver.</span>", "<span class='warning'>You spin the revolver's chamber.</span>")
-	if(getAmmo() > 0)
+	if (getAmmo() > 0)
 		Spin()
 	update_icon()
 	return
@@ -136,32 +136,32 @@
 /obj/item/weapon/gun/projectile/russian/attack_self(mob/user as mob)
 
 	user.visible_message("<span class='warning'>[user] spins the chamber of the revolver.</span>", "<span class='warning'>You spin the revolver's chamber.</span>")
-	if(getAmmo() > 0)
+	if (getAmmo() > 0)
 		Spin()
 
 /obj/item/weapon/gun/projectile/russian/attack(atom/target as mob|obj|turf|area, mob/living/user as mob|obj)
 
-	if(!loaded.len)
+	if (!loaded.len)
 		user.visible_message("\red *click*", "\red *click*")
 		playsound(user, 'sound/weapons/empty.ogg', 100, 1)
 		return
 
-	if(isliving(target) && isliving(user))
-		if(target == user)
+	if (isliving(target) && isliving(user))
+		if (target == user)
 			var/datum/organ/external/affecting = user.zone_sel.selecting
-			if(affecting == "head")
+			if (affecting == "head")
 
 				var/obj/item/ammo_casing/AC = loaded[1]
-				if(!load_into_chamber())
+				if (!load_into_chamber())
 					user.visible_message("\red *click*", "\red *click*")
 					playsound(user, 'sound/weapons/empty.ogg', 100, 1)
 					return
-				if(!in_chamber)
+				if (!in_chamber)
 					return
 				var/obj/item/projectile/P = new AC.projectile_type
 				playsound(user, fire_sound, 50, 1)
 				user.visible_message("<span class='danger'>[user.name] fires [src] at \his head!</span>", "<span class='danger'>You fire [src] at your head!</span>", "You hear a [istype(in_chamber, /obj/item/projectile/beam) ? "laser blast" : "gunshot"]!")
-				if(!P.nodamage)
+				if (!P.nodamage)
 					user.apply_damage(300, BRUTE, affecting) // You are dead, dead, dead.
 				return
 	..()

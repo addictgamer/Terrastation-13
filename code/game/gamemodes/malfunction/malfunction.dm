@@ -30,22 +30,22 @@
 
 /datum/game_mode/malfunction/pre_setup()
 	for(var/mob/new_player/player in player_list)
-		if(player.mind && player.mind.assigned_role == "AI")
+		if (player.mind && player.mind.assigned_role == "AI")
 			malf_ai+=player.mind
-	if(malf_ai.len)
+	if (malf_ai.len)
 		return 1
 	return 0
 
 
 /datum/game_mode/malfunction/post_setup()
 	for(var/datum/mind/AI_mind in malf_ai)
-		if(malf_ai.len < 1)
+		if (malf_ai.len < 1)
 			world << "Uh oh, its malfunction and there is no AI! Please report this."
 			world << "Rebooting world in 5 seconds."
 
 			feedback_set_details("end_error","malf - no AI")
 
-			if(blackbox)
+			if (blackbox)
 				blackbox.save_all_data_to_sql()
 			sleep(50)
 			world.Reboot()
@@ -63,10 +63,10 @@
 
 /*		AI_mind.current.icon_state = "ai-malf"
 		spawn(10)
-			if(alert(AI_mind.current,"Do you want to use an alternative sprite for your real core?",,"Yes","No")=="Yes")
+			if (alert(AI_mind.current,"Do you want to use an alternative sprite for your real core?",,"Yes","No")=="Yes")
 				AI_mind.current.icon_state = "ai-malf2"
 */
-	if(emergency_shuttle)
+	if (emergency_shuttle)
 		emergency_shuttle.always_fake_recall = 1
 	spawn (rand(waittime_l, waittime_h))
 		send_intercept()
@@ -134,8 +134,8 @@
 	if (station_captured && !to_nuke_or_not_to_nuke)
 		return 1
 	if (is_malf_ai_dead())
-		if(config.continous_rounds)
-			if(emergency_shuttle)
+		if (config.continous_rounds)
+			if (emergency_shuttle)
 				emergency_shuttle.always_fake_recall = 0
 			malf_mode_declared = 0
 		else
@@ -174,7 +174,7 @@
 	for(var/datum/mind/AI_mind in ticker.mode:malf_ai)
 		AI_mind.current.verbs -= /datum/game_mode/malfunction/proc/takeover
 	for(var/mob/M in player_list)
-		if(!istype(M,/mob/new_player))
+		if (!istype(M,/mob/new_player))
 			M << sound('sound/AI/aimalf.ogg')
 
 
@@ -196,9 +196,9 @@
 		world << i
 	sleep(10)
 	enter_allowed = 0
-	if(ticker)
+	if (ticker)
 		ticker.station_explosion_cinematic(0,null)
-		if(ticker.mode)
+		if (ticker.mode)
 			ticker.mode:station_was_nuked = 1
 			ticker.mode:explosion_in_progress = 0
 	return
@@ -247,18 +247,18 @@
 
 
 /datum/game_mode/proc/auto_declare_completion_malfunction()
-	if( malf_ai.len || istype(ticker.mode,/datum/game_mode/malfunction) )
+	if ( malf_ai.len || istype(ticker.mode,/datum/game_mode/malfunction) )
 		var/text = "<FONT size = 2><B>The malfunctioning AI were:</B></FONT>"
 
 		for(var/datum/mind/malf in malf_ai)
 
 			text += "<br>[malf.key] was [malf.name] ("
-			if(malf.current)
-				if(malf.current.stat == DEAD)
+			if (malf.current)
+				if (malf.current.stat == DEAD)
 					text += "deactivated"
 				else
 					text += "operational"
-				if(malf.current.real_name != malf.name)
+				if (malf.current.real_name != malf.name)
 					text += " as [malf.current.real_name]"
 			else
 				text += "hardware destroyed"

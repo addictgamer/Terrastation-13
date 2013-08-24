@@ -21,15 +21,15 @@
 		for(var/obj/item/weapon/reagent_containers/food/I in pickup)
 
 
-			if( I != src && !I.anchored && !istype(I, /obj/item/clothing/under) && !istype(I, /obj/item/clothing/suit) && !istype(I, /obj/item/projectile) )
+			if ( I != src && !I.anchored && !istype(I, /obj/item/clothing/under) && !istype(I, /obj/item/clothing/suit) && !istype(I, /obj/item/projectile) )
 				var/add = 0
-				if(I.w_class == 1.0)
+				if (I.w_class == 1.0)
 					add = 1
-				else if(I.w_class == 2.0)
+				else if (I.w_class == 2.0)
 					add = 3
 				else
 					add = 5
-				if(calc_carry() + add >= max_carry)
+				if (calc_carry() + add >= max_carry)
 					break
 
 				I.loc = src
@@ -68,11 +68,11 @@
 			I.loc = dropspot
 			carrying.Remove(I)
 			droppedSomething = 1
-			if(!foundtable && isturf(dropspot))
+			if (!foundtable && isturf(dropspot))
 				// if no table, presume that the person just shittily dropped the tray on the ground and made a mess everywhere!
 				spawn()
 					for(var/i = 1, i <= rand(1,2), i++)
-						if(I)
+						if (I)
 							step(I, pick(NORTH,SOUTH,EAST,WEST))
 							sleep(rand(2,4))
 		if ( droppedSomething )
@@ -115,7 +115,7 @@
 		return
 
 	n_name = copytext(n_name, 1, 32)
-	if(( get_dist(user,paper) <= 1  && user.stat == 0))
+	if (( get_dist(user,paper) <= 1  && user.stat == 0))
 		paper.name = "paper[(n_name ? text("- '[n_name]'") : null)]"
 	add_fingerprint(user)
 	return

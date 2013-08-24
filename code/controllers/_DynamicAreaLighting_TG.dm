@@ -47,13 +47,13 @@ datum/light_source
 
 
 	New(atom/A)
-		if(!istype(A))
+		if (!istype(A))
 			CRASH("The first argument to the light object's constructor must be the atom that is the light source. Expected atom, received '[A]' instead.")
 
 		..()
 		owner = A
 
-		if(istype(owner, /atom/movable))	mobile = 1		//apparantly this is faster than type-checking
+		if (istype(owner, /atom/movable))	mobile = 1		//apparantly this is faster than type-checking
 		else								mobile = 0		//Perhaps removing support for luminous turfs would be a good idea.
 
 		__x = owner.x
@@ -65,18 +65,18 @@ datum/light_source
 
 	//Check a light to see if its effect needs reprocessing. If it does, remove any old effect and create a new one
 	proc/check()
-		if(!owner)
+		if (!owner)
 			remove_effect()
 			return 1	//causes it to be removed from our list of lights. The garbage collector will then destroy it.
 
-		if(mobile)
+		if (mobile)
 			// check to see if we've moved since last update
-			if(owner.x != __x || owner.y != __y)
+			if (owner.x != __x || owner.y != __y)
 				__x = owner.x
 				__y = owner.y
 				changed = 1
 
-		if(changed)
+		if (changed)
 			changed = 0
 			remove_effect()
 			return add_effect()
@@ -85,7 +85,7 @@ datum/light_source
 
 	proc/remove_effect()
 		// before we apply the effect we remove the light's current effect.
-		if(effect.len)
+		if (effect.len)
 			for(var/turf in effect)	// negate the effect of this light source
 				var/turf/T = turf
 				T.update_lumcount(-effect[T])
@@ -93,7 +93,7 @@ datum/light_source
 
 	proc/add_effect()
 		// only do this if the light is turned on and is on the map
-		if(owner.loc && owner.luminosity > 0)
+		if (owner.loc && owner.luminosity > 0)
 			effect = new_effect()						// identify the effects of this light source
 			for(var/turf in effect)
 				var/turf/T = turf
@@ -109,9 +109,9 @@ datum/light_source
 
 		for(var/turf/T in view(owner.luminosity, owner))
 //			var/area/A = T.loc
-//			if(!A) continue
+//			if (!A) continue
 			var/change_in_lumcount = lum(T)
-			if(change_in_lumcount > 0)
+			if (change_in_lumcount > 0)
 				.[T] = change_in_lumcount
 
 		return .
@@ -120,7 +120,7 @@ datum/light_source
 	proc/lum(turf/A)
 		return owner.luminosity - max(abs(A.x-__x),abs(A.y-__y))
 //		var/dist = cheap_hypotenuse(A.x,A.y,__x,__y) //fetches the pythagorean distance between A and the light
-//		if(owner.luminosity < dist)	//if the turf is outside the radius the light doesn't illuminate it
+//		if (owner.luminosity < dist)	//if the turf is outside the radius the light doesn't illuminate it
 //			return 0
 //		return round(owner.luminosity - (dist/2),0.1)
 
@@ -132,11 +132,11 @@ atom
 //TODO: lag reduction
 turf/New()
 	..()
-	if(opacity)
+	if (opacity)
 		UpdateAffectingLights()
-	if(luminosity)
+	if (luminosity)
 		world.log << "[type] has luminosity at New()"
-		if(light)	world.log << "## WARNING: [type] - Don't set lights up manually during New(), We do it automatically."
+		if (light)	world.log << "## WARNING: [type] - Don't set lights up manually during New(), We do it automatically."
 		light = new(src)
 
 //Movable atoms with opacity when they are constructed will trigger nearby lights to update
@@ -144,22 +144,22 @@ turf/New()
 //TODO: lag reduction
 atom/movable/New()
 	..()
-	if(opacity)
+	if (opacity)
 		UpdateAffectingLights()
-	if(luminosity)
-		if(light)	world.log << "## WARNING: [type] - Don't set lights up manually during New(), We do it automatically."
+	if (luminosity)
+		if (light)	world.log << "## WARNING: [type] - Don't set lights up manually during New(), We do it automatically."
 		light = new(src)
 
 //Turfs with opacity will trigger nearby lights to update at next lighting process.
 //TODO: is this really necessary? Removing it could help reduce lag during singulo-mayhem somewhat
 turf/Del()
-	if(opacity)
+	if (opacity)
 		UpdateAffectingLights()
 	..()
 
 //Objects with opacity will trigger nearby lights to update at next lighting process.
 atom/movable/Del()
-	if(opacity)
+	if (opacity)
 		UpdateAffectingLights()
 	..()
 
@@ -169,20 +169,20 @@ atom/movable/Del()
 //If we are setting luminosity to 0 the light will be cleaned up and delted once all its queues are complete
 //if we have a light already it is merely updated
 atom/proc/SetLuminosity(new_luminosity, max_luminosity = LIGHTING_MAX_LUMINOSITY)
-	if(new_luminosity < 0)
+	if (new_luminosity < 0)
 		new_luminosity = 0
 //		world.log << "## WARNING: [type] - luminosity cannot be negative"
-	else if(max_luminosity < new_luminosity)
+	else if (max_luminosity < new_luminosity)
 		new_luminosity = max_luminosity
-//		if(luminosity != new_luminosity)
+//		if (luminosity != new_luminosity)
 //			world.log << "## WARNING: [type] - LIGHT_MAX_LUMINOSITY exceeded"
 
-	if(isturf(loc))
-		if(light)
-			if(luminosity != new_luminosity)	//TODO: remove lights from the light list when they're not luminous? DONE in add_effect
+	if (isturf(loc))
+		if (light)
+			if (luminosity != new_luminosity)	//TODO: remove lights from the light list when they're not luminous? DONE in add_effect
 				light.changed = 1
 		else
-			if(new_luminosity)
+			if (new_luminosity)
 				light = new(src)
 
 	luminosity = new_luminosity
@@ -193,8 +193,8 @@ mob/SetLuminosity(new_luminosity)
 
 //change our opacity (defaults to toggle), and then update all lights that affect us.
 atom/proc/SetOpacity(var/new_opacity)
-	if(new_opacity == null)			new_opacity = !opacity
-	else if(opacity == new_opacity)	return
+	if (new_opacity == null)			new_opacity = !opacity
+	else if (opacity == new_opacity)	return
 	opacity = new_opacity
 
 	UpdateAffectingLights()
@@ -203,20 +203,20 @@ atom/proc/SetOpacity(var/new_opacity)
 //We don't need to worry about lights which lit us but moved away, since they will have change status set already
 atom/proc/UpdateAffectingLights()
 	var/turf/T = src
-	if(!isturf(T))
+	if (!isturf(T))
 		T = loc
-		if(!isturf(T))	return
+		if (!isturf(T))	return
 	for(var/atom in range(LIGHTING_MAX_LUMINOSITY,T))	//TODO: this will probably not work very well :(
 		var/atom/A = atom
-		if(A.light && A.luminosity)
+		if (A.light && A.luminosity)
 			A.light.changed = 1			//force it to update at next process()
 
 //	for(var/light in lighting_controller.lights)		//TODO: this will probably laaaaaag
 //		var/datum/light_source/L = light
-//		if(L.changed)	continue
-//		if(!L.owner)	continue
-//		if(!L.owner.luminosity)	continue
-//		if(src in L.effect)
+//		if (L.changed)	continue
+//		if (!L.owner)	continue
+//		if (!L.owner.luminosity)	continue
+//		if (src in L.effect)
 //			L.changed = 1
 
 turf
@@ -228,9 +228,9 @@ turf/space
 
 turf/proc/update_lumcount(amount)
 	lighting_lumcount += amount
-//	if(lighting_lumcount < 0 || lighting_lumcount > 100)
+//	if (lighting_lumcount < 0 || lighting_lumcount > 100)
 //		world.log << "## WARNING: [type] ([src]) lighting_lumcount = [lighting_lumcount]"
-	if(!lighting_changed)
+	if (!lighting_changed)
 		lighting_controller.changed_turfs += src
 		lighting_changed = 1
 
@@ -238,7 +238,7 @@ turf/proc/shift_to_subarea()
 	lighting_changed = 0
 	var/area/Area = loc
 
-	if(!istype(Area) || !Area.lighting_use_dynamic) return
+	if (!istype(Area) || !Area.lighting_use_dynamic) return
 
 	// change the turf's area depending on its brightness
 	// restrict light to valid levels
@@ -248,19 +248,19 @@ turf/proc/shift_to_subarea()
 	var/new_tag = copytext(Area.tag, 1, find)
 	new_tag += "sd_L[light]"
 
-	if(Area.tag!=new_tag)	//skip if already in this area
+	if (Area.tag!=new_tag)	//skip if already in this area
 
 		var/area/A = locate(new_tag)	// find an appropriate area
 
-		if(!A)
+		if (!A)
 
 			A = new Area.type()    // create area if it wasn't found
 			// replicate vars
 			for(var/V in Area.vars)
 				switch(V)
-					if("contents","lighting_overlay","overlays")	continue
+					if ("contents","lighting_overlay","overlays")	continue
 					else
-						if(issaved(Area.vars[V])) A.vars[V] = Area.vars[V]
+						if (issaved(Area.vars[V])) A.vars[V] = Area.vars[V]
 
 			A.tag = new_tag
 			A.lighting_subarea = 1
@@ -276,16 +276,16 @@ area
 	var/lighting_subarea = 0		//tracks whether we're a lighting sub-area
 
 	proc/SetLightLevel(light)
-		if(!src) return
-		if(light <= 0)
+		if (!src) return
+		if (light <= 0)
 			light = 0
 			luminosity = 0
 		else
-			if(light > lighting_controller.lighting_states)
+			if (light > lighting_controller.lighting_states)
 				light = lighting_controller.lighting_states
 			luminosity = 1
 
-		if(lighting_overlay)
+		if (lighting_overlay)
 			overlays -= lighting_overlay
 			lighting_overlay.icon_state = "[light]"
 		else
@@ -294,9 +294,9 @@ area
 		overlays += lighting_overlay
 
 	proc/InitializeLighting()	//TODO: could probably improve this bit ~Carn
-		if(!tag) tag = "[type]"
-		if(!lighting_use_dynamic)
-			if(!lighting_subarea)	// see if this is a lighting subarea already
+		if (!tag) tag = "[type]"
+		if (!lighting_use_dynamic)
+			if (!lighting_subarea)	// see if this is a lighting subarea already
 			//show the dark overlay so areas, not yet in a lighting subarea, won't be bright as day and look silly.
 				SetLightLevel(4)
 

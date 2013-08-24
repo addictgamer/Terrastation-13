@@ -23,19 +23,19 @@
 	return 0
 
 /obj/assume_air(datum/gas_mixture/giver)
-	if(loc)
+	if (loc)
 		return loc.assume_air(giver)
 	else
 		return null
 
 /obj/remove_air(amount)
-	if(loc)
+	if (loc)
 		return loc.remove_air(amount)
 	else
 		return null
 
 /obj/return_air()
-	if(loc)
+	if (loc)
 		return loc.return_air()
 	else
 		return null
@@ -45,7 +45,7 @@
 	//		null if object handles breathing logic for lifeform
 	//		datum/air_group to tell lifeform to process using that breath return
 	//DEFAULT: Take air from turf to give to have mob process
-	if(breath_request>0)
+	if (breath_request>0)
 		return remove_air(breath_request)
 	else
 		return null
@@ -54,7 +54,7 @@
 	return
 
 /obj/proc/updateUsrDialog()
-	if(in_use)
+	if (in_use)
 		var/is_in_use = 0
 		var/list/nearby = viewers(1, src)
 		for(var/mob/M in nearby)
@@ -70,16 +70,16 @@
 		// check for TK users
 
 		if (istype(usr, /mob/living/carbon/human))
-			if(istype(usr.l_hand, /obj/item/tk_grab) || istype(usr.r_hand, /obj/item/tk_grab/))
-				if(!(usr in nearby))
-					if(usr.client && usr.machine==src)
+			if (istype(usr.l_hand, /obj/item/tk_grab) || istype(usr.r_hand, /obj/item/tk_grab/))
+				if (!(usr in nearby))
+					if (usr.client && usr.machine==src)
 						is_in_use = 1
 						src.attack_hand(usr)
 		in_use = is_in_use
 
 /obj/proc/updateDialog()
 	// Check that people are actually using the machine. If not, don't update anymore.
-	if(in_use)
+	if (in_use)
 		var/list/nearby = viewers(1, src)
 		var/is_in_use = 0
 		for(var/mob/M in nearby)
@@ -88,7 +88,7 @@
 				src.interact(M)
 		var/ai_in_use = AutoUpdateAI(src)
 
-		if(!ai_in_use && !is_in_use)
+		if (!ai_in_use && !is_in_use)
 			in_use = 0
 
 /obj/proc/interact(mob/user)
@@ -101,15 +101,15 @@
 	src.machine = null
 
 /mob/proc/set_machine(var/obj/O)
-	if(src.machine)
+	if (src.machine)
 		unset_machine()
 	src.machine = O
-	if(istype(O))
+	if (istype(O))
 		O.in_use = 1
 
 /obj/item/proc/updateSelfDialog()
 	var/mob/M = src.loc
-	if(istype(M) && M.client && M.machine == src)
+	if (istype(M) && M.client && M.machine == src)
 		src.attack_self(M)
 
 
@@ -123,7 +123,7 @@
 /obj/proc/hear_talk(mob/M as mob, text)
 /*
 	var/mob/mo = locate(/mob) in src
-	if(mo)
+	if (mo)
 		var/rendered = "<span class='game say'><span class='name'>[M.name]: </span> <span class='message'>[text]</span></span>"
 		mo.show_message(rendered, 2)
 		*/

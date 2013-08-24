@@ -54,7 +54,7 @@
 				src.name = "body bag"
 		//..() //Doesn't need to run the parent. Since when can fucking bodybags be welded shut? -Agouri
 			return
-		else if(istype(W, /obj/item/weapon/wirecutters))
+		else if (istype(W, /obj/item/weapon/wirecutters))
 			user << "You cut the tag off the bodybag"
 			src.name = "body bag"
 			src.overlays.Cut()
@@ -62,7 +62,7 @@
 
 
 	close()
-		if(..())
+		if (..())
 			density = 0
 			return 1
 		return 0
@@ -70,10 +70,10 @@
 
 	MouseDrop(over_object, src_location, over_location)
 		..()
-		if((over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
-			if(!ishuman(usr))	return
-			if(opened)	return 0
-			if(contents.len)	return 0
+		if ((over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
+			if (!ishuman(usr))	return
+			if (opened)	return 0
+			if (contents.len)	return 0
 			visible_message("[usr] folds up the [src.name]")
 			new item_path(get_turf(src))
 			spawn(0)
@@ -81,7 +81,7 @@
 			return
 
 /obj/structure/closet/bodybag/update_icon()
-	if(!opened)
+	if (!opened)
 		icon_state = icon_closed
 	else
 		icon_state = icon_opened
@@ -109,7 +109,7 @@
 
 	open()
 		. = ..()
-		if(used)
+		if (used)
 			var/obj/item/O = new/obj/item(src.loc)
 			O.name = "used stasis bag"
 			O.icon = src.icon
@@ -118,7 +118,7 @@
 			del(src)
 
 	MouseDrop(over_object, src_location, over_location)
-		if((over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
-			if(!ishuman(usr))	return
+		if ((over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
+			if (!ishuman(usr))	return
 			usr << "\red You can't fold that up anymore.."
 		..()

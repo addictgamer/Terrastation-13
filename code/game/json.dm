@@ -4,7 +4,7 @@ var/dmepath = "/home/bay12/git/baystation12.dme"
 var/makejson = 1 //temp
 proc/makejson()
 
-	if(!makejson)
+	if (!makejson)
 		return
 	fdel("[jsonpath]/info.json")
 		//usr << "Error cant delete json"
@@ -15,13 +15,13 @@ proc/makejson()
 	//else
 		//usr << "Deleted local json"
 	var/F = file("info.json")
-	if(!isfile(F))
+	if (!isfile(F))
 		return
 	var/mode
-	if(ticker)
-		if(ticker.current_state == 1)
+	if (ticker)
+		if (ticker.current_state == 1)
 			mode = "Round Setup"
-		else if(ticker.hide_mode)
+		else if (ticker.hide_mode)
 			mode = "SECRET"
 		else
 			mode = master_mode
@@ -30,8 +30,8 @@ proc/makejson()
 	var/admins = "no"
 	for(var/client/C)
 		playerscount++
-		if(C.holder && C.holder.level >= 0)		// make sure retired admins don't make nt think admins are on
-			if(!C.stealth)
+		if (C.holder && C.holder.level >= 0)		// make sure retired admins don't make nt think admins are on
+			if (!C.stealth)
 				admins = "yes"
 				players += "[C.key];"
 			else
@@ -45,7 +45,7 @@ proc/makejson()
 	var/oldmap
 	var/obj/mapinfo/M = locate()
 
-	if(M)
+	if (M)
 		oldmap = M.mapname
 
 	else
@@ -57,11 +57,11 @@ proc/makejson()
 	var/path = "#include \"maps/[oldmap].dmm\""
 	var/xpath = "#include \"maps/[newpath].dmm\""
 	var/loc = findtext(text,path,1,0)
-	if(!loc)
+	if (!loc)
 		path = "#include \"maps\\[oldmap].dmm\""
 		xpath = "#include \"maps\\[newpath].dmm\""
 		loc = findtext(text,path,1,0)
-		if(!loc)
+		if (!loc)
 			message_admins("Could not find '#include \"maps\\[oldmap].dmm\"' or '\"maps/[oldmap].dmm\"' in the bs12.dme. The mapinfo probably has an incorrect mapname var. Alternatively, could not find the .dme itself, at [dmepath].")
 			return
 
@@ -70,7 +70,7 @@ proc/makejson()
 	text += "\n[xpath]"
 	text += rest
 /*	for(var/A in lines)
-		if(findtext(A,path,1,0))
+		if (findtext(A,path,1,0))
 			lineloc = lines.Find(A,1,0)
 			lines[lineloc] = xpath
 			world << "FOUND"*/

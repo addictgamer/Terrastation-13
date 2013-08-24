@@ -2,7 +2,7 @@
 var/list/word_to_uristrune_table = null
 
 /proc/word_to_uristrune_bit(word)
-	if(word_to_uristrune_table == null)
+	if (word_to_uristrune_table == null)
 		word_to_uristrune_table = list()
 
 		var/bit = 1
@@ -23,7 +23,7 @@ var/list/word_to_uristrune_table = null
 /proc/get_uristrune_cult(word1, word2, word3)
 	var/animated
 
-	if((word1 == cultwords["travel"] && word2 == cultwords["self"])						\
+	if ((word1 == cultwords["travel"] && word2 == cultwords["self"])						\
 	|| (word1 == cultwords["join"] && word2 == cultwords["blood"] && word3 == cultwords["self"])	\
 	|| (word1 == cultwords["hell"] && word2 == cultwords["join"] && word3 == cultwords["self"])	\
 	|| (word1 == cultwords["see"] && word2 == cultwords["blood"] && word3 == cultwords["hell"])	\
@@ -62,13 +62,13 @@ var/list/uristrune_cache = list()
 /proc/get_uristrune(symbol_bits, animated = 0)
 	var/lookup = "[symbol_bits]-[animated]"
 
-	if(lookup in uristrune_cache)
+	if (lookup in uristrune_cache)
 		return uristrune_cache[lookup]
 
 	var/icon/I = icon('icons/effects/uristrunes.dmi', "blank")
 
 	for(var/i = 0, i < 10, i++)
-		if(symbol_bits & (1 << i))
+		if (symbol_bits & (1 << i))
 			I.Blend(icon('icons/effects/uristrunes.dmi', "rune-[1 << i]"), ICON_OVERLAY)
 
 
@@ -79,13 +79,13 @@ var/list/uristrune_cache = list()
 		for(var/y = 1, y <= 32, y++)
 			var/p = I.GetPixel(x, y)
 
-			if(p == null)
+			if (p == null)
 				var/n = I.GetPixel(x, y + 1)
 				var/s = I.GetPixel(x, y - 1)
 				var/e = I.GetPixel(x + 1, y)
 				var/w = I.GetPixel(x - 1, y)
 
-				if(n == "#000000" || s == "#000000" || e == "#000000" || w == "#000000")
+				if (n == "#000000" || s == "#000000" || e == "#000000" || w == "#000000")
 					I.DrawBox(rgb(200, 0, 0, 200), x, y)
 
 				else
@@ -94,14 +94,14 @@ var/list/uristrune_cache = list()
 					var/nw = I.GetPixel(x - 1, y + 1)
 					var/sw = I.GetPixel(x - 1, y - 1)
 
-					if(ne == "#000000" || se == "#000000" || nw == "#000000" || sw == "#000000")
+					if (ne == "#000000" || se == "#000000" || nw == "#000000" || sw == "#000000")
 						I.DrawBox(rgb(200, 0, 0, 100), x, y)
 
 	var/icon/result = icon(I, "")
 
 	result.Insert(I,  "", frame = 1, delay = 10)
 
-	if(animated == 1)
+	if (animated == 1)
 		var/icon/I2 = icon(I, "")
 		I2.MapColors(rgb(0xff,0x0c,0,0), rgb(0,0,0,0), rgb(0,0,0,0), rgb(0,0,0,0xff))
 		I2.SetIntensity(1.04)

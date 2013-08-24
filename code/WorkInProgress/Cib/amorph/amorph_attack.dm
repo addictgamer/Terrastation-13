@@ -26,11 +26,11 @@
 
 /mob/living/carbon/amorph/attack_hand(mob/living/carbon/human/M as mob)
 
-	if(M.gloves && istype(M.gloves,/obj/item/clothing/gloves))
+	if (M.gloves && istype(M.gloves,/obj/item/clothing/gloves))
 		var/obj/item/clothing/gloves/G = M.gloves
-		if(G.cell)
-			if(M.a_intent == "hurt")//Stungloves. Any contact will stun the alien.
-				if(G.cell.charge >= 2500)
+		if (G.cell)
+			if (M.a_intent == "hurt")//Stungloves. Any contact will stun the alien.
+				if (G.cell.charge >= 2500)
 					G.cell.charge -= 2500
 					Weaken(5)
 					if (stuttering < 5)
@@ -51,14 +51,14 @@
 		if (M.a_intent == "hurt")
 			var/attack_verb
 			switch(M.mutantrace)
-				if("lizard")
+				if ("lizard")
 					attack_verb = "scratch"
-				if("plant")
+				if ("plant")
 					attack_verb = "slash"
 				else
 					attack_verb = "punch"
 
-			if(M.type == /mob/living/carbon/human/tajaran)
+			if (M.type == /mob/living/carbon/human/tajaran)
 				attack_verb = "slash"
 
 			if ((prob(75) && health > 0))
@@ -67,17 +67,17 @@
 						O.show_message(text("\red <B>[] has [attack_verb]ed [name]!</B>", M), 1)
 
 				var/damage = rand(5, 10)
-				if(M.type != /mob/living/carbon/human/tajaran)
+				if (M.type != /mob/living/carbon/human/tajaran)
 					playsound(loc, "punch", 25, 1, -1)
-				else if(M.type == /mob/living/carbon/human/tajaran)
+				else if (M.type == /mob/living/carbon/human/tajaran)
 					damage += 10
 					playsound(loc, 'slice.ogg', 25, 1, -1)
 				adjustBruteLoss(damage/10)
 				updatehealth()
 			else
-				if(M.type != /mob/living/carbon/human/tajaran)
+				if (M.type != /mob/living/carbon/human/tajaran)
 					playsound(loc, 'punchmiss.ogg', 25, 1, -1)
-				else if(M.type == /mob/living/carbon/human/tajaran)
+				else if (M.type == /mob/living/carbon/human/tajaran)
 					playsound(loc, 'slashmiss.ogg', 25, 1, -1)
 				for(var/mob/O in viewers(src, null))
 					if ((O.client && !( O.blinded )))
@@ -162,7 +162,7 @@
 		if ("disarm")
 			playsound(loc, 'pierce.ogg', 25, 1, -1)
 			var/damage = 5
-			if(prob(95))
+			if (prob(95))
 				Weaken(rand(10,15))
 				for(var/mob/O in viewers(src, null))
 					if ((O.client && !( O.blinded )))
@@ -180,7 +180,7 @@
 
 
 /mob/living/carbon/amorph/attack_animal(mob/living/simple_animal/M as mob)
-	if(M.melee_damage_upper == 0)
+	if (M.melee_damage_upper == 0)
 		M.emote("[M.friendly] [src]")
 	else
 		for(var/mob/O in viewers(src, null))
@@ -189,7 +189,7 @@
 		bruteloss += damage
 
 /mob/living/carbon/amorph/attack_metroid(mob/living/carbon/metroid/M as mob)
-	if(M.Victim) return // can't attack while eating!
+	if (M.Victim) return // can't attack while eating!
 
 	if (health > -100)
 
@@ -199,7 +199,7 @@
 
 		var/damage = rand(1, 3)
 
-		if(istype(M, /mob/living/carbon/metroid/adult))
+		if (istype(M, /mob/living/carbon/metroid/adult))
 			damage = rand(10, 35)
 		else
 			damage = rand(5, 25)
@@ -209,21 +209,21 @@
 		UpdateDamageIcon()
 
 
-		if(M.powerlevel > 0)
+		if (M.powerlevel > 0)
 			var/stunprob = 10
 			var/power = M.powerlevel + rand(0,3)
 
 			switch(M.powerlevel)
-				if(1 to 2) stunprob = 20
-				if(3 to 4) stunprob = 30
-				if(5 to 6) stunprob = 40
-				if(7 to 8) stunprob = 60
-				if(9) 	   stunprob = 70
-				if(10) 	   stunprob = 95
+				if (1 to 2) stunprob = 20
+				if (3 to 4) stunprob = 30
+				if (5 to 6) stunprob = 40
+				if (7 to 8) stunprob = 60
+				if (9) 	   stunprob = 70
+				if (10) 	   stunprob = 95
 
-			if(prob(stunprob))
+			if (prob(stunprob))
 				M.powerlevel -= 3
-				if(M.powerlevel < 0)
+				if (M.powerlevel < 0)
 					M.powerlevel = 0
 
 				for(var/mob/O in viewers(src, null))

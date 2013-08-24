@@ -28,7 +28,7 @@
 
 		var/turf/T1 = get_turf(M)
 		if (T1 && ((M == user) || do_after(user, 50)))
-			if(user && M && (get_turf(M) == T1) && src && src.imp)
+			if (user && M && (get_turf(M) == T1) && src && src.imp)
 				for (var/mob/O in viewers(M, null))
 					O.show_message("\red [M] has been implanted by [user].", 1)
 				M.attack_log += text("\[[time_stamp()]\] <font color='orange'> Implanted with [src.name] ([src.imp.name])  by [user.name] ([user.ckey])</font>")
@@ -36,7 +36,7 @@
 				log_attack("<font color='red'>[user.name] ([user.ckey]) implanted [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>")
 
 				user.show_message("\red You implanted the implant into [M].")
-				if(src.imp.implanted(M))
+				if (src.imp.implanted(M))
 					src.imp.loc = M
 					src.imp.imp_in = M
 					src.imp.implanted = 1
@@ -94,7 +94,7 @@
 /obj/item/weapon/implanter/compressed/update()
 	if (imp)
 		var/obj/item/weapon/implant/compressed/c = imp
-		if(!c.scanned)
+		if (!c.scanned)
 			icon_state = "cimplanter1"
 		else
 			icon_state = "cimplanter2"
@@ -111,7 +111,7 @@
 	..()
 
 /obj/item/weapon/implanter/compressed/afterattack(atom/A, mob/user as mob)
-	if(istype(A,/obj/item) && imp)
+	if (istype(A,/obj/item) && imp)
 		var/obj/item/weapon/implant/compressed/c = imp
 		if (c.scanned)
 			user << "\red Something is already scanned inside the implant!"

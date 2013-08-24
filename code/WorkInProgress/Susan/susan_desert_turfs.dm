@@ -143,12 +143,12 @@ turf/simulated/wall/impassable_rock
 /obj/effect/alien/flesh/weeds/New(pos, node)
 	..()
 	linked_node = node
-	if(istype(loc, /turf/space))
+	if (istype(loc, /turf/space))
 		del(src)
 		return
-	if(icon_state == "flesh")icon_state = pick("flesh", "flesh1", "flesh2")
+	if (icon_state == "flesh")icon_state = pick("flesh", "flesh1", "flesh2")
 	spawn(rand(150, 200))
-		if(src)
+		if (src)
 			Life()
 	return
 
@@ -158,12 +158,12 @@ turf/simulated/wall/impassable_rock
 /*
 	if (locate(/obj/movable, U))
 		U = locate(/obj/movable, U)
-		if(U.density == 1)
+		if (U.density == 1)
 			del(src)
 			return
 
 Alien plants should do something if theres a lot of poison
-	if(U.poison> 200000)
+	if (U.poison> 200000)
 		health -= round(U.poison/200000)
 		update()
 		return
@@ -179,14 +179,14 @@ Alien plants should do something if theres a lot of poison
 			if (!istype(T) || T.density || locate(/obj/effect/alien/flesh/weeds) in T || istype(T.loc, /area/arrival) || istype(T, /turf/space))
 				continue
 
-			if(!linked_node || get_dist(linked_node, src) > linked_node.node_range)
+			if (!linked_node || get_dist(linked_node, src) > linked_node.node_range)
 				return
 
 	//		if (locate(/obj/movable, T)) // don't propogate into movables
 	//			continue
 
 			for(var/obj/O in T)
-				if(O.density)
+				if (O.density)
 					continue direction_loop
 
 			new /obj/effect/alien/flesh/weeds(T, linked_node)
@@ -194,28 +194,28 @@ Alien plants should do something if theres a lot of poison
 
 /obj/effect/alien/flesh/weeds/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			del(src)
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				del(src)
-		if(3.0)
+		if (3.0)
 			if (prob(5))
 				del(src)
 	return
 
 /obj/effect/alien/flesh/weeds/attackby(var/obj/item/weapon/W, var/mob/user)
-	if(W.attack_verb.len)
+	if (W.attack_verb.len)
 		visible_message("\red <B>\The [src] has been [pick(W.attack_verb)] with \the [W][(user ? " by [user]." : ".")]")
 	else
 		visible_message("\red <B>\The [src] has been attacked with \the [W][(user ? " by [user]." : ".")]")
 
 	var/damage = W.force / 4.0
 
-	if(istype(W, /obj/item/weapon/weldingtool))
+	if (istype(W, /obj/item/weapon/weldingtool))
 		var/obj/item/weapon/weldingtool/WT = W
 
-		if(WT.remove_fuel(0, user))
+		if (WT.remove_fuel(0, user))
 			damage = 15
 			playsound(loc, 'sound/items/Welder.ogg', 100, 1)
 
@@ -223,12 +223,12 @@ Alien plants should do something if theres a lot of poison
 	healthcheck()
 
 /obj/effect/alien/flesh/weeds/proc/healthcheck()
-	if(health <= 0)
+	if (health <= 0)
 		del(src)
 
 
 /obj/effect/alien/flesh/weeds/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
-	if(exposed_temperature > 300)
+	if (exposed_temperature > 300)
 		health -= 5
 		healthcheck()
 
@@ -370,45 +370,45 @@ Alien plants should do something if theres a lot of poison
 			if (src.target)
 				src.task = "chasing"
 				break
-			if((C.name == src.oldtarget_name) && (world.time < src.last_found + 100)) continue
-			if(istype(C, /mob/living/carbon/) && !src.atkcarbon) continue
-			if(istype(C, /mob/living/silicon/) && !src.atksilicon) continue
-			if(C.health < 0) continue
-			if(istype(C, /mob/living/carbon/) && src.atkcarbon)
-				if(C:mind)
-					if(C:mind:special_role == "H.I.V.E")
+			if ((C.name == src.oldtarget_name) && (world.time < src.last_found + 100)) continue
+			if (istype(C, /mob/living/carbon/) && !src.atkcarbon) continue
+			if (istype(C, /mob/living/silicon/) && !src.atksilicon) continue
+			if (C.health < 0) continue
+			if (istype(C, /mob/living/carbon/) && src.atkcarbon)
+				if (C:mind)
+					if (C:mind:special_role == "H.I.V.E")
 						continue
 				src.attack = 1
-			if(istype(C, /mob/living/silicon/) && src.atksilicon)
-				if(C:mind)
-					if(C:mind:special_role == "H.I.V.E")
+			if (istype(C, /mob/living/silicon/) && src.atksilicon)
+				if (C:mind)
+					if (C:mind:special_role == "H.I.V.E")
 						continue
 				src.attack = 1
-			if(src.attack)
+			if (src.attack)
 				T = C
 				break
 
-		if(!src.attack)
+		if (!src.attack)
 			for(var/obj/effect/critter/C in view(src.seekrange,src))
-				if(istype(C, /obj/effect/critter) && !src.atkcritter) continue
-				if(C.health <= 0) continue
-				if(istype(C, /obj/effect/critter) && src.atkcritter)
-					if((istype(C, /obj/effect/critter/hivebot) && !src.atksame) || (C == src))	continue
+				if (istype(C, /obj/effect/critter) && !src.atkcritter) continue
+				if (C.health <= 0) continue
+				if (istype(C, /obj/effect/critter) && src.atkcritter)
+					if ((istype(C, /obj/effect/critter/hivebot) && !src.atksame) || (C == src))	continue
 					T = C
 					break
 
 			for(var/obj/mecha/M in view(src.seekrange,src))
-				if(istype(M, /obj/mecha) && !src.atkmech) continue
-				if(M.health <= 0) continue
-				if(istype(M, /obj/mecha) && src.atkmech) src.attack = 1
-				if(src.attack)
+				if (istype(M, /obj/mecha) && !src.atkmech) continue
+				if (M.health <= 0) continue
+				if (istype(M, /obj/mecha) && src.atkmech) src.attack = 1
+				if (src.attack)
 					T = M
 					break
 
-		if(src.attack)
+		if (src.attack)
 			src.target = T
 			src.oldtarget_name = T:name
-			if(src.ranged)
+			if (src.ranged)
 				OpenFire(T)
 				return
 			src.task = "chasing"
@@ -422,7 +422,7 @@ Alien plants should do something if theres a lot of poison
 			O.show_message("\red <b>[src]</b> spits a glob at [src.target]!", 1)
 
 		var/tturf = get_turf(target)
-		if(rapid)
+		if (rapid)
 			spawn(1)
 				Shoot(tturf, src.loc, src)
 			spawn(4)
@@ -440,13 +440,13 @@ Alien plants should do something if theres a lot of poison
 
 
 	Shoot(var/target, var/start, var/user, var/bullet = 0)
-		if(target == start)
+		if (target == start)
 			return
 
 		var/obj/item/projectile/slimeglob/A = new /obj/item/projectile/slimeglob(user:loc)
 		playsound(user, 'sound/weapons/bite.ogg', 100, 1)
 
-		if(!A)	return
+		if (!A)	return
 
 		if (!istype(target, /turf))
 			del(A)

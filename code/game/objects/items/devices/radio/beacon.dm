@@ -41,7 +41,7 @@
 	origin_tech = "bluespace=1;syndicate=7"
 
 /obj/item/device/radio/beacon/syndicate/attack_self(mob/user as mob)
-	if(user)
+	if (user)
 		user << "\blue Locked In"
 		new /obj/machinery/singularity_beacon/syndicate( user.loc )
 		playsound(src, 'sound/effects/pop.ogg', 100, 1, 1)

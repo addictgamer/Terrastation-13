@@ -72,29 +72,29 @@
 	usr << "It has [uses] lights remaining."
 
 /obj/item/device/lightreplacer/attackby(obj/item/W, mob/user)
-	if(istype(W,  /obj/item/weapon/card/emag) && emagged == 0)
+	if (istype(W,  /obj/item/weapon/card/emag) && emagged == 0)
 		Emag()
 		return
 
-	if(istype(W, /obj/item/stack/sheet/glass))
+	if (istype(W, /obj/item/stack/sheet/glass))
 		var/obj/item/stack/sheet/glass/G = W
-		if(G.amount - decrement >= 0 && uses < max_uses)
+		if (G.amount - decrement >= 0 && uses < max_uses)
 			var/remaining = max(G.amount - decrement, 0)
-			if(!remaining && !(G.amount - decrement) == 0)
+			if (!remaining && !(G.amount - decrement) == 0)
 				user << "There isn't enough glass."
 				return
 			G.amount = remaining
-			if(!G.amount)
+			if (!G.amount)
 				user.drop_item()
 				del(G)
 			AddUses(increment)
 			user << "You insert a piece of glass into the [src.name]. You have [uses] lights remaining."
 			return
 
-	if(istype(W, /obj/item/weapon/light))
+	if (istype(W, /obj/item/weapon/light))
 		var/obj/item/weapon/light/L = W
-		if(L.status == 0) // LIGHT OKAY
-			if(uses < max_uses)
+		if (L.status == 0) // LIGHT OKAY
+			if (uses < max_uses)
 				AddUses(1)
 				user << "You insert the [L.name] into the [src.name]. You have [uses] lights remaining."
 				user.drop_item()
@@ -107,9 +107,9 @@
 
 /obj/item/device/lightreplacer/attack_self(mob/user)
 	/* // This would probably be a bit OP. If you want it though, uncomment the code.
-	if(isrobot(user))
+	if (isrobot(user))
 		var/mob/living/silicon/robot/R = user
-		if(R.emagged)
+		if (R.emagged)
 			src.Emag()
 			usr << "You shortcircuit the [src]."
 			return
@@ -132,18 +132,18 @@
 
 /obj/item/device/lightreplacer/proc/Charge(var/mob/user)
 	charge += 1
-	if(charge > 7)
+	if (charge > 7)
 		AddUses(1)
 		charge = 1
 
 /obj/item/device/lightreplacer/proc/ReplaceLight(var/obj/machinery/light/target, var/mob/living/U)
 
-	if(target.status != LIGHT_OK)
-		if(CanUse(U))
-			if(!Use(U)) return
+	if (target.status != LIGHT_OK)
+		if (CanUse(U))
+			if (!Use(U)) return
 			U << "<span class='notice'>You replace the [target.fitting] with the [src].</span>"
 
-			if(target.status != LIGHT_EMPTY)
+			if (target.status != LIGHT_EMPTY)
 
 				var/obj/item/weapon/light/L1 = new target.light_type(target.loc)
 				L1.status = target.status
@@ -166,7 +166,7 @@
 			target.update()
 			del(L2)
 
-			if(target.on && target.rigged)
+			if (target.on && target.rigged)
 				target.explode()
 			return
 
@@ -180,7 +180,7 @@
 /obj/item/device/lightreplacer/proc/Emag()
 	emagged = !emagged
 	playsound(src.loc, "sparks", 100, 1)
-	if(emagged)
+	if (emagged)
 		name = "Shortcircuited [initial(name)]"
 	else
 		name = initial(name)
@@ -191,7 +191,7 @@
 /obj/item/device/lightreplacer/proc/CanUse(var/mob/living/user)
 	src.add_fingerprint(user)
 	//Not sure what else to check for. Maybe if clumsy?
-	if(uses > 0)
+	if (uses > 0)
 		return 1
 	else
 		return 0

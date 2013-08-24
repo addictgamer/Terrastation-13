@@ -22,42 +22,42 @@ obj/machinery/atmospherics/valve
 		icon_state = "valve1"
 
 	update_icon(animation)
-		if(animation)
+		if (animation)
 			flick("valve[src.open][!src.open]",src)
 		else
 			icon_state = "valve[open]"
 
 	New()
 		switch(dir)
-			if(NORTH || SOUTH)
+			if (NORTH || SOUTH)
 				initialize_directions = NORTH|SOUTH
-			if(EAST || WEST)
+			if (EAST || WEST)
 				initialize_directions = EAST|WEST
 		..()
 
 	network_expand(datum/pipe_network/new_network, obj/machinery/atmospherics/pipe/reference)
 
 
-		if(reference == node1)
+		if (reference == node1)
 			network_node1 = new_network
-			if(open)
+			if (open)
 				network_node2 = new_network
-		else if(reference == node2)
+		else if (reference == node2)
 			network_node2 = new_network
-			if(open)
+			if (open)
 				network_node1 = new_network
 
-		if(new_network.normal_members.Find(src))
+		if (new_network.normal_members.Find(src))
 			return 0
 
 		new_network.normal_members += src
 
-		if(open)
-			if(reference == node1)
-				if(node2)
+		if (open)
+			if (reference == node1)
+				if (node2)
 					return node2.network_expand(new_network, src)
-			else if(reference == node2)
-				if(node1)
+			else if (reference == node2)
+				if (node1)
 					return node1.network_expand(new_network, src)
 
 		return null
@@ -65,10 +65,10 @@ obj/machinery/atmospherics/valve
 	Del()
 		loc = null
 
-		if(node1)
+		if (node1)
 			node1.disconnect(src)
 			del(network_node1)
-		if(node2)
+		if (node2)
 			node2.disconnect(src)
 			del(network_node2)
 
@@ -79,33 +79,33 @@ obj/machinery/atmospherics/valve
 
 	proc/open()
 
-		if(open) return 0
+		if (open) return 0
 
 		open = 1
 		update_icon()
 
-		if(network_node1&&network_node2)
+		if (network_node1&&network_node2)
 			network_node1.merge(network_node2)
 			network_node2 = network_node1
 
-		if(network_node1)
+		if (network_node1)
 			network_node1.update = 1
-		else if(network_node2)
+		else if (network_node2)
 			network_node2.update = 1
 
 		return 1
 
 	proc/close()
 
-		if(!open)
+		if (!open)
 			return 0
 
 		open = 0
 		update_icon()
 
-		if(network_node1)
+		if (network_node1)
 			del(network_node1)
-		if(network_node2)
+		if (network_node2)
 			del(network_node2)
 
 		build_network()
@@ -113,9 +113,9 @@ obj/machinery/atmospherics/valve
 		return 1
 
 	proc/normalize_dir()
-		if(dir==3)
+		if (dir==3)
 			dir = 1
-		else if(dir==12)
+		else if (dir==12)
 			dir = 4
 
 	attack_ai(mob/user as mob)
@@ -137,14 +137,14 @@ obj/machinery/atmospherics/valve
 		..()
 		. = PROCESS_KILL
 
-/*		if(open && (!node1 || !node2))
+/*		if (open && (!node1 || !node2))
 			close()
-		if(!node1)
-			if(!nodealert)
+		if (!node1)
+			if (!nodealert)
 				//world << "Missing node from [src] at [src.x],[src.y],[src.z]"
 				nodealert = 1
 		else if (!node2)
-			if(!nodealert)
+			if (!nodealert)
 				//world << "Missing node from [src] at [src.x],[src.y],[src.z]"
 				nodealert = 1
 		else if (nodealert)
@@ -160,24 +160,24 @@ obj/machinery/atmospherics/valve
 		var/node2_dir
 
 		for(var/direction in cardinal)
-			if(direction&initialize_directions)
+			if (direction&initialize_directions)
 				if (!node1_dir)
 					node1_dir = direction
 				else if (!node2_dir)
 					node2_dir = direction
 
 		for(var/obj/machinery/atmospherics/target in get_step(src,node1_dir))
-			if(target.initialize_directions & get_dir(target,src))
+			if (target.initialize_directions & get_dir(target,src))
 				node1 = target
 				break
 		for(var/obj/machinery/atmospherics/target in get_step(src,node2_dir))
-			if(target.initialize_directions & get_dir(target,src))
+			if (target.initialize_directions & get_dir(target,src))
 				node2 = target
 				break
 
 		build_network()
 
-		if(openDuringInit)
+		if (openDuringInit)
 			close()
 			open()
 			openDuringInit = 0
@@ -185,43 +185,43 @@ obj/machinery/atmospherics/valve
 /*
 		var/connect_directions
 		switch(dir)
-			if(NORTH)
+			if (NORTH)
 				connect_directions = NORTH|SOUTH
-			if(SOUTH)
+			if (SOUTH)
 				connect_directions = NORTH|SOUTH
-			if(EAST)
+			if (EAST)
 				connect_directions = EAST|WEST
-			if(WEST)
+			if (WEST)
 				connect_directions = EAST|WEST
 			else
 				connect_directions = dir
 
 		for(var/direction in cardinal)
-			if(direction&connect_directions)
+			if (direction&connect_directions)
 				for(var/obj/machinery/atmospherics/target in get_step(src,direction))
-					if(target.initialize_directions & get_dir(target,src))
+					if (target.initialize_directions & get_dir(target,src))
 						connect_directions &= ~direction
 						node1 = target
 						break
-				if(node1)
+				if (node1)
 					break
 
 		for(var/direction in cardinal)
-			if(direction&connect_directions)
+			if (direction&connect_directions)
 				for(var/obj/machinery/atmospherics/target in get_step(src,direction))
-					if(target.initialize_directions & get_dir(target,src))
+					if (target.initialize_directions & get_dir(target,src))
 						node2 = target
 						break
-				if(node1)
+				if (node1)
 					break
 */
 	build_network()
-		if(!network_node1 && node1)
+		if (!network_node1 && node1)
 			network_node1 = new /datum/pipe_network()
 			network_node1.normal_members += src
 			network_node1.build_network(node1, src)
 
-		if(!network_node2 && node2)
+		if (!network_node2 && node2)
 			network_node2 = new /datum/pipe_network()
 			network_node2.normal_members += src
 			network_node2.build_network(node2, src)
@@ -230,18 +230,18 @@ obj/machinery/atmospherics/valve
 	return_network(obj/machinery/atmospherics/reference)
 		build_network()
 
-		if(reference==node1)
+		if (reference==node1)
 			return network_node1
 
-		if(reference==node2)
+		if (reference==node2)
 			return network_node2
 
 		return null
 
 	reassign_network(datum/pipe_network/old_network, datum/pipe_network/new_network)
-		if(network_node1 == old_network)
+		if (network_node1 == old_network)
 			network_node1 = new_network
-		if(network_node2 == old_network)
+		if (network_node2 == old_network)
 			network_node2 = new_network
 
 		return 1
@@ -250,11 +250,11 @@ obj/machinery/atmospherics/valve
 		return null
 
 	disconnect(obj/machinery/atmospherics/reference)
-		if(reference==node1)
+		if (reference==node1)
 			del(network_node1)
 			node1 = null
 
-		else if(reference==node2)
+		else if (reference==node2)
 			del(network_node2)
 			node2 = null
 
@@ -269,7 +269,7 @@ obj/machinery/atmospherics/valve
 			return src.attack_hand(user)
 
 		attack_hand(mob/user as mob)
-			if(!src.allowed(user))
+			if (!src.allowed(user))
 				user << "\red Access denied."
 				return
 			..()
@@ -280,7 +280,7 @@ obj/machinery/atmospherics/valve
 			set_frequency(new_frequency)
 				radio_controller.remove_object(src, frequency)
 				frequency = new_frequency
-				if(frequency)
+				if (frequency)
 					radio_connection = radio_controller.add_object(src, frequency, RADIO_ATMOSIA)
 
 		var/frequency = 0
@@ -289,24 +289,24 @@ obj/machinery/atmospherics/valve
 
 		initialize()
 			..()
-			if(frequency)
+			if (frequency)
 				set_frequency(frequency)
 
 		receive_signal(datum/signal/signal)
-			if(!signal.data["tag"] || (signal.data["tag"] != id))
+			if (!signal.data["tag"] || (signal.data["tag"] != id))
 				return 0
 
 			switch(signal.data["command"])
-				if("valve_open")
-					if(!open)
+				if ("valve_open")
+					if (!open)
 						open()
 
-				if("valve_close")
-					if(open)
+				if ("valve_close")
+					if (open)
 						close()
 
-				if("valve_toggle")
-					if(open)
+				if ("valve_toggle")
+					if (open)
 						close()
 					else
 						open()

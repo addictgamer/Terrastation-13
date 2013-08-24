@@ -38,9 +38,9 @@ datum/reagent/antibodies
 	color = "#0050F0"
 
 	reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
-		if(istype(M,/mob/living/carbon))
-			if(src.data && method == INGEST)
-				if(M:virus2) if(src.data["antibodies"] & M:virus2.antigen)
+		if (istype(M,/mob/living/carbon))
+			if (src.data && method == INGEST)
+				if (M:virus2) if (src.data["antibodies"] & M:virus2.antigen)
 					M:virus2.dead = 1
 				M:antibodies |= src.data["antibodies"]
 		return
@@ -48,5 +48,5 @@ datum/reagent/antibodies
 // iterate over the list of antigens and see what matches
 /proc/antigens2string(var/antigens)
 	var/code = ""
-	for(var/V in ANTIGENS) if(text2num(V) & antigens) code += ANTIGENS[V]
+	for(var/V in ANTIGENS) if (text2num(V) & antigens) code += ANTIGENS[V]
 	return code

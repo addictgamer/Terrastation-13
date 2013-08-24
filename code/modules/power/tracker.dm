@@ -17,7 +17,7 @@
 
 /obj/machinery/power/tracker/New(var/turf/loc, var/obj/item/solar_assembly/S)
 	..(loc)
-	if(!S)
+	if (!S)
 		S = new /obj/item/solar_assembly(src)
 		S.glass_type = /obj/item/stack/sheet/glass
 		S.tracker = 1
@@ -41,26 +41,26 @@
 	dir = turn(NORTH, -angle - 22.5)	// 22.5 deg bias ensures, e.g. 67.5-112.5 is EAST
 
 	// check we can draw power
-	if(stat & NOPOWER)
+	if (stat & NOPOWER)
 		return
 
 	// find all solar controls and update them
 	// currently, just update all controllers in world
 	// ***TODO: better communication system using network
-	if(powernet)
+	if (powernet)
 		for(var/obj/machinery/power/solar_control/C in get_solars_powernet())
-			if(powernet.nodes[C])
-				if(get_dist(C, src) < SOLAR_MAX_DIST)
+			if (powernet.nodes[C])
+				if (get_dist(C, src) < SOLAR_MAX_DIST)
 					C.tracker_update(angle)
 
 
 /obj/machinery/power/tracker/attackby(var/obj/item/weapon/W, var/mob/user)
 
-	if(iscrowbar(W))
+	if (iscrowbar(W))
 		playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
-		if(do_after(user, 50))
+		if (do_after(user, 50))
 			var/obj/item/solar_assembly/S = locate() in src
-			if(S)
+			if (S)
 				S.loc = src.loc
 				S.give_glass()
 			playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
@@ -75,7 +75,7 @@
 
 	var/avail = surplus()
 
-	if(avail > 500)
+	if (avail > 500)
 		add_load(500)
 		stat &= ~NOPOWER
 	else

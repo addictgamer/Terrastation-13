@@ -22,25 +22,25 @@
 
 /obj/machinery/atmospherics/binary/circulator/proc/return_transfer_air()
 	var/datum/gas_mixture/removed
-	if(anchored && !(stat&BROKEN) )
+	if (anchored && !(stat&BROKEN) )
 		var/input_starting_pressure = air1.return_pressure()
 		var/output_starting_pressure = air2.return_pressure()
 		last_pressure_delta = max(input_starting_pressure - output_starting_pressure + 10, 0)
 
 		//only circulate air if there is a pressure difference (plus 10 kPa to represent friction in the machine)
-		if(air1.temperature > 0 && last_pressure_delta > 0)
+		if (air1.temperature > 0 && last_pressure_delta > 0)
 
 			//Calculate necessary moles to transfer using PV = nRT
 			recent_moles_transferred = last_pressure_delta*air2.volume/(air1.temperature * R_IDEAL_GAS_EQUATION)
 
 			//Actually transfer the gas
 			removed = air1.remove(recent_moles_transferred)
-			if(removed)
+			if (removed)
 				last_heat_capacity = removed.heat_capacity()
 				last_temperature = removed.temperature
 
 				//Update the gas networks.
-				if(network1)
+				if (network1)
 					network1.update = 1
 
 				last_worldtime_transfer = world.time
@@ -53,15 +53,15 @@
 /obj/machinery/atmospherics/binary/circulator/process()
 	..()
 
-	if(last_worldtime_transfer < world.time - 50)
+	if (last_worldtime_transfer < world.time - 50)
 		recent_moles_transferred = 0
 		update_icon()
 
 /obj/machinery/atmospherics/binary/circulator/update_icon()
-	if(stat & (BROKEN|NOPOWER) || !anchored)
+	if (stat & (BROKEN|NOPOWER) || !anchored)
 		icon_state = "circ-p"
-	else if(last_pressure_delta > 0 && recent_moles_transferred > 0)
-		if(last_pressure_delta > 5*ONE_ATMOSPHERE)
+	else if (last_pressure_delta > 0 && recent_moles_transferred > 0)
+		if (last_pressure_delta > 5*ONE_ATMOSPHERE)
 			icon_state = "circ-run"
 		else
 			icon_state = "circ-slow"
@@ -71,14 +71,14 @@
 	return 1
 
 /obj/machinery/atmospherics/binary/circulator/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/wrench))
+	if (istype(W, /obj/item/weapon/wrench))
 		anchored = !anchored
 		user << "\blue You [anchored ? "secure" : "unsecure"] the bolts holding [src] to the floor."
 
-		if(anchored)
-			if(dir & (NORTH|SOUTH))
+		if (anchored)
+			if (dir & (NORTH|SOUTH))
 				initialize_directions = NORTH|SOUTH
-			else if(dir & (EAST|WEST))
+			else if (dir & (EAST|WEST))
 				initialize_directions = EAST|WEST
 
 			initialize()
@@ -90,10 +90,10 @@
 				node2.initialize()
 				node2.build_network()
 		else
-			if(node1)
+			if (node1)
 				node1.disconnect(src)
 				del(network1)
-			if(node2)
+			if (node2)
 				node2.disconnect(src)
 				del(network2)
 

@@ -18,12 +18,12 @@
 					var filter_text = document.getElementById('filter');
 					var filter = filter_text.value.toLowerCase();
 
-					if(complete_list != null && complete_list != ""){
+					if (complete_list != null && complete_list != ""){
 						var mtbl = document.getElementById("maintable_data_archive");
 						mtbl.innerHTML = complete_list;
 					}
 
-					if(filter.value == ""){
+					if (filter.value == ""){
 						return;
 					}else{
 
@@ -33,7 +33,7 @@
 						{
 							try{
 								var tr = ltr\[i\];
-								if(tr.getAttribute("id").indexOf("data") != 0){
+								if (tr.getAttribute("id").indexOf("data") != 0){
 									continue;
 								}
 								var ltd = tr.getElementsByTagName("td");
@@ -82,7 +82,7 @@
 					body += "<a href='?src=\ref[usr];priv_msg=\ref"+ref+"'>PM</a> - "
 					body += "<a href='?src=\ref[src];subtlemessage="+ref+"'>SM</a> - "
 					body += "<a href='?src=\ref[src];adminplayerobservejump="+ref+"'>JMP</a><br>"
-					if(antagonist > 0)
+					if (antagonist > 0)
 						body += "<font size='2'><a href='?src=\ref[src];check_antagonist=1'><font color='red'><b>Antagonist</b></font></a></font>";
 
 					body += "</td></tr></table>";
@@ -98,19 +98,19 @@
 
 						var id = span.getAttribute("id");
 
-						if(!(id.indexOf("item")==0))
+						if (!(id.indexOf("item")==0))
 							continue;
 
 						var pass = 1;
 
 						for(var j = 0; j < locked_tabs.length; j++){
-							if(locked_tabs\[j\]==id){
+							if (locked_tabs\[j\]==id){
 								pass = 0;
 								break;
 							}
 						}
 
-						if(pass != 1)
+						if (pass != 1)
 							continue;
 
 
@@ -123,7 +123,7 @@
 				function addToLocked(id,link_id,notice_span_id){
 					var link = document.getElementById(link_id);
 					var decision = link.getAttribute("name");
-					if(decision == "1"){
+					if (decision == "1"){
 						link.setAttribute("name","2");
 					}else{
 						link.setAttribute("name","1");
@@ -133,12 +133,12 @@
 
 					var pass = 1;
 					for(var j = 0; j < locked_tabs.length; j++){
-						if(locked_tabs\[j\]==id){
+						if (locked_tabs\[j\]==id){
 							pass = 0;
 							break;
 						}
 					}
-					if(!pass)
+					if (!pass)
 						return;
 					locked_tabs.push(id);
 					var notice_span = document.getElementById(notice_span_id);
@@ -157,13 +157,13 @@
 					var index = 0;
 					var pass = 0;
 					for(var j = 0; j < locked_tabs.length; j++){
-						if(locked_tabs\[j\]==id){
+						if (locked_tabs\[j\]==id){
 							pass = 1;
 							index = j;
 							break;
 						}
 					}
-					if(!pass)
+					if (!pass)
 						return;
 					locked_tabs\[index\] = "";
 					var notice_span = document.getElementById(notice_span_id);
@@ -215,44 +215,44 @@
 	var/list/mobs = sortmobs()
 	var/i = 1
 	for(var/mob/M in mobs)
-		if(M.ckey)
+		if (M.ckey)
 
 			var/color = "#e6e6e6"
-			if(i%2 == 0)
+			if (i%2 == 0)
 				color = "#f2f2f2"
 			var/is_antagonist = is_special_character(M)
 
 			var/M_job = ""
 
-			if(isliving(M))
+			if (isliving(M))
 
-				if(iscarbon(M)) //Carbon stuff
-					if(ishuman(M))
+				if (iscarbon(M)) //Carbon stuff
+					if (ishuman(M))
 						M_job = M.job
-					else if(isslime(M))
+					else if (isslime(M))
 						M_job = "slime"
-					else if(ismonkey(M))
+					else if (ismonkey(M))
 						M_job = "Monkey"
-					else if(isalien(M)) //aliens
-						if(islarva(M))
+					else if (isalien(M)) //aliens
+						if (islarva(M))
 							M_job = "Alien larva"
 						else
 							M_job = "Alien"
 					else
 						M_job = "Carbon-based"
 
-				else if(issilicon(M)) //silicon
-					if(isAI(M))
+				else if (issilicon(M)) //silicon
+					if (isAI(M))
 						M_job = "AI"
-					else if(ispAI(M))
+					else if (ispAI(M))
 						M_job = "pAI"
-					else if(isrobot(M))
+					else if (isrobot(M))
 						M_job = "Cyborg"
 					else
 						M_job = "Silicon-based"
 
-				else if(isanimal(M)) //simple animals
-					if(iscorgi(M))
+				else if (isanimal(M)) //simple animals
+					if (iscorgi(M))
 						M_job = "Corgi"
 					else
 						M_job = "Animal"
@@ -260,10 +260,10 @@
 				else
 					M_job = "Living"
 
-			else if(istype(M,/mob/new_player))
+			else if (istype(M,/mob/new_player))
 				M_job = "New player"
 
-			else if(isobserver(M))
+			else if (isobserver(M))
 				M_job = "Ghost"
 
 			M_job = replacetext(M_job, "'", "")
@@ -329,32 +329,32 @@
 	var/list/mobs = sortmobs()
 
 	for(var/mob/M in mobs)
-		if(!M.ckey)	continue
+		if (!M.ckey)	continue
 
 		dat += "<tr><td>[M.name]</td>"
-		if(isAI(M))
+		if (isAI(M))
 			dat += "<td>AI</td>"
-		else if(isrobot(M))
+		else if (isrobot(M))
 			dat += "<td>Cyborg</td>"
-		else if(ishuman(M))
+		else if (ishuman(M))
 			dat += "<td>[M.real_name]</td>"
-		else if(istype(M, /mob/living/silicon/pai))
+		else if (istype(M, /mob/living/silicon/pai))
 			dat += "<td>pAI</td>"
-		else if(istype(M, /mob/new_player))
+		else if (istype(M, /mob/new_player))
 			dat += "<td>New Player</td>"
-		else if(isobserver(M))
+		else if (isobserver(M))
 			dat += "<td>Ghost</td>"
-		else if(ismonkey(M))
+		else if (ismonkey(M))
 			dat += "<td>Monkey</td>"
-		else if(isalien(M))
+		else if (isalien(M))
 			dat += "<td>Alien</td>"
 		else
 			dat += "<td>Unknown</td>"
 
 
-		if(istype(M,/mob/living/carbon/human))
+		if (istype(M,/mob/living/carbon/human))
 			var/mob/living/carbon/human/H = M
-			if(H.mind && H.mind.assigned_role)
+			if (H.mind && H.mind.assigned_role)
 				dat += "<td>[H.mind.assigned_role]</td>"
 		else
 			dat += "<td>NA</td>"
@@ -365,11 +365,11 @@
 		<td align=center><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td>
 		"}
 		switch(is_special_character(M))
-			if(0)
+			if (0)
 				dat += {"<td align=center><A HREF='?src=\ref[src];traitor=\ref[M]'>Traitor?</A></td>"}
-			if(1)
+			if (1)
 				dat += {"<td align=center><A HREF='?src=\ref[src];traitor=\ref[M]'><font color=red>Traitor?</font></A></td>"}
-			if(2)
+			if (2)
 				dat += {"<td align=center><A HREF='?src=\ref[src];traitor=\ref[M]'><font color=red><b>Traitor?</b></font></A></td>"}
 
 	dat += "</table></body></html>"
@@ -389,17 +389,17 @@
 		else
 			var/timeleft = emergency_shuttle.timeleft()
 			switch(emergency_shuttle.location)
-				if(0)
+				if (0)
 					dat += "ETA: <a href='?src=\ref[src];edit_shuttle_time=1'>[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]</a><BR>"
 					dat += "<a href='?src=\ref[src];call_shuttle=2'>Send Back</a><br>"
-				if(1)
+				if (1)
 					dat += "ETA: <a href='?src=\ref[src];edit_shuttle_time=1'>[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]</a><BR>"
 		dat += "<a href='?src=\ref[src];delay_round_end=1'>[ticker.delay_end ? "End Round Normally" : "Delay Round End"]</a><br>"
-		if(ticker.mode.syndicates.len)
+		if (ticker.mode.syndicates.len)
 			dat += "<br><table cellspacing=5><tr><td><B>Syndicates</B></td><td></td></tr>"
 			for(var/datum/mind/N in ticker.mode.syndicates)
 				var/mob/M = N.current
-				if(M)
+				if (M)
 					dat += "<tr><td><a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 					dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td></tr>"
 				else
@@ -409,34 +409,34 @@
 				dat += "<tr><td>[N.name], "
 				var/atom/disk_loc = N.loc
 				while(!istype(disk_loc, /turf))
-					if(istype(disk_loc, /mob))
+					if (istype(disk_loc, /mob))
 						var/mob/M = disk_loc
 						dat += "carried by <a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a> "
-					if(istype(disk_loc, /obj))
+					if (istype(disk_loc, /obj))
 						var/obj/O = disk_loc
 						dat += "in \a [O.name] "
 					disk_loc = disk_loc.loc
 				dat += "in [disk_loc.loc] at ([disk_loc.x], [disk_loc.y], [disk_loc.z])</td></tr>"
 			dat += "</table>"
 
-		if(ticker.mode.head_revolutionaries.len || ticker.mode.revolutionaries.len)
+		if (ticker.mode.head_revolutionaries.len || ticker.mode.revolutionaries.len)
 			dat += "<br><table cellspacing=5><tr><td><B>Revolutionaries</B></td><td></td></tr>"
 			for(var/datum/mind/N in ticker.mode.head_revolutionaries)
 				var/mob/M = N.current
-				if(!M)
+				if (!M)
 					dat += "<tr><td><i>Head Revolutionary not found!</i></td></tr>"
 				else
 					dat += "<tr><td><a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a> <b>(Leader)</b>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 					dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td></tr>"
 			for(var/datum/mind/N in ticker.mode.revolutionaries)
 				var/mob/M = N.current
-				if(M)
+				if (M)
 					dat += "<tr><td><a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 					dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td></tr>"
 			dat += "</table><table cellspacing=5><tr><td><B>Target(s)</B></td><td></td><td><B>Location</B></td></tr>"
 			for(var/datum/mind/N in ticker.mode.get_living_heads())
 				var/mob/M = N.current
-				if(M)
+				if (M)
 					dat += "<tr><td><a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 					dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td>"
 					var/turf/mob_loc = get_turf_loc(M)
@@ -445,11 +445,11 @@
 					dat += "<tr><td><i>Head not found!</i></td></tr>"
 			dat += "</table>"
 
-		if(ticker.mode.changelings.len > 0)
+		if (ticker.mode.changelings.len > 0)
 			dat += "<br><table cellspacing=5><tr><td><B>Changelings</B></td><td></td><td></td></tr>"
 			for(var/datum/mind/changeling in ticker.mode.changelings)
 				var/mob/M = changeling.current
-				if(M)
+				if (M)
 					dat += "<tr><td><a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 					dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td>"
 					dat += "<td><A HREF='?src=\ref[src];traitor=\ref[M]'>Show Objective</A></td></tr>"
@@ -457,11 +457,11 @@
 					dat += "<tr><td><i>Changeling not found!</i></td></tr>"
 			dat += "</table>"
 
-		if(ticker.mode.wizards.len > 0)
+		if (ticker.mode.wizards.len > 0)
 			dat += "<br><table cellspacing=5><tr><td><B>Wizards</B></td><td></td><td></td></tr>"
 			for(var/datum/mind/wizard in ticker.mode.wizards)
 				var/mob/M = wizard.current
-				if(M)
+				if (M)
 					dat += "<tr><td><a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 					dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td>"
 					dat += "<td><A HREF='?src=\ref[src];traitor=\ref[M]'>Show Objective</A></td></tr>"
@@ -469,22 +469,22 @@
 					dat += "<tr><td><i>Wizard not found!</i></td></tr>"
 			dat += "</table>"
 
-		if(ticker.mode.raiders.len > 0)
+		if (ticker.mode.raiders.len > 0)
 			dat += "<br><table cellspacing=5><tr><td><B>Raiders</B></td><td></td><td></td></tr>"
 			for(var/datum/mind/raider in ticker.mode.raiders)
 				var/mob/M = raider.current
-				if(M)
+				if (M)
 					dat += "<tr><td><a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 					dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td>"
 					dat += "<td><A HREF='?src=\ref[src];traitor=\ref[M]'>Show Objective</A></td></tr>"
 			dat += "</table>"
 
 		/*
-		if(ticker.mode.ninjas.len > 0)
+		if (ticker.mode.ninjas.len > 0)
 			dat += "<br><table cellspacing=5><tr><td><B>Ninjas</B></td><td></td><td></td></tr>"
 			for(var/datum/mind/ninja in ticker.mode.ninjas)
 				var/mob/M = ninja.current
-				if(M)
+				if (M)
 					dat += "<tr><td><a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 					dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td>"
 					dat += "<td><A HREF='?src=\ref[src];traitor=\ref[M]'>Show Objective</A></td></tr>"
@@ -493,29 +493,29 @@
 			dat += "</table>"
 		*/
 
-		if(ticker.mode.cult.len)
+		if (ticker.mode.cult.len)
 			dat += "<br><table cellspacing=5><tr><td><B>Cultists</B></td><td></td></tr>"
 			for(var/datum/mind/N in ticker.mode.cult)
 				var/mob/M = N.current
-				if(M)
+				if (M)
 					dat += "<tr><td><a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 					dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td></tr>"
 			dat += "</table>"
 
-		/*if(istype(ticker.mode, /datum/game_mode/anti_revolution) && ticker.mode:heads.len)	//comment out anti-revolution
+		/*if (istype(ticker.mode, /datum/game_mode/anti_revolution) && ticker.mode:heads.len)	//comment out anti-revolution
 			dat += "<br><table cellspacing=5><tr><td><B>Corrupt Heads</B></td><td></td></tr>"
 			for(var/datum/mind/N in ticker.mode:heads)
 				var/mob/M = N.current
-				if(M)
+				if (M)
 					dat += "<tr><td><a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 					dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td></tr>"
 			dat += "</table>"
 */
-		if(ticker.mode.traitors.len > 0)
+		if (ticker.mode.traitors.len > 0)
 			dat += "<br><table cellspacing=5><tr><td><B>Traitors</B></td><td></td><td></td></tr>"
 			for(var/datum/mind/traitor in ticker.mode.traitors)
 				var/mob/M = traitor.current
-				if(M)
+				if (M)
 					dat += "<tr><td><a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 					dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td>"
 					dat += "<td><A HREF='?src=\ref[src];traitor=\ref[M]'>Show Objective</A></td></tr>"

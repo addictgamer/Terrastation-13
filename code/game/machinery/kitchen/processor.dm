@@ -81,11 +81,11 @@
 				B.data["donor"] = O
 
 				for(var/datum/disease/D in O.viruses)
-					if(D.spread_type != SPECIAL)
+					if (D.spread_type != SPECIAL)
 						B.data["viruses"] += D.Copy()
 
 				B.data["blood_DNA"] = copytext(O.dna.unique_enzymes,1,0)
-				if(O.resistances&&O.resistances.len)
+				if (O.resistances&&O.resistances.len)
 					B.data["resistances"] = O.resistances.Copy()
 				bucket_of_blood.reagents.reagent_list += B
 				bucket_of_blood.reagents.update_total()
@@ -105,10 +105,10 @@
 	return 0
 
 /obj/machinery/processor/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	if(src.processing)
+	if (src.processing)
 		user << "\red The processor is in the process of processing."
 		return 1
-	if(src.contents.len > 0) //TODO: several items at once? several different items?
+	if (src.contents.len > 0) //TODO: several items at once? several different items?
 		user << "\red Something is already in the processing chamber."
 		return 1
 	var/what = O
@@ -129,10 +129,10 @@
 /obj/machinery/processor/attack_hand(var/mob/user as mob)
 	if (src.stat != 0) //NOPOWER etc
 		return
-	if(src.processing)
+	if (src.processing)
 		user << "\red The processor is in the process of processing."
 		return 1
-	if(src.contents.len == 0)
+	if (src.contents.len == 0)
 		user << "\red The processor is empty."
 		return 1
 	for(var/O in src.contents)

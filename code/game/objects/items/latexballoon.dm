@@ -39,7 +39,7 @@
 	burst()
 
 /obj/item/latexballon/temperature_expose(datum/gas_mixture/air, temperature, volume)
-	if(temperature > T0C+100)
+	if (temperature > T0C+100)
 		burst()
 	return
 

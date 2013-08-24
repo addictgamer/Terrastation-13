@@ -22,7 +22,7 @@
 
 
 	update_icon()
-		if(health <= 0)
+		if (health <= 0)
 			playsound(src.loc, 'sound/effects/splat.ogg', 50, 1)
 			del(src)
 			return
@@ -41,11 +41,11 @@
 	proc/create_fragments(var/wave_size = 1)
 		var/list/candidates = list()
 		for(var/mob/dead/observer/G in player_list)
-			if(G.client.prefs.be_special & BE_ALIEN)
-				if(!(G.mind && G.mind.current && G.mind.current.stat != DEAD))
+			if (G.client.prefs.be_special & BE_ALIEN)
+				if (!(G.mind && G.mind.current && G.mind.current.stat != DEAD))
 					candidates += G.key
 
-		if(candidates.len)
+		if (candidates.len)
 			for(var/i = 0 to wave_size)
 				var/mob/living/blob/B = new/mob/living/blob(src.loc)
 				B.key = pick(candidates)
@@ -54,17 +54,17 @@
 /*
 	Pulse(var/pulse = 0, var/origin_dir = 0)//Todo: Fix spaceblob expand
 		set background = 1
-		if(pulse > 20)	return
+		if (pulse > 20)	return
 		//Looking for another blob to pulse
 		var/list/dirs = list(1,2,4,8)
 		dirs.Remove(origin_dir)//Dont pulse the guy who pulsed us
 		for(var/i = 1 to 4)
-			if(!dirs.len)	break
+			if (!dirs.len)	break
 			var/dirn = pick(dirs)
 			dirs.Remove(dirn)
 			var/turf/T = get_step(src, dirn)
 			var/obj/effect/blob/B = (locate(/obj/effect/blob) in T)
-			if(!B)
+			if (!B)
 				expand(T)//No blob here so try and expand
 				return
 			B.Pulse((pulse+1),get_dir(src.loc,T))

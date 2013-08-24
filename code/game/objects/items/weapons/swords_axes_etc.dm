@@ -19,7 +19,7 @@
  * Sword
  */
 /obj/item/weapon/melee/energy/sword/IsShield()
-	if(active)
+	if (active)
 		return 1
 	return 0
 
@@ -33,7 +33,7 @@
 	active = !active
 	if (active)
 		force = 30
-		if(istype(src,/obj/item/weapon/melee/energy/sword/pirate))
+		if (istype(src,/obj/item/weapon/melee/energy/sword/pirate))
 			icon_state = "cutlass1"
 		else
 			icon_state = "sword[color]"
@@ -42,7 +42,7 @@
 		user << "\blue [src] is now active."
 	else
 		force = 3
-		if(istype(src,/obj/item/weapon/melee/energy/sword/pirate))
+		if (istype(src,/obj/item/weapon/melee/energy/sword/pirate))
 			icon_state = "cutlass0"
 		else
 			icon_state = "sword0"
@@ -69,7 +69,7 @@
 	if ((CLUMSY in user.mutations) && prob(50))
 		user << "\red You club yourself over the head."
 		user.Weaken(3 * force)
-		if(ishuman(user))
+		if (ishuman(user))
 			var/mob/living/carbon/human/H = user
 			H.apply_damage(2*force, BRUTE, "head")
 		else
@@ -83,7 +83,7 @@
 	log_attack("<font color='red'>[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>")
 */
 	if (user.a_intent == "hurt")
-		if(!..()) return
+		if (!..()) return
 		playsound(src.loc, "swing_hit", 50, 1, -1)
 		if (M.stuttering < 8 && (!(HULK in M.mutations))  /*&& (!istype(H:wear_suit, /obj/item/clothing/suit/judgerobe))*/)
 			M.stuttering = 8
@@ -119,7 +119,7 @@
 
 /obj/item/weapon/melee/telebaton/attack_self(mob/user as mob)
 	on = !on
-	if(on)
+	if (on)
 		user.visible_message("\red With a flick of their wrist, [user] extends their telescopic baton.",\
 		"\red You extend the baton.",\
 		"You hear an ominous click.")
@@ -140,7 +140,7 @@
 	playsound(src.loc, 'sound/weapons/empty.ogg', 50, 1)
 	add_fingerprint(user)
 
-	if(blood_overlay && (blood_DNA.len >= 1))							//updates blood overlay, if any
+	if (blood_overlay && (blood_DNA.len >= 1))							//updates blood overlay, if any
 		overlays.Cut()//this might delete other item overlays as well but eeeeeeeh
 
 		var/icon/I = new /icon(src.icon, src.icon_state)
@@ -153,18 +153,18 @@
 	return
 
 /obj/item/weapon/melee/telebaton/attack(mob/target as mob, mob/living/user as mob)
-	if(on)
+	if (on)
 		if ((CLUMSY in user.mutations) && prob(50))
 			user << "\red You club yourself over the head."
 			user.Weaken(3 * force)
-			if(ishuman(user))
+			if (ishuman(user))
 				var/mob/living/carbon/human/H = user
 				H.apply_damage(2*force, BRUTE, "head")
 			else
 				user.take_organ_damage(2*force)
 			return
 
-		if(!..()) return
+		if (!..()) return
 		playsound(src.loc, "swing_hit", 50, 1, -1)
 		//target.Stun(4)	//naaah
 		target.Weaken(4)
@@ -226,7 +226,7 @@
  * Energy Shield
  */
 /obj/item/weapon/shield/energy/IsShield()
-	if(active)
+	if (active)
 		return 1
 	else
 		return 0

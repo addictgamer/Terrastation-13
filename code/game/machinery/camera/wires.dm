@@ -35,7 +35,7 @@
 	return ((src.wires & wireFlag) == 0)
 
 /obj/machinery/camera/proc/canDeconstruct()
-	if(isWireCut(CAMERA_WIRE_POWER) && isWireCut(CAMERA_WIRE_FOCUS) && isWireCut(CAMERA_WIRE_LIGHT) && isWireCut(CAMERA_WIRE_NOTHING1) && isWireCut(CAMERA_WIRE_NOTHING2))
+	if (isWireCut(CAMERA_WIRE_POWER) && isWireCut(CAMERA_WIRE_FOCUS) && isWireCut(CAMERA_WIRE_LIGHT) && isWireCut(CAMERA_WIRE_NOTHING1) && isWireCut(CAMERA_WIRE_NOTHING2))
 		return 1
 	else
 		return 0
@@ -45,17 +45,17 @@
 	var/wireIndex = WireColorToIndex[wireColor]
 	wires &= ~wireFlag
 	switch(wireIndex)
-		if(CAMERA_WIRE_FOCUS)
+		if (CAMERA_WIRE_FOCUS)
 			setViewRange(short_range)
 
-		if(CAMERA_WIRE_POWER)
+		if (CAMERA_WIRE_POWER)
 			deactivate(usr, 1)
 			//shock(usr)
 
-		if(CAMERA_WIRE_LIGHT)
+		if (CAMERA_WIRE_LIGHT)
 			light_disabled = 1
 
-		if(CAMERA_WIRE_ALARM)
+		if (CAMERA_WIRE_ALARM)
 			triggerCameraAlarm()
 
 	src.interact(usr)
@@ -65,16 +65,16 @@
 	var/wireIndex = WireColorToIndex[wireColor]
 	wires |= wireFlag
 	switch(wireIndex)
-		if(CAMERA_WIRE_FOCUS)
+		if (CAMERA_WIRE_FOCUS)
 			setViewRange(initial(view_range))
 
-		if(CAMERA_WIRE_POWER)
+		if (CAMERA_WIRE_POWER)
 			deactivate(usr, 1)
 
-		if(CAMERA_WIRE_LIGHT)
+		if (CAMERA_WIRE_LIGHT)
 			light_disabled = 0
 
-		if(CAMERA_WIRE_ALARM)
+		if (CAMERA_WIRE_ALARM)
 			cancelCameraAlarm()
 
 	src.interact(usr)
@@ -83,23 +83,23 @@
 /obj/machinery/camera/proc/pulse(var/wireColor)
 	var/wireIndex = WireColorToIndex[wireColor]
 	switch(wireIndex)
-		if(CAMERA_WIRE_FOCUS)
+		if (CAMERA_WIRE_FOCUS)
 			var/new_range = (view_range == initial(view_range) ? short_range : initial(view_range))
 			setViewRange(new_range)
 
-		if(CAMERA_WIRE_POWER)
+		if (CAMERA_WIRE_POWER)
 			deactivate(usr, 0) // Kicks anyone watching the camera
 
-		if(CAMERA_WIRE_LIGHT)
+		if (CAMERA_WIRE_LIGHT)
 			light_disabled = !light_disabled
 
-		if(CAMERA_WIRE_ALARM)
+		if (CAMERA_WIRE_ALARM)
 			src.visible_message("\icon[src] *beep*", "\icon[src] *beep*")
 
 	src.interact(usr)
 
 /obj/machinery/camera/interact(mob/living/user as mob)
-	if(!panel_open)
+	if (!panel_open)
 		return
 
 	user.set_machine(src)
@@ -115,7 +115,7 @@
 	for(var/wiredesc in wires)
 		var/is_uncut = src.wires & WireColorToFlag[wires[wiredesc]]
 		t1 += "[wiredesc] wire: "
-		if(!is_uncut)
+		if (!is_uncut)
 			t1 += "<a href='?src=\ref[src];wires=[wires[wiredesc]]'>Mend</a>"
 		else
 			t1 += "<a href='?src=\ref[src];wires=[wires[wiredesc]]'>Cut</a> "

@@ -7,13 +7,13 @@ Doesn't work on other aliens/AI.*/
 
 
 /mob/living/carbon/alien/proc/powerc(X, Y)//Y is optional, checks for weed planting. X can be null.
-	if(stat)
+	if (stat)
 		src << "\green You must be conscious to do this."
 		return 0
-	else if(X && getPlasma() < X)
+	else if (X && getPlasma() < X)
 		src << "\green Not enough plasma stored."
 		return 0
-	else if(Y && (!isturf(src.loc) || istype(src.loc, /turf/space)))
+	else if (Y && (!isturf(src.loc) || istype(src.loc, /turf/space)))
 		src << "\green Bad place for a garden!"
 		return 0
 	else	return 1
@@ -23,7 +23,7 @@ Doesn't work on other aliens/AI.*/
 	set desc = "Plants some alien weeds"
 	set category = "Alien"
 
-	if(powerc(50,1))
+	if (powerc(50,1))
 		adjustToxLoss(-50)
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("\green <B>[src] has planted some alien weeds!</B>"), 1)
@@ -36,7 +36,7 @@ Doesn't work on other aliens/AI.*/
 	set desc = "Makes all nearby facehuggers activate"
 	set category = "Alien"
 
-	if(powerc(5))
+	if (powerc(5))
 		adjustToxLoss(-5)
 		for(var/obj/item/clothing/mask/facehugger/F in range(8,src))
 			F.GoActive()
@@ -48,10 +48,10 @@ Doesn't work on other aliens/AI.*/
 	set desc = "Whisper to someone"
 	set category = "Alien"
 
-	if(powerc(10))
+	if (powerc(10))
 		adjustToxLoss(-10)
 		var/msg = sanitize(input("Message:", "Alien Whisper") as text|null)
-		if(msg)
+		if (msg)
 			log_say("AlienWhisper: [key_name(src)]->[M.key] : [msg]")
 			M << "\green You hear a strange, alien voice in your head... \italic [msg]"
 			src << {"\green You said: "[msg]" to [M]"}
@@ -62,11 +62,11 @@ Doesn't work on other aliens/AI.*/
 	set desc = "Transfer Plasma to another alien"
 	set category = "Alien"
 
-	if(isalien(M))
+	if (isalien(M))
 		var/amount = input("Amount:", "Transfer Plasma to [M]") as num
 		if (amount)
 			amount = abs(round(amount))
-			if(powerc(amount))
+			if (powerc(amount))
 				if (get_dist(src,M) <= 1)
 					M.adjustToxLoss(amount)
 					adjustToxLoss(-amount)
@@ -82,23 +82,23 @@ Doesn't work on other aliens/AI.*/
 	set desc = "Drench an object in acid, destroying it over time."
 	set category = "Alien"
 
-	if(powerc(200))
-		if(O in oview(1))
+	if (powerc(200))
+		if (O in oview(1))
 			// OBJ CHECK
-			if(isobj(O))
+			if (isobj(O))
 				var/obj/I = O
-				if(I.unacidable)	//So the aliens don't destroy energy fields/singularies/other aliens/etc with their acid.
+				if (I.unacidable)	//So the aliens don't destroy energy fields/singularies/other aliens/etc with their acid.
 					src << "\green You cannot dissolve this object."
 					return
 			// TURF CHECK
-			else if(istype(O, /turf/simulated))
+			else if (istype(O, /turf/simulated))
 				var/turf/T = O
 				// R WALL
-				if(istype(T, /turf/simulated/wall/r_wall))
+				if (istype(T, /turf/simulated/wall/r_wall))
 					src << "\green You cannot dissolve this object."
 					return
 				// R FLOOR
-				if(istype(T, /turf/simulated/floor/engine))
+				if (istype(T, /turf/simulated/floor/engine))
 					src << "\green You cannot dissolve this object."
 					return
 			else// Not a type we can acid.
@@ -117,8 +117,8 @@ Doesn't work on other aliens/AI.*/
 	set desc = "Spits neurotoxin at someone, paralyzing them for a short time if they are not wearing protective gear."
 	set category = "Alien"
 
-	if(powerc(50))
-		if(isalien(target))
+	if (powerc(50))
+		if (isalien(target))
 			src << "\green Your allies are not a valid target."
 			return
 		adjustToxLoss(-50)
@@ -130,16 +130,16 @@ Doesn't work on other aliens/AI.*/
 		var/turf/T = loc
 		var/turf/U = (istype(target, /atom/movable) ? target.loc : target)
 
-		if(!U || !T)
+		if (!U || !T)
 			return
 		while(U && !istype(U,/turf))
 			U = U.loc
-		if(!istype(T, /turf))
+		if (!istype(T, /turf))
 			return
 		if (U == T)
 			usr.bullet_act(new /obj/item/projectile/energy/neurotoxin(usr.loc), get_organ_target())
 			return
-		if(!istype(U, /turf))
+		if (!istype(U, /turf))
 			return
 
 		var/obj/item/projectile/energy/neurotoxin/A = new /obj/item/projectile/energy/neurotoxin(usr.loc)
@@ -154,21 +154,21 @@ Doesn't work on other aliens/AI.*/
 	set desc = "Secrete tough malleable resin."
 	set category = "Alien"
 
-	if(powerc(75))
+	if (powerc(75))
 		var/choice = input("Choose what you wish to shape.","Resin building") as null|anything in list("resin door","resin wall","resin membrane","resin nest") //would do it through typesof but then the player choice would have the type path and we don't want the internal workings to be exposed ICly - Urist
-		if(!choice || !powerc(75))	return
+		if (!choice || !powerc(75))	return
 		adjustToxLoss(-75)
 		src << "\green You shape a [choice]."
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("\red <B>[src] vomits up a thick purple substance and begins to shape it!</B>"), 1)
 		switch(choice)
-			if("resin door")
+			if ("resin door")
 				new /obj/structure/mineral_door/resin(loc)
-			if("resin wall")
+			if ("resin wall")
 				new /obj/effect/alien/resin/wall(loc)
-			if("resin membrane")
+			if ("resin membrane")
 				new /obj/effect/alien/resin/membrane(loc)
-			if("resin nest")
+			if ("resin nest")
 				new /obj/structure/stool/bed/nest(loc)
 	return
 
@@ -177,10 +177,10 @@ Doesn't work on other aliens/AI.*/
 	set desc = "Empties the contents of your stomach"
 	set category = "Alien"
 
-	if(powerc())
-		if(stomach_contents.len)
+	if (powerc())
+		if (stomach_contents.len)
 			for(var/mob/M in src)
-				if(M in stomach_contents)
+				if (M in stomach_contents)
 					stomach_contents.Remove(M)
 					M.loc = loc
 					//Paralyse(10)

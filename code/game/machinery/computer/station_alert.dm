@@ -9,7 +9,7 @@
 
 	attack_ai(mob/user)
 		add_fingerprint(user)
-		if(stat & (BROKEN|NOPOWER))
+		if (stat & (BROKEN|NOPOWER))
 			return
 		interact(user)
 		return
@@ -17,7 +17,7 @@
 
 	attack_hand(mob/user)
 		add_fingerprint(user)
-		if(stat & (BROKEN|NOPOWER))
+		if (stat & (BROKEN|NOPOWER))
 			return
 		interact(user)
 		return
@@ -49,13 +49,13 @@
 
 
 	Topic(href, href_list)
-		if(..())
+		if (..())
 			return
 		return
 
 
 	proc/triggerAlarm(var/class, area/A, var/O, var/alarmsource)
-		if(stat & (BROKEN))
+		if (stat & (BROKEN))
 			return
 		var/list/L = src.alarms[class]
 		for (var/I in L)
@@ -78,7 +78,7 @@
 
 
 	proc/cancelAlarm(var/class, area/A as area, obj/origin)
-		if(stat & (BROKEN))
+		if (stat & (BROKEN))
 			return
 		var/list/L = src.alarms[class]
 		var/cleared = 0
@@ -95,14 +95,14 @@
 
 
 	process()
-		if(stat & (BROKEN|NOPOWER))
+		if (stat & (BROKEN|NOPOWER))
 			icon_state = "atmos0"
 			return
 		var/active_alarms = 0
 		for (var/cat in src.alarms)
 			var/list/L = src.alarms[cat]
-			if(L.len) active_alarms = 1
-		if(active_alarms)
+			if (L.len) active_alarms = 1
+		if (active_alarms)
 			icon_state = "alert:2"
 		else
 			icon_state = "alert:0"
