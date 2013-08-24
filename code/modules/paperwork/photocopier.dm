@@ -25,29 +25,29 @@
 		user.machine = src
 
 		var/dat = "Photocopier<BR><BR>"
-		if(copy)
+		if (copy)
 			dat += "<a href='byond://?src=\ref[src];remove=1'>Remove Paper</a><BR>"
-			if(toner)
+			if (toner)
 				dat += "<a href='byond://?src=\ref[src];copy=1'>Copy</a><BR>"
 				dat += "Printing: [copies] copies."
 				dat += "<a href='byond://?src=\ref[src];min=1'>-</a> "
 				dat += "<a href='byond://?src=\ref[src];add=1'>+</a><BR><BR>"
-		else if(toner)
+		else if (toner)
 			dat += "Please insert paper to copy.<BR><BR>"
 		dat += "Current toner level: [toner]"
-		if(!toner)
+		if (!toner)
 			dat +="<BR>Please insert a new toner cartridge!"
 		user << browse(dat, "window=copier")
 		onclose(user, "copier")
 		return
 
 	Topic(href, href_list)
-		if(href_list["copy"])
-			if(copy)
+		if (href_list["copy"])
+			if (copy)
 				for(var/i = 0, i < copies, i++)
-					if(toner > 0)
+					if (toner > 0)
 						var/obj/item/weapon/paper/c = new /obj/item/weapon/paper (src.loc)
-						if(toner > 10)	//lots of toner, make it dark
+						if (toner > 10)	//lots of toner, make it dark
 							c.info = "<font color = #101010>"
 						else			//no toner? shitty copies for you!
 							c.info = "<font color = #808080>"
@@ -64,27 +64,27 @@
 					else
 						break
 				updateUsrDialog()
-		else if(href_list["remove"])
-			if(copy)
-				if(ishuman(usr))
-					if(!usr.get_active_hand())
+		else if (href_list["remove"])
+			if (copy)
+				if (ishuman(usr))
+					if (!usr.get_active_hand())
 						copy.loc = usr.loc
 						usr.put_in_hand(copy)
 						usr << "You take the paper out of the photocopier."
 						copy = null
 						updateUsrDialog()
-		else if(href_list["min"])
-			if(copies > 1)
+		else if (href_list["min"])
+			if (copies > 1)
 				copies--
 				updateUsrDialog()
-		else if(href_list["add"])
-			if(copies < maxcopies)
+		else if (href_list["add"])
+			if (copies < maxcopies)
 				copies++
 				updateUsrDialog()
 
 	attackby(obj/item/O as obj, mob/user as mob)
-		if(istype(O, /obj/item/weapon/paper))
-			if(!copy)
+		if (istype(O, /obj/item/weapon/paper))
+			if (!copy)
 				user.drop_item()
 				copy = O
 				O.loc = src
@@ -93,8 +93,8 @@
 				updateUsrDialog()
 			else
 				user << "There is already paper in the photocopier."
-		else if(istype(O, /obj/item/device/toner))
-			if(toner == 0)
+		else if (istype(O, /obj/item/device/toner))
+			if (toner == 0)
 				user.drop_item()
 				del(O)
 				toner = 30
@@ -102,7 +102,7 @@
 				updateUsrDialog()
 			else
 				user << "This cartridge is not yet ready for replacement! Use up the rest of the toner."
-		else if(istype(O, /obj/item/weapon/wrench))
+		else if (istype(O, /obj/item/weapon/wrench))
 			playsound(loc, 'Ratchet.ogg', 50, 1)
 			anchored = !anchored
 			user << "You [anchored ? "wrench" : "unwrench"] \the [src]."
@@ -110,27 +110,27 @@
 
 	ex_act(severity)
 		switch(severity)
-			if(1.0)
+			if (1.0)
 				del(src)
-			if(2.0)
-				if(prob(50))
+			if (2.0)
+				if (prob(50))
 					del(src)
 				else
-					if(toner > 0)
+					if (toner > 0)
 						new /obj/decal/cleanable/oil(get_turf(src))
 						toner = 0
 			else
-				if(prob(50))
-					if(toner > 0)
+				if (prob(50))
+					if (toner > 0)
 						new /obj/decal/cleanable/oil(get_turf(src))
 						toner = 0
 		return
 
 	blob_act()
-		if(prob(50))
+		if (prob(50))
 			del(src)
 		else
-			if(toner > 0)
+			if (toner > 0)
 				new /obj/decal/cleanable/oil(get_turf(src))
 				toner = 0
 		return

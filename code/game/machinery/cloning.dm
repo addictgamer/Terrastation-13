@@ -102,7 +102,7 @@
 	user.machine = src
 	add_fingerprint(user)
 
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		return
 
 	var/dat = "<h3>Cloning System Control</h3>"
@@ -111,7 +111,7 @@
 	dat += "<br><tt>[temp]</tt><br>"
 
 	switch(src.menu)
-		if(1)
+		if (1)
 			dat += "<h4>Scanner Functions</h4>"
 
 			if (isnull(src.scanner))
@@ -130,13 +130,13 @@
 				dat += "<a href='byond://?src=\ref[src];disk=eject'>Eject Disk</a>"
 
 
-		if(2)
+		if (2)
 			dat += "<h4>Current records</h4>"
 			dat += "<a href='byond://?src=\ref[src];menu=1'>Back</a><br><br>"
 			for(var/datum/data/record/R in src.records)
 				dat += "<a href='byond://?src=\ref[src];view_rec=\ref[R]'>[R.fields["id"]]-[R.fields["name"]]</a><br>"
 
-		if(3)
+		if (3)
 			dat += "<h4>Selected Record</h4>"
 			dat += "<a href='byond://?src=\ref[src];menu=2'>Back</a><br>"
 
@@ -167,7 +167,7 @@
 				<b>SE:</b> [src.active_record.fields["SE"]]<br><br>
 				<a href='byond://?src=\ref[src];clone=\ref[src.active_record]'>Clone</a><br>"}
 
-		if(4)
+		if (4)
 			if (!src.active_record)
 				src.menu = 2
 			dat = "[src.temp]<br>"
@@ -182,7 +182,7 @@
 	return
 
 /obj/machinery/computer/cloning/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 
 	if ((href_list["scan"]) && (!isnull(src.scanner)))
@@ -213,7 +213,7 @@
 		else if (src.menu == 4)
 			var/obj/item/weapon/card/id/C = usr.equipped()
 			if (istype(C)||istype(C, /obj/item/device/pda))
-				if(src.check_access(C))
+				if (src.check_access(C))
 					src.records.Remove(src.active_record)
 					del(src.active_record)
 					src.temp = "Record deleted."
@@ -223,7 +223,7 @@
 
 	else if (href_list["disk"]) //Load or eject.
 		switch(href_list["disk"])
-			if("load")
+			if ("load")
 				if ((isnull(src.diskette)) || (src.diskette.data == ""))
 					src.temp = "Load error."
 					src.updateUsrDialog()
@@ -242,7 +242,7 @@
 					src.active_record.fields["SE"] = src.diskette.data
 
 				src.temp = "Load successful."
-			if("eject")
+			if ("eject")
 				if (!isnull(src.diskette))
 					src.diskette.loc = src.loc
 					src.diskette = null
@@ -254,15 +254,15 @@
 			return
 
 		switch(href_list["save_disk"]) //Save as Ui/Ui+Ue/Se
-			if("ui")
+			if ("ui")
 				src.diskette.data = src.active_record.fields["UI"]
 				src.diskette.ue = 0
 				src.diskette.data_type = "ui"
-			if("ue")
+			if ("ue")
 				src.diskette.data = src.active_record.fields["UI"]
 				src.diskette.ue = 1
 				src.diskette.data_type = "ui"
-			if("se")
+			if ("se")
 				src.diskette.data = src.active_record.fields["SE"]
 				src.diskette.ue = 0
 				src.diskette.data_type = "se"
@@ -276,7 +276,7 @@
 	else if (href_list["clone"])
 		var/datum/data/record/C = locate(href_list["clone"])
 		//Look for that player! They better be dead!
-		if(C)
+		if (C)
 			var/mob/selected = find_dead_player("[C.fields["ckey"]]")
 
 //Can't clone without someone to clone.  Or a pod.  Or if the pod is busy. Or full of gibs.
@@ -355,10 +355,10 @@
 
 /obj/machinery/computer/cloning/power_change()
 
-	if(stat & BROKEN)
+	if (stat & BROKEN)
 		icon_state = "commb"
 	else
-		if( powered() )
+		if ( powered() )
 			icon_state = initial(icon_state)
 			stat &= ~NOPOWER
 		else
@@ -482,9 +482,9 @@
 
 	switch(ticker.mode.name)
 		if ("revolution")
-			if(src.occupant.mind in ticker.mode:revolutionaries)
+			if (src.occupant.mind in ticker.mode:revolutionaries)
 				ticker.mode:update_all_rev_icons() //So the icon actually appears
-			if(src.occupant.mind in ticker.mode:head_revolutionaries)
+			if (src.occupant.mind in ticker.mode:head_revolutionaries)
 				ticker.mode:update_all_rev_icons()
 		if ("nuclear emergency")
 			if (src.occupant.mind in ticker.mode:syndicates)
@@ -531,13 +531,13 @@
 		return
 
 	if ((src.occupant) && (src.occupant.loc == src))
-		if((src.occupant.stat == 2) || (src.occupant.suiciding))  //Autoeject corpses and suiciding dudes.
+		if ((src.occupant.stat == 2) || (src.occupant.suiciding))  //Autoeject corpses and suiciding dudes.
 			src.locked = 0
 			src.go_out()
 			src.connected_message("Clone Rejected: Deceased.")
 			return
 
-		else if(src.occupant.health < src.heal_level)
+		else if (src.occupant.health < src.heal_level)
 			src.occupant.paralysis = 4
 
 			 //Slowly get that clone healed and finished.
@@ -556,7 +556,7 @@
 			use_power(7500) //This might need tweaking.
 			return
 
-		else if((src.occupant.health >= src.heal_level) && (!src.eject_wait))
+		else if ((src.occupant.health >= src.heal_level) && (!src.eject_wait))
 			src.connected_message("Cloning Process Complete.")
 			src.locked = 0
 			src.go_out()
@@ -663,25 +663,25 @@
 	return
 
 /obj/machinery/clonepod/emp_act(severity)
-	if(prob(100/severity)) malfunction()
+	if (prob(100/severity)) malfunction()
 	..()
 
 /obj/machinery/clonepod/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			for(var/atom/movable/A as mob|obj in src)
 				A.loc = src.loc
 				ex_act(severity)
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
 					ex_act(severity)
 				del(src)
 				return
-		if(3.0)
+		if (3.0)
 			if (prob(25))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
@@ -739,6 +739,6 @@
 
 //SOME SCRAPS I GUESS
 /* EMP grenade/spell effect
-		if(istype(A, /obj/machinery/clonepod))
+		if (istype(A, /obj/machinery/clonepod))
 			A:malfunction()
 */

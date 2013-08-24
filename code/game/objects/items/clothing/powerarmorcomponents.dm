@@ -64,7 +64,7 @@
 		slowdown = 1.5
 
 		process()
-			if(!crit_fail)
+			if (!crit_fail)
 				if (prob(src.reliability)) return 1 //No failure
 				if (prob(src.reliability))
 					for (var/mob/M in range(0,src.parent)) //Only a minor failure, enjoy your radiation.
@@ -95,10 +95,10 @@
 
 	toggle(sudden = 0)
 		switch(parent.active)
-			if(1)
-				if(!sudden)
+			if (1)
+				if (!sudden)
 					usr << "\blue Reactive armor systems disengaged."
-			if(0)
+			if (0)
 				usr << "\blue Reactive armor systems engaged."
 		var/list/switchover = list()
 		for (var/armorvar in parent.armor)
@@ -106,11 +106,11 @@
 			togglearmor[armorvar] = parent.armor[armorvar]
 			parent.armor[armorvar] = switchover[armorvar]
 			//Probably not the most elegant way to have the vars switch over, but it works. Also propagates the values to the other objects.
-			if(parent.helm)
+			if (parent.helm)
 				parent.helm.armor[armorvar] = parent.armor[armorvar]
-			if(parent.gloves)
+			if (parent.gloves)
 				parent.gloves.armor[armorvar] = parent.armor[armorvar]
-			if(parent.shoes)
+			if (parent.shoes)
 				parent.shoes.armor[armorvar] = parent.armor[armorvar]
 
 	centcomm
@@ -127,11 +127,11 @@
 
 	toggle(sudden = 0)
 		switch(parent.active)
-			if(1)
-				if(!sudden)
+			if (1)
+				if (!sudden)
 					usr << "\blue Movement assist servos disengaged."
 				parent.slowdown += toggleslowdown
-			if(0)
+			if (0)
 				usr << "\blue Movement assist servos engaged."
 				parent.slowdown -= toggleslowdown
 
@@ -143,51 +143,51 @@
 
 	toggle(sudden = 0)
 		switch(parent.active)
-			if(1)
-				if(!sudden)
+			if (1)
+				if (!sudden)
 					usr << "\blue Atmospheric seals disengaged."
 				parent.gas_transfer_coefficient = 1
 				parent.permeability_coefficient = 1
 				parent.heat_transfer_coefficient = 1
 				parent.radiation_protection = 0
 				parent.flags &= ~SUITSPACE
-				if(parent.helmrequired)
+				if (parent.helmrequired)
 					parent.helm.gas_transfer_coefficient = 1
 					parent.helm.permeability_coefficient = 1
 					parent.helm.heat_transfer_coefficient = 1
 					parent.helm.radiation_protection = 0
 					parent.helm.flags &= ~HEADSPACE
-				if(parent.glovesrequired)
+				if (parent.glovesrequired)
 					parent.gloves.gas_transfer_coefficient = 1
 					parent.gloves.permeability_coefficient = 1
 					parent.gloves.heat_transfer_coefficient = 1
 					parent.gloves.radiation_protection = 0
-				if(parent.shoesrequired)
+				if (parent.shoesrequired)
 					parent.shoes.gas_transfer_coefficient = 1
 					parent.shoes.permeability_coefficient = 1
 					parent.shoes.heat_transfer_coefficient = 1
 					parent.shoes.radiation_protection = 0
 				sealed = 0
 
-			if(0)
+			if (0)
 				usr << "\blue Atmospheric seals engaged."
 				parent.gas_transfer_coefficient = 0.01
 				parent.permeability_coefficient = 0.02
 				parent.heat_transfer_coefficient = 0.02
 				parent.radiation_protection = 0.75
 				parent.flags |= SUITSPACE
-				if(parent.helmrequired)
+				if (parent.helmrequired)
 					parent.helm.gas_transfer_coefficient = 0.01
 					parent.helm.permeability_coefficient = 0.02
 					parent.helm.heat_transfer_coefficient = 0.02
 					parent.helm.radiation_protection = 0.75
 					parent.helm.flags |= HEADSPACE
-				if(parent.glovesrequired)
+				if (parent.glovesrequired)
 					parent.gloves.gas_transfer_coefficient = 0.01
 					parent.gloves.permeability_coefficient = 0.02
 					parent.gloves.heat_transfer_coefficient = 0.02
 					parent.gloves.radiation_protection = 0.75
-				if(parent.shoesrequired)
+				if (parent.shoesrequired)
 					parent.shoes.gas_transfer_coefficient = 0.01
 					parent.shoes.permeability_coefficient = 0.02
 					parent.shoes.heat_transfer_coefficient = 0.02
@@ -206,13 +206,13 @@
 		proc/helmtoggle(sudden = 0, manual = 0)
 			var/mob/living/carbon/human/user = usr
 			var/obj/item/clothing/head/powered/helm
-			if(user.head && istype(user.head,/obj/item/clothing/head/powered))
+			if (user.head && istype(user.head,/obj/item/clothing/head/powered))
 				helm = user.head
 
-				if(!sealed)
+				if (!sealed)
 					user << "\red Unable to initialize helmet seal, armor seals not active."
 					return
-				if(!helm.parent)
+				if (!helm.parent)
 					user << "\blue Helmet locked."
 					helm.canremove = 0
 					parent.helm = helm
@@ -224,23 +224,23 @@
 					parent.helm.radiation_protection = 0.75
 					parent.helm.flags |= HEADSPACE
 					user << "\blue Helmet atmospheric seals engaged."
-					if(manual)
+					if (manual)
 						for (var/armorvar in helm.armor)
 							helm.armor[armorvar] = parent.armor[armorvar]
 					return
 				else
-					if(manual)
+					if (manual)
 						user << "\blue Helmet atmospheric seals disengaged."
 					parent.helm.gas_transfer_coefficient = 1
 					parent.helm.permeability_coefficient = 1
 					parent.helm.heat_transfer_coefficient = 1
 					parent.helm.radiation_protection = 0
 					parent.helm.flags &= ~HEADSPACE
-					if(manual)
+					if (manual)
 						for (var/armorvar in helm.armor)
 							helm.armor[armorvar] = parent.reactive.togglearmor[armorvar]
-					if(!sudden)
-						if(manual)
+					if (!sudden)
+						if (manual)
 							sleep(20)
 							user << "\blue Helmet unlocked."
 						helm.canremove = 1

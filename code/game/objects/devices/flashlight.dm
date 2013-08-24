@@ -27,7 +27,7 @@
 
 	attack(mob/M as mob, mob/user as mob)
 		src.add_fingerprint(user)
-		if(src.on && user.zone_sel.selecting == "eyes")
+		if (src.on && user.zone_sel.selecting == "eyes")
 			if ((user.mutations & CLOWN || user.brainloss >= 60) && prob(50))//too dumb to use flashlight properly
 				return ..()//just hit them in the head
 
@@ -36,7 +36,7 @@
 				return
 
 			var/mob/living/carbon/human/H = M//mob has protective eyewear
-			if(istype(M, /mob/living/carbon/human) && ((H.head && H.head.flags & HEADCOVERSEYES) || (H.wear_mask && H.wear_mask.flags & MASKCOVERSEYES) || (H.glasses && H.glasses.flags & GLASSESCOVERSEYES)))
+			if (istype(M, /mob/living/carbon/human) && ((H.head && H.head.flags & HEADCOVERSEYES) || (H.wear_mask && H.wear_mask.flags & MASKCOVERSEYES) || (H.glasses && H.glasses.flags & GLASSESCOVERSEYES)))
 				user << text("\blue You're going to need to remove that [] first.", ((H.head && H.head.flags & HEADCOVERSEYES) ? "helmet" : ((H.wear_mask && H.wear_mask.flags & MASKCOVERSEYES) ? "mask": "glasses")))
 				return
 
@@ -44,29 +44,29 @@
 				if ((O.client && !(O.blinded )))
 					O.show_message("\blue [(O==user?"You direct":"[user] directs")] [src] to [(M==user? "your":"[M]")] eyes", 1)
 
-			if(istype(M, /mob/living/carbon/human) || istype(M, /mob/living/carbon/monkey))//robots and aliens are unaffected
-				if(M.stat > 1 || M.sdisabilities & 1)//mob is dead or fully blind
-					if(M!=user)
+			if (istype(M, /mob/living/carbon/human) || istype(M, /mob/living/carbon/monkey))//robots and aliens are unaffected
+				if (M.stat > 1 || M.sdisabilities & 1)//mob is dead or fully blind
+					if (M!=user)
 						user.show_message(text("\red [] pupils does not react to the light!", M),1)
-				else if(M.mutations & XRAY)//mob has X-RAY vision
-					if(M!=user)
+				else if (M.mutations & XRAY)//mob has X-RAY vision
+					if (M!=user)
 						user.show_message(text("\red [] pupils give an eerie glow!", M),1)
 				else //nothing wrong
 					flick("flash", M.flash)//flash the affected mob
-					if(M!=user)
+					if (M!=user)
 						user.show_message(text("\blue [] pupils narrow", M),1)
 		else
 			return ..()
 
 
 	pickup(mob/user)
-		if(on)
+		if (on)
 			src.sd_SetLuminosity(0)
 			user.total_luminosity += brightness_on
 
 
 	dropped(mob/user)
-		if(on)
+		if (on)
 			user.total_luminosity -= brightness_on
 			src.sd_SetLuminosity(brightness_on)
 
@@ -89,17 +89,17 @@
 	icon_state = "hardhat[on]_[color]"
 	item_state = "hardhat[on]_[color]"
 
-	if(on)
+	if (on)
 		user.total_luminosity += brightness_on
 	else
 		user.total_luminosity -= brightness_on
 
 /obj/item/clothing/head/helmet/hardhat/pickup(mob/user)
-	if(on)
+	if (on)
 		src.sd_SetLuminosity(0)
 		user.total_luminosity += brightness_on
 
 /obj/item/clothing/head/helmet/hardhat/dropped(mob/user)
-	if(on)
+	if (on)
 		user.total_luminosity -= brightness_on
 		src.sd_SetLuminosity(brightness_on)

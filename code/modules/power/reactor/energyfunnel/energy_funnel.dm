@@ -29,7 +29,7 @@
 		var/temp_rating = 0
 		var/temp_reliability = 0
 		for(var/obj/item/weapon/stock_parts/SP in component_parts)
-			if(istype(SP, /obj/item/weapon/stock_parts/micro_laser) || istype(SP, /obj/item/weapon/stock_parts/capacitor))
+			if (istype(SP, /obj/item/weapon/stock_parts/micro_laser) || istype(SP, /obj/item/weapon/stock_parts/capacitor))
 				temp_rating += SP.rating
 		for(var/obj/item/weapon/CP in component_parts)
 			temp_reliability += CP.reliability
@@ -42,29 +42,29 @@
 
 
 	attackby(obj/item/W, mob/user)
-		if(istype(W, /obj/item/device/analyzer))
+		if (istype(W, /obj/item/device/analyzer))
 			user << "\blue The [W.name] detects that [target_power_gen]W is the targetted power to generate."
 			return 1
-		else if(istype(W, /obj/item/weapon/wrench))
+		else if (istype(W, /obj/item/weapon/wrench))
 			playsound(src.loc, 'Ratchet.ogg', 75, 1)
 			src.anchored = !src.anchored
 			user.visible_message("[user.name] [anchored? "secures":"unsecures"] the [src.name].", \
 				"You [anchored? "secure":"undo"] the external bolts.", \
 				"You hear ratchet")
-			if(anchored)
+			if (anchored)
 				connect_to_network()
 			else
 				disconnect_from_network()
-		else if(istype(W, /obj/item/weapon/screwdriver)) //If it's a screwdriver...dissassemble the machine.
+		else if (istype(W, /obj/item/weapon/screwdriver)) //If it's a screwdriver...dissassemble the machine.
 			var/obj/machinery/constructable_frame/machine_frame/new_frame = new /obj/machinery/constructable_frame/machine_frame(src.loc)
 			for(var/obj/item/I in component_parts)
-				if(I.reliability < 100)
+				if (I.reliability < 100)
 					I.crit_fail = 1
 				I.loc = src.loc
 			new_frame.state = 2
 			new_frame.icon_state = "box_1"
 			del(src)
-		else if(istype(W, /obj/item/device/multitool)) //If it's a multitool, adjust the target power...
+		else if (istype(W, /obj/item/device/multitool)) //If it's a multitool, adjust the target power...
 			target_power_gen = input(user, "Target power gen:","Enter ammount","") as num
 		else
 			..()
@@ -90,7 +90,7 @@
 
 		updateicon()
 			overlays = null
-			if(stat & (BROKEN))
+			if (stat & (BROKEN))
 				return
 
 

@@ -30,7 +30,7 @@
 	for(var/i=src.z,i<=world.maxz,i++)
 		var/isladder = 0
 		for(var/obj/machinery/travel/ladder/L in locate(src.x,src.y,i))
-			if(L==src)
+			if (L==src)
 				continue
 			src.x_connect[i] = L.x
 			src.y_connect[i] = L.y
@@ -41,14 +41,14 @@
 			L.z_connect[src.z] = src.z
 			isladder = 1
 			L.connected = src.z
-		if(isladder)
+		if (isladder)
 			src.connected = i
 			break
-	if(!src.connected)
+	if (!src.connected)
 		for(var/i=1,i<=src.z,i++)
 			var/isladder = 0
 			for(var/obj/machinery/travel/ladder/L in locate(src.x,src.y,i))
-				if(L==src)
+				if (L==src)
 					continue
 				src.x_connect[i] = L.x
 				src.y_connect[i] = L.y
@@ -59,14 +59,14 @@
 				L.z_connect[src.z] = src.z
 				isladder = 1
 				L.connected = src.z
-			if(isladder)
+			if (isladder)
 				src.connected = i
 				break
 
 	..()
 
 /obj/machinery/travel/ladder/attack_hand(mob/user as mob)
-	if(!src.connected)
+	if (!src.connected)
 		return
 	user.x = src.x_connect[src.connected]
 	user.y = src.y_connect[src.connected]
@@ -82,7 +82,7 @@
 			src.y_connect[i] = E.y
 			src.z_connect[i] = E.z
 			iselevator = 1
-		if(!iselevator)
+		if (!iselevator)
 			src.elevators_connected[i] = null
 			src.x_connect[i] = null
 			src.y_connect[i] = null

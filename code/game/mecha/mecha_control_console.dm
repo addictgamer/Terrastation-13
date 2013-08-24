@@ -15,18 +15,18 @@
 		return src.attack_hand(user)
 
 	attack_hand(var/mob/user as mob)
-		if(..())
+		if (..())
 			return
 		user.machine = src
 		var/dat = "<html><head><title>[src.name]</title><style>h3 {margin: 0px; padding: 0px;}</style></head><body>"
-		if(screen == 0)
+		if (screen == 0)
 			dat += "<h3>Tracking beacons data</h3>"
 			for(var/obj/item/mecha_tracking/TR in world)
 				var/answer = TR.get_mecha_info()
-				if(answer)
+				if (answer)
 					dat += {"<hr>[answer]<br>
 							  <a href='?src=\ref[src];get_log=\ref[TR]'>Show exosuit log</a> | <a style='color: #f00;' href='?src=\ref[src];shock=\ref[TR]'>(EMP pulse)</a><br>"}
-		if(screen==1)
+		if (screen==1)
 			dat += "<h3>Log contents</h3>"
 			dat += "<a href='?src=\ref[src];return=1'>Return</a><hr>"
 			dat += "[stored_data]"
@@ -39,16 +39,16 @@
 		return
 
 	Topic(href, href_list)
-		if(..())
+		if (..())
 			return
-		if(href_list["shock"])
+		if (href_list["shock"])
 			var/obj/item/mecha_tracking/MT = locate(href_list["shock"])
 			MT.shock()
-		if(href_list["get_log"])
+		if (href_list["get_log"])
 			var/obj/item/mecha_tracking/MT = locate(href_list["get_log"])
 			stored_data = MT.get_mecha_log()
 			screen = 1
-		if(href_list["return"])
+		if (href_list["return"])
 			screen = 0
 		src.updateUsrDialog()
 		return
@@ -65,7 +65,7 @@
 	var/list/construction_cost = list("metal"=500)
 
 	proc/get_mecha_info()
-		if(!in_mecha())
+		if (!in_mecha())
 			return 0
 		var/obj/mecha/M = src.loc
 		var/cell_charge = M.get_charge()
@@ -76,7 +76,7 @@
 							<b>Pilot:</b> [M.occupant||"None"]<br>
 							<b>Location:</b> [get_area(M)||"Unknown"]<br>
 							<b>Active equipment:</b> [M.selected||"None"]"}
-		if(istype(M, /obj/mecha/working/ripley))
+		if (istype(M, /obj/mecha/working/ripley))
 			var/obj/mecha/working/ripley/RM = M
 			answer += "<b>Used cargo space:</b> [RM.cargo.len/RM.cargo_capacity*100]%<br>"
 
@@ -91,18 +91,18 @@
 		return
 
 	proc/in_mecha()
-		if(istype(src.loc, /obj/mecha))
+		if (istype(src.loc, /obj/mecha))
 			return 1
 		return 0
 
 	proc/shock()
-		if(src.in_mecha())
+		if (src.in_mecha())
 			var/obj/mecha/M = src.loc
 			M.emp_act(3)
 		del(src)
 
 	proc/get_mecha_log()
-		if(!src.in_mecha())
+		if (!src.in_mecha())
 			return 0
 		var/obj/mecha/M = src.loc
 		return M.get_log_html()

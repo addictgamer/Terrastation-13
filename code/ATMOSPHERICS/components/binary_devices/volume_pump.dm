@@ -27,12 +27,12 @@ obj/machinery/atmospherics/binary/volume_pump
 	var/datum/radio_frequency/radio_connection
 
 	update_icon()
-		if(node1&&node2)
+		if (node1&&node2)
 			icon_state = "intact_[on?("on"):("off")]"
 		else
-			if(node1)
+			if (node1)
 				icon_state = "exposed_1_off"
-			else if(node2)
+			else if (node2)
 				icon_state = "exposed_2_off"
 			else
 				icon_state = "exposed_3_off"
@@ -42,7 +42,7 @@ obj/machinery/atmospherics/binary/volume_pump
 
 	process()
 //		..()
-		if(!on)
+		if (!on)
 			return 0
 
 		var/transfer_ratio = max(1, transfer_rate/air1.volume)
@@ -51,10 +51,10 @@ obj/machinery/atmospherics/binary/volume_pump
 
 		air2.merge(removed)
 
-		if(network1)
+		if (network1)
 			network1.update = 1
 
-		if(network2)
+		if (network2)
 			network2.update = 1
 
 		return 1
@@ -63,11 +63,11 @@ obj/machinery/atmospherics/binary/volume_pump
 		set_frequency(new_frequency)
 			radio_controller.remove_object(src, frequency)
 			frequency = new_frequency
-			if(frequency)
+			if (frequency)
 				radio_connection = radio_controller.add_object(src, frequency)
 
 		broadcast_status()
-			if(!radio_connection)
+			if (!radio_connection)
 				return 0
 
 			var/datum/signal/signal = new
@@ -91,23 +91,23 @@ obj/machinery/atmospherics/binary/volume_pump
 		set_frequency(frequency)
 
 	receive_signal(datum/signal/signal)
-		if(!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
+		if (!signal.data["tag"] || (signal.data["tag"] != id) || (signal.data["sigtype"]!="command"))
 			return 0
 
-		if("power" in signal.data)
+		if ("power" in signal.data)
 			on = text2num(signal.data["power"])
 
-		if("power_toggle" in signal.data)
+		if ("power_toggle" in signal.data)
 			on = !on
 
-		if("set_transfer_rate" in signal.data)
+		if ("set_transfer_rate" in signal.data)
 			transfer_rate = between(
 				0,
 				text2num(signal.data["set_transfer_rate"]),
 				air1.volume
 			)
 
-		if("status" in signal.data)
+		if ("status" in signal.data)
 			spawn(2)
 				broadcast_status()
 			return //do not update_icon

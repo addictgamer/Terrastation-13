@@ -57,28 +57,28 @@
 /obj/dummy/spell_jaunt/relaymove(var/mob/user, direction)
 	if (!src.canmove) return
 	var/turf/newLoc = get_step(src,direction)
-	if(!(newLoc.flags & NOJAUNT))
+	if (!(newLoc.flags & NOJAUNT))
 		loc = newLoc
 /*
 	switch(direction)
-		if(NORTH)
+		if (NORTH)
 			src.y++
-		if(SOUTH)
+		if (SOUTH)
 			src.y--
-		if(EAST)
+		if (EAST)
 			src.x++
-		if(WEST)
+		if (WEST)
 			src.x--
-		if(NORTHEAST)
+		if (NORTHEAST)
 			src.y++
 			src.x++
-		if(NORTHWEST)
+		if (NORTHWEST)
 			src.y++
 			src.x--
-		if(SOUTHEAST)
+		if (SOUTHEAST)
 			src.y--
 			src.x++
-		if(SOUTHWEST)
+		if (SOUTHWEST)
 			src.y--
 			src.x-- */
 	src.canmove = 0

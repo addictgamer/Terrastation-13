@@ -146,7 +146,7 @@
 	using.icon_state = "equip"
 	using.screen_loc = ui_headset
 	using.layer = 19
-	if(istype(mymob,/mob/living/carbon/monkey)) using.overlays += blocked
+	if (istype(mymob,/mob/living/carbon/monkey)) using.overlays += blocked
 	src.other += using*/
 
 	using = new src.h_type( src )
@@ -560,7 +560,7 @@
 	mymob.client.screen += list( mymob.throw_icon, mymob.zone_sel, mymob.oxygen, mymob.toxin, mymob.bodytemp, mymob.internals, mymob.fire, mymob.hands, mymob.healths, mymob.pullin, mymob.blind, mymob.flash, mymob.rest, mymob.sleep) //, mymob.mach )
 	mymob.client.screen += src.adding + src.other
 
-	//if(istype(mymob,/mob/living/carbon/monkey)) mymob.client.screen += src.mon_blo
+	//if (istype(mymob,/mob/living/carbon/monkey)) mymob.client.screen += src.mon_blo
 
 	return
 

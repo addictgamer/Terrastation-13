@@ -56,7 +56,7 @@
 /obj/mecha/combat/marauder/seraph/New()
 	..()//Let it equip whatever is needed.
 	var/obj/item/mecha_parts/mecha_equipment/ME
-	if(equipment.len)//Now to remove it and equip anew.
+	if (equipment.len)//Now to remove it and equip anew.
 		for(ME in equipment)
 			equipment -= ME
 			del(ME)
@@ -73,43 +73,43 @@
 	return
 
 /obj/mecha/combat/marauder/relaymove(mob/user,direction)
-	if(src.remote_controlled) //If remote controlled by the ai.
+	if (src.remote_controlled) //If remote controlled by the ai.
 		//world << "Relaying AI mecha move."
-		if(user != remote_controlled) //Invalid user.
+		if (user != remote_controlled) //Invalid user.
 			return 0
-		if(!can_move) //If can't move.
+		if (!can_move) //If can't move.
 			return 0
-		if(zoom)
-			if(world.time - last_message > 20)
+		if (zoom)
+			if (world.time - last_message > 20)
 				src.occupant_message("Unable to move while in zoom mode.")
 				last_message = world.time
 			return 0
-		if(connected_port)
-			if(world.time - last_message > 20)
+		if (connected_port)
+			if (world.time - last_message > 20)
 				src.occupant_message("Unable to move while connected to the air system port")
 				last_message = world.time
 			return 0
-		if(!thrusters && src.pr_inertial_movement.active())
+		if (!thrusters && src.pr_inertial_movement.active())
 			return 0
-		if(state || !get_charge())
+		if (state || !get_charge())
 			return 0
 		var/tmp_step_in = step_in
 		var/tmp_step_energy_drain = step_energy_drain
 		var/move_result = 0
-		if(internal_damage&MECHA_INT_CONTROL_LOST)
+		if (internal_damage&MECHA_INT_CONTROL_LOST)
 			move_result = step_rand(src)
-		else if(src.dir!=direction)
+		else if (src.dir!=direction)
 			src.dir=direction
 			move_result = 1
 		else
 			move_result	= step(src,direction)
-		if(move_result)
+		if (move_result)
 			can_move = 0
 			use_power(step_energy_drain)
-			if(istype(src.loc, /turf/space))
-				if(!src.check_for_support())
+			if (istype(src.loc, /turf/space))
+				if (!src.check_for_support())
 					src.pr_inertial_movement.start(list(src,direction))
-					if(thrusters)
+					if (thrusters)
 						src.pr_inertial_movement.set_process_args(list(src,direction))
 						tmp_step_energy_drain = step_energy_drain*2
 
@@ -123,43 +123,43 @@
 
 	else
 		//world << "Relaying occupant mecha move."
-		if(user != src.occupant) //While not "realistic", this piece is player friendly.
+		if (user != src.occupant) //While not "realistic", this piece is player friendly.
 			user.loc = get_turf(src)
 			user << "You climb out from [src]"
 			return 0
-		if(!can_move)
+		if (!can_move)
 			return 0
-		if(zoom)
-			if(world.time - last_message > 20)
+		if (zoom)
+			if (world.time - last_message > 20)
 				src.occupant_message("Unable to move while in zoom mode.")
 				last_message = world.time
 			return 0
-		if(connected_port)
-			if(world.time - last_message > 20)
+		if (connected_port)
+			if (world.time - last_message > 20)
 				src.occupant_message("Unable to move while connected to the air system port")
 				last_message = world.time
 			return 0
-		if(!thrusters && src.pr_inertial_movement.active())
+		if (!thrusters && src.pr_inertial_movement.active())
 			return 0
-		if(state || !get_charge())
+		if (state || !get_charge())
 			return 0
 		var/tmp_step_in = step_in
 		var/tmp_step_energy_drain = step_energy_drain
 		var/move_result = 0
-		if(internal_damage&MECHA_INT_CONTROL_LOST)
+		if (internal_damage&MECHA_INT_CONTROL_LOST)
 			move_result = step_rand(src)
-		else if(src.dir!=direction)
+		else if (src.dir!=direction)
 			src.dir=direction
 			move_result = 1
 		else
 			move_result	= step(src,direction)
-		if(move_result)
+		if (move_result)
 			can_move = 0
 			use_power(step_energy_drain)
-			if(istype(src.loc, /turf/space))
-				if(!src.check_for_support())
+			if (istype(src.loc, /turf/space))
+				if (!src.check_for_support())
 					src.pr_inertial_movement.start(list(src,direction))
-					if(thrusters)
+					if (thrusters)
 						src.pr_inertial_movement.set_process_args(list(src,direction))
 						tmp_step_energy_drain = step_energy_drain*2
 
@@ -175,10 +175,10 @@
 	set category = "Exosuit Interface"
 	set name = "Toggle thrusters"
 	set src in view(0)
-	if(usr!=src.occupant && usr != src.remote_controlled)
+	if (usr!=src.occupant && usr != src.remote_controlled)
 		return
-	if(src.occupant || src.remote_controlled)
-		if(get_charge() > 0)
+	if (src.occupant || src.remote_controlled)
+		if (get_charge() > 0)
 			thrusters = !thrusters
 			src.log_message("Toggled thrusters.")
 			src.occupant_message("<font color='[src.thrusters?"blue":"red"]'>Thrusters [thrusters?"en":"dis"]abled.")
@@ -189,9 +189,9 @@
 	set category = "Exosuit Interface"
 	set name = "Smoke"
 	set src in view(0)
-	if(usr!=src.occupant && usr != src.remote_controlled)
+	if (usr!=src.occupant && usr != src.remote_controlled)
 		return
-	if(smoke_ready && smoke>0)
+	if (smoke_ready && smoke>0)
 		src.smoke_system.start()
 		smoke--
 		smoke_ready = 0
@@ -203,24 +203,24 @@
 	set category = "Exosuit Interface"
 	set name = "Zoom"
 	set src in view(0)
-	if(usr!=src.occupant && usr != src.remote_controlled)
+	if (usr!=src.occupant && usr != src.remote_controlled)
 		return
-	if(src.occupant)
-		if(src.occupant.client)
+	if (src.occupant)
+		if (src.occupant.client)
 			src.zoom = !src.zoom
 			src.log_message("Toggled zoom mode.")
 			src.occupant_message("<font color='[src.zoom?"blue":"red"]'>Zoom mode [zoom?"en":"dis"]abled.</font>")
-			if(zoom)
+			if (zoom)
 				src.occupant.client.view = 12
 				src.occupant << sound('imag_enh.ogg',volume=50)
 			else
 				src.occupant.client.view = world.view//world.view - default mob view size
 	else
-		if(src.remote_controlled.client)
+		if (src.remote_controlled.client)
 			src.zoom = !src.zoom
 			src.log_message("Toggled zoom mode.")
 			src.occupant_message("<font color='[src.zoom?"blue":"red"]'>Zoom mode [zoom?"en":"dis"]abled.</font>")
-			if(zoom)
+			if (zoom)
 				src.remote_controlled.client.view = 12
 				src.remote_controlled << sound('imag_enh.ogg',volume=50)
 			else
@@ -229,10 +229,10 @@
 
 
 /obj/mecha/combat/marauder/go_out()
-	if(src.occupant && src.occupant.client)
+	if (src.occupant && src.occupant.client)
 		src.occupant.client.view = world.view
 		src.zoom = 0
-	else if(src.remote_controlled && src.remote_controlled.client)
+	else if (src.remote_controlled && src.remote_controlled.client)
 		src.remote_controlled.client.view = world.view
 		src.zoom = 0
 	..()

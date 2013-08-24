@@ -36,7 +36,7 @@
 	var/newblob = 1
 	for(var/obj/blob in locate(src.x, src.y, targetZ()))
 		newblob = 0
-	if(newblob)
+	if (newblob)
 		new /obj/blob(locate(src.x, src.y, targetZ()))
 
 //Stairs.  var/dir on all four component objects should be the dir you'd walk from top to bottom
@@ -55,17 +55,17 @@
 	density = 1
 
 /obj/multiz/stairs/active/Bumped(var/atom/movable/M)
-	if(istype(src, /obj/multiz/stairs/active/bottom) && !locate(/obj/multiz/stairs/enter) in M.loc)
+	if (istype(src, /obj/multiz/stairs/active/bottom) && !locate(/obj/multiz/stairs/enter) in M.loc)
 		return //If on bottom, only let them go up stairs if they've moved to the entry tile first.
 	//If it's the top, they can fall down just fine.
-	if(ismob(M) && M:client)
+	if (ismob(M) && M:client)
 		M:client.moving = 1
 	M.Move(locate(src.x, src.y, targetZ()))
 	if (ismob(M) && M:client)
 		M:client.moving = 0
 
 /obj/multiz/stairs/active/Click()
-	if(!istype(usr,/mob/dead/observer))
+	if (!istype(usr,/mob/dead/observer))
 		return ..()
 	usr.client.moving = 1
 	usr.Move(locate(src.x, src.y, targetZ()))
@@ -77,7 +77,7 @@
 
 /obj/multiz/ladder/MouseDrop_T(var/atom/movable/C, mob/user) //When the user drags an item onto it...
 
-	if(user.stat)
+	if (user.stat)
 		return
 
 	if (!istype(C)|| C.anchored || get_dist(user, src) > 1 || get_dist(src,C) > 1 )
@@ -88,12 +88,12 @@
 
 // called to move the item up the ladder.
 /obj/multiz/ladder/proc/load(var/atom/movable/C)
-	if(get_dist(C, src) > 1)
+	if (get_dist(C, src) > 1)
 		return
 
 	// if a create, close before loading
 	var/obj/crate/crate = C
-	if(istype(crate))
+	if (istype(crate))
 		crate.close()
 
 	C.Move(locate(src.x, src.y, targetZ()))

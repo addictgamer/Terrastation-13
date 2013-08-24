@@ -170,31 +170,31 @@
 
 /obj/computerframe/attackby(obj/item/P as obj, mob/user as mob)
 	switch(state)
-		if(0)
-			if(istype(P, /obj/item/weapon/wrench))
+		if (0)
+			if (istype(P, /obj/item/weapon/wrench))
 				playsound(src.loc, 'Ratchet.ogg', 50, 1)
-				if(do_after(user, 20))
+				if (do_after(user, 20))
 					user << "\blue You wrench the frame into place."
 					src.anchored = 1
 					src.state = 1
-			if(istype(P, /obj/item/weapon/weldingtool))
+			if (istype(P, /obj/item/weapon/weldingtool))
 				P:welding = 2
 				playsound(src.loc, 'Welder.ogg', 50, 1)
-				if(do_after(user, 20))
+				if (do_after(user, 20))
 					user << "\blue You deconstruct the frame."
 					new /obj/item/stack/sheet/metal( src.loc, 5 )
 					del(src)
 				P:welding = 1
-		if(1)
-			if(istype(P, /obj/item/weapon/wrench))
+		if (1)
+			if (istype(P, /obj/item/weapon/wrench))
 				playsound(src.loc, 'Ratchet.ogg', 50, 1)
-				if(do_after(user, 20))
+				if (do_after(user, 20))
 					user << "\blue You unfasten the frame."
 					src.anchored = 0
 					src.state = 0
-			if(istype(P, /obj/item/weapon/circuitboard) && !circuit)
+			if (istype(P, /obj/item/weapon/circuitboard) && !circuit)
 				var/obj/item/weapon/circuitboard/B = P
-				if(B.board_type == "computer")
+				if (B.board_type == "computer")
 					playsound(src.loc, 'Deconstruct.ogg', 50, 1)
 					user << "\blue You place the circuit board inside the frame."
 					src.icon_state = "1"
@@ -203,36 +203,36 @@
 					P.loc = src
 				else
 					user << "\red This frame does not accept circuit boards of this type!"
-			if(istype(P, /obj/item/weapon/screwdriver) && circuit)
+			if (istype(P, /obj/item/weapon/screwdriver) && circuit)
 				playsound(src.loc, 'Screwdriver.ogg', 50, 1)
 				user << "\blue You screw the circuit board into place."
 				src.state = 2
 				src.icon_state = "2"
-			if(istype(P, /obj/item/weapon/crowbar) && circuit)
+			if (istype(P, /obj/item/weapon/crowbar) && circuit)
 				playsound(src.loc, 'Crowbar.ogg', 50, 1)
 				user << "\blue You remove the circuit board."
 				src.state = 1
 				src.icon_state = "0"
 				circuit.loc = src.loc
 				src.circuit = null
-		if(2)
-			if(istype(P, /obj/item/weapon/screwdriver) && circuit)
+		if (2)
+			if (istype(P, /obj/item/weapon/screwdriver) && circuit)
 				playsound(src.loc, 'Screwdriver.ogg', 50, 1)
 				user << "\blue You unfasten the circuit board."
 				src.state = 1
 				src.icon_state = "1"
-			if(istype(P, /obj/item/weapon/cable_coil))
-				if(P:amount >= 5)
+			if (istype(P, /obj/item/weapon/cable_coil))
+				if (P:amount >= 5)
 					playsound(src.loc, 'Deconstruct.ogg', 50, 1)
-					if(do_after(user, 20))
-						if(P)
+					if (do_after(user, 20))
+						if (P)
 							P:amount -= 5
-							if(!P:amount) del(P)
+							if (!P:amount) del(P)
 							user << "\blue You add cables to the frame."
 							src.state = 3
 							src.icon_state = "3"
-		if(3)
-			if(istype(P, /obj/item/weapon/wirecutters))
+		if (3)
+			if (istype(P, /obj/item/weapon/wirecutters))
 				playsound(src.loc, 'wirecutter.ogg', 50, 1)
 				user << "\blue You remove the cables."
 				src.state = 2
@@ -240,28 +240,28 @@
 				var/obj/item/weapon/cable_coil/A = new /obj/item/weapon/cable_coil( src.loc )
 				A.amount = 5
 
-			if(istype(P, /obj/item/stack/sheet/glass))
-				if(P:amount >= 2)
+			if (istype(P, /obj/item/stack/sheet/glass))
+				if (P:amount >= 2)
 					playsound(src.loc, 'Deconstruct.ogg', 50, 1)
-					if(do_after(user, 20))
-						if(P)
+					if (do_after(user, 20))
+						if (P)
 							P:use(2)
 							user << "\blue You put in the glass panel."
 							src.state = 4
 							src.icon_state = "4"
-		if(4)
-			if(istype(P, /obj/item/weapon/crowbar))
+		if (4)
+			if (istype(P, /obj/item/weapon/crowbar))
 				playsound(src.loc, 'Crowbar.ogg', 50, 1)
 				user << "\blue You remove the glass panel."
 				src.state = 3
 				src.icon_state = "3"
 				new /obj/item/stack/sheet/glass( src.loc, 2 )
-			if(istype(P, /obj/item/weapon/screwdriver))
+			if (istype(P, /obj/item/weapon/screwdriver))
 				playsound(src.loc, 'Screwdriver.ogg', 50, 1)
 				user << "\blue You connect the monitor."
 				var/B = new src.circuit.build_path ( src.loc )
-				if(circuit.powernet) B:powernet = circuit.powernet
-				if(circuit.id) B:id = circuit.id
-				if(circuit.records) B:records = circuit.records
-				if(circuit.frequency) B:frequency = circuit.frequency
+				if (circuit.powernet) B:powernet = circuit.powernet
+				if (circuit.id) B:id = circuit.id
+				if (circuit.records) B:records = circuit.records
+				if (circuit.frequency) B:frequency = circuit.frequency
 				del(src)

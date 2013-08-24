@@ -10,7 +10,7 @@
 	return src.attack_hand(user)
 
 /obj/machinery/pipedispenser/attack_hand(user as mob)
-	if(..())
+	if (..())
 		return
 	var/dat = {"
 <b>Regular pipes:</b><BR>
@@ -39,19 +39,19 @@
 	return
 
 /obj/machinery/pipedispenser/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
-	if(unwrenched)
+	if (unwrenched)
 		usr << browse(null, "window=pipedispenser")
 		return
 	usr.machine = src
 	src.add_fingerprint(usr)
-	if(href_list["make"])
+	if (href_list["make"])
 		var/p_type = text2num(href_list["make"])
 		var/p_dir = text2num(href_list["dir"])
 		var/obj/item/pipe/P = new (/*usr.loc*/ src.loc, pipe_type=p_type, dir=p_dir)
 		P.update()
-	if(href_list["makemeter"])
+	if (href_list["makemeter"])
 		new /obj/item/pipe_meter(/*usr.loc*/ src.loc)
 
 /*	for(var/mob/M in viewers(1, src))
@@ -103,7 +103,7 @@
 
 
 /obj/machinery/pipedispenser/disposal/attack_hand(user as mob)
-	if(..())
+	if (..())
 		return
 
 	var/dat = {"<b>Disposal Pipes</b><br><br>
@@ -121,23 +121,23 @@
 
 
 /obj/machinery/pipedispenser/disposal/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	usr.machine = src
 	src.add_fingerprint(usr)
-	if(href_list["dmake"])
+	if (href_list["dmake"])
 		var/p_type = text2num(href_list["dmake"])
 		var/obj/disposalconstruct/C = new (src.loc)
 		switch(p_type)
-			if(0)
+			if (0)
 				C.ptype = 0
-			if(1)
+			if (1)
 				C.ptype = 1
-			if(2)
+			if (2)
 				C.ptype = 2
-			if(3)
+			if (3)
 				C.ptype = 4
-			if(4)
+			if (4)
 				C.ptype = 5
 
 		C.update()

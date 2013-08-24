@@ -48,7 +48,7 @@
 	examine()
 		set src in view()
 		..()
-		if(!alive)
+		if (!alive)
 			usr << text("\red <B>the thing isn't moving</B>")
 		else if (src.health > 15)
 			usr << text("\red <B>A sanity-destroying otherthing.</B>")
@@ -62,15 +62,15 @@
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
 		switch(W.damtype)
-			if("fire")
+			if ("fire")
 				src.health -= W.force * 2
-			if("brute")
+			if ("brute")
 				src.health -= W.force * 1
 			else
 		if (src.health <= 0)
 			src.death()
 		else if (W.force)
-			if(ishuman(user) || ismonkey(user))
+			if (ishuman(user) || ismonkey(user))
 				src.target = user
 				src.state = 1
 		..()
@@ -81,9 +81,9 @@
 
 	ex_act(severity)
 		switch(severity)
-			if(1.0)
+			if (1.0)
 				src.death()
-			if(2.0)
+			if (2.0)
 				src.health -= 15
 				healthcheck()
 		return
@@ -93,28 +93,28 @@
 		return
 
 	blob_act()
-		if(prob(50))
+		if (prob(50))
 			src.death()
 		return
 
 	Bumped(AM as mob|obj)
-		if(ismob(AM) && (ishuman(AM) || ismonkey(AM)) )
+		if (ismob(AM) && (ishuman(AM) || ismonkey(AM)) )
 			src.target = AM
 			set_attack()
-		else if(ismob(AM))
+		else if (ismob(AM))
 			spawn(0)
 				var/turf/T = get_turf(src)
 				AM:loc = T
 
 	Bump(atom/A)
-		if(ismob(A) && (ishuman(A) || ismonkey(A)))
+		if (ismob(A) && (ishuman(A) || ismonkey(A)))
 			src.target = A
 			set_attack()
-		else if(ismob(A))
+		else if (ismob(A))
 			src.loc = A:loc
 
 	temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
-		if(exposed_temperature > 200)
+		if (exposed_temperature > 200)
 			health -= 5
 			healthcheck()
 
@@ -122,7 +122,7 @@
 
 	proc/set_attack()
 		state = 1
-		if(path_idle.len) path_idle = new/list()
+		if (path_idle.len) path_idle = new/list()
 		trg_idle = null
 
 	proc/set_idle()
@@ -154,25 +154,25 @@
 			for (var/mob/living/carbon/C in range(viewrange-2,src.loc))
 				if (C.stat == 2 || !can_see(src,C,viewrange))
 					continue
-				if(C:stunned || C:paralysis || C:weakened)
+				if (C:stunned || C:paralysis || C:weakened)
 					target = C
 					break
-				if(C:health < last_health)
+				if (C:health < last_health)
 					last_health = C:health
 					target = C
 
-			if(target)
+			if (target)
 				set_attack()
-			else if(state != 2)
+			else if (state != 2)
 				set_idle()
 				idle()
 
-		else if(target)
+		else if (target)
 			var/turf/distance = get_dist(src, target)
 			set_attack()
 
-			if(can_see(src,target,viewrange))
-				if(distance <= 1)
+			if (can_see(src,target,viewrange))
+				if (distance <= 1)
 					for(var/mob/O in viewers(world.view,src))
 						O.show_message("\red <B>[src.target] has been attacked by [src]!</B>", 1, "\red You hear the sounds of combat", 2)
 					target:bruteloss += rand(1,10)
@@ -186,20 +186,20 @@
 					return
 
 			else
-				if( !path_target.len )
+				if ( !path_target.len )
 
 					path_attack(target)
-					if(!path_target.len)
+					if (!path_target.len)
 						set_null()
 						spawn(cycle_pause) src.process()
 						return
 				else
 					var/turf/next = path_target[1]
 
-					if(next in range(1,src))
+					if (next in range(1,src))
 						path_attack(target)
 
-					if(!path_target.len)
+					if (!path_target.len)
 						src.frustration += 5
 					else
 						next = path_target[1]
@@ -209,9 +209,9 @@
 
 			if (get_dist(src, src.target) >= distance) src.frustration++
 			else src.frustration--
-			if(frustration >= 35) set_null()
+			if (frustration >= 35) set_null()
 
-		if(quick_move)
+		if (quick_move)
 			spawn(cycle_pause/2)
 				src.process()
 		else
@@ -222,11 +222,11 @@
 		set background = 1
 		var/quick_move = 0
 
-		if(state != 2 || !alive || target) return
+		if (state != 2 || !alive || target) return
 
-		if(!path_idle.len)
+		if (!path_idle.len)
 			path_idle(trg_idle)
-			if(!path_idle.len)
+			if (!path_idle.len)
 				trg_idle = null
 				set_idle()
 				spawn(cycle_pause) src.idle()
@@ -236,26 +236,26 @@
 
 		else
 
-			if(can_see(src,trg_idle,viewrange))
+			if (can_see(src,trg_idle,viewrange))
 				switch(get_dist(src, trg_idle))
-					if(1)
-						if(istype(trg_idle,/obj/alien/weeds))
+					if (1)
+						if (istype(trg_idle,/obj/alien/weeds))
 							step_towards(src,get_step_towards2(src , trg_idle))
-					if(2 to INFINITY)
+					if (2 to INFINITY)
 						step_towards(src,get_step_towards2(src , trg_idle))
-						if(path_idle.len) path_idle = new/list()
+						if (path_idle.len) path_idle = new/list()
 					/*
-					if(viewrange+1 to INFINITY)
+					if (viewrange+1 to INFINITY)
 						step_towards(src,get_step_towards2(src , trg_idle))
-						if(path_idle.len) path_idle = new/list()
+						if (path_idle.len) path_idle = new/list()
 						quick_move = 1
 					*/
 			else
 				var/turf/next = path_idle[1]
-				if(!next in range(1,src))
+				if (!next in range(1,src))
 					path_idle(trg_idle)
 
-				if(!path_idle.len)
+				if (!path_idle.len)
 					spawn(cycle_pause) src.idle()
 					return
 				else
@@ -264,7 +264,7 @@
 					step_towards(src,next)
 					quick_move = 1
 
-		if(quick_move)
+		if (quick_move)
 			spawn(cycle_pause/2)
 				idle()
 		else
@@ -282,7 +282,7 @@
 
 
 	proc/death()
-		if(!alive) return
+		if (!alive) return
 		src.alive = 0
 		density = 0
 		icon_state = "dead"

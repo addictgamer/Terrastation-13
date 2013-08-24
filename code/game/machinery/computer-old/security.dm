@@ -6,7 +6,7 @@
 
 //Someone needs to break down the dat += into chunks instead of long ass lines.
 /obj/machinery/computer/secure_data/attack_hand(mob/user as mob)
-	if(..())
+	if (..())
 		return
 	var/dat
 	if (temp)
@@ -15,16 +15,16 @@
 		dat = text("Confirm Identity: <A href='?src=\ref[];choice=Confirm Identity'>[]</A><HR>", src, (scan ? text("[]", scan.name) : "----------"))
 		if (authenticated)
 			switch(screen)
-				if(1.0)
+				if (1.0)
 					dat += text("<A href='?src=\ref[];choice=Search Records'>Search Records</A><BR>\n<A href='?src=\ref[];choice=List Records'>List Records</A><BR>\n<A href='?src=\ref[];choice=Search Fingerprints'>Search Fingerprints</A><BR>\n<A href='?src=\ref[];choice=New Record (General)'>New General Record</A><BR>\n<BR>\n<A href='?src=\ref[];choice=Record Maintenance'>Record Maintenance</A><BR>\n<A href='?src=\ref[];choice=Log Out'>{Log Out}</A><BR>\n", src, src, src, src, src, src)
-				if(2.0)
+				if (2.0)
 					dat += "<B>Record List</B>:<HR>"
 					for(var/datum/data/record/R in data_core.general)
 						dat += text("<A href='?src=\ref[];choice=Browse Record;d_rec=\ref[]'>[]: []<BR>", src, R, R.fields["id"], R.fields["name"])
 					dat += text("<HR><A href='?src=\ref[];choice=Return'>Back</A>", src)
-				if(3.0)
+				if (3.0)
 					dat += text("<B>Records Maintenance</B><HR>\n<A href='?src=\ref[];choice=Delete All Records'>Delete All Records</A><BR>\n<BR>\n<A href='?src=\ref[];choice=Return'>Back</A>", src, src)
-				if(4.0)
+				if (4.0)
 					dat += "<CENTER><B>Security Record</B></CENTER><BR>"
 					if ((istype(active1, /datum/data/record) && data_core.general.Find(active1)))
 						dat += text("Name: <A href='?src=\ref[];choice=Edit Field;field=name'>[]</A> ID: <A href='?src=\ref[];choice=Edit Field;field=id'>[]</A><BR>\nSex: <A href='?src=\ref[];choice=Edit Field;field=sex'>[]</A><BR>\nAge: <A href='?src=\ref[];choice=Edit Field;field=age'>[]</A><BR>\nRank: <A href='?src=\ref[];choice=Edit Field;field=rank'>[]</A><BR>\nFingerprint: <A href='?src=\ref[];choice=Edit Field;field=fingerprint'>[]</A><BR>\nPhysical Status: []<BR>\nMental Status: []<BR>", src, active1.fields["name"], src, active1.fields["id"], src, active1.fields["sex"], src, active1.fields["age"], src, active1.fields["rank"], src, active1.fields["fingerprint"], active1.fields["p_stat"], active1.fields["m_stat"])
@@ -53,7 +53,7 @@
 I can't be bothered to look more of the actual code outside of switch but that probably needs revising too.
 What a mess.*/
 /obj/machinery/computer/secure_data/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	if (!( data_core.general.Find(active1) ))
 		active1 = null
@@ -63,7 +63,7 @@ What a mess.*/
 		usr.machine = src
 		switch(href_list["choice"])
 //BASIC FUNCTIONS
-			if("Clear Screen")
+			if ("Clear Screen")
 				temp = null
 
 			if ("Return")
@@ -71,7 +71,7 @@ What a mess.*/
 				active1 = null
 				active2 = null
 
-			if("Confirm Identity")
+			if ("Confirm Identity")
 				if (scan)
 					scan.loc = loc
 					scan = null
@@ -82,13 +82,13 @@ What a mess.*/
 						I.loc = src
 						scan = I
 
-			if("Log Out")
+			if ("Log Out")
 				authenticated = null
 				screen = null
 				active1 = null
 				active2 = null
 
-			if("Log In")
+			if ("Log In")
 				if (istype(usr, /mob/living/silicon))
 					active1 = null
 					active2 = null
@@ -98,17 +98,17 @@ What a mess.*/
 				else if (istype(scan, /obj/item/weapon/card/id))
 					active1 = null
 					active2 = null
-					if(check_access(scan))
+					if (check_access(scan))
 						authenticated = scan.registered
 						rank = scan.assignment
 						screen = 1
 //RECORD FUNCTIONS
-			if("List Records")
+			if ("List Records")
 				screen = 2
 				active1 = null
 				active2 = null
 
-			if("Search Records")
+			if ("Search Records")
 				var/t1 = input("Search String: (Name or ID)", "Secure. records", null, null)  as text
 				if ((!( t1 ) || usr.stat || !( authenticated ) || usr.restrained() || !in_range(src, usr)))
 					return
@@ -126,7 +126,7 @@ What a mess.*/
 							active2 = E
 					screen = 4
 
-			if("Record Maintenance")
+			if ("Record Maintenance")
 				screen = 3
 				active1 = null
 				active2 = null
@@ -257,67 +257,67 @@ What a mess.*/
 				var/a1 = active1
 				var/a2 = active2
 				switch(href_list["field"])
-					if("name")
+					if ("name")
 						if (istype(active1, /datum/data/record))
 							var/t1 = input("Please input name:", "Secure. records", active1.fields["name"], null)  as text
 							if ((!( t1 ) || !( authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon)))) || active1 != a1)
 								return
 							active1.fields["name"] = t1
-					if("id")
+					if ("id")
 						if (istype(active2, /datum/data/record))
 							var/t1 = input("Please input id:", "Secure. records", active1.fields["id"], null)  as text
 							if ((!( t1 ) || !( authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || active1 != a1))
 								return
 							active1.fields["id"] = t1
-					if("fingerprint")
+					if ("fingerprint")
 						if (istype(active1, /datum/data/record))
 							var/t1 = input("Please input fingerprint hash:", "Secure. records", active1.fields["fingerprint"], null)  as text
 							if ((!( t1 ) || !( authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || active1 != a1))
 								return
 							active1.fields["fingerprint"] = t1
-					if("sex")
+					if ("sex")
 						if (istype(active1, /datum/data/record))
 							if (active1.fields["sex"] == "Male")
 								active1.fields["sex"] = "Female"
 							else
 								active1.fields["sex"] = "Male"
-					if("age")
+					if ("age")
 						if (istype(active1, /datum/data/record))
 							var/t1 = input("Please input age:", "Secure. records", active1.fields["age"], null)  as text
 							if ((!( t1 ) || !( authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || active1 != a1))
 								return
 							active1.fields["age"] = t1
-					if("mi_crim")
+					if ("mi_crim")
 						if (istype(active2, /datum/data/record))
 							var/t1 = input("Please input minor disabilities list:", "Secure. records", active2.fields["mi_crim"], null)  as text
 							if ((!( t1 ) || !( authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || active2 != a2))
 								return
 							active2.fields["mi_crim"] = t1
-					if("mi_crim_d")
+					if ("mi_crim_d")
 						if (istype(active2, /datum/data/record))
 							var/t1 = input("Please summarize minor dis.:", "Secure. records", active2.fields["mi_crim_d"], null)  as message
 							if ((!( t1 ) || !( authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || active2 != a2))
 								return
 							active2.fields["mi_crim_d"] = t1
-					if("ma_crim")
+					if ("ma_crim")
 						if (istype(active2, /datum/data/record))
 							var/t1 = input("Please input major diabilities list:", "Secure. records", active2.fields["ma_crim"], null)  as text
 							if ((!( t1 ) || !( authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || active2 != a2))
 								return
 							active2.fields["ma_crim"] = t1
-					if("ma_crim_d")
+					if ("ma_crim_d")
 						if (istype(active2, /datum/data/record))
 							var/t1 = input("Please summarize major dis.:", "Secure. records", active2.fields["ma_crim_d"], null)  as message
 							if ((!( t1 ) || !( authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || active2 != a2))
 								return
 							active2.fields["ma_crim_d"] = t1
-					if("notes")
+					if ("notes")
 						if (istype(active2, /datum/data/record))
 							var/t1 = input("Please summarize notes:", "Secure. records", active2.fields["notes"], null)  as message
 							if ((!( t1 ) || !( authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || active2 != a2))
 								return
 							active2.fields["notes"] = t1
-					if("criminal")
+					if ("criminal")
 						if (istype(active2, /datum/data/record))
 							temp = "<h5>Criminal Status:</h5>"
 							temp += "<ul>"
@@ -327,7 +327,7 @@ What a mess.*/
 							temp += "<li><a href='?src=\ref[src];choice=Change Criminal Status;criminal2=parolled'>Parolled</a></li>"
 							temp += "<li><a href='?src=\ref[src];choice=Change Criminal Status;criminal2=released'>Released</a></li>"
 							temp += "</ul>"
-					if("rank")
+					if ("rank")
 						var/list/L = list( "Head of Personnel", "Captain", "AI" )
 						//This was so silly before the change. Now it actually works without beating your head against the keyboard. /N
 						if ((istype(active1, /datum/data/record) && L.Find(rank)))
@@ -349,15 +349,15 @@ What a mess.*/
 					if ("Change Criminal Status")
 						if (active2)
 							switch(href_list["criminal2"])
-								if("none")
+								if ("none")
 									active2.fields["criminal"] = "None"
-								if("arrest")
+								if ("arrest")
 									active2.fields["criminal"] = "*Arrest*"
-								if("incarcerated")
+								if ("incarcerated")
 									active2.fields["criminal"] = "Incarcerated"
-								if("parolled")
+								if ("parolled")
 									active2.fields["criminal"] = "Parolled"
-								if("released")
+								if ("released")
 									active2.fields["criminal"] = "Released"
 
 					if ("Delete Record (Security) Execute")

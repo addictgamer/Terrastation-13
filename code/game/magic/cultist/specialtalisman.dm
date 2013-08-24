@@ -24,23 +24,23 @@
 
 	if (href_list["rune"])
 		switch(href_list["rune"])
-			if("newtome")
+			if ("newtome")
 				var/obj/item/weapon/paper/talisman/T = new /obj/item/weapon/paper/talisman(get_turf(usr))
 				T.imbue = "newtome"
-			if("teleport")
+			if ("teleport")
 				var/obj/item/weapon/paper/talisman/T = new /obj/item/weapon/paper/talisman(get_turf(usr))
 				T.imbue = "[pick("ire", "ego", "nahlizet", "certum", "veri", "jatkaa", "balaq", "mgar", "karazet", "geeri", "orkan", "allaq")]"
 				T.info = "[T.imbue]"
-			if("emp")
+			if ("emp")
 				var/obj/item/weapon/paper/talisman/T = new /obj/item/weapon/paper/talisman(get_turf(usr))
 				T.imbue = "emp"
-			if("conceal")
+			if ("conceal")
 				var/obj/item/weapon/paper/talisman/T = new /obj/item/weapon/paper/talisman(get_turf(usr))
 				T.imbue = "conceal"
-			if("communicate")
+			if ("communicate")
 				var/obj/item/weapon/paper/talisman/T = new /obj/item/weapon/paper/talisman(get_turf(usr))
 				T.imbue = "communicate"
-			if("runestun")
+			if ("runestun")
 				var/obj/item/weapon/paper/talisman/T = new /obj/item/weapon/paper/talisman(get_turf(usr))
 				T.imbue = "runestun"
 		src.uses--

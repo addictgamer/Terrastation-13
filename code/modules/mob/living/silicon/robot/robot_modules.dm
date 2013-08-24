@@ -9,10 +9,10 @@
 	var/obj/item/emag
 
 	emp_act(severity)
-		if(modules)
+		if (modules)
 			for(var/obj/O in modules)
 				O.emp_act(severity)
-		if(emag)
+		if (emag)
 			emag.emp_act(severity)
 		..()
 

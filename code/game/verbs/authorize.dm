@@ -14,7 +14,7 @@
 		var/result = world.Export("http://byond.lljk.net/status/?key=[src.ckey]")
 		var/success = 0
 
-		if(lowertext(result["STATUS"]) == "200 ok")
+		if (lowertext(result["STATUS"]) == "200 ok")
 			var/content = file2text(result["CONTENT"])
 
 			var/pos = findtext(content, " ")
@@ -45,7 +45,7 @@
 /* The old goon auth/beta code is here
 /client/proc/beta_tester_auth()
 	set name = "Tester?"
-	/*if(istester(src))
+	/*if (istester(src))
 		src << "\blue <B>Key accepted as beta tester</B>"
 	else
 		src << "\red<B>Key not accepted as beta tester. You may only observe the rounds. */
@@ -56,7 +56,7 @@
 	if (src.authenticating)
 		return
 
-	if(isgoon(src))
+	if (isgoon(src))
 		src.goon = goon_keylist[src.ckey]
 		src.verbs -= /client/proc/goonauth
 		src << "Key authorized: Hello [goon_keylist[src.ckey]]!"
@@ -64,7 +64,7 @@
 		return
 
 	if (config.enable_authentication)	//so that this verb isn't used when its goon only
-		if(src.authenticated && src.authenticated != 1)
+		if (src.authenticated && src.authenticated != 1)
 			src.goon = src.authenticated
 			src.verbs -= /client/proc/goonauth
 			src << "Key authorized: Hello [src.goon]!"
@@ -79,7 +79,7 @@
 		var/result = world.Export("http://byond.lljk.net/status/?key=[src.ckey]")
 		var/success = 0
 
-		if(lowertext(result["STATUS"]) == "200 ok")
+		if (lowertext(result["STATUS"]) == "200 ok")
 			var/content = file2text(result["CONTENT"])
 
 			var/pos = findtext(content, " ")

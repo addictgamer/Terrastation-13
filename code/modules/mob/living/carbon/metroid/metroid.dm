@@ -2,7 +2,7 @@
 	var/datum/reagents/R = new/datum/reagents(100)
 	reagents = R
 	R.my_atom = src
-	if(name == "baby metroid")
+	if (name == "baby metroid")
 		name = text("baby metroid ([rand(1, 1000)])")
 	else
 		name = text("adult metroid ([rand(1,1000)])")
@@ -24,19 +24,19 @@
 	var/tally = 0
 
 	var/health_deficiency = (100 - health)
-	if(health_deficiency >= 45) tally += (health_deficiency / 25)
+	if (health_deficiency >= 45) tally += (health_deficiency / 25)
 
 	if (bodytemperature < 183.222)
 		tally += (283.222 - bodytemperature) / 10 * 1.75
 
-	if(reagents)
-		if(reagents.has_reagent("hyperzine")) // hyperzine slows Metroids down
+	if (reagents)
+		if (reagents.has_reagent("hyperzine")) // hyperzine slows Metroids down
 			tally *= 2 // moves twice as slow
 
-		if(reagents.has_reagent("frostoil")) // frostoil also makes them move VEEERRYYYYY slow
+		if (reagents.has_reagent("frostoil")) // frostoil also makes them move VEEERRYYYYY slow
 			tally *= 5
 
-	if(health <= 0) // if damaged, the metroid moves twice as slow
+	if (health <= 0) // if damaged, the metroid moves twice as slow
 		tally *= 2
 
 	if (bodytemperature >= 330.23) // 135 F
@@ -51,46 +51,46 @@
 			return
 		now_pushing = 1
 
-		if(isobj(AM))
-			if(!client && powerlevel > 0)
+		if (isobj(AM))
+			if (!client && powerlevel > 0)
 				var/probab = 10
 				switch(powerlevel)
-					if(1 to 2) probab = 20
-					if(3 to 4) probab = 30
-					if(5 to 6) probab = 40
-					if(7 to 8) probab = 60
-					if(9) 	   probab = 70
-					if(10) 	   probab = 95
-				if(prob(probab))
+					if (1 to 2) probab = 20
+					if (3 to 4) probab = 30
+					if (5 to 6) probab = 40
+					if (7 to 8) probab = 60
+					if (9) 	   probab = 70
+					if (10) 	   probab = 95
+				if (prob(probab))
 
 
-					if(istype(AM, /obj/window) || istype(AM, /obj/grille))
-						if(istype(src, /mob/living/carbon/metroid/adult))
-							if(nutrition <= 600 && !Atkcool)
+					if (istype(AM, /obj/window) || istype(AM, /obj/grille))
+						if (istype(src, /mob/living/carbon/metroid/adult))
+							if (nutrition <= 600 && !Atkcool)
 								AM.attack_metroid(src)
 								spawn()
 									Atkcool = 1
 									sleep(15)
 									Atkcool = 0
 						else
-							if(nutrition <= 500 && !Atkcool)
-								if(prob(5))
+							if (nutrition <= 500 && !Atkcool)
+								if (prob(5))
 									AM.attack_metroid(src)
 									spawn()
 										Atkcool = 1
 										sleep(15)
 										Atkcool = 0
 
-		if(ismob(AM))
+		if (ismob(AM))
 			var/mob/tmob = AM
 
-			if(istype(src, /mob/living/carbon/metroid/adult))
-				if(istype(tmob, /mob/living/carbon/human))
-					if(prob(90))
+			if (istype(src, /mob/living/carbon/metroid/adult))
+				if (istype(tmob, /mob/living/carbon/human))
+					if (prob(90))
 						now_pushing = 0
 						return
 			else
-				if(istype(tmob, /mob/living/carbon/human))
+				if (istype(tmob, /mob/living/carbon/human))
 					now_pushing = 0
 					return
 
@@ -103,7 +103,7 @@
 			if (!( AM.anchored ))
 				var/t = get_dir(src, AM)
 				if (istype(AM, /obj/window))
-					if(AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
+					if (AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
 						for(var/obj/window/win in get_step(AM,t))
 							now_pushing = 0
 							return
@@ -117,27 +117,27 @@
 	..()
 
 	statpanel("Status")
-	if(istype(src, /mob/living/carbon/metroid/adult))
+	if (istype(src, /mob/living/carbon/metroid/adult))
 		stat(null, "Health: [round((health / 200) * 100)]%")
 	else
 		stat(null, "Health: [round((health / 150) * 100)]%")
 
 
 	if (client.statpanel == "Status")
-		if(istype(src,/mob/living/carbon/metroid/adult))
+		if (istype(src,/mob/living/carbon/metroid/adult))
 			stat(null, "Nutrition: [nutrition]/1200")
-			if(amount_grown >= 10)
+			if (amount_grown >= 10)
 				stat(null, "You can reproduce!")
 		else
 			stat(null, "Nutrition: [nutrition]/1000")
-			if(amount_grown >= 10)
+			if (amount_grown >= 10)
 				stat(null, "You can evolve!")
 
 		stat(null,"Power Level: [powerlevel]")
 
 
 /mob/living/carbon/metroid/bullet_act(var/obj/item/projectile/Proj)
-	if(Proj)
+	if (Proj)
 		if (locate(/obj/item/weapon/grab, src))
 			var/mob/safe = null
 			if (istype(l_hand, /obj/item/weapon/grab))
@@ -155,29 +155,29 @@
 	for(var/i = 1, i<= Proj.mobdamage.len, i++)
 
 		switch(i)
-			if(1)
+			if (1)
 				var/d = Proj.mobdamage[BRUTE]
-				if(!Proj.nodamage) bruteloss += d
+				if (!Proj.nodamage) bruteloss += d
 				updatehealth()
-			if(2)
+			if (2)
 				var/d = Proj.mobdamage[BURN]
-				if(!Proj.nodamage) fireloss += d
+				if (!Proj.nodamage) fireloss += d
 				updatehealth()
-			if(3)
+			if (3)
 				var/d = Proj.mobdamage[TOX]
-				if(!Proj.nodamage) toxloss += d
+				if (!Proj.nodamage) toxloss += d
 				updatehealth()
-			if(4)
+			if (4)
 				var/d = Proj.mobdamage[OXY]
-				if(!Proj.nodamage) oxyloss += d
+				if (!Proj.nodamage) oxyloss += d
 				updatehealth()
-			if(5)
+			if (5)
 				var/d = Proj.mobdamage[CLONE]
-				if(!Proj.nodamage) cloneloss += d
+				if (!Proj.nodamage) cloneloss += d
 				updatehealth()
 
 
-	if(Proj.flag == "taser" && prob(35))
+	if (Proj.flag == "taser" && prob(35))
 		// Metroids have a small chance of "absorbing" taser shots. Deal /w it
 		powerlevel++
 		src << "<i>I have absorbed the electrode projectile...</i>"
@@ -187,9 +187,9 @@
 	// Metroids aren't effected by extra status effects. DO NOT NERF THIS PLZ THNX - LOVE, DOOHL 3===========D ~~~~     HONK
 	//																											~~~~     H
 	//EMP is special and yes they are because emp
-	if(Proj.effects["emp"])
+	if (Proj.effects["emp"])
 		var/emppulse = Proj.effects["emp"]
-		if(prob(Proj.effectprob["emp"]))
+		if (prob(Proj.effectprob["emp"]))
 			empulse(src, emppulse, emppulse)
 		else
 			empulse(src, 0, emppulse)
@@ -221,7 +221,7 @@
 			f_loss += 60
 
 
-		if(3.0)
+		if (3.0)
 			b_loss += 30
 
 	bruteloss += b_loss
@@ -239,7 +239,7 @@
 	if (stat != 2)
 		damage = rand(10,30)
 
-	if(shielded)
+	if (shielded)
 		damage /= 4
 
 		//paralysis += 1
@@ -283,16 +283,16 @@
 		. = ..()
 
 		if (pulling && pulling.loc)
-			if(!( isturf(pulling.loc) ))
+			if (!( isturf(pulling.loc) ))
 				pulling = null
 				return
 			else
-				if(Debug)
+				if (Debug)
 					diary <<"pulling disappeared? at __LINE__ in mob.dm - pulling = [pulling]"
 					diary <<"REPORT THIS"
 
 		/////
-		if(pulling && pulling.anchored)
+		if (pulling && pulling.anchored)
 			pulling = null
 			return
 
@@ -375,7 +375,7 @@
 		M << "You cannot attack people before the game has started."
 		return
 
-	if(Victim) return // can't attack while eating!
+	if (Victim) return // can't attack while eating!
 
 	if (health > -100)
 
@@ -386,7 +386,7 @@
 		var/damage = rand(1, 3)
 		attacked += 5
 
-		if(istype(src, /mob/living/carbon/metroid/adult))
+		if (istype(src, /mob/living/carbon/metroid/adult))
 			damage = rand(1, 6)
 		else
 			damage = rand(1, 3)
@@ -399,7 +399,7 @@
 	return
 
 /mob/living/carbon/metroid/attack_paw(mob/living/carbon/monkey/M as mob)
-	if(!(istype(M, /mob/living/carbon/monkey)))	return//Fix for aliens receiving double messages when attacking other aliens.
+	if (!(istype(M, /mob/living/carbon/monkey)))	return//Fix for aliens receiving double messages when attacking other aliens.
 
 	if (!ticker)
 		M << "You cannot attack people before the game has started."
@@ -439,9 +439,9 @@
 
 	..()
 
-	if(Victim)
-		if(Victim == M)
-			if(prob(60))
+	if (Victim)
+		if (Victim == M)
+			if (prob(60))
 				for(var/mob/O in viewers(src, null))
 					if ((O.client && !( O.blinded )))
 						O.show_message("\red [M] attempts to wrestle \the [name] off!", 1)
@@ -453,13 +453,13 @@
 						O.show_message("\red [M] manages to wrestle \the [name] off!", 1)
 				playsound(loc, 'thudswoosh.ogg', 50, 1, -1)
 
-				if(prob(90) && !client)
+				if (prob(90) && !client)
 					Discipline++
 
 				spawn()
 					SStun = 1
 					sleep(rand(45,60))
-					if(src)
+					if (src)
 						SStun = 0
 
 				Victim = null
@@ -469,7 +469,7 @@
 			return
 
 		else
-			if(prob(30))
+			if (prob(30))
 				for(var/mob/O in viewers(src, null))
 					if ((O.client && !( O.blinded )))
 						O.show_message("\red [M] attempts to wrestle \the [name] off of [Victim]!", 1)
@@ -481,17 +481,17 @@
 						O.show_message("\red [M] manages to wrestle \the [name] off of [Victim]!", 1)
 				playsound(loc, 'thudswoosh.ogg', 50, 1, -1)
 
-				if(prob(80) && !client)
+				if (prob(80) && !client)
 					Discipline++
 
-					if(!istype(src, /mob/living/carbon/metroid/adult))
-						if(Discipline == 1)
+					if (!istype(src, /mob/living/carbon/metroid/adult))
+						if (Discipline == 1)
 							attacked = 0
 
 				spawn()
 					SStun = 1
 					sleep(rand(55,65))
-					if(src)
+					if (src)
 						SStun = 0
 
 				Victim = null
@@ -502,8 +502,8 @@
 
 
 
-	if(M.gloves && M.gloves.elecgen == 1)//Stungloves. Any contact will stun the alien.
-		if(M.gloves.uses > 0)
+	if (M.gloves && M.gloves.elecgen == 1)//Stungloves. Any contact will stun the alien.
+		if (M.gloves.uses > 0)
 			M.gloves.uses--
 			for(var/mob/O in viewers(src, null))
 				if ((O.client && !( O.blinded )))
@@ -542,10 +542,10 @@
 			if (prob(90))
 				if (M.mutations & HULK)
 					damage += 5
-					if(Victim)
+					if (Victim)
 						Victim = null
 						anchored = 0
-						if(prob(80) && !client)
+						if (prob(80) && !client)
 							Discipline++
 					spawn(0)
 
@@ -633,18 +633,18 @@
 			var/damage = 5
 			attacked += 10
 
-			if(prob(95))
+			if (prob(95))
 				for(var/mob/O in viewers(src, null))
 					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has tackled [name]!</B>", M), 1)
 
-				if(Victim)
+				if (Victim)
 					Victim = null
 					anchored = 0
-					if(prob(80) && !client)
+					if (prob(80) && !client)
 						Discipline++
-						if(!istype(src, /mob/living/carbon/metroid))
-							if(Discipline == 1)
+						if (!istype(src, /mob/living/carbon/metroid))
+							if (Discipline == 1)
 								attacked = 0
 
 				spawn()
@@ -691,12 +691,12 @@ mob/living/carbon/metroid/var/temperature_resistance = T0C+75
 /mob/living/carbon/metroid/updatehealth()
 	if (nodamage == 0)
 		// metroids can't suffocate unless they suicide. They are also not harmed by fire
-		if(istype(src, /mob/living/carbon/metroid/adult))
+		if (istype(src, /mob/living/carbon/metroid/adult))
 			health = 200 - (oxyloss + toxloss + fireloss + bruteloss + cloneloss)
 		else
 			health = 150 - (oxyloss + toxloss + fireloss + bruteloss + cloneloss)
 	else
-		if(istype(src, /mob/living/carbon/metroid/adult))
+		if (istype(src, /mob/living/carbon/metroid/adult))
 			health = 200
 		else
 			health = 150
@@ -711,67 +711,67 @@ mob/living/carbon/metroid/var/temperature_resistance = T0C+75
 		var/turf/Step_1
 		var/turf/Step_2
 		switch(direct)
-			if(5.0)
+			if (5.0)
 				Step_1 = get_step(src, NORTH)
 				Step_2 = get_step(src, EAST)
 
-			if(6.0)
+			if (6.0)
 				Step_1 = get_step(src, SOUTH)
 				Step_2 = get_step(src, EAST)
 
-			if(9.0)
+			if (9.0)
 				Step_1 = get_step(src, NORTH)
 				Step_2 = get_step(src, WEST)
 
-			if(10.0)
+			if (10.0)
 				Step_1 = get_step(src, SOUTH)
 				Step_2 = get_step(src, WEST)
 
 			else
-		if(Step_1 && Step_2)
+		if (Step_1 && Step_2)
 			var/check_1 = 0
 			var/check_2 = 0
-			if(step_to(D, Step_1))
+			if (step_to(D, Step_1))
 				check_1 = 1
 				for(var/obj/border_obstacle in Step_1)
-					if(border_obstacle.flags & ON_BORDER)
-						if(!border_obstacle.CheckExit(D, A))
+					if (border_obstacle.flags & ON_BORDER)
+						if (!border_obstacle.CheckExit(D, A))
 							check_1 = 0
 				for(var/obj/border_obstacle in get_turf(A))
-					if((border_obstacle.flags & ON_BORDER) && (src != border_obstacle))
-						if(!border_obstacle.CanPass(D, D.loc, 1, 0))
+					if ((border_obstacle.flags & ON_BORDER) && (src != border_obstacle))
+						if (!border_obstacle.CanPass(D, D.loc, 1, 0))
 							check_1 = 0
 
 			D.loc = src.loc
-			if(step_to(D, Step_2))
+			if (step_to(D, Step_2))
 				check_2 = 1
 
 				for(var/obj/border_obstacle in Step_2)
-					if(border_obstacle.flags & ON_BORDER)
-						if(!border_obstacle.CheckExit(D, A))
+					if (border_obstacle.flags & ON_BORDER)
+						if (!border_obstacle.CheckExit(D, A))
 							check_2 = 0
 				for(var/obj/border_obstacle in get_turf(A))
-					if((border_obstacle.flags & ON_BORDER) && (src != border_obstacle))
-						if(!border_obstacle.CanPass(D, D.loc, 1, 0))
+					if ((border_obstacle.flags & ON_BORDER) && (src != border_obstacle))
+						if (!border_obstacle.CanPass(D, D.loc, 1, 0))
 							check_2 = 0
-			if(check_1 || check_2)
+			if (check_1 || check_2)
 				ok = 1
 	else
-		if(loc == src.loc)
+		if (loc == src.loc)
 			ok = 1
 		else
 			ok = 1
 
 			//Now, check objects to block exit that are on the border
 			for(var/obj/border_obstacle in src.loc)
-				if(border_obstacle.flags & ON_BORDER)
-					if(!border_obstacle.CheckExit(D, A))
+				if (border_obstacle.flags & ON_BORDER)
+					if (!border_obstacle.CheckExit(D, A))
 						ok = 0
 
 			//Next, check objects to block entry that are on the border
 			for(var/obj/border_obstacle in get_turf(A))
-				if((border_obstacle.flags & ON_BORDER) && (A != border_obstacle))
-					if(!border_obstacle.CanPass(D, D.loc, 1, 0))
+				if ((border_obstacle.flags & ON_BORDER) && (A != border_obstacle))
+					if (!border_obstacle.CanPass(D, D.loc, 1, 0))
 						ok = 0
 
 	del(D)

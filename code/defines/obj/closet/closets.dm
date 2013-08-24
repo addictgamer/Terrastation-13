@@ -71,11 +71,11 @@
 		//..() //That's very useful, Erro
 
 		var/hasaxe = 0       //gonna come in handy later~
-		if(FIREAXE)
+		if (FIREAXE)
 			hasaxe = 1
 
 		if (isrobot(usr) || src.locked)
-			if(istype(O, /obj/item/device/multitool))
+			if (istype(O, /obj/item/device/multitool))
 				user << "\red Resetting circuitry..."
 				playsound(user, 'lockreset.ogg', 50, 1)
 				sleep(50) // Sleeping time~
@@ -83,17 +83,17 @@
 				user << "\blue You disable the locking modules."
 				update_icon()
 				return
-			if(istype(O, /obj/item/weapon))
+			if (istype(O, /obj/item/weapon))
 				var/obj/item/weapon/W = O
-				if(src.smashed)
+				if (src.smashed)
 					return
 				else
 					playsound(user, 'Glasshit.ogg', 100, 1) //We don't want this playing every time
-				if(W.force < 15)
+				if (W.force < 15)
 					user << "\blue The cabinet's protective glass glances off the hit."
 				else
 					src.hitstaken++
-					if(src.hitstaken == 4)
+					if (src.hitstaken == 4)
 						playsound(user, 'Glassbr3.ogg', 100, 1) //Break cabinet, receive goodies. Cabinet's fucked for life after that.
 						src.smashed = 1
 						src.locked = 0
@@ -101,8 +101,8 @@
 				update_icon()
 			return
 		if (istype(O, /obj/item/weapon/fireaxe) && src.localopened)
-			if(!FIREAXE)
-				if(O.wielded)
+			if (!FIREAXE)
+				if (O.wielded)
 					user << "\red Unwield the axe first."
 					return
 				FIREAXE = O
@@ -111,21 +111,21 @@
 				user << "\blue You place the fire axe back in the [src.name]."
 				update_icon()
 			else
-				if(src.smashed)
+				if (src.smashed)
 					return
 				else
 					localopened = !localopened
-					if(localopened)
+					if (localopened)
 						icon_state = text("fireaxe[][][][]opening",hasaxe,src.localopened,src.hitstaken,src.smashed)
 						spawn(10) update_icon()
 					else
 						icon_state = text("fireaxe[][][][]closing",hasaxe,src.localopened,src.hitstaken,src.smashed)
 						spawn(10) update_icon()
 		else
-			if(src.smashed)
+			if (src.smashed)
 				return
-			if(istype(O, /obj/item/device/multitool))
-				if(localopened)
+			if (istype(O, /obj/item/device/multitool))
+				if (localopened)
 					localopened = 0
 					icon_state = text("fireaxe[][][][]closing",hasaxe,src.localopened,src.hitstaken,src.smashed)
 					spawn(10) update_icon()
@@ -139,7 +139,7 @@
 					return
 			else
 				localopened = !localopened
-				if(localopened)
+				if (localopened)
 					icon_state = text("fireaxe[][][][]opening",hasaxe,src.localopened,src.hitstaken,src.smashed)
 					spawn(10) update_icon()
 				else
@@ -152,25 +152,25 @@
 	attack_hand(mob/user as mob)
 
 		var/hasaxe = 0
-		if(FIREAXE)
+		if (FIREAXE)
 			hasaxe = 1
 
-		if(src.locked)
+		if (src.locked)
 			user <<"\red The cabinet won't budge!"
 			return
-		if(localopened)
-			if(FIREAXE)
+		if (localopened)
+			if (FIREAXE)
 				user.put_in_hand(FIREAXE)
 				FIREAXE = null
 				user << "\blue You take the fire axe from the [name]."
 				src.add_fingerprint(user)
 				update_icon()
 			else
-				if(src.smashed)
+				if (src.smashed)
 					return
 				else
 					localopened = !localopened
-					if(localopened)
+					if (localopened)
 						src.icon_state = text("fireaxe[][][][]opening",hasaxe,src.localopened,src.hitstaken,src.smashed)
 						spawn(10) update_icon()
 					else
@@ -178,8 +178,8 @@
 						spawn(10) update_icon()
 
 		else
-			localopened = !localopened //I'm pretty sure we don't need an if(src.smashed) in here. In case I'm wrong and it fucks up teh cabinet, **MARKER**. -Agouri
-			if(localopened)
+			localopened = !localopened //I'm pretty sure we don't need an if (src.smashed) in here. In case I'm wrong and it fucks up teh cabinet, **MARKER**. -Agouri
+			if (localopened)
 				src.icon_state = text("fireaxe[][][][]opening",hasaxe,src.localopened,src.hitstaken,src.smashed)
 				spawn(10) update_icon()
 			else
@@ -191,9 +191,9 @@
 		set category = "Object"
 
 		if (isrobot(usr) || src.locked || src.smashed)
-			if(src.locked)
+			if (src.locked)
 				usr << "\red The cabinet won't budge!"
-			else if(src.smashed)
+			else if (src.smashed)
 				usr << "\blue The protective glass is broken!"
 			return
 
@@ -208,7 +208,7 @@
 			return
 
 		if (localopened)
-			if(FIREAXE)
+			if (FIREAXE)
 				usr.put_in_hand(FIREAXE)
 				FIREAXE = null
 				usr << "\blue You take the Fire axe from the [name]."
@@ -223,12 +223,12 @@
 		return
 
 	attack_ai(mob/user as mob)
-		if(src.smashed)
+		if (src.smashed)
 			user << "\red The security of the cabinet is compromised."
 			return
 		else
 			locked = !locked
-			if(locked)
+			if (locked)
 				user << "\red Cabinet locked."
 			else
 				user << "\blue Cabinet unlocked."
@@ -236,7 +236,7 @@
 
 	update_icon() //Template: fireaxe[has fireaxe][is opened][hits taken][is smashed]. If you want the opening or closing animations, add "opening" or "closing" right after the numbers
 		var/hasaxe = 0
-		if(FIREAXE)
+		if (FIREAXE)
 			hasaxe = 1
 		icon_state = text("fireaxe[][][][]",hasaxe,src.localopened,src.hitstaken,src.smashed)
 
@@ -354,7 +354,7 @@
 		if (isrobot(usr))
 			return
 		if (istype(O, /obj/item/weapon/extinguisher))
-			if(!EXTINGUISHER)
+			if (!EXTINGUISHER)
 				user.drop_item(O)
 				src.contents += O
 				EXTINGUISHER = O
@@ -366,8 +366,8 @@
 		update_icon()
 
 	attack_hand(mob/user as mob)
-		if(localopened)
-			if(EXTINGUISHER)
+		if (localopened)
+			if (EXTINGUISHER)
 				user.put_in_hand(EXTINGUISHER)
 				EXTINGUISHER = null
 				user << "\blue You take the extinguisher from the [name]."
@@ -396,7 +396,7 @@
 			return
 
 		if (localopened)
-			if(EXTINGUISHER)
+			if (EXTINGUISHER)
 				usr.put_in_hand(EXTINGUISHER)
 				EXTINGUISHER = null
 				usr << "\blue You take the extinguisher from the [name]."
@@ -415,7 +415,7 @@
 
 	update_icon()
 		var/hasextinguisher = 0
-		if(EXTINGUISHER)
+		if (EXTINGUISHER)
 			hasextinguisher = 1
 		icon_state = text("extinguisher[][]",hasextinguisher,src.localopened)
 

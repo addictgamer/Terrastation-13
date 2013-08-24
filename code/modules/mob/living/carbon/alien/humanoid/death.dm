@@ -1,7 +1,7 @@
 /mob/living/carbon/alien/humanoid/death(gibbed)
-	if(src.stat == 2)
+	if (src.stat == 2)
 		return
-	if(src.healths)
+	if (src.healths)
 		src.healths.icon_state = "health6"
 	src.stat = 2
 
@@ -12,7 +12,7 @@
 			O.show_message("<B>[src]</B> lets out a waning guttural screech, green blood bubbling from its maw...", 1)
 
 		src.canmove = 0
-		if(src.client)
+		if (src.client)
 			src.blind.layer = 0
 		src.lying = 1
 		var/h = src.hand
@@ -25,13 +25,13 @@
 			var/obj/item/clothing/suit/armor/a_i_a_ptank/A = src.wear_suit
 			bombers += "[src.key] has detonated a suicide bomb. Temp = [A.part4.air_contents.temperature-T0C]."
 	//		world << "Detected that [src.key] is wearing a bomb" debug stuff
-			if(A.status && prob(90))
+			if (A.status && prob(90))
 	//			world << "Bomb has ignited?"
 				A.part4.ignite()
 
 		if (src.key)
 			spawn(10)
-				if(src.key && src.stat == 2)
+				if (src.key && src.stat == 2)
 					src.verbs += /mob/proc/ghost
 
 	var/tod = time2text(world.realtime,"hh:mm:ss") //weasellos time of death patch

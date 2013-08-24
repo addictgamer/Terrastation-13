@@ -72,7 +72,7 @@
 					src.see_in_dark = 8
 					src.see_invisible = 2
 
-					if(src.controlled_mecha) //Dirty hack to make the view stop resetting when controlling a mecha.
+					if (src.controlled_mecha) //Dirty hack to make the view stop resetting when controlling a mecha.
 						src.client.eye = controlled_mecha
 						src.client.perspective = EYE_PERSPECTIVE
 
@@ -242,7 +242,7 @@
 
 /mob/living/silicon/ai/updatehealth()
 	if (src.nodamage == 0)
-		if(src.fire_res_on_core)
+		if (src.fire_res_on_core)
 			src.health = 100 - src.oxyloss - src.toxloss - src.bruteloss
 		else
 			src.health = 100 - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
@@ -251,7 +251,7 @@
 		src.stat = 0
 
 /mob/living/silicon/ai/proc/update_mind()
-	if(!mind && client)
+	if (!mind && client)
 		mind = new
 		mind.current = src
 		mind.assigned_role = "AI"

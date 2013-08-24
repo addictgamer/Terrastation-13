@@ -29,7 +29,7 @@
 		R.my_atom = src
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)//TODO:Have grenades use the new assembly things
-		if(istype(W,/obj/item/device/assembly_holder) && !stage && path != 2)
+		if (istype(W,/obj/item/device/assembly_holder) && !stage && path != 2)
 			path = 1
 			user << "\blue You add [W] to the metal casing."
 			playsound(src.loc, 'Screwdriver2.ogg', 25, -3)
@@ -37,9 +37,9 @@
 			icon_state = initial(icon_state) +"_ass"
 			name = "unsecured grenade"
 			stage = 1
-		else if(istype(W,/obj/item/weapon/screwdriver) && stage == 1 && path != 2)
+		else if (istype(W,/obj/item/weapon/screwdriver) && stage == 1 && path != 2)
 			path = 1
-			if(beakers.len)
+			if (beakers.len)
 				user << "\blue You lock the assembly."
 				playsound(src.loc, 'Screwdriver.ogg', 25, -3)
 				name = "grenade"
@@ -49,11 +49,11 @@
 				user << "\red You need to add at least one beaker before locking the assembly."
 		else if ((istype(W,/obj/item/weapon/reagent_containers/glass/beaker)||istype(W,/obj/item/weapon/reagent_containers/glass/dispenser)||istype(W,/obj/item/weapon/reagent_containers/glass/bottle)) && stage == 1 && path != 2)
 			path = 1
-			if(beakers.len == 2)
+			if (beakers.len == 2)
 				user << "\red The grenade can not hold more containers."
 				return
 			else
-				if(W.reagents.total_volume)
+				if (W.reagents.total_volume)
 					user << "\blue You add \the [W] to the assembly."
 					user.drop_item()
 					W.loc = src
@@ -61,106 +61,106 @@
 				else
 					user << "\red \the [W] is empty."
 
-		else if(path != 1)
-			if(!istype(src.loc,/turf))
+		else if (path != 1)
+			if (!istype(src.loc,/turf))
 				user << "\red You need to put the canister on the ground to do that!"
 			else
 				switch(state)
-					if(0)
-						if(istype(W, /obj/item/weapon/wrench))
+					if (0)
+						if (istype(W, /obj/item/weapon/wrench))
 							playsound(src.loc, 'Ratchet.ogg', 50, 1)
-							if(do_after(user, 20))
+							if (do_after(user, 20))
 								user << "\blue You wrench the canister in place."
 								src.name = "Camera Assembly"
 								src.anchored = 1
 								src.state = 1
 								path = 2
-					if(1)
-						if(istype(W, /obj/item/weapon/wrench))
+					if (1)
+						if (istype(W, /obj/item/weapon/wrench))
 							playsound(src.loc, 'Ratchet.ogg', 50, 1)
-							if(do_after(user, 20))
+							if (do_after(user, 20))
 								user << "\blue You unfasten the canister."
 								src.name = "Grenade Casing"
 								src.anchored = 0
 								src.state = 0
 								path = 0
-						if(istype(W, /obj/item/device/multitool))
+						if (istype(W, /obj/item/device/multitool))
 							playsound(src.loc, 'Deconstruct.ogg', 50, 1)
 							user << "\blue You place the electronics inside the canister."
 							src.circuit = W
 							user.drop_item()
 							W.loc = src
-						if(istype(W, /obj/item/weapon/screwdriver) && circuit)
+						if (istype(W, /obj/item/weapon/screwdriver) && circuit)
 							playsound(src.loc, 'Screwdriver.ogg', 50, 1)
 							user << "\blue You screw the circuitry into place."
 							src.state = 2
-						if(istype(W, /obj/item/weapon/crowbar) && circuit)
+						if (istype(W, /obj/item/weapon/crowbar) && circuit)
 							playsound(src.loc, 'Crowbar.ogg', 50, 1)
 							user << "\blue You remove the circuitry."
 							src.state = 1
 							circuit.loc = src.loc
 							src.circuit = null
-					if(2)
-						if(istype(W, /obj/item/weapon/screwdriver) && circuit)
+					if (2)
+						if (istype(W, /obj/item/weapon/screwdriver) && circuit)
 							playsound(src.loc, 'Screwdriver.ogg', 50, 1)
 							user << "\blue You unfasten the circuitry."
 							src.state = 1
-						if(istype(W, /obj/item/weapon/cable_coil))
-							if(W:amount >= 1)
+						if (istype(W, /obj/item/weapon/cable_coil))
+							if (W:amount >= 1)
 								playsound(src.loc, 'Deconstruct.ogg', 50, 1)
-								if(do_after(user, 20))
+								if (do_after(user, 20))
 									W:amount -= 1
-									if(!W:amount) del(W)
+									if (!W:amount) del(W)
 									user << "\blue You add cabling to the canister."
 									src.state = 3
-					if(3)
-						if(istype(W, /obj/item/weapon/wirecutters))
+					if (3)
+						if (istype(W, /obj/item/weapon/wirecutters))
 							playsound(src.loc, 'wirecutter.ogg', 50, 1)
 							user << "\blue You remove the cabling."
 							src.state = 2
 							var/obj/item/weapon/cable_coil/A = new /obj/item/weapon/cable_coil( src.loc )
 							A.amount = 1
-						if(istype(W, /obj/item/device/radio/signaler))
+						if (istype(W, /obj/item/device/radio/signaler))
 							playsound(src.loc, 'Deconstruct.ogg', 50, 1)
 							user << "\blue You attach the wireless signaller unit to the circutry."
 							user.drop_item()
 							W.loc = src
 							src.state = 4
-					if(4)
-						if(istype(W, /obj/item/weapon/crowbar) && !motion)
+					if (4)
+						if (istype(W, /obj/item/weapon/crowbar) && !motion)
 							playsound(src.loc, 'Crowbar.ogg', 50, 1)
 							user << "\blue You remove the remote signalling device."
 							src.state = 3
 							new /obj/item/device/radio/signaler( src.loc, 1 )
-						if(istype(W, /obj/item/device/prox_sensor) && motion == 0)
-//							if(W:amount >= 1)
+						if (istype(W, /obj/item/device/prox_sensor) && motion == 0)
+//							if (W:amount >= 1)
 							playsound(src.loc, 'Deconstruct.ogg', 50, 1)
 //								W:use(1)
 							user << "\blue You attach the proximity sensor."
 							motion = 1
-						if(istype(W, /obj/item/weapon/crowbar) && motion)
+						if (istype(W, /obj/item/weapon/crowbar) && motion)
 							playsound(src.loc, 'Crowbar.ogg', 50, 1)
 							user << "\blue You remove the proximity sensor."
 							new /obj/item/device/prox_sensor( src.loc, 1 )
 							motion = 0
-						if(istype(W, /obj/item/stack/sheet/glass))
-							if(W:amount >= 1)
+						if (istype(W, /obj/item/stack/sheet/glass))
+							if (W:amount >= 1)
 								playsound(src.loc, 'Deconstruct.ogg', 50, 1)
-								if(do_after(user, 20))
+								if (do_after(user, 20))
 									W:use(1)
 									user << "\blue You put in the glass lens."
 									src.state = 5
-					if(5)
-						if(istype(W, /obj/item/weapon/crowbar))
+					if (5)
+						if (istype(W, /obj/item/weapon/crowbar))
 							playsound(src.loc, 'Crowbar.ogg', 50, 1)
 							user << "\blue You remove the glass lens."
 							src.state = 4
 							new /obj/item/stack/sheet/glass( src.loc, 2 )
-						if(istype(W, /obj/item/weapon/screwdriver))
+						if (istype(W, /obj/item/weapon/screwdriver))
 							playsound(src.loc, 'Screwdriver.ogg', 50, 1)
 							user << "\blue You connect the lense."
 							var/B
-							if(motion == 1)
+							if (motion == 1)
 								B = new /obj/machinery/camera/motion( src.loc )
 							else
 								B = new /obj/machinery/camera( src.loc )
@@ -185,7 +185,7 @@
 			user.drop_item()
 			var/t = (isturf(target) ? target : target.loc)
 			walk_towards(src, t, 3)
-		else if(crit_fail)
+		else if (crit_fail)
 			user << "\red This grenade is a dud and unusable!"
 
 	attack_self(mob/user as mob)
@@ -198,7 +198,7 @@
 			playsound(src.loc, 'armbomb.ogg', 75, 1, -3)
 			spawn(30)
 				explode()
-		else if(crit_fail)
+		else if (crit_fail)
 			user << "\red This grenade is a dud and unusable!"
 
 	attack_hand()
@@ -209,12 +209,12 @@
 
 	proc
 		explode()
-			if(reliability)
+			if (reliability)
 				var/has_reagents = 0
 				for(var/obj/item/weapon/reagent_containers/glass/G in beakers)
-					if(G.reagents.total_volume) has_reagents = 1
+					if (G.reagents.total_volume) has_reagents = 1
 
-				if(!has_reagents)
+				if (!has_reagents)
 					playsound(src.loc, 'Screwdriver2.ogg', 50, 1)
 					state = 0
 					return
@@ -224,14 +224,14 @@
 				for(var/obj/item/weapon/reagent_containers/glass/G in beakers)
 					G.reagents.trans_to(src, G.reagents.total_volume)
 
-				if(src.reagents.total_volume) //The possible reactions didnt use up all reagents.
+				if (src.reagents.total_volume) //The possible reactions didnt use up all reagents.
 					var/datum/effects/system/steam_spread/steam = new /datum/effects/system/steam_spread()
 					steam.set_up(10, 0, get_turf(src))
 					steam.attach(src)
 					steam.start()
 
 					for(var/atom/A in view(affected_area, src.loc))
-						if( A == src ) continue
+						if ( A == src ) continue
 						src.reagents.reaction(A, 1, 10)
 
 
@@ -343,8 +343,8 @@
 		usr << "\blue [syringes] / [max_syringes] Syringes."
 
 	attackby(obj/item/I as obj, mob/user as mob)
-		if(istype(I, /obj/item/weapon/reagent_containers/syringe))
-			if(syringes.len < max_syringes)
+		if (istype(I, /obj/item/weapon/reagent_containers/syringe))
+			if (syringes.len < max_syringes)
 				user.drop_item()
 				I.loc = src
 				syringes += I
@@ -354,9 +354,9 @@
 				usr << "\red The syringe gun cannot hold more syringes."
 
 	afterattack(obj/target, mob/user , flag)
-		if(!isturf(target.loc) || target == user) return
+		if (!isturf(target.loc) || target == user) return
 
-		if(syringes.len)
+		if (syringes.len)
 			spawn(0) fire_syringe(target,user)
 		else
 			usr << "\red The syringe gun is empty."
@@ -377,23 +377,23 @@
 				playsound(user.loc, 'syringeproj.ogg', 50, 1)
 
 				for(var/i=0, i<6, i++)
-					if(!D) break
-					if(D.loc == trg) break
+					if (!D) break
+					if (D.loc == trg) break
 					step_towards(D,trg)
 
 					for(var/mob/living/carbon/M in D.loc)
-						if(!istype(M,/mob/living/carbon)) continue
-						if(M == user) continue
+						if (!istype(M,/mob/living/carbon)) continue
+						if (M == user) continue
 						D.reagents.trans_to(M, 15)
 						M.take_organ_damage(5)
 						for(var/mob/O in viewers(world.view, D))
 							O.show_message(text("\red [] was hit by the syringe!", M), 1)
 
 						del(D)
-					if(D)
+					if (D)
 						for(var/atom/A in D.loc)
-							if(A == user) continue
-							if(A.density) del(D)
+							if (A == user) continue
+							if (A.density) del(D)
 
 					sleep(1)
 
@@ -421,8 +421,8 @@
 		usr << "\blue [syringes] / [max_syringes] Syringes."
 
 	attackby(obj/item/I as obj, mob/user as mob)
-		if(istype(I, /obj/item/weapon/reagent_containers/syringe))
-			if(syringes.len < max_syringes)
+		if (istype(I, /obj/item/weapon/reagent_containers/syringe))
+			if (syringes.len < max_syringes)
 				user.drop_item()
 				I.loc = src
 				syringes += I
@@ -432,9 +432,9 @@
 				usr << "\red The rapid syringe gun cannot hold more syringes."
 
 	afterattack(obj/target, mob/user , flag)
-		if(!isturf(target.loc) || target == user) return
+		if (!isturf(target.loc) || target == user) return
 
-		if(syringes.len)
+		if (syringes.len)
 			spawn(0) fire_syringe(target,user)
 		else
 			usr << "\red rapid The syringe gun is empty."
@@ -455,23 +455,23 @@
 				playsound(user.loc, 'syringeproj.ogg', 50, 1)
 
 				for(var/i=0, i<6, i++)
-					if(!D) break
-					if(D.loc == trg) break
+					if (!D) break
+					if (D.loc == trg) break
 					step_towards(D,trg)
 
 					for(var/mob/living/carbon/M in D.loc)
-						if(!istype(M,/mob/living/carbon)) continue
-						if(M == user) continue
+						if (!istype(M,/mob/living/carbon)) continue
+						if (M == user) continue
 						D.reagents.trans_to(M, 15)
 						M.take_organ_damage(5)
 						for(var/mob/O in viewers(world.view, D))
 							O.show_message(text("\red [] was hit by the syringe!", M), 1)
 
 						del(D)
-					if(D)
+					if (D)
 						for(var/atom/A in D.loc)
-							if(A == user) continue
-							if(A.density) del(D)
+							if (A == user) continue
+							if (A.density) del(D)
 
 					sleep(1)
 
@@ -509,7 +509,7 @@
 		..()
 		if (!(usr in view(2)) && usr!=src.loc) return
 		usr << "\blue It contains:"
-		if(reagents && reagents.reagent_list.len)
+		if (reagents && reagents.reagent_list.len)
 			for(var/datum/reagent/R in reagents.reagent_list)
 				usr << "\blue [R.volume] units of [R.name]"
 		else
@@ -525,15 +525,15 @@
 
 	ex_act(severity)
 		switch(severity)
-			if(1.0)
+			if (1.0)
 				del(src)
 				return
-			if(2.0)
+			if (2.0)
 				if (prob(50))
 					new /obj/effects/water(src.loc)
 					del(src)
 					return
-			if(3.0)
+			if (3.0)
 				if (prob(5))
 					new /obj/effects/water(src.loc)
 					del(src)
@@ -542,7 +542,7 @@
 		return
 
 	blob_act()
-		if(prob(50))
+		if (prob(50))
 			new /obj/effects/water(src.loc)
 			del(src)
 
@@ -621,7 +621,7 @@
 		..()
 		if (!(usr in view(2)) && usr!=src.loc) return
 		usr << "\blue It contains:"
-		if(reagents && reagents.reagent_list.len)
+		if (reagents && reagents.reagent_list.len)
 			for(var/datum/reagent/R in reagents.reagent_list)
 				usr << "\blue [R.volume] units of [R.name]"
 		else
@@ -629,35 +629,35 @@
 
 	afterattack(obj/target, mob/user , flag)
 		for(var/type in src.can_be_placed_into)
-			if(istype(target, type))
+			if (istype(target, type))
 				return
 
-		if(ismob(target) && target.reagents && reagents.total_volume)
+		if (ismob(target) && target.reagents && reagents.total_volume)
 			user << "\blue You splash the solution onto [target]."
 			for(var/mob/O in viewers(world.view, user))
 				O.show_message(text("\red [] has been splashed with something by []!", target, user), 1)
 			src.reagents.reaction(target, TOUCH)
 			spawn(5) src.reagents.clear_reagents()
 			return
-		else if(istype(target, /obj/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
+		else if (istype(target, /obj/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
 
-			if(!target.reagents.total_volume && target.reagents)
+			if (!target.reagents.total_volume && target.reagents)
 				user << "\red [target] is empty."
 				return
 
-			if(reagents.total_volume >= reagents.maximum_volume)
+			if (reagents.total_volume >= reagents.maximum_volume)
 				user << "\red [src] is full."
 				return
 
 			var/trans = target.reagents.trans_to(src, target:amount_per_transfer_from_this)
 			user << "\blue You fill [src] with [trans] units of the contents of [target]."
 
-		else if(target.is_open_container() && target.reagents) //Something like a glass. Player probably wants to transfer TO it.
-			if(!reagents.total_volume)
+		else if (target.is_open_container() && target.reagents) //Something like a glass. Player probably wants to transfer TO it.
+			if (!reagents.total_volume)
 				user << "\red [src] is empty."
 				return
 
-			if(target.reagents.total_volume >= target.reagents.maximum_volume)
+			if (target.reagents.total_volume >= target.reagents.maximum_volume)
 				user << "\red [target] is full."
 				return
 
@@ -665,10 +665,10 @@
 			user << "\blue You transfer [trans] units of the solution to [target]."
 
 		//Safety for dumping stuff into a ninja suit. It handles everything through attackby() and this is unnecessary.
-		else if(istype(target, /obj/item/clothing/suit/space/space_ninja))
+		else if (istype(target, /obj/item/clothing/suit/space/space_ninja))
 			return
 
-		else if(reagents.total_volume)
+		else if (reagents.total_volume)
 			user << "\blue You splash the solution onto [target]."
 			src.reagents.reaction(target, TOUCH)
 			spawn(5) src.reagents.clear_reagents()
@@ -692,19 +692,19 @@
 	var/filled = 0
 
 	afterattack(obj/target, mob/user , flag)
-		if(!target.reagents) return
+		if (!target.reagents) return
 
-		if(filled)
+		if (filled)
 
-			if(target.reagents.total_volume >= target.reagents.maximum_volume)
+			if (target.reagents.total_volume >= target.reagents.maximum_volume)
 				user << "\red [target] is full."
 				return
 
-			if(!target.is_open_container() && !ismob(target) && !istype(target,/obj/item/weapon/reagent_containers/food)) //You can inject humans and food but you cant remove the shit.
+			if (!target.is_open_container() && !ismob(target) && !istype(target,/obj/item/weapon/reagent_containers/food)) //You can inject humans and food but you cant remove the shit.
 				user << "\red You cannot directly fill this object."
 				return
 
-			if(ismob(target))
+			if (ismob(target))
 				for(var/mob/O in viewers(world.view, user))
 					O.show_message(text("\red <B>[] drips something onto []!</B>", user, target), 1)
 				src.reagents.reaction(target, TOUCH)
@@ -717,11 +717,11 @@
 
 		else
 
-			if(!target.is_open_container() && !istype(target,/obj/reagent_dispensers))
+			if (!target.is_open_container() && !istype(target,/obj/reagent_dispensers))
 				user << "\red You cannot directly remove reagents from [target]."
 				return
 
-			if(!target.reagents.total_volume)
+			if (!target.reagents.total_volume)
 				user << "\red [target] is empty."
 				return
 
@@ -745,19 +745,19 @@
 	var/filled = 0
 
 	afterattack(obj/target, mob/user , flag)
-		if(!target.reagents) return
+		if (!target.reagents) return
 
-		if(filled)
+		if (filled)
 
-			if(target.reagents.total_volume >= target.reagents.maximum_volume)
+			if (target.reagents.total_volume >= target.reagents.maximum_volume)
 				user << "\red [target] is full."
 				return
 
-			if(!target.is_open_container() && !ismob(target) && !istype(target,/obj/item/weapon/reagent_containers/food)) //You can inject humans and food but you cant remove the shit.
+			if (!target.is_open_container() && !ismob(target) && !istype(target,/obj/item/weapon/reagent_containers/food)) //You can inject humans and food but you cant remove the shit.
 				user << "\red You cannot directly fill this object."
 				return
 
-			if(ismob(target))
+			if (ismob(target))
 				for(var/mob/O in viewers(world.view, user))
 					O.show_message(text("\red <B>[] drips something onto []!</B>", user, target), 1)
 				src.reagents.reaction(target, TOUCH)
@@ -770,11 +770,11 @@
 
 		else
 
-			if(!target.is_open_container() && !istype(target,/obj/reagent_dispensers))
+			if (!target.is_open_container() && !istype(target,/obj/reagent_dispensers))
 				user << "\red You cannot directly remove reagents from [target]."
 				return
 
-			if(!target.reagents.total_volume)
+			if (!target.reagents.total_volume)
 				user << "\red [target] is empty."
 				return
 
@@ -822,9 +822,9 @@
 	attack_self(mob/user as mob)
 /*
 		switch(mode)
-			if(SYRINGE_DRAW)
+			if (SYRINGE_DRAW)
 				mode = SYRINGE_INJECT
-			if(SYRINGE_INJECT)
+			if (SYRINGE_INJECT)
 				mode = SYRINGE_DRAW
 */
 		mode = !mode
@@ -841,27 +841,27 @@
 		return
 
 	afterattack(obj/target, mob/user , flag)
-		if(!target.reagents) return
+		if (!target.reagents) return
 
 		switch(mode)
-			if(SYRINGE_DRAW)
+			if (SYRINGE_DRAW)
 
-				if(reagents.total_volume >= reagents.maximum_volume)
+				if (reagents.total_volume >= reagents.maximum_volume)
 					user << "\red The syringe is full."
 					return
 
-				if(ismob(target))//Blood!
-					if(istype(target, /mob/living/carbon/metroid))
+				if (ismob(target))//Blood!
+					if (istype(target, /mob/living/carbon/metroid))
 						user << "\red You are unable to locate any blood."
 						return
-					if(src.reagents.has_reagent("blood"))
+					if (src.reagents.has_reagent("blood"))
 						user << "\red There is already a blood sample in this syringe"
 						return
-					if(istype(target, /mob/living/carbon))//maybe just add a blood reagent to all mobs. Then you can suck them dry...With hundreds of syringes. Jolly good idea.
+					if (istype(target, /mob/living/carbon))//maybe just add a blood reagent to all mobs. Then you can suck them dry...With hundreds of syringes. Jolly good idea.
 						var/amount = src.reagents.maximum_volume - src.reagents.total_volume
 						var/mob/living/carbon/T = target
 						var/datum/reagent/B = new /datum/reagent/blood
-						if(!T.dna)
+						if (!T.dna)
 							usr << "You are unable to locate any blood. (To be specific, your target seems to be missing their DNA datum)"
 							return
 						B.holder = src
@@ -869,27 +869,27 @@
 						//set reagent data
 						B.data["donor"] = T
 						/*
-						if(T.virus && T.virus.spread_type != SPECIAL)
+						if (T.virus && T.virus.spread_type != SPECIAL)
 							B.data["virus"] = new T.virus.type(0)
 						*/
 
 
 
 						for(var/datum/disease/D in T.viruses)
-							if(!B.data["viruses"])
+							if (!B.data["viruses"])
 								B.data["viruses"] = list()
 
 
 							B.data["viruses"] += new D.type
 
-						if(B.data["virus2"])
-							if(T.virus2)
+						if (B.data["virus2"])
+							if (T.virus2)
 								B.data["virus2"] = T.virus2.getcopy()
 
 						B.data["blood_DNA"] = copytext(T.dna.unique_enzymes,1,0)
-						if(T.resistances&&T.resistances.len)
+						if (T.resistances&&T.resistances.len)
 							B.data["resistances"] = T.resistances.Copy()
-						if(istype(target, /mob/living/carbon/human))//I wish there was some hasproperty operation...
+						if (istype(target, /mob/living/carbon/human))//I wish there was some hasproperty operation...
 							var/mob/living/carbon/human/HT = target
 							B.data["blood_type"] = copytext(HT.b_type,1,0)
 						var/list/temp_chem = list()
@@ -910,11 +910,11 @@
 							O.show_message("\red [user] takes a blood sample from [target].", 1)
 
 				else //if not mob
-					if(!target.reagents.total_volume)
+					if (!target.reagents.total_volume)
 						user << "\red [target] is empty."
 						return
 
-					if(!target.is_open_container() && !istype(target,/obj/reagent_dispensers) && !istype(target,/obj/item/metroid_core))
+					if (!target.is_open_container() && !istype(target,/obj/reagent_dispensers) && !istype(target,/obj/item/metroid_core))
 						user << "\red You cannot directly remove reagents from this object."
 						return
 
@@ -925,32 +925,32 @@
 					mode=!mode
 					update_icon()
 
-			if(SYRINGE_INJECT)
-				if(!reagents.total_volume)
+			if (SYRINGE_INJECT)
+				if (!reagents.total_volume)
 					user << "\red The Syringe is empty."
 					return
-				if(istype(target, /obj/item/weapon/implantcase/chem))
+				if (istype(target, /obj/item/weapon/implantcase/chem))
 					return
 
-				if(!target.is_open_container() && !ismob(target) && !istype(target, /obj/item/weapon/reagent_containers/food) && !istype(target, /obj/item/metroid_core))
+				if (!target.is_open_container() && !ismob(target) && !istype(target, /obj/item/weapon/reagent_containers/food) && !istype(target, /obj/item/metroid_core))
 					user << "\red You cannot directly fill this object."
 					return
-				if(target.reagents.total_volume >= target.reagents.maximum_volume)
+				if (target.reagents.total_volume >= target.reagents.maximum_volume)
 					user << "\red [target] is full."
 					return
 
-				if(istype(target, /obj/item/metroid_core))
+				if (istype(target, /obj/item/metroid_core))
 					var/obj/item/metroid_core/core = target
 					core.Flush = 30 // reset flush counter
 
-				if(ismob(target) && target != user)
+				if (ismob(target) && target != user)
 					for(var/mob/O in viewers(world.view, user))
 						O.show_message(text("\red <B>[] is trying to inject []!</B>", user, target), 1)
-					if(!do_mob(user, target)) return
+					if (!do_mob(user, target)) return
 					for(var/mob/O in viewers(world.view, user))
 						O.show_message(text("\red [] injects [] with the syringe!", user, target), 1)
 					src.reagents.reaction(target, INGEST)
-				if(ismob(target) && target == user)
+				if (ismob(target) && target == user)
 					src.reagents.reaction(target, INGEST)
 				spawn(5)
 					var/trans = src.reagents.trans_to(target, amount_per_transfer_from_this)
@@ -963,7 +963,7 @@
 
 	update_icon()
 		var/rounded_vol = round(reagents.total_volume,5)
-		if(ismob(loc))
+		if (ismob(loc))
 			var/mode_t
 			switch(mode)
 				if (SYRINGE_DRAW)
@@ -1001,9 +1001,9 @@
 	attack_self(mob/user as mob)
 /*
 		switch(mode)
-			if(SYRINGE_DRAW)
+			if (SYRINGE_DRAW)
 				mode = SYRINGE_INJECT
-			if(SYRINGE_INJECT)
+			if (SYRINGE_INJECT)
 				mode = SYRINGE_DRAW
 */
 		mode = !mode
@@ -1020,25 +1020,25 @@
 		return
 
 	afterattack(obj/target, mob/user , flag)
-		if(!target.reagents) return
+		if (!target.reagents) return
 
 		switch(mode)
-			if(SYRINGE_DRAW)
+			if (SYRINGE_DRAW)
 
-				if(reagents.total_volume >= reagents.maximum_volume)
+				if (reagents.total_volume >= reagents.maximum_volume)
 					user << "\red The syringe is full."
 					return
 
-				if(ismob(target))
-					if(istype(target, /mob/living/carbon))//I Do not want it to suck 50 units out of people
+				if (ismob(target))
+					if (istype(target, /mob/living/carbon))//I Do not want it to suck 50 units out of people
 						usr << "This needle isn't designed for drawing blood."
 						return
 				else //if not mob
-					if(!target.reagents.total_volume)
+					if (!target.reagents.total_volume)
 						user << "\red [target] is empty."
 						return
 
-					if(!target.is_open_container() && !istype(target,/obj/reagent_dispensers))
+					if (!target.is_open_container() && !istype(target,/obj/reagent_dispensers))
 						user << "\red You cannot directly remove reagents from this object."
 						return
 
@@ -1049,27 +1049,27 @@
 					mode=!mode
 					update_icon()
 
-			if(SYRINGE_INJECT)
-				if(!reagents.total_volume)
+			if (SYRINGE_INJECT)
+				if (!reagents.total_volume)
 					user << "\red The Syringe is empty."
 					return
-				if(istype(target, /obj/item/weapon/implantcase/chem))
+				if (istype(target, /obj/item/weapon/implantcase/chem))
 					return
-				if(!target.is_open_container() && !ismob(target) && !istype(target, /obj/item/weapon/reagent_containers/food))
+				if (!target.is_open_container() && !ismob(target) && !istype(target, /obj/item/weapon/reagent_containers/food))
 					user << "\red You cannot directly fill this object."
 					return
-				if(target.reagents.total_volume >= target.reagents.maximum_volume)
+				if (target.reagents.total_volume >= target.reagents.maximum_volume)
 					user << "\red [target] is full."
 					return
 
-				if(ismob(target) && target != user)
+				if (ismob(target) && target != user)
 					for(var/mob/O in viewers(world.view, user))
 						O.show_message(text("\red <B>[] is trying to inject [] with a giant syringe!</B>", user, target), 1)
-					if(!do_mob(user, target, 300)) return
+					if (!do_mob(user, target, 300)) return
 					for(var/mob/O in viewers(world.view, user))
 						O.show_message(text("\red [] injects [] with a giant syringe!", user, target), 1)
 					src.reagents.reaction(target, INGEST)
-				if(ismob(target) && target == user)
+				if (ismob(target) && target == user)
 					src.reagents.reaction(target, INGEST)
 				spawn(5)
 					var/trans = src.reagents.trans_to(target, amount_per_transfer_from_this)
@@ -1082,7 +1082,7 @@
 
 	update_icon()
 		var/rounded_vol = round(reagents.total_volume,50)
-		if(ismob(loc))
+		if (ismob(loc))
 			var/mode_t
 			switch(mode)
 				if (SYRINGE_DRAW)
@@ -1124,7 +1124,7 @@
 */
 
 /obj/item/weapon/reagent_containers/hypospray/attack(mob/M as mob, mob/user as mob)
-	if(!reagents.total_volume)
+	if (!reagents.total_volume)
 		user << "\red The hypospray is empty."
 		return
 	if (!( istype(M, /mob) ))
@@ -1136,7 +1136,7 @@
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been injected with [src.name] by [user.name] ([user.ckey])</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to inject [M.name] ([M.ckey])</font>")
 		src.reagents.reaction(M, INGEST)
-		if(M.reagents)
+		if (M.reagents)
 			var/trans = reagents.trans_to(M, amount_per_transfer_from_this)
 			user << "\blue [trans] units injected.  [reagents.total_volume] units remaining in the hypospray."
 	return
@@ -1165,7 +1165,7 @@
 	//Placeholder for effects that trigger on eating that aren't tied to reagents.
 	proc/On_Consume()
 		if (!trash) return
-		if(!reagents.total_volume)
+		if (!reagents.total_volume)
 			var/mob/M = usr
 			switch(trash)
 				if ("raisins")
@@ -1214,12 +1214,12 @@
 	attack_self(mob/user as mob)
 		return
 	attack(mob/M as mob, mob/user as mob, def_zone)
-		if(!reagents.total_volume)						//Shouldn't be needed but it checks to see if it has anything left in it.
+		if (!reagents.total_volume)						//Shouldn't be needed but it checks to see if it has anything left in it.
 			user << "\red None of [src] left, oh no!"
 			del(src)
 			return 0
-		if(istype(M, /mob/living/carbon))
-			if(M == user)								//If you're eating it yourself.
+		if (istype(M, /mob/living/carbon))
+			if (M == user)								//If you're eating it yourself.
 				var/fullness = M.nutrition + (M.reagents.get_reagent_amount("nutriment") * 25)
 				if (fullness <= 50)
 					M << "\red You hungrily chew out a piece of [src] and gobble it!"
@@ -1233,7 +1233,7 @@
 					M << "\red You cannot force any more of [src] to go down your throat."
 					return 0
 			else
-				if(!istype(M, /mob/living/carbon/metroid))		//If you're feeding it to someone else.
+				if (!istype(M, /mob/living/carbon/metroid))		//If you're feeding it to someone else.
 					var/fullness = M.nutrition + (M.reagents.get_reagent_amount("nutriment") * 25)
 					if (fullness <= (550 * (1 + M.overeatduration / 1000)))
 						for(var/mob/O in viewers(world.view, user))
@@ -1243,7 +1243,7 @@
 							O.show_message("\red [user] cannot force anymore of [src] down [M]'s throat.", 1)
 							return 0
 
-					if(!do_mob(user, M)) return
+					if (!do_mob(user, M)) return
 
 					M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been fed [src.name] by [user.name] ([user.ckey]) Reagents: \ref[reagents]</font>")
 					user.attack_log += text("\[[time_stamp()]\] <font color='red'>Fed [M.name] by [M.name] ([M.ckey]) Reagents: \ref[reagents]</font>")
@@ -1255,11 +1255,11 @@
 					user << "This creature does not seem to have a mouth!"
 					return
 
-			if(reagents)								//Handle ingestion of the reagent.
-				if(reagents.total_volume)
+			if (reagents)								//Handle ingestion of the reagent.
+				if (reagents.total_volume)
 					reagents.reaction(M, INGEST)
 					spawn(5)
-						if(reagents.total_volume > bitesize)
+						if (reagents.total_volume > bitesize)
 							/*
 							 * I totally cannot understand what this code supposed to do.
 							 * Right now every snack consumes in 2 bites, my popcorn does not work right, so I simplify it. -- rastaf0
@@ -1271,8 +1271,8 @@
 							reagents.trans_to(M, reagents.total_volume)
 						bitecount++
 						On_Consume()
-						if(!reagents.total_volume)
-							if(M == user) user << "\red You finish eating [src]."
+						if (!reagents.total_volume)
+							if (M == user) user << "\red You finish eating [src]."
 							else user << "\red [M] finishes eating [src]."
 							del(src)
 				playsound(M.loc,'eatfood.ogg', rand(10,50), 1)
@@ -1303,16 +1303,16 @@
 	var/slices_num
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
 
-		if((slices_num <= 0 || !slices_num) || !slice_path)
+		if ((slices_num <= 0 || !slices_num) || !slice_path)
 			return 1
 		var/inaccurate = 0
-		if( \
+		if ( \
 				istype(W, /obj/item/weapon/kitchenknife) || \
 				istype(W, /obj/item/weapon/butch) || \
 				istype(W, /obj/item/weapon/scalpel) || \
 				istype(W, /obj/item/weapon/kitchen/utensil/knife) \
 			)
-		else if( \
+		else if ( \
 				istype(W, /obj/item/weapon/circular_saw) || \
 				istype(W, /obj/item/weapon/melee/energy/sword) && W:active || \
 				istype(W, /obj/item/weapon/melee/energy/blade) || \
@@ -1399,24 +1399,24 @@
 		var/datum/reagents/R = src.reagents
 		var/fillevel = gulp_size
 
-		if(!R.total_volume || !R)
+		if (!R.total_volume || !R)
 			user << "\red None of [src] left, oh no!"
 			return 0
 
-		if(M == user)
+		if (M == user)
 			M << "\blue You swallow a gulp of [src]."
-			if(reagents.total_volume)
+			if (reagents.total_volume)
 				reagents.reaction(M, INGEST)
 				spawn(5)
 					reagents.trans_to(M, gulp_size)
 
 			playsound(M.loc,'drink.ogg', rand(10,50), 1)
 			return 1
-		else if( istype(M, /mob/living/carbon/human) )
+		else if ( istype(M, /mob/living/carbon/human) )
 
 			for(var/mob/O in viewers(world.view, user))
 				O.show_message("\red [user] attempts to feed [M] [src].", 1)
-			if(!do_mob(user, M)) return
+			if (!do_mob(user, M)) return
 			for(var/mob/O in viewers(world.view, user))
 				O.show_message("\red [user] feeds [M] [src].", 1)
 
@@ -1424,12 +1424,12 @@
 			user.attack_log += text("\[[time_stamp()]\] <font color='red'>Fed [M.name] by [M.name] ([M.ckey]) Reagents: \ref[reagents]</font>")
 
 
-			if(reagents.total_volume)
+			if (reagents.total_volume)
 				reagents.reaction(M, INGEST)
 				spawn(5)
 					reagents.trans_to(M, gulp_size)
 
-			if(isrobot(user)) //Cyborg modules that include drinks automatically refill themselves, but drain the borg's cell
+			if (isrobot(user)) //Cyborg modules that include drinks automatically refill themselves, but drain the borg's cell
 				var/mob/living/silicon/robot/bro = user
 				bro.cell.use(30)
 				var/refill = R.get_master_reagent_id()
@@ -1445,32 +1445,32 @@
 
 	afterattack(obj/target, mob/user , flag)
 
-		if(istype(target, /obj/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
+		if (istype(target, /obj/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
 
-			if(!target.reagents.total_volume)
+			if (!target.reagents.total_volume)
 				user << "\red [target] is empty."
 				return
 
-			if(reagents.total_volume >= reagents.maximum_volume)
+			if (reagents.total_volume >= reagents.maximum_volume)
 				user << "\red [src] is full."
 				return
 
 			var/trans = target.reagents.trans_to(src, target:amount_per_transfer_from_this)
 			user << "\blue You fill [src] with [trans] units of the contents of [target]."
 
-		else if(target.is_open_container()) //Something like a glass. Player probably wants to transfer TO it.
-			if(!reagents.total_volume)
+		else if (target.is_open_container()) //Something like a glass. Player probably wants to transfer TO it.
+			if (!reagents.total_volume)
 				user << "\red [src] is empty."
 				return
 
-			if(target.reagents.total_volume >= target.reagents.maximum_volume)
+			if (target.reagents.total_volume >= target.reagents.maximum_volume)
 				user << "\red [target] is full."
 				return
 
 			var/trans = src.reagents.trans_to(target, amount_per_transfer_from_this)
 			user << "\blue You transfer [trans] units of the solution to [target]."
 
-			if(isrobot(user)) //Cyborg modules that include drinks automatically refill themselves, but drain the borg's cell
+			if (isrobot(user)) //Cyborg modules that include drinks automatically refill themselves, but drain the borg's cell
 				var/mob/living/silicon/robot/bro = user
 				bro.cell.use(30)
 				var/refill = reagents.get_master_reagent_id()
@@ -1483,7 +1483,7 @@
 		set src in view()
 		..()
 		if (!(usr in range(0)) && usr!=src.loc) return
-		if(!reagents || reagents.total_volume==0)
+		if (!reagents || reagents.total_volume==0)
 			usr << "\blue \The [src] is empty!"
 		else if (reagents.total_volume<src.volume/4)
 			usr << "\blue \The [src] is almost empty!"
@@ -1511,7 +1511,7 @@
 
 	New()
 		..()
-		if(!icon_state)
+		if (!icon_state)
 			icon_state = "pill[rand(1,20)]"
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
@@ -1519,9 +1519,9 @@
 	attack_self(mob/user as mob)
 		return
 	attack(mob/M as mob, mob/user as mob, def_zone)
-		if(M == user)
+		if (M == user)
 			M << "\blue You swallow [src]."
-			if(reagents.total_volume)
+			if (reagents.total_volume)
 				reagents.reaction(M, INGEST)
 				spawn(5)
 					reagents.trans_to(M, reagents.total_volume)
@@ -1530,12 +1530,12 @@
 				del(src)
 			return 1
 
-		else if(istype(M, /mob/living/carbon/human) )
+		else if (istype(M, /mob/living/carbon/human) )
 
 			for(var/mob/O in viewers(world.view, user))
 				O.show_message("\red [user] attempts to force [M] to swallow [src].", 1)
 
-			if(!do_mob(user, M)) return
+			if (!do_mob(user, M)) return
 
 			for(var/mob/O in viewers(world.view, user))
 				O.show_message("\red [user] forces [M] to swallow [src].", 1)
@@ -1544,7 +1544,7 @@
 			user.attack_log += text("\[[time_stamp()]\] <font color='red'>Fed [M.name] by [M.name] ([M.ckey]) Reagents: \ref[reagents]</font>")
 
 
-			if(reagents.total_volume)
+			if (reagents.total_volume)
 				reagents.reaction(M, INGEST)
 				spawn(5)
 					reagents.trans_to(M, reagents.total_volume)
@@ -1561,8 +1561,8 @@
 
 	afterattack(obj/target, mob/user , flag)
 
-		if(target.is_open_container() == 1 && target.reagents)
-			if(!target.reagents.total_volume)
+		if (target.is_open_container() == 1 && target.reagents)
+			if (!target.reagents.total_volume)
 				user << "\red [target] is empty. Cant dissolve pill."
 				return
 			user << "\blue You dissolve the pill in [target]"
@@ -1598,7 +1598,7 @@
 	flags = FPRINT | OPENCONTAINER
 
 	attackby(var/obj/D, mob/user as mob)
-		if(istype(D, /obj/item/device/prox_sensor))
+		if (istype(D, /obj/item/device/prox_sensor))
 			var/obj/item/weapon/bucket_sensor/B = new /obj/item/weapon/bucket_sensor
 			B.loc = user
 			if (user.r_hand == D)
@@ -1659,30 +1659,30 @@
 
 	on_reagent_change(var/mob/user)
 		/*
-		if(reagents.total_volume)
+		if (reagents.total_volume)
 			icon_state = "beaker1"
 		else
 			icon_state = "beaker0"
 		*/
 		overlays = null
 
-		if(reagents.total_volume)
+		if (reagents.total_volume)
 			var/obj/overlay = new/obj
 			overlay.icon = 'beaker1.dmi'
 			var/percent = round((reagents.total_volume / volume) * 100)
 			switch(percent)
-				if(0 to 9)		overlay.icon_state = "-10"
-				if(10 to 24) 	overlay.icon_state = "10"
-				if(25 to 49)	overlay.icon_state = "25"
-				if(50 to 74)	overlay.icon_state = "50"
-				if(75 to 79)	overlay.icon_state = "75"
-				if(80 to 90)	overlay.icon_state = "80"
-				if(91 to 100)	overlay.icon_state = "100"
+				if (0 to 9)		overlay.icon_state = "-10"
+				if (10 to 24) 	overlay.icon_state = "10"
+				if (25 to 49)	overlay.icon_state = "25"
+				if (50 to 74)	overlay.icon_state = "50"
+				if (75 to 79)	overlay.icon_state = "75"
+				if (80 to 90)	overlay.icon_state = "80"
+				if (91 to 100)	overlay.icon_state = "100"
 
 			var/list/rgbcolor = list(0,0,0)
 			var/finalcolor
 			for(var/datum/reagent/re in reagents.reagent_list) // natural color mixing bullshit/algorithm
-				if(!finalcolor)
+				if (!finalcolor)
 					rgbcolor = GetColors(re.color)
 					finalcolor = re.color
 				else
@@ -1702,7 +1702,7 @@
 					// If you add brighter colors to it it'll eventually get lighter, though.
 
 			overlay.icon += finalcolor
-			if(user || !istype(src.loc, /turf))
+			if (user || !istype(src.loc, /turf))
 				overlay.layer = 30
 			overlays += overlay
 
@@ -1716,11 +1716,11 @@
 
 	on_reagent_change()
 		switch(src.reagents.total_volume)
-			if(0)
+			if (0)
 				icon_state = "blender_jug_e"
-			if(1 to 75)
+			if (1 to 75)
 				icon_state = "blender_jug_h"
-			if(76 to 100)
+			if (76 to 100)
 				icon_state = "blender_jug_f"
 
 /obj/item/weapon/reagent_containers/glass/large
@@ -1744,24 +1744,24 @@
 	on_reagent_change(var/mob/user)
 		overlays = null
 
-		if(reagents.total_volume)
+		if (reagents.total_volume)
 
 			var/obj/overlay = new/obj
 			overlay.icon = 'beaker2.dmi'
 			var/percent = round((reagents.total_volume / volume) * 100)
 			switch(percent)
-				if(0 to 9)		overlay.icon_state = "-10"
-				if(10 to 24) 	overlay.icon_state = "10"
-				if(25 to 49)	overlay.icon_state = "25"
-				if(50 to 74)	overlay.icon_state = "50"
-				if(75 to 79)	overlay.icon_state = "75"
-				if(80 to 90)	overlay.icon_state = "80"
-				if(91 to 100)	overlay.icon_state = "100"
+				if (0 to 9)		overlay.icon_state = "-10"
+				if (10 to 24) 	overlay.icon_state = "10"
+				if (25 to 49)	overlay.icon_state = "25"
+				if (50 to 74)	overlay.icon_state = "50"
+				if (75 to 79)	overlay.icon_state = "75"
+				if (80 to 90)	overlay.icon_state = "80"
+				if (91 to 100)	overlay.icon_state = "100"
 
 			var/list/rgbcolor = list(0,0,0)
 			var/finalcolor
 			for(var/datum/reagent/re in reagents.reagent_list) // natural color mixing bullshit/algorithm
-				if(!finalcolor)
+				if (!finalcolor)
 					rgbcolor = GetColors(re.color)
 					finalcolor = re.color
 				else
@@ -1781,7 +1781,7 @@
 					// If you add brighter colors to it it'll eventually get lighter, though.
 
 			overlay.icon += finalcolor
-			if(user || !istype(src.loc, /turf))
+			if (user || !istype(src.loc, /turf))
 				overlay.layer = 30
 			overlays += overlay
 
@@ -1798,7 +1798,7 @@
 
 	New()
 		..()
-		if(!icon_state)
+		if (!icon_state)
 			icon_state = "bottle[rand(1,20)]"
 
 /obj/item/weapon/reagent_containers/glass/bottle/inaprovaline
@@ -2097,24 +2097,24 @@
 	attack(mob/M as mob, mob/user as mob, def_zone)
 		var/datum/reagents/R = src.reagents
 
-		if(!R || !R.total_volume)
+		if (!R || !R.total_volume)
 			user << "\red None of [src] left, oh no!"
 			return 0
 
-		if(M == user)
+		if (M == user)
 			M << "\blue You swallow some of contents of the [src]."
-			if(reagents.total_volume)
+			if (reagents.total_volume)
 				reagents.reaction(M, INGEST)
 				spawn(5)
 					reagents.trans_to(M, 10)
 
 			playsound(M.loc,'drink.ogg', rand(10,50), 1)
 			return 1
-		else if( istype(M, /mob/living/carbon/human) )
+		else if ( istype(M, /mob/living/carbon/human) )
 
 			for(var/mob/O in viewers(world.view, user))
 				O.show_message("\red [user] attempts to feed [M] [src].", 1)
-			if(!do_mob(user, M)) return
+			if (!do_mob(user, M)) return
 			for(var/mob/O in viewers(world.view, user))
 				O.show_message("\red [user] feeds [M] [src].", 1)
 
@@ -2122,7 +2122,7 @@
 			user.attack_log += text("\[[time_stamp()]\] <font color='red'>Fed [src.name] by [M.name] ([M.ckey]) Reagents: \ref[reagents]</font>")
 
 
-			if(reagents.total_volume)
+			if (reagents.total_volume)
 				reagents.reaction(M, INGEST)
 				spawn(5)
 					reagents.trans_to(M, 10)
@@ -2135,13 +2135,13 @@
 		return
 
 	afterattack(obj/target, mob/user , flag)
-		if(istype(target, /obj/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
+		if (istype(target, /obj/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
 
-			if(!target.reagents.total_volume)
+			if (!target.reagents.total_volume)
 				user << "\red [target] is empty."
 				return
 
-			if(reagents.total_volume >= reagents.maximum_volume)
+			if (reagents.total_volume >= reagents.maximum_volume)
 				user << "\red [src] is full."
 				return
 
@@ -2149,54 +2149,54 @@
 			user << "\blue You fill [src] with [trans] units of the contents of [target]."
 
 		//Something like a glass or a food item. Player probably wants to transfer TO it.
-		else if(target.is_open_container() || istype(target, /obj/item/weapon/reagent_containers/food/snacks))
-			if(!reagents.total_volume)
+		else if (target.is_open_container() || istype(target, /obj/item/weapon/reagent_containers/food/snacks))
+			if (!reagents.total_volume)
 				user << "\red [src] is empty."
 				return
-			if(target.reagents.total_volume >= target.reagents.maximum_volume)
+			if (target.reagents.total_volume >= target.reagents.maximum_volume)
 				user << "\red you can't add anymore to [target]."
 				return
 			var/trans = src.reagents.trans_to(target, amount_per_transfer_from_this)
 			user << "\blue You transfer [trans] units of the condiment to [target]."
 
 	on_reagent_change()
-		if(icon_state == "saltshakersmall" || icon_state == "peppermillsmall")
+		if (icon_state == "saltshakersmall" || icon_state == "peppermillsmall")
 			return
-		if(reagents.reagent_list.len > 0)
+		if (reagents.reagent_list.len > 0)
 			switch(reagents.get_master_reagent_id())
-				if("ketchup")
+				if ("ketchup")
 					name = "Ketchup"
 					desc = "You feel more American already."
 					icon_state = "ketchup"
-				if("capsaicin")
+				if ("capsaicin")
 					name = "Hotsauce"
 					desc = "You can almost TASTE the stomach ulcers now!"
 					icon_state = "hotsauce"
-				if("enzyme")
+				if ("enzyme")
 					name = "Universal Enzyme"
 					desc = "Used in cooking various dishes."
 					icon_state = "enzyme"
-				if("soysauce")
+				if ("soysauce")
 					name = "Soy Sauce"
 					desc = "A salty soy-based flavoring."
 					icon_state = "soysauce"
-				if("frostoil")
+				if ("frostoil")
 					name = "Coldsauce"
 					desc = "Leaves the tongue numb in it's passage."
 					icon_state = "coldsauce"
-				if("sodiumchloride")
+				if ("sodiumchloride")
 					name = "Salt Shaker"
 					desc = "Salt. From space oceans, presumably."
 					icon_state = "saltshaker"
-				if("blackpepper")
+				if ("blackpepper")
 					name = "Pepper Mill"
 					desc = "Often used to flavor food or make people sneeze."
 					icon_state = "peppermillsmall"
-				if("cornoil")
+				if ("cornoil")
 					name = "Corn Oil"
 					desc = "A delicious oil used in cooking. Made from corn."
 					icon_state = "oliveoil"
-				if("sugar")
+				if ("sugar")
 					name = "Sugar"
 					desc = "Tastey space sugar!"
 				else
@@ -2426,7 +2426,7 @@
 		src.pixel_x = rand(-10.0, 10)
 		src.pixel_y = rand(-10.0, 10)
 	on_reagent_change()
-		if(reagents.total_volume)
+		if (reagents.total_volume)
 			icon_state = "water_cup"
 		else
 			icon_state = "water_cup_e"
@@ -2680,12 +2680,12 @@
 
 /obj/reagent_dispensers/fueltank/blob_act()
 	explosion(src.loc,0,1,5,7,10)
-	if(src)
+	if (src)
 		del(src)
 
 /obj/reagent_dispensers/fueltank/ex_act()
 	explosion(src.loc,-1,0,2)
-	if(src)
+	if (src)
 		del(src)
 
 /obj/reagent_dispensers/water_cooler
@@ -2748,89 +2748,89 @@
 	volume = 50
 
 	on_reagent_change()
-		/*if(reagents.reagent_list.len > 1 )
+		/*if (reagents.reagent_list.len > 1 )
 			icon_state = "glass_brown"
 			name = "Glass of Hooch"
 			desc = "Two or more drinks, mixed together."*/
-		/*else if(reagents.reagent_list.len == 1)
+		/*else if (reagents.reagent_list.len == 1)
 			for(var/datum/reagent/R in reagents.reagent_list)
 				switch(R.id)*/
 		if (reagents.reagent_list.len > 0)
 			//mrid = R.get_master_reagent_id()
 			switch(reagents.get_master_reagent_id())
-				if("beer")
+				if ("beer")
 					icon_state = "beerglass"
 					name = "Beer glass"
 					desc = "A freezing pint of beer"
-				if("beer2")
+				if ("beer2")
 					icon_state = "beerglass"
 					name = "Beer glass"
 					desc = "A freezing pint of beer"
-				if("ale")
+				if ("ale")
 					icon_state = "aleglass"
 					name = "Ale glass"
 					desc = "A freezing pint of delicious Ale"
-				if("milk")
+				if ("milk")
 					icon_state = "glass_white"
 					name = "Glass of milk"
 					desc = "White and nutritious goodness!"
-				if("cream")
+				if ("cream")
 					icon_state  = "glass_white"
 					name = "Glass of cream"
 					desc = "Ewwww..."
-				if("chocolate")
+				if ("chocolate")
 					icon_state  = "chocolateglass"
 					name = "Glass of chocolate"
 					desc = "Tasty"
-				if("lemon")
+				if ("lemon")
 					icon_state  = "lemonglass"
 					name = "Glass of lemon"
 					desc = "Sour..."
-				if("cola")
+				if ("cola")
 					icon_state  = "glass_brown"
 					name = "Glass of Space Cola"
 					desc = "A glass of refreshing Space Cola"
-				if("nuka_cola")
+				if ("nuka_cola")
 					icon_state = "nuka_colaglass"
 					name = "Nuka Cola"
 					desc = "Don't cry, Don't raise your eye, It's only nuclear wasteland"
-				if("orangejuice")
+				if ("orangejuice")
 					icon_state = "glass_orange"
 					name = "Glass of Orange juice"
 					desc = "Vitamins! Yay!"
-				if("tomatojuice")
+				if ("tomatojuice")
 					icon_state = "glass_red"
 					name = "Glass of Tomato juice"
 					desc = "Are you sure this is tomato juice?"
-				if("blood")
+				if ("blood")
 					icon_state = "glass_red"
 					name = "Glass of Tomato juice"
 					desc = "Are you sure this is tomato juice?"
-				if("limejuice")
+				if ("limejuice")
 					icon_state = "glass_green"
 					name = "Glass of Lime juice"
 					desc = "A glass of sweet-sour lime juice."
-				if("whiskey")
+				if ("whiskey")
 					icon_state = "whiskeyglass"
 					name = "Glass of whiskey"
 					desc = "The silky, smokey whiskey goodness inside the glass makes the drink look very classy."
-				if("gin")
+				if ("gin")
 					icon_state = "ginvodkaglass"
 					name = "Glass of gin"
 					desc = "A crystal clear glass of Griffeater gin."
-				if("vodka")
+				if ("vodka")
 					icon_state = "ginvodkaglass"
 					name = "Glass of vodka"
 					desc = "The glass contain wodka. Xynta."
-				if("goldschlager")
+				if ("goldschlager")
 					icon_state = "ginvodkaglass"
 					name = "Glass of goldschlager"
 					desc = "100 proof that teen girls will drink anything with gold in it."
-				if("wine")
+				if ("wine")
 					icon_state = "wineglass"
 					name = "Glass of wine"
 					desc = "A very classy looking drink."
-				if("cognac")
+				if ("cognac")
 					icon_state = "cognacglass"
 					name = "Glass of cognac"
 					desc = "Damn, you feel like some kind of French aristocrat just by holding this."
@@ -2838,312 +2838,312 @@
 					icon_state = "kahluaglass"
 					name = "Glass of RR coffee Liquor"
 					desc = "DAMN, THIS THING LOOKS ROBUST"
-				if("vermouth")
+				if ("vermouth")
 					icon_state = "vermouthglass"
 					name = "Glass of Vermouth"
 					desc = "You wonder why you're even drinking this straight."
-				if("tequilla")
+				if ("tequilla")
 					icon_state = "tequillaglass"
 					name = "Glass of Tequilla"
 					desc = "Now all that's missing is the weird colored shades!"
-				if("patron")
+				if ("patron")
 					icon_state = "patronglass"
 					name = "Glass of Patron"
 					desc = "Drinking patron in the bar, with all the subpar ladies."
-				if("rum")
+				if ("rum")
 					icon_state = "rumglass"
 					name = "Glass of Rum"
 					desc = "Now you want to Pray for a pirate suit, don't you?"
-				if("gintonic")
+				if ("gintonic")
 					icon_state = "gintonicglass"
 					name = "Gin and Tonic"
 					desc = "A mild but still great cocktail. Drink up, like a true Englishman."
-				if("whiskeycola")
+				if ("whiskeycola")
 					icon_state = "whiskeycolaglass"
 					name = "Whiskey Cola"
 					desc = "An innocent-looking mixture of cola and Whiskey. Delicious."
-				if("whiterussian")
+				if ("whiterussian")
 					icon_state = "whiterussianglass"
 					name = "White Russian"
 					desc = "A very nice looking drink. But that's just, like, your opinion, man."
-				if("screwdrivercocktail")
+				if ("screwdrivercocktail")
 					icon_state = "screwdriverglass"
 					name = "Screwdriver"
 					desc = "A simple, yet superb mixture of Vodka and orange juice. Just the thing for the tired engineer."
-				if("bloodymary")
+				if ("bloodymary")
 					icon_state = "bloodymaryglass"
 					name = "Bloody Mary"
 					desc = "Tomato juice, mixed with Vodka and a lil' bit of lime. Tastes like liquid murder."
-				if("martini")
+				if ("martini")
 					icon_state = "martiniglass"
 					name = "Classic Martini"
 					desc = "Damn, the bartender even stirred it, not shook it."
-				if("vodkamartini")
+				if ("vodkamartini")
 					icon_state = "martiniglass"
 					name = "Vodka martini"
 					desc ="A bastardisation of the classic martini. Still great."
-				if("gargleblaster")
+				if ("gargleblaster")
 					icon_state = "gargleblasterglass"
 					name = "Pan-Galactic Gargle Blaster"
 					desc = "Does... does this mean that Arthur and Ford are on the station? Oh joy."
-				if("bravebull")
+				if ("bravebull")
 					icon_state = "bravebullglass"
 					name = "Brave Bull"
 					desc = "Tequilla and Coffee liquor, brought together in a mouthwatering mixture. Drink up."
-				if("tequillasunrise")
+				if ("tequillasunrise")
 					icon_state = "tequillasunriseglass"
 					name = "Tequilla Sunrise"
 					desc = "Oh great, now you feel nostalgic about sunrises back on Terra..."
-				if("toxinsspecial")
+				if ("toxinsspecial")
 					icon_state = "toxinsspecialglass"
 					name = "Toxins Special"
 					desc = "Whoah, this thing is on FIRE"
-				if("beepskysmash")
+				if ("beepskysmash")
 					icon_state = "beepskysmashglass"
 					name = "Beepsky Smash"
 					desc = "Heavy, hot and strong. Just like the Iron fist of the LAW."
-				if("doctorsdelight")
+				if ("doctorsdelight")
 					icon_state = "doctorsdelightglass"
 					name = "Doctor's Delight"
 					desc = "A healthy mixture of juices, guaranteed to keep you healthy until the next toolboxing takes place."
-				if("manlydorf")
+				if ("manlydorf")
 					icon_state = "manlydorfglass"
 					name = "The Manly Dorf"
 					desc = "A manly concotion made from Ale and Beer. Intended for true men only."
-				if("irishcream")
+				if ("irishcream")
 					icon_state = "irishcreamglass"
 					name = "Irish Cream"
 					desc = "It's cream, mixed with whiskey. What else would you expect from the Irish?"
-				if("cubalibre")
+				if ("cubalibre")
 					icon_state = "cubalibreglass"
 					name = "Cuba Libre"
 					desc = "A classic mix of rum and cola."
-				if("irishcream")
+				if ("irishcream")
 					icon_state = "irishcreamglass"
 					name = "Irish Cream"
 					desc = "It's cream, mixed with whiskey. What else would you expect from the Irish?"
-				if("cubalibre")
+				if ("cubalibre")
 					icon_state = "cubalibreglass"
 					name = "Cuba Libre"
 					desc = "A classic mix of rum and cola."
-				if("b52")
+				if ("b52")
 					icon_state = "b52glass"
 					name = "B-52"
 					desc = "Kahlua, Irish Cream, and congac. You will get bombed."
-				if("atomicbomb")
+				if ("atomicbomb")
 					icon_state = "atomicbombglass"
 					name = "Atomic Bomb"
 					desc = "Nanotrasen cannot take legal responsibility for your actions after imbibing."
-				if("longislandicedtea")
+				if ("longislandicedtea")
 					icon_state = "longislandicedteaglass"
 					name = "Long Island Iced Tea"
 					desc = "The liquor cabinet, brought together in a delicious mix. Intended for middle-aged alcoholic women only."
-				if("threemileisland")
+				if ("threemileisland")
 					icon_state = "threemileislandglass"
 					name = "Three Mile Island Ice Tea"
 					desc = "A glass of this is sure to prevent a meltdown."
-				if("margarita")
+				if ("margarita")
 					icon_state = "margaritaglass"
 					name = "Margarita"
 					desc = "On the rocks with salt on the rim. Arriba~!"
-				if("blackrussian")
+				if ("blackrussian")
 					icon_state = "blackrussianglass"
 					name = "Black Russian"
 					desc = "For the lactose-intolerant. Still as classy as a White Russian."
-				if("vodkatonic")
+				if ("vodkatonic")
 					icon_state = "vodkatonicglass"
 					name = "Vodka and Tonic"
 					desc = "For when a gin and tonic isn't russian enough."
-				if("manhattan")
+				if ("manhattan")
 					icon_state = "manhattanglass"
 					name = "Manhattan"
 					desc = "The Detective's undercover drink of choice. He never could stomach gin..."
-				if("manhattan_proj")
+				if ("manhattan_proj")
 					icon_state = "proj_manhattanglass"
 					name = "Manhattan Project"
 					desc = "A scienitst drink of choice, for thinking how to blow up the station."
-				if("ginfizz")
+				if ("ginfizz")
 					icon_state = "ginfizzglass"
 					name = "Gin Fizz"
 					desc = "Refreshingly lemony, deliciously dry."
-				if("irishcoffee")
+				if ("irishcoffee")
 					icon_state = "irishcoffeeglass"
 					name = "Irish Coffee"
 					desc = "Coffee and alcohol. More fun than a Mimosa to drink in the morning."
-				if("hooch")
+				if ("hooch")
 					icon_state = "glass_brown2"
 					name = "Hooch"
 					desc = "You've really hit rock bottom now... your liver packed its bags and left last night."
-				if("whiskeysoda")
+				if ("whiskeysoda")
 					icon_state = "whiskeysodaglass2"
 					name = "Whiskey Soda"
 					desc = "Ultimate refreshment."
-				if("tonic")
+				if ("tonic")
 					icon_state = "glass_clear"
 					name = "Glass of Tonic Water"
 					desc = "Quinine tastes funny, but at least it'll keep that Space Malaria away."
-				if("sodawater")
+				if ("sodawater")
 					icon_state = "glass_clear"
 					name = "Glass of Soda Water"
 					desc = "Soda water. Why not make a scotch and soda?"
-				if("water")
+				if ("water")
 					icon_state = "glass_clear"
 					name = "Glass of Water"
 					desc = "The father of all refreshments."
-				if("spacemountainwind")
+				if ("spacemountainwind")
 					icon_state = "Space_mountain_wind_glass"
 					name = "Glass of Space Mountain Wind"
 					desc = "Space Mountain Wind. As you know, there are no mountains in space, only wind."
-				if("thirteenloko")
+				if ("thirteenloko")
 					icon_state = "thirteen_loko_glass"
 					name = "Glass of Thirteen Loko"
 					desc = "This is a glass of Thirteen Loko, it appears to be of the highest quality. The drink, not the glass"
-				if("dr_gibb")
+				if ("dr_gibb")
 					icon_state = "dr_gibb_glass"
 					name = "Glass of Dr. Gibb"
 					desc = "Dr. Gibb. Not as dangerous as the name might imply."
-				if("space_up")
+				if ("space_up")
 					icon_state = "space-up_glass"
 					name = "Glass of Space-up"
 					desc = "Space-up. It helps keep your cool."
-				if("moonshine")
+				if ("moonshine")
 					icon_state = "glass_clear"
 					name = "Moonshine"
 					desc = "You've really hit rock bottom now... your liver packed its bags and left last night."
-				if("soymilk")
+				if ("soymilk")
 					icon_state = "glass_white"
 					name = "Glass of soy milk"
 					desc = "White and nutritious soy goodness!"
-				if("berryjuice")
+				if ("berryjuice")
 					icon_state = "berryjuice"
 					name = "Glass of berry juice"
 					desc = "Berry juice. Or maybe its jam. Who cares?"
-				if("poisonberryjuice")
+				if ("poisonberryjuice")
 					icon_state = "poisonberryjuice"
 					name = "Glass of poison berry juice"
 					desc = "A glass of deadly juice."
-				if("carrotjuice")
+				if ("carrotjuice")
 					icon_state = "carrotjuice"
 					name = "Glass of  carrot juice"
 					desc = "It is just like a carrot but without crunching."
-				if("banana")
+				if ("banana")
 					icon_state = "banana"
 					name = "Glass of banana juice"
 					desc = "The raw essence of a banana. HONK"
-				if("bahama_mama")
+				if ("bahama_mama")
 					icon_state = "bahama_mama"
 					name = "Bahama Mama"
 					desc = "Tropic cocktail"
-				if("singulo")
+				if ("singulo")
 					icon_state = "singulo"
 					name = "Singulo"
 					desc = "A blue-space beverage."
-				if("alliescocktail")
+				if ("alliescocktail")
 					icon_state = "alliescocktail"
 					name = "Allies cocktail"
 					desc = "A drink made from your allies."
-				if("antifreeze")
+				if ("antifreeze")
 					icon_state = "antifreeze"
 					name = "Anti-freeze"
 					desc = "The ultimate refreshment."
-				if("barefoot")
+				if ("barefoot")
 					icon_state = "b&p"
 					name = "Barefoot"
 					desc = "Barefoot and pregnant"
-				if("demonsblood")
+				if ("demonsblood")
 					icon_state = "demonsblood"
 					name = "Demons Blood"
 					desc = "Just looking at this thing makes the hair at the back of your neck stand up."
-				if("booger")
+				if ("booger")
 					icon_state = "booger"
 					name = "Booger"
 					desc = "Ewww..."
 
-				/*if("snowwhite")  /// Dumbly-sprited drinks below. If your drink is on the list, shame on you --Agouri
+				/*if ("snowwhite")  /// Dumbly-sprited drinks below. If your drink is on the list, shame on you --Agouri
 					icon_state = "snowwhite"
 					name = "Snow White"
 					desc = "A cold refreshment."
-				if("aloe")
+				if ("aloe")
 					icon_state = "aloe"
 					name = "Aloe"
 					desc = "Very, very, very good."
-				if("andalusia")
+				if ("andalusia")
 					icon_state = "andalusia"
 					name = "Andalusia"
 					desc = "A nice, strange named drink."
-				if("sbiten")
+				if ("sbiten")
 					icon_state = "sbitenglass"
 					name = "Sbiten"
 					desc = "A spicy mix of Vodka and Spice. Very hot."
-				if("red_mead")
+				if ("red_mead")
 					icon_state = "red_meadglass"
 					name = "Red Mead"
 					desc = "A True Vikings Beverage, though its color is strange."
-				if("mead")
+				if ("mead")
 					icon_state = "meadglass"
 					name = "Mead"
 					desc = "A Vikings Beverage, though a cheap one."
-				if("iced_beer")
+				if ("iced_beer")
 					icon_state = "iced_beerglass"
 					name = "Iced Beer"
 					desc = "A beer so frosty, the air around it freezes."
-				if("grog")
+				if ("grog")
 					icon_state = "grogglass"
 					name = "Grog"
 					desc = "A fine and cepa drink for Space."
-				if("soy_latte")
+				if ("soy_latte")
 					icon_state = "soy_latte"
 					name = "Soy Latte"
 					desc = "A nice and refrshing beverage while you are reading."
-				if("cafe_latte")
+				if ("cafe_latte")
 					icon_state = "cafe_latte"
 					name = "Cafe Latte"
 					desc = "A nice, strong and refreshing beverage while you are reading."
-				if("acidspit")
+				if ("acidspit")
 					icon_state = "acidspitglass"
 					name = "Acid Spit"
 					desc = "A drink from Nanotrasen. Made from live aliens."
-				if("amasec")
+				if ("amasec")
 					icon_state = "amasecglass"
 					name = "Amasec"
 					desc = "Always handy before COMBAT!!!"
-				if("neurotoxin")
+				if ("neurotoxin")
 					icon_state = "neurotoxinglass"
 					name = "Neurotoxin"
 					desc = "A drink that is guaranteed to knock you silly."
-				if("hippiesdelight")
+				if ("hippiesdelight")
 					icon_state = "hippiesdelightglass"
 					name = "Hippiesdelight"
 					desc = "A drink enjoyed by people during the 1960's."
-				if("bananahonk")
+				if ("bananahonk")
 					icon_state = "bananahonkglass"
 					name = "Banana Honk"
 					desc = "A drink from Clown Heaven."
-				if("silencer")
+				if ("silencer")
 					icon_state = "silencerglass"
 					name = "Silencer"
 					desc = "A drink from mime Heaven."
-				if("nothing")
+				if ("nothing")
 					icon_state = "nothing"
 					name = "Nothing"
 					desc = "Absolutely nothing."
-				if("devilskiss")
+				if ("devilskiss")
 					icon_state = "devilskiss"
 					name = "Devils Kiss"
 					desc = "Creepy time!"
-				if("changelingsting")
+				if ("changelingsting")
 					icon_state = "changelingsting"
 					name = "Changeling sting"
 					desc = "A stingy drink."
-				if("irishcarbomb")
+				if ("irishcarbomb")
 					icon_state = "irishcarbomb"
 					name = "Irish Car Bomb"
 					desc = "An irish car bomb."
-				if("syndicatebomb")
+				if ("syndicatebomb")
 					icon_state = "syndicatebomb"
 					name = "Syndicate Bomb"
 					desc = "A syndicate bomb."
-				if("erikasurprise")
+				if ("erikasurprise")
 					icon_state = "erikasurprise"
 					name = "Erika Surprise"
 					desc = "A surprise of Erika"*/
@@ -3184,7 +3184,7 @@
 	on_reagent_change()
 		if (reagents.reagent_list.len > 0)
 			switch(reagents.get_master_reagent_id())
-				if("metroid")
+				if ("metroid")
 					icon_state = "jar_metroid"
 					name = "metroid jam"
 					desc = "A jar of metroid jam. Delicious!"

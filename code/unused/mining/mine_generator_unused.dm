@@ -44,52 +44,52 @@
 
 /obj/mine_generator/proc/gererateTargetLoc()  //this proc determines where the next square-room will end.
 	switch(mineDirection)
-		if(1)
+		if (1)
 			randXParam = 0
 			randYParam = 4
-		if(2)
+		if (2)
 			randXParam = 1
 			randYParam = 3
-		if(3)
+		if (3)
 			randXParam = 2
 			randYParam = 2
-		if(4)
+		if (4)
 			randXParam = 3
 			randYParam = 1
-		if(5)
+		if (5)
 			randXParam = 4
 			randYParam = 0
-		if(6)
+		if (6)
 			randXParam = 3
 			randYParam = -1
-		if(7)
+		if (7)
 			randXParam = 2
 			randYParam = -2
-		if(8)
+		if (8)
 			randXParam = 1
 			randYParam = -3
-		if(9)
+		if (9)
 			randXParam = 0
 			randYParam = -4
-		if(10)
+		if (10)
 			randXParam = -1
 			randYParam = -3
-		if(11)
+		if (11)
 			randXParam = -2
 			randYParam = -2
-		if(12)
+		if (12)
 			randXParam = -3
 			randYParam = -1
-		if(13)
+		if (13)
 			randXParam = -4
 			randYParam = 0
-		if(14)
+		if (14)
 			randXParam = -3
 			randYParam = 1
-		if(15)
+		if (15)
 			randXParam = -2
 			randYParam = 2
-		if(16)
+		if (16)
 			randXParam = -1
 			randYParam = 3
 	target_loc = last_loc
@@ -102,37 +102,37 @@
 	if (randYParam < 0)
 		target_loc = locate(target_loc.x,target_loc.y-rand(-randXParam),src.z)
 	if (mineDirection == 1 || mineDirection == 5 || mineDirection == 9 || mineDirection == 13) //if N,S,E,W, turn quickly
-		if(prob(50))
+		if (prob(50))
 			mineDirection += 2
 		else
 			mineDirection -= 2
-			if(mineDirection < 1)
+			if (mineDirection < 1)
 				mineDirection += 16
 	else
-		if(prob(50))
-			if(prob(50))
+		if (prob(50))
+			if (prob(50))
 				mineDirection += 1
 			else
 				mineDirection -= 1
-				if(mineDirection < 1)
+				if (mineDirection < 1)
 					mineDirection += 16
 	return
 
 
 /obj/mine_generator/proc/fillWithAsteroids()
 
-	if(last_loc)
+	if (last_loc)
 		start_loc = last_loc
 
-	if(start_loc && target_loc)
+	if (start_loc && target_loc)
 		var/x1
 		var/y1
 
 		var/turf/line_start = start_loc
 		var/turf/column = line_start
 
-		if(start_loc.x <= target_loc.x)
-			if(start_loc.y <= target_loc.y)                                 //GOING NORTH-EAST
+		if (start_loc.x <= target_loc.x)
+			if (start_loc.y <= target_loc.y)                                 //GOING NORTH-EAST
 				for(y1 = start_loc.y; y1 <= target_loc.y; y1++)
 					for(x1 = start_loc.x; x1 <= target_loc.x; x1++)
 						new/turf/simulated/floor/plating/airless/asteroid(column)
@@ -151,7 +151,7 @@
 				last_loc = target_loc
 				return
 		else
-			if(start_loc.y <= target_loc.y)                                 //GOING SOUTH-EAST
+			if (start_loc.y <= target_loc.y)                                 //GOING SOUTH-EAST
 				for(y1 = start_loc.y; y1 <= target_loc.y; y1++)
 					for(x1 = start_loc.x; x1 >= target_loc.x; x1--)
 						new/turf/simulated/floor/plating/airless/asteroid(column)

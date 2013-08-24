@@ -91,7 +91,7 @@
 
 	proc/set_attack()
 		state = 1
-		if(path_idle.len) path_idle = new/list()
+		if (path_idle.len) path_idle = new/list()
 		trg_idle = null
 
 	proc/set_idle()

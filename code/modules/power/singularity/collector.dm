@@ -15,8 +15,8 @@
 		locked = 0
 
 	process()
-		if(P)
-			if(P.air_contents.toxins <= 0)
+		if (P)
+			if (P.air_contents.toxins <= 0)
 				P.air_contents.toxins = 0
 				eject()
 			else
@@ -25,28 +25,28 @@
 
 
 	attack_hand(mob/user as mob)
-		if(anchored)
-			if(!src.locked || istype(user, /mob/living/silicon))
+		if (anchored)
+			if (!src.locked || istype(user, /mob/living/silicon))
 				toggle_power()
 				user.visible_message("[user.name] turns the [src.name] [active? "on":"off"].", \
 				"You turn the [src.name] [active? "on":"off"].")
 				return
 			else
-				if(src.locked)
+				if (src.locked)
 					user << "\red The controls are locked."
 					return
 	..()
 
 
 	attackby(obj/item/W, mob/user)
-		if(istype(W, /obj/item/device/analyzer))
+		if (istype(W, /obj/item/device/analyzer))
 			user << "\blue The [W.name] detects that [last_power]W were recently produced."
 			return 1
-		else if(istype(W, /obj/item/weapon/tank/plasma))
-			if(!src.anchored)
+		else if (istype(W, /obj/item/weapon/tank/plasma))
+			if (!src.anchored)
 				user << "The [src] needs to be secured to the floor first."
 				return 1
-			if(src.P)
+			if (src.P)
 				user << "\red There appears to already be a plasma tank loaded!"
 				return 1
 			src.P = W
@@ -55,12 +55,12 @@
 				user.client.screen -= W
 			user.u_equip(W)
 			updateicon()
-		else if(istype(W, /obj/item/weapon/crowbar))
-			if(P)
+		else if (istype(W, /obj/item/weapon/crowbar))
+			if (P)
 				eject()
 				return 1
-		else if(istype(W, /obj/item/weapon/wrench))
-			if(P)
+		else if (istype(W, /obj/item/weapon/wrench))
+			if (P)
 				user << "\red Remove the plasma tank first."
 				return 1
 			playsound(src.loc, 'Ratchet.ogg', 75, 1)
@@ -68,11 +68,11 @@
 			user.visible_message("[user.name] [anchored? "secures":"unsecures"] the [src.name].", \
 				"You [anchored? "secure":"undo"] the external bolts.", \
 				"You hear ratchet")
-			if(anchored)
+			if (anchored)
 				connect_to_network()
 			else
 				disconnect_from_network()
-		else if(istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
+		else if (istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
 			if (src.allowed(user))
 				src.locked = !src.locked
 				user << "Controls are now [src.locked ? "locked." : "unlocked."]"
@@ -86,7 +86,7 @@
 
 	ex_act(severity)
 		switch(severity)
-			if(2, 3)
+			if (2, 3)
 				eject()
 		return ..()
 
@@ -99,13 +99,13 @@
 			Z.loc = get_turf(src)
 			Z.layer = initial(Z.layer)
 			src.P = null
-			if(active)
+			if (active)
 				toggle_power()
 			else
 				updateicon()
 
 		receive_pulse(var/pulse_strength)
-			if(P && active)
+			if (P && active)
 				var/power_produced = 0
 				power_produced = P.air_contents.toxins*pulse_strength*20
 				add_avail(power_produced)
@@ -116,17 +116,17 @@
 
 		updateicon()
 			overlays = null
-			if(P)
+			if (P)
 				overlays += image('singularity.dmi', "ptank")
-			if(stat & (NOPOWER|BROKEN))
+			if (stat & (NOPOWER|BROKEN))
 				return
-			if(active)
+			if (active)
 				overlays += image('singularity.dmi', "on")
 
 
 		toggle_power()
 			active = !active
-			if(active)
+			if (active)
 				icon_state = "ca_on"
 				flick("ca_active", src)
 

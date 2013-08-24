@@ -52,21 +52,21 @@
 			if (src.target)
 				src.task = "chasing"
 				break
-			if((C.name == src.oldtarget_name) && (world.time < src.last_found + 100)) continue
-			if(istype(C, /mob/living/carbon/) && !src.atkcarbon) continue
-			if(istype(C, /mob/living/silicon/) && !src.atksilicon) continue
-			if(C.health < 0) continue
-			if(istype(C, /mob/living/carbon/) && src.atkcarbon)
-				if(C:mind)
-					if(C:mind:special_role == "H.I.V.E")
+			if ((C.name == src.oldtarget_name) && (world.time < src.last_found + 100)) continue
+			if (istype(C, /mob/living/carbon/) && !src.atkcarbon) continue
+			if (istype(C, /mob/living/silicon/) && !src.atksilicon) continue
+			if (C.health < 0) continue
+			if (istype(C, /mob/living/carbon/) && src.atkcarbon)
+				if (C:mind)
+					if (C:mind:special_role == "H.I.V.E")
 						continue
 				src.attack = 1
-			if(istype(C, /mob/living/silicon/) && src.atksilicon)
-				if(C:mind)
-					if(C:mind:special_role == "H.I.V.E")
+			if (istype(C, /mob/living/silicon/) && src.atksilicon)
+				if (C:mind)
+					if (C:mind:special_role == "H.I.V.E")
 						continue
 				src.attack = 1
-			if(src.attack)
+			if (src.attack)
 				T = C
 				break
 
@@ -74,30 +74,30 @@
 			if (src.target)
 				src.task = "chasing"
 				break
-			if((C.name == src.oldtarget_name) && (world.time < src.last_found + 100)) continue
+			if ((C.name == src.oldtarget_name) && (world.time < src.last_found + 100)) continue
 			src.attack = 1
-			if(src.attack)
+			if (src.attack)
 				T = C
 				break
 
 
-		if(!src.attack)
+		if (!src.attack)
 			for(var/obj/critter/C in view(src.seekrange,src))
-				if(istype(C, /obj/critter) && !src.atkcritter) continue
-				if(istype(C, /obj/mecha) && !src.atkmech) continue
-				if(C.health <= 0) continue
-				if(istype(C, /obj/critter) && src.atkcritter)
-					if((istype(C, /obj/critter/hivebot) && !src.atksame) || (C == src))	continue
+				if (istype(C, /obj/critter) && !src.atkcritter) continue
+				if (istype(C, /obj/mecha) && !src.atkmech) continue
+				if (C.health <= 0) continue
+				if (istype(C, /obj/critter) && src.atkcritter)
+					if ((istype(C, /obj/critter/hivebot) && !src.atksame) || (C == src))	continue
 					src.attack = 1
-				if(istype(C, /obj/mecha) && src.atkmech) src.attack = 1
-				if(src.attack)
+				if (istype(C, /obj/mecha) && src.atkmech) src.attack = 1
+				if (src.attack)
 					T = C
 					break
 
-		if(src.attack)
+		if (src.attack)
 			src.target = T
 			src.oldtarget_name = T:name
-			if(src.ranged)
+			if (src.ranged)
 				OpenFire(T)
 				return
 			src.task = "chasing"
@@ -111,7 +111,7 @@
 			O.show_message("\red <b>[src]</b> fires at [src.target]!", 1)
 
 		var/tturf = get_turf(target)
-		if(rapid)
+		if (rapid)
 			spawn(1)
 				Shoot(tturf, src.loc, src)
 			spawn(4)
@@ -129,13 +129,13 @@
 
 
 	Shoot(var/target, var/start, var/user, var/bullet = 0)
-		if(target == start)
+		if (target == start)
 			return
 
 		var/obj/item/projectile/hivebotbullet/A = new /obj/item/projectile/hivebotbullet(user:loc)
 		playsound(user, 'Gunshot.ogg', 100, 1)
 
-		if(!A)	return
+		if (!A)	return
 
 		if (!istype(target, /turf))
 			del(A)
@@ -211,7 +211,7 @@
 		for(var/mob/O in viewers(src, null))
 			O.show_message("\red <B>The [src] warps in!</B>", 1)
 		playsound(src.loc, 'EMPulse.ogg', 25, 1)
-		if(auto_spawn)
+		if (auto_spawn)
 			spawn(spawn_delay)
 				turn_on = 1
 				auto_spawn = 0
@@ -224,13 +224,13 @@
 		while(bot_amt > 0)
 			bot_amt--
 			switch(bot_type)
-				if("norm")
+				if ("norm")
 					new /obj/critter/hivebot(get_turf(src))
-				if("range")
+				if ("range")
 					new /obj/critter/hivebot/range(get_turf(src))
-				if("rapid")
+				if ("rapid")
 					new /obj/critter/hivebot/rapid(get_turf(src))
-				if("borg")
+				if ("borg")
 					new /obj/critter/hivebot/borg(get_turf(src))
 		spawn(100)
 			del(src)
@@ -238,11 +238,11 @@
 
 
 	process()
-		if((health < (max_health/2)) && (!turn_on))
-			//if(prob(2))//Might be a bit low, will mess with it likely
+		if ((health < (max_health/2)) && (!turn_on))
+			//if (prob(2))//Might be a bit low, will mess with it likely
 			//	turn_on = 1
 			turn_on = 1
-		if(turn_on == 1)
+		if (turn_on == 1)
 			warpbots()
 			turn_on = 2
 		..()
@@ -263,7 +263,7 @@
 		for(var/mob/O in viewers(src, null))
 			O.show_message("\red <B>The [src] warps in!</B>", 1)
 		playsound(src.loc, 'EMPulse.ogg', 25, 1)
-		if(auto_spawn)
+		if (auto_spawn)
 			spawn(spawn_delay)
 				turn_on = 1
 				auto_spawn = 0

@@ -75,16 +75,16 @@
 	..()
 
 	switch(fitting)
-		if("tube")
+		if ("tube")
 			brightness = rand(6,9)
-		if("bulb")
+		if ("bulb")
 			brightness = rand(3,6)
 	spawn(1)
 		update()
 
 /obj/machinery/light/Del()
 	var/area/A = get_area(src)
-	if(A)
+	if (A)
 		on = 0
 //		A.update_lights()
 	..()
@@ -94,18 +94,18 @@
 /obj/machinery/light/proc/update()
 
 	switch(status)		// set icon_states
-		if(LIGHT_OK)
+		if (LIGHT_OK)
 			icon_state = "[base_state][on]"
-		if(LIGHT_EMPTY)
+		if (LIGHT_EMPTY)
 			icon_state = "[base_state]-empty"
 			on = 0
-		if(LIGHT_BURNED)
+		if (LIGHT_BURNED)
 			icon_state = "[base_state]-burned"
 			on = 0
-		if(LIGHT_BROKEN)
+		if (LIGHT_BROKEN)
 			icon_state = "[base_state]-broken"
 			on = 0
-	if(!on)
+	if (!on)
 		use_power = 1
 	else
 		use_power = 2
@@ -115,23 +115,23 @@
 	sd_SetLuminosity(on * brightness)		// *DAL*
 
 	// if the state changed, inc the switching counter
-	if(oldlum != luminosity)
+	if (oldlum != luminosity)
 		switchcount++
 
 		// now check to see if the bulb is burned out
-		if(status == LIGHT_OK)
-			if(on && rigged)
+		if (status == LIGHT_OK)
+			if (on && rigged)
 				explode()
-			if( prob( min(60, switchcount*switchcount*0.01) ) )
+			if ( prob( min(60, switchcount*switchcount*0.01) ) )
 				status = LIGHT_BURNED
 				icon_state = "[base_state]-burned"
 				on = 0
 				sd_SetLuminosity(0)
 	active_power_usage = (luminosity * 20)
-	if(on != on_gs)
+	if (on != on_gs)
 		on_gs = on
 //		var/area/A = get_area(src)
-//		if(A)
+//		if (A)
 //			A.update_lights()
 
 
@@ -144,15 +144,15 @@
 // examine verb
 /obj/machinery/light/examine()
 	set src in oview(1)
-	if(usr && !usr.stat)
+	if (usr && !usr.stat)
 		switch(status)
-			if(LIGHT_OK)
+			if (LIGHT_OK)
 				usr << "[desc] It is turned [on? "on" : "off"]."
-			if(LIGHT_EMPTY)
+			if (LIGHT_EMPTY)
 				usr << "[desc] The [fitting] has been removed."
-			if(LIGHT_BURNED)
+			if (LIGHT_BURNED)
 				usr << "[desc] The [fitting] is burnt out."
-			if(LIGHT_BROKEN)
+			if (LIGHT_BROKEN)
 				usr << "[desc] The [fitting] has been smashed."
 
 
@@ -163,14 +163,14 @@
 
 
 	// attempt to insert light
-	if(istype(W, /obj/item/weapon/light))
-		if(status != LIGHT_EMPTY)
+	if (istype(W, /obj/item/weapon/light))
+		if (status != LIGHT_EMPTY)
 			user << "There is a [fitting] already inserted."
 			return
 		else
 			src.add_fingerprint(user)
 			var/obj/item/weapon/light/L = W
-			if(istype(L, light_type))
+			if (istype(L, light_type))
 				status = L.status
 				user << "You insert the [L.name]."
 				switchcount = L.switchcount
@@ -181,7 +181,7 @@
 				on = has_power()
 				update()
 				user.update_clothing()
-				if(on && rigged)
+				if (on && rigged)
 					explode()
 			else
 				user << "This type of light requires a [fitting]."
@@ -190,18 +190,18 @@
 		// attempt to break the light
 		//If xenos decide they want to smash a light bulb with a toolbox, who am I to stop them? /N
 
-	else if(status != LIGHT_BROKEN && status != LIGHT_EMPTY)
+	else if (status != LIGHT_BROKEN && status != LIGHT_EMPTY)
 
 
-		if(prob(1+W.force * 5))
+		if (prob(1+W.force * 5))
 
 			user << "You hit the light, and it smashes!"
 			for(var/mob/M in viewers(src))
-				if(M == user)
+				if (M == user)
 					continue
 				M.show_message("[user.name] smashed the light!", 3, "You hear a tinkle of breaking glass", 2)
-			if(on && (W.flags & CONDUCT))
-				//if(!user.mutations & COLD_RESISTANCE)
+			if (on && (W.flags & CONDUCT))
+				//if (!user.mutations & COLD_RESISTANCE)
 				if (prob(12))
 					electrocute_mob(user, get_area(src), src, 0.3)
 			broken()
@@ -210,13 +210,13 @@
 			user << "You hit the light!"
 
 	// attempt to stick weapon into light socket
-	else if(status == LIGHT_EMPTY)
+	else if (status == LIGHT_EMPTY)
 		user << "You stick \the [W] into the light socket!"
-		if(has_power() && (W.flags & CONDUCT))
+		if (has_power() && (W.flags & CONDUCT))
 			var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
 			s.set_up(3, 1, src)
 			s.start()
-			//if(!user.mutations & COLD_RESISTANCE)
+			//if (!user.mutations & COLD_RESISTANCE)
 			if (prob(75))
 				electrocute_mob(user, get_area(src), src, rand(0.7,1.0))
 
@@ -235,7 +235,7 @@
 
 // Aliens smash the bulb but do not get electrocuted./N
 /obj/machinery/light/attack_alien(mob/living/carbon/alien/humanoid/user)//So larva don't go breaking light bulbs.
-	if(status == LIGHT_EMPTY||status == LIGHT_BROKEN)
+	if (status == LIGHT_EMPTY||status == LIGHT_BROKEN)
 		user << "\green That object is useless to you."
 		return
 	else if (status == LIGHT_OK||status == LIGHT_BURNED)
@@ -250,25 +250,25 @@
 
 	add_fingerprint(user)
 
-	if(status == LIGHT_EMPTY)
+	if (status == LIGHT_EMPTY)
 		user << "There is no [fitting] in this light."
 		return
 
 	// make it burn hands if not wearing fire-insulated gloves
-	if(on)
+	if (on)
 		var/prot = 0
 		var/mob/living/carbon/human/H = user
 
-		if(istype(H))
+		if (istype(H))
 
-			if(H.gloves)
+			if (H.gloves)
 				var/obj/item/clothing/gloves/G = H.gloves
 
 				prot = (G.heat_transfer_coefficient < 0.5)	// *** TODO: better handling of glove heat protection
 		else
 			prot = 1
 
-		if(prot > 0 || (user.mutations & COLD_RESISTANCE))
+		if (prot > 0 || (user.mutations & COLD_RESISTANCE))
 			user << "You remove the light [fitting]"
 		else
 			user << "You try to remove the light [fitting], but you burn your hand on it!"
@@ -288,7 +288,7 @@
 	L.brightness = src.brightness
 	L.loc = usr
 	L.layer = 20
-	if(user.hand)
+	if (user.hand)
 		user.l_hand = L
 	else
 		user.r_hand = L
@@ -308,12 +308,12 @@
 // break the light and make sparks if was on
 
 /obj/machinery/light/proc/broken()
-	if(status == LIGHT_EMPTY)
+	if (status == LIGHT_EMPTY)
 		return
 
-	if(status == LIGHT_OK || status == LIGHT_BURNED)
+	if (status == LIGHT_OK || status == LIGHT_BURNED)
 		playsound(src.loc, 'Glasshit.ogg', 75, 1)
-	if(on)
+	if (on)
 		var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
 		s.set_up(3, 1, src)
 		s.start()
@@ -325,13 +325,13 @@
 
 /obj/machinery/light/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			if (prob(75))
 				broken()
-		if(3.0)
+		if (3.0)
 			if (prob(50))
 				broken()
 	return
@@ -339,7 +339,7 @@
 //blob effect
 
 /obj/machinery/light/blob_act()
-	if(prob(75))
+	if (prob(75))
 		broken()
 
 
@@ -350,7 +350,7 @@
 
 /obj/machinery/light/process()
 	return
-//	if(on)
+//	if (on)
 //		use_power(luminosity * LIGHTING_POWER_FACTOR, LIGHT)
 
 // called when area power state changes
@@ -365,7 +365,7 @@
 // called when on fire
 
 /obj/machinery/light/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
-	if(prob(max(0, exposed_temperature - 673)))   //0% at <400C, 100% at >500C
+	if (prob(max(0, exposed_temperature - 673)))   //0% at <400C, 100% at >500C
 		broken()
 
 // explode the light
@@ -390,7 +390,7 @@
 
 /obj/machinery/light/lamp/attack_hand(mob/user)
 
-	if(user.a_intent == "grab")
+	if (user.a_intent == "grab")
 		..()	// do standard hand attack
 	else
 		switchon = !switchon
@@ -462,13 +462,13 @@
 /obj/item/weapon/light
 	proc/update()
 		switch(status)
-			if(LIGHT_OK)
+			if (LIGHT_OK)
 				icon_state = base_state
 				desc = "A replacement [name]."
-			if(LIGHT_BURNED)
+			if (LIGHT_BURNED)
 				icon_state = "[base_state]-burned"
 				desc = "A burnt-out [name]."
-			if(LIGHT_BROKEN)
+			if (LIGHT_BROKEN)
 				icon_state = "[base_state]-broken"
 				desc = "A broken [name]."
 
@@ -476,9 +476,9 @@
 /obj/item/weapon/light/New()
 	..()
 	switch(name)
-		if("light tube")
+		if ("light tube")
 			brightness = rand(6,9)
-		if("light bulb")
+		if ("light bulb")
 			brightness = rand(4,6)
 	update()
 
@@ -487,12 +487,12 @@
 // if a syringe, can inject plasma to make it explode
 /obj/item/weapon/light/attackby(var/obj/item/I, var/mob/user)
 	..()
-	if(istype(I, /obj/item/weapon/reagent_containers/syringe))
+	if (istype(I, /obj/item/weapon/reagent_containers/syringe))
 		var/obj/item/weapon/reagent_containers/syringe/S = I
 
 		user << "You inject the solution into the [src]."
 
-		if(S.reagents.has_reagent("plasma", 5))
+		if (S.reagents.has_reagent("plasma", 5))
 
 			rigged = 1
 
@@ -506,12 +506,12 @@
 // now only shatter if the intent was harm
 
 /obj/item/weapon/light/afterattack(atom/target, mob/user)
-	if(istype(target, /obj/machinery/light))
+	if (istype(target, /obj/machinery/light))
 		return
-	if(user.a_intent != "hurt")
+	if (user.a_intent != "hurt")
 		return
 
-	if(status == LIGHT_OK || status == LIGHT_BURNED)
+	if (status == LIGHT_OK || status == LIGHT_BURNED)
 		user << "The [name] shatters!"
 		status = LIGHT_BROKEN
 		force = 5

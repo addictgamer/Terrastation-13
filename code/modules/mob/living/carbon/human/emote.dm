@@ -62,7 +62,7 @@
 			message = "<B>[src]</B> [input]"
 
 		if ("me")
-			if(!(message))
+			if (!(message))
 				return
 			else
 				message = "<B>[src]</B> [message]"
@@ -312,7 +312,7 @@
 				message = "<B>[src]</B> raises a hand."
 			m_type = 1
 
-		if("shake")
+		if ("shake")
 			message = "<B>[src]</B> shakes \his head."
 			m_type = 1
 
@@ -389,7 +389,7 @@
 			message = "<B>[src]</B> collapses!"
 			m_type = 2
 
-		if("hug")
+		if ("hug")
 			m_type = 1
 			if (!src.restrained())
 				var/M = null
@@ -424,7 +424,7 @@
 					else
 						message = "<B>[src]</B> holds out \his hand to [M]."
 
-		if("daps")
+		if ("daps")
 			m_type = 1
 			if (!src.restrained())
 				var/M = null

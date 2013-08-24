@@ -16,13 +16,13 @@ mob/new_player
 		//Next line is commented out because seem it does nothing helpful and on the other hand it calls mob/new_player/Move() to EACH turf in the world. --rastaf0
 		//..()
 
-		if(!preferences)
+		if (!preferences)
 			preferences = new
 
 		src << browse(rules, "window=rules;size=480x320")
 		src << browse(space_law, "window=space_law;size=480x320")
 
-		if(!mind)
+		if (!mind)
 			mind = new
 			mind.key = key
 			mind.current = src
@@ -32,13 +32,13 @@ mob/new_player
 		sight |= SEE_TURFS
 		var/list/watch_locations = list()
 		for(var/obj/landmark/landmark in world)
-			if(landmark.tag == "landmark*new_player")
+			if (landmark.tag == "landmark*new_player")
 				watch_locations += landmark.loc
 
-		if(watch_locations.len>0)
+		if (watch_locations.len>0)
 			loc = pick(watch_locations)
 
-		if(!preferences.savefile_load(src, 0))
+		if (!preferences.savefile_load(src, 0))
 			preferences.ShowChoices(src)
 			if (!client.changes)
 				changes()
@@ -101,7 +101,7 @@ mob/new_player
 	Logout()
 		ready = 0
 		..()
-		if(!spawning)//Here so that if they are spawning and log out, the other procs can play out and they will have a mob to come back to.
+		if (!spawning)//Here so that if they are spawning and log out, the other procs can play out and they will have a mob to come back to.
 			key = null//We null their key before deleting the mob, so they are properly kicked out.
 			del(src)
 		return
@@ -128,8 +128,8 @@ mob/new_player
 			output += "[preferences.occupation[3]]<hr>"*/
 
 			output += "<br><a href='byond://?src=\ref[src];show_preferences=1'>Setup Character</A><BR><BR>"
-			if(!ticker || ticker.current_state <= GAME_STATE_PREGAME)
-				if(!ready)
+			if (!ticker || ticker.current_state <= GAME_STATE_PREGAME)
+				if (!ready)
 					output += "<a href='byond://?src=\ref[src];ready=1'>Declare Ready</A><BR>"
 				else
 					output += "<b>You are ready</b> (<a href='byond://?src=\ref[src];ready=2'>Cancel</A>)<BR>"
@@ -146,48 +146,48 @@ mob/new_player
 		..()
 
 		statpanel("Game")
-		if(client.statpanel=="Game" && ticker)
-			if(ticker.hide_mode)
+		if (client.statpanel=="Game" && ticker)
+			if (ticker.hide_mode)
 				stat("Game Mode:", "Secret")
 			else
 				stat("Game Mode:", "[master_mode]")
 
-			if((ticker.current_state == GAME_STATE_PREGAME) && going)
+			if ((ticker.current_state == GAME_STATE_PREGAME) && going)
 				stat("Time To Start:", ticker.pregame_timeleft)
-			if((ticker.current_state == GAME_STATE_PREGAME) && !going)
+			if ((ticker.current_state == GAME_STATE_PREGAME) && !going)
 				stat("Time To Start:", "DELAYED")
 
 		statpanel("Lobby")
-		if(client.statpanel=="Lobby" && ticker)
-			if(ticker.current_state == GAME_STATE_PREGAME)
+		if (client.statpanel=="Lobby" && ticker)
+			if (ticker.current_state == GAME_STATE_PREGAME)
 				for(var/mob/new_player/player in world)
 					stat("[player.key]", (player.ready)?("(Playing)"):(null))
 
 	Topic(href, href_list[])
-		if(href_list["show_preferences"])
+		if (href_list["show_preferences"])
 			preferences.ShowChoices(src)
 			return 1
 
-		if(href_list["ready"])
+		if (href_list["ready"])
 			if (!src.client.authenticated)
 				src << "You are not authorized to enter the game."
 				return
 
-			if(!ready)
+			if (!ready)
 				ready = 1
 			else
 				ready = 0
 
-		if(href_list["refresh"])
+		if (href_list["refresh"])
 			src << browse(null, "window=playersetup") //closes the player setup window
 			new_player_panel_proc()
 
-		if(href_list["observe"])
+		if (href_list["observe"])
 			if (!usr.client.authenticated)
 				src << "You are not authorized to enter the game."
 				return
 
-			if(alert(src,"Are you sure you wish to observe? You will not be able to play this round!","Player Setup","Yes","No") == "Yes")
+			if (alert(src,"Are you sure you wish to observe? You will not be able to play this round!","Player Setup","Yes","No") == "Yes")
 				var/mob/dead/observer/observer = new()
 
 				spawning = 1
@@ -197,7 +197,7 @@ mob/new_player
 				src << "\blue Now teleporting."
 				observer.loc = O.loc
 				observer.key = key
-				if(preferences.be_random_name)
+				if (preferences.be_random_name)
 					preferences.randomize_name()
 				observer.name = preferences.real_name
 				observer.real_name = observer.name
@@ -205,10 +205,10 @@ mob/new_player
 				del(src)
 				return 1
 
-		if(href_list["late_join"])
+		if (href_list["late_join"])
 			LateChoices()
 
-		if(href_list["SelectedJob"])
+		if (href_list["SelectedJob"])
 			if (!usr.client.authenticated)
 				src << "You are not authorized to enter the game."
 				return
@@ -283,31 +283,31 @@ mob/new_player
 				if ("32")
 					AttemptLateSpawn("Cyborg", 1000)
 
-		if(!ready && href_list["preferences"])
+		if (!ready && href_list["preferences"])
 			preferences.process_link(src, href_list)
-		else if(!href_list["late_join"])
+		else if (!href_list["late_join"])
 			new_player_panel()
 
 	proc/IsJobAvailable(rank, maxAllowed)
-		if(countJob(rank) < maxAllowed && !jobban_isbanned(src,rank))
+		if (countJob(rank) < maxAllowed && !jobban_isbanned(src,rank))
 			return 1
 		else
 			return 0
 
 	proc/AttemptLateSpawn(rank, maxAllowed)
-		if(IsJobAvailable(rank, maxAllowed))
+		if (IsJobAvailable(rank, maxAllowed))
 			var/mob/living/carbon/human/character = create_character()
 			var/icon/char_icon = getFlatIcon(character,0)//We're creating out own cache so it's not needed.
 			if (character)
 				character.Equip_Rank(rank, joined_late=1)
-				if(character.mind)
-					if(character.mind.assigned_role != "Cyborg")
+				if (character.mind)
+					if (character.mind.assigned_role != "Cyborg")
 						ManifestLateSpawn(character,char_icon)
-				if(ticker)
+				if (ticker)
 					character.loc = pick(latejoin)
 					AnnounceArrival(character, rank)
-					if(character.mind)
-						if(character.mind.assigned_role == "Cyborg")
+					if (character.mind)
+						if (character.mind.assigned_role == "Cyborg")
 							character.Robotize()
 						else//Adds late joiners to minds so they can be linked to objectives.
 							ticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.
@@ -323,8 +323,8 @@ mob/new_player
 					ailist += A
 			if (ailist.len)
 				var/mob/living/silicon/ai/announcer = pick(ailist)
-				if(character.mind)
-					if((character.mind.assigned_role != "Cyborg") && (character.mind.special_role != "MODE"))
+				if (character.mind)
+					if ((character.mind.assigned_role != "Cyborg") && (character.mind.special_role != "MODE"))
 						announcer.say("[character.real_name] has signed up as [rank].")
 
 
@@ -512,7 +512,7 @@ mob/new_player
 				if (src.client.key == "addictgamer" || src.client.key == "Addictgamer") //Not sure which capitalization it looks for.
 					world << "\red GAYLORD IS HERE. GAY."
 					gaylord = 1
-		if(mind)
+		if (mind)
 			mind.transfer_to(new_character)
 			mind.original = new_character
 

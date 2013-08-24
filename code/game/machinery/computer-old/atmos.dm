@@ -10,13 +10,13 @@ Atmos alert computer
 /obj/machinery/computer/station_alert/attack_ai(mob/user)
 	add_fingerprint(user)
 
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		return
 	interact(user)
 
 /obj/machinery/computer/station_alert/attack_hand(mob/user)
 	add_fingerprint(user)
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		return
 	interact(user)
 
@@ -45,12 +45,12 @@ Atmos alert computer
 	onclose(user, "alerts")
 
 /obj/machinery/computer/station_alert/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	return
 
 /obj/machinery/computer/station_alert/proc/triggerAlarm(var/class, area/A, var/O, var/alarmsource)
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		return
 	var/list/L = src.alarms[class]
 	for (var/I in L)
@@ -72,7 +72,7 @@ Atmos alert computer
 	return 1
 
 /obj/machinery/computer/station_alert/proc/cancelAlarm(var/class, area/A as area, obj/origin)
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		return
 	var/list/L = src.alarms[class]
 	var/cleared = 0
@@ -88,14 +88,14 @@ Atmos alert computer
 	return !cleared
 
 /obj/machinery/computer/station_alert/process()
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		icon_state = "atmos0"
 		return
 	var/active_alarms = 0
 	for (var/cat in src.alarms)
 		var/list/L = src.alarms[cat]
-		if(L.len) active_alarms = 1
-	if(active_alarms)
+		if (L.len) active_alarms = 1
+	if (active_alarms)
 		icon_state = "alert:2"
 	else
 		icon_state = "alert:0"

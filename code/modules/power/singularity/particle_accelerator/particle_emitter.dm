@@ -23,25 +23,25 @@
 
 	proc
 		set_delay(var/delay)
-			if(delay && delay >= 0)
+			if (delay && delay >= 0)
 				src.fire_delay = delay
 				return 1
 			return 0
 
 
 		emit_particle(var/strength = 0)
-			if((src.last_shot + src.fire_delay) <= world.time)
+			if ((src.last_shot + src.fire_delay) <= world.time)
 				src.last_shot = world.time
 				var/obj/accelerated_particle/A = null
 				var/turf/T = get_step(src,dir)
 				switch(strength)
-					if(0)
+					if (0)
 						A = new/obj/accelerated_particle/weak(T, dir)
-					if(1)
+					if (1)
 						A = new/obj/accelerated_particle(T, dir)
-					if(2)
+					if (2)
 						A = new/obj/accelerated_particle/strong(T, dir)
-				if(A)
+				if (A)
 					A.dir = src.dir
 					return 1
 			return 0

@@ -934,11 +934,11 @@
 	if (istype(O, /obj/item/device/analyzer/plant_analyzer))
 		user << "This is a \blue [name]"
 		switch(plant_type)
-			if(0)
+			if (0)
 				user << "- Plant type: \blue Normal plant"
-			if(1)
+			if (1)
 				user << "- Plant type: \blue Weed"
-			if(2)
+			if (2)
 				user << "- Plant type: \blue Mushroom"
 		user << "- Potency: \blue [potency]"
 		user << "- Yield: \blue [yield]"
@@ -953,11 +953,11 @@
 	if (istype(O, /obj/item/device/analyzer/plant_analyzer))
 		user << "This is a \blue [name]"
 		switch(plant_type)
-			if(0)
+			if (0)
 				user << "- Plant type: \blue Normal plant"
-			if(1)
+			if (1)
 				user << "- Plant type: \blue Weed"
-			if(2)
+			if (2)
 				user << "- Plant type: \blue Mushroom"
 		user << "- Acid strength: \blue [potency]"
 		user << "- Yield: \blue [yield]"
@@ -1002,10 +1002,10 @@
 		bitesize = reagents.total_volume
 
 	/*attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon/cable_coil))
-			if(W:amount >= 5)
+		if (istype(W, /obj/item/weapon/cable_coil))
+			if (W:amount >= 5)
 				W:amount -= 5
-				if(!W:amount) del(W)
+				if (!W:amount) del(W)
 				user << "\blue You add cable to the potato."
 				new /obj/item/weapon/cell/potato(src.loc)
 				del(src)*/
@@ -1069,7 +1069,7 @@
 		bitesize = 1+round(reagents.total_volume / 2, 1)
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/glowberries/Del()
-	if(istype(loc,/mob))
+	if (istype(loc,/mob))
 		loc.sd_SetLuminosity(loc.luminosity - potency/5)
 	..()
 
@@ -1234,7 +1234,7 @@
 	icon_state = "banana"
 	item_state = "banana"
 	On_Consume()
-		if(!reagents.total_volume)
+		if (!reagents.total_volume)
 			var/mob/M = usr
 			var/obj/item/weapon/bananapeel/W = new /obj/item/weapon/bananapeel( M )
 			M << "\blue You peel the banana."
@@ -1311,7 +1311,7 @@
 		..()
 		reagents.add_reagent("nutriment", 1+round((potency / 10), 1))
 		bitesize = 1+round(reagents.total_volume / 2, 1)
-		if(istype(src.loc,/mob))
+		if (istype(src.loc,/mob))
 			pickup(src.loc)
 	lifespan = 120
 	endurance = 30
@@ -1322,7 +1322,7 @@
 	plant_type = 2
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/killertomato/attack_self(mob/user as mob)
-	if(istype(user.loc,/turf/space))
+	if (istype(user.loc,/turf/space))
 		return
 	new /obj/critter/killertomato(user.loc)
 
@@ -1468,7 +1468,7 @@
 		..()
 		reagents.add_reagent("nutriment", 2+round((potency / 10), 1))
 		bitesize = 1+round(reagents.total_volume / 2, 1)
-		if(istype(src.loc,/mob))
+		if (istype(src.loc,/mob))
 			pickup(src.loc)
 	lifespan = 120
 	endurance = 30
@@ -1479,7 +1479,7 @@
 	plant_type = 2
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/walkingmushroom/attack_self(mob/user as mob)
-	if(istype(user.loc,/turf/space))
+	if (istype(user.loc,/turf/space))
 		return
 	new /obj/critter/walkingmushroom(user.loc)
 
@@ -1505,7 +1505,7 @@
 	New()
 		..()
 		reagents.add_reagent("radium",1+round((potency / 20), 1))
-		if(istype(src.loc,/mob))
+		if (istype(src.loc,/mob))
 			pickup(src.loc)
 		else
 			src.sd_SetLuminosity(potency/10)
@@ -1518,7 +1518,7 @@
 	plant_type = 2
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/glowshroom/attack_self(mob/user as mob)
-	if(istype(user.loc,/turf/space))
+	if (istype(user.loc,/turf/space))
 		return
 	var/obj/glowshroom/planted = new /obj/glowshroom(user.loc)
 
@@ -1532,7 +1532,7 @@
 	user << "You plant the glowshroom."
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/glowshroom/Del()
-	if(istype(loc,/mob))
+	if (istype(loc,/mob))
 		loc.sd_SetLuminosity(loc.luminosity - potency/10)
 	..()
 
@@ -1583,7 +1583,7 @@
 	seed = "/obj/item/seeds/towermycelium"
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon/circular_saw))
+		if (istype(W, /obj/item/weapon/circular_saw))
 			W.visible_message(" \red <B>You make planks out of the [src]! </B>", 1)
 			for(var/i=0,i<2,i++)
 				new /obj/item/stack/sheet/wood (src.loc)

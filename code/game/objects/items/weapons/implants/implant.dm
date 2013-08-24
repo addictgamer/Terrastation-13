@@ -51,7 +51,7 @@
 
 
 	trigger(emote, mob/source as mob)
-		if(emote == activation_emote)
+		if (emote == activation_emote)
 			uplink.attack_self(source)
 		return
 
@@ -103,15 +103,15 @@ Implant Specifics:<BR>"}
 
 
 	trigger(emote, source as mob)
-		if(emote == "deathgasp")
+		if (emote == "deathgasp")
 			src.activate("death")
 		return
 
 
 	activate(var/cause)
-		if((!cause) || (!src.imp_in))	return 0
+		if ((!cause) || (!src.imp_in))	return 0
 		explosion(src, -1, 0, 1, 3, 0)//This might be a bit much, dono will have to see.
-		if(src.imp_in)
+		if (src.imp_in)
 			src.imp_in.gib()
 
 
@@ -148,17 +148,17 @@ the implant may become unstable and either pre-maturely inject the subject or si
 
 
 	trigger(emote, source as mob)
-		if(emote == "deathgasp")
+		if (emote == "deathgasp")
 			src.activate(10)
 		return
 
 
 	activate(var/cause)
-		if((!cause) || (!src.imp_in))	return 0
+		if ((!cause) || (!src.imp_in))	return 0
 		var/mob/living/carbon/R = src.imp_in
 		src.reagents.trans_to(R, cause)
 		R << "You hear a faint *beep*."
-		if(!src.reagents.total_volume)
+		if (!src.reagents.total_volume)
 			R << "You hear a faint click from your chest."
 			spawn(0)
 				del(src)
@@ -185,13 +185,13 @@ the implant may become unstable and either pre-maturely inject the subject or si
 
 
 	implanted(M as mob)
-		if(!istype(M, /mob/living/carbon/human))	return
+		if (!istype(M, /mob/living/carbon/human))	return
 		var/mob/living/carbon/human/H = M
-		if(H.mind in ticker.mode.head_revolutionaries)
+		if (H.mind in ticker.mode.head_revolutionaries)
 			for(var/mob/O in viewers(H, null))
 				O.show_message(text("\red [] seems to resist the implant.", H), 1)
 				return
-		else if(H.mind in ticker.mode:revolutionaries)
+		else if (H.mind in ticker.mode:revolutionaries)
 			ticker.mode:remove_revolutionary(H.mind)
 		H << "\blue You feel a surge of loyalty towards NanoTrasen."
 		return

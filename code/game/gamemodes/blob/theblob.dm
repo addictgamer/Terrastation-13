@@ -32,24 +32,24 @@
 
 	Del()
 		blobs -= src
-		if(active)
+		if (active)
 			active_blobs -= src
-		if(blobtype == "Node")
+		if (blobtype == "Node")
 			processing_objects.Remove(src)
 		..()
 
 
 	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-		if( (air_group && blobtype != "Shield") || (height==0))	return 1
-		if(istype(mover) && mover.checkpass(PASSBLOB))	return 1
+		if ( (air_group && blobtype != "Shield") || (height==0))	return 1
+		if (istype(mover) && mover.checkpass(PASSBLOB))	return 1
 		return 0
 
 
 	proc/check_mutations()//These could be their own objects I guess
-		if(blobtype != "Blob")	return
+		if (blobtype != "Blob")	return
 		desc = "This really needs a better sprite."
 		//Spaceeeeeeblobbb
-		if(istype(src.loc, /turf/space))
+		if (istype(src.loc, /turf/space))
 			active = 0
 			health += 40
 			brute_resist = 2
@@ -59,7 +59,7 @@
 			active_blobs -= src
 			return 1
 		//Commandblob
-		if((blobdebug == 1))
+		if ((blobdebug == 1))
 			active = 0
 			health += 80
 			name = "solid blob"
@@ -68,7 +68,7 @@
 			active_blobs -= src
 			processing_objects.Add(src)
 			return 1
-		if((blobdebug == 2))
+		if ((blobdebug == 2))
 			health += 20
 			name = "odd blob"
 			icon_state = "blob_factory"//needs a new sprite
@@ -86,16 +86,16 @@
 	proc/Life(var/pulse = 0)
 		set background = 1
 
-		if(check_mutations())
+		if (check_mutations())
 			return
 
-		if(blobtype == "Factory")
+		if (blobtype == "Factory")
 			for(var/i = 1 to 2)
 				new/obj/critter/blob(src.loc)
-				if(!pulse)
+				if (!pulse)
 					return
 
-		if(!prob(health))	return//Does not do much unless its healthy it seems, might want to change this later
+		if (!prob(health))	return//Does not do much unless its healthy it seems, might want to change this later
 
 		var/list/dirs = list(1,2,4,8)
 		for(var/i = 1 to 4)
@@ -104,8 +104,8 @@
 			dirs.Remove(dirn)
 			var/turf/T = get_step(src, dirn)
 
-			if((locate(/obj/blob) in T))
-				if(((src.blobtype == "Node") || (pulse > 0))&& (pulse < 15))
+			if ((locate(/obj/blob) in T))
+				if (((src.blobtype == "Node") || (pulse > 0))&& (pulse < 15))
 					var/obj/blob/E = (locate(/obj/blob) in T)
 					E.Life((pulse+1))
 					return//Pass it along and end
@@ -113,11 +113,11 @@
 
 
 			var/obj/blob/B = new /obj/blob(src.loc, min(src.health, 40))//Currently capping blob health at 40 because thats very strong
-			if(T.Enter(B,src) && !(locate(/obj/blob) in T))
+			if (T.Enter(B,src) && !(locate(/obj/blob) in T))
 				B.loc = T							// open cell, so expand
 			else
-				if(prob(90))						// closed cell, 10% chance to not expand
-					if(!locate(/obj/blob) in T)
+				if (prob(90))						// closed cell, 10% chance to not expand
+					if (!locate(/obj/blob) in T)
 						for(var/atom/A in T)			// otherwise explode contents of turf
 							A.blob_act()
 
@@ -128,26 +128,26 @@
 
 	ex_act(severity)
 		switch(severity)
-			if(1)
+			if (1)
 				src.health -= rand(90,150)
-			if(2)
+			if (2)
 				src.health -= rand(60,90)
 				src.update()
-			if(3)
+			if (3)
 				src.health -= rand(30,40)
 				src.update()
 
 
 	proc/update()//Needs to be updated with the types
-		if(health <= 0)
+		if (health <= 0)
 			playsound(src.loc, 'splat.ogg', 50, 1)
 			del(src)
 			return
-		if(blobtype != "Blob")	return
-		if(health <= 10)
+		if (blobtype != "Blob")	return
+		if (health <= 10)
 			icon_state = "blob_damaged"
 			return
-		if(health <= 20)
+		if (health <= 20)
 			icon_state = "blob_damaged2"
 			return
 
@@ -163,11 +163,11 @@
 		src.visible_message("\red <B>The [src.name] has been attacked with \the [W][(user ? " by [user]." : ".")]")
 		var/damage = 0
 		switch(W.damtype)
-			if("fire")
+			if ("fire")
 				damage = (W.force)
-				if(istype(W, /obj/item/weapon/weldingtool))
+				if (istype(W, /obj/item/weapon/weldingtool))
 					playsound(src.loc, 'Welder.ogg', 100, 1)
-			if("brute")
+			if ("brute")
 				damage = (W.force / max(src.brute_resist,1))
 
 		src.health -= damage
@@ -177,42 +177,42 @@
 
 /datum/station_state/proc/count()
 	for(var/turf/T in world)
-		if(T.z != 1)
+		if (T.z != 1)
 			continue
 
-		if(istype(T,/turf/simulated/floor))
-			if(!(T:burnt))
+		if (istype(T,/turf/simulated/floor))
+			if (!(T:burnt))
 				src.floor+=2
 			else
 				src.floor++
 
-		else if(istype(T, /turf/simulated/floor/engine))
+		else if (istype(T, /turf/simulated/floor/engine))
 			src.floor+=2
 
-		else if(istype(T, /turf/simulated/wall))
-			if(T:intact)
+		else if (istype(T, /turf/simulated/wall))
+			if (T:intact)
 				src.wall+=2
 			else
 				src.wall++
 
-		else if(istype(T, /turf/simulated/wall/r_wall))
-			if(T:intact)
+		else if (istype(T, /turf/simulated/wall/r_wall))
+			if (T:intact)
 				src.r_wall+=2
 			else
 				src.r_wall++
 
 	for(var/obj/O in world)
-		if(O.z != 1)
+		if (O.z != 1)
 			continue
 
-		if(istype(O, /obj/window))
+		if (istype(O, /obj/window))
 			src.window++
-		else if(istype(O, /obj/grille))
-			if(!O:destroyed)
+		else if (istype(O, /obj/grille))
+			if (!O:destroyed)
 				src.grille++
-		else if(istype(O, /obj/machinery/door))
+		else if (istype(O, /obj/machinery/door))
 			src.door++
-		else if(istype(O, /obj/machinery))
+		else if (istype(O, /obj/machinery))
 			src.mach++
 
 
@@ -241,13 +241,13 @@
 
 
 	proc/update_idle()			//put in stuff here to make it transform? Maybe when its down to around 5 health?
-		if(health<=0)
+		if (health<=0)
 			del(src)
 			return
-		if(health<4)
+		if (health<4)
 			icon_state = "blobc0"
 			return
-		if(health<10)
+		if (health<10)
 			icon_state = "blobb0"
 			return
 		icon_state = "blobidle0"

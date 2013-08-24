@@ -31,13 +31,13 @@
 	src.pixel_y = rand(-8, 8)
 	src.pixel_x = rand(-9, 9)
 	spawn(2)
-		if(src.info)
+		if (src.info)
 			src.overlays += "paper_words"
 		updateinfolinks()
 		return
 
 /obj/item/weapon/paper/update_icon()
-	if(src.info)
+	if (src.info)
 		src.overlays += "paper_words"
 	return
 
@@ -45,7 +45,7 @@
 	set src in oview(1)
 
 //	..()	//We don't want them to see the dumb "this is a paper" thing every time.
-	if(!(istype(usr, /mob/living/carbon/human) || istype(usr, /mob/dead/observer) || istype(usr, /mob/living/silicon)))
+	if (!(istype(usr, /mob/living/carbon/human) || istype(usr, /mob/dead/observer) || istype(usr, /mob/living/silicon)))
 		usr << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[stars(info)][stamps]</BODY></HTML>", "window=[name]")
 		onclose(usr, "[name]")
 	else
@@ -70,8 +70,8 @@
 /*
 /obj/item/weapon/paper/attack_self(mob/living/user as mob)
 	examine()
-	if(rigged && (Holiday == "April Fool's Day"))
-		if(spam_flag == 0)
+	if (rigged && (Holiday == "April Fool's Day"))
+		if (spam_flag == 0)
 			spam_flag = 1
 			playsound(src.loc, 'bikehorn.ogg', 50, 1)
 			spawn(20)
@@ -96,21 +96,21 @@
 	var/locid = 0
 	var/laststart = 1
 	var/textindex = 1
-	while(1) // I know this can cause infinite loops and fuck up the whole server, but the if(istart==0) should be safe as fuck
+	while(1) // I know this can cause infinite loops and fuck up the whole server, but the if (istart==0) should be safe as fuck
 		var/istart = 0
-		if(links)
+		if (links)
 			istart = findtext(info_links, "<span class=\"paper_field\">", laststart)
 		else
 			istart = findtext(info, "<span class=\"paper_field\">", laststart)
 
-		if(istart==0)
+		if (istart==0)
 			return // No field found with matching id
 
 		laststart = istart+1
 		locid++
-		if(locid == id)
+		if (locid == id)
 			var/iend = 1
-			if(links)
+			if (links)
 				iend = findtext(info_links, "</span>", istart)
 			else
 				iend = findtext(info, "</span>", istart)
@@ -119,7 +119,7 @@
 			textindex = iend
 			break
 
-	if(links)
+	if (links)
 		var/before = copytext(info_links, 1, textindex)
 		var/after = copytext(info_links, textindex)
 		info_links = before + text + after
@@ -160,7 +160,7 @@
 	t = dd_replacetext(t, "\[sign\]", "<font face=\"[signfont]\"><i>[user.real_name]</i></font>")
 	t = dd_replacetext(t, "\[field\]", "<span class=\"paper_field\"></span>")
 
-	if(!iscrayon)
+	if (!iscrayon)
 		t = dd_replacetext(t, "\[*\]", "<li>")
 		t = dd_replacetext(t, "\[hr\]", "<HR>")
 		t = dd_replacetext(t, "\[small\]", "<font size = \"1\">")
@@ -183,7 +183,7 @@
 	var/laststart = 1
 	while(1)
 		var/i = findtext(t, "<span class=\"paper_field\">", laststart)
-		if(i==0)
+		if (i==0)
 			break
 		laststart = i+1
 		fields++
@@ -217,14 +217,14 @@
 	if ((usr.stat || usr.restrained()))
 		return
 
-	if(href_list["write"])
+	if (href_list["write"])
 		var/id = href_list["write"]
 		var/t = strip_html_simple(input(usr, "What text do you wish to add to " + (id=="end" ? "the end of the paper" : "field "+id) + "?", "[name]", null),8192) as text
 
 		var/obj/item/i = usr.equipped() // Check to see if he still got that darn pen, also check if he's using a crayon or pen.
 		var/iscrayon = 0
-		if(!istype(i, /obj/item/weapon/pen))
-			if(!istype(i, /obj/item/toy/crayon))
+		if (!istype(i, /obj/item/weapon/pen))
+			if (!istype(i, /obj/item/toy/crayon))
 				return
 			iscrayon = 1
 
@@ -234,7 +234,7 @@
 
 		t = parsepencode(t, i, usr, iscrayon) // Encode everything from pencode to html
 
-		if(id!="end")
+		if (id!="end")
 			addtofield(text2num(id), t) // He wants to edit a field, let him.
 		else
 			info += t // Oh, he wants to edit to the end of the file, let him.
@@ -242,41 +242,41 @@
 
 		usr << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[info_links][stamps]</BODY></HTML>", "window=[name]") // Update the window
 
-		if(!overlays.Find("paper_words"))
+		if (!overlays.Find("paper_words"))
 			overlays += "paper_words"
 
 /obj/item/weapon/paper/attackby(obj/item/weapon/P as obj, mob/user as mob)
 	..()
 	var/clown = 0
-	if(user.mind && (user.mind.assigned_role == "Clown"))
+	if (user.mind && (user.mind.assigned_role == "Clown"))
 		clown = 1
 
 	if (istype(P, /obj/item/weapon/pen) || istype(P, /obj/item/toy/crayon))
 		usr << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[info_links][stamps]</BODY></HTML>", "window=[name]")
 		//openhelp(user)
 		return
-	else if(istype(P, /obj/item/weapon/stamp))
+	else if (istype(P, /obj/item/weapon/stamp))
 		if ((!in_range(src, usr) && src.loc != user && !( istype(src.loc, /obj/item/weapon/clipboard) ) && src.loc.loc != user && user.equipped() != P))
 			return
 
 		stamps += (stamps=="" ? "<HR>" : "<BR>") + "<i>This paper has been stamped with the [P.name].</i>"
 
 		switch(P.type)
-			if(/obj/item/weapon/stamp/captain)
+			if (/obj/item/weapon/stamp/captain)
 				overlays += "paper_stamped_cap"
-			if(/obj/item/weapon/stamp/hop)
+			if (/obj/item/weapon/stamp/hop)
 				overlays += "paper_stamped_hop"
-			if(/obj/item/weapon/stamp/hos)
+			if (/obj/item/weapon/stamp/hos)
 				overlays += "paper_stamped_hos"
-			if(/obj/item/weapon/stamp/ce)
+			if (/obj/item/weapon/stamp/ce)
 				overlays += "paper_stamped_ce"
-			if(/obj/item/weapon/stamp/rd)
+			if (/obj/item/weapon/stamp/rd)
 				overlays += "paper_stamped_rd"
-			if(/obj/item/weapon/stamp/cmo)
+			if (/obj/item/weapon/stamp/cmo)
 				overlays += "paper_stamped_cmo"
-			if(/obj/item/weapon/stamp/denied)
+			if (/obj/item/weapon/stamp/denied)
 				overlays += "paper_stamped_denied"
-			if(/obj/item/weapon/stamp/clown)
+			if (/obj/item/weapon/stamp/clown)
 				if (!clown)
 					usr << "\red You are totally unable to use the stamp. HONK!"
 					return
@@ -284,7 +284,7 @@
 					overlays += "paper_stamped_clown"
 			else
 				overlays += "paper_stamped"
-		if(!stamped)
+		if (!stamped)
 			stamped = new
 		stamped += P.type
 

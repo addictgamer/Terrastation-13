@@ -24,29 +24,29 @@
 		var/right = turn(dir, -90)
 
 		switch(ptype)
-			if(0)
+			if (0)
 				base_state = "pipe-s"
 				dpdir = dir | flip
-			if(1)
+			if (1)
 				base_state = "pipe-c"
 				dpdir = dir | right
-			if(2)
+			if (2)
 				base_state = "pipe-j1"
 				dpdir = dir | right | flip
-			if(3)
+			if (3)
 				base_state = "pipe-j2"
 				dpdir = dir | left | flip
-			if(4)
+			if (4)
 				base_state = "pipe-y"
 				dpdir = dir | left | right
-			if(5)
+			if (5)
 				base_state = "pipe-t"
 				dpdir = dir
 
 
 		icon_state = "con[base_state]"
 
-		if(invisibility)				// if invisible, fade icon
+		if (invisibility)				// if invisible, fade icon
 			icon -= rgb(0,0,0,128)
 
 	// hide called by levelupdate if turf intact status changes
@@ -61,9 +61,9 @@
 		set name = "Rotate Pipe"
 		set src in view(1)
 
-		if(usr.stat)
+		if (usr.stat)
 			return
-		if(anchored)
+		if (anchored)
 			usr << "You must unfasten the pipe before rotating it."
 		dir = turn(dir, -90)
 		update()
@@ -71,27 +71,27 @@
 	verb/flip()
 		set name = "Flip Pipe"
 		set src in view(1)
-		if(usr.stat)
+		if (usr.stat)
 			return
 
-		if(anchored)
+		if (anchored)
 			usr << "You must unfasten the pipe before flipping it."
 
 		dir = turn(dir, 180)
-		if(ptype == 2)
+		if (ptype == 2)
 			ptype = 3
-		else if(ptype == 3)
+		else if (ptype == 3)
 			ptype = 2
 		update()
 
 	// returns the type path of disposalpipe corresponding to this item dtype
 	proc/dpipetype()
 		switch(ptype)
-			if(0,1)
+			if (0,1)
 				return /obj/disposalpipe/segment
-			if(2,3,4)
+			if (2,3,4)
 				return /obj/disposalpipe/junction
-			if(5)
+			if (5)
 				return /obj/disposalpipe/trunk
 		return
 
@@ -103,22 +103,22 @@
 
 	attackby(var/obj/item/I, var/mob/user)
 		var/turf/T = src.loc
-		if(T.intact)
+		if (T.intact)
 			user << "You can only attach the pipe if the floor plating is removed."
 			return
 
 		var/obj/disposalpipe/CP = locate() in T
-		if(CP)
+		if (CP)
 			update()
 			var/pdir = CP.dpdir
-			if(istype(CP, /obj/disposalpipe/broken))
+			if (istype(CP, /obj/disposalpipe/broken))
 				pdir = CP.dir
-			if(pdir & dpdir)
+			if (pdir & dpdir)
 				user << "There is already a pipe at that location."
 				return
 
-		if(istype(I, /obj/item/weapon/wrench))
-			if(anchored)
+		if (istype(I, /obj/item/weapon/wrench))
+			if (anchored)
 				anchored = 0
 				level = 2
 				density = 1
@@ -130,13 +130,13 @@
 				user << "You attach the pipe to the underfloor."
 			playsound(src.loc, 'Ratchet.ogg', 100, 1)
 
-		else if(istype(I, /obj/item/weapon/weldingtool))
+		else if (istype(I, /obj/item/weapon/weldingtool))
 			var/obj/item/weapon/weldingtool/W = I
-			if(W.remove_fuel(0,user))
+			if (W.remove_fuel(0,user))
 				playsound(src.loc, 'Welder2.ogg', 100, 1)
 				user << "Welding the pipe in place."
 				W:welding = 2
-				if(do_after(user, 20))
+				if (do_after(user, 20))
 					update()
 					var/pipetype = dpipetype()
 					var/obj/disposalpipe/P = new pipetype(src.loc)

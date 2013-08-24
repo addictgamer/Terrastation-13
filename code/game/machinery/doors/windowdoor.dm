@@ -1,23 +1,23 @@
 /obj/machinery/door/window/update_nearby_tiles(need_rebuild)
-	if(!air_master) return 0
+	if (!air_master) return 0
 
 	var/turf/simulated/source = loc
 	var/turf/simulated/target = get_step(source,dir)
 
-	if(need_rebuild)
-		if(istype(source)) //Rebuild/update nearby group geometry
-			if(source.parent)
+	if (need_rebuild)
+		if (istype(source)) //Rebuild/update nearby group geometry
+			if (source.parent)
 				air_master.groups_to_rebuild += source.parent
 			else
 				air_master.tiles_to_update += source
-		if(istype(target))
-			if(target.parent)
+		if (istype(target))
+			if (target.parent)
 				air_master.groups_to_rebuild += target.parent
 			else
 				air_master.tiles_to_update += target
 	else
-		if(istype(source)) air_master.tiles_to_update += source
-		if(istype(target)) air_master.tiles_to_update += target
+		if (istype(source)) air_master.tiles_to_update += source
+		if (istype(target)) air_master.tiles_to_update += target
 
 	return 1
 
@@ -32,19 +32,19 @@
 /obj/machinery/door/window/Bumped(atom/movable/AM as mob|obj)
 	if (!( ismob(AM) ))
 		var/obj/machinery/bot/bot = AM
-		if(istype(bot))
-			if(density && src.check_access(bot.botcard))
+		if (istype(bot))
+			if (density && src.check_access(bot.botcard))
 				open()
 				sleep(50)
 				close()
-		else if(istype(AM, /obj/mecha))
+		else if (istype(AM, /obj/mecha))
 			var/obj/mecha/mecha = AM
-			if(density)
-				if(mecha.occupant && src.allowed(mecha.occupant))
+			if (density)
+				if (mecha.occupant && src.allowed(mecha.occupant))
 					open()
 					sleep(50)
 					close()
-				else if(mecha.remote_controlled && src.allowed(mecha.remote_controlled))
+				else if (mecha.remote_controlled && src.allowed(mecha.remote_controlled))
 					open()
 					sleep(50)
 					close()
@@ -55,7 +55,7 @@
 		return
 	if (src.density && src.allowed(AM))
 		open()
-		if(src.check_access(null))
+		if (src.check_access(null))
 			sleep(50)
 		else //secure doors close faster
 			sleep(20)
@@ -63,18 +63,18 @@
 	return
 
 /obj/machinery/door/window/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(istype(mover) && mover.checkpass(PASSGLASS))
+	if (istype(mover) && mover.checkpass(PASSGLASS))
 		return 1
-	if(get_dir(loc, target) == dir) //Make sure looking at appropriate border
-		if(air_group) return 0
+	if (get_dir(loc, target) == dir) //Make sure looking at appropriate border
+		if (air_group) return 0
 		return !density
 	else
 		return 1
 
 /obj/machinery/door/window/CheckExit(atom/movable/mover as mob|obj, turf/target as turf)
-	if(istype(mover) && mover.checkpass(PASSGLASS))
+	if (istype(mover) && mover.checkpass(PASSGLASS))
 		return 1
-	if(get_dir(loc, target) == dir)
+	if (get_dir(loc, target) == dir)
 		return !density
 	else
 		return 1
@@ -84,7 +84,7 @@
 		return 0
 	if (!ticker)
 		return 0
-	if(!src.operating) //in case of emag
+	if (!src.operating) //in case of emag
 		src.operating = 1
 	flick(text("[]opening", src.base_state), src)
 	playsound(src.loc, 'windowdoor.ogg', 100, 1)
@@ -95,7 +95,7 @@
 	src.sd_SetOpacity(0)
 	update_nearby_tiles()
 
-	if(operating == 1) //emag again
+	if (operating == 1) //emag again
 		src.operating = 0
 	return 1
 
@@ -126,7 +126,7 @@
 		user = null
 	if (src.density && (istype(I, /obj/item/weapon/card/emag)||istype(I, /obj/item/weapon/melee/energy/blade)))
 		src.operating = -1
-		if(istype(I, /obj/item/weapon/melee/energy/blade))
+		if (istype(I, /obj/item/weapon/melee/energy/blade))
 			var/datum/effects/system/spark_spread/spark_system = new /datum/effects/system/spark_spread()
 			spark_system.set_up(5, 0, src.loc)
 			spark_system.start()

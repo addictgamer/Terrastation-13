@@ -54,31 +54,31 @@
 
 /datum/intercept_text/proc/build(var/mode_type, datum/mind/correct_person)
 	switch(mode_type)
-		if("revolution")
+		if ("revolution")
 			src.text = ""
 			src.build_rev(correct_person)
 			return src.text
-		if("cult")
+		if ("cult")
 			src.text = ""
 			src.build_cult(correct_person)
 			return src.text
-		if("wizard")
+		if ("wizard")
 			src.text = ""
 			src.build_wizard(correct_person)
 			return src.text
-		if("nuke")
+		if ("nuke")
 			src.text = ""
 			src.build_nuke(correct_person)
 			return src.text
-		if("traitor")
+		if ("traitor")
 			src.text = ""
 			src.build_traitor(correct_person)
 			return src.text
-		if("malf")
+		if ("malf")
 			src.text = ""
 			src.build_malf(correct_person)
 			return src.text
-		if("changeling","traitorchan")
+		if ("changeling","traitorchan")
 			src.text = ""
 			src.build_changeling(correct_person)
 			return src.text
@@ -92,7 +92,7 @@
 		if (!man.mind) continue
 		if (man.mind.assigned_role=="MODE") continue
 		dudes += man
-	if(dudes.len==0)
+	if (dudes.len==0)
 		return null
 	return pick(dudes)
 
@@ -100,7 +100,7 @@
 /datum/intercept_text/proc/pick_fingerprints()
 	var/mob/living/carbon/human/dude = src.pick_mob()
 	//if (!dude) return pick_fingerprints() //who coded that is totally crasy or just a traitor. -- rastaf0
-	if(dude)
+	if (dude)
 		return num2text(md5(dude.dna.uni_identity))
 	else
 		return num2text(md5(num2text(rand(1,10000))))
@@ -112,19 +112,19 @@
 	var/fingerprints
 	var/traitor_name
 	var/prob_right_dude = rand(prob_correct_person_lower, prob_correct_person_higher)
-	if(prob(prob_right_dude) && ticker.mode == "traitor")
-		if(correct_person:assigned_role=="MODE")
+	if (prob(prob_right_dude) && ticker.mode == "traitor")
+		if (correct_person:assigned_role=="MODE")
 			traitor_name = pick_mob()
 		else
 			traitor_name = correct_person:current
-	else if(prob(prob_right_dude))
+	else if (prob(prob_right_dude))
 		traitor_name = pick_mob()
 	else
 		fingerprints = pick_fingerprints()
 
 	src.text += "<BR><BR>The <B>[name_1] [name_2]</B> implied an undercover operative was acting on their behalf on the station currently.<BR>"
 	src.text += "After some investigation, we "
-	if(traitor_name)
+	if (traitor_name)
 		src.text += "are [prob_right_dude]% sure that [traitor_name] may have been involved, and should be closely observed."
 		src.text += "<BR>Note: This group are known to be untrustworthy, so do not act on this information without proper discourse."
 	else
@@ -139,9 +139,9 @@
 	var/traitor_job
 	var/prob_right_dude = rand(prob_correct_person_lower, prob_correct_person_higher)
 	var/prob_right_job = rand(prob_correct_job_lower, prob_correct_job_higher)
-	if(prob(prob_right_job) && is_convertable_to_cult(correct_person))
+	if (prob(prob_right_job) && is_convertable_to_cult(correct_person))
 		if (correct_person)
-			if(correct_person:assigned_role=="MODE")
+			if (correct_person:assigned_role=="MODE")
 				traitor_job = pick(get_all_jobs())
 			else
 				traitor_job = correct_person:assigned_role
@@ -149,8 +149,8 @@
 		var/list/job_tmp = get_all_jobs()
 		job_tmp.Remove("Captain", "Chaplain", "AI", "Cyborg", "Security Officer", "Detective", "Head Of Security", "Head of Personnel", "Chief Engineer", "Research Director", "Chief Medical Officer")
 		traitor_job = pick(job_tmp)
-	if(prob(prob_right_dude) && ticker.mode == "cult")
-		if(correct_person:assigned_role=="MODE")
+	if (prob(prob_right_dude) && ticker.mode == "cult")
+		if (correct_person:assigned_role=="MODE")
 			traitor_name = src.pick_mob()
 		else
 			traitor_name = correct_person:current
@@ -160,7 +160,7 @@
 	src.text += "<BR><BR>It has been brought to our attention that the [name_1] [name_2] have stumbled upon some dark secrets. They apparently want to spread the dangerous knowledge on as many stations as they can.<BR>"
 	src.text += "Based on our intelligence, we are [prob_right_job]% sure that if true, someone doing the job of [traitor_job] on your station may have been converted "
 	src.text += "and instilled with the idea of the flimsiness of the real world, seeking to destroy it. "
-	if(prob(prob_right_dude))
+	if (prob(prob_right_dude))
 		src.text += "<BR> In addition, we are [prob_right_dude]% sure that [traitor_name] may have also some in to contact with this "
 		src.text += "organisation."
 	src.text += "<BR>However, if this information is acted on without substantial evidence, those responsible will face severe repercussions."
@@ -173,9 +173,9 @@
 	var/traitor_job
 	var/prob_right_dude = rand(prob_correct_person_lower, prob_correct_person_higher)
 	var/prob_right_job = rand(prob_correct_job_lower, prob_correct_job_higher)
-	if(prob(prob_right_job) && is_convertable_to_rev(correct_person))
+	if (prob(prob_right_job) && is_convertable_to_rev(correct_person))
 		if (correct_person)
-			if(correct_person.assigned_role=="MODE")
+			if (correct_person.assigned_role=="MODE")
 				traitor_job = pick(get_all_jobs())
 			else
 				traitor_job = correct_person.assigned_role
@@ -185,8 +185,8 @@
 		job_tmp-=head_positions
 		job_tmp.Remove("Security Officer", "Detective", "Warden", "MODE")
 		traitor_job = pick(job_tmp)
-	if(prob(prob_right_dude) && ticker.mode.config_tag == "revolution")
-		if(correct_person.assigned_role=="MODE")
+	if (prob(prob_right_dude) && ticker.mode.config_tag == "revolution")
+		if (correct_person.assigned_role=="MODE")
 			traitor_name = src.pick_mob()
 		else
 			traitor_name = correct_person.current
@@ -196,7 +196,7 @@
 	src.text += "<BR><BR>It has been brought to our attention that the [name_1] [name_2] are attempting to stir unrest on one of our stations in your sector. <BR>"
 	src.text += "Based on our intelligence, we are [prob_right_job]% sure that if true, someone doing the job of [traitor_job] on your station may have been brainwashed "
 	src.text += "at a recent conference, and their department should be closely monitored for signs of mutiny. "
-	if(prob(prob_right_dude))
+	if (prob(prob_right_dude))
 		src.text += "<BR> In addition, we are [prob_right_dude]% sure that [traitor_name] may have also some in to contact with this "
 		src.text += "organisation."
 	src.text += "<BR>However, if this information is acted on without substantial evidence, those responsible will face severe repercussions."
@@ -230,16 +230,16 @@
 	var/changeling_job
 	var/prob_right_dude = rand(prob_correct_person_lower, prob_correct_person_higher)
 	var/prob_right_job = rand(prob_correct_job_lower, prob_correct_job_higher)
-	if(prob(prob_right_job))
-		if(correct_person)
-			if(correct_person:assigned_role=="MODE")
+	if (prob(prob_right_job))
+		if (correct_person)
+			if (correct_person:assigned_role=="MODE")
 				changeling_job = pick(get_all_jobs())
 			else
 				changeling_job = correct_person:assigned_role
 	else
 		changeling_job = pick(get_all_jobs())
-	if(prob(prob_right_dude) && ticker.mode == "changeling")
-		if(correct_person:assigned_role=="MODE")
+	if (prob(prob_right_dude) && ticker.mode == "changeling")
+		if (correct_person:assigned_role=="MODE")
 			changeling_name = correct_person:current
 		else
 			changeling_name = src.pick_mob()

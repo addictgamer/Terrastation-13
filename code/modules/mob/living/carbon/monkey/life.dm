@@ -15,19 +15,19 @@
 		return
 
 	var/datum/gas_mixture/environment // Added to prevent null location errors-- TLE
-	if(src.loc)
+	if (src.loc)
 		environment = loc.return_air()
 
 	if (src.stat != 2) //still breathing
 
 		//First, resolve location and get a breath
 
-		if(air_master.current_cycle%4==2)
+		if (air_master.current_cycle%4==2)
 			//Only try to take a breath every 4 seconds, unless suffocating
 			breathe()
 
 		else //Still give containing object the chance to interact
-			if(istype(loc, /obj/))
+			if (istype(loc, /obj/))
 				var/obj/location_as_object = loc
 				location_as_object.handle_internal_lifeform(src, 0)
 
@@ -44,7 +44,7 @@
 	handle_changeling()
 
 	//Handle temperature/pressure differences between body and environment
-	if(environment)	// More error checking -- TLE
+	if (environment)	// More error checking -- TLE
 		handle_environment(environment)
 
 	//Mutations and radiation
@@ -60,7 +60,7 @@
 	UpdateLuminosity()
 	handle_regular_status_updates()
 
-	if(client)
+	if (client)
 		handle_regular_hud_updates()
 
 	//Being buckled to a chair or bed
@@ -78,10 +78,10 @@
 	for(var/obj/item/weapon/grab/G in src)
 		G.process()
 
-	if(!client && !stat)
-		if(prob(33) && canmove && isturf(loc))
+	if (!client && !stat)
+		if (prob(33) && canmove && isturf(loc))
 			step(src, pick(cardinal))
-		if(prob(1))
+		if (prob(1))
 			emote(pick("scratch","jump","roll","tail"))
 
 
@@ -117,19 +117,19 @@
 					src.stuttering = max(10, src.stuttering)
 
 		update_mind()
-			if(!mind && client)
+			if (!mind && client)
 				mind = new
 				mind.current = src
 				mind.key = key
 
 		handle_mutations_and_radiation()
 
-			if(src.fireloss)
-				if(src.mutations & COLD_RESISTANCE || prob(50))
+			if (src.fireloss)
+				if (src.mutations & COLD_RESISTANCE || prob(50))
 					switch(src.fireloss)
-						if(1 to 50)
+						if (1 to 50)
 							src.fireloss--
-						if(51 to 100)
+						if (51 to 100)
 							src.fireloss -= 5
 
 			if (src.mutations & HULK && src.health <= 25)
@@ -146,26 +146,26 @@
 					emote("collapse")
 
 				switch(src.radiation)
-					if(1 to 49)
+					if (1 to 49)
 						src.radiation--
-						if(prob(25))
+						if (prob(25))
 							src.toxloss++
 							src.updatehealth()
 
-					if(50 to 74)
+					if (50 to 74)
 						src.radiation -= 2
 						src.toxloss++
-						if(prob(5))
+						if (prob(5))
 							src.radiation -= 5
 							src.weakened = 3
 							src << "\red You feel weak."
 							emote("collapse")
 						src.updatehealth()
 
-					if(75 to 100)
+					if (75 to 100)
 						src.radiation -= 3
 						src.toxloss += 3
-						if(prob(1))
+						if (prob(1))
 							src << "\red You mutate!"
 							randmutb(src)
 							domutcheck(src,null)
@@ -174,20 +174,20 @@
 
 
 		breathe()
-			if(src.reagents)
+			if (src.reagents)
 
-				if(src.reagents.has_reagent("lexorin")) return
+				if (src.reagents.has_reagent("lexorin")) return
 
-			if(!loc) return //probably ought to make a proper fix for this, but :effort: --NeoFite
+			if (!loc) return //probably ought to make a proper fix for this, but :effort: --NeoFite
 
 			var/datum/gas_mixture/environment = loc.return_air()
 			var/datum/air_group/breath
 
-			if(losebreath>0) //Suffocating so do not take a breath
+			if (losebreath>0) //Suffocating so do not take a breath
 				src.losebreath--
 				if (prob(75)) //High chance of gasping for air
 					spawn emote("gasp")
-				if(istype(loc, /obj/))
+				if (istype(loc, /obj/))
 					var/obj/location_as_object = loc
 					location_as_object.handle_internal_lifeform(src, 0)
 			else
@@ -195,49 +195,49 @@
 				breath = get_breath_from_internal(BREATH_VOLUME)
 
 				//No breath from internal atmosphere so get breath from location
-				if(!breath)
-					if(istype(loc, /obj/))
+				if (!breath)
+					if (istype(loc, /obj/))
 						var/obj/location_as_object = loc
 						breath = location_as_object.handle_internal_lifeform(src, BREATH_VOLUME)
-					else if(istype(loc, /turf/))
+					else if (istype(loc, /turf/))
 						var/breath_moles = environment.total_moles()*BREATH_PERCENTAGE
 						breath = loc.remove_air(breath_moles)
 
 						// Handle chem smoke effects  -- Doohl
 						var/block = 0
-						if(wear_mask)
-							if(istype(wear_mask, /obj/item/clothing/mask/gas))
+						if (wear_mask)
+							if (istype(wear_mask, /obj/item/clothing/mask/gas))
 								block = 1
 
-						if(!block)
+						if (!block)
 
 							for(var/obj/effects/chem_smoke/smoke in view(1, src))
-								if(smoke.reagents.total_volume)
+								if (smoke.reagents.total_volume)
 									smoke.reagents.reaction(src, INGEST)
 									spawn(5)
-										if(smoke)
+										if (smoke)
 											smoke.reagents.copy_to(src, 10) // I dunno, maybe the reagents enter the blood stream through the lungs?
 									break // If they breathe in the nasty stuff once, no need to continue checking
 
 
 				else //Still give containing object the chance to interact
-					if(istype(loc, /obj/))
+					if (istype(loc, /obj/))
 						var/obj/location_as_object = loc
 						location_as_object.handle_internal_lifeform(src, 0)
 
 			handle_breath(breath)
 
-			if(breath)
+			if (breath)
 				loc.assume_air(breath)
 
 
 		get_breath_from_internal(volume_needed)
-			if(internal)
+			if (internal)
 				if (!contents.Find(src.internal))
 					internal = null
 				if (!wear_mask || !(wear_mask.flags|MASKINTERNALS) )
 					internal = null
-				if(internal)
+				if (internal)
 					if (src.internals)
 						src.internals.icon_state = "internal1"
 					return internal.remove_air_volume(volume_needed)
@@ -247,14 +247,14 @@
 			return null
 
 		update_canmove()
-			if(paralysis || stunned || weakened || buckled || (changeling && changeling.changeling_fakedeath)) canmove = 0
+			if (paralysis || stunned || weakened || buckled || (changeling && changeling.changeling_fakedeath)) canmove = 0
 			else canmove = 1
 
 		handle_breath(datum/gas_mixture/breath)
-			if(src.nodamage)
+			if (src.nodamage)
 				return
 
-			if(!breath || (breath.total_moles() == 0))
+			if (!breath || (breath.total_moles() == 0))
 				oxyloss += 7
 
 				oxygen_alert = max(oxygen_alert, 1)
@@ -277,8 +277,8 @@
 			// And CO2, lets say a PP of more than 10 will be bad (It's a little less really, but eh, being passed out all round aint no fun)
 			var/CO2_pp = (breath.carbon_dioxide/breath.total_moles())*breath_pressure
 
-			if(O2_pp < safe_oxygen_min) 			// Too little oxygen
-				if(prob(20))
+			if (O2_pp < safe_oxygen_min) 			// Too little oxygen
+				if (prob(20))
 					spawn(0) emote("gasp")
 				if (O2_pp == 0)
 					O2_pp = 0.01
@@ -300,41 +300,41 @@
 			breath.oxygen -= oxygen_used
 			breath.carbon_dioxide += oxygen_used
 
-			if(CO2_pp > safe_co2_max)
-				if(!co2overloadtime) // If it's the first breath with too much CO2 in it, lets start a counter, then have them pass out after 12s or so.
+			if (CO2_pp > safe_co2_max)
+				if (!co2overloadtime) // If it's the first breath with too much CO2 in it, lets start a counter, then have them pass out after 12s or so.
 					co2overloadtime = world.time
-				else if(world.time - co2overloadtime > 120)
+				else if (world.time - co2overloadtime > 120)
 					src.paralysis = max(src.paralysis, 3)
 					oxyloss += 3 // Lets hurt em a little, let them know we mean business
-					if(world.time - co2overloadtime > 300) // They've been in here 30s now, lets start to kill them for their own good!
+					if (world.time - co2overloadtime > 300) // They've been in here 30s now, lets start to kill them for their own good!
 						oxyloss += 8
-				if(prob(20)) // Lets give them some chance to know somethings not right though I guess.
+				if (prob(20)) // Lets give them some chance to know somethings not right though I guess.
 					spawn(0) emote("cough")
 
 			else
 				co2overloadtime = 0
 
-			if(Toxins_pp > safe_toxins_max) // Too much toxins
+			if (Toxins_pp > safe_toxins_max) // Too much toxins
 				var/ratio = breath.toxins/safe_toxins_max
 				toxloss += min(ratio, 10)	//Limit amount of damage toxin exposure can do per second
 				toxins_alert = max(toxins_alert, 1)
 			else
 				toxins_alert = 0
 
-			if(breath.trace_gases.len)	// If there's some other shit in the air lets deal with it here.
+			if (breath.trace_gases.len)	// If there's some other shit in the air lets deal with it here.
 				for(var/datum/gas/sleeping_agent/SA in breath.trace_gases)
 					var/SA_pp = (SA.moles/breath.total_moles())*breath_pressure
-					if(SA_pp > SA_para_min) // Enough to make us paralysed for a bit
+					if (SA_pp > SA_para_min) // Enough to make us paralysed for a bit
 						src.paralysis = max(src.paralysis, 3) // 3 gives them one second to wake up and run away a bit!
-						if(SA_pp > SA_sleep_min) // Enough to make us sleep as well
+						if (SA_pp > SA_sleep_min) // Enough to make us sleep as well
 							src.sleeping = max(src.sleeping, 2)
-					else if(SA_pp > 0.01)	// There is sleeping gas in their lungs, but only a little, so give them a bit of a warning
-						if(prob(20))
+					else if (SA_pp > 0.01)	// There is sleeping gas in their lungs, but only a little, so give them a bit of a warning
+						if (prob(20))
 							spawn(0) emote(pick("giggle", "laugh"))
 
 
-			if(breath.temperature > (T0C+66)) // Hot air hurts :(
-				if(prob(20))
+			if (breath.temperature > (T0C+66)) // Hot air hurts :(
+				if (prob(20))
 					src << "\red You feel a searing heat in your lungs!"
 				fire_alert = max(fire_alert, 1)
 			else
@@ -346,36 +346,36 @@
 			return 1
 
 		handle_environment(datum/gas_mixture/environment)
-			if(!environment)
+			if (!environment)
 				return
 			var/environment_heat_capacity = environment.heat_capacity()
-			if(istype(loc, /turf/space))
+			if (istype(loc, /turf/space))
 				environment_heat_capacity = loc:heat_capacity
 
-			if((environment.temperature > (T0C + 50)) || (environment.temperature < (T0C + 10)))
+			if ((environment.temperature > (T0C + 50)) || (environment.temperature < (T0C + 10)))
 				var/transfer_coefficient
 
 				transfer_coefficient = 1
-				if(wear_mask && (wear_mask.body_parts_covered & HEAD) && (environment.temperature < wear_mask.protective_temperature))
+				if (wear_mask && (wear_mask.body_parts_covered & HEAD) && (environment.temperature < wear_mask.protective_temperature))
 					transfer_coefficient *= wear_mask.heat_transfer_coefficient
 
 				handle_temperature_damage(HEAD, environment.temperature, environment_heat_capacity*transfer_coefficient)
 
-			if(stat==2)
+			if (stat==2)
 				bodytemperature += 0.1*(environment.temperature - bodytemperature)*environment_heat_capacity/(environment_heat_capacity + 270000)
 
 			//Account for massive pressure differences
 			return //TODO: DEFERRED
 
 		handle_temperature_damage(body_part, exposed_temperature, exposed_intensity)
-			if(src.nodamage) return
+			if (src.nodamage) return
 			var/discomfort = min( abs(exposed_temperature - bodytemperature)*(exposed_intensity)/2000000, 1.0)
 			//fireloss += 2.5*discomfort
 			fireloss += 5.0*discomfort
 
 		handle_chemicals_in_body()
 
-			if(reagents) reagents.metabolize(src)
+			if (reagents) reagents.metabolize(src)
 
 			if (src.drowsyness)
 				src.drowsyness--
@@ -386,7 +386,7 @@
 
 			confused = max(0, confused - 1)
 			// decrement dizziness counter, clamped to 0
-			if(resting)
+			if (resting)
 				dizziness = max(0, dizziness - 5)
 			else
 				dizziness = max(0, dizziness - 1)
@@ -399,24 +399,24 @@
 
 			health = 100 - (oxyloss + toxloss + fireloss + bruteloss + cloneloss)
 
-			if(oxyloss > 25) paralysis = max(paralysis, 3)
+			if (oxyloss > 25) paralysis = max(paralysis, 3)
 
-			if(src.sleeping)
+			if (src.sleeping)
 				src.paralysis = max(src.paralysis, 5)
 				if (prob(1) && health) spawn(0) emote("snore")
 
-			if(src.resting)
+			if (src.resting)
 				src.weakened = max(src.weakened, 5)
 
-			if(health < -100)
+			if (health < -100)
 				death()
-			else if(src.health < 0)
-				if(src.health <= 20 && prob(1)) spawn(0) emote("gasp")
+			else if (src.health < 0)
+				if (src.health <= 20 && prob(1)) spawn(0) emote("gasp")
 
-				if(!src.rejuv) src.oxyloss++
-				if(!src.reagents.has_reagent("inaprovaline")) src.oxyloss++
+				if (!src.rejuv) src.oxyloss++
+				if (!src.reagents.has_reagent("inaprovaline")) src.oxyloss++
 
-				if(src.stat != 2)	src.stat = 1
+				if (src.stat != 2)	src.stat = 1
 				src.paralysis = max(src.paralysis, 5)
 
 			if (src.stat != 2) //Alive.
@@ -499,24 +499,24 @@
 			if (src.healths)
 				if (src.stat != 2)
 					switch(health)
-						if(100 to INFINITY)
+						if (100 to INFINITY)
 							src.healths.icon_state = "health0"
-						if(80 to 100)
+						if (80 to 100)
 							src.healths.icon_state = "health1"
-						if(60 to 80)
+						if (60 to 80)
 							src.healths.icon_state = "health2"
-						if(40 to 60)
+						if (40 to 60)
 							src.healths.icon_state = "health3"
-						if(20 to 40)
+						if (20 to 40)
 							src.healths.icon_state = "health4"
-						if(0 to 20)
+						if (0 to 20)
 							src.healths.icon_state = "health5"
 						else
 							src.healths.icon_state = "health6"
 				else
 					src.healths.icon_state = "health7"
 
-			if(src.pullin)	src.pullin.icon_state = "pull[src.pulling ? 1 : 0]"
+			if (src.pullin)	src.pullin.icon_state = "pull[src.pulling ? 1 : 0]"
 
 
 			if (src.toxin)	src.toxin.icon_state = "tox[src.toxins_alert ? 1 : 0]"
@@ -527,21 +527,21 @@
 
 			switch(src.bodytemperature) //310.055 optimal body temp
 
-				if(345 to INFINITY)
+				if (345 to INFINITY)
 					src.bodytemp.icon_state = "temp4"
-				if(335 to 345)
+				if (335 to 345)
 					src.bodytemp.icon_state = "temp3"
-				if(327 to 335)
+				if (327 to 335)
 					src.bodytemp.icon_state = "temp2"
-				if(316 to 327)
+				if (316 to 327)
 					src.bodytemp.icon_state = "temp1"
-				if(300 to 316)
+				if (300 to 316)
 					src.bodytemp.icon_state = "temp0"
-				if(295 to 300)
+				if (295 to 300)
 					src.bodytemp.icon_state = "temp-1"
-				if(280 to 295)
+				if (280 to 295)
 					src.bodytemp.icon_state = "temp-2"
-				if(260 to 280)
+				if (260 to 280)
 					src.bodytemp.icon_state = "temp-3"
 				else
 					src.bodytemp.icon_state = "temp-4"
@@ -570,7 +570,7 @@
 					if (!( src.machine.check_eye(src) ))
 						src.reset_view(null)
 				else
-					if(!client.adminobs)
+					if (!client.adminobs)
 						reset_view(null)
 
 			return 1
@@ -582,17 +582,17 @@
 					return
 
 		handle_virus_updates()
-			if(src.bodytemperature > 406)
+			if (src.bodytemperature > 406)
 				for(var/datum/disease/D in viruses)
 					D.cure()
 			return
 
-			if(!virus2)
+			if (!virus2)
 				for(var/mob/living/carbon/M in oviewers(4,src))
-					if(M.virus2)
+					if (M.virus2)
 						infect_virus2(src,M.virus2)
 				for(var/obj/decal/cleanable/blood/B in view(4, src))
-					if(B.virus2)
+					if (B.virus2)
 						infect_virus2(src,B.virus2)
 			else
 				virus2.activate(src)
@@ -601,7 +601,7 @@
 		check_if_buckled()
 			if (src.buckled)
 				src.lying = istype(src.buckled, /obj/stool/bed) || istype(src.buckled, /obj/machinery/conveyor)
-				if(src.lying)
+				if (src.lying)
 					src.drop_item()
 				src.density = 1
 			else

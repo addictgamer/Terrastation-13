@@ -67,13 +67,13 @@
 	setup_wires()
 
 	spawn(5)	// must wait for map loading to finish
-		if(radio_controller)
+		if (radio_controller)
 			radio_controller.add_object(src, control_freq, filter = RADIO_TERMINATOR)
 
 		var/count = 0
 		for(var/obj/machinery/bot/terminator/other in world)
 			count++
-		if(!suffix)
+		if (!suffix)
 			suffix = "#[count]"
 		name = "Terminator ([suffix])"
 
@@ -104,24 +104,24 @@
 // screwdriver: open/close hatch
 // cell: insert it
 /obj/machinery/bot/terminator/attackby(var/obj/item/I, var/mob/user)
-	if(istype(I,/obj/item/weapon/card/emag))
+	if (istype(I,/obj/item/weapon/card/emag))
 		locked = !locked
 		user << "\blue You [locked ? "lock" : "unlock"] the terminator's controls!"
 		flick("mulebot-emagged", src) //TODO: Correct this.
 		playsound(src.loc, 'sparks1.ogg', 100, 0)
-	else if(istype(I,/obj/item/weapon/cell) && open && !cell)
+	else if (istype(I,/obj/item/weapon/cell) && open && !cell)
 		var/obj/item/weapon/cell/C = I
 		user.drop_item()
 		C.loc = src
 		cell = C
 		updateDialog()
-	else if(istype(I,/obj/item/weapon/screwdriver))
-		if(locked)
+	else if (istype(I,/obj/item/weapon/screwdriver))
+		if (locked)
 			user << "\blue The maintenance hatch cannot be opened or closed while the controls are locked."
 			return
 
 		open = !open
-		if(open)
+		if (open)
 			src.visible_message("[user] opens the maintenance hatch of [src]", "\blue You open [src]'s maintenance hatch.")
 			on = 0
 			icon_state="mulebot-hatch" //TODO: Correct this.
@@ -146,23 +146,23 @@
 
 /obj/machinery/bot/terminator/ex_act(var/severity)
 	switch(severity)
-		if(2)
+		if (2)
 			wires &= ~(1 << rand(0,9))
 			wires &= ~(1 << rand(0,9))
 			wires &= ~(1 << rand(0,9))
-		if(3)
+		if (3)
 			wires &= ~(1 << rand(0,9))
 	..()
 	return
 
 /obj/machinery/bot/terminator/bullet_act() //TODO: Update this.
-	if(prob(50) && !isnull(load))
+	if (prob(50) && !isnull(load))
 		load.bullet_act()
 		unload(0)
-	if(prob(25))
+	if (prob(25))
 		src.visible_message("\red Something shorts out inside [src]!")
 		var/index = 1<< (rand(0,9))
-		if(wires & index)
+		if (wires & index)
 			wires &= ~index
 		else
 			wires |= index
@@ -186,22 +186,22 @@
 	dat += "ID: [suffix]<BR>"
 	dat += "Power: [on ? "On" : "Off"]<BR>"
 
-	if(!open)
+	if (!open)
 
 		dat += "Status: "
 		switch(mode)
-			if(0)
+			if (0)
 				dat += "Idle/No orders"
 
 		dat += "Destination: [!destination ? "<i>none</i>" : destination]<BR>"
-		//if(!target_mob)
+		//if (!target_mob)
 		//	dat += "No kill target.<BR>"
 		//else
 		//	dat += "Kill target: []"
 			dat += "Kill target: [!target_mob ? "<i>none</i>" : target_mob]<BR>"
 		dat += "Power level: [cell ? cell.percent() : 0]%<BR>"
 
-		if(locked && !ai)
+		if (locked && !ai)
 			dat += "<HR>Controls are locked <A href='byond://?src=\ref[src];op=unlock'><I>(unlock)</I></A>"
 		else
 			dat += "<HR>Controls are unlocked <A href='byond://?src=\ref[src];op=lock'><I>(lock)</I></A><BR><BR>"
@@ -216,10 +216,10 @@
 			dat += "<HR>The maintenance hatch is closed.<BR>"
 
 	else
-		if(!ai)
+		if (!ai)
 			dat += "The maintenance hatch is open.<BR><BR>"
 			dat += "Power cell: "
-			if(cell)
+			if (cell)
 				dat += "<A href='byond://?src=\ref[src];op=cellremove'>Installed</A><BR>"
 			else
 				dat += "<A href='byond://?src=\ref[src];op=cellinsert'>Removed</A><BR>"
@@ -238,7 +238,7 @@
 	for(var/i = 0 to 9)
 		var/index = 1<<wire_order[i+1]
 		t += "[wire_text[i+1]] wire: "
-		if(index & wires)
+		if (index & wires)
 			t += "<A href='byond://?src=\ref[src];op=wirecut;wire=[index]'>(cut)</A> <A href='byond://?src=\ref[src];op=wirepulse;wire=[index]'>(pulse)</A><BR>"
 		else
 			t += "<A href='byond://?src=\ref[src];op=wiremend;wire=[index]'>(mend)</A><BR>"
@@ -249,7 +249,7 @@
 
 
 /obj/machinery/bot/terminator/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	if (usr.stat)
 		return
@@ -257,14 +257,14 @@
 		usr.machine = src
 
 		switch(href_list["op"])
-			if("lock", "unlock")
-				if(src.allowed(usr))
+			if ("lock", "unlock")
+				if (src.allowed(usr))
 					locked = !locked
 					updateDialog()
 				else
 					usr << "\red Access denied."
 					return
-			if("power")
+			if ("power")
 				if (src.on)
 					turn_off()
 				else if (cell && !open)
@@ -275,16 +275,16 @@
 					return
 				usr << "You switch [on ? "on" : "off"] [src]."
 				for(var/mob/M in viewers(src))
-					if(M==usr) continue
+					if (M==usr) continue
 					M << "[usr] switches [on ? "on" : "off"] [src]."
 				updateDialog()
 
 
-			if("cellremove")
-				if(open && cell && !usr.equipped())
+			if ("cellremove")
+				if (open && cell && !usr.equipped())
 					cell.loc = usr
 					cell.layer = 20
-					if(usr.hand)
+					if (usr.hand)
 						usr.l_hand = cell
 					else
 						usr.r_hand = cell
@@ -296,10 +296,10 @@
 					usr.visible_message("\blue [usr] removes the power cell from [src].", "\blue You remove the power cell from [src].")
 					updateDialog()
 
-			if("cellinsert")
-				if(open && !cell)
+			if ("cellinsert")
+				if (open && !cell)
 					var/obj/item/weapon/cell/C = usr.equipped()
-					if(istype(C))
+					if (istype(C))
 						usr.drop_item()
 						cell = C
 						C.loc = src
@@ -309,57 +309,57 @@
 						updateDialog()
 
 
-			if("stop")
-				if(mode >=2)
+			if ("stop")
+				if (mode >=2)
 					mode = 0
 					updateDialog()
 
-			if("go")
-				if(mode == 0)
+			if ("go")
+				if (mode == 0)
 					start()
 					updateDialog()
 
-			if("destination")
+			if ("destination")
 				refresh=0
 				var/new_dest = input("Enter new destination tag", "Mulebot [suffix ? "([suffix])" : ""]", destination) as text|null
 				refresh=1
-				if(new_dest)
+				if (new_dest)
 					set_destination(new_dest)
 
 
-			if("setid")
+			if ("setid")
 				refresh=0
 				var/new_id = input("Enter new bot ID", "Terminator [suffix ? "([suffix])" : ""]", suffix) as text|null
 				refresh=1
-				if(new_id)
+				if (new_id)
 					suffix = new_id
 					name = "Terminator ([suffix])"
 					updateDialog()
 
-			if("close")
+			if ("close")
 				usr.machine = null
 				usr << browse(null,"window=terminator")
 
 
-			if("wirecut")
-				if(istype(usr.equipped(), /obj/item/weapon/wirecutters))
+			if ("wirecut")
+				if (istype(usr.equipped(), /obj/item/weapon/wirecutters))
 					var/wirebit = text2num(href_list["wire"])
 					wires &= ~wirebit
 				else
 					usr << "\blue You need wirecutters!"
-			if("wiremend")
-				if(istype(usr.equipped(), /obj/item/weapon/wirecutters))
+			if ("wiremend")
+				if (istype(usr.equipped(), /obj/item/weapon/wirecutters))
 					var/wirebit = text2num(href_list["wire"])
 					wires |= wirebit
 				else
 					usr << "\blue You need wirecutters!"
 
-			if("wirepulse")
-				if(istype(usr.equipped(), /obj/item/device/multitool))
+			if ("wirepulse")
+				if (istype(usr.equipped(), /obj/item/device/multitool))
 					switch(href_list["wire"])
-						if("1","2")
+						if ("1","2")
 							usr << "\blue \icon[src] The charge light flickers."
-						if("4", "8")
+						if ("4", "8")
 							usr << "\blue \icon[src] The drive motor whines briefly."
 						else
 							usr << "\blue \icon[src] You hear a radio crackle."
@@ -384,7 +384,7 @@
 //If an object is mouse dragged onto the bot.
 /obj/machinery/bot/terminator/MouseDrop_T(var/atom/movable/C, mob/user)
 
-	if(user.stat)
+	if (user.stat)
 		return
 
 	if (!on || !istype(C)|| C.anchored || get_dist(user, src) > 1 || get_dist(src,C) > 1 )
@@ -392,34 +392,34 @@
 
 
 /obj/machinery/bot/terminator/process()
-	if(!has_power())
+	if (!has_power())
 		on = 0
 		return
-	if(on)
+	if (on)
 		var/speed = ((wires & wire_motor1) ? 1:0) + ((wires & wire_motor2) ? 2:0)
 		//world << "speed: [speed]"
 		switch(speed)
-			if(0)
+			if (0)
 				// do nothing
-			if(1)
+			if (1)
 				process_bot()
 				spawn(3)
 					process_bot()
 					sleep(3)
 					process_bot()
-			if(2)
+			if (2)
 				process_bot()
 				spawn(5)
 					process_bot()
-			if(3)
+			if (3)
 				process_bot()
 
-	if(refresh) updateDialog()
+	if (refresh) updateDialog()
 
 /obj/machinery/bot/terminator/proc/process_bot()
-	//if(mode) world << "Mode: [mode]"
+	//if (mode) world << "Mode: [mode]"
 	switch(mode)
-		if(0)		// idle
+		if (0)		// idle
 			icon_state = "mulebot0" //TODO: Correct this.
 			return
 	return
@@ -433,10 +433,10 @@
 
 // called when bot bumps into anything
 /obj/machinery/bot/terminator/Bump(var/atom/obs)
-	if(!(wires))		//usually just bumps, but if avoidance disabled knock over mobs
+	if (!(wires))		//usually just bumps, but if avoidance disabled knock over mobs
 		var/mob/M = obs
-		if(ismob(M))
-			if(istype(M,/mob/living/silicon/robot))
+		if (ismob(M))
+			if (istype(M,/mob/living/silicon/robot))
 				src.visible_message("\red [src] bumps into [M]!")
 			else
 				src.visible_message("\red [src] knocks over [M]!")
@@ -457,11 +457,11 @@
 	playsound(src.loc, 'splat.ogg', 50, 1)
 
 	/*
-	if(ismob(load))
+	if (ismob(load))
 		var/mob/M = load
-		if(M.reagents.has_reagent("beer"))
+		if (M.reagents.has_reagent("beer"))
 			M.unlock_medal("DUI", 1)
-		if(M.reagents.has_reagent("space_drugs") && istype(H) && H.wear_id.assignment == "Security Officer")
+		if (M.reagents.has_reagent("space_drugs") && istype(H) && H.wear_id.assignment == "Security Officer")
 			M.unlock_medel("Ridin' Dirty",1)
 	*/
 
@@ -484,7 +484,7 @@
 // used for control
 /obj/machinery/bot/terminator/receive_signal(datum/signal/signal)
 
-	if(!on)
+	if (!on)
 		return
 
 	/*
@@ -494,27 +494,27 @@
 	*/
 	var/recv = signal.data["command"]
 	// process all-bot input
-	if(recv=="bot_status" && (wires & wire_remote_rx))
+	if (recv=="bot_status" && (wires & wire_remote_rx))
 		send_status()
 
 
 	recv = signal.data["command [suffix]"]
-	if(wires & wire_remote_rx)
+	if (wires & wire_remote_rx)
 		// process control input
 		switch(recv)
-			if("stop")
+			if ("stop")
 				mode = 0
 				return
 
-			if("go")
+			if ("go")
 				start()
 				return
 
-			if("target")
+			if ("target")
 				set_destination(signal.data["destination"] )
 				return
 
-			if("bot_status")
+			if ("bot_status")
 				send_status()
 				return
 
@@ -525,12 +525,12 @@
 // send a radio signal with multiple data key/values
 /obj/machinery/bot/terminator/proc/post_signal_multiple(var/freq, var/list/keyval)
 
-	if(freq == control_freq && !(wires & wire_remote_tx))
+	if (freq == control_freq && !(wires & wire_remote_tx))
 		return
 
 	var/datum/radio_frequency/frequency = radio_controller.return_frequency(freq)
 
-	if(!frequency) return
+	if (!frequency) return
 
 
 

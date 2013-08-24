@@ -45,19 +45,19 @@
 
 obj
 	assume_air(datum/air_group/giver)
-		if(loc)
+		if (loc)
 			return loc.assume_air(giver)
 		else
 			return null
 
 	remove_air(amount)
-		if(loc)
+		if (loc)
 			return loc.remove_air(amount)
 		else
 			return null
 
 	return_air()
-		if(loc)
+		if (loc)
 			return loc.return_air()
 		else
 			return null
@@ -81,22 +81,22 @@ obj
 	return
 
 /atom/proc/bullet_act(var/obj/item/projectile/Proj)
-	if(Proj.effects["emp"])
+	if (Proj.effects["emp"])
 		var/emppulse = Proj.effects["emp"]
-		if(prob(Proj.effectprob["emp"]))
+		if (prob(Proj.effectprob["emp"]))
 			empulse(src, emppulse, emppulse)
 		else
 			empulse(src, 0, emppulse)
 
-//	if(istype(Proj ,/obj/item/projectile/beam/pulse))
+//	if (istype(Proj ,/obj/item/projectile/beam/pulse))
 //		src.ex_act(2)
 	return
 
 /atom/proc/in_contents_of(container)//can take class or object instance as argument
-	if(ispath(container))
-		if(istype(src.loc, container))
+	if (ispath(container))
+		if (istype(src.loc, container))
 			return 1
-	else if(src in container)
+	else if (src in container)
 		return 1
 	return
 
@@ -173,7 +173,7 @@ its easier to just keep the beam vertical.
 		dir=get_dir(src,BeamTarget)	//Causes the source of the beam to rotate to continuosly face the BeamTarget.
 
 		for(var/obj/overlay/beam/O in orange(10,src))	//This section erases the previously drawn beam because I found it was easier to
-			if(O.BeamSource==src)				//just draw another instance of the beam instead of trying to manipulate all the
+			if (O.BeamSource==src)				//just draw another instance of the beam instead of trying to manipulate all the
 				del O							//pieces to a new orientation.
 		var/Angle=round(Get_Angle(src,BeamTarget))
 		var/icon/I=new(icon,icon_state)
@@ -185,7 +185,7 @@ its easier to just keep the beam vertical.
 		for(N,N<length,N+=32)
 			var/obj/overlay/beam/X=new(loc)
 			X.BeamSource=src
-			if(N+32>length)
+			if (N+32>length)
 				var/icon/II=new(icon,icon_state)
 				II.DrawBox(null,1,(length-N),32,32)
 				II.Turn(Angle)
@@ -193,21 +193,21 @@ its easier to just keep the beam vertical.
 			else X.icon=I
 			var/Pixel_x=round(sin(Angle)+32*sin(Angle)*(N+16)/32)
 			var/Pixel_y=round(cos(Angle)+32*cos(Angle)*(N+16)/32)
-			if(DX==0) Pixel_x=0
-			if(DY==0) Pixel_y=0
-			if(Pixel_x>32)
+			if (DX==0) Pixel_x=0
+			if (DY==0) Pixel_y=0
+			if (Pixel_x>32)
 				for(var/a=0, a<=Pixel_x,a+=32)
 					X.x++
 					Pixel_x-=32
-			if(Pixel_x<-32)
+			if (Pixel_x<-32)
 				for(var/a=0, a>=Pixel_x,a-=32)
 					X.x--
 					Pixel_x+=32
-			if(Pixel_y>32)
+			if (Pixel_y>32)
 				for(var/a=0, a<=Pixel_y,a+=32)
 					X.y++
 					Pixel_y-=32
-			if(Pixel_y<-32)
+			if (Pixel_y<-32)
 				for(var/a=0, a>=Pixel_y,a-=32)
 					X.y--
 					Pixel_y+=32
@@ -215,4 +215,4 @@ its easier to just keep the beam vertical.
 			X.pixel_y=Pixel_y
 		sleep(3)	//Changing this to a lower value will cause the beam to follow more smoothly with movement, but it will also be more laggy.
 					//I've found that 3 ticks provided a nice balance for my use.
-	for(var/obj/overlay/beam/O in orange(10,src)) if(O.BeamSource==src) del O
+	for(var/obj/overlay/beam/O in orange(10,src)) if (O.BeamSource==src) del O

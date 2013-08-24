@@ -12,18 +12,18 @@
 	var/best_dist = INFINITY //infinity
 	var/best_cam = null
 	for(var/obj/machinery/camera/C in A)
-		if(usr:network != C.network)
+		if (usr:network != C.network)
 			continue	//	different network (syndicate)
-		if(C.z != usr.z)
+		if (C.z != usr.z)
 			continue	//	different viewing plane
-		if(!C.status)
+		if (!C.status)
 			continue	//	ignore disabled cameras
 		var/dist = get_dist(src, C)
-		if(dist < best_dist)
+		if (dist < best_dist)
 			best_dist = dist
 			best_cam = C
 
-	if(!best_cam)
+	if (!best_cam)
 		return ..()
 	usr:lastDblClick = world.time
 	usr:switchCamera(best_cam)
@@ -32,7 +32,7 @@
 	set category = "AI Commands"
 	set name = "Show Camera List"
 
-	if(usr.stat == 2)
+	if (usr.stat == 2)
 		usr << "You can't track with camera because you are dead!"
 		return
 
@@ -41,7 +41,7 @@
 /mob/living/silicon/ai/proc/ai_camera_track()
 	set category = "AI Commands"
 	set name = "Track With Camera"
-	if(usr.stat == 2)
+	if (usr.stat == 2)
 		usr << "You can't track with camera because you are dead!"
 		return
 
@@ -53,18 +53,18 @@
 			continue //cameras can't follow people who haven't started yet DUH OR DIDN'T YOU KNOW THAT
 		//Cameras can't track people wearing an agent card or a ninja hood.
 		if (istype(M, /mob/living/carbon/human))
-			if(istype(M:wear_id, /obj/item/weapon/card/id/syndicate))
+			if (istype(M:wear_id, /obj/item/weapon/card/id/syndicate))
 				continue
-		 	if(istype(M:head, /obj/item/clothing/head/helmet/space/space_ninja)&&!M:head:canremove)
+		 	if (istype(M:head, /obj/item/clothing/head/helmet/space/space_ninja)&&!M:head:canremove)
 		 		continue
-		if(!istype(M.loc, /turf)) //in a closet or something, AI can't see him anyways
+		if (!istype(M.loc, /turf)) //in a closet or something, AI can't see him anyways
 			continue
 		var/area/wizard_station/A = locate()//So that wizards are not tracked by the AI until they leave their sanctuary. Unless they talk on radio/N
-		if(M in A.contents)
+		if (M in A.contents)
 			continue
-		if(M.invisibility)//cloaked
+		if (M.invisibility)//cloaked
 			continue
-		if(istype(M.loc,/obj/dummy))
+		if (istype(M.loc,/obj/dummy))
 			continue
 		else if (M == usr)
 			continue
@@ -101,15 +101,15 @@
 			if (usr:cameraFollow == null)
 				return
 			else if (istype(target, /mob/living/carbon/human))
-				if(istype(target:wear_id, /obj/item/weapon/card/id/syndicate))
+				if (istype(target:wear_id, /obj/item/weapon/card/id/syndicate))
 					usr << "Follow camera mode terminated."
 					usr:cameraFollow = null
 					return
-		 		if(istype(target:head, /obj/item/clothing/head/helmet/space/space_ninja)&&!target:head:canremove)
+		 		if (istype(target:head, /obj/item/clothing/head/helmet/space/space_ninja)&&!target:head:canremove)
 		 			usr << "Follow camera mode terminated."
 					usr:cameraFollow = null
 					return
-			else if(istype(target.loc,/obj/dummy))
+			else if (istype(target.loc,/obj/dummy))
 				usr << "Follow camera mode ended."
 				usr:cameraFollow = null
 				return
@@ -190,7 +190,7 @@
 
 	var/t = input(user, "Which camera should you change to?") as null|anything in D
 
-	if(!t)
+	if (!t)
 		user.machine = null
 		return 0
 
@@ -244,7 +244,7 @@
 	return
 
 /obj/machinery/camera/emp_act(severity)
-	if(prob(100/(hardened + severity)))
+	if (prob(100/(hardened + severity)))
 		icon_state = "cameraemp"
 		network = null                   //Not the best way but it will do. I think.
 		spawn(900)
@@ -265,7 +265,7 @@
 		..()
 
 /obj/machinery/camera/ex_act(severity)
-	if(src.invuln)
+	if (src.invuln)
 		return
 	else
 		..(severity)
@@ -300,11 +300,11 @@
 					O << "[user] holds a paper up to one of the cameras ..."
 					O << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", X.name, X.info), text("window=[]", X.name))
 	else if (istype(W, /obj/item/weapon/wrench)) //Adding dismantlable cameras to go with the constructable ones. --NEO
-		if(src.status)
+		if (src.status)
 			user << "\red You can't dismantle a camera while it is active."
 		else
 			user << "\blue Dismantling camera..."
-			if(do_after(user, 20))
+			if (do_after(user, 20))
 				var/obj/item/weapon/chem_grenade/case = new /obj/item/weapon/chem_grenade(src.loc)
 				case.name = "Camera Assembly"
 				case.path = 2
@@ -324,7 +324,7 @@
 		else
 			user << "\blue Camera bugged."
 			src.bugged = 1
-	else if(istype(W, /obj/item/weapon/melee/energy/blade))//Putting it here last since it's a special case. I wonder if there is a better way to do these than type casting.
+	else if (istype(W, /obj/item/weapon/melee/energy/blade))//Putting it here last since it's a special case. I wonder if there is a better way to do these than type casting.
 		deactivate(user,2)//Here so that you can disconnect anyone viewing the camera, regardless if it's on or off.
 		var/datum/effects/system/spark_spread/spark_system = new /datum/effects/system/spark_spread()
 		spark_system.set_up(5, 0, loc)
@@ -347,7 +347,7 @@
 	return
 
 /obj/machinery/camera/proc/deactivate(user as mob, var/choice = 1)
-	if(choice==1)
+	if (choice==1)
 		status = !( src.status )
 		if (!(src.status))
 			for(var/mob/O in viewers(user, null))
@@ -380,7 +380,7 @@
 /proc/seen_by_camera(var/mob/M)
 
 	for(var/obj/machinery/camera/C in oview(M))
-		if(C.status)	// check if camera disabled
+		if (C.status)	// check if camera disabled
 			return C
 			break
 

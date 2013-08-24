@@ -2,14 +2,14 @@
 	set category = "Fun"
 	set name = "THERE CAN BE ONLY ONE"
 	set desc = "Makes everyone into a traitor and has them fight for the nuke auth. disk."
-	if(!ticker)
+	if (!ticker)
 		alert("The game hasn't started yet!")
 		return
-	if(alert("BEGIN THE TOURNAMENT?",,"Yes","No")=="No")
+	if (alert("BEGIN THE TOURNAMENT?",,"Yes","No")=="No")
 		return
 	for(var/mob/living/carbon/human/H in world)
-		if(H.stat == 2 || !(H.client)) continue
-		if(is_special_character(H)) continue
+		if (H.stat == 2 || !(H.client)) continue
+		if (is_special_character(H)) continue
 
 		ticker.mode.equip_traitor(H)
 		ticker.mode.traitors += H.mind

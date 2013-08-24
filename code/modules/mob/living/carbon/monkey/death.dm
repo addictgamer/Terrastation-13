@@ -1,10 +1,10 @@
 /mob/living/carbon/monkey/death(gibbed)
-	if(src.stat == 2)
+	if (src.stat == 2)
 		return
 	var/cancel
 	if (src.healths)
 		src.healths.icon_state = "health5"
-	if(!gibbed)
+	if (!gibbed)
 		for(var/mob/O in viewers(src, null))
 			O.show_message("<b>The [src.name]</b> lets out a faint chimper as it collapses and stops moving...", 1) //ded -- Urist
 
@@ -38,7 +38,7 @@
 			return
 	if (src.key)
 		spawn(50)
-			if(src.key && src.stat == 2)
+			if (src.key && src.stat == 2)
 				src.verbs += /mob/proc/ghost
 
 	return ..(gibbed)

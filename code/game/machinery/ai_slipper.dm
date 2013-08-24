@@ -14,10 +14,10 @@
 	req_access = list(access_ai_upload)
 
 /obj/machinery/ai_slipper/power_change()
-	if(stat & BROKEN)
+	if (stat & BROKEN)
 		return
 	else
-		if( powered() )
+		if ( powered() )
 			stat &= ~NOPOWER
 		else
 			icon_state = "motion0"
@@ -30,7 +30,7 @@
 	src.power_change()
 
 /obj/machinery/ai_slipper/attackby(obj/item/weapon/W, mob/user)
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 	if (istype(user, /mob/living/silicon))
 		return src.attack_hand(user)
@@ -54,7 +54,7 @@
 	return attack_hand(user)
 
 /obj/machinery/ai_slipper/attack_hand(mob/user as mob)
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 	if ( (get_dist(src, user) > 1 ))
 		if (!istype(user, /mob/living/silicon))
@@ -73,7 +73,7 @@
 	var/area/area = loc
 	var/t = "<TT><B>AI Liquid Dispenser</B> ([area.name])<HR>"
 
-	if(src.locked && (!istype(user, /mob/living/silicon)))
+	if (src.locked && (!istype(user, /mob/living/silicon)))
 		t += "<I>(Swipe ID card to unlock control panel.)</I><BR>"
 	else
 		t += text("Dispenser [] - <A href='?src=\ref[];toggleOn=1'>[]?</a><br>\n", src.disabled?"deactivated":"activated", src, src.disabled?"Enable":"Disable")
@@ -93,7 +93,7 @@
 		src.disabled = !src.disabled
 		icon_state = src.disabled? "motion0":"motion3"
 	if (href_list["toggleUse"])
-		if(cooldown_on || disabled)
+		if (cooldown_on || disabled)
 			return
 		else
 			new /obj/effects/foam(src.loc)
@@ -110,7 +110,7 @@
 	while(cooldown_time - world.timeofday > 0)
 		var/ticksleft = cooldown_time - world.timeofday
 
-		if(ticksleft > 1e5)
+		if (ticksleft > 1e5)
 			cooldown_time = world.timeofday + 10	// midnight rollover
 
 

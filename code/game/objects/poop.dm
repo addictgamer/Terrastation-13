@@ -3,10 +3,10 @@
 		var/direction = pick(directions)
 		for (var/i = 0, i < pick(1, 200; 2, 150; 3, 50; 4), i++)
 			sleep(3)
-			if(i > 0)
+			if (i > 0)
 				var/obj/decal/cleanable/poop/splatter/b = new /obj/decal/cleanable/poop/splatter(src.loc)
 				b = b //to kill the warning
-			if(step_to(src, get_step(src, direction), 0))
+			if (step_to(src, get_step(src, direction), 0))
 				break
 
 
@@ -28,7 +28,7 @@
 	//world << "poop/place_in_world()"
 	src.loc = location
 	//TODO: If standing on toilet, no poop.
-	//if(/obj/machinery/disposal/toilet in src.loc.contents)
+	//if (/obj/machinery/disposal/toilet in src.loc.contents)
 		//var/found = 1
 	//	if (Debug || Debug2) world << "Placing poop in toilet."
 	//else
@@ -41,30 +41,30 @@
 	var/obj/decal/cleanable/poop/splatter/b = new /obj/decal/cleanable/poop/splatter(location)
 	b = b //To kill the warning
 
-	if(material_ammount < 1)
+	if (material_ammount < 1)
 		del(src)
 ///obj/item/weapon/poop/proc/throw()
 //
 
 /obj/item/weapon/poop/throw_impact(atom/hit_atom)
-	if(istype(hit_atom,/mob/living))
+	if (istype(hit_atom,/mob/living))
 		var/mob/living/M = hit_atom
 		M.visible_message("\red [hit_atom] has been hit by [src].")
-		if(src.vars.Find("throwforce"))
+		if (src.vars.Find("throwforce"))
 			M.take_organ_damage(src:throwforce)
 
-	else if(isobj(hit_atom))
+	else if (isobj(hit_atom))
 		var/obj/O = hit_atom
-		if(!O.anchored)
+		if (!O.anchored)
 			step(O, src.dir)
 		O.hitby(src)
 
-	else if(isturf(hit_atom))
+	else if (isturf(hit_atom))
 		var/turf/T = hit_atom
-		if(T.density)
+		if (T.density)
 			spawn(2)
 				step(src, turn(src.dir, 180))
-			if(istype(src,/mob/living))
+			if (istype(src,/mob/living))
 				var/mob/living/M = src
 				M.take_organ_damage(20)
 

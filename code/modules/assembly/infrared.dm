@@ -35,14 +35,14 @@
 
 	Process_cooldown()
 		cooldown--
-		if(cooldown <= 0)	return 0
+		if (cooldown <= 0)	return 0
 		spawn(10)
 			Process_cooldown()
 		return 1
 
 
 	Activate()
-		if((!secured) || (cooldown > 0))
+		if ((!secured) || (cooldown > 0))
 			return 0
 		cooldown = 2
 		src.scanning = !src.scanning
@@ -53,7 +53,7 @@
 
 
 	Secure()
-		if(secured)
+		if (secured)
 			return 0
 		secured = 1
 		processing_objects.Add(src)//removal is taken care of it process()
@@ -61,7 +61,7 @@
 
 
 	Unsecure()
-		if(!secured)
+		if (!secured)
 			return 0
 		secured = 0
 		return 1
@@ -69,19 +69,19 @@
 
 	Attach_Assembly(var/obj/A, var/mob/user)
 		holder = new/obj/item/device/assembly_holder(get_turf(src))
-		if(holder:attach(A,src,user))
+		if (holder:attach(A,src,user))
 			user.show_message("\blue You attach the [A.name] to the [src.name]!")
 			return 1
 		return 0
 
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(W.IsAssembly())
+		if (W.IsAssembly())
 			var/obj/item/device/D = W
-			if((!D:secured) && (!src.secured))
+			if ((!D:secured) && (!src.secured))
 				Attach_Assembly(D,user)
-		if(isscrewdriver(W))
-			if(src.secured)
+		if (isscrewdriver(W))
+			if (src.secured)
 				Unsecure()
 				user.show_message("\blue The [src.name] can now be attached!")
 			else
@@ -96,18 +96,18 @@
 	update_icon()
 		src.overlays = null
 		src.small_icon_state_overlays = list()
-		if(scanning)
+		if (scanning)
 			src.overlays += text("infrared_old2")
 			src.small_icon_state_overlays += text("infrared_on")
 
-		if(holder)
+		if (holder)
 			holder.update_icon()
 		return
 
 
 	process()
-		if(!scanning)
-			if(!src.first)
+		if (!scanning)
+			if (!src.first)
 				del(src.first)
 
 		if ((!( src.first ) && (src.secured && (istype(src.loc, /turf) || (src.holder && istype(src.holder.loc, /turf))))))
@@ -128,7 +128,7 @@
 						I.process()
 					return
 
-		if(!secured)
+		if (!secured)
 			processing_objects.Remove(src)
 		return
 
@@ -148,14 +148,14 @@
 
 
 	Holder_Movement()
-		if(!holder)	return 0
+		if (!holder)	return 0
 		src.dir = holder.dir
 		del(src.first)
 
 
 	beam_trigger()
-		if((!secured)||(!scanning)||(cooldown > 0))	return 0
-		if((holder)&&(holder.IsAssemblyHolder()))
+		if ((!secured)||(!scanning)||(cooldown > 0))	return 0
+		if ((holder)&&(holder.IsAssemblyHolder()))
 			spawn(0)
 				holder:Process_Activation(src)
 				return
@@ -168,7 +168,7 @@
 
 
 	attack_self(mob/user as mob)
-		if(!secured)	return
+		if (!secured)	return
 		user.machine = src
 		var/dat = text("<TT><B>Infrared Laser</B>\n<B>Status</B>: []<BR>\n<B>Visibility</B>: []<BR>\n</TT>", (src.scanning ? text("<A href='?src=\ref[];state=0'>On</A>", src) : text("<A href='?src=\ref[];state=1'>Off</A>", src)), (src.visible ? text("<A href='?src=\ref[];visible=0'>Visible</A>", src) : text("<A href='?src=\ref[];visible=1'>Invisible</A>", src)))
 		dat += "<BR><BR><A href='?src=\ref[src];refresh=1'>Refresh</A>"
@@ -180,7 +180,7 @@
 
 	Topic(href, href_list)
 		..()
-		if(get_dist(src, usr) <= 1)
+		if (get_dist(src, usr) <= 1)
 			if (href_list["state"])
 				src.scanning = !(src.scanning)
 				update_icon()
@@ -195,7 +195,7 @@
 				usr << browse(null, "window=infra")
 				return
 
-			if(usr)
+			if (usr)
 				src.attack_self(usr)
 
 		else

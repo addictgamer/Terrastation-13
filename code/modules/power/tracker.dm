@@ -23,13 +23,13 @@
 		dir = turn(NORTH, -angle - 22.5)	// 22.5 deg bias ensures, e.g. 67.5-112.5 is EAST
 
 		// check we can draw power
-		if(stat & NOPOWER)
+		if (stat & NOPOWER)
 			return
 
 		// find all solar controls and update them
 		// currently, just update all controllers in world
 		// ***TODO: better communication system using network
-		if(powernet)
+		if (powernet)
 			for(var/obj/machinery/power/solar_control/C in powernet.nodes)
 				C.tracker_update(angle)
 
@@ -39,7 +39,7 @@
 	process()
 		var/avail = surplus()
 
-		if(avail > 500)
+		if (avail > 500)
 			add_load(500)
 			stat &= ~NOPOWER
 		else

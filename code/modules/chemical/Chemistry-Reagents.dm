@@ -20,47 +20,47 @@ datum
 
 		proc
 			reaction_mob(var/mob/M, var/method=TOUCH, var/volume) //By default we have a chance to transfer some
-				if(!istype(M, /mob/living))
+				if (!istype(M, /mob/living))
 					return //Noticed runtime errors from pacid trying to damage ghosts, this should fix. --NEO
 				var/datum/reagent/self = src
 				src = null										  //of the reagent to the mob on TOUCHING it.
 
-				if(!istype(self.holder.my_atom, /obj/effects/chem_smoke))
+				if (!istype(self.holder.my_atom, /obj/effects/chem_smoke))
 					// If the chemicals are in a smoke cloud, do not try to let the chemicals "penetrate" into the mob's system (balance station 13) -- Doohl
 
-					if(method == TOUCH)
+					if (method == TOUCH)
 
 						var/chance = 1
 						var/block  = 0
 
 						for(var/obj/item/clothing/C in M.get_equipped_items())
-							if(C.permeability_coefficient < chance) chance = C.permeability_coefficient
-							if(istype(C, /obj/item/clothing/suit/bio_suit))
+							if (C.permeability_coefficient < chance) chance = C.permeability_coefficient
+							if (istype(C, /obj/item/clothing/suit/bio_suit))
 								// bio suits are just about completely fool-proof - Doohl
 								// kind of a hacky way of making bio suits more resistant to chemicals but w/e
-								if(prob(50))
+								if (prob(50))
 									block = 1
 								else
-									if(prob(50))
+									if (prob(50))
 										block = 1
 
-							if(istype(C, /obj/item/clothing/head/bio_hood))
-								if(prob(50))
+							if (istype(C, /obj/item/clothing/head/bio_hood))
+								if (prob(50))
 									block = 1
 								else
-									if(prob(50))
+									if (prob(50))
 										block = 1
 
 						chance = chance * 100
 
-						if(prob(chance) && !block)
-							if(M.reagents)
+						if (prob(chance) && !block)
+							if (M.reagents)
 								M.reagents.add_reagent(self.id,self.volume/2)
 				return
 
 			reaction_obj(var/obj/O, var/volume) //By default we transfer a small part of the reagent to the object
 				src = null						//if it can hold reagents. nope!
-				//if(O.reagents)
+				//if (O.reagents)
 				//	O.reagents.add_reagent(id,volume/3)
 				return
 
@@ -69,7 +69,7 @@ datum
 				return
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!istype(M, /mob/living))
+				if (!istype(M, /mob/living))
 					return //Noticed runtime errors from pacid trying to damage ghosts, this should fix. --NEO
 				holder.remove_reagent(src.id, REAGENTS_METABOLISM) //By default it slowly disappears.
 				return
@@ -87,10 +87,10 @@ datum
 			reagent_state = LIQUID
 			color = "#005020" // rgb: 0, 50, 20
 			on_mob_life(var/mob/living/M as mob)
-				if(prob(10))
+				if (prob(10))
 					M << "\red Your insides are burning!"
 					M.toxloss+=rand(20,60)
-				else if(prob(40))
+				else if (prob(40))
 					M:heal_organ_damage(5,0)
 				..()
 				return
@@ -108,23 +108,23 @@ datum
 				src = null
 				for(var/datum/disease/D in self.data["viruses"])
 					var/datum/disease/virus = new D.type
-					if(method == TOUCH)
+					if (method == TOUCH)
 						M.contract_disease(virus)
 
 					else //injected
 						M.contract_disease(virus, 1, 0)
 
-				if(self.data["virus2"])
-					if(method == TOUCH)
+				if (self.data["virus2"])
+					if (method == TOUCH)
 						infect_virus2(M,self.data["virus2"])
 					else
 						infect_virus2(M,self.data["virus2"],1)
 
 				/*
-				if(self.data["virus"])
+				if (self.data["virus"])
 					var/datum/disease/V = self.data["virus"]
-					if(M.resistances.Find(V.type)) return
-					if(method == TOUCH)//respect all protective clothing...
+					if (M.resistances.Find(V.type)) return
+					if (method == TOUCH)//respect all protective clothing...
 						M.contract_disease(V)
 					else //injected
 						M.contract_disease(V, 1, 0)
@@ -133,13 +133,13 @@ datum
 
 
 			reaction_turf(var/turf/simulated/T, var/volume)//splash the blood all over the place
-				if(!istype(T)) return
+				if (!istype(T)) return
 				var/datum/reagent/blood/self = src
 				src = null
 				//var/datum/disease/D = self.data["virus"]
-				if(!self.data["donor"] || istype(self.data["donor"], /mob/living/carbon/human))
+				if (!self.data["donor"] || istype(self.data["donor"], /mob/living/carbon/human))
 					var/obj/decal/cleanable/blood/blood_prop = locate() in T //find some blood here
-					if(!blood_prop) //first blood!
+					if (!blood_prop) //first blood!
 						blood_prop = new(T)
 						blood_prop.blood_DNA = self.data["blood_DNA"]
 						blood_prop.blood_type = self.data["blood_type"]
@@ -150,21 +150,21 @@ datum
 						newVirus.holder = blood_prop
 
 					var/datum/disease2/disease/v = self.data["virus2"]
-					if(v)
+					if (v)
 						blood_prop.virus2 = v.getcopy()
 
 						// this makes it almost impossible for airborne diseases to spread
 						// THIS SHIT HAS TO GO, SORRY!
 						/*
-						if(T.density==0)
+						if (T.density==0)
 							newVirus.spread_type = CONTACT_FEET
 						else
 							newVirus.spread_type = CONTACT_HANDS
 						*/
 
-				else if(istype(self.data["donor"], /mob/living/carbon/monkey))
+				else if (istype(self.data["donor"], /mob/living/carbon/monkey))
 					var/obj/decal/cleanable/blood/blood_prop = locate() in T
-					if(!blood_prop)
+					if (!blood_prop)
 						blood_prop = new(T)
 						blood_prop.blood_DNA = self.data["blood_DNA"]
 					for(var/datum/disease/D in self.data["viruses"])
@@ -173,15 +173,15 @@ datum
 						newVirus.holder = blood_prop
 
 						/*
-						if(T.density==0)
+						if (T.density==0)
 							newVirus.spread_type = CONTACT_FEET
 						else
 							newVirus.spread_type = CONTACT_HANDS
 						*/
 
-				else if(istype(self.data["donor"], /mob/living/carbon/alien))
+				else if (istype(self.data["donor"], /mob/living/carbon/alien))
 					var/obj/decal/cleanable/xenoblood/blood_prop = locate() in T
-					if(!blood_prop)
+					if (!blood_prop)
 						blood_prop = new(T)
 						blood_prop.blood_DNA = self.data["blood_DNA"]
 					for(var/datum/disease/D in self.data["viruses"])
@@ -189,7 +189,7 @@ datum
 						blood_prop.viruses += newVirus
 						newVirus.holder = blood_prop
 						/*
-						if(T.density==0)
+						if (T.density==0)
 							newVirus.spread_type = CONTACT_FEET
 						else
 							newVirus.spread_type = CONTACT_HANDS
@@ -199,7 +199,7 @@ datum
 /* Must check the transfering of reagents and their data first. They all can point to one disease datum.
 
 			Del()
-				if(src.data["virus"])
+				if (src.data["virus"])
 					var/datum/disease/D = src.data["virus"]
 					D.cure(0)
 				..()
@@ -214,9 +214,9 @@ datum
 			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
 				var/datum/reagent/vaccine/self = src
 				src = null
-				if(self.data&&method == INGEST)
+				if (self.data&&method == INGEST)
 					for(var/datum/disease/D in M.viruses)
-						if(D.type == self.data)
+						if (D.type == self.data)
 							D.cure()
 
 					M.resistances += self.data
@@ -233,10 +233,10 @@ datum
 			reaction_turf(var/turf/simulated/T, var/volume)
 				if (!istype(T)) return
 				src = null
-				if(volume >= 3)
-					if(T.wet >= 1) return
+				if (volume >= 3)
+					if (T.wet >= 1) return
 					T.wet = 1
-					if(T.wet_overlay)
+					if (T.wet_overlay)
 						T.overlays -= T.wet_overlay
 						T.wet_overlay = null
 					T.wet_overlay = image('water.dmi',T,"wet_floor")
@@ -244,9 +244,9 @@ datum
 
 					spawn(800)
 						if (!istype(T)) return
-						if(T.wet >= 2) return
+						if (T.wet >= 2) return
 						T.wet = 0
-						if(T.wet_overlay)
+						if (T.wet_overlay)
 							T.overlays -= T.wet_overlay
 							T.wet_overlay = null
 
@@ -254,7 +254,7 @@ datum
 					M.toxloss+=rand(15,20)
 
 				var/hotspot = (locate(/obj/hotspot) in T)
-				if(hotspot && !istype(T, /turf/space))
+				if (hotspot && !istype(T, /turf/space))
 					var/datum/gas_mixture/lowertemp = T.remove_air( T:air:total_moles() )
 					lowertemp.temperature = max( min(lowertemp.temperature-2000,lowertemp.temperature / 2) ,0)
 					lowertemp.react()
@@ -265,15 +265,15 @@ datum
 				src = null
 				var/turf/T = get_turf(O)
 				var/hotspot = (locate(/obj/hotspot) in T)
-				if(hotspot && !istype(T, /turf/space))
+				if (hotspot && !istype(T, /turf/space))
 					var/datum/gas_mixture/lowertemp = T.remove_air( T:air:total_moles() )
 					lowertemp.temperature = max( min(lowertemp.temperature-2000,lowertemp.temperature / 2) ,0)
 					lowertemp.react()
 					T.assume_air(lowertemp)
 					del(hotspot)
-				if(istype(O,/obj/item/weapon/reagent_containers/food/snacks/monkeycube))
+				if (istype(O,/obj/item/weapon/reagent_containers/food/snacks/monkeycube))
 					var/obj/item/weapon/reagent_containers/food/snacks/monkeycube/cube = O
-					if(!cube.wrapped)
+					if (!cube.wrapped)
 						cube.Expand()
 				return
 
@@ -287,12 +287,12 @@ datum
 			reaction_turf(var/turf/simulated/T, var/volume)
 				if (!istype(T)) return
 				src = null
-				if(T.wet >= 2) return
+				if (T.wet >= 2) return
 				T.wet = 2
 				spawn(800)
 					if (!istype(T)) return
 					T.wet = 0
-					if(T.wet_overlay)
+					if (T.wet_overlay)
 						T.overlays -= T.wet_overlay
 						T.wet_overlay = null
 					return
@@ -305,25 +305,25 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:drowsyness = max(M:drowsyness-2, 0)
-				if(holder.has_reagent("toxin"))
+				if (holder.has_reagent("toxin"))
 					holder.remove_reagent("toxin", 2)
-				if(holder.has_reagent("stoxin"))
+				if (holder.has_reagent("stoxin"))
 					holder.remove_reagent("stoxin", 2)
-				if(holder.has_reagent("plasma"))
+				if (holder.has_reagent("plasma"))
 					holder.remove_reagent("plasma", 1)
-				if(holder.has_reagent("acid"))
+				if (holder.has_reagent("acid"))
 					holder.remove_reagent("acid", 1)
-				if(holder.has_reagent("cyanide"))
+				if (holder.has_reagent("cyanide"))
 					holder.remove_reagent("cyanide", 1)
-				if(holder.has_reagent("amatoxin"))
+				if (holder.has_reagent("amatoxin"))
 					holder.remove_reagent("amatoxin", 2)
-				if(holder.has_reagent("chloralhydrate"))
+				if (holder.has_reagent("chloralhydrate"))
 					holder.remove_reagent("chloralhydrate", 5)
-				if(holder.has_reagent("carpotoxin"))
+				if (holder.has_reagent("carpotoxin"))
 					holder.remove_reagent("carpotoxin", 1)
-				if(holder.has_reagent("zombiepowder"))
+				if (holder.has_reagent("zombiepowder"))
 					holder.remove_reagent("zombiepowder", 0.5)
 				M:toxloss = max(M:toxloss-2,0)
 				..()
@@ -337,7 +337,7 @@ datum
 			color = "#CF3600" // rgb: 207, 54, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:toxloss += 1.5
 				..()
 				return
@@ -350,7 +350,7 @@ datum
 			color = "#CF3600" // rgb: 207, 54, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:toxloss += 3
 				M:oxyloss += 3
 				M:sleeping += 1
@@ -365,14 +365,14 @@ datum
 			color = "#E895CC" // rgb: 232, 149, 204
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
-				if(!data) data = 1
+				if (!M) M = holder.my_atom
+				if (!data) data = 1
 				switch(data)
-					if(1 to 15)
+					if (1 to 15)
 						M.eye_blurry = max(M.eye_blurry, 10)
-					if(15 to 25)
+					if (15 to 25)
 						M:drowsyness  = max(M:drowsyness, 20)
-					if(25 to INFINITY)
+					if (25 to INFINITY)
 						M:paralysis = max(M:paralysis, 20)
 						M:drowsyness  = max(M:drowsyness, 30)
 				data++
@@ -387,18 +387,18 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
-				if(!data) data = 1
+				if (!M) M = holder.my_atom
+				if (!data) data = 1
 				data++
-				if(M.losebreath >= 10)
+				if (M.losebreath >= 10)
 					M.losebreath = max(10, M.losebreath-10)
 				holder.remove_reagent(src.id, 0.2)
 				switch(data)
-					if(1 to 15)
+					if (1 to 15)
 						M.eye_blurry = max(M.eye_blurry, 10)
-					if(15 to 25)
+					if (15 to 25)
 						M:drowsyness  = max(M:drowsyness, 20)
-					if(25 to INFINITY)
+					if (25 to INFINITY)
 						M:sleeping = 1
 						M:oxyloss = 0
 						M:weakened = 0
@@ -420,8 +420,8 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
-				if(M.losebreath >= 10)
+				if (!M) M = holder.my_atom
+				if (M.losebreath >= 10)
 					M.losebreath = max(10, M.losebreath-5)
 				holder.remove_reagent(src.id, 0.2)
 				return
@@ -434,12 +434,12 @@ datum
 			color = "#60A584" // rgb: 96, 165, 132
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M.druggy = max(M.druggy, 15)
-				if(isturf(M.loc))
-					if(M.canmove)
+				if (isturf(M.loc))
+					if (M.canmove)
 						step(M, pick(cardinal))
-				if(prob(7)) M:emote(pick("twitch","drool","moan","giggle"))
+				if (prob(7)) M:emote(pick("twitch","drool","moan","giggle"))
 				holder.remove_reagent(src.id, 0.2)
 				return
 
@@ -452,13 +452,13 @@ datum
 
 			reaction_obj(var/obj/O, var/volume)
 				src = null
-				if(istype(O,/obj/window))
-					if(O:silicate <= 200)
+				if (istype(O,/obj/window))
+					if (O:silicate <= 200)
 
 						O:silicate += volume
 						O:health += volume * 3
 
-						if(!O:silicateIcon)
+						if (!O:silicateIcon)
 							var/icon/I = icon(O.icon,O.icon_state,O.dir)
 
 							var/r = (volume / 100) + 1
@@ -521,9 +521,9 @@ datum
 			color = "#484848" // rgb: 72, 72, 72
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
-				if(M.canmove) step(M, pick(cardinal))
-				if(prob(5)) M:emote(pick("twitch","drool","moan"))
+				if (!M) M = holder.my_atom
+				if (M.canmove) step(M, pick(cardinal))
+				if (prob(5)) M:emote(pick("twitch","drool","moan"))
 				..()
 				return
 
@@ -543,7 +543,7 @@ datum
 
 			reaction_turf(var/turf/T, var/volume)
 				src = null
-				if(!istype(T, /turf/space))
+				if (!istype(T, /turf/space))
 					new /obj/decal/cleanable/dirt(T)
 
 		chlorine
@@ -554,7 +554,7 @@ datum
 			color = "#808080" // rgb: 128, 128, 128
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M.take_organ_damage(1, 0)
 				..()
 				return
@@ -567,7 +567,7 @@ datum
 			color = "#808080" // rgb: 128, 128, 128
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:toxloss++
 				..()
 				return
@@ -594,9 +594,9 @@ datum
 			color = "#808080" // rgb: 128, 128, 128
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
-				if(M.canmove) step(M, pick(cardinal))
-				if(prob(5)) M:emote(pick("twitch","drool","moan"))
+				if (!M) M = holder.my_atom
+				if (M.canmove) step(M, pick(cardinal))
+				if (prob(5)) M:emote(pick("twitch","drool","moan"))
 				..()
 				return
 
@@ -620,31 +620,31 @@ datum
 			color = "#DB5008" // rgb: 219, 80, 8
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:toxloss++
 				M.take_organ_damage(0, 1)
 				..()
 				return
 			reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
-				if(method == TOUCH)
-					if(istype(M, /mob/living/carbon/human))
-						if(M:wear_mask)
+				if (method == TOUCH)
+					if (istype(M, /mob/living/carbon/human))
+						if (M:wear_mask)
 							del (M:wear_mask)
 							M << "\red Your mask melts away but protects you from the acid!"
 							return
-						if(M:head)
+						if (M:head)
 							del (M:head)
 							M << "\red Your helmet melts into uselessness but protects you from the acid!"
 							return
-					if(istype(M, /mob/living/carbon/monkey))
-						if(M:wear_mask)
+					if (istype(M, /mob/living/carbon/monkey))
+						if (M:wear_mask)
 							del (M:wear_mask)
 							M << "\red Your mask melts away but protects you from the acid!"
 							return
 
-					if(prob(15) && istype(M, /mob/living/carbon/human) && volume >= 30)
+					if (prob(15) && istype(M, /mob/living/carbon/human) && volume >= 30)
 						var/datum/organ/external/affecting = M:organs["head"]
-						if(affecting)
+						if (affecting)
 							affecting.take_damage(25, 0)
 							M:UpdateDamage()
 							M:UpdateDamageIcon()
@@ -657,7 +657,7 @@ datum
 					M.take_organ_damage(min(15, volume * 2))
 
 			reaction_obj(var/obj/O, var/volume)
-				if((istype(O,/obj/item) || istype(O,/obj/glowshroom)) && prob(10))
+				if ((istype(O,/obj/item) || istype(O,/obj/glowshroom)) && prob(10))
 					var/obj/decal/cleanable/molten_item/I = new/obj/decal/cleanable/molten_item(O.loc)
 					I.desc = "Looks like this was \an [O] some time ago."
 					for(var/mob/M in viewers(5, O))
@@ -672,21 +672,21 @@ datum
 			color = "#8E18A9" // rgb: 142, 24, 169
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:toxloss++
 				M.take_organ_damage(0, 1)
 				..()
 				return
 			reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
-				if(!istype(M, /mob/living))
+				if (!istype(M, /mob/living))
 					return //wooo more runtime fixin
-				if(method == TOUCH)
-					if(istype(M, /mob/living/carbon/human))
-						if(M:wear_mask)
+				if (method == TOUCH)
+					if (istype(M, /mob/living/carbon/human))
+						if (M:wear_mask)
 							del (M:wear_mask)
 							M << "\red Your mask melts away!"
 							return
-						if(M:head)
+						if (M:head)
 							del (M:head)
 							M << "\red Your helmet melts into uselessness!"
 							return
@@ -698,13 +698,13 @@ datum
 						M << "\red Your face has become disfigured!"
 						M.real_name = "Unknown"
 					else
-						if(istype(M, /mob/living/carbon/monkey) && M:wear_mask)
+						if (istype(M, /mob/living/carbon/monkey) && M:wear_mask)
 							del (M:wear_mask)
 							M << "\red Your mask melts away but protects you from the acid!"
 							return
 						M.take_organ_damage(min(15, volume * 4)) // same deal as sulphuric acid
 				else
-					if(istype(M, /mob/living/carbon/human))
+					if (istype(M, /mob/living/carbon/human))
 						var/datum/organ/external/affecting = M:organs["head"]
 						affecting.take_damage(30, 0)
 						M:UpdateDamage()
@@ -716,7 +716,7 @@ datum
 						M.take_organ_damage(min(15, volume * 4))
 
 			reaction_obj(var/obj/O, var/volume)
-				if((istype(O,/obj/item) || istype(O,/obj/glowshroom)))
+				if ((istype(O,/obj/item) || istype(O,/obj/glowshroom)))
 					var/obj/decal/cleanable/molten_item/I = new/obj/decal/cleanable/molten_item(O.loc)
 					I.desc = "Looks like this was \an [O] some time ago."
 					for(var/mob/M in viewers(5, O))
@@ -745,7 +745,7 @@ datum
 			color = "#604838" // rgb: 96, 72, 56
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M.radiation += 3
 				..()
 				return
@@ -753,7 +753,7 @@ datum
 
 			reaction_turf(var/turf/T, var/volume)
 				src = null
-				if(!istype(T, /turf/space))
+				if (!istype(T, /turf/space))
 					new /obj/decal/cleanable/greenglow(T)
 
 
@@ -765,7 +765,7 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M.mutations = 0
 				M.disabilities = 0
 				M.sdisabilities = 0
@@ -781,7 +781,7 @@ datum
 
 			reaction_turf(var/turf/T, var/volume)
 				src = null
-				if(istype(T, /turf/simulated/wall))
+				if (istype(T, /turf/simulated/wall))
 					T:thermite = 1
 					T.overlays = null
 					T.overlays = image('effects.dmi',icon_state = "thermite")
@@ -800,7 +800,7 @@ datum
 				src = null
 				if ( (method==TOUCH && prob(33)) || method==INGEST)
 					randmuti(M)
-					if(prob(98))
+					if (prob(98))
 						randmutb(M)
 					else
 						randmutg(M)
@@ -808,7 +808,7 @@ datum
 					updateappearance(M,M.dna.uni_identity)
 				return
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M.radiation += 3
 				..()
 				return
@@ -822,7 +822,7 @@ datum
 			color = "#899613" // rgb: 137, 150, 19
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:nutrition += nutriment_factor
 				..()
 				return
@@ -836,15 +836,15 @@ datum
 	/*		reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
 				src = null
 				if (method==TOUCH)
-					if(istype(M, /mob/living/carbon/human))
-						if(M.health >= -100 && M.health <= 0)
+					if (istype(M, /mob/living/carbon/human))
+						if (M.health >= -100 && M.health <= 0)
 							M.crit_op_stage = 0.0
 				if (method==INGEST)
 					usr << "Well, that was stupid."
 					M:toxloss += 3
 				return
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 					M.radiation += 3
 					..()
 					return
@@ -857,12 +857,12 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 /*
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
-				if((M.virus) && (prob(8) && (M.virus.name=="Magnitis")))
-					if(M.virus.spread == "Airborne")
+				if (!M) M = holder.my_atom
+				if ((M.virus) && (prob(8) && (M.virus.name=="Magnitis")))
+					if (M.virus.spread == "Airborne")
 						M.virus.spread = "Remissive"
 					M.virus.stage--
-					if(M.virus.stage <= 0)
+					if (M.virus.stage <= 0)
 						M.resistances += M.virus.type
 						M.virus = null
 				holder.remove_reagent(src.id, 0.2)
@@ -891,14 +891,14 @@ datum
 			color = "#B8B8C0" // rgb: 184, 184, 192
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M.radiation += 1
 				..()
 				return
 
 			reaction_turf(var/turf/T, var/volume)
 				src = null
-				if(!istype(T, /turf/space))
+				if (!istype(T, /turf/space))
 					new /obj/decal/cleanable/greenglow(T)
 
 		aluminum
@@ -925,7 +925,7 @@ datum
 			reaction_obj(var/obj/O, var/volume)
 				src = null
 				var/turf/the_turf = get_turf(O)
-				if(!the_turf)
+				if (!the_turf)
 					return //No sense trying to start a fire if you don't have a turf to set on fire. --NEO
 				var/datum/gas_mixture/napalm = new
 				var/datum/gas/volatile_fuel/fuel = new
@@ -941,7 +941,7 @@ datum
 				T.assume_air(napalm)
 				return
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:toxloss += 1
 				..()
 				return
@@ -954,7 +954,7 @@ datum
 			color = "#A5F0EE" // rgb: 165, 240, 238
 
 			reaction_obj(var/obj/O, var/volume)
-				if(istype(O,/obj/decal/cleanable))
+				if (istype(O,/obj/decal/cleanable))
 					del(O)
 				else
 					if (O)
@@ -971,24 +971,24 @@ datum
 
 			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
 				M.clean_blood()
-				if(istype(M, /mob/living/carbon))
+				if (istype(M, /mob/living/carbon))
 					var/mob/living/carbon/C = M
-					if(C.r_hand)
+					if (C.r_hand)
 						C.r_hand.clean_blood()
-					if(C.l_hand)
+					if (C.l_hand)
 						C.l_hand.clean_blood()
-					if(C.wear_mask)
+					if (C.wear_mask)
 						C.wear_mask.clean_blood()
-					if(istype(M, /mob/living/carbon/human))
-						if(C:w_uniform)
+					if (istype(M, /mob/living/carbon/human))
+						if (C:w_uniform)
 							C:w_uniform.clean_blood()
-						if(C:wear_suit)
+						if (C:wear_suit)
 							C:wear_suit.clean_blood()
-						if(C:shoes)
+						if (C:shoes)
 							C:shoes.clean_blood()
-						if(C:gloves)
+						if (C:gloves)
 							C:gloves.clean_blood()
-						if(C:head)
+						if (C:head)
 							C:head.clean_blood()
 
 		plantbgone
@@ -999,30 +999,30 @@ datum
 			color = "#49002E" // rgb: 73, 0, 46
 			/* Don't know if this is necessary.
 			on_mob_life(var/mob/living/carbon/M)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:toxloss += 3.0
 				..()
 				return
 			*/
 			reaction_obj(var/obj/O, var/volume)
-		//		if(istype(O,/obj/plant/vine/))
+		//		if (istype(O,/obj/plant/vine/))
 		//			O:life -= rand(15,35) // Kills vines nicely // Not tested as vines don't work in R41
-				if(istype(O,/obj/alien/weeds/))
+				if (istype(O,/obj/alien/weeds/))
 					O:health -= rand(15,35) // Kills alien weeds pretty fast
 					O:healthcheck()
-				else if(istype(O,/obj/glowshroom)) //even a small amount is enough to kill it
+				else if (istype(O,/obj/glowshroom)) //even a small amount is enough to kill it
 					del(O)
 				// Damage that is done to growing plants is separately
 				// at code/game/machinery/hydroponics at obj/item/hydroponics
 
 			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
 				src = null
-				if(istype(M, /mob/living/carbon))
-					if(!M.wear_mask) // If not wearing a mask
+				if (istype(M, /mob/living/carbon))
+					if (!M.wear_mask) // If not wearing a mask
 						M:toxloss += 2 // 4 toxic damage per application, doubled for some reason
-					if(istype(M,/mob/living/carbon/human) && M:mutantrace == "plant") //plantmen take a LOT of damage
+					if (istype(M,/mob/living/carbon/human) && M:mutantrace == "plant") //plantmen take a LOT of damage
 						M:toxloss += 10
-						//if(prob(10))
+						//if (prob(10))
 							//M.make_dizzy(1) doesn't seem to do anything
 
 		plasma
@@ -1033,8 +1033,8 @@ datum
 			color = "#E71B00" // rgb: 231, 27, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
-				if(holder.has_reagent("inaprovaline"))
+				if (!M) M = holder.my_atom
+				if (holder.has_reagent("inaprovaline"))
 					holder.remove_reagent("inaprovaline", 2)
 				M:toxloss++
 				..()
@@ -1066,10 +1066,10 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
-				if(M.bodytemperature > 310)
+				if (!M) M = holder.my_atom
+				if (M.bodytemperature > 310)
 					M.bodytemperature = max(310, M.bodytemperature-20)
-				else if(M.bodytemperature < 311)
+				else if (M.bodytemperature < 311)
 					M.bodytemperature = min(310, M.bodytemperature+20)
 				..()
 				return
@@ -1082,9 +1082,9 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M.make_dizzy(1)
-				if(!M.confused) M.confused = 1
+				if (!M.confused) M.confused = 1
 				M.confused = max(M.confused, 20)
 				holder.remove_reagent(src.id, 0.2)
 				..()
@@ -1098,13 +1098,13 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(M.stat == 2.0)
+				if (M.stat == 2.0)
 					return
-				if(!M) M = holder.my_atom
-				if(prob(33))
+				if (!M) M = holder.my_atom
+				if (prob(33))
 					M.take_organ_damage(1, 0)
 				M:oxyloss += 3
-				if(prob(20)) M:emote("gasp")
+				if (prob(20)) M:emote("gasp")
 				..()
 				return
 
@@ -1116,9 +1116,9 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(M.stat == 2.0)
+				if (M.stat == 2.0)
 					return
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:heal_organ_damage(0,2)
 				..()
 				return
@@ -1131,9 +1131,9 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(M.stat == 2.0) //THE GUY IS **DEAD**! BEREFT OF ALL LIFE HE RESTS IN PEACE etc etc. He does NOT metabolise shit anymore, god DAMN
+				if (M.stat == 2.0) //THE GUY IS **DEAD**! BEREFT OF ALL LIFE HE RESTS IN PEACE etc etc. He does NOT metabolise shit anymore, god DAMN
 					return
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:heal_organ_damage(0,3)
 				..()
 				return
@@ -1146,11 +1146,11 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(M.stat == 2.0)
+				if (M.stat == 2.0)
 					return  //See above, down and around. --Agouri
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:oxyloss = max(M:oxyloss-2, 0)
-				if(holder.has_reagent("lexorin"))
+				if (holder.has_reagent("lexorin"))
 					holder.remove_reagent("lexorin", 2)
 				..()
 				return
@@ -1163,11 +1163,11 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(M.stat == 2.0)
+				if (M.stat == 2.0)
 					return
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:oxyloss = 0
-				if(holder.has_reagent("lexorin"))
+				if (holder.has_reagent("lexorin"))
 					holder.remove_reagent("lexorin", 2)
 				..()
 				return
@@ -1180,13 +1180,13 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(M.stat == 2.0)
+				if (M.stat == 2.0)
 					return
-				if(!M) M = holder.my_atom
-				if(M:oxyloss && prob(40)) M:oxyloss--
-				if(M:bruteloss && prob(40)) M:heal_organ_damage(1,0)
-				if(M:fireloss && prob(40)) M:heal_organ_damage(0,1)
-				if(M:toxloss && prob(40)) M:toxloss--
+				if (!M) M = holder.my_atom
+				if (M:oxyloss && prob(40)) M:oxyloss--
+				if (M:bruteloss && prob(40)) M:heal_organ_damage(1,0)
+				if (M:fireloss && prob(40)) M:heal_organ_damage(0,1)
+				if (M:toxloss && prob(40)) M:toxloss--
 				..()
 				return
 
@@ -1198,33 +1198,33 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom ///This can even heal dead people.
+				if (!M) M = holder.my_atom ///This can even heal dead people.
 				M:cloneloss = 0
 				M:oxyloss = 0
 				M:radiation = 0
 				M:heal_organ_damage(5,5)
-				if(M:toxloss) M:toxloss = max(0, M:toxloss-5)
-				if(holder.has_reagent("toxin"))
+				if (M:toxloss) M:toxloss = max(0, M:toxloss-5)
+				if (holder.has_reagent("toxin"))
 					holder.remove_reagent("toxin", 5)
-				if(holder.has_reagent("stoxin"))
+				if (holder.has_reagent("stoxin"))
 					holder.remove_reagent("stoxin", 5)
-				if(holder.has_reagent("plasma"))
+				if (holder.has_reagent("plasma"))
 					holder.remove_reagent("plasma", 5)
-				if(holder.has_reagent("acid"))
+				if (holder.has_reagent("acid"))
 					holder.remove_reagent("acid", 5)
-				if(holder.has_reagent("pacid"))
+				if (holder.has_reagent("pacid"))
 					holder.remove_reagent("pacid", 5)
-				if(holder.has_reagent("cyanide"))
+				if (holder.has_reagent("cyanide"))
 					holder.remove_reagent("cyanide", 5)
-				if(holder.has_reagent("lexorin"))
+				if (holder.has_reagent("lexorin"))
 					holder.remove_reagent("lexorin", 5)
-				if(holder.has_reagent("amatoxin"))
+				if (holder.has_reagent("amatoxin"))
 					holder.remove_reagent("amatoxin", 5)
-				if(holder.has_reagent("chloralhydrate"))
+				if (holder.has_reagent("chloralhydrate"))
 					holder.remove_reagent("chloralhydrate", 5)
-				if(holder.has_reagent("carpotoxin"))
+				if (holder.has_reagent("carpotoxin"))
 					holder.remove_reagent("carpotoxin", 5)
-				if(holder.has_reagent("zombiepowder"))
+				if (holder.has_reagent("zombiepowder"))
 					holder.remove_reagent("zombiepowder", 5)
 				M:brainloss = 0
 				M.disabilities = 0
@@ -1246,7 +1246,7 @@ datum
 				for(var/datum/disease/D in M.viruses)
 					D.spread = "Remissive"
 					D.stage--
-					if(D.stage < 1)
+					if (D.stage < 1)
 						D.cure()
 				..()
 				return
@@ -1259,12 +1259,12 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:drowsyness = max(M:drowsyness-5, 0)
-				if(M:paralysis) M:paralysis--
-				if(M:stunned) M:stunned--
-				if(M:weakened) M:weakened--
-				if(prob(60))	M:toxloss++
+				if (M:paralysis) M:paralysis--
+				if (M:stunned) M:stunned--
+				if (M:weakened) M:weakened--
+				if (prob(60))	M:toxloss++
 				..()
 				return
 
@@ -1277,11 +1277,11 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:jitteriness = max(M:jitteriness-5,0)
-				if(prob(80)) M:brainloss++
-				if(prob(50)) M:drowsyness = max(M:drowsyness, 3)
-				if(prob(10)) M:emote("drool")
+				if (prob(80)) M:brainloss++
+				if (prob(50)) M:drowsyness = max(M:drowsyness, 3)
+				if (prob(10)) M:emote("drool")
 				..()
 				return
 
@@ -1293,7 +1293,7 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:radiation = max(M:radiation-3,0)
 				..()
 				return
@@ -1306,12 +1306,12 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(M.stat == 2.0)
+				if (M.stat == 2.0)
 					return  //See above, down and around. --Agouri
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:radiation = max(M:radiation-7,0)
-				if(M:toxloss) M:toxloss--
-				if(prob(15))
+				if (M:toxloss) M:toxloss--
+				if (prob(15))
 					M.take_organ_damage(1, 0)
 				..()
 				return
@@ -1324,7 +1324,7 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:brainloss = max(M:brainloss-3 , 0)
 				..()
 				return
@@ -1337,7 +1337,7 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:eye_blurry = max(M:eye_blurry-5 , 0)
 				M:eye_blind = max(M:eye_blind-5 , 0)
 				M:disabilities &= ~1
@@ -1353,9 +1353,9 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(M.stat == 2.0)
+				if (M.stat == 2.0)
 					return
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:heal_organ_damage(2,0)
 				..()
 				return
@@ -1368,8 +1368,8 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
-				if(prob(5)) M:emote(pick("twitch","blink_r","shiver"))
+				if (!M) M = holder.my_atom
+				if (prob(5)) M:emote(pick("twitch","blink_r","shiver"))
 				holder.remove_reagent(src.id, 0.2)
 				..()
 				return
@@ -1382,12 +1382,12 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
-				if(M.bodytemperature < 170)
-					if(M:cloneloss) M:cloneloss = max(0, M:cloneloss-1)
-					if(M:oxyloss) M:oxyloss = max(0, M:oxyloss-3)
+				if (!M) M = holder.my_atom
+				if (M.bodytemperature < 170)
+					if (M:cloneloss) M:cloneloss = max(0, M:cloneloss-1)
+					if (M:oxyloss) M:oxyloss = max(0, M:oxyloss-3)
 					M:heal_organ_damage(3,3)
-					if(M:toxloss) M:toxloss = max(0, M:toxloss-3)
+					if (M:toxloss) M:toxloss = max(0, M:toxloss-3)
 				..()
 				return
 
@@ -1399,12 +1399,12 @@ datum
 			color = "#C8A5DC" // rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
-				if(M.bodytemperature < 170)
-					if(M:cloneloss) M:cloneloss = max(0, M:cloneloss-3)
-					if(M:oxyloss) M:oxyloss = max(0, M:oxyloss-3)
+				if (!M) M = holder.my_atom
+				if (M.bodytemperature < 170)
+					if (M:cloneloss) M:cloneloss = max(0, M:cloneloss-3)
+					if (M:oxyloss) M:oxyloss = max(0, M:oxyloss-3)
 					M:heal_organ_damage(3,3)
-					if(M:toxloss) M:toxloss = max(0, M:toxloss-3)
+					if (M:toxloss) M:toxloss = max(0, M:toxloss-3)
 				..()
 				return
 
@@ -1428,7 +1428,7 @@ datum
 			color = "#003333" // rgb: 0, 51, 51
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:toxloss += 2
 				..()
 				return
@@ -1440,7 +1440,7 @@ datum
 			color = "#669900" // rgb: 102, 153, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:oxyloss += 0.5
 				M:toxloss += 0.5
 				M:weakened = max(M:weakened, 10)
@@ -1460,7 +1460,7 @@ datum
 
 			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
 				src = null
-				if( (prob(10) && method==TOUCH) || method==INGEST)
+				if ( (prob(10) && method==TOUCH) || method==INGEST)
 					M.contract_disease(new /datum/disease/robotic_transformation(0),1)
 
 		xenomicrobes
@@ -1472,7 +1472,7 @@ datum
 
 			reaction_mob(var/mob/M, var/method=TOUCH, var/volume)
 				src = null
-				if( (prob(10) && method==TOUCH) || method==INGEST)
+				if ( (prob(10) && method==TOUCH) || method==INGEST)
 					M.contract_disease(new /datum/disease/xeno_transformation(0),1)
 
 //foam precursor
@@ -1509,14 +1509,14 @@ datum
 			color = "#404030" // rgb: 64, 64, 48
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.make_dizzy(5)
 				M:jitteriness = max(M:jitteriness-5,0)
-				if(data >= 25)
+				if (data >= 25)
 					if (!M:stuttering) M:stuttering = 1
 					M:stuttering += 4
-				if(data >= 40 && prob(33))
+				if (data >= 40 && prob(33))
 					if (!M:confused) M:confused = 1
 					M:confused += 3
 				..()
@@ -1544,7 +1544,7 @@ datum
 			color = "#605048" // rgb: 96, 80, 72
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M.dizziness = 0
 				M:drowsyness = 0
 				M:stuttering = 0
@@ -1560,16 +1560,16 @@ datum
 			color = "#000067" // rgb: 0, 0, 103
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
-				if(!data) data = 1
+				if (!M) M = holder.my_atom
+				if (!data) data = 1
 				data++
 				switch(data)
-					if(1)
+					if (1)
 						M:confused += 2
 						M:drowsyness += 2
-					if(2 to 50)
+					if (2 to 50)
 						M:sleeping += 1
-					if(51 to INFINITY)
+					if (51 to INFINITY)
 						M:sleeping += 1
 						M:toxloss += (data - 50)
 				..()
@@ -1583,15 +1583,15 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
-				if(!data) data = 1
+				if (!M) M = holder.my_atom
+				if (!data) data = 1
 				switch(data)
-					if(1)
+					if (1)
 						M:confused += 2
 						M:drowsyness += 2
-					if(2 to 50)
+					if (2 to 50)
 						M:sleeping += 1
-					if(51 to INFINITY)
+					if (51 to INFINITY)
 						M:sleeping += 1
 						M:toxloss += (data - 50)
 				data++
@@ -1611,8 +1611,8 @@ datum
 			color = "#664330" // rgb: 102, 67, 48
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
-				if(prob(50)) M:heal_organ_damage(1,0)
+				if (!M) M = holder.my_atom
+				if (prob(50)) M:heal_organ_damage(1,0)
 				M:nutrition += nutriment_factor	// For hunger and fatness
 /*
 				// If overeaten - vomit and fall down
@@ -1655,12 +1655,12 @@ datum
 			color = "#B31008" // rgb: 179, 16, 8
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:bodytemperature += 5
-				if(prob(40) && !istype(M, /mob/living/carbon/metroid))
+				if (prob(40) && !istype(M, /mob/living/carbon/metroid))
 					M.take_organ_damage(0, 1)
 
-				if(istype(M, /mob/living/carbon/metroid))
+				if (istype(M, /mob/living/carbon/metroid))
 					M:bodytemperature += rand(5,20)
 				..()
 				return
@@ -1673,11 +1673,11 @@ datum
 			color = "#B31008" // rgb: 139, 166, 233
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:bodytemperature -= 5
-				if(prob(40))
+				if (prob(40))
 					M.take_organ_damage(0, 1)
-				if(prob(80) && istype(M, /mob/living/carbon/metroid))
+				if (prob(80) && istype(M, /mob/living/carbon/metroid))
 					M.fireloss += rand(5,20)
 					M << "\red You feel a terrible chill inside your body!"
 				..()
@@ -1736,7 +1736,7 @@ datum
 			color = "#792300" // rgb: 121, 35, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:toxloss++
 				..()
 				return
@@ -1748,26 +1748,26 @@ datum
 			color = "#E700E7" // rgb: 231, 0, 231
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M.druggy = max(M.druggy, 30)
-				if(!data) data = 1
+				if (!data) data = 1
 				switch(data)
-					if(1 to 5)
+					if (1 to 5)
 						if (!M:stuttering) M:stuttering = 1
 						M.make_dizzy(5)
-						if(prob(10)) M:emote(pick("twitch","giggle"))
-					if(5 to 10)
+						if (prob(10)) M:emote(pick("twitch","giggle"))
+					if (5 to 10)
 						if (!M:stuttering) M:stuttering = 1
 						M.make_jittery(10)
 						M.make_dizzy(10)
 						M.druggy = max(M.druggy, 35)
-						if(prob(20)) M:emote(pick("twitch","giggle"))
+						if (prob(20)) M:emote(pick("twitch","giggle"))
 					if (10 to INFINITY)
 						if (!M:stuttering) M:stuttering = 1
 						M.make_jittery(20)
 						M.make_dizzy(20)
 						M.druggy = max(M.druggy, 40)
-						if(prob(30)) M:emote(pick("twitch","giggle"))
+						if (prob(30)) M:emote(pick("twitch","giggle"))
 				holder.remove_reagent(src.id, 0.2)
 				data++
 				..()
@@ -1782,8 +1782,8 @@ datum
 
 			on_mob_life(var/mob/living/M as mob)
 				M:nutrition += nutriment_factor
-				if(istype(M, /mob/living/carbon/human) && M.job in list("Security Officer", "Head of Security", "Detective", "Warden"))
-					if(!M) M = holder.my_atom
+				if (istype(M, /mob/living/carbon/human) && M.job in list("Security Officer", "Head of Security", "Detective", "Warden"))
+					if (!M) M = holder.my_atom
 					M:heal_organ_damage(1,1)
 					M:nutrition += nutriment_factor
 					..()
@@ -1799,9 +1799,9 @@ datum
 
 			on_mob_life(var/mob/living/M as mob)
 				M:nutrition += nutriment_factor
-				if(istype(M, /mob/living/carbon/human) && M.mind)
-					if(M.mind.special_role)
-						if(!M) M = holder.my_atom
+				if (istype(M, /mob/living/carbon/human) && M.mind)
+					if (M.mind.special_role)
+						if (!M) M = holder.my_atom
 						M:heal_organ_damage(1,1)
 						M:nutrition += nutriment_factor
 						..()
@@ -1823,10 +1823,10 @@ datum
 			reaction_turf(var/turf/simulated/T, var/volume)
 				if (!istype(T)) return
 				src = null
-				if(volume >= 3)
-					if(T.wet >= 1) return
+				if (volume >= 3)
+					if (T.wet >= 1) return
 					T.wet = 1
-					if(T.wet_overlay)
+					if (T.wet_overlay)
 						T.overlays -= T.wet_overlay
 						T.wet_overlay = null
 					T.wet_overlay = image('water.dmi',T,"wet_floor")
@@ -1834,13 +1834,13 @@ datum
 
 					spawn(800)
 						if (!istype(T)) return
-						if(T.wet >= 2) return
+						if (T.wet >= 2) return
 						T.wet = 0
-						if(T.wet_overlay)
+						if (T.wet_overlay)
 							T.overlays -= T.wet_overlay
 							T.wet_overlay = null
 				var/hotspot = (locate(/obj/hotspot) in T)
-				if(hotspot)
+				if (hotspot)
 					var/datum/gas_mixture/lowertemp = T.remove_air( T:air:total_moles() )
 					lowertemp.temperature = max( min(lowertemp.temperature-2000,lowertemp.temperature / 2) ,0)
 					lowertemp.react()
@@ -1911,8 +1911,8 @@ datum
 
 			on_mob_life(var/mob/living/M as mob)
 				M:nutrition += nutriment_factor
-				if(!M) M = holder.my_atom
-				if(M:oxyloss && prob(30)) M:oxyloss--
+				if (!M) M = holder.my_atom
+				if (M:oxyloss && prob(30)) M:oxyloss--
 				M:nutrition++
 				..()
 				return
@@ -1927,8 +1927,8 @@ datum
 
 			on_mob_life(var/mob/living/M as mob)
 				M:nutrition += nutriment_factor
-				if(!M) M = holder.my_atom
-				if(M:fireloss && prob(20)) M:heal_organ_damage(0,1)
+				if (!M) M = holder.my_atom
+				if (M:fireloss && prob(20)) M:heal_organ_damage(0,1)
 				M:nutrition++
 				..()
 				return
@@ -1943,8 +1943,8 @@ datum
 
 			on_mob_life(var/mob/living/M as mob)
 				M:nutrition += nutriment_factor
-				if(!M) M = holder.my_atom
-				if(M:toxloss && prob(20)) M:toxloss--
+				if (!M) M = holder.my_atom
+				if (M:toxloss && prob(20)) M:toxloss--
 				M:nutrition++
 				..()
 				return
@@ -1958,15 +1958,15 @@ datum
 			color = "#973800" // rgb: 151, 56, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:nutrition += nutriment_factor
 				M:eye_blurry = max(M:eye_blurry-1 , 0)
 				M:eye_blind = max(M:eye_blind-1 , 0)
-				if(!data) data = 1
+				if (!data) data = 1
 				switch(data)
-					if(1 to 20)
+					if (1 to 20)
 						//nothing
-					if(21 to INFINITY)
+					if (21 to INFINITY)
 						if (prob(data-10))
 							M:disabilities &= ~1
 				data++
@@ -1982,7 +1982,7 @@ datum
 			color = "#863333" // rgb: 134, 51, 51
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:nutrition += nutriment_factor
 				..()
 				return
@@ -1996,7 +1996,7 @@ datum
 			color = "#863353" // rgb: 134, 51, 83
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:nutrition += nutriment_factor
 				M:toxloss += 1
 				..()
@@ -2011,7 +2011,7 @@ datum
 			color = "#863333" // rgb: 134, 51, 51
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:nutrition += nutriment_factor
 				..()
 				return
@@ -2025,7 +2025,7 @@ datum
 			color = "#863333" // rgb: 175, 175, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:nutrition += nutriment_factor
 				..()
 				return
@@ -2039,13 +2039,13 @@ datum
 
 			on_mob_life(var/mob/living/M as mob)
 				M:nutrition += nutriment_factor
-				if(istype(M, /mob/living/carbon/human) && M.job in list("Clown"))
-					if(!M) M = holder.my_atom
+				if (istype(M, /mob/living/carbon/human) && M.job in list("Clown"))
+					if (!M) M = holder.my_atom
 					M:heal_organ_damage(1,1)
 					..()
 					return
-				if(istype(M, /mob/living/carbon/monkey))
-					if(!M) M = holder.my_atom
+				if (istype(M, /mob/living/carbon/monkey))
+					if (!M) M = holder.my_atom
 					M:heal_organ_damage(1,1)
 					..()
 					return
@@ -2058,8 +2058,8 @@ datum
 			nutriment_factor = 1 * REAGENTS_METABOLISM
 			on_mob_life(var/mob/living/M as mob)
 				M:nutrition += nutriment_factor
-				if(istype(M, /mob/living/carbon/human) && M.job in list("Mime"))
-					if(!M) M = holder.my_atom
+				if (istype(M, /mob/living/carbon/human) && M.job in list("Mime"))
+					if (!M) M = holder.my_atom
 					M:heal_organ_damage(1,1)
 					..()
 					return
@@ -2086,8 +2086,8 @@ datum
 			color = "#DFDFDF" // rgb: 223, 223, 223
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
-				if(M:bruteloss && prob(20)) M:heal_organ_damage(1,0)
+				if (!M) M = holder.my_atom
+				if (M:bruteloss && prob(20)) M:heal_organ_damage(1,0)
 				M:nutrition++
 				..()
 				return
@@ -2100,8 +2100,8 @@ datum
 			color = "#DFDFC7" // rgb: 223, 223, 199
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
-				if(M:bruteloss && prob(20)) M:heal_organ_damage(1,0)
+				if (!M) M = holder.my_atom
+				if (M:bruteloss && prob(20)) M:heal_organ_damage(1,0)
 				M:nutrition++
 				..()
 				return
@@ -2116,7 +2116,7 @@ datum
 
 			on_mob_life(var/mob/living/M as mob)
 				M:nutrition += nutriment_factor
-				if(M:bruteloss && prob(20)) M:heal_organ_damage(1,0)
+				if (M:bruteloss && prob(20)) M:heal_organ_damage(1,0)
 				..()
 				return
 
@@ -2151,7 +2151,7 @@ datum
 				M:drowsyness = max(0,M:drowsyness-1)
 				M:jitteriness = max(0,M:jitteriness-3)
 				M:sleeping = 0
-				if(M:toxloss && prob(20))
+				if (M:toxloss && prob(20))
 					M:toxloss--
 				if (M.bodytemperature < 310)  //310 is the normal bodytemp. 310.055
 					M.bodytemperature = min(310, M.bodytemperature+5)
@@ -2188,7 +2188,7 @@ datum
 				M.dizziness = max(0,M.dizziness-2)
 				M:drowsyness = max(0,M:drowsyness-1)
 				M:sleeping = 0
-				if(M:toxloss && prob(20))
+				if (M:toxloss && prob(20))
 					M:toxloss--
 				if (M.bodytemperature > 310)//310 is the normal bodytemp. 310.055
 					M.bodytemperature = min(310, M.bodytemperature-5)
@@ -2259,13 +2259,13 @@ datum
 					M.bodytemperature = max(310, M.bodytemperature-5)
 				M.make_jittery(5)
 				M:nutrition += 1
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=4
-				if(data >= 45 && data <115)
+				if (data >= 45 && data <115)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 125 && prob(33))
+				else if (data >= 125 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2321,15 +2321,15 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.make_dizzy(3)
 				M:jitteriness = max(M:jitteriness-3,0)
 				M:nutrition += 2
-				if(data >= 25)
+				if (data >= 25)
 					if (!M:stuttering) M:stuttering = 1
 					M:stuttering += 3
-				if(data >= 40 && prob(33))
+				if (data >= 40 && prob(33))
 					if (!M:confused) M:confused = 1
 					M:confused += 2
 
@@ -2344,13 +2344,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=4
-				if(data >= 45 && data <125)
+				if (data >= 45 && data <125)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 125 && prob(33))
+				else if (data >= 125 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2363,13 +2363,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 45 && data <125)
+				if (data >= 45 && data <125)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 125 && prob(33))
+				else if (data >= 125 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2383,13 +2383,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 45 && data <125)
+				if (data >= 45 && data <125)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 125 && prob(33))
+				else if (data >= 125 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2402,13 +2402,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 45 && data <125)
+				if (data >= 45 && data <125)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 125 && prob(33))
+				else if (data >= 125 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2421,13 +2421,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 45 && data <125)
+				if (data >= 45 && data <125)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 125 && prob(33))
+				else if (data >= 125 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2440,19 +2440,19 @@ datum
 			color = "#E0E8EF" // rgb: 224, 232, 239
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=8
-				if(data >= 45 && data <125)
+				if (data >= 45 && data <125)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 8
-				else if(data >= 125 && prob(33))
+				else if (data >= 125 && prob(33))
 					M.confused = max(M:confused+8,8)
 				..()
 				return
 
 			reaction_turf(var/turf/simulated/T, var/volume)
-				if(!istype(T)) return
+				if (!istype(T)) return
 				T.Bless()
 
 		tequilla
@@ -2463,13 +2463,13 @@ datum
 			color = "#A8B0B7" // rgb: 168, 176, 183
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 45 && data <125)
+				if (data >= 45 && data <125)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 125 && prob(33))
+				else if (data >= 125 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2482,13 +2482,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 45 && data <125)
+				if (data >= 45 && data <125)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 125 && prob(33))
+				else if (data >= 125 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2501,13 +2501,13 @@ datum
 			color = "#7E4043" // rgb: 126, 64, 67
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=2
-				if(data >= 65 && data <125)
+				if (data >= 65 && data <125)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 145 && prob(33))
+				else if (data >= 145 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2552,13 +2552,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=4
-				if(data >= 45 && data <115)
+				if (data >= 45 && data <115)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 115 && prob(33))
+				else if (data >= 115 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2571,13 +2571,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=6
-				if(data >= 35 && data <90)
+				if (data >= 35 && data <90)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 5
-				else if(data >= 90 && prob(33))
+				else if (data >= 90 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2590,13 +2590,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 45 && data <125)
+				if (data >= 45 && data <125)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 125 && prob(33))
+				else if (data >= 125 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2625,7 +2625,7 @@ datum
 			color = "#619494" // rgb: 97, 148, 148
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:bodytemperature -= 5
 				..()
 				return
@@ -2640,16 +2640,16 @@ datum
 			color = "#895C4C" // rgb: 137, 92, 76
 
 			on_mob_life(var/mob/living/M as mob)
-				if(M:bruteloss && prob(10)) M:heal_organ_damage(1,0)
+				if (M:bruteloss && prob(10)) M:heal_organ_damage(1,0)
 				M:nutrition += 2
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.make_dizzy(3)
 				M:jitteriness = max(M:jitteriness-3,0)
-				if(data >= 25)
+				if (data >= 25)
 					if (!M:stuttering) M:stuttering = 1
 					M:stuttering += 3
-				if(data >= 40 && prob(33))
+				if (data >= 40 && prob(33))
 					if (!M:confused) M:confused = 1
 					M:confused += 2
 				..()
@@ -2668,10 +2668,10 @@ datum
 				M.make_dizzy(10)
 				if (!M.stuttering) M.stuttering = 1
 				M.stuttering += 3
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				switch(data)
-					if(51 to INFINITY)
+					if (51 to INFINITY)
 						M:sleeping += 1
 				..()
 				return
@@ -2684,14 +2684,14 @@ datum
 			color = "#666340" // rgb: 102, 99, 64
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
 				M.druggy = max(M.druggy, 50)
-				if(data >= 35 && data <90)
+				if (data >= 35 && data <90)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 90)
+				else if (data >= 90)
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2704,13 +2704,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 45 && data <125)
+				if (data >= 45 && data <125)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 125 && prob(33))
+				else if (data >= 125 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2723,13 +2723,13 @@ datum
 			color = "#585840" // rgb: 88, 88, 64
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 45 && data <125)
+				if (data >= 45 && data <125)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 125 && prob(33))
+				else if (data >= 125 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2742,13 +2742,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 45 && data <135)
+				if (data >= 45 && data <135)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 135 && prob(33))
+				else if (data >= 135 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2761,13 +2761,13 @@ datum
 			color = "#3E1B00" // rgb: 62, 27, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 45 && data <135)
+				if (data >= 45 && data <135)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 135 && prob(33))
+				else if (data >= 135 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2780,13 +2780,13 @@ datum
 			color = "#3E1B00" // rgb: 62, 27, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 55 && data <125)
+				if (data >= 55 && data <125)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 125 && prob(33))
+				else if (data >= 125 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2799,13 +2799,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 45 && data <165)
+				if (data >= 45 && data <165)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 135 && prob(33))
+				else if (data >= 135 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2818,13 +2818,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 45 && data <165)
+				if (data >= 45 && data <165)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 135 && prob(33))
+				else if (data >= 135 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2837,13 +2837,13 @@ datum
 			color = "#A68340" // rgb: 166, 131, 64
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 55 && data <165)
+				if (data >= 55 && data <165)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 165 && prob(33))
+				else if (data >= 165 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2856,13 +2856,13 @@ datum
 			color = "#A68310" // rgb: 166, 131, 16
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 55 && data <165)
+				if (data >= 55 && data <165)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 165 && prob(33))
+				else if (data >= 165 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2875,13 +2875,13 @@ datum
 			color = "#A68310" // rgb: 166, 131, 16
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=4
-				if(data >= 55 && data <165)
+				if (data >= 55 && data <165)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 4
-				else if(data >= 165 && prob(33))
+				else if (data >= 165 && prob(33))
 					M.confused = max(M:confused+4,0)
 				..()
 				return
@@ -2894,13 +2894,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 55 && data <165)
+				if (data >= 55 && data <165)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 165 && prob(33))
+				else if (data >= 165 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2913,15 +2913,15 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=6
-				if(data >= 15 && data <45)
+				if (data >= 15 && data <45)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 45 && prob(50) && data <55)
+				else if (data >= 45 && prob(50) && data <55)
 					M.confused = max(M:confused+3,0)
-				else if(data >=55)
+				else if (data >=55)
 					M.druggy = max(M.druggy, 55)
 				..()
 				return
@@ -2934,13 +2934,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 45 && data <145)
+				if (data >= 45 && data <145)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 145 && prob(33))
+				else if (data >= 145 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2953,13 +2953,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 55 && data <165)
+				if (data >= 55 && data <165)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 165 && prob(33))
+				else if (data >= 165 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2974,13 +2974,13 @@ datum
 			on_mob_life(var/mob/living/M as mob)
 				if (M.bodytemperature < 330)
 					M.bodytemperature = min(330, M.bodytemperature+15) //310 is the normal bodytemp. 310.055
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 55 && data <165)
+				if (data >= 55 && data <165)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 165 && prob(33))
+				else if (data >= 165 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -2994,13 +2994,13 @@ datum
 
 			on_mob_life(var/mob/living/M as mob)
 				M.stunned = 2
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 55 && data <165)
+				if (data >= 55 && data <165)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 165 && prob(33))
+				else if (data >= 165 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -3013,13 +3013,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
-				if(M:oxyloss && prob(50)) M:oxyloss -= 2
-				if(M:bruteloss && prob(60)) M:heal_organ_damage(2,0)
-				if(M:fireloss && prob(50)) M:heal_organ_damage(0,2)
-				if(M:toxloss && prob(50)) M:toxloss -= 2
-				if(M.dizziness !=0) M.dizziness = max(0,M.dizziness-15)
-				if(M.confused !=0) M.confused = max(0,M.confused - 5)
+				if (!M) M = holder.my_atom
+				if (M:oxyloss && prob(50)) M:oxyloss -= 2
+				if (M:bruteloss && prob(60)) M:heal_organ_damage(2,0)
+				if (M:fireloss && prob(50)) M:heal_organ_damage(0,2)
+				if (M:toxloss && prob(50)) M:toxloss -= 2
+				if (M.dizziness !=0) M.dizziness = max(0,M.dizziness-15)
+				if (M.confused !=0) M.confused = max(0,M.confused - 5)
 				..()
 				return
 
@@ -3031,13 +3031,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 45 && data <145)
+				if (data >= 45 && data <145)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 145 && prob(33))
+				else if (data >= 145 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -3050,13 +3050,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=5
-				if(data >= 35 && data <115)
+				if (data >= 35 && data <115)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 115 && prob(33))
+				else if (data >= 115 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -3069,13 +3069,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 55 && data <165)
+				if (data >= 55 && data <165)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 165 && prob(33))
+				else if (data >= 165 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -3088,13 +3088,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=5
-				if(data >= 30 && data <60)
+				if (data >= 30 && data <60)
 					if (!M.stuttering) M:stuttering = 1
 					M.stuttering += 4
-				else if(data >= 60 && prob(40))
+				else if (data >= 60 && prob(40))
 					M.confused = max(M:confused+5,0)
 				..()
 				return
@@ -3107,13 +3107,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 25 && data <90)
+				if (data >= 25 && data <90)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 90 && prob(33))
+				else if (data >= 90 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -3126,13 +3126,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 55 && data <150)
+				if (data >= 55 && data <150)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 150 && prob(33))
+				else if (data >= 150 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -3145,13 +3145,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=4
-				if(data >= 55 && data <150)
+				if (data >= 55 && data <150)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 150 && prob(33))
+				else if (data >= 150 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -3164,13 +3164,13 @@ datum
 			color = "#360000" // rgb: 54, 0, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=4
-				if(data >= 55 && data <115)
+				if (data >= 55 && data <115)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 115 && prob(33))
+				else if (data >= 115 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -3183,13 +3183,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=4
-				if(data >= 55 && data <115)
+				if (data >= 55 && data <115)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 115 && prob(33))
+				else if (data >= 115 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -3202,14 +3202,14 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=4
 				M.druggy = max(M.druggy, 30)
-				if(data >= 55 && data <115)
+				if (data >= 55 && data <115)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 115 && prob(33))
+				else if (data >= 115 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -3222,13 +3222,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=4
-				if(data >= 55 && data <115)
+				if (data >= 55 && data <115)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 115 && prob(33))
+				else if (data >= 115 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -3241,13 +3241,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=5
-				if(data >= 55 && data <115)
+				if (data >= 55 && data <115)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 5
-				else if(data >= 115 && prob(33))
+				else if (data >= 115 && prob(33))
 					M.confused = max(M:confused+5,0)
 				..()
 				return
@@ -3260,13 +3260,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=5
-				if(data >= 55 && data <115)
+				if (data >= 55 && data <115)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 5
-				else if(data >= 115 && prob(33))
+				else if (data >= 115 && prob(33))
 					M.confused = max(M:confused+5,0)
 				..()
 				return
@@ -3279,13 +3279,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=4
-				if(data >= 55 && data <115)
+				if (data >= 55 && data <115)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 4
-				else if(data >= 115 && prob(30))
+				else if (data >= 115 && prob(30))
 					M.confused = max(M:confused+4,0)
 				..()
 				return
@@ -3298,13 +3298,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=10
-				if(data >= 55 && data <115)
+				if (data >= 55 && data <115)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 10
-				else if(data >= 115 && prob(90))
+				else if (data >= 115 && prob(90))
 					M.confused = max(M:confused+10,10)
 				..()
 				return
@@ -3317,13 +3317,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=4
-				if(data >= 55 && data <115)
+				if (data >= 55 && data <115)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 115 && prob(33))
+				else if (data >= 115 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -3336,13 +3336,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=4
-				if(data >= 45 && data <125)
+				if (data >= 45 && data <125)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 125 && prob(33))
+				else if (data >= 125 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -3355,13 +3355,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=3
-				if(data >= 55 && data <165)
+				if (data >= 55 && data <165)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 165 && prob(33))
+				else if (data >= 165 && prob(33))
 					M.confused = max(M:confused+2,0)
 				if (M.bodytemperature > 310)
 					M.bodytemperature = max(310, M.bodytemperature-5)
@@ -3376,13 +3376,13 @@ datum
 			color = "#2E6671" // rgb: 46, 102, 113
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=15
-				if(data >= 55 && data <115)
+				if (data >= 55 && data <115)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 15
-				else if(data >= 115 && prob(33))
+				else if (data >= 115 && prob(33))
 					M.confused = max(M:confused+15,15)
 				..()
 				return
@@ -3399,13 +3399,13 @@ datum
 			on_mob_life(var/mob/living/M as mob)
 				if (M.bodytemperature < 360)
 					M.bodytemperature = min(360, M.bodytemperature+50) //310 is the normal bodytemp. 310.055
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=6
-				if(data >= 45 && data <125)
+				if (data >= 45 && data <125)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 6
-				else if(data >= 125 && prob(33))
+				else if (data >= 125 && prob(33))
 					M.confused = max(M:confused+5,5)
 				..()
 				return
@@ -3418,13 +3418,13 @@ datum
 			color = "#A68310" // rgb: 166, 131, 16
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=4
-				if(data >= 55 && data <165)
+				if (data >= 55 && data <165)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 4
-				else if(data >= 165 && prob(33))
+				else if (data >= 165 && prob(33))
 					M.confused = max(M:confused+4,0)
 				..()
 				return
@@ -3437,13 +3437,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=5
-				if(data >= 55 && data <115)
+				if (data >= 55 && data <115)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 4
-				else if(data >= 115 && prob(33))
+				else if (data >= 115 && prob(33))
 					M.confused = max(M:confused+4,4)
 				..()
 				return
@@ -3456,15 +3456,15 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.make_dizzy(3)
 				M:jitteriness = max(M:jitteriness-3,0)
 				M:nutrition += 2
-				if(data >= 25)
+				if (data >= 25)
 					if (!M:stuttering) M:stuttering = 1
 					M:stuttering += 3
-				if(data >= 40 && prob(33))
+				if (data >= 40 && prob(33))
 					if (!M:confused) M:confused = 1
 					M:confused += 2
 
@@ -3481,15 +3481,15 @@ datum
 			on_mob_life(var/mob/living/M as mob)
 				if (M.bodytemperature < 270)
 					M.bodytemperature = min(270, M.bodytemperature-40) //310 is the normal bodytemp. 310.055
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.make_dizzy(3)
 				M:jitteriness = max(M:jitteriness-3,0)
 				M:nutrition += 2
-				if(data >= 25)
+				if (data >= 25)
 					if (!M:stuttering) M:stuttering = 1
 					M:stuttering += 3
-				if(data >= 40 && prob(33))
+				if (data >= 40 && prob(33))
 					if (!M:confused) M:confused = 1
 					M:confused += 2
 
@@ -3504,13 +3504,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=2
-				if(data >= 90 && data <250)
+				if (data >= 90 && data <250)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 2
-				else if(data >= 250 && prob(33))
+				else if (data >= 250 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -3523,13 +3523,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=2
-				if(data >= 90 && data <250)
+				if (data >= 90 && data <250)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 2
-				else if(data >= 250 && prob(33))
+				else if (data >= 250 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -3542,13 +3542,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=8
-				if(data >= 90 && data <250)
+				if (data >= 90 && data <250)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 1
-				else if(data >= 250 && prob(33))
+				else if (data >= 250 && prob(33))
 					M.confused = max(M:confused+2,0)
 				..()
 				return
@@ -3561,13 +3561,13 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=4
-				if(data >= 90 && data <250)
+				if (data >= 90 && data <250)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 7
-				else if(data >= 250 && prob(60))
+				else if (data >= 250 && prob(60))
 					M.confused = max(M:confused+8,0)
 				..()
 				return
@@ -3587,7 +3587,7 @@ datum
 				if (M.bodytemperature < 310)//310 is the normal bodytemp. 310.055
 					M.bodytemperature = min(310, M.bodytemperature+5)
 				M.make_jittery(5)
-				if(M:bruteloss && prob(20)) M:heal_organ_damage(1,0)
+				if (M:bruteloss && prob(20)) M:heal_organ_damage(1,0)
 				M:nutrition++
 				..()
 				return
@@ -3607,7 +3607,7 @@ datum
 				if (M.bodytemperature < 310)//310 is the normal bodytemp. 310.055
 					M.bodytemperature = min(310, M.bodytemperature+5)
 				M.make_jittery(5)
-				if(M:bruteloss && prob(20)) M:heal_organ_damage(1,0)
+				if (M:bruteloss && prob(20)) M:heal_organ_damage(1,0)
 				M:nutrition++
 				..()
 				return
@@ -3620,13 +3620,13 @@ datum
 			color = "#365000" // rgb: 54, 80, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=10
-				if(data >= 55 && data <115)
+				if (data >= 55 && data <115)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 10
-				else if(data >= 115 && prob(33))
+				else if (data >= 115 && prob(33))
 					M.confused = max(M:confused+10,0)
 				..()
 				return
@@ -3640,13 +3640,13 @@ datum
 
 			on_mob_life(var/mob/living/M as mob)
 				M.stunned = 4
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=4
-				if(data >= 55 && data <165)
+				if (data >= 55 && data <165)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 4
-				else if(data >= 165 && prob(33))
+				else if (data >= 165 && prob(33))
 					M.confused = max(M:confused+5,0)
 				..()
 				return
@@ -3659,20 +3659,20 @@ datum
 			color = "#2E2E61" // rgb: 46, 46, 97
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M:oxyloss += 0.5
 				M:toxloss += 0.5
 				M:weakened = max(M:weakened, 15)
 				M:silent = max(M:silent, 15)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=6
-				if(data >= 15 && data <45)
+				if (data >= 15 && data <45)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 3
-				else if(data >= 45 && prob(50) && data <55)
+				else if (data >= 45 && prob(50) && data <55)
 					M.confused = max(M:confused+3,0)
-				else if(data >=55)
+				else if (data >=55)
 					M.druggy = max(M.druggy, 55)
 				..()
 
@@ -3687,26 +3687,26 @@ datum
 			color = "#664300" // rgb: 102, 67, 0
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!M) M = holder.my_atom
+				if (!M) M = holder.my_atom
 				M.druggy = max(M.druggy, 50)
-				if(!data) data = 1
+				if (!data) data = 1
 				switch(data)
-					if(1 to 5)
+					if (1 to 5)
 						if (!M:stuttering) M:stuttering = 1
 						M.make_dizzy(10)
-						if(prob(10)) M:emote(pick("twitch","giggle"))
-					if(5 to 10)
+						if (prob(10)) M:emote(pick("twitch","giggle"))
+					if (5 to 10)
 						if (!M:stuttering) M:stuttering = 1
 						M.make_jittery(20)
 						M.make_dizzy(20)
 						M.druggy = max(M.druggy, 45)
-						if(prob(20)) M:emote(pick("twitch","giggle"))
+						if (prob(20)) M:emote(pick("twitch","giggle"))
 					if (10 to INFINITY)
 						if (!M:stuttering) M:stuttering = 1
 						M.make_jittery(40)
 						M.make_dizzy(40)
 						M.druggy = max(M.druggy, 60)
-						if(prob(30)) M:emote(pick("twitch","giggle"))
+						if (prob(30)) M:emote(pick("twitch","giggle"))
 				holder.remove_reagent(src.id, 0.2)
 				data++
 				..()
@@ -3721,27 +3721,27 @@ datum
 
 			on_mob_life(var/mob/living/M as mob)
 				M:nutrition += nutriment_factor
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
-				if(istype(M, /mob/living/carbon/human) && M.job in list("Clown"))
-					if(!M) M = holder.my_atom
+				if (istype(M, /mob/living/carbon/human) && M.job in list("Clown"))
+					if (!M) M = holder.my_atom
 					M:heal_organ_damage(1,1)
 					M.dizziness +=5
-					if(data >= 55 && data <165)
+					if (data >= 55 && data <165)
 						if (!M.stuttering) M.stuttering = 1
 						M.stuttering += 5
-					else if(data >= 165 && prob(33))
+					else if (data >= 165 && prob(33))
 						M.confused = max(M:confused+5,0)
 					..()
 					return
-				if(istype(M, /mob/living/carbon/monkey))
-					if(!M) M = holder.my_atom
+				if (istype(M, /mob/living/carbon/monkey))
+					if (!M) M = holder.my_atom
 					M:heal_organ_damage(1,1)
 					M.dizziness +=5
-					if(data >= 55 && data <165)
+					if (data >= 55 && data <165)
 						if (!M.stuttering) M.stuttering = 1
 						M.stuttering += 5
-					else if(data >= 165 && prob(33))
+					else if (data >= 165 && prob(33))
 						M.confused = max(M:confused+5,0)
 					..()
 					return
@@ -3755,16 +3755,16 @@ datum
 
 			on_mob_life(var/mob/living/M as mob)
 				M:nutrition += nutriment_factor
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
-				if(istype(M, /mob/living/carbon/human) && M.job in list("Mime"))
-					if(!M) M = holder.my_atom
+				if (istype(M, /mob/living/carbon/human) && M.job in list("Mime"))
+					if (!M) M = holder.my_atom
 					M:heal_organ_damage(1,1)
 					M.dizziness +=5
-					if(data >= 55 && data <165)
+					if (data >= 55 && data <165)
 						if (!M.stuttering) M.stuttering = 1
 						M.stuttering += 5
-					else if(data >= 165 && prob(33))
+					else if (data >= 165 && prob(33))
 						M.confused = max(M:confused+5,0)
 					..()
 					return
@@ -3779,13 +3779,13 @@ datum
 			color = "#2E6671" // rgb: 46, 102, 113
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=5
-				if(data >= 55 && data <115)
+				if (data >= 55 && data <115)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 5
-				else if(data >= 115 && prob(33))
+				else if (data >= 115 && prob(33))
 					M.confused = max(M:confused+15,15)
 				..()
 				return
@@ -3798,13 +3798,13 @@ datum
 			color = "#2E6671" // rgb: 46, 102, 113
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=5
-				if(data >= 55 && data <115)
+				if (data >= 55 && data <115)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 5
-				else if(data >= 115 && prob(33))
+				else if (data >= 115 && prob(33))
 					M.confused = max(M:confused+15,15)
 				..()
 				return
@@ -3817,13 +3817,13 @@ datum
 			color = "#2E6671" // rgb: 46, 102, 113
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=10
-				if(data >= 55 && data <115)
+				if (data >= 55 && data <115)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 10
-				else if(data >= 115 && prob(33))
+				else if (data >= 115 && prob(33))
 					M.confused = max(M:confused+15,15)
 				..()
 				return
@@ -3836,13 +3836,13 @@ datum
 			color = "#2E6671" // rgb: 46, 102, 113
 
 			on_mob_life(var/mob/living/M as mob)
-				if(!data) data = 1
+				if (!data) data = 1
 				data++
 				M.dizziness +=30
-				if(data >= 55 && data <115)
+				if (data >= 55 && data <115)
 					if (!M.stuttering) M.stuttering = 1
 					M.stuttering += 30
-				else if(data >= 115 && prob(60))
+				else if (data >= 115 && prob(60))
 					M.confused = max(M:confused+15,15)
 				..()
 				return*/

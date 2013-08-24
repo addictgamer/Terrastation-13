@@ -182,14 +182,14 @@
 /obj/crate/New()
 	..()
 	spawn(1)
-		if(!opened)		// if closed, any item at the crate's loc is put in the contents
+		if (!opened)		// if closed, any item at the crate's loc is put in the contents
 			for(var/obj/item/I in src.loc)
-				if(I.density || I.anchored || I == src) continue
+				if (I.density || I.anchored || I == src) continue
 				I.loc = src
 
 /obj/crate/secure/New()
 	..()
-	if(locked)
+	if (locked)
 		overlays = null
 		overlays += redlight
 	else
@@ -228,21 +228,21 @@
 /obj/crate/proc/close()
 	playsound(src.loc, 'click.ogg', 15, 1, -3)
 	for(var/obj/O in get_turf(src))
-		if(O.density || O.anchored || O == src) continue
+		if (O.density || O.anchored || O == src) continue
 		O.loc = src
 	icon_state = closedicon
 	src.opened = 0
 
 /obj/crate/attack_hand(mob/user as mob)
-	if(!locked)
-		if(opened) close()
+	if (!locked)
+		if (opened) close()
 		else open()
 	else
 		user << "\red It's locked."
 	return
 
 /obj/crate/secure/attack_hand(mob/user as mob)
-	if(locked && allowed(user) && !broken)
+	if (locked && allowed(user) && !broken)
 		user << "\blue You unlock the [src]."
 		src.locked = 0
 		overlays = null
@@ -250,7 +250,7 @@
 	return ..()
 
 /obj/crate/secure/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/card) && src.allowed(user) && !locked && !opened && !broken)
+	if (istype(W, /obj/item/weapon/card) && src.allowed(user) && !locked && !opened && !broken)
 		user << "\red You lock the [src]."
 		src.locked = 1
 		overlays = null
@@ -280,19 +280,19 @@
 			P.wrapped = src
 			src.loc = P
 			O.amount -= 3
-	else if(opened)
-		if(isrobot(user))
+	else if (opened)
+		if (isrobot(user))
 			return
 		user.drop_item()
-		if(W)
+		if (W)
 			W.loc = src.loc
 	else return attack_hand(user)
 
 /obj/crate/secure/emp_act(severity)
 	for(var/obj/O in src)
 		O.emp_act(severity)
-	if(!broken && !opened  && prob(50/severity))
-		if(!locked)
+	if (!broken && !opened  && prob(50/severity))
+		if (!locked)
 			src.locked = 1
 			overlays = null
 			overlays += redlight
@@ -303,8 +303,8 @@
 			spawn(6) overlays -= sparks //Tried lots of stuff but nothing works right. so i have to use this *sadface*
 			playsound(src.loc, 'sparks4.ogg', 75, 1)
 			src.locked = 0
-	if(!opened && prob(20/severity))
-		if(!locked)
+	if (!opened && prob(20/severity))
+		if (!locked)
 			open()
 		else
 			src.req_access = list()
@@ -314,18 +314,18 @@
 
 /obj/crate/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			for(var/obj/O in src.contents)
 				del(O)
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			for(var/obj/O in src.contents)
-				if(prob(50))
+				if (prob(50))
 					del(O)
 			del(src)
 			return
-		if(3.0)
+		if (3.0)
 			if (prob(50))
 				del(src)
 			return

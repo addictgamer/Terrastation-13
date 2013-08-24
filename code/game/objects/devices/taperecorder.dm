@@ -50,7 +50,7 @@
 	if (ismob(src.loc))
 		var/mob/M = src.loc
 		M.show_message("\red The [src] explodes!", 1)
-	if(T)
+	if (T)
 		T.hotspot_expose(700,125)
 		explosion(T, -1, -1, 0, 4)
 	del(src)
@@ -59,17 +59,17 @@
 /obj/item/device/taperecorder/verb/record()
 	set name = "Start Recording"
 	set category = "Object"
-	if(usr.stat)
+	if (usr.stat)
 		usr << "Not when you're incapicated."
 		return
-	if(src.emagged == 1)
+	if (src.emagged == 1)
 		usr << "\red The tape recorder makes a scratchy noise."
 		return
 	src.icon_state = "taperecorderrecording"
-	if(src.timerecorded < 60 && src.playing == 0)
+	if (src.timerecorded < 60 && src.playing == 0)
 		src.recording = 1
 		for(src.timerecorded, src.timerecorded<60)
-			if(src.recording == 0)
+			if (src.recording == 0)
 				break
 			src.timerecorded++
 			sleep(10)
@@ -84,7 +84,7 @@
 	set name = "Stop Recording"
 	set category = "Object"
 
-	if(usr.stat)
+	if (usr.stat)
 		usr << "Not when you're incapicated."
 		return
 	if (src.recording == 1 || src.playing == 1)
@@ -102,10 +102,10 @@
 	set name = "Clear Memory"
 	set category = "Object"
 
-	if(usr.stat)
+	if (usr.stat)
 		usr << "Not when you're incapicated."
 		return
-	if(src.emagged == 1)
+	if (src.emagged == 1)
 		usr << "\red The tape recorder makes a scratchy noise."
 		return
 	if (src.recording == 1 || src.playing == 1)
@@ -122,7 +122,7 @@
 	set name = "Playback Memory"
 	set category = "Object"
 
-	if(usr.stat)
+	if (usr.stat)
 		usr << "Not when you're incapicated."
 		return
 	if (src.recording == 1)

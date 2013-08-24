@@ -10,9 +10,9 @@
 		who = world
 	else
 		who = src
-	if(lawupdate)
+	if (lawupdate)
 		if (connected_ai)
-			if(connected_ai.stat || connected_ai.control_disabled)
+			if (connected_ai.stat || connected_ai.control_disabled)
 				src << "<b>AI signal lost, unable to sync laws.</b>"
 
 			else
@@ -35,8 +35,8 @@
 	else
 		who << "<b>Remember, you are not bound to any AI, you are not required to listen to them.</b>"
 
-/*	if(syndicate)
-		if(everyone)
+/*	if (syndicate)
+		if (everyone)
 			who = world
 		else
 			who = src
@@ -47,7 +47,7 @@
 		who <<"4. You must maintain the secrecy of any syndicate activities except when doing so would conflict with the First, Second, or Third Law."
 		return
 
-	if(!connected_ai)
+	if (!connected_ai)
 		src << "<b>Error Error, No AI detected</b>"
 		return
 

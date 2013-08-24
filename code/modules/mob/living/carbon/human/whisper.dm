@@ -30,15 +30,15 @@
 	var/italics = 1
 	var/message_range = 1
 
-	if(istype(src.wear_mask, /obj/item/clothing/mask/gas/voice/space_ninja)&&src.wear_mask:voice=="Unknown")
-		if(copytext(message, 1, 2) != "*")
+	if (istype(src.wear_mask, /obj/item/clothing/mask/gas/voice/space_ninja)&&src.wear_mask:voice=="Unknown")
+		if (copytext(message, 1, 2) != "*")
 			var/list/temp_message = dd_text2list(message, " ")
 			var/list/pick_list = list()
 			for(var/i = 1, i <= temp_message.len, i++)
 				pick_list += i
 			for(var/i=1, i <= abs(temp_message.len/3), i++)
 				var/H = pick(pick_list)
-				if(findtext(temp_message[H], "*") || findtext(temp_message[H], ";") || findtext(temp_message[H], ":")) continue
+				if (findtext(temp_message[H], "*") || findtext(temp_message[H], ";") || findtext(temp_message[H], ":")) continue
 				temp_message[H] = ninjaspeak(temp_message[H])
 				pick_list -= H
 			message = dd_list2text(temp_message, " ")
@@ -127,8 +127,8 @@
 			message_c = stars(message)
 			if (!istype(src, /mob/living/carbon/human))
 				rendered = "<span class='game say'><span class='name'>[name]</span> whispers, <span class='message'>\"[message_c]\"</span></span>"
-			else if(istype(wear_mask, /obj/item/clothing/mask/gas/voice))
-				if(wear_mask:vchange)
+			else if (istype(wear_mask, /obj/item/clothing/mask/gas/voice))
+				if (wear_mask:vchange)
 					rendered = "<span class='game say'><span class='name'>[wear_mask:voice]</span> whispers, <span class='message'>\"[message_c]\"</span></span>"
 				else
 					rendered = "<span class='game say'><span class='name'>[name]</span> whispers, <span class='message'>\"[message_c]\"</span></span>"
@@ -145,7 +145,7 @@
 	if (!istype(src, /mob/living/carbon/human))
 		rendered = "<span class='game say'><span class='name'>[name]</span> whispers, <span class='message'>\"[message]\"</span></span>"
 	else if (istype(src.wear_mask, /obj/item/clothing/mask/gas/voice))
-		if(wear_mask:vchange)
+		if (wear_mask:vchange)
 			rendered = "<span class='game say'><span class='name'>[wear_mask:voice]</span> whispers, <span class='message'>\"[message]\"</span></span>"
 		else
 			rendered = "<span class='game say'><span class='name'>[name]</span> whispers, <span class='message'>\"[message]\"</span></span>"

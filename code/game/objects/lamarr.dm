@@ -73,7 +73,7 @@
 	return
 
 /obj/lamarr/update_icon()
-	if(src.destroyed)
+	if (src.destroyed)
 		src.icon_state = "labcageb[src.occupied]"
 	else
 		src.icon_state = "labcage[src.occupied]"

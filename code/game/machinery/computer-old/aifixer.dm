@@ -12,9 +12,9 @@
 
 /obj/machinery/computer/aifixer/attackby(I as obj, user as mob)
 /*
-	if(istype(I, /obj/item/weapon/screwdriver))
+	if (istype(I, /obj/item/weapon/screwdriver))
 		playsound(src.loc, 'Screwdriver.ogg', 50, 1)
-		if(do_after(user, 20))
+		if (do_after(user, 20))
 			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				var/obj/computerframe/A = new /obj/computerframe( src.loc )
@@ -41,8 +41,8 @@
 				A.anchored = 1
 				del(src)
 */
-	if(istype(I, /obj/item/device/aicard))
-		if(stat & (NOPOWER|BROKEN))
+	if (istype(I, /obj/item/device/aicard))
+		if (stat & (NOPOWER|BROKEN))
 			user << "This terminal isn't functioning right now, get it working!"
 			return
 		I:transfer_ai("AIFIXER","AICARD",src,user)
@@ -57,12 +57,12 @@
 	return attack_hand(user)
 
 /obj/machinery/computer/aifixer/attack_hand(var/mob/user as mob)
-	if(..())
+	if (..())
 		return
 
-	if(ishuman(user))//Checks to see if they are ninja
-		if(istype(user:gloves, /obj/item/clothing/gloves/space_ninja)&&user:gloves:candrain&&!user:gloves:draining)
-			if(user:wear_suit:s_control)
+	if (ishuman(user))//Checks to see if they are ninja
+		if (istype(user:gloves, /obj/item/clothing/gloves/space_ninja)&&user:gloves:candrain&&!user:gloves:draining)
+			if (user:wear_suit:s_control)
 				user:wear_suit.transfer_ai("AIFIXER","NINJASUIT",src,user)
 			else
 				user << "\red <b>ERROR</b>: \black Remote access channel disabled."
@@ -108,7 +108,7 @@
 	return
 
 /obj/machinery/computer/aifixer/process()
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 
 
@@ -116,7 +116,7 @@
 	return
 
 /obj/machinery/computer/aifixer/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	if (href_list["fix"])
 		src.active = 1

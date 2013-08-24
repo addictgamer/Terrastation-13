@@ -70,7 +70,7 @@ for reference:
 			if (src.health < src.maxhealth)
 				for(var/mob/O in viewers(src, null))
 					O << "\red [user] begins to repair the [src]!"
-				if(do_after(user,20))
+				if (do_after(user,20))
 					src.health = src.maxhealth
 					W:use(1)
 					for(var/mob/O in viewers(src, null))
@@ -81,9 +81,9 @@ for reference:
 			return
 		else
 			switch(W.damtype)
-				if("fire")
+				if ("fire")
 					src.health -= W.force * 1
-				if("brute")
+				if ("brute")
 					src.health -= W.force * 0.75
 				else
 			if (src.health <= 0)
@@ -97,12 +97,12 @@ for reference:
 
 	ex_act(severity)
 		switch(severity)
-			if(1.0)
+			if (1.0)
 				for(var/mob/O in viewers(src, null))
 					O << "\red <B>The barricade is blown appart!</B>"
 				del(src)
 				return
-			if(2.0)
+			if (2.0)
 				src.health -= 25
 				if (src.health <= 0)
 					for(var/mob/O in viewers(src, null))
@@ -131,9 +131,9 @@ for reference:
 		return
 
 	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)//So bullets will fly over and stuff.
-		if(air_group || (height==0))
+		if (air_group || (height==0))
 			return 1
-		if(istype(mover) && mover.checkpass(PASSTABLE))
+		if (istype(mover) && mover.checkpass(PASSTABLE))
 			return 1
 		else
 			return 0
@@ -236,9 +236,9 @@ These should not block bullets/N */
 			return
 		else
 			switch(W.damtype)
-				if("fire")
+				if ("fire")
 					src.health -= W.force * 0.75
-				if("brute")
+				if ("brute")
 					src.health -= W.force * 0.5
 				else
 			if (src.health <= 0)
@@ -247,10 +247,10 @@ These should not block bullets/N */
 
 	ex_act(severity)
 		switch(severity)
-			if(1.0)
+			if (1.0)
 				src.explode()
 				return
-			if(2.0)
+			if (2.0)
 				src.health -= 25
 				if (src.health <= 0)
 					src.explode()
@@ -267,9 +267,9 @@ These should not block bullets/N */
 		return
 
 	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)//So bullets will fly over and stuff.
-		if(air_group || (height==0))
+		if (air_group || (height==0))
 			return 1
-		if(istype(mover) && mover.checkpass(PASSTABLE))
+		if (istype(mover) && mover.checkpass(PASSTABLE))
 			return 1
 		else
 			return 0
@@ -303,5 +303,5 @@ These should not block bullets/N */
 		s.start()
 
 		explosion(src.loc,-1,-1,0)
-		if(src)
+		if (src)
 			del(src)

@@ -9,7 +9,7 @@
 		modtype = "robot"
 		updateicon()
 //		syndicate = syndie
-		if(real_name == "Cyborg")
+		if (real_name == "Cyborg")
 			real_name += " [pick(rand(1, 999))]"
 			name = real_name
 	spawn (4)
@@ -31,25 +31,25 @@
 		camera = new /obj/machinery/camera(src)
 		camera.c_tag = real_name
 		camera.network = "SS13"
-	if(!cell)
+	if (!cell)
 		var/obj/item/weapon/cell/C = new(src)
 		C.charge = 1500
 		cell = C
-	if(src.mind)
+	if (src.mind)
 		ticker.mode.remove_revolutionary(src.mind)
 	..()
 
 //If there's an MMI in the robot, have it ejected when the mob goes away. --NEO
 //Improved /N
 /mob/living/silicon/robot/Del()
-	if(mmi)//Safety for when a cyborg gets dust()ed. Or there is no MMI inside.
+	if (mmi)//Safety for when a cyborg gets dust()ed. Or there is no MMI inside.
 		mmi.loc = get_turf(loc)//To hopefully prevent run time errors.
-		if(key)//If there is a client attached to host.
-			if(client)
+		if (key)//If there is a client attached to host.
+			if (client)
 				client.screen.len = null
-			if(mind)//If the cyborg has a mind. It should if it's a player. May not.
+			if (mind)//If the cyborg has a mind. It should if it's a player. May not.
 				mind.transfer_to(mmi.brainmob)
-			else if(!mmi.brainmob.mind)//If the brainmob has no mind and neither does the cyborg. Shouldn't happen but can due to admun canspiraucy.
+			else if (!mmi.brainmob.mind)//If the brainmob has no mind and neither does the cyborg. Shouldn't happen but can due to admun canspiraucy.
 				mmi.brainmob.mind = new()//Quick mind initialize
 				mmi.brainmob.mind.current = mmi.brainmob
 				mmi.brainmob.mind.assigned_role = "Assistant"//Default to an assistant.
@@ -60,109 +60,109 @@
 	..()
 
 /mob/living/silicon/robot/proc/pick_module()
-	if(module)
+	if (module)
 		return
 	//var/mod = input("Please, select a module!", "Robot", null, null) in list("Standard", "Engineering", "Medical", "Janitor", "Service", "Brobot")
 	var/mod = input("Please, select a module!", "Robot", null, null) in list("Standard", "Engineering", "Medical", "Miner", "Janitor","Service", "Security")
-	if(module)
+	if (module)
 		return
 	switch(mod)
-		if("Standard")
+		if ("Standard")
 			module = new /obj/item/weapon/robot_module/standard(src)
 			hands.icon_state = "standard"
 			icon_state = "robot"
 			modtype = "Stand"
 
-/*		if("Hydroborg")
+/*		if ("Hydroborg")
 			module = new /obj/item/weapon/robot_module/hydroborg(src)
 			hands.icon_state = "hydroborg"
 			var/icontype = input("Select an icon!", "Robot", null, null) in list("Hydroborg")
-			if(icontype== "Hydroborg")
+			if (icontype== "Hydroborg")
 				icon_state = "hydroborg"
-			else if(icontype == "Kent")
+			else if (icontype == "Kent")
 				icon_state = "toiletbot"
 			modtype = "Hydroborg"*/
 
-		if("Service")
+		if ("Service")
 			module = new /obj/item/weapon/robot_module/butler(src)
 			hands.icon_state = "service"
 			var/icontype = input("Select an icon!", "Robot", null, null) in list("Waitress", "Bro", "Butler", "Kent", "Rich")
-			if(icontype== "Waitress")
+			if (icontype== "Waitress")
 				icon_state = "Service"
-			else if(icontype == "Kent")
+			else if (icontype == "Kent")
 				icon_state = "toiletbot"
-			else if(icontype == "Bro")
+			else if (icontype == "Bro")
 				icon_state = "Brobot"
-			else if(icontype == "Rich")
+			else if (icontype == "Rich")
 				icon_state = "maximillion"
 			else
 				icon_state = "Service2"
 			modtype = "Butler"
 
-		if("Miner")
+		if ("Miner")
 			module = new /obj/item/weapon/robot_module/miner(src)
 			hands.icon_state = "miner"
 			icon_state = "Miner"
 			modtype = "Miner"
 
 
-		if("Medical")
+		if ("Medical")
 			module = new /obj/item/weapon/robot_module/medical(src)
 			hands.icon_state = "medical"
 			var/icontype = input("Select an icon!", "Robot", null, null) in list("Standard", "Kent", "Medbot")
 //			icon_state = "MedBot"
-			if(icontype == "Kent")
+			if (icontype == "Kent")
 				icon_state = "toiletbot"
-			else if(icontype == "Medbot")
+			else if (icontype == "Medbot")
 				icon_state = "Medbot"
 			else
 				icon_state = "robot"
 			modtype = "Med"
 
-		if("Security")
+		if ("Security")
 			module = new /obj/item/weapon/robot_module/security(src)
 			hands.icon_state = "security"
 			var/icontype = input("Select an icon!", "Robot", null, null) in list("Standard", "Armored", "Robocop", "Robocop Red", "Heavy Duty")
-			if(icontype == "Armored")
+			if (icontype == "Armored")
 				icon_state = "Security"
-			else if(icontype == "Robocop")
+			else if (icontype == "Robocop")
 				icon_state = "Security2"
-			else if(icontype == "Robocop Red")
+			else if (icontype == "Robocop Red")
 				icon_state = "Security3"
-			else if(icontype == "Heavy Duty")
+			else if (icontype == "Heavy Duty")
 				icon_state = "secborg"
 			else
 				icon_state = "robot"
 			modtype = "Sec"
 
-		if("Engineering")
+		if ("Engineering")
 			module = new /obj/item/weapon/robot_module/engineering(src)
 			hands.icon_state = "engineer"
 
 			var/icontype = input("Select an icon!", "Robot", null, null) in list("Standard", "Engineer", "Engiseer")
-			if(icontype == "Standard")
+			if (icontype == "Standard")
 				icon_state = "robot"
-			else if(icontype == "Engineer")
+			else if (icontype == "Engineer")
 				icon_state = "Engineering"
 			else
 				icon_state = "Engineering2"
 			modtype = "Eng"
 
-		if("Janitor")
+		if ("Janitor")
 			module = new /obj/item/weapon/robot_module/janitor(src)
 			hands.icon_state = "janitor"
 			var/icontype = input("Select an icon!", "Robot", null, null) in list("Standard", "Chryssalid")
-			if(icontype == "Standard")
+			if (icontype == "Standard")
 				icon_state = "robot"
 			else
 				icon_state = "Janbot"
 			modtype = "Jan"
 
-/*		if("Brobot")
+/*		if ("Brobot")
 			module = new /obj/item/weapon/robot_module/brobot(src)
 			hands.icon_state = "brobot"
 			var/icontype = input("Select an icon!", "Robot", null, null) in list("Standard", "Bro",)
-			if(icontype == "Bro")
+			if (icontype == "Bro")
 				icon_state = "Brobot"
 			else
 				icon_state = "robot"
@@ -209,22 +209,22 @@
 	..()
 	statpanel("Status")
 	if (client.statpanel == "Status")
-		if(emergency_shuttle.online && emergency_shuttle.location < 2)
+		if (emergency_shuttle.online && emergency_shuttle.location < 2)
 			var/timeleft = emergency_shuttle.timeleft()
 			if (timeleft)
 				stat(null, "ETA-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
 
-		if(ticker.mode.name == "AI malfunction")
+		if (ticker.mode.name == "AI malfunction")
 			var/datum/game_mode/malfunction/malf = ticker.mode
 			for (var/datum/mind/malfai in malf.malf_ai)
-				if(connected_ai)
-					if(connected_ai.mind == malfai)
-						if(malf.apcs >= 3)
+				if (connected_ai)
+					if (connected_ai.mind == malfai)
+						if (malf.apcs >= 3)
 							stat(null, "Time until station control secured: [max(malf.AI_win_timeleft/(malf.apcs/3), 0)] seconds")
-				else if(ticker.mode:malf_mode_declared)
+				else if (ticker.mode:malf_mode_declared)
 					stat(null, "Time left: [max(ticker.mode:AI_win_timeleft/(ticker.mode:apcs/3), 0)]")
 
-		if(cell)
+		if (cell)
 			stat(null, text("Charge Left: [cell.charge]/[cell.maxcharge]"))
 		else
 			stat(null, text("No Cell Inserted!"))
@@ -248,17 +248,17 @@
 	var/b_loss = bruteloss
 	var/f_loss = fireloss
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			if (stat != 2)
 				b_loss += 100
 				f_loss += 100
 				gib(1)
 				return
-		if(2.0)
+		if (2.0)
 			if (stat != 2)
 				b_loss += 60
 				f_loss += 60
-		if(3.0)
+		if (3.0)
 			if (stat != 2)
 				b_loss += 30
 	bruteloss = b_loss
@@ -279,17 +279,17 @@
 
 
 /mob/living/silicon/robot/bullet_act(var/obj/item/projectile/Proj)
-	if(!Proj.nodamage) bruteloss += Proj.damage
+	if (!Proj.nodamage) bruteloss += Proj.damage
 
-	if(Proj.effects["emp"])
+	if (Proj.effects["emp"])
 		var/emppulse = Proj.effects["emp"]
-		if(prob(Proj.effectprob["emp"]))
+		if (prob(Proj.effectprob["emp"]))
 			empulse(src, emppulse, emppulse)
 		else
 			empulse(src, 0, emppulse)
 
 	updatehealth()
-	if(prob(75) && Proj.damage > 0) spark_system.start()
+	if (prob(75) && Proj.damage > 0) spark_system.start()
 	return
 
 
@@ -298,12 +298,12 @@
 		if ((!( yes ) || now_pushing))
 			return
 		now_pushing = 1
-		if(ismob(AM))
+		if (ismob(AM))
 			var/mob/tmob = AM
-			if(istype(tmob, /mob/living/carbon/human) && tmob.mutations & FAT)
-				if(prob(20))
+			if (istype(tmob, /mob/living/carbon/human) && tmob.mutations & FAT)
+				if (prob(20))
 					for(var/mob/M in viewers(src, null))
-						if(M.client)
+						if (M.client)
 							M << M << "\red <B>[src] fails to push [tmob]'s fat ass out of the way.</B>"
 					now_pushing = 0
 					//unlock_medal("That's No Moon, That's A Gourmand!", 1)
@@ -317,7 +317,7 @@
 			if (!AM.anchored)
 				var/t = get_dir(src, AM)
 				if (istype(AM, /obj/window))
-					if(AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
+					if (AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
 						for(var/obj/window/win in get_step(AM,t))
 							now_pushing = 0
 							return
@@ -374,7 +374,7 @@
 	if (istype(W, /obj/item/weapon/weldingtool) && W:welding)
 		if (W:remove_fuel(0))
 			bruteloss -= 30
-			if(bruteloss < 0) bruteloss = 0
+			if (bruteloss < 0) bruteloss = 0
 			updatehealth()
 			add_fingerprint(user)
 			for(var/mob/O in viewers(user, null))
@@ -383,22 +383,22 @@
 			user << "Need more welding fuel!"
 			return
 
-	else if(istype(W, /obj/item/weapon/cable_coil) && wiresexposed)
+	else if (istype(W, /obj/item/weapon/cable_coil) && wiresexposed)
 		var/obj/item/weapon/cable_coil/coil = W
 		fireloss -= 30
-		if(fireloss < 0) fireloss = 0
+		if (fireloss < 0) fireloss = 0
 		updatehealth()
 		coil.use(1)
 		for(var/mob/O in viewers(user, null))
 			O.show_message(text("\red [user] has fixed some of the burnt wires on [src]!"), 1)
 
 	else if (istype(W, /obj/item/weapon/crowbar))	// crowbar means open or close the cover
-		if(opened)
+		if (opened)
 			user << "You close the cover."
 			opened = 0
 			updateicon()
 		else
-			if(locked)
+			if (locked)
 				user << "The cover is locked and cannot be opened."
 			else
 				user << "You open the cover."
@@ -406,9 +406,9 @@
 				updateicon()
 
 	else if (istype(W, /obj/item/weapon/cell) && opened)	// trying to put a cell inside
-		if(wiresexposed)
+		if (wiresexposed)
 			user << "Close the panel first."
-		else if(cell)
+		else if (cell)
 			user << "There is a power cell already installed."
 		else
 			user.drop_item()
@@ -430,40 +430,40 @@
 		updateicon()
 
 	else if (istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))			// trying to unlock the interface with an ID card
-		if(emagged)//still allow them to open the cover
+		if (emagged)//still allow them to open the cover
 			user << "The interface seems slightly damaged"
-		if(opened)
+		if (opened)
 			user << "You must close the cover to swipe an ID card."
 		else
-			if(allowed(usr))
+			if (allowed(usr))
 				locked = !locked
 				user << "You [ locked ? "lock" : "unlock"] [src]'s interface."
 				updateicon()
 			else
 				user << "\red Access denied."
 
-	else if(istype(W, /obj/item/weapon/card/emag))		// trying to unlock with an emag card
-		if(!opened)//Cover is closed
-			if(locked)
-				if(prob(90))
+	else if (istype(W, /obj/item/weapon/card/emag))		// trying to unlock with an emag card
+		if (!opened)//Cover is closed
+			if (locked)
+				if (prob(90))
 					user << "You emag the cover lock."
 					locked = 0
 				else
 					user << "You fail to emag the cover lock."
-					if(prob(25))
+					if (prob(25))
 						src << "Hack attempt detected."
 			else
 				user << "The cover is already unlocked."
 			return
 
-		if(opened)//Cover is open
-			if(emagged)	return//Prevents the X has hit Y with Z message also you cant emag them twice
-			if(wiresexposed)
+		if (opened)//Cover is open
+			if (emagged)	return//Prevents the X has hit Y with Z message also you cant emag them twice
+			if (wiresexposed)
 				user << "You must close the panel first"
 				return
 			else
 				sleep(6)
-				if(prob(50))
+				if (prob(50))
 					emagged = 1
 					lawupdate = 0
 					connected_ai = null
@@ -493,7 +493,7 @@
 					updateicon()
 				else
 					user << "You fail to [ locked ? "unlock" : "lock"] [src]'s interface."
-					if(prob(25))
+					if (prob(25))
 						src << "Hack attempt detected."
 			return
 	else
@@ -540,7 +540,7 @@
 				/*
 				if (M.class == "combat")
 					damage += 15
-					if(prob(20))
+					if (prob(20))
 						weakened = max(weakened,4)
 						stunned = max(stunned,4)
 				What is this?*/
@@ -548,7 +548,7 @@
 				playsound(loc, 'slash.ogg', 25, 1, -1)
 				for(var/mob/O in viewers(src, null))
 					O.show_message(text("\red <B>[] has slashed at []!</B>", M, src), 1)
-				if(prob(8))
+				if (prob(8))
 					flick("noise", flash)
 				bruteloss += damage
 				updatehealth()
@@ -559,7 +559,7 @@
 						O.show_message(text("\red <B>[] took a swipe at []!</B>", M, src), 1)
 
 		if ("disarm")
-			if(!(lying))
+			if (!(lying))
 				var/randn = rand(1, 100)
 				if (randn <= 85)
 					stunned = 5
@@ -583,7 +583,7 @@
 		M << "You cannot attack people before the game has started."
 		return
 
-	if(M.Victim) return // can't attack while eating!
+	if (M.Victim) return // can't attack while eating!
 
 	if (health > -100)
 
@@ -593,7 +593,7 @@
 
 		var/damage = rand(1, 3)
 
-		if(istype(src, /mob/living/carbon/metroid/adult))
+		if (istype(src, /mob/living/carbon/metroid/adult))
 			damage = rand(20, 40)
 		else
 			damage = rand(5, 35)
@@ -602,20 +602,20 @@
 		bruteloss += damage
 
 
-		if(M.powerlevel > 0)
+		if (M.powerlevel > 0)
 			var/stunprob = 10
 
 			switch(M.powerlevel)
-				if(1 to 2) stunprob = 20
-				if(3 to 4) stunprob = 30
-				if(5 to 6) stunprob = 40
-				if(7 to 8) stunprob = 60
-				if(9) 	   stunprob = 70
-				if(10) 	   stunprob = 95
+				if (1 to 2) stunprob = 20
+				if (3 to 4) stunprob = 30
+				if (5 to 6) stunprob = 40
+				if (7 to 8) stunprob = 60
+				if (9) 	   stunprob = 70
+				if (10) 	   stunprob = 95
 
-			if(prob(stunprob))
+			if (prob(stunprob))
 				M.powerlevel -= 3
-				if(M.powerlevel < 0)
+				if (M.powerlevel < 0)
 					M.powerlevel = 0
 
 				for(var/mob/O in viewers(src, null))
@@ -640,8 +640,8 @@
 
 	add_fingerprint(user)
 
-	if(opened && !wiresexposed && (!istype(user, /mob/living/silicon)))
-		if(cell)
+	if (opened && !wiresexposed && (!istype(user, /mob/living/silicon)))
+		if (cell)
 			cell.loc = usr
 			cell.layer = 20
 			if (user.hand )
@@ -656,56 +656,56 @@
 			user << "You remove the power cell."
 			updateicon()
 
-	if(ishuman(user))
-		if(istype(user:gloves, /obj/item/clothing/gloves/space_ninja)&&user:gloves:candrain&&!user:gloves:draining)
+	if (ishuman(user))
+		if (istype(user:gloves, /obj/item/clothing/gloves/space_ninja)&&user:gloves:candrain&&!user:gloves:draining)
 			call(/obj/item/clothing/gloves/space_ninja/proc/drain)("CYBORG",src,user:wear_suit)
 			return
 
 /mob/living/silicon/robot/proc/allowed(mob/M)
 	//check if it doesn't require any access at all
-	if(check_access(null))
+	if (check_access(null))
 		return 1
-	if(istype(M, /mob/living/carbon/human))
+	if (istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		//if they are holding or wearing a card that has access, that works
-		if(check_access(H.equipped()) || check_access(H.wear_id))
+		if (check_access(H.equipped()) || check_access(H.wear_id))
 			return 1
-	else if(istype(M, /mob/living/carbon/monkey))
+	else if (istype(M, /mob/living/carbon/monkey))
 		var/mob/living/carbon/monkey/george = M
 		//they can only hold things :(
-		if(george.equipped() && istype(george.equipped(), /obj/item/weapon/card/id) && check_access(george.equipped()))
+		if (george.equipped() && istype(george.equipped(), /obj/item/weapon/card/id) && check_access(george.equipped()))
 			return 1
 	return 0
 
 /mob/living/silicon/robot/proc/check_access(obj/item/weapon/card/id/I)
-	if(!istype(req_access, /list)) //something's very wrong
+	if (!istype(req_access, /list)) //something's very wrong
 		return 1
 
 	var/list/L = req_access
-	if(!L.len) //no requirements
+	if (!L.len) //no requirements
 		return 1
-	if(!I || !istype(I, /obj/item/weapon/card/id) || !I.access) //not ID or no access
+	if (!I || !istype(I, /obj/item/weapon/card/id) || !I.access) //not ID or no access
 		return 0
 	for(var/req in req_access)
-		if(!(req in I.access)) //doesn't have this access
+		if (!(req in I.access)) //doesn't have this access
 			return 0
 	return 1
 
 /mob/living/silicon/robot/proc/updateicon()
 
 	overlays = null
-	if(stat == 0)
+	if (stat == 0)
 		overlays += "eyes"
-		if(icon_state == "toiletbot")
+		if (icon_state == "toiletbot")
 			overlays = null
 			overlays += "eyes-toiletbot"
 	else
 		overlays -= "eyes"
 
-	if(opened)
-		if(wiresexposed)
+	if (opened)
+		if (wiresexposed)
 			overlays += "ov-openpanel +w"
-		else if(cell)
+		else if (cell)
 			overlays += "ov-openpanel +c"
 		else
 			overlays += "ov-openpanel -c"
@@ -714,11 +714,11 @@
 
 
 /mob/living/silicon/robot/proc/installed_modules()
-	if(weapon_lock)
+	if (weapon_lock)
 		src << "\red Weapon lock active, unable to use modules! Count:[weaponlock_time]"
 		return
 
-	if(!module)
+	if (!module)
 		pick_module()
 		return
 	var/dat = "<HEAD><TITLE>Modules</TITLE><META HTTP-EQUIV='Refresh' CONTENT='10'></HEAD><BODY>\n"
@@ -737,17 +737,17 @@
 	for (var/obj in module.modules)
 		if (!obj)
 			dat += text("<B>Resource depleted</B><BR>")
-		else if(activated(obj))
+		else if (activated(obj))
 			dat += text("[obj]: <B>Activated</B><BR>")
 		else
 			dat += text("[obj]: <A HREF=?src=\ref[src];act=\ref[obj]>Activate</A><BR>")
 	if (emagged)
-		if(activated(module.emag))
+		if (activated(module.emag))
 			dat += text("[module.emag]: <B>Activated</B><BR>")
 		else
 			dat += text("[module.emag]: <A HREF=?src=\ref[src];act=\ref[module.emag]>Activate</A><BR>")
 /*
-		if(activated(obj))
+		if (activated(obj))
 			dat += text("[obj]: \[<B>Activated</B> | <A HREF=?src=\ref[src];deact=\ref[obj]>Deactivate</A>\]<BR>")
 		else
 			dat += text("[obj]: \[<A HREF=?src=\ref[src];act=\ref[obj]>Activate</A> | <B>Deactivated</B>\]<BR>")
@@ -769,26 +769,26 @@
 
 	if (href_list["act"])
 		var/obj/item/O = locate(href_list["act"])
-		if(activated(O))
+		if (activated(O))
 			src << "Already activated"
 			return
-		if(!module_state_1)
+		if (!module_state_1)
 			module_state_1 = O
 			O.layer = 20
 			contents += O
-			if(istype(module_state_1,/obj/item/weapon/borg/sight))
+			if (istype(module_state_1,/obj/item/weapon/borg/sight))
 				sight_mode |= module_state_1:sight_mode
-		else if(!module_state_2)
+		else if (!module_state_2)
 			module_state_2 = O
 			O.layer = 20
 			contents += O
-			if(istype(module_state_2,/obj/item/weapon/borg/sight))
+			if (istype(module_state_2,/obj/item/weapon/borg/sight))
 				sight_mode |= module_state_2:sight_mode
-		else if(!module_state_3)
+		else if (!module_state_3)
 			module_state_3 = O
 			O.layer = 20
 			contents += O
-			if(istype(module_state_3,/obj/item/weapon/borg/sight))
+			if (istype(module_state_3,/obj/item/weapon/borg/sight))
 				sight_mode |= module_state_3:sight_mode
 		else
 			src << "You need to disable a module first!"
@@ -796,14 +796,14 @@
 
 	if (href_list["deact"])
 		var/obj/item/O = locate(href_list["deact"])
-		if(activated(O))
-			if(module_state_1 == O)
+		if (activated(O))
+			if (module_state_1 == O)
 				module_state_1 = null
 				contents -= O
-			else if(module_state_2 == O)
+			else if (module_state_2 == O)
 				module_state_2 = null
 				contents -= O
-			else if(module_state_3 == O)
+			else if (module_state_3 == O)
 				module_state_3 = null
 				contents -= O
 			else
@@ -814,10 +814,10 @@
 	return
 
 /mob/living/silicon/robot/proc/uneq_active()
-	if(isnull(module_active))
+	if (isnull(module_active))
 		return
-	if(module_state_1 == module_active)
-		if(istype(module_state_1,/obj/item/weapon/borg/sight))
+	if (module_state_1 == module_active)
+		if (istype(module_state_1,/obj/item/weapon/borg/sight))
 			sight_mode &= ~module_state_1:sight_mode
 		if (client)
 			client.screen -= module_state_1
@@ -825,8 +825,8 @@
 		module_active = null
 		module_state_1 = null
 		inv1.icon_state = "inv1"
-	else if(module_state_2 == module_active)
-		if(istype(module_state_2,/obj/item/weapon/borg/sight))
+	else if (module_state_2 == module_active)
+		if (istype(module_state_2,/obj/item/weapon/borg/sight))
 			sight_mode &= ~module_state_2:sight_mode
 		if (client)
 			client.screen -= module_state_2
@@ -834,8 +834,8 @@
 		module_active = null
 		module_state_2 = null
 		inv2.icon_state = "inv2"
-	else if(module_state_3 == module_active)
-		if(istype(module_state_3,/obj/item/weapon/borg/sight))
+	else if (module_state_3 == module_active)
+		if (istype(module_state_3,/obj/item/weapon/borg/sight))
 			sight_mode &= ~module_state_3:sight_mode
 		if (client)
 			client.screen -= module_state_3
@@ -847,24 +847,24 @@
 /mob/living/silicon/robot/proc/uneq_all()
 	module_active = null
 
-	if(module_state_1)
-		if(istype(module_state_1,/obj/item/weapon/borg/sight))
+	if (module_state_1)
+		if (istype(module_state_1,/obj/item/weapon/borg/sight))
 			sight_mode &= ~module_state_1:sight_mode
 		if (client)
 			client.screen -= module_state_1
 		contents -= module_state_1
 		module_state_1 = null
 		inv1.icon_state = "inv1"
-	if(module_state_2)
-		if(istype(module_state_2,/obj/item/weapon/borg/sight))
+	if (module_state_2)
+		if (istype(module_state_2,/obj/item/weapon/borg/sight))
 			sight_mode &= ~module_state_2:sight_mode
 		if (client)
 			client.screen -= module_state_2
 		contents -= module_state_2
 		module_state_2 = null
 		inv2.icon_state = "inv2"
-	if(module_state_3)
-		if(istype(module_state_3,/obj/item/weapon/borg/sight))
+	if (module_state_3)
+		if (istype(module_state_3,/obj/item/weapon/borg/sight))
 			sight_mode &= ~module_state_3:sight_mode
 		if (client)
 			client.screen -= module_state_3
@@ -874,11 +874,11 @@
 
 
 /mob/living/silicon/robot/proc/activated(obj/item/O)
-	if(module_state_1 == O)
+	if (module_state_1 == O)
 		return 1
-	else if(module_state_2 == O)
+	else if (module_state_2 == O)
 		return 1
-	else if(module_state_3 == O)
+	else if (module_state_3 == O)
 		return 1
 	else
 		return 0
@@ -919,16 +919,16 @@ Frequency:
 		. = ..()
 
 		if (pulling && pulling.loc)
-			if(!( isturf(pulling.loc) ))
+			if (!( isturf(pulling.loc) ))
 				pulling = null
 				return
 			else
-				if(Debug)
+				if (Debug)
 					diary <<"pulling disappeared? at [__LINE__] in mob.dm - pulling = [pulling]"
 					diary <<"REPORT THIS"
 
 		/////
-		if(pulling && pulling.anchored)
+		if (pulling && pulling.anchored)
 			pulling = null
 			return
 
@@ -960,7 +960,7 @@ Frequency:
 				else
 					if (pulling)
 						if (istype(pulling, /obj/window))
-							if(pulling:ini_dir == NORTHWEST || pulling:ini_dir == NORTHEAST || pulling:ini_dir == SOUTHWEST || pulling:ini_dir == SOUTHEAST)
+							if (pulling:ini_dir == NORTHWEST || pulling:ini_dir == NORTHEAST || pulling:ini_dir == SOUTHWEST || pulling:ini_dir == SOUTHEAST)
 								for(var/obj/window/win in get_step(pulling,get_dir(pulling.loc, T)))
 									pulling = null
 					if (pulling)

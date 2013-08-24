@@ -38,13 +38,13 @@
 			src.notices--
 			src.icon_state = text("nboard0[]", src.notices)
 
-	if(href_list["write"])
+	if (href_list["write"])
 		if ((usr.stat || usr.restrained())) //For when a player is handcuffed while they have the notice window open
 			usr << "\red It's a bit hard to write when you're restrained like this."
 			return
 		var/obj/item/P = locate(href_list["write"])
 
-		if((P && P.loc == src)) //if the paper's on the board
+		if ((P && P.loc == src)) //if the paper's on the board
 			if (istype(usr.r_hand, /obj/item/weapon/pen)) //and you're holding a pen
 				src.add_fingerprint(usr)
 				P.attackby(usr.r_hand, usr) //then do ittttt

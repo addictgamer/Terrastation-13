@@ -102,21 +102,21 @@
 	..()
 
 	//Feeding, chasing food, FOOOOODDDD
-	if(alive && !resting && !buckled)
+	if (alive && !resting && !buckled)
 		turns_since_scan++
-		if(turns_since_scan > 5)
+		if (turns_since_scan > 5)
 			turns_since_scan = 0
-			if((movement_target) && !(isturf(movement_target.loc) || ishuman(movement_target.loc) ))
+			if ((movement_target) && !(isturf(movement_target.loc) || ishuman(movement_target.loc) ))
 				movement_target = null
 				stop_automated_movement = 0
-			if( !movement_target || !(movement_target.loc in oview(src, 3)) )
+			if ( !movement_target || !(movement_target.loc in oview(src, 3)) )
 				movement_target = null
 				stop_automated_movement = 0
 				for(var/obj/item/weapon/reagent_containers/food/snacks/S in oview(src,3))
-					if(isturf(S.loc) || ishuman(S.loc))
+					if (isturf(S.loc) || ishuman(S.loc))
 						movement_target = S
 						break
-			if(movement_target)
+			if (movement_target)
 				stop_automated_movement = 1
 				step_to(src,movement_target,1)
 				sleep(3)
@@ -124,7 +124,7 @@
 				sleep(3)
 				step_to(src,movement_target,1)
 
-				if(movement_target)		//Not redundant due to sleeps, Item can be gone in 6 decisecomds
+				if (movement_target)		//Not redundant due to sleeps, Item can be gone in 6 decisecomds
 					if (movement_target.loc.x < src.x)
 						dir = WEST
 					else if (movement_target.loc.x > src.x)
@@ -136,10 +136,10 @@
 					else
 						dir = SOUTH
 
-				if(isturf(movement_target.loc) )
+				if (isturf(movement_target.loc) )
 					movement_target.attack_animal(src)
-				else if(ishuman(movement_target.loc) )
-					if(prob(20))
+				else if (ishuman(movement_target.loc) )
+					if (prob(20))
 						emote("", 0, "stares at the [movement_target] that [movement_target.loc] has with a sad puppy-face")
 
 /mob/living/simple_animal/New()
@@ -147,130 +147,130 @@
 	verbs -= /mob/verb/observe
 
 /mob/living/simple_animal/Login()
-	if(src && src.client)
+	if (src && src.client)
 		src.client.screen = null
 
 /mob/living/simple_animal/Life()
 
 	//Health
-	if(!alive)
-		if(health > 0)
+	if (!alive)
+		if (health > 0)
 			icon_state = icon_living
 			alive = 1
 			stat = 0 		//Alive - conscious
 			density = 1
 		return
 
-	if(health < 1)
+	if (health < 1)
 		alive = 0
 		icon_state = icon_dead
 		stat = 2 			//Dead
 		density = 0
 		return
 
-	if(health > max_health)
+	if (health > max_health)
 		health = max_health
 
 	//Movement
-	if(!ckey && !stop_automated_movement)
-		if(isturf(src.loc) && !resting && !buckled)		//This is so it only moves if it's not inside a closet, gentics machine, etc.
+	if (!ckey && !stop_automated_movement)
+		if (isturf(src.loc) && !resting && !buckled)		//This is so it only moves if it's not inside a closet, gentics machine, etc.
 			turns_since_move++
-			if(turns_since_move >= turns_per_move)
+			if (turns_since_move >= turns_per_move)
 				Move(get_step(src,pick(cardinal)))
 				turns_since_move = 0
 
 	//Speaking
-	if(speak_chance)
-		if(prob(speak_chance))
-			if(speak && (emote_hear || emote_see) )
+	if (speak_chance)
+		if (prob(speak_chance))
+			if (speak && (emote_hear || emote_see) )
 				var/length = speak.len
-				if(emote_hear)
+				if (emote_hear)
 					length += emote_hear.len
-				if(emote_see)
+				if (emote_see)
 					length += emote_see.len
 				var/pick = rand(1,length)
-				if(pick <= speak.len)
+				if (pick <= speak.len)
 					say(pick(speak))
 				else
 					pick -= speak.len
-					if(emote_see && pick <= emote_see.len)
+					if (emote_see && pick <= emote_see.len)
 						emote(pick(emote_see),1)
 					else
 						emote(pick(emote_hear),2)
-			if(!speak)
-				if(!emote_hear && emote_see)
+			if (!speak)
+				if (!emote_hear && emote_see)
 					emote(pick(emote_see),1)
-				if(emote_hear && !emote_see)
+				if (emote_hear && !emote_see)
 					emote(pick(emote_hear),2)
-				if(emote_hear && emote_see)
+				if (emote_hear && emote_see)
 					var/length = emote_hear.len + emote_see.len
 					var/pick = rand(1,length)
-					if(pick <= emote_see.len)
+					if (pick <= emote_see.len)
 						emote(pick(emote_see),1)
 					else
 						emote(pick(emote_hear),2)
-			if(speak && !(emote_see || emote_hear))
+			if (speak && !(emote_see || emote_hear))
 				say(pick(speak))
 
 	//Atmos
 	var/atmos_suitable = 1
 
 	var/atom/A = src.loc
-	if(isturf(A))
+	if (isturf(A))
 		var/turf/T = A
 		var/areatemp = T.temperature
-		if( abs(areatemp - bodytemperature) > 50 )
+		if ( abs(areatemp - bodytemperature) > 50 )
 			var/diff = areatemp - bodytemperature
 			diff = diff / 5
 			//world << "changed from [bodytemperature] by [diff] to [bodytemperature + diff]"
 			bodytemperature += diff
 
-		if(istype(T,/turf/simulated))
+		if (istype(T,/turf/simulated))
 			var/turf/simulated/ST = T
-			if(ST.air)
+			if (ST.air)
 				var/tox = ST.air.toxins
 				var/oxy = ST.air.oxygen
 				var/n2  = ST.air.nitrogen
 				var/co2 = ST.air.carbon_dioxide
 
-				if(min_oxy)
-					if(oxy < min_oxy)
+				if (min_oxy)
+					if (oxy < min_oxy)
 						atmos_suitable = 0
-				if(max_oxy)
-					if(oxy > max_oxy)
+				if (max_oxy)
+					if (oxy > max_oxy)
 						atmos_suitable = 0
-				if(min_tox)
-					if(tox < min_tox)
+				if (min_tox)
+					if (tox < min_tox)
 						atmos_suitable = 0
-				if(max_tox)
-					if(tox > max_tox)
+				if (max_tox)
+					if (tox > max_tox)
 						atmos_suitable = 0
-				if(min_n2)
-					if(n2 < min_n2)
+				if (min_n2)
+					if (n2 < min_n2)
 						atmos_suitable = 0
-				if(max_n2)
-					if(n2 > max_n2)
+				if (max_n2)
+					if (n2 > max_n2)
 						atmos_suitable = 0
-				if(min_co2)
-					if(co2 < min_co2)
+				if (min_co2)
+					if (co2 < min_co2)
 						atmos_suitable = 0
-				if(max_co2)
-					if(co2 > max_co2)
+				if (max_co2)
+					if (co2 > max_co2)
 						atmos_suitable = 0
 
 	//Atmos effects
-	if(bodytemperature < minbodytemp)
+	if (bodytemperature < minbodytemp)
 		health -= cold_damage_per_tick
-	else if(bodytemperature > maxbodytemp)
+	else if (bodytemperature > maxbodytemp)
 		health -= heat_damage_per_tick
 
-	if(!atmos_suitable)
+	if (!atmos_suitable)
 		health -= unsuitable_atoms_damage
 
 /mob/living/simple_animal/Bumped(AM as mob|obj)
-	if(!AM) return
-	if(isturf(src.loc) && !resting && !buckled)
-		if(ismob(AM))
+	if (!AM) return
+	if (isturf(src.loc) && !resting && !buckled)
+		if (ismob(AM))
 			var/newamloc = src.loc
 			src.loc = AM:loc
 			AM:loc = newamloc
@@ -278,20 +278,20 @@
 			..()
 
 /mob/living/simple_animal/gib()
-	if(meat_amount && meat_type)
+	if (meat_amount && meat_type)
 		for(var/i = 0; i < meat_amount; i++)
 			new meat_type(src.loc)
 	..()
 
 /mob/living/simple_animal/say_quote(var/text)
-	if(speak_emote)
+	if (speak_emote)
 		var/emote = pick(speak_emote)
-		if(emote)
+		if (emote)
 			return "[emote], \"[text]\""
 	return "says, \"[text]\"";
 
 /mob/living/simple_animal/emote(var/act)
-	if(act)
+	if (act)
 		for (var/mob/O in viewers(src, null))
 			O.show_message("<B>[src]</B> [act].")
 
@@ -340,14 +340,14 @@
 	return
 
 /mob/living/simple_animal/attackby(var/obj/item/O as obj, var/mob/user as mob)  //Marker -Agouri
-	if(istype(O, /obj/item/stack/medical))
-		if(alive)
+	if (istype(O, /obj/item/stack/medical))
+		if (alive)
 			var/obj/item/stack/medical/MED = O
-			if(health < max_health)
-				if(MED.amount >= 1)
+			if (health < max_health)
+				if (MED.amount >= 1)
 					health = min(max_health, health + MED.heal_brute)
 					MED.amount -= 1
-					if(MED.amount <= 0)
+					if (MED.amount <= 0)
 						del(MED)
 					for(var/mob/M in viewers(src, null))
 						if ((M.client && !( M.blinded )))
@@ -355,7 +355,7 @@
 		else
 			user << "\blue this [src] is dead, medical items won't bring it back to life."
 	else
-		if(O.force)
+		if (O.force)
 			health -= O.force
 			for(var/mob/M in viewers(src, null))
 				if ((M.client && !( M.blinded )))

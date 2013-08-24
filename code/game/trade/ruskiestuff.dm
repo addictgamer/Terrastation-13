@@ -15,7 +15,7 @@ var/ruskie_shuttle_location = 0 // 0 = centcom, 1 = ruskie station.
 //Yes, this is a bit backwards.
 
 proc/move_ruskie_shuttle()  //This is what makes the goddamn thing move
-	if(ruskie_shuttle_moving)	return
+	if (ruskie_shuttle_moving)	return
 	ruskie_shuttle_moving = 1
 	spawn(ruskie_shuttle_tickstomove*10)
 		var/area/dasOrigin
@@ -49,11 +49,11 @@ proc/move_ruskie_shuttle()  //This is what makes the goddamn thing move
 	user << browse("[dat]", "window=ruskieshuttle;size=200x100")
 
 /obj/machinery/computer/ruskie_shuttle/Topic(href, href_list) //The message that displays when you call it
-	if(..())
+	if (..())
 		return
 	usr.machine = src
 	src.add_fingerprint(usr)
-	if(href_list["move"])
+	if (href_list["move"])
 
 		if (!mining_shuttle_moving)
 			usr << "\blue shuttle called and will arrive shortly"

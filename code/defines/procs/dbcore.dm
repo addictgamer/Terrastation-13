@@ -51,9 +51,9 @@ DBConnection
 		_db_con = _dm_db_new_con()
 	proc
 		Connect(dbi_handler=src.dbi,user_handler=src.user,password_handler=src.password,cursor_handler)
-			if(!src) return 0
+			if (!src) return 0
 			cursor_handler = src.default_cursor
-			if(!cursor_handler) cursor_handler = Default_Cursor
+			if (!cursor_handler) cursor_handler = Default_Cursor
 			return _dm_db_connect(_db_con,dbi_handler,user_handler,password_handler,cursor_handler,null)
 
 		Disconnect() return _dm_db_close(_db_con)
@@ -64,7 +64,7 @@ DBConnection
 
 		ErrorMsg() return _dm_db_error_msg(_db_con)
 		SelectDB(database_name,dbi)
-			if(IsConnected()) Disconnect()
+			if (IsConnected()) Disconnect()
 			//return Connect("[dbi?"[dbi]":"dbi:mysql:[database_name]:[DB_SERVER]:[DB_PORT]"]",user,password)
 			return Connect("[dbi?"[dbi]":"dbi:mysql:[database_name]:[sqladdress]:[sqlport]"]",user,password)
 		NewQuery(sql_query,cursor_handler=src.default_cursor) return new/DBQuery(sql_query,src,cursor_handler)
@@ -81,9 +81,9 @@ DBConnection
 
 DBQuery
 	New(sql_query,DBConnection/connection_handler,cursor_handler)
-		if(sql_query) src.sql = sql_query
-		if(connection_handler) src.db_connection = connection_handler
-		if(cursor_handler) src.default_cursor = cursor_handler
+		if (sql_query) src.sql = sql_query
+		if (connection_handler) src.db_connection = connection_handler
+		if (cursor_handler) src.default_cursor = cursor_handler
 		_db_query = _dm_db_new_query()
 		return ..()
 
@@ -104,14 +104,14 @@ DBQuery
 		ErrorMsg() return _dm_db_error_msg(_db_query)
 
 		Columns()
-			if(!columns)
+			if (!columns)
 				columns = _dm_db_columns(_db_query,/DBColumn)
 			return columns
 
 		GetRowData()
 			var/list/columns = Columns()
 			var/list/results
-			if(columns.len)
+			if (columns.len)
 				results = list()
 				for(var/C in columns)
 					results+=C
@@ -129,9 +129,9 @@ DBQuery
 			return db_connection.Quote(str)
 
 		SetConversion(column,conversion)
-			if(istext(column)) column = columns.Find(column)
-			if(!conversions) conversions = new/list(column)
-			else if(conversions.len < column) conversions.len = column
+			if (istext(column)) column = columns.Find(column)
+			if (!conversions) conversions = new/list(column)
+			else if (conversions.len < column) conversions.len = column
 			conversions[column] = conversion
 
 	var
@@ -167,16 +167,16 @@ DBColumn
 	proc
 		SqlTypeName(type_handler=src.sql_type)
 			switch(type_handler)
-				if(TINYINT) return "TINYINT"
-				if(SMALLINT) return "SMALLINT"
-				if(MEDIUMINT) return "MEDIUMINT"
-				if(INTEGER) return "INTEGER"
-				if(BIGINT) return "BIGINT"
-				if(FLOAT) return "FLOAT"
-				if(DOUBLE) return "DOUBLE"
-				if(DATE) return "DATE"
-				if(DATETIME) return "DATETIME"
-				if(TIMESTAMP) return "TIMESTAMP"
-				if(TIME) return "TIME"
-				if(STRING) return "STRING"
-				if(BLOB) return "BLOB"
+				if (TINYINT) return "TINYINT"
+				if (SMALLINT) return "SMALLINT"
+				if (MEDIUMINT) return "MEDIUMINT"
+				if (INTEGER) return "INTEGER"
+				if (BIGINT) return "BIGINT"
+				if (FLOAT) return "FLOAT"
+				if (DOUBLE) return "DOUBLE"
+				if (DATE) return "DATE"
+				if (DATETIME) return "DATETIME"
+				if (TIMESTAMP) return "TIMESTAMP"
+				if (TIME) return "TIME"
+				if (STRING) return "STRING"
+				if (BLOB) return "BLOB"

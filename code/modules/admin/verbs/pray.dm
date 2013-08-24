@@ -1,7 +1,7 @@
 /mob/verb/pray(msg as text)
 	set category = "IC"
 	set name = "Pray"
-	if(!usr.client.authenticated)
+	if (!usr.client.authenticated)
 		src << "Please authorize before sending these messages."
 		return
 

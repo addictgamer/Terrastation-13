@@ -123,13 +123,13 @@
 /world/Reboot(var/reason)
 	spawn(0)
 		world << sound(pick('newroundsexy.ogg','apcdestroyed.ogg','bangindonk.ogg','interesting.wav')) // random end sounds!! - LastyBatsy
-		//if(prob(40))
+		//if (prob(40))
 		//	for(var/mob/M in world)
-		//		if(M.client)
+		//		if (M.client)
 		//			M << sound('newroundsexy.ogg')
 		//else
 		//	for(var/mob/M in world)
-		//		if(M.client)
+		//		if (M.client)
 		//			M << sound('apcdestroyed.ogg')
 
 	for(var/client/C)

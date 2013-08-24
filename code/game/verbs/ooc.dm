@@ -16,7 +16,7 @@
 		src << "You are not authorized to communicate over these channels."
 		return
 	msg = copytext(sanitize(msg), 1, MAX_MESSAGE_LEN)
-	if(!msg)
+	if (!msg)
 		return
 	else if (!src.client.listen_ooc)
 		return
@@ -68,12 +68,12 @@
 
 	for (var/client/C)
 		if (C.goon)
-			if(src.client.holder && (!src.client.stealth || C.holder))
+			if (src.client.holder && (!src.client.stealth || C.holder))
 				if (src.client.holder.rank == "Admin Observer")
 					C << "<span class=\"gfartgoonsay\"><span class=\"prefix\">GOONSAY:</span> <span class=\"name\">[src.key][src.client.stealth ? "/([src.client.fakekey])" : ""]:</span> <span class=\"message\">[msg]</span></span>"
 				else
 					C << "<span class=\"admingoonsay\"><span class=\"prefix\">GOONSAY:</span> <span class=\"name\">[src.key][src.client.stealth ? "/([src.client.fakekey])" : ""]:</span> <span class=\"message\">[msg]</span></span>"
-			else if(C.listen_ooc)
+			else if (C.listen_ooc)
 				C << "<span class=\"goonsay\"><span class=\"prefix\">GOONSAY:</span> <span class=\"name\">[src.client.stealth ? src.client.fakekey : src.key]:</span> <span class=\"message\">[msg]</span></span>"
 
 

@@ -175,8 +175,8 @@ MONKEY CUBE BOX
 	attack_hand(mob/user as mob, unused, flag)
 		add_fingerprint(user)
 
-		if(user.r_hand == src || user.l_hand == src)
-			if(amount)
+		if (user.r_hand == src || user.l_hand == src)
+			if (amount)
 				var/obj/item/weapon/reagent_containers/food/snacks/monkeycube/wrapped/M = new /obj/item/weapon/reagent_containers/food/snacks/monkeycube/wrapped(src)
 				if (user.hand)
 					user.l_hand = M

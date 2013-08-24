@@ -27,20 +27,20 @@ var/bomb_set = 1
 
 /proc/syndicate_begin()
 	switch(rand(1,4))
-		if(1)
+		if (1)
 			syndicate_loc = locate(/area/syndicate_station/one)
-		if(2)
+		if (2)
 			syndicate_loc = locate(/area/syndicate_station/two)
-		if(3)
+		if (3)
 			syndicate_loc = locate(/area/syndicate_station/three)
-		if(4)
+		if (4)
 			syndicate_loc = locate(/area/syndicate_station/four)
 
 /proc/syndicate_process()
 	while(syndicate_station_time - world.timeofday > 0)
 		var/ticksleft = syndicate_station_time - world.timeofday
 
-		if(ticksleft > 1e5)
+		if (ticksleft > 1e5)
 			syndicate_station_time = world.timeofday + 10	// midnight rollover
 
 
@@ -50,7 +50,7 @@ var/bomb_set = 1
 	syndicate_station_moving_to_space = 0
 
 	switch(syndicate_station_at_station)
-		if(0)
+		if (0)
 			syndicate_station_at_station = 1
 			if (syndicate_station_moving_to_station || syndicate_station_moving_to_space) return
 
@@ -66,7 +66,7 @@ var/bomb_set = 1
 
 			for(var/turf/T in end_location)
 				dstturfs += T
-				if(T.y < throwy)
+				if (T.y < throwy)
 					throwy = T.y
 
 						// hey you, get out of the way!
@@ -76,7 +76,7 @@ var/bomb_set = 1
 							//var/turf/E = get_step(D, SOUTH)
 				for(var/atom/movable/AM as mob|obj in T)
 					AM.Move(D)
-				if(istype(T, /turf/simulated))
+				if (istype(T, /turf/simulated))
 					del(T)
 
 			start_location.move_contents_to(end_location)
@@ -84,7 +84,7 @@ var/bomb_set = 1
 
 
 
-		if(1)
+		if (1)
 			syndicate_station_at_station = 0
 			if (syndicate_station_moving_to_station || syndicate_station_moving_to_space) return
 
@@ -100,7 +100,7 @@ var/bomb_set = 1
 
 			for(var/turf/T in end_location)
 				dstturfs += T
-				if(T.y < throwy)
+				if (T.y < throwy)
 					throwy = T.y
 
 						// hey you, get out of the way!
@@ -110,16 +110,16 @@ var/bomb_set = 1
 							//var/turf/E = get_step(D, SOUTH)
 				for(var/atom/movable/AM as mob|obj in T)
 					AM.Move(D)
-				if(istype(T, /turf/simulated))
+				if (istype(T, /turf/simulated))
 					del(T)
 
 			start_location.move_contents_to(end_location)
 			syndicate_out_of_moves = 1
 
 /proc/syndicate_can_move()
-	if(syndicate_station_moving_to_station || syndicate_station_moving_to_space) return 0
-	if(syndicate_out_of_moves) return 0
-	if(!bomb_set) return 0
+	if (syndicate_station_moving_to_station || syndicate_station_moving_to_space) return 0
+	if (syndicate_out_of_moves) return 0
+	if (!bomb_set) return 0
 	else return 1
 
 /obj/machinery/computer/syndicate_station/attackby(I as obj, user as mob)
@@ -132,21 +132,21 @@ var/bomb_set = 1
 	return src.attack_hand(user)
 
 /obj/machinery/computer/syndicate_station/attackby(I as obj, user as mob)
-	if(istype(I,/obj/item/weapon/card/emag))
+	if (istype(I,/obj/item/weapon/card/emag))
 		user << "\blue Nothing happens."
 	else
 		return src.attack_hand(user)
 
 /obj/machinery/computer/syndicate_station/attack_hand(var/mob/user as mob)
-	if(!src.allowed(user))
+	if (!src.allowed(user))
 		user << "\red Access Denied."
 		return
 
-	if(syndicate_break)
+	if (syndicate_break)
 		user << "\red Unable to locate shuttle."
 		return
 
-	if(..())
+	if (..())
 		return
 	user.machine = src
 	var/dat
@@ -163,14 +163,14 @@ var/bomb_set = 1
 	return
 
 /obj/machinery/computer/syndicate_station/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 
 	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
 		usr.machine = src
 
 	if (href_list["sendtospace"])
-		if(!syndicate_station_at_station|| syndicate_station_moving_to_station || syndicate_station_moving_to_space) return
+		if (!syndicate_station_at_station|| syndicate_station_moving_to_station || syndicate_station_moving_to_space) return
 
 		if (!syndicate_can_move())
 			usr << "\red The syndicate shuttle is unable to leave."
@@ -188,7 +188,7 @@ var/bomb_set = 1
 			syndicate_process()
 
 	else if (href_list["sendtostation"])
-		if(syndicate_station_at_station || syndicate_station_moving_to_station || syndicate_station_moving_to_space) return
+		if (syndicate_station_at_station || syndicate_station_moving_to_station || syndicate_station_moving_to_space) return
 
 		if (!syndicate_can_move())
 			usr << "\red The syndicate shuttle is unable to leave."

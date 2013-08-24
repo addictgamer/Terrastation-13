@@ -18,7 +18,7 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 	set category = "Special Verbs"
 	set name = "Check Rune Words"
 	set desc = "Check the rune-word meaning"
-	if(!wordtravel)
+	if (!wordtravel)
 		runerandom()
 	usr << "[wordtravel] is travel, [wordblood] is blood, [wordjoin] is join, [wordhell] is Hell, [worddestr] is destroy, [wordtech] is technology, [wordself] is self, [wordsee] is see, [wordother] is other, [wordhide] is hide."
 
@@ -93,17 +93,17 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 // self other technology - Communication rune  //was other hear blood
 // join hide technology - stun rune. Rune color: bright pink.
 	examine()
-		if(!iscultist(usr))
+		if (!iscultist(usr))
 			usr << "A strange collection of symbols drawn in blood."
 		else
 			usr << "A spell circle drawn in blood. It reads: <i>[word1] [word2] [word3]</i>."
 
 	attackby(I as obj, user as mob)
-		if(istype(I, /obj/item/weapon/tome) && iscultist(user))
+		if (istype(I, /obj/item/weapon/tome) && iscultist(user))
 			user << "You retrace your steps, carefully undoing the lines of the rune."
 			del(src)
 			return
-		else if(istype(I, /obj/item/weapon/storage/bible) && usr.mind && (usr.mind.assigned_role == "Chaplain"))
+		else if (istype(I, /obj/item/weapon/storage/bible) && usr.mind && (usr.mind.assigned_role == "Chaplain"))
 			var/obj/item/weapon/storage/bible/bible = I
 			user << "\blue You banish the vile magic with the blessing of [bible.deity_name]!"
 			del(src)
@@ -111,63 +111,63 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 		return
 
 	attack_hand(mob/user as mob)
-		if(!iscultist(user))
+		if (!iscultist(user))
 			user << "You can't mouth the arcane scratchings without fumbling over them."
 			return
-		if(istype(user.wear_mask, /obj/item/clothing/mask/muzzle) || user.ear_deaf)
+		if (istype(user.wear_mask, /obj/item/clothing/mask/muzzle) || user.ear_deaf)
 			user << "You need to be able to both speak and hear to use runes."
 			return
-		if(!word1 || !word2 || !word3 || prob(usr.brainloss))
+		if (!word1 || !word2 || !word3 || prob(usr.brainloss))
 			return fizzle()
-//		if(!src.visibility)
+//		if (!src.visibility)
 //			src.visibility=1
-		if(word1 == wordtravel && word2 == wordself)
+		if (word1 == wordtravel && word2 == wordself)
 			return teleport(src.word3)
-		if(word1 == wordsee && word2 == wordblood && word3 == wordhell)
+		if (word1 == wordsee && word2 == wordblood && word3 == wordhell)
 			return tomesummon()
-		if(word1 == wordhell && word2 == worddestr && word3 == wordother)
+		if (word1 == wordhell && word2 == worddestr && word3 == wordother)
 			return armor()
-		if(word1 == wordjoin && word2 == wordblood && word3 == wordself)
+		if (word1 == wordjoin && word2 == wordblood && word3 == wordself)
 			return convert()
-		if(word1 == wordhell && word2 == wordjoin && word3 == wordself)
+		if (word1 == wordhell && word2 == wordjoin && word3 == wordself)
 			return tearreality()
-		if(word1 == worddestr && word2 == wordsee && word3 == wordtech)
+		if (word1 == worddestr && word2 == wordsee && word3 == wordtech)
 			return emp(src.loc,3)
-		if(word1 == wordtravel && word2 == wordblood && word3 == wordself)
+		if (word1 == wordtravel && word2 == wordblood && word3 == wordself)
 			return drain()
-		if(word1 == wordsee && word2 == wordhell && word3 == wordjoin)
+		if (word1 == wordsee && word2 == wordhell && word3 == wordjoin)
 			return seer()
-		if(word1 == wordblood && word2 == wordjoin && word3 == wordhell)
+		if (word1 == wordblood && word2 == wordjoin && word3 == wordhell)
 			return raise()
-		if(word1 == wordhide && word2 == wordsee && word3 == wordblood)
+		if (word1 == wordhide && word2 == wordsee && word3 == wordblood)
 			return obscure(4)
-		if(word1 == wordhell && word2 == wordtravel && word3 == wordself)
+		if (word1 == wordhell && word2 == wordtravel && word3 == wordself)
 			return ajourney()
-		if(word1 == wordblood && word2 == wordsee && word3 == wordtravel)
+		if (word1 == wordblood && word2 == wordsee && word3 == wordtravel)
 			return manifest()
-		if(word1 == wordhell && word2 == wordtech && word3 == wordjoin)
+		if (word1 == wordhell && word2 == wordtech && word3 == wordjoin)
 			return talisman()
-		if(word1 == wordhell && word2 == wordblood && word3 == wordjoin)
+		if (word1 == wordhell && word2 == wordblood && word3 == wordjoin)
 			return sacrifice()
-		if(word1 == wordblood && word2 == wordsee && word3 == wordhide)
+		if (word1 == wordblood && word2 == wordsee && word3 == wordhide)
 			return revealrunes(src)
-		if(word1 == worddestr && word2 == wordtravel && word3 == wordself)
+		if (word1 == worddestr && word2 == wordtravel && word3 == wordself)
 			return wall()
-		if(word1 == wordtravel && word2 == wordtech && word3 == wordother)
+		if (word1 == wordtravel && word2 == wordtech && word3 == wordother)
 			return freedom()
-		if(word1 == wordjoin && word2 == wordother && word3 == wordself)
+		if (word1 == wordjoin && word2 == wordother && word3 == wordself)
 			return cultsummon()
-		if(word1 == wordhide && word2 == wordother && word3 == wordsee)
+		if (word1 == wordhide && word2 == wordother && word3 == wordsee)
 			return deafen()
-		if(word1 == worddestr && word2 == wordsee && word3 == wordother)
+		if (word1 == worddestr && word2 == wordsee && word3 == wordother)
 			return blind()
-		if(word1 == worddestr && word2 == wordsee && word3 == wordblood)
+		if (word1 == worddestr && word2 == wordsee && word3 == wordblood)
 			return bloodboil()
-		if(word1 == wordself && word2 == wordother && word3 == wordtech)
+		if (word1 == wordself && word2 == wordother && word3 == wordtech)
 			return communicate()
-		if(word1 == wordtravel && word2 == wordother)
+		if (word1 == wordtravel && word2 == wordother)
 			return itemport(src.word3)
-		if(word1 == wordjoin && word2 == wordhide && word3 == wordtech)
+		if (word1 == wordjoin && word2 == wordhide && word3 == wordtech)
 			return runestun()
 		else
 			return fizzle()
@@ -175,7 +175,7 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 
 	proc
 		fizzle()
-			if(istype(src,/obj/rune))
+			if (istype(src,/obj/rune))
 				usr.say(pick("B'ADMINES SP'WNIN SH'T","IC'IN O'OC","RO'SHA'M I'SA GRI'FF'N ME'AI","TOX'IN'S O'NM FI'RAH","IA BL'AME TOX'IN'S","FIR'A NON'AN RE'SONA","A'OI I'RS ROUA'GE","LE'OAN JU'STA SP'A'C Z'EE SH'EF","IA PT'WOBEA'RD, IA A'DMI'NEH'LP"))
 			else
 				usr.whisper(pick("B'ADMINES SP'WNIN SH'T","IC'IN O'OC","RO'SHA'M I'SA GRI'FF'N ME'AI","TOX'IN'S O'NM FI'RAH","IA BL'AME TOX'IN'S","FIR'A NON'AN RE'SONA","A'OI I'RS ROUA'GE","LE'OAN JU'STA SP'A'C Z'EE SH'EF","IA PT'WOBEA'RD, IA A'DMI'NEH'LP"))
@@ -184,88 +184,88 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 			return
 
 		check_icon()
-			if(word1 == wordtravel && word2 == wordself)
+			if (word1 == wordtravel && word2 == wordself)
 				icon_state = "2"
 				src.icon += rgb(0, 0 , 255)
 				return
-			if(word1 == wordjoin && word2 == wordblood && word3 == wordself)
+			if (word1 == wordjoin && word2 == wordblood && word3 == wordself)
 				icon_state = "3"
 				return
-			if(word1 == wordhell && word2 == wordjoin && word3 == wordself)
+			if (word1 == wordhell && word2 == wordjoin && word3 == wordself)
 				icon_state = "4"
 				return
-			if(word1 == wordsee && word2 == wordblood && word3 == wordhell)
+			if (word1 == wordsee && word2 == wordblood && word3 == wordhell)
 				icon_state = "5"
 				src.icon += rgb(0, 0 , 255)
 				return
-			if(word1 == worddestr && word2 == wordsee && word3 == wordtech)
+			if (word1 == worddestr && word2 == wordsee && word3 == wordtech)
 				icon_state = "5"
 				return
-			if(word1 == wordtravel && word2 == wordblood && word3 == wordself)
+			if (word1 == wordtravel && word2 == wordblood && word3 == wordself)
 				icon_state = "2"
 				return
-			if(word1 == wordsee && word2 == wordhell && word3 == wordjoin)
+			if (word1 == wordsee && word2 == wordhell && word3 == wordjoin)
 				icon_state = "4"
 				src.icon += rgb(0, 0 , 255)
 				return
-			if(word1 == wordblood && word2 == wordjoin && word3 == wordhell)
+			if (word1 == wordblood && word2 == wordjoin && word3 == wordhell)
 				icon_state = "1"
 				return
-			if(word1 == wordhide && word2 == wordsee && word3 == wordblood)
+			if (word1 == wordhide && word2 == wordsee && word3 == wordblood)
 				icon_state = "1"
 				src.icon += rgb(0, 0 , 255)
 				return
-			if(word1 == wordhell && word2 == wordtravel && word3 == wordself)
+			if (word1 == wordhell && word2 == wordtravel && word3 == wordself)
 				icon_state = "6"
 				src.icon += rgb(0, 0 , 255)
 				return
-			if(word1 == wordblood && word2 == wordsee && word3 == wordtravel)
+			if (word1 == wordblood && word2 == wordsee && word3 == wordtravel)
 				icon_state = "6"
 				return
-			if(word1 == wordhell && word2 == wordtech && word3 == wordjoin)
+			if (word1 == wordhell && word2 == wordtech && word3 == wordjoin)
 				icon_state = "3"
 				src.icon += rgb(0, 0 , 255)
 				return
-			if(word1 == wordhell && word2 == wordblood && word3 == wordjoin)
+			if (word1 == wordhell && word2 == wordblood && word3 == wordjoin)
 				icon_state = "[rand(1,6)]"
 				src.icon += rgb(255, 255, 255)
 				return
-			if(word1 == wordblood && word2 == wordsee && word3 == wordhide)
+			if (word1 == wordblood && word2 == wordsee && word3 == wordhide)
 				icon_state = "4"
 				src.icon += rgb(255, 255, 255)
 				return
-			if(word1 == worddestr && word2 == wordtravel && word3 == wordself)
+			if (word1 == worddestr && word2 == wordtravel && word3 == wordself)
 				icon_state = "1"
 				src.icon += rgb(255, 0, 0)
 				return
-			if(word1 == wordtravel && word2 == wordtech && word3 == wordother)
+			if (word1 == wordtravel && word2 == wordtech && word3 == wordother)
 				icon_state = "4"
 				src.icon += rgb(255, 0, 255)
 				return
-			if(word1 == wordjoin && word2 == wordother && word3 == wordself)
+			if (word1 == wordjoin && word2 == wordother && word3 == wordself)
 				icon_state = "2"
 				src.icon += rgb(0, 255, 0)
 				return
-			if(word1 == wordhide && word2 == wordother && word3 == wordsee)
+			if (word1 == wordhide && word2 == wordother && word3 == wordsee)
 				icon_state = "4"
 				src.icon += rgb(0, 255, 0)
 				return
-			if(word1 == worddestr && word2 == wordsee && word3 == wordother)
+			if (word1 == worddestr && word2 == wordsee && word3 == wordother)
 				icon_state = "4"
 				src.icon += rgb(0, 0, 255)
 				return
-			if(word1 == worddestr && word2 == wordsee && word3 == wordblood)
+			if (word1 == worddestr && word2 == wordsee && word3 == wordblood)
 				icon_state = "4"
 				src.icon += rgb(255, 0, 0)
 				return
-			if(word1 == wordself && word2 == wordother && word3 == wordtech)
+			if (word1 == wordself && word2 == wordother && word3 == wordtech)
 				icon_state = "3"
 				src.icon += rgb(200, 0, 0)
 				return
-			if(word1 == wordtravel && word2 == wordother)
+			if (word1 == wordtravel && word2 == wordother)
 				icon_state = "1"
 				src.icon += rgb(200, 0, 0)
-			if(word1 == wordjoin && word2 == wordhide && word3 == wordtech)
+			if (word1 == wordjoin && word2 == wordhide && word3 == wordtech)
 				icon_state = "2"
 				src.icon += rgb(100, 0, 100)
 				return
@@ -384,9 +384,9 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 			if (usr.stat|| usr.restrained())
 				return
 			switch(href_list["action"])
-				if("clear")
+				if ("clear")
 					words[words[number]] = words[number]
-				if("change")
+				if ("change")
 					words[words[number]] = input("Enter the translation for [words[number]]", "Word notes") in engwords
 					for (var/w in words)
 						if ((words[w] == words[words[number]]) && (w != words[number]))
@@ -433,18 +433,18 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has had the [name] used on him by [user.name] ([user.ckey])</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used [name] on [M.name] ([M.ckey])</font>")
 
-		if(istype(M,/mob/dead))
+		if (istype(M,/mob/dead))
 			M.invisibility = 0
 			user.visible_message( \
 				"\red [user] drags the ghost to our plan of reality!", \
 				"\red You drag the ghost to our plan of reality!" \
 			)
 			return
-		if(!istype(M))
+		if (!istype(M))
 			return
-		if(!iscultist(user))
+		if (!iscultist(user))
 			return ..()
-		if(iscultist(M))
+		if (iscultist(M))
 			return
 		M.take_organ_damage(0,rand(5,20)) //really lucky - 5 hits for a crit
 		for(var/mob/O in viewers(M, null))
@@ -455,9 +455,9 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 
 	attack_self(mob/living/user as mob)
 		usr = user
-		if(!wordtravel)
+		if (!wordtravel)
 			runerandom()
-		if(iscultist(user))
+		if (iscultist(user))
 			var/C = 0
 			for(var/obj/rune/N in world)
 				C++
@@ -466,22 +466,22 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 				return
 			if (C>=26+runedec+ticker.mode.cult.len) //including the useless rune at the secret room, shouldn't count against the limit of 25 runes - Urist
 				switch(alert("The cloth of reality can't take that much of a strain. By creating another rune, you risk locally tearing reality apart, which would prove fatal to you. Do you still wish to scribe the rune?",,"Yes","No"))
-					if("Yes")
-						if(prob(C*5-105-(runedec-ticker.mode.cult.len)*5)) //including the useless rune at the secret room, shouldn't count against the limit - Urist
+					if ("Yes")
+						if (prob(C*5-105-(runedec-ticker.mode.cult.len)*5)) //including the useless rune at the secret room, shouldn't count against the limit - Urist
 							usr.emote("scream")
 							user << "\red A tear momentarily appears in reality. Before it closes, you catch a glimpse of that which lies beyond. That proves to be too much for your mind."
 							usr.gib(1)
 							return
-					if("No")
+					if ("No")
 						return
 			else
 				switch(alert("You open the tome",,"Read it","Scribe a rune", "Notes")) //Fuck the "Cancel" option. Rewrite the whole tome interface yourself if you want it to work better. And input() is just ugly. - K0000
-					if("Cancel")
+					if ("Cancel")
 						return
-					if("Read it")
+					if ("Read it")
 						user << browse("[tomedat]", "window=Arcane Tome")
 						return
-					if("Notes")
+					if ("Notes")
 						notedat = {"
 					<br><b>Word translation notes</b> <br>
 					[words[1]] is <a href='byond://?src=\ref[src];number=1;action=change'>[words[words[1]]]</A> <A href='byond://?src=\ref[src];number=1;action=clear'>Clear</A><BR>
@@ -504,17 +504,17 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 			var/list/english = list()
 			for (var/w in words)
 				english+=words[w]
-			if(usr)
+			if (usr)
 				w1 = input("Write your first rune:", "Rune Scribing") in english
 				for (var/w in words)
 					if (words[w] == w1)
 						w1 = w
-			if(usr)
+			if (usr)
 				w2 = input("Write your second rune:", "Rune Scribing") in english
 				for (var/w in words)
 					if (words[w] == w2)
 						w2 = w
-			if(usr)
+			if (usr)
 				w3 = input("Write your third rune:", "Rune Scribing") in english
 				for (var/w in words)
 					if (words[w] == w3)
@@ -523,7 +523,7 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 				V.show_message("\red [user] slices open a finger and begins to chant and paint symbols on the floor.", 3, "\red You hear chanting.", 2)
 			user << "\red You slice open one of your fingers and begin drawing a rune on the floor whilst chanting the ritual that binds your life essence with the dark arcane energies flowing through the surrounding world."
 			user.take_overall_damage(1)
-			if(do_after(user, 50))
+			if (do_after(user, 50))
 				var/mob/living/carbon/human/H = user
 				var/obj/rune/R = new /obj/rune(user.loc)
 				user << "\red You finish drawing the arcane markings of the Geometer."
@@ -539,15 +539,15 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 			return
 
 	attackby(obj/item/weapon/tome/T as obj, mob/living/user as mob)
-		if(istype(T, /obj/item/weapon/tome)) // sanity check to prevent a runtime error
+		if (istype(T, /obj/item/weapon/tome)) // sanity check to prevent a runtime error
 			switch(alert("Copy the runes from your tome?",,"Copy", "Cancel"))
-				if("cancel")
+				if ("cancel")
 					return
 	//		var/list/nearby = viewers(1,src) //- Fuck this as well. No clue why this doesnt work. -K0000
 	//			if (T.loc != user)
 	//				return
 	//		for(var/mob/M in nearby)
-	//			if(M == user)
+	//			if (M == user)
 			for(var/w in words)
 				words[w] = T.words[w]
 			user << "You copy the translation notes from your tome."
@@ -555,7 +555,7 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 
 	examine()
 		set src in usr
-		if(!iscultist(usr))
+		if (!iscultist(usr))
 			usr << "An old, dusty tome with frayed edges and a sinister looking cover."
 		else
 			usr << "The scriptures of Nar-Sie, The One Who Sees, The Geometer of Blood. Contains the details of every ritual his followers could think of. Most of these are useless, though."
@@ -564,169 +564,169 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 	w_class = 2.0
 	var/cultistsonly = 1
 	attack_self(mob/user as mob)
-		if(src.cultistsonly && !iscultist(usr))
+		if (src.cultistsonly && !iscultist(usr))
 			return
-		if(!wordtravel)
+		if (!wordtravel)
 			runerandom()
-		if(user)
+		if (user)
 			var/r
 			if (!istype(user.loc,/turf))
 				user << "\red You do not have enough space to write a proper rune."
 			var/list/runes = list("teleport", "itemport", "tome", "convert", "tear in reality", "emp", "drain", "seer", "raise", "obscure", "reveal", "astral journey", "manifest", "imbue talisman", "sacrifice", "wall", "freedom", "cultsummon", "deafen", "blind", "bloodboil", "communicate", "stun")
 			r = input("Choose a rune to scribe", "Rune Scribing") in runes //not cancellable.
 			var/obj/rune/R = new /obj/rune
-			if(istype(user, /mob/living/carbon/human))
+			if (istype(user, /mob/living/carbon/human))
 				var/mob/living/carbon/human/H = user
 				R.blood_DNA = H.dna.unique_enzymes
 				R.blood_type = H.b_type
 			switch(r)
-				if("teleport")
+				if ("teleport")
 					var/list/words = list("ire", "ego", "nahlizet", "certum", "veri", "jatkaa", "balaq", "mgar", "karazet", "geeri")
 					var/beacon
-					if(usr)
+					if (usr)
 						beacon = input("Select the last rune", "Rune Scribing") in words
 					R.word1=wordtravel
 					R.word2=wordself
 					R.word3=beacon
 					R.loc = user.loc
 					R.check_icon()
-				if("itemport")
+				if ("itemport")
 					var/list/words = list("ire", "ego", "nahlizet", "certum", "veri", "jatkaa", "balaq", "mgar", "karazet", "geeri")
 					var/beacon
-					if(usr)
+					if (usr)
 						beacon = input("Select the last rune", "Rune Scribing") in words
 					R.word1=wordtravel
 					R.word2=wordother
 					R.word3=beacon
 					R.loc = user.loc
 					R.check_icon()
-				if("tome")
+				if ("tome")
 					R.word1=wordsee
 					R.word2=wordblood
 					R.word3=wordhell
 					R.loc = user.loc
 					R.check_icon()
-				if("armor")
+				if ("armor")
 					R.word1=wordhell
 					R.word2=worddestr
 					R.word3=wordother
 					R.loc = user.loc
 					R.check_icon()
-				if("convert")
+				if ("convert")
 					R.word1=wordjoin
 					R.word2=wordblood
 					R.word3=wordself
 					R.loc = user.loc
 					R.check_icon()
-				if("tear in reality")
+				if ("tear in reality")
 					R.word1=wordhell
 					R.word2=wordjoin
 					R.word3=wordself
 					R.loc = user.loc
 					R.check_icon()
-				if("emp")
+				if ("emp")
 					R.word1=worddestr
 					R.word2=wordsee
 					R.word3=wordtech
 					R.loc = user.loc
 					R.check_icon()
-				if("drain")
+				if ("drain")
 					R.word1=wordtravel
 					R.word2=wordblood
 					R.word3=wordself
 					R.loc = user.loc
 					R.check_icon()
-				if("seer")
+				if ("seer")
 					R.word1=wordsee
 					R.word2=wordhell
 					R.word3=wordjoin
 					R.loc = user.loc
 					R.check_icon()
-				if("raise")
+				if ("raise")
 					R.word1=wordblood
 					R.word2=wordjoin
 					R.word3=wordhell
 					R.loc = user.loc
 					R.check_icon()
-				if("obscure")
+				if ("obscure")
 					R.word1=wordhide
 					R.word2=wordsee
 					R.word3=wordblood
 					R.loc = user.loc
 					R.check_icon()
-				if("astral journey")
+				if ("astral journey")
 					R.word1=wordhell
 					R.word2=wordtravel
 					R.word3=wordself
 					R.loc = user.loc
 					R.check_icon()
-				if("manifest")
+				if ("manifest")
 					R.word1=wordblood
 					R.word2=wordsee
 					R.word3=wordtravel
 					R.loc = user.loc
 					R.check_icon()
-				if("imbue talisman")
+				if ("imbue talisman")
 					R.word1=wordhell
 					R.word2=wordtech
 					R.word3=wordjoin
 					R.loc = user.loc
 					R.check_icon()
-				if("sacrifice")
+				if ("sacrifice")
 					R.word1=wordhell
 					R.word2=wordblood
 					R.word3=wordjoin
 					R.loc = user.loc
 					R.check_icon()
-				if("reveal")
+				if ("reveal")
 					R.word1=wordblood
 					R.word2=wordsee
 					R.word3=wordhide
 					R.loc = user.loc
 					R.check_icon()
-				if("wall")
+				if ("wall")
 					R.word1=worddestr
 					R.word2=wordtravel
 					R.word3=wordself
 					R.loc = user.loc
 					R.check_icon()
-				if("freedom")
+				if ("freedom")
 					R.word1=wordtravel
 					R.word2=wordtech
 					R.word3=wordother
 					R.loc = user.loc
 					R.check_icon()
-				if("cultsummon")
+				if ("cultsummon")
 					R.word1=wordjoin
 					R.word2=wordother
 					R.word3=wordself
 					R.loc = user.loc
 					R.check_icon()
-				if("deafen")
+				if ("deafen")
 					R.word1=wordhide
 					R.word2=wordother
 					R.word3=wordsee
 					R.loc = user.loc
 					R.check_icon()
-				if("blind")
+				if ("blind")
 					R.word1=worddestr
 					R.word2=wordsee
 					R.word3=wordother
 					R.loc = user.loc
 					R.check_icon()
-				if("bloodboil")
+				if ("bloodboil")
 					R.word1=worddestr
 					R.word2=wordsee
 					R.word3=wordblood
 					R.loc = user.loc
 					R.check_icon()
-				if("communicate")
+				if ("communicate")
 					R.word1=wordself
 					R.word2=wordother
 					R.word3=wordtech
 					R.loc = user.loc
 					R.check_icon()
-				if("stun")
+				if ("stun")
 					R.word1=wordjoin
 					R.word2=wordhide
 					R.word3=wordtech
@@ -759,33 +759,33 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 	var/uses = 0
 
 	attack_self(mob/living/user as mob)
-		if(iscultist(user))
+		if (iscultist(user))
 			switch(imbue)
-				if("newtome")
+				if ("newtome")
 					call(/obj/rune/proc/tomesummon)()
-				if("armor")
+				if ("armor")
 					call(/obj/rune/proc/armor)()
-				if("emp")
+				if ("emp")
 					call(/obj/rune/proc/emp)(usr.loc,3)
-				if("conceal")
+				if ("conceal")
 					call(/obj/rune/proc/obscure)(2)
-				if("revealrunes")
+				if ("revealrunes")
 					call(/obj/rune/proc/revealrunes)(src)
-				if("ire", "ego", "nahlizet", "certum", "veri", "jatkaa", "balaq", "mgar", "karazet", "geeri")
+				if ("ire", "ego", "nahlizet", "certum", "veri", "jatkaa", "balaq", "mgar", "karazet", "geeri")
 					call(/obj/rune/proc/teleport)(imbue)
-				if("communicate")
+				if ("communicate")
 					call(/obj/rune/proc/communicate)()
-				if("deafen")
+				if ("deafen")
 					call(/obj/rune/proc/deafen)()
-				if("blind")
+				if ("blind")
 					call(/obj/rune/proc/blind)()
-				if("runestun")
+				if ("runestun")
 					user << "\red To use this talisman, attack your target directly."
 					return
-				if("supply")
+				if ("supply")
 					supply()
 			user.take_organ_damage(5, 0)
-			if(src && src.imbue!="supply" && src.imbue!="runestun")
+			if (src && src.imbue!="supply" && src.imbue!="runestun")
 				del(src)
 			return
 		else
@@ -793,8 +793,8 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 			return
 
 	attack(mob/living/carbon/T as mob, mob/living/user as mob)
-		if(iscultist(user))
-			if(imbue == "runestun")
+		if (iscultist(user))
+			if (imbue == "runestun")
 				user.take_organ_damage(5, 0)
 				call(/obj/rune/proc/runestun)(T)
 				del(src)

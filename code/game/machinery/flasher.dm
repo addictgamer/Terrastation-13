@@ -72,7 +72,7 @@
 			var/mob/living/carbon/human/H = O
 			if (istype(H.glasses, /obj/item/clothing/glasses/sunglasses))	continue
 			if (istype(H.head, /obj/item/clothing/head/helmet/welding))
-				if(!H.head:up)	continue
+				if (!H.head:up)	continue
 			if (istype(H.wear_mask, /obj/item/clothing/mask/gas/voice))	continue
 		if (istype(O, /mob/living/carbon/alien))//So aliens don't get flashed (they have no external eyes)/N
 			continue
@@ -90,7 +90,7 @@
 	if ((src.disable) || (src.last_flash && world.time < src.last_flash + 150))
 		return
 
-	if(istype(AM, /mob/living/carbon))
+	if (istype(AM, /mob/living/carbon))
 		var/mob/living/carbon/M = AM
 		if ((M.m_intent != "walk") && (src.anchored))
 			src.flash()

@@ -4,7 +4,7 @@
 	..()
 /*
 /obj/decal/cleanable/blood/burn(fi_amount)
-	if(fi_amount > 900000.0)
+	if (fi_amount > 900000.0)
 		src.virus = null
 	sleep(11)
 	del(src)

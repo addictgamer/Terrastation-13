@@ -24,16 +24,16 @@
 
 /datum/game_mode/malfunction/pre_setup()
 	for(var/mob/new_player/player in world)
-		if(player.mind && player.mind.assigned_role == "AI")
+		if (player.mind && player.mind.assigned_role == "AI")
 			malf_ai+=player.mind
-	if(malf_ai.len)
+	if (malf_ai.len)
 		return 1
 	return 0
 
 
 /datum/game_mode/malfunction/post_setup()
 	for(var/datum/mind/AI_mind in malf_ai)
-		if(malf_ai.len < 1)
+		if (malf_ai.len < 1)
 			world << "Uh oh, its malfunction and there is no AI! Please report this."
 			world << "Rebooting world in 5 seconds."
 			sleep(50)
@@ -59,7 +59,7 @@
 		AI_mind.current.verbs += /datum/game_mode/malfunction/proc/takeover
 		AI_mind.current.icon_state = "ai-malf"
 		spawn(10)
-			if(alert(AI_mind.current,"Do you want to use an alternative sprite for your real core?",,"Yes","No")=="Yes")
+			if (alert(AI_mind.current,"Do you want to use an alternative sprite for your real core?",,"Yes","No")=="Yes")
 				AI_mind.current.icon_state = "ai-malf2"
 
 	spawn (rand(waittime_l, waittime_h))
@@ -169,7 +169,7 @@
 		AI_mind.current.verbs -= /datum/game_mode/malfunction/proc/ai_win
 	ticker.mode:explosion_in_progress = 1
 	for(var/mob/M in world)
-		if(M.client)
+		if (M.client)
 			M << 'Alarm.ogg'
 	world << "Self-destructing in 10"
 	for (var/i=9 to 1 step -1)
@@ -178,7 +178,7 @@
 	sleep(10)
 	enter_allowed = 0
 	for(var/mob/M in world)
-		if(M.client)
+		if (M.client)
 			spawn(0)
 				M.client.station_explosion_cinematic()
 	sleep(110)
@@ -228,7 +228,7 @@
 		if (malf_ai.len==1)
 			var/text = ""
 			var/datum/mind/ai = malf_ai[1]
-			if(ai.current)
+			if (ai.current)
 				text += "[ai.current.real_name]"
 			else
 				text += "[ai.key] (character destroyed)"
@@ -237,7 +237,7 @@
 			world << "<FONT size = 2><B>The malfunctioning AI were: </B></FONT>"
 			var/list/ai_names = new
 			for(var/datum/mind/ai in malf_ai)
-				if(ai.current)
+				if (ai.current)
 					ai_names += ai.current.real_name + ((ai.current.stat==2)?" (Dead)":"")
 				else
 					ai_names += "[ai.key] (character destroyed)"

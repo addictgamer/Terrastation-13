@@ -7,11 +7,11 @@
 
 	src.camera.status = 0.0
 
-	if(src.in_contents_of(/obj/machinery/recharge_station))//exit the recharge station
+	if (src.in_contents_of(/obj/machinery/recharge_station))//exit the recharge station
 		var/obj/machinery/recharge_station/RC = src.loc
 		RC.go_out()
 
-	if(src.blind)
+	if (src.blind)
 		src.blind.layer = 0
 	src.sight |= SEE_TURFS
 	src.sight |= SEE_MOBS
@@ -38,6 +38,6 @@
 			return
 	if (src.key)
 		spawn(50)
-			if(src.key && src.stat == 2)
+			if (src.key && src.stat == 2)
 				src.verbs += /mob/proc/ghost
 	return ..(gibbed)

@@ -27,7 +27,7 @@ MOP
 	var/list/rgbcolor = list(0,0,0)
 	var/finalcolor
 	for(var/datum/reagent/re in D.reagents.reagent_list) // natural color mixing bullshit/algorithm
-		if(!finalcolor)
+		if (!finalcolor)
 			rgbcolor = GetColors(re.color)
 			finalcolor = re.color
 		else
@@ -62,7 +62,7 @@ MOP
 			sleep(3)
 		del(D)
 
-	if(isrobot(user)) //Cyborgs can clean forever if they keep charged
+	if (isrobot(user)) //Cyborgs can clean forever if they keep charged
 		var/mob/living/silicon/robot/janitor = user
 		janitor.cell.charge -= 20
 		var/refill = src.reagents.get_master_reagent_id()
@@ -99,7 +99,7 @@ MOP
 
 	var/Sprays[3]
 	for(var/i=1, i<=3, i++) // intialize sprays
-		if(src.reagents.total_volume < 1) break
+		if (src.reagents.total_volume < 1) break
 		var/obj/decal/D = new/obj/decal(get_turf(src))
 		D.name = "chemicals"
 		D.icon = 'chempuff.dmi'
@@ -109,7 +109,7 @@ MOP
 		var/rgbcolor[3]
 		var/finalcolor
 		for(var/datum/reagent/re in D.reagents.reagent_list)
-			if(!finalcolor)
+			if (!finalcolor)
 				rgbcolor = GetColors(re.color)
 				finalcolor = re.color
 			else
@@ -137,7 +137,7 @@ MOP
 	for(var/i=1, i<=Sprays.len, i++)
 		spawn()
 			var/obj/decal/D = Sprays[i]
-			if(!D) continue
+			if (!D) continue
 
 			// Spreads the sprays a little bit
 			var/turf/my_target = pick(the_targets)
@@ -152,7 +152,7 @@ MOP
 			del(D)
 	sleep(1)
 
-	if(isrobot(user)) //Cyborgs can clean forever if they keep charged
+	if (isrobot(user)) //Cyborgs can clean forever if they keep charged
 		var/mob/living/silicon/robot/janitor = user
 		janitor.cell.charge -= 20
 		var/refill = src.reagents.get_master_reagent_id()
@@ -195,14 +195,14 @@ MOP
 		for(var/mob/O in viewers(user, null))
 			O.show_message(text("\red <B>[user] begins to clean [A]</B>"), 1)
 		sleep(20)
-		if(A)
+		if (A)
 			user << "\blue You have finished mopping!"
 			var/turf/U = A.loc
 			src.reagents.reaction(U)
-		if(A) del(A)
+		if (A) del(A)
 		mopcount++
 
-	if(mopcount >= 5) //Okay this stuff is an ugly hack and i feel bad about it.
+	if (mopcount >= 5) //Okay this stuff is an ugly hack and i feel bad about it.
 		spawn(5)
 			src.reagents.clear_reagents()
 			mopcount = 0

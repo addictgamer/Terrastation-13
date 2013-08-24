@@ -7,7 +7,7 @@
 	return
 
 /obj/machinery/igniter/attack_hand(mob/user as mob)
-	if(..())
+	if (..())
 		return
 	add_fingerprint(user)
 
@@ -28,7 +28,7 @@
 	icon_state = "igniter[on]"
 
 /obj/machinery/igniter/power_change()
-	if(!( stat & NOPOWER) )
+	if (!( stat & NOPOWER) )
 		icon_state = "igniter[src.on]"
 	else
 		icon_state = "igniter0"
@@ -68,7 +68,7 @@
 			icon_state = "[base_state]-d"
 		if (!src.disable)
 			user.visible_message("\red [user] has reconnected the [src]!", "\red You fix the connection to the [src].")
-			if(src.powered())
+			if (src.powered())
 				icon_state = "[base_state]"
 			else
 				icon_state = "[base_state]-p"
@@ -107,15 +107,15 @@
 
 /obj/machinery/ignition_switch/attackby(obj/item/weapon/W, mob/user as mob)
 
-	if(istype(W, /obj/item/device/detective_scanner))
+	if (istype(W, /obj/item/device/detective_scanner))
 		return
 	return src.attack_hand(user)
 
 /obj/machinery/ignition_switch/attack_hand(mob/user as mob)
 
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
-	if(active)
+	if (active)
 		return
 
 	use_power(5)
@@ -129,7 +129,7 @@
 				M.ignite()
 
 	for(var/obj/machinery/igniter/M in machines)
-		if(M.id == src.id)
+		if (M.id == src.id)
 			use_power(50)
 			M.on = !( M.on )
 			M.icon_state = text("igniter[]", M.on)

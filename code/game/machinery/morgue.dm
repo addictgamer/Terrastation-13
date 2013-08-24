@@ -10,20 +10,20 @@
 
 /obj/morgue/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			for(var/atom/movable/A as mob|obj in src)
 				A.loc = src.loc
 				ex_act(severity)
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
 					ex_act(severity)
 				del(src)
 				return
-		if(3.0)
+		if (3.0)
 			if (prob(5))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
@@ -147,20 +147,20 @@
 
 /obj/crematorium/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			for(var/atom/movable/A as mob|obj in src)
 				A.loc = src.loc
 				ex_act(severity)
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
 					ex_act(severity)
 				del(src)
 				return
-		if(3.0)
+		if (3.0)
 			if (prob(5))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
@@ -246,16 +246,16 @@
 
 /obj/crematorium/proc/cremate(atom/A, mob/user as mob)
 //	for(var/obj/machinery/crema_switch/O in src) //trying to figure a way to call the switch, too drunk to sort it out atm
-//		if(var/on == 1)
+//		if (var/on == 1)
 //		return
-	if(cremating)
+	if (cremating)
 		return //don't let you cremate something twice or w/e
 
-	if(length(contents) == 0)
+	if (length(contents) == 0)
 		for (var/mob/M in viewers(user))
 			M.show_message("\red You hear a hollow crackle.", 1)
 			return
-	else if(contents)
+	else if (contents)
 		cremating = 1
 		locked = 1
 		for (var/mob/living/M in contents)
@@ -315,7 +315,7 @@
 	return
 
 /obj/machinery/crema_switch/attack_hand(mob/user as mob)
-	if(src.allowed(usr))
+	if (src.allowed(usr))
 		for (var/obj/crematorium/C in world)
 			if (C.id == id)
 				if (!C.cremating)

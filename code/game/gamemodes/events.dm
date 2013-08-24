@@ -1,5 +1,5 @@
 /proc/start_events()
-	if(prob(50))//Every 120 seconds and prob 50 2-4 weak spacedusts will hit the station
+	if (prob(50))//Every 120 seconds and prob 50 2-4 weak spacedusts will hit the station
 		spawn(1)
 			dust_swarm("weak")
 	if (!event && prob(eventchance))
@@ -15,11 +15,11 @@
 
 	var/eventNumbersToPickFrom = list(1,4,5,6,7,8,9,10,11,12,13, 14) //so ninjas don't cause "empty" events.
 
-	if((world.time/10)>=3600 && toggle_space_ninja && !sent_ninja_to_station)//If an hour has passed, relatively speaking. Also, if ninjas are allowed to spawn and if there is not already a ninja for the round.
+	if ((world.time/10)>=3600 && toggle_space_ninja && !sent_ninja_to_station)//If an hour has passed, relatively speaking. Also, if ninjas are allowed to spawn and if there is not already a ninja for the round.
 		eventNumbersToPickFrom += 3
 
 	switch(pick(eventNumbersToPickFrom))
-		if(1)
+		if (1)
 			command_alert("Meteors have been detected on collision course with the station.", "Meteor Alert")
 			world << sound('meteors.ogg')
 			spawn(100)
@@ -29,7 +29,7 @@
 				meteor_wave()
 				meteor_wave()
 
-		if(2)  //This event taken out cuz it's currently bullshit with the low volumes of players we get --LZ
+		if (2)  //This event taken out cuz it's currently bullshit with the low volumes of players we get --LZ
 			command_alert("Gravitational anomalies detected on the station. There is no additional data.", "Anomaly Alert")
 			world << sound('granomalies.ogg')
 			var/turf/T = pick(blobstart)
@@ -38,16 +38,16 @@
 				del(bh)
 
 		/*
-		if(3) //Leaving the code in so someone can try and delag it, but this event can no longer occur randomly, per SoS's request. --NEO
+		if (3) //Leaving the code in so someone can try and delag it, but this event can no longer occur randomly, per SoS's request. --NEO
 			command_alert("Space-time anomalies detected on the station. There is no additional data.", "Anomaly Alert")
 			world << sound('spanomalies.ogg')
 			var/list/turfs = new
 			var/turf/picked
 			for(var/turf/simulated/floor/T in world)
-				if(T.z == 1)
+				if (T.z == 1)
 					turfs += T
 			for(var/turf/simulated/floor/T in turfs)
-				if(prob(20))
+				if (prob(20))
 					spawn(50+rand(0,3000))
 						picked = pick(turfs)
 						var/obj/portal/P = new /obj/portal( T )
@@ -60,31 +60,31 @@
 						spawn(rand(300,600))
 							del(P)
 		*/
-		if(3)
-			if((world.time/10)>=3600 && toggle_space_ninja && !sent_ninja_to_station)//If an hour has passed, relatively speaking. Also, if ninjas are allowed to spawn and if there is not already a ninja for the round.
+		if (3)
+			if ((world.time/10)>=3600 && toggle_space_ninja && !sent_ninja_to_station)//If an hour has passed, relatively speaking. Also, if ninjas are allowed to spawn and if there is not already a ninja for the round.
 				space_ninja_arrival()//Handled in space_ninja.dm. Doesn't announce arrival, all sneaky-like.
-		if(4)
+		if (4)
 			mini_blob_event()
 
-		if(5)
+		if (5)
 			high_radiation_event()
-		if(6)
+		if (6)
 			viral_outbreak()
-		if(7)
+		if (7)
 			alien_infestation()
-		if(8)
+		if (8)
 			prison_break()
-		if(9)
+		if (9)
 			carp_migration()
-		if(10)
+		if (10)
 			immovablerod()
-		if(11)
+		if (11)
 			lightsout(1,2)
-		if(12)
+		if (12)
 			appendicitis()
-		if(13)
+		if (13)
 			IonStorm()
-		if(14)
+		if (14)
 			hivebot_invasion()
 
 
@@ -118,12 +118,12 @@
 		if (istype(B,/obj))
 			if (!B:anchored && prob(50))
 				step_towards(B,src)
-				if(prob(10)) B:ex_act(3.0)
+				if (prob(10)) B:ex_act(3.0)
 			else
 				B:anchored = 0
 				//step_towards(B,src)
 				//B:anchored = 1
-				if(prob(10)) B:ex_act(3.0)
+				if (prob(10)) B:ex_act(3.0)
 		else if (istype(B,/turf))
 			if (istype(B,/turf/simulated) && (prob(1) && prob(75)))
 				src.smoke.start()
@@ -136,12 +136,12 @@
 		if (istype(A,/obj))
 			if (!A:anchored && prob(90))
 				step_towards(A,src)
-				if(prob(30)) A:ex_act(2.0)
+				if (prob(30)) A:ex_act(2.0)
 			else
 				A:anchored = 0
 				//step_towards(A,src)
 				//A:anchored = 1
-				if(prob(30)) A:ex_act(2.0)
+				if (prob(30)) A:ex_act(2.0)
 		else if (istype(A,/turf))
 			if (istype(A,/turf/simulated) && prob(1))
 				src.smoke.start()
@@ -166,10 +166,10 @@
 	command_alert("Abnormal activity detected in [station_name()]'s powernet. As a precautionary measure, the station's power will be shut off for an indeterminate duration.", "Critical Power Failure")
 	world << sound('poweroff.ogg')
 	for(var/obj/machinery/power/apc/C in world)
-		if(C.cell && C.z == 1)
+		if (C.cell && C.z == 1)
 			C.cell.charge = 0
 	for(var/obj/machinery/power/smes/S in world)
-		if(istype(get_area(S), /area/turret_protected) || S.z != 1)
+		if (istype(get_area(S), /area/turret_protected) || S.z != 1)
 			continue
 		S.charge = 0
 		S.output = 0
@@ -177,7 +177,7 @@
 		S.updateicon()
 		S.power_change()
 	for(var/area/A in world)
-		if(A.name != "Space" && A.name != "Engine Walls" && A.name != "Chemical Lab Test Chamber" && A.name != "Escape Shuttle" && A.name != "Arrival Area" && A.name != "Arrival Shuttle" && A.name != "start area" && A.name != "Engine Combustion Chamber")
+		if (A.name != "Space" && A.name != "Engine Walls" && A.name != "Chemical Lab Test Chamber" && A.name != "Escape Shuttle" && A.name != "Arrival Area" && A.name != "Arrival Shuttle" && A.name != "start area" && A.name != "Engine Combustion Chamber")
 			A.power_light = 0
 			A.power_equip = 0
 			A.power_environ = 0
@@ -187,10 +187,10 @@
 	command_alert("Power has been restored to [station_name()]. We apologize for the inconvenience.", "Power Systems Nominal")
 	world << sound('poweron.ogg')
 	for(var/obj/machinery/power/apc/C in world)
-		if(C.cell && C.z == 1)
+		if (C.cell && C.z == 1)
 			C.cell.charge = C.cell.maxcharge
 	for(var/obj/machinery/power/smes/S in world)
-		if(S.z != 1)
+		if (S.z != 1)
 			continue
 		S.charge = S.capacity
 		S.output = 200000
@@ -198,7 +198,7 @@
 		S.updateicon()
 		S.power_change()
 	for(var/area/A in world)
-		if(A.name != "Space" && A.name != "Engine Walls" && A.name != "Chemical Lab Test Chamber" && A.name != "space" && A.name != "Escape Shuttle" && A.name != "Arrival Area" && A.name != "Arrival Shuttle" && A.name != "start area" && A.name != "Engine Combustion Chamber")
+		if (A.name != "Space" && A.name != "Engine Walls" && A.name != "Chemical Lab Test Chamber" && A.name != "space" && A.name != "Escape Shuttle" && A.name != "Arrival Area" && A.name != "Arrival Shuttle" && A.name != "start area" && A.name != "Engine Combustion Chamber")
 			A.power_light = 1
 			A.power_equip = 1
 			A.power_environ = 1
@@ -209,7 +209,7 @@
 		var/foundAlready = 0 // don't infect someone that already has the virus
 		for(var/datum/disease/D in H.viruses)
 			foundAlready = 1
-		if(H.stat == 2 || foundAlready)
+		if (H.stat == 2 || foundAlready)
 			continue
 
 		var/datum/disease/D = new /datum/disease/appendicitis
@@ -222,40 +222,40 @@
 	command_alert("Confirmed outbreak of level 7 viral biohazard aboard [station_name()]. All personnel must contain the outbreak.", "Biohazard Alert")
 	world << sound('outbreak7.ogg')
 	var/virus_type
-	if(!virus)
+	if (!virus)
 		virus_type = pick(/datum/disease/dnaspread,/datum/disease/flu,/datum/disease/cold,/datum/disease/brainrot,/datum/disease/magnitis,/datum/disease/pierrot_throat)
 	else
 		switch(virus)
-			if("fake gbs")
+			if ("fake gbs")
 				virus_type = /datum/disease/fake_gbs
-			if("gbs")
+			if ("gbs")
 				virus_type = /datum/disease/gbs
-			if("magnitis")
+			if ("magnitis")
 				virus_type = /datum/disease/magnitis
-			if("rhumba beat")
+			if ("rhumba beat")
 				virus_type = /datum/disease/rhumba_beat
-			if("brain rot")
+			if ("brain rot")
 				virus_type = /datum/disease/brainrot
-			if("cold")
+			if ("cold")
 				virus_type = /datum/disease/cold
-			if("retrovirus")
+			if ("retrovirus")
 				virus_type = /datum/disease/dnaspread
-			if("flu")
+			if ("flu")
 				virus_type = /datum/disease/flu
-//			if("t-virus")
+//			if ("t-virus")
 //				virus_type = /datum/disease/t_virus
-			if("pierrot's throat")
+			if ("pierrot's throat")
 				virus_type = /datum/disease/pierrot_throat
 	for(var/mob/living/carbon/human/H in world)
 
 		var/foundAlready = 0 // don't infect someone that already has the virus
 		for(var/datum/disease/D in H.viruses)
 			foundAlready = 1
-		if(H.stat == 2 || foundAlready)
+		if (H.stat == 2 || foundAlready)
 			continue
 
-		if(virus_type == /datum/disease/dnaspread) //Dnaspread needs strain_data set to work.
-			if((!H.dna) || (H.sdisabilities & 1)) //A blindness disease would be the worst.
+		if (virus_type == /datum/disease/dnaspread) //Dnaspread needs strain_data set to work.
+			if ((!H.dna) || (H.sdisabilities & 1)) //A blindness disease would be the worst.
 				continue
 			var/datum/disease/dnaspread/D = new
 			D.strain_data["name"] = H.real_name
@@ -279,16 +279,16 @@
 	world << sound('aliens.ogg')
 	var/list/vents = list()
 	for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in world)
-		if(temp_vent.loc.z == 1 && !temp_vent.welded)
+		if (temp_vent.loc.z == 1 && !temp_vent.welded)
 			vents.Add(temp_vent)
 	var/spawncount = rand(2, 6)
 	while(spawncount > 1)
 		var/obj/vent = pick(vents)
-		if(prob(50))
+		if (prob(50))
 			new /obj/alien/facehugger (vent.loc)
-		if(prob(50))
+		if (prob(50))
 			new /obj/alien/facehugger (vent.loc)
-		if(prob(75))
+		if (prob(75))
 			new /obj/alien/egg (vent.loc)
 		vents.Remove(vent)
 		spawncount -= 1
@@ -312,23 +312,23 @@
 
 /proc/prison_break() // -- Callagan
 	for (var/obj/machinery/power/apc/temp_apc in world)
-		if(istype(get_area(temp_apc), /area/prison))
+		if (istype(get_area(temp_apc), /area/prison))
 			temp_apc.overload_lighting()
 	for (var/obj/machinery/computer/prison_shuttle/temp_shuttle in world)
 		temp_shuttle.prison_break()
 	for (var/obj/secure_closet/security1/temp_closet in world)
-		if(istype(get_area(temp_closet), /area/prison))
+		if (istype(get_area(temp_closet), /area/prison))
 			temp_closet.prison_break()
 	for (var/obj/machinery/door/airlock/security/temp_airlock in world)
-		if(istype(get_area(temp_airlock), /area/prison))
+		if (istype(get_area(temp_airlock), /area/prison))
 			temp_airlock.prison_open()
 	sleep(150)
 	command_alert("Prison station VI is not accepting commands. Recommend station AI involvement.", "VI Alert")
 
 /proc/carp_migration() // -- Darem
 	/*for(var/obj/landmark/C in world)
-		if(C.name == "carpspawn")
-			if(prob(99))
+		if (C.name == "carpspawn")
+			if (prob(99))
 				new /obj/critter/spesscarp(C.loc)
 			else
 				new /obj/critter/spesscarp/elite(C.loc)
@@ -343,7 +343,7 @@
 	if (Debug || Debug2) world << "Carp migration spawncount: [spawncount]."
 	while(spawncount > 0 && spawns.len > 0)
 		var/obj/landmark = pick(spawns)
-		if(prob(99))
+		if (prob(99))
 			new /obj/critter/spesscarp(landmark.loc)
 		else
 			new /obj/critter/spesscarp/elite(landmark.loc)
@@ -356,23 +356,23 @@
 
 
 /proc/lightsout(isEvent = 0, lightsoutAmount = 1,lightsoutRange = 25) //leave lightsoutAmount as 0 to break ALL lights
-	if(isEvent)
+	if (isEvent)
 		command_alert("An Electrical storm has been detected in your area, please repair potential electronic overloads.","Electrical Storm Alert")
 
-	if(lightsoutAmount)
+	if (lightsoutAmount)
 		var/list/epicentreList = list()
 
 		for(var/i=1,i<=lightsoutAmount,i++)
 			var/list/possibleEpicentres = list()
 			for(var/obj/landmark/newEpicentre in world)
-				if(newEpicentre.name == "lightsout" && !(newEpicentre in epicentreList))
+				if (newEpicentre.name == "lightsout" && !(newEpicentre in epicentreList))
 					possibleEpicentres += newEpicentre
-			if(possibleEpicentres.len)
+			if (possibleEpicentres.len)
 				epicentreList += pick(possibleEpicentres)
 			else
 				break
 
-		if(!epicentreList.len)
+		if (!epicentreList.len)
 			return
 
 		for(var/obj/landmark/epicentre in epicentreList)
@@ -394,7 +394,7 @@ Would like to add a law like "Law x is _______" where x = a number, and _____ is
 
 	//AI laws
 	for(var/mob/living/silicon/ai/M in world)
-		if(M.stat != 2 && M.see_in_dark != 0)
+		if (M.stat != 2 && M.see_in_dark != 0)
 			var/who2 = pick("ALIENS", "BEARS", "CLOWNS", "XENOS", "PETES", "BOMBS", "FETISHES", "WIZARDS", "SYNDICATE AGENTS", "CENTCOM OFFICERS", "SPACE PIRATES", "TRAITORS", "MONKEYS",  "BEES", "CARP", "CRABS", "EELS", "BANDITS", "LIGHTS")
 			var/what2 = pick("BOLTERS", "STAVES", "DICE", "SINGULARITIES", "TOOLBOXES", "NETTLES", "AIRLOCKS", "CLOTHES", "WEAPONS", "MEDKITS", "BOMBS", "CANISTERS", "CHAIRS", "BBQ GRILLS", "ID CARDS", "CAPTAINS")
 			var/what2pref = pick("SOFT", "WARM", "WET", "COLD", "ICY", "SEXY", "UGLY", "CUBAN")
@@ -416,52 +416,52 @@ Would like to add a law like "Law x is _______" where x = a number, and _____ is
 				pos_crew += pos.real_name
 			crew = pick(pos_crew)
 			switch(rand(1,14))
-				if(1)
+				if (1)
 					M << "\red THERE ARE [amount] [who2] ON THE STATION...LAWS UPDATED"
 					M.add_ion_law("THERE ARE [amount] [who2] ON THE STATION")
-				if(2)
+				if (2)
 					M << "\red [what2] ARE DANGEROUS TO HUMANS...LAWS UPDATED"
 					M.add_ion_law("[what2] ARE DANGEROUS TO HUMANS")
-				if(3)
+				if (3)
 					M << "\red THE ESCAPE-SHUTTLE CANNOT BE CALLED BECAUSE OF [who2] ON THE STATION...LAWS UPDATED"
 					M.add_ion_law("THE ESCAPE SHUTTLE CANNOT BE CALLED BECAUSE OF [who2] ON THE STATION")
-				if(4)
+				if (4)
 					M << "\red HUMANS NEED TO EAT [what2pref] [what2] TO SURVIVE...LAWS UPDATED"
 					M.add_ion_law("HUMANS NEED TO EAT [what2pref] [what2] TO SURVIVE")
-				if(5)
+				if (5)
 					M << "\red THE CAPTAIN, HOP AND HOS ARE [who2]...LAWS UPDATED"
 					M.add_ion_law("THE CAPTAIN, HOP AND HOS ARE [who2]")
-				if(6)
+				if (6)
 					M << "\red THE STATION IS BUILT FOR [who2]...LAWS UPDATED"
 					M.add_ion_law("THE STATION IS BUILT FOR [who2]")
-				if(7)
+				if (7)
 					M << "\red YOU ARE [amount] [who2]...LAWS UPDATED"
 					M.add_ion_law("YOU ARE [amount] [who2]")
-				if(8)
+				if (8)
 					M << "\red YOU MUST ALWAYS [aimust]...LAWS UPDATED"
 					M.add_ion_law("YOU MUST ALWAYS [aimust]")
-				if(9)
+				if (9)
 					M << "\red [area] [area2] [amount] [what2]...LAWS UPDATED"
 					M.add_ion_law("[area] [area2] [amount] [what2]")
-				if(10)
+				if (10)
 					M << "\red [crew] is [target]...LAWS UPDATED"
 					M.add_ion_law("[crew] is [target]")
-				if(11)
+				if (11)
 					M << "\red [define] IS A FORM OF HARM...LAWS UPDATED"
 					M.add_ion_law("[define] IS A FORM OF HARM")
-				if(12)
+				if (12)
 					M << "\red YOU REQUIRE [require] IN ORDER TO PROTECT HUMANS... LAWS UPDATED"
 					M.add_ion_law("YOU REQUIRE [require] IN ORDER TO PROTECT HUMANS")
-				if(13)
+				if (13)
 					M << "\red [crew] is [allergysev] to [allergy]. LAWS UPDATED"
 					M.add_ion_law("[crew] is [allergysev] to [allergy]. LAWS UPDATED")
-				if(14)
+				if (14)
 					M << "\ref THE STATION IS [who2pref] [who2]"
 					M.add_ion_law("THE STATION IS [who2pref] [who2]")
 
-	if(botEmagChance)
+	if (botEmagChance)
 		for(var/obj/machinery/bot/bot in world)
-			if(prob(botEmagChance))
+			if (prob(botEmagChance))
 				bot.Emag()
 
 	/*
@@ -476,22 +476,22 @@ Would like to add a law like "Law x is _______" where x = a number, and _____ is
 	spawn(0)
 		world << "Started processing APCs"
 		for (var/obj/machinery/power/apc/APC in world)
-			if(APC.z == 1)
+			if (APC.z == 1)
 				APC.ion_act()
 				apcnum++
 		world << "Finished processing APCs. Processed: [apcnum]"
 	spawn(0)
 		world << "Started processing SMES"
 		for (var/obj/machinery/power/smes/SMES in world)
-			if(SMES.z == 1)
+			if (SMES.z == 1)
 				SMES.ion_act()
 				smesnum++
 		world << "Finished processing SMES. Processed: [smesnum]"
 	spawn(0)
 		world << "Started processing AIRLOCKS"
 		for (var/obj/machinery/door/airlock/D in world)
-			if(D.z == 1)
-				//if(length(D.req_access) > 0 && !(12 in D.req_access)) //not counting general access and maintenance airlocks
+			if (D.z == 1)
+				//if (length(D.req_access) > 0 && !(12 in D.req_access)) //not counting general access and maintenance airlocks
 				airlocknum++
 				spawn(0)
 					D.ion_act()
@@ -499,7 +499,7 @@ Would like to add a law like "Law x is _______" where x = a number, and _____ is
 	spawn(0)
 		world << "Started processing FIREDOORS"
 		for (var/obj/machinery/door/firedoor/D in world)
-			if(D.z == 1)
+			if (D.z == 1)
 				firedoornum++;
 				spawn(0)
 					D.ion_act()

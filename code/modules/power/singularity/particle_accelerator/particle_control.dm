@@ -22,56 +22,56 @@
 
 
 	attack_hand(mob/user as mob)
-		if(construction_state >= 3)
+		if (construction_state >= 3)
 			interact(user)
 
 
 	update_state()
-		if(construction_state < 3)
+		if (construction_state < 3)
 			use_power = 0
 			assembled = 0
 			active = 0
 			connected_parts = list()
 			return
-		if(!part_scan())
+		if (!part_scan())
 			assembled = 0
 		return
 
 
 	Topic(href, href_list)
 		..()
-		if( href_list["close"] )
+		if ( href_list["close"] )
 			usr << browse(null, "window=pacontrol")
 			usr.machine = null
 			return
-		if(href_list["togglep"])
+		if (href_list["togglep"])
 			src.toggle_power()
-		if(href_list["scan"])
+		if (href_list["scan"])
 			src.part_scan()
-		if(href_list["strengthup"])
+		if (href_list["strengthup"])
 			src.strength++
-			if(src.strength > 2)
+			if (src.strength > 2)
 				src.strength = 2
-		if(href_list["strengthdown"])
+		if (href_list["strengthdown"])
 			src.strength--
-			if(src.strength < 0)
+			if (src.strength < 0)
 				src.strength = 0
 		src.updateDialog()
 
 
 	power_change()
 		..()
-		if(stat & NOPOWER)
+		if (stat & NOPOWER)
 			active = 0
 			use_power = 0
-		else if(!stat)
+		else if (!stat)
 			use_power = 1
 		return
 
 	process()
-		if(src.active)
+		if (src.active)
 			for(var/obj/particle_accelerator/particle_emitter/PE in connected_parts)
-				if(PE)
+				if (PE)
 					PE.emit_particle(src.strength)
 //			for(var/obj/particle_accelerator/fuel_chamber/PF in connected_parts)
 //				PF.doshit()
@@ -89,44 +89,44 @@
 			var/rdir = 0
 			var/odir = 0
 			switch(src.dir)
-				if(1)
+				if (1)
 					ldir = 4
 					rdir = 8
 					odir = 2
-				if(2)
+				if (2)
 					ldir = 8
 					rdir = 4
 					odir = 1
-				if(4)
+				if (4)
 					ldir = 1
 					rdir = 2
 					odir = 8
-				if(8)
+				if (8)
 					ldir = 2
 					rdir = 1
 					odir = 4
 			var/turf/T = src.loc
 			T = get_step(T,rdir)
-			if(check_part(T,/obj/particle_accelerator/fuel_chamber))
+			if (check_part(T,/obj/particle_accelerator/fuel_chamber))
 				tally++
 			T = get_step(T,odir)
-			if(check_part(T,/obj/particle_accelerator/end_cap))
+			if (check_part(T,/obj/particle_accelerator/end_cap))
 				tally++
 			T = get_step(T,dir)
 			T = get_step(T,dir)
-			if(check_part(T,/obj/particle_accelerator/power_box))
+			if (check_part(T,/obj/particle_accelerator/power_box))
 				tally++
 			T = get_step(T,dir)
-			if(check_part(T,/obj/particle_accelerator/particle_emitter/center))
+			if (check_part(T,/obj/particle_accelerator/particle_emitter/center))
 				tally++
 			T = get_step(T,ldir)
-			if(check_part(T,/obj/particle_accelerator/particle_emitter/left))
+			if (check_part(T,/obj/particle_accelerator/particle_emitter/left))
 				tally++
 			T = get_step(T,rdir)
 			T = get_step(T,rdir)
-			if(check_part(T,/obj/particle_accelerator/particle_emitter/right))
+			if (check_part(T,/obj/particle_accelerator/particle_emitter/right))
 				tally++
-			if(tally >= 6)
+			if (tally >= 6)
 				assembled = 1
 				return 1
 			else
@@ -135,12 +135,12 @@
 
 
 		check_part(var/turf/T, var/type)
-			if(!(T)||!(type))
+			if (!(T)||!(type))
 				return 0
 			var/obj/particle_accelerator/PA = locate(/obj/particle_accelerator) in T
-			if(istype(PA, type))
-				if(PA.connect_master(src))
-					if(PA.report_ready(src))
+			if (istype(PA, type))
+				if (PA.connect_master(src))
+					if (PA.report_ready(src))
 						src.connected_parts.Add(PA)
 						return 1
 			return 0
@@ -148,7 +148,7 @@
 
 		toggle_power()
 			src.active = !src.active
-			if(src.active)
+			if (src.active)
 				src.use_power = 2
 			else
 				src.use_power = 1
@@ -167,13 +167,13 @@
 			dat += "Particle Accelerator Control Panel<BR>"
 			dat += "<A href='?src=\ref[src];close=1'>Close</A><BR><BR>"
 			dat += "Status:<BR>"
-			if(!assembled)
+			if (!assembled)
 				dat += "Unable to detect all parts!<BR>"
 				dat += "<A href='?src=\ref[src];scan=1'>Run Scan</A><BR><BR>"
 			else
 				dat += "All parts in place.<BR><BR>"
 				dat += "Power:"
-				if(active)
+				if (active)
 					dat += "On<BR>"
 				else
 					dat += "Off <BR>"

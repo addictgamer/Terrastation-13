@@ -11,10 +11,10 @@
 	var/heal_amt = 10
 	for(var/A in H.organs)
 		var/datum/organ/external/affecting = null
-		if(!H.organs[A])	continue
+		if (!H.organs[A])	continue
 		affecting = H.organs[A]
-		if(!istype(affecting, /datum/organ/external))	continue
-		if(affecting.heal_damage(heal_amt, heal_amt))
+		if (!istype(affecting, /datum/organ/external))	continue
+		if (affecting.heal_damage(heal_amt, heal_amt))
 			H.UpdateDamageIcon()
 		else
 			H.UpdateDamage()
@@ -23,7 +23,7 @@
 /obj/item/weapon/storage/bible/attack(mob/M as mob, mob/living/user as mob)
 
 	var/chaplain = 0
-	if(user.mind && (user.mind.assigned_role == "Chaplain"))
+	if (user.mind && (user.mind.assigned_role == "Chaplain"))
 		chaplain = 1
 
 
@@ -33,7 +33,7 @@
 	if (!(istype(user, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
 		user << "\red You don't have the dexterity to do this!"
 		return
-	if(!chaplain)
+	if (!chaplain)
 		user << "\red The book sizzles in your hands."
 		user.take_organ_damage(0,10)
 		return
@@ -44,11 +44,11 @@
 		user.paralysis += 20
 		return
 
-//	if(..() == BLOCKED)
+//	if (..() == BLOCKED)
 //		return
 
 	if (M.stat !=2)
-		if((M.mind in ticker.mode.cult) && (prob(20)))
+		if ((M.mind in ticker.mode.cult) && (prob(20)))
 			M << "\red The power of [src.deity_name] clears your mind of heresy!"
 			user << "\red You see how [M]'s eyes become clear, the cult no longer holds control over him!"
 			ticker.mode.remove_cultist(M.mind)
@@ -59,13 +59,13 @@
 			M << "\red May the power of [src.deity_name] compel you to be healed!"
 			playsound(src.loc, "punch", 25, 1, -1)
 		else
-			if(ishuman(M) && !istype(M:head, /obj/item/clothing/head/helmet))
+			if (ishuman(M) && !istype(M:head, /obj/item/clothing/head/helmet))
 				M.brainloss += 10
 				M << "\red You feel dumber."
 			for(var/mob/O in viewers(M, null))
 				O.show_message(text("\red <B>[] beats [] over the head with []!</B>", user, M, src), 1)
 			playsound(src.loc, "punch", 25, 1, -1)
-	else if(M.stat == 2)
+	else if (M.stat == 2)
 		for(var/mob/O in viewers(M, null))
 			O.show_message(text("\red <B>[] smacks []'s lifeless corpse with [].</B>", user, M, src), 1)
 		playsound(src.loc, "punch", 25, 1, -1)
@@ -74,10 +74,10 @@
 /obj/item/weapon/storage/bible/afterattack(atom/A, mob/user as mob)
 	if (istype(A, /turf/simulated/floor))
 		user << "\blue You hit the floor with the bible."
-		if(user.mind && (user.mind.assigned_role == "Chaplain"))
+		if (user.mind && (user.mind.assigned_role == "Chaplain"))
 			call(/obj/rune/proc/revealrunes)(src)
-	if(user.mind && (user.mind.assigned_role == "Chaplain"))
-		if(A.reagents && A.reagents.has_reagent("water")) //blesses all the water in the holder
+	if (user.mind && (user.mind.assigned_role == "Chaplain"))
+		if (A.reagents && A.reagents.has_reagent("water")) //blesses all the water in the holder
 			user << "\blue You bless [A]."
 			A.reagents.add_reagent("holywater",A.reagents.get_reagent_amount("water"))
 			A.reagents.del_reagent("water")

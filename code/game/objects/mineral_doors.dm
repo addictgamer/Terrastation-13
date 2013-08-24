@@ -28,15 +28,15 @@
 
 	Bumped(atom/user)
 		..()
-		if(!state)
+		if (!state)
 			return TryToSwitchState(user)
 		return
 
 	attack_ai(mob/user as mob) //those aren't machinery, they're just big fucking slabs of a mineral
-		if(isAI(user)) //so the AI can't open it
+		if (isAI(user)) //so the AI can't open it
 			return
-		else if(isrobot(user)) //but cyborgs can
-			if(get_dist(user,src) <= 1) //not remotely though
+		else if (isrobot(user)) //but cyborgs can
+			if (get_dist(user,src) <= 1) //not remotely though
 				return TryToSwitchState(user)
 
 	attack_paw(mob/user as mob)
@@ -46,23 +46,23 @@
 		return TryToSwitchState(user)
 
 	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-		if(air_group) return 0
-		if(istype(mover, /obj/beam))
+		if (air_group) return 0
+		if (istype(mover, /obj/beam))
 			return !opacity
 		return !density
 
 	proc/TryToSwitchState(atom/user)
-		if(isSwitchingStates) return
-		if(ismob(user))
+		if (isSwitchingStates) return
+		if (ismob(user))
 			var/mob/M = user
-			if(world.time - user.last_bumped <= 60) return //NOTE do we really need that?
-			if(M.client && !M:handcuffed)
+			if (world.time - user.last_bumped <= 60) return //NOTE do we really need that?
+			if (M.client && !M:handcuffed)
 				SwitchState()
-		else if(istype(user, /obj/mecha))
+		else if (istype(user, /obj/mecha))
 			SwitchState()
 
 	proc/SwitchState()
-		if(state)
+		if (state)
 			Close()
 		else
 			Open()
@@ -90,19 +90,19 @@
 		isSwitchingStates = 0
 
 	update_icon()
-		if(state)
+		if (state)
 			icon_state = "[mineralType]open"
 		else
 			icon_state = mineralType
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W,/obj/item/weapon/pickaxe))
+		if (istype(W,/obj/item/weapon/pickaxe))
 			var/obj/item/weapon/pickaxe/digTool = W
 			user << "You start digging the [name]."
-			if(do_after(user,digTool.digspeed*hardness) && src)
+			if (do_after(user,digTool.digspeed*hardness) && src)
 				user << "You finished digging."
 				Dismantle()
-		else if(istype(W,/obj/item/weapon)) //not sure, can't not just weapons get passed to this proc?
+		else if (istype(W,/obj/item/weapon)) //not sure, can't not just weapons get passed to this proc?
 			hardness -= W.force/100
 			user << "You hit the [name] with your [W.name]!"
 			CheckHardness()
@@ -111,11 +111,11 @@
 		return
 
 	proc/CheckHardness()
-		if(hardness <= 0)
+		if (hardness <= 0)
 			Dismantle(1)
 
 	proc/Dismantle(devastated = 0)
-		if(!devastated)
+		if (!devastated)
 			var/ore = text2path("/obj/item/weapon/ore/[mineralType]")
 			for(var/i = 1, i <= oreAmount, i++)
 				new ore(get_turf(src))
@@ -123,21 +123,21 @@
 
 	ex_act(severity = 1)
 		switch(severity)
-			if(1)
+			if (1)
 				Dismantle(1)
-			if(2)
-				if(prob(20))
+			if (2)
+				if (prob(20))
 					Dismantle(1)
 				else
 					hardness--
 					CheckHardness()
-			if(3)
+			if (3)
 				hardness -= 0.1
 				CheckHardness()
 		return
 
 	proc/update_nearby_tiles(need_rebuild) //Copypasta from airlock code
-		if(!air_master) return 0
+		if (!air_master) return 0
 
 		var/turf/simulated/source = loc
 		var/turf/simulated/north = get_step(source,NORTH)
@@ -145,38 +145,38 @@
 		var/turf/simulated/east = get_step(source,EAST)
 		var/turf/simulated/west = get_step(source,WEST)
 
-		if(need_rebuild)
-			if(istype(source)) //Rebuild/update nearby group geometry
-				if(source.parent)
+		if (need_rebuild)
+			if (istype(source)) //Rebuild/update nearby group geometry
+				if (source.parent)
 					air_master.groups_to_rebuild += source.parent
 				else
 					air_master.tiles_to_update += source
-			if(istype(north))
-				if(north.parent)
+			if (istype(north))
+				if (north.parent)
 					air_master.groups_to_rebuild += north.parent
 				else
 					air_master.tiles_to_update += north
-			if(istype(south))
-				if(south.parent)
+			if (istype(south))
+				if (south.parent)
 					air_master.groups_to_rebuild += south.parent
 				else
 					air_master.tiles_to_update += south
-			if(istype(east))
-				if(east.parent)
+			if (istype(east))
+				if (east.parent)
 					air_master.groups_to_rebuild += east.parent
 				else
 					air_master.tiles_to_update += east
-			if(istype(west))
-				if(west.parent)
+			if (istype(west))
+				if (west.parent)
 					air_master.groups_to_rebuild += west.parent
 				else
 					air_master.tiles_to_update += west
 		else
-			if(istype(source)) air_master.tiles_to_update += source
-			if(istype(north)) air_master.tiles_to_update += north
-			if(istype(south)) air_master.tiles_to_update += south
-			if(istype(east)) air_master.tiles_to_update += east
-			if(istype(west)) air_master.tiles_to_update += west
+			if (istype(source)) air_master.tiles_to_update += source
+			if (istype(north)) air_master.tiles_to_update += north
+			if (istype(south)) air_master.tiles_to_update += south
+			if (istype(east)) air_master.tiles_to_update += east
+			if (istype(west)) air_master.tiles_to_update += west
 
 		return 1
 
@@ -214,18 +214,18 @@
 	mineralType = "plasma"
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W,/obj/item/weapon/weldingtool))
-			if(W:welding)
+		if (istype(W,/obj/item/weapon/weldingtool))
+			if (W:welding)
 				TemperatureAct(100)
 		..()
 
 	temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
-		if(exposed_temperature > 300)
+		if (exposed_temperature > 300)
 			TemperatureAct(exposed_temperature)
 
 	proc/TemperatureAct(temperature)
 		for(var/turf/simulated/floor/target_tile in range(2,loc))
-			if(target_tile.parent && target_tile.parent.group_processing)
+			if (target_tile.parent && target_tile.parent.group_processing)
 				target_tile.parent.suspend_group_processing()
 
 			var/datum/gas_mixture/napalm = new

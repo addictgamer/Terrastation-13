@@ -20,15 +20,15 @@
 		S.frequency = rand(32000, 55000)
 	for (var/mob/M in range(world.view+extrarange, source))
 		if (M.client)
-			if(M.ear_deaf <= 0 || !M.ear_deaf)
-				if(isturf(source))
+			if (M.ear_deaf <= 0 || !M.ear_deaf)
+				if (isturf(source))
 					var/dx = source.x - M.x
 					S.pan = max(-100, min(100, dx/8.0 * 100))
 
 				M << S
 
 /mob/proc/playsound_local(var/atom/source, soundin, vol as num, vary, extrarange as num)
-	if(!src.client || ear_deaf > 0)	return
+	if (!src.client || ear_deaf > 0)	return
 	switch(soundin)
 		if ("shatter") soundin = pick('Glassbr1.ogg','Glassbr2.ogg','Glassbr3.ogg')
 		if ("explosion") soundin = pick('Explosion1.ogg','Explosion2.ogg')
@@ -46,7 +46,7 @@
 
 	if (vary)
 		S.frequency = rand(32000, 55000)
-	if(isturf(source))
+	if (isturf(source))
 		var/dx = source.x - src.x
 		S.pan = max(-100, min(100, dx/8.0 * 100))
 
@@ -56,7 +56,7 @@ client/verb/Toggle_Soundscape()
 	set category = "OOC"
 	set name = "Toggle Ambience"
 	usr:client:no_ambi = !usr:client:no_ambi
-	if(usr:client:no_ambi)
+	if (usr:client:no_ambi)
 		usr << sound('shipambience.ogg', repeat = 0, wait = 0, volume = 0, channel = 2)
 	else
 		usr << sound('shipambience.ogg', repeat = 1, wait = 0, volume = 35, channel = 2)
@@ -91,9 +91,9 @@ client/verb/Toggle_Soundscape()
 			else sound = pick('ambigen1.ogg','ambigen3.ogg','ambigen4.ogg','ambigen5.ogg','ambigen6.ogg','ambigen7.ogg','ambigen8.ogg','ambigen9.ogg','ambigen10.ogg','ambigen11.ogg','ambigen12.ogg','ambigen14.ogg')
 
 		if (prob(35))
-			if(A && A:client && !A:client:played)
+			if (A && A:client && !A:client:played)
 				A << sound(sound, repeat = 0, wait = 0, volume = musVolume, channel = 1)
 				A:client:played = 1
 				spawn(600)
-					if(A && A:client)
+					if (A && A:client)
 						A:client:played = 0

@@ -1,7 +1,7 @@
 /client/proc/cmd_admin_drop_everything(mob/M as mob in world)
 	set category = null
 	set name = "Drop Everything"
-	if(!authenticated || !holder)
+	if (!authenticated || !holder)
 		src << "Only administrators may use this command."
 		return
 	for(var/obj/item/W in M)
@@ -13,11 +13,11 @@
 /client/proc/cmd_admin_prison(mob/M as mob in world)
 	set category = "Admin"
 	set name = "Prison"
-	if(!authenticated || !holder)
+	if (!authenticated || !holder)
 		src << "Only administrators may use this command."
 		return
 	if (ismob(M))
-		if(istype(M, /mob/living/silicon/ai))
+		if (istype(M, /mob/living/silicon/ai))
 			alert("The AI can't be sent to prison you jerk!", null, null, null, null, null)
 			return
 		//strip their stuff before they teleport into a cell :downs:
@@ -27,7 +27,7 @@
 		M.paralysis += 5
 		sleep(5)	//so they black out before warping
 		M.loc = pick(prisonwarp)
-		if(istype(M, /mob/living/carbon/human))
+		if (istype(M, /mob/living/carbon/human))
 			var/mob/living/carbon/human/prisoner = M
 			prisoner.equip_if_possible(new /obj/item/clothing/under/color/orange(prisoner), prisoner.slot_w_uniform)
 			prisoner.equip_if_possible(new /obj/item/clothing/shoes/orange(prisoner), prisoner.slot_shoes)
@@ -48,9 +48,9 @@
 
 	if (!msg)
 		return
-	if(usr)
+	if (usr)
 		if (usr.client)
-			if(usr.client.holder)
+			if (usr.client.holder)
 				M << "\bold You hear a voice in your head... \italic [msg]"
 
 	log_admin("SubtlePM: [key_name(usr)] -> [key_name(M)] : [msg]")
@@ -76,7 +76,7 @@
 	set category = "Special Verbs"
 	set name = "Direct Narrate"
 
-	if(!authenticated || !holder)
+	if (!authenticated || !holder)
 		src << "Only administrators may use this command."
 		return
 	var/msg = input("Message:", text("Enter the text you wish to appear to your target:")) as text
@@ -87,17 +87,17 @@
 /client/proc/cmd_admin_pm(mob/M as mob in world)
 	set category = "Admin"
 	set name = "Admin PM"
-	if(!authenticated || !holder)
+	if (!authenticated || !holder)
 		src << "Only administrators may use this command."
 		return
-	if(M)
-		if(mob.muted)
+	if (M)
+		if (mob.muted)
 			src << "You are muted have a nice day"
 			return
 		if (!( ismob(M) ))
 			return
 		var/t = input("Message:", text("Private message to [M.key]"))  as text|null
-		if(holder.rank != "Game Admin" && holder.rank != "Game Master")
+		if (holder.rank != "Game Admin" && holder.rank != "Game Master")
 			t = strip_html(t,500)
 		if (!( t ))
 			return
@@ -114,13 +114,13 @@
 		log_admin("PM: [key_name(usr)]->[key_name(M)] : [t]")
 
 		for(var/mob/K in world)	//we don't use message_admins here because the sender/receiver might get it too
-			if(K && K.client && K.client.holder && K.key != usr.key && K.key != M.key)
+			if (K && K.client && K.client.holder && K.key != usr.key && K.key != M.key)
 				K << "<B><font color='blue'>PM: [key_name(usr, K)]-&gt;[key_name(M, K)]:</B> \blue [t]</font>"
 
 /client/proc/cmd_admin_godmode(mob/M as mob in world)
 	set category = "Special Verbs"
 	set name = "Godmode"
-	if(!authenticated || !holder)
+	if (!authenticated || !holder)
 		src << "Only administrators may use this command."
 		return
 	if (M.nodamage == 1)
@@ -136,7 +136,7 @@
 /client/proc/cmd_admin_mute(mob/M as mob in world)
 	set category = "Special Verbs"
 	set name = "Admin Mute"
-	if(!authenticated || !holder)
+	if (!authenticated || !holder)
 		src << "Only administrators may use this command."
 		return
 	if (M.client && M.client.holder && (M.client.holder.level >= holder.level))
@@ -153,7 +153,7 @@
 /client/proc/cmd_admin_add_random_ai_law()
 	set category = "Fun"
 	set name = "Add Random AI Law"
-	if(!authenticated || !holder)
+	if (!authenticated || !holder)
 		src << "Only administrators may use this command."
 		return
 	log_admin("[key_name(src)] has added a random AI law.")
@@ -171,7 +171,7 @@
 	set desc = "Spawns a xenomorph for all those boring rounds, without having you to do so manually."
 	set popup_menu = 0
 
-	if(!authenticated || !holder)
+	if (!authenticated || !holder)
 		src << "Only administrators may use this command."
 		return
 
@@ -186,29 +186,29 @@
 
 	var/mob/living/carbon/alien/humanoid/new_xeno
 	switch(alien_caste)
-		if("Hunter")
+		if ("Hunter")
 			new_xeno = new /mob/living/carbon/alien/humanoid/hunter (spawn_here)
-		if("Sentinel")
+		if ("Sentinel")
 			new_xeno = new /mob/living/carbon/alien/humanoid/sentinel (spawn_here)
-		if("Drone")
+		if ("Drone")
 			new_xeno = new /mob/living/carbon/alien/humanoid/drone (spawn_here)
 
 	// Picks a random ghost for the role if none is specified. Mostly a copy of alien burst code.
 	var/candidates_list[] = list()
-	if(G)//If G exists through a passed argument.
+	if (G)//If G exists through a passed argument.
 		candidates_list += G.client
 	else//Else we need to find them.
 		for(G in world)
-			if(G.client)
-				if(!G.client.holder && ((G.client.inactivity/10)/60) <= 5)
+			if (G.client)
+				if (!G.client.holder && ((G.client.inactivity/10)/60) <= 5)
 					candidates_list += G.client//We want their client, not their ghost.
-	if(candidates_list.len)//If there are people to spawn.
-		if(!G)//If G was not passed through an argument.
+	if (candidates_list.len)//If there are people to spawn.
+		if (!G)//If G was not passed through an argument.
 			var/client/G_client = input("Pick the client you want to respawn as a xeno.", "Active Players") as null|anything in candidates_list//It will auto-pick a person when there is only one candidate.
-			if(G_client)//They may have logged out when the admin was choosing people. Or were not chosen. Would run time error otherwise.
+			if (G_client)//They may have logged out when the admin was choosing people. Or were not chosen. Would run time error otherwise.
 				G = G_client.mob
 
-		if(G)//If G exists.
+		if (G)//If G exists.
 			message_admins("\blue [key_name_admin(usr)] has spawned [G.key] as a filthy xeno.", 1)
 			new_xeno.mind_initialize(G, alien_caste)
 			new_xeno.key = G.key
@@ -231,20 +231,20 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	set category = "Special Verbs"
 	set name = "Respawn Character"
 	set desc = "Respawn a person that has been gibbed/dusted/killed. They must be a ghost for this to work and preferably should not have a body to go back into."
-	if(!authenticated || !holder)
+	if (!authenticated || !holder)
 		src << "Only administrators may use this command."
 		return
 	var/input = input(src, "Please specify which key will be respawned.", "Key", "")
-	if(!input)
+	if (!input)
 		return
 
 	var/mob/dead/observer/G_found
 	for(var/mob/dead/observer/G in world)
-		if(G.client&&ckey(G.key)==ckey(input))
+		if (G.client&&ckey(G.key)==ckey(input))
 			G_found = G
 			break
 
-	if(!G_found)//If a ghost was not found.
+	if (!G_found)//If a ghost was not found.
 		alert("There is no active key like that in the game or the person is not currently a ghost. Aborting command.")
 		return
 
@@ -253,30 +253,30 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 	//Second, we check if they are an alien or monkey.
 	var/adj_name = copytext(G_found.real_name,1,7)//What is their name?
-	if(G_found.mind&&G_found.mind.special_role=="Alien")//If they have a mind, are they an alien?
+	if (G_found.mind&&G_found.mind.special_role=="Alien")//If they have a mind, are they an alien?
 		adj_name="alien "
-	if( adj_name==("alien "||"monkey"))
-		if(alert("This character appears to either be an an alien or monkey. Would you like to respawn them as such?",,"Yes","No")=="Yes")//If you do.
+	if ( adj_name==("alien "||"monkey"))
+		if (alert("This character appears to either be an an alien or monkey. Would you like to respawn them as such?",,"Yes","No")=="Yes")//If you do.
 			switch(adj_name)//Let's check based on adjusted name.
-				if("monkey")//A monkey. Monkeys don't have a mind, so we can safely spawn them here if needed.
+				if ("monkey")//A monkey. Monkeys don't have a mind, so we can safely spawn them here if needed.
 					//TO DO: Monkeys may have a mind now. May need retooling.
 					var/mob/living/carbon/monkey/M = new(pick(latejoin))//Spawn a monkey at latejoin.
 					M.mind = G_found.mind
-					if(M.mind)//If the mind is not null.
+					if (M.mind)//If the mind is not null.
 						M.mind.current = M
 						M.key = G_found.key//They are now a monkey. Nothing else needs doing.
-				if("alien ")//An alien. Aliens can have a mind which can be used to determine a few things.
-					if(G_found.mind)
+				if ("alien ")//An alien. Aliens can have a mind which can be used to determine a few things.
+					if (G_found.mind)
 						var/turf/location = xeno_spawn.len ? pick(xeno_spawn) : pick(latejoin)//Location where they will be spawned.
 						var/mob/living/carbon/alien/new_xeno//Null alien mob first.
 						switch(G_found.mind.special_role)//If they have a mind, we can determine which caste they were.
-							if("Hunter")
+							if ("Hunter")
 								new_xeno = new/mob/living/carbon/alien/humanoid/hunter(location)
-							if("Sentinel")
+							if ("Sentinel")
 								new_xeno = new/mob/living/carbon/alien/humanoid/sentinel(location)
-							if("Drone")
+							if ("Drone")
 								new_xeno = new/mob/living/carbon/alien/humanoid/drone(location)
-							if("Queen")
+							if ("Queen")
 								new_xeno = new/mob/living/carbon/alien/humanoid/queen(location)
 							else//If we don't know what special role they have, for whatever reason, or they're a larva.
 								create_xeno(G_found)
@@ -304,44 +304,44 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	/*Third, we try and locate a record for the person being respawned through data_core.
 	This isn't an exact science but it does the trick more often than not.*/
 	var/datum/data/record/record_found//Referenced to later to either randomize or not randomize the character.
-	if(G_found.mind)//They must have a mind to reference the record. Here we also double check for aliens.
+	if (G_found.mind)//They must have a mind to reference the record. Here we also double check for aliens.
 		var/id = md5("[G_found.real_name][G_found.mind.assigned_role]")
 		for(var/datum/data/record/t in data_core.locked)
-			if(t.fields["id"]==id)
+			if (t.fields["id"]==id)
 				record_found = t//We shall now reference the record.
 				break
 
 	//Now we do some mind locating to see how to set up the rest of the character.
-	if(G_found.mind)//If they had a previous mind.
+	if (G_found.mind)//If they had a previous mind.
 		new_character.mind = G_found.mind
 		new_character.mind.special_verbs = list()//New list because they will receive them again.
 	else
 		new_character.mind = new()
 		ticker.minds += new_character.mind//And we'll add it to the minds database.
 		new_character.mind.original = new_character//If they are respawning with a new character.
-	if(!record_found)//We have to pick their role if they have no record.
-		if(G_found.mind&&G_found.mind.assigned_role)//But they may have an assigned role already.
+	if (!record_found)//We have to pick their role if they have no record.
+		if (G_found.mind&&G_found.mind.assigned_role)//But they may have an assigned role already.
 			new_character.mind.assigned_role = G_found.mind.assigned_role//Also makes sure our MODE people are equipped right later on.
 		else
 			var/assigned_role = input("Please specify which job the character will be respawned as.", "Assigned role") as null|anything in get_all_jobs()
-			if(!assigned_role)	new_character.mind.assigned_role = "Assistant"//Defaults to assistant.
+			if (!assigned_role)	new_character.mind.assigned_role = "Assistant"//Defaults to assistant.
 			else	new_character.mind.assigned_role = assigned_role
 
-	if(!new_character.mind.assigned_role)	new_character.mind.assigned_role = "Assistant"//If they somehow got a null assigned role.
+	if (!new_character.mind.assigned_role)	new_character.mind.assigned_role = "Assistant"//If they somehow got a null assigned role.
 	new_character.mind.key = G_found.key//In case it's someone else playing as that character.
 	new_character.mind.current = new_character//So that it can properly reference later if needed.
 	new_character.mind.memory = ""//Memory erased so it doesn't get clunkered up with useless info. This means they may forget their previous mission--this is usually handled through objective code and recalling memory.
 
 	//Here we either load their saved appearance or randomize it.
 	var/datum/preferences/A = new()
-	if(A.savefile_load(G_found))//If they have a save file. This will automatically load their parameters.
+	if (A.savefile_load(G_found))//If they have a save file. This will automatically load their parameters.
 	//Note: savefile appearances are overwritten later on if the character has a data_core entry. By appearance, I mean the physical appearance.
 		var/name_safety = G_found.real_name//Their saved parameters may include a random name. Also a safety in case they are playing a character that got their name after round start.
 		A.copy_to(new_character)
 		new_character.real_name = name_safety
 		new_character.name = name_safety
 	else
-		if(record_found)//If they have a record we can determine a few things.
+		if (record_found)//If they have a record we can determine a few things.
 			new_character.real_name = record_found.fields["name"]//Not necessary to reference the record but I like to keep things uniform.
 			new_character.name = record_found.fields["name"]
 			new_character.gender = record_found.fields["sex"]//Sex
@@ -350,7 +350,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 			//We will update their appearance when determining DNA.
 		else
 			new_character.gender = MALE
-			if(alert("Save file not detected. Record data not detected. Please specify [G_found.real_name]'s gender.",,"Male","Female")=="Female")
+			if (alert("Save file not detected. Record data not detected. Please specify [G_found.real_name]'s gender.",,"Male","Female")=="Female")
 				new_character.gender = FEMALE
 			var/name_safety = G_found.real_name//Default is a random name so we want to save this.
 			A.randomize_appearance_for(new_character)//Now we will randomize their appearance since we have no way of knowing what they look/looked like.
@@ -358,7 +358,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 			new_character.name = name_safety
 
 	//After everything above, it's time to initialize their DNA.
-	if(record_found)//Pull up their name from database records if they did have a mind.
+	if (record_found)//Pull up their name from database records if they did have a mind.
 		new_character.dna = new()//Let's first give them a new DNA.
 		new_character.dna.unique_enzymes = record_found.fields["b_dna"]//Enzymes are based on real name but we'll use the record for conformity.
 		new_character.dna.struc_enzymes = record_found.fields["enzymes"]//This is the default of enzymes so I think it's safe to go with.
@@ -386,58 +386,58 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 	//Now for special roles and equipment.
 	switch(new_character.mind.special_role)
-		if("Changeling")
+		if ("Changeling")
 			new_character.Equip_Rank(new_character.mind.assigned_role, joined_late=1)
 			new_character.make_changeling()
-		if("traitor")
+		if ("traitor")
 			new_character.Equip_Rank(new_character.mind.assigned_role, joined_late=1)
 			ticker.mode.equip_traitor(new_character)
-		if("Wizard")
+		if ("Wizard")
 			new_character.loc = pick(wizardstart)
 			ticker.mode.learn_basic_spells(new_character)
 			ticker.mode.equip_wizard(new_character)
-		if("Syndicate")
+		if ("Syndicate")
 			var/obj/landmark/synd_spawn = locate("landmark*Syndicate-Spawn")
-			if(synd_spawn)
+			if (synd_spawn)
 				new_character.loc = get_turf(synd_spawn)
 			call(/datum/game_mode/proc/equip_syndicate)(new_character)
-		if("Space Ninja")
+		if ("Space Ninja")
 			var/ninja_spawn[] = list()
 			for(var/obj/landmark/L in world)
-				if(L.name=="carpspawn")
+				if (L.name=="carpspawn")
 					ninja_spawn += L
 			new_character.equip_space_ninja()
 			new_character.internal = new_character.s_store
 			new_character.internals.icon_state = "internal1"
-			if(ninja_spawn.len)
+			if (ninja_spawn.len)
 				var/obj/landmark/ninja_spawn_here = pick(ninja_spawn)
 				new_character.loc = ninja_spawn_here.loc
-		if("Death Commando")//Leaves them at late-join spawn.
+		if ("Death Commando")//Leaves them at late-join spawn.
 			new_character.equip_death_commando()
 			new_character.internal = new_character.s_store
 			new_character.internals.icon_state = "internal1"
 		else//They may also be a cyborg or AI.
 			switch(new_character.mind.assigned_role)
-				if("Cyborg")//More rigging to make em' work and check if they're traitor.
+				if ("Cyborg")//More rigging to make em' work and check if they're traitor.
 					new_character = new_character.Robotize()
-					if(new_character.mind.special_role=="traitor")
+					if (new_character.mind.special_role=="traitor")
 						call(/datum/game_mode/proc/add_law_zero)(new_character)
-				if("AI")
+				if ("AI")
 					new_character = new_character.AIize()
-					if(new_character.mind.special_role=="traitor")
+					if (new_character.mind.special_role=="traitor")
 						call(/datum/game_mode/proc/add_law_zero)(new_character)
 				//Add aliens.
 				else
 					new_character.Equip_Rank(new_character.mind.assigned_role, joined_late=1)//Or we simply equip them.
 
 	//Announces the character on all the systems, based on the record.
-	if(!issilicon(new_character))//If they are not a cyborg/AI.
-		if(!record_found&&new_character.mind.assigned_role!="MODE")//If there are no records for them. If they have a record, this info is already in there. MODE people are not announced anyway.
+	if (!issilicon(new_character))//If they are not a cyborg/AI.
+		if (!record_found&&new_character.mind.assigned_role!="MODE")//If there are no records for them. If they have a record, this info is already in there. MODE people are not announced anyway.
 			//Power to the user!
-			if(alert(new_character,"Warning: No data core entry detected. Would you like to announce the arrival of this character by adding them to various databases, such as medical records?",,"No","Yes")=="Yes")
+			if (alert(new_character,"Warning: No data core entry detected. Would you like to announce the arrival of this character by adding them to various databases, such as medical records?",,"No","Yes")=="Yes")
 				call(/mob/new_player/proc/ManifestLateSpawn)(new_character)
 
-			if(alert(new_character,"Would you like an active AI to announce this character?",,"No","Yes")=="Yes")
+			if (alert(new_character,"Would you like an active AI to announce this character?",,"No","Yes")=="Yes")
 				call(/mob/new_player/proc/AnnounceArrival)(new_character, new_character.mind.assigned_role)
 
 	message_admins("\blue [admin] has respawned [player_key] as [new_character.real_name].", 1)
@@ -450,11 +450,11 @@ Traitors and the like can also be revived with the previous role mostly intact.
 /client/proc/cmd_admin_add_freeform_ai_law()
 	set category = "Fun"
 	set name = "Add Custom AI law"
-	if(!authenticated || !holder)
+	if (!authenticated || !holder)
 		src << "Only administrators may use this command."
 		return
 	var/input = input(usr, "Please enter anything you want the AI to do. Anything. Serious.", "What?", "") as text|null
-	if(!input)
+	if (!input)
 		return
 	for(var/mob/living/silicon/ai/M in world)
 		if (M.stat == 2)
@@ -475,15 +475,15 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	set category = "Special Verbs"
 	set name = "Rejuvenate"
     //    All admins should be authenticated, but... what if?
-	if(!authenticated || !holder)
+	if (!authenticated || !holder)
 		src << "Only administrators may use this command."
 		return
-	if(!mob)
+	if (!mob)
 		return
-	if(!istype(M))
+	if (!istype(M))
 		alert("Cannot revive a ghost")
 		return
-	if(config.allow_admin_rev)
+	if (config.allow_admin_rev)
 		//M.fireloss = 0
 		M.toxloss = 0
 		//M.bruteloss = 0
@@ -510,14 +510,14 @@ Traitors and the like can also be revived with the previous role mostly intact.
 /client/proc/cmd_admin_create_centcom_report()
 	set category = "Special Verbs"
 	set name = "Create Command Report"
-	if(!authenticated || !holder)
+	if (!authenticated || !holder)
 		src << "Only administrators may use this command."
 		return
 	var/input = input(usr, "Please enter anything you want. Anything. Serious.", "What?", "") as message|null
-	if(!input)
+	if (!input)
 		return
 	for (var/obj/machinery/computer/communications/C in machines)
-		if(! (C.stat & (BROKEN|NOPOWER) ) )
+		if (! (C.stat & (BROKEN|NOPOWER) ) )
 			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper( C.loc )
 			P.name = "paper- '[command_name()] Update.'"
 			P.info = input
@@ -609,7 +609,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 		src << "Only administrators may use this command."
 		return
 
-	if(usr.key != M.key && M.client)
+	if (usr.key != M.key && M.client)
 		log_admin("[key_name(usr)] has gibbed [key_name(M)]")
 		message_admins("[key_name_admin(usr)] has gibbed [key_name_admin(M)]", 1)
 
@@ -630,17 +630,17 @@ Traitors and the like can also be revived with the previous role mostly intact.
 /client/proc/cmd_manual_ban()
 	set name = "Manual Ban"
 	set category = "Special Verbs"
-	if(!authenticated || !holder)
+	if (!authenticated || !holder)
 		src << "Only administrators may use this command."
 		return
 	var/mob/M = null
 	switch(alert("How would you like to ban someone today?", "Manual Ban", "Key List", "Enter Manually", "Cancel"))
-		if("Key List")
+		if ("Key List")
 			var/list/keys = list()
 			for(var/mob/M in world)
 				keys += M.client
 			var/selection = input("Please, select a player!", "Admin Jumping", null, null) as null|anything in keys
-			if(!selection)
+			if (!selection)
 				return
 			M = selection:mob
 			if ((M.client && M.client.holder && (M.client.holder.level >= holder.level)))
@@ -648,15 +648,15 @@ Traitors and the like can also be revived with the previous role mostly intact.
 				return
 
 	switch(alert("Temporary Ban?",,"Yes","No"))
-	if("Yes")
+	if ("Yes")
 		var/mins = input(usr,"How long (in minutes)?","Ban time",1440) as num
-		if(!mins)
+		if (!mins)
 			return
-		if(mins >= 525600) mins = 525599
+		if (mins >= 525600) mins = 525599
 		var/reason = input(usr,"Reason?","reason","Griefer") as text
-		if(!reason)
+		if (!reason)
 			return
-		if(M)
+		if (M)
 			AddBan(M.ckey, M.computer_id, reason, usr.ckey, 1, mins)
 			M.unlock_medal("Banned", 1)
 			M << "\red<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>"
@@ -669,9 +669,9 @@ Traitors and the like can also be revived with the previous role mostly intact.
 			del(M)
 		else
 
-	if("No")
+	if ("No")
 		var/reason = input(usr,"Reason?","reason","Griefer") as text
-		if(!reason)
+		if (!reason)
 			return
 		AddBan(M.ckey, M.computer_id, reason, usr.ckey, 0, 0)
 		M.unlock_medal("Banned", 1)
@@ -701,7 +701,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 /client/proc/cmd_admin_remove_plasma()
 	set category = "Debug"
 	set name = "Stabilize Atmos."
-	if(!authenticated || !holder)
+	if (!authenticated || !holder)
 		src << "Only administrators may use this command."
 		return
 // DEFERRED
@@ -733,7 +733,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	set name = "Change View Range"
 	set desc = "switches between 1x and custom views"
 
-	if(view == world.view)
+	if (view == world.view)
 		view = input("Select view range:", "FUCK YE", 7) in list(1,2,3,4,5,6,7,8,9,10,11,12,13,14,128)
 	else
 		view = world.view
@@ -750,9 +750,9 @@ Traitors and the like can also be revived with the previous role mostly intact.
 		src << "Only administrators may use this command."
 		return
 
-	if(ticker.mode.name == "revolution" || ticker.mode.name == "AI malfunction" || ticker.mode.name == "confliction")
+	if (ticker.mode.name == "revolution" || ticker.mode.name == "AI malfunction" || ticker.mode.name == "confliction")
 		var/choice = input("The shuttle will just return if you call it. Call anyway?") in list("Confirm", "Cancel")
-		if(choice == "Confirm")
+		if (choice == "Confirm")
 			emergency_shuttle.fake_recall = rand(300,500)
 		else
 			return

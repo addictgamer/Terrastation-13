@@ -21,15 +21,15 @@ Pod/Blast Doors computer
 	return
 
 /obj/machinery/computer/emp_act(severity)
-	if(prob(20/severity)) set_broken()
+	if (prob(20/severity)) set_broken()
 	..()
 
 /obj/machinery/computer/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			if (prob(25))
 				del(src)
 				return
@@ -37,7 +37,7 @@ Pod/Blast Doors computer
 				for(var/x in verbs)
 					verbs -= x
 				set_broken()
-		if(3.0)
+		if (3.0)
 			if (prob(25))
 				for(var/x in verbs)
 					verbs -= x
@@ -53,14 +53,14 @@ Pod/Blast Doors computer
 		density = 0
 
 /obj/machinery/computer/power_change()
-	if(!istype(src,/obj/machinery/computer/security/telescreen))
-		if(stat & BROKEN)
+	if (!istype(src,/obj/machinery/computer/security/telescreen))
+		if (stat & BROKEN)
 			icon_state = initial(icon_state)
 			icon_state += "b"
 			if (istype(src,/obj/machinery/computer/aifixer))
 				overlays = null
 
-		else if(powered())
+		else if (powered())
 			icon_state = initial(icon_state)
 			stat &= ~NOPOWER
 			if (istype(src,/obj/machinery/computer/aifixer))
@@ -83,7 +83,7 @@ Pod/Blast Doors computer
 					overlays = null
 
 /obj/machinery/computer/process()
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 	use_power(250)
 
@@ -93,9 +93,9 @@ Pod/Blast Doors computer
 	stat |= BROKEN
 
 /obj/machinery/computer/attackby(I as obj, user as mob)
-	if(istype(I, /obj/item/weapon/screwdriver) && circuit)
+	if (istype(I, /obj/item/weapon/screwdriver) && circuit)
 		playsound(src.loc, 'Screwdriver.ogg', 50, 1)
-		if(do_after(user, 20))
+		if (do_after(user, 20))
 			var/obj/computerframe/A = new /obj/computerframe( src.loc )
 			var/obj/item/weapon/circuitboard/M = new circuit( A )
 			A.circuit = M
@@ -134,19 +134,19 @@ Pod/Blast Doors computer
 	return 1
 
 /obj/machinery/computer/card/attackby(O as obj, user as mob)
-	if(istype(O, /obj/item/weapon/card/id))
+	if (istype(O, /obj/item/weapon/card/id))
 		var/obj/item/weapon/card/id/idcard = O
-		if(access_change_ids in idcard.access)
-			if(!scan)
+		if (access_change_ids in idcard.access)
+			if (!scan)
 				usr.drop_item()
 				idcard.loc = src
 				scan = idcard
-			else if(!modify)
+			else if (!modify)
 				usr.drop_item()
 				idcard.loc = src
 				modify = idcard
 		else
-			if(!modify)
+			if (!modify)
 				usr.drop_item()
 				idcard.loc = src
 				modify = idcard
@@ -160,7 +160,7 @@ Pod/Blast Doors computer
 	return attack_hand(user)
 
 /obj/machinery/computer/card/attack_hand(var/mob/user as mob)
-	if(..())
+	if (..())
 		return
 
 	user.machine = src
@@ -178,26 +178,26 @@ Pod/Blast Doors computer
 		var/target_name
 		var/target_owner
 		var/target_rank
-		if(modify)
+		if (modify)
 			target_name = modify.name
 		else
 			target_name = "--------"
-		if(modify && modify.registered)
+		if (modify && modify.registered)
 			target_owner = modify.registered
 		else
 			target_owner = "--------"
-		if(modify && modify.assignment)
+		if (modify && modify.assignment)
 			target_rank = modify.assignment
 		else
 			target_rank = "Unassigned"
 
 		var/scan_name
-		if(scan)
+		if (scan)
 			scan_name = scan.name
 		else
 			scan_name = "--------"
 
-		if(!authenticated)
+		if (!authenticated)
 			header += "<br><i>Please insert the cards into the slots</i><br>"
 			header += "Target: <a href='?src=\ref[src];choice=modify'>[target_name]</a><br>"
 			header += "Confirm Identity: <a href='?src=\ref[src];choice=scan'>[scan_name]</a><br>"
@@ -247,10 +247,10 @@ Pod/Blast Doors computer
 			jobs = "<span id='alljobsslot'><a href='#' onclick='showAll()'>[target_rank]</a></span>"
 
 			var/accesses = ""
-			if(istype(src,/obj/machinery/computer/card/centcom))
+			if (istype(src,/obj/machinery/computer/card/centcom))
 				accesses += "<h5>Central Command:</h5>"
 				for(var/A in get_all_centcom_access())
-					if(A in modify.access)
+					if (A in modify.access)
 						accesses += "<a href='?src=\ref[src];choice=access;access_target=[A];allowed=0'><font color=\"red\">[dd_replacetext(get_centcom_access_desc(A), " ", "&nbsp")]</font></a> "
 					else
 						accesses += "<a href='?src=\ref[src];choice=access;access_target=[A];allowed=1'>[dd_replacetext(get_centcom_access_desc(A), " ", "&nbsp")]</a> "
@@ -264,7 +264,7 @@ Pod/Blast Doors computer
 				for(var/i = 1; i <= 7; i++)
 					accesses += "<td style='width:14%' valign='top'>"
 					for(var/A in get_region_accesses(i))
-						if(A in modify.access)
+						if (A in modify.access)
 							accesses += "<a href='?src=\ref[src];choice=access;access_target=[A];allowed=0'><font color=\"red\">[dd_replacetext(get_access_desc(A), " ", "&nbsp")]</font></a> "
 						else
 							accesses += "<a href='?src=\ref[src];choice=access;access_target=[A];allowed=1'>[dd_replacetext(get_access_desc(A), " ", "&nbsp")]</a> "
@@ -281,7 +281,7 @@ Pod/Blast Doors computer
 	return
 
 /obj/machinery/computer/card/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	usr.machine = src
 	switch(href_list["choice"])
@@ -289,9 +289,9 @@ Pod/Blast Doors computer
 			if (modify)
 				data_core.manifest_modify(modify.registered, modify.assignment)
 				modify.name = text("[modify.registered]'s ID Card ([modify.assignment])")
-				if(ishuman(usr))
+				if (ishuman(usr))
 					modify.loc = usr.loc
-					if(!usr.get_active_hand())
+					if (!usr.get_active_hand())
 						usr.put_in_hand(modify)
 					modify = null
 				else
@@ -307,9 +307,9 @@ Pod/Blast Doors computer
 
 		if ("scan")
 			if (scan)
-				if(ishuman(usr))
+				if (ishuman(usr))
 					scan.loc = usr.loc
-					if(!usr.get_active_hand())
+					if (!usr.get_active_hand())
 						usr.put_in_hand(scan)
 					scan = null
 				else
@@ -332,19 +332,19 @@ Pod/Blast Doors computer
 				usr << "You can't modify an ID without an ID inserted to modify. Once one is in the modify slot on the computer, you can log in."
 		if ("logout")
 			authenticated = 0
-		if("access")
-			if(href_list["allowed"])
-				if(authenticated)
+		if ("access")
+			if (href_list["allowed"])
+				if (authenticated)
 					var/access_type = text2num(href_list["access_target"])
 					var/access_allowed = text2num(href_list["allowed"])
-					if(access_type in (istype(src,/obj/machinery/computer/card/centcom)?get_all_centcom_access() : get_all_accesses()))
+					if (access_type in (istype(src,/obj/machinery/computer/card/centcom)?get_all_centcom_access() : get_all_accesses()))
 						modify.access -= access_type
-						if(access_allowed == 1)
+						if (access_allowed == 1)
 							modify.access += access_type
 		if ("assign")
 			if (authenticated)
 				var/t1 = href_list["assign_target"]
-				if(t1 == "Custom")
+				if (t1 == "Custom")
 					t1 = input("Enter a custom job assignment.","Assignment")
 				else
 					modify.access = ( istype(src,/obj/machinery/computer/card/centcom) ? get_centcom_access(t1) : get_access(t1) )
@@ -376,7 +376,7 @@ Pod/Blast Doors computer
 
 /obj/datacore/proc/manifest(var/nosleep = 0)
 	spawn()
-		if(!nosleep)
+		if (!nosleep)
 			sleep(40)
 		for(var/mob/living/carbon/human/H in world)
 			if (!isnull(H.mind) && (H.mind.assigned_role != "MODE"))
@@ -388,7 +388,7 @@ Pod/Blast Doors computer
 				if (C)
 					G.fields["rank"] = C.assignment
 				else
-					if(H.job)
+					if (H.job)
 						G.fields["rank"] = H.job
 					else
 						G.fields["rank"] = "Unassigned"
@@ -447,11 +447,11 @@ Pod/Blast Doors computer
 	var/datum/data/record/foundrecord
 
 	for(var/datum/data/record/t in data_core.general)
-		if(t.fields["name"] == name)
+		if (t.fields["name"] == name)
 			foundrecord = t
 			break
 
-	if(foundrecord)
+	if (foundrecord)
 		foundrecord.fields["rank"] = assignment
 
 
@@ -465,7 +465,7 @@ Pod/Blast Doors computer
 		if (C)
 			G.fields["rank"] = C.assignment
 		else
-			if(H.job)
+			if (H.job)
 				G.fields["rank"] = H.job
 			else
 				G.fields["rank"] = "Unassigned"
@@ -521,7 +521,7 @@ Pod/Blast Doors computer
 
 
 /obj/machinery/computer/pod/proc/alarm()
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 
 	if (!( connected ))
@@ -537,7 +537,7 @@ Pod/Blast Doors computer
 
 	//connected.drive()		*****RM from 40.93.3S
 	for(var/obj/machinery/mass_driver/M in machines)
-		if(M.id == id)
+		if (M.id == id)
 			M.power = connected.power
 			M.drive()
 
@@ -560,9 +560,9 @@ Pod/Blast Doors computer
 	return
 
 /obj/machinery/computer/pod/attackby(I as obj, user as mob)
-	if(istype(I, /obj/item/weapon/screwdriver))
+	if (istype(I, /obj/item/weapon/screwdriver))
 		playsound(loc, 'Screwdriver.ogg', 50, 1)
-		if(do_after(user, 20))
+		if (do_after(user, 20))
 			if (stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				var/obj/computerframe/A = new /obj/computerframe( loc )
@@ -570,11 +570,11 @@ Pod/Blast Doors computer
 
 				//generate appropriate circuitboard. Accounts for /pod/old computer types
 				var/obj/item/weapon/circuitboard/pod/M = null
-				if(istype(src, /obj/machinery/computer/pod/old))
+				if (istype(src, /obj/machinery/computer/pod/old))
 					M = new /obj/item/weapon/circuitboard/olddoor( A )
-					if(istype(src, /obj/machinery/computer/pod/old/syndicate))
+					if (istype(src, /obj/machinery/computer/pod/old/syndicate))
 						M = new /obj/item/weapon/circuitboard/syndicatedoor( A )
-					if(istype(src, /obj/machinery/computer/pod/old/swf))
+					if (istype(src, /obj/machinery/computer/pod/old/swf))
 						M = new /obj/item/weapon/circuitboard/swfdoor( A )
 				else //it's not an old computer. Generate standard pod circuitboard.
 					M = new /obj/item/weapon/circuitboard/pod( A )
@@ -593,11 +593,11 @@ Pod/Blast Doors computer
 
 				//generate appropriate circuitboard. Accounts for /pod/old computer types
 				var/obj/item/weapon/circuitboard/pod/M = null
-				if(istype(src, /obj/machinery/computer/pod/old))
+				if (istype(src, /obj/machinery/computer/pod/old))
 					M = new /obj/item/weapon/circuitboard/olddoor( A )
-					if(istype(src, /obj/machinery/computer/pod/old/syndicate))
+					if (istype(src, /obj/machinery/computer/pod/old/syndicate))
 						M = new /obj/item/weapon/circuitboard/syndicatedoor( A )
-					if(istype(src, /obj/machinery/computer/pod/old/swf))
+					if (istype(src, /obj/machinery/computer/pod/old/swf))
 						M = new /obj/item/weapon/circuitboard/swfdoor( A )
 				else //it's not an old computer. Generate standard pod circuitboard.
 					M = new /obj/item/weapon/circuitboard/pod( A )
@@ -621,7 +621,7 @@ Pod/Blast Doors computer
 	return attack_hand(user)
 
 /obj/machinery/computer/pod/attack_hand(var/mob/user as mob)
-	if(..())
+	if (..())
 		return
 
 	var/dat = "<HTML><BODY><TT><B>Mass Driver Controls</B>"
@@ -666,7 +666,7 @@ Pod/Blast Doors computer
 	return
 
 /obj/machinery/computer/pod/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(loc, /turf))) || (istype(usr, /mob/living/silicon)))
 		usr.machine = src
@@ -688,8 +688,8 @@ Pod/Blast Doors computer
 						time = min(max(round(time), 0), 120)
 					else
 						if (href_list["door"])
-							if(istype(src, /obj/machinery/computer/pod/old/syndicate))//Added here so Nuke ops don't go running naked into space before moving the shuttle.
-								if(syndicate_station_at_station == 0)
+							if (istype(src, /obj/machinery/computer/pod/old/syndicate))//Added here so Nuke ops don't go running naked into space before moving the shuttle.
+								if (syndicate_station_at_station == 0)
 									usr << "\red You need to launch the Syndicate Shuttle via the computer terminal at the head of the ship before departing."
 									return
 							for(var/obj/machinery/door/poddoor/M in machines)
@@ -709,15 +709,15 @@ Pod/Blast Doors computer
 	return
 
 /obj/machinery/mass_driver/proc/drive(amount)
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		return
 	use_power(500)
 	var/O_limit
 	var/atom/target = get_edge_target_turf(src, dir)
 	for(var/atom/movable/O in loc)
-		if(!O.anchored||istype(O, /obj/mecha))//Mechs need their launch platforms.
+		if (!O.anchored||istype(O, /obj/mecha))//Mechs need their launch platforms.
 			O_limit++
-			if(O_limit >= 20)
+			if (O_limit >= 20)
 				for(var/mob/M in hearers(src, null))
 					M << "\blue The mass driver lets out a screech, it mustn't be able to handle any more items."
 				break

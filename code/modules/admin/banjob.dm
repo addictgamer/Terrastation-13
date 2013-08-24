@@ -8,12 +8,12 @@ var
 	jobban_savebanfile()
 
 /proc/jobban_isbanned(mob/M, rank)
-	if(_jobban_isbanned(M, rank)) return 1//for old jobban
-	if(M)
+	if (_jobban_isbanned(M, rank)) return 1//for old jobban
+	if (M)
 		if (is_important_job(rank))
-			if(config.guest_jobban && IsGuestKey(M.key))
+			if (config.guest_jobban && IsGuestKey(M.key))
 				return 1
-			if(config.usewhitelist && !check_whitelist(M))
+			if (config.usewhitelist && !check_whitelist(M))
 				return 1
 		if (jobban_keylist.Find(text("[M.ckey] - [rank]")))
 			return 1
@@ -45,16 +45,16 @@ var
 
 
 /proc/jobban_updatelegacybans()
-	if(!jobban_runonce)
+	if (!jobban_runonce)
 		log_admin("Updating jobbanfile!")
 		// Updates bans.. Or fixes them. Either way.
 		for(var/T in jobban_keylist)
-			if(!T)	continue
+			if (!T)	continue
 		jobban_runonce++	//don't run this update again
 
 
 /proc/jobban_remove(X)
-	if(jobban_keylist.Find(X))
+	if (jobban_keylist.Find(X))
 		jobban_keylist.Remove(X)
 		jobban_savebanfile()
 		return 1

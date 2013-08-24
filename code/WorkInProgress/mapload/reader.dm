@@ -1,6 +1,6 @@
 
 dmm_suite/load_map(var/dmm_file as file, var/z_offset as num)
-	if(!z_offset)
+	if (!z_offset)
 		z_offset = world.maxz+1
 	var/quote = ascii2text(34)
 	var/tfile = file2text(dmm_file)
@@ -9,7 +9,7 @@ dmm_suite/load_map(var/dmm_file as file, var/z_offset as num)
 	var/key_len = length(copytext(tfile,2,findtext(tfile,quote,2,0)))
 	for(var/lpos=1;lpos<tfile_len;lpos=findtext(tfile,"\n",lpos,0)+1)
 		var/tline = copytext(tfile,lpos,findtext(tfile,"\n",lpos,0))
-		if(copytext(tline,1,2)!=quote)	break
+		if (copytext(tline,1,2)!=quote)	break
 		var/model_key = copytext(tline,2,findtext(tfile,quote,2,0))
 		var/model_contents = copytext(tline,findtext(tfile,"=")+3,length(tline))
 		grid_models[model_key] = model_contents
@@ -26,23 +26,23 @@ dmm_suite/load_map(var/dmm_file as file, var/z_offset as num)
 		for(var/gpos=1;gpos!=0;gpos=findtext(zgrid,"\n",gpos,0)+1)
 			var/grid_line = copytext(zgrid,gpos,findtext(zgrid,"\n",gpos,0)+1)
 			var/y_depth = length(zgrid)/(length(grid_line))
-			if(world.maxy<y_depth)	world.maxy=y_depth
+			if (world.maxy<y_depth)	world.maxy=y_depth
 			grid_line=copytext(grid_line,1,length(grid_line))
-			if(!ycrd)
+			if (!ycrd)
 				ycrd = y_depth
 			else
 				ycrd--
 			xcrd=0
 			for(var/mpos=1;mpos<=length(grid_line);mpos+=key_len)
 				xcrd++
-				if(world.maxx<xcrd)	world.maxx=xcrd
+				if (world.maxx<xcrd)	world.maxx=xcrd
 				var/model_key = copytext(grid_line,mpos,mpos+key_len)
 				parse_grid(grid_models[model_key],xcrd,ycrd,zcrd+z_offset)
 
-			if(gpos+length(grid_line)+1>length(zgrid))	break
+			if (gpos+length(grid_line)+1>length(zgrid))	break
 			sleep(-1)
 
-		if(findtext(tfile,quote+"}",zpos,0)+2==tfile_len)	break
+		if (findtext(tfile,quote+"}",zpos,0)+2==tfile_len)	break
 		sleep(-1)
 
 dmm_suite/proc/parse_grid(var/model as text,var/xcrd as num,var/ycrd as num,var/zcrd as num)
@@ -70,16 +70,16 @@ dmm_suite/proc/parse_grid(var/model as text,var/xcrd as num,var/ycrd as num,var/
 		var/full_def = copytext(model,dpos,findtext(model,",",dpos,0))
 		var/atom_def = text2path(copytext(full_def,1,findtext(full_def,"{")))
 
-		if(ispath(atom_def, /turf/space))
+		if (ispath(atom_def, /turf/space))
 			continue
 
 		var/list/attributes[0]
-		if(findtext(full_def,"{"))
+		if (findtext(full_def,"{"))
 			full_def = copytext(full_def,1,length(full_def))
 			for(var/apos=findtext(full_def,"{")+1;apos!=0;apos=findtext(full_def,";",apos,0)+1)
 				//Loop: Identifies each attribute/value pair, and stores it in attributes[].
 				attributes.Add(copytext(full_def,apos,findtext(full_def,";",apos,0)))
-				if(!findtext(copytext(full_def,apos,0),";"))	break
+				if (!findtext(copytext(full_def,apos,0),";"))	break
 				sleep(-1)
 
 		//Construct attributes associative list
@@ -88,14 +88,14 @@ dmm_suite/proc/parse_grid(var/model as text,var/xcrd as num,var/ycrd as num,var/
 			var/trim_left = trim_text(copytext(attributes[index],1,findtext(attributes[index],"=")))
 			var/trim_right = trim_text(copytext(attributes[index],findtext(attributes[index],"=")+1,0))
 			//Check for string
-			if(findtext(trim_right,"~"))
+			if (findtext(trim_right,"~"))
 				var/reference_index = copytext(trim_right,findtext(trim_right,"~")+1,0)
 				trim_right=text_strings[text2num(reference_index)]
 			//Check for number
-			else if(isnum(text2num(trim_right)))
+			else if (isnum(text2num(trim_right)))
 				trim_right = text2num(trim_right)
 			//Check for file
-			else if(copytext(trim_right,1,2) == "'")
+			else if (copytext(trim_right,1,2) == "'")
 				trim_right = file(copytext(trim_right,2,length(trim_right)))
 			fields[trim_left] = trim_right
 
@@ -103,19 +103,19 @@ dmm_suite/proc/parse_grid(var/model as text,var/xcrd as num,var/ycrd as num,var/
 		//Begin Instanciation
 		var/atom/instance
 		var/dmm_suite/preloader/_preloader = new(fields)
-		if(ispath(atom_def,/area))
+		if (ispath(atom_def,/area))
 
 			var/turf/A = locate(xcrd,ycrd,zcrd)
-			if(A.loc.name == "space")
+			if (A.loc.name == "space")
 				instance = locate(atom_def)
 				instance.contents.Add(locate(xcrd,ycrd,zcrd))
 
 		else
 			instance = new atom_def(locate(xcrd,ycrd,zcrd))
-			if(_preloader)
+			if (_preloader)
 				_preloader.load(instance)
 			//End Instanciation
-		if(!findtext(copytext(model,dpos,0),","))	break
+		if (!findtext(copytext(model,dpos,0),","))	break
 
 
 
@@ -135,7 +135,7 @@ dmm_suite/preloader
 
 	New(list/the_attributes)
 		..()
-		if(!the_attributes.len)	Del()
+		if (!the_attributes.len)	Del()
 		attributes = the_attributes
 
 
@@ -151,17 +151,17 @@ dmm_suite/preloader
 	set name = "LoadMap"
 	set desc = "Loads a map"
 	set hidden = 1
-	if(src.authenticated && src.holder)
-		if(!src.mob)
+	if (src.authenticated && src.holder)
+		if (!src.mob)
 			return
-		if(src.holder.rank in list("Game Admin", "Game Master"))
+		if (src.holder.rank in list("Game Admin", "Game Master"))
 			var/file_name = "[dmm_map]"
 			var/file_extension = copytext(file_name,length(file_name)-2,0)
-			if(file_extension != "dmm")
+			if (file_extension != "dmm")
 				usr << "Supplied file must be a .dmm file."
 				return
 			var/map_z = input(usr,"Enter variable value:" ,"Value", 123) as num
-			if(map_z > (world.maxz+1))
+			if (map_z > (world.maxz+1))
 				map_z = (world.maxz+1)
 
 			var/dmm_suite/new_reader = new()

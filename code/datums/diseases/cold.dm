@@ -13,50 +13,50 @@
 /datum/disease/cold/stage_act()
 	..()
 	switch(stage)
-		if(2)
-			if(affected_mob.sleeping && prob(40))
+		if (2)
+			if (affected_mob.sleeping && prob(40))
 				affected_mob << "\blue You feel better."
 				cure()
 				return
-			if(affected_mob.lying && prob(10))
+			if (affected_mob.lying && prob(10))
 				affected_mob << "\blue You feel better."
 				cure()
 				return
-			if(prob(1) && prob(5))
+			if (prob(1) && prob(5))
 				affected_mob << "\blue You feel better."
 				cure()
 				return
-			if(prob(1))
+			if (prob(1))
 				affected_mob.emote("sneeze")
-			if(prob(1))
+			if (prob(1))
 				affected_mob.emote("cough")
-			if(prob(1))
+			if (prob(1))
 				affected_mob << "\red Your throat feels sore."
-			if(prob(1))
+			if (prob(1))
 				affected_mob << "\red Mucous runs down the back of your throat."
-		if(3)
-			if(affected_mob.sleeping && prob(25))
+		if (3)
+			if (affected_mob.sleeping && prob(25))
 				affected_mob << "\blue You feel better."
 				cure()
 				return
-			if(affected_mob.lying && prob(5))
+			if (affected_mob.lying && prob(5))
 				affected_mob << "\blue You feel better."
 				cure()
 				return
-			if(prob(1) && prob(1))
+			if (prob(1) && prob(1))
 				affected_mob << "\blue You feel better."
 				cure()
 				return
-			if(prob(1))
+			if (prob(1))
 				affected_mob.emote("sneeze")
-			if(prob(1))
+			if (prob(1))
 				affected_mob.emote("cough")
-			if(prob(1))
+			if (prob(1))
 				affected_mob << "\red Your throat feels sore."
-			if(prob(1))
+			if (prob(1))
 				affected_mob << "\red Mucous runs down the back of your throat."
-			if(prob(1) && prob(50))
-				if(!affected_mob.resistances.Find(/datum/disease/flu))
+			if (prob(1) && prob(50))
+				if (!affected_mob.resistances.Find(/datum/disease/flu))
 					var/datum/disease/Flu = new /datum/disease/flu(0)
 					affected_mob.contract_disease(Flu,1)
 					cure()

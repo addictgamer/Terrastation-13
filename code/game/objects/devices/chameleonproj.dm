@@ -23,7 +23,7 @@
 		..()
 		master.disrupt()
 	relaymove(var/mob/user, direction)
-		if(can_move)
+		if (can_move)
 			can_move = 0
 			spawn(10) can_move = 1
 			step(src,direction)
@@ -50,19 +50,19 @@
 		toggle()
 
 	afterattack(atom/target, mob/user , flag)
-		if(istype(target,/obj/item))
+		if (istype(target,/obj/item))
 			playsound(src, 'flash.ogg', 100, 1, 1)
 			user << "\blue Scanned [target]."
 			saved_item = target.type
 
 	proc/toggle()
-		if(!can_use || !saved_item) return
-		if(active_dummy)
+		if (!can_use || !saved_item) return
+		if (active_dummy)
 			playsound(src, 'pop.ogg', 100, 1, 1)
 			for(var/atom/movable/A in active_dummy)
 				A.loc = get_turf(active_dummy)
-				if(ismob(A))
-					if(A:client)
+				if (ismob(A))
+					if (A:client)
 						A:client:eye = A
 			del(active_dummy)
 			active_dummy = null
@@ -74,7 +74,7 @@
 		else
 			playsound(src, 'pop.ogg', 100, 1, 1)
 			var/obj/O = new saved_item (src)
-			if(!O) return
+			if (!O) return
 			var/obj/dummy/chameleon/C = new/obj/dummy/chameleon(get_turf(src))
 			C.name = O.name
 			C.desc = O.desc
@@ -92,15 +92,15 @@
 			spawn(8) del(T)
 
 	proc/disrupt()
-		if(active_dummy)
+		if (active_dummy)
 			var/datum/effects/system/spark_spread/spark_system = new /datum/effects/system/spark_spread
 			spark_system.set_up(5, 0, src)
 			spark_system.attach(src)
 			spark_system.start()
 			for(var/atom/movable/A in active_dummy)
 				A.loc = get_turf(active_dummy)
-				if(ismob(A))
-					if(A:client)
+				if (ismob(A))
+					if (A:client)
 						A:client:eye = A
 			del(active_dummy)
 			active_dummy = null

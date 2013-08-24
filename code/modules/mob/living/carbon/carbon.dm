@@ -1,23 +1,23 @@
 /mob/living/carbon/Move(NewLoc, direct)
 	. = ..()
-	if(.)
-		if(src.nutrition && src.stat != 2)
+	if (.)
+		if (src.nutrition && src.stat != 2)
 			src.nutrition -= HUNGER_FACTOR/10
-			if(src.m_intent == "run")
+			if (src.m_intent == "run")
 				src.nutrition -= HUNGER_FACTOR/10
-		if(src.mutations & FAT && src.m_intent == "run" && src.bodytemperature <= 360)
+		if (src.mutations & FAT && src.m_intent == "run" && src.bodytemperature <= 360)
 			src.bodytemperature += 2
 
 /mob/living/carbon/relaymove(var/mob/user, direction)
-	if(user in src.stomach_contents)
-		if(prob(40))
+	if (user in src.stomach_contents)
+		if (prob(40))
 			for(var/mob/M in hearers(4, src))
-				if(M.client)
+				if (M.client)
 					M.show_message(text("\red You hear something rumbling inside [src]'s stomach..."), 2)
 			var/obj/item/I = user.equipped()
-			if(I && I.force)
+			if (I && I.force)
 				var/d = rand(round(I.force / 4), I.force)
-				if(istype(src, /mob/living/carbon/human))
+				if (istype(src, /mob/living/carbon/human))
 					var/mob/living/carbon/human/H = src
 					var/organ = H.organs["chest"]
 					if (istype(organ, /datum/organ/external))
@@ -28,29 +28,29 @@
 				else
 					src.take_organ_damage(d)
 				for(var/mob/M in viewers(user, null))
-					if(M.client)
+					if (M.client)
 						M.show_message(text("\red <B>[user] attacks [src]'s stomach wall with the [I.name]!"), 2)
 				playsound(user.loc, 'attackblob.ogg', 50, 1)
 
-				if(prob(src.bruteloss - 50))
+				if (prob(src.bruteloss - 50))
 					src.gib()
 
 /mob/living/carbon/gib(give_medal)
 	for(var/mob/M in src)
-		if(M in src.stomach_contents)
+		if (M in src.stomach_contents)
 			src.stomach_contents.Remove(M)
 		M.loc = src.loc
 		for(var/mob/N in viewers(src, null))
-			if(N.client)
+			if (N.client)
 				N.show_message(text("\red <B>[M] bursts out of [src]!</B>"), 2)
 	. = ..(give_medal)
 
 /mob/living/carbon/attack_hand(mob/M as mob)
-	if(!istype(M, /mob/living/carbon)) return
+	if (!istype(M, /mob/living/carbon)) return
 
 	for(var/datum/disease/D in viruses)
 		var/s_spread_type
-		if(D.spread_type!=SPECIAL && D.spread_type!=AIRBORNE)
+		if (D.spread_type!=SPECIAL && D.spread_type!=AIRBORNE)
 			s_spread_type = D.spread_type
 			D.spread_type = CONTACT_HANDS
 			M.contract_disease(D)
@@ -58,22 +58,22 @@
 
 	for(var/datum/disease/D in M.viruses)
 		var/s_spread_type
-		if(D.spread_type!=SPECIAL && D.spread_type!=AIRBORNE)
+		if (D.spread_type!=SPECIAL && D.spread_type!=AIRBORNE)
 			s_spread_type = D.spread_type
 			D.spread_type = CONTACT_HANDS
 			contract_disease(D)
 			D.spread_type = s_spread_type
 
 	/*		// old code: doesn't support multiple viruses
-	if(src.virus || M.virus)
+	if (src.virus || M.virus)
 		var/s_spread_type
-		if(src.virus && src.virus.spread_type!=SPECIAL && src.virus.spread_type!=AIRBORNE)
+		if (src.virus && src.virus.spread_type!=SPECIAL && src.virus.spread_type!=AIRBORNE)
 			s_spread_type = src.virus.spread_type
 			src.virus.spread_type = CONTACT_HANDS
 			M.contract_disease(src.virus)
 			src.virus.spread_type = s_spread_type
 
-		if(M.virus && M.virus.spread_type!=SPECIAL && M.virus.spread_type!=AIRBORNE)
+		if (M.virus && M.virus.spread_type!=SPECIAL && M.virus.spread_type!=AIRBORNE)
 			s_spread_type = M.virus.spread_type
 			M.virus.spread_type = CONTACT_GENERAL
 			src.contract_disease(M.virus)
@@ -83,12 +83,12 @@
 
 
 /mob/living/carbon/attack_paw(mob/M as mob)
-	if(!istype(M, /mob/living/carbon)) return
+	if (!istype(M, /mob/living/carbon)) return
 
 
 	for(var/datum/disease/D in viruses)
 		var/s_spread_type
-		if(D.spread_type!=SPECIAL && D.spread_type!=AIRBORNE)
+		if (D.spread_type!=SPECIAL && D.spread_type!=AIRBORNE)
 			s_spread_type = D.spread_type
 			D.spread_type = CONTACT_HANDS
 			M.contract_disease(D)
@@ -96,7 +96,7 @@
 
 	for(var/datum/disease/D in M.viruses)
 		var/s_spread_type
-		if(D.spread_type!=SPECIAL && D.spread_type!=AIRBORNE)
+		if (D.spread_type!=SPECIAL && D.spread_type!=AIRBORNE)
 			s_spread_type = D.spread_type
 			D.spread_type = CONTACT_HANDS
 			contract_disease(D)
@@ -104,15 +104,15 @@
 
 	/*
 
-	if(src.virus || M.virus)
+	if (src.virus || M.virus)
 		var/s_spread_type
-		if(src.virus && src.virus.spread_type!=SPECIAL && src.virus.spread_type!=AIRBORNE)
+		if (src.virus && src.virus.spread_type!=SPECIAL && src.virus.spread_type!=AIRBORNE)
 			s_spread_type = src.virus.spread_type
 			src.virus.spread_type = CONTACT_HANDS
 			M.contract_disease(src.virus)
 			src.virus.spread_type = s_spread_type
 
-		if(M.virus && M.virus.spread_type!=SPECIAL && M.virus.spread_type!=AIRBORNE)
+		if (M.virus && M.virus.spread_type!=SPECIAL && M.virus.spread_type!=AIRBORNE)
 			s_spread_type = M.virus.spread_type
 			M.virus.spread_type = CONTACT_GENERAL
 			src.contract_disease(M.virus)
@@ -133,21 +133,21 @@
 		"\red <B>You feel a powerful shock course through your body!</B>", \
 		"\red You hear a heavy electrical crack." \
 	)
-//	if(src.stunned < shock_damage)	src.stunned = shock_damage
+//	if (src.stunned < shock_damage)	src.stunned = shock_damage
 	src.stunned = max(src.stunned,10)//This should work for now, more is really silly and makes you lay there forever
-//	if(src.weakened < 20*siemens_coeff)	src.weakened = 20*siemens_coeff
+//	if (src.weakened < 20*siemens_coeff)	src.weakened = 20*siemens_coeff
 	src.weakened = max(src.weakened,10)
 	return shock_damage
 
 
 /mob/living/carbon/proc/swap_hand()
 	var/obj/item/item_in_hand = src.get_active_hand()
-	if(item_in_hand) //this segment checks if the item in your hand is twohanded.
-		if(item_in_hand.twohanded == 1)
-			if(item_in_hand.wielded == 1)
+	if (item_in_hand) //this segment checks if the item in your hand is twohanded.
+		if (item_in_hand.twohanded == 1)
+			if (item_in_hand.wielded == 1)
 				usr << text("Your other hand is too busy holding the []",item_in_hand.name)
 				return
-	//if(src.hand.needs_held_update) //Uncomment if you want automatic guns and whatnot to not fire when they are not in the active hand.
+	//if (src.hand.needs_held_update) //Uncomment if you want automatic guns and whatnot to not fire when they are not in the active hand.
 	//	src.hand.on = 0 //Turn it off.
 	src.hand = !( src.hand )
 	if (!( src.hand ))

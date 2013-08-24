@@ -2,7 +2,7 @@
 var/const/js_byjax = {"
 function replaceContent(id,content) {
 	var parent = document.getElementById(id);
-	if(typeof(parent)!=='undefined' && parent!=null){
+	if (typeof(parent)!=='undefined' && parent!=null){
 		parent.innerHTML = content?content:'';
 	}
 }
@@ -21,9 +21,9 @@ callback_args - arguments for callback function
 Be sure to include required js functions in your page, or it'll raise an exception.
 */
 proc/send_byjax(receiver, control_id, target_element, new_content=null, callback=null, list/callback_args=null)
-	if(receiver && target_element && control_id) // && winexists(receiver, control_id))
+	if (receiver && target_element && control_id) // && winexists(receiver, control_id))
 		receiver << output(list2params(list(target_element, new_content)),"[control_id]:replaceContent")
-		if(callback)
+		if (callback)
 			receiver << output(istype(callback_args)?list2params(callback_args):"","[control_id]:[callback]")
 	return
 

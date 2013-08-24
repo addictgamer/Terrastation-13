@@ -2,7 +2,7 @@
 	set category = "Fun"
 	set name = "Create AI Triumvirate"
 
-	if(ticker.current_state > GAME_STATE_PREGAME)
+	if (ticker.current_state > GAME_STATE_PREGAME)
 		usr << "This option is currently only usable during pregame. This may change at a later date."
 		return
 	if (occupations["AI"] > 1)

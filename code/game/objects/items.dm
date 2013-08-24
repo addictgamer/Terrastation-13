@@ -15,15 +15,15 @@
 
 
 /obj/item/weapon/handcuffs/attack(mob/M as mob, mob/user as mob)
-	if(istype(src, /obj/item/weapon/handcuffs/cyborg) && isrobot(user))
-		if(!M.handcuffed)
+	if (istype(src, /obj/item/weapon/handcuffs/cyborg) && isrobot(user))
+		if (!M.handcuffed)
 			var/turf/p_loc = user.loc
 			var/turf/p_loc_m = M.loc
 			playsound(src.loc, 'handcuffs.ogg', 30, 1, -2)
 			for(var/mob/O in viewers(user, null))
 				O.show_message("\red <B>[user] is trying to put handcuffs on [M]!</B>", 1)
 			spawn(30)
-				if(p_loc == user.loc && p_loc_m == M.loc)
+				if (p_loc == user.loc && p_loc_m == M.loc)
 					M.handcuffed = new /obj/item/weapon/handcuffs(M)
 
 	else
@@ -95,7 +95,7 @@
 /obj/item/weapon/extinguisher/afterattack(atom/target, mob/user , flag)
 	//TODO; Add support for reagents in water.
 
-	if( istype(target, /obj/reagent_dispensers/watertank) && get_dist(src,target) <= 1)
+	if ( istype(target, /obj/reagent_dispensers/watertank) && get_dist(src,target) <= 1)
 		var/obj/o = target
 		o.reagents.trans_to(src, 50)
 		user << "\blue Extinguisher refilled"
@@ -126,22 +126,22 @@
 				var/obj/effects/water/W = new /obj/effects/water( get_turf(src) )
 				var/turf/my_target = pick(the_targets)
 				var/datum/reagents/R = new/datum/reagents(5)
-				if(!W) return
+				if (!W) return
 				W.reagents = R
 				R.my_atom = W
-				if(!W || !src) return
+				if (!W || !src) return
 				src.reagents.trans_to(W,1)
 				for(var/b=0, b<5, b++)
 					step_towards(W,my_target)
-					if(!W) return
+					if (!W) return
 					W.reagents.reaction(get_turf(W))
 					for(var/atom/atm in get_turf(W))
-						if(!W) return
+						if (!W) return
 						W.reagents.reaction(atm)
-					if(W.loc == my_target) break
+					if (W.loc == my_target) break
 					sleep(2)
 
-		if(istype(usr.loc, /turf/space))
+		if (istype(usr.loc, /turf/space))
 			user.inertia_dir = get_dir(target, user)
 			step(user, user.inertia_dir)
 
@@ -189,7 +189,7 @@
 		M << "\red You feel a tiny prick!"
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been stabbed with [src.name]  by [user.name] ([user.ckey])</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to stab [M.name] ([M.ckey])</font>")
-		if(M.reagents) reagents.trans_to(M, 50) //used to be 150
+		if (M.reagents) reagents.trans_to(M, 50) //used to be 150
 	return
 
 /obj/item/device/flashlight/pen/paralysis/New()
@@ -208,7 +208,7 @@
 		M << "\red You feel a tiny prick!"
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been stabbed with [src.name]  by [user.name] ([user.ckey])</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to stab [M.name] ([M.ckey])</font>")
-		if(M.reagents) reagents.trans_to(M, 15)
+		if (M.reagents) reagents.trans_to(M, 15)
 	..()
 	return
 
@@ -311,51 +311,51 @@
 		return
 	usr << "This is \icon[src] \an [name]."
 
-	if(brainmob)//if thar be a brain inside... the brain.
+	if (brainmob)//if thar be a brain inside... the brain.
 		usr << "You can feel the small spark of life still left in this one."
 	else
 		usr << "This one seems particularly lifeless. Perhaps it will regain some of its luster later. Probably not."
 
 /obj/item/brain/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if(!istype(M, /mob))
+	if (!istype(M, /mob))
 		return
 
 	add_fingerprint(user)
 
-	if(!(user.zone_sel.selecting == ("head")) || !istype(M, /mob/living/carbon/human))
+	if (!(user.zone_sel.selecting == ("head")) || !istype(M, /mob/living/carbon/human))
 		return ..()
 
-	if(!(locate(/obj/machinery/optable, M.loc) && M.resting))
+	if (!(locate(/obj/machinery/optable, M.loc) && M.resting))
 		return ..()
 
 	var/mob/living/carbon/human/H = M
-	if(istype(M, /mob/living/carbon/human) && ((H.head && H.head.flags & HEADCOVERSEYES) || (H.wear_mask && H.wear_mask.flags & MASKCOVERSEYES) || (H.glasses && H.glasses.flags & GLASSESCOVERSEYES)))
+	if (istype(M, /mob/living/carbon/human) && ((H.head && H.head.flags & HEADCOVERSEYES) || (H.wear_mask && H.wear_mask.flags & MASKCOVERSEYES) || (H.glasses && H.glasses.flags & GLASSESCOVERSEYES)))
 		// you can't stab someone in the eyes wearing a mask!
 		user << "\blue You're going to need to remove their head cover first."
 		return
 
 //since these people will be dead M != usr
 
-	if(M:brain_op_stage == 4.0)
+	if (M:brain_op_stage == 4.0)
 		for(var/mob/O in viewers(M, null))
-			if(O == (user || M))
+			if (O == (user || M))
 				continue
-			if(M == user)
+			if (M == user)
 				O.show_message(text("\red [user] inserts [src] into his head!"), 1)
 			else
 				O.show_message(text("\red [M] has [src] inserted into his head by [user]."), 1)
 
-		if(M != user)
+		if (M != user)
 			M << "\red [user] inserts [src] into your head!"
 			user << "\red You insert [src] into [M]'s head!"
 		else
 			user << "\red You insert [src] into your head!"
 
 		//this might actually be outdated since barring badminnery, a debrain'd body will have any client sucked out to the brain's internal mob. Leaving it anyway to be safe. --NEO
-		if(M.key)//Revised. /N
+		if (M.key)//Revised. /N
 			M.ghostize(1)
 
-		if(brainmob.mind)
+		if (brainmob.mind)
 			brainmob.mind.transfer_to(M)
 		else
 			M.key = brainmob.key
@@ -378,19 +378,19 @@
 
 /obj/item/weapon/dice/attack_self(mob/user as mob) // Roll the dice -- TLE
 	var/temp_sides
-	if(src.sides < 1)
+	if (src.sides < 1)
 		temp_sides = 2
 	else
 		temp_sides = src.sides
 	var/result = rand(1,temp_sides)
 	var/comment = ""
-	if(temp_sides == 20 && result == 20)
+	if (temp_sides == 20 && result == 20)
 		comment = "Nat 20!"
-	else if(temp_sides == 20 && result == 1)
+	else if (temp_sides == 20 && result == 1)
 		comment = "Ouch, bad luck."
 	user << text("\red You throw a [src]. It lands on a [result]. [comment]")
 	for(var/mob/O in viewers(user, null))
-		if(O == (user))
+		if (O == (user))
 			continue
 		else
 			O.show_message(text("\red [user] has thrown a [src]. It lands on [result]. [comment]"), 1)
@@ -436,7 +436,7 @@
 	burst()
 
 /obj/item/latexballon/temperature_expose(datum/gas_mixture/air, temperature, volume)
-	if(temperature > T0C+100)
+	if (temperature > T0C+100)
 		burst()
 	return
 

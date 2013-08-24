@@ -1,10 +1,10 @@
 /mob/living/carbon/human/say(var/message)
-	if(src.mutantrace == "lizard")
-		if(copytext(message, 1, 2) != "*")
+	if (src.mutantrace == "lizard")
+		if (copytext(message, 1, 2) != "*")
 			message = dd_replaceText(message, "s", stutter("ss"))
-	if(src.mutantrace == "metroid" && prob(5))
-		if(copytext(message, 1, 2) != "*")
-			if(copytext(message, 1, 2) == ";")
+	if (src.mutantrace == "metroid" && prob(5))
+		if (copytext(message, 1, 2) != "*")
+			if (copytext(message, 1, 2) == ";")
 				message = ";"
 			else
 				message = ""
@@ -19,24 +19,24 @@
 		for(var/i = 1, i <= temp_message.len, i++)
 			pick_list += i
 		for(var/i=1, ((i <= D.stage) && (i <= temp_message.len)), i++)
-			if(prob(5 * D.stage))
+			if (prob(5 * D.stage))
 				var/H = pick(pick_list)
-				if(findtext(temp_message[H], "*") || findtext(temp_message[H], ";") || findtext(temp_message[H], ":")) continue
+				if (findtext(temp_message[H], "*") || findtext(temp_message[H], ";") || findtext(temp_message[H], ":")) continue
 				temp_message[H] = "HONK"
 				pick_list -= H
 			message = dd_list2text(temp_message, " ")
 
 	//Ninja mask obscures text and voice if set to do so.
 	//Would make it more global but it's sort of ninja specific.
-	if(istype(src.wear_mask, /obj/item/clothing/mask/gas/voice/space_ninja)&&src.wear_mask:voice=="Unknown")
-		if(copytext(message, 1, 2) != "*")
+	if (istype(src.wear_mask, /obj/item/clothing/mask/gas/voice/space_ninja)&&src.wear_mask:voice=="Unknown")
+		if (copytext(message, 1, 2) != "*")
 			var/list/temp_message = dd_text2list(message, " ")
 			var/list/pick_list = list()
 			for(var/i = 1, i <= temp_message.len, i++)
 				pick_list += i
 			for(var/i=1, i <= abs(temp_message.len/3), i++)
 				var/H = pick(pick_list)
-				if(findtext(temp_message[H], "*") || findtext(temp_message[H], ";") || findtext(temp_message[H], ":")) continue
+				if (findtext(temp_message[H], "*") || findtext(temp_message[H], ";") || findtext(temp_message[H], ":")) continue
 				temp_message[H] = ninjaspeak(temp_message[H])
 				pick_list -= H
 			message = dd_list2text(temp_message, " ")

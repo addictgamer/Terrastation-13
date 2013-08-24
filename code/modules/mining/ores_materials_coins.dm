@@ -137,13 +137,13 @@
 	icon_state = "coin_adamantine"
 
 /obj/item/weapon/coin/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W,/obj/item/weapon/cable_coil) )
+	if (istype(W,/obj/item/weapon/cable_coil) )
 		var/obj/item/weapon/cable_coil/CC = W
-		if(string_attached)
+		if (string_attached)
 			user << "\blue There already is a string attached to this coin."
 			return
 
-		if(CC.amount <= 0)
+		if (CC.amount <= 0)
 			user << "\blue This cable coil appears to be empty."
 			del(CC)
 			return
@@ -152,8 +152,8 @@
 		string_attached = 1
 		user << "\blue You attach a string to the coin."
 		CC.use(1)
-	else if(istype(W,/obj/item/weapon/wirecutters) )
-		if(!string_attached)
+	else if (istype(W,/obj/item/weapon/wirecutters) )
+		if (!string_attached)
 			..()
 			return
 

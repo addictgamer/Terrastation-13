@@ -23,8 +23,8 @@
 */
 
 /obj/mecha/combat/durand/relaymove(mob/user,direction)
-	if(defence)
-		if(world.time - last_message > 20)
+	if (defence)
+		if (world.time - last_message > 20)
 			src.occupant_message("<font color='red'>Unable to move while in defence mode</font>")
 			last_message = world.time
 		return 0
@@ -36,10 +36,10 @@
 	set category = "Exosuit Interface"
 	set name = "Toggle defence mode"
 	set src in view(0)
-	if(usr!=src.occupant && usr != src.remote_controlled)
+	if (usr!=src.occupant && usr != src.remote_controlled)
 		return
 	defence = !defence
-	if(defence)
+	if (defence)
 		deflect_chance = defence_deflect
 		src.occupant_message("<font color='blue'>You enable [src] defence mode.</font>")
 	else

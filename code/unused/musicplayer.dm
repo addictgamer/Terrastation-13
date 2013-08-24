@@ -3,7 +3,7 @@
 	set name = "Music Toggle"
 	if (!client)
 		return //NEEDS CLIENT.
-	if(src.client.be_music == 0)
+	if (src.client.be_music == 0)
 		src.client.be_music = 1
 		src << "\blue Music toggled on!"
 		return

@@ -31,12 +31,12 @@
 		active_blobs = list()
 		for(var/i = 1 to 3)
 			var/turf/location = pick(blobstart)
-			if(location)
-				if(!locate(/obj/blob in location))
+			if (location)
+				if (!locate(/obj/blob in location))
 					var/obj/blob/blob = new/obj/blob(location)
 					spawn(200)
-						if(blob)
-							if(blob.blobtype == "Blob")
+						if (blob)
+							if (blob.blobtype == "Blob")
 								blob.blobdebug = 1
 		spawn(40)
 			autoexpand = 1
@@ -45,9 +45,9 @@
 
 
 /datum/game_mode/blob/process()
-	if(declared)
+	if (declared)
 		stage()
-		if(autoexpand)
+		if (autoexpand)
 			spawn(0)
 				life()
 	return
@@ -61,7 +61,7 @@
 				break
 
 			var/obj/blob/B = pick(active_blobs)
-			if(B.z != 1)
+			if (B.z != 1)
 				continue
 
 			spawn(0)
@@ -93,35 +93,35 @@
 			next_stage = world.timeofday + 600
 
 		if (2)
-			if((blobs.len > 500) && (declared == 1))
+			if ((blobs.len > 500) && (declared == 1))
 				command_alert("Uncontrolled spread of the biohazard onboard the station. We have issued directive 7-12 for [station_name()].  Any living Heads of Staff are ordered to enact directive 7-12 at any cost, a print out with detailed instructions has been sent to your communications computers.", "Biohazard Alert")
 				send_intercept(2)
 				declared = 2
-			if(blobs.len > 700)
+			if (blobs.len > 700)
 				stage = 3
 			next_stage = world.timeofday + 600
 
 
 /datum/game_mode/blob/check_finished()
-	if(!declared)
+	if (!declared)
 		return 0
-	if(stage >= 3)
+	if (stage >= 3)
 		return 1
-	if(station_was_nuked)
+	if (station_was_nuked)
 		return 1
 	for(var/obj/blob/B in blobs)
-		if(B.z == 1)
+		if (B.z == 1)
 			return 0
 	return 1
 
 
 /datum/game_mode/blob/declare_completion()
-	if(stage >= 3)
+	if (stage >= 3)
 		world << "<FONT size = 3><B>The blob has taken over the station!</B></FONT>"
 		world << "<B>The entire station was eaten by the Blob</B>"
 		check_quarantine()
 
-	else if(station_was_nuked)
+	else if (station_was_nuked)
 		world << "<FONT size = 3><B>Partial Win: The station has been destroyed!</B></FONT>"
 		world << "<B>Directive 7-12 has been successfully carried out preventing the Blob from spreading.</B>"
 
@@ -143,7 +143,7 @@
 	var/intercepttext = ""
 	var/interceptname = "Error"
 	switch(orders)
-		if(1)
+		if (1)
 			interceptname = "Biohazard Alert"
 			intercepttext += "<FONT size = 3><B>NanoTrasen Update</B>: Biohazard Alert.</FONT><HR>"
 			intercepttext += "Reports indicate the probable transfer of a biohazardous agent onto [station_name()] during the last crew deployment cycle.<BR>"
@@ -156,11 +156,11 @@
 			intercepttext += " 4. Avoid damage to the capital infrastructure of the station.<BR>"
 			intercepttext += "<BR>Note in the event of a quarantine breach or uncontrolled spread of the biohazard, the directive 7-10 may be upgraded to a directive 7-12.<BR>"
 			intercepttext += "Message ends."
-		if(2)
+		if (2)
 			var/nukecode = "ERROR"
 			for(var/obj/machinery/nuclearbomb/bomb in world)
-				if(bomb && bomb.r_code)
-					if(bomb.z == 1)
+				if (bomb && bomb.r_code)
+					if (bomb.z == 1)
 						nukecode = bomb.r_code
 			interceptname = "Directive 7-12"
 			intercepttext += "<FONT size = 3><B>NanoTrasen Update</B>: Biohazard Alert.</FONT><HR>"
@@ -202,7 +202,7 @@
 					var/T = M.loc
 					if (istype(T, /turf/space))
 						numSpace += 1
-					else if(istype(T, /turf))
+					else if (istype(T, /turf))
 						if (M.z!=1)
 							numOffStation += 1
 						else

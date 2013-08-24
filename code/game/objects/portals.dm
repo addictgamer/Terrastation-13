@@ -19,7 +19,7 @@
 	return
 
 /obj/portal/proc/teleport(atom/movable/M as mob|obj)
-	if(istype(M, /obj/effects)) //sparks don't teleport
+	if (istype(M, /obj/effects)) //sparks don't teleport
 		return
 	if (M.anchored&&istype(M, /obj/mecha))
 		return
@@ -29,7 +29,7 @@
 		del(src)
 		return
 	if (istype(M, /atom/movable))
-		if(prob(failchance)) //oh dear a problem, put em in deep space
+		if (prob(failchance)) //oh dear a problem, put em in deep space
 			src.icon_state = "portal1"
 			do_teleport(M, locate(rand(5, world.maxx - 5), rand(5, world.maxy -5), 3), 0)
 		else

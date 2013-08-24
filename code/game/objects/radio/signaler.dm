@@ -32,14 +32,14 @@
 
 	Process_cooldown()
 		cooldown--
-		if(cooldown <= 0)	return 0
+		if (cooldown <= 0)	return 0
 		spawn(10)
 			Process_cooldown()
 		return 1
 
 
 	Activate()
-		if((!secured) || (cooldown > 0))
+		if ((!secured) || (cooldown > 0))
 			return 0
 		cooldown = 2
 		send_signal()
@@ -49,14 +49,14 @@
 
 
 	Secure()
-		if(secured)
+		if (secured)
 			return 0
 		secured = 1
 		return 1
 
 
 	Unsecure()
-		if(!secured)
+		if (!secured)
 			return 0
 		secured = 0
 		return 1
@@ -64,19 +64,19 @@
 
 	Attach_Assembly(var/obj/A, var/mob/user)
 		holder = new/obj/item/device/assembly_holder(get_turf(src))
-		if(holder:attach(A,src,user))
+		if (holder:attach(A,src,user))
 			user.show_message("\blue You attach the [A.name] to the [src.name]!")
 			return 1
 		return 0
 
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(W.IsAssembly())
+		if (W.IsAssembly())
 			var/obj/item/device/D = W
-			if((!D:secured) && (!src.secured))
+			if ((!D:secured) && (!src.secured))
 				Attach_Assembly(D,user)
-		if(isscrewdriver(W))
-			if(src.secured)
+		if (isscrewdriver(W))
+			if (src.secured)
 				Unsecure()
 				b_stat = 1
 				user.show_message("\blue The [src.name] can now be attached!")
@@ -131,15 +131,15 @@ Code:
 
 
 /obj/item/device/radio/signaler/receive_signal(datum/signal/signal)
-	if(cooldown > 0)	return 0
-	if(!signal || (signal.encryption != code))	return 0
+	if (cooldown > 0)	return 0
+	if (!signal || (signal.encryption != code))	return 0
 
 	if (!( src.wires & 2 ))
 		return
-	if(istype(src.loc, /obj/machinery/door/airlock) && src.airlock_wire && src.wires & 1)
+	if (istype(src.loc, /obj/machinery/door/airlock) && src.airlock_wire && src.wires & 1)
 		var/obj/machinery/door/airlock/A = src.loc
 		A.pulse(src.airlock_wire)
-	if((src.holder) && (holder.IsAssemblyHolder()) && (secured) && (src.wires & 1))
+	if ((src.holder) && (holder.IsAssemblyHolder()) && (secured) && (src.wires & 1))
 		spawn(0)
 			holder:Process_Activation(src)
 			return
@@ -155,14 +155,14 @@ Code:
 
 /obj/item/device/radio/signaler/proc/send_signal(message="ACTIVATE")
 
-	if(last_transmission && world.time < (last_transmission + TRANSMISSION_DELAY))
+	if (last_transmission && world.time < (last_transmission + TRANSMISSION_DELAY))
 		return
 	last_transmission = world.time
 
 	if (!( src.wires & 4 ))
 		return
 
-	if((usr)&&(ismob(usr)))
+	if ((usr)&&(ismob(usr)))
 		var/time = time2text(world.realtime,"hh:mm:ss")
 		lastsignalers.Add("[time] <B>:</B> [usr.key] used [src] @ location ([src.loc.x],[src.loc.y],[src.loc.z]) <B>:</B> [format_frequency(frequency)]/[code]")
 

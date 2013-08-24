@@ -90,115 +90,115 @@
 
 	if (href_list["buy_item"])
 		switch(href_list["buy_item"])
-			if("revolver")
+			if ("revolver")
 				if (uses >= 6)
 					uses -= 6
 					new /obj/item/weapon/gun/projectile(get_turf(hostpda))
-			if("revolver_ammo")
+			if ("revolver_ammo")
 				if (uses >= 2)
 					uses -= 2
 					new /obj/item/ammo_magazine(get_turf(hostpda))
-			if("suffocation_revolver_ammo")
+			if ("suffocation_revolver_ammo")
 				if (uses >= 3)
 					uses -= 3
 					new /obj/item/ammo_magazine/a418(get_turf(hostpda))
-			if("xbow")
+			if ("xbow")
 				if (uses >= 5)
 					uses -= 5
 					new /obj/item/weapon/gun/energy/crossbow(get_turf(hostpda))
-			if("empbox")
+			if ("empbox")
 				if (uses >= 4)
 					uses -= 4
 					new /obj/item/weapon/storage/emp_kit(get_turf(hostpda))
-			if("voice")
+			if ("voice")
 				if (uses >= 4)
 					uses -= 4
 					new /obj/item/clothing/mask/gas/voice(get_turf(hostpda))
-			if("jump")
+			if ("jump")
 				if (uses >= 3)
 					uses -= 3
 					new /obj/item/clothing/under/chameleon(get_turf(hostpda))
-			if("shoes")
+			if ("shoes")
 				if (uses >= 2)
 					uses -= 2
 					new /obj/item/clothing/shoes/syndigaloshes(get_turf(hostpda))
-			if("card")
+			if ("card")
 				if (uses >= 3)
 					uses -= 3
 					new /obj/item/weapon/card/id/syndicate(get_turf(hostpda))
-			if("emag")
+			if ("emag")
 				if (uses >= 3)
 					uses -= 3
 					new /obj/item/weapon/card/emag(get_turf(hostpda))
-			if("imp_freedom")
+			if ("imp_freedom")
 				if (uses >= 3)
 					uses -= 3
 					var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(hostpda))
 					O.imp = new /obj/item/weapon/implant/freedom(O)
-			if("imp_uplink")
+			if ("imp_uplink")
 				if (uses >= 10)
 					uses -= 10
 					var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(hostpda))
 					O.imp = new /obj/item/weapon/implant/uplink(O)
-			if("sleepypen")
+			if ("sleepypen")
 				if (uses >= 5)
 					uses -= 5
 					new /obj/item/weapon/pen/sleepypen(get_turf(hostpda))
-			if("paralysispen")
+			if ("paralysispen")
 				if (uses >= 3)
 					uses -= 3
 					new /obj/item/device/flashlight/pen/paralysis(get_turf(hostpda))
-			if("projector")
+			if ("projector")
 				if (uses >= 4)
 					uses -= 4
 					new /obj/item/device/chameleon(get_turf(hostpda))
-			if("cloak")
+			if ("cloak")
 				if (uses >= 4)
 					uses -= 4
 					new /obj/item/weapon/cloaking_device(get_turf(hostpda))
-			if("sword")
+			if ("sword")
 				if (uses >= 4)
 					uses -= 4
 					new /obj/item/weapon/melee/energy/sword(get_turf(hostpda))
-			if("bomb")
+			if ("bomb")
 				if (uses >= 2)
 					uses -= 2
 					new /obj/item/weapon/plastique(get_turf(hostpda))
-			if("powersink")
+			if ("powersink")
 				if (uses >= 5)
 					uses -= 5
 					new /obj/item/device/powersink(get_turf(hostpda))
-			if("detomatix")
+			if ("detomatix")
 				if (uses >= 3)
 				 uses -= 3
 				 new /obj/item/weapon/cartridge/syndicate(get_turf(hostpda))
-			if("space")
+			if ("space")
 				if (uses >= 3)
 				 uses -= 3
 				 new /obj/item/clothing/suit/space/syndicate(get_turf(hostpda))
 				 new /obj/item/clothing/head/helmet/space/syndicate(get_turf(hostpda))
-			if("lawmod")
+			if ("lawmod")
 				if (uses >= 7)
 					uses -= 7
 					new /obj/item/weapon/aiModule/syndicate(get_turf(hostpda))
-			if("botchat")
+			if ("botchat")
 				if (uses >= 3)
 					uses -= 3
 					new /obj/item/device/radio/headset/traitor(get_turf(hostpda))
-			if("singubeacon")
-				if(uses >= 7)
+			if ("singubeacon")
+				if (uses >= 7)
 					uses -= 7
 					new /obj/machinery/singularity_beacon/syndicate(get_turf(hostpda))
-			if("toolbox")
-				if(uses)
+			if ("toolbox")
+				if (uses)
 					uses--
 					new /obj/item/weapon/storage/toolbox/syndicate(get_turf(hostpda))
-			if("balloon")
-				if(uses >= 10)
+			if ("balloon")
+				if (uses >= 10)
 					uses -= 10
 					new /obj/item/toy/syndicateballoon(get_turf(hostpda))
-			if("bundle")
-				if(uses >= 10)
+			if ("bundle")
+				if (uses >= 10)
 					uses -= 10
 					new /obj/item/weapon/storage/box/syndicate(get_turf(hostpda))
 

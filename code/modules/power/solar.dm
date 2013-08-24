@@ -31,9 +31,9 @@
 		spawn(10)
 			updateicon()
 			update_solar_exposure()
-			if(powernet)
+			if (powernet)
 				for(var/obj/machinery/power/solar_control/SC in powernet.nodes)
-					if(SC.id == id)
+					if (SC.id == id)
 						control = SC
 
 
@@ -54,7 +54,7 @@
 
 	healthcheck()
 		if (src.health <= 0)
-			if(!(stat & BROKEN))
+			if (!(stat & BROKEN))
 				broken()
 			else
 				new /obj/item/weapon/shard(src.loc)
@@ -66,7 +66,7 @@
 
 	updateicon()
 		overlays = null
-		if(stat & BROKEN)
+		if (stat & BROKEN)
 			overlays += image('power.dmi', icon_state = "solar_panel-b", layer = FLY_LAYER)
 		else
 			overlays += image('power.dmi', icon_state = "solar_panel", layer = FLY_LAYER)
@@ -75,30 +75,30 @@
 
 
 	update_solar_exposure()
-		if(!sun)
+		if (!sun)
 			return
-		if(obscured)
+		if (obscured)
 			sunfrac = 0
 			return
 		var/p_angle = abs((360+adir)%360 - (360+sun.angle)%360)
-		if(p_angle > 90)			// if facing more than 90deg from sun, zero output
+		if (p_angle > 90)			// if facing more than 90deg from sun, zero output
 			sunfrac = 0
 			return
 		sunfrac = cos(p_angle) ** 2
 
 
 	process()
-		if(stat & BROKEN)	return
-		if(!control)	return
-		if(obscured)	return
+		if (stat & BROKEN)	return
+		if (!control)	return
+		if (obscured)	return
 
 		var/sgen = SOLARGENRATE * sunfrac
 		add_avail(sgen)
-		if(powernet && control)
-			if(control in powernet.nodes) //this line right here...
+		if (powernet && control)
+			if (control in powernet.nodes) //this line right here...
 				control.gen += sgen
 
-		if(adir != ndir)
+		if (adir != ndir)
 			spawn(10+rand(0,15))
 				adir = (360+adir+dd_range(-10,10,ndir-adir))%360
 				updateicon()
@@ -112,7 +112,7 @@
 
 
 	meteorhit()
-		if(stat & !BROKEN)
+		if (stat & !BROKEN)
 			broken()
 		else
 			del(src)
@@ -120,26 +120,26 @@
 
 	ex_act(severity)
 		switch(severity)
-			if(1.0)
+			if (1.0)
 				del(src)
-				if(prob(15))
+				if (prob(15))
 					new /obj/item/weapon/shard( src.loc )
 				return
-			if(2.0)
+			if (2.0)
 				if (prob(25))
 					new /obj/item/weapon/shard( src.loc )
 					del(src)
 					return
 				if (prob(50))
 					broken()
-			if(3.0)
+			if (3.0)
 				if (prob(25))
 					broken()
 		return
 
 
 	blob_act()
-		if(prob(75))
+		if (prob(75))
 			broken()
 			src.density = 0
 
@@ -182,45 +182,45 @@
 	New()
 		..()
 		spawn(15)
-			if(!powernet) return
+			if (!powernet) return
 			for(var/obj/machinery/power/solar/S in powernet.nodes)
-				if(S.id != id) continue
+				if (S.id != id) continue
 				cdir = S.adir
 				updateicon()
 
 
 	updateicon()
-		if(stat & BROKEN)
+		if (stat & BROKEN)
 			icon_state = "broken"
 			overlays = null
 			return
-		if(stat & NOPOWER)
+		if (stat & NOPOWER)
 			icon_state = "c_unpowered"
 			overlays = null
 			return
 		icon_state = "solar"
 		overlays = null
-		if(cdir > 0)
+		if (cdir > 0)
 			overlays += image('computer.dmi', "solcon-o", FLY_LAYER, angle2dir(cdir))
 		return
 
 
 	attack_ai(mob/user)
 		add_fingerprint(user)
-		if(stat & (BROKEN | NOPOWER)) return
+		if (stat & (BROKEN | NOPOWER)) return
 		interact(user)
 
 
 	attack_hand(mob/user)
 		add_fingerprint(user)
-		if(stat & (BROKEN | NOPOWER)) return
+		if (stat & (BROKEN | NOPOWER)) return
 		interact(user)
 
 
 	attackby(I as obj, user as mob)
-		if(istype(I, /obj/item/weapon/screwdriver))
+		if (istype(I, /obj/item/weapon/screwdriver))
 			playsound(src.loc, 'Screwdriver.ogg', 50, 1)
-			if(do_after(user, 20))
+			if (do_after(user, 20))
 				if (src.stat & BROKEN)
 					user << "\blue The broken glass falls out."
 					var/obj/computerframe/A = new /obj/computerframe( src.loc )
@@ -253,11 +253,11 @@
 		lastgen = gen
 		gen = 0
 
-		if(stat & (NOPOWER | BROKEN))
+		if (stat & (NOPOWER | BROKEN))
 			return
 
 		use_power(250)
-		if(track==1 && nexttime < world.timeofday && trackrate)
+		if (track==1 && nexttime < world.timeofday && trackrate)
 			nexttime = world.timeofday + 3600/abs(trackrate)
 			cdir = (cdir+trackrate/abs(trackrate)+360)%360
 			set_panels(cdir)
@@ -268,7 +268,7 @@
 
 // called by solar tracker when sun position changes
 	tracker_update(var/angle)
-		if(track != 2 || stat & (NOPOWER | BROKEN))
+		if (track != 2 || stat & (NOPOWER | BROKEN))
 			return
 		cdir = angle
 		set_panels(cdir)
@@ -277,7 +277,7 @@
 
 
 	interact(mob/user)
-		if(stat & (BROKEN | NOPOWER)) return
+		if (stat & (BROKEN | NOPOWER)) return
 		if ( (get_dist(src, user) > 1 ))
 			if (!istype(user, /mob/living/silicon/ai))
 				user.machine = null
@@ -293,11 +293,11 @@
 		t += "<BR><HR><BR><BR>"
 		t += "Tracking: "
 		switch(track)
-			if(0)
+			if (0)
 				t += "<B>Off</B> <A href='?src=\ref[src];track=1'>Timed</A> <A href='?src=\ref[src];track=2'>Auto</A><BR>"
-			if(1)
+			if (1)
 				t += "<A href='?src=\ref[src];track=0'>Off</A> <B>Timed</B> <A href='?src=\ref[src];track=2'>Auto</A><BR>"
-			if(2)
+			if (2)
 				t += "<A href='?src=\ref[src];track=0'>Off</A> <A href='?src=\ref[src];track=1'>Timed</A> <B>Auto</B><BR>"
 
 		t += "Tracking Rate: [rate_control(src,"tdir","[trackrate] deg/h ([trackrate<0 ? "CCW" : "CW"])",5,30,180)]<BR><BR>"
@@ -308,37 +308,37 @@
 
 
 	Topic(href, href_list)
-		if(..())
+		if (..())
 			usr << browse(null, "window=solcon")
 			usr.machine = null
 			return
-		if(href_list["close"] )
+		if (href_list["close"] )
 			usr << browse(null, "window=solcon")
 			usr.machine = null
 			return
 
-		if(href_list["dir"])
+		if (href_list["dir"])
 			cdir = text2num(href_list["dir"])
 			spawn(1)
 				set_panels(cdir)
 				updateicon()
 
-		if(href_list["rate control"])
-			if(href_list["cdir"])
+		if (href_list["rate control"])
+			if (href_list["cdir"])
 				src.cdir = dd_range(0,359,(360+src.cdir+text2num(href_list["cdir"]))%360)
 				spawn(1)
 					set_panels(cdir)
 					updateicon()
-			if(href_list["tdir"])
+			if (href_list["tdir"])
 				src.trackrate = dd_range(-7200,7200,src.trackrate+text2num(href_list["tdir"]))
-				if(src.trackrate) nexttime = world.timeofday + 3600/abs(trackrate)
+				if (src.trackrate) nexttime = world.timeofday + 3600/abs(trackrate)
 
-		if(href_list["track"])
-			if(src.trackrate) nexttime = world.timeofday + 3600/abs(trackrate)
+		if (href_list["track"])
+			if (src.trackrate) nexttime = world.timeofday + 3600/abs(trackrate)
 			track = text2num(href_list["track"])
-			if(track == 2)
+			if (track == 2)
 				var/obj/machinery/power/tracker/T = locate() in world
-				if(T)
+				if (T)
 					cdir = T.sun_angle
 
 		set_panels(cdir)
@@ -348,15 +348,15 @@
 
 
 	set_panels(var/cdir)
-		if(!powernet) return
+		if (!powernet) return
 		for(var/obj/machinery/power/solar/S in powernet.nodes)
-			if(S.id != id) continue
+			if (S.id != id) continue
 			S.control = src
 			S.ndir = cdir
 
 
 	power_change()
-		if(powered())
+		if (powered())
 			stat &= ~NOPOWER
 			updateicon()
 		else
@@ -377,14 +377,14 @@
 
 	ex_act(severity)
 		switch(severity)
-			if(1.0)
+			if (1.0)
 				//SN src = null
 				del(src)
 				return
-			if(2.0)
+			if (2.0)
 				if (prob(50))
 					broken()
-			if(3.0)
+			if (3.0)
 				if (prob(25))
 					broken()
 		return

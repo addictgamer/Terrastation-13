@@ -1,11 +1,11 @@
 /obj/item/device/radio/New()
 	..()
-	if(radio_controller)
+	if (radio_controller)
 		initialize()
 
 /obj/item/device/radio/initialize()
-	if(freerange)
-		if(frequency < 1200 || frequency > 1600)
+	if (freerange)
+		if (frequency < 1200 || frequency > 1600)
 			frequency = sanitize_frequency(frequency)
 	else if (frequency < 1441 || frequency > 1489)
 		world.log << "[src] ([type]) has a frequency of [frequency], sanitizing."
@@ -91,7 +91,7 @@ Microphone:"<A href='byond://?src=\ref[src];ch_name=[chan_name];talk=[!broad]'> 
 	if (href_list["track"])
 		var/mob/target = locate(href_list["track"])
 		var/mob/living/silicon/ai/A = locate(href_list["track2"])
-		if(A && target)
+		if (A && target)
 			A.ai_actual_track(target)
 		return
 	else if (href_list["freq"])
@@ -154,7 +154,7 @@ Microphone:"<A href='byond://?src=\ref[src];ch_name=[chan_name];talk=[!broad]'> 
 
 /obj/item/device/radio/talk_into(mob/M as mob, message, channel)
 	var/datum/radio_frequency/connection = null // Code shared by Mport2004 for Security Headsets -- TLE
-	if(channel && channels && channels.len > 0)
+	if (channel && channels && channels.len > 0)
 		if (channel == "department")
 			//world << "DEBUG: channel=\"[channel]\" switching to \"[channels[1]]\""
 			channel = channels[1]
@@ -190,7 +190,7 @@ Microphone:"<A href='byond://?src=\ref[src];ch_name=[chan_name];talk=[!broad]'> 
 
 	//for (var/obj/item/device/radio/R in radio_connection.devices)
 	for (var/obj/item/device/radio/R in connection.devices["[RADIO_CHAT]"]) // Modified for security headset code -- TLE
-		//if(R.accept_rad(src, message))
+		//if (R.accept_rad(src, message))
 		receive |= R.send_hear(display_freq)
 
 	//world << "DEBUG: receive.len=[receive.len]"
@@ -216,25 +216,25 @@ Microphone:"<A href='byond://?src=\ref[src];ch_name=[chan_name];talk=[!broad]'> 
 		//var/part_b = "</span><b> \icon[src]\[[format_frequency(frequency)]\]</b> <span class='message'>"
 		var/freq_text
 		switch(display_freq)
-			if(SYND_FREQ)
+			if (SYND_FREQ)
 				freq_text = "#unkn"
-			if(COMM_FREQ)
+			if (COMM_FREQ)
 				freq_text = "Command"
-			if(1351)
+			if (1351)
 				freq_text = "Science"
-			if(1355)
+			if (1355)
 				freq_text = "Medical"
-			if(1357)
+			if (1357)
 				freq_text = "Engineering"
-			if(1359)
+			if (1359)
 				freq_text = "Security"
-			if(1349)
+			if (1349)
 				freq_text = "Mining"
-			if(1347)
+			if (1347)
 				freq_text = "Cargo"
 		//There's probably a way to use the list var of channels in code\game\communications.dm to make the dept channels non-hardcoded, but I wasn't in an experimentive mood. --NEO
 
-		if(!freq_text)
+		if (!freq_text)
 			freq_text = format_frequency(display_freq)
 
 		var/part_b = "</span><b> \icon[src]\[[freq_text]\]</b> <span class='message'>" // Tweaked for security headsets -- TLE
@@ -257,25 +257,25 @@ Microphone:"<A href='byond://?src=\ref[src];ch_name=[chan_name];talk=[!broad]'> 
 		for (var/obj/machinery/blackbox_recorder/BR in world)
 			//BR.messages_admin += blackbox_admin_msg
 			switch(display_freq)
-				if(1459)
+				if (1459)
 					BR.msg_common += blackbox_msg
-				if(1351)
+				if (1351)
 					BR.msg_science += blackbox_msg
-				if(1353)
+				if (1353)
 					BR.msg_command += blackbox_msg
-				if(1355)
+				if (1355)
 					BR.msg_medical += blackbox_msg
-				if(1357)
+				if (1357)
 					BR.msg_engineering += blackbox_msg
-				if(1359)
+				if (1359)
 					BR.msg_security += blackbox_msg
-				if(1441)
+				if (1441)
 					BR.msg_deathsquad += blackbox_msg
-				if(1213)
+				if (1213)
 					BR.msg_syndicate += blackbox_msg
-				if(1349)
+				if (1349)
 					BR.msg_mining += blackbox_msg
-				if(1347)
+				if (1347)
 					BR.msg_cargo += blackbox_msg
 				else
 					BR.messages += blackbox_msg
@@ -292,7 +292,7 @@ Microphone:"<A href='byond://?src=\ref[src];ch_name=[chan_name];talk=[!broad]'> 
 				J = "Unknown"
 			var/rendered = "[part_a][N][part_b][quotedmsg][part_c]"
 			for (var/mob/R in heard_masked)
-				if(istype(R, /mob/living/silicon/ai))
+				if (istype(R, /mob/living/silicon/ai))
 					R.show_message("[part_a]<a href='byond://?src=\ref[src];track2=\ref[R];track=\ref[M]'>[N] ([J]) </a>[part_b][quotedmsg][part_c]", 2)
 				else
 					R.show_message(rendered, 2)
@@ -301,7 +301,7 @@ Microphone:"<A href='byond://?src=\ref[src];ch_name=[chan_name];talk=[!broad]'> 
 			var/rendered = "[part_a][M.real_name][part_b][quotedmsg][part_c]"
 
 			for (var/mob/R in heard_normal)
-				if(istype(R, /mob/living/silicon/ai))
+				if (istype(R, /mob/living/silicon/ai))
 					R.show_message("[part_a]<a href='byond://?src=\ref[src];track2=\ref[R];track=\ref[M]'>[M.real_name] ([eqjobname]) </a>[part_b][quotedmsg][part_c]", 2)
 				else
 					R.show_message(rendered, 2)
@@ -310,7 +310,7 @@ Microphone:"<A href='byond://?src=\ref[src];ch_name=[chan_name];talk=[!broad]'> 
 			var/rendered = "[part_a][M.voice_name][part_b][M.voice_message][part_c]"
 
 			for (var/mob/R in heard_voice)
-				if(istype(R, /mob/living/silicon/ai))
+				if (istype(R, /mob/living/silicon/ai))
 					R.show_message("[part_a]<a href='byond://?src=\ref[src];track2=\ref[R];track=\ref[M]'>[M.voice_name] ([eqjobname]) </a>[part_b][M.voice_message][part_c]", 2)
 				else
 					R.show_message(rendered, 2)
@@ -320,7 +320,7 @@ Microphone:"<A href='byond://?src=\ref[src];ch_name=[chan_name];talk=[!broad]'> 
 			var/rendered = "[part_a][M.voice_name][part_b][quotedmsg][part_c]"
 
 			for (var/mob/R in heard_voice)
-				if(istype(R, /mob/living/silicon/ai))
+				if (istype(R, /mob/living/silicon/ai))
 					R.show_message("[part_a]<a href='byond://?src=\ref[src];track2=\ref[R];track=\ref[M]'>[M.voice_name]</a>[part_b][quotedmsg][part_c]", 2)
 				else
 					R.show_message(rendered, 2)
@@ -340,7 +340,7 @@ Microphone:"<A href='byond://?src=\ref[src];ch_name=[chan_name];talk=[!broad]'> 
 	return
 */
 /obj/item/device/radio/proc/send_hear(freq)
-	if(last_transmission && world.time < (last_transmission + TRANSMISSION_DELAY))
+	if (last_transmission && world.time < (last_transmission + TRANSMISSION_DELAY))
 		return
 	last_transmission = world.time
 	if (!(wires & WIRE_RECEIVE))

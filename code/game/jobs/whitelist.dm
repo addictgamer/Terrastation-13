@@ -9,7 +9,7 @@ var/list/whitelist
 		whitelist = dd_text2list(text, "\n")
 
 /proc/check_whitelist(mob/M /*, var/rank*/)
-	if(!whitelist)
+	if (!whitelist)
 		return 0
 	return ("[M.ckey]" in whitelist)
 

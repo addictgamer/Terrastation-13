@@ -19,23 +19,23 @@ PriorityQueue
 				j >>= 1
 
 		Dequeue()
-			if(!L.len) return 0
+			if (!L.len) return 0
 			. = L[1]
 			Remove(1)
 
 		Remove(i)
-			if(i > L.len) return 0
+			if (i > L.len) return 0
 			L.Swap(i,L.len)
 			L.Cut(L.len)
-			if(i < L.len)
+			if (i < L.len)
 				_Fix(i)
 		_Fix(i)
 			var/child = i + i
 			var/item = L[i]
 			while(child <= L.len)
-				if(child + 1 <= L.len && call(cmp)(L[child],L[child + 1]) > 0)
+				if (child + 1 <= L.len && call(cmp)(L[child],L[child + 1]) > 0)
 					child++
-				if(call(cmp)(item,L[child]) > 0)
+				if (call(cmp)(item,L[child]) > 0)
 					L[i] = L[child]
 					i = child
 				else
@@ -51,7 +51,7 @@ PriorityQueue
 			return ret
 		RemoveItem(i)
 			var/ind = L.Find(i)
-			if(ind)
+			if (ind)
 				Remove(ind)
 PathNode
 	var/datum/source
@@ -82,7 +82,7 @@ proc
 		var/closed[] = new()
 		var/path[]
 		start = get_turf(start)
-		if(!start) return 0
+		if (!start) return 0
 
 		open.Enqueue(new /PathNode(start,null,0,call(start,dist)(end)))
 
@@ -92,10 +92,10 @@ proc
 			closed.Add(cur.source)
 
 			var/closeenough
-			if(mintargetdist)
+			if (mintargetdist)
 				closeenough = call(cur.source,dist)(end) <= mintargetdist
 
-			if(cur.source == end || closeenough)
+			if (cur.source == end || closeenough)
 				path = new()
 				path.Add(cur.source)
 				while(cur.prevNode)
@@ -104,29 +104,29 @@ proc
 				break
 
 			var/L[] = call(cur.source,adjacent)(id)
-			if(minnodedist && maxnodedepth)
-				if(call(cur.source,minnodedist)(end) + cur.nt >= maxnodedepth)
+			if (minnodedist && maxnodedepth)
+				if (call(cur.source,minnodedist)(end) + cur.nt >= maxnodedepth)
 					continue
-			else if(maxnodedepth)
-				if(cur.nt >= maxnodedepth)
+			else if (maxnodedepth)
+				if (cur.nt >= maxnodedepth)
 					continue
 
 			for(var/datum/d in L)
-				if(d == exclude)
+				if (d == exclude)
 					continue
 				var/ng = cur.g + call(cur.source,dist)(d)
-				if(d.bestF)
-					if(ng + call(d,dist)(end) < d.bestF)
+				if (d.bestF)
+					if (ng + call(d,dist)(end) < d.bestF)
 						for(var/i = 1; i <= open.L.len; i++)
 							var/PathNode/n = open.L[i]
-							if(n.source == d)
+							if (n.source == d)
 								open.Remove(i)
 								break
 					else
 						continue
 
 				open.Enqueue(new /PathNode(d,cur,ng,call(d,dist)(end),cur.nt+1))
-				if(maxnodes && open.L.len > maxnodes)
+				if (maxnodes && open.L.len > maxnodes)
 					open.L.Cut(open.L.len)
 		}
 
@@ -139,7 +139,7 @@ proc
 			temp.bestF = 0
 			closed.Cut(closed.len)
 
-		if(path)
+		if (path)
 			for(var/i = 1; i <= path.len/2; i++)
 				path.Swap(i,path.len-i+1)
 			//if (Debug || Debug2) world << "Pathfinding NOTE: path.len = [path.len]"
@@ -151,27 +151,27 @@ proc
 // Movement through doors allowed if ID has access
 /proc/LinkBlockedWithAccess(turf/A, turf/B, obj/item/weapon/card/id/ID)
 
-	if(A == null || B == null) return 1
+	if (A == null || B == null) return 1
 	var/adir = get_dir(A,B)
 	var/rdir = get_dir(B,A)
-	if((adir & (NORTH|SOUTH)) && (adir & (EAST|WEST)))	//	diagonal
+	if ((adir & (NORTH|SOUTH)) && (adir & (EAST|WEST)))	//	diagonal
 		var/iStep = get_step(A,adir&(NORTH|SOUTH))
-		if(!LinkBlockedWithAccess(A,iStep, ID) && !LinkBlockedWithAccess(iStep,B,ID))
+		if (!LinkBlockedWithAccess(A,iStep, ID) && !LinkBlockedWithAccess(iStep,B,ID))
 			return 0
 
 		var/pStep = get_step(A,adir&(EAST|WEST))
-		if(!LinkBlockedWithAccess(A,pStep,ID) && !LinkBlockedWithAccess(pStep,B,ID))
+		if (!LinkBlockedWithAccess(A,pStep,ID) && !LinkBlockedWithAccess(pStep,B,ID))
 			return 0
 		return 1
 
-	if(DirBlockedWithAccess(A,adir, ID))
+	if (DirBlockedWithAccess(A,adir, ID))
 		return 1
 
-	if(DirBlockedWithAccess(B,rdir, ID))
+	if (DirBlockedWithAccess(B,rdir, ID))
 		return 1
 
 	for(var/obj/O in B)
-		if(O.density && !istype(O, /obj/machinery/door) && !(O.flags & ON_BORDER))
+		if (O.density && !istype(O, /obj/machinery/door) && !(O.flags & ON_BORDER))
 			return 1
 
 	return 0
@@ -180,16 +180,16 @@ proc
 // Checks doors against access with given ID
 /proc/DirBlockedWithAccess(turf/loc,var/dir,var/obj/item/weapon/card/id/ID)
 	for(var/obj/window/D in loc)
-		if(!D.density)			continue
-		if(D.dir == SOUTHWEST)	return 1
-		if(D.dir == dir)		return 1
+		if (!D.density)			continue
+		if (D.dir == SOUTHWEST)	return 1
+		if (D.dir == dir)		return 1
 
 	for(var/obj/machinery/door/D in loc)
-		if(!D.density)			continue
-		if(istype(D, /obj/machinery/door/window))
-			if( dir & D.dir )	return !D.check_access(ID)
+		if (!D.density)			continue
+		if (istype(D, /obj/machinery/door/window))
+			if ( dir & D.dir )	return !D.check_access(ID)
 
-			//if((dir & SOUTH) && (D.dir & (EAST|WEST)))		return !D.check_access(ID)
-			//if((dir & EAST ) && (D.dir & (NORTH|SOUTH)))	return !D.check_access(ID)
+			//if ((dir & SOUTH) && (D.dir & (EAST|WEST)))		return !D.check_access(ID)
+			//if ((dir & EAST ) && (D.dir & (NORTH|SOUTH)))	return !D.check_access(ID)
 		else return !D.check_access(ID)	// it's a real, air blocking door
 	return 0

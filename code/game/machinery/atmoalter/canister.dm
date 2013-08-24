@@ -57,7 +57,7 @@
 
 	else
 		icon_state = "[color]"
-		if(holding)
+		if (holding)
 			overlays += image('atmos.dmi', "can-oT")
 
 		var/tank_pressure = air_contents.return_pressure()
@@ -73,12 +73,12 @@
 	return
 
 /obj/machinery/portable_atmospherics/canister/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
-	if(exposed_temperature > temperature_resistance)
+	if (exposed_temperature > temperature_resistance)
 		health -= 5
 		healthcheck()
 
 /obj/machinery/portable_atmospherics/canister/proc/healthcheck()
-	if(destroyed)
+	if (destroyed)
 		return 1
 
 	if (src.health <= 10)
@@ -104,9 +104,9 @@
 
 	..()
 
-	if(valve_open)
+	if (valve_open)
 		var/datum/gas_mixture/environment
-		if(holding)
+		if (holding)
 			environment = holding.air_contents
 		else
 			environment = loc.return_air()
@@ -116,13 +116,13 @@
 		//Can not have a pressure delta that would cause environment pressure > tank pressure
 
 		var/transfer_moles = 0
-		if((air_contents.temperature > 0) && (pressure_delta > 0))
+		if ((air_contents.temperature > 0) && (pressure_delta > 0))
 			transfer_moles = pressure_delta*environment.volume/(air_contents.temperature * R_IDEAL_GAS_EQUATION)
 
 			//Actually transfer the gas
 			var/datum/gas_mixture/removed = air_contents.remove(transfer_moles)
 
-			if(holding)
+			if (holding)
 				environment.merge(removed)
 			else
 				loc.assume_air(removed)
@@ -136,13 +136,13 @@
 
 /obj/machinery/portable_atmospherics/canister/proc/return_temperature()
 	var/datum/gas_mixture/GM = src.return_air()
-	if(GM && GM.volume>0)
+	if (GM && GM.volume>0)
 		return GM.temperature
 	return 0
 
 /obj/machinery/portable_atmospherics/canister/proc/return_pressure()
 	var/datum/gas_mixture/GM = src.return_air()
-	if(GM && GM.volume>0)
+	if (GM && GM.volume>0)
 		return GM.return_pressure()
 	return 0
 
@@ -157,7 +157,7 @@
 	return
 
 /obj/machinery/portable_atmospherics/canister/attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
-	if(!istype(W, /obj/item/weapon/wrench) && !istype(W, /obj/item/weapon/tank) && !istype(W, /obj/item/device/analyzer) && !istype(W, /obj/item/device/pda))
+	if (!istype(W, /obj/item/weapon/wrench) && !istype(W, /obj/item/weapon/tank) && !istype(W, /obj/item/device/analyzer) && !istype(W, /obj/item/device/pda))
 		for(var/mob/V in viewers(src, null))
 			V.show_message(text("\red [user] hits the [src] with a [W]!"))
 		src.health -= W.force
@@ -176,7 +176,7 @@
 
 	user.machine = src
 	var/holding_text
-	if(holding)
+	if (holding)
 		holding_text = {"<BR><B>Tank Pressure</B>: [holding.air_contents.return_pressure()] KPa<BR>
 <A href='?src=\ref[src];remove_tank=1'>Remove Tank</A><BR>
 "}
@@ -202,7 +202,7 @@ Release Pressure: <A href='?src=\ref[src];pressure_adj=-1000'>-</A> <A href='?sr
 	if (((get_dist(src, usr) <= 1) && istype(src.loc, /turf)))
 		usr.machine = src
 
-		if(href_list["toggle"])
+		if (href_list["toggle"])
 			if (valve_open)
 				if (holding)
 					release_log += "Valve was <b>closed</b> by [usr], stopping the transfer into the [holding]<br>"
@@ -216,13 +216,13 @@ Release Pressure: <A href='?src=\ref[src];pressure_adj=-1000'>-</A> <A href='?sr
 			valve_open = !valve_open
 
 		if (href_list["remove_tank"])
-			if(holding)
+			if (holding)
 				holding.loc = loc
 				holding = null
 
 		if (href_list["pressure_adj"])
 			var/diff = text2num(href_list["pressure_adj"])
-			if(diff > 0)
+			if (diff > 0)
 				release_pressure = min(10*ONE_ATMOSPHERE, release_pressure+diff)
 			else
 				release_pressure = max(ONE_ATMOSPHERE/10, release_pressure+diff)
@@ -254,7 +254,7 @@ Release Pressure: <A href='?src=\ref[src];pressure_adj=-1000'>-</A> <A href='?sr
 
 /obj/machinery/portable_atmospherics/canister/bullet_act(var/obj/item/projectile/Proj)
 	health -= Proj.damage
-	if(Proj.flag == "bullet")
+	if (Proj.flag == "bullet")
 		src.health = 0
 		spawn( 0 )
 			healthcheck()

@@ -5,15 +5,15 @@ Contains the procs that control attacking critters
 
 	attackby(obj/item/weapon/W as obj, mob/living/user as mob)
 		..()
-		if(!src.alive)
+		if (!src.alive)
 			Harvest(W,user)
 			return
 		var/damage = 0
 		switch(W.damtype)
-			if("fire") damage = W.force * firevuln
-			if("brute") damage = W.force * brutevuln
+			if ("fire") damage = W.force * firevuln
+			if ("brute") damage = W.force * brutevuln
 		TakeDamage(damage)
-		if(src.defensive)	Target_Attacker(user)
+		if (src.defensive)	Target_Attacker(user)
 		return
 
 
@@ -24,17 +24,17 @@ Contains the procs that control attacking critters
 			for(var/mob/O in viewers(src, null))
 				O.show_message("\red <b>[user]</b> punches [src]!", 1)
 			playsound(src.loc, pick('punch1.ogg','punch2.ogg','punch3.ogg','punch4.ogg'), 100, 1)
-			if(src.defensive)	Target_Attacker(user)
+			if (src.defensive)	Target_Attacker(user)
 		else
 			for(var/mob/O in viewers(src, null))
 				O.show_message("\red <b>[user]</b> touches [src]!", 1)
 
 
 	Target_Attacker(var/target)
-		if(!target)	return
+		if (!target)	return
 		src.target = target
 		src.oldtarget_name = target:name
-		if(task != "chasing")
+		if (task != "chasing")
 			for(var/mob/O in viewers(src, null))
 				O.show_message("\red <b>[src]</b> [src.angertext] [target:name]!", 1)
 		src.task = "chasing"
@@ -43,11 +43,11 @@ Contains the procs that control attacking critters
 
 	TakeDamage(var/damage = 0)
 		var/tempdamage = (damage-armor)
-		if(tempdamage > 0)
+		if (tempdamage > 0)
 			src.health -= tempdamage
 		else
 			src.health--
-		if(src.health <= 0)
+		if (src.health <= 0)
 			src.Die()
 
 
@@ -62,8 +62,8 @@ Contains the procs that control attacking critters
 
 
 	Harvest(var/obj/item/weapon/W, var/mob/living/user)
-		if((!W) || (!user))	return 0
-		if(src.alive)	return 0
+		if ((!W) || (!user))	return 0
+		if (src.alive)	return 0
 		return 1
 
 
@@ -74,10 +74,10 @@ Contains the procs that control attacking critters
 
 	ex_act(severity)
 		switch(severity)
-			if(1.0)
+			if (1.0)
 				src.Die()
 				return
-			if(2.0)
+			if (2.0)
 				TakeDamage(20)
 				return
 		return
@@ -85,10 +85,10 @@ Contains the procs that control attacking critters
 
 	emp_act(serverity)
 		switch(serverity)
-			if(1.0)
+			if (1.0)
 				src.Die()
 				return
-			if(2.0)
+			if (2.0)
 				TakeDamage(20)
 				return
 		return
@@ -100,6 +100,6 @@ Contains the procs that control attacking critters
 
 
 	blob_act()
-		if(prob(25))
+		if (prob(25))
 			src.Die()
 		return

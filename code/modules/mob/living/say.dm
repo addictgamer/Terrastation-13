@@ -5,8 +5,8 @@
 	var/mob/living/carbon/human/H = src
 	if (H.ears)
 		var/obj/item/device/radio/headset/dongle = H.ears
-		if(!istype(dongle)) return
-		if(dongle.translate_binary) return 1
+		if (!istype(dongle)) return
+		if (dongle.translate_binary) return 1
 
 /mob/living/proc/hivecheck()
 	if (isalien(src)) return 1
@@ -14,8 +14,8 @@
 	var/mob/living/carbon/human/H = src
 	if (H.ears)
 		var/obj/item/device/radio/headset/dongle = H.ears
-		if(!istype(dongle)) return
-		if(dongle.translate_hive) return 1
+		if (!istype(dongle)) return
+		if (dongle.translate_hive) return 1
 
 /mob/living/say(var/message)
 	message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
@@ -63,7 +63,7 @@
 	else if (copytext(message, 1, 2) == ";")
 		if (ishuman(src))
 			message_mode = "headset"
-		else if(istype(src, /mob/living/silicon/pai) || istype(src, /mob/living/silicon/robot))
+		else if (istype(src, /mob/living/silicon/pai) || istype(src, /mob/living/silicon/robot))
 			message_mode = "pAI"
 		message = copytext(message, 2)
 
@@ -128,19 +128,19 @@
 		message = dd_replacetext(message, "grief", "grife")
 		message = dd_replacetext(message, "space", "spess")
 		message = dd_replacetext(message, "carp", "crap")
-		if(prob(50))
+		if (prob(50))
 			message = uppertext(message)
 			message += "[stutter(pick("!", "!!", "!!!"))]"
-		if(!stuttering && prob(15))
+		if (!stuttering && prob(15))
 			message = stutter(message)
 
 	if (stuttering)
 		message = stutter(message)
 
 /* //qw do not have beesease atm.
-	if(virus)
-		if(virus.name=="beesease" && virus.stage>=2)
-			if(prob(virus.stage*10))
+	if (virus)
+		if (virus.name=="beesease" && virus.stage>=2)
+			if (prob(virus.stage*10))
 				var/bzz = length(message)
 				message = "B"
 				for(var/i=0,i<bzz,i++)
@@ -195,13 +195,13 @@
 			return
 
 		if ("binary")
-			if(robot_talk_understand || binarycheck())
+			if (robot_talk_understand || binarycheck())
 			//message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN)) //seems redundant
 				robot_talk(message)
 			return
 
 		if ("alientalk")
-			if(alien_talk_understand || hivecheck())
+			if (alien_talk_understand || hivecheck())
 			//message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN)) //seems redundant
 				alien_talk(message)
 			return
@@ -218,10 +218,10 @@
 				used_radios += src:radio
 			message_range = 1
 			italics = 1
-		if("changeling")
-			if(src.changeling)
+		if ("changeling")
+			if (src.changeling)
 				for(var/mob/living/carbon/aChangeling in world)
-					if(aChangeling.changeling)
+					if (aChangeling.changeling)
 						aChangeling << "<i><font color=#800080><b>[gender=="male"?"Mr.":"Mrs."] [changeling.changelingID]:</b> [message]</font></i>"
 				return
 ////SPECIAL HEADSETS START
@@ -237,9 +237,9 @@
 
 	var/list/listening
 /*
-	if(istype(loc, /obj/item/device/aicard)) // -- TLE
+	if (istype(loc, /obj/item/device/aicard)) // -- TLE
 		var/obj/O = loc
-		if(istype(O.loc, /mob))
+		if (istype(O.loc, /mob))
 			var/mob/M = O.loc
 			listening = hearers(message_range, M)
 		else
@@ -281,9 +281,9 @@
 			if (O)
 				O.hear_talk(src, message)
 
-	if(isbrain(src))//For brains to properly talk if they are in an MMI..or in a brain. Could be extended to other mobs I guess.
+	if (isbrain(src))//For brains to properly talk if they are in an MMI..or in a brain. Could be extended to other mobs I guess.
 		for(var/obj/O in loc)//Kinda ugly but whatever.
-			if(O)
+			if (O)
 				spawn(0)
 					O.hear_talk(src, message)
 
@@ -304,8 +304,8 @@
 			message_a = "<i>[message_a]</i>"
 		if (!istype(src, /mob/living/carbon/human))
 			rendered = "<span class='game say'><span class='name'>[name]</span> <span class='message'>[message_a]</span></span>"
-		else if(istype(wear_mask, /obj/item/clothing/mask/gas/voice))
-			if(wear_mask:vchange)
+		else if (istype(wear_mask, /obj/item/clothing/mask/gas/voice))
+			if (wear_mask:vchange)
 				rendered = "<span class='game say'><span class='name'>[wear_mask:voice]</span> <span class='message'>[message_a]</span></span>"
 			else
 				rendered = "<span class='game say'><span class='name'>[name]</span> <span class='message'>[message_a]</span></span>"
@@ -315,10 +315,10 @@
 		for (var/mob/M in heard_a)
 			M.show_message(rendered, 2)
 			/*
-			if(M.client)
+			if (M.client)
 				spawn()
 					var/isbot = ""
-					if(istype(src, /mob/living/silicon))
+					if (istype(src, /mob/living/silicon))
 						isbot = "bot"
 
 					var/speechtype = "say"
@@ -328,8 +328,8 @@
 					else if (ending == "!")
 						speechtype = "exclamation"
 
-					if(istype(M, /mob/living))
-						if(M:ear_deaf && speechtype == "question")
+					if (istype(M, /mob/living))
+						if (M:ear_deaf && speechtype == "question")
 							speechtype = "say"
 
 					var/obj/speech_bubble/B = new/obj/speech_bubble
@@ -339,14 +339,14 @@
 					B.invisibility = invisibility
 					B.layer = 10
 
-					if(!M.client.bubbles || M == src)
+					if (!M.client.bubbles || M == src)
 						var/image/I = image('speechbubble.dmi', B, "override")
 						I.override = 1
 						M << I
 
 					flick("[isbot][speechtype]", B)
 
-					if(istype(loc, /turf))
+					if (istype(loc, /turf))
 						B.loc = loc
 					else
 						B.loc = loc.loc
@@ -359,7 +359,7 @@
 
 /*
 			for(var/obj/O in M) // This is terribly costly for such a unique circumstance, should probably do this a different way in the future -- TLE
-				if(istype(O, /obj/item/device/aicard))
+				if (istype(O, /obj/item/device/aicard))
 					for(var/mob/M2 in O)
 						M2.show_message(rendered, 2)
 						break
@@ -382,10 +382,10 @@
 		for (var/mob/M in heard_b)
 			M.show_message(rendered, 2)
 			/*
-			if(M.client)
+			if (M.client)
 				spawn()
 					var/isbot = ""
-					if(istype(src, /mob/living/silicon))
+					if (istype(src, /mob/living/silicon))
 						isbot = "bot"
 
 					var/obj/speech_bubble/B = new/obj/speech_bubble
@@ -395,14 +395,14 @@
 					B.invisibility = invisibility
 					B.layer = 10
 
-					if(!M.client.bubbles || M == src)
+					if (!M.client.bubbles || M == src)
 						var/image/I = image('speechbubble.dmi', B, "override")
 						I.override = 1
 						M << I
 
 					flick("[isbot]say", B)
 
-					if(istype(loc, /turf))
+					if (istype(loc, /turf))
 						B.loc = loc
 					else
 						B.loc = loc.loc

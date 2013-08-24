@@ -32,7 +32,7 @@
 
 	New()
 		..()
-		if(aliens_allowed)
+		if (aliens_allowed)
 			health = maxhealth
 			process()
 		else
@@ -41,7 +41,7 @@
 	examine()
 		set src in view()
 		..()
-		if(!alive)
+		if (!alive)
 			usr << text("\red <B>The alien is not moving.</B>")
 		else if (health > 5)
 			usr << text("\red <B>The alien looks fresh, just out of the egg.</B>")
@@ -57,15 +57,15 @@
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
 		switch(W.damtype)
-			if("fire")
+			if ("fire")
 				health -= W.force * 0.75
-			if("brute")
+			if ("brute")
 				health -= W.force * 0.5
 			else
 		if (health <= 0)
 			death()
 		else if (W.force)
-			if(ishuman(user) || ismonkey(user))
+			if (ishuman(user) || ismonkey(user))
 				target = user
 				state = 1
 		..()
@@ -77,9 +77,9 @@
 
 	ex_act(severity)
 		switch(severity)
-			if(1.0)
+			if (1.0)
 				death()
-			if(2.0)
+			if (2.0)
 				health -= 15
 				healthcheck()
 		return
@@ -89,28 +89,28 @@
 		return
 
 	blob_act()
-		if(prob(50))
+		if (prob(50))
 			death()
 		return
 
 	Bumped(AM as mob|obj)
-		if(ismob(AM) && (ishuman(AM) || ismonkey(AM)) )
+		if (ismob(AM) && (ishuman(AM) || ismonkey(AM)) )
 			target = AM
 			set_attack()
-		else if(ismob(AM))
+		else if (ismob(AM))
 			spawn(0)
 				var/turf/T = get_turf(src)
 				AM:loc = T
 
 	Bump(atom/A)
-		if(ismob(A) && (ishuman(A) || ismonkey(A)))
+		if (ismob(A) && (ishuman(A) || ismonkey(A)))
 			target = A
 			set_attack()
-		else if(ismob(A))
+		else if (ismob(A))
 			loc = A:loc
 
 	temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
-		if(exposed_temperature > 300)
+		if (exposed_temperature > 300)
 			health -= 5
 			healthcheck()
 
@@ -121,11 +121,11 @@
 		set src in view() //set src in get_aliens(view()) - does not work, damn shitty byond :( -- rastaf0
 		set name = "Follow Me"
 		set category = "Object" //"Alien" does not work perfect - humans get "Alien" tab too, that's annoying
-		if(!alive) return
-		if(!isalien(usr))
+		if (!alive) return
+		if (!isalien(usr))
 			usr << text("\red <B>The alien ignores you.</B>")
 			return
-		if(state != 2 || health < maxhealth)
+		if (state != 2 || health < maxhealth)
 			usr << text("\red <B>The alien is too busy to follow you.</B>")
 			return
 		usr << text("\green <B>The alien will now try to follow you.</B>")
@@ -137,11 +137,11 @@
 		set src in view()
 		set name = "Stop Following"
 		set category = "Object"
-		if(!alive) return
-		if(!isalien(usr))
+		if (!alive) return
+		if (!isalien(usr))
 			usr << text("\red <B>The alien ignores you.</B>")
 			return
-		if(state != 2)
+		if (state != 2)
 			usr << text("\red <B>The alien is too busy to follow you.</B>")
 			return
 		usr << text("\green <B>The alien stops following you.</B>")
@@ -152,14 +152,14 @@
 
 
 	proc/call_to(var/mob/user)
-		if(!alive || !isalien(user) || state != 2) return
+		if (!alive || !isalien(user) || state != 2) return
 		trg_idle = user
 		path_idle = new/list()
 		return
 
 	proc/set_attack()
 		state = 1
-		if(path_idle.len) path_idle = new/list()
+		if (path_idle.len) path_idle = new/list()
 		trg_idle = null
 
 	proc/set_idle()
@@ -195,41 +195,41 @@
 			for (var/mob/living/carbon/C in range(view,loc))
 				if (C.stat == 2 || isalien(C) || C.alien_egg_flag || !can_see(src,C,viewrange) || istype(C, /mob/living/carbon/metroid))
 					continue
-				if(C:stunned || C:paralysis || C:weakened)
+				if (C:stunned || C:paralysis || C:weakened)
 					target = C
 
 					break
-				if(C:health < last_health)
+				if (C:health < last_health)
 					last_health = C:health
 					target = C
 
-			if(target)
+			if (target)
 				if (!lamarr || prob(10))
 					set_attack()
-			else if(state != 2)
+			else if (state != 2)
 				set_idle()
 				idle()
 
-		else if(target)
+		else if (target)
 			var/turf/distance = get_dist(src, target)
 			if (!lamarr || prob(10))
 				set_attack()
 
-			if(can_see(src,target,viewrange))
-				if(distance <= 1 && (!lamarr || prob(20)))
+			if (can_see(src,target,viewrange))
+				if (distance <= 1 && (!lamarr || prob(20)))
 					for(var/mob/O in viewers(world.view,src))
 						O.show_message("\red <B>[target] has been leapt on by [lamarr ? name : "the alien"]!</B>", 1, "\red You hear someone fall", 2)
 					if (!lamarr)
 						target:take_overall_damage(5)
-						if(prob(70))
+						if (prob(70))
 							target:paralysis = max(target:paralysis, 5)
 					loc = target.loc
 
-					if(!target.alien_egg_flag && ( ishuman(target) || ismonkey(target) ) )
+					if (!target.alien_egg_flag && ( ishuman(target) || ismonkey(target) ) )
 						if (!lamarr && target)
 							var/mob/trg = target
 							death()
-							//if(trg.virus)//Viruses are stored in a global database.
+							//if (trg.virus)//Viruses are stored in a global database.
 								//trg.virus.cure(0)//You need to either cure() or del() them to stop their processing.
 							trg.contract_disease(new /datum/disease/alien_embryo(0))//So after that you need to infect the target anew.
 							for(var/datum/disease/alien_embryo/A in trg.viruses)
@@ -244,20 +244,20 @@
 
 				step_towards(src,get_step_towards2(src , target))
 			else
-				if( !path_target.len )
+				if ( !path_target.len )
 
 					path_attack(target)
-					if(!path_target.len)
+					if (!path_target.len)
 						set_null()
 						spawn(cycle_pause) process()
 						return
 				else
 					var/turf/next = path_target[1]
 
-					if(next in range(1,src))
+					if (next in range(1,src))
 						path_attack(target)
 
-					if(!path_target.len)
+					if (!path_target.len)
 						frustration += 5
 					else
 						next = path_target[1]
@@ -267,9 +267,9 @@
 
 			if (get_dist(src, target) >= distance) frustration++
 			else frustration--
-			if(frustration >= 35 || lamarr) set_null()
+			if (frustration >= 35 || lamarr) set_null()
 
-		if(quick_move)
+		if (quick_move)
 			spawn(cycle_pause/2)
 				process()
 		else
@@ -280,42 +280,42 @@
 		set background = 1
 		var/quick_move = 0
 
-		if(state != 2 || !alive || target) return
+		if (state != 2 || !alive || target) return
 
-		if(locate(/obj/alien/weeds) in loc && health < maxhealth)
+		if (locate(/obj/alien/weeds) in loc && health < maxhealth)
 			health++
 			spawn(cycle_pause) idle()
 			return
 
-		if(!path_idle.len)
+		if (!path_idle.len)
 
-			if(isalien(trg_idle))
-				if(can_see(src,trg_idle,viewrange))
+			if (isalien(trg_idle))
+				if (can_see(src,trg_idle,viewrange))
 					step_towards(src,get_step_towards2(src , trg_idle))
 				else
 					path_idle(trg_idle)
-					if(!path_idle.len)
+					if (!path_idle.len)
 						trg_idle = null
 						set_idle()
 						spawn(cycle_pause) idle()
 						return
 			else
 				var/obj/alien/weeds/W = null
-				if(health < maxhealth)
+				if (health < maxhealth)
 					var/list/the_weeds = new/list()
 
 					find_weeds:
 						for(var/obj/alien/weeds/weed in range(viewrange,loc))
-							if(!can_see(src,weed,viewrange)) continue
+							if (!can_see(src,weed,viewrange)) continue
 							for(var/atom/A in get_turf(weed))
-								if(A.density) continue find_weeds
+								if (A.density) continue find_weeds
 							the_weeds += weed
-					if(the_weeds.len)
+					if (the_weeds.len)
 						W = pick(the_weeds)
 
-				if(W)
+				if (W)
 					path_idle(W)
-					if(!path_idle.len)
+					if (!path_idle.len)
 						trg_idle = null
 						spawn(cycle_pause) idle()
 						return
@@ -327,26 +327,26 @@
 
 		else
 
-			if(can_see(src,trg_idle,viewrange))
+			if (can_see(src,trg_idle,viewrange))
 				switch(get_dist(src, trg_idle))
-					if(1)
-						if(istype(trg_idle,/obj/alien/weeds))
+					if (1)
+						if (istype(trg_idle,/obj/alien/weeds))
 							step_towards(src,get_step_towards2(src , trg_idle))
-					if(2 to INFINITY)
+					if (2 to INFINITY)
 						step_towards(src,get_step_towards2(src , trg_idle))
-						if(path_idle.len) path_idle = new/list()
+						if (path_idle.len) path_idle = new/list()
 					/*
-					if(viewrange+1 to INFINITY)
+					if (viewrange+1 to INFINITY)
 						step_towards(src,get_step_towards2(src , trg_idle))
-						if(path_idle.len) path_idle = new/list()
+						if (path_idle.len) path_idle = new/list()
 						quick_move = 1
 					*/
 			else
 				var/turf/next = path_idle[1]
-				if(!next in range(1,src))
+				if (!next in range(1,src))
 					path_idle(trg_idle)
 
-				if(!path_idle.len)
+				if (!path_idle.len)
 					spawn(cycle_pause) idle()
 					return
 				else
@@ -355,7 +355,7 @@
 					step_towards(src,next)
 					quick_move = 1
 
-		if(quick_move)
+		if (quick_move)
 			spawn(cycle_pause/2)
 				idle()
 		else
@@ -373,7 +373,7 @@
 
 
 	proc/death()
-		if(!alive) return
+		if (!alive) return
 		alive = 0
 		density = 0
 		icon_state = "facehugger_l"

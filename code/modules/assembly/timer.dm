@@ -32,14 +32,14 @@
 
 	Process_cooldown()
 		cooldown--
-		if(cooldown <= 0)	return 0
+		if (cooldown <= 0)	return 0
 		spawn(10)
 			Process_cooldown()
 		return 1
 
 
 	Activate()
-		if((!secured) || (cooldown > 0))
+		if ((!secured) || (cooldown > 0))
 			return 0
 		cooldown = 2
 		src.timing = !src.timing
@@ -50,7 +50,7 @@
 
 
 	Secure()
-		if(secured)
+		if (secured)
 			return 0
 		processing_objects.Add(src)//removal is taken care of it process()
 		secured = 1
@@ -58,7 +58,7 @@
 
 
 	Unsecure()
-		if(!secured)
+		if (!secured)
 			return 0
 		secured = 0
 		return 1
@@ -66,19 +66,19 @@
 
 	Attach_Assembly(var/obj/A, var/mob/user)
 		holder = new/obj/item/device/assembly_holder(get_turf(src))
-		if(holder:attach(A,src,user))
+		if (holder:attach(A,src,user))
 			user.show_message("\blue You attach the [A.name] to the [src.name]!")
 			return 1
 		return 0
 
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(W.IsAssembly())
+		if (W.IsAssembly())
 			var/obj/item/device/D = W
-			if((!D:secured) && (!src.secured))
+			if ((!D:secured) && (!src.secured))
 				Attach_Assembly(D,user)
-		if(isscrewdriver(W))
-			if(src.secured)
+		if (isscrewdriver(W))
+			if (src.secured)
 				Unsecure()
 				user.show_message("\blue The [src.name] can now be attached!")
 			else
@@ -91,8 +91,8 @@
 
 
 	timer_end()
-		if((!secured)||(cooldown > 0))	return 0
-		if((holder)&&(holder.IsAssemblyHolder()))
+		if ((!secured)||(cooldown > 0))	return 0
+		if ((holder)&&(holder.IsAssemblyHolder()))
 			spawn(0)
 				holder:Process_Activation(src)
 				return
@@ -105,15 +105,15 @@
 
 
 	process()
-		if((src.timing) && (src.time >= 0))
+		if ((src.timing) && (src.time >= 0))
 			src.time--
-			if(src.time <= 0)
+			if (src.time <= 0)
 				src.timing = 0
 				src.time = 0
 				timer_end()
 				update_icon()
 
-		if(!secured)
+		if (!secured)
 			src.timing = 0
 			processing_objects.Remove(src)
 			update_icon()
@@ -123,10 +123,10 @@
 	update_icon()
 		src.overlays = null
 		src.small_icon_state_overlays = list()
-		if(timing)
+		if (timing)
 			src.overlays += text("timer_timing")
 			src.small_icon_state_overlays += text("timer_timing")
-		if(holder)
+		if (holder)
 			holder.update_icon()
 		return
 
@@ -143,7 +143,7 @@
 
 
 	attack_self(mob/user as mob)
-		if(!secured)
+		if (!secured)
 			user.show_message("\red The [src.name] is unsecured!")
 			return 0
 		var/second = src.time % 60
@@ -158,7 +158,7 @@
 
 	Topic(href, href_list)
 		..()
-		if(get_dist(src, usr) <= 1)
+		if (get_dist(src, usr) <= 1)
 
 			if (href_list["time"])
 				src.timing = text2num(href_list["time"])
@@ -173,7 +173,7 @@
 				usr << browse(null, "window=timer")
 				return
 
-			if(usr)
+			if (usr)
 				src.attack_self(usr)
 
 		else

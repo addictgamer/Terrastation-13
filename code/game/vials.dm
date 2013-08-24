@@ -41,7 +41,7 @@
 
 ///////////////////////////////////////////////////////***
 /obj/item/weapon/vial/attack(target as mob, mob/user as mob)
-	if(target == user) return attack_self(user)
+	if (target == user) return attack_self(user)
 	user << "\blue The vial shatters."
 	src.shatter()
 /obj/item/weapon/vial/attackby(obj/item/weapon/W as obj, mob/user as mob)
@@ -63,13 +63,13 @@
 	src = null
 	del(A)
 	switch(pick(1,2,3))
-		if(1)
+		if (1)
 			spawn(300)
 				user:gib()
-		if(2)
+		if (2)
 			user:weakened += 5
 			user:contract_disease(new /datum/disease/gbs,1)
-		if(3)
+		if (3)
 			spawn(200)
 				user:contract_disease(new /datum/disease/gbs,1)
 /obj/item/weapon/vial/green/shatter()
@@ -164,7 +164,7 @@
 
 /proc/liquify(var/mob/H, time = 150)
 
-	if(H.stat) return
+	if (H.stat) return
 	spawn(0)
 		var/mobloc = get_turf(H.loc)
 		var/obj/dummy/liquid/holder = new /obj/dummy/liquid( mobloc )
@@ -232,24 +232,24 @@
 	if (!src.canmove) return
 	//writing my own movement because step is broken.
 	switch(direction)
-		if(NORTH)
+		if (NORTH)
 			src.y++
-		if(SOUTH)
+		if (SOUTH)
 			src.y--
-		if(EAST)
+		if (EAST)
 			src.x++
-		if(WEST)
+		if (WEST)
 			src.x--
-		if(NORTHEAST)
+		if (NORTHEAST)
 			src.y++
 			src.x++
-		if(NORTHWEST)
+		if (NORTHWEST)
 			src.y++
 			src.x--
-		if(SOUTHEAST)
+		if (SOUTHEAST)
 			src.y--
 			src.x++
-		if(SOUTHWEST)
+		if (SOUTHWEST)
 			src.y--
 			src.x--
 	src.canmove = 0
@@ -264,7 +264,7 @@
 ///atom/relaymove - change to obj to restore
 
 /obj/relaymove(var/mob/user, direction) //testing something
-	//if(anchored) return
+	//if (anchored) return
 	//step(src, direction)
 
 /proc/possess(obj/O as obj in world)

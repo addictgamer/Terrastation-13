@@ -24,7 +24,7 @@ var/savefile/Banlist
 	for (var/A in Banlist.dir)
 		Banlist.cd = "/base/[A]"
 		if (id == Banlist["id"] || key == Banlist["key"])
-			if(Banlist["temp"])
+			if (Banlist["temp"])
 				if (!GetExp(Banlist["minutes"]))
 					ClearTempbans()
 					return 0
@@ -111,7 +111,7 @@ var/savefile/Banlist
 
 	if (!Banlist.dir.Remove(foldername)) return 0
 
-	if(!usr)
+	if (!usr)
 		log_admin("Ban Expired: [key]")
 		message_admins("Ban Expired: [key]")
 	else
@@ -169,7 +169,7 @@ var/savefile/Banlist
 	for(i=0, i<1001, i++)
 		var/a = pick(1,0)
 		var/b = pick(1,0)
-		if(b)
+		if (b)
 			Banlist.cd = "/base"
 			Banlist.dir.Add("trash[i]trashid[i]")
 			Banlist.cd = "/base/trash[i]trashid[i]"

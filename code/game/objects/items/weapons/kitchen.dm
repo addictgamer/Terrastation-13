@@ -19,14 +19,14 @@ KNIFE
 // FORK
 
 /obj/item/weapon/kitchen/utensil/fork/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if(!istype(M))
+	if (!istype(M))
 		return ..()
 
-	if(user.zone_sel.selecting != "eyes" && user.zone_sel.selecting != "head")
+	if (user.zone_sel.selecting != "eyes" && user.zone_sel.selecting != "head")
 		return ..()
 
 	if (src.icon_state == "forkloaded") //This is a poor way of handling it, but a proper rewrite of the fork to allow for a more varied foodening can happen when I'm in the mood. --NEO
-		if(M == user)
+		if (M == user)
 			for(var/mob/O in viewers(M, null))
 				O.show_message(text("\blue [] eats a delicious forkful of omelette!", user), 1)
 				M.reagents.add_reagent("nutriment", 1)
@@ -37,7 +37,7 @@ KNIFE
 		src.icon_state = "fork"
 		return
 	else
-		if((user.mutations & CLOWN) && prob(50))
+		if ((user.mutations & CLOWN) && prob(50))
 			M = user
 		return eyestab(M,user)
 
@@ -68,7 +68,7 @@ KNIFE
 		else
 			if (M.stunned < time && (!(M.mutations & HULK)) )
 				M.stunned = time
-		if(M.stat != 2)	M.stat = 1
+		if (M.stat != 2)	M.stat = 1
 		for(var/mob/O in viewers(M, null))
 			O.show_message(text("\red <B>[] has been knocked unconscious!</B>", M), 1, "\red You hear someone fall.", 2)
 	else
@@ -93,11 +93,11 @@ KNIFE
 ///////////////////////////////// TRAY -Agouri :3   ///////////////////////////////////////////////
 
 /obj/item/weapon/tray/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if((user.mutations & CLOWN) && prob(50))              //What if he's a clown?
+	if ((user.mutations & CLOWN) && prob(50))              //What if he's a clown?
 		M << "\red You accidentally slam yourself with the [src]!"
 		M.weakened += 1
 		user.take_organ_damage(2)
-		if(prob(50))
+		if (prob(50))
 			playsound(M, 'trayhit1.ogg', 50, 1)
 			return
 		else
@@ -107,8 +107,8 @@ KNIFE
 	var/mob/living/carbon/human/H = M      ///////////////////////////////////// /Let's have this ready for later.
 
 
-	if(!(user.zone_sel.selecting == ("eyes" || "head"))) //////////////hitting anything else other than the eyes
-		if(prob(33))
+	if (!(user.zone_sel.selecting == ("eyes" || "head"))) //////////////hitting anything else other than the eyes
+		if (prob(33))
 			src.add_blood(H)
 			var/turf/location = H.loc
 			if (istype(location, /turf/simulated))
@@ -117,12 +117,12 @@ KNIFE
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been attacked with [src.name] by [user.name] ([user.ckey])</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to attack [M.name] ([M.ckey])</font>")
 
-		if(prob(15))
+		if (prob(15))
 			M.weakened += 3
 			M.take_organ_damage(3)
 		else
 			M.take_organ_damage(5)
-		if(prob(50))
+		if (prob(50))
 			//playsound(M, 'trayhit1.wav', 50, 1)
 			for(var/mob/O in viewers(M, null))
 				O.show_message(text("\red <B>[] slams [] with the tray!</B>", user, M), 1)
@@ -136,9 +136,9 @@ KNIFE
 
 
 
-	if(istype(M, /mob/living/carbon/human) && ((H.head && H.head.flags & HEADCOVERSEYES) || (H.wear_mask && H.wear_mask.flags & MASKCOVERSEYES) || (H.glasses && H.glasses.flags & GLASSESCOVERSEYES)))
+	if (istype(M, /mob/living/carbon/human) && ((H.head && H.head.flags & HEADCOVERSEYES) || (H.wear_mask && H.wear_mask.flags & MASKCOVERSEYES) || (H.glasses && H.glasses.flags & GLASSESCOVERSEYES)))
 		M << "\red You get slammed in the face with the tray, against your mask!"
-		if(prob(33))
+		if (prob(33))
 			src.add_blood(H)
 			if (H.wear_mask)
 				H.wear_mask.add_blood(H)
@@ -150,7 +150,7 @@ KNIFE
 			if (istype(location, /turf/simulated))     //Addin' blood! At least on the floor and item :v
 				location.add_blood(H)
 
-		if(prob(50))
+		if (prob(50))
 			//playsound(M, 'trayhit1.wav', 50, 1)
 			for(var/mob/O in viewers(M, null))
 				O.show_message(text("\red <B>[] slams [] with the tray!</B>", user, M), 1)
@@ -158,7 +158,7 @@ KNIFE
 			//playsound(M, 'trayhit2.wav', 50, 1)  //sound playin'
 			for(var/mob/O in viewers(M, null))
 				O.show_message(text("\red <B>[] slams [] with the tray!</B>", user, M), 1)
-		if(prob(10))
+		if (prob(10))
 			M.stunned = rand(1,3)
 			M.take_organ_damage(3)
 			return
@@ -168,13 +168,13 @@ KNIFE
 
 	else //No eye or head protection, tough luck!
 		M << "\red You get slammed in the face with the tray!"
-		if(prob(33))
+		if (prob(33))
 			src.add_blood(M)
 			var/turf/location = H.loc
 			if (istype(location, /turf/simulated))
 				location.add_blood(H)
 
-		if(prob(50))
+		if (prob(50))
 		//	playsound(M, 'trayhit1.ogg', 50, 1)
 			for(var/mob/O in viewers(M, null))
 				O.show_message(text("\red <B>[] slams [] in the face with the tray!</B>", user, M), 1)
@@ -182,13 +182,13 @@ KNIFE
 			//playsound(M, 'trayhit2.ogg', 50, 1)  //sound playin' again
 			for(var/mob/O in viewers(M, null))
 				O.show_message(text("\red <B>[] slams [] in the face with the tray!</B>", user, M), 1)
-		if(prob(30))
+		if (prob(30))
 			M.stunned = rand(2,4)
 			M.take_organ_damage(4)
 			return
 		else
 			M.take_organ_damage(8)
-			if(prob(30))
+			if (prob(30))
 				M.weakened+=2
 				return
 			return
@@ -200,7 +200,7 @@ KNIFE
 
 
 /*/obj/item/weapon/tray/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W,/obj/item/weapon/kitchen/utensil/fork))
+	if (istype(W,/obj/item/weapon/kitchen/utensil/fork))
 		if (W.icon_state == "forkloaded")
 			user << "\red You already have omelette on your fork."
 			return

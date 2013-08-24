@@ -16,7 +16,7 @@
 	return get_turf(src)
 
 /obj/closet/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height==0 || wall_mounted)) return 1
+	if (air_group || (height==0 || wall_mounted)) return 1
 
 	return opened
 
@@ -27,7 +27,7 @@
 
 /obj/closet/proc/can_close()
 	for(var/obj/closet/closet in get_turf(src))
-		if(closet != src)
+		if (closet != src)
 			return 0
 	for(var/obj/secure_closet/closet in get_turf(src))
 		return 0
@@ -119,7 +119,7 @@
 /obj/closet/bullet_act(var/obj/item/projectile/Proj)
 	health -= Proj.damage
 	..()
-	if(health <= 0)
+	if (health <= 0)
 		for (var/atom/movable/A as mob|obj in src)
 			A.loc = src.loc
 		del(src)
@@ -162,7 +162,7 @@
 			del(src)
 			return
 
-		if(isrobot(user))
+		if (isrobot(user))
 			return
 
 		usr.drop_item()
@@ -170,7 +170,7 @@
 		if (W)
 			W.loc = src.loc
 
-	else if(istype(W, /obj/item/weapon/weldingtool) && W:welding)
+	else if (istype(W, /obj/item/weapon/weldingtool) && W:welding)
 		if (!W:remove_fuel(0,user))
 			user << "\blue You need more welding fuel to complete this task."
 			return
@@ -190,11 +190,11 @@
 		return
 	if (!istype(user.loc, /turf)) // are you in a container/closet/pod/etc?
 		return
-	if(!src.opened)
+	if (!src.opened)
 		return
-	if(istype(O, /obj/secure_closet) || istype(O, /obj/closet))
+	if (istype(O, /obj/secure_closet) || istype(O, /obj/closet))
 		return
-	if(isrobot(user))
+	if (isrobot(user))
 		return
 	step_towards(O, src.loc)
 	user.show_viewers(text("\red [] stuffs [] into []!", user, O, src))
@@ -218,7 +218,7 @@
 	..()
 	for(var/mob/M in contents)
 		for(var/obj/speech_bubble/B in range(1, src))
-			if(B.parent == M)
+			if (B.parent == M)
 				B.loc = loc
 
 

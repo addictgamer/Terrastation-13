@@ -19,12 +19,12 @@ CRAYONS
 		overlays += image('crayons.dmi',crayon.colourName)
 
 /obj/item/toy/crayonbox/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W,/obj/item/toy/crayon))
+	if (istype(W,/obj/item/toy/crayon))
 		switch(W:colourName)
-			if("mime")
+			if ("mime")
 				usr << "This crayon is too sad to be contained in this box."
 				return
-			if("rainbow")
+			if ("rainbow")
 				usr << "This crayon is too powerful to be contained in this box."
 				return
 			else
@@ -41,14 +41,14 @@ CRAYONS
 		..()
 
 /obj/item/toy/crayonbox/attack_hand(mob/user as mob)
-	if(user.r_hand == src || user.l_hand == src)
-		if(!contents.len)
+	if (user.r_hand == src || user.l_hand == src)
+		if (!contents.len)
 			user << "\red You're out of crayons!"
 			return
 		else
 			var/crayon = pick(contents)
 			user.contents += crayon
-			if(user.hand)
+			if (user.hand)
 				user.l_hand = crayon
 			else
 				user.r_hand = crayon
@@ -105,7 +105,7 @@ CRAYONS
 	uses = 0
 
 /obj/item/toy/crayon/mime/attack_self(mob/living/user as mob) //inversion
-	if(colour != "#FFFFFF" && shadeColour != "#000000")
+	if (colour != "#FFFFFF" && shadeColour != "#000000")
 		colour = "#FFFFFF"
 		shadeColour = "#000000"
 		user << "You will now draw in white and black with this crayon."
@@ -128,33 +128,33 @@ CRAYONS
 	return
 
 /obj/item/toy/crayon/afterattack(atom/target, mob/user as mob)
-	if(istype(target,/turf/simulated/floor))
+	if (istype(target,/turf/simulated/floor))
 		var/drawtype = input("Choose what you'd like to draw.", "Crayon scribbles") in list("graffiti","rune","letter")
 		switch(drawtype)
-			if("letter")
+			if ("letter")
 				drawtype = input("Choose the letter.", "Crayon scribbles") in list("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z")
 				user << "You start drawing a letter on the [target.name]."
-			if("graffiti")
+			if ("graffiti")
 				user << "You start drawing graffiti on the [target.name]."
-			if("rune")
+			if ("rune")
 				user << "You start drawing a rune on the [target.name]."
-		if(instant || do_after(user, 50))
+		if (instant || do_after(user, 50))
 			new /obj/decal/cleanable/crayon(target,colour,shadeColour,drawtype)
 			user << "You finish drawing."
-			if(uses)
+			if (uses)
 				uses--
-				if(!uses)
+				if (!uses)
 					user << "\red You used up your crayon!"
 					del(src)
 	return
 
 /obj/item/toy/crayon/attack(mob/M as mob, mob/user as mob)
-	if(M == user)
+	if (M == user)
 		user << "You take a bite of the crayon. Delicious!"
 		user.nutrition += 5
-		if(uses)
+		if (uses)
 			uses -= 5
-			if(uses <= 0)
+			if (uses <= 0)
 				user << "\red You ate your crayon!"
 				del(src)
 	else
@@ -175,9 +175,9 @@ CRAYONS
 	desc = "A [type] drawn in crayon."
 
 	switch(type)
-		if("rune")
+		if ("rune")
 			type = "rune[rand(1,6)]"
-		if("graffiti")
+		if ("graffiti")
 			type = pick("amyjon","face","matt","revolution","engie","guy","end","dwarf","uboa")
 
 	var/icon/mainOverlay = new/icon('crayondecal.dmi',"[type]",2.1)

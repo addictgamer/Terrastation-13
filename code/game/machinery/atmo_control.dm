@@ -26,7 +26,7 @@ obj/machinery/air_sensor
 		icon_state = "gsensor[on]"
 
 	process()
-		if(on)
+		if (on)
 			var/datum/signal/signal = new
 			signal.transmission_method = 1 //radio signal
 			signal.data["tag"] = id_tag
@@ -34,21 +34,21 @@ obj/machinery/air_sensor
 
 			var/datum/gas_mixture/air_sample = return_air()
 
-			if(output&1)
+			if (output&1)
 				signal.data["pressure"] = num2text(round(air_sample.return_pressure(),0.1),)
-			if(output&2)
+			if (output&2)
 				signal.data["temperature"] = round(air_sample.temperature,0.1)
 
-			if(output>4)
+			if (output>4)
 				var/total_moles = air_sample.total_moles()
-				if(total_moles > 0)
-					if(output&4)
+				if (total_moles > 0)
+					if (output&4)
 						signal.data["oxygen"] = round(100*air_sample.oxygen/total_moles,0.1)
-					if(output&8)
+					if (output&8)
 						signal.data["toxins"] = round(100*air_sample.toxins/total_moles,0.1)
-					if(output&16)
+					if (output&16)
 						signal.data["nitrogen"] = round(100*air_sample.nitrogen/total_moles,0.1)
-					if(output&32)
+					if (output&32)
 						signal.data["carbon_dioxide"] = round(100*air_sample.carbon_dioxide/total_moles,0.1)
 				else
 					signal.data["oxygen"] = 0
@@ -71,7 +71,7 @@ obj/machinery/air_sensor
 	New()
 		..()
 
-		if(radio_controller)
+		if (radio_controller)
 			set_frequency(frequency)
 
 obj/machinery/computer/general_air_control
@@ -97,9 +97,9 @@ obj/machinery/computer/general_air_control
 		src.updateDialog()
 
 	attackby(I as obj, user as mob)
-		if(istype(I, /obj/item/weapon/screwdriver))
+		if (istype(I, /obj/item/weapon/screwdriver))
 			playsound(src.loc, 'Screwdriver.ogg', 50, 1)
-			if(do_after(user, 20))
+			if (do_after(user, 20))
 				if (src.stat & BROKEN)
 					user << "\blue The broken glass falls out."
 					var/obj/computerframe/A = new /obj/computerframe( src.loc )
@@ -130,35 +130,35 @@ obj/machinery/computer/general_air_control
 		return
 
 	receive_signal(datum/signal/signal)
-		if(!signal || signal.encryption) return
+		if (!signal || signal.encryption) return
 
 		var/id_tag = signal.data["tag"]
-		if(!id_tag || !sensors.Find(id_tag)) return
+		if (!id_tag || !sensors.Find(id_tag)) return
 
 		sensor_information[id_tag] = signal.data
 
 	proc/return_text()
 		var/sensor_data
-		if(sensors.len)
+		if (sensors.len)
 			for(var/id_tag in sensors)
 				var/long_name = sensors[id_tag]
 				var/list/data = sensor_information[id_tag]
 				var/sensor_part = "<B>[long_name]</B>:<BR>"
 
-				if(data)
-					if(data["pressure"])
+				if (data)
+					if (data["pressure"])
 						sensor_part += "   <B>Pressure:</B> [data["pressure"]] kPa<BR>"
-					if(data["temperature"])
+					if (data["temperature"])
 						sensor_part += "   <B>Temperature:</B> [data["temperature"]] K<BR>"
-					if(data["oxygen"]||data["toxins"]||data["nitrogen"]||data["carbon_dioxide"])
+					if (data["oxygen"]||data["toxins"]||data["nitrogen"]||data["carbon_dioxide"])
 						sensor_part += "   <B>Gas Composition :</B>"
-						if(data["oxygen"])
+						if (data["oxygen"])
 							sensor_part += "[data["oxygen"]]% O2; "
-						if(data["nitrogen"])
+						if (data["nitrogen"])
 							sensor_part += "[data["nitrogen"]]% N; "
-						if(data["carbon_dioxide"])
+						if (data["carbon_dioxide"])
 							sensor_part += "[data["carbon_dioxide"]]% CO2; "
-						if(data["toxins"])
+						if (data["toxins"])
 							sensor_part += "[data["toxins"]]% TX; "
 					sensor_part += "<HR>"
 
@@ -199,11 +199,11 @@ obj/machinery/computer/general_air_control
 
 		return_text()
 			var/output = ..()
-			//if(signal.data)
+			//if (signal.data)
 			//	input_info = signal.data // Attempting to fix intake control -- TLE
 
 			output += "<B>Tank Control System</B><BR>"
-			if(input_info)
+			if (input_info)
 				var/power = (input_info["power"])
 				var/volume_rate = input_info["volume_rate"]
 				output += {"<B>Input</B>: [power?("Injecting"):("On Hold")] <A href='?src=\ref[src];in_refresh_status=1'>Refresh</A><BR>
@@ -215,7 +215,7 @@ Rate: [volume_rate] L/sec<BR>"}
 
 			output += "<BR>"
 
-			if(output_info)
+			if (output_info)
 				var/power = (output_info["power"])
 				var/output_pressure = output_info["internal"]
 				output += {"<B>Output</B>: [power?("Open"):("On Hold")] <A href='?src=\ref[src];out_refresh_status=1'>Refresh</A><BR>
@@ -230,50 +230,50 @@ Max Output Pressure: [output_pressure] kPa<BR>"}
 			return output
 
 		receive_signal(datum/signal/signal)
-			if(!signal || signal.encryption) return
+			if (!signal || signal.encryption) return
 
 			var/id_tag = signal.data["tag"]
 
-			if(input_tag == id_tag)
+			if (input_tag == id_tag)
 				input_info = signal.data
-			else if(output_tag == id_tag)
+			else if (output_tag == id_tag)
 				output_info = signal.data
 			else
 				..(signal)
 
 		Topic(href, href_list)
-			if(..())
+			if (..())
 				return
 
-			if(href_list["adj_pressure"])
+			if (href_list["adj_pressure"])
 				var/change = text2num(href_list["adj_pressure"])
 				pressure_setting = between(0, pressure_setting + change, 50*ONE_ATMOSPHERE)
 				spawn(1)
 					src.updateDialog()
 				return
 
-			if(!radio_connection)
+			if (!radio_connection)
 				return 0
 			var/datum/signal/signal = new
 			signal.transmission_method = 1 //radio signal
 			signal.source = src
-			if(href_list["in_refresh_status"])
+			if (href_list["in_refresh_status"])
 				input_info = null
 				signal.data = list ("tag" = input_tag, "status")
 
-			if(href_list["in_toggle_injector"])
+			if (href_list["in_toggle_injector"])
 				input_info = null
 				signal.data = list ("tag" = input_tag, "power_toggle")
 
-			if(href_list["out_refresh_status"])
+			if (href_list["out_refresh_status"])
 				output_info = null
 				signal.data = list ("tag" = output_tag, "status")
 
-			if(href_list["out_toggle_power"])
+			if (href_list["out_toggle_power"])
 				output_info = null
 				signal.data = list ("tag" = output_tag, "power_toggle")
 
-			if(href_list["out_set_pressure"])
+			if (href_list["out_set_pressure"])
 				output_info = null
 				signal.data = list ("tag" = output_tag, "set_internal_pressure" = "[pressure_setting]")
 
@@ -296,9 +296,9 @@ Max Output Pressure: [output_pressure] kPa<BR>"}
 		var/on_temperature = 1200
 
 		attackby(I as obj, user as mob)
-			if(istype(I, /obj/item/weapon/screwdriver))
+			if (istype(I, /obj/item/weapon/screwdriver))
 				playsound(src.loc, 'Screwdriver.ogg', 50, 1)
-				if(do_after(user, 20))
+				if (do_after(user, 20))
 					if (src.stat & BROKEN)
 						user << "\blue The broken glass falls out."
 						var/obj/computerframe/A = new /obj/computerframe( src.loc )
@@ -329,18 +329,18 @@ Max Output Pressure: [output_pressure] kPa<BR>"}
 			return
 
 		process()
-			if(automation)
-				if(!radio_connection)
+			if (automation)
+				if (!radio_connection)
 					return 0
 
 				var/injecting = 0
 				for(var/id_tag in sensor_information)
 					var/list/data = sensor_information[id_tag]
-					if(data["temperature"])
-						if(data["temperature"] >= cutoff_temperature)
+					if (data["temperature"])
+						if (data["temperature"] >= cutoff_temperature)
 							injecting = 0
 							break
-						if(data["temperature"] <= on_temperature)
+						if (data["temperature"] <= on_temperature)
 							injecting = 1
 
 				var/datum/signal/signal = new
@@ -361,13 +361,13 @@ Max Output Pressure: [output_pressure] kPa<BR>"}
 			var/output = ..()
 
 			output += "<B>Fuel Injection System</B><BR>"
-			if(device_info)
+			if (device_info)
 				var/power = device_info["power"]
 				var/volume_rate = device_info["volume_rate"]
 				output += {"Status: [power?("Injecting"):("On Hold")] <A href='?src=\ref[src];refresh_status=1'>Refresh</A><BR>
 Rate: [volume_rate] L/sec<BR>"}
 
-				if(automation)
+				if (automation)
 					output += "Automated Fuel Injection: <A href='?src=\ref[src];toggle_automation=1'>Engaged</A><BR>"
 					output += "Injector Controls Locked Out<BR>"
 				else
@@ -380,22 +380,22 @@ Rate: [volume_rate] L/sec<BR>"}
 			return output
 
 		receive_signal(datum/signal/signal)
-			if(!signal || signal.encryption) return
+			if (!signal || signal.encryption) return
 
 			var/id_tag = signal.data["tag"]
 
-			if(device_tag == id_tag)
+			if (device_tag == id_tag)
 				device_info = signal.data
 			else
 				..(signal)
 
 		Topic(href, href_list)
-			if(..())
+			if (..())
 				return
 
-			if(href_list["refresh_status"])
+			if (href_list["refresh_status"])
 				device_info = null
-				if(!radio_connection)
+				if (!radio_connection)
 					return 0
 
 				var/datum/signal/signal = new
@@ -408,12 +408,12 @@ Rate: [volume_rate] L/sec<BR>"}
 				)
 				radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
 
-			if(href_list["toggle_automation"])
+			if (href_list["toggle_automation"])
 				automation = !automation
 
-			if(href_list["toggle_injector"])
+			if (href_list["toggle_injector"])
 				device_info = null
-				if(!radio_connection)
+				if (!radio_connection)
 					return 0
 
 				var/datum/signal/signal = new
@@ -427,8 +427,8 @@ Rate: [volume_rate] L/sec<BR>"}
 
 				radio_connection.post_signal(src, signal, filter = RADIO_ATMOSIA)
 
-			if(href_list["injection"])
-				if(!radio_connection)
+			if (href_list["injection"])
+				if (!radio_connection)
 					return 0
 
 				var/datum/signal/signal = new
@@ -449,16 +449,16 @@ Rate: [volume_rate] L/sec<BR>"}
 	set_frequency(receive_frequency)
 
 /obj/machinery/computer/atmos_alert/receive_signal(datum/signal/signal)
-	if(!signal || signal.encryption) return
+	if (!signal || signal.encryption) return
 
 	var/zone = signal.data["zone"]
 	var/severity = signal.data["alert"]
 
-	if(!zone || !severity) return
+	if (!zone || !severity) return
 
 	minor_alarms -= zone
 	priority_alarms -= zone
-	if(severity=="severe")
+	if (severity=="severe")
 		priority_alarms += zone
 	else if (severity=="minor")
 		minor_alarms += zone
@@ -481,10 +481,10 @@ Rate: [volume_rate] L/sec<BR>"}
 	src.updateDialog()
 
 /obj/machinery/computer/atmos_alert/update_icon()
-	if(priority_alarms.len)
+	if (priority_alarms.len)
 		icon_state = "alert:2"
 
-	else if(minor_alarms.len)
+	else if (minor_alarms.len)
 		icon_state = "alert:1"
 
 	else
@@ -494,13 +494,13 @@ Rate: [volume_rate] L/sec<BR>"}
 	var/priority_text
 	var/minor_text
 
-	if(priority_alarms.len)
+	if (priority_alarms.len)
 		for(var/zone in priority_alarms)
 			priority_text += "<FONT color='red'><B>[zone]</B></FONT>  <A href='?src=\ref[src];priority_clear=[ckey(zone)]'>X</A><BR>"
 	else
 		priority_text = "No priority alerts detected.<BR>"
 
-	if(minor_alarms.len)
+	if (minor_alarms.len)
 		for(var/zone in minor_alarms)
 			minor_text += "<B>[zone]</B>  <A href='?src=\ref[src];minor_clear=[ckey(zone)]'>X</A><BR>"
 	else
@@ -518,18 +518,18 @@ Rate: [volume_rate] L/sec<BR>"}
 	return output
 
 /obj/machinery/computer/atmos_alert/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 
-	if(href_list["priority_clear"])
+	if (href_list["priority_clear"])
 		var/removing_zone = href_list["priority_clear"]
 		for(var/zone in priority_alarms)
-			if(ckey(zone) == removing_zone)
+			if (ckey(zone) == removing_zone)
 				priority_alarms -= zone
 
-	if(href_list["minor_clear"])
+	if (href_list["minor_clear"])
 		var/removing_zone = href_list["minor_clear"]
 		for(var/zone in minor_alarms)
-			if(ckey(zone) == removing_zone)
+			if (ckey(zone) == removing_zone)
 				minor_alarms -= zone
 	update_icon()

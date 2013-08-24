@@ -15,13 +15,13 @@
 	var/obj/organ/chest/chest = null
 
 	proc/FindMainPowercell()
-		if(chest) //priority goes to chest implant, if there is one
-			if((chest.organType & CYBER) && chest.canExportPower && chest.cell)
+		if (chest) //priority goes to chest implant, if there is one
+			if ((chest.organType & CYBER) && chest.canExportPower && chest.cell)
 				mainPowerCell = chest.cell
 				return
 		var/list/organs = GetAllContents()
 		for(var/obj/organ/otherOrgan in organs) //otherwise, maybe some other organ fits the criteria?
-			if((otherOrgan.organType & CYBER) && otherOrgan.canExportPower && otherOrgan.cell)
+			if ((otherOrgan.organType & CYBER) && otherOrgan.canExportPower && otherOrgan.cell)
 				mainPowerCell = otherOrgan:cell
 				return
 		mainPowerCell = null //otherwise, seems there's no main cell
@@ -31,7 +31,7 @@
 		var/list/speciesPresent = list()
 
 		for(var/obj/organ/organ in src) //only external organs count, since it's judging by the appearance
-			if(speciesPresent[organ.species])
+			if (speciesPresent[organ.species])
 				speciesPresent[organ.species]++
 			else
 				speciesPresent[organ.species] = 1 //not sure, but I think it's not initialised before that, so can't ++
@@ -39,15 +39,15 @@
 		var/list/dominantSpecies = list()
 
 		for(var/speciesName in speciesPresent)
-			if(!dominantSpecies.len)
+			if (!dominantSpecies.len)
 				dominantSpecies += speciesName
 			else
-				if(speciesPresent[dominantSpecies[1]] == speciesPresent[speciesName])
+				if (speciesPresent[dominantSpecies[1]] == speciesPresent[speciesName])
 					dominantSpecies += speciesName
-				else if(speciesPresent[dominantSpecies[1]] < speciesPresent[speciesName])
+				else if (speciesPresent[dominantSpecies[1]] < speciesPresent[speciesName])
 					dominantSpecies = list(speciesName)
 
-		if(!dominantSpecies.len)
+		if (!dominantSpecies.len)
 			species = "mob"
 		else
 			species = pick(dominantSpecies)
@@ -111,21 +111,21 @@
 		rootOrganStructure = FindRootStructure()
 
 	proc/FindRootStructure()
-		if(istype(loc,/obj/organ))
+		if (istype(loc,/obj/organ))
 			var/obj/organ/parent = loc
 			return parent.FindRootStructure()
-		else if(istype(loc,/obj/organstructure))
+		else if (istype(loc,/obj/organstructure))
 			return loc
 		return null
 
 	proc/ProcessOrgan()
 		set background = 1
 
-		if(organType & CYBER)
+		if (organType & CYBER)
 			var/hasPower = DrainPower()
-			if(!hasPower && active)
+			if (!hasPower && active)
 				Deactivate()
-			else if(hasPower && !active)
+			else if (hasPower && !active)
 				Activate()
 
 	//CYBORG type
@@ -137,14 +137,14 @@
 	proc/DrainPower()
 		set background = 1
 
-		if(!powerDrainPerTick)
+		if (!powerDrainPerTick)
 			return 1
-		if(cell)
-			if(cell.charge >= powerDrainPerTick)
+		if (cell)
+			if (cell.charge >= powerDrainPerTick)
 				cell.charge -= powerDrainPerTick
 				return 1
-		if(rootOrganStructure.mainPowerCell)
-			if(rootOrganStructure.mainPowerCell.charge >= powerDrainPerTick)
+		if (rootOrganStructure.mainPowerCell)
+			if (rootOrganStructure.mainPowerCell.charge >= powerDrainPerTick)
 				rootOrganStructure.mainPowerCell.charge -= powerDrainPerTick
 				return 1
 		return 0
@@ -252,7 +252,7 @@
 		..()
 		canExportPower = 1
 		maxHealth = 150
-		if(rootOrganStructure.loc && istype(rootOrganStructure.loc,/mob/living))
+		if (rootOrganStructure.loc && istype(rootOrganStructure.loc,/mob/living))
 			var/mob/living/holder = rootOrganStructure.loc
 			holder.updatehealth()
 
@@ -260,6 +260,6 @@
 		..()
 		canExportPower = 0
 		maxHealth = 120
-		if(rootOrganStructure.loc && istype(rootOrganStructure.loc,/mob/living))
+		if (rootOrganStructure.loc && istype(rootOrganStructure.loc,/mob/living))
 			var/mob/living/holder = rootOrganStructure.loc
 			holder.updatehealth()

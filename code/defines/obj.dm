@@ -14,7 +14,7 @@
 		//		null if object handles breathing logic for lifeform
 		//		datum/air_group to tell lifeform to process using that breath return
 		//DEFAULT: Take air from turf to give to have mob process
-		if(breath_request>0)
+		if (breath_request>0)
 			return remove_air(breath_request)
 		else
 			return null
@@ -48,11 +48,11 @@
 
 	attack_hand(mob/user as mob)
 		switch(alert("Travel back to ss13?",,"Yes","No"))
-			if("Yes")
-				if(user.z != src.z)	return
+			if ("Yes")
+				if (user.z != src.z)	return
 				user.loc.loc.Exited(user)
 				user.loc = pick(latejoin)
-			if("No")
+			if ("No")
 				return
 
 /obj/mark
@@ -257,9 +257,9 @@
 	icon_state = "goldenplaque"
 
 /obj/item/weapon/plaque_assembly/afterattack(atom/A as mob|obj|turf|area, mob/user as mob)
-	if(istype(A,/turf/simulated/wall) || istype(A,/turf/simulated/shuttle/wall) || istype(A,/turf/unsimulated/wall))
+	if (istype(A,/turf/simulated/wall) || istype(A,/turf/simulated/shuttle/wall) || istype(A,/turf/unsimulated/wall))
 		var/epitaph = input("What would you like to engrave", null)
-		if(epitaph)
+		if (epitaph)
 			var/obj/sign/goldenplaque/gp = new/obj/sign/goldenplaque(A)
 			gp.name = epitaph
 			gp.layer = 2.9
@@ -410,30 +410,30 @@
 
 /obj/lattice/New()
 	..()
-	if(!(istype(src.loc, /turf/space)))
+	if (!(istype(src.loc, /turf/space)))
 		del(src)
 	for(var/obj/lattice/LAT in src.loc)
-		if(LAT != src)
+		if (LAT != src)
 			del(LAT)
 	icon = 'smoothlattice.dmi'
 	icon_state = "latticeblank"
 	updateOverlays()
 	for (var/dir in cardinal)
 		var/obj/lattice/L
-		if(locate(/obj/lattice, get_step(src, dir)))
+		if (locate(/obj/lattice, get_step(src, dir)))
 			L = locate(/obj/lattice, get_step(src, dir))
 			L.updateOverlays()
 
 /obj/lattice/Del()
 	for (var/dir in cardinal)
 		var/obj/lattice/L
-		if(locate(/obj/lattice, get_step(src, dir)))
+		if (locate(/obj/lattice, get_step(src, dir)))
 			L = locate(/obj/lattice, get_step(src, dir))
 			L.updateOverlays(src.loc)
 	..()
 
 /obj/lattice/proc/updateOverlays()
-	//if(!(istype(src.loc, /turf/space)))
+	//if (!(istype(src.loc, /turf/space)))
 	//	del(src)
 	spawn(1)
 		overlays = list()
@@ -441,10 +441,10 @@
 		var/dir_sum = 0
 
 		for (var/direction in cardinal)
-			if(locate(/obj/lattice, get_step(src, direction)))
+			if (locate(/obj/lattice, get_step(src, direction)))
 				dir_sum += direction
 			else
-				if(!(istype(get_step(src, direction), /turf/space)))
+				if (!(istype(get_step(src, direction), /turf/space)))
 					dir_sum += direction
 
 		icon_state = "lattice[dir_sum]"
@@ -453,11 +453,11 @@
 		/*
 		overlays += icon(icon,"lattice-middlebar") //the nw-se bar in the cneter
 		for (var/dir in cardinal)
-			if(locate(/obj/lattice, get_step(src, dir)))
+			if (locate(/obj/lattice, get_step(src, dir)))
 				src.overlays += icon(icon,"lattice-[dir2text(dir)]")
 			else
 				src.overlays += icon(icon,"lattice-nc-[dir2text(dir)]") //t for turf
-				if(!(istype(get_step(src, dir), /turf/space)))
+				if (!(istype(get_step(src, dir), /turf/space)))
 					src.overlays += icon(icon,"lattice-t-[dir2text(dir)]") //t for turf
 
 		//if ( !( (locate(/obj/lattice, get_step(src, SOUTH))) || (locate(/obj/lattice, get_step(src, EAST))) ))
@@ -469,7 +469,7 @@
 		if ( !( (locate(/obj/lattice, get_step(src, SOUTH))) || (locate(/obj/lattice, get_step(src, WEST))) ))
 			src.overlays += icon(icon,"lattice-c-sw")
 
-		if(!(overlays))
+		if (!(overlays))
 			icon_state = "latticefull"
 		*/
 
@@ -722,17 +722,17 @@
 	New()
 		..()
 		for(var/obj/table/T in src.loc)
-			if(T != src)
+			if (T != src)
 				del(T)
 		update_icon()
 		for(var/direction in list(1,2,4,8,5,6,9,10))
-			if(locate(/obj/table,get_step(src,direction)))
+			if (locate(/obj/table,get_step(src,direction)))
 				var/obj/table/T = locate(/obj/table,get_step(src,direction))
 				T.update_icon()
 
 	Del()
 		for(var/direction in list(1,2,4,8,5,6,9,10))
-			if(locate(/obj/table,get_step(src,direction)))
+			if (locate(/obj/table,get_step(src,direction)))
 				var/obj/table/T = locate(/obj/table,get_step(src,direction))
 				T.update_icon()
 		..()
@@ -743,25 +743,25 @@
 			for(var/direction in cardinal)
 				var/skip_sum = 0
 				for(var/obj/window/W in src.loc)
-					if(W.dir == direction) //So smooth tables don't go smooth through windows
+					if (W.dir == direction) //So smooth tables don't go smooth through windows
 						skip_sum = 1
 						continue
 				var/inv_direction //inverse direction
 				switch(direction)
-					if(1)
+					if (1)
 						inv_direction = 2
-					if(2)
+					if (2)
 						inv_direction = 1
-					if(4)
+					if (4)
 						inv_direction = 8
-					if(8)
+					if (8)
 						inv_direction = 4
 				for(var/obj/window/W in get_step(src,direction))
-					if(W.dir == inv_direction) //So smooth tables don't go smooth through windows when the window is on the other table's tile
+					if (W.dir == inv_direction) //So smooth tables don't go smooth through windows when the window is on the other table's tile
 						skip_sum = 1
 						continue
-				if(!skip_sum) //means there is a window between the two tiles in this direction
-					if(locate(/obj/table,get_step(src,direction)))
+				if (!skip_sum) //means there is a window between the two tiles in this direction
+					if (locate(/obj/table,get_step(src,direction)))
 						dir_sum += direction
 
 			//dir_sum:
@@ -779,68 +779,68 @@
 			//  4 = middle table (full, 4 connections)
 
 			var/table_type = 0 //stand_alone table
-			if(dir_sum in cardinal)
+			if (dir_sum in cardinal)
 				table_type = 1 //endtable
-			if(dir_sum in list(3,12))
+			if (dir_sum in list(3,12))
 				table_type = 2 //1 tile thick, streight table
-				if(dir_sum == 3) //3 doesn't exist as a dir
+				if (dir_sum == 3) //3 doesn't exist as a dir
 					dir_sum = 2
-				if(dir_sum == 12) //12 doesn't exist as a dir.
+				if (dir_sum == 12) //12 doesn't exist as a dir.
 					dir_sum = 4
-			if(dir_sum in list(5,6,9,10))
-				if(locate(/obj/table,get_step(src.loc,dir_sum)))
+			if (dir_sum in list(5,6,9,10))
+				if (locate(/obj/table,get_step(src.loc,dir_sum)))
 					table_type = 3 //full table (not the 1 tile thick one, but one of the 'tabledir' tables)
 				else
 					table_type = 2 //1 tile thick, corner table (treated the same as streight tables in code later on)
-			if(dir_sum in list(13,14,7,11)) //Three-way intersection
+			if (dir_sum in list(13,14,7,11)) //Three-way intersection
 				table_type = 3 //full table as three-way intersections are not sprited, would require 64 sprites to handle all combinations
 				switch(dir_sum)
-					if(7)
+					if (7)
 						dir_sum = 4
-					if(11)
+					if (11)
 						dir_sum = 8
-					if(13)
+					if (13)
 						dir_sum = 1
-					if(14)
+					if (14)
 						dir_sum = 2 //These translate the dir_sum to the correct dirs from the 'tabledir' icon_state.
-			if(dir_sum == 15)
+			if (dir_sum == 15)
 				table_type = 4 //4-way intersection, the 'middle' table sprites will be used.
 
-			if(istype(src,/obj/table/reinforced))
+			if (istype(src,/obj/table/reinforced))
 				switch(table_type)
-					if(0)
+					if (0)
 						icon_state = "reinf_table"
-					if(1)
+					if (1)
 						icon_state = "reinf_1tileendtable"
-					if(2)
+					if (2)
 						icon_state = "reinf_1tilethick"
-					if(3)
+					if (3)
 						icon_state = "reinf_tabledir"
-					if(4)
+					if (4)
 						icon_state = "reinf_middle"
-			else if(istype(src,/obj/table/woodentable))
+			else if (istype(src,/obj/table/woodentable))
 				switch(table_type)
-					if(0)
+					if (0)
 						icon_state = "wood_table"
-					if(1)
+					if (1)
 						icon_state = "wood_1tileendtable"
-					if(2)
+					if (2)
 						icon_state = "wood_1tilethick"
-					if(3)
+					if (3)
 						icon_state = "wood_tabledir"
-					if(4)
+					if (4)
 						icon_state = "wood_middle"
 			else
 				switch(table_type)
-					if(0)
+					if (0)
 						icon_state = "table"
-					if(1)
+					if (1)
 						icon_state = "table_1tileendtable"
-					if(2)
+					if (2)
 						icon_state = "table_1tilethick"
-					if(3)
+					if (3)
 						icon_state = "tabledir"
-					if(4)
+					if (4)
 						icon_state = "table_middle"
 			if (dir_sum in list(1,2,4,8,5,6,9,10))
 				dir = dir_sum
@@ -923,7 +923,7 @@
 		//Shifting the brain "mob" over to the brain object so it's easier to keep track of. --NEO
 		//WASSSSSUUUPPPP /N
 		spawn(5)
-			if(brainmob&&brainmob.client)
+			if (brainmob&&brainmob.client)
 				brainmob.client.screen.len = null //clear the hud
 
 	proc
@@ -933,7 +933,7 @@
 			brainmob.name = H.real_name
 			brainmob.real_name = H.real_name
 			brainmob.dna = H.dna
-			if(H.mind)
+			if (H.mind)
 				H.mind.transfer_to(brainmob)
 			brainmob << "\blue You might feel slightly disoriented. That's normal when your brain gets cut out."
 			return
@@ -973,7 +973,7 @@
 		while(src)
 			sleep(10)
 			Flush--
-			if(Flush <= 0)
+			if (Flush <= 0)
 				reagents.clear_reagents()
 				Flush = 30
 
@@ -1210,24 +1210,24 @@
 
 	attackby(var/obj/item/O as obj, var/mob/user as mob)
 		..()
-		if(istype(O,/obj/item/weapon/wirecutters))
+		if (istype(O,/obj/item/weapon/wirecutters))
 			var/obj/item/weapon/cable_coil/CC = new/obj/item/weapon/cable_coil(user.loc)
 			CC.amount = 5
 			amount--
 			new/obj/item/stack/sheet/glass(user.loc)
-			if(amount <= 0)
+			if (amount <= 0)
 				user.u_equip(src)
 				del(src)
 
-		if(istype(O,/obj/item/stack/sheet/metal))
+		if (istype(O,/obj/item/stack/sheet/metal))
 			var/obj/item/stack/sheet/metal/M = O
 			M.amount--
-			if(M.amount <= 0)
+			if (M.amount <= 0)
 				user.u_equip(M)
 				del(M)
 			amount--
 			new/obj/item/stack/tile/light(user.loc)
-			if(amount <= 0)
+			if (amount <= 0)
 				user.u_equip(src)
 				del(src)
 
@@ -1248,22 +1248,22 @@
 
 	New()
 		..()
-		if(prob(5))
+		if (prob(5))
 			state = 3 //broken
-		else if(prob(5))
+		else if (prob(5))
 			state = 2 //breaking
-		else if(prob(10))
+		else if (prob(10))
 			state = 1 //flickering occasionally
 		else
 			state = 0 //fine
 
 	attackby(var/obj/item/O as obj, var/mob/user as mob)
 		..()
-		if(istype(O,/obj/item/weapon/crowbar))
+		if (istype(O,/obj/item/weapon/crowbar))
 			new/obj/item/stack/sheet/metal(user.loc)
 			amount--
 			new/obj/item/stack/light_w(user.loc)
-			if(amount <= 0)
+			if (amount <= 0)
 				user.u_equip(src)
 				del(src)
 

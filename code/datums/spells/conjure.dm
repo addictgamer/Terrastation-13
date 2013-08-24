@@ -16,25 +16,25 @@
 /obj/proc_holder/spell/aoe_turf/conjure/cast(list/targets)
 
 	for(var/turf/T in targets)
-		if(T.density && !summon_ignore_density)
+		if (T.density && !summon_ignore_density)
 			targets -= T
 
 	for(var/i=0,i<summon_amt,i++)
-		if(!targets.len)
+		if (!targets.len)
 			break
 		var/summoned_object_type = text2path(pick(summon_type))
 		var/spawn_place = pick(targets)
-		if(summon_ignore_prev_spawn_points)
+		if (summon_ignore_prev_spawn_points)
 			targets -= spawn_place
 		var/atom/summoned_object = new summoned_object_type(spawn_place)
 
 		for(var/varName in newVars)
-			if(varName in summoned_object.vars)
+			if (varName in summoned_object.vars)
 				summoned_object.vars[varName] = newVars[varName]
 
-		if(summon_lifespan)
+		if (summon_lifespan)
 			spawn(summon_lifespan)
-				if(summoned_object)
+				if (summoned_object)
 					del(summoned_object)
 
 	return

@@ -14,41 +14,41 @@
 /datum/disease/flu/stage_act()
 	..()
 	switch(stage)
-		if(2)
-			if(affected_mob.sleeping && prob(20))
+		if (2)
+			if (affected_mob.sleeping && prob(20))
 				affected_mob << "\blue You feel better."
 				stage--
 				return
-			if(prob(1))
+			if (prob(1))
 				affected_mob.emote("sneeze")
-			if(prob(1))
+			if (prob(1))
 				affected_mob.emote("cough")
-			if(prob(1))
+			if (prob(1))
 				affected_mob << "\red Your muscles ache."
-				if(prob(20))
+				if (prob(20))
 					affected_mob.take_organ_damage(1)
-			if(prob(1))
+			if (prob(1))
 				affected_mob << "\red Your stomach hurts."
-				if(prob(20))
+				if (prob(20))
 					affected_mob.toxloss += 1
 					affected_mob.updatehealth()
 
-		if(3)
-			if(affected_mob.sleeping && prob(15))
+		if (3)
+			if (affected_mob.sleeping && prob(15))
 				affected_mob << "\blue You feel better."
 				stage--
 				return
-			if(prob(1))
+			if (prob(1))
 				affected_mob.emote("sneeze")
-			if(prob(1))
+			if (prob(1))
 				affected_mob.emote("cough")
-			if(prob(1))
+			if (prob(1))
 				affected_mob << "\red Your muscles ache."
-				if(prob(20))
+				if (prob(20))
 					affected_mob.take_organ_damage(1)
-			if(prob(1))
+			if (prob(1))
 				affected_mob << "\red Your stomach hurts."
-				if(prob(20))
+				if (prob(20))
 					affected_mob.toxloss += 1
 					affected_mob.updatehealth()
 	return

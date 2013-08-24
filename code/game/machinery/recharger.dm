@@ -30,8 +30,8 @@ obj/machinery/recharger
 
 /obj/machinery/recharger/attack_hand(mob/user as mob)
 	src.add_fingerprint(user)
-	if(ishuman(user))
-		if(istype(user:gloves, /obj/item/clothing/gloves/space_ninja)&&user:gloves:candrain&&!user:gloves:draining)
+	if (ishuman(user))
+		if (istype(user:gloves, /obj/item/clothing/gloves/space_ninja)&&user:gloves:candrain&&!user:gloves:draining)
 			call(/obj/item/clothing/gloves/space_ninja/proc/drain)("MACHINERY",src,user:wear_suit)
 			return
 
@@ -40,7 +40,7 @@ obj/machinery/recharger
 		src.charging.loc = src.loc
 		src.charging = null
 		use_power = 1
-	if(src.charging2)
+	if (src.charging2)
 		src.charging2.update_icon()
 		src.charging2.loc = src.loc
 		src.charging2 = null

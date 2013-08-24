@@ -21,11 +21,11 @@
 	return src.attack_hand(user)
 
 /obj/machinery/computer/tradecomp/attack_hand(var/mob/user as mob)
-	if(!src.allowed(user))
+	if (!src.allowed(user))
 		user << "\red Access Denied."
 		return
 
-	if(..())
+	if (..())
 		return
 	user.machine = src
 	post_signal("trade")
@@ -46,13 +46,13 @@
 
 
 /obj/machinery/computer/tradecomp/attackby(I as obj, user as mob)
-	/*if(istype(I,/obj/item/weapon/card/emag) && !hacked)
+	/*if (istype(I,/obj/item/weapon/card/emag) && !hacked)
 		user << "\blue Special supplies unlocked."
 		src.hacked = 1
 		return*/ //TODO: Maybe open up some kind of black market?
-	if(istype(I, /obj/item/weapon/screwdriver))
+	if (istype(I, /obj/item/weapon/screwdriver))
 		playsound(src.loc, 'Screwdriver.ogg', 50, 1)
-		if(do_after(user, 20))
+		if (do_after(user, 20))
 			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				var/obj/computerframe/A = new /obj/computerframe( src.loc )
@@ -87,14 +87,14 @@
 
 
 /obj/machinery/computer/tradecomp/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 
 	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
 		usr.machine = src
 
 	/*if (href_list["sendtodock"])
-		if(!supply_shuttle_at_station || supply_shuttle_moving) return
+		if (!supply_shuttle_at_station || supply_shuttle_moving) return
 
 		//if (!supply_can_move())
 		//	usr << "\red The supply shuttle can not transport station employees or homing beacons."
@@ -111,7 +111,7 @@
 		send_supply_shuttle()*/
 
 	/*else if (href_list["sendtostation"])
-		if(supply_shuttle_at_station || supply_shuttle_moving) return
+		if (supply_shuttle_at_station || supply_shuttle_moving) return
 
 		//if (!supply_can_move())
 		//	usr << "\red The supply shuttle can not transport station employees or homing beacons."
@@ -134,13 +134,13 @@
 	if (href_list["order"])
 		for(var/S in (typesof(/datum/trade_packs) - /datum/trade_packs) )
 			var/datum/trade_packs/N = new S()
-			if(N.hidden && !src.hacked) continue													//Have to send the type instead of a reference to
+			if (N.hidden && !src.hacked) continue													//Have to send the type instead of a reference to
 			src.temp += "<A href='?src=\ref[src];doorder=[N.type]'>[N.name]</A><BR>" 				//the obj because it would get caught by the garbage
 		src.temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"								//collector. oh well.
 
 	else if (href_list["doorder"])
 
-		if(locate(href_list["doorder"])) //Comes from the requestlist
+		if (locate(href_list["doorder"])) //Comes from the requestlist
 			var/datum/trade_order/O = locate(href_list["doorder"])
 			//var/datum/trade_packs/P = O.object //Uh, is this needed? What's it do?
 			trade_shuttle_requestlist -= O
@@ -204,7 +204,7 @@
 
 	var/datum/radio_frequency/frequency = radio_controller.return_frequency(1435)
 
-	if(!frequency) return
+	if (!frequency) return
 
 	var/datum/signal/status_signal = new
 	status_signal.source = src

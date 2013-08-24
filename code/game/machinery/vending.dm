@@ -38,14 +38,14 @@
 
 /obj/machinery/vending/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				del(src)
 				return
-		if(3.0)
+		if (3.0)
 			if (prob(25))
 				spawn(0)
 					src.malfunction()
@@ -77,10 +77,10 @@
 //		R.amount = text2num(amt_list[p])
 //		src.product_records += R
 
-		if(hidden)
+		if (hidden)
 			R.amount = text2num(amt_list[p])
 			src.hidden_records += R
-		else if(req_coin)
+		else if (req_coin)
 			R.amount = text2num(amt_list[p])
 			src.coin_records += R
 		else
@@ -99,19 +99,19 @@
 		src.emagged = 1
 		user << "You short out the product lock on [src]"
 		return
-	else if(istype(W, /obj/item/weapon/screwdriver))
+	else if (istype(W, /obj/item/weapon/screwdriver))
 		src.panel_open = !src.panel_open
 		user << "You [src.panel_open ? "open" : "close"] the maintenance panel."
 		src.overlays = null
-		if(src.panel_open)
+		if (src.panel_open)
 			src.overlays += image(src.icon, "[initial(icon_state)]-panel")
 		src.updateUsrDialog()
 		return
-	else if(istype(W, /obj/item/device/multitool)||istype(W, /obj/item/weapon/wirecutters))
-		if(src.panel_open)
+	else if (istype(W, /obj/item/device/multitool)||istype(W, /obj/item/weapon/wirecutters))
+		if (src.panel_open)
 			attack_hand(user)
 		return
-	else if(istype(W, /obj/item/weapon/coin))
+	else if (istype(W, /obj/item/weapon/coin))
 		user.drop_item()
 		W.loc = src
 		coin = W
@@ -127,12 +127,12 @@
 	return attack_hand(user)
 
 /obj/machinery/vending/attack_hand(mob/user as mob)
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		return
 	user.machine = src
 
-	if(src.seconds_electrified != 0)
-		if(src.shock(user, 100))
+	if (src.seconds_electrified != 0)
+		if (src.shock(user, 100))
 			return
 
 	var/dat = "<TT><b>Select an item:</b><br>"
@@ -143,11 +143,11 @@
 		dat += "<font color = 'red'>No product loaded!</font>"
 	else
 		var/list/display_records = src.product_records
-		if(src.extended_inventory)
+		if (src.extended_inventory)
 			display_records = src.product_records + src.hidden_records
-		if(src.coin)
+		if (src.coin)
 			display_records = src.product_records + src.coin_records
-		if(src.coin && src.extended_inventory)
+		if (src.coin && src.extended_inventory)
 			display_records = src.product_records + src.hidden_records + src.coin_records
 
 		for (var/datum/data/vending_product/R in display_records)
@@ -161,7 +161,7 @@
 
 		dat += "</TT>"
 
-	if(panel_open)
+	if (panel_open)
 		var/list/vendwires = list(
 			"Violet" = 1,
 			"Orange" = 2,
@@ -172,7 +172,7 @@
 		for(var/wiredesc in vendwires)
 			var/is_uncut = src.wires & APCWireColorToFlag[vendwires[wiredesc]]
 			dat += "[wiredesc] wire: "
-			if(!is_uncut)
+			if (!is_uncut)
 				dat += "<a href='?src=\ref[src];cutwire=[vendwires[wiredesc]]'>Mend</a>"
 			else
 				dat += "<a href='?src=\ref[src];cutwire=[vendwires[wiredesc]]'>Cut</a> "
@@ -193,28 +193,28 @@
 	return
 
 /obj/machinery/vending/Topic(href, href_list)
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		return
-	if(usr.stat || usr.restrained())
+	if (usr.stat || usr.restrained())
 		return
 
-	if(istype(usr,/mob/living/silicon))
-		if(istype(usr,/mob/living/silicon/robot))
+	if (istype(usr,/mob/living/silicon))
+		if (istype(usr,/mob/living/silicon/robot))
 			var/mob/living/silicon/robot/R = usr
-			if(!(R.module && istype(R.module,/obj/item/weapon/robot_module/butler) ))
+			if (!(R.module && istype(R.module,/obj/item/weapon/robot_module/butler) ))
 				usr << "\red The vending machine refuses to interface with you, as you are not in its target demographic!"
 				return
 		else
 			usr << "\red The vending machine refuses to interface with you, as you are not in its target demographic!"
 			return
 
-	if(href_list["remove_coin"])
-		if(!coin)
+	if (href_list["remove_coin"])
+		if (!coin)
 			usr << "There is no coin in this machine."
 			return
 
 		coin.loc = src.loc
-		if(!usr.get_active_hand())
+		if (!usr.get_active_hand())
 			usr.put_in_hand(coin)
 		usr << "\blue You remove the [coin] from the [src]"
 		coin = null
@@ -245,11 +245,11 @@
 				return
 
 			if (R in coin_records)
-				if(!coin)
+				if (!coin)
 					usr << "\blue You need to insert a coin to get this item."
 					return
-				if(coin.string_attached)
-					if(prob(50))
+				if (coin.string_attached)
+					if (prob(50))
 						usr << "\blue You successfully pull the coin out before the [src] could swallow it."
 					else
 						usr << "\blue You weren't able to pull the coin out fast enough, the machine ate it, string and all."
@@ -259,7 +259,7 @@
 
 			R.amount--
 
-			if(((src.last_reply + (src.vend_delay + 200)) <= world.time) && src.vend_reply)
+			if (((src.last_reply + (src.vend_delay + 200)) <= world.time) && src.vend_reply)
 				spawn(0)
 					src.speak(src.vend_reply)
 					src.last_reply = world.time
@@ -307,28 +307,28 @@
 	return
 
 /obj/machinery/vending/process()
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		return
 
-	if(!src.active)
+	if (!src.active)
 		return
 
-	if(src.seconds_electrified > 0)
+	if (src.seconds_electrified > 0)
 		src.seconds_electrified--
 
 	//Pitch to the people!  Really sell it!
-	if(prob(5) && ((src.last_slogan + src.slogan_delay) <= world.time) && (src.slogan_list.len > 0) && (!src.shut_up))
+	if (prob(5) && ((src.last_slogan + src.slogan_delay) <= world.time) && (src.slogan_list.len > 0) && (!src.shut_up))
 		var/slogan = pick(src.slogan_list)
 		src.speak(slogan)
 		src.last_slogan = world.time
 
-	if((prob(2)) && (src.shoot_inventory))
+	if ((prob(2)) && (src.shoot_inventory))
 		src.throw_item()
 
 	return
 
 /obj/machinery/vending/proc/speak(var/message)
-	if(stat & NOPOWER)
+	if (stat & NOPOWER)
 		return
 
 	if (!message)
@@ -339,10 +339,10 @@
 	return
 
 /obj/machinery/vending/power_change()
-	if(stat & BROKEN)
+	if (stat & BROKEN)
 		icon_state = "[initial(icon_state)]-broken"
 	else
-		if( powered() )
+		if ( powered() )
 			icon_state = initial(icon_state)
 			stat &= ~NOPOWER
 		else
@@ -372,7 +372,7 @@
 /obj/machinery/vending/proc/throw_item()
 	var/obj/throw_item = null
 	var/mob/living/target = locate() in view(7,src)
-	if(!target)
+	if (!target)
 		return 0
 
 	for(var/datum/data/vending_product/R in src.product_records)
@@ -405,12 +405,12 @@
 	var/wireIndex = APCWireColorToIndex[wireColor]
 	src.wires &= ~wireFlag
 	switch(wireIndex)
-		if(WIRE_EXTEND)
+		if (WIRE_EXTEND)
 			src.extended_inventory = 0
-		if(WIRE_SHOCK)
+		if (WIRE_SHOCK)
 			src.seconds_electrified = -1
 		if (WIRE_SHOOTINV)
-			if(!src.shoot_inventory)
+			if (!src.shoot_inventory)
 				src.shoot_inventory = 1
 
 
@@ -419,8 +419,8 @@
 	var/wireIndex = APCWireColorToIndex[wireColor] //not used in this function
 	src.wires |= wireFlag
 	switch(wireIndex)
-//		if(WIRE_SCANID)
-		if(WIRE_SHOCK)
+//		if (WIRE_SCANID)
+		if (WIRE_SHOCK)
 			src.seconds_electrified = 0
 		if (WIRE_SHOOTINV)
 			src.shoot_inventory = 0
@@ -428,7 +428,7 @@
 /obj/machinery/vending/proc/pulse(var/wireColor)
 	var/wireIndex = APCWireColorToIndex[wireColor]
 	switch(wireIndex)
-		if(WIRE_EXTEND)
+		if (WIRE_EXTEND)
 			src.extended_inventory = !src.extended_inventory
 //		if (WIRE_SCANID)
 		if (WIRE_SHOCK)
@@ -438,9 +438,9 @@
 
 
 /obj/machinery/vending/proc/shock(mob/user, prb)
-	if(stat & (BROKEN|NOPOWER))		// unpowered, no shock
+	if (stat & (BROKEN|NOPOWER))		// unpowered, no shock
 		return 0
-	if(!prob(prb))
+	if (!prob(prb))
 		return 0
 	var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
 	s.set_up(5, 1, src)

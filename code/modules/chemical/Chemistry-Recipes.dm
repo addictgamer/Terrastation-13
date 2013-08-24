@@ -304,17 +304,17 @@ datum
 				s.start()
 				for(var/mob/living/carbon/M in viewers(world.view, location))
 					switch(get_dist(M, location))
-						if(0 to 3)
-							if(hasvar(M, "glasses"))
-								if(istype(M:glasses, /obj/item/clothing/glasses/sunglasses))
+						if (0 to 3)
+							if (hasvar(M, "glasses"))
+								if (istype(M:glasses, /obj/item/clothing/glasses/sunglasses))
 									continue
 
 							flick("e_flash", M.flash)
 							M.weakened = 15
 
-						if(4 to 5)
-							if(hasvar(M, "glasses"))
-								if(istype(M:glasses, /obj/item/clothing/glasses/sunglasses))
+						if (4 to 5)
+							if (hasvar(M, "glasses"))
+								if (istype(M:glasses, /obj/item/clothing/glasses/sunglasses))
 									continue
 
 							flick("e_flash", M.flash)
@@ -329,7 +329,7 @@ datum
 			on_reaction(var/datum/reagents/holder, var/created_volume)
 				var/turf/location = get_turf(holder.my_atom.loc)
 				for(var/turf/simulated/floor/target_tile in range(0,location))
-					if(target_tile.parent && target_tile.parent.group_processing)
+					if (target_tile.parent && target_tile.parent.group_processing)
 						target_tile.parent.suspend_group_processing()
 
 					var/datum/gas_mixture/napalm = new
@@ -620,10 +620,10 @@ datum
 				for(var/obj/item/device/radio/beacon/W in world)
 					possible += W
 
-				if(possible.len > 0)
+				if (possible.len > 0)
 					chosen = pick(possible)
 
-				if(chosen)
+				if (chosen)
 				// Calculate previous position for transition
 
 					var/turf/FROM = get_turf_loc(holder.my_atom) // the turf of origin we're travelling FROM
@@ -639,16 +639,16 @@ datum
 					var/y_distance = TO.y - FROM.y
 					var/x_distance = TO.x - FROM.x
 					for (var/atom/movable/A in range(3, FROM )) // iterate thru list of mobs in the area
-						if(A == chosen) continue // don't teleport the actual beacon that's just stupid as fukkkkk
+						if (A == chosen) continue // don't teleport the actual beacon that's just stupid as fukkkkk
 
 						var/turf/newloc = locate(A.x + x_distance, A.y + y_distance, TO.z) // calculate the new place
-						if(!A.Move(newloc)) // if the atom, for some reason, can't move, FORCE them to move! :) We try Move() first to invoke any movement-related checks the atom needs to perform after moving
+						if (!A.Move(newloc)) // if the atom, for some reason, can't move, FORCE them to move! :) We try Move() first to invoke any movement-related checks the atom needs to perform after moving
 							A.loc = locate(A.x + x_distance, A.y + y_distance, TO.z)
 
 						spawn()
-							if(ismob(A) && !(A in flashers)) // don't flash if we're already doing an effect
+							if (ismob(A) && !(A in flashers)) // don't flash if we're already doing an effect
 								var/mob/M = A
-								if(M.client)
+								if (M.client)
 									var/obj/blueeffect = new /obj(src)
 									blueeffect.screen_loc = "WEST,SOUTH to EAST,NORTH"
 									blueeffect.icon = 'effects.dmi'

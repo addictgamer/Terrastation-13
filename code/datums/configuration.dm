@@ -51,7 +51,7 @@
 		var/datum/game_mode/M = new T()
 
 		if (M.config_tag)
-			if(!(M.config_tag in modes))		// ensure each mode is added only once
+			if (!(M.config_tag in modes))		// ensure each mode is added only once
 				diary << "Adding game mode [M.name] ([M.config_tag]) to configuration."
 				src.modes += M.config_tag
 				src.mode_names[M.config_tag] = M.name
@@ -130,7 +130,7 @@
 			if ("allow_admin_jump")
 				config.allow_admin_jump = 1
 
-			if("allow_admin_rev")
+			if ("allow_admin_rev")
 				config.allow_admin_rev = 1
 
 			if ("allow_admin_spawning")

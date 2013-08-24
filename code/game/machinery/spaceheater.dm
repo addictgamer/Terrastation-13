@@ -23,7 +23,7 @@
 		return
 
 	update_icon()
-		if(open)
+		if (open)
 			icon_state = "sheater-open"
 		else
 			icon_state = "sheater[on]"
@@ -37,7 +37,7 @@
 		usr << src.desc
 
 		usr << "The heater is [on ? "on" : "off"] and the hatch is [open ? "open" : "closed"]."
-		if(open)
+		if (open)
 			usr << "The power cell is [cell ? "installed" : "missing"]."
 		else
 			usr << "The charge meter reads [cell ? round(cell.percent(),1) : 0]%"
@@ -45,15 +45,15 @@
 
 
 	attackby(obj/item/I, mob/user)
-		if(istype(I, /obj/item/weapon/cell))
-			if(open)
-				if(cell)
+		if (istype(I, /obj/item/weapon/cell))
+			if (open)
+				if (cell)
 					user << "There is already a power cell inside."
 					return
 				else
 					// insert cell
 					var/obj/item/weapon/cell/C = usr.equipped()
-					if(istype(C))
+					if (istype(C))
 						user.drop_item()
 						cell = C
 						C.loc = src
@@ -63,11 +63,11 @@
 			else
 				user << "The hatch must be open to insert a power cell."
 				return
-		else if(istype(I, /obj/item/weapon/screwdriver))
+		else if (istype(I, /obj/item/weapon/screwdriver))
 			open = !open
 			user.visible_message("\blue [user] [open ? "opens" : "closes"] the hatch on the [src].", "\blue You [open ? "open" : "close"] the hatch on the [src].")
 			update_icon()
-			if(!open && user.machine == src)
+			if (!open && user.machine == src)
 				user << browse(null, "window=spaceheater")
 				user.machine = null
 		else
@@ -76,11 +76,11 @@
 
 	attack_hand(mob/user as mob)
 		src.add_fingerprint(user)
-		if(open)
+		if (open)
 
 			var/dat
 			dat = "Power cell: "
-			if(cell)
+			if (cell)
 				dat += "<A href='byond://?src=\ref[src];op=cellremove'>Installed</A><BR>"
 			else
 				dat += "<A href='byond://?src=\ref[src];op=cellinstall'>Removed</A><BR>"
@@ -116,17 +116,17 @@
 
 			switch(href_list["op"])
 
-				if("temp")
+				if ("temp")
 					var/value = text2num(href_list["val"])
 
 					// limit to 20-90 degC
 					set_temperature = dd_range(20, 90, set_temperature + value)
 
-				if("cellremove")
-					if(open && cell && !usr.equipped())
+				if ("cellremove")
+					if (open && cell && !usr.equipped())
 						cell.loc = usr
 						cell.layer = 20
-						if(usr.hand)
+						if (usr.hand)
 							usr.l_hand = cell
 						else
 							usr.r_hand = cell
@@ -138,10 +138,10 @@
 						usr.visible_message("\blue [usr] removes the power cell from \the [src].", "\blue You remove the power cell from \the [src].")
 
 
-				if("cellinstall")
-					if(open && !cell)
+				if ("cellinstall")
+					if (open && !cell)
 						var/obj/item/weapon/cell/C = usr.equipped()
-						if(istype(C))
+						if (istype(C))
 							usr.drop_item()
 							cell = C
 							C.loc = src
@@ -158,13 +158,13 @@
 
 
 	process()
-		if(on)
-			if(cell && cell.charge > 0)
+		if (on)
+			if (cell && cell.charge > 0)
 
 				var/turf/simulated/L = loc
-				if(istype(L))
+				if (istype(L))
 					var/datum/gas_mixture/env = L.return_air()
-					if(env.temperature < (set_temperature+T0C))
+					if (env.temperature < (set_temperature+T0C))
 
 						var/transfer_moles = 0.25 * env.total_moles()
 
@@ -172,11 +172,11 @@
 
 						//world << "got [transfer_moles] moles at [removed.temperature]"
 
-						if(removed)
+						if (removed)
 
 							var/heat_capacity = removed.heat_capacity()
 							//world << "heating ([heat_capacity])"
-							if(heat_capacity == 0 || heat_capacity == null) // Added check to avoid divide by zero (oshi-) runtime errors -- TLE
+							if (heat_capacity == 0 || heat_capacity == null) // Added check to avoid divide by zero (oshi-) runtime errors -- TLE
 								heat_capacity = 1
 							removed.temperature = min((removed.temperature*heat_capacity + heating_power)/heat_capacity, 1000) // Added min() check to try and avoid wacky superheating issues in low gas scenarios -- TLE
 							cell.use(heating_power/20000)

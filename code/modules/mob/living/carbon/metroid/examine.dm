@@ -14,16 +14,16 @@
 
 		switch(powerlevel)
 
-			if(2 to 3)
+			if (2 to 3)
 				usr << text("\blue [] seems to have little bit of electrical activity inside it.", src.name)
 
-			if(4 to 5)
+			if (4 to 5)
 				usr << text("\blue [] seems to some electricity inside of it.", src.name)
 
-			if(6 to 9)
+			if (6 to 9)
 				usr << text("\blue [] seems to have a lot of electricity inside of it.", src.name)
 
-			if(10)
+			if (10)
 				usr << text("\blue <B>[] seems to have extreme electrical activity inside it!</B>", src.name)
 
 	return

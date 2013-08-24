@@ -25,10 +25,10 @@
 		user.drop_item()
 		if (W) W.loc = src.loc
 	else if (istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
-		if(istype(W, /obj/item/device/pda))
+		if (istype(W, /obj/item/device/pda))
 			var/obj/item/device/pda/pda = W
 			W = pda.id
-		if(src.broken)
+		if (src.broken)
 			user << "\red It appears to be broken."
 			return
 		var/obj/item/weapon/card/id/I = W
@@ -38,7 +38,7 @@
 			for(var/mob/O in viewers(user, 3))
 				if ((O.client && !( O.blinded )))
 					O << text("\blue The locker has been []locked by [].", (src.locked ? null : "un"), user)
-			if(src.locked)
+			if (src.locked)
 				src.icon_state = src.icon_locked
 			else
 				src.icon_state = src.icon_closed
@@ -47,12 +47,12 @@
 				src.desc = "Owned by [I.registered]."
 		else
 			user << "\red Access Denied"
-	else if( (istype(W, /obj/item/weapon/card/emag)||istype(W, /obj/item/weapon/melee/energy/blade)) && !src.broken)
+	else if ( (istype(W, /obj/item/weapon/card/emag)||istype(W, /obj/item/weapon/melee/energy/blade)) && !src.broken)
 		broken = 1
 		locked = 0
 		desc = "It appears to be broken."
 		icon_state = src.icon_broken
-		if(istype(W, /obj/item/weapon/melee/energy/blade))
+		if (istype(W, /obj/item/weapon/melee/energy/blade))
 			var/datum/effects/system/spark_spread/spark_system = new /datum/effects/system/spark_spread()
 			spark_system.set_up(5, 0, src.loc)
 			spark_system.start()

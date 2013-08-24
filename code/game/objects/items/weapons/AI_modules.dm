@@ -24,11 +24,11 @@ AI MODULES
 	set category = "Object"
 	set name = "Access Computer's Internals"
 	set src in oview(1)
-	if(get_dist(src, usr) > 1 || usr.restrained() || usr.lying || usr.stat || istype(usr, /mob/living/silicon))
+	if (get_dist(src, usr) > 1 || usr.restrained() || usr.lying || usr.stat || istype(usr, /mob/living/silicon))
 		return
 
 	opened = !opened
-	if(opened)
+	if (opened)
 		usr << "\blue The access panel is now open."
 	else
 		usr << "\blue The access panel is now closed."
@@ -36,17 +36,17 @@ AI MODULES
 
 
 /obj/machinery/computer/aiupload/attackby(obj/item/weapon/O as obj, mob/user as mob)
-	if(istype(O, /obj/item/weapon/aiModule))
+	if (istype(O, /obj/item/weapon/aiModule))
 		var/obj/item/weapon/aiModule/M = O
 		M.install(src)
 	else
 		..()
 
 /obj/machinery/computer/aiupload/attack_hand(var/mob/user as mob)
-	if(src.stat & NOPOWER)
+	if (src.stat & NOPOWER)
 		usr << "The upload computer has no power!"
 		return
-	if(src.stat & BROKEN)
+	if (src.stat & BROKEN)
 		usr << "The upload computer is broken!"
 		return
 
@@ -61,10 +61,10 @@ AI MODULES
 /obj/item/weapon/aiModule/proc/install(var/obj/machinery/computer/C)
 	if (istype(C, /obj/machinery/computer/aiupload))
 		var/obj/machinery/computer/aiupload/comp = C
-		if(comp.stat & NOPOWER)
+		if (comp.stat & NOPOWER)
 			usr << "The upload computer has no power!"
 			return
-		if(comp.stat & BROKEN)
+		if (comp.stat & BROKEN)
 			usr << "The upload computer is broken!"
 			return
 		if (!comp.current)
@@ -84,10 +84,10 @@ AI MODULES
 
 	else if (istype(C, /obj/machinery/computer/borgupload))
 		var/obj/machinery/computer/borgupload/comp = C
-		if(comp.stat & NOPOWER)
+		if (comp.stat & NOPOWER)
 			usr << "The upload computer has no power!"
 			return
-		if(comp.stat & BROKEN)
+		if (comp.stat & BROKEN)
 			usr << "The upload computer is broken!"
 			return
 		if (!comp.current)
@@ -106,16 +106,16 @@ AI MODULES
 
 
 /obj/machinery/computer/borgupload/attackby(obj/item/weapon/aiModule/module as obj, mob/user as mob)
-	if(istype(module, /obj/item/weapon/aiModule))
+	if (istype(module, /obj/item/weapon/aiModule))
 		module.install(src)
 	else
 		return ..()
 
 /obj/machinery/computer/borgupload/attack_hand(var/mob/user as mob)
-	if(src.stat & NOPOWER)
+	if (src.stat & NOPOWER)
 		usr << "The upload computer has no power!"
 		return
-	if(src.stat & BROKEN)
+	if (src.stat & BROKEN)
 		usr << "The upload computer is broken!"
 		return
 
@@ -311,7 +311,7 @@ AI MODULES
 	..()
 	var/law = "[newFreeFormLaw]"
 	target << law
-	if(!lawpos || lawpos < 15)
+	if (!lawpos || lawpos < 15)
 		lawpos = 15
 	target.add_supplied_law(lawpos, law)
 	lawchanges.Add("The law was '[newFreeFormLaw]'")

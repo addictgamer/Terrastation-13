@@ -26,16 +26,16 @@
 		stunned = 0
 		paralysis = 0
 
-		if(health < -100 || src.brain_op_stage == 4.0)
+		if (health < -100 || src.brain_op_stage == 4.0)
 			death()
-		else if(src.health < 0)
+		else if (src.health < 0)
 
-			if(!src.reagents.has_reagent("plasma")) src.oxyloss++
+			if (!src.reagents.has_reagent("plasma")) src.oxyloss++
 
-			if(src.stat != 2)	src.stat = 1
+			if (src.stat != 2)	src.stat = 1
 			src.paralysis = max(src.paralysis, 5)
 
-		if(stat == 2)
+		if (stat == 2)
 			lying = 1
 
 		src.density = !(src.lying )
@@ -46,16 +46,16 @@
 		src.health = 200 - src.oxyloss - src.fireloss - src.bruteloss
 
 	xcom_attack(mob/living/carbon/human/target as mob)
-		if(!ishuman(target))
+		if (!ishuman(target))
 			return
-		if(target.stat != 2 || !target.client)
+		if (target.stat != 2 || !target.client)
 			target.take_overall_damage(20,0)
 			target.visible_message(pick(
 			"\red <b>[src] tears at [target]!</b>",
 			"\red <b>[src] stabs [target] with it's claws!</b>",
 			"\red <b>[src] slashes [target] with it's claws!</b>"))
 		else
-			if(target.client)
+			if (target.client)
 				target.client.mob = new/mob/living/carbon/alien/humanoid/special/chryssalid(src.loc)
 				target.gib()
 		..()

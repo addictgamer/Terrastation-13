@@ -2,7 +2,7 @@
 	var/cancel
 	src.stat = 2
 	src.canmove = 0
-	if(src.blind)
+	if (src.blind)
 		src.blind.layer = 0
 	src.sight |= SEE_TURFS
 	src.sight |= SEE_MOBS
@@ -23,7 +23,7 @@
 			log_game("Rebooting because of no live players")
 			world.Reboot()
 			return
-	if(key)
+	if (key)
 		spawn(50)
 			src.ghostize(1)
 	del(src)

@@ -127,12 +127,12 @@
 	AdjacentTurfs()
 		var/L[] = new()
 		for(var/turf/t in range(src,1))
-			if(!t.density)
-				if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
+			if (!t.density)
+				if (!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
 					L.Add(t)
 		return L
 	Distance(turf/t)
-		if(get_dist(src,t) == 1)
+		if (get_dist(src,t) == 1)
 			var/cost = (src.x - t.x) * (src.x - t.x) + (src.y - t.y) * (src.y - t.y)
 			cost *= (pathweight+t.pathweight)/2
 			return cost
@@ -141,23 +141,23 @@
 	AdjacentTurfsSpace()
 		var/L[] = new()
 		for(var/turf/t in range(src,1))
-			if(!t.density)
-				if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
+			if (!t.density)
+				if (!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
 					L.Add(t)
 		return L
 	AdjacentTurfsCritter() //For use when seeking a path to a creature.
 		var/L[] = new()
 		for(var/turf/t in range(src,1)) //Using range instead of oview or view to see in dark....
-			if(!t.density)
-				if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
+			if (!t.density)
+				if (!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
 					L.Add(t)
 				//L.Add(t)
 		return L
 	AdjacentTurfsCritterB() //For use when seeking a path to an object.
 		var/L[] = new()
 		for(var/turf/t in range(src,1)) //Using range instead of oview or view to see in dark...
-			if(!t.density)
-				//if(!LinkBlockedCritter(src, t))
+			if (!t.density)
+				//if (!LinkBlockedCritter(src, t))
 				//	L.Add(t)
 				L.Add(t)
 		return L
@@ -172,8 +172,8 @@
 
 		for(var/d in cardinal)
 			var/turf/T = get_step(src, d)
-			if(istype(T) && !T.density)
-				if(!LinkBlockedWithAccess(src, T, ID))
+			if (istype(T) && !T.density)
+				if (!LinkBlockedWithAccess(src, T, ID))
 					L.Add(T)
 		return L
 
@@ -184,8 +184,8 @@
 
 		for(var/d in cardinal)
 			var/turf/T = get_step(src, d)
-			if(istype(T) && !T.density && !istype(T, /turf/space))
-				if(!LinkBlockedWithAccess(src, T, ID))
+			if (istype(T) && !T.density && !istype(T, /turf/space))
+				if (!LinkBlockedWithAccess(src, T, ID))
 					L.Add(T)
 		return L
 
@@ -197,8 +197,8 @@
 		var/L[] = new()
 		for(var/d in cardinal)
 			var/turf/simulated/T = get_step(src, d)
-			if((istype(T) || istype(T,/turf/space))&& !T.density)
-				if(!LinkBlockedWithAccess(src, T, ID))
+			if ((istype(T) || istype(T,/turf/space))&& !T.density)
+				if (!LinkBlockedWithAccess(src, T, ID))
 					L.Add(T)
 		return L
 
@@ -209,8 +209,8 @@
 
 		for(var/d in cardinal)
 			var/turf/T = get_step(src, d)
-			if(/*istype(T) &&*/ !T.density)
-				if(!LinkBlocked(src, T) && !TurfBlockedNonWindow(T))
+			if (/*istype(T) &&*/ !T.density)
+				if (!LinkBlocked(src, T) && !TurfBlockedNonWindow(T))
 					L.Add(T)
 		return L
 
@@ -228,7 +228,7 @@
 		name = "[walltype] wall"
 
 	dismantle_wall(devastated = 0)
-		if(!devastated)
+		if (!devastated)
 			var/ore = text2path("/obj/item/weapon/ore/[walltype]")
 			for(var/i = 1, i <= oreAmount, i++)
 				new ore(src)
@@ -237,13 +237,13 @@
 			ReplaceWithSpace()
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W,/obj/item/weapon/pickaxe))
+		if (istype(W,/obj/item/weapon/pickaxe))
 			var/obj/item/weapon/pickaxe/digTool = W
 			user << "You start digging the [name]."
-			if(do_after(user,digTool.digspeed*hardness) && src)
+			if (do_after(user,digTool.digspeed*hardness) && src)
 				user << "You finished digging."
 				dismantle_wall()
-		else if(istype(W,/obj/item/weapon)) //not sure, can't not just weapons get passed to this proc?
+		else if (istype(W,/obj/item/weapon)) //not sure, can't not just weapons get passed to this proc?
 			hardness -= W.force/100
 			user << "You hit the [name] with your [W.name]!"
 			CheckHardness()
@@ -252,7 +252,7 @@
 		return
 
 	proc/CheckHardness()
-		if(hardness <= 0)
+		if (hardness <= 0)
 			dismantle_wall()
 
 /turf/simulated/wall/mineral/iron
@@ -289,18 +289,18 @@
 	walltype = "plasma"
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W,/obj/item/weapon/weldingtool))
-			if(W:welding)
+		if (istype(W,/obj/item/weapon/weldingtool))
+			if (W:welding)
 				return TemperatureAct(100)
 		..()
 
 	temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
-		if(exposed_temperature > 300)
+		if (exposed_temperature > 300)
 			TemperatureAct(exposed_temperature)
 
 	proc/TemperatureAct(temperature)
 		for(var/turf/simulated/floor/target_tile in range(2,loc))
-			if(target_tile.parent && target_tile.parent.group_processing)
+			if (target_tile.parent && target_tile.parent.group_processing)
 				target_tile.parent.suspend_group_processing()
 
 			var/datum/gas_mixture/napalm = new

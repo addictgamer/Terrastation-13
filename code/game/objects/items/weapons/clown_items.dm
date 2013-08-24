@@ -44,7 +44,7 @@ BIKE HORN
 		M.weakened = 5
 
 /obj/item/weapon/soap/afterattack(atom/target, mob/user as mob)
-	if(istype(target,/obj/decal/cleanable))
+	if (istype(target,/obj/decal/cleanable))
 		del(target)
 		user << "\blue You scrub the [name] out."
 	else

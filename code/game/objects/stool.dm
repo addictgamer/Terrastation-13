@@ -1,16 +1,16 @@
 /obj/stool/ex_act(severity)
 
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			//SN src = null
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				//SN src = null
 				del(src)
 				return
-		if(3.0)
+		if (3.0)
 			if (prob(5))
 				//SN src = null
 				del(src)
@@ -19,7 +19,7 @@
 	return
 
 /obj/stool/blob_act()
-	if(prob(75))
+	if (prob(75))
 		new /obj/item/stack/sheet/metal( src.loc )
 		del(src)
 
@@ -179,9 +179,9 @@
 
 	// special power handling
 	var/area/A = get_area(src)
-	if(!isarea(A))
+	if (!isarea(A))
 		return
-	if(!A.powered(EQUIP))
+	if (!A.powered(EQUIP))
 		return
 	A.use_power(EQUIP, 5000)
 	var/light = A.power_light
@@ -197,7 +197,7 @@
 		M << "\red <B>You feel a deep shock course through your body!</B>"
 		sleep(1)
 		M.burn_skin(85)
-		if(M.stunned < 600)
+		if (M.stunned < 600)
 			M.stunned = 600
 	for(var/mob/M in hearers(src, null))
 		M.show_message("\red The electric chair went off!.", 3, "\red You hear a deep sharp shock.", 2)
@@ -209,21 +209,21 @@
 /obj/stool/chair/ex_act(severity)
 	unbuckle_all()
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				del(src)
 				return
-		if(3.0)
+		if (3.0)
 			if (prob(5))
 				del(src)
 				return
 	return
 
 /obj/stool/chair/blob_act()
-	if(prob(75))
+	if (prob(75))
 		unbuckle_all()
 		del(src)
 
@@ -322,7 +322,7 @@
 				M.anchored = 0
 				M.buckled = null
 				N++
-		if(N)
+		if (N)
 			density = 0
 			icon_state = "down"
 		return N

@@ -72,11 +72,11 @@
 Status: []<BR>
 Behaviour controls are [src.locked ? "locked" : "unlocked"]""},
 text("<A href='?src=\ref[src];operation=start'>[src.on ? "On" : "Off"]</A>"))
-	if(!src.locked)
+	if (!src.locked)
 		dat += text({"<BR>
 Cleans Blood: []<BR>"},
 text("<A href='?src=\ref[src];operation=blood'>[src.blood ? "Yes" : "No"]</A>"))
-	if(src.panelopen && !src.locked)
+	if (src.panelopen && !src.locked)
 		dat += text({"
 Odd looking screw twiddled: []<BR>
 Weird button pressed: []"},
@@ -88,38 +88,38 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 	return
 
 /obj/machinery/bot/cleanbot/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	usr.machine = src
 	src.add_fingerprint(usr)
 	switch(href_list["operation"])
-		if("start")
+		if ("start")
 			if (src.on)
 				turn_off()
 			else
 				turn_on()
-		if("blood")
+		if ("blood")
 			src.blood =!src.blood
 			src.get_targets()
 			src.updateUsrDialog()
-		if("screw")
+		if ("screw")
 			src.screwloose = !src.screwloose
 			usr << "You twiddle the screw."
 			src.updateUsrDialog()
-		if("oddbutton")
+		if ("oddbutton")
 			src.oddbutton = !src.oddbutton
 			usr << "You press the weird button."
 			src.updateUsrDialog()
 
 /obj/machinery/bot/cleanbot/attackby(obj/item/weapon/W, mob/user as mob)
 	if (istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
-		if(src.allowed(usr))
+		if (src.allowed(usr))
 			src.locked = !src.locked
 			user << "You [ src.locked ? "lock" : "unlock"] the [src] behaviour controls."
 		else
 			user << "\red This [src] doesn't seem to accept your authority."
 	else if (istype(W, /obj/item/weapon/screwdriver))
-		if(!src.locked)
+		if (!src.locked)
 			src.panelopen = !src.panelopen
 			user << "You [ src.panelopen ? "open" : "close"] the hidden panel on [src]."
 	else
@@ -127,7 +127,7 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 
 /obj/machinery/bot/cleanbot/Emag(mob/user as mob)
 	..()
-	if(user) user << "The [src] buzzes and beeps."
+	if (user) user << "The [src] buzzes and beeps."
 	src.oddbutton = 1
 	src.screwloose = 1
 	src.panelopen = 0
@@ -136,28 +136,28 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 /obj/machinery/bot/cleanbot/process()
 	set background = 1
 
-	if(!src.on)
+	if (!src.on)
 		return
-	if(src.cleaning)
+	if (src.cleaning)
 		return
 	var/list/cleanbottargets = list()
-	if(!src.target || src.target == null)
+	if (!src.target || src.target == null)
 		for(var/obj/machinery/bot/cleanbot/bot in world)
-			if(bot != src)
+			if (bot != src)
 				cleanbottargets += bot.target
 
-	if(prob(5) && !src.screwloose && !src.oddbutton)
+	if (prob(5) && !src.screwloose && !src.oddbutton)
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("[src] makes an excited beeping booping sound!"), 1)
 
-	if(src.screwloose && prob(5))
+	if (src.screwloose && prob(5))
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("[src] leaks a drop of water. How strange."), 1)
-		if(istype(loc,/turf/simulated))
+		if (istype(loc,/turf/simulated))
 			var/turf/simulated/T = src.loc
-			if(T.wet < 1)
+			if (T.wet < 1)
 				T.wet = 1
-				if(T.wet_overlay)
+				if (T.wet_overlay)
 					T.overlays -= T.wet_overlay
 					T.wet_overlay = null
 				T.wet_overlay = image('water.dmi',T,"wet_floor")
@@ -165,44 +165,44 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 				spawn(800)
 					if (istype(T) && T.wet < 2)
 						T.wet = 0
-						if(T.wet_overlay)
+						if (T.wet_overlay)
 							T.overlays -= T.wet_overlay
 							T.wet_overlay = null
-	if(src.oddbutton && prob(5))
+	if (src.oddbutton && prob(5))
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("Something flies out of [src]. He seems to be acting oddly."), 1)
 		var/obj/decal/cleanable/blood/gibs/gib = new /obj/decal/cleanable/blood/gibs(src.loc)
 		//gib.streak(list(NORTH, SOUTH, EAST, WEST, NORTHEAST, NORTHWEST, SOUTHEAST, SOUTHWEST))
 		src.oldtarget = gib
-	if(!src.target || src.target == null)
+	if (!src.target || src.target == null)
 		for (var/obj/decal/cleanable/D in view(7,src))
 			for(var/T in src.target_types)
-				if(!(D in cleanbottargets) && (D.type == T || D.parent_type == T) && D != src.oldtarget)
+				if (!(D in cleanbottargets) && (D.type == T || D.parent_type == T) && D != src.oldtarget)
 					src.oldtarget = D
 					src.target = D
 					return
 
-	if(!src.target || src.target == null)
-		if(src.loc != src.oldloc)
+	if (!src.target || src.target == null)
+		if (src.loc != src.oldloc)
 			src.oldtarget = null
 		return
 
-	if(src.target && (src.target != null) && src.path.len == 0)
+	if (src.target && (src.target != null) && src.path.len == 0)
 		spawn(0)
 			src.path = AStar(src.loc, src.target.loc, /turf/proc/AdjacentTurfs, /turf/proc/Distance, 0, 30)
 			src.path = reverselist(src.path)
-			if(src.path.len == 0)
+			if (src.path.len == 0)
 				src.oldtarget = src.target
 				src.target = null
 		return
-	if(src.path.len > 0 && src.target && (src.target != null))
+	if (src.path.len > 0 && src.target && (src.target != null))
 		step_to(src, src.path[1])
 		src.path -= src.path[1]
-	else if(src.path.len == 1)
+	else if (src.path.len == 1)
 		step_to(src, target)
 
-	if(src.target && (src.target != null))
-		if(src.loc == src.target.loc)
+	if (src.target && (src.target != null))
+		if (src.loc == src.target.loc)
 			clean(src.target)
 			src.path = new()
 			src.target = null
@@ -212,7 +212,7 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 
 /obj/machinery/bot/cleanbot/proc/get_targets()
 	src.target_types = new/list()
-	if(src.blood)
+	if (src.blood)
 
 		target_types += /obj/decal/cleanable/xenoblood/
 		target_types += /obj/decal/cleanable/xenoblood/xgibs
@@ -258,9 +258,9 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 
 /obj/item/weapon/bucket_sensor/attackby(var/obj/item/W, mob/user as mob)
 	..()
-	if(istype(W, /obj/item/robot_parts/l_arm) || istype(W, /obj/item/robot_parts/r_arm))
+	if (istype(W, /obj/item/robot_parts/l_arm) || istype(W, /obj/item/robot_parts/r_arm))
 		var/obj/machinery/bot/cleanbot/A = new /obj/machinery/bot/cleanbot
-		if(user.r_hand == src || user.l_hand == src)
+		if (user.r_hand == src || user.l_hand == src)
 			A.loc = user.loc
 		else
 			A.loc = src.loc

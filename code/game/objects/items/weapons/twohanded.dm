@@ -16,7 +16,7 @@
 	name = "Fire Axe (Unwielded)"
 
 /obj/item/weapon/fireaxe/attack_self(mob/user as mob)
-	if( istype(user,/mob/living/carbon/monkey) )
+	if ( istype(user,/mob/living/carbon/monkey) )
 		user << "\red It's too heavy for you to fully wield"
 		return
 

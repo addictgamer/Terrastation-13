@@ -27,14 +27,14 @@
 //		bitesize = 3													//This is the amount each bite consumes.
 
 /obj/item/weapon/reagent_containers/food/snacks/attack_animal(var/mob/M)
-	if(isanimal(M))
-		if(iscorgi(M))
-			if(bitecount == 0 || prob(50))
+	if (isanimal(M))
+		if (iscorgi(M))
+			if (bitecount == 0 || prob(50))
 				M.emote("nibbles away at the [src]")
 			bitecount++
-			if(bitecount >= 5)
+			if (bitecount >= 5)
 				var/sattisfaction_text = pick("burps from enjoyment", "yaps for more", "woofs twice", "looks at the area where the [src] was")
-				if(sattisfaction_text)
+				if (sattisfaction_text)
 					M.emote("[sattisfaction_text]")
 				del(src)
 
@@ -100,7 +100,7 @@
 		reagents.add_reagent("nutriment", 3)
 		reagents.add_reagent("sprinkles", 1)
 		src.bitesize = 3
-		if(prob(30))
+		if (prob(30))
 			src.icon_state = "donut2"
 			src.name = "frosted donut"
 			reagents.add_reagent("sprinkles", 2)
@@ -378,7 +378,7 @@
 		reagents.add_reagent("nutriment", 8)
 		bitesize = 1
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W,/obj/item/weapon/kitchen/utensil/fork))
+		if (istype(W,/obj/item/weapon/kitchen/utensil/fork))
 			if (W.icon_state == "forkloaded")
 				user << "\red You already have omelette on your fork."
 				return
@@ -466,7 +466,7 @@
 		reagents.add_reagent("sprinkles", 1)
 		reagents.add_reagent("berryjuice", 5)
 		bitesize = 5
-		if(prob(30))
+		if (prob(30))
 			src.icon_state = "jdonut2"
 			src.name = "Frosted Jelly Donut"
 			reagents.add_reagent("sprinkles", 2)
@@ -540,7 +540,7 @@
 	icon_state = "plump_pie"
 	New()
 		..()
-		if(prob(10))
+		if (prob(10))
 			name = "exceptional plump pie"
 			desc = "Microwave is taken by a fey mood! It has cooked an exceptional plump pie!"
 			reagents.add_reagent("nutriment", 15)
@@ -579,7 +579,7 @@
 		..()
 		reagents.add_reagent("nutriment", 3)
 		bitesize = 2
-		if(prob(30))
+		if (prob(30))
 			src.icon_state = "donut2"
 			src.name = "Frosted Chaos Donut"
 			reagents.add_reagent("sprinkles", 3)
@@ -594,7 +594,7 @@
 		reagents.add_reagent("nutriment", 8)
 		bitesize = 2
 	On_Consume()
-		if(!reagents.total_volume)
+		if (!reagents.total_volume)
 			var/mob/M = usr
 			var/obj/item/stack/rods/W = new /obj/item/stack/rods( M )
 			M << "\blue You lick clean the rod."
@@ -609,7 +609,7 @@
 		reagents.add_reagent("nutriment", 8)
 		bitesize = 2
 	On_Consume()
-		if(!reagents.total_volume)
+		if (!reagents.total_volume)
 			var/mob/M = usr
 			var/obj/item/stack/rods/W = new /obj/item/stack/rods( M )
 			M << "\blue You lick clean the rod."
@@ -624,7 +624,7 @@
 		reagents.add_reagent("nutriment", 8)
 		bitesize = 2
 	On_Consume()
-		if(!reagents.total_volume)
+		if (!reagents.total_volume)
 			var/mob/M = usr
 			var/obj/item/stack/rods/W = new /obj/item/stack/rods( M )
 			M << "\blue You lick clean the rod."
@@ -654,7 +654,7 @@
 		reagents.add_reagent("nutriment", 2)
 		bitesize = 0.1 //this snack is supposed to be eating during looooong time. And this it not dinner food! --rastaf0
 	On_Consume()
-		if(prob(unpopped))
+		if (prob(unpopped))
 			usr << "\red You bite down on an un-popped kernel!"
 			unpopped = max(0, unpopped-1)
 		..()
@@ -767,7 +767,7 @@
 		reagents.add_reagent("nutriment", 3)
 		bitesize = 2
 	On_Consume()
-		if(!reagents.total_volume)
+		if (!reagents.total_volume)
 			var/mob/M = usr
 			var/obj/item/weapon/paper/paper = locate() in src
 			M.visible_message( \
@@ -955,7 +955,7 @@
 		reagents.add_reagent("nutriment", 4)
 		baconbeacon = new /obj/item/device/radio/beacon/bacon(src)
 	On_Consume()
-		if(!reagents.total_volume)
+		if (!reagents.total_volume)
 			baconbeacon.loc = usr
 			baconbeacon.digest_delay()
 
@@ -972,14 +972,14 @@
 		reagents.add_reagent("nutriment",12)
 
 	afterattack(obj/O as obj, mob/user as mob)
-		if(istype(O,/obj/machinery/sink) && !wrapped)
+		if (istype(O,/obj/machinery/sink) && !wrapped)
 			user << "You place [name] under a stream of water..."
 			loc = get_turf(O)
 			return Expand()
 		..()
 
 	attack_self(mob/user as mob)
-		if(wrapped)
+		if (wrapped)
 			Unwrap(user)
 
 	proc/Expand()

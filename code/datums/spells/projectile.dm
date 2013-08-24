@@ -26,10 +26,10 @@
 	for(var/mob/target in targets)
 		spawn(0)
 			var/obj/proc_holder/spell/targeted/projectile
-			if(istext(proj_type))
+			if (istext(proj_type))
 				var/projectile_type = text2path(proj_type)
 				projectile = new projectile_type(user)
-			if(istype(proj_type,/obj/proc_holder/spell))
+			if (istype(proj_type,/obj/proc_holder/spell))
 				projectile = new /obj/proc_holder/spell/targeted/trigger(user)
 				projectile:linked_spells += proj_type
 			projectile.icon = proj_icon
@@ -40,28 +40,28 @@
 			var/current_loc = usr.loc
 
 			for(var/i = 0,i < proj_lifespan,i++)
-				if(!projectile)
+				if (!projectile)
 					break
 
-				if(proj_homing)
-					if(proj_insubstantial)
+				if (proj_homing)
+					if (proj_insubstantial)
 						projectile.dir = get_dir(projectile,target)
 						projectile.loc = get_step_to(projectile,target)
 					else
 						step_to(projectile,target)
 				else
-					if(proj_insubstantial)
+					if (proj_insubstantial)
 						projectile.loc = get_step(projectile,dir)
 					else
 						step(projectile,dir)
 
-				if(!proj_lingering && projectile.loc == current_loc) //if it didn't move since last time
+				if (!proj_lingering && projectile.loc == current_loc) //if it didn't move since last time
 					del(projectile)
 					break
 
-				if(proj_trail && projectile)
+				if (proj_trail && projectile)
 					spawn(0)
-						if(projectile)
+						if (projectile)
 							var/obj/overlay/trail = new /obj/overlay(projectile.loc)
 							trail.icon = proj_trail_icon
 							trail.icon_state = proj_trail_icon_state
@@ -69,7 +69,7 @@
 							spawn(proj_trail_lifespan)
 								del(trail)
 
-				if(projectile.loc in range(target.loc,proj_trigger_range))
+				if (projectile.loc in range(target.loc,proj_trigger_range))
 					projectile.perform(list(target))
 					break
 
@@ -77,5 +77,5 @@
 
 				sleep(proj_step_delay)
 
-			if(projectile)
+			if (projectile)
 				del(projectile)

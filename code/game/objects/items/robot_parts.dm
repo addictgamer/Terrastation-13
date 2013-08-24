@@ -73,29 +73,29 @@
 
 /obj/item/robot_parts/robot_suit/proc/updateicon()
 	src.overlays = null
-	if(src.l_arm)
+	if (src.l_arm)
 		src.overlays += "l_arm+o"
-	if(src.r_arm)
+	if (src.r_arm)
 		src.overlays += "r_arm+o"
-	if(src.chest)
+	if (src.chest)
 		src.overlays += "chest+o"
-	if(src.l_leg)
+	if (src.l_leg)
 		src.overlays += "l_leg+o"
-	if(src.r_leg)
+	if (src.r_leg)
 		src.overlays += "r_leg+o"
-	if(src.head)
+	if (src.head)
 		src.overlays += "head+o"
 
 /obj/item/robot_parts/robot_suit/proc/check_completion()
-	if(src.l_arm && src.r_arm)
-		if(src.l_leg && src.r_leg)
-			if(src.chest && src.head)
+	if (src.l_arm && src.r_arm)
+		if (src.l_leg && src.r_leg)
+			if (src.chest && src.head)
 				return 1
 	return 0
 
 /obj/item/robot_parts/robot_suit/attackby(obj/item/W as obj, mob/user as mob)
 	..()
-	if(istype(W, /obj/item/stack/sheet/metal))
+	if (istype(W, /obj/item/stack/sheet/metal))
 		var/obj/item/weapon/ed209_assembly/B = new /obj/item/weapon/ed209_assembly
 		B.loc = get_turf(src)
 		user << "You armed the robot frame"
@@ -104,44 +104,44 @@
 			user.before_take_item(src)
 			user.put_in_inactive_hand(B)
 		del(src)
-	if(istype(W, /obj/item/robot_parts/l_leg))
+	if (istype(W, /obj/item/robot_parts/l_leg))
 		user.drop_item()
 		W.loc = src
 		src.l_leg = W
 		src.updateicon()
 
-	if(istype(W, /obj/item/robot_parts/r_leg))
+	if (istype(W, /obj/item/robot_parts/r_leg))
 		user.drop_item()
 		W.loc = src
 		src.r_leg = W
 		src.updateicon()
 
-	if(istype(W, /obj/item/robot_parts/l_arm))
+	if (istype(W, /obj/item/robot_parts/l_arm))
 		user.drop_item()
 		W.loc = src
 		src.l_arm = W
 		src.updateicon()
 
-	if(istype(W, /obj/item/robot_parts/r_arm))
+	if (istype(W, /obj/item/robot_parts/r_arm))
 		user.drop_item()
 		W.loc = src
 		src.r_arm = W
 		src.updateicon()
 
-	if(istype(W, /obj/item/robot_parts/chest))
+	if (istype(W, /obj/item/robot_parts/chest))
 
-		if(W:wires && W:cell)
+		if (W:wires && W:cell)
 			user.drop_item()
 			W.loc = src
 			src.chest = W
 			src.updateicon()
-		else if(!W:wires)
+		else if (!W:wires)
 			user << "\blue You need to attach wires to it first!"
 		else
 			user << "\blue You need to attach a cell to it first!"
 
-	if(istype(W, /obj/item/robot_parts/head))
-		if(W:flash2 && W:flash1)
+	if (istype(W, /obj/item/robot_parts/head))
+		if (W:flash2 && W:flash1)
 			user.drop_item()
 			W.loc = src
 			src.head = W
@@ -149,25 +149,25 @@
 		else
 			user << "\blue You need to attach a flash to it first!"
 
-	if(istype(W, /obj/item/device/mmi))
+	if (istype(W, /obj/item/device/mmi))
 		var/obj/item/device/mmi/M = W
-		if(check_completion())
-			if(!istype(loc,/turf))
+		if (check_completion())
+			if (!istype(loc,/turf))
 				user << "\red You can't put the MMI in, the frame has to be standing on the ground to be perfectly precise."
 				return
-			if(!M.brainmob)
+			if (!M.brainmob)
 				user << "\red Sticking an empty MMI into the frame would sort of defeat the purpose."
 				return
-			if(M.brainmob.stat == 2)
+			if (M.brainmob.stat == 2)
 				user << "\red Sticking a dead brain into the frame would sort of defeat the purpose."
 				return
 
-			if(jobban_isbanned(M.brainmob, "Cyborg"))
+			if (jobban_isbanned(M.brainmob, "Cyborg"))
 				user << "\red This MMI does not seem to fit."
 				return
 
 			var/mob/living/silicon/robot/O = new /mob/living/silicon/robot(get_turf(loc))
-			if(!O)	return
+			if (!O)	return
 
 			user.drop_item()
 
@@ -179,11 +179,11 @@
 				M.brainmob.mind.transfer_to(O)
 			else
 				for(var/mob/dead/observer/G in world)
-					if(G.corpse == M.brainmob && G.client && G.corpse.mind)
+					if (G.corpse == M.brainmob && G.client && G.corpse.mind)
 						G.corpse.mind.transfer_to(O)
 						del(G)
 						break
-			if(O.mind && O.mind.special_role)
+			if (O.mind && O.mind.special_role)
 				O.mind.store_memory("In case you look at this after being borged, the objectives are only here until I find a way to make them not show up for you, as I can't simply delete them without screwing up round-end reporting. --NeoFite")
 
 			O << "<B>You are playing a Robot. The Robot can interact with most electronic objects in its view point.</B>"
@@ -216,8 +216,8 @@
 
 /obj/item/robot_parts/chest/attackby(obj/item/W as obj, mob/user as mob)
 	..()
-	if(istype(W, /obj/item/weapon/cell))
-		if(src.cell)
+	if (istype(W, /obj/item/weapon/cell))
+		if (src.cell)
 			user << "\blue You have already inserted a cell!"
 			return
 		else
@@ -225,8 +225,8 @@
 			W.loc = src
 			src.cell = W
 			user << "\blue You insert the cell!"
-	if(istype(W, /obj/item/weapon/cable_coil))
-		if(src.wires)
+	if (istype(W, /obj/item/weapon/cable_coil))
+		if (src.wires)
 			user << "\blue You have already inserted wire!"
 			return
 		else
@@ -238,11 +238,11 @@
 
 /obj/item/robot_parts/head/attackby(obj/item/W as obj, mob/user as mob)
 	..()
-	if(istype(W, /obj/item/device/flash))
-		if(src.flash1 && src.flash2)
+	if (istype(W, /obj/item/device/flash))
+		if (src.flash1 && src.flash2)
 			user << "\blue You have already inserted the eyes!"
 			return
-		else if(src.flash1)
+		else if (src.flash1)
 			user.drop_item()
 			W.loc = src
 			src.flash2 = W

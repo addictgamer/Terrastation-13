@@ -17,17 +17,17 @@
 		return 1
 
 	attackby(obj/item/item, mob/user)
-		if(istype(item, /obj/item/weapon/tank))
-			if(tank_one && tank_two)
+		if (istype(item, /obj/item/weapon/tank))
+			if (tank_one && tank_two)
 				user << "\red There are already two tanks attached, remove one first!"
 				return
 
-			if(!tank_one)
+			if (!tank_one)
 				tank_one = item
 				user.drop_item()
 				item.loc = src
 				user << "\blue You attach the tank to the transfer valve"
-			else if(!tank_two)
+			else if (!tank_two)
 				tank_two = item
 				user.drop_item()
 				item.loc = src
@@ -35,11 +35,11 @@
 
 			update_icon()
 //TODO: Have this take an assemblyholder
-		else if(item.IsAssembly())
-			if(item:secured)
+		else if (item.IsAssembly())
+			if (item:secured)
 				user << "\red The device is secured!"
 				return
-			if(attached_device)
+			if (attached_device)
 				user << "\red There is already an device attached to the valve, remove it first!"
 				return
 			user.remove_from_mob(item)
@@ -57,7 +57,7 @@
 
 
 	HasProximity(atom/movable/AM as mob|obj)
-		if(!attached_device)	return
+		if (!attached_device)	return
 		attached_device.HasProximity(AM)
 		return
 
@@ -80,27 +80,27 @@
 		if (usr.stat|| usr.restrained())
 			return
 		if (src.loc == usr)
-			if(href_list["tankone"])
+			if (href_list["tankone"])
 				split_gases()
 				valve_open = 0
 				tank_one.loc = get_turf(src)
 				tank_one = null
 				update_icon()
-			if(href_list["tanktwo"])
+			if (href_list["tanktwo"])
 				split_gases()
 				valve_open = 0
 				tank_two.loc = get_turf(src)
 				tank_two = null
 				update_icon()
-			if(href_list["open"])
+			if (href_list["open"])
 				toggle_valve()
-			if(href_list["rem_device"])
-				if(attached_device)
+			if (href_list["rem_device"])
+				if (attached_device)
 					attached_device.loc = get_turf(src)
 					attached_device:holder = null
 					attached_device = null
 				update_icon()
-			if(href_list["device"])
+			if (href_list["device"])
 				attached_device.attack_self(usr)
 
 			src.attack_self(usr)
@@ -109,7 +109,7 @@
 			return
 
 	Process_Activation(var/obj/item/device/D)
-		if(toggle)
+		if (toggle)
 			toggle = 0
 			toggle_valve()
 			spawn(50) // To stop a signal being spammed from a proxy sensor constantly going off or whatever
@@ -120,30 +120,30 @@
 	update_icon()
 		src.overlays = new/list()
 		src.underlays = new/list()
-		if(!tank_one && !tank_two && !attached_device)
+		if (!tank_one && !tank_two && !attached_device)
 			icon_state = "valve_1"
 			return
 		icon_state = "valve"
 		var/tank_one_icon = ""
 		var/tank_two_icon = ""
-		if(tank_one)
+		if (tank_one)
 			tank_one_icon = tank_one.icon_state
-		if(tank_two)
+		if (tank_two)
 			tank_two_icon = tank_two.icon_state
-		if(tank_one)
+		if (tank_one)
 			var/icon/I = new(src.icon, icon_state = "[tank_one_icon]")
 			//var/obj/overlay/tank_one_overlay = new
 			//tank_one_overlay.icon = src.icon
 			//tank_one_overlay.icon_state = tank_one_icon
 			src.underlays += I
-		if(tank_two)
+		if (tank_two)
 			var/icon/J = new(src.icon, icon_state = "[tank_two_icon]")
 			//I.Flip(EAST) this breaks the perspective!
 			J.Shift(WEST, 13)
 			//var/obj/underlay/tank_two_overlay = new
 			//tank_two_overlay.icon = I
 			src.underlays += J
-		if(attached_device)
+		if (attached_device)
 			var/icon/K = new(src.icon, icon_state = "device")
 			//var/obj/overlay/device_overlay = new
 			//device_overlay.icon = src.icon
@@ -171,7 +171,7 @@
 		*/
 
 		toggle_valve()
-			if(valve_open==0 && (tank_one && tank_two))
+			if (valve_open==0 && (tank_one && tank_two))
 				valve_open = 1
 				var/turf/bombturf = get_turf(src)
 				var/bombarea = bombturf.loc.name
@@ -186,7 +186,7 @@
 						sleep(10)
 					src.update_icon()
 
-			else if(valve_open==1 && (tank_one && tank_two))
+			else if (valve_open==1 && (tank_one && tank_two))
 				split_gases()
 				valve_open = 0
 				src.update_icon()
@@ -200,7 +200,7 @@
 
 /obj/falsewall/
 	attack_hand(mob/user as mob)
-		if(density)
+		if (density)
 			// Open wall
 			icon_state = "fwall_open"
 			flick("fwall_opening", src)
@@ -223,7 +223,7 @@
 
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon/screwdriver))
+		if (istype(W, /obj/item/weapon/screwdriver))
 			var/turf/T = get_turf(src)
 			user.visible_message("[user] tightens some bolts on the wall.", "You tighten the bolts on the wall.")
 			T.ReplaceWithWall()
@@ -244,7 +244,7 @@
 
 /obj/falserwall/
 	attack_hand(mob/user as mob)
-		if(density)
+		if (density)
 			// Open wall
 			icon_state = "frwall_open"
 			flick("frwall_opening", src)
@@ -267,7 +267,7 @@
 
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon/screwdriver))
+		if (istype(W, /obj/item/weapon/screwdriver))
 			var/turf/T = get_turf(src)
 			user.visible_message("[user] tightens some bolts on the r wall.", "You tighten the bolts on the r wall.")
 			T.ReplaceWithWall() //Intentionally makes a regular wall instead of an r-wall (no cheap r-walls for you).

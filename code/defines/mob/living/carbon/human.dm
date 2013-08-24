@@ -59,11 +59,11 @@
 	var/list/organs = list(  )
 
 	//Life()
-	//	if(istype(l_hand, /obj/item/weapon)) //If holding a weapon in the left hand.
-	//		if(l_hand.needs_held_update) //Check if it needs a held update.
+	//	if (istype(l_hand, /obj/item/weapon)) //If holding a weapon in the left hand.
+	//		if (l_hand.needs_held_update) //Check if it needs a held update.
 	//			l_hand.held_update() //Update.
-	//	if(istype(r_hand, /obj/item/weapon)) //If holding a weapon in the right hand.
-	//		if(r_hand.needs_held_update) //Check if it needs a held update.
+	//	if (istype(r_hand, /obj/item/weapon)) //If holding a weapon in the right hand.
+	//		if (r_hand.needs_held_update) //Check if it needs a held update.
 	//			r_hand.held_update() //Update.
 
 	var/nutrition_decreased_since_last_poop_material = 0

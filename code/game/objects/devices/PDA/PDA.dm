@@ -182,7 +182,7 @@
 						dat += "<li><a href='byond://?src=\ref[src];choice=Honk'><img src=pda_honk.png> Honk Synthesizer</a></li>"
 					if (cartridge.access_manifest)
 						dat += "<li><a href='byond://?src=\ref[src];choice=41'><img src=pda_notes.png> View Crew Manifest</a></li>"
-					if(cartridge.access_status_display)
+					if (cartridge.access_status_display)
 						dat += "<li><a href='byond://?src=\ref[src];choice=42'><img src=pda_status.png> Set Status Display</a></li>"
 					dat += "</ul>"
 					if (cartridge.access_engine)
@@ -201,11 +201,11 @@
 						dat += "<ul>"
 						dat += "<li><a href='byond://?src=\ref[src];choice=45'><img src=pda_cuffs.png> Security Records</A></li>"
 						dat += "<li><a href='byond://?src=\ref[src];choice=Forensic Scan'><img src=pda_scanner.png> [scanmode == 2 ? "Disable" : "Enable"] Forensic Scanner</a></li>"
-					if(istype(cartridge.radio, /obj/item/radio/integrated/beepsky))
+					if (istype(cartridge.radio, /obj/item/radio/integrated/beepsky))
 						dat += "<li><a href='byond://?src=\ref[src];choice=46'><img src=pda_cuffs.png> Security Bot Access</a></li>"
 						dat += "</ul>"
 					else	dat += "</ul>"
-					if(cartridge.access_quartermaster)
+					if (cartridge.access_quartermaster)
 						dat += "<h4>Quartermaster Functions:</h4>"
 						dat += "<ul>"
 						dat += "<li><a href='byond://?src=\ref[src];choice=47'><img src=pda_crate.png> Supply Records</A></li>"
@@ -229,7 +229,7 @@
 				dat += "<li><a href='byond://?src=\ref[src];choice=3'><img src=pda_atmos.png> Atmospheric Scan</a></li>"
 				dat += "<li><a href='byond://?src=\ref[src];choice=Light'><img src=pda_flashlight.png> [fon ? "Disable" : "Enable"] Flashlight</a></li>"
 				if (pai)
-					if(pai.loc != src)
+					if (pai.loc != src)
 						pai = null
 					else
 						dat += "<li><a href='byond://?src=\ref[src];choice=pai;option=1'>pAI Device Configuration</a></li>"
@@ -280,7 +280,7 @@
 				if (count == 0)
 					dat += "None detected.<br>"
 
-			if(21)
+			if (21)
 				dat += "<h4><img src=pda_mail.png> SpaceMessenger V3.9.4</h4>"
 				dat += "<a href='byond://?src=\ref[src];choice=Clear'><img src=pda_blank.png> Clear Messages</a>"
 
@@ -313,7 +313,7 @@
 						dat += "Oxygen: [round(o2_level*100)]%<br>"
 						dat += "Carbon Dioxide: [round(co2_level*100)]%<br>"
 						dat += "Plasma: [round(plasma_level*100)]%<br>"
-						if(unknown_level > 0.01)
+						if (unknown_level > 0.01)
 							dat += "OTHER: [round(unknown_level)]%<br>"
 					dat += "Temperature: [round(environment.temperature-T0C)]&deg;C<br>"
 				dat += "<br>"
@@ -338,27 +338,27 @@
 
 //BASIC FUNCTIONS===================================
 
-				if("Close")//Self explanatory
+				if ("Close")//Self explanatory
 					U.machine = null
 					U << browse(null, "window=pda")
 					return
-				if("Refresh")//Refresh, goes to the end of the proc.
-				if("Return")//Return
-					if(mode<=9)
+				if ("Refresh")//Refresh, goes to the end of the proc.
+				if ("Return")//Return
+					if (mode<=9)
 						mode = 0
 					else
 						mode = round(mode/10)
-						if(mode==4)//Fix for cartridges. Redirects to hub.
+						if (mode==4)//Fix for cartridges. Redirects to hub.
 							mode = 0
-						else if(mode >= 40 && mode <= 49)//Fix for cartridges. Redirects to refresh the menu.
+						else if (mode >= 40 && mode <= 49)//Fix for cartridges. Redirects to refresh the menu.
 							cartridge.mode = mode
 							cartridge.unlock()
 				if ("Authenticate")//Checks for ID
 					id_check(U, 1)
-				if("Eject")//Ejects the cart, only done from hub.
+				if ("Eject")//Ejects the cart, only done from hub.
 					if (!isnull(cartridge))
 						var/turf/T = loc
-						if(ismob(T))
+						if (ismob(T))
 							T = T.loc
 						cartridge.loc = T
 						scanmode = 0
@@ -368,23 +368,23 @@
 
 //MENU FUNCTIONS===================================
 
-				if("0")//Hub
+				if ("0")//Hub
 					mode = 0
-				if("1")//Notes
+				if ("1")//Notes
 					mode = 1
-				if("2")//Messenger
+				if ("2")//Messenger
 					mode = 2
-				if("21")//Read messeges
+				if ("21")//Read messeges
 					mode = 21
-				if("3")//Atmos scan
+				if ("3")//Atmos scan
 					mode = 3
-				if("4")//Redirects to hub
+				if ("4")//Redirects to hub
 					mode = 0
 
 
 //MAIN FUNCTIONS===================================
 
-				if("Light")
+				if ("Light")
 					fon = (!fon)
 					if (src in U.contents)
 						if (fon)
@@ -393,27 +393,27 @@
 							U.total_luminosity -= f_lum
 					else
 						sd_SetLuminosity(fon * f_lum)
-				if("Medical Scan")
-					if(scanmode == 1)
+				if ("Medical Scan")
+					if (scanmode == 1)
 						scanmode = 0
-					else if((!isnull(cartridge)) && (cartridge.access_medical))
+					else if ((!isnull(cartridge)) && (cartridge.access_medical))
 						scanmode = 1
-				if("Forensic Scan")
-					if(scanmode == 2)
+				if ("Forensic Scan")
+					if (scanmode == 2)
 						scanmode = 0
-					else if((!isnull(cartridge)) && (cartridge.access_security))
+					else if ((!isnull(cartridge)) && (cartridge.access_security))
 						scanmode = 2
-				if("Reagent Scan")
-					if(scanmode == 3)
+				if ("Reagent Scan")
+					if (scanmode == 3)
 						scanmode = 0
-					else if((!isnull(cartridge)) && (cartridge.access_reagent_scanner))
+					else if ((!isnull(cartridge)) && (cartridge.access_reagent_scanner))
 						scanmode = 3
-				if("Halogen Counter")
-					if(scanmode == 4)
+				if ("Halogen Counter")
+					if (scanmode == 4)
 						scanmode = 0
-					else if((!isnull(cartridge)) && (cartridge.access_engine))
+					else if ((!isnull(cartridge)) && (cartridge.access_engine))
 						scanmode = 4
-				if("Honk")
+				if ("Honk")
 					if ( !(last_honk && world.time < last_honk + 20) )
 						playsound(loc, 'bikehorn.ogg', 50, 1)
 						last_honk = world.time
@@ -429,18 +429,18 @@
 					else
 						U << browse(null, "window=pda")
 						return
-				if("Toggle Messenger")
+				if ("Toggle Messenger")
 					toff = !toff
-				if("Toggle Ringer")//If viewing texts then erase them, if not then toggle silent status
+				if ("Toggle Ringer")//If viewing texts then erase them, if not then toggle silent status
 					silent = !silent
-				if("Clear")//Clears messages
+				if ("Clear")//Clears messages
 					tnote = null
-				if("Ringtone")
+				if ("Ringtone")
 					var/t = input(U, "Please enter new ringtone", name, ttone) as text
 					if (in_range(src, U) && loc == U)
 						if (t)
 							if ((uplink) && (cmptext(t,uplink.lock_code)))
-								if(uplink.active)
+								if (uplink.active)
 									U << "The PDA uplink is already unlocked."
 									mode = 1
 								else
@@ -452,7 +452,7 @@
 					else
 						U << browse(null, "window=pda")
 						return
-				if("Message")
+				if ("Message")
 					var/t = input(U, "Please enter message", name, null) as text
 					t = copytext(sanitize(t), 1, MAX_MESSAGE_LEN)
 					if (!t)
@@ -462,7 +462,7 @@
 
 					var/obj/item/device/pda/P = locate(href_list["target"])
 
-					if(istype(P, /obj/item/device/pda))
+					if (istype(P, /obj/item/device/pda))
 						if (isnull(P)||P.toff || toff)
 							return
 
@@ -479,7 +479,7 @@
 
 						if (prob(15)) //Give the AI a chance of intercepting the message
 							var/who = src.owner
-							if(prob(50))
+							if (prob(50))
 								who = P:owner
 							for(var/mob/living/silicon/ai/ai in world)
 								ai.show_message("<i>Intercepted message from <b>[who]</b>: [t]</i>")
@@ -504,7 +504,7 @@
 
 						if (prob(15)) //Give the AI a chance of intercepting the message
 							var/who = src
-							if(prob(50))
+							if (prob(50))
 								who = P
 							for (var/mob/living/silicon/ai/ai in world)
 								ai.show_message("<i>Intercepted message from <b>[who]</b>: [t]</i>")
@@ -513,10 +513,10 @@
 
 
 
-				if("Send Honk")//Honk virus
-					if(istype(cartridge, /obj/item/weapon/cartridge/clown))//Cartridge checks are kind of unnecessary since everything is done through switch.
+				if ("Send Honk")//Honk virus
+					if (istype(cartridge, /obj/item/weapon/cartridge/clown))//Cartridge checks are kind of unnecessary since everything is done through switch.
 						var/obj/item/device/pda/P = locate(href_list["target"])//Leaving it alone in case it may do something useful, I guess.
-						if(!isnull(P))
+						if (!isnull(P))
 							if (!P.toff && cartridge:honk_charges > 0)
 								cartridge:honk_charges--
 								U.show_message("\blue Virus sent!", 1)
@@ -526,10 +526,10 @@
 					else
 						U << browse(null, "window=pda")
 						return
-				if("Send Silence")//Silent virus
-					if(istype(cartridge, /obj/item/weapon/cartridge/mime))
+				if ("Send Silence")//Silent virus
+					if (istype(cartridge, /obj/item/weapon/cartridge/mime))
 						var/obj/item/device/pda/P = locate(href_list["target"])
-						if(!isnull(P))
+						if (!isnull(P))
 							if (!P.toff && cartridge:mime_charges > 0)
 								cartridge:mime_charges--
 								U.show_message("\blue Virus sent!", 1)
@@ -544,24 +544,24 @@
 
 //SYNDICATE FUNCTIONS===================================
 
-				if("Toggle Door")
-					if(!isnull(cartridge) && cartridge.access_remote_door)
+				if ("Toggle Door")
+					if (!isnull(cartridge) && cartridge.access_remote_door)
 						for(var/obj/machinery/door/poddoor/M in machines)
-							if(M.id == cartridge.remote_door_id)
-								if(M.density)
+							if (M.id == cartridge.remote_door_id)
+								if (M.density)
 									spawn(0)
 										M.open()
 								else
 									spawn(0)
 										M.close()
-				if("Lock")
-					if(uplink)
+				if ("Lock")
+					if (uplink)
 						uplink.active = 0
 						note = uplink.orignote
-				if("Detonate")//Detonate PDA
-					if(istype(cartridge, /obj/item/weapon/cartridge/syndicate))
+				if ("Detonate")//Detonate PDA
+					if (istype(cartridge, /obj/item/weapon/cartridge/syndicate))
 						var/obj/item/device/pda/P = locate(href_list["target"])
-						if(!isnull(P))
+						if (!isnull(P))
 							if (!P.toff && cartridge:shock_charges > 0)
 								cartridge:shock_charges--
 
@@ -594,13 +594,13 @@
 						return
 
 //pAI FUNCTIONS===================================
-				if("pai")
+				if ("pai")
 					switch(href_list["option"])
-						if("1")		// Configure pAI device
+						if ("1")		// Configure pAI device
 							pai.attack_self(U)
-						if("2")		// Eject pAI device
+						if ("2")		// Eject pAI device
 							var/turf/T = get_turf_or_move(src.loc)
-							if(T)
+							if (T)
 								pai.loc = T
 
 //LINK FUNCTIONS===================================
@@ -627,7 +627,7 @@
 		honkamt--
 		playsound(loc, 'bikehorn.ogg', 30, 1)
 
-	if(U.machine == src)//Final safety.
+	if (U.machine == src)//Final safety.
 		attack_self(U)//It auto-closes the menu prior if the user is not in range and so on.
 	else
 		U.machine = null
@@ -635,14 +635,14 @@
 	return
 
 /obj/item/device/pda/proc/id_check(mob/user as mob, choice as num)//To check for IDs; 1 for in-pda use, 2 for out of pda use.
-	if(choice == 1)
+	if (choice == 1)
 		if (id)
 			if (istype(loc, /mob))
 				var/obj/item/W = loc:equipped()
 				var/emptyHand = (W == null)
-				if(emptyHand)
+				if (emptyHand)
 					id.DblClick()
-					if(!istype(id.loc, /obj/item/device/pda))
+					if (!istype(id.loc, /obj/item/device/pda))
 						id = null
 			else
 				id.loc = loc
@@ -655,7 +655,7 @@
 				id = I
 	else
 		var/obj/item/weapon/card/I = user.equipped()
-		if(id)//Get id and replace it.
+		if (id)//Get id and replace it.
 			user.drop_item()
 			I.loc = src
 			user.put_in_hand(id)
@@ -678,7 +678,7 @@
 			C:radio.hostpda = src
 
 	else if (istype(C, /obj/item/weapon/card/id) && C:registered)
-		if(!owner)
+		if (!owner)
 			owner = C:registered
 			ownjob = C:assignment
 			name = "PDA-[owner] ([ownjob])"
@@ -689,14 +689,14 @@
 
 			if ( ( (src in user.contents) && (C in user.contents)) || (istype(loc, /turf) && in_range(src, user) && (C in user.contents)) )
 				if ( !(user.stat || user.restrained()) )//If they can still act.
-					if(input=="Insert")
+					if (input=="Insert")
 						id_check(user, 2)
 					else
-						if(!(owner == C:registered))
+						if (!(owner == C:registered))
 							user << "\blue Name on card does not match registered name. Please try again."
-						else if((owner == C:registered) && (ownjob == C:assignment))
+						else if ((owner == C:registered) && (ownjob == C:assignment))
 							user << "\blue Rank is up to date."
-						else if((owner == C:registered) && (ownjob != C:assignment))
+						else if ((owner == C:registered) && (ownjob != C:assignment))
 							ownjob = C:assignment
 							name = "PDA-[owner] ([ownjob])"
 							user << "\blue Rank updated."
@@ -714,7 +714,7 @@
 /obj/item/device/pda/attack(mob/C as mob, mob/user as mob)
 	if (istype(C, /mob/living/carbon))
 		switch(scanmode)
-			if(1)
+			if (1)
 
 				for (var/mob/O in viewers(C, null))
 					O.show_message("\red [user] has analyzed [C]'s vitals!", 1)
@@ -725,14 +725,14 @@
 				user.show_message("\blue \t Key: Suffocation/Toxin/Burns/Brute", 1)
 				user.show_message("\blue \t Body Temperature: [C.bodytemperature-T0C]&deg;C ([C.bodytemperature*1.8-459.67]&deg;F)", 1)
 				for(var/datum/disease/D in C.viruses)
-					if(!D.hidden[SCANNER])
+					if (!D.hidden[SCANNER])
 						user.show_message(text("\red <b>Warning: [D.form] Detected</b>\nName: [D.name].\nType: [D.spread].\nStage: [D.stage]/[D.max_stages].\nPossible Cure: [D.cure]"))
 
-			if(2)
+			if (2)
 				if (!istype(C:dna, /datum/dna))
 					user << "\blue No fingerprints found on [C]"
-				else if(!istype(C, /mob/living/carbon/monkey))
-					if(!isnull(C:gloves))
+				else if (!istype(C, /mob/living/carbon/monkey))
+					if (!isnull(C:gloves))
 						user << "\blue No fingerprints found on [C]"
 				else
 					user << text("\blue [C]'s Fingerprints: [md5(C:dna.uni_identity)]")
@@ -743,19 +743,19 @@
 					spawn(15)
 						user << "\blue Blood type: [C:blood_type]\nDNA: [C:blood_DNA]"
 
-			if(4)
+			if (4)
 				for (var/mob/O in viewers(C, null))
 					O.show_message("\red [user] has analyzed [C]'s radiation levels!", 1)
 
 				user.show_message("\blue Analyzing Results for [C]:")
-				if(C.radiation)
+				if (C.radiation)
 					user.show_message("\green Radiation Level: \black [C.radiation]")
 				else
 					user.show_message("\blue No radiation detected.")
 
 /obj/item/device/pda/afterattack(atom/A as mob|obj|turf|area, mob/user as mob)
 	switch(scanmode)
-		if(2)
+		if (2)
 			if (!A.fingerprints)
 				user << "\blue Unable to locate any fingerprints on [A]!"
 			else
@@ -764,9 +764,9 @@
 				for(var/i in L)
 					user << "\blue \t [i]"
 
-		if(3)
-			if(!isnull(A.reagents))
-				if(A.reagents.reagent_list.len > 0)
+		if (3)
+			if (!isnull(A.reagents))
+				if (A.reagents.reagent_list.len > 0)
 					var/reagents_length = A.reagents.reagent_list.len
 					user << "\blue [reagents_length] chemical agent[reagents_length > 1 ? "s" : ""] found."
 					for (var/re in A.reagents.reagent_list)
@@ -791,7 +791,7 @@
 		var/mob/M = loc
 		M.show_message("\red Your [src] explodes!", 1)
 
-	if(T)
+	if (T)
 		T.hotspot_expose(700,125)
 
 		explosion(T, -1, -1, 2, 3)
@@ -830,7 +830,7 @@
 	var/list/plist = list()
 	var/list/namecounts = list()
 
-	if(usr.stat == 2)
+	if (usr.stat == 2)
 		usr << "You can't send PDA messages because you are dead!"
 		return
 
@@ -899,13 +899,13 @@
 
 	var/newcart = pick(1,2,3,4)
 	switch(newcart)
-		if(1)
+		if (1)
 			new /obj/item/weapon/cartridge/janitor(src)
-		if(2)
+		if (2)
 			new /obj/item/weapon/cartridge/security(src)
-		if(3)
+		if (3)
 			new /obj/item/weapon/cartridge/medical(src)
-		if(4)
+		if (4)
 			new /obj/item/weapon/cartridge/head(src)
 
 	new /obj/item/weapon/cartridge/signal/toxins(src)

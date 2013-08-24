@@ -10,21 +10,21 @@
 	while(i > 0)
 		var/char = copytext(hex, i, i + 1)
 		switch(char)
-			if("0")
+			if ("0")
 				//Apparently, switch works with empty statements, yay! If that doesn't work, blame me, though. -- Urist
-			if("9", "8", "7", "6", "5", "4", "3", "2", "1")
+			if ("9", "8", "7", "6", "5", "4", "3", "2", "1")
 				num += text2num(char) * 16 ** power
-			if("a", "A")
+			if ("a", "A")
 				num += 16 ** power * 10
-			if("b", "B")
+			if ("b", "B")
 				num += 16 ** power * 11
-			if("c", "C")
+			if ("c", "C")
 				num += 16 ** power * 12
-			if("d", "D")
+			if ("d", "D")
 				num += 16 ** power * 13
-			if("e", "E")
+			if ("e", "E")
 				num += 16 ** power * 14
-			if("f", "F")
+			if ("f", "F")
 				num += 16 ** power * 15
 			else
 				CRASH("hex2num given non-hexadecimal string (user error)")
@@ -52,19 +52,19 @@
 		var/val = round(num / 16 ** power)
 		num -= val * 16 ** power
 		switch(val)
-			if(9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0, 0.0)
+			if (9.0, 8.0, 7.0, 6.0, 5.0, 4.0, 3.0, 2.0, 1.0, 0.0)
 				hex += text("[]", val)
-			if(10.0)
+			if (10.0)
 				hex += "A"
-			if(11.0)
+			if (11.0)
 				hex += "B"
-			if(12.0)
+			if (12.0)
 				hex += "C"
-			if(13.0)
+			if (13.0)
 				hex += "D"
-			if(14.0)
+			if (14.0)
 				hex += "E"
-			if(15.0)
+			if (15.0)
 				hex += "F"
 			else
 		power--
@@ -100,7 +100,7 @@
 	return
 
 /proc/shuffle(var/list/shufflelist)
-	if(!shufflelist)
+	if (!shufflelist)
 		return
 	var/list/new_list = list()
 	var/list/old_list = shufflelist.Copy()
@@ -113,7 +113,7 @@
 /proc/uniquelist(var/list/L)
 	var/list/K = list()
 	for(var/item in L)
-		if(!(item in K))
+		if (!(item in K))
 			K += item
 	return K
 
@@ -179,7 +179,7 @@
 	return uppertext(copytext(t, 1, 2)) + copytext(t, 2)
 
 /proc/sortList(var/list/L)
-	if(L.len < 2)
+	if (L.len < 2)
 		return L
 	var/middle = L.len / 2 + 1 // Copy is first,second-1
 	return mergeLists(sortList(L.Copy(0,middle)), sortList(L.Copy(middle))) //second parameter null = to end of list
@@ -195,20 +195,20 @@
 	var/Ri=1
 	var/list/result = new()
 	while(Li <= L.len && Ri <= R.len)
-		if(sorttext(L[Li], R[Ri]) < 1)
+		if (sorttext(L[Li], R[Ri]) < 1)
 			result += R[Ri++]
 		else
 			result += L[Li++]
 
-	if(Li <= L.len)
+	if (Li <= L.len)
 		return (result + L.Copy(Li, 0))
 	return (result + R.Copy(Ri, 0))
 
 /proc/dd_file2list(file_path, separator)
 	var/file
-	if(separator == null)
+	if (separator == null)
 		separator = "\n"
-	if(isfile(file_path))
+	if (isfile(file_path))
 		file = file_path
 	else
 		file = file(file_path)
@@ -237,29 +237,29 @@
 
 /proc/dd_hassuffix(text, suffix)
 	var/start = length(text) - length(suffix)
-	if(start)
+	if (start)
 		return findtext(text, suffix, start, null)
 	return
 
 /proc/dd_hasSuffix(text, suffix)
 	var/start = length(text) - length(suffix)
-	if(start)
+	if (start)
 		return findtext(text, suffix, start, null) //was findtextEx
 
 /proc/dd_text2list(text, separator, var/list/withinList)
 	var/textlength = length(text)
 	var/separatorlength = length(separator)
-	if(withinList && !withinList.len) withinList = null
+	if (withinList && !withinList.len) withinList = null
 	var/list/textList = new()
 	var/searchPosition = 1
 	var/findPosition = 1
 	while(1)
 		findPosition = findtext(text, separator, searchPosition, 0)
 		var/buggyText = copytext(text, searchPosition, findPosition)
-		if(!withinList || (buggyText in withinList)) textList += "[buggyText]"
-		if(!findPosition) return textList
+		if (!withinList || (buggyText in withinList)) textList += "[buggyText]"
+		if (!findPosition) return textList
 		searchPosition = findPosition + separatorlength
-		if(searchPosition > textlength)
+		if (searchPosition > textlength)
 			textList += ""
 			return textList
 	return
@@ -267,29 +267,29 @@
 /proc/dd_text2List(text, separator, var/list/withinList)
 	var/textlength = length(text)
 	var/separatorlength = length(separator)
-	if(withinList && !withinList.len) withinList = null
+	if (withinList && !withinList.len) withinList = null
 	var/list/textList = new()
 	var/searchPosition = 1
 	var/findPosition = 1
 	while(1)
 		findPosition = findtext(text, separator, searchPosition, 0) //was findtextEx
 		var/buggyText = copytext(text, searchPosition, findPosition)
-		if(!withinList || (buggyText in withinList)) textList += "[buggyText]"
-		if(!findPosition) return textList
+		if (!withinList || (buggyText in withinList)) textList += "[buggyText]"
+		if (!findPosition) return textList
 		searchPosition = findPosition + separatorlength
-		if(searchPosition > textlength)
+		if (searchPosition > textlength)
 			textList += ""
 			return textList
 	return
 
 /proc/dd_list2text(var/list/the_list, separator)
 	var/total = the_list.len
-	if(!total)
+	if (!total)
 		return
 	var/count = 2
 	var/newText = "[the_list[1]]"
 	while(count <= total)
-		if(separator)
+		if (separator)
 			newText += separator
 		newText += "[the_list[count]]"
 		count++
@@ -297,7 +297,7 @@
 
 //slower then dd_list2text, but correctly processes associative lists.
 proc/tg_list2text(list/list, glue=",")
-	if(!istype(list) || !list.len)
+	if (!istype(list) || !list.len)
 		return
 	var/output
 	for(var/i=1 to list.len)
@@ -308,7 +308,7 @@ proc/tg_list2text(list/list, glue=",")
 //tg_text2list is faster then dd_text2list
 //not case sensitive version
 proc/tg_text2list(string, separator=",")
-	if(!string)
+	if (!string)
 		return
 	var/list/output = new
 	var/seplength = length(separator)
@@ -318,17 +318,17 @@ proc/tg_text2list(string, separator=",")
 	do
 		index = findtext(string, separator, prev, 0)
 		output += copytext(string, prev, index)
-		if(!index)
+		if (!index)
 			break
 		prev = index+seplength
-		if(prev>strlength)
+		if (prev>strlength)
 			break
 	while(index)
 	return output
 
 //case sensitive version
 proc/tg_extext2list(string, separator=",")
-	if(!string)
+	if (!string)
 		return
 	var/list/output = new
 	var/seplength = length(separator)
@@ -338,10 +338,10 @@ proc/tg_extext2list(string, separator=",")
 	do
 		index = findtextEx(string, separator, prev, 0)
 		output += copytext(string, prev, index)
-		if(!index)
+		if (!index)
 			break
 		prev = index+seplength
-		if(prev>strlength)
+		if (prev>strlength)
 			break
 	while(index)
 	return output
@@ -370,13 +370,13 @@ proc/tg_extext2list(string, separator=",")
 	var/new_message = message
 	var/size = length(message)
 	var/delta = length - size
-	if(size == length)
+	if (size == length)
 		return new_message
-	if(size > length)
+	if (size > length)
 		return copytext(new_message, 1, length + 1)
-	if(delta == 1)
+	if (delta == 1)
 		return new_message + " "
-	if(delta % 2)
+	if (delta % 2)
 		new_message = " " + new_message
 		delta--
 	var/spaces = add_lspace("",delta/2-1)
@@ -384,36 +384,36 @@ proc/tg_extext2list(string, separator=",")
 
 /proc/dd_limittext(message, length)
 	var/size = length(message)
-	if(size <= length)
+	if (size <= length)
 		return message
 	return copytext(message, 1, length + 1)
 
 /proc/angle2dir(var/degree)
 	degree = ((degree+22.5)%365)
-	if(degree < 45)		return NORTH
-	if(degree < 90)		return NORTH|EAST
-	if(degree < 135)	return EAST
-	if(degree < 180)	return SOUTH|EAST
-	if(degree < 225)	return SOUTH
-	if(degree < 270)	return SOUTH|WEST
-	if(degree < 315)	return WEST
+	if (degree < 45)		return NORTH
+	if (degree < 90)		return NORTH|EAST
+	if (degree < 135)	return EAST
+	if (degree < 180)	return SOUTH|EAST
+	if (degree < 225)	return SOUTH
+	if (degree < 270)	return SOUTH|WEST
+	if (degree < 315)	return WEST
 	return NORTH|WEST
 
 /proc/angle2text(var/degree)
 	return dir2text(angle2dir(degree))
 
 /proc/Get_Angle(atom/movable/start,atom/movable/end)//For beams.
-	if(!start || !end) return 0
+	if (!start || !end) return 0
 	var/dy
 	var/dx
 	dy=(32*end.y+end.pixel_y)-(32*start.y+start.pixel_y)
 	dx=(32*end.x+end.pixel_x)-(32*start.x+start.pixel_x)
-	if(!dy)
+	if (!dy)
 		return (dx>=0)?90:270
 	.=arctan(dx/dy)
-	if(dy<0)
+	if (dy<0)
 		.+=180
-	else if(dx<0)
+	else if (dx<0)
 		.+=360
 
 //Returns location. Returns null if no location was found.
@@ -443,7 +443,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 	switch(target.dir)//This can be done through equations but switch is the simpler method. And works fast to boot.
 	//Directs on what values need modifying.
-		if(1)//North
+		if (1)//North
 			diry+=distance
 			yoffset+=eoffsety
 			xoffset+=eoffsetx
@@ -451,7 +451,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 			b1yerror-=errory
 			b2xerror+=errorx
 			b2yerror+=errory
-		if(2)//South
+		if (2)//South
 			diry-=distance
 			yoffset-=eoffsety
 			xoffset+=eoffsetx
@@ -459,7 +459,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 			b1yerror-=errory
 			b2xerror+=errorx
 			b2yerror+=errory
-		if(4)//East
+		if (4)//East
 			dirx+=distance
 			yoffset+=eoffsetx//Flipped.
 			xoffset+=eoffsety
@@ -467,7 +467,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 			b1yerror-=errorx
 			b2xerror+=errory
 			b2yerror+=errorx
-		if(8)//West
+		if (8)//West
 			dirx-=distance
 			yoffset-=eoffsetx//Flipped.
 			xoffset+=eoffsety
@@ -478,8 +478,8 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 	var/turf/destination=locate(location.x+dirx,location.y+diry,location.z)
 
-	if(destination)//If there is a destination.
-		if(errorx||errory)//If errorx or y were specified.
+	if (destination)//If there is a destination.
+		if (errorx||errory)//If errorx or y were specified.
 			var/destination_list[] = list()//To add turfs to list.
 			//destination_list = new()
 			/*This will draw a block around the target turf, given what the error is.
@@ -493,18 +493,18 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 			//Now to find a box from center location and make that our destination.
 			for(var/turf/T in block(locate(center.x+b1xerror,center.y+b1yerror,location.z), locate(center.x+b2xerror,center.y+b2yerror,location.z) ))
-				if(density&&T.density)	continue//If density was specified.
-				if(T.x>world.maxx || T.x<1)	continue//Don't want them to teleport off the map.
-				if(T.y>world.maxy || T.y<1)	continue
+				if (density&&T.density)	continue//If density was specified.
+				if (T.x>world.maxx || T.x<1)	continue//Don't want them to teleport off the map.
+				if (T.y>world.maxy || T.y<1)	continue
 				destination_list += T
-			if(destination_list.len)
+			if (destination_list.len)
 				destination = pick(destination_list)
 			else	return
 
 		else//Same deal here.
-			if(density&&destination.density)	return
-			if(destination.x>world.maxx || destination.x<1)	return
-			if(destination.y>world.maxy || destination.y<1)	return
+			if (density&&destination.density)	return
+			if (destination.x>world.maxx || destination.x<1)	return
+			if (destination.y>world.maxy || destination.y<1)	return
 	else	return
 
 	return destination
@@ -516,78 +516,78 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	return strip_html(input(Message,Title,Default) as text, length)
 
 /proc/InRange(var/A, var/lower, var/upper)
-	if(A < lower) return 0
-	if(A > upper) return 0
+	if (A < lower) return 0
+	if (A > upper) return 0
 	return 1
 
 /proc/LinkBlocked(turf/A, turf/B)
-	if(A == null || B == null) return 1
+	if (A == null || B == null) return 1
 	var/adir = get_dir(A,B)
 	var/rdir = get_dir(B,A)
-	if((adir & (NORTH|SOUTH)) && (adir & (EAST|WEST)))	//	diagonal
+	if ((adir & (NORTH|SOUTH)) && (adir & (EAST|WEST)))	//	diagonal
 		var/iStep = get_step(A,adir&(NORTH|SOUTH))
-		if(!LinkBlocked(A,iStep) && !LinkBlocked(iStep,B)) return 0
+		if (!LinkBlocked(A,iStep) && !LinkBlocked(iStep,B)) return 0
 
 		var/pStep = get_step(A,adir&(EAST|WEST))
-		if(!LinkBlocked(A,pStep) && !LinkBlocked(pStep,B)) return 0
+		if (!LinkBlocked(A,pStep) && !LinkBlocked(pStep,B)) return 0
 		return 1
 
-	if(DirBlocked(A,adir)) return 1
-	if(DirBlocked(B,rdir)) return 1
+	if (DirBlocked(A,adir)) return 1
+	if (DirBlocked(B,rdir)) return 1
 	return 0
 
 /proc/LinkBlockedCritter(turf/A, turf/B)
-	if(A == null || B == null) return 1
+	if (A == null || B == null) return 1
 	var/adir = get_dir(A,B)
 	var/rdir = get_dir(B,A)
-	if((adir & (NORTH|SOUTH)) && (adir & (EAST|WEST)))	//	diagonal
+	if ((adir & (NORTH|SOUTH)) && (adir & (EAST|WEST)))	//	diagonal
 		var/iStep = get_step(A,adir&(NORTH|SOUTH))
-		if(!LinkBlockedCritter(A,iStep) && !LinkBlockedCritter(iStep,B)) return 0
+		if (!LinkBlockedCritter(A,iStep) && !LinkBlockedCritter(iStep,B)) return 0
 
 		var/pStep = get_step(A,adir&(EAST|WEST))
-		if(!LinkBlockedCritter(A,pStep) && !LinkBlockedCritter(pStep,B)) return 0
+		if (!LinkBlockedCritter(A,pStep) && !LinkBlockedCritter(pStep,B)) return 0
 		return 1
 
-	if(DirBlockedCritter(A,adir)) return 1
-	if(DirBlockedCritter(B,rdir)) return 1
+	if (DirBlockedCritter(A,adir)) return 1
+	if (DirBlockedCritter(B,rdir)) return 1
 	return 0
 
 
 /proc/DirBlocked(turf/loc,var/dir)
 	for(var/obj/window/D in loc)
-		if(!D.density)			continue
-		if(D.dir == SOUTHWEST)	return 1
-		if(D.dir == dir)		return 1
+		if (!D.density)			continue
+		if (D.dir == SOUTHWEST)	return 1
+		if (D.dir == dir)		return 1
 
 	for(var/obj/machinery/door/D in loc)
-		if(!D.density)			continue
-		if(istype(D, /obj/machinery/door/window))
-			if((dir & SOUTH) && (D.dir & (EAST|WEST)))		return 1
-			if((dir & EAST ) && (D.dir & (NORTH|SOUTH)))	return 1
+		if (!D.density)			continue
+		if (istype(D, /obj/machinery/door/window))
+			if ((dir & SOUTH) && (D.dir & (EAST|WEST)))		return 1
+			if ((dir & EAST ) && (D.dir & (NORTH|SOUTH)))	return 1
 		else return 1	// it's a real, air blocking door
 	return 0
 
 
 /proc/DirBlockedCritter(turf/loc,var/dir)
 	for(var/obj/window/D in loc)
-		if(!D.density)			continue
-		if(D.dir == SOUTHWEST)	return 1
-		if(D.dir == dir)		return 1
+		if (!D.density)			continue
+		if (D.dir == SOUTHWEST)	return 1
+		if (D.dir == dir)		return 1
 
 	for(var/obj/machinery/door/D in loc)
-		if(!D.density)			continue
-		if(istype(D, /obj/machinery/door/window))
-			if((dir & SOUTH) && (D.dir & (EAST|WEST)))		return 1
-			if((dir & EAST ) && (D.dir & (NORTH|SOUTH)))	return 1
+		if (!D.density)			continue
+		if (istype(D, /obj/machinery/door/window))
+			if ((dir & SOUTH) && (D.dir & (EAST|WEST)))		return 1
+			if ((dir & EAST ) && (D.dir & (NORTH|SOUTH)))	return 1
 		else return 1	// it's a real, air blocking door
 	for(var/obj/O in loc)
-		if(O.density && !istype(O, /obj/window) && !istype(O, /obj/machinery/door))
+		if (O.density && !istype(O, /obj/window) && !istype(O, /obj/machinery/door))
 			return 1
 	return 0
 
 /proc/TurfBlockedNonWindow(turf/loc)
 	for(var/obj/O in loc)
-		if(O.density && !istype(O, /obj/window))
+		if (O.density && !istype(O, /obj/window))
 			return 1
 	return 0
 
@@ -596,9 +596,9 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 /*	//Kelson's version (doesn't work)
 /proc/getline(atom/M,atom/N)
-	if(!M || !M.loc) return
-	if(!N || !N.loc) return
-	if(M.z != N.z) return
+	if (!M || !M.loc) return
+	if (!N || !N.loc) return
+	if (M.z != N.z) return
 	var/line = new/list()
 
 	var/dx = abs(M.x - N.x)
@@ -611,7 +611,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	var/turf/tloc = M.loc
 
 	while(tloc != N.loc)
-		if(tslope>0)
+		if (tslope>0)
 			--tslope
 			tloc = locate(tloc.x+cx,tloc.y,tloc.z)
 		else
@@ -634,10 +634,10 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	var/x=dxabs>>1	//Counters for steps taken, setting to distance/2
 	var/y=dyabs>>1	//Bit-shifting makes me l33t.  It also makes getline() unnessecarrily fast.
 	var/j			//Generic integer for counting
-	if(dxabs>=dyabs)	//x distance is greater than y
+	if (dxabs>=dyabs)	//x distance is greater than y
 		for(j=0;j<dxabs;j++)//It'll take dxabs steps to get there
 			y+=dyabs
-			if(y>=dxabs)	//Every dyabs steps, step once in y direction
+			if (y>=dxabs)	//Every dyabs steps, step once in y direction
 				y-=dxabs
 				py+=sdy
 			px+=sdx		//Step on in x direction
@@ -645,7 +645,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	else
 		for(j=0;j<dyabs;j++)
 			x+=dxabs
-			if(x>=dyabs)
+			if (x>=dyabs)
 				x-=dyabs
 				px+=sdx
 			py+=sdy
@@ -696,7 +696,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	var/randomname = M.name
 	var/time_passed = world.time//Pretty basic but it'll do. It's still possible to bypass this by return ainame().
 	var/newname = input(M,"You are the AI. Would you like to change your name to something else?", "Name change",randomname)
-	if((world.time-time_passed)>200)//If more than 20 game seconds passed.
+	if ((world.time-time_passed)>200)//If more than 20 game seconds passed.
 		M << "You took too long to decide. Default name selected."
 		return
 
@@ -745,7 +745,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 			pda.name = "PDA-[newname] ([pda.ownjob])"
 			break
 	for(var/obj/item/weapon/card/id/id in M.contents)
-		if(id.registered == oldname)
+		if (id.registered == oldname)
 			id.registered = newname
 			id.name = "[id.registered]'s ID Card ([id.assignment])"
 			break
@@ -765,7 +765,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 		if (A.connected_ai)
 			continue
 		else
-			if(A.module)
+			if (A.module)
 				name += " ([A.module.name])"
 			names.Add(name)
 			namecounts[name] = 1
@@ -812,7 +812,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 		if (M.real_name && M.real_name != M.name)
 			name += " \[[M.real_name]\]"
 		if (M.stat == 2)
-			if(istype(M, /mob/dead/observer/))
+			if (istype(M, /mob/dead/observer/))
 				name += " \[ghost\]"
 			else
 				name += " \[dead\]"
@@ -856,9 +856,9 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	return M
 
 /proc/modulus(var/M)
-	if(M >= 0)
+	if (M >= 0)
 		return M
-	if(M < 0)
+	if (M < 0)
 		return -M
 
 
@@ -929,9 +929,9 @@ Turf and target are seperate in case you want to teleport some distance from a t
 // Otherwise, the user mob's machine var will be reset directly.
 //
 /proc/onclose(mob/user, windowid, var/atom/ref=null)
-	if(!user.client) return
+	if (!user.client) return
 	var/param = "null"
-	if(ref)
+	if (ref)
 		param = "\ref[ref]"
 
 	winset(user, windowid, "on-close=\".windowclose [param]\"")
@@ -949,10 +949,10 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	set name = ".windowclose"			// no autocomplete on cmd line
 
 	//world << "windowclose: [atomref]"
-	if(atomref!="null")				// if passed a real atomref
+	if (atomref!="null")				// if passed a real atomref
 		var/hsrc = locate(atomref)	// find the reffed atom
 		var/href = "close=1"
-		if(hsrc)
+		if (hsrc)
 			//world << "[src] Topic [href] [hsrc]"
 			usr = src.mob
 			src.Topic(href, params2list(href), hsrc)	// this will direct to the atom's
@@ -960,7 +960,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 	// no atomref specified (or not found)
 	// so just reset the user mob's machine var
-	if(src && src.mob)
+	if (src && src.mob)
 		//world << "[src] was [src.mob.machine], setting to null"
 		src.mob.machine = null
 	return
@@ -987,13 +987,13 @@ Turf and target are seperate in case you want to teleport some distance from a t
 		//and isn't really any more complicated
 
 		// Note diagonal directions won't usually be accurate
-	if(direction & NORTH)
+	if (direction & NORTH)
 		target = locate(target.x, world.maxy, target.z)
-	if(direction & SOUTH)
+	if (direction & SOUTH)
 		target = locate(target.x, 1, target.z)
-	if(direction & EAST)
+	if (direction & EAST)
 		target = locate(world.maxx, target.y, target.z)
-	if(direction & WEST)
+	if (direction & WEST)
 		target = locate(1, target.y, target.z)
 
 	return target
@@ -1006,13 +1006,13 @@ Turf and target are seperate in case you want to teleport some distance from a t
 
 	var/x = A.x
 	var/y = A.y
-	if(direction & NORTH)
+	if (direction & NORTH)
 		y = min(world.maxy, y + range)
-	if(direction & SOUTH)
+	if (direction & SOUTH)
 		y = max(1, y - range)
-	if(direction & EAST)
+	if (direction & EAST)
 		x = min(world.maxx, x + range)
-	if(direction & WEST)
+	if (direction & WEST)
 		x = max(1, x - range)
 
 	return locate(x,y,A.z)
@@ -1029,21 +1029,21 @@ Turf and target are seperate in case you want to teleport some distance from a t
 /proc/dir2text(var/d)
 	var/dir
 	switch(d)
-		if(1)
+		if (1)
 			dir = "NORTH"
-		if(2)
+		if (2)
 			dir = "SOUTH"
-		if(4)
+		if (4)
 			dir = "EAST"
-		if(8)
+		if (8)
 			dir = "WEST"
-		if(5)
+		if (5)
 			dir = "NORTHEAST"
-		if(6)
+		if (6)
 			dir = "SOUTHEAST"
-		if(9)
+		if (9)
 			dir = "NORTHWEST"
-		if(10)
+		if (10)
 			dir = "SOUTHWEST"
 		else
 			dir = null
@@ -1076,11 +1076,11 @@ proc/anim(turf/location as turf,target as mob|obj,a_icon,a_icon_state as text,fl
 //This proc throws up either an icon or an animation for a specified amount of time.
 //The variables should be apparent enough.
 	var/atom/movable/overlay/animation = new(location)
-	if(direction)
+	if (direction)
 		animation.dir = direction
 	animation.icon = a_icon
 	animation.layer = target:layer+1
-	if(a_icon_state)
+	if (a_icon_state)
 		animation.icon_state = a_icon_state
 	else
 		animation.icon_state = "blank"
@@ -1091,31 +1091,31 @@ proc/anim(turf/location as turf,target as mob|obj,a_icon,a_icon_state as text,fl
 
 //returns list element or null. Should prevent "index out of bounds" error.
 proc/listgetindex(var/list/list,index)
-	if(istype(list) && list.len)
-		if(isnum(index))
-			if(InRange(index,1,list.len))
+	if (istype(list) && list.len)
+		if (isnum(index))
+			if (InRange(index,1,list.len))
 				return list[index]
-		else if(index in list)
+		else if (index in list)
 			return list[index]
 	return
 
 proc/islist(list/list)
-	if(istype(list))
+	if (istype(list))
 		return 1
 	return 0
 
 proc/isemptylist(list/list)
-	if(istype(list) && !list.len)
+	if (istype(list) && !list.len)
 		return 1
 	return 0
 
 proc/clearlist(list/list)
-	if(istype(list))
+	if (istype(list))
 		list.len = 0
 	return
 
 proc/listclearnulls(list/list)
-	if(istype(list))
+	if (istype(list))
 		while(null in list)
 			list -= null
 	return
@@ -1125,7 +1125,7 @@ proc/listclearnulls(list/list)
 
 	for(var/atom/part in contents)
 		toReturn += part
-		if(part.contents.len && searchDepth)
+		if (part.contents.len && searchDepth)
 			toReturn += part.GetAllContents(searchDepth - 1)
 
 	return toReturn
@@ -1138,7 +1138,7 @@ proc/listclearnulls(list/list)
  * If either of arguments is not a list, returns null
  */
 /proc/intersectlist(var/list/first, var/list/second)
-	if(!islist(first) || !islist(second))
+	if (!islist(first) || !islist(second))
 		return
 	return first & second
 
@@ -1148,12 +1148,12 @@ proc/listclearnulls(list/list)
  * If either of arguments is not a list, returns null
  */
 /proc/difflist(var/list/first, var/list/second, var/skiprep=0)
-	if(!islist(first) || !islist(second))
+	if (!islist(first) || !islist(second))
 		return
 	var/list/result = new
-	if(skiprep)
+	if (skiprep)
 		for(var/e in first)
-			if(!(e in result) && !(e in second))
+			if (!(e in result) && !(e in second))
 				result += e
 	else
 		result = first - second
@@ -1165,10 +1165,10 @@ proc/listclearnulls(list/list)
  * If either of arguments is not a list, returns null
  */
 /proc/uniquemergelist(var/list/first, var/list/second, var/skiprep=0)
-	if(!islist(first) || !islist(second))
+	if (!islist(first) || !islist(second))
 		return
 	var/list/result = new
-	if(skiprep)
+	if (skiprep)
 		result = difflist(first, second, skiprep)+difflist(second, first, skiprep)
 	else
 		result = first ^ second
@@ -1195,10 +1195,10 @@ proc/listclearnulls(list/list)
 	var/steps = 0
 
 	while(current != target_turf)
-		if(steps > length) return 0
-		if(current.opacity) return 0
+		if (steps > length) return 0
+		if (current.opacity) return 0
 		for(var/atom/A in current)
-			if(A.opacity) return 0
+			if (A.opacity) return 0
 		current = get_step_towards(current, target_turf)
 		steps++
 
@@ -1208,29 +1208,29 @@ proc/listclearnulls(list/list)
 /mob/proc/get_equipped_items()
 	var/list/items = new/list()
 
-	if(hasvar(src,"back")) if(src:back) items += src:back
-	if(hasvar(src,"belt")) if(src:belt) items += src:belt
-	if(hasvar(src,"ears")) if(src:ears) items += src:ears
-	if(hasvar(src,"glasses")) if(src:glasses) items += src:glasses
-	if(hasvar(src,"gloves")) if(src:gloves) items += src:gloves
-	if(hasvar(src,"head")) if(src:head) items += src:head
-	if(hasvar(src,"shoes")) if(src:shoes) items += src:shoes
-	if(hasvar(src,"wear_id")) if(src:wear_id) items += src:wear_id
-	if(hasvar(src,"wear_mask")) if(src:wear_mask) items += src:wear_mask
-	if(hasvar(src,"wear_suit")) if(src:wear_suit) items += src:wear_suit
-//	if(hasvar(src,"w_radio")) if(src:w_radio) items += src:w_radio  commenting this out since headsets go on your ears now PLEASE DON'T BE MAD KEELIN
-	if(hasvar(src,"w_uniform")) if(src:w_uniform) items += src:w_uniform
+	if (hasvar(src,"back")) if (src:back) items += src:back
+	if (hasvar(src,"belt")) if (src:belt) items += src:belt
+	if (hasvar(src,"ears")) if (src:ears) items += src:ears
+	if (hasvar(src,"glasses")) if (src:glasses) items += src:glasses
+	if (hasvar(src,"gloves")) if (src:gloves) items += src:gloves
+	if (hasvar(src,"head")) if (src:head) items += src:head
+	if (hasvar(src,"shoes")) if (src:shoes) items += src:shoes
+	if (hasvar(src,"wear_id")) if (src:wear_id) items += src:wear_id
+	if (hasvar(src,"wear_mask")) if (src:wear_mask) items += src:wear_mask
+	if (hasvar(src,"wear_suit")) if (src:wear_suit) items += src:wear_suit
+//	if (hasvar(src,"w_radio")) if (src:w_radio) items += src:w_radio  commenting this out since headsets go on your ears now PLEASE DON'T BE MAD KEELIN
+	if (hasvar(src,"w_uniform")) if (src:w_uniform) items += src:w_uniform
 
-	//if(hasvar(src,"l_hand")) if(src:l_hand) items += src:l_hand
-	//if(hasvar(src,"r_hand")) if(src:r_hand) items += src:r_hand
+	//if (hasvar(src,"l_hand")) if (src:l_hand) items += src:l_hand
+	//if (hasvar(src,"r_hand")) if (src:r_hand) items += src:r_hand
 
 	return items
 
 /proc/is_blocked_turf(var/turf/T)
 	var/cant_pass = 0
-	if(T.density) cant_pass = 1
+	if (T.density) cant_pass = 1
 	for(var/atom/A in T)
-		if(A.density)//&&A.anchored
+		if (A.density)//&&A.anchored
 			cant_pass = 1
 	return cant_pass
 
@@ -1238,7 +1238,7 @@ proc/listclearnulls(list/list)
 	var/base_dir = get_dir(ref, get_step_towards(ref,trg))
 	var/turf/temp = get_step_towards(ref,trg)
 
-	if(is_blocked_turf(temp))
+	if (is_blocked_turf(temp))
 		var/dir_alt1 = turn(base_dir, 90)
 		var/dir_alt2 = turn(base_dir, -90)
 		var/turf/turf_last1 = temp
@@ -1247,23 +1247,23 @@ proc/listclearnulls(list/list)
 		var/breakpoint = 0
 
 		while(!free_tile && breakpoint < 10)
-			if(!is_blocked_turf(turf_last1))
+			if (!is_blocked_turf(turf_last1))
 				free_tile = turf_last1
 				break
-			if(!is_blocked_turf(turf_last2))
+			if (!is_blocked_turf(turf_last2))
 				free_tile = turf_last2
 				break
 			turf_last1 = get_step(turf_last1,dir_alt1)
 			turf_last2 = get_step(turf_last2,dir_alt2)
 			breakpoint++
 
-		if(!free_tile) return get_step(ref, base_dir)
+		if (!free_tile) return get_step(ref, base_dir)
 		else return get_step_towards(ref,free_tile)
 
 	else return get_step(ref, base_dir)
 
 /proc/do_mob(var/mob/user , var/mob/target, var/time = 30) //This is quite an ugly solution but i refuse to use the old request system.
-	if(!user || !target) return 0
+	if (!user || !target) return 0
 	var/user_loc = user.loc
 	var/target_loc = target.loc
 	var/holding = user.equipped()
@@ -1277,7 +1277,7 @@ proc/listclearnulls(list/list)
 	var/turf/T = M.loc
 	var/holding = M.equipped()
 	sleep(time)
-	if(M)
+	if (M)
 		if ((M.loc == T && M.equipped() == holding && !( M.stat )))
 			return 1
 		else
@@ -1287,22 +1287,22 @@ proc/listclearnulls(list/list)
 	//Takes: Anything that could possibly have variables and a varname to check.
 	//Returns: 1 if found, 0 if not.
 	//Notes: Do i really need to explain this?
-	if(A.vars.Find(lowertext(varname))) return 1
+	if (A.vars.Find(lowertext(varname))) return 1
 	else return 0
 
 /proc/get_areas(var/areatype)
 	//Takes: Area type as text string or as typepath OR an instance of the area.
 	//Returns: A list of all areas of that type in the world.
 	//Notes: Simple!
-	if(!areatype) return null
-	if(istext(areatype)) areatype = text2path(areatype)
-	if(isarea(areatype))
+	if (!areatype) return null
+	if (istext(areatype)) areatype = text2path(areatype)
+	if (isarea(areatype))
 		var/area/areatemp = areatype
 		areatype = areatemp.type
 
 	var/list/areas = new/list()
 	for(var/area/N in world)
-		if(istype(N, areatype)) areas += N
+		if (istype(N, areatype)) areas += N
 	return areas
 
 /proc/get_area_turfs(var/areatype)
@@ -1310,15 +1310,15 @@ proc/listclearnulls(list/list)
 	//Returns: A list of all turfs in areas of that type of that type in the world.
 	//Notes: Simple!
 
-	if(!areatype) return null
-	if(istext(areatype)) areatype = text2path(areatype)
-	if(isarea(areatype))
+	if (!areatype) return null
+	if (istext(areatype)) areatype = text2path(areatype)
+	if (isarea(areatype))
 		var/area/areatemp = areatype
 		areatype = areatemp.type
 
 	var/list/turfs = new/list()
 	for(var/area/N in world)
-		if(istype(N, areatype))
+		if (istype(N, areatype))
 			for(var/turf/T in N) turfs += T
 	return turfs
 
@@ -1327,15 +1327,15 @@ proc/listclearnulls(list/list)
 	//Returns: A list of all atoms	(objs, turfs, mobs) in areas of that type of that type in the world.
 	//Notes: Simple!
 
-	if(!areatype) return null
-	if(istext(areatype)) areatype = text2path(areatype)
-	if(isarea(areatype))
+	if (!areatype) return null
+	if (istext(areatype)) areatype = text2path(areatype)
+	if (isarea(areatype))
 		var/area/areatemp = areatype
 		areatype = areatemp.type
 
 	var/list/atoms = new/list()
 	for(var/area/N in world)
-		if(istype(N, areatype))
+		if (istype(N, areatype))
 			for(var/atom/A in N)
 				atoms += A
 	return atoms
@@ -1352,7 +1352,7 @@ proc/listclearnulls(list/list)
 	//       Movement based on lower left corner. Tiles that do not fit
 	//		 into the new area will not be moved.
 
-	if(!A || !src) return 0
+	if (!A || !src) return 0
 
 	var/list/turfs_src = get_area_turfs(src.type)
 	var/list/turfs_trg = get_area_turfs(A.type)
@@ -1360,14 +1360,14 @@ proc/listclearnulls(list/list)
 	var/src_min_x = 0
 	var/src_min_y = 0
 	for (var/turf/T in turfs_src)
-		if(T.x < src_min_x || !src_min_x) src_min_x	= T.x
-		if(T.y < src_min_y || !src_min_y) src_min_y	= T.y
+		if (T.x < src_min_x || !src_min_x) src_min_x	= T.x
+		if (T.y < src_min_y || !src_min_y) src_min_y	= T.y
 
 	var/trg_min_x = 0
 	var/trg_min_y = 0
 	for (var/turf/T in turfs_trg)
-		if(T.x < trg_min_x || !trg_min_x) trg_min_x	= T.x
-		if(T.y < trg_min_y || !trg_min_y) trg_min_y	= T.y
+		if (T.x < trg_min_x || !trg_min_x) trg_min_x	= T.x
+		if (T.y < trg_min_y || !trg_min_y) trg_min_y	= T.y
 
 	var/list/refined_src = new/list()
 	for(var/turf/T in turfs_src)
@@ -1393,7 +1393,7 @@ proc/listclearnulls(list/list)
 			var/datum/coords/C_src = refined_src[T]
 			for (var/turf/B in refined_trg)
 				var/datum/coords/C_trg = refined_trg[B]
-				if(C_src.x_pos == C_trg.x_pos && C_src.y_pos == C_trg.y_pos)
+				if (C_src.x_pos == C_trg.x_pos && C_src.y_pos == C_trg.y_pos)
 
 					var/old_dir1 = T.dir
 					var/old_icon_state1 = T.icon_state
@@ -1405,26 +1405,26 @@ proc/listclearnulls(list/list)
 					X.icon = old_icon1 //Shuttle floors are in shuttle.dmi while the defaults are floors.dmi
 
 					for(var/obj/O in T)
-						if(!istype(O,/obj)) continue
+						if (!istype(O,/obj)) continue
 						O.loc = X
 					for(var/mob/M in T)
-						if(!istype(M,/mob)) continue
+						if (!istype(M,/mob)) continue
 						M.loc = X
 
 					var/area/AR = X.loc
 
-					if(AR.sd_lighting)
+					if (AR.sd_lighting)
 						X.opacity = !X.opacity
 						X.sd_SetOpacity(!X.opacity)
 
 					toupdate += X
 
-					if(turftoleave)
+					if (turftoleave)
 						var/turf/ttl = new turftoleave(T)
 
 						var/area/AR2 = ttl.loc
 
-						if(AR2.sd_lighting)
+						if (AR2.sd_lighting)
 							ttl.opacity = !ttl.opacity
 							ttl.sd_SetOpacity(!ttl.opacity)
 
@@ -1439,20 +1439,20 @@ proc/listclearnulls(list/list)
 
 	var/list/doors = new/list()
 
-	if(toupdate.len)
+	if (toupdate.len)
 		for(var/turf/simulated/T1 in toupdate)
 			for(var/obj/machinery/door/D2 in T1)
 				doors += D2
-			if(T1.parent)
+			if (T1.parent)
 				air_master.groups_to_rebuild += T1.parent
 			else
 				air_master.tiles_to_update += T1
 
-	if(fromupdate.len)
+	if (fromupdate.len)
 		for(var/turf/simulated/T2 in fromupdate)
 			for(var/obj/machinery/door/D2 in T2)
 				doors += D2
-			if(T2.parent)
+			if (T2.parent)
 				air_master.groups_to_rebuild += T2.parent
 			else
 				air_master.tiles_to_update += T2
@@ -1471,13 +1471,13 @@ proc/get_cardinal_dir(atom/A, atom/B)
 
 //For sanitizing user inputs
 /proc/reject_bad_text(var/text)
-	if(length(text) > 512)	return			//message too long
+	if (length(text) > 512)	return			//message too long
 	var/non_whitespace = 0
 	for(var/i=1, i<=length(text), i++)
 		switch(text2ascii(text,i))
-			if(62,60,92,47)	return			//rejects the text if it contains these bad characters: <, >, \ or /
-			if(127 to 255)	return			//rejects weird letters like ÿ
-			if(0 to 31)		return			//more weird stuff
-			if(32)							//whitespace
+			if (62,60,92,47)	return			//rejects the text if it contains these bad characters: <, >, \ or /
+			if (127 to 255)	return			//rejects weird letters like ÿ
+			if (0 to 31)		return			//more weird stuff
+			if (32)							//whitespace
 			else			non_whitespace = 1
-	if(non_whitespace)		return text		//only accepts the text if it has some non-spaces
+	if (non_whitespace)		return text		//only accepts the text if it has some non-spaces

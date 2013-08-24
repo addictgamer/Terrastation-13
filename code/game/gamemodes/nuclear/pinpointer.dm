@@ -12,7 +12,7 @@
 	var/active = 0
 
 	attack_self()
-		if(!active)
+		if (!active)
 			active = 1
 			work()
 			usr << "\blue You activate the pinpointer"
@@ -22,22 +22,22 @@
 			usr << "\blue You deactivate the pinpointer"
 
 	proc/work()
-		if(!active) return
-		if(!the_disk)
+		if (!active) return
+		if (!the_disk)
 			the_disk = locate()
-			if(!the_disk)
+			if (!the_disk)
 				active = 0
 				icon_state = "pinonnull"
 				return
 		src.dir = get_dir(src,the_disk)
 		switch(get_dist(src,the_disk))
-			if(0)
+			if (0)
 				icon_state = "pinondirect"
-			if(1 to 8)
+			if (1 to 8)
 				icon_state = "pinonclose"
-			if(9 to 16)
+			if (9 to 16)
 				icon_state = "pinonmedium"
-			if(16 to INFINITY)
+			if (16 to INFINITY)
 				icon_state = "pinonfar"
 		spawn(5) .()
 

@@ -71,30 +71,30 @@
 	return
 
 /obj/item/weapon/moneybag/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	usr.machine = src
 	src.add_fingerprint(usr)
-	if(href_list["remove"])
+	if (href_list["remove"])
 		var/obj/item/weapon/coin/COIN
 		switch(href_list["remove"])
-			if("gold")
+			if ("gold")
 				COIN = locate(/obj/item/weapon/coin/gold,src.contents)
-			if("silver")
+			if ("silver")
 				COIN = locate(/obj/item/weapon/coin/silver,src.contents)
-			if("iron")
+			if ("iron")
 				COIN = locate(/obj/item/weapon/coin/iron,src.contents)
-			if("diamond")
+			if ("diamond")
 				COIN = locate(/obj/item/weapon/coin/diamond,src.contents)
-			if("plasma")
+			if ("plasma")
 				COIN = locate(/obj/item/weapon/coin/plasma,src.contents)
-			if("uranium")
+			if ("uranium")
 				COIN = locate(/obj/item/weapon/coin/uranium,src.contents)
-			if("clown")
+			if ("clown")
 				COIN = locate(/obj/item/weapon/coin/clown,src.contents)
-			if("adamantine")
+			if ("adamantine")
 				COIN = locate(/obj/item/weapon/coin/adamantine,src.contents)
-		if(!COIN)
+		if (!COIN)
 			return
 		COIN.loc = src.loc
 	return
