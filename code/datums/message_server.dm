@@ -5,11 +5,11 @@
 	var/message = "Blank" //transferred message
 
 /datum/data_pda_msg/New(var/param_rec = "",var/param_sender = "",var/param_message = "")
-	if(param_rec)
+	if (param_rec)
 		recipient = param_rec
-	if(param_sender)
+	if (param_sender)
 		sender = param_sender
-	if(param_message)
+	if (param_message)
 		message = param_message
 
 /datum/data_rc_msg
@@ -21,23 +21,23 @@
 	var/priority = "Normal"
 
 /datum/data_rc_msg/New(var/param_rec = "",var/param_sender = "",var/param_message = "",var/param_stamp = "",var/param_id_auth = "",var/param_priority)
-	if(param_rec)
+	if (param_rec)
 		rec_dpt = param_rec
-	if(param_sender)
+	if (param_sender)
 		send_dpt = param_sender
-	if(param_message)
+	if (param_message)
 		message = param_message
-	if(param_stamp)
+	if (param_stamp)
 		stamp = param_stamp
-	if(param_id_auth)
+	if (param_id_auth)
 		id_auth = param_id_auth
-	if(param_priority)
+	if (param_priority)
 		switch(param_priority)
-			if(1)
+			if (1)
 				priority = "Normal"
-			if(2)
+			if (2)
 				priority = "High"
-			if(3)
+			if (3)
 				priority = "Extreme"
 			else
 				priority = "Undetermined"
@@ -51,27 +51,27 @@
 		value = param_value
 
 	proc/inc(var/num = 1)
-		if(isnum(value))
+		if (isnum(value))
 			value += num
 		else
 			value = text2num(value)
-			if(isnum(value))
+			if (isnum(value))
 				value += num
 			else
 				value = num
 
 	proc/dec(var/num = 1)
-		if(isnum(value))
+		if (isnum(value))
 			value -= num
 		else
 			value = text2num(value)
-			if(isnum(value))
+			if (isnum(value))
 				value -= num
 			else
 				value = -num
 
 	proc/set_value(var/num)
-		if(isnum(num))
+		if (isnum(num))
 			value = num
 
 	proc/get_value()
@@ -86,28 +86,28 @@
 var/obj/machinery/blackbox_recorder/blackbox
 
 proc/feedback_set(var/variable,var/value)
-	if(!blackbox) return
+	if (!blackbox) return
 
 	var/datum/feedback_variable/FV = blackbox.find_feedback_datum(variable)
 
-	if(!FV) return
+	if (!FV) return
 
 	FV.set_value(value)
 
 proc/feedback_inc(var/variable,var/value)
-	if(!blackbox) return
+	if (!blackbox) return
 
 	var/datum/feedback_variable/FV = blackbox.find_feedback_datum(variable)
 
-	if(!FV) return
+	if (!FV) return
 
 	FV.inc(value)
 
 proc/feedback_dec(var/variable,var/value)
-	if(!blackbox) return
+	if (!blackbox) return
 
 	var/datum/feedback_variable/FV = blackbox.find_feedback_datum(variable)
 
-	if(!FV) return
+	if (!FV) return
 
 	FV.dec(value)

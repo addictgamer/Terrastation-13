@@ -10,6 +10,6 @@
 		reagents.add_reagent("nutriment", 4)
 		baconbeacon = new /obj/item/device/radio/beacon/bacon(src)
 	On_Consume()
-		if(!reagents.total_volume)
+		if (!reagents.total_volume)
 			baconbeacon.loc = usr
 			baconbeacon.digest_delay()

@@ -11,14 +11,14 @@
 		reagents.add_reagent("nutriment",12)
 
 	afterattack(obj/O as obj, mob/user as mob)
-		if(istype(O,/obj/machinery/sink) && !wrapped)
+		if (istype(O,/obj/machinery/sink) && !wrapped)
 			user << "You place [name] under a stream of water..."
 			loc = get_turf(O)
 			return Expand()
 		..()
 
 	attack_self(mob/user as mob)
-		if(wrapped)
+		if (wrapped)
 			Unwrap(user)
 
 	proc/Expand()

@@ -18,15 +18,15 @@
 
 	ex_act(severity)
 		switch(severity)
-			if(1.0)
+			if (1.0)
 				del(src)
 				return
-			if(2.0)
-				if(prob(50))
+			if (2.0)
+				if (prob(50))
 					del(src)
 					return
-			if(3.0)
-				if(prob(25))
+			if (3.0)
+				if (prob(25))
 					src.health -= 11
 					healthcheck()
 		return
@@ -49,9 +49,9 @@
 		user.visible_message("[user.name] kicks the [src.name].", \
 							"You kick the [src.name].", \
 							"You hear a noise")
-		if((usr.mutations & HULK))
+		if ((usr.mutations & HULK))
 			src.health -= 5
-		else if(!shock(user, 70))
+		else if (!shock(user, 70))
 			src.health -= 3
 		healthcheck()
 		return
@@ -67,13 +67,13 @@
 		user.visible_message("[user.name] mangles the [src.name].", \
 							"You mangle the [src.name].", \
 							"You hear a noise")
-		if(!shock(usr, 70))
+		if (!shock(usr, 70))
 			src.health -= 5
 			healthcheck()
 			return
 
 	attack_metroid(var/mob/user)
-		if(!istype(usr, /mob/living/carbon/metroid/adult))	return
+		if (!istype(usr, /mob/living/carbon/metroid/adult))	return
 		playsound(src.loc, 'grillehit.ogg', 80, 1)
 		user.visible_message("[user.name] smashes against the [src.name].", \
 							"You smash against the [src.name].", \
@@ -84,8 +84,8 @@
 
 
 	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-		if(air_group || (height==0)) return 1
-		if(istype(mover) && mover.checkpass(PASSGRILLE))
+		if (air_group || (height==0)) return 1
+		if (istype(mover) && mover.checkpass(PASSGRILLE))
 			return 1
 		else
 			if (istype(mover, /obj/item/projectile))
@@ -95,28 +95,28 @@
 
 
 	attackby(obj/item/weapon/W, mob/user)
-		if(iswirecutter(W))
-			if(!shock(user, 100))
+		if (iswirecutter(W))
+			if (!shock(user, 100))
 				playsound(src.loc, 'Wirecutter.ogg', 100, 1)
 				src.health = 0
-				if(!destroyed)
+				if (!destroyed)
 					src.health = -100
 		else if ((isscrewdriver(W)) && (istype(src.loc, /turf/simulated) || src.anchored))
-			if(!shock(user, 90))
+			if (!shock(user, 90))
 				playsound(src.loc, 'Screwdriver.ogg', 100, 1)
 				src.anchored = !( src.anchored )
 				user << (src.anchored ? "You have fastened the grille to the floor." : "You have unfastened the grill.")
 				for(var/mob/O in oviewers())
 					O << text("\red [user] [src.anchored ? "fastens" : "unfastens"] the grille.")
 				return
-		else if(istype(W, /obj/item/weapon/shard))
+		else if (istype(W, /obj/item/weapon/shard))
 			src.health -= W.force * 0.1
-		else if(!shock(user, 70))
+		else if (!shock(user, 70))
 			playsound(src.loc, 'grillehit.ogg', 80, 1)
 			switch(W.damtype)
-				if("fire")
+				if ("fire")
 					src.health -= W.force
-				if("brute")
+				if ("brute")
 					src.health -= W.force * 0.1
 		src.healthcheck()
 		..()
@@ -143,9 +143,9 @@
 // returns 1 if shocked, 0 otherwise
 
 	shock(mob/user, prb)
-		if(!anchored || destroyed)		// anchored/destroyed grilles are never connected
+		if (!anchored || destroyed)		// anchored/destroyed grilles are never connected
 			return 0
-		if(!prob(prb))
+		if (!prob(prb))
 			return 0
 		var/turf/T = get_turf(src)
 		if (electrocute_mob(user, T.get_cable_node(), src))
@@ -159,40 +159,40 @@
 
 
 
-		/*if(ishuman(user)) //Let's check if the guy's wearing electrically insulated gloves --Agourimarkan
+		/*if (ishuman(user)) //Let's check if the guy's wearing electrically insulated gloves --Agourimarkan
 			var/mob/living/carbon/human/H = user
-			if(H.gloves)
+			if (H.gloves)
 				var/obj/item/clothing/gloves/G = H.gloves
-				if(istype(G,/obj/item/clothing/gloves/yellow) ) //Business as usual for guys with gloves
+				if (istype(G,/obj/item/clothing/gloves/yellow) ) //Business as usual for guys with gloves
 					src.health -= W.force * 0.2
 				else // Guy has gloves, not electrically insulated ones
 					var/outcome = pick(1,2,3)
 					switch(outcome) // 3 possible outcomes
-						if(1) //Guy gets shocked. If not electrified, cause damage.
-							if(shock(user,100))
+						if (1) //Guy gets shocked. If not electrified, cause damage.
+							if (shock(user,100))
 								return
 							else
 								src.health -= W.force *0.2
-						if(2) //Shard breaks
+						if (2) //Shard breaks
 							user << "<font color='blue'>The shard breaks!</font>"
 							del W
 							return
-						if(3) //You somehow manage to damage the grille. Beefin' up the damage, a bit. Instead of doing 10% damage it now does... 20% of the shard's force? Yeah, 20% sounds good at 66% chance of failure.
+						if (3) //You somehow manage to damage the grille. Beefin' up the damage, a bit. Instead of doing 10% damage it now does... 20% of the shard's force? Yeah, 20% sounds good at 66% chance of failure.
 							src.health -=W.force *0.2
 			else //SHIT SON, GUY DOESN'T HAVE ANY GLOVES
 				var/outcome = pick(1,2,3)
 				switch(outcome)
-					if(1) // Let's see, the guy damages it but takes some damage back
+					if (1) // Let's see, the guy damages it but takes some damage back
 						user << "<font color='red'>You cut yourself with the shard as you hit the grille!</font>"
 						src.health -= W.force *0.2
 						var/brutedamagetaken = rand(3,6)
 						H.take_organ_damage(brutedamagetaken,0)
-					if(2) //Guy gets shocked. If not electrified, apply damage
-						if(shock(user,100))
+					if (2) //Guy gets shocked. If not electrified, apply damage
+						if (shock(user,100))
 							return
 						else
 							src.health -= W.force *0.2
-					if(3) // It breaks in his hands. Ouch.
+					if (3) // It breaks in his hands. Ouch.
 						user << "<font color='red'>As you smash the grille the shard breaks into smithereens in your palm!</font>"
 						src.health -= W.force *0.2
 						del(W)

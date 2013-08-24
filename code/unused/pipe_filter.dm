@@ -22,9 +22,9 @@
 	node2 = get_machine( level, T , n2dir )
 	node3 = get_machine( level, T, dir )	// the ejector port
 
-	if(node1) vnode1 = node1.getline()
-	if(node2) vnode2 = node2.getline()
-	if(node3) vnode3 = node3.getline()
+	if (node1) vnode1 = node1.getline()
+	if (node2) vnode2 = node2.getline()
+	if (node3) vnode3 = node3.getline()
 
 /obj/machinery/pipefilter/gas_flow()
 	gas.copy_from(ngas)
@@ -33,24 +33,24 @@
 /obj/machinery/pipefilter/process()
 /*	var/delta_gt
 
-	if(vnode1)
+	if (vnode1)
 		delta_gt = FLOWFRAC * ( vnode1.get_gas_val(src) - gas.total_moles() / capmult)
 		calc_delta( src, gas, ngas, vnode1, delta_gt)
 	else
 		leak_to_turf(1)
-	if(vnode2)
+	if (vnode2)
 		delta_gt = FLOWFRAC * ( vnode2.get_gas_val(src) - gas.total_moles() / capmult)
 		calc_delta( src, gas, ngas, vnode2, delta_gt)
 	else
 		leak_to_turf(2)
-	if(vnode3)
+	if (vnode3)
 		delta_gt = FLOWFRAC * ( vnode3.get_gas_val(src) - f_gas.total_moles() / capmult)
 		calc_delta( src, f_gas, f_ngas, vnode3, delta_gt)
 	else
 		leak_to_turf(3)
 
 	// transfer gas from ngas->f_ngas according to extraction rate, but only if we have power
-	if(! (stat & NOPOWER) )
+	if (! (stat & NOPOWER) )
 		use_power(min(src.f_per, 100),ENVIRON)
 		var/datum/gas_mixture/ndelta = src.get_extract()
 		ngas.sub_delta(ndelta)
@@ -68,22 +68,22 @@
 	var/turf/T
 
 	switch(port)
-		if(1)
+		if (1)
 			T = get_step(src, n1dir)
-		if(2)
+		if (2)
 			T = get_step(src, n2dir)
-		if(3)
+		if (3)
 			T = get_step(src, dir)
-			if(T.density)
+			if (T.density)
 				T = src.loc
-				if(T.density)
+				if (T.density)
 					return
 			flow_to_turf(f_gas, f_ngas, T)
 			return
 
-	if(T.density)
+	if (T.density)
 		T = src.loc
-		if(T.density)
+		if (T.density)
 			return
 
 	flow_to_turf(gas, ngas, T)
@@ -105,10 +105,10 @@
 	*/ //TODO: FIX
 
 /obj/machinery/pipefilter/attackby(obj/item/weapon/W, mob/user as mob)
-	if(istype(W, /obj/item/weapon/detective_scanner))
+	if (istype(W, /obj/item/weapon/detective_scanner))
 		return ..()
-	if(istype(W, /obj/item/weapon/screwdriver))
-		if(bypassed)
+	if (istype(W, /obj/item/weapon/screwdriver))
+		if (bypassed)
 			user.show_message(text("\red Remove the foreign wires first!"), 1)
 			return
 		src.add_fingerprint(user)
@@ -118,12 +118,12 @@
 		user.show_message(text("\red Done!"),1)
 		src.updateicon()
 		return
-	if(istype(W, /obj/item/cable_coil) && !bypassed)
-		if(src.locked)
+	if (istype(W, /obj/item/cable_coil) && !bypassed)
+		if (src.locked)
 			user.show_message(text("\red You must remove the panel first!"),1)
 			return
 		var/obj/item/cable_coil/C = W
-		if(C.use(4))
+		if (C.use(4))
 			user.show_message(text("\red You unravel some cable.."),1)
 		else
 			user.show_message(text("\red Not enough cable! <I>(Requires four pieces)</I>"),1)
@@ -133,14 +133,14 @@
 		bypassed = 1
 		src.updateicon()
 		return
-	if(istype(W, /obj/item/weapon/wirecutters) && bypassed)
+	if (istype(W, /obj/item/weapon/wirecutters) && bypassed)
 		src.add_fingerprint(user)
 		user.show_message(text("\red Now removing the bypass wires... <I>(This may take a while)</I>"), 1)
 		sleep(50)
 		bypassed = 0
 		src.updateicon()
 		return
-	if(istype(W, /obj/item/weapon/card/emag) && (!emagged))
+	if (istype(W, /obj/item/weapon/card/emag) && (!emagged))
 		emagged++
 		src.add_fingerprint(user)
 		for(var/mob/O in viewers(user, null))
@@ -159,7 +159,7 @@
 	return src.attack_hand(user)
 
 /obj/machinery/pipefilter/attack_hand(mob/user as mob)
-/*	if(stat & NOPOWER)
+/*	if (stat & NOPOWER)
 		user << browse(null, "window=pipefilter")
 		user.machine = null
 		return
@@ -169,7 +169,7 @@
 	var/dat = "Filter Release Rate:<BR>\n<A href='?src=\ref[src];fp=-[num2text(src.maxrate, 9)]'>M</A> <A href='?src=\ref[src];fp=-100000'>-</A> <A href='?src=\ref[src];fp=-10000'>-</A> <A href='?src=\ref[src];fp=-1000'>-</A> <A href='?src=\ref[src];fp=-100'>-</A> <A href='?src=\ref[src];fp=-1'>-</A> [src.f_per] <A href='?src=\ref[src];fp=1'>+</A> <A href='?src=\ref[src];fp=100'>+</A> <A href='?src=\ref[src];fp=1000'>+</A> <A href='?src=\ref[src];fp=10000'>+</A> <A href='?src=\ref[src];fp=100000'>+</A> <A href='?src=\ref[src];fp=[num2text(src.maxrate, 9)]'>M</A><BR>\n"
 	for (var/i = 1; i <= gases.len; i++)
 		dat += "[gases[i]]: <A HREF='?src=\ref[src];tg=[1 << (i - 1)]'>[(src.f_mask & 1 << (i - 1)) ? "Releasing" : "Passing"]</A><BR>\n"
-	if(gas.total_moles())
+	if (gas.total_moles())
 		var/totalgas = gas.total_moles()
 		var/pressure = round(totalgas / gas.maximum * 100)
 		var/nitrogen = gas.n2 / totalgas * 100
@@ -188,7 +188,7 @@
 
 /obj/machinery/pipefilter/Topic(href, href_list)
 	..()
-	if(usr.restrained() || usr.lying)
+	if (usr.restrained() || usr.lying)
 		return
 	if ((((get_dist(src, usr) <= 1 || usr.telekinesis == 1) || istype(usr, /mob/living/silicon/ai)) && istype(src.loc, /turf)))
 		usr.machine = src
@@ -214,7 +214,7 @@
 		return
 
 /obj/machinery/pipefilter/power_change()
-	if(powered(ENVIRON))
+	if (powered(ENVIRON))
 		stat &= ~NOPOWER
 	else
 		stat |= NOPOWER
@@ -223,11 +223,11 @@
 
 /obj/machinery/pipefilter/proc/updateicon()
 	src.overlays = null
-	if(stat & NOPOWER)
+	if (stat & NOPOWER)
 		icon_state = "filter-off"
 	else
 		icon_state = "filter"
-		if(emagged)	//only show if powered because presumeably its the interface that has been fried
+		if (emagged)	//only show if powered because presumeably its the interface that has been fried
 			src.overlays += image('pipes2.dmi', "filter-emag")
 		if (src.f_mask & (GAS_N2O|GAS_PL))
 			src.overlays += image('pipes2.dmi', "filter-tox")
@@ -237,7 +237,7 @@
 			src.overlays += image('pipes2.dmi', "filter-n2")
 		if (src.f_mask & GAS_CO2)
 			src.overlays += image('pipes2.dmi', "filter-co2")
-	if(!locked)
+	if (!locked)
 		src.overlays += image('pipes2.dmi', "filter-open")
-		if(bypassed)	//should only be bypassed if unlocked
+		if (bypassed)	//should only be bypassed if unlocked
 			src.overlays += image('pipes2.dmi', "filter-bypass")

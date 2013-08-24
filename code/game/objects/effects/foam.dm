@@ -28,7 +28,7 @@
 		spawn(120)
 			expand = 0 // stop expanding
 			sleep(30)
-			if(metal)
+			if (metal)
 				var/obj/foamedmetal/M = new(src.loc)
 				M.metal = metal
 				M.updateicon()
@@ -39,29 +39,29 @@
 
 // on delete, transfer any reagents to the floor
 	Del()
-		if(!metal && reagents)
+		if (!metal && reagents)
 			for(var/atom/A in oview(0,src))
-				if(A == src)
+				if (A == src)
 					continue
 				reagents.reaction(A, 1, 1)
 		..()
 
 	process()
-		if(--amount < 0)
+		if (--amount < 0)
 			return
 		while(expand)	// keep trying to expand while true
 			for(var/direction in cardinal)
 				var/turf/T = get_step(src,direction)
-				if(!T)
+				if (!T)
 					continue
-				if(!T.Enter(src))
+				if (!T.Enter(src))
 					continue
 				var/obj/effects/foam/F = locate() in T
-				if(F)
+				if (F)
 					continue
 				F = new(T, metal)
 				F.amount = amount
-				if(!metal)
+				if (!metal)
 					F.create_reagents(10)
 					if (reagents)
 						for(var/datum/reagent/R in reagents.reagent_list)
@@ -71,14 +71,14 @@
 // foam disolves when heated
 // except metal foams
 	temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
-		if(!metal && prob(max(0, exposed_temperature - 475)))
+		if (!metal && prob(max(0, exposed_temperature - 475)))
 			flick("[icon_state]-disolve", src)
 			spawn(5)
 				del(src)
 
 
 	HasEntered(var/atom/movable/AM)
-		if(metal)
+		if (metal)
 			return
 		if (istype(AM, /mob/living/carbon))
 			var/mob/M =	AM

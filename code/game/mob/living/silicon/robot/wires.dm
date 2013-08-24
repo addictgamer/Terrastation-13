@@ -36,7 +36,7 @@
 	var/wireIndex = BorgWireColorToIndex[wireColor]
 	borgwires &= ~wireFlag
 	switch(wireIndex)
-		if(BORG_WIRE_LAWCHECK) //Cut the law wire, and the borg will no longer receive law updates from its AI
+		if (BORG_WIRE_LAWCHECK) //Cut the law wire, and the borg will no longer receive law updates from its AI
 			if (src.lawupdate == 1)
 				src << "LawSync protocol engaged."
 				src.show_laws()
@@ -50,7 +50,7 @@
 	var/wireIndex = BorgWireColorToIndex[wireColor]
 	borgwires |= wireFlag
 	switch(wireIndex)
-		if(BORG_WIRE_LAWCHECK) //turns law updates back on assuming the borg hasn't been emagged
+		if (BORG_WIRE_LAWCHECK) //turns law updates back on assuming the borg hasn't been emagged
 			if (src.lawupdate == 0 && !src.emagged)
 				src.lawupdate = 1
 	src.interact(usr)
@@ -59,17 +59,17 @@
 /mob/living/silicon/robot/proc/pulse(var/wireColor)
 	var/wireIndex = BorgWireColorToIndex[wireColor]
 	switch(wireIndex)
-		if(BORG_WIRE_LAWCHECK)	//Forces a law update if the borg is set to receive them. Since an update would happen when the borg checks its laws anyway, not much use, but eh
+		if (BORG_WIRE_LAWCHECK)	//Forces a law update if the borg is set to receive them. Since an update would happen when the borg checks its laws anyway, not much use, but eh
 			if (src.lawupdate)
 				src.lawsync()
 
 		if (BORG_WIRE_AI_CONTROL) //pule the AI wire to make the borg reselect an AI
-			if(!src.emagged)
+			if (!src.emagged)
 				src.connected_ai = activeais()
 	src.interact(usr)
 
 /mob/living/silicon/robot/proc/interact(mob/user)
-	if(wiresexposed && (!istype(user, /mob/living/silicon)))
+	if (wiresexposed && (!istype(user, /mob/living/silicon)))
 		user.machine = src
 		var/t1 = text("<B>Access Panel</B><br>\n")
 		var/list/Borgwires = list(
@@ -81,7 +81,7 @@
 		for(var/wiredesc in Borgwires)
 			var/is_uncut = src.borgwires & BorgWireColorToFlag[Borgwires[wiredesc]]
 			t1 += "[wiredesc] wire: "
-			if(!is_uncut)
+			if (!is_uncut)
 				t1 += "<a href='?src=\ref[src];borgwires=[Borgwires[wiredesc]]'>Mend</a>"
 			else
 				t1 += "<a href='?src=\ref[src];borgwires=[Borgwires[wiredesc]]'>Cut</a> "

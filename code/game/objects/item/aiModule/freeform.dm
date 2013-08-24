@@ -22,7 +22,7 @@
 		..()
 		var/law = "[newFreeFormLaw]"
 		target << law
-		if(!lawpos || lawpos < 15)
+		if (!lawpos || lawpos < 15)
 			lawpos = 15
 		target.add_supplied_law(lawpos, law)
 		lawchanges.Add("The law was '[newFreeFormLaw]'")

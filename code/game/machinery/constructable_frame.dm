@@ -21,30 +21,30 @@ to destroy them and players will be able to make replacements.
 
 /obj/machinery/constructable_frame/machine_frame
 	attackby(obj/item/P as obj, mob/user as mob)
-		if(P.crit_fail)
+		if (P.crit_fail)
 			user << "\red This part is faulty, you cannot add this to the machine!"
 			return
 		switch(state)
-			if(1)
-				if(istype(P, /obj/item/cable_coil))
-					if(P:amount >= 5)
+			if (1)
+				if (istype(P, /obj/item/cable_coil))
+					if (P:amount >= 5)
 						playsound(src.loc, 'Deconstruct.ogg', 50, 1)
 						user << "\blue You start to add cables to the frame."
-						if(do_after(user, 20))
+						if (do_after(user, 20))
 							P:amount -= 5
-							if(!P:amount) del(P)
+							if (!P:amount) del(P)
 							user << "\blue You add cables to the frame."
 							state = 2
 							icon_state = "box_1"
-				if(istype(P, /obj/item/weapon/wrench))
+				if (istype(P, /obj/item/weapon/wrench))
 					playsound(src.loc, 'Ratchet.ogg', 75, 1)
 					user << "\blue You dismantle the frame"
 					new /obj/item/stack/sheet/metal(src.loc, 5)
 					del(src)
-			if(2)
-				if(istype(P, /obj/item/weapon/circuitboard))
+			if (2)
+				if (istype(P, /obj/item/weapon/circuitboard))
 					var/obj/item/weapon/circuitboard/B = P
-					if(B.board_type == "machine")
+					if (B.board_type == "machine")
 						playsound(src.loc, 'Deconstruct.ogg', 50, 1)
 						user << "\blue You add the circuit board to the frame."
 						circuit = P
@@ -56,10 +56,10 @@ to destroy them and players will be able to make replacements.
 						req_components = circuit.req_components.Copy()
 						for(var/A in circuit.req_components)
 							req_components[A] = circuit.req_components[A]
-						if(circuit.frame_desc) desc = circuit.frame_desc
+						if (circuit.frame_desc) desc = circuit.frame_desc
 					else
 						user << "\red This frame does not accept circuit boards of this type!"
-				if(istype(P, /obj/item/weapon/wirecutters))
+				if (istype(P, /obj/item/weapon/wirecutters))
 					playsound(src.loc, 'wirecutter.ogg', 50, 1)
 					user << "\blue You remove the cables."
 					state = 1
@@ -67,13 +67,13 @@ to destroy them and players will be able to make replacements.
 					var/obj/item/cable_coil/A = new /obj/item/cable_coil( src.loc )
 					A.amount = 5
 
-			if(3)
-				if(istype(P, /obj/item/weapon/crowbar))
+			if (3)
+				if (istype(P, /obj/item/weapon/crowbar))
 					playsound(src.loc, 'Crowbar.ogg', 50, 1)
 					state = 2
 					circuit.loc = src.loc
 					circuit = null
-					if(components.len == 0)
+					if (components.len == 0)
 						user << "\blue You remove the circuit board."
 					else
 						user << "\blue You remove the circuit board and other components."
@@ -84,13 +84,13 @@ to destroy them and players will be able to make replacements.
 					components = null
 					icon_state = "box_1"
 
-				if(istype(P, /obj/item/weapon/screwdriver))
+				if (istype(P, /obj/item/weapon/screwdriver))
 					var/component_check = 1
 					for(var/R in req_components)
-						if(req_components[R] > 0)
+						if (req_components[R] > 0)
 							component_check = 0
 							break
-					if(component_check)
+					if (component_check)
 						playsound(src.loc, 'Screwdriver.ogg', 50, 1)
 						var/obj/machinery/new_machine = new src.circuit.build_path(src.loc)
 						for(var/obj/O in new_machine.component_parts)
@@ -103,12 +103,12 @@ to destroy them and players will be able to make replacements.
 						new_machine.RefreshParts()
 						del(src)
 
-				if(istype(P, /obj/item/weapon))
+				if (istype(P, /obj/item/weapon))
 					for(var/I in req_components)
-						if(istype(P, text2path(I)) && (req_components[I] > 0))
-							if(istype(P, /obj/item/cable_coil))
+						if (istype(P, text2path(I)) && (req_components[I] > 0))
+							if (istype(P, /obj/item/cable_coil))
 								var/obj/item/cable_coil/CP = P
-								if(CP.amount > 1)
+								if (CP.amount > 1)
 									var/obj/item/cable_coil/CC = new /obj/item/cable_coil(src)
 									CC.amount = 1
 									components += CC
@@ -119,5 +119,5 @@ to destroy them and players will be able to make replacements.
 							components += P
 							req_components[I]--
 							break
-					if(P.loc != src && !istype(P, /obj/item/cable_coil))
+					if (P.loc != src && !istype(P, /obj/item/cable_coil))
 						user << "\red You cannot add that component to the machine!"

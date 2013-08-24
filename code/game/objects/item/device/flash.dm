@@ -25,12 +25,12 @@
 	attack(mob/living/M as mob, mob/user as mob)
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been flashed (attempt) with [src.name]  by [user.name] ([user.ckey])</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to flash [M.name] ([M.ckey])</font>")
-		if(!clown_check(user))	return
-		if(broken)
+		if (!clown_check(user))	return
+		if (broken)
 			user.show_message("\red The [src.name] is broken", 2)
 			return
 
-		if(shots_left <= 0)
+		if (shots_left <= 0)
 			user.show_message("\red *click* *click*", 2)
 			return
 
@@ -38,36 +38,36 @@
 		shots_left--
 		var/flashfail = 0
 
-		if(iscarbon(M))
+		if (iscarbon(M))
 			var/safety = M:eyecheck()
-			if(safety <= 0)
-				if(M.weakened <= 10)
+			if (safety <= 0)
+				if (M.weakened <= 10)
 					M.weakened = 10
 					flick("e_flash", M.flash)
 
-				if(ishuman(M) && ishuman(user))
-					if(user.mind in ticker.mode.head_revolutionaries)
+				if (ishuman(M) && ishuman(user))
+					if (user.mind in ticker.mode.head_revolutionaries)
 						var/revsafe = 0
 						for(var/obj/item/weapon/implant/loyalty/L in M)
-							if(L && L.implanted)
+							if (L && L.implanted)
 								revsafe = 1
 								break
-						if(M.mind.has_been_rev)
+						if (M.mind.has_been_rev)
 							revsafe = 2
-						if(!revsafe)
+						if (!revsafe)
 							M.mind.has_been_rev = 1
 							ticker.mode.add_revolutionary(M.mind)
-						else if(revsafe == 1)
+						else if (revsafe == 1)
 							user << "\red Something seems to be blocking the flash!"
 						else
 							user << "\red This mind seems resistant to the flash!"
 			else
 				flashfail = 1
 
-		else if(issilicon(M))
+		else if (issilicon(M))
 			M.weakened = max(user.weakened, rand(5,10))
 
-		if(isrobot(user))
+		if (isrobot(user))
 			spawn(0)
 				var/atom/movable/overlay/animation = new(user.loc)
 				animation.layer = user.layer + 1
@@ -79,7 +79,7 @@
 				del(animation)
 
 
-		if(!flashfail)
+		if (!flashfail)
 			for(var/mob/O in viewers(user, null))
 				O.show_message(text("\red [] blinds [] with the flash!", user, M))
 		else
@@ -99,15 +99,15 @@
 
 
 	attack_self(mob/living/carbon/user as mob, flag = 0, emp = 0)
-		if(!emp)
+		if (!emp)
 			if (!clown_check(user)) return
-		if(broken)
-			if(user)
+		if (broken)
+			if (user)
 				user.show_message("\red The [src.name] is broken", 2)
 			return
 
-		if(shots_left <= 0)
-			if(user)
+		if (shots_left <= 0)
+			if (user)
 				user.show_message("\red *click* *click*", 2)
 			return
 
@@ -115,7 +115,7 @@
 		shots_left--
 
 		flick("flash2", src)
-		if(isrobot(user))
+		if (isrobot(user))
 			spawn(0)
 				var/atom/movable/overlay/animation = new(user.loc)
 				animation.layer = user.layer + 1
@@ -127,18 +127,18 @@
 				del(animation)
 
 		for(var/mob/living/carbon/M in oviewers(3, null))
-			if(prob(50))
+			if (prob(50))
 				if (locate(/obj/item/weapon/cloaking_device, M))
 					for(var/obj/item/weapon/cloaking_device/S in M)
 						S.active = 0
 						S.icon_state = "shield0"
 			var/safety = M:eyecheck()
-			if(!safety)
+			if (!safety)
 				flick("flash", M.flash)
 
 		if (prob(2))
 			broken = 1
-			if(user)
+			if (user)
 				user << "\red The bulb has burnt out!"
 			return
 
@@ -154,7 +154,7 @@
 
 
 	clown_check(var/mob/user)
-		if((user.mutations & CLOWN) && prob(50))
+		if ((user.mutations & CLOWN) && prob(50))
 			user << "\red The Flash slips out of your hand."
 			user.drop_item()
 			return 0
@@ -162,9 +162,9 @@
 
 
 	recharge()
-		if(max_shots > shots_left)
+		if (max_shots > shots_left)
 			shots_left++
-		if(max_shots > shots_left)
+		if (max_shots > shots_left)
 			spawn(60)//more or less 10 seconds
 				recharge()
 		return

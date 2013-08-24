@@ -35,41 +35,41 @@ var/list/spells = typesof(/obj/proc_holder/spell) //needed for the badmin verb f
 
 /obj/proc_holder/spell/proc/cast_check(skipcharge = 0,mob/user = usr) //checks if the spell can be cast based on its settings; skipcharge is used when an additional cast_check is called inside the spell
 
-	if(!(src in usr.spell_list))
+	if (!(src in usr.spell_list))
 		usr << "\red You shouldn't have this spell! Something's wrong."
 		return 0
 
-	if(!skipcharge)
+	if (!skipcharge)
 		switch(charge_type)
-			if("recharge")
-				if(charge_counter < charge_max)
+			if ("recharge")
+				if (charge_counter < charge_max)
 					usr << "[name] is still recharging."
 					return 0
-			if("charges")
-				if(!charge_counter)
+			if ("charges")
+				if (!charge_counter)
 					usr << "[name] has no charges left."
 					return 0
 
-	if(usr.stat && !stat_allowed)
+	if (usr.stat && !stat_allowed)
 		usr << "Not when you're incapacitated."
 		return 0
 
-	if(clothes_req) //clothes check
-		if(!istype(usr:wear_suit, /obj/item/clothing/suit/wizrobe))
+	if (clothes_req) //clothes check
+		if (!istype(usr:wear_suit, /obj/item/clothing/suit/wizrobe))
 			usr << "I don't feel strong enough without my robe."
 			return 0
-		if(!istype(usr:shoes, /obj/item/clothing/shoes/sandal))
+		if (!istype(usr:shoes, /obj/item/clothing/shoes/sandal))
 			usr << "I don't feel strong enough without my sandals."
 			return 0
-		if(!istype(usr:head, /obj/item/clothing/head/wizard))
+		if (!istype(usr:head, /obj/item/clothing/head/wizard))
 			usr << "I don't feel strong enough without my hat."
 			return 0
 
-	if(!skipcharge)
+	if (!skipcharge)
 		switch(charge_type)
-			if("recharge")
+			if ("recharge")
 				charge_counter = 0 //doesn't start recharging until the targets selecting ends
-			if("charges")
+			if ("charges")
 				charge_counter-- //returns the charge if the targets selecting fails
 
 	return 1
@@ -77,13 +77,13 @@ var/list/spells = typesof(/obj/proc_holder/spell) //needed for the badmin verb f
 /obj/proc_holder/spell/proc/invocation(mob/user = usr) //spelling the spell out and setting it on recharge/reducing charges amount
 
 	switch(invocation_type)
-		if("shout")
+		if ("shout")
 			usr.say(invocation)
-			if(usr.gender=="male")
+			if (usr.gender=="male")
 				playsound(usr.loc, pick('null.ogg','null.ogg'), 100, 1)
 			else
 				playsound(usr.loc, pick('null.ogg','null.ogg'), 100, 1)
-		if("whisper")
+		if ("whisper")
 			usr.whisper(invocation)
 
 /obj/proc_holder/spell/New()
@@ -94,7 +94,7 @@ var/list/spells = typesof(/obj/proc_holder/spell) //needed for the badmin verb f
 /obj/proc_holder/spell/Click()
 	..()
 
-	if(!cast_check())
+	if (!cast_check())
 		return
 
 	choose_targets()
@@ -111,21 +111,21 @@ var/list/spells = typesof(/obj/proc_holder/spell) //needed for the badmin verb f
 	before_cast(targets)
 	invocation()
 	spawn(0)
-		if(charge_type == "recharge" && recharge)
+		if (charge_type == "recharge" && recharge)
 			start_recharge()
-	if(prob(critfailchance))
+	if (prob(critfailchance))
 		critfail(targets)
 	else
 		cast(targets)
 	after_cast(targets)
 
 /obj/proc_holder/spell/proc/before_cast(list/targets)
-	if(overlay)
+	if (overlay)
 		for(var/atom/target in targets)
 			var/location
-			if(istype(target,/mob))
+			if (istype(target,/mob))
 				location = target.loc
-			else if(istype(target,/turf))
+			else if (istype(target,/turf))
 				location = target
 			var/obj/overlay/spell = new /obj/overlay(location)
 			spell.icon = overlay_icon
@@ -138,22 +138,22 @@ var/list/spells = typesof(/obj/proc_holder/spell) //needed for the badmin verb f
 /obj/proc_holder/spell/proc/after_cast(list/targets)
 	for(var/atom/target in targets)
 		var/location
-		if(istype(target,/mob))
+		if (istype(target,/mob))
 			location = target.loc
-		else if(istype(target,/turf))
+		else if (istype(target,/turf))
 			location = target
-		if(istype(target,/mob) && message)
+		if (istype(target,/mob) && message)
 			target << text("[message]")
-		if(sparks_spread)
+		if (sparks_spread)
 			var/datum/effects/system/spark_spread/sparks = new /datum/effects/system/spark_spread()
 			sparks.set_up(sparks_amt, 0, location) //no idea what the 0 is
 			sparks.start()
-		if(smoke_spread)
-			if(smoke_spread == 1)
+		if (smoke_spread)
+			if (smoke_spread == 1)
 				var/datum/effects/system/harmless_smoke_spread/smoke = new /datum/effects/system/harmless_smoke_spread()
 				smoke.set_up(smoke_amt, 0, location) //no idea what the 0 is
 				smoke.start()
-			else if(smoke_spread == 2)
+			else if (smoke_spread == 2)
 				var/datum/effects/system/bad_smoke_spread/smoke = new /datum/effects/system/bad_smoke_spread()
 				smoke.set_up(smoke_amt, 0, location) //no idea what the 0 is
 				smoke.start()
@@ -166,9 +166,9 @@ var/list/spells = typesof(/obj/proc_holder/spell) //needed for the badmin verb f
 
 /obj/proc_holder/spell/proc/revert_cast() //resets recharge or readds a charge
 	switch(charge_type)
-		if("recharge")
+		if ("recharge")
 			charge_counter = charge_max
-		if("charges")
+		if ("charges")
 			charge_counter++
 
 	return
@@ -186,17 +186,17 @@ var/list/spells = typesof(/obj/proc_holder/spell) //needed for the badmin verb f
 	var/list/targets = list()
 
 	switch(selection_type)
-		if("range")
+		if ("range")
 			switch(max_targets)
-				if(0)
+				if (0)
 					for(var/mob/target in range(user,range))
 						targets += target
-				if(1)
-					if(range < 0)
+				if (1)
+					if (range < 0)
 						targets += user
 					else
 						var/possible_targets = range(user,range)
-						if(!include_user && user in possible_targets)
+						if (!include_user && user in possible_targets)
 							possible_targets -= user
 						targets += input("Choose the target for the spell.", "Targeting") as mob in possible_targets
 				else
@@ -204,25 +204,25 @@ var/list/spells = typesof(/obj/proc_holder/spell) //needed for the badmin verb f
 					for(var/mob/target in range(user,range))
 						possible_targets += target
 					for(var/i=1,i<=max_targets,i++)
-						if(!possible_targets.len)
+						if (!possible_targets.len)
 							break
-						if(target_ignore_prev)
+						if (target_ignore_prev)
 							var/target = pick(possible_targets)
 							possible_targets -= target
 							targets += target
 						else
 							targets += pick(possible_targets)
-		if("view")
+		if ("view")
 			switch(max_targets)
-				if(0)
+				if (0)
 					for(var/mob/target in view(user,range))
 						targets += target
-				if(1)
-					if(range < 0)
+				if (1)
+					if (range < 0)
 						targets += user
 					else
 						var/possible_targets = view(user,range)
-						if(!include_user && user in possible_targets)
+						if (!include_user && user in possible_targets)
 							possible_targets -= user
 						targets += input("Choose the target for the spell.", "Targeting") as mob in possible_targets
 				else
@@ -230,19 +230,19 @@ var/list/spells = typesof(/obj/proc_holder/spell) //needed for the badmin verb f
 					for(var/mob/target in view(usr,range))
 						possible_targets += target
 					for(var/i=1,i<=max_targets,i++)
-						if(!possible_targets.len)
+						if (!possible_targets.len)
 							break
-						if(target_ignore_prev)
+						if (target_ignore_prev)
 							var/target = pick(possible_targets)
 							possible_targets -= target
 							targets += target
 						else
 							targets += pick(possible_targets)
 
-	if(!include_user && (user in targets))
+	if (!include_user && (user in targets))
 		targets -= user
 
-	if(!targets.len) //doesn't waste the spell
+	if (!targets.len) //doesn't waste the spell
 		revert_cast()
 		return
 
@@ -254,16 +254,16 @@ var/list/spells = typesof(/obj/proc_holder/spell) //needed for the badmin verb f
 	var/list/targets = list()
 
 	switch(selection_type)
-		if("range")
+		if ("range")
 			for(var/turf/target in range(user,range))
-				if(!(target in range(user,inner_radius)))
+				if (!(target in range(user,inner_radius)))
 					targets += target
-		if("view")
+		if ("view")
 			for(var/turf/target in view(user,range))
-				if(!(target in view(user,inner_radius)))
+				if (!(target in view(user,inner_radius)))
 					targets += target
 
-	if(!targets.len) //doesn't waste the spell
+	if (!targets.len) //doesn't waste the spell
 		revert_cast()
 		return
 

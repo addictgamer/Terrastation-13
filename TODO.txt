@@ -219,7 +219,7 @@ blarg missiles
 
 106. Nuclear gun doesn't just have nuclear reactor. It fires nuclear explosives.
 
-107.  if(singularity.size == 3) play_nyan_on_repeat()
+107.  if (singularity.size == 3) play_nyan_on_repeat()
 
 108. Make the hivebot invasion music play the entire time hivebots spawned from the invasion exist.
 

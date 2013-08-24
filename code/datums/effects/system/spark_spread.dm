@@ -9,11 +9,11 @@
 
 	proc
 		set_up(n = 3, c = 0, loca)
-			if(n > 10)
+			if (n > 10)
 				n = 10
 			number = n
 			cardinals = c
-			if(istype(loca, /turf/))
+			if (istype(loca, /turf/))
 				location = loca
 			else
 				location = get_turf(loca)
@@ -24,15 +24,15 @@
 		start()
 			var/i = 0
 			for(i=0, i<src.number, i++)
-				if(src.total_sparks > 20)
+				if (src.total_sparks > 20)
 					return
 				spawn(0)
-					if(holder)
+					if (holder)
 						src.location = get_turf(holder)
 					var/obj/effects/sparks/sparks = new /obj/effects/sparks(src.location)
 					src.total_sparks++
 					var/direction
-					if(src.cardinals)
+					if (src.cardinals)
 						direction = pick(cardinal)
 					else
 						direction = pick(alldirs)

@@ -20,24 +20,24 @@
 	on_reagent_change(var/mob/user)
 		overlays = null
 
-		if(reagents.total_volume)
+		if (reagents.total_volume)
 
 			var/obj/overlay = new/obj
 			overlay.icon = 'beaker2.dmi'
 			var/percent = round((reagents.total_volume / volume) * 100)
 			switch(percent)
-				if(0 to 9)		overlay.icon_state = "-10"
-				if(10 to 24) 	overlay.icon_state = "10"
-				if(25 to 49)	overlay.icon_state = "25"
-				if(50 to 74)	overlay.icon_state = "50"
-				if(75 to 79)	overlay.icon_state = "75"
-				if(80 to 90)	overlay.icon_state = "80"
-				if(91 to 100)	overlay.icon_state = "100"
+				if (0 to 9)		overlay.icon_state = "-10"
+				if (10 to 24) 	overlay.icon_state = "10"
+				if (25 to 49)	overlay.icon_state = "25"
+				if (50 to 74)	overlay.icon_state = "50"
+				if (75 to 79)	overlay.icon_state = "75"
+				if (80 to 90)	overlay.icon_state = "80"
+				if (91 to 100)	overlay.icon_state = "100"
 
 			var/list/rgbcolor = list(0,0,0)
 			var/finalcolor
 			for(var/datum/reagent/re in reagents.reagent_list) // natural color mixing bullshit/algorithm
-				if(!finalcolor)
+				if (!finalcolor)
 					rgbcolor = GetColors(re.color)
 					finalcolor = re.color
 				else
@@ -57,6 +57,6 @@
 					// If you add brighter colors to it it'll eventually get lighter, though.
 
 			overlay.icon += finalcolor
-			if(user || !istype(src.loc, /turf))
+			if (user || !istype(src.loc, /turf))
 				overlay.layer = 30
 			overlays += overlay

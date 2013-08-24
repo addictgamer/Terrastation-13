@@ -108,7 +108,7 @@
 			I don't have the time to figure out how this code works so this will do for now.
 			I did rearrange things a bit.
 			*/
-			if(!isnull(user))//If the user still exists. Their mob may not.
+			if (!isnull(user))//If the user still exists. Their mob may not.
 				user.show_message(text("\red You inject [M]"))
 	return
 

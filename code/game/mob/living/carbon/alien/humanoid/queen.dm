@@ -3,7 +3,7 @@
 	reagents = R
 	R.my_atom = src
 //there should only be one queen
-//	if(src.name == "alien")
+//	if (src.name == "alien")
 //		src.name = text("alien ([rand(1, 1000)])")
 	src.real_name = src.name
 	spawn (1)
@@ -49,15 +49,15 @@
 		if (src.healths)
 			if (src.stat != 2)
 				switch(health)
-					if(250 to INFINITY)
+					if (250 to INFINITY)
 						src.healths.icon_state = "health0"
-					if(175 to 250)
+					if (175 to 250)
 						src.healths.icon_state = "health1"
-					if(100 to 175)
+					if (100 to 175)
 						src.healths.icon_state = "health2"
-					if(50 to 100)
+					if (50 to 100)
 						src.healths.icon_state = "health3"
-					if(0 to 50)
+					if (0 to 50)
 						src.healths.icon_state = "health4"
 					else
 						src.healths.icon_state = "health5"
@@ -67,10 +67,10 @@
 	handle_environment()
 
 		//If there are alien weeds on the ground then heal if needed or give some toxins
-		if(locate(/obj/alien/weeds) in loc)
-			if(health >= 250)
+		if (locate(/obj/alien/weeds) in loc)
+			if (health >= 250)
 				toxloss += 20
-				if(toxloss > max_plasma)
+				if (toxloss > max_plasma)
 					toxloss = max_plasma
 			else
 				bruteloss -= 5
@@ -80,25 +80,25 @@
 
 		health = 250 - (oxyloss + fireloss + bruteloss + cloneloss)
 
-		if(oxyloss > 50) paralysis = max(paralysis, 3)
+		if (oxyloss > 50) paralysis = max(paralysis, 3)
 
-		if(src.sleeping)
+		if (src.sleeping)
 			src.paralysis = max(src.paralysis, 3)
 			if (prob(10) && health) spawn(0) emote("snore")
 			src.sleeping--
 
-		if(src.resting)
+		if (src.resting)
 			src.weakened = max(src.weakened, 5)
 
-		if(health < -100 || src.brain_op_stage == 4.0)
+		if (health < -100 || src.brain_op_stage == 4.0)
 			death()
-		else if(src.health < 0)
-			if(src.health <= 20 && prob(1)) spawn(0) emote("gasp")
+		else if (src.health < 0)
+			if (src.health <= 20 && prob(1)) spawn(0) emote("gasp")
 
-			//if(!src.rejuv) src.oxyloss++
-			if(!src.reagents.has_reagent("inaprovaline")) src.oxyloss++
+			//if (!src.rejuv) src.oxyloss++
+			if (!src.reagents.has_reagent("inaprovaline")) src.oxyloss++
 
-			if(src.stat != 2)	src.stat = 1
+			if (src.stat != 2)	src.stat = 1
 			src.paralysis = max(src.paralysis, 5)
 
 		if (src.stat != 2) //Alive.
@@ -167,7 +167,7 @@
 	set desc = "Plants an egg"
 	set category = "Alien"
 
-	if(powerc(50,1))//Can't plant eggs on spess tiles. That's silly.
+	if (powerc(50,1))//Can't plant eggs on spess tiles. That's silly.
 		toxloss -= 200
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("\green <B>[src] has laid an egg!</B>"), 1)

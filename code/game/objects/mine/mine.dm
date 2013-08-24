@@ -18,8 +18,8 @@
 		Bumped(AM)
 
 	Bumped(mob/M as mob|obj)
-		if(triggered) return
-		if(istype(M, /mob/living/carbon/human) || istype(M, /mob/living/carbon/monkey))
+		if (triggered) return
+		if (istype(M, /mob/living/carbon/human) || istype(M, /mob/living/carbon/monkey))
 			for(var/mob/O in viewers(world.view, src.loc))
 				O << text("<font color='red'>[M] triggered the \icon[] [src]</font>", src)
 			triggered = 1
@@ -48,8 +48,8 @@
 			//example: n2o triggerproc
 			//note: im lazy
 			for (var/turf/simulated/floor/target in range(1,src))
-				if(!target.blocks_air)
-					if(target.parent)
+				if (!target.blocks_air)
+					if (target.parent)
 						target.parent.suspend_group_processing()
 					var/datum/gas_mixture/payload = new
 					var/datum/gas/sleeping_agent/trace_gas = new
@@ -61,8 +61,8 @@
 
 		triggerplasma(obj)
 			for (var/turf/simulated/floor/target in range(1,src))
-				if(!target.blocks_air)
-					if(target.parent)
+				if (!target.blocks_air)
+					if (target.parent)
 						target.parent.suspend_group_processing()
 					var/datum/gas_mixture/payload = new
 					payload.toxins = 30

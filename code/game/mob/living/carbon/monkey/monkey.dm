@@ -16,7 +16,7 @@
 	reagents = R
 	R.my_atom = src
 	if (!(dna))
-		if(gender == NEUTER)
+		if (gender == NEUTER)
 			gender = pick(MALE, FEMALE)
 		dna = new /datum/dna( null )
 		dna.uni_identity = "00600200A00E0110148FC01300B009"
@@ -32,7 +32,7 @@
 		dna.uni_identity += "12C"
 		dna.uni_identity += "4E2"
 
-	if(name == "monkey")
+	if (name == "monkey")
 		name = text("monkey ([rand(1, 1000)])")
 	real_name = name
 	..()
@@ -40,13 +40,13 @@
 
 /mob/living/carbon/monkey/movement_delay()
 	var/tally = 0
-	if(reagents)
-		if(reagents.has_reagent("hyperzine")) return -1
+	if (reagents)
+		if (reagents.has_reagent("hyperzine")) return -1
 
-		if(reagents.has_reagent("nuka_cola")) return -1
+		if (reagents.has_reagent("nuka_cola")) return -1
 
 	var/health_deficiency = (100 - health)
-	if(health_deficiency >= 45) tally += (health_deficiency / 25)
+	if (health_deficiency >= 45) tally += (health_deficiency / 25)
 
 	if (bodytemperature < 283.222)
 		tally += (283.222 - bodytemperature) / 10 * 1.75
@@ -58,12 +58,12 @@
 		if ((!( yes ) || now_pushing))
 			return
 		now_pushing = 1
-		if(ismob(AM))
+		if (ismob(AM))
 			var/mob/tmob = AM
-			if(istype(tmob, /mob/living/carbon/human) && tmob.mutations & FAT)
-				if(prob(70))
+			if (istype(tmob, /mob/living/carbon/human) && tmob.mutations & FAT)
+				if (prob(70))
 					for(var/mob/M in viewers(src, null))
-						if(M.client)
+						if (M.client)
 							M << "\red <B>[src] fails to push [tmob]'s fat ass out of the way.</B>"
 					now_pushing = 0
 					return
@@ -78,7 +78,7 @@
 			if (!( AM.anchored ))
 				var/t = get_dir(src, AM)
 				if (istype(AM, /obj/structure/window))
-					if(AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
+					if (AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
 						for(var/obj/structure/window/win in get_step(AM,t))
 							now_pushing = 0
 							return
@@ -125,82 +125,82 @@
 
 /mob/living/carbon/monkey/bullet_act(var/obj/item/projectile/Proj)
 
-	if(prob(80))
+	if (prob(80))
 		for(var/mob/living/carbon/metroid/M in view(1,src))
-			if(M.Victim == src)
+			if (M.Victim == src)
 				M.bullet_act(Proj)
 				return
 
 	for(var/i = 1, i<= Proj.mobdamage.len, i++)
 
 		switch(i)
-			if(1)
+			if (1)
 				var/d = Proj.mobdamage[BRUTE]
-				if(!Proj.nodamage) src.take_organ_damage(d)
+				if (!Proj.nodamage) src.take_organ_damage(d)
 				updatehealth()
-			if(2)
+			if (2)
 				var/d = Proj.mobdamage[BURN]
-				if(!Proj.nodamage) src.take_organ_damage(0, d)
+				if (!Proj.nodamage) src.take_organ_damage(0, d)
 				updatehealth()
-			if(3)
+			if (3)
 				var/d = Proj.mobdamage[TOX]
-				if(!Proj.nodamage) toxloss += d
+				if (!Proj.nodamage) toxloss += d
 				updatehealth()
-			if(4)
+			if (4)
 				var/d = Proj.mobdamage[OXY]
-				if(!Proj.nodamage) oxyloss += d
+				if (!Proj.nodamage) oxyloss += d
 				updatehealth()
-			if(5)
+			if (5)
 				var/d = Proj.mobdamage[CLONE]
-				if(!Proj.nodamage) cloneloss += d
+				if (!Proj.nodamage) cloneloss += d
 				updatehealth()
 
-	if(Proj.effects["stun"] && prob(Proj.effectprob["stun"]))
-		if(Proj.effectmod["stun"] == SET)
+	if (Proj.effects["stun"] && prob(Proj.effectprob["stun"]))
+		if (Proj.effectmod["stun"] == SET)
 			stunned = Proj.effects["stun"]
 		else
 			stunned += Proj.effects["stun"]
 
 
-	if(Proj.effects["weak"] && prob(Proj.effectprob["weak"]))
-		if(Proj.effectmod["weak"] == SET)
+	if (Proj.effects["weak"] && prob(Proj.effectprob["weak"]))
+		if (Proj.effectmod["weak"] == SET)
 			weakened = Proj.effects["weak"]
 		else
 			weakened += Proj.effects["weak"]
 
-	if(Proj.effects["paralysis"] && prob(Proj.effectprob["paralysis"]))
-		if(Proj.effectmod["paralysis"] == SET)
+	if (Proj.effects["paralysis"] && prob(Proj.effectprob["paralysis"]))
+		if (Proj.effectmod["paralysis"] == SET)
 			paralysis = Proj.effects["paralysis"]
 		else
 			paralysis += Proj.effects["paralysis"]
 
-	if(Proj.effects["stutter"] && prob(Proj.effectprob["stutter"]))
-		if(Proj.effectmod["stutter"] == SET)
+	if (Proj.effects["stutter"] && prob(Proj.effectprob["stutter"]))
+		if (Proj.effectmod["stutter"] == SET)
 			stuttering = Proj.effects["stutter"]
 		else
 			stuttering += Proj.effects["stutter"]
 
-	if(Proj.effects["drowsyness"] && prob(Proj.effectprob["drowsyness"]))
-		if(Proj.effectmod["drowsyness"] == SET)
+	if (Proj.effects["drowsyness"] && prob(Proj.effectprob["drowsyness"]))
+		if (Proj.effectmod["drowsyness"] == SET)
 			drowsyness = Proj.effects["drowsyness"]
 		else
 			drowsyness += Proj.effects["drowsyness"]
 
-	if(Proj.effects["radiation"] && prob(Proj.effectprob["radiation"]))
-		if(Proj.effectmod["radiation"] == SET)
+	if (Proj.effects["radiation"] && prob(Proj.effectprob["radiation"]))
+		if (Proj.effectmod["radiation"] == SET)
 			radiation = Proj.effects["radiation"]
 		else
 			radiation += Proj.effects["radiation"]
 
-	if(Proj.effects["eyeblur"] && prob(Proj.effectprob["eyeblur"]))
-		if(Proj.effectmod["eyeblur"] == SET)
+	if (Proj.effects["eyeblur"] && prob(Proj.effectprob["eyeblur"]))
+		if (Proj.effectmod["eyeblur"] == SET)
 			eye_blurry = Proj.effects["eyeblur"]
 		else
 			eye_blurry += Proj.effects["eyeblur"]
 
-	if(Proj.effects["emp"])
+	if (Proj.effects["emp"])
 		var/emppulse = Proj.effects["emp"]
-		if(prob(Proj.effectprob["emp"]))
+		if (prob(Proj.effectprob["emp"]))
 			empulse(src, emppulse, emppulse)
 		else
 			empulse(src, 0, emppulse)
@@ -218,7 +218,7 @@
 			updatehealth()
 
 			for(var/datum/disease/D in M.viruses)
-				if(istype(D, /datum/disease/jungle_fever))
+				if (istype(D, /datum/disease/jungle_fever))
 					contract_disease(D,1,0)
 		else
 			for(var/mob/O in viewers(src, null))
@@ -240,7 +240,7 @@
 				bruteloss += damage
 				health = 100 - oxyloss - toxloss - fireloss - bruteloss
 				for(var/datum/disease/D in M.viruses)
-					if(istype(D, /datum/disease/jungle_fever))
+					if (istype(D, /datum/disease/jungle_fever))
 						contract_disease(D,1,0)
 			else
 				for(var/mob/O in viewers(src, null))
@@ -256,7 +256,7 @@
 		M << "No attacking people at spawn, you jackass."
 		return
 	if ((M:gloves && M:gloves.elecgen == 1 && M.a_intent == "hurt") /*&& (!istype(src:wear_suit, /obj/item/clothing/suit/judgerobe))*/)
-		if(M:gloves.uses > 0)
+		if (M:gloves.uses > 0)
 			M:gloves.uses--
 			if (weakened < 5)
 				weakened = 5
@@ -397,7 +397,7 @@
 		if ("disarm")
 			playsound(loc, 'pierce.ogg', 25, 1, -1)
 			var/damage = 5
-			if(prob(95))
+			if (prob(95))
 				weakened = rand(10, 15)
 				for(var/mob/O in viewers(src, null))
 					if ((O.client && !( O.blinded )))
@@ -418,7 +418,7 @@
 		M << "You cannot attack people before the game has started."
 		return
 
-	if(M.Victim) return // can't attack while eating!
+	if (M.Victim) return // can't attack while eating!
 
 	if (health > -100)
 
@@ -428,28 +428,28 @@
 
 		var/damage = rand(1, 3)
 
-		if(istype(src, /mob/living/carbon/metroid/adult))
+		if (istype(src, /mob/living/carbon/metroid/adult))
 			damage = rand(20, 40)
 		else
 			damage = rand(5, 35)
 
 		bruteloss += damage
 
-		if(M.powerlevel > 0)
+		if (M.powerlevel > 0)
 			var/stunprob = 10
 			var/power = M.powerlevel + rand(0,3)
 
 			switch(M.powerlevel)
-				if(1 to 2) stunprob = 20
-				if(3 to 4) stunprob = 30
-				if(5 to 6) stunprob = 40
-				if(7 to 8) stunprob = 60
-				if(9) 	   stunprob = 70
-				if(10) 	   stunprob = 95
+				if (1 to 2) stunprob = 20
+				if (3 to 4) stunprob = 30
+				if (5 to 6) stunprob = 40
+				if (7 to 8) stunprob = 60
+				if (9) 	   stunprob = 70
+				if (10) 	   stunprob = 95
 
-			if(prob(stunprob))
+			if (prob(stunprob))
 				M.powerlevel -= 3
-				if(M.powerlevel < 0)
+				if (M.powerlevel < 0)
 					M.powerlevel = 0
 
 				for(var/mob/O in viewers(src, null))
@@ -480,20 +480,20 @@
 	statpanel("Status")
 	stat(null, text("Intent: []", a_intent))
 	stat(null, text("Move Mode: []", m_intent))
-	if(client && mind)
+	if (client && mind)
 		if (client.statpanel == "Status")
 			if (mind.special_role == "Changeling" && changeling)
 				stat("Chemical Storage", changeling.chem_charges)
 	return
 
 /mob/living/carbon/monkey/update_clothing()
-	if(buckled)
-		if(istype(buckled, /obj/structure/stool/bed))
+	if (buckled)
+		if (istype(buckled, /obj/structure/stool/bed))
 			lying = 1
 		else
 			lying = 0
 
-	if(update_icon) // Skie
+	if (update_icon) // Skie
 		..()
 		for(var/i in overlays)
 			overlays -= i
@@ -510,12 +510,12 @@
 			wear_mask.screen_loc = ui_mask
 
 	if (r_hand)
-		if(update_icon)
+		if (update_icon)
 			overlays += image("icon" = 'items_righthand.dmi', "icon_state" = r_hand.item_state ? r_hand.item_state : r_hand.icon_state, "layer" = layer)
 		r_hand.screen_loc = ui_rhand
 
 	if (l_hand)
-		if(update_icon)
+		if (update_icon)
 			overlays += image("icon" = 'items_lefthand.dmi', "icon_state" = l_hand.item_state ? l_hand.item_state : l_hand.icon_state, "layer" = layer)
 		l_hand.screen_loc = ui_lhand
 
@@ -598,7 +598,7 @@
 			else
 				if (pulling)
 					if (istype(pulling, /obj/structure/window))
-						if(pulling:ini_dir == NORTHWEST || pulling:ini_dir == NORTHEAST || pulling:ini_dir == SOUTHWEST || pulling:ini_dir == SOUTHEAST)
+						if (pulling:ini_dir == NORTHWEST || pulling:ini_dir == NORTHEAST || pulling:ini_dir == SOUTHWEST || pulling:ini_dir == SOUTHEAST)
 							for(var/obj/structure/window/win in get_step(pulling,get_dir(pulling.loc, T)))
 								pulling = null
 				if (pulling)
@@ -624,22 +624,22 @@
 /mob/living/carbon/monkey/var/temperature_resistance = T0C+75
 
 /mob/living/carbon/monkey/emp_act(severity)
-	if(wear_id) wear_id.emp_act(severity)
+	if (wear_id) wear_id.emp_act(severity)
 	..()
 
 /mob/living/carbon/monkey/ex_act(severity)
 	flick("flash", flash)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			if (stat != 2)
 				bruteloss += 200
 				health = 100 - oxyloss - toxloss - fireloss - bruteloss
-		if(2.0)
+		if (2.0)
 			if (stat != 2)
 				bruteloss += 60
 				fireloss += 60
 				health = 100 - oxyloss - toxloss - fireloss - bruteloss
-		if(3.0)
+		if (3.0)
 			if (stat != 2)
 				bruteloss += 30
 				health = 100 - oxyloss - toxloss - fireloss - bruteloss
@@ -660,27 +660,27 @@
 		item.add_fingerprint(source)
 	if (!( item ))
 		switch(place)
-			if("head")
+			if ("head")
 				if (!( target.wear_mask ))
 					del(src)
 					return
-			if("l_hand")
+			if ("l_hand")
 				if (!( target.l_hand ))
 					del(src)
 					return
-			if("r_hand")
+			if ("r_hand")
 				if (!( target.r_hand ))
 					del(src)
 					return
-			if("back")
+			if ("back")
 				if (!( target.back ))
 					del(src)
 					return
-			if("handcuff")
+			if ("handcuff")
 				if (!( target.handcuffed ))
 					del(src)
 					return
-			if("internal")
+			if ("internal")
 				if ((!( (istype(target.wear_mask, /obj/item/clothing/mask) && istype(target.back, /obj/item/weapon/tank) && !( target.internal )) ) && !( target.internal )))
 					del(src)
 					return
@@ -692,20 +692,20 @@
 	else
 		var/message = null
 		switch(place)
-			if("mask")
-				if(istype(target.wear_mask, /obj/item/clothing)&&!target.wear_mask:canremove)
+			if ("mask")
+				if (istype(target.wear_mask, /obj/item/clothing)&&!target.wear_mask:canremove)
 					message = text("\red <B>[] fails to take off \a [] from []'s body!</B>", source, target.wear_mask, target)
 				else
 					message = text("\red <B>[] is trying to take off \a [] from []'s head!</B>", source, target.wear_mask, target)
-			if("l_hand")
+			if ("l_hand")
 				message = text("\red <B>[] is trying to take off a [] from []'s left hand!</B>", source, target.l_hand, target)
-			if("r_hand")
+			if ("r_hand")
 				message = text("\red <B>[] is trying to take off a [] from []'s right hand!</B>", source, target.r_hand, target)
-			if("back")
+			if ("back")
 				message = text("\red <B>[] is trying to take off a [] from []'s back!</B>", source, target.back, target)
-			if("handcuff")
+			if ("handcuff")
 				message = text("\red <B>[] is trying to unhandcuff []!</B>", source, target)
-			if("internal")
+			if ("internal")
 				if (target.internal)
 					message = text("\red <B>[] is trying to remove []'s internals</B>", source, target)
 				else
@@ -719,16 +719,16 @@
 	return
 
 /obj/equip_e/monkey/done()
-	if(!source || !target)						return
-	if(source.loc != s_loc)						return
-	if(target.loc != t_loc)						return
-	if(LinkBlocked(s_loc,t_loc))				return
-	if(item && source.equipped() != item)	return
+	if (!source || !target)						return
+	if (source.loc != s_loc)						return
+	if (target.loc != t_loc)						return
+	if (LinkBlocked(s_loc,t_loc))				return
+	if (item && source.equipped() != item)	return
 	if ((source.restrained() || source.stat))	return
 	switch(place)
-		if("mask")
+		if ("mask")
 			if (target.wear_mask)
-				if(istype(target.wear_mask, /obj/item/clothing)&& !target.wear_mask:canremove)
+				if (istype(target.wear_mask, /obj/item/clothing)&& !target.wear_mask:canremove)
 					return
 				var/obj/item/W = target.wear_mask
 				target.u_equip(W)
@@ -746,7 +746,7 @@
 					item.layer = 20
 					target.wear_mask = item
 					item.loc = target
-		if("l_hand")
+		if ("l_hand")
 			if (target.l_hand)
 				var/obj/item/W = target.l_hand
 				target.u_equip(W)
@@ -764,7 +764,7 @@
 					item.layer = 20
 					target.l_hand = item
 					item.loc = target
-		if("r_hand")
+		if ("r_hand")
 			if (target.r_hand)
 				var/obj/item/W = target.r_hand
 				target.u_equip(W)
@@ -782,7 +782,7 @@
 					item.layer = 20
 					target.r_hand = item
 					item.loc = target
-		if("back")
+		if ("back")
 			if (target.back)
 				var/obj/item/W = target.back
 				target.u_equip(W)
@@ -800,7 +800,7 @@
 					item.layer = 20
 					target.back = item
 					item.loc = target
-		if("handcuff")
+		if ("handcuff")
 			if (target.handcuffed)
 				var/obj/item/W = target.handcuffed
 				target.u_equip(W)
@@ -816,7 +816,7 @@
 					source.drop_item()
 					target.handcuffed = item
 					item.loc = target
-		if("internal")
+		if ("internal")
 			if (target.internal)
 				target.internal.add_fingerprint(source)
 				target.internal = null

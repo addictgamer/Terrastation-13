@@ -10,19 +10,19 @@
 	var/filled = 0
 
 	afterattack(obj/target, mob/user , flag)
-		if(!target.reagents) return
+		if (!target.reagents) return
 
-		if(filled)
+		if (filled)
 
-			if(target.reagents.total_volume >= target.reagents.maximum_volume)
+			if (target.reagents.total_volume >= target.reagents.maximum_volume)
 				user << "\red [target] is full."
 				return
 
-			if(!target.is_open_container() && !ismob(target) && !istype(target,/obj/item/weapon/reagent_containers/food)) //You can inject humans and food but you cant remove the shit.
+			if (!target.is_open_container() && !ismob(target) && !istype(target,/obj/item/weapon/reagent_containers/food)) //You can inject humans and food but you cant remove the shit.
 				user << "\red You cannot directly fill this object."
 				return
 
-			if(ismob(target))
+			if (ismob(target))
 				for(var/mob/O in viewers(world.view, user))
 					O.show_message(text("\red <B>[] drips something onto []!</B>", user, target), 1)
 				src.reagents.reaction(target, TOUCH)
@@ -35,11 +35,11 @@
 
 		else
 
-			if(!target.is_open_container() && !istype(target,/obj/reagent_dispensers))
+			if (!target.is_open_container() && !istype(target,/obj/reagent_dispensers))
 				user << "\red You cannot directly remove reagents from [target]."
 				return
 
-			if(!target.reagents.total_volume)
+			if (!target.reagents.total_volume)
 				user << "\red [target] is empty."
 				return
 

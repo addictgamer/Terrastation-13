@@ -42,12 +42,12 @@
 
 	for(var/datum/mind/player in possible_changelings)
 		for(var/job in restricted_jobs)//Removing robots from the list
-			if(player.assigned_role == job)
+			if (player.assigned_role == job)
 				possible_changelings -= player
 
-	if(possible_changelings.len>0)
+	if (possible_changelings.len>0)
 		for(var/i = 0, i < changeling_amount, i++)
-			if(!possible_changelings.len) break
+			if (!possible_changelings.len) break
 			var/datum/mind/changeling = pick(possible_changelings)
 			possible_changelings -= changeling
 			changelings += changeling
@@ -81,7 +81,7 @@
 	changeling.objectives += absorb_objective
 
 	switch(rand(1,100))
-		if(1 to 45)
+		if (1 to 45)
 
 			var/datum/objective/assassinate/kill_objective = new
 			kill_objective.owner = changeling
@@ -93,7 +93,7 @@
 				escape_objective.owner = changeling
 				changeling.objectives += escape_objective
 
-		if(46 to 90)
+		if (46 to 90)
 
 			var/datum/objective/steal/steal_objective = new
 			steal_objective.owner = changeling
@@ -138,9 +138,9 @@
 /*/datum/game_mode/changeling/check_finished()
 	var/changelings_alive = 0
 	for(var/datum/mind/changeling in changelings)
-		if(!istype(changeling.current,/mob/living/carbon))
+		if (!istype(changeling.current,/mob/living/carbon))
 			continue
-		if(changeling.current.stat==2)
+		if (changeling.current.stat==2)
 			continue
 		changelings_alive++
 
@@ -151,7 +151,7 @@
 		if (!changelingdeath)
 			changelingdeathtime = world.time
 			changelingdeath = 1
-		if(world.time-changelingdeathtime > TIME_TO_GET_REVIVED)
+		if (world.time-changelingdeathtime > TIME_TO_GET_REVIVED)
 			return 1
 		else
 			return ..()
@@ -170,25 +170,25 @@
 		if (changeling.current)
 			totalabsorbed = changeling.current.changeling.absorbed_dna.len - 1
 
-		if(changeling.current)
+		if (changeling.current)
 			changeling_name = "[changeling.current.real_name] (played by [changeling.key])"
 		else
 			changeling_name = "[changeling.key] (character destroyed)"
 
 		world << "<B>The changeling was [changeling_name].</B>"
-		if(changeling.current) world << "<b>[changeling.current.gender=="male"?"His":"Her"] changeling ID was [changeling.current.gender=="male"?"Mr.":"Mrs."] [changeling.current.changeling.changelingID]."
+		if (changeling.current) world << "<b>[changeling.current.gender=="male"?"His":"Her"] changeling ID was [changeling.current.gender=="male"?"Mr.":"Mrs."] [changeling.current.changeling.changelingID]."
 		world << "<B>Genomes absorbed: [totalabsorbed]</B>"
 
 		var/count = 1
 		for(var/datum/objective/objective in changeling.objectives)
-			if(objective.check_completion())
+			if (objective.check_completion())
 				world << "<B>Objective #[count]</B>: [objective.explanation_text] \green <B>Success</B>"
 			else
 				world << "<B>Objective #[count]</B>: [objective.explanation_text] \red Failed"
 				changelingwin = 0
 			count++
 
-		if(changelingwin)
+		if (changelingwin)
 			world << "<B>The changeling was successful!<B>"
 		else
 			world << "<B>The changeling has failed!<B>"
@@ -208,10 +208,10 @@
 	var/list/possibleIDs = list("Alpha","Beta","Gamma","Delta","Epsilon","Zeta","Eta","Theta","Iota","Kappa","Lambda","Mu","Nu","Xi","Omicron","Pi","Rho","Sigma","Tau","Upsilon","Phi","Chi","Psi","Omega")
 
 	for(var/mob/living/carbon/aChangeling in world)
-		if(aChangeling.changeling)
+		if (aChangeling.changeling)
 			possibleIDs -= aChangeling.changeling.changelingID
 
-	if(possibleIDs.len)
+	if (possibleIDs.len)
 		changelingID = pick(possibleIDs)
 	else
 		changelingID = "[rand(1,1000)]"

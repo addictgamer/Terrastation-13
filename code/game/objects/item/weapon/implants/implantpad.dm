@@ -48,8 +48,8 @@
 
 	attackby(obj/item/weapon/implantcase/C as obj, mob/user as mob)
 		..()
-		if(istype(C, /obj/item/weapon/implantcase))
-			if(!( src.case ))
+		if (istype(C, /obj/item/weapon/implantcase))
+			if (!( src.case ))
 				user.drop_item()
 				C.loc = src
 				src.case = C
@@ -63,10 +63,10 @@
 		user.machine = src
 		var/dat = "<B>Implant Mini-Computer:</B><HR>"
 		if (src.case)
-			if(src.case.imp)
-				if(istype(src.case.imp, /obj/item/weapon/implant))
+			if (src.case.imp)
+				if (istype(src.case.imp, /obj/item/weapon/implant))
 					dat += src.case.imp.get_data()
-					if(istype(src.case.imp, /obj/item/weapon/implant/tracking))
+					if (istype(src.case.imp, /obj/item/weapon/implant/tracking))
 						dat += {"ID (1-100):
 						<A href='byond://?src=\ref[src];tracking_id=-10'>-</A>
 						<A href='byond://?src=\ref[src];tracking_id=-1'>-</A> [case.imp:id]

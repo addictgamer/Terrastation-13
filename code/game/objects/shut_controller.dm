@@ -37,9 +37,9 @@
 	var/obj/random = pick(src.parts)
 	var/s_direct = null
 	switch(s_direct)
-		if(1.0)
+		if (1.0)
 			switch(direct)
-				if(90.0)
+				if (90.0)
 					var/tx = SE_X
 					var/ty = SE_Y
 					var/t_z = random.z
@@ -57,7 +57,7 @@
 						var/T = locate(M.tx, M.ty, t_z)
 						M.relocate(T, 90)
 						//Foreach goto(468)
-				if(-90.0)
+				if (-90.0)
 					var/tx = SE_X
 					var/ty = SE_Y
 					var/t_z = random.z

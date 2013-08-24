@@ -40,16 +40,16 @@
 	..()
 
 	// So you can't drop the Offhand
-	if(istype(src, /obj/item/weapon/offhand))
+	if (istype(src, /obj/item/weapon/offhand))
 		user.drop_item(src)
 
 		var/obj/item/O_r = user.r_hand
 		var/obj/item/O_l = user.l_hand
-		if(O_r.twohanded)
-			if(O_r.wielded)
+		if (O_r.twohanded)
+			if (O_r.wielded)
 				user.drop_item(O_r)
-		if(O_l.twohanded)
-			if(O_l.wielded)
+		if (O_l.twohanded)
+			if (O_l.wielded)
 				user.drop_item(O_l)
 		del(src)
 
@@ -70,7 +70,7 @@
 
 /obj/item/proc/updateSelfDialog()
 	var/mob/M = src.loc
-	if(istype(M) && M.client && M.machine == src)
+	if (istype(M) && M.client && M.machine == src)
 		src.attack_self(M)
 
 /obj/item/proc/afterattack()
@@ -79,14 +79,14 @@
 
 /obj/item/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				del(src)
 				return
-		if(3.0)
+		if (3.0)
 			if (prob(5))
 				del(src)
 				return
@@ -101,7 +101,7 @@
 	set category = "Object"
 	set src in oview(1)
 
-	if(!istype(src.loc, /turf) || usr.stat || usr.restrained() )
+	if (!istype(src.loc, /turf) || usr.stat || usr.restrained() )
 		return
 
 	var/turf/T = src.loc
@@ -115,15 +115,15 @@
 
 	var/t
 	switch(src.w_class)
-		if(1.0)
+		if (1.0)
 			t = "tiny"
-		if(2.0)
+		if (2.0)
 			t = "small"
-		if(3.0)
+		if (3.0)
 			t = "normal-sized"
-		if(4.0)
+		if (4.0)
 			t = "bulky"
-		if(5.0)
+		if (5.0)
 			t = "huge"
 		else
 	if ((usr.mutations & CLOWN) && prob(50)) t = "funny-looking"
@@ -141,12 +141,12 @@
 	src.throwing = 0
 	if (src.loc == user)
 		//canremove==0 means that object may not be removed. You can still wear it. This only applies to clothing. /N
-		if(istype(src, /obj/item/clothing) && !src:canremove)
+		if (istype(src, /obj/item/clothing) && !src:canremove)
 			return
 		else
 			user.u_equip(src)
 	else
-		if(istype(src.loc, /mob/living))
+		if (istype(src.loc, /mob/living))
 			return
 		src.pickup(user)
 		user.lastDblClick = world.time + 2
@@ -165,8 +165,8 @@
 
 /obj/item/attack_paw(mob/user as mob)
 
-	if(isalien(user)) // -- TLE
-		if(!user:has_fine_manipulation) // -- defaults to 0, only changes due to badminnery -- Urist
+	if (isalien(user)) // -- TLE
+		if (!user:has_fine_manipulation) // -- defaults to 0, only changes due to badminnery -- Urist
 			user << "Your claws aren't capable of such fine manipulation."
 			return
 
@@ -178,12 +178,12 @@
 	src.throwing = 0
 	if (src.loc == user)
 		//canremove==0 means that object may not be removed. You can still wear it. This only applies to clothing. /N
-		if(istype(src, /obj/item/clothing) && !src:canremove)
+		if (istype(src, /obj/item/clothing) && !src:canremove)
 			return
 		else
 			user.u_equip(src)
 	else
-		if(istype(src.loc, /mob/living))
+		if (istype(src.loc, /mob/living))
 			return
 		src.pickup(user)
 		user.lastDblClick = world.time + 2
@@ -210,19 +210,19 @@
 
 /obj/item/attack_self(mob/user as mob)
 	..()
-	if(twohanded)
-		if(wielded) //Trying to unwield it
+	if (twohanded)
+		if (wielded) //Trying to unwield it
 			wielded = 0
 			force = force_unwielded
 			src.name = "[initial(name)] (Unwielded)"
 			src.update_icon() //If needed by the particular item
 			user << "\blue You are now carrying the [initial(name)] with one hand."
 
-			if(istype(user.get_inactive_hand(),/obj/item/weapon/offhand))
+			if (istype(user.get_inactive_hand(),/obj/item/weapon/offhand))
 				del user.get_inactive_hand()
 			return
 		else //Trying to wield it
-			if(user.get_inactive_hand())
+			if (user.get_inactive_hand())
 				user << "\red You need your other hand to be empty"
 				return
 			wielded = 1
@@ -234,7 +234,7 @@
 			var/obj/item/weapon/offhand/O = new /obj/item/weapon/offhand(user) ////Let's reserve his other hand~
 			O.name = text("[initial(src.name)] - Offhand")
 			O.desc = "Your second grip on the [initial(src.name)]"
-			if(user.hand)
+			if (user.hand)
 				user.r_hand = O          ///Place dat offhand in the opposite hand
 			else
 				user.l_hand = O
@@ -263,31 +263,31 @@
 	/////////////////////////
 
 	var/power = src.force
-	if(!istype(M, /mob/living/carbon/human))
-		if(istype(M, /mob/living/carbon/metroid))
+	if (!istype(M, /mob/living/carbon/human))
+		if (istype(M, /mob/living/carbon/metroid))
 			var/mob/living/carbon/metroid/Metroid = M
-			if(prob(25))
+			if (prob(25))
 				user << "\red [src] passes right through [M]!"
 				return
 
-			if(power > 0)
+			if (power > 0)
 				Metroid.attacked += 10
 
-			if(power >= 3)
-				if(istype(Metroid, /mob/living/carbon/metroid/adult))
-					if(prob(5 + round(power/2)))
+			if (power >= 3)
+				if (istype(Metroid, /mob/living/carbon/metroid/adult))
+					if (prob(5 + round(power/2)))
 
-						if(Metroid.Victim)
-							if(prob(80) && !Metroid.client)
+						if (Metroid.Victim)
+							if (prob(80) && !Metroid.client)
 								Metroid.Discipline++
 						Metroid.Victim = null
 						Metroid.anchored = 0
 
-						if(prob(80) && !Metroid.client)
+						if (prob(80) && !Metroid.client)
 							Metroid.Discipline++
 
 						spawn()
-							if(Metroid)
+							if (Metroid)
 								Metroid.SStun = 1
 								sleep(rand(5,20))
 								Metroid.SStun = 0
@@ -295,19 +295,19 @@
 						spawn(0)
 							Metroid.canmove = 0
 							step_away(Metroid, user)
-							if(prob(25 + power*2))
+							if (prob(25 + power*2))
 								sleep(2)
 								step_away(Metroid, user)
 							Metroid.canmove = 1
 
 				else
-					if(prob(10 + power*2))
+					if (prob(10 + power*2))
 
-						if(Metroid.Victim)
-							if(prob(80) && !Metroid.client)
+						if (Metroid.Victim)
+							if (prob(80) && !Metroid.client)
 								Metroid.Discipline++
 
-								if(Metroid.Discipline == 1)
+								if (Metroid.Discipline == 1)
 									Metroid.attacked = 0
 
 							spawn()
@@ -322,7 +322,7 @@
 						spawn(0)
 							step_away(Metroid, user)
 							Metroid.canmove = 0
-							if(prob(25 + power*4))
+							if (prob(25 + power*4))
 								sleep(2)
 								step_away(Metroid, user)
 							Metroid.canmove = 1
@@ -372,7 +372,7 @@
 					else
 						if (H.weakened < time)
 							H.weakened = time
-					if(H.stat != 2)	H.stat = 1
+					if (H.stat != 2)	H.stat = 1
 					for(var/mob/O in viewers(M, null))
 						O.show_message(text("\red <B>[] has been knocked unconscious!</B>", H), 1, "\red You hear someone fall.", 2)
 					if (prob(50))
@@ -423,7 +423,7 @@
 							H.stunned = 2
 						for(var/mob/O in viewers(H, null))
 							O.show_message(text("\red <B>[] has been stunned!</B>", H), 1)
-						if(H.stat != 2)	H.stat = 1
+						if (H.stat != 2)	H.stat = 1
 				if (b_dam && prob(25 + (b_dam * 2)))
 					src.add_blood(H)
 					if (prob(33))
@@ -475,8 +475,8 @@
 		H.UpdateDamageIcon()                     ///Only reference I can find on the attack() proc actually changing mob icon -Agouri
 	else
 		switch(src.damtype)
-			if("brute")
-				if(istype(src, /mob/living/carbon/metroid))
+			if ("brute")
+				if (istype(src, /mob/living/carbon/metroid))
 					M.bruteloss += power
 
 				else
@@ -486,7 +486,7 @@
 						var/turf/location = M.loc
 						if (istype(location, /turf/simulated))
 							location.add_blood_floor(M)
-			if("fire")
+			if ("fire")
 				if (!(M.mutations & COLD_RESISTANCE))
 					M.take_organ_damage(0, power)
 					M << "Aargh it burns!"
@@ -497,7 +497,7 @@
 /obj/item/proc/eyestab(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 
 	var/mob/living/carbon/human/H = M
-	if(istype(H) && ( \
+	if (istype(H) && ( \
 			(H.head && H.head.flags & HEADCOVERSEYES) || \
 			(H.wear_mask && H.wear_mask.flags & MASKCOVERSEYES) || \
 			(H.glasses && H.glasses.flags & GLASSESCOVERSEYES) \
@@ -507,14 +507,14 @@
 		return
 
 	var/mob/living/carbon/monkey/Mo = M
-	if(istype(Mo) && ( \
+	if (istype(Mo) && ( \
 			(Mo.wear_mask && Mo.wear_mask.flags & MASKCOVERSEYES) \
 		))
 		// you can't stab someone in the eyes wearing a mask!
 		user << "\red You're going to need to remove that mask/helmet/glasses first."
 		return
 
-	if(istype(M, /mob/living/carbon/alien) || istype(M, /mob/living/carbon/metroid))//Aliens don't have eyes./N     Metroids also don't have eyes!
+	if (istype(M, /mob/living/carbon/alien) || istype(M, /mob/living/carbon/metroid))//Aliens don't have eyes./N     Metroids also don't have eyes!
 		user << "\red You cannot locate any eyes on this creature!"
 		return
 
@@ -522,7 +522,7 @@
 	M.attack_log += "\[[time_stamp()]\]<font color='orange'> Attacked by [user.name] ([user.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>"
 
 	src.add_fingerprint(user)
-	//if((user.mutations & CLOWN) && prob(50))
+	//if ((user.mutations & CLOWN) && prob(50))
 	//	M = user
 		/*
 		M << "\red You stab yourself in the eye."
@@ -530,7 +530,7 @@
 		M.weakened += 4
 		M.bruteloss += 10
 		*/
-	if(M != user)
+	if (M != user)
 		for(var/mob/O in (viewers(M) - user - M))
 			O.show_message("\red [M] has been stabbed in the eye with [src] by [user].", 1)
 		M << "\red [user] stabs you in the eye with [src]!"
@@ -540,7 +540,7 @@
 			"\red [user] has stabbed themself with [src]!", \
 			"\red You stab yourself in the eyes with [src]!" \
 		)
-	if(istype(M, /mob/living/carbon/human))
+	if (istype(M, /mob/living/carbon/human))
 		var/datum/organ/external/affecting = M:organs["head"]
 		affecting.take_damage(7)
 	else
@@ -550,17 +550,17 @@
 	if (M.eye_stat >= 10)
 		M.eye_blurry += 15+(0.1*M.eye_blurry)
 		M.disabilities |= 1
-		if(M.stat != 2)
+		if (M.stat != 2)
 			M << "\red Your eyes start to bleed profusely!"
-		if(prob(50))
-			if(M.stat != 2)
+		if (prob(50))
+			if (M.stat != 2)
 				M << "\red You drop what you're holding and clutch at your eyes!"
 				M.drop_item()
 			M.eye_blurry += 10
 			M.paralysis += 1
 			M.weakened += 4
 		if (prob(M.eye_stat - 10 + 1))
-			if(M.stat != 2)
+			if (M.stat != 2)
 				M << "\red You go blind!"
 			M.sdisabilities |= 1
 	return
@@ -575,9 +575,9 @@
 	icon_state = "goldenplaque"
 
 /obj/item/weapon/plaque_assembly/afterattack(atom/A as mob|obj|turf|area, mob/user as mob)
-	if(istype(A,/turf/simulated/wall) || istype(A,/turf/simulated/shuttle/wall) || istype(A,/turf/unsimulated/wall))
+	if (istype(A,/turf/simulated/wall) || istype(A,/turf/simulated/shuttle/wall) || istype(A,/turf/unsimulated/wall))
 		var/epitaph = input("What would you like to engrave", null)
-		if(epitaph)
+		if (epitaph)
 			var/obj/sign/goldenplaque/gp = new/obj/sign/goldenplaque(A)
 			gp.name = epitaph
 			gp.layer = 2.9

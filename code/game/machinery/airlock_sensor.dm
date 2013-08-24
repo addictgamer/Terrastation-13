@@ -16,8 +16,8 @@ obj/machinery/airlock_sensor
 	var/alert = 0
 
 	update_icon()
-		if(on)
-			if(alert)
+		if (on)
+			if (alert)
 				icon_state = "airlock_sensor_alert"
 			else
 				icon_state = "airlock_sensor_standby"
@@ -34,7 +34,7 @@ obj/machinery/airlock_sensor
 		flick("airlock_sensor_cycle", src)
 
 	process()
-		if(on)
+		if (on)
 			var/datum/signal/signal = new
 			signal.transmission_method = 1 //radio signal
 			signal.data["tag"] = id_tag
@@ -63,5 +63,5 @@ obj/machinery/airlock_sensor
 	New()
 		..()
 
-		if(radio_controller)
+		if (radio_controller)
 			set_frequency(frequency)

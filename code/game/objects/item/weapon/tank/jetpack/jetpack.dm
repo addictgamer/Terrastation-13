@@ -47,13 +47,13 @@
 			set name = "Toggle Jetpack"
 			set category = "Object"
 			src.on = !( src.on )
-			if(src.name == "Void Jetpack (oxygen)")         //Slight change added by me. i didn't make it an if-elseif because some of you might want to add other types of resprited packs :3 -Agouri
+			if (src.name == "Void Jetpack (oxygen)")         //Slight change added by me. i didn't make it an if-elseif because some of you might want to add other types of resprited packs :3 -Agouri
 				src.icon_state = text("voidjetpack[]", src.on)
-			else if(src.name == "Black Jetpack (oxygen)")
+			else if (src.name == "Black Jetpack (oxygen)")
 				src.icon_state = text("black_jetpack[]", src.on)
 			else
 				src.icon_state = text("jetpack[]", src.on)
-			if(src.on)
+			if (src.on)
 				src.ion_trail.start()
 			else
 				src.ion_trail.stop()

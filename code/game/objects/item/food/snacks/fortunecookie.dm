@@ -8,7 +8,7 @@
 		reagents.add_reagent("nutriment", 3)
 		bitesize = 2
 	On_Consume()
-		if(!reagents.total_volume)
+		if (!reagents.total_volume)
 			var/mob/M = usr
 			var/obj/item/paper/paper = locate() in src
 			M.visible_message( \

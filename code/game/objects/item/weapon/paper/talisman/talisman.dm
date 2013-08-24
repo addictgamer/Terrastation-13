@@ -5,33 +5,33 @@
 	var/uses = 0
 
 	attack_self(mob/living/user as mob)
-		if(iscultist(user))
+		if (iscultist(user))
 			switch(imbue)
-				if("newtome")
+				if ("newtome")
 					call(/obj/rune/proc/tomesummon)()
-				if("armor")
+				if ("armor")
 					call(/obj/rune/proc/armor)()
-				if("emp")
+				if ("emp")
 					call(/obj/rune/proc/emp)(usr.loc,3)
-				if("conceal")
+				if ("conceal")
 					call(/obj/rune/proc/obscure)(2)
-				if("revealrunes")
+				if ("revealrunes")
 					call(/obj/rune/proc/revealrunes)(src)
-				if("ire", "ego", "nahlizet", "certum", "veri", "jatkaa", "balaq", "mgar", "karazet", "geeri")
+				if ("ire", "ego", "nahlizet", "certum", "veri", "jatkaa", "balaq", "mgar", "karazet", "geeri")
 					call(/obj/rune/proc/teleport)(imbue)
-				if("communicate")
+				if ("communicate")
 					call(/obj/rune/proc/communicate)()
-				if("deafen")
+				if ("deafen")
 					call(/obj/rune/proc/deafen)()
-				if("blind")
+				if ("blind")
 					call(/obj/rune/proc/blind)()
-				if("runestun")
+				if ("runestun")
 					user << "\red To use this talisman, attack your target directly."
 					return
-				if("supply")
+				if ("supply")
 					supply()
 			user.take_organ_damage(5, 0)
-			if(src && src.imbue!="supply" && src.imbue!="runestun")
+			if (src && src.imbue!="supply" && src.imbue!="runestun")
 				del(src)
 			return
 		else
@@ -39,8 +39,8 @@
 			return
 
 	attack(mob/living/carbon/T as mob, mob/living/user as mob)
-		if(iscultist(user))
-			if(imbue == "runestun")
+		if (iscultist(user))
+			if (imbue == "runestun")
 				user.take_organ_damage(5, 0)
 				call(/obj/rune/proc/runestun)(T)
 				del(src)
@@ -56,23 +56,23 @@
 			return
 		if (href_list["rune"])
 			switch(href_list["rune"])
-				if("newtome")
+				if ("newtome")
 					var/obj/item/paper/talisman/T = new /obj/item/paper/talisman(get_turf(usr))
 					T.imbue = "newtome"
-				if("teleport")
+				if ("teleport")
 					var/obj/item/paper/talisman/T = new /obj/item/paper/talisman(get_turf(usr))
 					T.imbue = "[pick("ire", "ego", "nahlizet", "certum", "veri", "jatkaa", "balaq", "mgar", "karazet", "geeri", "orkan", "allaq")]"
 					T.info = "[T.imbue]"
-				if("emp")
+				if ("emp")
 					var/obj/item/paper/talisman/T = new /obj/item/paper/talisman(get_turf(usr))
 					T.imbue = "emp"
-				if("conceal")
+				if ("conceal")
 					var/obj/item/paper/talisman/T = new /obj/item/paper/talisman(get_turf(usr))
 					T.imbue = "conceal"
-				if("communicate")
+				if ("communicate")
 					var/obj/item/paper/talisman/T = new /obj/item/paper/talisman(get_turf(usr))
 					T.imbue = "communicate"
-				if("runestun")
+				if ("runestun")
 					var/obj/item/paper/talisman/T = new /obj/item/paper/talisman(get_turf(usr))
 					T.imbue = "runestun"
 			src.uses--

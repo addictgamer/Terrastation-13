@@ -18,7 +18,7 @@
 	tools += new /datum/mecha_tool/drill(src)
 /*
 	for(var/g_type in typesof(/datum/mecha_tool/gimmick))
-		if(g_type!=/datum/mecha_tool/gimmick)
+		if (g_type!=/datum/mecha_tool/gimmick)
 			tools += new g_type(src)
 */
 	selected_tool = tools[1]

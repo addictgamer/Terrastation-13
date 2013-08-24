@@ -6,10 +6,10 @@
 
 /obj/item/powerarmor/servos/toggle(sudden = 0)
 	switch(parent.active)
-		if(1)
-			if(!sudden)
+		if (1)
+			if (!sudden)
 				usr << "\blue Movement assist servos disengaged."
 			parent.slowdown += toggleslowdown
-		if(0)
+		if (0)
 			usr << "\blue Movement assist servos engaged."
 			parent.slowdown -= toggleslowdown

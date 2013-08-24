@@ -18,12 +18,12 @@
 
 		//First, resolve location and get a breath
 
-		if(air_master.current_cycle%4==2)
+		if (air_master.current_cycle%4==2)
 			//Only try to take a breath every 4 seconds, unless suffocating
 			spawn(0) breathe()
 
 		else //Still give containing object the chance to interact
-			if(istype(loc, /obj/))
+			if (istype(loc, /obj/))
 				var/obj/location_as_object = loc
 				location_as_object.handle_internal_lifeform(src, 0)
 
@@ -58,7 +58,7 @@
 	// Update clothing
 	update_clothing()
 
-	if(client)
+	if (client)
 		handle_regular_hud_updates()
 
 	//Being buckled to a chair or bed
@@ -89,7 +89,7 @@
 
 		handle_mutations_and_radiation()
 
-			if(amount_grown == 200)
+			if (amount_grown == 200)
 				src << "\green You are growing into a beautiful alien! It is time to choose a caste."
 				src << "\green There are three to choose from:"
 				src << "\green <B>Hunters</B> are strong and agile, able to hunt away from the hive and rapidly move through ventilation shafts. Hunters generate plasma slowly and have low reserves."
@@ -99,11 +99,11 @@
 
 				var/mob/living/carbon/alien/humanoid/new_xeno
 				switch(alien_caste)
-					if("Hunter")
+					if ("Hunter")
 						new_xeno = new /mob/living/carbon/alien/humanoid/hunter (loc)
-					if("Sentinel")
+					if ("Sentinel")
 						new_xeno = new /mob/living/carbon/alien/humanoid/sentinel (loc)
-					if("Drone")
+					if ("Drone")
 						new_xeno = new /mob/living/carbon/alien/humanoid/drone (loc)
 
 				new_xeno.mind_initialize(src, alien_caste)
@@ -112,7 +112,7 @@
 				del(src)
 				return
 			//grow!! but not if metroid or dead
-			if(health>-100)
+			if (health>-100)
 				amount_grown++
 
 			if (radiation)
@@ -126,29 +126,29 @@
 					radiation = 0
 
 				switch(radiation)
-					if(1 to 49)
+					if (1 to 49)
 						radiation--
-						if(prob(25))
+						if (prob(25))
 							toxloss++
 							updatehealth()
 
-					if(50 to 74)
+					if (50 to 74)
 						radiation -= 2
 						toxloss++
-						if(prob(5))
+						if (prob(5))
 							radiation -= 5
 							weakened = 3
 							src << "\red You feel weak."
 							emote("collapse")
 						updatehealth()
 
-					if(75 to 100)
+					if (75 to 100)
 						radiation -= 3
 						toxloss += 3
 						updatehealth()
 
 		update_mind()
-			if(!mind && client)
+			if (!mind && client)
 				mind = new
 				mind.current = src
 				mind.assigned_role = "Larva"
@@ -156,20 +156,20 @@
 
 		breathe()
 
-			if(reagents.has_reagent("lexorin")) return
-			if(istype(loc, /obj/machinery/atmospherics/unary/cryo_cell)) return
+			if (reagents.has_reagent("lexorin")) return
+			if (istype(loc, /obj/machinery/atmospherics/unary/cryo_cell)) return
 
 			var/datum/gas_mixture/environment = loc.return_air()
 			var/datum/air_group/breath
 			// HACK NEED CHANGING LATER
-			if(health < 0)
+			if (health < 0)
 				losebreath++
 
-			if(losebreath>0) //Suffocating so do not take a breath
+			if (losebreath>0) //Suffocating so do not take a breath
 				losebreath--
 				if (prob(75)) //High chance of gasping for air
 					spawn emote("gasp")
-				if(istype(loc, /obj/))
+				if (istype(loc, /obj/))
 					var/obj/location_as_object = loc
 					location_as_object.handle_internal_lifeform(src, 0)
 			else
@@ -177,13 +177,13 @@
 				breath = get_breath_from_internal(BREATH_VOLUME)
 
 				//No breath from internal atmosphere so get breath from location
-				if(!breath)
-					if(istype(loc, /obj/))
+				if (!breath)
+					if (istype(loc, /obj/))
 						var/obj/location_as_object = loc
 						breath = location_as_object.handle_internal_lifeform(src, BREATH_VOLUME)
-					else if(istype(loc, /turf/))
+					else if (istype(loc, /turf/))
 						var/breath_moles = 0
-						/*if(environment.return_pressure() > ONE_ATMOSPHERE)
+						/*if (environment.return_pressure() > ONE_ATMOSPHERE)
 							// Loads of air around (pressure effects will be handled elsewhere), so lets just take a enough to fill our lungs at normal atmos pressure (using n = Pv/RT)
 							breath_moles = (ONE_ATMOSPHERE*BREATH_VOLUME/R_IDEAL_GAS_EQUATION*environment.temperature)
 						else*/
@@ -194,32 +194,32 @@
 
 						// Handle chem smoke effects  -- Doohl
 						for(var/obj/effects/chem_smoke/smoke in view(1, src))
-							if(smoke.reagents.total_volume)
+							if (smoke.reagents.total_volume)
 								smoke.reagents.reaction(src, INGEST)
 								spawn(5)
-									if(smoke)
+									if (smoke)
 										smoke.reagents.copy_to(src, 10) // I dunno, maybe the reagents enter the blood stream through the lungs?
 								break // If they breathe in the nasty stuff once, no need to continue checking
 
 
 				else //Still give containing object the chance to interact
-					if(istype(loc, /obj/))
+					if (istype(loc, /obj/))
 						var/obj/location_as_object = loc
 						location_as_object.handle_internal_lifeform(src, 0)
 
 			handle_breath(breath)
 
-			if(breath)
+			if (breath)
 				loc.assume_air(breath)
 
 
 		get_breath_from_internal(volume_needed)
-			if(internal)
+			if (internal)
 				if (!contents.Find(internal))
 					internal = null
 				if (!wear_mask || !(wear_mask.flags & MASKINTERNALS) )
 					internal = null
-				if(internal)
+				if (internal)
 					if (internals)
 						internals.icon_state = "internal1"
 					return internal.remove_air_volume(volume_needed)
@@ -229,14 +229,14 @@
 			return null
 
 		update_canmove()
-			if(paralysis || stunned || weakened || buckled) canmove = 0
+			if (paralysis || stunned || weakened || buckled) canmove = 0
 			else canmove = 1
 
 		handle_breath(datum/gas_mixture/breath)
-			if(nodamage)
+			if (nodamage)
 				return
 
-			if(!breath || (breath.total_moles() == 0))
+			if (!breath || (breath.total_moles() == 0))
 				//Aliens breathe in vaccuum
 				return 0
 
@@ -246,7 +246,7 @@
 			//Partial pressure of the toxins in our breath
 			var/Toxins_pp = (breath.toxins/breath.total_moles())*breath_pressure
 
-			if(Toxins_pp) // Detect toxins in air
+			if (Toxins_pp) // Detect toxins in air
 
 				toxloss += breath.toxins*250
 				toxins_alert = max(toxins_alert, 1)
@@ -260,8 +260,8 @@
 			breath.toxins -= toxins_used
 			breath.oxygen += toxins_used
 
-			if(breath.temperature > (T0C+66) && !(mutations & COLD_RESISTANCE)) // Hot air hurts :(
-				if(prob(20))
+			if (breath.temperature > (T0C+66) && !(mutations & COLD_RESISTANCE)) // Hot air hurts :(
+				if (prob(20))
 					src << "\red You feel a searing heat in your lungs!"
 				fire_alert = max(fire_alert, 1)
 			else
@@ -274,8 +274,8 @@
 		handle_environment()
 
 			//If there are alien weeds on the ground then heal if needed or give some toxins
-			if(locate(/obj/alien/weeds) in loc)
-				if(health >= 25)
+			if (locate(/obj/alien/weeds) in loc)
+				if (health >= 25)
 					toxloss += 5
 				else
 					bruteloss -= 5
@@ -286,15 +286,15 @@
 
 		handle_chemicals_in_body()
 
-			if(reagents) reagents.metabolize(src)
+			if (reagents) reagents.metabolize(src)
 
-			if(nutrition > 500 && !(mutations & FAT))
-				if(prob(5 + round((nutrition - 200) / 2)))
+			if (nutrition > 500 && !(mutations & FAT))
+				if (prob(5 + round((nutrition - 200) / 2)))
 					src << "\red You suddenly feel blubbery!"
 					mutations |= FAT
 //					update_body()
 			if (nutrition < 100 && mutations & FAT)
-				if(prob(round((50 - nutrition) / 100)))
+				if (prob(round((50 - nutrition) / 100)))
 					src << "\blue You feel fit again!"
 					mutations &= ~FAT
 //					update_body()
@@ -310,7 +310,7 @@
 
 			confused = max(0, confused - 1)
 			// decrement dizziness counter, clamped to 0
-			if(resting)
+			if (resting)
 				dizziness = max(0, dizziness - 5)
 				jitteriness = max(0, jitteriness - 5)
 			else
@@ -325,25 +325,25 @@
 
 			health = 25 - (oxyloss + fireloss + bruteloss + cloneloss)
 
-			if(oxyloss > 50) paralysis = max(paralysis, 3)
+			if (oxyloss > 50) paralysis = max(paralysis, 3)
 
-			if(sleeping)
+			if (sleeping)
 				paralysis = max(paralysis, 3)
 				if (prob(10) && health) spawn(0) emote("snore")
 				sleeping--
 
-			if(resting)
+			if (resting)
 				weakened = max(weakened, 5)
 
-			if(health < -100 || brain_op_stage == 4.0)
+			if (health < -100 || brain_op_stage == 4.0)
 				death()
-			else if(health < 0)
-				if(health <= 20 && prob(1)) spawn(0) emote("gasp")
+			else if (health < 0)
+				if (health <= 20 && prob(1)) spawn(0) emote("gasp")
 
-				//if(!rejuv) oxyloss++
-				if(!reagents.has_reagent("inaprovaline")) oxyloss++
+				//if (!rejuv) oxyloss++
+				if (!reagents.has_reagent("inaprovaline")) oxyloss++
 
-				if(stat != 2)	stat = 1
+				if (stat != 2)	stat = 1
 				paralysis = max(paralysis, 5)
 
 			if (stat != 2) //Alive.
@@ -426,22 +426,22 @@
 			if (healths)
 				if (stat != 2)
 					switch(health)
-						if(25 to INFINITY)
+						if (25 to INFINITY)
 							healths.icon_state = "health0"
-						if(19 to 25)
+						if (19 to 25)
 							healths.icon_state = "health1"
-						if(13 to 19)
+						if (13 to 19)
 							healths.icon_state = "health2"
-						if(7 to 13)
+						if (7 to 13)
 							healths.icon_state = "health3"
-						if(0 to 7)
+						if (0 to 7)
 							healths.icon_state = "health4"
 						else
 							healths.icon_state = "health5"
 				else
 					healths.icon_state = "health6"
 
-			if(pullin)	pullin.icon_state = "pull[pulling ? 1 : 0]"
+			if (pullin)	pullin.icon_state = "pull[pulling ? 1 : 0]"
 
 
 			if (toxin)	toxin.icon_state = "tox[toxins_alert ? 1 : 0]"
@@ -475,7 +475,7 @@
 					if (!( machine.check_eye(src) ))
 						reset_view(null)
 				else
-					if(!client.adminobs)
+					if (!client.adminobs)
 						reset_view(null)
 
 			return 1
@@ -484,7 +484,7 @@
 			return
 
 		handle_virus_updates()
-			if(bodytemperature > 406)
+			if (bodytemperature > 406)
 				for(var/datum/disease/D in viruses)
 					D.cure()
 			return
@@ -492,7 +492,7 @@
 		check_if_buckled()
 			if (buckled)
 				lying = (istype(buckled, /obj/structure/stool/bed) ? 1 : 0)
-				if(lying)
+				if (lying)
 					drop_item()
 				density = 1
 			else
@@ -501,16 +501,16 @@
 		handle_stomach()
 			spawn(0)
 				for(var/mob/M in stomach_contents)
-					if(M.loc != src)
+					if (M.loc != src)
 						stomach_contents.Remove(M)
 						continue
-					if(istype(M, /mob/living/carbon) && stat != 2)
-						if(M.stat == 2)
+					if (istype(M, /mob/living/carbon) && stat != 2)
+						if (M.stat == 2)
 							M.death(1)
 							stomach_contents.Remove(M)
 							del(M)
 							continue
-						if(air_master.current_cycle%3==1)
-							if(!M.nodamage)
+						if (air_master.current_cycle%3==1)
+							if (!M.nodamage)
 								M.bruteloss += 5
 							nutrition += 10

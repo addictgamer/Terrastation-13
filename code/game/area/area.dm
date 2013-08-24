@@ -55,8 +55,8 @@ var/list/teleportlocs = list()
 
 proc/process_teleport_locs()
 	for(var/area/AR in world)
-		if(istype(AR, /area/shuttle) || istype(AR, /area/syndicate_station) || istype(AR, /area/wizard_station)) continue
-		if(teleportlocs.Find(AR.name)) continue
+		if (istype(AR, /area/shuttle) || istype(AR, /area/syndicate_station) || istype(AR, /area/wizard_station)) continue
+		if (teleportlocs.Find(AR.name)) continue
 		var/turf/picked = pick(get_area_turfs(AR.type))
 		if (picked.z == 1)
 			teleportlocs += AR.name
@@ -65,10 +65,10 @@ proc/process_teleport_locs()
 	var/not_in_order = 0
 	do
 		not_in_order = 0
-		if(teleportlocs.len <= 1)
+		if (teleportlocs.len <= 1)
 			break
 		for(var/i = 1, i <= (teleportlocs.len - 1), i++)
-			if(sorttext(teleportlocs[i], teleportlocs[i+1]) == -1)
+			if (sorttext(teleportlocs[i], teleportlocs[i+1]) == -1)
 				teleportlocs.Swap(i, i+1)
 				not_in_order = 1
 	while(not_in_order)
@@ -77,8 +77,8 @@ var/list/ghostteleportlocs = list()
 
 proc/process_ghost_teleport_locs()
 	for(var/area/AR in world)
-		if(ghostteleportlocs.Find(AR.name)) continue
-		if(istype(AR, /area/turret_protected/aisat) || istype(AR, /area/derelict) || istype(AR, /area/tdome))
+		if (ghostteleportlocs.Find(AR.name)) continue
+		if (istype(AR, /area/turret_protected/aisat) || istype(AR, /area/derelict) || istype(AR, /area/tdome))
 			ghostteleportlocs += AR.name
 			ghostteleportlocs[AR.name] = AR
 		var/turf/picked = pick(get_area_turfs(AR.type))
@@ -89,10 +89,10 @@ proc/process_ghost_teleport_locs()
 	var/not_in_order = 0
 	do
 		not_in_order = 0
-		if(ghostteleportlocs.len <= 1)
+		if (ghostteleportlocs.len <= 1)
 			break
 		for(var/i = 1, i <= (ghostteleportlocs.len - 1), i++)
-			if(sorttext(ghostteleportlocs[i], ghostteleportlocs[i+1]) == -1)
+			if (sorttext(ghostteleportlocs[i], ghostteleportlocs[i+1]) == -1)
 				ghostteleportlocs.Swap(i, i+1)
 				not_in_order = 1
 	while(not_in_order)
@@ -105,7 +105,7 @@ proc/process_ghost_teleport_locs()
 	//world.log << "New: [src] [tag]"
 		var/sd_created = findtext(tag,"sd_L")
 		sd_New(sd_created)
-		if(sd_created)
+		if (sd_created)
 			related += src
 			return
 		master = src
@@ -114,10 +114,10 @@ proc/process_ghost_teleport_locs()
 		src.icon = 'alert.dmi'
 		src.layer = 10
 //		update_lights()
-		if(name == "Space")			// override defaults for space
+		if (name == "Space")			// override defaults for space
 			requires_power = 0
 
-		if(!requires_power)
+		if (!requires_power)
 			power_light = 0//rastaf0
 			power_equip = 0//rastaf0
 			power_environ = 0//rastaf0
@@ -130,7 +130,7 @@ proc/process_ghost_teleport_locs()
 
 	/*spawn(5)
 		for(var/turf/T in src)		// count the number of turfs (for lighting calc)
-			if(no_air)
+			if (no_air)
 				T.oxygen = 0		// remove air if so specified for this area
 				T.n2 = 0
 				T.res_vars()
@@ -154,7 +154,7 @@ proc/process_ghost_teleport_locs()
 /area/proc/update_lights()
 	var/new_power = 0
 	for(var/obj/machinery/light/L in src.contents)
-		if(L.on)
+		if (L.on)
 			new_power += (L.luminosity * 20)
 	lighting_power_usage = new_power
 	return
@@ -171,16 +171,16 @@ proc/process_ghost_teleport_locs()
 			else
 				aiPlayer.triggerAlarm("Power", src, cameras, source)
 		for(var/obj/machinery/computer/station_alert/a in world)
-			if(state == 1)
+			if (state == 1)
 				a.cancelAlarm("Power", src, source)
 			else
 				a.triggerAlarm("Power", src, source)
 	return
 
 /area/proc/atmosalert(danger_level)
-//	if(src.type==/area) //No atmos alarms in space
+//	if (src.type==/area) //No atmos alarms in space
 //		return 0 //redudant
-	if(danger_level != src.atmosalm)
+	if (danger_level != src.atmosalm)
 		//src.updateicon()
 		//src.mouse_opacity = 0
 		if (danger_level==2)
@@ -203,17 +203,17 @@ proc/process_ghost_teleport_locs()
 	return 0
 
 /area/proc/firealert()
-	if(src.name == "Space") //no fire alarms in space
+	if (src.name == "Space") //no fire alarms in space
 		return
 	if (!( src.fire ))
 		src.fire = 1
 		src.updateicon()
 		src.mouse_opacity = 0
 		for(var/obj/machinery/door/firedoor/D in src)
-			if(!D.blocked)
-				if(D.operating)
+			if (!D.blocked)
+				if (D.operating)
 					D.nextstate = CLOSED
-				else if(!D.density)
+				else if (!D.density)
 					spawn(0)
 					D.close()
 		var/list/cameras = list()
@@ -231,10 +231,10 @@ proc/process_ghost_teleport_locs()
 		src.mouse_opacity = 0
 		src.updateicon()
 		for(var/obj/machinery/door/firedoor/D in src)
-			if(!D.blocked)
-				if(D.operating)
+			if (!D.blocked)
+				if (D.operating)
 					D.nextstate = OPEN
-				else if(D.density)
+				else if (D.density)
 					spawn(0)
 					D.open()
 		for (var/mob/living/silicon/ai/aiPlayer in world)
@@ -244,21 +244,21 @@ proc/process_ghost_teleport_locs()
 	return
 
 /area/proc/readyalert()
-	if(name == "Space")
+	if (name == "Space")
 		return
-	if(!eject)
+	if (!eject)
 		eject = 1
 		updateicon()
 	return
 
 /area/proc/readyreset()
-	if(eject)
+	if (eject)
 		eject = 0
 		updateicon()
 	return
 
 /area/proc/partyalert()
-	if(src.name == "Space") //no parties in space!!!
+	if (src.name == "Space") //no parties in space!!!
 		return
 	if (!( src.party ))
 		src.party = 1
@@ -272,23 +272,23 @@ proc/process_ghost_teleport_locs()
 		src.mouse_opacity = 0
 		src.updateicon()
 		for(var/obj/machinery/door/firedoor/D in src)
-			if(!D.blocked)
-				if(D.operating)
+			if (!D.blocked)
+				if (D.operating)
 					D.nextstate = OPEN
-				else if(D.density)
+				else if (D.density)
 					spawn(0)
 					D.open()
 	return
 
 /area/proc/updateicon()
 	if ((fire || eject || party) && ((!requires_power)?(!requires_power):power_environ))//If it doesn't require power, can still activate this proc.
-		if(fire && !eject && !party)
+		if (fire && !eject && !party)
 			icon_state = "blue"
-		/*else if(atmosalm && !fire && !eject && !party)
+		/*else if (atmosalm && !fire && !eject && !party)
 			icon_state = "bluenew"*/
-		else if(!fire && eject && !party)
+		else if (!fire && eject && !party)
 			icon_state = "red"
-		else if(party && !fire && !eject)
+		else if (party && !fire && !eject)
 			icon_state = "party"
 		else
 			icon_state = "blue-red"
@@ -305,14 +305,14 @@ proc/process_ghost_teleport_locs()
 
 /area/proc/powered(var/chan)		// return true if the area has power to given channel
 
-	if(!master.requires_power)
+	if (!master.requires_power)
 		return 1
 	switch(chan)
-		if(EQUIP)
+		if (EQUIP)
 			return master.power_equip
-		if(LIGHT)
+		if (LIGHT)
 			return master.power_light
-		if(ENVIRON)
+		if (ENVIRON)
 			return master.power_environ
 
 	return 0
@@ -329,13 +329,13 @@ proc/process_ghost_teleport_locs()
 /area/proc/usage(var/chan)
 	var/used = 0
 	switch(chan)
-		if(LIGHT)
+		if (LIGHT)
 			used += master.used_light
-		if(EQUIP)
+		if (EQUIP)
 			used += master.used_equip
-		if(ENVIRON)
+		if (ENVIRON)
 			used += master.used_environ
-		if(TOTAL)
+		if (TOTAL)
 			used += master.used_light + master.used_equip + master.used_environ
 
 	return used
@@ -349,11 +349,11 @@ proc/process_ghost_teleport_locs()
 /area/proc/use_power(var/amount, var/chan)
 
 	switch(chan)
-		if(EQUIP)
+		if (EQUIP)
 			master.used_equip += amount
-		if(LIGHT)
+		if (LIGHT)
 			master.used_light += amount
-		if(ENVIRON)
+		if (ENVIRON)
 			master.used_environ += amount
 
 /*

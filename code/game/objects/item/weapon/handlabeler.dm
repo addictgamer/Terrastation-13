@@ -8,24 +8,24 @@
 	var/mode = 0	//off or on.
 
 /obj/item/weapon/hand_labeler/afterattack(atom/A, mob/user as mob)
-	if(!mode)	//if it's off, give up.
+	if (!mode)	//if it's off, give up.
 		return
-	if(A==loc)		// if placing the labeller into something (e.g. backpack)
+	if (A==loc)		// if placing the labeller into something (e.g. backpack)
 		return		// don't set a label
 
-	if(!labels_left)
+	if (!labels_left)
 		user << "\blue No labels left."
 		return
-	if(!label || !length(label))
+	if (!label || !length(label))
 		user << "\blue No text set."
 		return
-	if(length(A.name) + length(label) > 64)
+	if (length(A.name) + length(label) > 64)
 		user << "\blue Label too big."
 		return
-	if(ishuman(A))
+	if (ishuman(A))
 		user << "\blue You can't label humans."
 		return
-	if(issilicon(A))
+	if (issilicon(A))
 		user << "\blue You can't label cyborgs."
 		return
 
@@ -37,11 +37,11 @@
 /obj/item/weapon/hand_labeler/attack_self()
 	mode = !mode
 	icon_state = "labeler[mode]"
-	if(mode)
+	if (mode)
 		usr << "\blue You turn on the hand labeler."
 		//Now let them chose the text.
 		var/str = copytext(reject_bad_text(input(usr,"Label text?","Set label","")),1,MAX_NAME_LEN)
-		if(!str || !length(str))
+		if (!str || !length(str))
 			usr << "\red Invalid text."
 			return
 		label = str

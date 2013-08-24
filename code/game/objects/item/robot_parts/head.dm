@@ -11,11 +11,11 @@
 
 	attackby(obj/item/W as obj, mob/user as mob)
 		..()
-		if(istype(W, /obj/item/device/flash))
-			if(src.flash1 && src.flash2)
+		if (istype(W, /obj/item/device/flash))
+			if (src.flash1 && src.flash2)
 				user << "\blue You have already inserted the eyes!"
 				return
-			else if(src.flash1)
+			else if (src.flash1)
 				user.drop_item()
 				W.loc = src
 				src.flash2 = W

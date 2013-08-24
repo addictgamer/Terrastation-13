@@ -4,7 +4,7 @@
 		set category = "Debug"
 		set name = "Show General Report"
 
-		if(!master_controller)
+		if (!master_controller)
 			usr << alert("Master_controller not found.")
 
 		var/mobs = 0
@@ -26,7 +26,7 @@
 		set category = "Debug"
 		set name = "Show Air Report"
 
-		if(!master_controller || !air_master)
+		if (!master_controller || !air_master)
 			alert(usr,"Master_controller or air_master not found.","Air Report")
 			return 0
 
@@ -34,7 +34,7 @@
 		var/inactive_groups = 0
 		var/active_tiles = 0
 		for(var/datum/air_group/group in air_master.air_groups)
-			if(group.group_processing)
+			if (group.group_processing)
 				active_groups++
 			else
 				inactive_groups++
@@ -68,14 +68,14 @@
 		set category = "Debug"
 		set name = "Display Air Status"
 
-		if(!isturf(target))
+		if (!isturf(target))
 			return
 
 		var/datum/gas_mixture/GM = target.return_air()
 		var/burning = 0
-		if(istype(target, /turf/simulated))
+		if (istype(target, /turf/simulated))
 			var/turf/simulated/T = target
-			if(T.active_hotspot)
+			if (T.active_hotspot)
 				burning = 1
 
 		usr << "\blue @[target.x],[target.y] ([GM.group_multiplier]): O:[GM.oxygen] T:[GM.toxins] N:[GM.nitrogen] C:[GM.carbon_dioxide] w [GM.temperature] Kelvin, [GM.return_pressure()] kPa [(burning)?("\red BURNING"):(null)]"
@@ -90,17 +90,17 @@
 		var/mob/largest_move_mob = null
 		var/mob/largest_click_mob = null
 		for(var/mob/M in world)
-			if(!M.client)
+			if (!M.client)
 				continue
-			if(M.next_move >= largest_move_time)
+			if (M.next_move >= largest_move_time)
 				largest_move_mob = M
-				if(M.next_move > world.time)
+				if (M.next_move > world.time)
 					largest_move_time = M.next_move - world.time
 				else
 					largest_move_time = 1
-			if(M.lastDblClick >= largest_click_time)
+			if (M.lastDblClick >= largest_click_time)
 				largest_click_mob = M
-				if(M.lastDblClick > world.time)
+				if (M.lastDblClick > world.time)
 					largest_click_time = M.lastDblClick - world.time
 				else
 					largest_click_time = 0
@@ -152,7 +152,7 @@
 		set name = "Reload Admins"
 		set category = "Debug"
 
-		if(!(usr.client.holder && usr.client.holder.level >= 6)) // protect and prevent
+		if (!(usr.client.holder && usr.client.holder.level >= 6)) // protect and prevent
 			usr << "\red Not a good cop"
 			return
 

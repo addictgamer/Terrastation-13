@@ -1,5 +1,5 @@
 /proc/parse_zone(zone)
-	if(zone == "r_hand") return "right hand"
+	if (zone == "r_hand") return "right hand"
 	else if (zone == "l_hand") return "left hand"
 	else if (zone == "l_arm") return "left arm"
 	else if (zone == "r_arm") return "right arm"
@@ -11,21 +11,21 @@
 
 /proc/text2dir(direction)
 	switch(uppertext(direction))
-		if("NORTH")
+		if ("NORTH")
 			return 1
-		if("SOUTH")
+		if ("SOUTH")
 			return 2
-		if("EAST")
+		if ("EAST")
 			return 4
-		if("WEST")
+		if ("WEST")
 			return 8
-		if("NORTHEAST")
+		if ("NORTHEAST")
 			return 5
-		if("NORTHWEST")
+		if ("NORTHWEST")
 			return 9
-		if("SOUTHEAST")
+		if ("SOUTHEAST")
 			return 6
-		if("SOUTHWEST")
+		if ("SOUTHWEST")
 			return 10
 		else
 	return
@@ -46,28 +46,28 @@
 
 /proc/dir2text(direction)
 	switch(direction)
-		if(1.0)
+		if (1.0)
 			return "north"
-		if(2.0)
+		if (2.0)
 			return "south"
-		if(4.0)
+		if (4.0)
 			return "east"
-		if(8.0)
+		if (8.0)
 			return "west"
-		if(5.0)
+		if (5.0)
 			return "northeast"
-		if(6.0)
+		if (6.0)
 			return "southeast"
-		if(9.0)
+		if (9.0)
 			return "northwest"
-		if(10.0)
+		if (10.0)
 			return "southwest"
 		else
 	return
 
 /proc/is_type_in_list(var/atom/A, var/list/L)
 	for(var/type in L)
-		if(istype(A, type))
+		if (istype(A, type))
 			return 1
 	return 0
 
@@ -82,41 +82,41 @@ var/global/list/common_tools = list(
 /obj/item/weapon/crowbar)
 
 /proc/istool(O)
-	if(O && is_type_in_list(O, common_tools))
+	if (O && is_type_in_list(O, common_tools))
 		return 1
 	return 0
 
 /proc/iswrench(O)
-	if(istype(O, /obj/item/weapon/wrench))
+	if (istype(O, /obj/item/weapon/wrench))
 		return 1
 	return 0
 
 /proc/iswelder(O)
-	if(istype(O, /obj/item/weapon/weldingtool))
+	if (istype(O, /obj/item/weapon/weldingtool))
 		return 1
 	return 0
 
 /proc/iscoil(O)
-	if(istype(O, /obj/item/cable_coil))
+	if (istype(O, /obj/item/cable_coil))
 		return 1
 	return 0
 
 /proc/iswirecutter(O)
-	if(istype(O, /obj/item/weapon/wirecutters))
+	if (istype(O, /obj/item/weapon/wirecutters))
 		return 1
 	return 0
 
 /proc/isscrewdriver(O)
-	if(istype(O, /obj/item/weapon/screwdriver))
+	if (istype(O, /obj/item/weapon/screwdriver))
 		return 1
 	return 0
 
 /proc/ismultitool(O)
-	if(istype(O, /obj/item/device/multitool))
+	if (istype(O, /obj/item/device/multitool))
 		return 1
 	return 0
 
 /proc/iscrowbar(O)
-	if(istype(O, /obj/item/weapon/crowbar))
+	if (istype(O, /obj/item/weapon/crowbar))
 		return 1
 	return 0

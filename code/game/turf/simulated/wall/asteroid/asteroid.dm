@@ -13,9 +13,9 @@
 	var/min_amount = 0
 
 /turf/simulated/wall/asteroid/dismantle_wall(devastated=0)
-	if(contains && ispath(contains))
+	if (contains && ispath(contains))
 		var/iterations = 0
-		if(!devastated)
+		if (!devastated)
 			iterations = max_amount
 		else
 			iterations = min_amount

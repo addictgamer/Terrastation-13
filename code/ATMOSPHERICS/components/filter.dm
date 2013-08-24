@@ -44,25 +44,25 @@ Filter types:
 		set_frequency(new_frequency)
 			radio_controller.remove_object(src, frequency)
 			frequency = new_frequency
-			if(frequency)
+			if (frequency)
 				radio_connection = radio_controller.add_object(src, frequency, RADIO_ATMOSIA)
 
 	New()
 		..()
 		switch(dir)
-			if(NORTH)
+			if (NORTH)
 				initialize_directions = NORTH|EAST|SOUTH
-			if(SOUTH)
+			if (SOUTH)
 				initialize_directions = NORTH|SOUTH|WEST
-			if(EAST)
+			if (EAST)
 				initialize_directions = EAST|WEST|SOUTH
-			if(WEST)
+			if (WEST)
 				initialize_directions = NORTH|EAST|WEST
-		if(radio_controller)
+		if (radio_controller)
 			initialize()
 
 	update_icon()
-		if(node_out1&&node_out2&&node_in)
+		if (node_out1&&node_out2&&node_in)
 			icon_state = "intact_[on?("on"):("off")]"
 		else
 			var/node_out1_direction = get_dir(src, node_out1)
@@ -89,12 +89,12 @@ Filter types:
 
 	process()
 		..()
-		if(!on)
+		if (!on)
 			return 0
 
 		var/output_starting_pressure = air_out2.return_pressure()
 
-		if(output_starting_pressure >= target_pressure)
+		if (output_starting_pressure >= target_pressure)
 			//No need to mix if target is already full!
 			return 1
 
@@ -103,46 +103,46 @@ Filter types:
 		var/pressure_delta = target_pressure - output_starting_pressure
 		var/transfer_moles
 
-		if(air_in.temperature > 0)
+		if (air_in.temperature > 0)
 			transfer_moles = pressure_delta*air_out2.volume/(air_in.temperature * R_IDEAL_GAS_EQUATION)
 
 		//Actually transfer the gas
 
-		if(transfer_moles > 0)
+		if (transfer_moles > 0)
 			var/datum/gas_mixture/removed = air_in.remove(transfer_moles)
 
-			if(!removed)
+			if (!removed)
 				return
 			var/datum/gas_mixture/filtered_out = new
 			filtered_out.temperature = removed.temperature
 
 			switch(filter_type)
-				if(0) //removing hydrocarbons
+				if (0) //removing hydrocarbons
 					filtered_out.toxins = removed.toxins
 					removed.toxins = 0
 
-					if(removed.trace_gases.len>0)
+					if (removed.trace_gases.len>0)
 						for(var/datum/gas/trace_gas in removed.trace_gases)
-							if(istype(trace_gas, /datum/gas/oxygen_agent_b))
+							if (istype(trace_gas, /datum/gas/oxygen_agent_b))
 								removed.trace_gases -= trace_gas
 								filtered_out.trace_gases += trace_gas
 
-				if(1) //removing O2
+				if (1) //removing O2
 					filtered_out.oxygen = removed.oxygen
 					removed.oxygen = 0
 
-				if(2) //removing N2
+				if (2) //removing N2
 					filtered_out.nitrogen = removed.nitrogen
 					removed.nitrogen = 0
 
-				if(3) //removing CO2
+				if (3) //removing CO2
 					filtered_out.carbon_dioxide = removed.carbon_dioxide
 					removed.carbon_dioxide = 0
 
-				if(4)//removing N2O
-					if(removed.trace_gases.len>0)
+				if (4)//removing N2O
+					if (removed.trace_gases.len>0)
 						for(var/datum/gas/trace_gas in removed.trace_gases)
-							if(istype(trace_gas, /datum/gas/sleeping_agent))
+							if (istype(trace_gas, /datum/gas/sleeping_agent))
 								removed.trace_gases -= trace_gas
 								filtered_out.trace_gases += trace_gas
 
@@ -153,29 +153,29 @@ Filter types:
 			air_out1.merge(filtered_out)
 			air_out2.merge(removed)
 
-		if(network_out1)
+		if (network_out1)
 			network_out1.update = 1
 
-		if(network_out2)
+		if (network_out2)
 			network_out2.update = 1
 
-		if(network_in)
+		if (network_in)
 			network_in.update = 1
 
 		return 1
 
 // Housekeeping and pipe network stuff below
 	network_expand(datum/pipe_network/new_network, obj/machinery/atmospherics/pipe/reference)
-		if(reference == node_out1)
+		if (reference == node_out1)
 			network_out1 = new_network
 
-		else if(reference == node_out2)
+		else if (reference == node_out2)
 			network_out2 = new_network
 
-		else if(reference == node_in)
+		else if (reference == node_in)
 			network_in = new_network
 
-		if(new_network.normal_members.Find(src))
+		if (new_network.normal_members.Find(src))
 			return 0
 
 		new_network.normal_members += src
@@ -185,15 +185,15 @@ Filter types:
 	Del()
 		loc = null
 
-		if(node_out1)
+		if (node_out1)
 			node_out1.disconnect(src)
 			del(network_out1)
 
-		if(node_out2)
+		if (node_out2)
 			node_out2.disconnect(src)
 			del(network_out2)
 
-		if(node_in)
+		if (node_in)
 			node_in.disconnect(src)
 			del(network_in)
 
@@ -204,7 +204,7 @@ Filter types:
 		..()
 
 	initialize()
-		if(node_out1 && node_in) return
+		if (node_out1 && node_in) return
 
 		var/node_in_connect = turn(dir, -180)
 		var/node_out1_connect = turn(dir, -90)
@@ -212,17 +212,17 @@ Filter types:
 
 
 		for(var/obj/machinery/atmospherics/target in get_step(src,node_out1_connect))
-			if(target.initialize_directions & get_dir(target,src))
+			if (target.initialize_directions & get_dir(target,src))
 				node_out1 = target
 				break
 
 		for(var/obj/machinery/atmospherics/target in get_step(src,node_out2_connect))
-			if(target.initialize_directions & get_dir(target,src))
+			if (target.initialize_directions & get_dir(target,src))
 				node_out2 = target
 				break
 
 		for(var/obj/machinery/atmospherics/target in get_step(src,node_in_connect))
-			if(target.initialize_directions & get_dir(target,src))
+			if (target.initialize_directions & get_dir(target,src))
 				node_in = target
 				break
 
@@ -231,17 +231,17 @@ Filter types:
 		set_frequency(frequency)
 
 	build_network()
-		if(!network_out1 && node_out1)
+		if (!network_out1 && node_out1)
 			network_out1 = new /datum/pipe_network()
 			network_out1.normal_members += src
 			network_out1.build_network(node_out1, src)
 
-		if(!network_out2 && node_out2)
+		if (!network_out2 && node_out2)
 			network_out2 = new /datum/pipe_network()
 			network_out2.normal_members += src
 			network_out2.build_network(node_out2, src)
 
-		if(!network_in && node_in)
+		if (!network_in && node_in)
 			network_in = new /datum/pipe_network()
 			network_in.normal_members += src
 			network_in.build_network(node_in, src)
@@ -250,25 +250,25 @@ Filter types:
 	return_network(obj/machinery/atmospherics/reference)
 		build_network()
 
-		if(reference==node_out1)
+		if (reference==node_out1)
 			return network_out1
 
-		if(reference==node_out2)
+		if (reference==node_out2)
 			return network_out2
 
-		if(reference==node_in)
+		if (reference==node_in)
 			return network_in
 
 		return null
 
 	reassign_network(datum/pipe_network/old_network, datum/pipe_network/new_network)
-		if(network_out1 == old_network)
+		if (network_out1 == old_network)
 			network_out1 = new_network
 
-		if(network_out2 == old_network)
+		if (network_out2 == old_network)
 			network_out2 = new_network
 
-		if(network_in == old_network)
+		if (network_in == old_network)
 			network_in = new_network
 
 		return 1
@@ -276,27 +276,27 @@ Filter types:
 	return_network_air(datum/pipe_network/reference)
 		var/list/results = list()
 
-		if(network_out1 == reference)
+		if (network_out1 == reference)
 			results += air_out1
 
-		if(network_out2 == reference)
+		if (network_out2 == reference)
 			results += air_out2
 
-		if(network_in == reference)
+		if (network_in == reference)
 			results += air_in
 
 		return results
 
 	disconnect(obj/machinery/atmospherics/reference)
-		if(reference==node_out1)
+		if (reference==node_out1)
 			del(network_out1)
 			node_out1 = null
 
-		else if(reference==node_out2)
+		else if (reference==node_out2)
 			del(network_out2)
 			node_out2 = null
 
-		else if(reference==node_in)
+		else if (reference==node_in)
 			del(network_in)
 			node_in = null
 
@@ -304,10 +304,10 @@ Filter types:
 
 
 obj/machinery/atmospherics/filter/attack_hand(user as mob) // -- TLE
-	if(..())
+	if (..())
 		return
 
-	if(!src.allowed(user))
+	if (!src.allowed(user))
 		user << "\red Access denied."
 		return
 /*
@@ -323,17 +323,17 @@ obj/machinery/atmospherics/filter/attack_hand(user as mob) // -- TLE
 	var/dat
 	var/current_filter_type
 	switch(filter_type)
-		if(0)
+		if (0)
 			current_filter_type = "Carbon Molecules"
-		if(1)
+		if (1)
 			current_filter_type = "Oxygen"
-		if(2)
+		if (2)
 			current_filter_type = "Nitrogen"
-		if(3)
+		if (3)
 			current_filter_type = "Carbon Dioxide"
-		if(4)
+		if (4)
 			current_filter_type = "Nitrous Oxide"
-		if(-1)
+		if (-1)
 			current_filter_type = "Nothing"
 		else
 			current_filter_type = "ERROR - Report this bug to the admin, please!"
@@ -366,18 +366,18 @@ obj/machinery/atmospherics/filter/attack_hand(user as mob) // -- TLE
 	return
 
 obj/machinery/atmospherics/filter/Topic(href, href_list) // -- TLE
-	if(..())
+	if (..())
 		return
 	usr.machine = src
 	src.add_fingerprint(usr)
-	if(href_list["filterset"])
+	if (href_list["filterset"])
 		src.filter_type = text2num(href_list["filterset"])
 	if (href_list["temp"])
 		src.temp = null
-	if(href_list["set_press"])
+	if (href_list["set_press"])
 		var/new_pressure = input(usr,"Enter new output pressure (0-4500kPa)","Pressure control",src.target_pressure) as num
 		src.target_pressure = max(0, min(4500, new_pressure))
-	if(href_list["power"])
+	if (href_list["power"])
 		on=!on
 	src.update_icon()
 	src.updateUsrDialog()

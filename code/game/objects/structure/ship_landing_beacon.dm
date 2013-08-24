@@ -8,12 +8,12 @@
 
 	proc
 		deploy()
-			if(active)
+			if (active)
 				return
 			src.active = 1
 			src.anchored = 1
 		deactivate()
-			if(!active)
+			if (!active)
 				return
 			src.active = 0
 			src.anchored = 0

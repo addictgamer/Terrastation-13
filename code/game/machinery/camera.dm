@@ -18,7 +18,7 @@
 	active_power_usage = 10
 
 /obj/machinery/camera/emp_act(severity)
-	if(prob(100/(hardened + severity)))
+	if (prob(100/(hardened + severity)))
 		icon_state = "cameraemp"
 		network = null                   //Not the best way but it will do. I think.
 		spawn(900)
@@ -39,7 +39,7 @@
 		..()
 
 /obj/machinery/camera/ex_act(severity)
-	if(src.invuln)
+	if (src.invuln)
 		return
 	else
 		..(severity)
@@ -74,11 +74,11 @@
 					O << "[user] holds a paper up to one of the cameras ..."
 					O << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", X.name, X.info), text("window=[]", X.name))
 	else if (istype(W, /obj/item/weapon/wrench)) //Adding dismantlable cameras to go with the constructable ones. --NEO
-		if(src.status)
+		if (src.status)
 			user << "\red You can't dismantle a camera while it is active."
 		else
 			user << "\blue Dismantling camera..."
-			if(do_after(user, 20))
+			if (do_after(user, 20))
 				var/obj/item/weapon/chem_grenade/case = new /obj/item/weapon/chem_grenade(src.loc)
 				case.name = "Camera Assembly"
 				case.path = 2
@@ -98,7 +98,7 @@
 		else
 			user << "\blue Camera bugged."
 			src.bugged = 1
-	else if(istype(W, /obj/item/weapon/melee/energy/blade))//Putting it here last since it's a special case. I wonder if there is a better way to do these than type casting.
+	else if (istype(W, /obj/item/weapon/melee/energy/blade))//Putting it here last since it's a special case. I wonder if there is a better way to do these than type casting.
 		deactivate(user,2)//Here so that you can disconnect anyone viewing the camera, regardless if it's on or off.
 		var/datum/effects/system/spark_spread/spark_system = new /datum/effects/system/spark_spread()
 		spark_system.set_up(5, 0, loc)
@@ -121,7 +121,7 @@
 	return
 
 /obj/machinery/camera/proc/deactivate(user as mob, var/choice = 1)
-	if(choice==1)
+	if (choice==1)
 		status = !( src.status )
 		if (!(src.status))
 			for(var/mob/O in viewers(user, null))
@@ -170,7 +170,7 @@
 /proc/seen_by_camera(var/mob/M)
 
 	for(var/obj/machinery/camera/C in oview(M))
-		if(C.status)	// check if camera disabled
+		if (C.status)	// check if camera disabled
 			return C
 			break
 

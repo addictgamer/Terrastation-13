@@ -32,14 +32,14 @@
 		if (!id_tag)
 			assign_uid()
 			id_tag = num2text(uid)
-		if(ticker && ticker.current_state == 3)//if the game is running
+		if (ticker && ticker.current_state == 3)//if the game is running
 			src.initialize()
 			src.broadcast_status()
 		..()
 
 	update_icon()
-		if(node && on && !(stat & (NOPOWER|BROKEN)))
-			if(scrubbing)
+		if (node && on && !(stat & (NOPOWER|BROKEN)))
+			if (scrubbing)
 				icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]on"
 			else
 				icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]in"
@@ -54,7 +54,7 @@
 			radio_connection = radio_controller.add_object(src, frequency, radio_filter_in)
 
 		broadcast_status()
-			if(!radio_connection)
+			if (!radio_connection)
 				return 0
 
 			var/datum/signal/signal = new
@@ -86,19 +86,19 @@
 
 	process()
 		..()
-		if(stat & (NOPOWER|BROKEN))
+		if (stat & (NOPOWER|BROKEN))
 			return
 		if (!node)
 			on = 0
 		//broadcast_status()
-		if(!on)
+		if (!on)
 			return 0
 
 
 		var/datum/gas_mixture/environment = loc.return_air()
 
-		if(scrubbing)
-			if((environment.toxins>0) || (environment.carbon_dioxide>0) || (environment.trace_gases.len>0))
+		if (scrubbing)
+			if ((environment.toxins>0) || (environment.carbon_dioxide>0) || (environment.trace_gases.len>0))
 				var/transfer_moles = min(1, volume_rate/environment.volume)*environment.total_moles()
 
 				//Take a gas sample
@@ -109,19 +109,19 @@
 				//Filter it
 				var/datum/gas_mixture/filtered_out = new
 				filtered_out.temperature = removed.temperature
-				if(scrub_Toxins)
+				if (scrub_Toxins)
 					filtered_out.toxins = removed.toxins
 					removed.toxins = 0
-				if(scrub_CO2)
+				if (scrub_CO2)
 					filtered_out.carbon_dioxide = removed.carbon_dioxide
 					removed.carbon_dioxide = 0
 
-				if(removed.trace_gases.len>0)
+				if (removed.trace_gases.len>0)
 					for(var/datum/gas/trace_gas in removed.trace_gases)
-						if(istype(trace_gas, /datum/gas/oxygen_agent_b))
+						if (istype(trace_gas, /datum/gas/oxygen_agent_b))
 							removed.trace_gases -= trace_gas
 							filtered_out.trace_gases += trace_gas
-						else if(istype(trace_gas, /datum/gas/sleeping_agent) && scrub_N2O)
+						else if (istype(trace_gas, /datum/gas/sleeping_agent) && scrub_N2O)
 							removed.trace_gases -= trace_gas
 							filtered_out.trace_gases += trace_gas
 
@@ -131,7 +131,7 @@
 
 				loc.assume_air(removed)
 
-				if(network)
+				if (network)
 					network.update = 1
 
 		else //Just siphoning all air
@@ -144,14 +144,14 @@
 
 			air_contents.merge(removed)
 
-			if(network)
+			if (network)
 				network.update = 1
 
 		return 1
 /* //unused piece of code
 	hide(var/i) //to make the little pipe section invisible, the icon changes.
-		if(on&&node)
-			if(scrubbing)
+		if (on&&node)
+			if (scrubbing)
 				icon_state = "[i == 1 && istype(loc, /turf/simulated) ? "h" : "" ]on"
 			else
 				icon_state = "[i == 1 && istype(loc, /turf/simulated) ? "h" : "" ]in"
@@ -162,28 +162,28 @@
 */
 
 	receive_signal(datum/signal/signal)
-		if(stat & (NOPOWER|BROKEN))
+		if (stat & (NOPOWER|BROKEN))
 			return
-		if(!signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
+		if (!signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
 			return 0
 
-		if("power" in signal.data)
+		if ("power" in signal.data)
 			on = text2num(signal.data["power"])
-		if("power_toggle" in signal.data)
+		if ("power_toggle" in signal.data)
 			on = !on
 
-		if("panic_siphon" in signal.data) //must be before if("scrubbing" thing
+		if ("panic_siphon" in signal.data) //must be before if ("scrubbing" thing
 			panic = text2num(signal.data["panic_siphon"])
-			if(panic)
+			if (panic)
 				on = 1
 				scrubbing = 0
 				volume_rate = 2000
 			else
 				scrubbing = 1
 				volume_rate = initial(volume_rate)
-		if("toggle_panic_siphon" in signal.data)
+		if ("toggle_panic_siphon" in signal.data)
 			panic = !panic
-			if(panic)
+			if (panic)
 				on = 1
 				scrubbing = 0
 				volume_rate = 2000
@@ -191,31 +191,31 @@
 				scrubbing = 1
 				volume_rate = initial(volume_rate)
 
-		if("scrubbing" in signal.data)
+		if ("scrubbing" in signal.data)
 			scrubbing = text2num(signal.data["scrubbing"])
-		if("toggle_scrubbing" in signal.data)
+		if ("toggle_scrubbing" in signal.data)
 			scrubbing = !scrubbing
 
-		if("co2_scrub" in signal.data)
+		if ("co2_scrub" in signal.data)
 			scrub_CO2 = text2num(signal.data["co2_scrub"])
-		if("toggle_co2_scrub" in signal.data)
+		if ("toggle_co2_scrub" in signal.data)
 			scrub_CO2 = !scrub_CO2
 
-		if("tox_scrub" in signal.data)
+		if ("tox_scrub" in signal.data)
 			scrub_Toxins = text2num(signal.data["tox_scrub"])
-		if("toggle_tox_scrub" in signal.data)
+		if ("toggle_tox_scrub" in signal.data)
 			scrub_Toxins = !scrub_Toxins
 
-		if("n2o_scrub" in signal.data)
+		if ("n2o_scrub" in signal.data)
 			scrub_N2O = text2num(signal.data["n2o_scrub"])
-		if("toggle_n2o_scrub" in signal.data)
+		if ("toggle_n2o_scrub" in signal.data)
 			scrub_N2O = !scrub_N2O
 
-		if("init" in signal.data)
+		if ("init" in signal.data)
 			name = signal.data["init"]
 			return
 
-		if("status" in signal.data)
+		if ("status" in signal.data)
 			spawn(2)
 				broadcast_status()
 			return //do not update_icon
@@ -227,7 +227,7 @@
 		return
 
 	power_change()
-		if(powered(ENVIRON))
+		if (powered(ENVIRON))
 			stat &= ~NOPOWER
 		else
 			stat |= NOPOWER

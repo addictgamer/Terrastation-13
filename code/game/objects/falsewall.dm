@@ -16,7 +16,7 @@
 		..()
 
 	attack_hand(mob/user as mob)
-		if(density)
+		if (density)
 			// Open wall
 			icon_state = "fwall_open"
 			flick("fwall_opening", src)
@@ -37,7 +37,7 @@
 			T.sd_LumReset()
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon/screwdriver))
+		if (istype(W, /obj/item/weapon/screwdriver))
 			var/turf/T = get_turf(src)
 			user.visible_message("[user] tightens some bolts on the wall.", "You tighten the bolts on the wall.")
 			T.ReplaceWithWall()

@@ -119,7 +119,7 @@
 			convert_part_set(part_set)
 		files = new /datum/research(src) //Setup the research data holder.
 		/*
-		if(!id)
+		if (!id)
 			for(var/obj/machinery/r_n_d/server/centcom/S in world)
 				S.initialize()
 				break
@@ -134,7 +134,7 @@
 
 	proc/convert_part_set(set_name as text)
 		var/list/parts = part_sets[set_name]
-		if(istype(parts, /list))
+		if (istype(parts, /list))
 			for(var/i=1;i<=parts.len;i++)
 				var/path = parts[i]
 				parts[i] = new path(src)
@@ -142,9 +142,9 @@
 
 
 	proc/add_part_set(set_name as text,parts=null)
-		if(set_name in part_sets)//attempt to create duplicate set
+		if (set_name in part_sets)//attempt to create duplicate set
 			return 0
-		if(isnull(parts))
+		if (isnull(parts))
 			part_sets[set_name] = list()
 		else
 			part_sets[set_name] = parts
@@ -152,17 +152,17 @@
 		return 1
 
 	proc/add_part_to_set(set_name as text,part)
-		if(!part) return 0
+		if (!part) return 0
 		src.add_part_set(set_name)//if no "set_name" set exists, create
 		var/list/part_set = part_sets[set_name]
 		var/atom/apart
-		if(ispath(part))
+		if (ispath(part))
 			apart = new part(src)
 		else
 			apart = part
-		if(!istype(apart)) return 0
+		if (!istype(apart)) return 0
 		for(var/obj/O in part_set)
-			if(O.type == apart.type)
+			if (O.type == apart.type)
 				del apart
 				return 0
 		part_set[++part_set.len] = apart
@@ -170,7 +170,7 @@
 
 	proc/remove_part_set(set_name as text)
 		for(var/i=1,i<=part_sets.len,i++)
-			if(part_sets[i]==set_name)
+			if (part_sets[i]==set_name)
 				part_sets.Cut(i,++i)
 		return
 /*
@@ -178,13 +178,13 @@
 		for(var/p in resources)
 			var/index = resources.Find(p)
 			index = resources.Find(p, ++index)
-			if(index) //duplicate resource
+			if (index) //duplicate resource
 				world << "Duplicate resource definition for [src](\ref[src])"
 				return 0
 		for(var/set_name in part_sets)
 			var/index = part_sets.Find(set_name)
 			index = part_sets.Find(set_name, ++index)
-			if(index) //duplicate part set
+			if (index) //duplicate part set
 				world << "Duplicate part set definition for [src](\ref[src])"
 				return 0
 		return 1
@@ -201,7 +201,7 @@
 	proc/output_parts_list(set_name)
 		var/output = ""
 		var/list/part_set = listgetindex(part_sets, set_name)
-		if(istype(part_set))
+		if (istype(part_set))
 			for(var/atom/part in part_set)
 				var/resources_available = check_resources(part)
 				output += "<div class='part'>[output_part_info(part)]<br>\[[resources_available?"<a href='?src=\ref[src];part=\ref[part]'>Build</a> | ":null]<a href='?src=\ref[src];add_to_queue=\ref[part]'>Add to queue</a>\]\[<a href='?src=\ref[src];part_desc=\ref[part]'>?</a>\]</div>"
@@ -215,7 +215,7 @@
 		var/i = 0
 		var/output
 		for(var/p in part.construction_cost)
-			if(p in resources)
+			if (p in resources)
 				output += "[i?" | ":null][get_resource_cost_w_coeff(part,p)] [p]"
 				i++
 		return output
@@ -228,19 +228,19 @@
 
 	proc/remove_resources(var/obj/item/mecha_parts/part)
 		for(var/resource in part.construction_cost)
-			if(resource in src.resources)
+			if (resource in src.resources)
 				src.resources[resource] -= get_resource_cost_w_coeff(part,resource)
 		return
 
 	proc/check_resources(var/obj/item/mecha_parts/part)
 		for(var/resource in part.construction_cost)
-			if(resource in src.resources)
-				if(src.resources[resource] < get_resource_cost_w_coeff(part,resource))
+			if (resource in src.resources)
+				if (src.resources[resource] < get_resource_cost_w_coeff(part,resource))
 					return 0
 		return 1
 
 	proc/build_part(var/obj/item/mecha_parts/part)
-		if(!part) return
+		if (!part) return
 		src.being_built = new part.type(src)
 		src.desc = "It's building [src.being_built]."
 		src.remove_resources(part)
@@ -248,11 +248,11 @@
 		src.use_power = 2
 		src.updateUsrDialog()
 		sleep(get_construction_time_w_coeff(part))
-		//if(!src) return // you do not need to check it, all sleeping procedires will be terminated when src dies. -- rastaf0
+		//if (!src) return // you do not need to check it, all sleeping procedires will be terminated when src dies. -- rastaf0
 		src.use_power = 1
 		src.overlays -= "fab-active"
 		src.desc = initial(src.desc)
-		if(being_built)
+		if (being_built)
 			src.being_built.Move(get_step(src,SOUTH))
 			src.visible_message("<b>[src]</b> beeps, \"The [src.being_built] is complete\".")
 			src.being_built = null
@@ -264,22 +264,22 @@
 		return
 
 	proc/add_part_set_to_queue(set_name)
-		if(set_name in part_sets)
+		if (set_name in part_sets)
 			var/list/part_set = part_sets[set_name]
-			if(islist(part_set))
+			if (islist(part_set))
 				for(var/part in part_set)
 					add_to_queue(part)
 		return
 
 	proc/add_to_queue(part)
-		if(!istype(queue))
+		if (!istype(queue))
 			queue = list()
-		if(part)
+		if (part)
 			queue[++queue.len] = part
 		return queue.len
 
 	proc/remove_from_queue(index)
-		if(!isnum(index) || !istype(queue) || (index<1 || index>queue.len))
+		if (!isnum(index) || !istype(queue) || (index<1 || index>queue.len))
 			return 0
 		queue.Cut(index,++index)
 		return 1
@@ -288,9 +288,9 @@
 		var/part = listgetindex(src.queue, 1)
 		temp = null
 		while(part)
-			if(stat&(NOPOWER|BROKEN))
+			if (stat&(NOPOWER|BROKEN))
 				return 0
-			if(!check_resources(part))
+			if (!check_resources(part))
 				src.visible_message("<b>[src]</b> beeps, \"Not enough resources. Queue processing stopped\".")
 				temp = {"<font color='red'>Not enough resources to build next part.</font><br>
 							<a href='?src=\ref[src];process_queue=1'>Try again</a> | <a href='?src=\ref[src];clear_temp=1'>Return</a><a>"}
@@ -303,54 +303,54 @@
 
 	proc/list_queue()
 		var/output = "<b>Queue contains:</b>"
-		if(!istype(queue) || !queue.len)
+		if (!istype(queue) || !queue.len)
 			output += "<br>Nothing"
 		else
 			output += "<ol>"
 			for(var/i=1;i<=queue.len;i++)
 				var/atom/part = listgetindex(src.queue, i)
-				if(istype(part))
+				if (istype(part))
 					output += "<li[!check_resources(part)?" style='color: #f00;'":null]>[part.name] - [i>1?"<a href='?src=\ref[src];queue_move=-1;index=[i]' class='arrow'>&uarr;</a>":null] [i<queue.len?"<a href='?src=\ref[src];queue_move=+1;index=[i]' class='arrow'>&darr;</a>":null] <a href='?src=\ref[src];remove_from_queue=[i]'>Remove</a></li>"
 			output += "</ol>"
 			output += "\[<a href='?src=\ref[src];process_queue=1'>Process queue</a> | <a href='?src=\ref[src];clear_queue=1'>Clear queue</a>\]"
 		return output
 
 	proc/convert_designs()
-		if(!files) return
+		if (!files) return
 		var/i = 0
 		for(var/datum/design/D in files.known_designs)
-			if(D.build_type&16)
-				if(add_part_to_set("Exosuit Equipment", text2path(D.build_path)))
+			if (D.build_type&16)
+				if (add_part_to_set("Exosuit Equipment", text2path(D.build_path)))
 					i++
 		return i
 
 	proc/update_tech()
-		if(!files) return
+		if (!files) return
 		var/output
 		for(var/datum/tech/T in files.known_tech)
-			if(T && T.level > 1)
+			if (T && T.level > 1)
 				var/diff
 				switch(T.id) //bad, bad formulas
-					if("materials")
+					if ("materials")
 						diff = round(initial(resource_coeff) - (initial(resource_coeff)*T.level)/25,0.01)
-						if(resource_coeff!=diff)
+						if (resource_coeff!=diff)
 							resource_coeff = diff
 							output+="Production efficiency increased.<br>"
-					if("programming")
+					if ("programming")
 						diff = round(initial(time_coeff) - (initial(time_coeff)*T.level)/25,0.1)
-						if(time_coeff!=diff)
+						if (time_coeff!=diff)
 							time_coeff = diff
 							output+="Production routines updated.<br>"
 		return output
 
 
 	proc/sync(silent=null)
-		if(!silent)
+		if (!silent)
 			temp = "Updating local R&D database..."
 			src.updateUsrDialog()
 			sleep(30) //only sleep if called by user
 		for(var/obj/machinery/computer/rdconsole/RDC in get_area(src))
-			if(!RDC.sync)
+			if (!RDC.sync)
 				continue
 			for(var/datum/tech/T in RDC.files.known_tech)
 				files.AddTech2Known(T)
@@ -359,12 +359,12 @@
 			files.RefreshResearch()
 			var/i = src.convert_designs()
 			var/tech_output = update_tech()
-			if(!silent)
+			if (!silent)
 				temp = "Processed [i] equipment designs.<br>"
 				temp += tech_output
 				temp += "<a href='?src=\ref[src];clear_temp=1'>Return</a>"
 				src.updateUsrDialog()
-			if(i || tech_output)
+			if (i || tech_output)
 				src.visible_message("<b>[src]</b> beeps, \"Succesfully synchronized with R&D server. New data processed.\"")
 		return
 
@@ -381,22 +381,22 @@
 			return
 		user.machine = src
 		var/turf/exit = get_step(src,EAST)
-		if(exit.density)
+		if (exit.density)
 			src.visible_message("<b>[src]</b> beeps, \"Error! Part outlet is obstructed\".")
 			return
-		if(temp)
+		if (temp)
 			left_part = temp
-		else if(src.being_built)
+		else if (src.being_built)
 			left_part = {"<TT>Building [src.being_built.name].<BR>
 								Please wait until completion...</TT>"}
 		else
 			switch(screen)
-				if("main")
+				if ("main")
 					left_part = output_available_resources()+"<hr>"
 					left_part += "<a href='?src=\ref[src];sync=1'>Sync with R&D servers</a> | <a href='?src=\ref[src];auto_sync=1'>[sync?"Dis":"En"]able auto sync</a><hr>"
 					for(var/part_set in part_sets)
 						left_part += "<a href='?src=\ref[src];part_set=[part_set]'>[part_set]</a> - \[<a href='?src=\ref[src];partset_to_queue=[part_set]'>Add all parts to queue\]<br>"
-				if("parts")
+				if ("parts")
 					left_part += output_parts_list(part_set)
 					left_part += "<hr><a href='?src=\ref[src];screen=main'>Return</a>"
 		dat = {"<html>
@@ -436,62 +436,62 @@
 
 	Topic(href, href_list)
 		..()
-		if(href_list["part_set"])
-			if(href_list["part_set"]=="clear")
+		if (href_list["part_set"])
+			if (href_list["part_set"]=="clear")
 				src.part_set = null
 			else
 				src.part_set = href_list["part_set"]
 				screen = "parts"
-		if(href_list["part"])
+		if (href_list["part"])
 			var/list/part = locate(href_list["part"])
-			if(!processing_queue)
+			if (!processing_queue)
 				build_part(part)
 			else
 				add_to_queue(part)
-		if(href_list["add_to_queue"])
+		if (href_list["add_to_queue"])
 			var/part = locate(href_list["add_to_queue"])
 			add_to_queue(part)
 			return update_queue_on_page()
-		if(href_list["remove_from_queue"])
+		if (href_list["remove_from_queue"])
 			var/index = text2num(href_list["remove_from_queue"])
-			if(isnum(index))
+			if (isnum(index))
 				remove_from_queue(index)
 			return update_queue_on_page()
-		if(href_list["partset_to_queue"])
+		if (href_list["partset_to_queue"])
 			var/part_set = href_list["partset_to_queue"]
 			add_part_set_to_queue(part_set)
 			return update_queue_on_page()
-		if(href_list["process_queue"])
-			if(processing_queue || being_built)
+		if (href_list["process_queue"])
+			if (processing_queue || being_built)
 				return 0
 			spawn(-1) //don't wait for process_queue() to finish
 				processing_queue = 1
 				process_queue()
 				processing_queue = 0
 /*
-		if(href_list["list_queue"])
+		if (href_list["list_queue"])
 			list_queue()
 */
-		if(href_list["clear_temp"])
+		if (href_list["clear_temp"])
 			temp = null
-		if(href_list["screen"])
+		if (href_list["screen"])
 			src.screen = href_list["screen"]
-		if(href_list["queue_move"] && href_list["index"])
+		if (href_list["queue_move"] && href_list["index"])
 			var/index = text2num(href_list["index"])
 			var/new_index = index + text2num(href_list["queue_move"])
-			if(isnum(index) && isnum(new_index))
-				if(InRange(new_index,1,queue.len))
+			if (isnum(index) && isnum(new_index))
+				if (InRange(new_index,1,queue.len))
 					queue.Swap(index,new_index)
 			return update_queue_on_page()
-		if(href_list["clear_queue"])
+		if (href_list["clear_queue"])
 			queue = list()
 			return update_queue_on_page()
-		if(href_list["sync"])
+		if (href_list["sync"])
 			src.sync()
-		if(href_list["auto_sync"])
+		if (href_list["auto_sync"])
 			src.sync = !src.sync
 			//pr_auto_sync.toggle()
-		if(href_list["part_desc"])
+		if (href_list["part_desc"])
 			var/obj/part = locate(href_list["part_desc"])
 			temp = {"<h1>[part] description:</h1>
 						[part.desc]<br>
@@ -503,43 +503,43 @@
 	process()
 		if (stat & (NOPOWER|BROKEN))
 			return
-		if(sync)
+		if (sync)
 			spawn(-1)
 				sync(1)
 		return
 
 	attackby(obj/item/stack/sheet/W as obj, mob/user as mob)
 		var/material
-		if(istype(W, /obj/item/stack/sheet/gold))
+		if (istype(W, /obj/item/stack/sheet/gold))
 			material = "gold"
-		else if(istype(W, /obj/item/stack/sheet/silver))
+		else if (istype(W, /obj/item/stack/sheet/silver))
 			material = "silver"
-		else if(istype(W, /obj/item/stack/sheet/diamond))
+		else if (istype(W, /obj/item/stack/sheet/diamond))
 			material = "diamond"
-		else if(istype(W, /obj/item/stack/sheet/plasma))
+		else if (istype(W, /obj/item/stack/sheet/plasma))
 			material = "plasma"
-		else if(istype(W, /obj/item/stack/sheet/metal))
+		else if (istype(W, /obj/item/stack/sheet/metal))
 			material = "metal"
-		else if(istype(W, /obj/item/stack/sheet/glass))
+		else if (istype(W, /obj/item/stack/sheet/glass))
 			material = "glass"
-		else if(istype(W, /obj/item/stack/sheet/clown))
+		else if (istype(W, /obj/item/stack/sheet/clown))
 			material = "bananium"
-		else if(istype(W, /obj/item/stack/sheet/uranium))
+		else if (istype(W, /obj/item/stack/sheet/uranium))
 			material = "uranium"
 		else
 			return ..()
 
-		if(src.being_built)
+		if (src.being_built)
 			user << "The fabricator is currently processing. Please wait until completion."
 			return
 
 		var/name = "[W.name]"
 		var/amnt = W.perunit
-		if(src.resources[material] < res_max_amount)
+		if (src.resources[material] < res_max_amount)
 			var/count = 0
 			src.overlays += "fab-load-[material]"//loading animation is now an overlay based on material type. No more spontaneous conversion of all ores to metal. -vey
 			sleep(10)
-			if(W && W.amount)
+			if (W && W.amount)
 				while(src.resources[material] < res_max_amount && W)
 					src.resources[material] += amnt
 					W.use(1)

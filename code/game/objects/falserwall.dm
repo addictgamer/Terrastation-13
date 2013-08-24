@@ -9,7 +9,7 @@
 	anchored = 1
 
 	attack_hand(mob/user as mob)
-		if(density)
+		if (density)
 			// Open wall
 			icon_state = "frwall_open"
 			flick("frwall_opening", src)
@@ -30,7 +30,7 @@
 			T.sd_LumReset()
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon/screwdriver))
+		if (istype(W, /obj/item/weapon/screwdriver))
 			var/turf/T = get_turf(src)
 			user.visible_message("[user] tightens some bolts on the r wall.", "You tighten the bolts on the r wall.")
 			T.ReplaceWithWall() //Intentionally makes a regular wall instead of an r-wall (no cheap r-walls for you).

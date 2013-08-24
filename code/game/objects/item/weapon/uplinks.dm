@@ -27,7 +27,7 @@ SYNDICATE UPLINK
 
 /obj/item/weapon/syndicate_uplink/proc/explode()
 	var/turf/location = get_turf(src.loc)
-	if(location)
+	if (location)
 		location.hotspot_expose(700,125)
 
 		explosion(location, 0, 0, 2, 4)
@@ -93,7 +93,7 @@ SYNDICATE UPLINK
 
 /obj/item/weapon/syndicate_uplink/Topic(href, href_list)
 	..()
-	if(!currentUser)
+	if (!currentUser)
 		return
 	if (currentUser.stat || currentUser.restrained())
 		return
@@ -103,64 +103,64 @@ SYNDICATE UPLINK
 		currentUser.machine = src
 		if (href_list["buy_item"])
 			switch(href_list["buy_item"])
-				if("revolver")
+				if ("revolver")
 					if (src.uses >= 6)
 						src.uses -= 6
 						new /obj/item/weapon/gun/projectile(get_turf(src))
-				if("revolver_ammo")
+				if ("revolver_ammo")
 					if (src.uses >= 2)
 						src.uses -= 2
 						new /obj/item/ammo_magazine(get_turf(src))
-				if("suffocation_revolver_ammo")
+				if ("suffocation_revolver_ammo")
 					if (uses >= 3)
 						uses -= 3
 						new /obj/item/ammo_magazine/a418(get_turf(src))
-				if("xbow")
+				if ("xbow")
 					if (src.uses >= 5)
 						src.uses -= 5
 						new /obj/item/weapon/gun/energy/crossbow(get_turf(src))
-				if("empbox")
+				if ("empbox")
 					if (src.uses >= 4)
 						src.uses -= 4
 						new /obj/item/weapon/storage/emp_kit(get_turf(src))
-				if("voice")
+				if ("voice")
 					if (src.uses >= 4)
 						src.uses -= 4
 						new /obj/item/clothing/mask/gas/voice(get_turf(src))
-				if("jump")
+				if ("jump")
 					if (src.uses >= 3)
 						src.uses -= 3
 						new /obj/item/clothing/under/chameleon(get_turf(src))
-				if("shoes")
+				if ("shoes")
 					if (uses >= 2)
 						uses -= 2
 						new /obj/item/clothing/shoes/syndigaloshes(get_turf(src))
-				if("card")
+				if ("card")
 					if (src.uses >= 3)
 						src.uses -= 3
 						new /obj/item/weapon/card/id/syndicate(get_turf(src))
-				if("emag")
+				if ("emag")
 					if (src.uses >= 3)
 						src.uses -= 3
 						new /obj/item/weapon/card/emag(get_turf(src))
-				if("imp_freedom")
+				if ("imp_freedom")
 					if (src.uses >= 3)
 						src.uses -= 3
 						var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(get_turf(src))
 						O.imp = new /obj/item/weapon/implant/freedom(O)
-				if("sleepypen")
+				if ("sleepypen")
 					if (src.uses >= 5)
 						src.uses -= 5
 						new /obj/item/weapon/pen/sleepypen(get_turf(src))
-				if("paralysispen")
+				if ("paralysispen")
 					if (src.uses >= 3)
 						src.uses -= 3
 						new /obj/item/device/flashlight/pen/paralysis(get_turf(src))
-				if("projector")
+				if ("projector")
 					if (src.uses >= 4)
 						src.uses -= 4
 						new /obj/item/device/chameleon(get_turf(src))
-				if("cloak")
+				if ("cloak")
 					if (src.uses >= 4)
 						if (ticker.mode.config_tag!="nuclear" || \
 							(input(currentUser,"Spawning a cloak in nuke is generally regarded as entirely dumb, are you sure?") in list("Confirm", "Abort")) == "Confirm" \
@@ -168,40 +168,40 @@ SYNDICATE UPLINK
 							if (src.uses >= 4)
 								src.uses -= 4
 								new /obj/item/weapon/cloaking_device(get_turf(src))
-				if("sword")
+				if ("sword")
 					if (src.uses >= 4)
 						src.uses -= 4
 						new /obj/item/weapon/melee/energy/sword(get_turf(src))
-				if("bomb")
+				if ("bomb")
 					if (src.uses >= 2)
 						src.uses -= 2
 						new /obj/item/weapon/plastique(get_turf(src))
-				if("powersink")
+				if ("powersink")
 					if (src.uses >= 5)
 						src.uses -= 5
 						new /obj/item/device/powersink(get_turf(src))
-				if("detomatix")
+				if ("detomatix")
 					if (src.uses >= 3)
 					 src.uses -= 3
 					 new /obj/item/weapon/cartridge/syndicate(get_turf(src))
-				if("space")
+				if ("space")
 					if (src.uses >= 3)
 					 src.uses -= 3
 					 new /obj/item/clothing/suit/space/syndicate(get_turf(src))
 					 new /obj/item/clothing/head/helmet/space/syndicate(get_turf(src))
-				if("lawmod")
+				if ("lawmod")
 					if (src.uses >= 7)
 						src.uses -= 7
 						new /obj/item/aiModule/syndicate(get_turf(src))
-				if("botchat")
+				if ("botchat")
 					if (src.uses >= 3)
 						src.uses -= 3
 						new /obj/item/device/radio/headset/traitor(get_turf(src))
-				if("toolbox")
-					if(uses)
+				if ("toolbox")
+					if (uses)
 						uses--
 						new /obj/item/weapon/storage/toolbox/syndicate(get_turf(src))
-				if("balloon")
+				if ("balloon")
 					if (src.uses >= 10)
 						uses -= 10
 						new /obj/item/toy/syndicateballoon(get_turf(src))

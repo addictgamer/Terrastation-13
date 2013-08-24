@@ -8,7 +8,7 @@
 	uses = 0
 
 	attack_self(mob/living/user as mob) //inversion
-		if(colour != "#FFFFFF" && shadeColour != "#000000")
+		if (colour != "#FFFFFF" && shadeColour != "#000000")
 			colour = "#FFFFFF"
 			shadeColour = "#000000"
 			user << "You will now draw in white and black with this crayon."

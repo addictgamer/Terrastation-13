@@ -24,9 +24,9 @@
 	attack_self(mob/user as mob)
 /*
 		switch(mode)
-			if(SYRINGE_DRAW)
+			if (SYRINGE_DRAW)
 				mode = SYRINGE_INJECT
-			if(SYRINGE_INJECT)
+			if (SYRINGE_INJECT)
 				mode = SYRINGE_DRAW
 */
 		mode = !mode
@@ -43,25 +43,25 @@
 		return
 
 	afterattack(obj/target, mob/user , flag)
-		if(!target.reagents) return
+		if (!target.reagents) return
 
 		switch(mode)
-			if(SYRINGE_DRAW)
+			if (SYRINGE_DRAW)
 
-				if(reagents.total_volume >= reagents.maximum_volume)
+				if (reagents.total_volume >= reagents.maximum_volume)
 					user << "\red The syringe is full."
 					return
 
-				if(ismob(target))
-					if(istype(target, /mob/living/carbon))//I Do not want it to suck 50 units out of people
+				if (ismob(target))
+					if (istype(target, /mob/living/carbon))//I Do not want it to suck 50 units out of people
 						usr << "This needle isn't designed for drawing blood."
 						return
 				else //if not mob
-					if(!target.reagents.total_volume)
+					if (!target.reagents.total_volume)
 						user << "\red [target] is empty."
 						return
 
-					if(!target.is_open_container() && !istype(target,/obj/reagent_dispensers))
+					if (!target.is_open_container() && !istype(target,/obj/reagent_dispensers))
 						user << "\red You cannot directly remove reagents from this object."
 						return
 
@@ -72,27 +72,27 @@
 					mode=!mode
 					update_icon()
 
-			if(SYRINGE_INJECT)
-				if(!reagents.total_volume)
+			if (SYRINGE_INJECT)
+				if (!reagents.total_volume)
 					user << "\red The Syringe is empty."
 					return
-				if(istype(target, /obj/item/weapon/implantcase/chem))
+				if (istype(target, /obj/item/weapon/implantcase/chem))
 					return
-				if(!target.is_open_container() && !ismob(target) && !istype(target, /obj/item/weapon/reagent_containers/food))
+				if (!target.is_open_container() && !ismob(target) && !istype(target, /obj/item/weapon/reagent_containers/food))
 					user << "\red You cannot directly fill this object."
 					return
-				if(target.reagents.total_volume >= target.reagents.maximum_volume)
+				if (target.reagents.total_volume >= target.reagents.maximum_volume)
 					user << "\red [target] is full."
 					return
 
-				if(ismob(target) && target != user)
+				if (ismob(target) && target != user)
 					for(var/mob/O in viewers(world.view, user))
 						O.show_message(text("\red <B>[] is trying to inject [] with a giant syringe!</B>", user, target), 1)
-					if(!do_mob(user, target, 300)) return
+					if (!do_mob(user, target, 300)) return
 					for(var/mob/O in viewers(world.view, user))
 						O.show_message(text("\red [] injects [] with a giant syringe!", user, target), 1)
 					src.reagents.reaction(target, INGEST)
-				if(ismob(target) && target == user)
+				if (ismob(target) && target == user)
 					src.reagents.reaction(target, INGEST)
 				spawn(5)
 					var/trans = src.reagents.trans_to(target, amount_per_transfer_from_this)
@@ -105,7 +105,7 @@
 
 	update_icon()
 		var/rounded_vol = round(reagents.total_volume,50)
-		if(ismob(loc))
+		if (ismob(loc))
 			var/mode_t
 			switch(mode)
 				if (SYRINGE_DRAW)

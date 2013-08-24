@@ -31,7 +31,7 @@
 		..()
 		if (!(usr in view(2)) && usr!=src.loc) return
 		usr << "\blue It contains:"
-		if(reagents && reagents.reagent_list.len)
+		if (reagents && reagents.reagent_list.len)
 			for(var/datum/reagent/R in reagents.reagent_list)
 				usr << "\blue [R.volume] units of [R.name]"
 		else
@@ -47,15 +47,15 @@
 
 	ex_act(severity)
 		switch(severity)
-			if(1.0)
+			if (1.0)
 				del(src)
 				return
-			if(2.0)
+			if (2.0)
 				if (prob(50))
 					new /obj/effects/water(src.loc)
 					del(src)
 					return
-			if(3.0)
+			if (3.0)
 				if (prob(5))
 					new /obj/effects/water(src.loc)
 					del(src)
@@ -64,6 +64,6 @@
 		return
 
 	blob_act()
-		if(prob(50))
+		if (prob(50))
 			new /obj/effects/water(src.loc)
 			del(src)

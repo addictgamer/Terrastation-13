@@ -12,11 +12,11 @@
 	active_power_usage = 60
 
 /obj/machinery/cell_charger/attackby(obj/item/weapon/W, mob/user)
-	if(stat & BROKEN)
+	if (stat & BROKEN)
 		return
 
-	if(istype(W, /obj/item/weapon/cell))
-		if(charging)
+	if (istype(W, /obj/item/weapon/cell))
+		if (charging)
 			user << "There is already a cell in the charger."
 			return
 		else
@@ -30,12 +30,12 @@
 /obj/machinery/cell_charger/proc/updateicon()
 	icon_state = "ccharger[charging ? 1 : 0]"
 
-	if(charging && !(stat & (BROKEN|NOPOWER)) )
+	if (charging && !(stat & (BROKEN|NOPOWER)) )
 
 		var/newlevel = 	round( charging.percent() * 4.0 / 99 )
 		//world << "nl: [newlevel]"
 
-		if(chargelevel != newlevel)
+		if (chargelevel != newlevel)
 
 			overlays = null
 			overlays += image('power.dmi', "ccharger-o[newlevel]")
@@ -46,7 +46,7 @@
 
 /obj/machinery/cell_charger/attack_hand(mob/user)
 
-	if(charging)
+	if (charging)
 		usr.put_in_hand(charging)
 		charging.add_fingerprint(user)
 		charging.updateicon()
@@ -61,7 +61,7 @@
 
 /obj/machinery/cell_charger/process()
 	//world << "ccpt [charging] [stat]"
-	if(!charging || (stat & (BROKEN|NOPOWER)) )
+	if (!charging || (stat & (BROKEN|NOPOWER)) )
 		return
 
 	var/added = charging.give(50)

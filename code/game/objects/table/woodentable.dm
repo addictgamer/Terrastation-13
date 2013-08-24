@@ -8,7 +8,7 @@
 
 	if (istype(W, /obj/item/weapon/grab))
 		var/obj/item/weapon/grab/G = W
-		if(G.state<2)
+		if (G.state<2)
 			user << "\red You need a better grip to do that!"
 			return
 		G.affecting.loc = src.loc
@@ -26,9 +26,9 @@
 		playsound(src.loc, 'Deconstruct.ogg', 50, 1)
 		del(src)
 		return
-	if(isrobot(user))
+	if (isrobot(user))
 		return
-	if(istype(W, /obj/item/weapon/melee/energy/blade))
+	if (istype(W, /obj/item/weapon/melee/energy/blade))
 		var/datum/effects/system/spark_spread/spark_system = new /datum/effects/system/spark_spread()
 		spark_system.set_up(5, 0, src.loc)
 		spark_system.start()
@@ -41,5 +41,5 @@
 		return
 
 	user.drop_item()
-	if(W && W.loc)	W.loc = src.loc
+	if (W && W.loc)	W.loc = src.loc
 	return

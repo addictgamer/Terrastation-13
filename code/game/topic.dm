@@ -7,10 +7,10 @@
 			x++
 		return x
 
-	else if(T == "players")
+	else if (T == "players")
 		var/n = 0
 		for(var/mob/M in world)
-			if(M.client)
+			if (M.client)
 				n++
 		return n
 
@@ -26,7 +26,7 @@
 		s["players"] = list()
 		var/n = 0
 		for(var/mob/M in world)
-			if(M.client)
+			if (M.client)
 				s["player[n]"] = M.client.key
 				n++
 		s["players"] = n

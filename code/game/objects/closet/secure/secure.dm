@@ -22,11 +22,11 @@
 	emp_act(severity)
 		for(var/obj/O in src)
 			O.emp_act(severity)
-		if(!broken)
-			if(prob(50/severity))
+		if (!broken)
+			if (prob(50/severity))
 				src.locked = !src.locked
-			if(prob(20/severity) && !opened)
-				if(!locked)
+			if (prob(20/severity) && !opened)
+				if (!locked)
 					open()
 				else
 					src.req_access = list()
@@ -76,7 +76,7 @@
 	bullet_act(var/obj/item/projectile/Proj)
 		health -= Proj.damage
 		..()
-		if(health <= 0)
+		if (health <= 0)
 			for (var/atom/movable/A as mob|obj in src)
 				A.loc = src.loc
 			del(src)
@@ -92,15 +92,15 @@
 			user.drop_item()
 			if (W)
 				W.loc = src.loc
-		else if(src.broken)
+		else if (src.broken)
 			user << "\red It appears to be broken."
 			return
-		else if( (istype(W, /obj/item/weapon/card/emag)||istype(W, /obj/item/weapon/melee/energy/blade)) && !src.broken)
+		else if ( (istype(W, /obj/item/weapon/card/emag)||istype(W, /obj/item/weapon/melee/energy/blade)) && !src.broken)
 			broken = 1
 			locked = 0
 			desc = "It appears to be broken."
 			icon_state = src.icon_broken
-			if(istype(W, /obj/item/weapon/melee/energy/blade))
+			if (istype(W, /obj/item/weapon/melee/energy/blade))
 				var/datum/effects/system/spark_spread/spark_system = new /datum/effects/system/spark_spread()
 				spark_system.set_up(5, 0, src.loc)
 				spark_system.start()
@@ -111,12 +111,12 @@
 			else
 				for(var/mob/O in viewers(user, 3))
 					O.show_message(text("\blue The locker has been broken by [] with an electromagnetic card!", user), 1, text("You hear a faint electrical spark."), 2)
-		else if(src.allowed(user))
+		else if (src.allowed(user))
 			src.locked = !src.locked
 			for(var/mob/O in viewers(user, 3))
 				if ((O.client && !( O.blinded )))
 					O << text("\blue The locker has been []locked by [].", (src.locked ? null : "un"), user)
-			if(src.locked)
+			if (src.locked)
 				src.icon_state = src.icon_locked
 			else
 				src.icon_state = src.icon_closed
@@ -136,7 +136,7 @@
 		return get_turf(src)
 
 	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-		if(air_group || (height==0) || wall_mounted) return 1
+		if (air_group || (height==0) || wall_mounted) return 1
 		return src.opened
 
 	MouseDrop_T(atom/movable/O as mob|obj, mob/user as mob)
@@ -144,9 +144,9 @@
 			return
 		if ((!( istype(O, /atom/movable) ) || O.anchored || get_dist(user, src) > 1 || get_dist(user, O) > 1 || user.contents.Find(src)))
 			return
-		if(!src.opened)
+		if (!src.opened)
 			return
-		if(istype(O, /obj/secure_closet) || istype(O, /obj/closet))
+		if (istype(O, /obj/secure_closet) || istype(O, /obj/closet))
 			return
 		step_towards(O, src.loc)
 		if (user != O)
@@ -182,7 +182,7 @@
 			for(var/obj/closet/closet in get_turf(src))
 				return 0
 			for(var/obj/secure_closet/closet in get_turf(src))
-				if(closet != src)
+				if (closet != src)
 					return 0
 			return 1
 
@@ -231,7 +231,7 @@
 					M.client.perspective = EYE_PERSPECTIVE
 					M.client.eye = src
 				M.loc = src
-			if(broken)
+			if (broken)
 				src.icon_state = src.icon_off
 			else
 				src.icon_state = src.icon_closed
@@ -248,7 +248,7 @@
 /obj/secure_closet/attack_hand(mob/user as mob)
 	src.add_fingerprint(user)
 	if (!src.opened && !src.locked)
-		if(!src.can_open())
+		if (!src.can_open())
 			return
 		//open it
 		for(var/obj/item/I in src)
@@ -261,8 +261,8 @@
 		src.icon_state = src.icon_opened
 		playsound(src.loc, 'click.ogg', 15, 1, -3)
 		src.opened = 1
-	else if(src.opened)
-		if(!src.can_close())
+	else if (src.opened)
+		if (!src.can_close())
 			return
 		//close it
 		for(var/obj/item/I in src.loc)

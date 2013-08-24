@@ -7,13 +7,13 @@ Doesn't work on other aliens/AI.*/
 
 
 /mob/living/carbon/alien/proc/powerc(X, Y)//Y is optional, checks for weed planting. X can be null.
-	if(stat)
+	if (stat)
 		src << "\green You must be conscious to do this."
 		return 0
-	else if(X&&toxloss < X)
+	else if (X&&toxloss < X)
 		src << "\green Not enough plasma stored."
 		return 0
-	else if(Y&&(!isturf(src.loc) || istype(src.loc, /turf/space)))
+	else if (Y&&(!isturf(src.loc) || istype(src.loc, /turf/space)))
 		src << "\green Bad place for a garden!"
 		return 0
 	else	return 1
@@ -23,7 +23,7 @@ Doesn't work on other aliens/AI.*/
 	set desc = "Plants some alien weeds"
 	set category = "Alien"
 
-	if(powerc(100,1))
+	if (powerc(100,1))
 		toxloss -= 100
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("\green <B>[src] has planted some alien weeds!</B>"), 1)
@@ -36,7 +36,7 @@ Doesn't work on other aliens/AI.*/
 	set desc = "Makes all nearby facehuggers follow you"
 	set category = "Alien"
 
-	if(powerc(5))
+	if (powerc(5))
 		toxloss -= 5
 		for(var/obj/alien/facehugger/F in range(8,src))
 			F.call_to(src)
@@ -48,10 +48,10 @@ Doesn't work on other aliens/AI.*/
 	set desc = "Whisper to someone"
 	set category = "Alien"
 
-	if(powerc(10))
+	if (powerc(10))
 		toxloss -= 10
 		var/msg = sanitize(input("Message:", "Alien Whisper") as text|null)
-		if(msg)
+		if (msg)
 			log_say("AlienWhisper: [key_name(src)]->[M.key] : [msg]")
 			M << "\green You hear a strange, alien voice in your head... \italic [msg]"
 			src << {"\green You said: "[msg]" to [M]"}
@@ -62,10 +62,10 @@ Doesn't work on other aliens/AI.*/
 	set desc = "Transfer Plasma to another alien"
 	set category = "Alien"
 
-	if(isalien(M))
+	if (isalien(M))
 		var/amount = input("Amount:", "Transfer Plasma to [M]") as num
 		if (amount)
-			if(powerc(amount))
+			if (powerc(amount))
 				if (get_dist(src,M) <= 1)
 					M.toxloss += amount
 					toxloss -= amount
@@ -91,17 +91,17 @@ I kind of like the right click only--the window version can get a little confusi
 	set desc = "Drench an object in acid, destroying it over time."
 	set category = "Alien"
 
-	if(powerc(200))//Check 1.
+	if (powerc(200))//Check 1.
 		var/list/xeno_target
 		xeno_target = list("Abort Command")
 		for(var/obj/O in view(1))
-			if(!O.unacidable)
+			if (!O.unacidable)
 				xeno_target.Add(O)
 		var/obj/A
 		A = input("Corrode which target?", "Targets", A) in xeno_target
-		if(!A == "Abort Command")
-			if(powerc(200))//Check 2.
-				if(A in view(1))//Check 3.
+		if (!A == "Abort Command")
+			if (powerc(200))//Check 2.
+				if (A in view(1))//Check 3.
 					toxloss -= 200
 					A.acid()
 				else
@@ -113,9 +113,9 @@ I kind of like the right click only--the window version can get a little confusi
 	set desc = "Drench an object in acid, destroying it over time."
 	set category = "Alien"
 
-	if(istype(O, /obj))
-		if(powerc(200))
-			if(!O.unacidable)
+	if (istype(O, /obj))
+		if (powerc(200))
+			if (!O.unacidable)
 				toxloss -= 200
 				O.acid()
 			else//So the aliens don't destroy energy fields/singularies/other aliens/etc with their acid.
@@ -126,49 +126,49 @@ I kind of like the right click only--the window version can get a little confusi
 	set name = "Crawl through Vent"
 	set desc = "Enter an air vent and crawl through the pipes."
 	set category = "Alien"
-//	if(!istype(V,/obj/machinery/atmoalter/siphs/fullairsiphon/air_vent))
+//	if (!istype(V,/obj/machinery/atmoalter/siphs/fullairsiphon/air_vent))
 //		return
 
-	if(powerc())
+	if (powerc())
 		var/obj/machinery/atmospherics/unary/vent_pump/vent_found
 		for(var/obj/machinery/atmospherics/unary/vent_pump/v in range(1,src))
-			if(!v.welded)
+			if (!v.welded)
 				vent_found = v
 			else
 				src << "\red That vent is welded."
-		if(vent_found)
+		if (vent_found)
 			var/list/vents = list()
-			if(vent_found.network&&vent_found.network.normal_members.len)
+			if (vent_found.network&&vent_found.network.normal_members.len)
 				for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in vent_found.network.normal_members)
-					if(temp_vent.loc == loc)
+					if (temp_vent.loc == loc)
 						continue
-					if(temp_vent.welded)
+					if (temp_vent.welded)
 						continue
 					vents.Add(temp_vent)
 				var/list/choices = list()
 				for(var/obj/machinery/atmospherics/unary/vent_pump/vent in vents)
-					if(vent.loc.z != loc.z)
+					if (vent.loc.z != loc.z)
 						continue
-					if(vent.welded)
+					if (vent.welded)
 						continue
 					var/atom/a = get_turf_loc(vent)
 					choices.Add(a.loc)
 				var/turf/startloc = loc
 				var/obj/selection = input("Select a destination.", "Duct System") in choices
 				var/selection_position = choices.Find(selection)
-				if(loc==startloc)
+				if (loc==startloc)
 
 					// Hacky way of hopefully preventing a runtime error from happening
-					if(vents.len < selection_position)
+					if (vents.len < selection_position)
 						vents.len = selection_position
 
 					var/obj/machinery/atmospherics/unary/vent_pump/target_vent = vents[selection_position]
-					if(target_vent)
+					if (target_vent)
 						for(var/mob/O in viewers(src, null))
 							O.show_message(text("<B>[src] scrambles into the ventillation ducts!</B>"), 1)
 						var/list/huggers = list()
 						for(var/obj/alien/facehugger/F in view(3, src))
-							if(istype(F, /obj/alien/facehugger))
+							if (istype(F, /obj/alien/facehugger))
 								huggers.Add(F)
 						loc = vent_found
 
@@ -177,12 +177,12 @@ I kind of like the right click only--the window version can get a little confusi
 						var/travel_time = get_dist(loc, target_vent.loc)
 
 						spawn(round(travel_time/2))//give sound warning to anyone near the target vent
-							if(!target_vent.welded)
+							if (!target_vent.welded)
 								for(var/mob/O in hearers(target_vent, null))
 									O.show_message("You hear something crawling trough the ventilation pipes.",2)
 
 						spawn(travel_time)
-							if(target_vent.welded)//the vent can be welded while alien scrolled through the list or travelled.
+							if (target_vent.welded)//the vent can be welded while alien scrolled through the list or travelled.
 								target_vent = vent_found //travel back. No additional time required.
 								src << "\red The vent you were heading to appears to be welded."
 							loc = target_vent.loc

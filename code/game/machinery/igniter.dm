@@ -20,7 +20,7 @@
 	return
 
 /obj/machinery/igniter/attack_hand(mob/user as mob)
-	if(..())
+	if (..())
 		return
 	add_fingerprint(user)
 
@@ -41,7 +41,7 @@
 	icon_state = "igniter[on]"
 
 /obj/machinery/igniter/power_change()
-	if(!( stat & NOPOWER) )
+	if (!( stat & NOPOWER) )
 		icon_state = "igniter[src.on]"
 	else
 		icon_state = "igniter0"

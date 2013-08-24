@@ -67,21 +67,21 @@ PE|PE|PE
 
 	examine()
 		switch(src.construction_state)
-			if(0)
+			if (0)
 				src.desc = text("Part of a Particle Accelerator, looks like its not attached to the flooring")
-			if(1)
+			if (1)
 				src.desc = text("Part of a Particle Accelerator, looks like its missing some cables")
-			if(2)
+			if (2)
 				src.desc = text("Part of a Particle Accelerator, looks like its got an open panel")
-			if(3)
+			if (3)
 				src.desc = text("Part of a Particle Accelerator, looks like its all setup")
 		..()
 		return
 
 
 	attackby(obj/item/W, mob/user)
-		if(istool(W))
-			if(src.process_tool_hit(W,user))
+		if (istool(W))
+			if (src.process_tool_hit(W,user))
 				return
 		..()
 		return
@@ -93,54 +93,54 @@ PE|PE|PE
 
 
 		process_tool_hit(var/obj/O, var/mob/user)
-			if(!(O) || !(user))
+			if (!(O) || !(user))
 				return 0
-			if(!ismob(user) || !isobj(O))
+			if (!ismob(user) || !isobj(O))
 				return 0
 			var/temp_state = src.construction_state
 			switch(src.construction_state)//TODO:Might be more interesting to have it need several parts rather than a single list of steps
-				if(0)
-					if(iswrench(O))
+				if (0)
+					if (iswrench(O))
 						playsound(src.loc, 'Ratchet.ogg', 75, 1)
 						src.anchored = 1
 						user.visible_message("[user.name] secures the [src.name] to the floor.", \
 							"You secure the external bolts.")
 						temp_state++
-				if(1)
-					if(iswrench(O))
+				if (1)
+					if (iswrench(O))
 						playsound(src.loc, 'Ratchet.ogg', 75, 1)
 						src.anchored = 0
 						user.visible_message("[user.name] detaches the [src.name] from the floor.", \
 							"You remove the external bolts.")
 						temp_state--
-					else if(iscoil(O))
-						if(O:use(1))
+					else if (iscoil(O))
+						if (O:use(1))
 							user.visible_message("[user.name] adds wires to the [src.name].", \
 								"You add some wires.")
 							temp_state++
-				if(2)
-					if(iswirecutter(O))//TODO:Shock user if its on?
+				if (2)
+					if (iswirecutter(O))//TODO:Shock user if its on?
 						user.visible_message("[user.name] removes some wires from the [src.name].", \
 							"You remove some wires.")
 						temp_state--
-					else if(isscrewdriver(O))
+					else if (isscrewdriver(O))
 						user.visible_message("[user.name] closes the [src.name]'s access panel.", \
 							"You close the access panel.")
 						temp_state++
-				if(3)
-					if(isscrewdriver(O))
+				if (3)
+					if (isscrewdriver(O))
 						user.visible_message("[user.name] opens the [src.name]'s access panel.", \
 							"You open the access panel.")
 						temp_state--
-			if(temp_state == src.construction_state)//Nothing changed
+			if (temp_state == src.construction_state)//Nothing changed
 				return 0
 			else
-				if(src.construction_state >= 3)//Was taken apart, update state
+				if (src.construction_state >= 3)//Was taken apart, update state
 					update_state()
-					if(use_power)
+					if (use_power)
 						use_power = 0
 				src.construction_state = temp_state
-				if(src.construction_state >= 3)
+				if (src.construction_state >= 3)
 					use_power = 1
 				update_icon()
 				return 1

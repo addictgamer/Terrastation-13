@@ -31,18 +31,18 @@
 			var/strength = 1
 			var/turf/ground_zero = get_turf(loc)
 			loc = null
-			if(air_contents.temperature > (T0C + 400))
+			if (air_contents.temperature > (T0C + 400))
 				strength = fuel_moles/15
 				explosion(ground_zero, strength, strength*2, strength*3, strength*4)
-			else if(air_contents.temperature > (T0C + 250))
+			else if (air_contents.temperature > (T0C + 250))
 				strength = fuel_moles/20
 				explosion(ground_zero, 0, strength, strength*2, strength*3)
-			else if(air_contents.temperature > (T0C + 100))
+			else if (air_contents.temperature > (T0C + 100))
 				strength = fuel_moles/25
 				explosion(ground_zero, 0, 0, strength, strength*3)
 			else
 				ground_zero.assume_air(air_contents)
 				ground_zero.hotspot_expose(1000, 125)
-			if(src.master)
+			if (src.master)
 				del(src.master)
 			del(src)

@@ -14,15 +14,15 @@
 	var/dispenser = 0
 
 /obj/item/weapon/handcuffs/attack(mob/M as mob, mob/user as mob)
-	if(istype(src, /obj/item/weapon/handcuffs/cyborg) && isrobot(user))
-		if(!M.handcuffed)
+	if (istype(src, /obj/item/weapon/handcuffs/cyborg) && isrobot(user))
+		if (!M.handcuffed)
 			var/turf/p_loc = user.loc
 			var/turf/p_loc_m = M.loc
 			playsound(src.loc, 'handcuffs.ogg', 30, 1, -2)
 			for(var/mob/O in viewers(user, null))
 				O.show_message("\red <B>[user] is trying to put handcuffs on [M]!</B>", 1)
 			spawn(30)
-				if(p_loc == user.loc && p_loc_m == M.loc)
+				if (p_loc == user.loc && p_loc_m == M.loc)
 					M.handcuffed = new /obj/item/weapon/handcuffs(M)
 
 	else

@@ -49,7 +49,7 @@
 		del(src)
 
 	update_icon()
-		if(src.destroyed)
+		if (src.destroyed)
 			src.icon_state = "glassboxb[src.occupied]"
 		else
 			src.icon_state = "glassbox[src.occupied]"

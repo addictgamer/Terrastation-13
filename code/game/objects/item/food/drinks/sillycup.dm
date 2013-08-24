@@ -10,7 +10,7 @@
 		src.pixel_x = rand(-10.0, 10)
 		src.pixel_y = rand(-10.0, 10)
 	on_reagent_change()
-		if(reagents.total_volume)
+		if (reagents.total_volume)
 			icon_state = "water_cup"
 		else
 			icon_state = "water_cup_e"

@@ -15,21 +15,21 @@
 
 		var/mob/living/carbon/human/user = usr
 
-		if(!istype(user))
+		if (!istype(user))
 			user << "\red This helmet is not rated for nonhuman use."
 			return
 
-		if(user.head != src)
+		if (user.head != src)
 			user << "\red Can't engage the seals without wearing the helmet."
 			return
 
-		if(!user.wear_suit || !istype(user.wear_suit,/obj/item/clothing/suit/powered))
+		if (!user.wear_suit || !istype(user.wear_suit,/obj/item/clothing/suit/powered))
 			user << "\red This helmet can only couple with powered armor."
 			return
 
 		var/obj/item/clothing/suit/powered/armor = user.wear_suit
 
-		if(!armor.atmoseal || !istype(armor.atmoseal, /obj/item/powerarmor/atmoseal/optional))
+		if (!armor.atmoseal || !istype(armor.atmoseal, /obj/item/powerarmor/atmoseal/optional))
 			user << "\red This armor's atmospheric seals are missing or incompatible."
 			return
 

@@ -10,14 +10,14 @@
 
 	ex_act(severity)
 		switch(severity)
-			if(1.0)
+			if (1.0)
 				del(src)
 				return
-			if(2.0)
+			if (2.0)
 				if (prob(50))
 					del(src)
 					return
-			if(3.0)
+			if (3.0)
 				if (prob(25))
 					src.icon_state = "rackbroken"
 					src.density = 0
@@ -25,17 +25,17 @@
 		return
 
 	blob_act()
-		if(prob(75))
+		if (prob(75))
 			del(src)
 			return
-		else if(prob(50))
+		else if (prob(50))
 			src.icon_state = "rackbroken"
 			src.density = 0
 			return
 
 	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-		if(air_group || (height==0)) return 1
-		if(istype(mover) && mover.checkpass(PASSTABLE))
+		if (air_group || (height==0)) return 1
+		if (istype(mover) && mover.checkpass(PASSTABLE))
 			return 1
 		else
 			return 0
@@ -43,7 +43,7 @@
 	MouseDrop_T(obj/O as obj, mob/user as mob)
 		if ((!( istype(O, /obj/item/weapon) ) || user.equipped() != O))
 			return
-		if(isrobot(user))
+		if (isrobot(user))
 			return
 		user.drop_item()
 		if (O.loc != src.loc)
@@ -57,14 +57,14 @@
 			//SN src = null
 			del(src)
 			return
-		if(isrobot(user))
+		if (isrobot(user))
 			return
 		user.drop_item()
-		if(W && W.loc)	W.loc = src.loc
+		if (W && W.loc)	W.loc = src.loc
 		return
 
 	meteorhit(obj/O as obj)
-		if(prob(75))
+		if (prob(75))
 			del(src)
 			return
 		else

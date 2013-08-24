@@ -10,12 +10,12 @@ datum/controller/game_controller
 		process()
 
 	setup()
-		if(master_controller && (master_controller != src))
+		if (master_controller && (master_controller != src))
 			del(src)
 			return
 			//There can be only one master.
 
-		if(!air_master)
+		if (!air_master)
 			air_master = new /datum/controller/air_system()
 			air_master.setup()
 
@@ -31,11 +31,11 @@ datum/controller/game_controller
 
 		emergency_shuttle = new /datum/shuttle_controller/emergency_shuttle()
 
-		if(!ticker)
+		if (!ticker)
 			ticker = new /datum/controller/gameticker()
 
 		/*for(var/client/c in world)
-			if(!c.playing_lobby_music)
+			if (!c.playing_lobby_music)
 				c.music = sound('lobby3.mid')
 				c << sound(c.music,1)
 				c.playing_lobby_music = 1
@@ -46,9 +46,9 @@ datum/controller/game_controller
 
 	setup_objects()
 
-		//if(ticker.current_state == GAME_STATE_PREGAME || ticker.current_state == GAME_STATE_SETTING_UP)
+		//if (ticker.current_state == GAME_STATE_PREGAME || ticker.current_state == GAME_STATE_SETTING_UP)
 		/*for(var/client/c in world)
-			if(!c.playing_lobby_music)
+			if (!c.playing_lobby_music)
 				c.music = sound('lobby3.mid')
 				c << sound(c.music,1)
 				c.playing_lobby_music = 1
@@ -61,9 +61,9 @@ datum/controller/game_controller
 
 
 
-		//if(ticker.current_state == GAME_STATE_PREGAME || ticker.current_state == GAME_STATE_SETTING_UP)
+		//if (ticker.current_state == GAME_STATE_PREGAME || ticker.current_state == GAME_STATE_SETTING_UP)
 		/*for(var/client/c in world)
-			if(!c.playing_lobby_music)
+			if (!c.playing_lobby_music)
 				c.music = sound('lobby3.mid')
 				c << sound(c.music,1)
 				c.playing_lobby_music = 1
@@ -74,9 +74,9 @@ datum/controller/game_controller
 
 
 
-		//if(ticker.current_state == GAME_STATE_PREGAME || ticker.current_state == GAME_STATE_SETTING_UP)
+		//if (ticker.current_state == GAME_STATE_PREGAME || ticker.current_state == GAME_STATE_SETTING_UP)
 		/*for(var/client/c in world)
-			if(!c.playing_lobby_music)
+			if (!c.playing_lobby_music)
 				c.music = sound('lobby3.mid')
 				c << sound(c.music,1)
 				c.playing_lobby_music = 1
@@ -87,9 +87,9 @@ datum/controller/game_controller
 
 
 
-		//if(ticker.current_state == GAME_STATE_PREGAME || ticker.current_state == GAME_STATE_SETTING_UP)
+		//if (ticker.current_state == GAME_STATE_PREGAME || ticker.current_state == GAME_STATE_SETTING_UP)
 		/*for(var/client/c in world)
-			if(!c.playing_lobby_music)
+			if (!c.playing_lobby_music)
 				c.music = sound('lobby3.mid')
 				c << sound(c.music,1)
 				c.playing_lobby_music = 1
@@ -109,9 +109,9 @@ datum/controller/game_controller
 
 
 
-		//if(ticker.current_state == GAME_STATE_PREGAME || ticker.current_state == GAME_STATE_SETTING_UP)
+		//if (ticker.current_state == GAME_STATE_PREGAME || ticker.current_state == GAME_STATE_SETTING_UP)
 		/*for(var/client/c in world)
-			if(!c.playing_lobby_music)
+			if (!c.playing_lobby_music)
 				c.music = sound('lobby3.mid')
 				c << sound(c.music,1)
 				c.playing_lobby_music = 1
@@ -122,16 +122,16 @@ datum/controller/game_controller
 
 	process()
 
-		if(!processing)
+		if (!processing)
 			return 0
 		//world << "Processing"
 
-		/*if(ticker.current_state == GAME_STATE_PREGAME || ticker.current_state == GAME_STATE_SETTING_UP)
+		/*if (ticker.current_state == GAME_STATE_PREGAME || ticker.current_state == GAME_STATE_SETTING_UP)
 			//world << "GAME_STATE_PREGAME || GAME_STATE_SETTING_UP"
 			var/num = 0
 			for(var/client/c in world)
 				//world << "num = [num]"
-				if(!c.playing_lobby_music)
+				if (!c.playing_lobby_music)
 					c.music = sound('lobby3.mid')
 					c << sound(c.music,1)
 					c.playing_lobby_music = 1
@@ -160,9 +160,9 @@ datum/controller/game_controller
 			D.process()
 
 		for(var/obj/machinery/machine in machines)
-			if(machine)
+			if (machine)
 				machine.process()
-				if(machine && machine.use_power)
+				if (machine && machine.use_power)
 					machine.auto_use_power()
 
 
@@ -190,7 +190,7 @@ datum/controller/game_controller
 
 		spawn process()
 
-		if(!already_processing_trade)
+		if (!already_processing_trade)
 			already_processing_trade = 1
 			tradeshuttleprocess()
 
@@ -206,11 +206,11 @@ datum/controller/game_controller
 
 	//world << "Processing Trade Shuttle"
 
-	/*if(trade_shuttle_moving)//If the trade shuttle is moving.
+	/*if (trade_shuttle_moving)//If the trade shuttle is moving.
 		world << "Trade shuttle alreayd moving."
 		return
 
-	if(trade_shuttle_move_timerleft <= 0) //If finished timing...
+	if (trade_shuttle_move_timerleft <= 0) //If finished timing...
 		world << "Trade shuttle now moving!"
 
 		trade_process()

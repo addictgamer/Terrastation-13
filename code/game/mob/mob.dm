@@ -282,7 +282,7 @@ the mob is also allowed to move without any sort of restriction. For instance, i
 	set category = "Admin"
 	set hidden = 1
 
-	if(!loc) return 0
+	if (!loc) return 0
 
 	var/datum/gas_mixture/environment = loc.return_air()
 
@@ -299,82 +299,82 @@ the mob is also allowed to move without any sort of restriction. For instance, i
 
 // fun if you want to typecast humans/monkeys/etc without writing long path-filled lines.
 /proc/ishuman(A)
-	if(istype(A, /mob/living/carbon/human))
+	if (istype(A, /mob/living/carbon/human))
 		return 1
 	return 0
 
 /proc/ismonkey(A)
-	if(A && istype(A, /mob/living/carbon/monkey))
+	if (A && istype(A, /mob/living/carbon/monkey))
 		return 1
 	return 0
 
 /proc/isbrain(A)
-	if(A && istype(A, /mob/living/carbon/brain))
+	if (A && istype(A, /mob/living/carbon/brain))
 		return 1
 	return 0
 
 /proc/isalien(A)
-	if(istype(A, /mob/living/carbon/alien))
+	if (istype(A, /mob/living/carbon/alien))
 		return 1
 	return 0
 
 /proc/isalienadult(A)
-	if(istype(A, /mob/living/carbon/alien/humanoid))
+	if (istype(A, /mob/living/carbon/alien/humanoid))
 		return 1
 	return 0
 
 /proc/islarva(A)
-	if(istype(A, /mob/living/carbon/alien/larva))
+	if (istype(A, /mob/living/carbon/alien/larva))
 		return 1
 	return 0
 
 /proc/isrobot(A)
-	if(istype(A, /mob/living/silicon/robot))
+	if (istype(A, /mob/living/silicon/robot))
 		return 1
 	return 0
 
 /proc/isanimal(A)
-	if(istype(A, /mob/living/simple_animal))
+	if (istype(A, /mob/living/simple_animal))
 		return 1
 	return 0
 
 /proc/iscorgi(A)
-	if(istype(A, /mob/living/simple_animal/corgi))
+	if (istype(A, /mob/living/simple_animal/corgi))
 		return 1
 	return 0
 
 /*proc/ishivebot(A)
-	if(A && istype(A, /mob/living/silicon/hivebot))
+	if (A && istype(A, /mob/living/silicon/hivebot))
 		return 1
 	return 0*/
 
 /*proc/ishivemainframe(A)
-	if(A && istype(A, /mob/living/silicon/hive_mainframe))
+	if (A && istype(A, /mob/living/silicon/hive_mainframe))
 		return 1
 	return 0*/
 
 /proc/isAI(A)
-	if(istype(A, /mob/living/silicon/ai))
+	if (istype(A, /mob/living/silicon/ai))
 		return 1
 	return 0
 
 /proc/iscarbon(A)
-	if(istype(A, /mob/living/carbon))
+	if (istype(A, /mob/living/carbon))
 		return 1
 	return 0
 
 /proc/issilicon(A)
-	if(istype(A, /mob/living/silicon))
+	if (istype(A, /mob/living/silicon))
 		return 1
 	return 0
 
 /proc/isliving(A)
-	if(istype(A, /mob/living))
+	if (istype(A, /mob/living))
 		return 1
 	return 0
 
 proc/isobserver(A)
-	if(istype(A, /mob/dead/observer))
+	if (istype(A, /mob/dead/observer))
 		return 1
 	return 0
 
@@ -388,7 +388,7 @@ proc/isobserver(A)
 	if (probability == 100)
 		return zone
 	switch(zone)
-		if("chest")
+		if ("chest")
 			if (prob(probability))
 				return "chest"
 			else
@@ -408,7 +408,7 @@ proc/isobserver(A)
 				else
 					return "chest"
 
-		if("groin")
+		if ("groin")
 			if (prob(probability * 0.9))
 				return "groin"
 			else
@@ -425,7 +425,7 @@ proc/isobserver(A)
 					return "r_hand"
 				else
 					return "groin"
-		if("head")
+		if ("head")
 			if (prob(probability * 0.75))
 				return "head"
 			else
@@ -433,7 +433,7 @@ proc/isobserver(A)
 					return "chest"
 				else
 					return "head"
-		if("l_arm")
+		if ("l_arm")
 			if (prob(probability * 0.75))
 				return "l_arm"
 			else
@@ -441,7 +441,7 @@ proc/isobserver(A)
 					return "chest"
 				else
 					return "l_arm"
-		if("r_arm")
+		if ("r_arm")
 			if (prob(probability * 0.75))
 				return "r_arm"
 			else
@@ -449,7 +449,7 @@ proc/isobserver(A)
 					return "chest"
 				else
 					return "r_arm"
-		if("r_leg")
+		if ("r_leg")
 			if (prob(probability * 0.75))
 				return "r_leg"
 			else
@@ -457,7 +457,7 @@ proc/isobserver(A)
 					return "groin"
 				else
 					return "r_leg"
-		if("l_leg")
+		if ("l_leg")
 			if (prob(probability * 0.75))
 				return "l_leg"
 			else
@@ -465,7 +465,7 @@ proc/isobserver(A)
 					return "groin"
 				else
 					return "l_leg"
-		if("l_hand")
+		if ("l_hand")
 			if (prob(probability * 0.5))
 				return "l_hand"
 			else
@@ -481,7 +481,7 @@ proc/isobserver(A)
 				else
 					return "l_hand"
 
-		if("r_hand")
+		if ("r_hand")
 			if (prob(probability * 0.5))
 				return "r_hand"
 			else
@@ -497,7 +497,7 @@ proc/isobserver(A)
 				else
 					return "r_hand"
 
-		if("l_foot")
+		if ("l_foot")
 			if (prob(probability * 0.25))
 				return "l_foot"
 			else
@@ -509,7 +509,7 @@ proc/isobserver(A)
 						return "r_foot"
 					else
 						return "l_foot"
-		if("r_foot")
+		if ("r_foot")
 			if (prob(probability * 0.25))
 				return "r_foot"
 			else
@@ -582,7 +582,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	while(p <= n)
 		var/n_letter
 		var/n_mod = rand(1,4)
-		if(p+n_mod>n+1)
+		if (p+n_mod>n+1)
 			n_letter = copytext(te, p, n+1)
 		else
 			n_letter = copytext(te, p, p+n_mod)
@@ -598,7 +598,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	return copytext(sanitize(t),1,MAX_MESSAGE_LEN)
 
 /proc/shake_camera(mob/M, duration, strength=1)
-	if(!M || !M.client || M.shakecamera)
+	if (!M || !M.client || M.shakecamera)
 		return
 	spawn(1)
 		var/oldeye=M.client.eye
@@ -620,7 +620,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	return
 
 /mob/proc/show_message(msg, type, alt, alt_type)//Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
-	if(!client)	return
+	if (!client)	return
 	if (type)
 		if ((type & 1 && (sdisabilities & 1 || (blinded || paralysis))))//Vision related
 			if (!( alt ))
@@ -652,7 +652,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 /mob/visible_message(var/message, var/self_message, var/blind_message)
 	for(var/mob/M in viewers(src))
 		var/msg = message
-		if(self_message && M==src)
+		if (self_message && M==src)
 			msg = self_message
 		M.show_message( msg, 1, blind_message, 2)
 
@@ -675,7 +675,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	return 0
 
 /mob/proc/Life()
-	if(organStructure)
+	if (organStructure)
 		organStructure.ProcessOrgans()
 	return
 
@@ -694,7 +694,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 /mob/proc/db_click(text, t1)
 	var/obj/item/weapon/W = equipped()
 	switch(text)
-		if("mask")
+		if ("mask")
 			if (wear_mask)
 				return
 			if (!( istype(W, /obj/item/clothing/mask) ))
@@ -702,7 +702,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 			u_equip(W)
 			wear_mask = W
 			W.equipped(src, text)
-		if("back")
+		if ("back")
 			if ((back || !( istype(W, /obj/item/weapon) )))
 				return
 			if (!( W.flags & 1 ))
@@ -721,9 +721,9 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	return
 
 /mob/proc/drop_from_slot(var/obj/item/item)
-	if(!item)
+	if (!item)
 		return
-	if(!(item in contents))
+	if (!(item in contents))
 		return
 	u_equip(item)
 	if (client)
@@ -742,9 +742,9 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	var/obj/item/W = equipped()
 
 	if (W)
-		if(W.twohanded)
-			if(W.wielded)
-				if(hand)
+		if (W.twohanded)
+			if (W.wielded)
+				if (hand)
 					var/obj/item/weapon/offhand/O = r_hand
 					del O
 				else
@@ -788,7 +788,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 		return r_hand
 
 /mob/proc/put_in_hand(var/obj/item/I)
-	if(!I) return
+	if (!I) return
 	I.loc = src
 	if (hand)
 		l_hand = I
@@ -821,9 +821,9 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	return
 
 /mob/proc/equipped()
-	if(issilicon(src))
-		if(isrobot(src))
-			if(src:module_active)
+	if (issilicon(src))
+		if (isrobot(src))
+			if (src:module_active)
 				return src:module_active
 	else
 		if (hand)
@@ -922,7 +922,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 /mob/verb/memory()
 	set name = "Notes"
 	set category = "OOC"
-	if(mind)
+	if (mind)
 		mind.show_memory(src)
 	else
 		src << "The game appears to have misplaced your mind datum, so we can't show you your notes."
@@ -934,7 +934,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	msg = copytext(msg, 1, MAX_MESSAGE_LEN)
 	msg = sanitize(msg)
 
-	if(mind)
+	if (mind)
 		mind.store_memory(msg)
 	else
 		src << "The game appears to have misplaced your mind datum, so we can't show you your notes."
@@ -974,26 +974,26 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 
 	usr << "\blue <B>Please roleplay correctly!</B>"
 
-	if(!client)
+	if (!client)
 		log_game("[usr.key] AM failed due to disconnect.")
 		return
 	for(var/obj/screen/t in usr.client.screen)
 		if (t.loc == null)
 			//t = null
 			del(t)
-	if(!client)
+	if (!client)
 		log_game("[usr.key] AM failed due to disconnect.")
 		return
 
 	var/mob/new_player/M = new /mob/new_player()
-	if(!client)
+	if (!client)
 		log_game("[usr.key] AM failed due to disconnect.")
 		del(M)
 		return
 
 
 
-	if(client && client.holder && (client.holder.state == 2))
+	if (client && client.holder && (client.holder.state == 2))
 		client.admin_play()
 		return
 
@@ -1110,15 +1110,15 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 		if (eye)
 			reset_view(eye)
 			client.adminobs = 1
-			if(eye == client.mob)
+			if (eye == client.mob)
 				client.adminobs = 0
 		else
 			reset_view(null)
 			client.adminobs = 0
 	else
-		if(ticker)
+		if (ticker)
 //		 world << "there's a ticker"
-			if(ticker.mode.name == "AI malfunction")
+			if (ticker.mode.name == "AI malfunction")
 //				world << "ticker says its malf"
 				var/datum/game_mode/malfunction/malf = ticker.mode
 				for (var/datum/mind/B in malf.malf_ai)
@@ -1137,14 +1137,14 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	set category = "OOC"
 	reset_view(null)
 	machine = null
-	if(istype(src, /mob/living))
-		if(src:cameraFollow)
+	if (istype(src, /mob/living))
+		if (src:cameraFollow)
 			src:cameraFollow = null
 
 /mob/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height==0)) return 1
+	if (air_group || (height==0)) return 1
 
-	if(ismob(mover))
+	if (ismob(mover))
 		var/mob/moving_mob = mover
 		if ((other_mobs && moving_mob.other_mobs))
 			return 1
@@ -1157,15 +1157,15 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	return 1
 
 /mob/Topic(href, href_list)
-	if(href_list["mach_close"])
+	if (href_list["mach_close"])
 		var/t1 = text("window=[href_list["mach_close"]]")
 		machine = null
 		src << browse(null, t1)
 
-	if(href_list["priv_msg"])
+	if (href_list["priv_msg"])
 		var/mob/M = locate(href_list["priv_msg"])
-		if(M)
-			if(muted)
+		if (M)
+			if (muted)
 				src << "You are muted. Have a nice day"
 				return
 			if (!ismob(M))
@@ -1189,8 +1189,8 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 
 			//we don't use message_admins here because the sender/receiver might get it too
 			for (var/mob/K in world)
-				if(K && usr)
-					if(K.client && K.client.holder && K.key != usr.key && K.key != M.key)
+				if (K && usr)
+					if (K.client && K.client.holder && K.key != usr.key && K.key != M.key)
 						K << "<b><font color='blue'>PM: [key_name(usr, K)]->[key_name(M, K)]:</b> \blue [t]</font>"
 	..()
 	return
@@ -1200,7 +1200,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 
 
 /mob/proc/UpdateLuminosity()
-	if(src.total_luminosity == src.last_luminosity)	return 0//nothing to do here
+	if (src.total_luminosity == src.last_luminosity)	return 0//nothing to do here
 	src.last_luminosity = src.total_luminosity
 	sd_SetLuminosity(min(src.total_luminosity,7))//Current hardcode max at 7, should likely be a const somewhere else
 	return 1
@@ -1208,11 +1208,11 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 
 /mob/MouseDrop(mob/M as mob)
 	..()
-	if(M != usr) return
-	if(usr == src) return
-	if(get_dist(usr,src) > 1) return
-	if(istype(M,/mob/living/silicon/ai)) return
-	if(LinkBlocked(usr.loc,loc)) return
+	if (M != usr) return
+	if (usr == src) return
+	if (get_dist(usr,src) > 1) return
+	if (istype(M,/mob/living/silicon/ai)) return
+	if (LinkBlocked(usr.loc,loc)) return
 	show_inv(usr)
 
 
@@ -1261,9 +1261,9 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 		return
 	if (!( anchored ))
 		usr.pulling = src
-		if(ismob(src))
+		if (ismob(src))
 			var/mob/M = src
-			if(!istype(usr, /mob/living/carbon))
+			if (!istype(usr, /mob/living/carbon))
 				M.LAssailant = null
 			else
 				M.LAssailant = usr
@@ -1295,7 +1295,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	..()
 
 /client/Northeast()
-	if(istype(mob, /mob/living/carbon))
+	if (istype(mob, /mob/living/carbon))
 		mob:swap_hand()
 	return
 
@@ -1306,7 +1306,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	return
 
 /client/Northwest()
-	if(!isrobot(mob))
+	if (!isrobot(mob))
 		mob.drop_item_v()
 	return
 
@@ -1318,13 +1318,13 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	return
 
 /client/Move(n, direct)
-	if(mob.control_object)					// Hacking in something to control objects -- TLE
-		if(mob.control_object.density)
+	if (mob.control_object)					// Hacking in something to control objects -- TLE
+		if (mob.control_object.density)
 			step(mob.control_object,direct)
 			mob.control_object.dir = direct
 		else
 			mob.control_object.loc = get_step(mob.control_object,direct)
-	if(isobserver(mob))
+	if (isobserver(mob))
 		return mob.Move(n,direct)
 	if (moving)
 		return 0
@@ -1335,17 +1335,17 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	if (mob.stat==2)
 		return
 
-	if(isAI(mob))
+	if (isAI(mob))
 		//var/mob/_mob as /mob/living/silicon/AI
 		//var/mov/living/silicon/ai/_mob as mob
 		//_mob = mob
-		//if(_mob.controlled_mecha == null)
+		//if (_mob.controlled_mecha == null)
 			//return AIMove(n,direct,mob)
 		return AIMove(n,direct,mob)
-//	if(ishivemainframe(mob))
+//	if (ishivemainframe(mob))
 //		return MainframeMove(n,direct,mob)
 
-	if(mob.anchored)/*If mob is not AI and is anchored. This means most anchored mobs will not be able to move.
+	if (mob.anchored)/*If mob is not AI and is anchored. This means most anchored mobs will not be able to move.
 	This is a fix for ninja energy_net to where mobs can not move but can still act to destroy it.
 	If needed, this should be changed in the appropriate manner. I think the only time you would need to anchor a mob
 	is when they are not meant to move.*/
@@ -1354,34 +1354,34 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	if (mob.incorporeal_move)
 		var/turf/mobloc = get_turf(mob.loc)
 		switch(mob.incorporeal_move)//1 is for all mobs. 2 is for ninjas only.
-			if(1)
+			if (1)
 				mob.loc = get_step(mob, direct)
 				mob.dir = direct
-			if(2)
+			if (2)
 				//For Ninja crazy porting powers. Moves either 1 or 2 tiles.
-				if(prob(50))
+				if (prob(50))
 					var/locx
 					var/locy
 					switch(direct)
-						if(NORTH)
+						if (NORTH)
 							locx = mobloc.x
 							locy = (mobloc.y+2)
-							if(locy>world.maxy)
+							if (locy>world.maxy)
 								return
-						if(SOUTH)
+						if (SOUTH)
 							locx = mobloc.x
 							locy = (mobloc.y-2)
-							if(locy<1)
+							if (locy<1)
 								return
-						if(EAST)
+						if (EAST)
 							locy = mobloc.y
 							locx = (mobloc.x+2)
-							if(locx>world.maxx)
+							if (locx>world.maxx)
 								return
-						if(WEST)
+						if (WEST)
 							locy = mobloc.y
 							locx = (mobloc.x-2)
-							if(locx<1)
+							if (locx<1)
 								return
 						else
 							return
@@ -1392,7 +1392,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 							spawn(0)
 								anim(T,mob,'mob.dmi',,"shadow",,mob.dir)
 							limit--
-							if(limit<=0)	break
+							if (limit<=0)	break
 				else
 					spawn(0)
 						anim(mobloc,mob,'mob.dmi',,"shadow",,mob.dir)
@@ -1434,7 +1434,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 							return
 	if (mob.canmove)
 
-		if(mob.m_intent == "face")
+		if (mob.m_intent == "face")
 			mob.dir = direct
 
 		var/j_pack = 0
@@ -1444,7 +1444,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 					if (istype(mob.back, /obj/item/weapon/tank/jetpack))
 						var/obj/item/weapon/tank/jetpack/J = mob.back
 						j_pack = J.allow_thrust(0.01, mob)
-						if(j_pack)
+						if (j_pack)
 							mob.inertia_dir = 0
 						if (!( j_pack ))
 							return 0
@@ -1459,18 +1459,18 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 			if ((j_pack && j_pack < 1))
 				move_delay += 5
 			switch(mob.m_intent)
-				if("run")
+				if ("run")
 					if (mob.drowsyness > 0)
 						move_delay += 6
-					if(mob.organStructure && mob.organStructure.legs)
+					if (mob.organStructure && mob.organStructure.legs)
 						move_delay += mob.organStructure.legs.moveRunDelay
 					else
 						move_delay += 1
-				if("face")
+				if ("face")
 					mob.dir = direct
 					return
-				if("walk")
-					if(mob.organStructure && mob.organStructure.legs)
+				if ("walk")
+					if (mob.organStructure && mob.organStructure.legs)
 						move_delay += mob.organStructure.legs.moveWalkDelay
 					else
 						move_delay += 7
@@ -1515,12 +1515,12 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 								M.animate_movement = 2
 								return
 			else
-				if(mob.confused)
+				if (mob.confused)
 					step(mob, pick(cardinal))
 				else
 					. = ..()
 					for(var/obj/speech_bubble/S in range(1, mob))
-						if(S.parent == mob)
+						if (S.parent == mob)
 							S.loc = mob.loc
 
 			moving = null
@@ -1535,7 +1535,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	return
 
 /client/New()
-	if(findtextEx(key, "Telnet @"))
+	if (findtextEx(key, "Telnet @"))
 		src << "Sorry, this game does not support Telnet."
 		del(src)
 	var/isbanned = CheckBan(src)
@@ -1561,8 +1561,8 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 		src << "<div class=\"motd\">[join_motd]</div>"
 
 
-	if(!ticker || ticker.current_state == GAME_STATE_PREGAME || ticker.current_state == GAME_STATE_SETTING_UP)
-		if(!src.playing_lobby_music)
+	if (!ticker || ticker.current_state == GAME_STATE_PREGAME || ticker.current_state == GAME_STATE_SETTING_UP)
+		if (!src.playing_lobby_music)
 			src.music = sound('lobby3.mid', 1)
 			src << sound(src.music,1)
 			src.playing_lobby_music = 1
@@ -1583,19 +1583,19 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 
 	if (ticker && ticker.mode && ticker.mode.name =="sandbox" && authenticated)
 		mob.CanBuild()
-		if(holder  && (holder.level >= 3))
+		if (holder  && (holder.level >= 3))
 			verbs += /mob/proc/Delete
 
 /client/Del()
 	spawn(0)
-		if(holder)
+		if (holder)
 			del(holder)
 	return ..()
 
 /mob/proc/can_use_hands()
-	if(handcuffed)
+	if (handcuffed)
 		return 0
-	if(buckled && istype(buckled, /obj/structure/stool/bed)) // buckling does not restrict hands
+	if (buckled && istype(buckled, /obj/structure/stool/bed)) // buckling does not restrict hands
 		return 0
 	return ..()
 
@@ -1603,7 +1603,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	return (0 >= usr.stat)
 
 /mob/proc/see(message)
-	if(!is_active())
+	if (!is_active())
 		return 0
 	src << message
 	return 1
@@ -1619,7 +1619,7 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	if (istype(src, /mob/dead/observer))
 		gibs(loc, viruses)
 		return
-	if(!isrobot(src))//Cyborgs no-longer "die" when gibbed.
+	if (!isrobot(src))//Cyborgs no-longer "die" when gibbed.
 		death(1)
 	var/atom/movable/overlay/animation = null
 	monkeyizing = 1
@@ -1631,17 +1631,17 @@ It's fairly easy to fix if dealing with single letters but not so much with comp
 	animation.icon_state = "blank"
 	animation.icon = 'mob.dmi'
 	animation.master = src
-	if(ishuman(src))
+	if (ishuman(src))
 		flick("gibbed-h", animation)
-	else if(ismonkey(src))
+	else if (ismonkey(src))
 		flick("gibbed-m", animation)
-	else if(isalien(src))
+	else if (isalien(src))
 		flick("gibbed-a", animation)
 	else
 		flick("gibbed-r", animation)
 
 	spawn()
-		if(key)
+		if (key)
 			if (istype(src, /mob/living/silicon))
 				robogibs(loc, viruses)
 			else if (istype(src, /mob/living/carbon/alien))
@@ -1676,13 +1676,13 @@ Dusting robots does not eject the MMI, so it's a bit more powerful than gib() /N
 	animation.icon_state = "blank"
 	animation.icon = 'mob.dmi'
 	animation.master = src
-	if(ishuman(src))
+	if (ishuman(src))
 		flick("dust-h", animation)
 		new /obj/decal/remains/human(loc)
-	else if(ismonkey(src))
+	else if (ismonkey(src))
 		flick("dust-m", animation)
 		new /obj/decal/remains/human(loc)
-	else if(isalien(src))
+	else if (isalien(src))
 		flick("dust-a", animation)
 		new /obj/decal/remains/xeno(loc)
 	else
@@ -1690,7 +1690,7 @@ Dusting robots does not eject the MMI, so it's a bit more powerful than gib() /N
 		new /obj/decal/remains/robot(loc)
 
 	sleep(15)
-	if(isrobot(src)&&src:mmi)//Is a robot and it has an mmi.
+	if (isrobot(src)&&src:mmi)//Is a robot and it has an mmi.
 		del(src:mmi)//Delete the MMI first so that it won't go popping out.
 	del(src)
 
@@ -1704,12 +1704,12 @@ value of dizziness ranges from 0 to 1000
 below 100 is not dizzy
 */
 /mob/proc/make_dizzy(var/amount)
-	if(!istype(src, /mob/living/carbon/human)) // for the moment, only humans get dizzy
+	if (!istype(src, /mob/living/carbon/human)) // for the moment, only humans get dizzy
 		return
 
 	dizziness = min(1000, dizziness + amount)	// store what will be new value
 													// clamped to max 1000
-	if(dizziness > 100 && !is_dizzy)
+	if (dizziness > 100 && !is_dizzy)
 		spawn(0)
 			dizzy_process()
 
@@ -1722,7 +1722,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 /mob/proc/dizzy_process()
 	is_dizzy = 1
 	while(dizziness > 100)
-		if(client)
+		if (client)
 			var/amplitude = dizziness*(sin(dizziness * 0.044 * world.time) + 1) / 70
 			client.pixel_x = amplitude * sin(0.008 * dizziness * world.time)
 			client.pixel_y = amplitude * cos(0.008 * dizziness * world.time)
@@ -1730,19 +1730,19 @@ note dizziness decrements automatically in the mob's Life() proc.
 		sleep(1)
 	//endwhile - reset the pixel offsets to zero
 	is_dizzy = 0
-	if(client)
+	if (client)
 		client.pixel_x = 0
 		client.pixel_y = 0
 
 // jitteriness - copy+paste of dizziness
 
 /mob/proc/make_jittery(var/amount)
-	if(!istype(src, /mob/living/carbon/human)) // for the moment, only humans get dizzy
+	if (!istype(src, /mob/living/carbon/human)) // for the moment, only humans get dizzy
 		return
 
 	jitteriness = min(1000, jitteriness + amount)	// store what will be new value
 													// clamped to max 1000
-	if(jitteriness > 100 && !is_jittery)
+	if (jitteriness > 100 && !is_jittery)
 		spawn(0)
 			jittery_process()
 
@@ -1783,81 +1783,81 @@ note dizziness decrements automatically in the mob's Life() proc.
 
 		for(var/obj/proc_holder/spell/S in spell_list)
 			switch(S.charge_type)
-				if("recharge")
+				if ("recharge")
 					statpanel("Spells","[S.charge_counter/10.0]/[S.charge_max/10]",S)
-				if("charges")
+				if ("charges")
 					statpanel("Spells","[S.charge_counter]/[S.charge_max]",S)
 #if 1
 /client/proc/station_explosion_cinematic(var/derp)
-	if(mob)
+	if (mob)
 		var/mob/M = mob
 		M.loc = null // HACK, but whatever, this works
 
 		if (M.client&&M.hud_used)//They may some times not have a hud, apparently.
 			var/obj/screen/boom = M.hud_used.station_explosion
 			M.client.screen += boom
-			if(ticker)
+			if (ticker)
 				switch(ticker.mode.name)
-					if("nuclear emergency")
+					if ("nuclear emergency")
 						flick("start_nuke", boom)
-					if("AI malfunction")
+					if ("AI malfunction")
 						flick("start_malf", boom)
 					else
 						boom.icon_state = "start"
 			sleep(40)
 			M << sound('explosionfar.ogg')
 			boom.icon_state = "end"
-			if(!derp) flick("explode", boom)
+			if (!derp) flick("explode", boom)
 			else flick("explode2", boom)
 			sleep(40)
-			if(ticker)
+			if (ticker)
 				switch(ticker.mode.name)
-					if("nuclear emergency")
+					if ("nuclear emergency")
 						if (!derp) boom.icon_state = "loss_nuke"
 						else boom.icon_state = "loss_nuke2"
-					if("malfunction")
+					if ("malfunction")
 						boom.icon_state = "loss_malf"
-					if("blob")
+					if ("blob")
 						return//Nothin here yet and the general one does not fit.
 					else
 						boom.icon_state = "loss_general"
 #elif
 /client/proc/station_explosion_cinematic(var/derp)
-	if(!src.mob)
+	if (!src.mob)
 		return
 
 	var/mob/M = src.mob
 	M.loc = null // HACK, but whatever, this works
 
-	if(!M.hud_used)
+	if (!M.hud_used)
 		return
 
 	var/obj/screen/boom = M.hud_used.station_explosion
 	src.screen += boom
-	if(ticker)
+	if (ticker)
 		switch(ticker.mode.name)
-			if("nuclear emergency")
+			if ("nuclear emergency")
 				flick("start_nuke", boom)
-			if("AI malfunction")
+			if ("AI malfunction")
 				flick("start_malf", boom)
 			else
 				boom.icon_state = "start"
 	sleep(40)
 	M << sound('explosionfar.ogg')
 	boom.icon_state = "end"
-	if(!derp)
+	if (!derp)
 		flick("explode", boom)
 	else
 		flick("explode2", boom)
 	sleep(40)
-	if(ticker)
+	if (ticker)
 		switch(ticker.mode.name)
-			if("nuclear emergency")
+			if ("nuclear emergency")
 				if (!derp)
 					boom.icon_state = "loss_nuke"
 				else
 					boom.icon_state = "loss_nuke2"
-			if("AI malfunction")
+			if ("AI malfunction")
 				boom.icon_state = "loss_malf"
 			else
 				boom.icon_state = "loss_general"
@@ -1871,7 +1871,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 // facing verbs
 /mob/verb/eastface()
 	set hidden = 1
-	if(!canmove)
+	if (!canmove)
 		return
 	if (client.moving)
 		return 0
@@ -1890,7 +1890,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 
 /mob/verb/westface()
 	set hidden = 1
-	if(!canmove)
+	if (!canmove)
 		return
 	if (client.moving)
 		return 0
@@ -1909,7 +1909,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 
 /mob/verb/northface()
 	set hidden = 1
-	if(!canmove)
+	if (!canmove)
 		return
 	if (client.moving)
 		return 0
@@ -1928,7 +1928,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 
 /mob/verb/southface()
 	set hidden = 1
-	if(!canmove)
+	if (!canmove)
 		return
 	if (client.moving)
 		return 0
@@ -1948,7 +1948,7 @@ note dizziness decrements automatically in the mob's Life() proc.
 /mob/verb/adminhelp(msg as text)
 	set category = "Admin"
 	set name = "Adminhelp"
-	if(!usr.client.authenticated)
+	if (!usr.client.authenticated)
 		src << "Please authorize before sending these messages."
 		return
 

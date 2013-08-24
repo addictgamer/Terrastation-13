@@ -13,6 +13,6 @@
 	examine()
 		set src in usr
 		..()
-		if(air_contents.oxygen < 1)
+		if (air_contents.oxygen < 1)
 			usr << text("\red <B>The meter on the tank indicates you are almost out of air!</B>")
 			playsound(usr, 'alert.ogg', 50, 1)

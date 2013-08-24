@@ -82,8 +82,8 @@ FINGERPRINT CARD
 
 /obj/item/weapon/card/id/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
-	if(istype(W,/obj/item/weapon/photo))
-		if(!(PHOTO))
+	if (istype(W,/obj/item/weapon/photo))
+		if (!(PHOTO))
 			src.PHOTO = W
 			usr.before_take_item(W)
 			W.loc = src
@@ -99,7 +99,7 @@ FINGERPRINT CARD
 	set name = "Remove Photo From ID"
 	set category = "Object"
 
-	if(PHOTO)
+	if (PHOTO)
 		contents -= PHOTO
 		PHOTO.loc = usr.loc
 		PHOTO.layer = 3
@@ -141,7 +141,7 @@ FINGERPRINT CARD
 	origin_tech = "syndicate=3"
 
 /obj/item/weapon/card/id/syndicate/attack_self(mob/user as mob)
-	if(!src.registered)
+	if (!src.registered)
 		src.registered = input(user, "What name would you like to put on this card?", "Agent card name", ishuman(user) ? user.real_name : user.name)
 		src.assignment = input(user, "What occupation would you like to put on this card?\nNote: This will not grant any access levels other than Maintenance.", "Agent card job assignment", "Assistant")
 		src.name = "[src.registered]'s ID Card ([src.assignment])"

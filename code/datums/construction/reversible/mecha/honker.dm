@@ -18,28 +18,28 @@
 		return check_step(used_atom,user)
 
 	custom_action(step, atom/used_atom, mob/user)
-		if(!..())
+		if (!..())
 			return 0
 
-		if(istype(used_atom, /obj/item/weapon/bikehorn))
+		if (istype(used_atom, /obj/item/weapon/bikehorn))
 			playsound(holder, 'bikehorn.ogg', 50, 1)
 			user.visible_message("HONK!")
 
 		//TODO: better messages.
 		switch(step)
-			if(10)
+			if (10)
 				user.visible_message("[user] installs the central control module into [holder].", "You install the central control module into [holder].")
 				del used_atom
-			if(8)
+			if (8)
 				user.visible_message("[user] installs the peripherals control module into [holder].", "You install the peripherals control module into [holder].")
 				del used_atom
-			if(6)
+			if (6)
 				user.visible_message("[user] installs the weapon control module into [holder].", "You install the weapon control module into [holder].")
 				del used_atom
-			if(4)
+			if (4)
 				user.visible_message("[user] puts clown wig and mask on [holder].", "You put clown wig and mask on [holder].")
 				del used_atom
-			if(2)
+			if (2)
 				user.visible_message("[user] puts clown boots on [holder].", "You put clown boots on [holder].")
 				del used_atom
 		return 1

@@ -14,16 +14,16 @@
 
 /obj/machinery/dispenser/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			//SN src = null
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				//SN src = null
 				del(src)
 				return
-		if(3.0)
+		if (3.0)
 			if (prob(25))
 				while(src.o2tanks > 0)
 					new /obj/item/weapon/tank/oxygen( src.loc )
@@ -64,7 +64,7 @@
 	return src.attack_hand(user)
 
 /obj/machinery/dispenser/attack_hand(mob/user as mob)
-	if(stat & BROKEN)
+	if (stat & BROKEN)
 		return
 	user.machine = src
 	var/dat = text("<TT><B>Loaded Tank Dispensing Unit</B><BR>\n<FONT color = 'blue'><B>Oxygen</B>: []</FONT> []<BR>\n<FONT color = 'orange'><B>Plasma</B>: []</FONT> []<BR>\n</TT>", src.o2tanks, (src.o2tanks ? text("<A href='?src=\ref[];oxygen=1'>Dispense</A>", src) : "empty"), src.pltanks, (src.pltanks ? text("<A href='?src=\ref[];plasma=1'>Dispense</A>", src) : "empty"))
@@ -73,9 +73,9 @@
 	return
 
 /obj/machinery/dispenser/Topic(href, href_list)
-	if(stat & BROKEN)
+	if (stat & BROKEN)
 		return
-	if(usr.stat || usr.restrained())
+	if (usr.stat || usr.restrained())
 		return
 	if (!(istype(usr, /mob/living/carbon/human) || ticker))
 		if (!istype(usr, /mob/living/silicon/ai))

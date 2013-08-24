@@ -47,7 +47,7 @@ atom
 	proc
 		ul_SetLuminosity(var/Red, var/Green = Red, var/Blue = Red)
 
-			if(LuminosityRed == Red && LuminosityGreen == Green && LuminosityBlue == Blue)
+			if (LuminosityRed == Red && LuminosityGreen == Green && LuminosityBlue == Blue)
 				return //No point doing all that work if it won't have any effect anyways...
 
 			if (ul_Extinguished == UL_I_EXTINGUISHED)
@@ -87,7 +87,7 @@ atom
 				var/DeltaGreen = LuminosityGreen - Falloff
 				var/DeltaBlue = LuminosityBlue - Falloff
 
-				if(ul_IsLuminous(DeltaRed, DeltaGreen, DeltaBlue))
+				if (ul_IsLuminous(DeltaRed, DeltaGreen, DeltaBlue))
 
 					Affected.LightLevelRed += max(DeltaRed, 0)
 					Affected.LightLevelGreen += max(DeltaGreen, 0)
@@ -121,7 +121,7 @@ atom
 				var/DeltaGreen = LuminosityGreen - Falloff
 				var/DeltaBlue = LuminosityBlue - Falloff
 
-				if(ul_IsLuminous(DeltaRed, DeltaGreen, DeltaBlue))
+				if (ul_IsLuminous(DeltaRed, DeltaGreen, DeltaBlue))
 
 					Affected.LightLevelRed -= max(DeltaRed, 0)
 					Affected.LightLevelGreen -= max(DeltaGreen, 0)
@@ -158,7 +158,7 @@ atom
 			return 0
 
 		ul_SetOpacity(var/NewOpacity)
-			if(opacity != NewOpacity)
+			if (opacity != NewOpacity)
 
 				var/list/Blanked = ul_BlankLocal()
 				var/atom/T = src
@@ -167,7 +167,7 @@ atom
 
 				opacity = NewOpacity
 
-				if(T)
+				if (T)
 					T:LightLevelRed = 0
 					T:LightLevelGreen = 0
 					T:LightLevelBlue = 0
@@ -178,7 +178,7 @@ atom
 
 		ul_UnblankLocal(var/list/ReApply = view(ul_TopLuminosity, src))
 			for(var/atom/Light in ReApply)
-				if(Light.ul_IsLuminous())
+				if (Light.ul_IsLuminous())
 					Light.ul_Illuminate()
 
 			return
@@ -188,7 +188,7 @@ atom
 			var/TurfAdjust = isturf(src) ? 1 : 0
 
 			for(var/atom/Affected in view(ul_TopLuminosity, src))
-				if(Affected.ul_IsLuminous() && Affected.ul_Extinguished == UL_I_LIT && (ul_FalloffAmount(Affected) <= Affected.luminosity + TurfAdjust))
+				if (Affected.ul_IsLuminous() && Affected.ul_Extinguished == UL_I_LIT && (ul_FalloffAmount(Affected) <= Affected.luminosity + TurfAdjust))
 					Affected.ul_Extinguish()
 					Blanked += Affected
 
@@ -219,13 +219,13 @@ atom
 
 	New()
 		..()
-		if(ul_IsLuminous())
+		if (ul_IsLuminous())
 			spawn(1)
 				ul_Illuminate()
 		return
 
 	Del()
-		if(ul_IsLuminous())
+		if (ul_IsLuminous())
 			ul_Extinguish()
 
 		..()
@@ -262,20 +262,20 @@ turf
 
 			var/area/CurrentArea = loc
 
-			if(!isarea(CurrentArea) || !CurrentArea.ul_Lighting)
+			if (!isarea(CurrentArea) || !CurrentArea.ul_Lighting)
 				return
 
 			var/LightingTag = copytext(CurrentArea.tag, 1, findtext(CurrentArea.tag, ":UL")) + ":UL[ul_GetRed()]_[ul_GetGreen()]_[ul_GetBlue()]"
 
-			if(CurrentArea.tag != LightingTag)
+			if (CurrentArea.tag != LightingTag)
 				var/area/NewArea = locate(LightingTag)
 
-				if(!NewArea)
+				if (!NewArea)
 					NewArea = new CurrentArea.type()
 					NewArea.tag = LightingTag
 
 					for(var/V in CurrentArea.vars - "contents")
-						if(issaved(CurrentArea.vars[V]))
+						if (issaved(CurrentArea.vars[V]))
 							NewArea.vars[V] = CurrentArea.vars[V]
 
 					NewArea.tag = LightingTag
@@ -315,7 +315,7 @@ area
 	proc
 		ul_Light(var/Red = LightLevelRed, var/Green = LightLevelGreen, var/Blue = LightLevelBlue)
 
-			if(!src || !src.ul_Lighting)
+			if (!src || !src.ul_Lighting)
 				return
 
 			overlays -= ul_Overlay
@@ -334,10 +334,10 @@ area
 
 		ul_Prep()
 
-			if(!tag)
+			if (!tag)
 				tag = "[type]"
-			if(ul_Lighting)
-				if(!findtext(tag,":UL"))
+			if (ul_Lighting)
+				if (!findtext(tag,":UL"))
 					ul_Light()
 			//world.log << tag
 

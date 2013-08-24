@@ -13,13 +13,13 @@
 
 	set src = view(0)
 
-	if(stat)
+	if (stat)
 		return
 
-	if(!M)
+	if (!M)
 		return
 
-	if(!M.client)
+	if (!M.client)
 		src << "This being is missing a brain."
 		return
 
@@ -29,7 +29,7 @@
 		usr << "\red The injection of the egg has been interrupted!"
 		return
 
-	if(M.client)
+	if (M.client)
 		M.client.mob = new/mob/living/carbon/alien/humanoid/special/snakeman(new/obj/snake_egg(src.loc))
 		visible_message("[src] injects [M] with an egg.")
 		visible_message("The egg absorbs [M]")

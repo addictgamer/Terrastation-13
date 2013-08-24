@@ -6,17 +6,17 @@
 
 
 	process_hud(var/mob/M)
-		if(!M)	return
-		if(!M.client)	return
+		if (!M)	return
+		if (!M.client)	return
 		var/client/C = M.client
 		var/icon/tempHud = 'hud.dmi'
 		for(var/mob/living/carbon/human/perp in view(M))
-			if(perp.wear_id)
+			if (perp.wear_id)
 				C.images += image(tempHud,perp,"hud[ckey(perp:wear_id:GetJobName())]")
 				var/perpname = "wot"
-				if(istype(perp.wear_id,/obj/item/weapon/card/id))
+				if (istype(perp.wear_id,/obj/item/weapon/card/id))
 					perpname = perp.wear_id:registered
-				else if(istype(perp.wear_id,/obj/item/device/pda))
+				else if (istype(perp.wear_id,/obj/item/device/pda))
 					var/obj/item/device/pda/tempPda = perp.wear_id
 					perpname = tempPda.owner
 				for (var/datum/data/record/E in data_core.general)
@@ -25,14 +25,14 @@
 							if ((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "*Arrest*"))
 								C.images += image(tempHud,perp,"hudwanted")
 								break
-							else if((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "Incarcerated"))
+							else if ((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "Incarcerated"))
 								C.images += image(tempHud,perp,"hudprisoner")
 								break
 			else
 				C.images += image(tempHud,perp,"hudunknown")
 			for(var/obj/item/weapon/implant/I in perp)
-				if(I.implanted)
-					if(istype(I,/obj/item/weapon/implant/tracking))
+				if (I.implanted)
+					if (istype(I,/obj/item/weapon/implant/tracking))
 						C.images += image(tempHud,perp,"hud_imp_tracking")
-					if(istype(I,/obj/item/weapon/implant/loyalty))
+					if (istype(I,/obj/item/weapon/implant/loyalty))
 						C.images += image(tempHud,perp,"hud_imp_loyal")

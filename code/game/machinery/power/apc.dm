@@ -123,7 +123,7 @@
 /obj/machinery/power/apc/proc/init()
 	has_electronics = 2 //installed and secured
 	// is starting with a power cell installed, create it and set its charge level
-	if(cell_type)
+	if (cell_type)
 		src.cell = new/obj/item/weapon/cell(src)
 		cell.maxcharge = cell_type	// cell_type is maximum charge (old default was 1000 or 2500 (values one and two respectively)
 		cell.charge = start_charge * cell.maxcharge / 100.0 		// (convert percentage to actual value)
@@ -131,7 +131,7 @@
 	var/area/A = src.loc.loc
 
 	//if area isn't specified use current
-	if(isarea(A) && src.areastring == null)
+	if (isarea(A) && src.areastring == null)
 		src.area = A
 	else
 		src.area = get_area_name(areastring)
@@ -145,13 +145,13 @@
 /obj/machinery/power/apc/examine()
 	set src in oview(1)
 
-	if(usr /*&& !usr.stat*/)
+	if (usr /*&& !usr.stat*/)
 		usr << "A control terminal for the area electrical systems."
-		if(stat & BROKEN)
+		if (stat & BROKEN)
 			usr << "Looks broken."
 			return
-		if(opened)
-			if(has_electronics && terminal)
+		if (opened)
+			if (has_electronics && terminal)
 				usr << "The cover is [opened==2?"removed":"open"] and the power cell is [ cell ? "installed" : "missing"]."
 			else if (!has_electronics && terminal)
 				usr << "There are some wires but no any electronics."
@@ -173,7 +173,7 @@
 // also add overlays for indicator lights
 /obj/machinery/power/apc/proc/updateicon()
 	src.overlays = null
-	if(opened)
+	if (opened)
 		var/basestate = "apc[ cell ? "2" : "1" ]"	// if opened, show cell if it's inserted
 		if (opened==1)
 			if (stat & (MAINT|BROKEN))
@@ -187,9 +187,9 @@
 				icon_state = "[basestate]-nocover"
 	else if (stat & BROKEN)
 		icon_state = "apc-b"
-	else if(emagged || malfhack)
+	else if (emagged || malfhack)
 		icon_state = "apcemag"
-	else if(wiresexposed)
+	else if (wiresexposed)
 		icon_state = "apcewires"
 	else
 		icon_state = "apc0"
@@ -197,7 +197,7 @@
 		if (!(stat & (BROKEN|MAINT)))
 			overlays += image('power.dmi', "apcox-[locked]")	// 0=blue 1=red
 			overlays += image('power.dmi', "apco3-[charging]") // 0=red, 1=yellow/black 2=green
-			if(operating)
+			if (operating)
 				overlays += image('power.dmi', "apco0-[equipment]")	// 0=red, 1=green, 2=blue
 				overlays += image('power.dmi', "apco1-[lighting]")
 				overlays += image('power.dmi', "apco2-[environ]")
@@ -215,7 +215,7 @@
 				return
 			playsound(src.loc, 'Crowbar.ogg', 50, 1)
 			user << "You trying to remove the power control board..."
-			if(do_after(user, 50))
+			if (do_after(user, 50))
 				has_electronics = 0
 				if ((stat & BROKEN) || malfhack)
 					user.visible_message(\
@@ -232,14 +232,14 @@
 			opened = 0
 			updateicon()
 	else if (istype(W, /obj/item/weapon/crowbar) && !((stat & BROKEN) || malfhack) )
-		if(coverlocked && !(stat & MAINT))
+		if (coverlocked && !(stat & MAINT))
 			user << "\red The cover is locked and cannot be opened."
 			return
 		else
 			opened = 1
 			updateicon()
 	else if	(istype(W, /obj/item/weapon/cell) && opened)	// trying to put a cell inside
-		if(cell)
+		if (cell)
 			user << "There is a power cell already installed."
 			return
 		else
@@ -255,7 +255,7 @@
 			chargecount = 0
 			updateicon()
 	else if	(istype(W, /obj/item/weapon/screwdriver))	// haxing
-		if(opened)
+		if (opened)
 			if (cell)
 				user << "\red Close the APC first." //Less hints more mystery!
 				return
@@ -274,7 +274,7 @@
 					user << "\red There is nothing to secure."
 					return
 				updateicon()
-		else if(emagged || malfhack)
+		else if (emagged || malfhack)
 			user << "The interface is broken"
 		else
 			wiresexposed = !wiresexposed
@@ -282,32 +282,32 @@
 			updateicon()
 
 	else if (istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))			// trying to unlock the interface with an ID card
-		if(emagged || malfhack)
+		if (emagged || malfhack)
 			user << "The interface is broken."
-		else if(opened)
+		else if (opened)
 			user << "You must close the cover to swipe an ID card."
-		else if(wiresexposed)
+		else if (wiresexposed)
 			user << "You must close the panel"
-		else if(stat & (BROKEN|MAINT))
+		else if (stat & (BROKEN|MAINT))
 			user << "Nothing happens."
 		else
-			if(src.allowed(usr))
+			if (src.allowed(usr))
 				locked = !locked
 				user << "You [ locked ? "lock" : "unlock"] the APC interface."
 				updateicon()
 			else
 				user << "\red Access denied."
 	else if (istype(W, /obj/item/weapon/card/emag) && !(emagged || malfhack))		// trying to unlock with an emag card
-		if(opened)
+		if (opened)
 			user << "You must close the cover to swipe an ID card."
-		else if(wiresexposed)
+		else if (wiresexposed)
 			user << "You must close the panel first"
-		else if(stat & (BROKEN|MAINT))
+		else if (stat & (BROKEN|MAINT))
 			user << "Nothing happens."
 		else
 			flick("apc-spark", src)
 			if (do_after(user,6))
-				if(prob(50))
+				if (prob(50))
 					emagged = 1
 					locked = 0
 					user << "You emag the APC interface."
@@ -319,12 +319,12 @@
 			user << "\red You must remove the floor plating first."
 			return
 		var/obj/item/cable_coil/C = W
-		if(C.amount < 10)
+		if (C.amount < 10)
 			user << "\red You need more wires."
 			return
 		user << "You start adding cables to the APC frame..."
 		playsound(src.loc, 'Deconstruct.ogg', 50, 1)
-		if(do_after(user, 20) && C.amount >= 10)
+		if (do_after(user, 20) && C.amount >= 10)
 			var/turf/T = get_turf_loc(src)
 			var/obj/cable/N = T.get_cable_node()
 			if (prob(50) && electrocute_mob(usr, N, N))
@@ -344,7 +344,7 @@
 			return
 		user << "You begin to cut cables..."
 		playsound(src.loc, 'Deconstruct.ogg', 50, 1)
-		if(do_after(user, 50))
+		if (do_after(user, 50))
 			if (prob(50) && electrocute_mob(usr, terminal.powernet, terminal))
 				var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
 				s.set_up(5, 1, src)
@@ -358,7 +358,7 @@
 	else if (istype(W, /obj/item/weapon/module/power_control) && opened && has_electronics==0 && !((stat & BROKEN) || malfhack))
 		user << "You trying to insert the power control board into the frame..."
 		playsound(src.loc, 'Deconstruct.ogg', 50, 1)
-		if(do_after(user, 10))
+		if (do_after(user, 10))
 			has_electronics = 1
 			user << "You place the power control board inside the frame."
 			del(W)
@@ -370,10 +370,10 @@
 			user << "\blue You need more welding fuel to complete this task."
 			return
 		user << "You start welding APC frame..."
-		if(W:remove_fuel(0,user))
+		if (W:remove_fuel(0,user))
 			W:welding = 2
 			playsound(src.loc, 'Welder.ogg', 50, 1)
-			if(do_after(user, 50))
+			if (do_after(user, 50))
 
 				if (emagged || malfhack || (stat & BROKEN) || opened==2)
 					new /obj/item/stack/sheet/metal(loc)
@@ -404,7 +404,7 @@
 			user << "You cannot repair this heavy damaged APC until broken electronics stills inside."
 			return
 		user << "You begin to replace the damaged APC frame..."
-		if(do_after(user, 50))
+		if (do_after(user, 50))
 			user.visible_message(\
 				"\red [user.name] has replaced the damaged APC frame with new one.",\
 				"You replace the damaged APC frame with new one.")
@@ -443,8 +443,8 @@
 	if (!can_use(user))
 		return
 	src.add_fingerprint(user)
-	if(opened && (!istype(user, /mob/living/silicon)))
-		if(cell)
+	if (opened && (!istype(user, /mob/living/silicon)))
+		if (cell)
 			usr.put_in_hand(cell)
 			cell.add_fingerprint(user)
 			cell.updateicon()
@@ -455,11 +455,11 @@
 			charging = 0
 			src.updateicon()
 			return
-	if(stat & (BROKEN|MAINT))
+	if (stat & (BROKEN|MAINT))
 		return
 
-	if(ishuman(user))
-		if(istype(user:gloves, /obj/item/clothing/gloves/space_ninja)&&user:gloves:candrain&&!user:gloves:draining)
+	if (ishuman(user))
+		if (istype(user:gloves, /obj/item/clothing/gloves/space_ninja)&&user:gloves:candrain&&!user:gloves:draining)
 			call(/obj/item/clothing/gloves/space_ninja/proc/drain)("APC",src,user:wear_suit)
 			return
 	// do APC interaction
@@ -482,7 +482,7 @@
 				user << "AI control for this APC interface has been disabled."
 				user << browse(null, "window=apc")
 				return
-	if(wiresexposed && (!istype(user, /mob/living/silicon)))
+	if (wiresexposed && (!istype(user, /mob/living/silicon)))
 		var/t1 = text("<html><head><title>[area.name] APC wires</title></head><body><B>Access Panel</B><br>\n")
 		var/list/apcwires = list(
 			"Orange" = 1,
@@ -493,7 +493,7 @@
 		for(var/wiredesc in apcwires)
 			var/is_uncut = src.apcwires & APCWireColorToFlag[apcwires[wiredesc]]
 			t1 += "[wiredesc] wire: "
-			if(!is_uncut)
+			if (!is_uncut)
 				t1 += "<a href='?src=\ref[src];apcwires=[apcwires[wiredesc]]'>Mend</a>"
 			else
 				t1 += "<a href='?src=\ref[src];apcwires=[apcwires[wiredesc]]'>Cut</a> "
@@ -507,12 +507,12 @@
 	user.machine = src
 	var/t = "<html><head><title>[area.name] APC</title></head><body><TT><B>Area Power Controller</B> ([area.name])<HR>"
 
-	if(locked && (!istype(user, /mob/living/silicon)))
+	if (locked && (!istype(user, /mob/living/silicon)))
 		t += "<I>(Swipe ID card to unlock inteface.)</I><BR>"
 		t += "Main breaker : <B>[operating ? "On" : "Off"]</B><BR>"
 		t += "External power : <B>[ main_status ? (main_status ==2 ? "<FONT COLOR=#004000>Good</FONT>" : "<FONT COLOR=#D09000>Low</FONT>") : "<FONT COLOR=#F00000>None</FONT>"]</B><BR>"
 		t += "Power cell: <B>[cell ? "[round(cell.percent())]%" : "<FONT COLOR=red>Not connected.</FONT>"]</B>"
-		if(cell)
+		if (cell)
 			t += " ([charging ? ( charging == 1 ? "Charging" : "Fully charged" ) : "Not charging"])"
 			t += " ([chargemode ? "Auto" : "Off"])"
 
@@ -532,7 +532,7 @@
 			t += "<I>(Swipe ID card to lock interface.)</I><BR>"
 		t += "Main breaker: [operating ? "<B>On</B> <A href='?src=\ref[src];breaker=1'>Off</A>" : "<A href='?src=\ref[src];breaker=1'>On</A> <B>Off</B>" ]<BR>"
 		t += "External power : <B>[ main_status ? (main_status ==2 ? "<FONT COLOR=#004000>Good</FONT>" : "<FONT COLOR=#D09000>Low</FONT>") : "<FONT COLOR=#F00000>None</FONT>"]</B><BR>"
-		if(cell)
+		if (cell)
 			t += "Power cell: <B>[round(cell.percent())]%</B>"
 			t += " ([charging ? ( charging == 1 ? "Charging" : "Fully charged" ) : "Not charging"])"
 			t += " ([chargemode ? "<A href='?src=\ref[src];cmode=1'>Off</A> <B>Auto</B>" : "<B>Off</B> <A href='?src=\ref[src];cmode=1'>Auto</A>"])"
@@ -545,39 +545,39 @@
 
 		t += "Equipment:    [add_lspace(lastused_equip, 6)] W : "
 		switch(equipment)
-			if(0)
+			if (0)
 				t += "<B>Off</B> <A href='?src=\ref[src];eqp=2'>On</A> <A href='?src=\ref[src];eqp=3'>Auto</A>"
-			if(1)
+			if (1)
 				t += "<A href='?src=\ref[src];eqp=1'>Off</A> <A href='?src=\ref[src];eqp=2'>On</A> <B>Auto (Off)</B>"
-			if(2)
+			if (2)
 				t += "<A href='?src=\ref[src];eqp=1'>Off</A> <B>On</B> <A href='?src=\ref[src];eqp=3'>Auto</A>"
-			if(3)
+			if (3)
 				t += "<A href='?src=\ref[src];eqp=1'>Off</A> <A href='?src=\ref[src];eqp=2'>On</A> <B>Auto (On)</B>"
 		t +="<BR>"
 
 		t += "Lighting:     [add_lspace(lastused_light, 6)] W : "
 
 		switch(lighting)
-			if(0)
+			if (0)
 				t += "<B>Off</B> <A href='?src=\ref[src];lgt=2'>On</A> <A href='?src=\ref[src];lgt=3'>Auto</A>"
-			if(1)
+			if (1)
 				t += "<A href='?src=\ref[src];lgt=1'>Off</A> <A href='?src=\ref[src];lgt=2'>On</A> <B>Auto (Off)</B>"
-			if(2)
+			if (2)
 				t += "<A href='?src=\ref[src];lgt=1'>Off</A> <B>On</B> <A href='?src=\ref[src];lgt=3'>Auto</A>"
-			if(3)
+			if (3)
 				t += "<A href='?src=\ref[src];lgt=1'>Off</A> <A href='?src=\ref[src];lgt=2'>On</A> <B>Auto (On)</B>"
 		t +="<BR>"
 
 
 		t += "Environmental:[add_lspace(lastused_environ, 6)] W : "
 		switch(environ)
-			if(0)
+			if (0)
 				t += "<B>Off</B> <A href='?src=\ref[src];env=2'>On</A> <A href='?src=\ref[src];env=3'>Auto</A>"
-			if(1)
+			if (1)
 				t += "<A href='?src=\ref[src];env=1'>Off</A> <A href='?src=\ref[src];env=2'>On</A> <B>Auto (Off)</B>"
-			if(2)
+			if (2)
 				t += "<A href='?src=\ref[src];env=1'>Off</A> <B>On</B> <A href='?src=\ref[src];env=3'>Auto</A>"
-			if(3)
+			if (3)
 				t += "<A href='?src=\ref[src];env=1'>Off</A> <A href='?src=\ref[src];env=2'>On</A> <B>Auto (On)</B>"
 
 
@@ -590,7 +590,7 @@
 			t += "<BR><HR><A href='?src=\ref[src];overload=1'><I>Overload lighting circuit</I></A><BR>"
 		if (ticker && ticker.mode)
 //		 world << "there's a ticker"
-			if(user.mind in ticker.mode.malf_ai)
+			if (user.mind in ticker.mode.malf_ai)
 //				world << "ticker says its malf"
 				if (!src.malfai)
 					t += "<BR><HR><A href='?src=\ref[src];malfhack=1'><I>Override Programming</I></A><BR>"
@@ -608,7 +608,7 @@
 	return "[area.name] : [equipment]/[lighting]/[environ] ([lastused_equip+lastused_light+lastused_environ]) : [cell? cell.percent() : "N/C"] ([charging])"
 
 /obj/machinery/power/apc/proc/update()
-	if(operating && !shorted)
+	if (operating && !shorted)
 		area.power_light = (lighting > 1)
 		area.power_equip = (equipment > 1)
 		area.power_environ = (environ > 1)
@@ -636,11 +636,11 @@
 	var/wireIndex = APCWireColorToIndex[wireColor]
 	apcwires &= ~wireFlag
 	switch(wireIndex)
-		if(APC_WIRE_MAIN_POWER1)
+		if (APC_WIRE_MAIN_POWER1)
 			src.shock(usr, 50)
 			src.shorted = 1
 			src.updateDialog()
-		if(APC_WIRE_MAIN_POWER2)
+		if (APC_WIRE_MAIN_POWER2)
 			src.shock(usr, 50)
 			src.shorted = 1
 			src.updateDialog()
@@ -648,19 +648,19 @@
 			if (src.aidisabled == 0)
 				src.aidisabled = 1
 			src.updateDialog()
-//		if(APC_WIRE_IDSCAN)		nothing happens when you cut this wire, add in something if you want whatever
+//		if (APC_WIRE_IDSCAN)		nothing happens when you cut this wire, add in something if you want whatever
 
 /obj/machinery/power/apc/proc/mend(var/wireColor)
 	var/wireFlag = APCWireColorToFlag[wireColor]
 	var/wireIndex = APCWireColorToIndex[wireColor] //not used in this function
 	apcwires |= wireFlag
 	switch(wireIndex)
-		if(APC_WIRE_MAIN_POWER1)
+		if (APC_WIRE_MAIN_POWER1)
 			if ((!src.isWireCut(APC_WIRE_MAIN_POWER1)) && (!src.isWireCut(APC_WIRE_MAIN_POWER2)))
 				src.shorted = 0
 				src.shock(usr, 50)
 				src.updateDialog()
-		if(APC_WIRE_MAIN_POWER2)
+		if (APC_WIRE_MAIN_POWER2)
 			if ((!src.isWireCut(APC_WIRE_MAIN_POWER1)) && (!src.isWireCut(APC_WIRE_MAIN_POWER2)))
 				src.shorted = 0
 				src.shock(usr, 50)
@@ -671,29 +671,29 @@
 			if (src.aidisabled == 1)
 				src.aidisabled = 0
 			src.updateDialog()
-//		if(APC_WIRE_IDSCAN)		nothing happens when you cut this wire, add in something if you want whatever
+//		if (APC_WIRE_IDSCAN)		nothing happens when you cut this wire, add in something if you want whatever
 
 /obj/machinery/power/apc/proc/pulse(var/wireColor)
 	//var/wireFlag = apcWireColorToFlag[wireColor] //not used in this function
 	var/wireIndex = APCWireColorToIndex[wireColor]
 	switch(wireIndex)
-		if(APC_WIRE_IDSCAN)			//unlocks the APC for 30 seconds, if you have a better way to hack an APC I'm all ears
+		if (APC_WIRE_IDSCAN)			//unlocks the APC for 30 seconds, if you have a better way to hack an APC I'm all ears
 			src.locked = 0
 			spawn(300)
 				src.locked = 1
 				src.updateDialog()
 		if (APC_WIRE_MAIN_POWER1)
-			if(shorted == 0)
+			if (shorted == 0)
 				shorted = 1
 			spawn(1200)
-				if(shorted == 1)
+				if (shorted == 1)
 					shorted = 0
 				src.updateDialog()
 		if (APC_WIRE_MAIN_POWER2)
-			if(shorted == 0)
+			if (shorted == 0)
 				shorted = 1
 			spawn(1200)
-				if(shorted == 1)
+				if (shorted == 1)
 					shorted = 0
 				src.updateDialog()
 		if (APC_WIRE_AI_CONTROL)
@@ -716,10 +716,10 @@
 		user << browse(null, "window=apc")
 		user.machine = null
 		return 0
-	if(user.restrained())
+	if (user.restrained())
 		user << "\red You must have free hands to use this [src]"
 		return 0
-	if(user.lying)
+	if (user.lying)
 		user << "\red You must stand to use this [src]!"
 		return 0
 	if (istype(user, /mob/living/silicon))
@@ -744,11 +744,11 @@
 			return 0
 	var/mob/living/carbon/human/H = user
 	if (istype(H))
-		if(H.brainloss >= 60)
+		if (H.brainloss >= 60)
 			for(var/mob/M in viewers(src, null))
 				M << "\red [H] stares cluelessly at [src] and drools."
 			return 0
-		else if(prob(H.brainloss))
+		else if (prob(H.brainloss))
 			user << "\red You momentarily forget how to use [src]."
 			return 0
 	return 1
@@ -787,7 +787,7 @@
 
 	else if (href_list["cmode"])
 		chargemode = !chargemode
-		if(!chargemode)
+		if (!chargemode)
 			charging = 0
 			updateicon()
 
@@ -813,7 +813,7 @@
 
 		updateicon()
 		update()
-	else if( href_list["close"] )
+	else if ( href_list["close"] )
 		usr << browse(null, "window=apc")
 		usr.machine = null
 		return
@@ -823,12 +823,12 @@
 		return
 
 	else if (href_list["overload"])
-		if( istype(usr, /mob/living/silicon) && !src.aidisabled )
+		if ( istype(usr, /mob/living/silicon) && !src.aidisabled )
 			src.overload_lighting()
 
 	else if (href_list["malfhack"])
 		var/mob/living/silicon/ai/malfai = usr
-		if( istype(malfai, /mob/living/silicon/ai) && !src.aidisabled )
+		if ( istype(malfai, /mob/living/silicon/ai) && !src.aidisabled )
 			if (malfai.malfhacking)
 				malfai << "You are already hacking an APC."
 				return
@@ -872,8 +872,8 @@
 
 /obj/machinery/power/apc/proc/ion_act()
 	//intended to be exactly the same as an AI malf attack
-	if(!src.malfhack && src.z == 1)
-		if(prob(3))
+	if (!src.malfhack && src.z == 1)
+		if (prob(3))
 			src.locked = 1
 			if (src.cell.charge > 0)
 				world << "\red blew APC in [src.loc.loc]"
@@ -893,26 +893,26 @@
 
 
 /obj/machinery/power/apc/surplus()
-	if(terminal)
+	if (terminal)
 		return terminal.surplus()
 	else
 		return 0
 
 /obj/machinery/power/apc/add_load(var/amount)
-	if(terminal && terminal.powernet)
+	if (terminal && terminal.powernet)
 		terminal.powernet.newload += amount
 
 /obj/machinery/power/apc/avail()
-	if(terminal)
+	if (terminal)
 		return terminal.avail()
 	else
 		return 0
 
 /obj/machinery/power/apc/process()
 
-	if(stat & (BROKEN|MAINT))
+	if (stat & (BROKEN|MAINT))
 		return
-	if(!area.requires_power)
+	if (!area.requires_power)
 		return
 
 
@@ -941,25 +941,25 @@
 
 	var/excess = surplus()
 
-	if(!src.avail())
+	if (!src.avail())
 		main_status = 0
-	else if(excess < 0)
+	else if (excess < 0)
 		main_status = 1
 	else
 		main_status = 2
 
 	var/perapc = 0
-	if(terminal && terminal.powernet)
+	if (terminal && terminal.powernet)
 		perapc = terminal.powernet.perapc
 
-	if(cell && !shorted)
+	if (cell && !shorted)
 
 		// draw power from cell as before
 
 		var/cellused = min(cell.charge, CELLRATE * lastused_total)	// clamp deduction to a max, amount left in cell
 		cell.use(cellused)
 
-		if(excess > 0 || perapc > lastused_total)		// if power excess, or enough anyway, recharge the cell
+		if (excess > 0 || perapc > lastused_total)		// if power excess, or enough anyway, recharge the cell
 														// by the same amount just used
 
 			cell.give(cellused)
@@ -968,7 +968,7 @@
 
 		else		// no excess, and not enough per-apc
 
-			if( (cell.charge/CELLRATE+perapc) >= lastused_total)		// can we draw enough from cell+grid to cover last usage?
+			if ( (cell.charge/CELLRATE+perapc) >= lastused_total)		// can we draw enough from cell+grid to cover last usage?
 
 				cell.charge = min(cell.maxcharge, cell.charge + CELLRATE * perapc)	//recharge with what we can
 				add_load(perapc)		// so draw what we can from the grid
@@ -984,17 +984,17 @@
 
 		// set channels depending on how much charge we have left
 
-		if(cell.charge <= 0)					// zero charge, turn all off
+		if (cell.charge <= 0)					// zero charge, turn all off
 			equipment = autoset(equipment, 0)
 			lighting = autoset(lighting, 0)
 			environ = autoset(environ, 0)
 			area.poweralert(0, src)
-		else if(cell.percent() < 15)			// <15%, turn off lighting & equipment
+		else if (cell.percent() < 15)			// <15%, turn off lighting & equipment
 			equipment = autoset(equipment, 2)
 			lighting = autoset(lighting, 2)
 			environ = autoset(environ, 1)
 			area.poweralert(0, src)
-		else if(cell.percent() < 30)			// <30%, turn off equipment
+		else if (cell.percent() < 30)			// <30%, turn off equipment
 			equipment = autoset(equipment, 2)
 			lighting = autoset(lighting, 1)
 			environ = autoset(environ, 1)
@@ -1004,13 +1004,13 @@
 			lighting = autoset(lighting, 1)
 			environ = autoset(environ, 1)
 			area.poweralert(1, src)
-			if(cell.percent() > 75)
+			if (cell.percent() > 75)
 				area.poweralert(1, src)
 
 		// now trickle-charge the cell
 
-		if(chargemode && charging == 1 && operating)
-			if(excess > 0)		// check to make sure we have enough to charge
+		if (chargemode && charging == 1 && operating)
+			if (excess > 0)		// check to make sure we have enough to charge
 				// Max charge is perapc share, capped to cell capacity, or % per second constant (Whichever is smallest)
 /*				var/ch = min(perapc, (cell.maxcharge - cell.charge), (cell.maxcharge*CHARGELEVEL))
 				add_load(ch) // Removes the power we're taking from the grid
@@ -1026,17 +1026,17 @@
 
 		// show cell as fully charged if so
 
-		if(cell.charge >= cell.maxcharge)
+		if (cell.charge >= cell.maxcharge)
 			charging = 2
 
-		if(chargemode)
-			if(!charging)
-				if(excess > cell.maxcharge*CHARGELEVEL)
+		if (chargemode)
+			if (!charging)
+				if (excess > cell.maxcharge*CHARGELEVEL)
 					chargecount++
 				else
 					chargecount = 0
 
-				if(chargecount == 10)
+				if (chargecount == 10)
 
 					chargecount = 0
 					charging = 1
@@ -1056,7 +1056,7 @@
 
 	// update icon & area power if anything changed
 
-	if(last_lt != lighting || last_eq != equipment || last_en != environ)
+	if (last_lt != lighting || last_eq != equipment || last_en != environ)
 		updateicon()
 		update()
 	else if (last_ch != charging)
@@ -1070,18 +1070,18 @@
 
 /proc/autoset(var/val, var/on)
 
-	if(on==0)
-		if(val==2)			// if on, return off
+	if (on==0)
+		if (val==2)			// if on, return off
 			return 0
-		else if(val==3)		// if auto-on, return auto-off
+		else if (val==3)		// if auto-on, return auto-off
 			return 1
 
-	else if(on==1)
-		if(val==1)			// if auto-off, return auto-on
+	else if (on==1)
+		if (val==1)			// if auto-off, return auto-on
 			return 3
 
-	else if(on==2)
-		if(val==3)			// if auto-on, return auto-off
+	else if (on==2)
+		if (val==3)			// if auto-on, return auto-off
 			return 1
 
 	return val
@@ -1094,7 +1094,7 @@
 	return
 
 /obj/machinery/power/apc/emp_act(severity)
-	if(cell)
+	if (cell)
 		cell.emp_act(severity)
 	lighting = 0
 	equipment = 0
@@ -1107,18 +1107,18 @@
 /obj/machinery/power/apc/ex_act(severity)
 
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			//set_broken() //now Del() do what we need
 			if (cell)
 				cell.ex_act(1.0) // more lags woohoo
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				set_broken()
 				if (cell && prob(50))
 					cell.ex_act(2.0)
-		if(3.0)
+		if (3.0)
 			if (prob(25))
 				set_broken()
 				if (cell && prob(25))
@@ -1140,9 +1140,9 @@
 // overload all the lights in this APC area
 
 /obj/machinery/power/apc/proc/overload_lighting()
-	if(/* !get_connection() || */ !operating || shorted)
+	if (/* !get_connection() || */ !operating || shorted)
 		return
-	if( cell && cell.charge>=20)
+	if ( cell && cell.charge>=20)
 		cell.use(20);
 		spawn(0)
 			for(var/area/A in area.related)
@@ -1159,7 +1159,7 @@
 	..()
 
 /obj/machinery/power/apc/proc/shock(mob/user, prb)
-	if(!prob(prb))
+	if (!prob(prb))
 		return 0
 	var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
 	s.set_up(5, 1, src)

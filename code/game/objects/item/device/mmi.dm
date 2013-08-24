@@ -22,8 +22,8 @@
 		obj/mecha = null//This does not appear to be used outside of reference in mecha.dm.
 
 	attackby(var/obj/item/O as obj, var/mob/user as mob)
-		if(istype(O,/obj/item/brain) && !brainmob) //Time to stick a brain in it --NEO
-			if(!O:brainmob)
+		if (istype(O,/obj/item/brain) && !brainmob) //Time to stick a brain in it --NEO
+			if (!O:brainmob)
 				user << "\red You aren't sure where this brain came from, but you're pretty sure it's a useless brain."
 				return
 			for(var/mob/V in viewers(src, null))
@@ -44,22 +44,22 @@
 			locked = 1
 			return
 
-		if((istype(O,/obj/item/weapon/card/id)||istype(O,/obj/item/device/pda)) && brainmob)
-			if(allowed(user))
+		if ((istype(O,/obj/item/weapon/card/id)||istype(O,/obj/item/device/pda)) && brainmob)
+			if (allowed(user))
 				locked = !locked
 				user << "\blue You [locked ? "lock" : "unlock"] the brain holder."
 			else
 				user << "\red Access denied."
 			return
-		if(brainmob)
+		if (brainmob)
 			O.attack(brainmob, user)//Oh noooeeeee
 			return
 		..()
 
 	attack_self(mob/user as mob)
-		if(!brainmob)
+		if (!brainmob)
 			user << "\red You upend the MMI, but there's nothing in it."
-		else if(locked)
+		else if (locked)
 			user << "\red You upend the MMI, but the brain is clamped into place."
 		else
 			user << "\blue You upend the MMI, spilling the brain onto the floor."
@@ -105,7 +105,7 @@
 			set src = usr.loc//In user location, or in MMI in this case.
 			set popup_menu = 0//Will not appear when right clicking.
 
-			if(brainmob.stat)//Only the brainmob will trigger these so no further check is necessary.
+			if (brainmob.stat)//Only the brainmob will trigger these so no further check is necessary.
 				brainmob << "Can't do that while incapacitated or dead."
 
 			radio.broadcasting = radio.broadcasting==1 ? 0 : 1
@@ -118,7 +118,7 @@
 			set src = usr.loc
 			set popup_menu = 0
 
-			if(brainmob.stat)
+			if (brainmob.stat)
 				brainmob << "Can't do that while incapacitated or dead."
 
 			radio.listening = radio.listening==1 ? 0 : 1

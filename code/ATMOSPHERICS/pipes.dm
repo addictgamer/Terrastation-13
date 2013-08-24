@@ -21,28 +21,28 @@ obj/machinery/atmospherics/pipe
 		return 1
 
 	return_air()
-		if(!parent)
+		if (!parent)
 			parent = new /datum/pipeline()
 			parent.build_pipeline(src)
 
 		return parent.air
 
 	build_network()
-		if(!parent)
+		if (!parent)
 			parent = new /datum/pipeline()
 			parent.build_pipeline(src)
 
 		return parent.return_network()
 
 	network_expand(datum/pipe_network/new_network, obj/machinery/atmospherics/pipe/reference)
-		if(!parent)
+		if (!parent)
 			parent = new /datum/pipeline()
 			parent.build_pipeline(src)
 
 		return parent.network_expand(new_network, reference)
 
 	return_network(obj/machinery/atmospherics/reference)
-		if(!parent)
+		if (!parent)
 			parent = new /datum/pipeline()
 			parent.build_pipeline(src)
 
@@ -50,7 +50,7 @@ obj/machinery/atmospherics/pipe
 
 	Del()
 		del(parent)
-		if(air_temporary)
+		if (air_temporary)
 			loc.assume_air(air_temporary)
 
 		..()
@@ -83,51 +83,51 @@ obj/machinery/atmospherics/pipe
 		New()
 			..()
 			switch(dir)
-				if(SOUTH || NORTH)
+				if (SOUTH || NORTH)
 					initialize_directions = SOUTH|NORTH
-				if(EAST || WEST)
+				if (EAST || WEST)
 					initialize_directions = EAST|WEST
-				if(NORTHEAST)
+				if (NORTHEAST)
 					initialize_directions = NORTH|EAST
-				if(NORTHWEST)
+				if (NORTHWEST)
 					initialize_directions = NORTH|WEST
-				if(SOUTHEAST)
+				if (SOUTHEAST)
 					initialize_directions = SOUTH|EAST
-				if(SOUTHWEST)
+				if (SOUTHWEST)
 					initialize_directions = SOUTH|WEST
 
 
 		hide(var/i)
-			if(level == 1 && istype(loc, /turf/simulated))
+			if (level == 1 && istype(loc, /turf/simulated))
 				invisibility = i ? 101 : 0
 			update_icon()
 
 		process()
-			if(!parent) //This should cut back on the overhead calling build_network thousands of times per cycle
+			if (!parent) //This should cut back on the overhead calling build_network thousands of times per cycle
 				..()
 			else
 				machines.Remove(src)
 
-			/*if(!node1)
+			/*if (!node1)
 				parent.mingle_with_turf(loc, volume)
-				if(!nodealert)
+				if (!nodealert)
 					//world << "Missing node from [src] at [src.x],[src.y],[src.z]"
 					nodealert = 1
 
-			else if(!node2)
+			else if (!node2)
 				parent.mingle_with_turf(loc, volume)
-				if(!nodealert)
+				if (!nodealert)
 					//world << "Missing node from [src] at [src.x],[src.y],[src.z]"
 					nodealert = 1
 			else if (nodealert)
 				nodealert = 0
 
 
-			else if(parent)
+			else if (parent)
 				var/environment_temperature = 0
 
-				if(istype(loc, /turf/simulated/))
-					if(loc:blocks_air)
+				if (istype(loc, /turf/simulated/))
+					if (loc:blocks_air)
 						environment_temperature = loc:temperature
 					else
 						var/datum/gas_mixture/environment = loc.return_air()
@@ -138,7 +138,7 @@ obj/machinery/atmospherics/pipe
 
 				var/datum/gas_mixture/pipe_air = return_air()
 
-				if(abs(environment_temperature-pipe_air.temperature) > minimum_temperature_difference)
+				if (abs(environment_temperature-pipe_air.temperature) > minimum_temperature_difference)
 					parent.temperature_interact(loc, volume, thermal_conductivity)
 			*/  //Screw you heat lag
 
@@ -147,12 +147,12 @@ obj/machinery/atmospherics/pipe
 
 			var/pressure_difference = pressure - environment.return_pressure()
 
-			if(pressure_difference > maximum_pressure)
+			if (pressure_difference > maximum_pressure)
 				burst()
 
-			else if(pressure_difference > fatigue_pressure)
+			else if (pressure_difference > fatigue_pressure)
 				//TODO: leak to turf, doing pfshhhhh
-				if(prob(5))
+				if (prob(5))
 					burst()
 
 			else return 1
@@ -166,15 +166,15 @@ obj/machinery/atmospherics/pipe
 			del(src)
 
 		proc/normalize_dir()
-			if(dir==3)
+			if (dir==3)
 				dir = 1
-			else if(dir==12)
+			else if (dir==12)
 				dir = 4
 
 		Del()
-			if(node1)
+			if (node1)
 				node1.disconnect(src)
-			if(node2)
+			if (node2)
 				node2.disconnect(src)
 
 			..()
@@ -183,7 +183,7 @@ obj/machinery/atmospherics/pipe
 			return list(node1, node2)
 
 		update_icon()
-			if(node1&&node2)
+			if (node1&&node2)
 				var/C = ""
 				switch(color)
 					if ("red") C = "-r"
@@ -200,7 +200,7 @@ obj/machinery/atmospherics/pipe
 				//dir = node1_direction|node2_direction
 
 			else
-				if(!node1&&!node2)
+				if (!node1&&!node2)
 					del(src) //TODO: silent deleting looks weird
 				var/have_node1 = node1?1:0
 				var/have_node2 = node2?1:0
@@ -213,18 +213,18 @@ obj/machinery/atmospherics/pipe
 			var/node2_dir
 
 			for(var/direction in cardinal)
-				if(direction&initialize_directions)
+				if (direction&initialize_directions)
 					if (!node1_dir)
 						node1_dir = direction
 					else if (!node2_dir)
 						node2_dir = direction
 
 			for(var/obj/machinery/atmospherics/target in get_step(src,node1_dir))
-				if(target.initialize_directions & get_dir(target,src))
+				if (target.initialize_directions & get_dir(target,src))
 					node1 = target
 					break
 			for(var/obj/machinery/atmospherics/target in get_step(src,node2_dir))
-				if(target.initialize_directions & get_dir(target,src))
+				if (target.initialize_directions & get_dir(target,src))
 					node2 = target
 					break
 
@@ -235,13 +235,13 @@ obj/machinery/atmospherics/pipe
 			//update_icon()
 
 		disconnect(obj/machinery/atmospherics/reference)
-			if(reference == node1)
-				if(istype(node1, /obj/machinery/atmospherics/pipe))
+			if (reference == node1)
+				if (istype(node1, /obj/machinery/atmospherics/pipe))
 					del(parent)
 				node1 = null
 
-			if(reference == node2)
-				if(istype(node2, /obj/machinery/atmospherics/pipe))
+			if (reference == node2)
+				if (istype(node2, /obj/machinery/atmospherics/pipe))
 					del(parent)
 				node2 = null
 
@@ -336,13 +336,13 @@ obj/machinery/atmospherics/pipe
 			..()
 
 		process()
-			if(!parent)
+			if (!parent)
 				..()
 			else
 				machines.Remove(src)
-/*			if(!node1)
+/*			if (!node1)
 				parent.mingle_with_turf(loc, 200)
-				if(!nodealert)
+				if (!nodealert)
 					//world << "Missing node from [src] at [src.x],[src.y],[src.z]"
 					nodealert = 1
 			else if (nodealert)
@@ -430,7 +430,7 @@ obj/machinery/atmospherics/pipe
 				..()
 
 		Del()
-			if(node1)
+			if (node1)
 				node1.disconnect(src)
 
 			..()
@@ -439,7 +439,7 @@ obj/machinery/atmospherics/pipe
 			return list(node1)
 
 		update_icon()
-			if(node1)
+			if (node1)
 				icon_state = "intact"
 
 				dir = get_dir(src, node1)
@@ -452,15 +452,15 @@ obj/machinery/atmospherics/pipe
 			var/connect_direction = dir
 
 			for(var/obj/machinery/atmospherics/target in get_step(src,connect_direction))
-				if(target.initialize_directions & get_dir(target,src))
+				if (target.initialize_directions & get_dir(target,src))
 					node1 = target
 					break
 
 			update_icon()
 
 		disconnect(obj/machinery/atmospherics/reference)
-			if(reference == node1)
-				if(istype(node1, /obj/machinery/atmospherics/pipe))
+			if (reference == node1)
+				if (istype(node1, /obj/machinery/atmospherics/pipe))
 					del(parent)
 				node1 = null
 
@@ -490,7 +490,7 @@ obj/machinery/atmospherics/pipe
 					user << "\blue Oxygen: [round(o2_concentration*100)]%"
 					user << "\blue CO2: [round(co2_concentration*100)]%"
 					user << "\blue Plasma: [round(plasma_concentration*100)]%"
-					if(unknown_concentration>0.01)
+					if (unknown_concentration>0.01)
 						user << "\red Unknown: [round(unknown_concentration*100)]%"
 					user << "\blue Temperature: [round(parent.air.temperature-T0C)]&deg;C"
 				else
@@ -518,8 +518,8 @@ obj/machinery/atmospherics/pipe
 			..()
 
 		process()
-			if(!parent)
-				if(build_killswitch <= 0)
+			if (!parent)
+				if (build_killswitch <= 0)
 					machines.Remove(src)
 				else
 					build_killswitch--
@@ -528,15 +528,15 @@ obj/machinery/atmospherics/pipe
 			else
 				parent.mingle_with_turf(loc, 250)
 /*
-			if(!node1)
-				if(!nodealert)
+			if (!node1)
+				if (!nodealert)
 					//world << "Missing node from [src] at [src.x],[src.y],[src.z]"
 					nodealert = 1
 			else if (nodealert)
 				nodealert = 0
 */
 		Del()
-			if(node1)
+			if (node1)
 				node1.disconnect(src)
 
 			..()
@@ -545,7 +545,7 @@ obj/machinery/atmospherics/pipe
 			return list(node1)
 
 		update_icon()
-			if(node1)
+			if (node1)
 				icon_state = "intact"
 
 				dir = get_dir(src, node1)
@@ -557,15 +557,15 @@ obj/machinery/atmospherics/pipe
 			var/connect_direction = dir
 
 			for(var/obj/machinery/atmospherics/target in get_step(src,connect_direction))
-				if(target.initialize_directions & get_dir(target,src))
+				if (target.initialize_directions & get_dir(target,src))
 					node1 = target
 					break
 
 			update_icon()
 
 		disconnect(obj/machinery/atmospherics/reference)
-			if(reference == node1)
-				if(istype(node1, /obj/machinery/atmospherics/pipe))
+			if (reference == node1)
+				if (istype(node1, /obj/machinery/atmospherics/pipe))
 					del(parent)
 				node1 = null
 
@@ -574,7 +574,7 @@ obj/machinery/atmospherics/pipe
 			return null
 
 		hide(var/i) //to make the little pipe section invisible, the icon changes.
-			if(node1)
+			if (node1)
 				icon_state = "[i == 1 && istype(loc, /turf/simulated) ? "h" : "" ]intact"
 				dir = get_dir(src, node1)
 			else
@@ -600,13 +600,13 @@ obj/machinery/atmospherics/pipe
 
 		New()
 			switch(dir)
-				if(NORTH)
+				if (NORTH)
 					initialize_directions = EAST|SOUTH|WEST
-				if(SOUTH)
+				if (SOUTH)
 					initialize_directions = WEST|NORTH|EAST
-				if(EAST)
+				if (EAST)
 					initialize_directions = SOUTH|WEST|NORTH
-				if(WEST)
+				if (WEST)
 					initialize_directions = NORTH|EAST|SOUTH
 
 			..()
@@ -614,7 +614,7 @@ obj/machinery/atmospherics/pipe
 
 
 		hide(var/i)
-			if(level == 1 && istype(loc, /turf/simulated))
+			if (level == 1 && istype(loc, /turf/simulated))
 				invisibility = i ? 101 : 0
 			update_icon()
 
@@ -622,52 +622,52 @@ obj/machinery/atmospherics/pipe
 			return list(node1, node2, node3)
 
 		process()
-			if(!parent)
+			if (!parent)
 				..()
 			else
 				machines.Remove(src)
 /*
-			if(!node1)
+			if (!node1)
 				parent.mingle_with_turf(loc, 70)
-				if(!nodealert)
+				if (!nodealert)
 					//world << "Missing node from [src] at [src.x],[src.y],[src.z]"
 					nodealert = 1
-			else if(!node2)
+			else if (!node2)
 				parent.mingle_with_turf(loc, 70)
-				if(!nodealert)
+				if (!nodealert)
 					//world << "Missing node from [src] at [src.x],[src.y],[src.z]"
 					nodealert = 1
-			else if(!node3)
+			else if (!node3)
 				parent.mingle_with_turf(loc, 70)
-				if(!nodealert)
+				if (!nodealert)
 					//world << "Missing node from [src] at [src.x],[src.y],[src.z]"
 					nodealert = 1
 			else if (nodealert)
 				nodealert = 0
 */
 		Del()
-			if(node1)
+			if (node1)
 				node1.disconnect(src)
-			if(node2)
+			if (node2)
 				node2.disconnect(src)
-			if(node3)
+			if (node3)
 				node3.disconnect(src)
 
 			..()
 
 		disconnect(obj/machinery/atmospherics/reference)
-			if(reference == node1)
-				if(istype(node1, /obj/machinery/atmospherics/pipe))
+			if (reference == node1)
+				if (istype(node1, /obj/machinery/atmospherics/pipe))
 					del(parent)
 				node1 = null
 
-			if(reference == node2)
-				if(istype(node2, /obj/machinery/atmospherics/pipe))
+			if (reference == node2)
+				if (istype(node2, /obj/machinery/atmospherics/pipe))
 					del(parent)
 				node2 = null
 
-			if(reference == node3)
-				if(istype(node3, /obj/machinery/atmospherics/pipe))
+			if (reference == node3)
+				if (istype(node3, /obj/machinery/atmospherics/pipe))
 					del(parent)
 				node3 = null
 
@@ -676,7 +676,7 @@ obj/machinery/atmospherics/pipe
 			..()
 
 		update_icon()
-			if(node1&&node2&&node3)
+			if (node1&&node2&&node3)
 				var/C = ""
 				switch(color)
 					if ("red") C = "-r"
@@ -692,18 +692,18 @@ obj/machinery/atmospherics/pipe
 				var/unconnected = 0
 				var/connect_directions = (NORTH|SOUTH|EAST|WEST)&(~dir)
 
-				if(node1)
+				if (node1)
 					connected |= get_dir(src, node1)
-				if(node2)
+				if (node2)
 					connected |= get_dir(src, node2)
-				if(node3)
+				if (node3)
 					connected |= get_dir(src, node3)
 
 				unconnected = (~connected)&(connect_directions)
 
 				icon_state = "manifold_[connected]_[unconnected]"
 
-				if(!connected)
+				if (!connected)
 					del(src)
 
 			return
@@ -712,9 +712,9 @@ obj/machinery/atmospherics/pipe
 			var/connect_directions = (NORTH|SOUTH|EAST|WEST)&(~dir)
 
 			for(var/direction in cardinal)
-				if(direction&connect_directions)
+				if (direction&connect_directions)
 					for(var/obj/machinery/atmospherics/target in get_step(src,direction))
-						if(target.initialize_directions & get_dir(target,src))
+						if (target.initialize_directions & get_dir(target,src))
 							node1 = target
 							connect_directions &= ~direction
 							break
@@ -723,9 +723,9 @@ obj/machinery/atmospherics/pipe
 
 
 			for(var/direction in cardinal)
-				if(direction&connect_directions)
+				if (direction&connect_directions)
 					for(var/obj/machinery/atmospherics/target in get_step(src,direction))
-						if(target.initialize_directions & get_dir(target,src))
+						if (target.initialize_directions & get_dir(target,src))
 							node2 = target
 							connect_directions &= ~direction
 							break
@@ -734,9 +734,9 @@ obj/machinery/atmospherics/pipe
 
 
 			for(var/direction in cardinal)
-				if(direction&connect_directions)
+				if (direction&connect_directions)
 					for(var/obj/machinery/atmospherics/target in get_step(src,direction))
-						if(target.initialize_directions & get_dir(target,src))
+						if (target.initialize_directions & get_dir(target,src))
 							node3 = target
 							connect_directions &= ~direction
 							break

@@ -32,6 +32,6 @@
 		if (--src.life < 1)
 			//SN src = null
 			del(src)
-		if(newloc.density)
+		if (newloc.density)
 			return 0
 		.=..()

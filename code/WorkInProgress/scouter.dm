@@ -8,8 +8,8 @@
 /*
 	proc
 		checkpowerlevel(var/mob/M)
-		if(!M)	return
-		if(!M.client)	return
+		if (!M)	return
+		if (!M.client)	return
 		var/client/C = M.client
 		var/icon/tempHud = 'hud.dmi'
 		for(var/mob/living/carbon/human/player in view(M))

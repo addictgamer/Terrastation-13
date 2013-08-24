@@ -5,7 +5,7 @@
 	icon_state = "plump_pie"
 	New()
 		..()
-		if(prob(10))
+		if (prob(10))
 			name = "exceptional plump pie"
 			desc = "Microwave is taken by a fey mood! It has cooked an exceptional plump pie!"
 			reagents.add_reagent("nutriment", 15)

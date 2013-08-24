@@ -11,8 +11,8 @@
 
 	attackby(obj/item/W as obj, mob/user as mob)
 		..()
-		if(istype(W, /obj/item/weapon/cell))
-			if(src.cell)
+		if (istype(W, /obj/item/weapon/cell))
+			if (src.cell)
 				user << "\blue You have already inserted a cell!"
 				return
 			else
@@ -20,8 +20,8 @@
 				W.loc = src
 				src.cell = W
 				user << "\blue You insert the cell!"
-		if(istype(W, /obj/item/cable_coil))
-			if(src.wires)
+		if (istype(W, /obj/item/cable_coil))
+			if (src.wires)
 				user << "\blue You have already inserted wire!"
 				return
 			else

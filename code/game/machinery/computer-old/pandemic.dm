@@ -17,10 +17,10 @@
 
 	power_change()
 
-		if(stat & BROKEN)
+		if (stat & BROKEN)
 			icon_state = (src.beaker?"mixer1_b":"mixer0_b")
 
-		else if(powered())
+		else if (powered())
 			icon_state = (src.beaker?"mixer1":"mixer0")
 			stat &= ~NOPOWER
 
@@ -31,20 +31,20 @@
 
 
 	Topic(href, href_list)
-		if(stat & (NOPOWER|BROKEN)) return
-		if(usr.stat || usr.restrained()) return
-		if(!in_range(src, usr)) return
+		if (stat & (NOPOWER|BROKEN)) return
+		if (usr.stat || usr.restrained()) return
+		if (!in_range(src, usr)) return
 
 		usr.machine = src
-		if(!beaker) return
+		if (!beaker) return
 
 		if (href_list["create_vaccine"])
-			if(!src.wait)
+			if (!src.wait)
 				var/obj/item/weapon/reagent_containers/glass/bottle/B = new/obj/item/weapon/reagent_containers/glass/bottle(src.loc)
 				var/vaccine_type = text2path(href_list["create_vaccine"])//the path is received as string - converting
 				var/datum/disease/D = new vaccine_type
 				var/name = input(usr,"Name:","Name the vaccine",D.name)
-				if(!name || name == " ") name = D.name
+				if (!name || name == " ") name = D.name
 				B.name = "[name] vaccine bottle"
 				B.reagents.add_reagent("vaccine",15,vaccine_type)
 				del(D)
@@ -56,14 +56,14 @@
 			src.updateUsrDialog()
 			return
 		else if (href_list["create_virus_culture"])
-			if(!wait)
+			if (!wait)
 				var/obj/item/weapon/reagent_containers/glass/bottle/B = new/obj/item/weapon/reagent_containers/glass/bottle(src.loc)
 				B.icon_state = "bottle3"
 				var/type = text2path(href_list["create_virus_culture"])//the path is received as string - converting
 				var/datum/disease/D = new type
 				var/list/data = list("viruses"=list(D))
 				var/name = sanitize(input(usr,"Name:","Name the culture",D.name))
-				if(!name || name == " ") name = D.name
+				if (!name || name == " ") name = D.name
 				B.name = "[name] culture bottle"
 				B.desc = "A small bottle. Contains [D.agent] culture in synthblood medium."
 				B.reagents.add_reagent("blood",20,data)
@@ -85,7 +85,7 @@
 			icon_state = "mixer0"
 			src.updateUsrDialog()
 			return
-		else if(href_list["clear"])
+		else if (href_list["clear"])
 			src.temphtml = ""
 			src.updateUsrDialog()
 			return
@@ -104,25 +104,25 @@
 		return src.attack_hand(user)
 
 	attack_hand(mob/user as mob)
-		if(stat & (NOPOWER|BROKEN))
+		if (stat & (NOPOWER|BROKEN))
 			return
 		user.machine = src
 		var/dat = ""
-		if(src.temphtml)
+		if (src.temphtml)
 			dat = "[src.temphtml]<BR><BR><A href='?src=\ref[src];clear=1'>Main Menu</A>"
-		else if(!beaker)
+		else if (!beaker)
 			dat += "Please insert beaker.<BR>"
 			dat += "<A href='?src=\ref[user];mach_close=pandemic'>Close</A>"
 		else
 			var/datum/reagents/R = beaker.reagents
 			var/datum/reagent/blood/Blood = null
 			for(var/datum/reagent/blood/B in R.reagent_list)
-				if(B)
+				if (B)
 					Blood = B
 					break
-			if(!R.total_volume||!R.reagent_list.len)
+			if (!R.total_volume||!R.reagent_list.len)
 				dat += "The beaker is empty<BR>"
-			else if(!Blood)
+			else if (!Blood)
 				dat += "No blood sample found in beaker"
 			else
 				dat += "<h3>Blood sample data:</h3>"
@@ -130,11 +130,11 @@
 				dat += "<b>Blood Type:</b> [(Blood.data["blood_type"]||"none")]<BR>"
 
 
-				if(Blood.data["viruses"])
+				if (Blood.data["viruses"])
 					var/list/vir = Blood.data["viruses"]
-					if(vir.len)
+					if (vir.len)
 						for(var/datum/disease/D in Blood.data["viruses"])
-							if(!D.hidden[PANDEMIC])
+							if (!D.hidden[PANDEMIC])
 
 								dat += "<b>Disease Agent:</b> [D?"[D.agent] - <A href='?src=\ref[src];create_virus_culture=[D.type]'>Create virus culture bottle</A>":"none"]<BR>"
 								dat += "<b>Common name:</b> [(D.name||"none")]<BR>"
@@ -142,9 +142,9 @@
 								dat += "<b>Possible cure:</b> [(D.cure||"none")]<BR><BR>"
 
 				dat += "<b>Contains antibodies to:</b> "
-				if(Blood.data["resistances"])
+				if (Blood.data["resistances"])
 					var/list/res = Blood.data["resistances"]
-					if(res.len)
+					if (res.len)
 						dat += "<ul>"
 						for(var/type in Blood.data["resistances"])
 							var/datum/disease/DR = new type
@@ -163,9 +163,9 @@
 		return
 
 	attackby(var/obj/I as obj, var/mob/user as mob)
-		if(istype(I, /obj/item/weapon/screwdriver))
+		if (istype(I, /obj/item/weapon/screwdriver))
 			playsound(src.loc, 'Screwdriver.ogg', 50, 1)
-			if(do_after(user, 20))
+			if (do_after(user, 20))
 				if (src.stat & BROKEN)
 					user << "\blue The broken glass falls out."
 					var/obj/computerframe/A = new /obj/computerframe(src.loc)
@@ -189,9 +189,9 @@
 					A.icon_state = "4"
 					A.anchored = 1
 					del(src)
-		else if(istype(I, /obj/item/weapon/reagent_containers/glass))
-			if(stat & (NOPOWER|BROKEN)) return
-			if(src.beaker)
+		else if (istype(I, /obj/item/weapon/reagent_containers/glass))
+			if (stat & (NOPOWER|BROKEN)) return
+			if (src.beaker)
 				user << "A beaker is already loaded into the machine."
 				return
 

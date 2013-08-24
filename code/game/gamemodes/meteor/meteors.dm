@@ -7,7 +7,7 @@
 /var/const/meteors_in_small_wave = 10
 
 /proc/meteor_wave()
-	if(!ticker || wavesecret)
+	if (!ticker || wavesecret)
 		return
 
 	wavesecret = 1
@@ -35,22 +35,22 @@
 
 	do
 		switch(pick(1,2,3,4))
-			if(1) //NORTH
+			if (1) //NORTH
 				starty = world.maxy-1
 				startx = rand(1, world.maxx-1)
 				endy = 1
 				endx = rand(1, world.maxx-1)
-			if(2) //EAST
+			if (2) //EAST
 				starty = rand(1,world.maxy-1)
 				startx = world.maxx-1
 				endy = rand(1, world.maxy-1)
 				endx = 1
-			if(3) //SOUTH
+			if (3) //SOUTH
 				starty = 1
 				startx = rand(1, world.maxx-1)
 				endy = world.maxy-1
 				endx = rand(1, world.maxx-1)
-			if(4) //WEST
+			if (4) //WEST
 				starty = rand(1, world.maxy-1)
 				startx = 1
 				endy = rand(1,world.maxy-1)
@@ -59,7 +59,7 @@
 		pickedstart = locate(startx, starty, 1)
 		pickedgoal = locate(endx, endy, 1)
 		max_i--
-		if(max_i<=0) return
+		if (max_i<=0) return
 
 	while (!istype(pickedstart, /turf/space) || pickedstart.loc.name != "Space" ) //FUUUCK, should never happen.
 
@@ -67,11 +67,11 @@
 	var/obj/meteor/M
 	switch(rand(1, 100))
 
-		if(1 to 10)
+		if (1 to 10)
 			M = new /obj/meteor/big( pickedstart )
-		if(11 to 75)
+		if (11 to 75)
 			M = new /obj/meteor( pickedstart )
-		if(76 to 100)
+		if (76 to 100)
 			M = new /obj/meteor/small( pickedstart )
 
 	M.dest = pickedgoal
@@ -105,13 +105,13 @@
 /obj/meteor/Bump(atom/A)
 	spawn(0)
 		for(var/mob/M in range(10, src))
-			if(!M.stat && !istype(M, /mob/living/silicon/ai)) //bad idea to shake an ai's view
+			if (!M.stat && !istype(M, /mob/living/silicon/ai)) //bad idea to shake an ai's view
 				shake_camera(M, 3, 1)
 		if (A)
 			A.meteorhit(src)
 			playsound(src.loc, 'meteorimpact.ogg', 40, 1)
 		if (--src.hits <= 0)
-			if(prob(15))// && !istype(A, /obj/grille))
+			if (prob(15))// && !istype(A, /obj/grille))
 				explosion(src.loc, 4, 5, 6, 7, 0)
 				playsound(src.loc, "explosion", 50, 1)
 			del(src)
@@ -134,13 +134,13 @@
 	Bump(atom/A)
 		spawn(0)
 			for(var/mob/M in range(10, src))
-				if(!M.stat && !istype(M, /mob/living/silicon/ai)) //bad idea to shake an ai's view
+				if (!M.stat && !istype(M, /mob/living/silicon/ai)) //bad idea to shake an ai's view
 					shake_camera(M, 3, 1)
 			if (A)
 				explosion(src.loc, 0, 1, 2, 3, 0)
 				playsound(src.loc, 'meteorimpact.ogg', 40, 1)
 			if (--src.hits <= 0)
-				if(prob(15) && !istype(A, /obj/grille))
+				if (prob(15) && !istype(A, /obj/grille))
 					explosion(src.loc, 1, 2, 3, 4, 0)
 					playsound(src.loc, "explosion", 50, 1)
 				del(src)

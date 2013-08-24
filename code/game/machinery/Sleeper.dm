@@ -14,11 +14,11 @@
 
 /obj/machinery/sleep_console/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			//SN src = null
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				//SN src = null
 				del(src)
@@ -29,7 +29,7 @@
 /obj/machinery/sleep_console/New()
 	..()
 	spawn( 5 )
-		if(orient == "RIGHT")
+		if (orient == "RIGHT")
 			icon_state = "sleeperconsole-r"
 			src.connected = locate(/obj/machinery/sleeper, get_step(src, EAST))
 		else
@@ -45,7 +45,7 @@
 	return src.attack_hand(user)
 
 /obj/machinery/sleep_console/attack_hand(mob/user as mob)
-	if(..())
+	if (..())
 		return
 	if (src.connected)
 		var/mob/occupant = src.connected.occupant
@@ -53,11 +53,11 @@
 		if (occupant)
 			var/t1
 			switch(occupant.stat)
-				if(0)
+				if (0)
 					t1 = "Conscious"
-				if(1)
+				if (1)
 					t1 = "<font color='blue'>Unconscious</font>"
-				if(2)
+				if (2)
 					t1 = "<font color='red'>*dead*</font>"
 				else
 			dat += text("[]\tHealth %: [] ([])</FONT><BR>", (occupant.health > 50 ? "<font color='blue'>" : "<font color='red'>"), occupant.health, t1)
@@ -80,13 +80,13 @@
 	return
 
 /obj/machinery/sleep_console/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	if ((usr.contents.Find(src) || ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon/ai)))
 		usr.machine = src
 		if (src.connected)
 			if (src.connected.occupant)
-				if(src.connected.occupant.health > 0)
+				if (src.connected.occupant.health > 0)
 					if (href_list["inap"])
 						src.connected.inject_inap(usr)
 					if (href_list["stox"])
@@ -98,7 +98,7 @@
 					if (href_list["dex"])
 						src.connected.inject_dexalin(usr)
 				else
-					if(src.connected.occupant.health > -100)
+					if (src.connected.occupant.health > -100)
 						if (href_list["inap"])
 							src.connected.inject_inap(usr)
 						if (href_list["stox"] || href_list["derm"] || href_list["bic"] || href_list["dex"])
@@ -111,7 +111,7 @@
 	return
 
 /obj/machinery/sleep_console/process()
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 	src.updateUsrDialog()
 	return
@@ -143,7 +143,7 @@
 	New()
 		..()
 		spawn( 5 )
-			if(orient == "RIGHT")
+			if (orient == "RIGHT")
 				icon_state = "sleeper_0-r"
 			return
 		return
@@ -159,7 +159,7 @@
 
 
 	blob_act()
-		if(prob(75))
+		if (prob(75))
 			for(var/atom/movable/A as mob|obj in src)
 				A.loc = src.loc
 				A.blob_act()
@@ -168,33 +168,33 @@
 
 
 	attackby(obj/item/weapon/grab/G as obj, mob/user as mob)
-		if((!( istype(G, /obj/item/weapon/grab)) || !( ismob(G.affecting))))
+		if ((!( istype(G, /obj/item/weapon/grab)) || !( ismob(G.affecting))))
 			return
-		if(src.occupant)
+		if (src.occupant)
 			user << "\blue <B>The sleeper is already occupied!</B>"
 			return
 
 		for(var/mob/living/carbon/metroid/M in range(1,G.affecting))
-			if(M.Victim == G.affecting)
+			if (M.Victim == G.affecting)
 				usr << "[G.affecting.name] will not fit into the sleeper because they have a Metroid latched onto their head."
 				return
 
 		for (var/mob/V in viewers(user))
 			V.show_message("[user] starts putting [G.affecting.name] into the sleeper.", 3)
 
-		if(do_after(user, 20))
-			if(src.occupant)
+		if (do_after(user, 20))
+			if (src.occupant)
 				user << "\blue <B>The sleeper is already occupied!</B>"
 				return
-			if(!G || !G.affecting) return
+			if (!G || !G.affecting) return
 			var/mob/M = G.affecting
-			if(M.client)
+			if (M.client)
 				M.client.perspective = EYE_PERSPECTIVE
 				M.client.eye = src
 			M.loc = src
 			src.occupant = M
 			src.icon_state = "sleeper_1"
-			if(orient == "RIGHT")
+			if (orient == "RIGHT")
 				icon_state = "sleeper_1-r"
 
 			for(var/obj/O in src)
@@ -207,21 +207,21 @@
 
 	ex_act(severity)
 		switch(severity)
-			if(1.0)
+			if (1.0)
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
 					ex_act(severity)
 				del(src)
 				return
-			if(2.0)
-				if(prob(50))
+			if (2.0)
+				if (prob(50))
 					for(var/atom/movable/A as mob|obj in src)
 						A.loc = src.loc
 						ex_act(severity)
 					del(src)
 					return
-			if(3.0)
-				if(prob(25))
+			if (3.0)
+				if (prob(25))
 					for(var/atom/movable/A as mob|obj in src)
 						A.loc = src.loc
 						ex_act(severity)
@@ -253,23 +253,23 @@
 
 
 	proc/go_out()
-		if(!src.occupant)
+		if (!src.occupant)
 			return
 		for(var/obj/O in src)
 			O.loc = src.loc
-		if(src.occupant.client)
+		if (src.occupant.client)
 			src.occupant.client.eye = src.occupant.client.mob
 			src.occupant.client.perspective = MOB_PERSPECTIVE
 		src.occupant.loc = src.loc
 		src.occupant = null
-		if(orient == "RIGHT")
+		if (orient == "RIGHT")
 			icon_state = "sleeper_0-r"
 		return
 
 
 	proc/inject_inap(mob/user as mob)
-		if(src.occupant)
-			if(src.occupant.reagents.get_reagent_amount("inaprovaline") + 30 <= 60)
+		if (src.occupant)
+			if (src.occupant.reagents.get_reagent_amount("inaprovaline") + 30 <= 60)
 				src.occupant.reagents.add_reagent("inaprovaline", 30)
 			user << text("Occupant now has [] units of Inaprovaline in his/her bloodstream.", src.occupant.reagents.get_reagent_amount("inaprovaline"))
 		else
@@ -278,8 +278,8 @@
 
 
 	proc/inject_stox(mob/user as mob)
-		if(src.occupant)
-			if(src.occupant.reagents.get_reagent_amount("stoxin") + 20 <= 40)
+		if (src.occupant)
+			if (src.occupant.reagents.get_reagent_amount("stoxin") + 20 <= 40)
 				src.occupant.reagents.add_reagent("stoxin", 20)
 			user << text("Occupant now has [] units of soporifics in his/her bloodstream.", src.occupant.reagents.get_reagent_amount("stoxin"))
 		else
@@ -289,7 +289,7 @@
 
 	proc/inject_dermaline(mob/user as mob)
 		if (src.occupant)
-			if(src.occupant.reagents.get_reagent_amount("dermaline") + 20 <= 40)
+			if (src.occupant.reagents.get_reagent_amount("dermaline") + 20 <= 40)
 				src.occupant.reagents.add_reagent("dermaline", 20)
 			user << text("Occupant now has [] units of Dermaline in his/her bloodstream.", src.occupant.reagents.get_reagent_amount("dermaline"))
 		else
@@ -298,8 +298,8 @@
 
 
 	proc/inject_bicaridine(mob/user as mob)
-		if(src.occupant)
-			if(src.occupant.reagents.get_reagent_amount("bicaridine") + 10 <= 20)
+		if (src.occupant)
+			if (src.occupant.reagents.get_reagent_amount("bicaridine") + 10 <= 20)
 				src.occupant.reagents.add_reagent("bicaridine", 10)
 			user << text("Occupant now has [] units of Bicaridine in his/her bloodstream.", src.occupant.reagents.get_reagent_amount("bicaridine"))
 		else
@@ -308,8 +308,8 @@
 
 
 	proc/inject_dexalin(mob/user as mob)
-		if(src.occupant)
-			if(src.occupant.reagents.get_reagent_amount("dexalin") + 20 <= 40)
+		if (src.occupant)
+			if (src.occupant.reagents.get_reagent_amount("dexalin") + 20 <= 40)
 				src.occupant.reagents.add_reagent("dexalin", 20)
 			user << text("Occupant now has [] units of Dexalin in his/her bloodstream.", src.occupant.reagents.get_reagent_amount("dexalin"))
 		else
@@ -318,15 +318,15 @@
 
 
 	proc/check(mob/user as mob)
-		if(src.occupant)
+		if (src.occupant)
 			user << text("\blue <B>Occupant ([]) Statistics:</B>", src.occupant)
 			var/t1
 			switch(src.occupant.stat)
-				if(0.0)
+				if (0.0)
 					t1 = "Conscious"
-				if(1.0)
+				if (1.0)
 					t1 = "Unconscious"
-				if(2.0)
+				if (2.0)
 					t1 = "*dead*"
 				else
 			user << text("[]\t Health %: [] ([])", (src.occupant.health > 50 ? "\blue " : "\red "), src.occupant.health, t1)
@@ -346,9 +346,9 @@
 		set name = "Eject Sleeper"
 		set category = "Object"
 		set src in oview(1)
-		if(usr.stat != 0)
+		if (usr.stat != 0)
 			return
-		if(orient == "RIGHT")
+		if (orient == "RIGHT")
 			icon_state = "sleeper_0-r"
 		src.icon_state = "sleeper_0"
 		src.go_out()
@@ -361,20 +361,20 @@
 		set category = "Object"
 		set src in oview(1)
 
-		if(usr.stat != 0)
+		if (usr.stat != 0)
 			return
-		if(src.occupant)
+		if (src.occupant)
 			usr << "\blue <B>The sleeper is already occupied!</B>"
 			return
 
 		for(var/mob/living/carbon/metroid/M in range(1,usr))
-			if(M.Victim == usr)
+			if (M.Victim == usr)
 				usr << "You're too busy getting your life sucked out of you."
 				return
 		for(var/mob/V in viewers(usr))
 			V.show_message("[usr] starts climbing into the sleeper.", 3)
-		if(do_after(usr, 20))
-			if(src.occupant)
+		if (do_after(usr, 20))
+			if (src.occupant)
 				usr << "\blue <B>The sleeper is already occupied!</B>"
 				return
 			usr.pulling = null
@@ -383,7 +383,7 @@
 			usr.loc = src
 			src.occupant = usr
 			src.icon_state = "sleeper_1"
-			if(orient == "RIGHT")
+			if (orient == "RIGHT")
 				icon_state = "sleeper_1-r"
 
 			for(var/obj/O in src)

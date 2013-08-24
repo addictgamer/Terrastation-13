@@ -8,7 +8,7 @@
 
 	proc
 		set_up(n = 3, c = 0, turf/loc)
-			if(n > 10)
+			if (n > 10)
 				n = 10
 			number = n
 			cardinals = c
@@ -21,11 +21,11 @@
 			var/i = 0
 			for(i=0, i<src.number, i++)
 				spawn(0)
-					if(holder)
+					if (holder)
 						src.location = get_turf(holder)
 					var/obj/effects/steam/steam = new /obj/effects/steam(src.location)
 					var/direction
-					if(src.cardinals)
+					if (src.cardinals)
 						direction = pick(cardinal)
 					else
 						direction = pick(alldirs)

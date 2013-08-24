@@ -7,10 +7,10 @@
 
 /obj/item/powerarmor/reactive/toggle(sudden = 0)
 	switch(parent.active)
-		if(1)
-			if(!sudden)
+		if (1)
+			if (!sudden)
 				usr << "\blue Reactive armor systems disengaged."
-		if(0)
+		if (0)
 			usr << "\blue Reactive armor systems engaged."
 	var/list/switchover = list()
 	for (var/armorvar in parent.armor)
@@ -18,9 +18,9 @@
 		togglearmor[armorvar] = parent.armor[armorvar]
 		parent.armor[armorvar] = switchover[armorvar]
 		//Probably not the most elegant way to have the vars switch over, but it works. Also propagates the values to the other objects.
-		if(parent.helm)
+		if (parent.helm)
 			parent.helm.armor[armorvar] = parent.armor[armorvar]
-		if(parent.gloves)
+		if (parent.gloves)
 			parent.gloves.armor[armorvar] = parent.armor[armorvar]
-		if(parent.shoes)
+		if (parent.shoes)
 			parent.shoes.armor[armorvar] = parent.armor[armorvar]

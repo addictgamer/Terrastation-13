@@ -23,34 +23,34 @@ Make sure spells that are removed from spell_list are actually removed and delet
 Also, you never added distance checking after target is selected. I've went ahead and did that.
 */
 /obj/proc_holder/spell/targeted/mind_transfer/cast(list/targets,mob/user = usr)
-	if(!targets.len)
+	if (!targets.len)
 		user << "No mind found."
 		return
 
-	if(targets.len > 1)
+	if (targets.len > 1)
 		user << "Too many minds! You're not a hive damnit!"//Whaa...aat?
 		return
 
 	var/mob/target = targets[1]
 
-	if(!(target in oview(range)))//If they are not in overview after selection. Do note that !() is necessary for in to work because ! takes precedence over it.
+	if (!(target in oview(range)))//If they are not in overview after selection. Do note that !() is necessary for in to work because ! takes precedence over it.
 		user << "They are too far away!"
 		return
 
-	if(!(target.type in compatible_mobs))
+	if (!(target.type in compatible_mobs))
 		user << "Their mind isn't compatible with yours."
 		return
 
-	if(target.stat == 2)
+	if (target.stat == 2)
 		user << "You didn't study necromancy back at the Space Wizard Federation academy."
 		return
 
-	if(!target.client || !target.mind)
-	//if(!target.mind)//Good for testing.
+	if (!target.client || !target.mind)
+	//if (!target.mind)//Good for testing.
 		user << "They appear to be brain-dead."
 		return
 
-	if(target.mind.special_role in protected_roles)
+	if (target.mind.special_role in protected_roles)
 		user << "Their mind is resisting your spell."
 		return
 
@@ -65,10 +65,10 @@ Also, you never added distance checking after target is selected. I've went ahea
 	var/list/checked_spells = user.spell_list
 	checked_spells -= m_transfer //Remove Mind Transfer from the list.
 
-	if(caster.spell_list.len)//If they have any spells left over after mind transfer is taken out. If they don't, we don't need this.
+	if (caster.spell_list.len)//If they have any spells left over after mind transfer is taken out. If they don't, we don't need this.
 		for(var/i=spell_loss_amount,(i>0&&checked_spells.len),i--)//While spell loss amount is greater than zero and checked_spells has spells in it, run this proc.
 			for(var/j=checked_spells.len,(j>0&&checked_spells.len),j--)//While the spell list to check is greater than zero and has spells in it, run this proc.
-				if(prob(base_spell_loss_chance))
+				if (prob(base_spell_loss_chance))
 					checked_spells -= pick(checked_spells)//Pick a random spell to remove.
 					spawn(msg_wait)
 						victim << "The mind transfer has robbed you of a spell."
@@ -81,11 +81,11 @@ Also, you never added distance checking after target is selected. I've went ahea
 	//SPELL LOSS END
 
 	//MIND TRANSFER BEGIN
-	if(caster.mind.special_verbs.len)//If the caster had any special verbs, remove them from the mob verb list.
+	if (caster.mind.special_verbs.len)//If the caster had any special verbs, remove them from the mob verb list.
 		for(var/V in caster.mind.special_verbs)//Since the caster is using an object spell system, this is mostly moot.
 			caster.verbs -= V//But a safety nontheless.
 
-	if(victim.mind.special_verbs.len)//Now remove all of the victim's verbs.
+	if (victim.mind.special_verbs.len)//Now remove all of the victim's verbs.
 		for(var/V in victim.mind.special_verbs)
 			victim.verbs -= V
 
@@ -97,7 +97,7 @@ Also, you never added distance checking after target is selected. I've went ahea
 	victim.mind = caster.mind//Do the same for their mind and spell list.
 	victim.spell_list = caster.spell_list//Now they are inside the victim's body.
 
-	if(victim.mind.special_verbs.len)//To add all the special verbs for the original caster.
+	if (victim.mind.special_verbs.len)//To add all the special verbs for the original caster.
 		for(var/V in caster.mind.special_verbs)//Not too important but could come into play.
 			caster.verbs += V
 
@@ -105,7 +105,7 @@ Also, you never added distance checking after target is selected. I've went ahea
 	caster.mind = temp_ghost.mind//Along with their mind and spell list.
 	caster.spell_list = temp_ghost.spell_list
 
-	if(caster.mind.special_verbs.len)//If they had any special verbs, we add them here.
+	if (caster.mind.special_verbs.len)//If they had any special verbs, we add them here.
 		for(var/V in caster.mind.special_verbs)
 			caster.verbs += V
 	//MIND TRANSFER END

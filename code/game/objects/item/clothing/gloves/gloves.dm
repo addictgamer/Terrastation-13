@@ -15,11 +15,11 @@
 	armor = list(melee = 0, bullet = 0, laser = 2, taser = 2, bomb = 0, bio = 0, rad = 0)
 
 /obj/item/clothing/gloves/attackby(obj/item/weapon/W, mob/user)
-	if(istype(W, /obj/item/cable_coil))
+	if (istype(W, /obj/item/cable_coil))
 		var/obj/item/cable_coil/C = W
-		if(!istype(src, /obj/item/clothing/gloves/yellow))
-			if(!wired)
-				if(C.amount >= 2)
+		if (!istype(src, /obj/item/clothing/gloves/yellow))
+			if (!wired)
+				if (C.amount >= 2)
 					C.amount -= 2
 					wired = 1
 					user << "You wrap some wires around [src]."

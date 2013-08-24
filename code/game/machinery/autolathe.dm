@@ -44,19 +44,19 @@
 			user << "You close the maintenance hatch of [src]."
 		return 1
 	if (opened)
-		if(istype(O, /obj/item/weapon/crowbar))
+		if (istype(O, /obj/item/weapon/crowbar))
 			playsound(src.loc, 'Crowbar.ogg', 50, 1)
 			var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(src.loc)
 			M.state = 2
 			M.icon_state = "box_1"
 			for(var/obj/I in component_parts)
-				if(I.reliability != 100 && crit_fail)
+				if (I.reliability != 100 && crit_fail)
 					I.crit_fail = 1
 				I.loc = src.loc
-			if(m_amount >= 3750)
+			if (m_amount >= 3750)
 				var/obj/item/stack/sheet/metal/G = new /obj/item/stack/sheet/metal(src.loc)
 				G.amount = round(m_amount / 3750)
-			if(g_amount >= 3750)
+			if (g_amount >= 3750)
 				var/obj/item/stack/sheet/glass/G = new /obj/item/stack/sheet/glass(src.loc)
 				G.amount = round(g_amount / 3750)
 			del(src)
@@ -160,7 +160,7 @@
 	onclose(user, "autolathe_regular")
 
 /obj/machinery/autolathe/proc/interact(mob/user as mob)
-	if(..())
+	if (..())
 		return
 	if (src.shocked)
 		src.shock(user,50)
@@ -174,18 +174,18 @@
 	return
 
 /obj/machinery/autolathe/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	usr.machine = src
 	src.add_fingerprint(usr)
 	if (!busy)
-		if(href_list["make"])
+		if (href_list["make"])
 			var/turf/T = get_step(src.loc, get_dir(src,usr))
 			var/obj/template = locate(href_list["make"])
 			var/multiplier = text2num(href_list["multiplier"])
 			if (!multiplier) multiplier = 1
 			var/power = max(2000, (template.m_amt+template.g_amt)*multiplier/5)
-			if(src.m_amount >= template.m_amt*multiplier && src.g_amount >= template.g_amt*multiplier)
+			if (src.m_amount >= template.m_amt*multiplier && src.g_amount >= template.g_amt*multiplier)
 				busy = 1
 				use_power(power)
 				icon_state = "autolathe"
@@ -197,9 +197,9 @@
 						spawn(16)
 							src.m_amount -= template.m_amt*multiplier
 							src.g_amount -= template.g_amt*multiplier
-							if(src.m_amount < 0)
+							if (src.m_amount < 0)
 								src.m_amount = 0
-							if(src.g_amount < 0)
+							if (src.g_amount < 0)
 								src.g_amount = 0
 							var/obj/new_item = new template.type(T)
 							if (multiplier>1)
@@ -207,37 +207,37 @@
 								S.amount = multiplier
 							busy = 0
 							src.updateUsrDialog()
-		if(href_list["act"])
+		if (href_list["act"])
 			var/temp_wire = href_list["wire"]
-			if(href_list["act"] == "pulse")
+			if (href_list["act"] == "pulse")
 				if (!istype(usr.equipped(), /obj/item/device/multitool))
 					usr << "You need a multitool!"
 				else
-					if(src.wires[temp_wire])
+					if (src.wires[temp_wire])
 						usr << "You can't pulse a cut wire."
 					else
-						if(src.hack_wire == temp_wire)
+						if (src.hack_wire == temp_wire)
 							src.hacked = !src.hacked
 							spawn(100) src.hacked = !src.hacked
-						if(src.disable_wire == temp_wire)
+						if (src.disable_wire == temp_wire)
 							src.disabled = !src.disabled
 							src.shock(usr,50)
 							spawn(100) src.disabled = !src.disabled
-						if(src.shock_wire == temp_wire)
+						if (src.shock_wire == temp_wire)
 							src.shocked = !src.shocked
 							src.shock(usr,50)
 							spawn(100) src.shocked = !src.shocked
-			if(href_list["act"] == "wire")
+			if (href_list["act"] == "wire")
 				if (!istype(usr.equipped(), /obj/item/weapon/wirecutters))
 					usr << "You need wirecutters!"
 				else
 					wires[temp_wire] = !wires[temp_wire]
-					if(src.hack_wire == temp_wire)
+					if (src.hack_wire == temp_wire)
 						src.hacked = !src.hacked
-					if(src.disable_wire == temp_wire)
+					if (src.disable_wire == temp_wire)
 						src.disabled = !src.disabled
 						src.shock(usr,50)
-					if(src.shock_wire == temp_wire)
+					if (src.shock_wire == temp_wire)
 						src.shocked = !src.shocked
 						src.shock(usr,50)
 	else
@@ -336,9 +336,9 @@ var/global/list/autolathe_recipes_hidden = list( \
 	w -= src.disable_wire
 
 /obj/machinery/autolathe/proc/shock(mob/user, prb)
-	if(stat & (BROKEN|NOPOWER))		// unpowered, no shock
+	if (stat & (BROKEN|NOPOWER))		// unpowered, no shock
 		return 0
-	if(!prob(prb))
+	if (!prob(prb))
 		return 0
 	var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
 	s.set_up(5, 1, src)

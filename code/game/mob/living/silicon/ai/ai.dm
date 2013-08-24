@@ -31,7 +31,7 @@
 	set category = "AI Commands"
 	set name = "Show Camera List"
 
-	if(usr.stat == 2)
+	if (usr.stat == 2)
 		usr << "You can't track with camera because you are dead!"
 		return
 
@@ -40,7 +40,7 @@
 /mob/living/silicon/ai/proc/ai_camera_track()
 	set category = "AI Commands"
 	set name = "Track With Camera"
-	if(usr.stat == 2)
+	if (usr.stat == 2)
 		usr << "You can't track with camera because you are dead!"
 		return
 
@@ -52,18 +52,18 @@
 			continue //cameras can't follow people who haven't started yet DUH OR DIDN'T YOU KNOW THAT
 		//Cameras can't track people wearing an agent card or a ninja hood.
 		if (istype(M, /mob/living/carbon/human))
-			if(istype(M:wear_id, /obj/item/weapon/card/id/syndicate))
+			if (istype(M:wear_id, /obj/item/weapon/card/id/syndicate))
 				continue
-		 	if(istype(M:head, /obj/item/clothing/head/helmet/space/space_ninja)&&!M:head:canremove)
+		 	if (istype(M:head, /obj/item/clothing/head/helmet/space/space_ninja)&&!M:head:canremove)
 		 		continue
-		if(!istype(M.loc, /turf)) //in a closet or something, AI can't see him anyways
+		if (!istype(M.loc, /turf)) //in a closet or something, AI can't see him anyways
 			continue
 		var/area/wizard_station/A = locate()//So that wizards are not tracked by the AI until they leave their sanctuary. Unless they talk on radio/N
-		if(M in A.contents)
+		if (M in A.contents)
 			continue
-		if(M.invisibility)//cloaked
+		if (M.invisibility)//cloaked
 			continue
-		if(istype(M.loc,/obj/dummy))
+		if (istype(M.loc,/obj/dummy))
 			continue
 		else if (M == usr)
 			continue
@@ -100,15 +100,15 @@
 			if (usr:cameraFollow == null)
 				return
 			else if (istype(target, /mob/living/carbon/human))
-				if(istype(target:wear_id, /obj/item/weapon/card/id/syndicate))
+				if (istype(target:wear_id, /obj/item/weapon/card/id/syndicate))
 					usr << "Follow camera mode terminated."
 					usr:cameraFollow = null
 					return
-		 		if(istype(target:head, /obj/item/clothing/head/helmet/space/space_ninja)&&!target:head:canremove)
+		 		if (istype(target:head, /obj/item/clothing/head/helmet/space/space_ninja)&&!target:head:canremove)
 		 			usr << "Follow camera mode terminated."
 					usr:cameraFollow = null
 					return
-			else if(istype(target.loc,/obj/dummy))
+			else if (istype(target.loc,/obj/dummy))
 				usr << "Follow camera mode ended."
 				usr:cameraFollow = null
 				return
@@ -195,7 +195,7 @@
 	var/list/plist = list()
 	var/list/namecounts = list()
 
-	if(usr.stat == 2)
+	if (usr.stat == 2)
 		usr << "You can't send PDA messages because you are dead!"
 		return
 
@@ -265,7 +265,7 @@
 
 	proc_holder_list = new()
 
-	if(L)
+	if (L)
 		if (istype(L, /datum/ai_laws))
 			laws = L
 	else
@@ -283,7 +283,7 @@
 		//Hologram verb./N
 		verbs += /mob/living/silicon/ai/proc/ai_hologram_change
 
-	if(!safety)//Only used by AIize() to successfully spawn an AI.
+	if (!safety)//Only used by AIize() to successfully spawn an AI.
 		if (!B)//If there is no player/brain inside.
 			new/obj/AIcore/deactivated(loc)//New empty terminal.
 			del(src)//Delete AI.
@@ -307,7 +307,7 @@
 			spawn(0)
 				ainame(src)
 
-	if(src.mind)
+	if (src.mind)
 		ticker.mode.remove_revolutionary(src.mind)
 	return
 
@@ -315,26 +315,26 @@
 /mob/living/silicon/ai/verb/pick_icon()
 	set category = "AI Commands"
 	set name = "Change AI Core Display"
-	if(stat || aiRestorePowerRoutine)
+	if (stat || aiRestorePowerRoutine)
 		return
 
-		//if(icon_state == initial(icon_state))
+		//if (icon_state == initial(icon_state))
 	var/icontype = input("Please, select a display!", "AI", null/*, null*/) in list("Clown", "HAL9000", "Monochrome", "Blue", "HAL9000 Mark2", "Inverted", "Firewall", "Green")
-	if(icontype == "Clown")
+	if (icontype == "Clown")
 		icon_state = "ai-clown2"
-	else if(icontype == "HAL9000")
+	else if (icontype == "HAL9000")
 		icon_state = "ai-hal9000-2"
-	else if(icontype == "Monochrome")
+	else if (icontype == "Monochrome")
 		icon_state = "ai-mono"
-	else if(icontype == "Blue")
+	else if (icontype == "Blue")
 		icon_state = "ai"
-	else if(icontype == "HAL9000 Mark2")
+	else if (icontype == "HAL9000 Mark2")
 		icon_state = "ai-hal9000-3"
-	else if(icontype == "Inverted")
+	else if (icontype == "Inverted")
 		icon_state = "ai-u"
-	else if(icontype == "Firewall")
+	else if (icontype == "Firewall")
 		icon_state = "ai-magma"
-	else if(icontype == "Funny")
+	else if (icontype == "Funny")
 		icon_state = "ai-yesman"
 	else//(icontype == "Green")
 		icon_state = "ai-wierd"
@@ -347,19 +347,19 @@
 	..()
 	statpanel("Status")
 	if (client.statpanel == "Status")
-		if(emergency_shuttle.online && emergency_shuttle.location < 2)
+		if (emergency_shuttle.online && emergency_shuttle.location < 2)
 			var/timeleft = emergency_shuttle.timeleft()
 			if (timeleft)
 				stat(null, "ETA-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
 
-		if(ticker.mode.name == "AI malfunction")
+		if (ticker.mode.name == "AI malfunction")
 			var/datum/game_mode/malfunction/malf = ticker.mode
 			for (var/datum/mind/malfai in malf.malf_ai)
 				if (mind == malfai)
 					if (malf.apcs >= 3)
 						stat(null, "Time until station control secured: [max(malf.AI_win_timeleft/(malf.apcs/3), 0)] seconds")
 
-		if(!stat)
+		if (!stat)
 			stat(null, text("System integrity: [(health+100)/2]%"))
 		else
 			stat(null, text("Systems nonfunctional"))
@@ -416,7 +416,7 @@
 
 /mob/living/silicon/ai/proc/ai_cancel_call()
 	set category = "AI Commands"
-	if(usr.stat == 2)
+	if (usr.stat == 2)
 		usr << "You can't send the shuttle back because you are dead!"
 		return
 	cancel_call_proc(src)
@@ -441,9 +441,9 @@
 /mob/living/silicon/ai/emp_act(severity)
 	if (prob(30))
 		switch(pick(1,2))
-			if(1)
+			if (1)
 				cancel_camera()
-			if(2)
+			if (2)
 				ai_call_shuttle()
 	..()
 
@@ -453,15 +453,15 @@
 	var/b_loss = bruteloss
 	var/f_loss = fireloss
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			if (stat != 2)
 				b_loss += 100
 				f_loss += 100
-		if(2.0)
+		if (2.0)
 			if (stat != 2)
 				b_loss += 60
 				f_loss += 60
-		if(3.0)
+		if (3.0)
 			if (stat != 2)
 				b_loss += 30
 	bruteloss = b_loss
@@ -518,11 +518,11 @@
 /mob/living/silicon/ai/bullet_act(var/obj/item/projectile/Proj)
 
 	// AI bullet code is pretty simple. No other effects really need to be added.
-	if(!Proj.nodamage) bruteloss += Proj.damage
+	if (!Proj.nodamage) bruteloss += Proj.damage
 
-	if(Proj.effects["emp"])
+	if (Proj.effects["emp"])
 		var/emppulse = Proj.effects["emp"]
-		if(prob(Proj.effectprob["emp"]))
+		if (prob(Proj.effectprob["emp"]))
 			empulse(src, emppulse, emppulse)
 		else
 			empulse(src, 0, emppulse)
@@ -553,7 +553,7 @@
 				for(var/mob/O in viewers(src, null))
 					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has slashed at []!</B>", M, src), 1)
-				if(prob(8))
+				if (prob(8))
 					flick("noise", flash)
 				bruteloss += damage
 				updatehealth()
@@ -565,9 +565,9 @@
 	return
 
 /mob/living/silicon/ai/attack_hand(mob/living/carbon/M as mob)
-	if(ishuman(M))//Checks to see if they are ninja
-		if(istype(M:gloves, /obj/item/clothing/gloves/space_ninja)&&M:gloves:candrain&&!M:gloves:draining)
-			if(M:wear_suit:s_control)
+	if (ishuman(M))//Checks to see if they are ninja
+		if (istype(M:gloves, /obj/item/clothing/gloves/space_ninja)&&M:gloves:candrain&&!M:gloves:draining)
+			if (M:wear_suit:s_control)
 				M:wear_suit:transfer_ai("AICORE", "NINJASUIT", src, M)
 			else
 				M << "\red <b>ERROR</b>: \black Remote access channel disabled."
@@ -660,21 +660,21 @@
 	src:cameraFollow = null
 	var/cameralist[0]
 
-	if(usr.stat == 2)
+	if (usr.stat == 2)
 		usr << "You can't change your camera network because you are dead!"
 		return
 
 	for (var/obj/machinery/camera/C in world)
-		if(!C.status)
+		if (!C.status)
 			continue
-		if(C.network == "AI Satellite")
+		if (C.network == "AI Satellite")
 			if (ticker.mode.name == "AI malfunction")
 				var/datum/game_mode/malfunction/malf = ticker.mode
 				for (var/datum/mind/M in malf.malf_ai)
 					if (mind == M)
 						cameralist[C.network] = C.network
 		else
-			if(C.network != "CREED" && C.network != "thunder" && C.network != "RD" && C.network != "toxins" && C.network != "Prison")
+			if (C.network != "CREED" && C.network != "thunder" && C.network != "RD" && C.network != "toxins" && C.network != "Prison")
 				cameralist[C.network] = C.network
 
 	network = input(usr, "Which network would you like to view?") as null|anything in cameralist
@@ -695,17 +695,17 @@
 	set category = "AI Commands"
 
 	var/input
-	if(alert("Would you like to select a hologram based on a crew member or switch to unique avatar?",,"Crew Member","Unique")=="Crew Member")
+	if (alert("Would you like to select a hologram based on a crew member or switch to unique avatar?",,"Crew Member","Unique")=="Crew Member")
 
 		var/personnel_list[] = list()
 
 		for(var/datum/data/record/t in data_core.locked)//Look in data core locked.
 			personnel_list["[t.fields["name"]]: [t.fields["rank"]]"] = t.fields["image"]//Pull names, rank, and image.
 
-		if(personnel_list.len)
+		if (personnel_list.len)
 			input = input("Select a crew member:") as null|anything in personnel_list
 			var/icon/character_icon = personnel_list[input]
-			if(character_icon)
+			if (character_icon)
 				del(holo_icon)//Clear old icon so we're not storing it in memory.
 				holo_icon = getHologramIcon(icon(character_icon))
 		else
@@ -717,11 +717,11 @@
 		"floating face"
 		)
 		input = input("Please select a hologram:") as null|anything in icon_list
-		if(input)
+		if (input)
 			del(holo_icon)
 			switch(input)
-				if("default")
+				if ("default")
 					holo_icon = getHologramIcon(icon('AI.dmi',"holo1"))
-				if("floating face")
+				if ("floating face")
 					holo_icon = getHologramIcon(icon('AI.dmi',"holo2"))
 	return

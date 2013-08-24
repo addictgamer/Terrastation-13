@@ -9,17 +9,17 @@
 
 /obj/item/weapon/folder/update_icon()
 	overlays = null
-	if(contents.len)
+	if (contents.len)
 		overlays += "folder_paper"
 	return
 
 /obj/item/weapon/folder/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/paper) || istype(W, /obj/item/weapon/photo))
+	if (istype(W, /obj/item/paper) || istype(W, /obj/item/weapon/photo))
 		user.drop_item()
 		W.loc = src
 		user << "\blue You put the [W] into the folder."
 		update_icon()
-	else if(istype(W, /obj/item/weapon/pen))
+	else if (istype(W, /obj/item/weapon/pen))
 		var/n_name = copytext(sanitize(input(usr, "What would you like to label the folder?", "Folder Labelling", null)  as text),1,MAX_NAME_LEN)
 		if ((loc == usr && usr.stat == 0))
 			name = "folder[(n_name ? text("- '[n_name]'") : null)]"
@@ -44,20 +44,20 @@
 
 	if (usr.contents.Find(src))
 
-		if(href_list["remove"])
+		if (href_list["remove"])
 			var/obj/item/P = locate(href_list["remove"])
-			if(P)
+			if (P)
 				P.loc = usr.loc
-				if(ishuman(usr))
-					if(!usr.get_active_hand())
+				if (ishuman(usr))
+					if (!usr.get_active_hand())
 						usr.put_in_hand(P)
 				else
 					P.loc = get_turf(usr)
 
-		if(href_list["read"])
+		if (href_list["read"])
 			var/obj/item/paper/P = locate(href_list["read"])
-			if(P)
-				if(!(istype(usr, /mob/living/carbon/human) || istype(usr, /mob/dead/observer) || istype(usr, /mob/living/silicon)))
+			if (P)
+				if (!(istype(usr, /mob/living/carbon/human) || istype(usr, /mob/dead/observer) || istype(usr, /mob/living/silicon)))
 					usr << browse("<HTML><HEAD><TITLE>[P.name]</TITLE></HEAD><BODY>[stars(P.info)][P.stamps]</BODY></HTML>", "window=[P.name]")
 					onclose(usr, "[P.name]")
 				else

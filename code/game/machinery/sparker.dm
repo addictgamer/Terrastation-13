@@ -32,7 +32,7 @@
 			icon_state = "[base_state]-d"
 		if (!src.disable)
 			user.visible_message("\red [user] has reconnected the [src]!", "\red You fix the connection to the [src].")
-			if(src.powered())
+			if (src.powered())
 				icon_state = "[base_state]"
 			else
 				icon_state = "[base_state]-p"

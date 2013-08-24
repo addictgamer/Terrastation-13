@@ -111,9 +111,9 @@
 			if (usr.stat|| usr.restrained())
 				return
 			switch(href_list["action"])
-				if("clear")
+				if ("clear")
 					words[words[number]] = words[number]
-				if("change")
+				if ("change")
 					words[words[number]] = input("Enter the translation for [words[number]]", "Word notes") in engwords
 					for (var/w in words)
 						if ((words[w] == words[words[number]]) && (w != words[number]))
@@ -161,18 +161,18 @@
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has had the [name] used on him by [user.name] ([user.ckey])</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used [name] on [M.name] ([M.ckey])</font>")
 
-		if(istype(M,/mob/dead))
+		if (istype(M,/mob/dead))
 			M.invisibility = 0
 			user.visible_message( \
 				"\red [user] drags the ghost to our plan of reality!", \
 				"\red You drag the ghost to our plan of reality!" \
 			)
 			return
-		if(!istype(M))
+		if (!istype(M))
 			return
-		if(!iscultist(user))
+		if (!iscultist(user))
 			return ..()
-		if(iscultist(M))
+		if (iscultist(M))
 			return
 		M.take_organ_damage(0,rand(5,20)) //really lucky - 5 hits for a crit
 		for(var/mob/O in viewers(M, null))
@@ -183,9 +183,9 @@
 
 	attack_self(mob/living/user as mob)
 		usr = user
-		if(!wordtravel)
+		if (!wordtravel)
 			runerandom()
-		if(iscultist(user))
+		if (iscultist(user))
 			var/C = 0
 			for(var/obj/rune/N in world)
 				C++
@@ -194,22 +194,22 @@
 				return
 			if (C>=26+runedec+ticker.mode.cult.len) //including the useless rune at the secret room, shouldn't count against the limit of 25 runes - Urist
 				switch(alert("The cloth of reality can't take that much of a strain. By creating another rune, you risk locally tearing reality apart, which would prove fatal to you. Do you still wish to scribe the rune?",,"Yes","No"))
-					if("Yes")
-						if(prob(C*5-105-(runedec-ticker.mode.cult.len)*5)) //including the useless rune at the secret room, shouldn't count against the limit - Urist
+					if ("Yes")
+						if (prob(C*5-105-(runedec-ticker.mode.cult.len)*5)) //including the useless rune at the secret room, shouldn't count against the limit - Urist
 							usr.emote("scream")
 							user << "\red A tear momentarily appears in reality. Before it closes, you catch a glimpse of that which lies beyond. That proves to be too much for your mind."
 							usr.gib(1)
 							return
-					if("No")
+					if ("No")
 						return
 			else
 				switch(alert("You open the tome",,"Read it","Scribe a rune", "Notes")) //Fuck the "Cancel" option. Rewrite the whole tome interface yourself if you want it to work better. And input() is just ugly. - K0000
-					if("Cancel")
+					if ("Cancel")
 						return
-					if("Read it")
+					if ("Read it")
 						user << browse("[tomedat]", "window=Arcane Tome")
 						return
-					if("Notes")
+					if ("Notes")
 						notedat = {"
 					<br><b>Word translation notes</b> <br>
 					[words[1]] is <a href='byond://?src=\ref[src];number=1;action=change'>[words[words[1]]]</A> <A href='byond://?src=\ref[src];number=1;action=clear'>Clear</A><BR>
@@ -232,17 +232,17 @@
 			var/list/english = list()
 			for (var/w in words)
 				english+=words[w]
-			if(usr)
+			if (usr)
 				w1 = input("Write your first rune:", "Rune Scribing") in english
 				for (var/w in words)
 					if (words[w] == w1)
 						w1 = w
-			if(usr)
+			if (usr)
 				w2 = input("Write your second rune:", "Rune Scribing") in english
 				for (var/w in words)
 					if (words[w] == w2)
 						w2 = w
-			if(usr)
+			if (usr)
 				w3 = input("Write your third rune:", "Rune Scribing") in english
 				for (var/w in words)
 					if (words[w] == w3)
@@ -251,7 +251,7 @@
 				V.show_message("\red [user] slices open a finger and begins to chant and paint symbols on the floor.", 3, "\red You hear chanting.", 2)
 			user << "\red You slice open one of your fingers and begin drawing a rune on the floor whilst chanting the ritual that binds your life essence with the dark arcane energies flowing through the surrounding world."
 			user.take_overall_damage(1)
-			if(do_after(user, 50))
+			if (do_after(user, 50))
 				var/mob/living/carbon/human/H = user
 				var/obj/rune/R = new /obj/rune(user.loc)
 				user << "\red You finish drawing the arcane markings of the Geometer."
@@ -267,15 +267,15 @@
 			return
 
 	attackby(obj/item/weapon/tome/T as obj, mob/living/user as mob)
-		if(istype(T, /obj/item/weapon/tome)) // sanity check to prevent a runtime error
+		if (istype(T, /obj/item/weapon/tome)) // sanity check to prevent a runtime error
 			switch(alert("Copy the runes from your tome?",,"Copy", "Cancel"))
-				if("cancel")
+				if ("cancel")
 					return
 	//		var/list/nearby = viewers(1,src) //- Fuck this as well. No clue why this doesnt work. -K0000
 	//			if (T.loc != user)
 	//				return
 	//		for(var/mob/M in nearby)
-	//			if(M == user)
+	//			if (M == user)
 			for(var/w in words)
 				words[w] = T.words[w]
 			user << "You copy the translation notes from your tome."
@@ -283,7 +283,7 @@
 
 	examine()
 		set src in usr
-		if(!iscultist(usr))
+		if (!iscultist(usr))
 			usr << "An old, dusty tome with frayed edges and a sinister looking cover."
 		else
 			usr << "The scriptures of Nar-Sie, The One Who Sees, The Geometer of Blood. Contains the details of every ritual his followers could think of. Most of these are useless, though."

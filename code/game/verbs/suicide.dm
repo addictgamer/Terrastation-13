@@ -17,11 +17,11 @@
 
 	var/confirm = alert("Are you sure you want to commit suicide?", "Confirm Suicide", "Yes", "No")
 
-	if(alien_egg_flag)
+	if (alien_egg_flag)
 		src << "The alien inside you forces you to breathe, preventing you from suiciding."
 		return
 
-	if(confirm == "Yes")
+	if (confirm == "Yes")
 		suiciding = 1
 		//instead of killing them instantly, just put them at -175 health and let 'em gasp for a while
 		viewers(src) << "\red <b>[src] is attempting to bite \his tongue. It looks like \he's trying to commit suicide.</b>"
@@ -45,7 +45,7 @@
 
 	var/confirm = alert("Are you sure you want to commit suicide?", "Confirm Suicide", "Yes", "No")
 
-	if(confirm == "Yes")
+	if (confirm == "Yes")
 		suiciding = 1
 		viewers(loc) << "\red <b>[src]'s brain is growing dull and lifeless. It looks like it's trying to commit suicide. Somehow.</b>"
 		oxyloss = max(175 - toxloss - fireloss - bruteloss, oxyloss)
@@ -75,7 +75,7 @@
 
 	var/confirm = alert("Are you sure you want to commit suicide?", "Confirm Suicide", "Yes", "No")
 
-	if(confirm == "Yes")
+	if (confirm == "Yes")
 		suiciding = 1
 		//instead of killing them instantly, just put them at -175 health and let 'em gasp for a while
 		viewers(src) << "\red <b>[src] is attempting to bite \his tongue. It looks like \he's trying to commit suicide.</b>"
@@ -95,7 +95,7 @@
 
 	var/confirm = alert("Are you sure you want to commit suicide?", "Confirm Suicide", "Yes", "No")
 
-	if(confirm == "Yes")
+	if (confirm == "Yes")
 		suiciding = 1
 		viewers(src) << "\red <b>[src] is powering down. It looks like \he's trying to commit suicide.</b>"
 		//put em at -175
@@ -116,7 +116,7 @@
 
 	var/confirm = alert("Are you sure you want to commit suicide?", "Confirm Suicide", "Yes", "No")
 
-	if(confirm == "Yes")
+	if (confirm == "Yes")
 		suiciding = 1
 		viewers(src) << "\red <b>[src] is powering down. It looks like \he's trying to commit suicide.</b>"
 		//put em at -175
@@ -129,7 +129,7 @@
 	set desc = "Kill yourself and become a ghost (You will receive a confirmation prompt)"
 	set name = "pAI Suicide"
 	var/answer = input("REALLY kill yourself? This action can't be undone.", "Suicide", "No") in list ("Yes", "No")
-	if(answer == "Yes")
+	if (answer == "Yes")
 		var/obj/item/device/paicard/card = loc
 		card.pai = null
 		var/turf/T = get_turf_or_move(card.loc)
@@ -152,7 +152,7 @@
 
 	var/confirm = alert("Are you sure you want to commit suicide?", "Confirm Suicide", "Yes", "No")
 
-	if(confirm == "Yes")
+	if (confirm == "Yes")
 		suiciding = 1
 		viewers(src) << "\red <b>[src] is thrashing wildly! It looks like \he's trying to commit suicide.</b>"
 		//put em at -175
@@ -174,7 +174,7 @@
 
 	var/confirm = alert("Are you sure you want to commit suicide?", "Confirm Suicide", "Yes", "No")
 
-	if(confirm == "Yes")
+	if (confirm == "Yes")
 		suiciding = 1
 		oxyloss += 100
 		bruteloss += 100

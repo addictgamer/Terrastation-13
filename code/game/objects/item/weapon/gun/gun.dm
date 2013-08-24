@@ -57,24 +57,24 @@
 			list/Storedshots = list()
 
 		load_into_chamber()
-			if(!loaded.len)
-				if(Storedshots.len > 0)
-					if(istype(src, /obj/item/weapon/gun/projectile/shotgun))
+			if (!loaded.len)
+				if (Storedshots.len > 0)
+					if (istype(src, /obj/item/weapon/gun/projectile/shotgun))
 						var/obj/item/weapon/gun/projectile/shotgun/S = src
 						S.pump(loc)
 				return 0
 
-			if(istype(src, /obj/item/weapon/gun/projectile/shotgun) && pumped >= maxpump)
+			if (istype(src, /obj/item/weapon/gun/projectile/shotgun) && pumped >= maxpump)
 				return 1
 
 			var/obj/item/ammo_casing/AC = loaded[1] //load next casing.
 			loaded -= AC //Remove casing from loaded list.
-			if(!istype(src, /obj/item/weapon/gun/projectile/shotgun))
+			if (!istype(src, /obj/item/weapon/gun/projectile/shotgun))
 				AC.loc = get_turf(src) //Eject casing onto ground.
 			else
 				Storedshots += AC
 
-			if(AC.BB)
+			if (AC.BB)
 				in_chamber = AC.BB //Load projectile into chamber.
 				AC.BB.loc = src //Set projectile loc to gun.
 				return 1
@@ -89,24 +89,24 @@
 
 		attackby(var/obj/item/A as obj, mob/user as mob)
 			var/num_loaded = 0
-			if(istype(A, /obj/item/ammo_magazine))
+			if (istype(A, /obj/item/ammo_magazine))
 				var/obj/item/ammo_magazine/AM = A
 				for(var/obj/item/ammo_casing/AC in AM.stored_ammo)
-					if(loaded.len >= max_shells)
+					if (loaded.len >= max_shells)
 						break
-					if(AC.caliber == caliber && loaded.len < max_shells)
+					if (AC.caliber == caliber && loaded.len < max_shells)
 						AC.loc = src
 						AM.stored_ammo -= AC
 						loaded += AC
 						num_loaded++
-			else if(istype(A, /obj/item/ammo_casing) && !load_method)
+			else if (istype(A, /obj/item/ammo_casing) && !load_method)
 				var/obj/item/ammo_casing/AC = A
-				if(AC.caliber == caliber && loaded.len < max_shells)
+				if (AC.caliber == caliber && loaded.len < max_shells)
 					user.drop_item()
 					AC.loc = src
 					loaded += AC
 					num_loaded++
-			if(num_loaded)
+			if (num_loaded)
 				user << text("\blue You load [] shell\s into the gun!", num_loaded)
 			A.update_icon()
 			return
@@ -128,8 +128,8 @@
 				update_icon()
 
 			special_check(var/mob/living/carbon/human/M)
-				if(istype(M))
-					if(istype(M.w_uniform, /obj/item/clothing/under/det) && istype(M.head, /obj/item/clothing/head/det_hat) && istype(M.wear_suit, /obj/item/clothing/suit/det_suit))
+				if (istype(M))
+					if (istype(M.w_uniform, /obj/item/clothing/under/det) && istype(M.head, /obj/item/clothing/head/det_hat) && istype(M.wear_suit, /obj/item/clothing/suit/det_suit))
 						return 1
 					M << "\red You just don't feel cool enough to use this gun looking like that."
 				return 0
@@ -140,11 +140,11 @@
 					set desc = "Click to rename your gun. If you're the detective."
 
 					var/mob/U = usr
-					if(ishuman(U)&&U.mind&&U.mind.assigned_role=="Detective")
+					if (ishuman(U)&&U.mind&&U.mind.assigned_role=="Detective")
 						var/input = input("What do you want to name the gun?",,"")
 						input = sanitize(input)
-						if(input)
-							if(in_range(U,src)&&(!isnull(src))&&!U.stat)
+						if (input)
+							if (in_range(U,src)&&(!isnull(src))&&!U.stat)
 								name = input
 								U << "You name the gun [input]. Say hello to your new friend."
 							else
@@ -178,11 +178,11 @@
 					set desc = "Click to rename your gun."
 
 					var/mob/U = usr
-					if(ishuman(U)&&U.mind)
+					if (ishuman(U)&&U.mind)
 						var/input = input("What do you want to name the gun?",,"")
 						input = sanitize(input)
-						if(input)
-							if(in_range(U,src)&&(!isnull(src))&&!U.stat)
+						if (input)
+							if (in_range(U,src)&&(!isnull(src))&&!U.stat)
 								name = input
 								U << "You name the gun [input]. Say hello to your new friend."
 							else
@@ -206,7 +206,7 @@
 				update_icon()
 
 			attack_self(mob/living/user as mob)
-				if(recentpump) return
+				if (recentpump) return
 				pump()
 				recentpump = 1
 				sleep(10)
@@ -268,9 +268,9 @@
 
 			process()
 				//world << "Processing automatic weapon."
-				if(on)
+				if (on)
 					//world << "Processing automatic weapon that's on."
-					if(!_user || !the_target) //If no user or target, abort.
+					if (!_user || !the_target) //If no user or target, abort.
 						on = !on
 						//world << "No use or no target, or both."
 						return
@@ -280,29 +280,29 @@
 					if (!istype(target_loc) || !istype(current_loc))
 						return
 
-					if(badmin)
+					if (badmin)
 						badmin_ammo()
-					else if(!special_check(_user))
+					else if (!special_check(_user))
 						return
-					else if(!load_into_chamber())
+					else if (!load_into_chamber())
 						_user << "\red *click* *click*";
 						on = !on //Toggle off.
 						return
 
-					if(istype(src, /obj/item/weapon/gun/projectile/shotgun))
+					if (istype(src, /obj/item/weapon/gun/projectile/shotgun))
 						var/obj/item/weapon/gun/projectile/shotgun/S = src
-						if(S.pumped >= S.maxpump)
+						if (S.pumped >= S.maxpump)
 							S.pump()
 							return
 
-					if(silenced)
+					if (silenced)
 						playsound(_user, fire_sound, 10, 1)
 						//world << "Silenced."
 					else
 						playsound(_user, fire_sound, 50, 1)
 						//world << "Not silenced."
 
-					if(!in_chamber)
+					if (!in_chamber)
 						on = !on //Turn it off.
 						world << "!in_chamber"
 						return
@@ -310,23 +310,23 @@
 					in_chamber.firer = _user
 					in_chamber.def_zone = _user.get_organ_target()
 
-					if(target_loc.loc == current_loc.loc)
+					if (target_loc.loc == current_loc.loc)
 						_user.bullet_act(in_chamber)
 						//world << "target_loc = current_loc"
 						//world << "target.x = [target_loc.loc.x] and target.y = [target_loc.loc.y]"
 						//world << "current.x = [current_loc.loc.x] and current.y = [current_loc.loc.y]"
-						//if(_user == the_target)
+						//if (_user == the_target)
 						//	world << "_user == the_target"
 						del(in_chamber)
 					else
 						//world << "target_loc != current_loc"
-						if(istype(src, /obj/item/weapon/gun/energy/freeze))
+						if (istype(src, /obj/item/weapon/gun/energy/freeze))
 							var/obj/item/projectile/freeze/F = in_chamber
 							var/obj/item/weapon/gun/energy/freeze/Fgun = src
 
 							F.temperature = Fgun.temperature
 
-						if(recoil)
+						if (recoil)
 							spawn()
 								shake_camera(_user, recoil + 1, recoil)
 
@@ -342,7 +342,7 @@
 						sleep(1)
 						in_chamber = null
 
-						if(istype(src, /obj/item/weapon/gun/projectile/shotgun))
+						if (istype(src, /obj/item/weapon/gun/projectile/shotgun))
 							var/obj/item/weapon/gun/projectile/shotgun/S = src
 							S.pumped++
 					update_icon()
@@ -463,28 +463,28 @@
 			power_supply.give(power_supply.maxcharge)
 
 		load_into_chamber()
-			if(in_chamber)
+			if (in_chamber)
 				return 1
-			if(!power_supply)
+			if (!power_supply)
 				return 0
-			if(power_supply.charge < charge_cost)
+			if (power_supply.charge < charge_cost)
 				return 0
 			switch (mode)
-				if(0)
+				if (0)
 					in_chamber = new /obj/item/projectile/electrode(src)
-				if(1)
+				if (1)
 					in_chamber = new /obj/item/projectile/beam(src)
 			power_supply.use(charge_cost)
 			return 1
 
 		attack_self(mob/living/user as mob)
 			switch(mode)
-				if(0)
+				if (0)
 					mode = 1
 					charge_cost = 100
 					fire_sound = 'Laser.ogg'
 					user << "\red [src.name] is now set to kill."
-				if(1)
+				if (1)
 					mode = 0
 					charge_cost = 100
 					fire_sound = 'Taser.ogg'
@@ -524,7 +524,7 @@
 
 				proc
 					charge()
-						if(power_supply.charge < power_supply.maxcharge)
+						if (power_supply.charge < power_supply.maxcharge)
 							power_supply.give(100)
 						update_icon()
 						spawn(50) charge()
@@ -532,9 +532,9 @@
 
 			cyborg
 				load_into_chamber()
-					if(in_chamber)
+					if (in_chamber)
 						return 1
-					if(isrobot(src.loc))
+					if (isrobot(src.loc))
 						var/mob/living/silicon/robot/R = src.loc
 						R.cell.use(40)
 						in_chamber = new /obj/item/projectile/beam(src)
@@ -549,16 +549,16 @@
 			mode = 2
 			fire_sound = 'pulse.ogg'
 			load_into_chamber()
-				if(in_chamber)
+				if (in_chamber)
 					return 1
-				if(power_supply.charge < charge_cost)
+				if (power_supply.charge < charge_cost)
 					return 0
 				switch (mode)
-					if(0)
+					if (0)
 						in_chamber = new /obj/item/projectile/electrode(src)
-					if(1)
+					if (1)
 						in_chamber = new /obj/item/projectile/beam(src)
-					if(2)
+					if (2)
 						in_chamber = new /obj/item/projectile/beam/pulse(src)
 				power_supply.use(charge_cost)
 				return 1
@@ -566,11 +566,11 @@
 			attack_self(mob/living/user as mob)
 				mode++
 				switch(mode)
-					if(1)
+					if (1)
 						user << "\red [src.name] is now set to kill."
 						fire_sound = 'Laser.ogg'
 						charge_cost = 100
-					if(2)
+					if (2)
 						user << "\red [src.name] is now set to destroy."
 						fire_sound = 'pulse.ogg'
 						charge_cost = 200
@@ -616,11 +616,11 @@
 
 			proc
 				charge()
-					if(power_supply.charge < power_supply.maxcharge)
-						if(failcheck())
+					if (power_supply.charge < power_supply.maxcharge)
+						if (failcheck())
 							power_supply.give(100)
 					update_icon()
-					if(!crit_fail)
+					if (!crit_fail)
 						spawn(50) charge()
 
 				failcheck()
@@ -652,10 +652,10 @@
 					overlays += text("nucgun-[]", ratio)
 
 				update_reactor()
-					if(crit_fail)
+					if (crit_fail)
 						overlays += "nucgun-crit"
 						return
-					if(lightfail)
+					if (lightfail)
 						overlays += "nucgun-medium"
 					else if ((power_supply.charge/power_supply.maxcharge) <= 0.5)
 						overlays += "nucgun-light"
@@ -686,9 +686,9 @@
 			charge_cost = 100
 
 			load_into_chamber()
-				if(in_chamber)
+				if (in_chamber)
 					return 1
-				if(power_supply.charge <= charge_cost)
+				if (power_supply.charge <= charge_cost)
 					return 0
 				in_chamber = new /obj/item/projectile/electrode(src)
 				power_supply.use(charge_cost)
@@ -703,9 +703,9 @@
 
 			cyborg
 				load_into_chamber()
-					if(in_chamber)
+					if (in_chamber)
 						return 1
-					if(isrobot(src.loc))
+					if (isrobot(src.loc))
 						var/mob/living/silicon/robot/R = src.loc
 						R.cell.use(40)
 						in_chamber = new /obj/item/projectile/electrode(src)
@@ -720,14 +720,14 @@
 			fire_sound = 'lasercannonfire.ogg'
 			origin_tech = "combat=4;materials=3;powerstorage=3"
 			load_into_chamber()
-				if(in_chamber)
+				if (in_chamber)
 					return 1
-				if(power_supply.charge < charge_cost)
+				if (power_supply.charge < charge_cost)
 					return 0
 				switch(mode)
-					if(0)
+					if (0)
 						in_chamber = new /obj/item/projectile/heavylaser(src)
-					if(1)
+					if (1)
 						in_chamber = new /obj/item/projectile/beam(src)
 				power_supply.use(charge_cost)
 				return 1
@@ -735,11 +735,11 @@
 			attack_self(mob/living/user as mob)
 				mode = !mode
 				switch(mode)
-					if(0)
+					if (0)
 						user << "\red [src.name] is now set to laser cannon."
 						fire_sound = 'lasercannonfire.ogg'
 						charge_cost = 100
-					if(1)
+					if (1)
 						user << "\red [src.name] is now set to laser."
 						fire_sound = 'Laser.ogg'
 						charge_cost = 50
@@ -757,9 +757,9 @@
 			charge_cost = 250
 
 			load_into_chamber()
-				if(in_chamber)
+				if (in_chamber)
 					return 1
-				if(power_supply.charge <= charge_cost)
+				if (power_supply.charge <= charge_cost)
 					return 0
 				in_chamber = new /obj/item/projectile/fireball(src)
 				power_supply.use(charge_cost)
@@ -787,9 +787,9 @@
 			charge_cost = 100
 
 			load_into_chamber()
-				if(in_chamber)
+				if (in_chamber)
 					return 1
-				if(power_supply.charge <= charge_cost)
+				if (power_supply.charge <= charge_cost)
 					return 0
 				in_chamber = new /obj/item/projectile/ion(src)
 				power_supply.use(charge_cost)
@@ -812,9 +812,9 @@
 			charge_cost = 100
 
 			load_into_chamber()
-				if(in_chamber)
+				if (in_chamber)
 					return 1
-				if(power_supply.charge <= charge_cost)
+				if (power_supply.charge <= charge_cost)
 					return 0
 				in_chamber = new /obj/item/projectile/declone(src)
 				power_supply.use(charge_cost)
@@ -836,9 +836,9 @@
 			charge_cost = 125
 
 			load_into_chamber()
-				if(in_chamber)
+				if (in_chamber)
 					return 1
-				if(power_supply.charge <= charge_cost)
+				if (power_supply.charge <= charge_cost)
 					return 0
 				in_chamber = new /obj/item/projectile/electrode(src)
 				power_supply.use(charge_cost)
@@ -870,9 +870,9 @@
 
 
 			load_into_chamber()
-				if(in_chamber)
+				if (in_chamber)
 					return 1
-				if(power_supply.charge < charge_cost)
+				if (power_supply.charge < charge_cost)
 					return 0
 				in_chamber = new /obj/item/projectile/freeze(src)
 				power_supply.use(charge_cost)
@@ -881,7 +881,7 @@
 			attack_self(mob/living/user as mob)
 				user.machine = src
 				var/temp_text = ""
-				if(temperature > (T0C - 50))
+				if (temperature > (T0C - 50))
 					temp_text = "<FONT color=black>[temperature] ([round(temperature-T0C)]&deg;C) ([round(temperature*1.8-459.67)]&deg;F)</FONT>"
 				else
 					temp_text = "<FONT color=blue>[temperature] ([round(temperature-T0C)]&deg;C) ([round(temperature*1.8-459.67)]&deg;F)</FONT>"
@@ -899,9 +899,9 @@
 					return
 				usr.machine = src
 				src.add_fingerprint(usr)
-				if(href_list["temp"])
+				if (href_list["temp"])
 					var/amount = text2num(href_list["temp"])
-					if(amount > 0)
+					if (amount > 0)
 						src.current_temperature = min(T20C, src.current_temperature+amount)
 					else
 						src.current_temperature = max(0, src.current_temperature+amount)
@@ -915,17 +915,17 @@
 					sleep(10)
 
 					switch(temperature)
-						if(0 to 10) charge_cost = 500
-						if(11 to 50) charge_cost = 150
-						if(51 to 100) charge_cost = 100
-						if(101 to 150) charge_cost = 75
-						if(151 to 200) charge_cost = 50
-						if(201 to 300) charge_cost = 25
+						if (0 to 10) charge_cost = 500
+						if (11 to 50) charge_cost = 150
+						if (51 to 100) charge_cost = 100
+						if (101 to 150) charge_cost = 75
+						if (151 to 200) charge_cost = 50
+						if (201 to 300) charge_cost = 25
 
-					if(current_temperature != temperature)
+					if (current_temperature != temperature)
 						var/difference = abs(current_temperature - temperature)
-						if(difference >= 10)
-							if(current_temperature < temperature)
+						if (difference >= 10)
+							if (current_temperature < temperature)
 								temperature -= 10
 							else
 								temperature += 10
@@ -955,9 +955,9 @@
 
 
 			load_into_chamber()
-				if(in_chamber)
+				if (in_chamber)
 					return 1
-				if(power_supply.charge < charge_cost)
+				if (power_supply.charge < charge_cost)
 					return 0
 				in_chamber = new /obj/item/projectile/plasma(src)
 				power_supply.use(charge_cost)
@@ -966,7 +966,7 @@
 			attack_self(mob/living/user as mob)
 				user.machine = src
 				var/temp_text = ""
-				if(temperature < (T0C + 50))
+				if (temperature < (T0C + 50))
 					temp_text = "<FONT color=black>[temperature] ([round(temperature+T0C)]&deg;C) ([round(temperature*1.8+459.67)]&deg;F)</FONT>"
 				else
 					temp_text = "<FONT color=red>[temperature] ([round(temperature+T0C)]&deg;C) ([round(temperature*1.8+459.67)]&deg;F)</FONT>"
@@ -984,9 +984,9 @@
 					return
 				usr.machine = src
 				src.add_fingerprint(usr)
-				if(href_list["temp"])
+				if (href_list["temp"])
 					var/amount = text2num(href_list["temp"])
-					if(amount < 0)
+					if (amount < 0)
 						src.current_temperature = max(T20C, src.current_temperature+amount)
 					else
 						src.current_temperature = min(800, src.current_temperature+amount)
@@ -1000,17 +1000,17 @@
 					sleep(10)
 
 					switch(temperature)
-						if(601 to 800) charge_cost = 500
-						if(401 to 600) charge_cost = 150
-						if(201 to 400) charge_cost = 100
-						if(101 to 200) charge_cost = 75
-						if(51 to 100) charge_cost = 50
-						if(0 to 50) charge_cost = 25
+						if (601 to 800) charge_cost = 500
+						if (401 to 600) charge_cost = 150
+						if (201 to 400) charge_cost = 100
+						if (101 to 200) charge_cost = 75
+						if (51 to 100) charge_cost = 50
+						if (0 to 50) charge_cost = 25
 
-					if(current_temperature != temperature)
+					if (current_temperature != temperature)
 						var/difference = abs(current_temperature + temperature)
-						if(difference >= 10)
-							if(current_temperature < temperature)
+						if (difference >= 10)
+							if (current_temperature < temperature)
 								temperature -= 10
 							else
 								temperature += 10
@@ -1044,8 +1044,8 @@
 				charge()
 
 			proc/charge()
-				if(power_supply)
-					if(power_supply.charge < power_supply.maxcharge) power_supply.give(100)
+				if (power_supply)
+					if (power_supply.charge < power_supply.maxcharge) power_supply.give(100)
 				spawn(50) charge()
 
 			update_icon()
@@ -1055,9 +1055,9 @@
 				return
 
 			load_into_chamber()
-				if(in_chamber)
+				if (in_chamber)
 					return 1
-				if(power_supply.charge <= charge_cost)
+				if (power_supply.charge <= charge_cost)
 					return 0
 				in_chamber = new /obj/item/projectile/bolt(src)
 				power_supply.use(charge_cost)
@@ -1065,9 +1065,9 @@
 
 			cyborg
 				load_into_chamber()
-					if(in_chamber)
+					if (in_chamber)
 						return 1
-					if(isrobot(src.loc))
+					if (isrobot(src.loc))
 						var/mob/living/silicon/robot/R = src.loc
 						R.cell.use(20)
 						in_chamber = new /obj/item/projectile/bolt(src)
@@ -1094,8 +1094,8 @@
 				charge()
 
 			proc/charge()
-				if(power_supply)
-					if(power_supply.charge < power_supply.maxcharge) power_supply.give(200)
+				if (power_supply)
+					if (power_supply.charge < power_supply.maxcharge) power_supply.give(200)
 				spawn(20) charge()
 
 			update_icon()
@@ -1105,9 +1105,9 @@
 				return
 
 			load_into_chamber()
-				if(in_chamber)
+				if (in_chamber)
 					return 1
-				if(power_supply.charge <= charge_cost)
+				if (power_supply.charge <= charge_cost)
 					return 0
 				in_chamber = new /obj/item/projectile/largebolt(src)
 				power_supply.use(charge_cost)
@@ -1115,9 +1115,9 @@
 
 			cyborg
 				load_into_chamber()
-					if(in_chamber)
+					if (in_chamber)
 						return 1
-					if(isrobot(src.loc))
+					if (isrobot(src.loc))
 						var/mob/living/silicon/robot/R = src.loc
 						R.cell.use(20)
 						in_chamber = new /obj/item/projectile/largebolt(src)
@@ -1131,19 +1131,19 @@
 
 		badmin_ammo() //CREEEEEED!!!!!!!!!
 			switch(badmin)
-				if(1)
+				if (1)
 					in_chamber = new /obj/item/projectile/electrode(src)
-				if(2)
+				if (2)
 					in_chamber = new /obj/item/projectile/weakbullet(src)
-				if(3)
+				if (3)
 					in_chamber = new /obj/item/projectile(src)
-				if(4)
+				if (4)
 					in_chamber = new /obj/item/projectile/beam(src)
-				if(5)
+				if (5)
 					in_chamber = new /obj/item/projectile/beam/pulse(src)
 				else
 					return 0
-			if(!istype(src, /obj/item/weapon/gun/energy))
+			if (!istype(src, /obj/item/weapon/gun/energy))
 				var/obj/item/ammo_casing/AC = new(get_turf(src))
 				AC.name = "unidentifiable bullet casing"
 				AC.desc = "This casing has the Central Command Insignia etched into the side."
@@ -1159,9 +1159,9 @@
 	afterattack(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, flag)
 		if (flag)
 			return //we're placing gun on a table or in backpack --rastaf0
-		if(istype(target, /obj/machinery/recharger) && istype(src, /obj/item/weapon/gun/energy))
+		if (istype(target, /obj/machinery/recharger) && istype(src, /obj/item/weapon/gun/energy))
 			return
-		if(istype(user, /mob/living))
+		if (istype(user, /mob/living))
 			var/mob/living/M = user
 			if ((M.mutations & CLOWN) && prob(50))
 				M << "\red The [src.name] blows up in your face."
@@ -1180,7 +1180,7 @@
 		var/turf/curloc = user.loc
 		var/turf/targloc = get_turf(target)
 
-		if(automatic_fire) //If it has automatic firing, that means it fires a round each tick.
+		if (automatic_fire) //If it has automatic firing, that means it fires a round each tick.
 			//world << "Automatic fire weapon toggled.\n"
 			world << "target_loc = current_loc"
 			world << "target.x = [targloc.loc.x] and target.y = [targloc.loc.y]"
@@ -1197,44 +1197,44 @@
 		if (!istype(targloc) || !istype(curloc))
 			return
 
-		if(badmin)
+		if (badmin)
 			badmin_ammo()
-		else if(!special_check(user))
+		else if (!special_check(user))
 			return
-		else if(!load_into_chamber())
+		else if (!load_into_chamber())
 			user << "\red *click* *click*";
 			return
 
-		if(istype(src, /obj/item/weapon/gun/projectile/shotgun))
+		if (istype(src, /obj/item/weapon/gun/projectile/shotgun))
 			var/obj/item/weapon/gun/projectile/shotgun/S = src
-			if(S.pumped >= S.maxpump)
+			if (S.pumped >= S.maxpump)
 				S.pump()
 				return
 
 
 
-		if(silenced)
+		if (silenced)
 			playsound(user, fire_sound, 10, 1)
 		else
 			playsound(user, fire_sound, 50, 1)
 
-		if(!in_chamber)
+		if (!in_chamber)
 			return
 
 		in_chamber.firer = user
 		in_chamber.def_zone = user.get_organ_target()
 
-		if(targloc == curloc)
+		if (targloc == curloc)
 			user.bullet_act(in_chamber)
 			del(in_chamber)
 		else
-			if(istype(src, /obj/item/weapon/gun/energy/freeze))
+			if (istype(src, /obj/item/weapon/gun/energy/freeze))
 				var/obj/item/projectile/freeze/F = in_chamber
 				var/obj/item/weapon/gun/energy/freeze/Fgun = src
 
 				F.temperature = Fgun.temperature
 
-			if(recoil)
+			if (recoil)
 				spawn()
 					shake_camera(user, recoil + 1, recoil)
 
@@ -1250,7 +1250,7 @@
 			sleep(1)
 			in_chamber = null
 
-			if(istype(src, /obj/item/weapon/gun/projectile/shotgun))
+			if (istype(src, /obj/item/weapon/gun/projectile/shotgun))
 				var/obj/item/weapon/gun/projectile/shotgun/S = src
 				S.pumped++
 		update_icon()

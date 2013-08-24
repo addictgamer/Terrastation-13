@@ -17,10 +17,10 @@
 
 	process()
 		..()
-		if(!(NOPOWER|BROKEN))
+		if (!(NOPOWER|BROKEN))
 			return
 
-		if(src.occupant)
+		if (src.occupant)
 			process_occupant()
 		return 1
 
@@ -30,15 +30,15 @@
 
 
 	relaymove(mob/user as mob)
-		if(user.stat)
+		if (user.stat)
 			return
 		src.go_out()
 		return
 
 	proc
 		build_icon()
-			if(NOPOWER|BROKEN)
-				if(src.occupant)
+			if (NOPOWER|BROKEN)
+				if (src.occupant)
 					icon_state = "borgcharger1"
 				else
 					icon_state = "borgcharger0"
@@ -46,13 +46,13 @@
 				icon_state = "borgcharger0"
 
 		process_occupant()
-			if(src.occupant)
+			if (src.occupant)
 				if (istype(occupant, /mob/living/silicon/robot))
 					var/mob/living/silicon/robot/R = occupant
 					restock_modules()
-					if(!R.cell)
+					if (!R.cell)
 						return
-					else if(R.cell.charge >= R.cell.maxcharge)
+					else if (R.cell.charge >= R.cell.maxcharge)
 						R.cell.charge = R.cell.maxcharge
 						return
 					else
@@ -60,7 +60,7 @@
 						return
 
 		go_out()
-			if(!( src.occupant ))
+			if (!( src.occupant ))
 				return
 			//for(var/obj/O in src)
 			//	O.loc = src.loc
@@ -74,41 +74,41 @@
 			return
 
 		restock_modules()
-			if(src.occupant)
+			if (src.occupant)
 				if (istype(occupant, /mob/living/silicon/robot))
 					var/mob/living/silicon/robot/R = occupant
 					for(var/obj/O in R)
 						// Engineering
-						if(istype(O,/obj/item/weapon/rcd))
-							if(O:matter < 30)
+						if (istype(O,/obj/item/weapon/rcd))
+							if (O:matter < 30)
 								O:matter += 1
-						if(istype(O,/obj/item/stack/sheet/metal) || istype(O,/obj/item/stack/sheet/rglass) || istype(O,/obj/item/cable_coil))
-							if(O:amount < 50)
+						if (istype(O,/obj/item/stack/sheet/metal) || istype(O,/obj/item/stack/sheet/rglass) || istype(O,/obj/item/cable_coil))
+							if (O:amount < 50)
 								O:amount += 1
 						// Security
-						if(istype(O,/obj/item/device/flash))
-							if(O:broken)
+						if (istype(O,/obj/item/device/flash))
+							if (O:broken)
 								O:broken = 0
-						if(istype(O,/obj/item/weapon/gun/energy/taser/cyborg))
-							if(O:power_supply.charge < O:power_supply.maxcharge)
+						if (istype(O,/obj/item/weapon/gun/energy/taser/cyborg))
+							if (O:power_supply.charge < O:power_supply.maxcharge)
 								O:power_supply.give(100)
-						if(istype(O,/obj/item/weapon/melee/baton))
-							if(O:charges < 10)
+						if (istype(O,/obj/item/weapon/melee/baton))
+							if (O:charges < 10)
 								O:charges += 1
 						//Service
-						if(istype(O,/obj/item/weapon/reagent_containers/food/condiment/enzyme))
-							if(O.reagents.get_reagent_amount("enzyme") < 50)
+						if (istype(O,/obj/item/weapon/reagent_containers/food/condiment/enzyme))
+							if (O.reagents.get_reagent_amount("enzyme") < 50)
 								O.reagents.add_reagent("enzyme", 1)
 						//Medical
-						if(istype(O,/obj/item/weapon/reagent_containers/glass/bottle/inaprovaline))
-							if(O.reagents.get_reagent_amount("inaprovaline") < 30)
+						if (istype(O,/obj/item/weapon/reagent_containers/glass/bottle/inaprovaline))
+							if (O.reagents.get_reagent_amount("inaprovaline") < 30)
 								O.reagents.add_reagent("inaprovaline", 1)
-						if(istype(O,/obj/item/weapon/reagent_containers/glass/bottle/antitoxin))
-							if(O.reagents.get_reagent_amount("anti_toxin") < 30)
+						if (istype(O,/obj/item/weapon/reagent_containers/glass/bottle/antitoxin))
+							if (O.reagents.get_reagent_amount("anti_toxin") < 30)
 								O.reagents.add_reagent("anti_toxin", 1)
 
-					if(R)
-						if(R.module)
+					if (R)
+						if (R.module)
 							R.module.respawn_consumable(R)
 
 

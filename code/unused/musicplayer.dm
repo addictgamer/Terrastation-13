@@ -1,7 +1,7 @@
 // this toggle doesn't save across rounds
 /mob/verb/musictoggle()
 	set name = "Music Toggle"
-	if(src.be_music == 0)
+	if (src.be_music == 0)
 		src.be_music = 1
 		src << "\blue Music toggled on!"
 		return

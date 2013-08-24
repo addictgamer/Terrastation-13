@@ -1,11 +1,11 @@
 /mob/living/carbon/metroid/death(gibbed)
-	if(src.stat == 2)
+	if (src.stat == 2)
 		return
 	var/cancel
-	if(!gibbed)
-		if(istype(src, /mob/living/carbon/metroid/adult))
+	if (!gibbed)
+		if (istype(src, /mob/living/carbon/metroid/adult))
 
-			if(client)
+			if (client)
 				var/mob/dead/observer/ghost = new(src)
 				ghost.key = key
 				if (ghost.client)
@@ -49,7 +49,7 @@
 			return
 	if (src.key)
 		spawn(50)
-			if(src.key && src.stat == 2)
+			if (src.key && src.stat == 2)
 				src.verbs += /mob/proc/ghost
 
 	return ..(gibbed)

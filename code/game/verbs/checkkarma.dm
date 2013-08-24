@@ -3,10 +3,10 @@ mob/verb/check_karma()
 	set category = "Special Verbs"
 	set desc = "Reports how much karma you have accrued"
 
-	if(config.sql_enabled)
+	if (config.sql_enabled)
 		var/DBConnection/dbcon = new()
 		dbcon.Connect("dbi:mysql:[sqldb]:[sqladdress]:[sqlport]","[sqllogin]","[sqlpass]")
-		if(!dbcon.IsConnected())
+		if (!dbcon.IsConnected())
 			usr << "\red Unable to connect to karma database. This error can occur if your host has failed to set up an SQL database or improperly configured its login credentials.<br>"
 			return
 		else
@@ -16,7 +16,7 @@ mob/verb/check_karma()
 			var/currentkarma
 			while(query.NextRow())
 				currentkarma = query.item[1]
-			if(currentkarma)
+			if (currentkarma)
 				usr << "<b>Your current karma is:</b> [currentkarma]<br>"
 			else
 				usr << "<b>Your current karma is:</b> 0<br>"

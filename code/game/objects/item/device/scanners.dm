@@ -25,38 +25,38 @@ MASS SPECTROMETER
 	on = !on
 	icon_state = "t-ray[on]"
 
-	if(on)
+	if (on)
 		processing_objects.Add(src)
 
 
 /obj/item/device/t_scanner/process()
-	if(!on)
+	if (!on)
 		processing_objects.Remove(src)
 		return null
 
 	for(var/turf/T in range(1, src.loc) )
 
-		if(!T.intact)
+		if (!T.intact)
 			continue
 
 		for(var/obj/O in T.contents)
 
-			if(O.level != 1)
+			if (O.level != 1)
 				continue
 
-			if(O.invisibility == 101)
+			if (O.invisibility == 101)
 				O.invisibility = 0
 				spawn(10)
-					if(O)
+					if (O)
 						var/turf/U = O.loc
-						if(U.intact)
+						if (U.intact)
 							O.invisibility = 101
 
 		var/mob/living/M = locate() in T
-		if(M && M.invisibility == 2)
+		if (M && M.invisibility == 2)
 			M.invisibility = 0
 			spawn(2)
-				if(M)
+				if (M)
 					M.invisibility = 2
 
 /obj/item/device/detective_scanner
@@ -93,7 +93,7 @@ MASS SPECTROMETER
 /obj/item/device/detective_scanner/attack_self(mob/user as mob)
 
 	src.printing = !( src.printing )
-	if(src.printing)
+	if (src.printing)
 		user << "\blue Printing turned on"
 	else
 		user << "\blue Printing turned off"
@@ -133,7 +133,7 @@ MASS SPECTROMETER
 
 	src.add_fingerprint(user)
 	if (istype(A, /obj/decal/cleanable/blood) || istype(A, /obj/rune))
-		if(A.blood_DNA)
+		if (A.blood_DNA)
 			user << "\blue Blood type: [A.blood_type]\nDNA: [A.blood_DNA]"
 	else if (A.blood_DNA)
 		user << "\blue Blood found on [A]. Analysing..."
@@ -194,7 +194,7 @@ MASS SPECTROMETER
 		O.show_message(text("\red [] has analyzed []'s vitals!", user, M), 1)
 		//Foreach goto(67)
 	var/fake_oxy = max(rand(1,40), M.oxyloss, (300 - (M.toxloss + M.fireloss + M.bruteloss)))
-	if((M.reagents && M.reagents.has_reagent("zombiepowder")) || (M.changeling && M.changeling.changeling_fakedeath))
+	if ((M.reagents && M.reagents.has_reagent("zombiepowder")) || (M.changeling && M.changeling.changeling_fakedeath))
 		user.show_message(text("\blue Analyzing Results for []:\n\t Overall Status: []", M, "dead"), 1)
 		user.show_message(text("\blue \t Damage Specifics: []-[]-[]-[]", fake_oxy < 50 ? "\red [fake_oxy]" : fake_oxy , M.toxloss > 50 ? "\red [M.toxloss]" : M.toxloss, M.fireloss > 50 ? "\red[M.fireloss]" : M.fireloss, M.bruteloss > 50 ? "\red[M.bruteloss]" : M.bruteloss), 1)
 	else
@@ -202,14 +202,14 @@ MASS SPECTROMETER
 		user.show_message(text("\blue \t Damage Specifics: []-[]-[]-[]", M.oxyloss > 50 ? "\red [M.oxyloss]" : M.oxyloss, M.toxloss > 50 ? "\red [M.toxloss]" : M.toxloss, M.fireloss > 50 ? "\red[M.fireloss]" : M.fireloss, M.bruteloss > 50 ? "\red[M.bruteloss]" : M.bruteloss), 1)
 	user.show_message("\blue Key: Suffocation/Toxin/Burns/Brute", 1)
 	user.show_message("\blue Body Temperature: [M.bodytemperature-T0C]&deg;C ([M.bodytemperature*1.8-459.67]&deg;F)", 1)
-	if((M.changeling && M.changeling.changeling_fakedeath) ||  (M.reagents && M.reagents.has_reagent("zombiepowder")))
+	if ((M.changeling && M.changeling.changeling_fakedeath) ||  (M.reagents && M.reagents.has_reagent("zombiepowder")))
 		user.show_message(text("\blue [] | [] | [] | []", fake_oxy > 50 ? "\red Severe oxygen deprivation detected\blue" : "Subject bloodstream oxygen level normal", M.toxloss > 50 ? "\red Dangerous amount of toxins detected\blue" : "Subject bloodstream toxin level minimal", M.fireloss > 50 ? "\red Severe burn damage detected\blue" : "Subject burn injury status O.K", M.bruteloss > 50 ? "\red Severe anatomical damage detected\blue" : "Subject brute-force injury status O.K"), 1)
 	else
 		user.show_message(text("\blue [] | [] | [] | []", M.oxyloss > 50 ? "\red Severe oxygen deprivation detected\blue" : "Subject bloodstream oxygen level normal", M.toxloss > 50 ? "\red Dangerous amount of toxins detected\blue" : "Subject bloodstream toxin level minimal", M.fireloss > 50 ? "\red Severe burn damage detected\blue" : "Subject burn injury status O.K", M.bruteloss > 50 ? "\red Severe anatomical damage detected\blue" : "Subject brute-force injury status O.K"), 1)
 	if (M.cloneloss)
 		user.show_message(text("\red Subject appears to have been imperfectly cloned."), 1)
 	for(var/datum/disease/D in M.viruses)
-		if(!D.hidden[SCANNER])
+		if (!D.hidden[SCANNER])
 			user.show_message(text("\red <b>Warning: [D.form] Detected</b>\nName: [D.name].\nType: [D.spread].\nStage: [D.stage]/[D.max_stages].\nPossible Cure: [D.cure]"))
 	if (M.reagents && M.reagents.get_reagent_amount("inaprovaline"))
 		user.show_message(text("\blue Bloodstream Analysis located [M.reagents:get_reagent_amount("inaprovaline")] units of rejuvenation chemicals."), 1)
@@ -255,36 +255,36 @@ MASS SPECTROMETER
 	var/total_moles = environment.total_moles()
 
 	user.show_message("\blue <B>Results:</B>", 1)
-	if(abs(pressure - ONE_ATMOSPHERE) < 10)
+	if (abs(pressure - ONE_ATMOSPHERE) < 10)
 		user.show_message("\blue Pressure: [round(pressure,0.1)] kPa", 1)
 	else
 		user.show_message("\red Pressure: [round(pressure,0.1)] kPa", 1)
-	if(total_moles)
+	if (total_moles)
 		var/o2_concentration = environment.oxygen/total_moles
 		var/n2_concentration = environment.nitrogen/total_moles
 		var/co2_concentration = environment.carbon_dioxide/total_moles
 		var/plasma_concentration = environment.toxins/total_moles
 
 		var/unknown_concentration =  1-(o2_concentration+n2_concentration+co2_concentration+plasma_concentration)
-		if(abs(n2_concentration - N2STANDARD) < 20)
+		if (abs(n2_concentration - N2STANDARD) < 20)
 			user.show_message("\blue Nitrogen: [round(n2_concentration*100)]%", 1)
 		else
 			user.show_message("\red Nitrogen: [round(n2_concentration*100)]%", 1)
 
-		if(abs(o2_concentration - O2STANDARD) < 2)
+		if (abs(o2_concentration - O2STANDARD) < 2)
 			user.show_message("\blue Oxygen: [round(o2_concentration*100)]%", 1)
 		else
 			user.show_message("\red Oxygen: [round(o2_concentration*100)]%", 1)
 
-		if(co2_concentration > 0.01)
+		if (co2_concentration > 0.01)
 			user.show_message("\red CO2: [round(co2_concentration*100)]%", 1)
 		else
 			user.show_message("\blue CO2: [round(co2_concentration*100)]%", 1)
 
-		if(plasma_concentration > 0.01)
+		if (plasma_concentration > 0.01)
 			user.show_message("\red Plasma: [round(plasma_concentration*100)]%", 1)
 
-		if(unknown_concentration > 0.01)
+		if (unknown_concentration > 0.01)
 			user.show_message("\red Unknown: [round(unknown_concentration*100)]%", 1)
 
 		user.show_message("\blue Temperature: [round(environment.temperature-T0C)]&deg;C", 1)
@@ -316,7 +316,7 @@ MASS SPECTROMETER
 	R.my_atom = src
 
 /obj/item/device/mass_spectrometer/on_reagent_change()
-	if(reagents.total_volume)
+	if (reagents.total_volume)
 		icon_state = initial(icon_state) + "_s"
 	else
 		icon_state = initial(icon_state)
@@ -330,10 +330,10 @@ MASS SPECTROMETER
 	if (!(istype(user, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
 		user << "\red You don't have the dexterity to do this!"
 		return
-	if(reagents.total_volume)
+	if (reagents.total_volume)
 		var/list/blood_traces = list()
 		for(var/datum/reagent/R in reagents.reagent_list)
-			if(R.id != "blood")
+			if (R.id != "blood")
 				reagents.clear_reagents()
 				user << "\red The sample was contaminated! Please insert another sample"
 				return
@@ -342,14 +342,14 @@ MASS SPECTROMETER
 				break
 		var/dat = "Trace Chemicals Found: "
 		for(var/R in blood_traces)
-			if(prob(reliability))
-				if(details)
+			if (prob(reliability))
+				if (details)
 					dat += "[R] ([blood_traces[R]] units) "
 				else
 					dat += "[R] "
 				recent_fail = 0
 			else
-				if(recent_fail)
+				if (recent_fail)
 					crit_fail = 1
 					reagents.clear_reagents()
 					return

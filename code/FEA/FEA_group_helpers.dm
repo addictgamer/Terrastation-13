@@ -9,13 +9,13 @@
 	var/turf/simulated/floor/west = get_step(src,WEST)
 
 	//Clear those we do not have access to
-	if(!CanPass(null, north, null, 1) || !istype(north))
+	if (!CanPass(null, north, null, 1) || !istype(north))
 		north = null
-	if(!CanPass(null, south, null, 1) || !istype(south))
+	if (!CanPass(null, south, null, 1) || !istype(south))
 		south = null
-	if(!CanPass(null, east, null, 1) || !istype(east))
+	if (!CanPass(null, east, null, 1) || !istype(east))
 		east = null
-	if(!CanPass(null, west, null, 1) || !istype(west))
+	if (!CanPass(null, west, null, 1) || !istype(west))
 		west = null
 
 	var/new_group_possible = 0
@@ -24,43 +24,43 @@
 	var/south_votes = 0
 	var/east_votes = 0
 
-	if(north)
-		if(north.parent)
+	if (north)
+		if (north.parent)
 			north_votes = 1
 
-			if(south && (south.parent == north.parent))
+			if (south && (south.parent == north.parent))
 				north_votes++
 				south = null
 
-			if(east && (east.parent == north.parent))
+			if (east && (east.parent == north.parent))
 				north_votes++
 				east = null
 
-			if(west && (west.parent == north.parent))
+			if (west && (west.parent == north.parent))
 				north_votes++
 				west = null
 		else
 			new_group_possible = 1
 
-	if(south)
-		if(south.parent)
+	if (south)
+		if (south.parent)
 			south_votes = 1
 
-			if(east && (east.parent == south.parent))
+			if (east && (east.parent == south.parent))
 				south_votes++
 				east = null
 
-			if(west && (west.parent == south.parent))
+			if (west && (west.parent == south.parent))
 				south_votes++
 				west = null
 		else
 			new_group_possible = 1
 
-	if(east)
-		if(east.parent)
+	if (east)
+		if (east.parent)
 			east_votes = 1
 
-			if(west && (west.parent == east.parent))
+			if (west && (west.parent == east.parent))
 				east_votes++
 				west = null
 		else
@@ -68,8 +68,8 @@
 
 //	world << "[north_votes], [south_votes], [east_votes]"
 
-	if(west)
-		if(west.parent)
+	if (west)
+		if (west.parent)
 			west.parent.suspend_group_processing()
 			west.parent.members += src
 			parent = west.parent
@@ -80,7 +80,7 @@
 		else
 			new_group_possible = 1
 
-	if(north_votes && (north_votes >= south_votes) && (north_votes >= east_votes))
+	if (north_votes && (north_votes >= south_votes) && (north_votes >= east_votes))
 		north.parent.suspend_group_processing()
 		north.parent.members += src
 		parent = north.parent
@@ -89,7 +89,7 @@
 		return 1
 
 
-	if(south_votes  && (south_votes >= east_votes))
+	if (south_votes  && (south_votes >= east_votes))
 		south.parent.suspend_group_processing()
 		south.parent.members += src
 		parent = south.parent
@@ -97,7 +97,7 @@
 		air_master.tiles_to_update += south.parent.members
 		return 1
 
-	if(east_votes)
+	if (east_votes)
 		east.parent.suspend_group_processing()
 		east.parent.members += src
 		parent = east.parent
@@ -105,7 +105,7 @@
 		air_master.tiles_to_update += east.parent.members
 		return 1
 
-	if(new_group_possible)
+	if (new_group_possible)
 		air_master.assemble_group_turf(src)
 		return 1
 

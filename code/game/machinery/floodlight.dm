@@ -20,12 +20,12 @@
 			sd_SetLuminosity(0)		// *DAL*
 		return
 
-	if(!luminosity && cell && cell.charge > 0)
+	if (!luminosity && cell && cell.charge > 0)
 		//ul_SetLuminosity(10)
 		sd_SetLuminosity(10)
 		updateicon()
 
-	if(!cell && luminosity)
+	if (!cell && luminosity)
 		on = 0
 		updateicon()
 		//ul_SetLuminosity(0)
@@ -34,7 +34,7 @@
 
 	cell.charge -= use
 
-	if(cell.charge <= 0 && luminosity)
+	if (cell.charge <= 0 && luminosity)
 		on = 0
 		updateicon()
 		//ul_SetLuminosity(0)
@@ -42,7 +42,7 @@
 		return
 
 /obj/machinery/floodlight/attack_hand(mob/user as mob)
-	if(open && cell)
+	if (open && cell)
 		cell.loc = usr
 		cell.layer = 20
 		if (user.hand )
@@ -58,13 +58,13 @@
 		user << "You remove the power cell"
 		return
 
-	if(on)
+	if (on)
 		on = 0
 		user << "You turn off the light"
 	else
-		if(!cell)
+		if (!cell)
 			return
-		if(cell.charge <= 0)
+		if (cell.charge <= 0)
 			return
 		on = 1
 		user << "You turn on the light"
@@ -75,7 +75,7 @@
 /obj/machinery/floodlight/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if (istype(W, /obj/item/weapon/screwdriver))
 		if (!open)
-			if(unlocked)
+			if (unlocked)
 				unlocked = 0
 				user << "You screw the battery panel in place."
 			else
@@ -83,19 +83,19 @@
 				user << "You unscrew the battery panel."
 
 	if (istype(W, /obj/item/weapon/crowbar))
-		if(unlocked)
-			if(open)
+		if (unlocked)
+			if (open)
 				open = 0
 				overlays = null
 				user << "You crowbar the battery panel in place."
 			else
-				if(unlocked)
+				if (unlocked)
 					open = 1
 					user << "You remove the battery panel."
 
 	if (istype(W, /obj/item/weapon/cell))
-		if(open)
-			if(cell)
+		if (open)
+			if (cell)
 				user << "There is a power cell already installed."
 			else
 				user.drop_item()

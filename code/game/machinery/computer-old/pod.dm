@@ -9,7 +9,7 @@
 	var/time = 30.0
 
 /obj/machinery/computer/pod/proc/alarm()
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 
 	if (!( connected ))
@@ -25,7 +25,7 @@
 
 	//connected.drive()		*****RM from 40.93.3S
 	for(var/obj/machinery/mass_driver/M in machines)
-		if(M.id == id)
+		if (M.id == id)
 			M.power = connected.power
 			M.drive()
 
@@ -48,9 +48,9 @@
 	return
 
 /obj/machinery/computer/pod/attackby(I as obj, user as mob)
-	if(istype(I, /obj/item/weapon/screwdriver))
+	if (istype(I, /obj/item/weapon/screwdriver))
 		playsound(loc, 'Screwdriver.ogg', 50, 1)
-		if(do_after(user, 20))
+		if (do_after(user, 20))
 			if (stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				var/obj/computerframe/A = new /obj/computerframe( loc )
@@ -58,11 +58,11 @@
 
 				//generate appropriate circuitboard. Accounts for /pod/old computer types
 				var/obj/item/weapon/circuitboard/pod/M = null
-				if(istype(src, /obj/machinery/computer/pod/old))
+				if (istype(src, /obj/machinery/computer/pod/old))
 					M = new /obj/item/weapon/circuitboard/olddoor( A )
-					if(istype(src, /obj/machinery/computer/pod/old/syndicate))
+					if (istype(src, /obj/machinery/computer/pod/old/syndicate))
 						M = new /obj/item/weapon/circuitboard/syndicatedoor( A )
-					if(istype(src, /obj/machinery/computer/pod/old/swf))
+					if (istype(src, /obj/machinery/computer/pod/old/swf))
 						M = new /obj/item/weapon/circuitboard/swfdoor( A )
 				else //it's not an old computer. Generate standard pod circuitboard.
 					M = new /obj/item/weapon/circuitboard/pod( A )
@@ -81,11 +81,11 @@
 
 				//generate appropriate circuitboard. Accounts for /pod/old computer types
 				var/obj/item/weapon/circuitboard/pod/M = null
-				if(istype(src, /obj/machinery/computer/pod/old))
+				if (istype(src, /obj/machinery/computer/pod/old))
 					M = new /obj/item/weapon/circuitboard/olddoor( A )
-					if(istype(src, /obj/machinery/computer/pod/old/syndicate))
+					if (istype(src, /obj/machinery/computer/pod/old/syndicate))
 						M = new /obj/item/weapon/circuitboard/syndicatedoor( A )
-					if(istype(src, /obj/machinery/computer/pod/old/swf))
+					if (istype(src, /obj/machinery/computer/pod/old/swf))
 						M = new /obj/item/weapon/circuitboard/swfdoor( A )
 				else //it's not an old computer. Generate standard pod circuitboard.
 					M = new /obj/item/weapon/circuitboard/pod( A )
@@ -109,7 +109,7 @@
 	return attack_hand(user)
 
 /obj/machinery/computer/pod/attack_hand(var/mob/user as mob)
-	if(..())
+	if (..())
 		return
 
 	var/dat = "<HTML><BODY><TT><B>Mass Driver Controls</B>"
@@ -154,7 +154,7 @@
 	return
 
 /obj/machinery/computer/pod/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(loc, /turf))) || (istype(usr, /mob/living/silicon)))
 		usr.machine = src
@@ -176,8 +176,8 @@
 						time = min(max(round(time), 0), 120)
 					else
 						if (href_list["door"])
-							if(istype(src, /obj/machinery/computer/pod/old/syndicate))//Added here so Nuke ops don't go running naked into space before moving the shuttle.
-								if(syndicate_station_at_station == 0)
+							if (istype(src, /obj/machinery/computer/pod/old/syndicate))//Added here so Nuke ops don't go running naked into space before moving the shuttle.
+								if (syndicate_station_at_station == 0)
 									usr << "\red You need to launch the Syndicate Shuttle via the computer terminal at the head of the ship before departing."
 									return
 							for(var/obj/machinery/door/poddoor/M in machines)

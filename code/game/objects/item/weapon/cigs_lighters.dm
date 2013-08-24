@@ -25,7 +25,7 @@ ZIPPO
 		while(src.lit == 1)
 			src.smoketime--
 			sleep(10)
-			if(src.smoketime < 1)
+			if (src.smoketime < 1)
 				src.icon_state = "match_burnt"
 				src.lit = -1
 				processing_objects.Remove(src)
@@ -33,7 +33,7 @@ ZIPPO
 
 
 	dropped(mob/user as mob)
-		if(src.lit == 1)
+		if (src.lit == 1)
 			src.lit = -1
 			src.damtype = "brute"
 			src.icon_state = "match_burnt"
@@ -60,25 +60,25 @@ ZIPPO
 
 
 	attack_hand(mob/user as mob)
-		if(user.r_hand == src || user.l_hand == src)
-			if(src.matchcount <= 0)
+		if (user.r_hand == src || user.l_hand == src)
+			if (src.matchcount <= 0)
 				user << "\red You're out of matches. Shouldn't have wasted so many..."
 				return
 			else
 				src.matchcount--
 				var/obj/item/weapon/match/W = new /obj/item/weapon/match(user)
-				if(user.hand)
+				if (user.hand)
 					user.l_hand = W
 				else
 					user.r_hand = W
 				W.layer = 20
 		else
 			return ..()
-		if(src.matchcount <= 0)
+		if (src.matchcount <= 0)
 			src.icon_state = "matchbox_empty"
-		else if(src.matchcount <= 3)
+		else if (src.matchcount <= 3)
 			src.icon_state = "matchbox_almostempty"
-		else if(src.matchcount <= 6)
+		else if (src.matchcount <= 6)
 			src.icon_state = "matchbox_almostfull"
 		else
 			src.icon_state = "matchbox"
@@ -87,7 +87,7 @@ ZIPPO
 
 
 	attackby(obj/item/weapon/match/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon/match) && W.lit == 0)
+		if (istype(W, /obj/item/weapon/match) && W.lit == 0)
 			W.lit = 1
 			W.icon_state = "match_lit"
 			processing_objects.Add(W)
@@ -121,13 +121,13 @@ ZIPPO
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
 		..()
-		if(istype(W, /obj/item/weapon/weldingtool)  && W:welding)
+		if (istype(W, /obj/item/weapon/weldingtool)  && W:welding)
 			light("\red [user] casually lights the [name] with [W], what a badass.")
 
-		else if(istype(W, /obj/item/weapon/zippo) && (W:lit > 0))
+		else if (istype(W, /obj/item/weapon/zippo) && (W:lit > 0))
 			light("\red With a single flick of their wrist, [user] smoothly lights their [name] with their [W]. Damn they're cool.")
 
-		else if(istype(W, /obj/item/weapon/match) && (W:lit > 0))
+		else if (istype(W, /obj/item/weapon/match) && (W:lit > 0))
 			light("\red [user] lights their [name] with their [W]. How poor can you get?")
 
 		else  if (istype(W, /obj/item/weapon/trashbag))
@@ -150,7 +150,7 @@ ZIPPO
 
 
 	light(var/flavor_text = "[usr] lights the [name].")
-		if(!src.lit)
+		if (!src.lit)
 			src.lit = 1
 			src.damtype = "fire"
 			src.icon_state = icon_on
@@ -163,26 +163,26 @@ ZIPPO
 	process()
 		var/turf/location = get_turf(src)
 		src.smoketime--
-		if(src.smoketime < 1)
+		if (src.smoketime < 1)
 			if (istype(src,/obj/item/clothing/mask/cigarette/cigar))
 				var/obj/item/weapon/cigbutt/C = new /obj/item/weapon/cigarbutt
 				C.loc = location
 			else
 				var/obj/item/weapon/cigbutt/C = new /obj/item/weapon/cigbutt
 				C.loc = location
-			if(ismob(src.loc))
+			if (ismob(src.loc))
 				var/mob/living/M = src.loc
 				M << "\red Your [src.name] goes out."
 			processing_objects.Remove(src)
 			del(src)
 			return
-		if(location)
+		if (location)
 			location.hotspot_expose(700, 5)
 		return
 
 
 	dropped(mob/user as mob)
-		if(src.lit == 1)
+		if (src.lit == 1)
 			for(var/mob/O in viewers(user, null))
 				O.show_message(text("\red [] calmly drops and treads on the lit [], putting it out instantly.", user,src.name), 1)
 			src.lit = -1
@@ -244,7 +244,7 @@ ZIPPO
 
 
 /obj/item/clothing/mask/cigarette/cigar/havanian/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/match) && (W:lit > 0))
+	if (istype(W, /obj/item/weapon/match) && (W:lit > 0))
 		user << "\red The [src] straight out REFUSES to be lit by such uncivilized means."
 	else
 		..()
@@ -273,14 +273,14 @@ ZIPPO
 
 
 	attack_hand(mob/user as mob)
-		if(user.r_hand == src || user.l_hand == src)
-			if(src.cigcount == 0)
+		if (user.r_hand == src || user.l_hand == src)
+			if (src.cigcount == 0)
 				user << "\red You're out of cigs, shit! How you gonna get through the rest of the day..."
 				return
 			else
 				src.cigcount--
 				var/obj/item/clothing/mask/cigarette/W = new /obj/item/clothing/mask/cigarette(user)
-				if(user.hand)
+				if (user.hand)
 					user.l_hand = W
 				else
 					user.r_hand = W
@@ -330,8 +330,8 @@ ZIPPO
 
 
 	attack_self(mob/user)
-		if(user.r_hand == src || user.l_hand == src)
-			if(!src.lit)
+		if (user.r_hand == src || user.l_hand == src)
+			if (!src.lit)
 				src.lit = 1
 				src.icon_state = "zippoon"
 				src.item_state = "zippoon"
@@ -355,11 +355,11 @@ ZIPPO
 
 
 	attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-		if(!istype(M, /mob))
+		if (!istype(M, /mob))
 			return
 
-		if(istype(M.wear_mask,/obj/item/clothing/mask/cigarette) && user.zone_sel.selecting == "mouth" && src.lit)
-			if(M == user)
+		if (istype(M.wear_mask,/obj/item/clothing/mask/cigarette) && user.zone_sel.selecting == "mouth" && src.lit)
+			if (M == user)
 				M.wear_mask:light("\red With a single flick of their wrist, [user] smoothly lights their [M.wear_mask.name] with their [src.name]. Damn they're cool.")
 			else
 				M.wear_mask:light("\red [user] whips the [src.name] out and holds it for [M]. Their arm is as steady as the unflickering flame they light the [M.wear_mask.name] with.")
@@ -369,20 +369,20 @@ ZIPPO
 
 	process()
 		var/turf/location = get_turf(src)
-		if(location)
+		if (location)
 			location.hotspot_expose(700, 5)
 		return
 
 
 	pickup(mob/user)
-		if(lit)
+		if (lit)
 			src.sd_SetLuminosity(0)
 			user.total_luminosity += 2
 		return
 
 
 	dropped(mob/user)
-		if(lit)
+		if (lit)
 			user.total_luminosity -= 2
 			src.sd_SetLuminosity(2)
 		return

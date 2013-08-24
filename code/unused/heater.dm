@@ -1,6 +1,6 @@
 /obj/machinery/atmoalter/heater/proc/setstate()
 
-	if(stat & NOPOWER)
+	if (stat & NOPOWER)
 		icon_state = "heater-p"
 		return
 
@@ -12,7 +12,7 @@
 
 /obj/machinery/atmoalter/heater/process()
 	/*
-	if(stat & NOPOWER)	return
+	if (stat & NOPOWER)	return
 	use_power(5)
 
 	var/turf/T = src.loc
@@ -29,7 +29,7 @@
 			src.gas.temperature = min(n_temp, (src.h_tar+T0C))
 			use_power( src.h_tar*8)
 	switch(src.t_status)
-		if(1.0)
+		if (1.0)
 			if (src.holding)
 				var/t1 = src.gas.total_moles()
 				var/t2 = t1
@@ -39,7 +39,7 @@
 				src.holding.gas.transfer_from(src.gas, t)
 			else
 				src.t_status = 3
-		if(2.0)
+		if (2.0)
 			if (src.holding)
 				var/t1 = src.gas.total_moles()
 				var/t2 = src.maximum - t1
@@ -69,17 +69,17 @@
 
 /obj/machinery/atmoalter/heater/attack_hand(var/mob/user as mob)
 	/*
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		return
 
 	user.machine = src
 	var/tt
 	switch(src.t_status)
-		if(1.0)
+		if (1.0)
 			tt = text("Releasing <A href='?src=\ref[];t=2'>Siphon</A> <A href='?src=\ref[];t=3'>Stop</A>", src, src)
-		if(2.0)
+		if (2.0)
 			tt = text("<A href='?src=\ref[];t=1'>Release</A> Siphoning<A href='?src=\ref[];t=3'>Stop</A>", src, src)
-		if(3.0)
+		if (3.0)
 			tt = text("<A href='?src=\ref[];t=1'>Release</A> <A href='?src=\ref[];t=2'>Siphon</A> Stopped", src, src)
 		else
 	var/ht = null
@@ -89,11 +89,11 @@
 		ht = text("<A href='?src=\ref[];h=1'>Heat</A> Stopped", src)
 	var/ct = null
 	switch(src.c_status)
-		if(1.0)
+		if (1.0)
 			ct = text("Releasing <A href='?src=\ref[];c=2'>Accept</A> <A href='?src=\ref[];ct=3'>Stop</A>", src, src)
-		if(2.0)
+		if (2.0)
 			ct = text("<A href='?src=\ref[];c=1'>Release</A> Accepting <A href='?src=\ref[];c=3'>Stop</A>", src, src)
-		if(3.0)
+		if (3.0)
 			ct = text("<A href='?src=\ref[];c=1'>Release</A> <A href='?src=\ref[];c=2'>Accept</A> Stopped", src, src)
 		else
 			ct = "Disconnected"
@@ -113,11 +113,11 @@
 		if (href_list["c"])
 			var/c = text2num(href_list["c"])
 			switch(c)
-				if(1.0)
+				if (1.0)
 					src.c_status = 1
-				if(2.0)
+				if (2.0)
 					src.c_status = 2
-				if(3.0)
+				if (3.0)
 					src.c_status = 3
 				else
 		else
@@ -126,11 +126,11 @@
 				if (src.t_status == 0)
 					return
 				switch(t)
-					if(1.0)
+					if (1.0)
 						src.t_status = 1
-					if(2.0)
+					if (2.0)
 						src.t_status = 2
-					if(3.0)
+					if (3.0)
 						src.t_status = 3
 					else
 			else
@@ -187,7 +187,7 @@
 				src.anchored = initial(src.anchored)
 				src.c_status = 0
 				user.show_message("\blue You have disconnected the heater.", 1)
-				if(con)
+				if (con)
 					con.connected = null
 			else
 				if (con && !con.connected)

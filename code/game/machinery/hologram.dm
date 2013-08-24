@@ -29,12 +29,12 @@ Possible to do for anyone motivated enough:
 //Destruction procs.
 /obj/machinery/hologram/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			del(src)
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				del(src)
-		if(3.0)
+		if (3.0)
 			if (prob(5))
 				del(src)
 	return
@@ -48,7 +48,7 @@ Possible to do for anyone motivated enough:
 	return
 
 /obj/machinery/hologram/Del()
-	if(hologram)
+	if (hologram)
 		src:clear_holo()
 	..()
 
@@ -64,7 +64,7 @@ Holographic project of everything else.
 	flat_icon.ColorTone(rgb(125,180,225))//Let's make it bluish.
 	flat_icon.ChangeOpacity(0.5)//Make it half transparent.
 	var/input = input("Select what icon state to use in effects.",,"")
-	if(input)
+	if (input)
 		var/icon/alpha_mask = new('effects.dmi', "[input]")
 		flat_icon.AddAlphaMask(alpha_mask)//Finally, let's mix in a distortion effect.
 		hologram.icon = flat_icon
@@ -86,18 +86,18 @@ Holographic project of everything else.
 	/*There are pretty much only three ways to interact here.
 	I don't need to check for client since they're clicking on an object.
 	This may change in the future but for now will suffice.*/
-	if(user.client.eye!=src)//Set client eye on the object if it's not already.
+	if (user.client.eye!=src)//Set client eye on the object if it's not already.
 		user.current = src
 		user.reset_view(src)
-	else if(!hologram)//If there is no hologram, possibly make one.
+	else if (!hologram)//If there is no hologram, possibly make one.
 		activate_holo(user)
-	else if(master==user)//If there is a hologram, remove it. But only if the user is the master. Otherwise do nothing.
+	else if (master==user)//If there is a hologram, remove it. But only if the user is the master. Otherwise do nothing.
 		clear_holo()
 	return
 
 /obj/machinery/hologram/holopad/proc/activate_holo(mob/living/silicon/ai/user)
-	if(!(stat & NOPOWER)&&user.client.eye==src)//If the projector has power and client eye is on it.
-		if(!hologram)//If there is not already a hologram.
+	if (!(stat & NOPOWER)&&user.client.eye==src)//If the projector has power and client eye is on it.
+		if (!hologram)//If there is not already a hologram.
 			create_holo(user)//Create one.
 			for(var/mob/M in viewers())
 				M.show_message("A holographic image of [user] flicks to life right before your eyes!",1)
@@ -110,11 +110,11 @@ Holographic project of everything else.
 /*This is the proc for special two-way communication between AI and holopad/people talking near holopad.
 For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 /obj/machinery/hologram/holopad/hear_talk(mob/M, text)
-	if(M&&hologram&&master)//Master is mostly a safety in case lag hits or something.
-		if(!master.say_understands(M))//The AI will be able to understand most mobs talking through the holopad.
+	if (M&&hologram&&master)//Master is mostly a safety in case lag hits or something.
+		if (!master.say_understands(M))//The AI will be able to understand most mobs talking through the holopad.
 			text = stars(text)
 		var/name_used = M.name
-		if(istype(M.wear_mask, /obj/item/clothing/mask/gas/voice)&&M.wear_mask:vchange)//Can't forget the ninjas.
+		if (istype(M.wear_mask, /obj/item/clothing/mask/gas/voice)&&M.wear_mask:vchange)//Can't forget the ninjas.
 			name_used = M.wear_mask:voice
 		//This communication is imperfect because the holopad "filters" voices and is only designed to connect to the master only.
 		var/rendered = "<i><span class='game say'>Holopad received, <span class='name'>[name_used]</span> <span class='message'>[M.say_quote(text)]</span></span></i>"
@@ -145,9 +145,9 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	return 1
 
 /obj/machinery/hologram/holopad/process()
-	if(hologram)//If there is a hologram.
-		if(master&&!master.stat&&master.client&&master.client.eye==src)//If there is an AI attached, it's not incapacitated, it has a client, and the client eye is centered on the projector.
-			if( !(get_dist(src,hologram.loc)>3||stat & NOPOWER) )//If the hologram is not out of bounds and the machine has power.
+	if (hologram)//If there is a hologram.
+		if (master&&!master.stat&&master.client&&master.client.eye==src)//If there is an AI attached, it's not incapacitated, it has a client, and the client eye is centered on the projector.
+			if ( !(get_dist(src,hologram.loc)>3||stat & NOPOWER) )//If the hologram is not out of bounds and the machine has power.
 				return 1
 		clear_holo()//If not, we want to get rid of the hologram.
 	return 1
@@ -231,7 +231,7 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 
 	if (href_list["power"])
 		if (src.projection)
-			if(istype(src, /obj/machinery/hologram_ai/wall_projector))
+			if (istype(src, /obj/machinery/hologram_ai/wall_projector))
 				src.icon_state = "wall_hologram0"
 			else
 				src.icon_state = "hologram0"
@@ -242,7 +242,7 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 			src.projection = new /obj/projection( src.loc )
 			src.projection.icon = 'human.dmi'
 			src.projection.icon_state = "male"
-			if(istype(src, /obj/machinery/hologram_ai/wall_projector))
+			if (istype(src, /obj/machinery/hologram_ai/wall_projector))
 				src.icon_state = "wall_hologram1"
 			else
 				src.icon_state = "hologram1"

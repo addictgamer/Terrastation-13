@@ -339,8 +339,8 @@ var
 proc
 	sd_OutsideLight(n as num)
 	// set the brightness of the outside sunlight
-		if(sd_light_outside == n) return	// same level, no update
-		if(sd_light_outside)
+		if (sd_light_outside == n) return	// same level, no update
+		if (sd_light_outside)
 			for(var/turf/T in sd_light_spill_turfs)
 				T.sd_StripSpill()
 		sd_light_outside = n
@@ -348,7 +348,7 @@ proc
 		// make all the outside areas update themselves
 		for(var/area/A in sd_outside_areas)
 			A.sd_LightLevel(sd_light_outside + A.sd_light_level,0)
-		if(n)
+		if (n)
 			for(var/turf/T in sd_light_spill_turfs)
 				T.sd_ApplySpill()
 */
@@ -359,26 +359,26 @@ proc
 		sd_dark_shades = shades
 		// change existing areas
 		for(var/area/A)
-			if(A.sd_darkimage) A.sd_LightLevel(A.sd_light_level,0)
+			if (A.sd_darkimage) A.sd_LightLevel(A.sd_light_level,0)
 
 
 atom
 	New()
 		..()
 		// if this is not an area and is luminous
-		if(!isarea(src)&&(luminosity>0))
+		if (!isarea(src)&&(luminosity>0))
 			spawn(1)			// delay to allow map load
 				sd_ApplyLum()
 
 	Del()
 		// if this is not an area and is luminous
-		if(!isarea(src)&&(luminosity>0))
+		if (!isarea(src)&&(luminosity>0))
 			sd_StripLum()
 		..()
 
 	proc
 		sd_ApplyLum(list/V = view(luminosity,src), center = src)
-			if(src.luminosity>sd_top_luminosity)
+			if (src.luminosity>sd_top_luminosity)
 				sd_top_luminosity = src.luminosity
 			// loop through all the turfs in V
 			for(var/turf/T in V)
@@ -388,7 +388,7 @@ atom
 				//	update the turf's area
 
 				//
-				//if(T.tag == "sdd")
+				//if (T.tag == "sdd")
 				//	slog << "\red lc+([luminosity-get_dist(center,T)]) from [center] ([center:x],[center:y])"
 				//	slog << "now [T.sd_lumcount]"
 
@@ -401,7 +401,7 @@ atom
 					brightness and distance of the lightsource */
 				T.sd_lumcount -= (luminosity-get_dist(center,T))
 
-				//if(T.tag == "sdd")
+				//if (T.tag == "sdd")
 				//	slog << "\red lc-([luminosity-get_dist(center,T)]) from [center] ([center:x],[center:y])"
 				//	slog << "now [T.sd_lumcount]"
 
@@ -412,9 +412,9 @@ atom
 		sd_ApplyLocalLum(list/affected = view(sd_top_luminosity,src))
 			// Reapplies the lighting effects of all atoms in affected.
 			for(var/atom/A in affected)
-				if(A.luminosity) A.sd_ApplyLum()
+				if (A.luminosity) A.sd_ApplyLum()
 
-				//if(sd_light_outside && (A in sd_light_spill_turfs))
+				//if (sd_light_outside && (A in sd_light_spill_turfs))
 				//	A:sd_ApplySpill()
 
 		sd_StripLocalLum()
@@ -427,11 +427,11 @@ atom
 			var/list/affected = list()
 			for(var/atom/A in view(sd_top_luminosity,src))
 				var/turfflag = (isturf(src)?1:0)
-				if(A.luminosity && (get_dist(src,A) <= A.luminosity + turfflag))
+				if (A.luminosity && (get_dist(src,A) <= A.luminosity + turfflag))
 					A.sd_StripLum()
 					affected += A
 
-				//if(sd_light_outside && (A in sd_light_spill_turfs))
+				//if (sd_light_outside && (A in sd_light_spill_turfs))
 				//	A:sd_StripSpill()
 				//	affected += A
 
@@ -442,19 +442,19 @@ atom
 				luminosity of an atom instead of setting it directly.
 
 				new_luminosity is the new value for luminosity. */
-			if(luminosity>0)
+			if (luminosity>0)
 				sd_StripLum()
 			luminosity = new_luminosity
-			if(luminosity>0)
+			if (luminosity>0)
 				sd_ApplyLum()
 
 
 		sd_SetOpacity(new_opacity as num)
-			/* if(opacity != new_opacity)
+			/* if (opacity != new_opacity)
 				var/list/affected = sd_StripLocalLum()
 				opacity = new_opacity
 				sd_ApplyLocalLum(affected) */
-			if(opacity == (new_opacity ? 1 : 0)) return
+			if (opacity == (new_opacity ? 1 : 0)) return
 			var
 				list
 					affected = new
@@ -467,26 +467,26 @@ atom
 			for(A in range(sd_top_luminosity,src))
 				T = A
 				while(T && !istype(T)) T = T.loc
-				if(T)
+				if (T)
 					var/list/V = view(A.luminosity,T)
-					if(!(src in V)) continue
+					if (!(src in V)) continue
 					var/turfflag = 0
-					if(A == T) turfflag = 1
-					if(A.luminosity && get_dist(A,src)<=A.luminosity+turfflag)
+					if (A == T) turfflag = 1
+					if (A.luminosity && get_dist(A,src)<=A.luminosity+turfflag)
 						affected[A] = V
-					//if(sd_light_outside && (A in sd_light_spill_turfs))
-					//	if(!spill) spill=new
+					//if (sd_light_outside && (A in sd_light_spill_turfs))
+					//	if (!spill) spill=new
 					//	spill[A] = view(sd_light_outside, T)
 			opacity = new_opacity
-			if(opacity)
+			if (opacity)
 				for(A in affected)
 					ATurf = A
 					while(ATurf && !istype(ATurf)) ATurf = ATurf.loc
-					if(ATurf)
+					if (ATurf)
 						for(T in affected[A]-view(A.luminosity, ATurf))
 							T.sd_lumcount -= (A.luminosity-get_dist(A,T))
 
-							//if(T.tag == "sdd")
+							//if (T.tag == "sdd")
 							//	slog << "\red lc(1)-([A.luminosity-get_dist(A,T)]) from [A] ([A.x],[A.y])"
 							//	slog << "now [T.sd_lumcount]"
 
@@ -494,16 +494,16 @@ atom
 							T.sd_LumUpdate()
 				/*
 				for(A in spill)
-					if(A.opacity && A!=src) continue
+					if (A.opacity && A!=src) continue
 					ATurf = A
 					while(ATurf && !istype(ATurf)) ATurf = ATurf.loc
-					if(ATurf)
+					if (ATurf)
 						//spill[A] -= view(sd_light_outside, A)
 						for(T in (A==src)?spill[A]:(spill[A]-view(sd_light_outside,ATurf)))
-							if(T.loc:sd_outside) continue
+							if (T.loc:sd_outside) continue
 							T.sd_lumcount -= (sd_light_outside-get_dist(A,T))
 
-							//if(T.tag == "sdd")
+							//if (T.tag == "sdd")
 							//	slog << "\red lc(O)-([sd_light_outside-get_dist(A,T)]) from [A] ([A:x],[A:y])"
 							//	slog << "now [T.sd_lumcount]"
 
@@ -517,24 +517,24 @@ atom
 				for(A in affected)
 					ATurf = A
 					while(ATurf && !istype(ATurf)) ATurf = ATurf.loc
-					if(ATurf)
+					if (ATurf)
 						for(T in view(A.luminosity, ATurf) - affected[A])
 							T.sd_lumcount += (A.luminosity-get_dist(A,T))
-							//if(T.tag == "sdd")
+							//if (T.tag == "sdd")
 							//	slog << "\red lc(1)+([A.luminosity-get_dist(A,T)]) from [A] ([A.x],[A.y])"
 							//	slog << "now [T.sd_lumcount]"
 
 							T.sd_LumUpdate()
 				/*
 				for(A in spill)
-					if(A.opacity) continue
+					if (A.opacity) continue
 					ATurf = A
 					while(ATurf && !istype(ATurf)) ATurf = ATurf.loc
-					if(ATurf)
+					if (ATurf)
 						for(T in (A==src)?spill[A]:(view(sd_light_outside, ATurf)-spill[A]))
-							if(T.loc:sd_outside) continue
+							if (T.loc:sd_outside) continue
 							T.sd_lumcount += (sd_light_outside-get_dist(A,T))
-							//if(T.tag == "sdd")
+							//if (T.tag == "sdd")
 							//	slog << "\red lc(O)+([sd_light_outside-get_dist(A,T)]) from [A] ([A:x],[A:y])"
 							//	slog << "now [T.sd_lumcount]"
 
@@ -547,13 +547,13 @@ atom
 ///
 
 		sd_NewOpacity(var/new_opacity)
-			if(opacity != new_opacity)
+			if (opacity != new_opacity)
 				var/list/affected = sd_StripLocalLum()
 				opacity = new_opacity
 				var/atom/T = src
 				while(T && !isturf(T))
 					T = T.loc
-				if(T)
+				if (T)
 					T:sd_lumcount = 0
 
 				sd_ApplyLocalLum(affected)
@@ -573,7 +573,7 @@ turf
 				re-apply local lum*/
 			var/list/affected = sd_StripLocalLum()
 			sd_lumcount = 0
-			//if(src.tag == "sdd")
+			//if (src.tag == "sdd")
 			//	slog << "\red lc(LR)=0"
 
 			sd_ApplyLocalLum(affected)
@@ -581,29 +581,29 @@ turf
 		sd_LumUpdate()
 			set background = 1
 			var/area/Loc = loc
-			if(!istype(Loc) || !Loc.sd_lighting) return
+			if (!istype(Loc) || !Loc.sd_lighting) return
 
 			// change the turf's area depending on its brightness
 			// restrict light to valid levels
 			var/light = min(max(sd_lumcount,0),sd_dark_shades)
 			var/ltag = copytext(Loc.tag,1,findtext(Loc.tag,"sd_L")) + "sd_L[light]"
 
-			if(Loc.tag!=ltag)	//skip if already in this area
+			if (Loc.tag!=ltag)	//skip if already in this area
 				var/area/A = locate(ltag)	// find an appropriate area
-				if(!A)
+				if (!A)
 					A = new Loc.type()    // create area if it wasn't found
 					A.tag = ltag
 
 					// replicate vars
 					for(var/V in Loc.vars-"contents")
-						if(issaved(Loc.vars[V])) A.vars[V] = Loc.vars[V]
+						if (issaved(Loc.vars[V])) A.vars[V] = Loc.vars[V]
 
 
 
 					A.tag = ltag
 					/*
-					if(A.sd_outside)
-						if(!(A in sd_outside_areas))
+					if (A.sd_outside)
+						if (!(A in sd_outside_areas))
 							sd_outside_areas += A
 						A.sd_light_level = light
 						A.sd_LightLevel(light + sd_light_outside,0)
@@ -615,17 +615,17 @@ turf
 				A.contents += src	// move the turf into the area
 /*
 		sd_ApplySpill()
-			if(opacity) return
+			if (opacity) return
 			var/oldlum = luminosity
 			luminosity = sd_light_outside
 			// loop through all the turfs in V
 			for(var/turf/T in view(sd_light_outside,src))
 				var/area/A = T.loc
-				if(!istype(A) || A.sd_outside) continue
+				if (!istype(A) || A.sd_outside) continue
 				/*	increase the turf's brightness depending on the
 					brightness and distance of the lightsource */
 				T.sd_lumcount += (sd_light_outside-get_dist(src,T))
-				//if(T.tag == "sdd")
+				//if (T.tag == "sdd")
 				//	slog << "\red lc(AS)+([sd_light_outside-get_dist(src,T)]) from [src] ([src:x],[src:y])"
 				//	slog << "now [T.sd_lumcount]"
 
@@ -634,17 +634,17 @@ turf
 			luminosity = oldlum
 
 		sd_StripSpill()
-			if(opacity) return
+			if (opacity) return
 			var/oldlum = luminosity
 			luminosity = sd_light_outside
 			// loop through all the turfs in V
 			for(var/turf/T in view(sd_light_outside,src))
 				var/area/A = T.loc
-				if(!istype(A) || A.sd_outside) continue
+				if (!istype(A) || A.sd_outside) continue
 				/*	increase the turf's brightness depending on the
 					brightness and distance of the lightsource */
 				T.sd_lumcount -= (sd_light_outside-get_dist(src,T))
-				//if(T.tag == "sdd")
+				//if (T.tag == "sdd")
 				//	slog << "\red lc(AS)-([sd_light_outside-get_dist(src,T)]) from [src] ([src:x],[src:y])"
 				//	slog << "now [T.sd_lumcount]"
 
@@ -654,7 +654,7 @@ turf
 
 	New()
 		..()
-		if(sd_light_spill)
+		if (sd_light_spill)
 			sd_light_spill_turfs += src
 */
 atom/movable/Move() // when something moves
@@ -664,8 +664,8 @@ atom/movable/Move() // when something moves
 	var/turf/oldloc = loc	// remember for range calculations
 	// list turfs in view and luminosity range of old loc
 	var/list/oldview
-	if(luminosity>0)		// if atom is luminous
-		if(isturf(loc))
+	if (luminosity>0)		// if atom is luminous
+		if (isturf(loc))
 			oldview = view(luminosity,loc)
 		else
 			oldview = list()
@@ -675,9 +675,9 @@ atom/movable/Move() // when something moves
 	//world << "[src]: sd_Move: .=[.]"
 
 
-	if(.&&(luminosity>0))	// if the atom actually moved
+	if (.&&(luminosity>0))	// if the atom actually moved
 		//world << "[src](luminosity) moved"
-		if(istype(oldloc))
+		if (istype(oldloc))
 			sd_StripLum(oldview,oldloc)
 			oldloc.sd_lumcount++	// correct "off by 1" error in oldloc
 		sd_ApplyLum()
@@ -699,14 +699,14 @@ area
 
 	proc
 		sd_LightLevel(slevel = sd_light_level as num, keep = 1)
-			if(!src) return
+			if (!src) return
 			overlays -= sd_darkimage
 
-			if(keep) sd_light_level = slevel
+			if (keep) sd_light_level = slevel
 
 			slevel = min(max(slevel,0),sd_dark_shades)	// restrict range
 
-			if(slevel > 0)
+			if (slevel > 0)
 				luminosity = 1
 			else
 				luminosity = 0
@@ -717,28 +717,28 @@ area
 	/*
 	New()
 		..()
-		if(!tag) tag = "[type]"
+		if (!tag) tag = "[type]"
 		spawn(1)	// wait a tick
-			if(sd_lighting)
+			if (sd_lighting)
 				// see if this area was created by the library
-				if(!findtext(tag, "sd_L"))
+				if (!findtext(tag, "sd_L"))
 					/*	show the dark overlay so areas outside of luminous regions
 						won't be bright as day when they should be dark. */
 					sd_LightLevel()
-		if(sd_outside)
+		if (sd_outside)
 			sd_outside_areas += src
 	*/
 	proc/sd_New(sd_created)
 
-		if(!tag) tag = "[type]"
+		if (!tag) tag = "[type]"
 		spawn(1)	// wait a tick
-			if(sd_lighting)
+			if (sd_lighting)
 				// see if this area was created by the library
-				if(!sd_created)
+				if (!sd_created)
 					/*	show the dark overlay so areas outside of luminous regions
 						won't be bright as day when they should be dark. */
 					sd_LightLevel()
-		//if(sd_outside)
+		//if (sd_outside)
 		//	sd_outside_areas += src
 
 	Del()
@@ -748,24 +748,24 @@ area
 mob
 	/* extend the mob procs to compensate for sight settings. */
 	sd_ApplyLum(list/V, center = src)
-		if(!V)
-			if(isturf(loc))
+		if (!V)
+			if (isturf(loc))
 				V = view(luminosity,loc)
 			else
 				V = view(luminosity,src)
 		. = ..(V, center)
 
 	sd_StripLum(list/V, center = src)
-		if(!V)
-			if(isturf(loc))
+		if (!V)
+			if (isturf(loc))
 				V = view(luminosity,loc)
 			else
 				V = view(luminosity,src)
 		. = ..(V, center)
 
 	sd_ApplyLocalLum(list/affected)
-		if(!affected)
-			if(isturf(loc))
+		if (!affected)
+			if (isturf(loc))
 				affected = view(sd_top_luminosity,loc)
 			else
 				affected = view(sd_top_luminosity,src)

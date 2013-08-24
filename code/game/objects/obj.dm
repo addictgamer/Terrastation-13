@@ -15,7 +15,7 @@
 		//		null if object handles breathing logic for lifeform
 		//		datum/air_group to tell lifeform to process using that breath return
 		//DEFAULT: Take air from turf to give to have mob process
-		if(breath_request>0)
+		if (breath_request>0)
 			return remove_air(breath_request)
 		else
 			return null
@@ -69,7 +69,7 @@
 /obj/proc/hear_talk(mob/M as mob, text)
 /*
 	var/mob/mo = locate(/mob) in src
-	if(mo)
+	if (mo)
 		var/rendered = "<span class='game say'><span class='name'>[M.name]: </span> <span class='message'>[text]</span></span>"
 		mo.show_message(rendered, 2)
 		*/
@@ -113,14 +113,14 @@ Desc:	If true is an assembly that can work with the holder
 
 	Process_cooldown()
 		cooldown--
-		if(cooldown <= 0)	return 0
+		if (cooldown <= 0)	return 0
 		spawn(10)
 			Process_cooldown()
 		return 1
 
 
 	Activate()
-		if((!secured) || (cooldown > 0))//Make sure to add something using cooldown or such to prevent spam
+		if ((!secured) || (cooldown > 0))//Make sure to add something using cooldown or such to prevent spam
 			return 0
 		cooldown = 2
 		spawn(10)
@@ -129,14 +129,14 @@ Desc:	If true is an assembly that can work with the holder
 
 
 	Secure()
-		if(secured)
+		if (secured)
 			return 0
 		secured = 1
 		return 1
 
 
 	Unsecure()
-		if(!secured)
+		if (!secured)
 			return 0
 		secured = 0
 		return 1
@@ -144,19 +144,19 @@ Desc:	If true is an assembly that can work with the holder
 
 	Attach_Assembly(var/obj/A, var/mob/user)
 		holder = new/obj/item/device/assembly_holder(get_turf(src))
-		if(holder:attach(A,src,user))
+		if (holder:attach(A,src,user))
 			user.show_message("\blue You attach the [A.name] to the [src.name]!")
 			return 1
 		return 0
 
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(W.IsAssembly())
+		if (W.IsAssembly())
 			var/obj/item/device/D = W
-			if((!D:secured) && (!src.secured))
+			if ((!D:secured) && (!src.secured))
 				Attach_Assembly(D,user)
-		if(isscrewdriver(W))
-			if(src.secured)
+		if (isscrewdriver(W))
+			if (src.secured)
 				Unsecure()
 				user.show_message("\blue The [src.name] can now be attached!")
 			else
@@ -203,7 +203,7 @@ Desc:	If true is an object that can be attached to an assembly holder but is a s
 
 
 	Activate()
-		if(cooldown > 0)
+		if (cooldown > 0)
 			return 0
 		cooldown = 2
 		spawn(10)
@@ -214,14 +214,14 @@ Desc:	If true is an object that can be attached to an assembly holder but is a s
 
 	Process_cooldown()
 		cooldown--
-		if(cooldown <= 0)	return 0
+		if (cooldown <= 0)	return 0
 		spawn(10)
 			Process_cooldown()
 		return 1
 
 
 	Attach_Holder(var/obj/H, var/mob/user)
-		if(!H)	return 0
-		if(!H.IsAssemblyHolder())	return 0
+		if (!H)	return 0
+		if (!H.IsAssemblyHolder())	return 0
 		//Remember to have it set its loc somewhere in here
 */

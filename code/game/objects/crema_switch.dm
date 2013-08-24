@@ -13,7 +13,7 @@
 		id = 1
 
 	attack_hand(mob/user as mob)
-		if(src.allowed(usr))
+		if (src.allowed(usr))
 			for (var/obj/crematorium/C in world)
 				if (C.id == id)
 					if (!C.cremating)

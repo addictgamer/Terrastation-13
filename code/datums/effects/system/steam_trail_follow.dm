@@ -13,13 +13,13 @@
 			oldposition = get_turf(atom)
 
 		start()
-			if(!src.on)
+			if (!src.on)
 				src.on = 1
 				src.processing = 1
-			if(src.processing)
+			if (src.processing)
 				src.processing = 0
 				spawn(0)
-					if(src.number < 3)
+					if (src.number < 3)
 						var/obj/effects/steam/I = new /obj/effects/steam(src.oldposition)
 						src.number++
 						src.oldposition = get_turf(holder)
@@ -28,12 +28,12 @@
 							del(I)
 							src.number--
 						spawn(2)
-							if(src.on)
+							if (src.on)
 								src.processing = 1
 								src.start()
 					else
 						spawn(2)
-							if(src.on)
+							if (src.on)
 								src.processing = 1
 								src.start()
 

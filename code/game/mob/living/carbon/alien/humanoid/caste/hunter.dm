@@ -2,7 +2,7 @@
 	var/datum/reagents/R = new/datum/reagents(100)
 	reagents = R
 	R.my_atom = src
-	if(src.name == "alien hunter")
+	if (src.name == "alien hunter")
 		src.name = text("alien hunter ([rand(1, 1000)])")
 	src.real_name = src.name
 	spawn (1)
@@ -46,15 +46,15 @@
 		if (src.healths)
 			if (src.stat != 2)
 				switch(health)
-					if(150 to INFINITY)
+					if (150 to INFINITY)
 						src.healths.icon_state = "health0"
-					if(100 to 150)
+					if (100 to 150)
 						src.healths.icon_state = "health1"
-					if(50 to 100)
+					if (50 to 100)
 						src.healths.icon_state = "health2"
-					if(25 to 50)
+					if (25 to 50)
 						src.healths.icon_state = "health3"
-					if(0 to 25)
+					if (0 to 25)
 						src.healths.icon_state = "health4"
 					else
 						src.healths.icon_state = "health5"
@@ -64,10 +64,10 @@
 	handle_environment()
 
 		//If there are alien weeds on the ground then heal if needed or give some toxins
-		if(locate(/obj/alien/weeds) in loc)
-			if(health >= 150)
+		if (locate(/obj/alien/weeds) in loc)
+			if (health >= 150)
 				toxloss += 5
-				if(toxloss > max_plasma)
+				if (toxloss > max_plasma)
 					toxloss = max_plasma
 
 			else
@@ -78,25 +78,25 @@
 
 		health = 150 - (oxyloss + fireloss + bruteloss + cloneloss)
 
-		if(oxyloss > 50) paralysis = max(paralysis, 3)
+		if (oxyloss > 50) paralysis = max(paralysis, 3)
 
-		if(src.sleeping)
+		if (src.sleeping)
 			src.paralysis = max(src.paralysis, 3)
 			if (prob(10) && health) spawn(0) emote("snore")
 			src.sleeping--
 
-		if(src.resting)
+		if (src.resting)
 			src.weakened = max(src.weakened, 5)
 
-		if(health < -100 || src.brain_op_stage == 4.0)
+		if (health < -100 || src.brain_op_stage == 4.0)
 			death()
-		else if(src.health < 0)
-			if(src.health <= 20 && prob(1)) spawn(0) emote("gasp")
+		else if (src.health < 0)
+			if (src.health <= 20 && prob(1)) spawn(0) emote("gasp")
 
-			//if(!src.rejuv) src.oxyloss++
-			if(!src.reagents.has_reagent("inaprovaline")) src.oxyloss++
+			//if (!src.rejuv) src.oxyloss++
+			if (!src.reagents.has_reagent("inaprovaline")) src.oxyloss++
 
-			if(src.stat != 2)	src.stat = 1
+			if (src.stat != 2)	src.stat = 1
 			src.paralysis = max(src.paralysis, 5)
 
 		if (src.stat != 2) //Alive.
@@ -165,14 +165,14 @@
 	set desc = "Makes you invisible for 15 seconds"
 	set category = "Alien"
 
-	if(powerc(50))
+	if (powerc(50))
 		toxloss -= 50
 		alien_invis = 1.0
 		src << "\green You are now invisible."
 		for(var/mob/O in oviewers(src, null))
 			O.show_message(text("\red <B>[src] fades into the surroundings!</B>"), 1)
 		spawn(150)
-			if(!isnull(src))//Don't want the game to runtime error when the mob no-longer exists.
+			if (!isnull(src))//Don't want the game to runtime error when the mob no-longer exists.
 				alien_invis = 0.0
 				src << "\green You are no longer invisible."
 	return
@@ -182,10 +182,10 @@
 	set desc = "Empties the contents of your stomach"
 	set category = "Alien"
 
-	if(powerc())
-		if(stomach_contents.len)
+	if (powerc())
+		if (stomach_contents.len)
 			for(var/mob/M in src)
-				if(M in stomach_contents)
+				if (M in stomach_contents)
 					stomach_contents.Remove(M)
 					M.loc = loc
 					M.paralysis += 10

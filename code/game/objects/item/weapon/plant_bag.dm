@@ -23,9 +23,9 @@
 
 	mode = !mode
 	switch (mode)
-		if(1)
+		if (1)
 			usr << "The bag now picks up all plants in a tile at once."
-		if(0)
+		if (0)
 			usr << "The bag now picks up one plant at a time."
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/attackby(var/obj/item/O as obj, var/mob/user as mob)
@@ -80,16 +80,16 @@
 
 
 /obj/machinery/smartfridge/power_change()
-	if( powered() )
+	if ( powered() )
 		src.ispowered = 1
 		stat &= ~NOPOWER
-		if(!isbroken)
+		if (!isbroken)
 			icon_state = "smartfridge"
 	else
 		spawn(rand(0, 15))
 		src.ispowered = 0
 		stat |= NOPOWER
-		if(!isbroken)
+		if (!isbroken)
 			icon_state = "smartfridge-off"
 
 
@@ -98,10 +98,10 @@
 ********************/
 
 /obj/machinery/smartfridge/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	if(!src.ispowered)
+	if (!src.ispowered)
 		user << "\red The [src] is unpowered and useless."
 		return
-	if(istype(O,/obj/item/weapon/reagent_containers/food/snacks/grown/))
+	if (istype(O,/obj/item/weapon/reagent_containers/food/snacks/grown/))
 		if (contents.len>=max_n_of_items)
 			user << "\red This [src] is full of ingredients, you cannot put more."
 			return 1
@@ -109,7 +109,7 @@
 		else
 			user.before_take_item(O)
 			O.loc = src
-			if(item_quants[O.name])
+			if (item_quants[O.name])
 				item_quants[O.name]++
 			else
 				item_quants[O.name]=1
@@ -120,7 +120,7 @@
 		for (var/obj/item/weapon/reagent_containers/food/snacks/grown/G in O.contents)
 			O.contents -= G
 			G.loc = src
-			if(item_quants[G.name])
+			if (item_quants[G.name])
 				item_quants[G.name]++
 			else
 				item_quants[G.name]=1
@@ -148,7 +148,7 @@
 ********************/
 
 /obj/machinery/smartfridge/proc/interact(mob/user as mob)
-	if(!src.ispowered)
+	if (!src.ispowered)
 		return
 
 	var/dat = "<TT><b>Select an item:</b><br>"
@@ -157,7 +157,7 @@
 		dat += "<font color = 'red'>No product loaded!</font>"
 	else
 		for (var/O in item_quants)
-			if(item_quants[O] > 0)
+			if (item_quants[O] > 0)
 				var/N = item_quants[O]
 				dat += "<FONT color = 'blue'><B>[capitalize(O)]</B>:"
 				dat += " [N] </font>"
@@ -170,19 +170,19 @@
 	return
 
 /obj/machinery/smartfridge/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 
 	usr.machine = src
 
 	var/N = href_list["vend"]
 
-	if(item_quants[N] <= 0) // Sanity check, there are probably ways to press the button when it shouldn't be possible.
+	if (item_quants[N] <= 0) // Sanity check, there are probably ways to press the button when it shouldn't be possible.
 		return
 
 	item_quants[N] -= 1
 	for(var/obj/O in contents)
-		if(O.name == N)
+		if (O.name == N)
 			O.loc = src.loc
 			break
 	src.updateUsrDialog()

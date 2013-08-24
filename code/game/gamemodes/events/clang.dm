@@ -18,19 +18,19 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 
 	Bump(atom/clong)
 		if (istype(clong, /turf))
-			if(clong.density)
+			if (clong.density)
 				clong.ex_act(2)
 				for (var/mob/O in hearers(src, null))
 					O.show_message("CLANG", 2)
 		if (istype(clong, /obj))
-			if(clong.density)
+			if (clong.density)
 				clong.ex_act(2)
 				for (var/mob/O in hearers(src, null))
 					O.show_message("CLANG", 2)
 		if (istype(clong, /mob))
-			if(clong.density || prob(10))
+			if (clong.density || prob(10))
 				clong.meteorhit(src)
-		if(clong && prob(25))
+		if (clong && prob(25))
 			src.loc = clong.loc
 
 /proc/immovablerod()
@@ -42,22 +42,22 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 	var/startside = pick(cardinal)
 
 	switch(startside)
-		if(NORTH)
+		if (NORTH)
 			starty = 187
 			startx = rand(41, 199)
 			endy = 38
 			endx = rand(41, 199)
-		if(EAST)
+		if (EAST)
 			starty = rand(38, 187)
 			startx = 199
 			endy = rand(38, 187)
 			endx = 41
-		if(SOUTH)
+		if (SOUTH)
 			starty = 38
 			startx = rand(41, 199)
 			endy = 187
 			endx = rand(41, 199)
-		if(WEST)
+		if (WEST)
 			starty = rand(38, 187)
 			startx = 41
 			endy = rand(38, 187)
@@ -73,7 +73,7 @@ In my current plan for it, 'solid' will be defined as anything with density == 1
 	while (immrod)
 		if (immrod.z != 1)
 			immrod.z = 1
-		if(immrod.loc == end)
+		if (immrod.loc == end)
 			del(immrod)
 		sleep(10)
 	for(var/obj/immovablerod/imm in world)

@@ -34,7 +34,7 @@ var/global/const/GAME_STATE_FINISHED = 4
 /datum/controller/gameticker/proc/pregame()
 
 	/*for(var/client/c in world)
-		if(!c.playing_lobby_music)
+		if (!c.playing_lobby_music)
 			c.music = sound('lobby3.mid')
 			c << sound(c.music,1)
 			c.playing_lobby_music = 1
@@ -46,32 +46,32 @@ var/global/const/GAME_STATE_FINISHED = 4
 		world << "Please, setup your character and select ready. Game will start in [pregame_timeleft] seconds"
 		while(current_state == GAME_STATE_PREGAME)
 			sleep(10)
-			if(going)
+			if (going)
 				pregame_timeleft--
 
-			if(pregame_timeleft <= 0)
+			if (pregame_timeleft <= 0)
 				current_state = GAME_STATE_SETTING_UP
 	while (!setup())
 
 /datum/controller/gameticker/proc/setup()
 	//Create and announce mode
-	if(master_mode=="secret")
+	if (master_mode=="secret")
 		src.hide_mode = 1
 	var/list/datum/game_mode/runnable_modes
-	if((master_mode=="random") || (master_mode=="secret"))
+	if ((master_mode=="random") || (master_mode=="secret"))
 		runnable_modes = config.get_runnable_modes()
 		if (runnable_modes.len==0)
 			current_state = GAME_STATE_PREGAME
 			world << "<B>Unable to choose playable game mode.</B> Reverting to pre-game lobby."
 			return 0
-		if(secret_force_mode != "secret")
+		if (secret_force_mode != "secret")
 			var/datum/game_mode/M = config.pick_mode(secret_force_mode)
-			if(M.can_start())
+			if (M.can_start())
 				src.mode = config.pick_mode(secret_force_mode)
 		ResetOccupations()
-		if(!src.mode)
+		if (!src.mode)
 			src.mode = pickweight(runnable_modes)
-		if(src.mode)
+		if (src.mode)
 			var/mtype = src.mode.type
 			src.mode = new mtype
 	else
@@ -88,14 +88,14 @@ var/global/const/GAME_STATE_FINISHED = 4
 
 	DivideOccupations() //Distribute jobs
 	var/can_continue = src.mode.pre_setup()//Setup special modes
-	if(!can_continue)
+	if (!can_continue)
 		del(mode)
 		current_state = GAME_STATE_PREGAME
 		world << "<B>Error setting up [master_mode].</B> Reverting to pre-game lobby."
 		ResetOccupations()
 		return 0
 
-	if(hide_mode)
+	if (hide_mode)
 		var/list/modes = new
 		for (var/datum/game_mode/M in runnable_modes)
 			modes+=M.name
@@ -137,8 +137,8 @@ var/global/const/GAME_STATE_FINISHED = 4
 	/*world << "Time to do clients."
 	for(var/client/c in world)
 		world << "Found a client in world."
-		if(c.playing_lobby_music)
-			if(c.music)
+		if (c.playing_lobby_music)
+			if (c.music)
 				c.playing_lobby_music = 0
 				c.music.status = SOUND_PAUSED | SOUND_UPDATE
 				del c.music
@@ -147,9 +147,9 @@ var/global/const/GAME_STATE_FINISHED = 4
 
 
 	for(var/mob/m in world)
-		if(m.client) //If has client.
-			if(m.client.playing_lobby_music)
-				if(m.client.music)
+		if (m.client) //If has client.
+			if (m.client.playing_lobby_music)
+				if (m.client.music)
 					m.client.playing_lobby_music = 0
 					m.client.music.status = SOUND_PAUSED | SOUND_UPDATE
 					m.client << m.client.music //Stop the music.
@@ -164,30 +164,30 @@ var/global/const/GAME_STATE_FINISHED = 4
 
 	proc/create_characters()
 		for(var/mob/new_player/player in world)
-			if(player.ready)
-				if(player.mind && player.mind.assigned_role=="AI")
+			if (player.ready)
+				if (player.mind && player.mind.assigned_role=="AI")
 					player.close_spawn_windows()
 					player.AIize()
-				else if(player.mind)
+				else if (player.mind)
 					player.create_character()
 					del(player)
 
 
 	proc/collect_minds()
 		for(var/mob/living/player in world)
-			if(player.mind)
+			if (player.mind)
 				ticker.minds += player.mind
 
 
 	proc/equip_characters()
 		var/captainless=1
 		for(var/mob/living/carbon/human/player in world)
-			if(player)
-				if(player.mind)
-					if(player.mind.assigned_role)
-						if(player.mind.assigned_role == "Captain")
+			if (player)
+				if (player.mind)
+					if (player.mind.assigned_role)
+						if (player.mind.assigned_role == "Captain")
 							captainless=0
-						if(player.mind.assigned_role != "MODE")
+						if (player.mind.assigned_role != "MODE")
 							player.Equip_Rank(player.mind.assigned_role)
 
 		if (captainless)
@@ -195,14 +195,14 @@ var/global/const/GAME_STATE_FINISHED = 4
 
 
 	proc/process()
-		if(current_state != GAME_STATE_PLAYING)
+		if (current_state != GAME_STATE_PLAYING)
 			return 0
 
 		mode.process()
 
 		emergency_shuttle.process()
 
-		if(!mode.explosion_in_progress && mode.check_finished())
+		if (!mode.explosion_in_progress && mode.check_finished())
 			current_state = GAME_STATE_FINISHED
 
 			spawn

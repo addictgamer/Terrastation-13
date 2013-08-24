@@ -35,17 +35,17 @@
 
 	Process_cooldown()
 		src.cooldown--
-		if(src.cooldown <= 0)	return 0
+		if (src.cooldown <= 0)	return 0
 		spawn(10)
 			src.Process_cooldown()
 		return 1
 
 
 	Activate()
-		if((!secured) || (cooldown > 0))
+		if ((!secured) || (cooldown > 0))
 			return 0
 		var/turf/location = get_turf(src.loc)
-		if(location)
+		if (location)
 			location.hotspot_expose(1000,1000)
 		cooldown = 2
 		spawn(10)
@@ -54,14 +54,14 @@
 
 
 	Secure()
-		if(secured)
+		if (secured)
 			return 0
 		secured = 1
 		return 1
 
 
 	Unsecure()
-		if(!secured)
+		if (!secured)
 			return 0
 		secured = 0
 		return 1
@@ -69,19 +69,19 @@
 
 	Attach_Assembly(var/obj/A, var/mob/user)
 		holder = new/obj/item/device/assembly_holder(get_turf(src))
-		if(holder:attach(A,src,user))
+		if (holder:attach(A,src,user))
 			user.show_message("\blue You attach the [A.name] to the [src.name]!")
 			return 1
 		return 0
 
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(W.IsAssembly())
+		if (W.IsAssembly())
 			var/obj/item/device/D = W
-			if((!D:secured) && (!src.secured))
+			if ((!D:secured) && (!src.secured))
 				Attach_Assembly(D,user)
-		if(isscrewdriver(W))
-			if(src.secured)
+		if (isscrewdriver(W))
+			if (src.secured)
 				Unsecure()
 				user.show_message("\blue The [src.name] can now be attached!")
 			else

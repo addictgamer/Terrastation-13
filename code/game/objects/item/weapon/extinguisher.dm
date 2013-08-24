@@ -32,7 +32,7 @@
 /obj/item/weapon/extinguisher/afterattack(atom/target, mob/user , flag)
 	//TODO; Add support for reagents in water.
 
-	if( istype(target, /obj/reagent_dispensers/watertank) && get_dist(src,target) <= 1)
+	if ( istype(target, /obj/reagent_dispensers/watertank) && get_dist(src,target) <= 1)
 		var/obj/o = target
 		o.reagents.trans_to(src, 50)
 		user << "\blue Extinguisher refilled"
@@ -63,22 +63,22 @@
 				var/obj/effects/water/W = new /obj/effects/water( get_turf(src) )
 				var/turf/my_target = pick(the_targets)
 				var/datum/reagents/R = new/datum/reagents(5)
-				if(!W) return
+				if (!W) return
 				W.reagents = R
 				R.my_atom = W
-				if(!W || !src) return
+				if (!W || !src) return
 				src.reagents.trans_to(W,1)
 				for(var/b=0, b<5, b++)
 					step_towards(W,my_target)
-					if(!W) return
+					if (!W) return
 					W.reagents.reaction(get_turf(W))
 					for(var/atom/atm in get_turf(W))
-						if(!W) return
+						if (!W) return
 						W.reagents.reaction(atm)
-					if(W.loc == my_target) break
+					if (W.loc == my_target) break
 					sleep(2)
 
-		if(istype(usr.loc, /turf/space))
+		if (istype(usr.loc, /turf/space))
 			user.inertia_dir = get_dir(target, user)
 			step(user, user.inertia_dir)
 

@@ -20,8 +20,8 @@
 		usr << "\blue [syringes] / [max_syringes] Syringes."
 
 	attackby(obj/item/I as obj, mob/user as mob)
-		if(istype(I, /obj/item/weapon/reagent_containers/syringe))
-			if(syringes.len < max_syringes)
+		if (istype(I, /obj/item/weapon/reagent_containers/syringe))
+			if (syringes.len < max_syringes)
 				user.drop_item()
 				I.loc = src
 				syringes += I
@@ -31,9 +31,9 @@
 				usr << "\red The syringe gun cannot hold more syringes."
 
 	afterattack(obj/target, mob/user , flag)
-		if(!isturf(target.loc) || target == user) return
+		if (!isturf(target.loc) || target == user) return
 
-		if(syringes.len)
+		if (syringes.len)
 			spawn(0) fire_syringe(target,user)
 		else
 			usr << "\red The syringe gun is empty."
@@ -54,23 +54,23 @@
 				playsound(user.loc, 'syringeproj.ogg', 50, 1)
 
 				for(var/i=0, i<6, i++)
-					if(!D) break
-					if(D.loc == trg) break
+					if (!D) break
+					if (D.loc == trg) break
 					step_towards(D,trg)
 
 					for(var/mob/living/carbon/M in D.loc)
-						if(!istype(M,/mob/living/carbon)) continue
-						if(M == user) continue
+						if (!istype(M,/mob/living/carbon)) continue
+						if (M == user) continue
 						D.reagents.trans_to(M, 15)
 						M.take_organ_damage(5)
 						for(var/mob/O in viewers(world.view, D))
 							O.show_message(text("\red [] was hit by the syringe!", M), 1)
 
 						del(D)
-					if(D)
+					if (D)
 						for(var/atom/A in D.loc)
-							if(A == user) continue
-							if(A.density) del(D)
+							if (A == user) continue
+							if (A.density) del(D)
 
 					sleep(1)
 

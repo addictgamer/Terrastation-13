@@ -60,20 +60,20 @@ atom/proc/CanPass(atom/movable/mover, turf/target, height=1.5, air_group = 0)
 
 turf
 	CanPass(atom/movable/mover, turf/target, height=1.5,air_group=0)
-		if(!target) return 0
+		if (!target) return 0
 
-		if(istype(mover)) // turf/Enter(...) will perform more advanced checks
+		if (istype(mover)) // turf/Enter(...) will perform more advanced checks
 			return !density
 
 		else // Now, doing more detailed checks for air movement and air group formation
-			if(target.blocks_air||blocks_air)
+			if (target.blocks_air||blocks_air)
 				return 0
 
 			for(var/obj/obstacle in src)
-				if(!obstacle.CanPass(mover, target, height, air_group))
+				if (!obstacle.CanPass(mover, target, height, air_group))
 					return 0
 			for(var/obj/obstacle in target)
-				if(!obstacle.CanPass(mover, src, height, air_group))
+				if (!obstacle.CanPass(mover, src, height, air_group))
 					return 0
 
 			return 1
@@ -141,7 +141,7 @@ datum
 					//Warning: Do not call this, add the group to air_master.groups_to_rebuild instead
 
 				add_singleton(turf/simulated/T)
-					if(!active_singletons.Find(T))
+					if (!active_singletons.Find(T))
 						active_singletons += T
 
 			setup()
@@ -152,15 +152,15 @@ datum
 				var/start_time = world.timeofday
 
 				for(var/turf/simulated/S in world)
-					if(!S.blocks_air && !S.parent && S.z < 5) // Added last check to force skipping asteroid z-levels -- TLE
+					if (!S.blocks_air && !S.parent && S.z < 5) // Added last check to force skipping asteroid z-levels -- TLE
 						assemble_group_turf(S)
 				for(var/turf/simulated/S in world) //Update all pathing and border information as well
-					if(S.z > 4) // Skipping asteroids -- TLE
+					if (S.z > 4) // Skipping asteroids -- TLE
 						continue
 					S.update_air_properties()
 /*
 				for(var/obj/movable/floor/S in world)
-					if(!S.parent)
+					if (!S.parent)
 						assemble_group_object(S)
 				for(var/obj/movable/floor/S in world) //Update all pathing and border information as well
 					S.update_air_properties()
@@ -180,26 +180,26 @@ datum
 						test.length_space_border = 0
 						for(var/direction in cardinal)
 							var/turf/T = get_step(test,direction)
-							if(T && !members.Find(T) && test.CanPass(null, T, null,1))
-								if(istype(T,/turf/simulated) && !T:parent)
+							if (T && !members.Find(T) && test.CanPass(null, T, null,1))
+								if (istype(T,/turf/simulated) && !T:parent)
 									possible_members += T
 									members += T
-								else if(istype(T,/turf/space))
+								else if (istype(T,/turf/space))
 									possible_space_borders -= test
 									possible_space_borders += test
 									test.length_space_border++
 								else
 									possible_borders -= test
 									possible_borders += test
-						if(test.length_space_border > 0)
+						if (test.length_space_border > 0)
 							possible_space_length += test.length_space_border
 						possible_members -= test
 
-				if(members.len > 1)
+				if (members.len > 1)
 					var/datum/air_group/turf/group = new
-					if(possible_borders.len>0)
+					if (possible_borders.len>0)
 						group.borders = possible_borders
-					if(possible_space_borders.len>0)
+					if (possible_space_borders.len>0)
 						group.space_borders = possible_space_borders
 						group.length_space_border = possible_space_length
 
@@ -217,7 +217,7 @@ datum
 					base.processing = 0 //singletons at startup are technically unconnected anyway
 					base.parent = null
 
-					if(base.air.check_tile_graphic())
+					if (base.air.check_tile_graphic())
 						base.update_visuals(base.air)
 
 				return null
@@ -232,10 +232,10 @@ datum
 					for(var/obj/movable/floor/test in possible_members)
 						for(var/direction in list(NORTH, SOUTH, EAST, WEST))
 							var/turf/T = get_step(test.loc,direction)
-							if(T && test.loc.CanPass(null, T, null, 1))
+							if (T && test.loc.CanPass(null, T, null, 1))
 								var/obj/movable/floor/O = locate(/obj/movable/floor) in T
-								if(istype(O) && !O.parent)
-									if(!members.Find(O))
+								if (istype(O) && !O.parent)
+									if (!members.Find(O))
 										possible_members += O
 										members += O
 								else
@@ -243,9 +243,9 @@ datum
 									possible_borders += test
 						possible_members -= test
 
-				if(members.len > 1)
+				if (members.len > 1)
 					var/datum/air_group/object/group = new
-					if(possible_borders.len>0)
+					if (possible_borders.len>0)
 						group.borders = possible_borders
 
 					for(var/obj/movable/floor/test in members)
@@ -265,11 +265,11 @@ datum
 				return null
 */
 			process()
-				if(kill_air)
+				if (kill_air)
 					return 1
 				current_cycle++
-				if(groups_to_rebuild.len > 0) process_rebuild_select_groups()
-				if(tiles_to_update.len > 0) process_update_tiles()
+				if (groups_to_rebuild.len > 0) process_rebuild_select_groups()
+				if (tiles_to_update.len > 0) process_update_tiles()
 
 				process_groups()
 				process_singletons()
@@ -277,7 +277,7 @@ datum
 				process_super_conductivity()
 				process_high_pressure_delta()
 
-				if(current_cycle%10==5) //Check for groups of tiles to resume group processing every 10 cycles
+				if (current_cycle%10==5) //Check for groups of tiles to resume group processing every 10 cycles
 					for(var/datum/air_group/AG in air_groups)
 						AG.check_regroup()
 
@@ -302,7 +302,7 @@ datum
 					del(turf_AG)
 
 				for(var/turf/simulated/S in turfs) //Have old members try to form new groups
-					if(!S.parent)
+					if (!S.parent)
 						assemble_group_turf(S)
 				for(var/turf/simulated/S in turfs)
 					S.update_air_properties()
@@ -317,7 +317,7 @@ datum
 					del(object_AG)
 
 				for(var/obj/movable/floor/OM in movable_objects) //Have old members try to form new groups
-					if(!OM.parent)
+					if (!OM.parent)
 						assemble_group_object(OM)
 				for(var/obj/movable/floor/OM in movable_objects)
 					OM.update_air_properties()

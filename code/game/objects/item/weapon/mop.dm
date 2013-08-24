@@ -39,14 +39,14 @@
 		for(var/mob/O in viewers(user, null))
 			O.show_message(text("\red <B>[user] begins to clean [A]</B>"), 1)
 		sleep(20)
-		if(A)
+		if (A)
 			user << "\blue You have finished mopping!"
 			var/turf/U = A.loc
 			src.reagents.reaction(U)
-		if(A) del(A)
+		if (A) del(A)
 		mopcount++
 
-	if(mopcount >= 5) //Okay this stuff is an ugly hack and i feel bad about it.
+	if (mopcount >= 5) //Okay this stuff is an ugly hack and i feel bad about it.
 		spawn(5)
 			src.reagents.clear_reagents()
 			mopcount = 0

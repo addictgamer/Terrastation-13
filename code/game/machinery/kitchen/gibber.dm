@@ -23,7 +23,7 @@
 	overlays = null
 	if (dirty)
 		src.overlays += image('kitchen.dmi', "grbloody")
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 	if (!occupant)
 		src.overlays += image('kitchen.dmi', "grjam")
@@ -40,31 +40,31 @@
 	return
 
 /obj/machinery/gibber/attack_hand(mob/user as mob)
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
-	if(operating)
+	if (operating)
 		user << "\red It's locked and running"
 		return
 	else
 		src.startgibbing(user)
 
 /obj/machinery/gibber/attackby(obj/item/weapon/grab/G as obj, mob/user as mob)
-	if(src.occupant)
+	if (src.occupant)
 		user << "\red The gibber is full, empty it first!"
 		return
 	if (!( istype(G, /obj/item/weapon/grab)) || !(istype(G.affecting, /mob/living/carbon/human)))
 		user << "\red This item is not suitable for the gibber!"
 		return
-	if(G.affecting.abiotic())
+	if (G.affecting.abiotic())
 		user << "\red Subject may not have abiotic items on."
 		return
 
 	user.visible_message("\red [user] starts to put [G.affecting] into the gibber!")
 	src.add_fingerprint(user)
-	if(do_after(user, 30) && G && G.affecting && !occupant)
+	if (do_after(user, 30) && G && G.affecting && !occupant)
 		user.visible_message("\red [user] stuffs [G.affecting] into the gibber!")
 		var/mob/M = G.affecting
-		if(M.client)
+		if (M.client)
 			M.client.perspective = EYE_PERSPECTIVE
 			M.client.eye = src
 		M.loc = src
@@ -98,9 +98,9 @@
 
 
 /obj/machinery/gibber/proc/startgibbing(mob/user as mob)
-	if(src.operating)
+	if (src.operating)
 		return
-	if(!src.occupant)
+	if (!src.occupant)
 		for(var/mob/M in viewers(src, null))
 			M.show_message("\red You hear a loud metallic grinding sound.", 1)
 		return

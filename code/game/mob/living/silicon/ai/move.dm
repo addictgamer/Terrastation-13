@@ -6,9 +6,9 @@
 // the farthest away). don't do that.
 
 /client/proc/AIMove(n,direct,var/mob/living/silicon/ai/user)
-	if(!user) return
+	if (!user) return
 
-	if(user.controlled_mecha) //If controlling a mecha
+	if (user.controlled_mecha) //If controlling a mecha
 		//Move the mecha
 		user.controlled_mecha.relaymove(user, direct)
 		//user << "Moving mecha."
@@ -18,52 +18,52 @@
 	var/obj/machinery/camera/closest = null
 	var/atom/old = (user.current?user.current : user.loc)
 
-	if(istype(user.loc, /obj/item/clothing/suit/space/space_ninja))//To make ninja suit AI holograms work.
+	if (istype(user.loc, /obj/item/clothing/suit/space/space_ninja))//To make ninja suit AI holograms work.
 		var/obj/item/clothing/suit/space/space_ninja/S = user.loc//Ease of use.
-		if(S.hologram)//If there is a hologram.
+		if (S.hologram)//If there is a hologram.
 			S.hologram.loc = get_step(S.hologram, direct)
 			S.hologram.dir = direct
 		return//Whatever the case, return since you can't move anyway.
 
-	if(user.client)//To make AI holograms work. They will relay directions as long as they are centered on the object.
+	if (user.client)//To make AI holograms work. They will relay directions as long as they are centered on the object.
 		var/obj/machinery/hologram/holopad/T = user.client.eye//Client eye centers on an object.
-		if(istype(T)&&T.hologram&&T.master==user)//If there is a hologram and its master is the user.
+		if (istype(T)&&T.hologram&&T.master==user)//If there is a hologram and its master is the user.
 			T.hologram.loc = get_step(T.hologram, direct)
 			T.hologram.dir = direct
 			return//Relay move and then return if that's the case.
 
-	if(!old) return
+	if (!old) return
 
 	var/dx = 0
 	var/dy = 0
-	if(direct & NORTH)
+	if (direct & NORTH)
 		dy = 1
-	else if(direct & SOUTH)
+	else if (direct & SOUTH)
 		dy = -1
-	if(direct & EAST)
+	if (direct & EAST)
 		dx = 1
-	else if(direct & WEST)
+	else if (direct & WEST)
 		dx = -1
 
 	var/area/A = get_area(old)
 	var/list/old_types = dd_text2list("[A.type]", "/")
 
 	for(var/obj/machinery/camera/current in world)
-		if(user.network != current.network)
+		if (user.network != current.network)
 			continue	//	different network (syndicate)
-		if(ticker.mode.name == "AI malfunction")
-			if(current.z != user.z && (user.network != "Prison") && (user.network != "SS13"))
+		if (ticker.mode.name == "AI malfunction")
+			if (current.z != user.z && (user.network != "Prison") && (user.network != "SS13"))
 				continue
 		//else
-		//	if(current.z != user.z && (user.network != "Prison") && (user.network != "AI Satellite"))
+		//	if (current.z != user.z && (user.network != "Prison") && (user.network != "AI Satellite"))
 		//		continue	//	different viewing plane
-		if(!current.status)
+		if (!current.status)
 			continue	//	ignore disabled cameras
 
 		//make sure it's the right direction
-		if(dx && (current.x * dx <= old.x * dx))
+		if (dx && (current.x * dx <= old.x * dx))
 			continue
-		if(dy && (current.y * dy <= old.y * dy))
+		if (dy && (current.y * dy <= old.y * dy))
 			continue
 
 		var/shared_types = 0 //how many levels deep the old camera and the closest camera's areas share
@@ -73,7 +73,7 @@
 		var/area/cur_area = get_area(current)
 		var/list/new_types = dd_text2list("[cur_area.type]", "/")
 		for(var/i = 1; i <= old_types.len && i <= new_types.len; i++)
-			if(old_types[i] == new_types[i])
+			if (old_types[i] == new_types[i])
 				shared_types++
 			else
 				break
@@ -87,11 +87,11 @@
 		//weight things in the same area as this so they count as being closer - makes you stay in the same area
 		//when possible
 
-		if(distance < min_dist)
+		if (distance < min_dist)
 			//closer, or this is in the same area and the current closest isn't
 			min_dist = distance
 			closest = current
 
-	if(!closest)
+	if (!closest)
 		return
 	user.switchCamera(closest)

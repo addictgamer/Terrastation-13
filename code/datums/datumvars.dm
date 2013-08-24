@@ -11,8 +11,8 @@ client
 		var/title = ""
 		var/body = ""
 
-		if(!D)	return
-		if(istype(D, /atom))
+		if (!D)	return
+		if (istype(D, /atom))
 			var/atom/A = D
 			title = "[A.name] (\ref[A]) = [A.type]"
 
@@ -27,7 +27,7 @@ client
 						var filter_text = document.getElementById('filter');
 						var filter = filter_text.value;
 
-						if(filter.value == ""){
+						if (filter.value == ""){
 							return;
 						}else{
 							var vars_ol = document.getElementById('vars');
@@ -106,7 +106,7 @@ client
 	proc/debug_variable(name, value, level, var/datum/DA = null)
 		var/html = ""
 
-		if(DA)
+		if (DA)
 			html += "<li>(<a href='byond://?src=\ref[src];datumedit=\ref[DA];varnameedit=[name]'>E</a>) (<a href='byond://?src=\ref[src];datumchange=\ref[DA];varnamechange=[name]'>C</a>) "
 		else
 			html += "<li>"
@@ -178,36 +178,36 @@ client
 		if (href_list["Vars"])
 			debug_variables(locate(href_list["Vars"]))
 		else if (href_list["varnameedit"])
-			if(!href_list["datumedit"] || !href_list["varnameedit"])
+			if (!href_list["datumedit"] || !href_list["varnameedit"])
 				usr << "Varedit error: Not all information has been sent Contact a coder."
 				return
 			var/datum/DAT = locate(href_list["datumedit"])
-			if(!DAT)
+			if (!DAT)
 				usr << "Item not found"
 				return
-			if(!istype(DAT,/datum))
+			if (!istype(DAT,/datum))
 				usr << "Can't edit an item of this type. Type must be /datum, so anything except simple variables. [DAT]"
 				return
 			modify_variables(DAT, href_list["varnameedit"], 1)
 		else if (href_list["varnamechange"])
-			if(!href_list["datumchange"] || !href_list["varnamechange"])
+			if (!href_list["datumchange"] || !href_list["varnamechange"])
 				usr << "Varedit error: Not all information has been sent. Contact a coder."
 				return
 			var/datum/DAT = locate(href_list["datumchange"])
-			if(!DAT)
+			if (!DAT)
 				usr << "Item not found"
 				return
-			if(!istype(DAT,/datum))
+			if (!istype(DAT,/datum))
 				usr << "Can't edit an item of this type. Type must be /datum, so anything except simple variables. [DAT]"
 				return
 			modify_variables(DAT, href_list["varnamechange"], 0)
 		else if (href_list["refresh"])
-			if(!href_list["datumrefresh"])
+			if (!href_list["datumrefresh"])
 				return
 			var/datum/DAT = locate(href_list["datumrefresh"])
-			if(!DAT)
+			if (!DAT)
 				return
-			if(!istype(DAT,/datum))
+			if (!istype(DAT,/datum))
 				return
 			src.debug_variables(DAT)
 		else
@@ -218,5 +218,5 @@ client
 /mob/proc/Delete(atom/A in view())
 	set category = "Debug"
 	switch (alert("Are you sure you wish to delete \the [A.name] at ([A.x],[A.y],[A.z]) ?", "Admin Delete Object","Yes","No"))
-		if("Yes")
+		if ("Yes")
 			log_admin("[usr.key] deleted [A.name] at ([A.x],[A.y],[A.z])")

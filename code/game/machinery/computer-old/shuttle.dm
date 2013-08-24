@@ -7,7 +7,7 @@
 	var/list/authorized = list(  )
 
 /obj/machinery/computer/shuttle/attackby(var/obj/item/weapon/card/W as obj, var/mob/user as mob)
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		return
 	if ((!( istype(W, /obj/item/weapon/card) ) || !( ticker ) || emergency_shuttle.location != 1 || !( user )))
 		return
@@ -22,17 +22,17 @@
 			return
 
 		var/list/cardaccess = W:access
-		if(!istype(cardaccess, /list) || !cardaccess.len) //no access
+		if (!istype(cardaccess, /list) || !cardaccess.len) //no access
 			user << "The access level of [W:registered]\'s card is not high enough. "
 			return
 
-		if(!(access_heads in W:access)) //doesn't have this access
+		if (!(access_heads in W:access)) //doesn't have this access
 			user << "The access level of [W:registered]\'s card is not high enough. "
 			return 0
 
 		var/choice = alert(user, text("Would you like to (un)authorize a shortened launch time? [] authorization\s are still needed. Use abort to cancel all authorizations.", src.auth_need - src.authorized.len), "Shuttle Launch", "Authorize", "Repeal", "Abort")
 		switch(choice)
-			if("Authorize")
+			if ("Authorize")
 				src.authorized -= W:registered
 				src.authorized += W:registered
 				if (src.auth_need - src.authorized.len > 0)
@@ -48,11 +48,11 @@
 					del(src.authorized)
 					src.authorized = list(  )
 
-			if("Repeal")
+			if ("Repeal")
 				src.authorized -= W:registered
 				world << text("\blue <B>Alert: [] authorizations needed until shuttle is launched early</B>", src.auth_need - src.authorized.len)
 
-			if("Abort")
+			if ("Abort")
 				world << "\blue <B>All authorizations to shorting time for shuttle launch have been revoked!</B>"
 				src.authorized.len = 0
 				src.authorized = list(  )
@@ -60,10 +60,10 @@
 	else if (istype(W, /obj/item/weapon/card/emag))
 		var/choice = alert(user, "Would you like to launch the shuttle?","Shuttle control", "Launch", "Cancel")
 		switch(choice)
-			if("Launch")
+			if ("Launch")
 				world << "\blue <B>Alert: Shuttle launch time shortened to 10 seconds!</B>"
 				emergency_shuttle.settimeleft( 10 )
-			if("Cancel")
+			if ("Cancel")
 				return
 
 	return
@@ -77,10 +77,10 @@
 		return
 
 	src.add_fingerprint(usr)
-	if(!src.allowedtocall)
+	if (!src.allowedtocall)
 		usr << "\red The console seems irreparably damaged!"
 		return
-	if(src.z == 3)
+	if (src.z == 3)
 		usr << "\red Already in transit! Please wait!"
 		return
 
@@ -90,7 +90,7 @@
 		spawn(0)	shake_camera(M, 10, 1)
 	sleep(10)
 
-	if(src.z == 2)	//This is the laziest proc ever
+	if (src.z == 2)	//This is the laziest proc ever
 		for(var/atom/movable/AM as mob|obj in A)
 			AM.z = 3
 			AM.Move()

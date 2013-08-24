@@ -86,26 +86,26 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 
 	var/datum/radio_frequency/radio_connection
 	receive_signal(datum/signal/signal)
-		if(!signal || signal.encryption) return
+		if (!signal || signal.encryption) return
 
-		if(id_tag != signal.data["tag"] || !signal.data["command"]) return
+		if (id_tag != signal.data["tag"] || !signal.data["command"]) return
 
 		switch(signal.data["command"])
-			if("open")
+			if ("open")
 				spawn open(1)
 
-			if("close")
+			if ("close")
 				spawn close(1)
 
-			if("unlock")
+			if ("unlock")
 				locked = 0
 				update_icon()
 
-			if("lock")
+			if ("lock")
 				locked = 1
 				update_icon()
 
-			if("secure_open")
+			if ("secure_open")
 				spawn
 					locked = 0
 					update_icon()
@@ -116,7 +116,7 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 					locked = 1
 					update_icon()
 
-			if("secure_close")
+			if ("secure_close")
 				spawn
 					locked = 0
 					close(1)
@@ -128,7 +128,7 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 		send_status()
 
 	proc/send_status()
-		if(radio_connection)
+		if (radio_connection)
 			var/datum/signal/signal = new
 			signal.transmission_method = 1 //radio signal
 			signal.data["tag"] = id_tag
@@ -141,14 +141,14 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 
 	open(surpress_send)
 		. = ..()
-		if(!surpress_send) send_status()
+		if (!surpress_send) send_status()
 
 	close(surpress_send)
 		. = ..()
-		if(!surpress_send) send_status()
+		if (!surpress_send) send_status()
 
 	initialize()
-		if(frequency)
+		if (frequency)
 			set_frequency(frequency)
 
 		update_icon()
@@ -156,27 +156,27 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	New()
 		..()
 
-		if(radio_controller)
+		if (radio_controller)
 			set_frequency(frequency)
 
 	proc
 		set_frequency(new_frequency)
 			radio_controller.remove_object(src, frequency)
-			if(new_frequency)
+			if (new_frequency)
 				frequency = new_frequency
 				radio_connection = radio_controller.add_object(src, frequency, RADIO_AIRLOCK)
 
 		ion_act()
-			if(src.z == 1 && src.density)
-				if(length(req_access) > 0 && !(12 in req_access))
-					if(prob(4))
+			if (src.z == 1 && src.density)
+				if (length(req_access) > 0 && !(12 in req_access))
+					if (prob(4))
 						world << "\red Airlock emagged in [src.loc.loc]"
 						src.operating = -1
 						flick("door_spark", src)
 						sleep(6)
 						open()
 				else
-					if(prob(8))
+					if (prob(8))
 						world << "\red non vital Airlock emagged in [src.loc.loc]"
 						src.operating = -1
 						flick("door_spark", src)
@@ -188,7 +188,7 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	if (!istype(usr, /mob/living/silicon))
 		if (src.isElectrified())
 			if (!src.justzap)
-				if(src.shock(user, 100))
+				if (src.shock(user, 100))
 					src.justzap = 1
 					spawn (10)
 						src.justzap = 0
@@ -202,7 +202,7 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 	//var/wireFlag = airlockWireColorToFlag[wireColor] //not used in this function
 	var/wireIndex = airlockWireColorToIndex[wireColor]
 	switch(wireIndex)
-		if(AIRLOCK_WIRE_IDSCAN)
+		if (AIRLOCK_WIRE_IDSCAN)
 			//Sending a pulse through this flashes the red light on the door (if the door has power).
 			if ((src.arePowerSystemsOn()) && (!(stat & NOPOWER)))
 				animate("deny")
@@ -217,7 +217,7 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 				usr << "You hear a click from the bottom of the door."
 				src.updateUsrDialog()
 			else
-				if(src.arePowerSystemsOn()) //only can raise bolts if power's on
+				if (src.arePowerSystemsOn()) //only can raise bolts if power's on
 					src.locked = 0
 					usr << "You hear a click from inside the door."
 					src.updateUsrDialog()
@@ -250,7 +250,7 @@ Airlock index -> wire color are { 9, 4, 6, 7, 5, 8, 1, 2, 3 }.
 							src.secondsElectrified = 0
 //						src.updateUsrDialog()  //Commented this line out to keep the airlock from clusterfucking you with electricity. --NeoFite
 						sleep(10)
-		if(AIRLOCK_WIRE_OPEN_DOOR)
+		if (AIRLOCK_WIRE_OPEN_DOOR)
 			//tries to open the door without ID
 			//will succeed only if the ID wire is cut or the door requires no access
 			if (!src.requiresID() || src.check_access(null))
@@ -276,7 +276,7 @@ An airlock wire dialog can be accessed by the normal way or by using wirecutters
 	var/wireIndex = airlockWireColorToIndex[wireColor]
 	wires &= ~wireFlag
 	switch(wireIndex)
-		if(AIRLOCK_WIRE_MAIN_POWER1 || AIRLOCK_WIRE_MAIN_POWER2)
+		if (AIRLOCK_WIRE_MAIN_POWER1 || AIRLOCK_WIRE_MAIN_POWER2)
 			//Cutting either one disables the main door power, but unless backup power is also cut, the backup power re-powers the door in 10 seconds. While unpowered, the door may be crowbarred open, but bolts-raising will not work. Cutting these wires may electocute the user.
 			src.loseMainPower()
 			src.shock(usr, 50)
@@ -311,7 +311,7 @@ An airlock wire dialog can be accessed by the normal way or by using wirecutters
 	var/wireIndex = airlockWireColorToIndex[wireColor] //not used in this function
 	wires |= wireFlag
 	switch(wireIndex)
-		if(AIRLOCK_WIRE_MAIN_POWER1 || AIRLOCK_WIRE_MAIN_POWER2)
+		if (AIRLOCK_WIRE_MAIN_POWER1 || AIRLOCK_WIRE_MAIN_POWER2)
 			if ((!src.isWireCut(AIRLOCK_WIRE_MAIN_POWER1)) && (!src.isWireCut(AIRLOCK_WIRE_MAIN_POWER2)))
 				src.regainMainPower()
 				src.shock(usr, 50)
@@ -334,7 +334,7 @@ An airlock wire dialog can be accessed by the normal way or by using wirecutters
 				src.secondsElectrified = 0
 
 /obj/machinery/door/airlock/proc/isElectrified()
-	if(src.secondsElectrified != 0)
+	if (src.secondsElectrified != 0)
 		return 1
 	else return 0
 
@@ -407,9 +407,9 @@ An airlock wire dialog can be accessed by the normal way or by using wirecutters
 // returns 1 if shocked, 0 otherwise
 // The preceding comment was borrowed from the grille's shock script
 /obj/machinery/door/airlock/proc/shock(mob/user, prb)
-	if((stat & (NOPOWER)) || !src.arePowerSystemsOn())		// unpowered, no shock
+	if ((stat & (NOPOWER)) || !src.arePowerSystemsOn())		// unpowered, no shock
 		return 0
-	if(!prob(prb))
+	if (!prob(prb))
 		return 0 //you lucked out, no shock for you
 	var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
 	s.set_up(5, 1, src)
@@ -421,17 +421,17 @@ An airlock wire dialog can be accessed by the normal way or by using wirecutters
 
 
 /obj/machinery/door/airlock/update_icon()
-	if(overlays) overlays = null
-	if(density)
-		if(locked)
+	if (overlays) overlays = null
+	if (density)
+		if (locked)
 			icon_state = "door_locked"
 		else
 			icon_state = "door_closed"
-		if(p_open || welded)
+		if (p_open || welded)
 			overlays = list()
-			if(p_open)
+			if (p_open)
 				overlays += image(icon, "panel_open")
-			if(welded)
+			if (welded)
 				overlays += image(icon, "welded")
 	else
 		icon_state = "door_open"
@@ -440,21 +440,21 @@ An airlock wire dialog can be accessed by the normal way or by using wirecutters
 
 /obj/machinery/door/airlock/animate(animation)
 	switch(animation)
-		if("opening")
-			if(overlays) overlays = null
-			if(p_open)
+		if ("opening")
+			if (overlays) overlays = null
+			if (p_open)
 				icon_state = "o_door_opening" //can not use flick due to BYOND bug updating overlays right before flicking
 			else
 				flick("door_opening", src)
-		if("closing")
-			if(overlays) overlays = null
-			if(p_open)
+		if ("closing")
+			if (overlays) overlays = null
+			if (p_open)
 				flick("o_door_closing", src)
 			else
 				flick("door_closing", src)
-		if("spark")
+		if ("spark")
 			flick("door_spark", src)
-		if("deny")
+		if ("deny")
 			flick("door_deny", src)
 	return
 
@@ -596,14 +596,14 @@ An airlock wire dialog can be accessed by the normal way or by using wirecutters
 /obj/machinery/door/airlock/attack_hand(mob/user as mob)
 	if (!istype(usr, /mob/living/silicon))
 		if (src.isElectrified())
-			if(src.shock(user, 100))
+			if (src.shock(user, 100))
 				return
 
 	if (ishuman(user) && prob(40) && src.density)
 		var/mob/living/carbon/human/H = user
-		if(H.brainloss >= 60)
+		if (H.brainloss >= 60)
 			playsound(src.loc, 'bang.ogg', 25, 1)
-			if(!istype(H.head, /obj/item/clothing/head/helmet))
+			if (!istype(H.head, /obj/item/clothing/head/helmet))
 				for(var/mob/M in viewers(src, null))
 					M << "\red [user] headbutts the airlock."
 				var/datum/organ/external/affecting = H.organs["head"]
@@ -636,12 +636,12 @@ An airlock wire dialog can be accessed by the normal way or by using wirecutters
 		for(var/wiredesc in wires)
 			var/is_uncut = src.wires & airlockWireColorToFlag[wires[wiredesc]]
 			t1 += "[wiredesc] wire: "
-			if(!is_uncut)
+			if (!is_uncut)
 				t1 += "<a href='?src=\ref[src];wires=[wires[wiredesc]]'>Mend</a>"
 			else
 				t1 += "<a href='?src=\ref[src];wires=[wires[wiredesc]]'>Cut</a> "
 				t1 += "<a href='?src=\ref[src];pulse=[wires[wiredesc]]'>Pulse</a> "
-				if(src.signalers[wires[wiredesc]])
+				if (src.signalers[wires[wiredesc]])
 					t1 += "<a href='?src=\ref[src];remove-signaler=[wires[wiredesc]]'>Detach signaler</a>"
 				else
 					t1 += "<a href='?src=\ref[src];signaler=[wires[wiredesc]]'>Attach signaler</a>"
@@ -669,7 +669,7 @@ An airlock wire dialog can be accessed by the normal way or by using wirecutters
 			usr.machine = null
 			return
 	if (!istype(usr, /mob/living/silicon))
-		if(!src.p_open)
+		if (!src.p_open)
 			return
 		if ((in_range(src, usr) && istype(src.loc, /turf)))
 			usr.machine = src
@@ -692,16 +692,16 @@ An airlock wire dialog can be accessed by the normal way or by using wirecutters
 					return
 				else
 					src.pulse(t1)
-			else if(href_list["signaler"])
+			else if (href_list["signaler"])
 				var/wirenum = text2num(href_list["signaler"])
-				if(!istype(usr.equipped(), /obj/item/device/radio/signaler))
+				if (!istype(usr.equipped(), /obj/item/device/radio/signaler))
 					usr << "You need a signaller!"
 					return
-				if(src.isWireColorCut(wirenum))
+				if (src.isWireColorCut(wirenum))
 					usr << "You can't attach a signaller to a cut wire."
 					return
 				var/obj/item/device/radio/signaler/R = usr.equipped()
-				if(!R.b_stat)
+				if (!R.b_stat)
 					usr << "This radio can't be attached!"
 					return
 				var/mob/M = usr
@@ -709,9 +709,9 @@ An airlock wire dialog can be accessed by the normal way or by using wirecutters
 				R.loc = src
 				R.airlock_wire = wirenum
 				src.signalers[wirenum] = R
-			else if(href_list["remove-signaler"])
+			else if (href_list["remove-signaler"])
 				var/wirenum = text2num(href_list["remove-signaler"])
-				if(!(src.signalers[wirenum]))
+				if (!(src.signalers[wirenum]))
 					usr << "There's no signaller attached to that wire!"
 					return
 				var/obj/item/device/radio/signaler/R = src.signalers[wirenum]
@@ -850,13 +850,13 @@ An airlock wire dialog can be accessed by the normal way or by using wirecutters
 	//world << text("airlock attackby src [] obj [] mob []", src, C, user)
 	if (!istype(usr, /mob/living/silicon))
 		if (src.isElectrified())
-			if(src.shock(user, 75))
+			if (src.shock(user, 75))
 				return
 
 	src.add_fingerprint(user)
 	if ((istype(C, /obj/item/weapon/weldingtool) && !( src.operating ) && src.density))
 		var/obj/item/weapon/weldingtool/W = C
-		if(W.remove_fuel(0,user))
+		if (W.remove_fuel(0,user))
 			if (!src.welded)
 				src.welded = 1
 			else
@@ -879,24 +879,24 @@ An airlock wire dialog can be accessed by the normal way or by using wirecutters
 		cable.plugin(src, user)
 	else if (istype(C, /obj/item/weapon/crowbar) || istype(C, /obj/item/weapon/fireaxe) )
 		var/beingcrowbarred = null
-		if(istype(C, /obj/item/weapon/crowbar) )
+		if (istype(C, /obj/item/weapon/crowbar) )
 			beingcrowbarred = 1 //derp, Agouri
 		else
 			beingcrowbarred = 0
 		if ( ((src.density) && ( src.welded ) && !( src.operating ) && src.p_open && (!src.arePowerSystemsOn() || (stat & NOPOWER)) && !src.locked) && beingcrowbarred == 1 )
 			playsound(src.loc, 'Crowbar.ogg', 100, 1)
 			user.visible_message("[user] removes the electronics from the airlock assembly.", "You start to remove electronics into the airlock assembly.")
-			if(do_after(user,40))
+			if (do_after(user,40))
 				user << "\blue You removed the airlock electronics!"
 				switch(src.doortype)
-					if(0) new/obj/door_assembly/door_assembly_0( src.loc )
-					if(1) new/obj/door_assembly/door_assembly_com( src.loc )
-					if(2) new/obj/door_assembly/door_assembly_sec( src.loc )
-					if(3) new/obj/door_assembly/door_assembly_eng( src.loc )
-					if(4) new/obj/door_assembly/door_assembly_med( src.loc )
-					if(5) new/obj/door_assembly/door_assembly_mai( src.loc )
-					if(6) new/obj/door_assembly/door_assembly_ext( src.loc )
-					if(7) new/obj/door_assembly/door_assembly_g( src.loc )
+					if (0) new/obj/door_assembly/door_assembly_0( src.loc )
+					if (1) new/obj/door_assembly/door_assembly_com( src.loc )
+					if (2) new/obj/door_assembly/door_assembly_sec( src.loc )
+					if (3) new/obj/door_assembly/door_assembly_eng( src.loc )
+					if (4) new/obj/door_assembly/door_assembly_med( src.loc )
+					if (5) new/obj/door_assembly/door_assembly_mai( src.loc )
+					if (6) new/obj/door_assembly/door_assembly_ext( src.loc )
+					if (7) new/obj/door_assembly/door_assembly_g( src.loc )
 				var/obj/item/weapon/airlock_electronics/ae
 				if (!electronics)
 					ae = new/obj/item/weapon/airlock_electronics( src.loc )
@@ -914,9 +914,9 @@ An airlock wire dialog can be accessed by the normal way or by using wirecutters
 			user << "\blue The airlock's bolts prevent it from being pried open."
 		if ((src.density) && (!( src.welded ) && !( src.operating ) && ((!src.arePowerSystemsOn()) || (stat & NOPOWER)) && !( src.locked )))
 
-			if(beingcrowbarred == 0) //being fireaxe'd
+			if (beingcrowbarred == 0) //being fireaxe'd
 				var/obj/item/weapon/fireaxe/F = C
-				if(F.wielded == 1)
+				if (F.wielded == 1)
 					spawn( 0 )
 						src.operating = 1
 						animate("opening")
@@ -951,9 +951,9 @@ An airlock wire dialog can be accessed by the normal way or by using wirecutters
 
 		else
 			if ((!src.density) && (!( src.welded ) && !( src.operating ) && !( src.locked )))
-				if(beingcrowbarred == 0)
+				if (beingcrowbarred == 0)
 					var/obj/item/weapon/fireaxe/F = C
-					if(F.wielded == 1)
+					if (F.wielded == 1)
 						spawn( 0 )
 							src.operating = 1
 							animate("closing")
@@ -1001,7 +1001,7 @@ An airlock wire dialog can be accessed by the normal way or by using wirecutters
 	use_power(50)
 	playsound(src.loc, 'airlock.ogg', 30, 1)
 	var/obj/structure/window/killthis = (locate(/obj/structure/window) in get_turf(src))
-	if(killthis)
+	if (killthis)
 		killthis.ex_act(2)//Smashin windows
 	..()
 	return

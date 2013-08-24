@@ -9,7 +9,7 @@
 	var/list/items = new/list()
 
 /obj/structure/filingcabinet/attackby(obj/item/P as obj, mob/user as mob)
-	if(istype(P, /obj/item/paper) || istype(P, /obj/item/weapon/folder))
+	if (istype(P, /obj/item/paper) || istype(P, /obj/item/weapon/folder))
 		user << "You put the [P] in the [name]."
 		user.drop_item()
 		P.loc = src
@@ -17,7 +17,7 @@
 			icon_state = "filing_cabinet1"
 			sleep(5)
 			icon_state = "filing_cabinet0"
-	else if(istype(P, /obj/item/weapon/wrench))
+	else if (istype(P, /obj/item/weapon/wrench))
 		playsound(loc, 'Ratchet.ogg', 50, 1)
 		anchored = !anchored
 		user << "You [anchored ? "wrench" : "unwrench"] \the [src]."
@@ -25,7 +25,7 @@
 		user << "You can't put a [P] in the [src]!"
 
 /obj/structure/filingcabinet/attack_hand(mob/user as mob)
-	if(contents.len <= 0)
+	if (contents.len <= 0)
 		user << "The [src] is empty."
 		return
 
@@ -40,13 +40,13 @@
 	return
 
 /obj/structure/filingcabinet/Topic(href, href_list)
-	if(href_list["retrieve"])
+	if (href_list["retrieve"])
 		usr << browse("", "window=filingcabinet") // Close the menu
 
 		//var/retrieveindex = text2num(href_list["retrieve"])
 		var/obj/item/P = locate(href_list["retrieve"])//contents[retrieveindex]
-		if(!isnull(P) && in_range(src,usr))
-			if(!usr.get_active_hand())
+		if (!isnull(P) && in_range(src,usr))
+			if (!usr.get_active_hand())
 				usr.put_in_hand(P)
 			else
 				P.loc = get_turf_loc(src)

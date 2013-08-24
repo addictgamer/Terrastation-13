@@ -52,10 +52,10 @@
 		return
 
 	alien_talk()
-		if(istype(src, /mob/living/carbon/alien/humanoid/special/etheral))
+		if (istype(src, /mob/living/carbon/alien/humanoid/special/etheral))
 			..()
 			return
-		if(istype(src, /mob/living/carbon/alien/humanoid/special/sectoid))
+		if (istype(src, /mob/living/carbon/alien/humanoid/special/sectoid))
 			..()
 			return
 		return

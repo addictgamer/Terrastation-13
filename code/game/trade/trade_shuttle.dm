@@ -62,13 +62,13 @@ Random chance of pirate shuttle arriving instead.
 /proc/trade_process()
 	//world << "trade_process()"
 
-	if(trade_shuttle_moving) //If the trade shuttle is moving.
-		//world << "if(trade_shuttle_moving)"
+	if (trade_shuttle_moving) //If the trade shuttle is moving.
+		//world << "if (trade_shuttle_moving)"
 		while(trade_shuttle_time - world.timeofday > 0)
 			//world << "Ticking trade_shuttle_time"
 			var/datum/radio_frequency/frequency = radio_controller.return_frequency(1435)
 
-			if(!frequency) return
+			if (!frequency) return
 
 			var/datum/signal/status_signal = new
 			status_signal.source = src
@@ -78,7 +78,7 @@ Random chance of pirate shuttle arriving instead.
 			frequency.post_signal(src, status_signal)
 			var/ticksleft = trade_shuttle_time - world.timeofday
 
-			if(ticksleft > 1e5)
+			if (ticksleft > 1e5)
 				trade_shuttle_time = world.timeofday + 10	// midnight rollover
 
 
@@ -93,7 +93,7 @@ Random chance of pirate shuttle arriving instead.
 			//world << "Ticking trade_shuttle_move_timerleft"
 			var/datum/radio_frequency/frequency = radio_controller.return_frequency(1435)
 
-			if(!frequency) return
+			if (!frequency) return
 
 			var/datum/signal/status_signal = new
 			status_signal.source = src
@@ -101,13 +101,13 @@ Random chance of pirate shuttle arriving instead.
 			status_signal.data["command"] = "trade"
 			var/ticksleft = trade_shuttle_move_timerleft - world.timeofday
 
-			if(ticksleft > 1e5)
+			if (ticksleft > 1e5)
 				trade_shuttle_move_timerleft = world.timeofday + 10	// midnight rollover
 
 
 			trade_shuttle_move_timerleft = round( ((ticksleft / 10)/60) )
 			sleep(10)
-		//if(trade_shuttle_move_timerleft <= 0) //If finished timing...
+		//if (trade_shuttle_move_timerleft <= 0) //If finished timing...
 		//	world << "Trade shuttle now moving!"
 
 		//	move_trade_shuttle() //SEND THE TRADE SHUTTLE.
@@ -119,23 +119,23 @@ Random chance of pirate shuttle arriving instead.
 
 
 /proc/trade_can_move()
-	if(trade_shuttle_moving) return 0
+	if (trade_shuttle_moving) return 0
 
 	var/shuttleat = trade_shuttle_at_station ? TRADE_STATION_AREATYPE : TRADE_DOCK_AREATYPE
 
 	for(var/turf/T in get_area_turfs(shuttleat) )
-		//if((locate(/mob/living) in T) && (!locate(/mob/living/carbon/monkey) in T)) return 0  //old check for living excluded monkeys
-		if((locate(/mob/living) in T)) return 0
-		if((locate(/obj/item/device/radio/beacon) in T)) return 0
+		//if ((locate(/mob/living) in T) && (!locate(/mob/living/carbon/monkey) in T)) return 0  //old check for living excluded monkeys
+		if ((locate(/mob/living) in T)) return 0
+		if ((locate(/obj/item/device/radio/beacon) in T)) return 0
 		for(var/atom/ATM in T)
-			if((locate(/mob/living) in ATM)) return 0
-			if((locate(/obj/item/device/radio/beacon) in ATM)) return 0
+			if ((locate(/mob/living) in ATM)) return 0
+			if ((locate(/obj/item/device/radio/beacon) in ATM)) return 0
 
 
 /proc/process_trade_order()
 	//var/shuttleat = trade_shuttle_at_station ? TRADE_STATION_AREATYPE : TRADE_DOCK_AREATYPE
 
-	if(!trade_shuttle_shoppinglist.len) return //If no items were ordered...
+	if (!trade_shuttle_shoppinglist.len) return //If no items were ordered...
 
 	//var/list/blocked_orders_list = new/list() //Orders to ignore as to not to give thema  second chance at being brought with the shuttle.
 
@@ -152,16 +152,16 @@ Random chance of pirate shuttle arriving instead.
 		//Check to make sure the object is not already in the list.
 		var/found = 0 //Did not find the entry yet
 		for(var/datum/trade_packs/PACK in trade_shuttle_bringinglist) //Loop through the bring list.
-			if(PACK == SP) //If the current pack in the bring list is equal to the pack we want to add
+			if (PACK == SP) //If the current pack in the bring list is equal to the pack we want to add
 				found = 1 //The order already exists!
 
 		for(var/datum/trade_packs/PACK in blocked_orders_list) //Check to make sure this order is not in the blocked orders list!
-			if(PACK == SP) //Check to see if the oack we're looking for is the same as this pack.
+			if (PACK == SP) //Check to see if the oack we're looking for is the same as this pack.
 				found = 1 //Found the order! That means it's blocked!
 
-		if(!found) //If this is a unique order and not blocked...
+		if (!found) //If this is a unique order and not blocked...
 			var/ammount_to_bring = rand(5) //Randomally choose how much to bring
-			if(ammount_to_bring <= 5) //If the amount to bring is 5 or less. Anything above five means the market ain't got any o this stuff.
+			if (ammount_to_bring <= 5) //If the amount to bring is 5 or less. Anything above five means the market ain't got any o this stuff.
 				var/i = 0
 				while(i < ammount_to_bring) //Loop through this to get the right ammount of orders added.
 					trade_shuttle_bringinglist += SP //Add the order.
@@ -196,7 +196,7 @@ Random chance of pirate shuttle arriving instead.
 
 		//supply manifest generation begin
 
-		if(ordernum)
+		if (ordernum)
 			ordernum++
 		else
 			ordernum = rand(500,5000) //pick a random number to start with
@@ -210,14 +210,14 @@ Random chance of pirate shuttle arriving instead.
 		slip.info +="CONTENTS:<br><ul>"
 
 		//spawn the stuff, finish generating the manifest while you're at it
-		if(SP.access)
+		if (SP.access)
 			A:req_access = new/list()
 			A:req_access += text2num(SP.access)
 		for(var/B in SP.contains)
-			if(!B)	continue
+			if (!B)	continue
 			var/thepath = text2path(B)
 			var/atom/B2 = new thepath (A)
-			if(SP.amount && B2:amount) B2:amount = SP.amount
+			if (SP.amount && B2:amount) B2:amount = SP.amount
 			slip.info += "<li>[B2.name]</li>" //add the item to the manifest
 
 		//manifest finalisation
@@ -247,12 +247,12 @@ Random chance of pirate shuttle arriving instead.
 	var/area/from = locate(shuttleat)
 	var/area/dest = locate(shuttleto)
 
-	if(!from || !dest) return
+	if (!from || !dest) return
 
 	from.move_contents_to(dest)
 	trade_shuttle_at_station = !trade_shuttle_at_station
 
-	if(trade_shuttle_at_station) //If the trade shuttle is already at the station...
+	if (trade_shuttle_at_station) //If the trade shuttle is already at the station...
 		trade_shuttle_move_timerleft = world.timeofday + TRADE_SHUTTLE_STATION_WAITTIME //Set the move wait timer to the station's wait time.
 		//world << "Trade shuttle gonna wait at station."
 	else //Ok...

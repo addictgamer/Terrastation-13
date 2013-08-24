@@ -75,20 +75,20 @@
 		src.hd.name = "Minidrive"
 		src.hd.title = "Minidrive"
 
-		if(src.setup_system_os_path)
+		if (src.setup_system_os_path)
 			src.host_program = new src.setup_system_os_path
 
 			src.hd.file_amount = max(src.hd.file_amount, src.host_program.size)
 
 			src.host_program.transfer_holder(src.hd)
 
-		if(radio_controller)
+		if (radio_controller)
 			radio_controller.add_object(src, frequency)
 
 
 	if (src.default_cartridge)
 		src.cartridge = new src.setup_default_cartridge(src)
-//	if(src.owner)
+//	if (src.owner)
 //		processing_items.Add(src)
 
 /obj/item/device/pda2/attack_self(mob/user as mob)
@@ -99,19 +99,19 @@
 	dat += "<a href='byond://?src=\ref[src];close=1'>Close</a>"
 
 	if (!src.owner)
-		if(src.cartridge)
+		if (src.cartridge)
 			dat += " | <a href='byond://?src=\ref[src];eject_cart=1'>Eject [src.cartridge]</a>"
 		dat += "<br>Warning: No owner information entered.  Please swipe card.<br><br>"
 		dat += "<a href='byond://?src=\ref[src];refresh=1'>Retry</a>"
 	else
-		if(src.active_program)
+		if (src.active_program)
 			dat += src.active_program.return_text()
 		else
-			if(src.host_program)
+			if (src.host_program)
 				src.run_program(src.host_program)
 				dat += src.active_program.return_text()
 			else
-				if(src.cartridge)
+				if (src.cartridge)
 					dat += " | <a href='byond://?src=\ref[src];eject_cart=1'>Eject [src.cartridge]</a><br>"
 				dat += "<center><font color=red>Fatal Error 0x17<br>"
 				dat += "No System Software Loaded</font></center>"
@@ -133,8 +133,8 @@
 		usr.machine = src
 
 
-		if(href_list["return_to_host"])
-			if(src.host_program)
+		if (href_list["return_to_host"])
+			if (src.host_program)
 				src.active_program = src.host_program
 				src.host_program = null
 
@@ -166,30 +166,30 @@
 		src.updateSelfDialog()
 
 /obj/item/device/pda2/receive_signal(datum/signal/signal)
-	if(!signal || signal.encryption || !src.owner) return
+	if (!signal || signal.encryption || !src.owner) return
 
-	if(signal.data["tag"] && signal.data["tag"] != "\ref[src]") return
+	if (signal.data["tag"] && signal.data["tag"] != "\ref[src]") return
 
-	if(src.host_program)
+	if (src.host_program)
 		src.host_program.receive_signal(signal)
 
-	if(src.active_program && (src.active_program != src.host_program))
+	if (src.active_program && (src.active_program != src.host_program))
 		src.host_program.receive_signal(signal)
 
 	return
 
 /obj/item/device/pda2/attack(mob/M as mob, mob/user as mob)
-	if(src.scan_program)
+	if (src.scan_program)
 		return
 	else
 		..()
 
 /obj/item/device/pda2/afterattack(atom/A as mob|obj|turf|area, mob/user as mob)
 	var/scan_dat = null
-	if(src.scan_program && istype(src.scan_program))
+	if (src.scan_program && istype(src.scan_program))
 		scan_dat = src.scan_program.scan_atom(A)
 
-	if(scan_dat)
+	if (scan_dat)
 		A.visible_message("\red [user] has scanned [A]!")
 		user.show_message(scan_dat, 1)
 
@@ -199,10 +199,10 @@
 /obj/item/device/pda2/proc
 
 	post_signal(datum/signal/signal,var/newfreq)
-		if(!signal)
+		if (!signal)
 			return
 		var/freq = newfreq
-		if(!freq)
+		if (!freq)
 			freq = src.frequency
 
 		signal.source = src
@@ -210,22 +210,22 @@
 		var/datum/radio_frequency/frequency = radio_controller.return_frequency(freq)
 
 		signal.transmission_method = TRANSMISSION_RADIO
-		if(frequency)
+		if (frequency)
 			return frequency.post_signal(src, signal)
 		else
 			del(signal)
 
 	eject_cartridge()
-		if(src.cartridge)
+		if (src.cartridge)
 			var/turf/T = get_turf(src)
 
-			if(src.active_program && (src.active_program.holder == src.cartridge))
+			if (src.active_program && (src.active_program.holder == src.cartridge))
 				src.active_program = null
 
-			if(src.host_program && (src.host_program.holder == src.cartridge))
+			if (src.host_program && (src.host_program.holder == src.cartridge))
 				src.host_program = null
 
-			if(src.scan_program && (src.scan_program.holder == src.cartridge))
+			if (src.scan_program && (src.scan_program.holder == src.cartridge))
 				src.scan_program = null
 
 			src.cartridge.loc = T
@@ -258,22 +258,22 @@
 		return
 
 	run_program(datum/computer/file/pda_program/program)
-		if((!program) || (!program.holder))
+		if ((!program) || (!program.holder))
 			return 0
 
-		if(!(program.holder in src))
+		if (!(program.holder in src))
 	//		world << "Not in src"
 			program = new program.type
 			program.transfer_holder(src.hd)
 
-		if(program.master != src)
+		if (program.master != src)
 			program.master = src
 
-		if(!src.host_program && istype(program, /datum/computer/file/pda_program/os))
+		if (!src.host_program && istype(program, /datum/computer/file/pda_program/os))
 			src.host_program = program
 
-		if(istype(program, /datum/computer/file/pda_program/scan))
-			if(program == src.scan_program)
+		if (istype(program, /datum/computer/file/pda_program/scan))
+			if (program == src.scan_program)
 				src.scan_program = null
 			else
 				src.scan_program = program
@@ -284,12 +284,12 @@
 
 	delete_file(datum/computer/file/file)
 		//world << "Deleting [file]..."
-		if((!file) || (!file.holder) || (file.holder.read_only))
+		if ((!file) || (!file.holder) || (file.holder.read_only))
 			//world << "Cannot delete :("
 			return 0
 
 		//Don't delete the running program you jerk
-		if(src.active_program == file || src.host_program == file)
+		if (src.active_program == file || src.host_program == file)
 			src.active_program = null
 
 		//world << "Now calling del on [file]..."

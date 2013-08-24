@@ -27,10 +27,10 @@ FLOOR TILES
 /obj/item/stack/rods/attackby(obj/item/W as obj, mob/user as mob)
 	..()
 	if (istype(W, /obj/item/weapon/weldingtool) && W:welding)
-		if(amount < 2)
+		if (amount < 2)
 			user << "\red You need at least two rods to do this."
 			return
-		if(W:remove_fuel(0,user))
+		if (W:remove_fuel(0,user))
 			var/obj/item/stack/sheet/metal/new_item = new(usr.loc)
 			new_item.add_to_stacks(usr)
 			for (var/mob/M in viewers(src))
@@ -58,7 +58,7 @@ FLOOR TILES
 			else
 				return 1
 	else
-		if(amount < 2)
+		if (amount < 2)
 			user << "\blue You need at least two rods to do this."
 			return
 		new /obj/grille( usr.loc )

@@ -19,13 +19,13 @@
 		var/output_starting_pressure = air2.return_pressure()
 		var/input_starting_pressure = air1.return_pressure()
 
-		if(output_starting_pressure >= input_starting_pressure-10)
+		if (output_starting_pressure >= input_starting_pressure-10)
 			//Need at least 10 KPa difference to overcome friction in the mechanism
 			last_pressure_delta = 0
 			return null
 
 		//Calculate necessary moles to transfer using PV = nRT
-		if((air1.total_moles() > 0) && (air1.temperature>0))
+		if ((air1.total_moles() > 0) && (air1.temperature>0))
 			var/pressure_delta = (input_starting_pressure - output_starting_pressure)/2
 
 			var/transfer_moles = pressure_delta*air2.volume/(air1.temperature * R_IDEAL_GAS_EQUATION)
@@ -35,10 +35,10 @@
 			//Actually transfer the gas
 			var/datum/gas_mixture/removed = air1.remove(transfer_moles)
 
-			if(network1)
+			if (network1)
 				network1.update = 1
 
-			if(network2)
+			if (network2)
 				network2.update = 1
 
 			return removed
@@ -51,10 +51,10 @@
 		update_icon()
 
 	update_icon()
-		if(stat & (BROKEN|NOPOWER))
+		if (stat & (BROKEN|NOPOWER))
 			icon_state = "circ[side]-p"
-		else if(last_pressure_delta > 0)
-			if(last_pressure_delta > ONE_ATMOSPHERE)
+		else if (last_pressure_delta > 0)
+			if (last_pressure_delta > ONE_ATMOSPHERE)
 				icon_state = "circ[side]-run"
 			else
 				icon_state = "circ[side]-slow"

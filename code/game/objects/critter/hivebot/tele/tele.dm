@@ -37,7 +37,7 @@
 		for(var/mob/O in viewers(src, null))
 			O.show_message("\red <B>The [src] warps in!</B>", 1)
 		playsound(src.loc, 'EMPulse.ogg', 25, 1)
-		if(auto_spawn)
+		if (auto_spawn)
 			spawn(spawn_delay)
 				turn_on = 1
 				auto_spawn = 0
@@ -50,13 +50,13 @@
 		while(bot_amt > 0)
 			bot_amt--
 			switch(bot_type)
-				if("norm")
+				if ("norm")
 					new /obj/critter/hivebot(get_turf(src))
-				if("range")
+				if ("range")
 					new /obj/critter/hivebot/range(get_turf(src))
-				if("rapid")
+				if ("rapid")
 					new /obj/critter/hivebot/rapid(get_turf(src))
-				if("borg")
+				if ("borg")
 					new /obj/critter/hivebot/borg(get_turf(src))
 		spawn(100)
 			del(src)
@@ -64,11 +64,11 @@
 
 
 	process()
-		if((health < (max_health/2)) && (!turn_on))
-			//if(prob(2))//Might be a bit low, will mess with it likely
+		if ((health < (max_health/2)) && (!turn_on))
+			//if (prob(2))//Might be a bit low, will mess with it likely
 			//	turn_on = 1
 			turn_on = 1
-		if(turn_on == 1)
+		if (turn_on == 1)
 			warpbots()
 			turn_on = 2
 		..()

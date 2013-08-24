@@ -16,9 +16,9 @@
 
 	update_icon()
 		var/i
-		if(wax>75)
+		if (wax>75)
 			i = 1
-		else if(wax>40)
+		else if (wax>40)
 			i = 2
 		else i = 3
 		icon_state = "candle[i][lit ? "_lit" : ""]"
@@ -26,18 +26,18 @@
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
 		..()
-		if(istype(W, /obj/item/weapon/weldingtool)  && W:welding)
+		if (istype(W, /obj/item/weapon/weldingtool)  && W:welding)
 			light("\red [user] casually lights the [name] with [W], what a badass.")
-		else if(istype(W, /obj/item/weapon/zippo) && W:lit)
+		else if (istype(W, /obj/item/weapon/zippo) && W:lit)
 			light()
-		else if(istype(W, /obj/item/weapon/match) && W:lit)
+		else if (istype(W, /obj/item/weapon/match) && W:lit)
 			light()
-		else if(istype(W, /obj/item/candle) && W:lit)
+		else if (istype(W, /obj/item/candle) && W:lit)
 			light()
 
 
 	light(var/flavor_text = "\red [usr] lights the [name].")
-		if(!src.lit)
+		if (!src.lit)
 			src.lit = 1
 			//src.damtype = "fire"
 			for(var/mob/O in viewers(usr, null))
@@ -47,22 +47,22 @@
 
 
 	process()
-		if(!lit)
+		if (!lit)
 			return
 		wax--
-		if(!wax)
+		if (!wax)
 			new/obj/item/trash/candle(src.loc)
-			if(istype(src.loc, /mob))
+			if (istype(src.loc, /mob))
 				src.dropped()
 			del(src)
 		update_icon()
-		if(istype(loc, /turf)) //start a fire if possible
+		if (istype(loc, /turf)) //start a fire if possible
 			var/turf/T = loc
 			T.hotspot_expose(700, 5)
 
 
 	attack_self(mob/user as mob)
-		if(lit)
+		if (lit)
 			lit = 0
 			update_icon()
 			sd_SetLuminosity(0)
@@ -70,13 +70,13 @@
 
 
 	pickup(mob/user)
-		if(lit)
+		if (lit)
 			src.sd_SetLuminosity(0)
 			user.total_luminosity += CANDLE_LUM
 
 
 	dropped(mob/user)
-		if(lit)
+		if (lit)
 			user.total_luminosity -= CANDLE_LUM
 			src.sd_SetLuminosity(CANDLE_LUM)
 
@@ -103,14 +103,14 @@
 	return
 
 /obj/item/weapon/candlepack/attack_hand(mob/user as mob)
-	if(user.r_hand == src || user.l_hand == src)
-		if(src.candlecount == 0)
+	if (user.r_hand == src || user.l_hand == src)
+		if (src.candlecount == 0)
 			//user << "\red You're out of cigs, shit! How you gonna get through the rest of the day..."
 			return
 		else
 			src.candlecount--
 			var/obj/item/candle/W = new /obj/item/candle(user)
-			if(user.hand)
+			if (user.hand)
 				user.l_hand = W
 			else
 				user.r_hand = W

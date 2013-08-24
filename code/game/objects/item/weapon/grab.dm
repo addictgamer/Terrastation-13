@@ -25,7 +25,7 @@
 	return
 
 /obj/item/weapon/grab/proc/throw()
-	if(affecting)
+	if (affecting)
 		var/grabee = affecting
 		spawn(0)
 			del(src)
@@ -33,7 +33,7 @@
 	return null
 
 /obj/item/weapon/grab/proc/synch()
-	if(affecting.anchored)//This will prevent from grabbing people that are anchored.
+	if (affecting.anchored)//This will prevent from grabbing people that are anchored.
 		del(src)
 	if (assailant.r_hand == src)
 		hud1.screen_loc = ui_rhand
@@ -42,7 +42,7 @@
 	return
 
 /obj/item/weapon/grab/process()
-	if(!assailant || !affecting)
+	if (!assailant || !affecting)
 		del(src)
 		return
 	if ((!( isturf(assailant.loc) ) || (!( isturf(affecting.loc) ) || (assailant.loc != affecting.loc && get_dist(assailant, affecting) > 1))))
@@ -96,7 +96,7 @@
 		del(src)
 		return
 	switch(S.id)
-		if(1.0)
+		if (1.0)
 			if (state >= 3)
 				if (!( killing ))
 					for(var/mob/O in viewers(assailant, null))
@@ -118,7 +118,7 @@
 		del(src)
 		return
 	switch(S.id)
-		if(1.0)
+		if (1.0)
 			if (state < 2)
 				if (!( allow_upgrade ))
 					return
@@ -134,20 +134,20 @@
 					return
 			else
 				if (state < 3)
-					if(istype(affecting, /mob/living/carbon/human))
+					if (istype(affecting, /mob/living/carbon/human))
 						var/mob/living/carbon/human/H = affecting
-						if(H.mutations & FAT)
+						if (H.mutations & FAT)
 							assailant << "\blue You can't strangle [affecting] through all that fat!"
 							return
 
 						/*Hrm might want to add this back in
 						//we should be able to strangle the Captain if he is wearing a hat
 						for(var/obj/item/clothing/C in list(H.head, H.wear_suit, H.wear_mask, H.w_uniform))
-							if(C.body_parts_covered & HEAD)
+							if (C.body_parts_covered & HEAD)
 								assailant << "\blue You have to take off [affecting]'s [C.name] first!"
 								return
 
-						if(istype(H.wear_suit, /obj/item/clothing/suit/space) || istype(H.wear_suit, /obj/item/clothing/suit/armor) || istype(H.wear_suit, /obj/item/clothing/suit/bio_suit) || istype(H.wear_suit, /obj/item/clothing/suit/swat_suit))
+						if (istype(H.wear_suit, /obj/item/clothing/suit/space) || istype(H.wear_suit, /obj/item/clothing/suit/armor) || istype(H.wear_suit, /obj/item/clothing/suit/bio_suit) || istype(H.wear_suit, /obj/item/clothing/suit/swat_suit))
 							assailant << "\blue You can't strangle [affecting] through their suit collar!"
 							return
 						*/
@@ -187,18 +187,18 @@
 		else
 			s_click(hud1)
 		return
-	if(M == assailant && state >= 2)
-		if( ( ishuman(user) && (user.mutations & FAT) && ismonkey(affecting) ) || ( isalien(user) && iscarbon(affecting) ) )
+	if (M == assailant && state >= 2)
+		if ( ( ishuman(user) && (user.mutations & FAT) && ismonkey(affecting) ) || ( isalien(user) && iscarbon(affecting) ) )
 			var/mob/living/carbon/attacker = user
 			for(var/mob/N in viewers(user, null))
-				if(N.client)
+				if (N.client)
 					N.show_message(text("\red <B>[user] is attempting to devour [affecting]!</B>"), 1)
-			if(istype(user, /mob/living/carbon/alien/humanoid/hunter))
-				if(!do_mob(user, affecting)||!do_after(user, 30)) return
+			if (istype(user, /mob/living/carbon/alien/humanoid/hunter))
+				if (!do_mob(user, affecting)||!do_after(user, 30)) return
 			else
-				if(!do_mob(user, affecting)||!do_after(user, 100)) return
+				if (!do_mob(user, affecting)||!do_after(user, 100)) return
 			for(var/mob/N in viewers(user, null))
-				if(N.client)
+				if (N.client)
 					N.show_message(text("\red <B>[user] devours [affecting]!</B>"), 1)
 			affecting.loc = user
 			attacker.stomach_contents.Add(affecting)

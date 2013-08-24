@@ -15,10 +15,10 @@
 
 	for(var/datum/mind/player in possible_changelings)
 		for(var/job in restricted_jobs)//Removing robots from the list
-			if(player.assigned_role == job)
+			if (player.assigned_role == job)
 				possible_changelings -= player
 
-	if(possible_changelings.len>0)
+	if (possible_changelings.len>0)
 		var/datum/mind/changeling = pick(possible_changelings)
 		//possible_changelings-=changeling
 		changelings += changeling

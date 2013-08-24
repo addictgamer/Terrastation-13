@@ -25,7 +25,7 @@ FLASHBANG
 
 
 	afterattack(atom/target as mob|obj|turf|area, mob/user as mob)
-		if((user.equipped() == src)&&(!active)&&(clown_check(user)))
+		if ((user.equipped() == src)&&(!active)&&(clown_check(user)))
 			user << "\red You prime the emp grenade! [det_time/10] seconds!"
 			src.active = 1
 			src.icon_state = "empar"
@@ -41,8 +41,8 @@ FLASHBANG
 
 
 	attack_self(mob/user as mob)
-		if(!active)
-			if(clown_check(user))
+		if (!active)
+			if (clown_check(user))
 				user << "\red You prime the EMP grenade! [det_time/10] seconds!"
 				src.active = 1
 				src.icon_state = "empar"
@@ -56,15 +56,15 @@ FLASHBANG
 	prime()
 		playsound(src.loc, 'Welder2.ogg', 25, 1)
 		var/turf/T = get_turf(src)
-		if(T)
+		if (T)
 			T.hotspot_expose(700,125)
-		if(empulse(src, 5, 7))
+		if (empulse(src, 5, 7))
 			del(src)
 		return
 
 
 	clown_check(var/mob/living/user)
-		if((user.mutations & CLOWN) && prob(50))
+		if ((user.mutations & CLOWN) && prob(50))
 			user << "\red Huh? How does this thing work?!"
 			src.active = 1
 			src.icon_state = "empar"
@@ -117,7 +117,7 @@ FLASHBANG
 
 
 	afterattack(atom/target as mob|obj|turf|area, mob/user as mob)
-		if((user.equipped() == src)&&(!active)&&(clown_check(user)))
+		if ((user.equipped() == src)&&(!active)&&(clown_check(user)))
 			user << "\red You prime the flashbang! [det_time/10] seconds!"
 			src.active = 1
 			src.icon_state = "flashbang1"
@@ -145,7 +145,7 @@ FLASHBANG
 	prime()
 		playsound(src.loc, 'bang.ogg', 25, 1)
 		var/turf/T = get_turf(src)
-		if(T)
+		if (T)
 			T.hotspot_expose(700,125)
 
 		for(var/mob/living/carbon/M in viewers(T, null))
@@ -159,26 +159,26 @@ FLASHBANG
 //Checking for protections
 			var/eye_safety = 0
 			var/ear_safety = 0
-			if(iscarbon(M))
+			if (iscarbon(M))
 				eye_safety = M.eyecheck()
-				if(ishuman(M))
-					if(istype(M:ears, /obj/item/clothing/ears/earmuffs))
+				if (ishuman(M))
+					if (istype(M:ears, /obj/item/clothing/ears/earmuffs))
 						ear_safety += 2
-					if(M.mutations & HULK)
+					if (M.mutations & HULK)
 						ear_safety += 1
-					if(istype(M:head, /obj/item/clothing/head/helmet))
+					if (istype(M:head, /obj/item/clothing/head/helmet))
 						ear_safety += 1
 
 //Flashing everyone
-			if(eye_safety < 1)
+			if (eye_safety < 1)
 				flick("e_flash", M.flash)
 				M.eye_stat += rand(1, 3)
 				M.stunned = max(M.stunned,2)
 				M.weakened = max(M.weakened,10)
 
 //Now applying sound
-			if((get_dist(M, T) <= 2 || src.loc == M.loc || src.loc == M))
-				if(ear_safety > 0)
+			if ((get_dist(M, T) <= 2 || src.loc == M.loc || src.loc == M))
+				if (ear_safety > 0)
 					M.stunned = max(M.stunned,2)
 					M.weakened = max(M.weakened,1)
 				else
@@ -190,13 +190,13 @@ FLASHBANG
 						M.ear_damage += rand(0, 5)
 					M.ear_deaf = max(M.ear_deaf,15)
 
-			else if(get_dist(M, T) <= 5)
-				if(!ear_safety)
+			else if (get_dist(M, T) <= 5)
+				if (!ear_safety)
 					M.stunned = max(M.stunned,8)
 					M.ear_damage += rand(0, 3)
 					M.ear_deaf = max(M.ear_deaf,10)
 
-			else if(!ear_safety)
+			else if (!ear_safety)
 				M.stunned = max(M.stunned,4)
 				M.ear_damage += rand(0, 1)
 				M.ear_deaf = max(M.ear_deaf,5)
@@ -227,8 +227,8 @@ FLASHBANG
 
 
 	attack_self(mob/user as mob)
-		if(!active)
-			if(clown_check(user))
+		if (!active)
+			if (clown_check(user))
 				user << "\red You prime the flashbang! [det_time/10] seconds!"
 				src.active = 1
 				src.icon_state = "flashbang1"

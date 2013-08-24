@@ -14,24 +14,24 @@
 
 	attackby(var/obj/item/O as obj, var/mob/user as mob)
 		..()
-		if(istype(O,/obj/item/weapon/wirecutters))
+		if (istype(O,/obj/item/weapon/wirecutters))
 			var/obj/item/cable_coil/CC = new/obj/item/cable_coil(user.loc)
 			CC.amount = 5
 			amount--
 			new/obj/item/stack/sheet/glass(user.loc)
-			if(amount <= 0)
+			if (amount <= 0)
 				user.u_equip(src)
 				del(src)
 
-		if(istype(O,/obj/item/stack/sheet/metal))
+		if (istype(O,/obj/item/stack/sheet/metal))
 			var/obj/item/stack/sheet/metal/M = O
 			M.amount--
-			if(M.amount <= 0)
+			if (M.amount <= 0)
 				user.u_equip(M)
 				del(M)
 			amount--
 			new/obj/item/stack/tile/light(user.loc)
-			if(amount <= 0)
+			if (amount <= 0)
 				user.u_equip(src)
 				del(src)
 
@@ -52,21 +52,21 @@
 
 	New()
 		..()
-		if(prob(5))
+		if (prob(5))
 			state = 3 //broken
-		else if(prob(5))
+		else if (prob(5))
 			state = 2 //breaking
-		else if(prob(10))
+		else if (prob(10))
 			state = 1 //flickering occasionally
 		else
 			state = 0 //fine
 
 	attackby(var/obj/item/O as obj, var/mob/user as mob)
 		..()
-		if(istype(O,/obj/item/weapon/crowbar))
+		if (istype(O,/obj/item/weapon/crowbar))
 			new/obj/item/stack/sheet/metal(user.loc)
 			amount--
 			new/obj/item/stack/light_w(user.loc)
-			if(amount <= 0)
+			if (amount <= 0)
 				user.u_equip(src)
 				del(src)

@@ -15,7 +15,7 @@
 		for(var/mob/O in viewers(src, null))
 			O.show_message("\red <B>The [src] warps in!</B>", 1)
 		playsound(src.loc, 'EMPulse.ogg', 25, 1)
-		if(auto_spawn)
+		if (auto_spawn)
 			spawn(spawn_delay)
 				turn_on = 1
 				auto_spawn = 0

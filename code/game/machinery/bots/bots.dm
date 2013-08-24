@@ -29,7 +29,7 @@
 		src.explode()
 
 /obj/machinery/bot/proc/Emag(mob/user as mob)
-	if(!emagged) emagged = 1
+	if (!emagged) emagged = 1
 
 /obj/machinery/bot/examine()
 	set src in view()
@@ -52,7 +52,7 @@
 	src.health -= rand(15,30)*brute_dam_coeff
 	src.visible_message("\red <B>[user] has slashed [src]!</B>")
 	playsound(src.loc, 'slice.ogg', 25, 1, -1)
-	if(prob(10))
+	if (prob(10))
 		new /obj/decal/cleanable/oil(src.loc)
 	healthcheck()
 
@@ -72,9 +72,9 @@
 		Emag(user)
 	else
 		switch(W.damtype)
-			if("fire")
+			if ("fire")
 				src.health -= W.force * fire_dam_coeff
-			if("brute")
+			if ("brute")
 				src.health -= W.force * brute_dam_coeff
 		..()
 		healthcheck()
@@ -95,15 +95,15 @@
 
 /obj/machinery/bot/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			src.explode()
 			return
-		if(2.0)
+		if (2.0)
 			src.health -= rand(5,10)*fire_dam_coeff
 			src.health -= rand(10,20)*brute_dam_coeff
 			healthcheck()
 			return
-		if(3.0)
+		if (3.0)
 			if (prob(50))
 				src.health -= rand(1,5)*fire_dam_coeff
 				src.health -= rand(1,5)*brute_dam_coeff

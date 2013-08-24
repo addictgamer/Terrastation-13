@@ -26,21 +26,21 @@
 	ex_act(severity)
 		unbuckle_all()
 		switch(severity)
-			if(1.0)
+			if (1.0)
 				del(src)
 				return
-			if(2.0)
+			if (2.0)
 				if (prob(50))
 					del(src)
 					return
-			if(3.0)
+			if (3.0)
 				if (prob(5))
 					del(src)
 					return
 		return
 
 	blob_act()
-		if(prob(75))
+		if (prob(75))
 			unbuckle_all()
 			del(src)
 

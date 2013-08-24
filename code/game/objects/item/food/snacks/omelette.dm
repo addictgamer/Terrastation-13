@@ -10,7 +10,7 @@
 		reagents.add_reagent("nutriment", 8)
 		bitesize = 1
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W,/obj/item/weapon/kitchen/utensil/fork))
+		if (istype(W,/obj/item/weapon/kitchen/utensil/fork))
 			if (W.icon_state == "forkloaded")
 				user << "\red You already have omelette on your fork."
 				return

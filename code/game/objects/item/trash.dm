@@ -96,11 +96,11 @@
 		capacity = 25; //the number of trash it can carry.
 
 	update_icon()
-		if(contents.len == 0)
+		if (contents.len == 0)
 			icon_state = "trashbag0"
-		else if(contents.len < 12)
+		else if (contents.len < 12)
 			icon_state = "trashbag1"
-		else if(contents.len < 25)
+		else if (contents.len < 25)
 			icon_state = "trashbag2"
 		else icon_state = "trashbag3"
 
@@ -118,7 +118,7 @@
 
 			mode = !mode
 			switch (mode)
-				if(1)
+				if (1)
 					usr << "The bag now picks up all trash in a tile at once."
-				if(0)
+				if (0)
 					usr << "The bag now picks up one trash at a time."

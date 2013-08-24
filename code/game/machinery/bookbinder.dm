@@ -7,7 +7,7 @@
 	density = 1
 
 	attackby(var/obj/O as obj, var/mob/user as mob)
-		if(istype(O, /obj/item/paper))
+		if (istype(O, /obj/item/paper))
 			user.drop_item()
 			O.loc = src
 			user.visible_message("[user] loads some paper into [src].", "You load some paper into [src].")

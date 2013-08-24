@@ -250,7 +250,7 @@
 	return
 
 /obj/item/weapon/storage/trashcan/attack_hand(mob/user as mob)
-	if(src.allowed(usr))
+	if (src.allowed(usr))
 		locked = !locked
 	else
 		user << "\red Access denied."
@@ -260,7 +260,7 @@
 	if (src.contents.len >= 7)
 		user << "\blue You begin the emptying procedure."
 		var/area/A = src.loc.loc		// make sure it's in an area
-		if(!A || !isarea(A))
+		if (!A || !isarea(A))
 			return
 //		var/turf/T = src.loc
 		A.use_power(250, EQUIP)

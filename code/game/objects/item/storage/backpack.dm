@@ -31,7 +31,7 @@
 			M.update_clothing()
 			src.add_fingerprint(usr)
 			return
-		if(over_object == usr && in_range(src, usr) || usr.contents.Find(src))
+		if (over_object == usr && in_range(src, usr) || usr.contents.Find(src))
 			if (usr.s_active)
 				usr.s_active.close(usr)
 			src.show_to(usr)
@@ -54,10 +54,10 @@
 	return
 
 /obj/item/weapon/storage/backpack/holding/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(crit_fail)
+	if (crit_fail)
 		user << "\red The Bluespace generator isn't working."
 		return
-	if(istype(W, /obj/item/weapon/storage/backpack/holding) && !W.crit_fail)
+	if (istype(W, /obj/item/weapon/storage/backpack/holding) && !W.crit_fail)
 		user << "\red The Bluespace interfaces of the two devices catastrophically malfunction!"
 		del(W)
 		new /obj/machinery/singularity (get_turf(src))

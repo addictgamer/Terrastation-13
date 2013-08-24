@@ -55,7 +55,7 @@
 		usr.machine = src
 		if (href_list["passive"])
 			src.passive = !( src.passive )
-			if(passive)
+			if (passive)
 				processing_objects.Add(src)
 		if (href_list["active"])
 			spawn( 0 )

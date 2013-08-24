@@ -14,18 +14,18 @@
 /obj/machinery/computer/operating/New()
 	..()
 	for(var/obj/machinery/optable/O in world)
-		if(src.id == O.id)
+		if (src.id == O.id)
 			src.table = O
 
 /obj/machinery/computer/operating/attack_ai(mob/user)
 	add_fingerprint(user)
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		return
 	interact(user)
 
 /obj/machinery/computer/operating/attack_hand(mob/user)
 	add_fingerprint(user)
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		return
 	interact(user)
 
@@ -39,7 +39,7 @@
 	user.machine = src
 	var/dat = "<HEAD><TITLE>Operating Computer</TITLE><META HTTP-EQUIV='Refresh' CONTENT='10'></HEAD><BODY>\n"
 	dat += "<A HREF='?src=\ref[user];mach_close=op'>Close</A><br><br>" //| <A HREF='?src=\ref[user];update=1'>Update</A>"
-	if(src.table && (src.table.check_victim()))
+	if (src.table && (src.table.check_victim()))
 		src.victim = src.table.victim
 		dat += {"
 <B>Patient Information:</B><BR>
@@ -67,7 +67,7 @@
 
 
 /obj/machinery/computer/operating/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
 		usr.machine = src
@@ -76,7 +76,7 @@
 	return
 
 /obj/machinery/computer/operating/process()
-	if(!(stat & (NOPOWER|BROKEN)) )
+	if (!(stat & (NOPOWER|BROKEN)) )
 		use_power(500)
 
 	src.updateDialog()

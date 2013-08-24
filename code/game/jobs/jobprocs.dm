@@ -14,8 +14,8 @@
 
 /proc/ResetOccupations()
 	for(var/mob/new_player/player in world)
-		if(player)
-			if(player.mind)
+		if (player)
+			if (player.mind)
 				player.mind.assigned_role = null
 				player.mind.special_role = null
 	return
@@ -58,9 +58,9 @@
 	//Then check for an AI
 	for (var/level = 1 to 3)//Malf is a bit special as it replaces a normal job
 		var/list/candidates = FindOccupationCandidates(unassigned, "AI", level)
-		if(ticker.mode.name == "AI malfunction")
+		if (ticker.mode.name == "AI malfunction")
 			for(var/mob/new_player/player in candidates)
-				if(!player.preferences.be_special & BE_MALF)
+				if (!player.preferences.be_special & BE_MALF)
 					candidates -= player
 		if (candidates.len)
 			var/mob/new_player/candidate = pick(candidates)
@@ -68,10 +68,10 @@
 			candidate.mind.assigned_role = "AI"
 			break
 	//Malf NEEDS an AI so force one
-	if((ticker.mode.name == "AI malfunction")&&(occupation_eligible["AI"] > 0))
+	if ((ticker.mode.name == "AI malfunction")&&(occupation_eligible["AI"] > 0))
 		unassigned = shuffle(unassigned)
 		for(var/mob/new_player/player in unassigned)
-			if(jobban_isbanned(player, "AI"))
+			if (jobban_isbanned(player, "AI"))
 				continue
 			else
 				player.mind.assigned_role = "AI"
@@ -109,9 +109,9 @@
 				vacancies += occ
 
 		for(var/mob/new_player/candidate in unassigned)
-			if(!unassigned.len || !vacancies.len)	break
+			if (!unassigned.len || !vacancies.len)	break
 			var/occupation = pick(vacancies)
-			if(!jobban_isbanned(candidate, occupation))
+			if (!jobban_isbanned(candidate, occupation))
 				candidate.mind.assigned_role = occupation
 				unassigned -= candidate
 				vacancies -= occupation
@@ -121,7 +121,7 @@
 				break
 			var/list/occupationsPossible = list()
 			for(var/occ in assistant_occupations)
-				if(assistant_occupations[occ])
+				if (assistant_occupations[occ])
 					occupationsPossible += occ
 				player.mind.assigned_role = pick(occupationsPossible)
 				assistant_occupations[player.mind.assigned_role]--
@@ -138,7 +138,7 @@
 			src.equip_if_possible(new /obj/item/device/pda/chaplain(src), slot_belt)
 			src.equip_if_possible(new /obj/item/clothing/under/rank/chaplain(src), slot_w_uniform)
 			src.equip_if_possible(new /obj/item/clothing/shoes/black(src), slot_shoes)
-			//if(prob(15))
+			//if (prob(15))
 			//	src.see_invisible = 15 -- Doesn't work as see_invisible is reset every world cycle. -- Skie
 			//The two procs below allow the Chaplain to choose their religion. All it really does is change their bible.
 			spawn(0)
@@ -153,28 +153,28 @@
 						new_religion = copytext(new_religion, 1, 26)
 					new_religion = dd_replacetext(new_religion, ">", "'")
 					switch(lowertext(new_religion))
-						if("christianity")
+						if ("christianity")
 							B.name = pick("The Holy Bible","The Dead Sea Scrolls")
-						if("satanism")
+						if ("satanism")
 							B.name = "The Unholy Bible"
-						if("cthulu")
+						if ("cthulu")
 							B.name = "The Necronomicon"
-						if("islam")
+						if ("islam")
 							B.name = "Quran"
-						if("scientology")
+						if ("scientology")
 							B.name = pick("The Biography of L. Ron Hubbard","Dianetics")
-						if("chaos")
+						if ("chaos")
 							B.name = "The Book of Lorgar"
-						if("imperium")
+						if ("imperium")
 							B.name = "Uplifting Primer"
-						if("toolboxia")
+						if ("toolboxia")
 							B.name = "Toolbox Manifesto"
-						if("homosexuality")
+						if ("homosexuality")
 							B.name = "Guys Gone Wild"
-						if("lol", "wtf", "gay", "penis", "ass", "poo", "badmin", "shitmin", "deadmin", "cock", "cocks")
+						if ("lol", "wtf", "gay", "penis", "ass", "poo", "badmin", "shitmin", "deadmin", "cock", "cocks")
 							B.name = pick("Woodys Got Wood: The Aftermath", "War of the Cocks", "Sweet Bro and Hella Jef: Expanded Edition")
 							brainloss = 100 // starts off retarded as fuck
-						if("science")
+						if ("science")
 							B.name = pick("Principle of Relativity", "Quantum Enigma: Physics Encounters Consciousness", "Programming the Universe", "Quantum Physics and Theology", "String Theory for Dummies", "How To: Build Your Own Warp Drive", "The Mysteries of Bluespace", "Playing God: Collector's Edition")
 						else
 							B.name = "The Holy Book of [new_religion]"
@@ -186,7 +186,7 @@
 				if ( (length(new_deity) == 0) || (new_deity == "Space Jesus") )
 					new_deity = deity_name
 
-				if(new_deity)
+				if (new_deity)
 					if (length(new_deity) >= 26)
 						new_deity = copytext(new_deity, 1, 26)
 						new_deity = dd_replacetext(new_deity, ">", "'")
@@ -197,46 +197,46 @@
 				spawn(200) // 20 seconds to choose
 					outoftime = 1
 				while(!accepted)
-					if(!B) break // prevents possible runtime errors
+					if (!B) break // prevents possible runtime errors
 
 					switch(input(src,"Which bible style would you like?") in list("Bible", "Koran", "Scrapbook", "Daederic Scroll", "Creeper", "White Bible", "Holy Light", "Athiest", "Tome", "The King in Yellow", "Ithaqua", "Scientology", "the bible melts", "Necronomicon"))
-						if("Koran")
+						if ("Koran")
 							B.icon_state = "koran"
 							B.item_state = "koran"
-						if("Scrapbook")
+						if ("Scrapbook")
 							B.icon_state = "scrapbook"
 							B.item_state = "scrapbook"
-						if("Daederic Scroll")
+						if ("Daederic Scroll")
 							B.icon_state = "daederic_scroll"
 							B.item_state = "daederic"
-						if("Creeper")
+						if ("Creeper")
 							B.icon_state = "creeper"
 							B.item_state = "syringe_kit"
-						if("White Bible")
+						if ("White Bible")
 							B.icon_state = "white"
 							B.item_state = "syringe_kit"
-						if("Holy Light")
+						if ("Holy Light")
 							B.icon_state = "holylight"
 							B.item_state = "syringe_kit"
-						if("Athiest")
+						if ("Athiest")
 							B.icon_state = "athiest"
 							B.item_state = "syringe_kit"
-						if("Tome")
+						if ("Tome")
 							B.icon_state = "tome"
 							B.item_state = "syringe_kit"
-						if("The King in Yellow")
+						if ("The King in Yellow")
 							B.icon_state = "kingyellow"
 							B.item_state = "kingyellow"
-						if("Ithaqua")
+						if ("Ithaqua")
 							B.icon_state = "ithaqua"
 							B.item_state = "ithaqua"
-						if("Scientology")
+						if ("Scientology")
 							B.icon_state = "scientology"
 							B.item_state = "scientology"
-						if("the bible melts")
+						if ("the bible melts")
 							B.icon_state = "melted"
 							B.item_state = "melted"
-						if("Necronomicon")
+						if ("Necronomicon")
 							B.icon_state = "necronomicon"
 							B.item_state = "necronomicon"
 						else
@@ -247,14 +247,14 @@
 					src:update_clothing() // so that it updates the bible's item_state in his hand
 
 					switch(input(src,"Look at your bible - is this what you want?") in list("Yes","No"))
-						if("Yes")
+						if ("Yes")
 							accepted = 1
-						if("No")
-							if(outoftime)
+						if ("No")
+							if (outoftime)
 								src << "Welp, out of time, buddy. You're stuck. Next time choose faster."
 								accepted = 1
 
-				if(ticker)
+				if (ticker)
 					ticker.Bible_icon_state = B.icon_state
 					ticker.Bible_item_state = B.item_state
 					ticker.Bible_name = B.name
@@ -283,7 +283,7 @@
 			src.equip_if_possible(new /obj/item/clothing/shoes/black(src), slot_shoes)
 
 		if ("Clown")
-			if(src.gender == FEMALE)
+			if (src.gender == FEMALE)
 				src.equip_if_possible(new /obj/item/clothing/under/sexyclown(src), slot_w_uniform)
 				src.equip_if_possible(new /obj/item/clothing/mask/gas/sexyclown(src), slot_wear_mask)
 			else //MALE or NEUTER
@@ -302,7 +302,7 @@
 			src.mutations |= CLOWN
 
 		if ("Mime")
-			if(src.gender == FEMALE)
+			if (src.gender == FEMALE)
 				src.equip_if_possible(new /obj/item/clothing/under/sexymime(src), slot_w_uniform)
 				src.equip_if_possible(new /obj/item/clothing/mask/gas/sexymime(src), slot_wear_mask)
 			else //MALE or NEUTER
@@ -517,7 +517,7 @@
 			src.equip_if_possible(new /obj/item/weapon/barcodescanner(src), slot_l_hand)
 
 		if ("Lawyer")
-			if(!lawyer)
+			if (!lawyer)
 				lawyer = 1
 				src.equip_if_possible(new /obj/item/clothing/under/lawyer/bluesuit(src), slot_w_uniform)
 				src.equip_if_possible(new /obj/item/clothing/suit/lawyer/bluejacket(src), slot_wear_suit)
@@ -598,18 +598,18 @@
 		if ("Cyborg")
 //			Robotize()
 
-		if("AI")
+		if ("AI")
 			src.mind.assigned_role = "AI"
 
 		else
 			src << "RUH ROH! Your job is [rank] and the game just can't handle it! Please report this bug to an administrator."
 
 	spawnId(rank)
-	if(rank == "Captain")
+	if (rank == "Captain")
 		world << "<b>[src] is the captain!</b>"
 	src << "<B>You are the [rank].</B>"
 	src.job = rank
-	if(src.mind)
+	if (src.mind)
 		src.mind.assigned_role = rank
 
 	if (!joined_late && rank != "Tourist")
@@ -625,34 +625,34 @@
 			S = locate("start*[rank]") // use old stype
 		if (istype(S, /obj/landmark/start) && istype(S.loc, /turf))
 			src.loc = S.loc
-//			if(S.name == "Cyborg")
+//			if (S.name == "Cyborg")
 //				src.Robotize()
 	/*else
 		var/list/L = list()
 		for(var/area/arrival/start/S in world)
 			L += S
-		if(L.len < 1) // Added this check to stop the empty list bug -- TLE
+		if (L.len < 1) // Added this check to stop the empty list bug -- TLE
 			return	 // **
 		var/A = pick(L)
 		var/list/NL = list()
 		for(var/turf/T in A)
-			if(!T.density)
+			if (!T.density)
 				var/clear = 1
 				for(var/obj/O in T)
-					if(O.density)
+					if (O.density)
 						clear = 0
 						break
-				if(clear)
+				if (clear)
 					NL += T
 		src.loc = pick(NL)
 		*/
-	if(src.mind)
-		if(src.mind.assigned_role == "Cyborg")
+	if (src.mind)
+		if (src.mind.assigned_role == "Cyborg")
 			src << "YOU ARE GETTING BORGED NOW"
 			src.Robotize()
 			return
-	if(src.mind)
-		if(src.mind.assigned_role == "AI")
+	if (src.mind)
+		if (src.mind.assigned_role == "AI")
 			src << "Welcome, AI."
 			src.AIize() //Make AI.
 	src.equip_if_possible(new /obj/item/device/radio/headset(src), slot_ears)
@@ -665,7 +665,7 @@
 		CT.afterattack(src, src, 10)
 		var/obj/item/weapon/photo/PH
 		PH = locate(/obj/item/weapon/photo,src.loc)
-		if(PH)
+		if (PH)
 			PH.layer = 3
 			src.equip_if_possible(PH, slot_in_backpack)
 		del(CT)*/ //--For another day - errorage
@@ -675,13 +675,13 @@
 /mob/living/carbon/human/proc/spawnId(rank)
 	var/obj/item/weapon/card/id/C = null
 	switch(rank)
-		if("Cyborg")
+		if ("Cyborg")
 			return
-		if("Captain")
+		if ("Captain")
 			C = new /obj/item/weapon/card/id/gold(src)
 		else
 			C = new /obj/item/weapon/card/id(src)
-	if(C)
+	if (C)
 		C.registered = src.real_name
 		C.assignment = rank
 		C.name = "[C.registered]'s ID Card ([C.assignment])"
@@ -709,17 +709,17 @@
 	set category = "Mime"
 	set name = "Invisible wall"
 	set desc = "Create an invisible wall on your location."
-	if(usr.stat)
+	if (usr.stat)
 		usr << "Not when you're incapicated."
 		return
-	if(!usr.miming)
+	if (!usr.miming)
 		usr << "You still haven't atoned for your speaking transgression. Wait."
 		return
 	usr.verbs -= /client/proc/mimewall
 	spawn(100)
 		usr.verbs += /client/proc/mimewall
 	for (var/mob/V in viewers(usr))
-		if(V!=usr)
+		if (V!=usr)
 			V.show_message("[usr] looks as if a wall is in front of them.", 3, "", 2)
 	usr << "You form a wall in front of yourself."
 	var/obj/forcefield/F =  new /obj/forcefield(locate(usr.x,usr.y,usr.z))
@@ -734,7 +734,7 @@
 	set category = "Mime"
 	set name = "Speech"
 	set desc = "Toggle your speech."
-	if(usr.miming)
+	if (usr.miming)
 		usr.miming = 0
 	else
 		usr << "You'll have to wait if you want to atone for your sins."

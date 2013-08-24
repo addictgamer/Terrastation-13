@@ -22,18 +22,18 @@ Some verbs that are still in the code but not used atm
 
 /client/proc/update_admins(var/rank)
 
-	if(!holder)
+	if (!holder)
 		holder = new /obj/admins(src)
 
 	holder.rank = rank
 
-	if(!holder.state)
+	if (!holder.state)
 		var/state = alert("Which state do you the admin to begin in?", "Admin-state", "Play", "Observe", "Neither")
-		if(state == "Play")
+		if (state == "Play")
 			holder.state = 1
 			admin_play()
 			return
-		else if(state == "Observe")
+		else if (state == "Observe")
 			holder.state = 2
 			admin_observe()
 			return
@@ -65,7 +65,7 @@ Some verbs that are still in the code but not used atm
 			seeprayers = 1
 			holder.level = 3
 
-			if(holder.state == 2) // if observing
+			if (holder.state == 2) // if observing
 				// Debug
 				verbs += /client/proc/debug_variables
 				verbs += /client/proc/cmd_modify_object_variables
@@ -89,7 +89,7 @@ Some verbs that are still in the code but not used atm
 
 		if ("Admin Candidate")
 			holder.level = 2
-			if(holder.state == 2) // if observing
+			if (holder.state == 2) // if observing
 				deadchat = 1
 				// Settings
 				verbs += /obj/admins/proc/toggleaban			//abandon mob
@@ -385,7 +385,7 @@ Some verbs that are still in the code but not used atm
 /client/proc/admin_observe()
 	set category = "Admin"
 	set name = "Set Observe"
-	if(!holder)
+	if (!holder)
 		alert("You are not an admin")
 		return
 
@@ -396,14 +396,14 @@ Some verbs that are still in the code but not used atm
 	clear_admin_verbs()
 	holder.state = 2
 	update_admins(rank)
-	if(!istype(mob, /mob/dead/observer))
+	if (!istype(mob, /mob/dead/observer))
 		mob.adminghostize(1)
 	src << "\blue You are now observing"
 
 /client/proc/admin_play()
 	set category = "Admin"
 	set name = "Set Play"
-	if(!holder)
+	if (!holder)
 		alert("You are not an admin")
 		return
 	verbs -= /client/proc/admin_observe
@@ -413,7 +413,7 @@ Some verbs that are still in the code but not used atm
 	clear_admin_verbs()
 	holder.state = 1
 	update_admins(rank)
-	if(istype(mob, /mob/dead/observer))
+	if (istype(mob, /mob/dead/observer))
 		mob:reenter_corpse()
 	src << "\blue You are now playing"
 
@@ -421,10 +421,10 @@ Some verbs that are still in the code but not used atm
 	set name = "Get Admin State"
 	set category = "Debug"
 	for(var/mob/M in world)
-		if(M.client && M.client.holder)
-			if(M.client.holder.state == 1)
+		if (M.client && M.client.holder)
+			if (M.client.holder.state == 1)
 				src << "[M.key] is playing - [M.client.holder.state]"
-			else if(M.client.holder.state == 2)
+			else if (M.client.holder.state == 2)
 				src << "[M.key] is observing - [M.client.holder.state]"
 			else
 				src << "[M.key] is undefined - [M.client.holder.state]"
@@ -440,7 +440,7 @@ Some verbs that are still in the code but not used atm
 /client/proc/jobbans()
 	set name = "Display Job bans"
 	set category = "Admin"
-	if(holder)
+	if (holder)
 		holder.Jobbans()
 	return
 
@@ -480,17 +480,17 @@ Some verbs that are still in the code but not used atm
 /client/proc/stealth()
 	set category = "Admin"
 	set name = "Stealth Mode"
-	if(!authenticated || !holder)
+	if (!authenticated || !holder)
 		src << "Only administrators may use this command."
 		return
 	stealth = !stealth
-	if(stealth)
+	if (stealth)
 		var/new_key = trim(input("Enter your desired display name.", "Fake Key", key))
-		if(!new_key)
+		if (!new_key)
 			stealth = 0
 			return
 		new_key = strip_html(new_key)
-		if(length(new_key) >= 26)
+		if (length(new_key) >= 26)
 			new_key = copytext(new_key, 1, 26)
 		fakekey = new_key
 	else
@@ -503,13 +503,13 @@ Some verbs that are still in the code but not used atm
 	set category = "Special Verbs"
 	set name = "Warn"
 	set desc = "Warn a player"
-	if(!authenticated || !holder)
+	if (!authenticated || !holder)
 		src << "Only administrators may use this command."
 		return
-	if(M.client && M.client.holder && (M.client.holder.level >= holder.level))
+	if (M.client && M.client.holder && (M.client.holder.level >= holder.level))
 		alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
 		return
-	if(!M.client.warned)
+	if (!M.client.warned)
 		M << "\red <B>You have been warned by an administrator. This is the only warning you will recieve.</B>"
 		M.client.warned = 1
 		message_admins("\blue [ckey] warned [M.ckey].")
@@ -533,15 +533,15 @@ Some verbs that are still in the code but not used atm
 	var/list/choices = list("Small Bomb", "Medium Bomb", "Big Bomb", "Custom Bomb")
 	var/choice = input("What size explosion would you like to produce?") in choices
 	switch(choice)
-		if(null)
+		if (null)
 			return 0
-		if("Small Bomb")
+		if ("Small Bomb")
 			explosion(epicenter, 1, 2, 3, 3)
-		if("Medium Bomb")
+		if ("Medium Bomb")
 			explosion(epicenter, 2, 3, 4, 4)
-		if("Big Bomb")
+		if ("Big Bomb")
 			explosion(epicenter, 3, 5, 7, 5)
-		if("Custom Bomb")
+		if ("Custom Bomb")
 			var/devastation_range = input("Devastation range (in tiles):") as num
 			var/heavy_impact_range = input("Heavy impact range (in tiles):") as num
 			var/light_impact_range = input("Light impact range (in tiles):") as num
@@ -560,9 +560,9 @@ Some verbs that are still in the code but not used atm
 	set category = "Special Verbs"
 	set name = "Make Sound"
 	set desc = "Display a message to everyone who can hear the target"
-	if(O)
+	if (O)
 		var/message = input("What do you want the message to be?", "Make Sound") as text|null
-		if(!message)
+		if (!message)
 			return
 		for (var/mob/V in hearers(O))
 			V.show_message(message, 2)
@@ -570,15 +570,15 @@ Some verbs that are still in the code but not used atm
 /client/proc/togglebuildmodeself()
 	set name = "Toggle Build Mode Self"
 	set category = "Special Verbs"
-	if(src.mob)
+	if (src.mob)
 		togglebuildmode(src.mob)
 
 /client/proc/object_talk(var/msg as text) // -- TLE
 	set category = "Special Verbs"
 	set name = "oSay"
 	set desc = "Display a message to everyone who can hear the target"
-	if(mob.control_object)
-		if(!msg)
+	if (mob.control_object)
+		if (!msg)
 			return
 		for (var/mob/V in hearers(mob.control_object))
 			V.show_message("<b>[mob.control_object.name]</b> says: \"" + msg + "\"", 2)
@@ -587,7 +587,7 @@ Some verbs that are still in the code but not used atm
 	set category = "Debug"
 	set name = "Kill Air"
 	set desc = "Toggle Air Processing"
-	if(kill_air)
+	if (kill_air)
 		kill_air = 0
 		usr << "<b>Enabled air processing.</b>"
 	else
@@ -616,10 +616,10 @@ Some verbs that are still in the code but not used atm
 	verbs -= /client/proc/hide_most_verbs
 	verbs += /client/proc/show_verbs
 
-	if(holder.level >= 6)//Game Master********************************************************************
+	if (holder.level >= 6)//Game Master********************************************************************
 		verbs += /client/proc/colorooc
 
-	if(holder.level >= 4)//Badmin********************************************************************
+	if (holder.level >= 4)//Badmin********************************************************************
 		verbs += /client/proc/debug_variables
 		verbs += /client/proc/cmd_modify_object_variables
 		verbs += /client/proc/Jump

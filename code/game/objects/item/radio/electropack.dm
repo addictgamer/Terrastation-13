@@ -124,7 +124,7 @@
 	return*/
 
 /obj/item/device/radio/electropack/receive_signal(datum/signal/signal)
-	if(!signal || (signal.encryption != code))
+	if (!signal || (signal.encryption != code))
 		return
 
 	if ((ismob(src.loc) && src.on))

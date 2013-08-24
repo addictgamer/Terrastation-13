@@ -40,12 +40,12 @@
 	AdjacentTurfs()
 		var/L[] = new()
 		for(var/turf/t in range(src,1))
-			if(!t.density)
-				if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
+			if (!t.density)
+				if (!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
 					L.Add(t)
 		return L
 	Distance(turf/t)
-		if(get_dist(src,t) == 1)
+		if (get_dist(src,t) == 1)
 			var/cost = (src.x - t.x) * (src.x - t.x) + (src.y - t.y) * (src.y - t.y)
 			cost *= (pathweight+t.pathweight)/2
 			return cost
@@ -54,23 +54,23 @@
 	AdjacentTurfsSpace()
 		var/L[] = new()
 		for(var/turf/t in range(src,1))
-			if(!t.density)
-				if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
+			if (!t.density)
+				if (!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
 					L.Add(t)
 		return L
 	AdjacentTurfsCritter() //For use when seeking a path to a creature.
 		var/L[] = new()
 		for(var/turf/t in range(src,1)) //Using range instead of oview or view to see in dark....
-			if(!t.density)
-				if(!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
+			if (!t.density)
+				if (!LinkBlocked(src, t) && !TurfBlockedNonWindow(t))
 					L.Add(t)
 				//L.Add(t)
 		return L
 	AdjacentTurfsCritterB() //For use when seeking a path to an object.
 		var/L[] = new()
 		for(var/turf/t in range(src,1)) //Using range instead of oview or view to see in dark...
-			if(!t.density)
-				//if(!LinkBlockedCritter(src, t))
+			if (!t.density)
+				//if (!LinkBlockedCritter(src, t))
 				//	L.Add(t)
 				L.Add(t)
 		return L
@@ -84,8 +84,8 @@
 
 		for(var/d in cardinal)
 			var/turf/T = get_step(src, d)
-			if(istype(T) && !T.density)
-				if(!LinkBlockedWithAccess(src, T, ID))
+			if (istype(T) && !T.density)
+				if (!LinkBlockedWithAccess(src, T, ID))
 					L.Add(T)
 		return L
 
@@ -96,8 +96,8 @@
 
 		for(var/d in cardinal)
 			var/turf/T = get_step(src, d)
-			if(/*istype(T) &&*/ !T.density)
-				if(!LinkBlocked(src, T) && !TurfBlockedNonWindow(T))
+			if (/*istype(T) &&*/ !T.density)
+				if (!LinkBlocked(src, T) && !TurfBlockedNonWindow(T))
 					L.Add(T)
 		return L
 
@@ -113,33 +113,33 @@
 	var/best_dist = INFINITY //infinity
 	var/best_cam = null
 	for(var/obj/machinery/camera/C in A)
-		if(usr:network != C.network)
+		if (usr:network != C.network)
 			continue	//	different network (syndicate)
-		if(C.z != usr.z)
+		if (C.z != usr.z)
 			continue	//	different viewing plane
-		if(!C.status)
+		if (!C.status)
 			continue	//	ignore disabled cameras
 		var/dist = get_dist(src, C)
-		if(dist < best_dist)
+		if (dist < best_dist)
 			best_dist = dist
 			best_cam = C
 
-	if(!best_cam)
+	if (!best_cam)
 		return ..()
 	usr:lastDblClick = world.time
 	usr:switchCamera(best_cam)
 
 /turf/DblClick()
-	if(istype(usr, /mob/living/silicon/ai))
+	if (istype(usr, /mob/living/silicon/ai))
 		return move_camera_by_click()
-	if(usr.stat || usr.restrained() || usr.lying)
+	if (usr.stat || usr.restrained() || usr.lying)
 		return ..()
 
-	if(usr.hand && istype(usr.l_hand, /obj/item/weapon/flamethrower))
+	if (usr.hand && istype(usr.l_hand, /obj/item/weapon/flamethrower))
 		var/turflist = getline(usr,src)
 		var/obj/item/weapon/flamethrower/F = usr.l_hand
 		F.flame_turf(turflist)
-	else if(!usr.hand && istype(usr.r_hand, /obj/item/weapon/flamethrower))
+	else if (!usr.hand && istype(usr.r_hand, /obj/item/weapon/flamethrower))
 		var/turflist = getline(usr,src)
 		var/obj/item/weapon/flamethrower/F = usr.r_hand
 		F.flame_turf(turflist)
@@ -159,7 +159,7 @@
 
 
 /turf/bullet_act(var/obj/item/projectile/Proj)
-	if(istype(Proj ,/obj/item/projectile/beam/pulse))
+	if (istype(Proj ,/obj/item/projectile/beam/pulse))
 		src.ex_act(2)
 	..()
 	return
@@ -171,22 +171,22 @@
 
 	//First, check objects to block exit that are not on the border
 	for(var/obj/obstacle in mover.loc)
-		if((obstacle.flags & ~ON_BORDER) && (mover != obstacle) && (forget != obstacle))
-			if(!obstacle.CheckExit(mover, src))
+		if ((obstacle.flags & ~ON_BORDER) && (mover != obstacle) && (forget != obstacle))
+			if (!obstacle.CheckExit(mover, src))
 				mover.Bump(obstacle, 1)
 				return 0
 
 	//Now, check objects to block exit that are on the border
 	for(var/obj/border_obstacle in mover.loc)
-		if((border_obstacle.flags & ON_BORDER) && (mover != border_obstacle) && (forget != border_obstacle))
-			if(!border_obstacle.CheckExit(mover, src))
+		if ((border_obstacle.flags & ON_BORDER) && (mover != border_obstacle) && (forget != border_obstacle))
+			if (!border_obstacle.CheckExit(mover, src))
 				mover.Bump(border_obstacle, 1)
 				return 0
 
 	//Next, check objects to block entry that are on the border
 	for(var/obj/border_obstacle in src)
-		if(border_obstacle.flags & ON_BORDER)
-			if(!border_obstacle.CanPass(mover, mover.loc, 1, 0) && (forget != border_obstacle))
+		if (border_obstacle.flags & ON_BORDER)
+			if (!border_obstacle.CanPass(mover, mover.loc, 1, 0) && (forget != border_obstacle))
 				mover.Bump(border_obstacle, 1)
 				return 0
 
@@ -197,24 +197,24 @@
 
 	//Finally, check objects/mobs to block entry that are not on the border
 	for(var/atom/movable/obstacle in src)
-		if(obstacle.flags & ~ON_BORDER)
-			if(!obstacle.CanPass(mover, mover.loc, 1, 0) && (forget != obstacle))
+		if (obstacle.flags & ~ON_BORDER)
+			if (!obstacle.CanPass(mover, mover.loc, 1, 0) && (forget != obstacle))
 				mover.Bump(obstacle, 1)
 				return 0
 	return 1 //Nothing found to block so return success!
 
 
 /turf/Entered(atom/movable/M as mob|obj)
-	if(ismob(M) && !istype(src, /turf/space))
+	if (ismob(M) && !istype(src, /turf/space))
 		var/mob/tmob = M
 		tmob.inertia_dir = 0
 	..()
 	// Clowns have it rough enough, disabling their slipping -- TLE
 	/*
-	if(prob(1) && ishuman(M))
+	if (prob(1) && ishuman(M))
 		var/mob/living/carbon/human/tmob = M
 		if (!tmob.lying && istype(tmob.shoes, /obj/item/clothing/shoes/clown_shoes))
-			if(istype(tmob.head, /obj/item/clothing/head/helmet))
+			if (istype(tmob.head, /obj/item/clothing/head/helmet))
 				tmob << "\red You stumble and fall to the ground. Thankfully, that helmet protected you."
 				tmob.weakened = max(rand(1,2), tmob.weakened)
 			else
@@ -238,13 +238,13 @@
 
 /turf/proc/levelupdate()
 	for(var/obj/O in src)
-		if(O.level == 1)
+		if (O.level == 1)
 			O.hide(src.intact)
 
 // override for space turfs, since they should never hide anything
 /turf/space/levelupdate()
 	for(var/obj/O in src)
-		if(O.level == 1)
+		if (O.level == 1)
 			O.hide(0)
 
 /turf/proc/ReplaceWithFloor(explode=0)
@@ -254,7 +254,7 @@
 	var/turf/simulated/floor/W = new /turf/simulated/floor( locate(src.x, src.y, src.z) )
 
 	W.dir = old_dir
-	if(prior_icon) W.icon_state = prior_icon
+	if (prior_icon) W.icon_state = prior_icon
 	else W.icon_state = "floor"
 
 	if (!explode)
@@ -271,7 +271,7 @@
 	var/turf/simulated/floor/plating/W = new /turf/simulated/floor/plating( locate(src.x, src.y, src.z) )
 
 	W.dir = old_dir
-	if(prior_icon) W.icon_state = prior_icon
+	if (prior_icon) W.icon_state = prior_icon
 	else W.icon_state = "plating"
 	W.opacity = 1
 	W.sd_SetOpacity(0)
@@ -289,21 +289,21 @@
 /turf/simulated/Entered(atom/A, atom/OL)
 	if (istype(A,/mob/living/carbon))
 		var/mob/living/carbon/M = A
-		if(M.lying)
+		if (M.lying)
 			return
-		if(istype(M, /mob/living/carbon/human))			// Split this into two seperate if checks, when non-humans were being checked it would throw a null error -- TLE
-			if(istype(M:shoes, /obj/item/clothing/shoes/clown_shoes))
-				if(M.m_intent == "run")
-					if(M.footstep >= 2)
+		if (istype(M, /mob/living/carbon/human))			// Split this into two seperate if checks, when non-humans were being checked it would throw a null error -- TLE
+			if (istype(M:shoes, /obj/item/clothing/shoes/clown_shoes))
+				if (M.m_intent == "run")
+					if (M.footstep >= 2)
 						M.footstep = 0
 					else
 						M.footstep++
-					if(M.footstep == 0)
+					if (M.footstep == 0)
 						playsound(src, "clownstep", 50, 1) // this will get annoying very fast.
 				else
 					playsound(src, "clownstep", 20, 1)
 		switch (src.wet)
-			if(1)
+			if (1)
 				if (istype(M, /mob/living/carbon/human)) // Added check since monkeys don't have shoes
 					if ((M.m_intent == "run") && !(istype(M:shoes, /obj/item/clothing/shoes) && M:shoes.flags&NOSLIP))
 						M.pulling = null
@@ -315,7 +315,7 @@
 					else
 						M.inertia_dir = 0
 						return
-				else if(!istype(M, /mob/living/carbon/metroid))
+				else if (!istype(M, /mob/living/carbon/metroid))
 					if (M.m_intent == "run")
 						M.pulling = null
 						step(M, M.dir)
@@ -327,8 +327,8 @@
 						M.inertia_dir = 0
 						return
 
-			if(2) //lube
-				if(!istype(M, /mob/living/carbon/metroid))
+			if (2) //lube
+				if (!istype(M, /mob/living/carbon/metroid))
 					M.pulling = null
 					step(M, M.dir)
 					spawn(1) step(M, M.dir)
@@ -374,7 +374,7 @@
 /turf/proc/kill_creatures(mob/U = null)//Will kill people/creatures and damage mechs./N
 //Useful to batch-add creatures to the list.
 	for(var/mob/living/M in src)
-		if(M==U)	continue//Will not harm U. Since null != M, can be excluded to kill everyone.
+		if (M==U)	continue//Will not harm U. Since null != M, can be excluded to kill everyone.
 		spawn(0)
 			M.gib()
 	for(var/obj/mecha/M in src)//Mecha are not gibbed but are damaged.

@@ -14,7 +14,7 @@
 
 /turf/space/levelupdate()
 	for(var/obj/O in src)
-		if(O.level == 1)
+		if (O.level == 1)
 			O.hide(0)
 
 /turf/space/attack_paw(mob/user as mob)
@@ -48,7 +48,7 @@
 
 	if (istype(C, /obj/item/stack/tile/steel))
 		var/obj/lattice/L = locate(/obj/lattice, src)
-		if(L)
+		if (L)
 			del(L)
 			playsound(src.loc, 'Genhit.ogg', 50, 1)
 			C:build(src)
@@ -77,13 +77,13 @@
 		if ((!( M.handcuffed) && M.canmove))
 			var/prob_slip = 5
 			var/mag_eq = 0
-			if(istype(M, /mob/living/carbon/human))
+			if (istype(M, /mob/living/carbon/human))
 				var/mob/living/carbon/human/H = M
-				if(istype(H.shoes, /obj/item/clothing/shoes/magboots) && H.shoes.flags&NOSLIP)
+				if (istype(H.shoes, /obj/item/clothing/shoes/magboots) && H.shoes.flags&NOSLIP)
 					mag_eq = 1
 
 			if (locate(/obj/grille, oview(1, M)) || locate(/obj/lattice, oview(1, M)) )
-				if(mag_eq)
+				if (mag_eq)
 					prob_slip = 0
 				else
 					if (!( M.l_hand ))
@@ -96,7 +96,7 @@
 					else if (M.r_hand.w_class <= 2)
 						prob_slip -= 1
 			else if (locate(/turf/unsimulated, oview(1, M)) || locate(/turf/simulated, oview(1, M)))
-				if(mag_eq)
+				if (mag_eq)
 					prob_slip = 0
 				else
 					if (!( M.l_hand ))
@@ -121,7 +121,7 @@
 			else //not by a wall or anything, they just keep going
 				spawn(5)
 					if ((A && !( A.anchored ) && A.loc == src))
-						if(M.inertia_dir) //they keep moving the same direction
+						if (M.inertia_dir) //they keep moving the same direction
 							step(M, M.inertia_dir)
 						else
 							M.inertia_dir = M.last_move
@@ -129,16 +129,16 @@
 		else //can't move, they just keep going (COPY PASTED CODE WOO)
 			spawn(5)
 				if ((A && !( A.anchored ) && A.loc == src))
-					if(M.inertia_dir) //they keep moving the same direction
+					if (M.inertia_dir) //they keep moving the same direction
 						step(M, M.inertia_dir)
 					else
 						M.inertia_dir = M.last_move
 						step(M, M.inertia_dir) //TODO: DEFERRED
-	if(ticker && ticker.mode)
-		if(ticker.mode.name == "nuclear emergency")
+	if (ticker && ticker.mode)
+		if (ticker.mode.name == "nuclear emergency")
 			return
 
-		else if(ticker.mode.name == "extended"||ticker.mode.name == "sandbox")
+		else if (ticker.mode.name == "extended"||ticker.mode.name == "sandbox")
 
 			var/cur_x
 			var/cur_y
@@ -147,13 +147,13 @@
 			var/target_z
 			var/list/y_arr
 
-			if(src.x <= 1)
-				if(istype(A, /obj/meteor)||istype(A, /obj/space_dust))
+			if (src.x <= 1)
+				if (istype(A, /obj/meteor)||istype(A, /obj/space_dust))
 					del(A)
 					return
 
 				var/list/cur_pos = src.get_global_map_pos()
-				if(!cur_pos) return
+				if (!cur_pos) return
 				cur_x = cur_pos["x"]
 				cur_y = cur_pos["y"]
 				next_x = (--cur_x||global_map.len)
@@ -166,19 +166,19 @@
 				world << "Next X = [next_x]"
 				//debug
 */
-				if(target_z)
+				if (target_z)
 					A.z = target_z
 					A.x = world.maxx - 2
 					spawn (0)
 						if ((A && A.loc))
 							A.loc.Entered(A)
 			else if (src.x >= world.maxx)
-				if(istype(A, /obj/meteor))
+				if (istype(A, /obj/meteor))
 					del(A)
 					return
 
 				var/list/cur_pos = src.get_global_map_pos()
-				if(!cur_pos) return
+				if (!cur_pos) return
 				cur_x = cur_pos["x"]
 				cur_y = cur_pos["y"]
 				next_x = (++cur_x > global_map.len ? 1 : cur_x)
@@ -191,18 +191,18 @@
 				world << "Next X = [next_x]"
 				//debug
 */
-				if(target_z)
+				if (target_z)
 					A.z = target_z
 					A.x = 3
 					spawn (0)
 						if ((A && A.loc))
 							A.loc.Entered(A)
 			else if (src.y <= 1)
-				if(istype(A, /obj/meteor))
+				if (istype(A, /obj/meteor))
 					del(A)
 					return
 				var/list/cur_pos = src.get_global_map_pos()
-				if(!cur_pos) return
+				if (!cur_pos) return
 				cur_x = cur_pos["x"]
 				cur_y = cur_pos["y"]
 				y_arr = global_map[cur_x]
@@ -215,7 +215,7 @@
 				world << "Target Z = [target_z]"
 				//debug
 */
-				if(target_z)
+				if (target_z)
 					A.z = target_z
 					A.y = world.maxy - 2
 					spawn (0)
@@ -223,11 +223,11 @@
 							A.loc.Entered(A)
 
 			else if (src.y >= world.maxy)
-				if(istype(A, /obj/meteor)||istype(A, /obj/space_dust))
+				if (istype(A, /obj/meteor)||istype(A, /obj/space_dust))
 					del(A)
 					return
 				var/list/cur_pos = src.get_global_map_pos()
-				if(!cur_pos) return
+				if (!cur_pos) return
 				cur_x = cur_pos["x"]
 				cur_y = cur_pos["y"]
 				y_arr = global_map[cur_x]
@@ -240,7 +240,7 @@
 				world << "Target Z = [target_z]"
 				//debug
 */
-				if(target_z)
+				if (target_z)
 					A.z = target_z
 					A.y = 3
 					spawn (0)
@@ -252,7 +252,7 @@
 		else
 
 			if (src.x <= 2)
-				if(istype(A, /obj/meteor)||istype(A, /obj/space_dust))
+				if (istype(A, /obj/meteor)||istype(A, /obj/space_dust))
 					del(A)
 					return
 
@@ -260,7 +260,7 @@
 
 				var/move_to_z = text2num(move_to_z_str)
 
-				if(!move_to_z)
+				if (!move_to_z)
 					return
 
 				A.z = move_to_z
@@ -269,7 +269,7 @@
 					if ((A && A.loc))
 						A.loc.Entered(A)
 			else if (A.x >= (world.maxx - 1))
-				if(istype(A, /obj/meteor)||istype(A, /obj/space_dust))
+				if (istype(A, /obj/meteor)||istype(A, /obj/space_dust))
 					del(A)
 					return
 
@@ -277,7 +277,7 @@
 
 				var/move_to_z = text2num(move_to_z_str)
 
-				if(!move_to_z)
+				if (!move_to_z)
 					return
 
 				A.z = move_to_z
@@ -286,7 +286,7 @@
 					if ((A && A.loc))
 						A.loc.Entered(A)
 			else if (src.y <= 2)
-				if(istype(A, /obj/meteor)||istype(A, /obj/space_dust))
+				if (istype(A, /obj/meteor)||istype(A, /obj/space_dust))
 					del(A)
 					return
 
@@ -294,7 +294,7 @@
 
 				var/move_to_z = text2num(move_to_z_str)
 
-				if(!move_to_z)
+				if (!move_to_z)
 					return
 
 				A.z = move_to_z
@@ -304,7 +304,7 @@
 						A.loc.Entered(A)
 
 			else if (A.y >= (world.maxy - 1))
-				if(istype(A, /obj/meteor)||istype(A, /obj/space_dust))
+				if (istype(A, /obj/meteor)||istype(A, /obj/space_dust))
 					del(A)
 					return
 
@@ -312,7 +312,7 @@
 
 				var/move_to_z = text2num(move_to_z_str)
 
-				if(!move_to_z)
+				if (!move_to_z)
 					return
 
 				A.z = move_to_z

@@ -17,7 +17,7 @@
 			usr << text("\red <B>[src.name] looks severely burnt!</B>")
 	if (src.stat == 1)
 		usr << text("\red [src.name] doesn't seem to be responding.")
-	if(opened)
+	if (opened)
 		usr << "The cover is open and the power cell is [ cell ? "installed" : "missing"]."
 	else
 		usr << "The cover is closed."

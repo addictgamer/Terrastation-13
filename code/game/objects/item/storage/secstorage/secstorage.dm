@@ -84,7 +84,7 @@
 			src.overlays = null
 			overlays += image('storage.dmi', icon_locking)
 			locked = 0
-			if(istype(W, /obj/item/weapon/melee/energy/blade))
+			if (istype(W, /obj/item/weapon/melee/energy/blade))
 				var/datum/effects/system/spark_spread/spark_system = new /datum/effects/system/spark_spread()
 				spark_system.set_up(5, 0, src.loc)
 				spark_system.start()
@@ -210,7 +210,7 @@
 			return
 
 		hide_from(mob/user as mob)
-			if(!user.client)
+			if (!user.client)
 				return
 			user.client.screen -= src.boxes
 			user.client.screen -= src.closer

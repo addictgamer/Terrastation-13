@@ -8,7 +8,7 @@
 	var/icon/mob2
 
 	update_icon(var/mob/living/carbon/human/user)
-		if(!istype(user)) return
+		if (!istype(user)) return
 		mob = new/icon("icon" = 'head.dmi', "icon_state" = "kitty")
 		mob2 = new/icon("icon" = 'head.dmi', "icon_state" = "kitty2")
 		mob.Blend(rgb(user.r_hair, user.g_hair, user.b_hair), ICON_ADD)

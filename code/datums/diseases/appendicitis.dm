@@ -16,15 +16,15 @@
 /datum/disease/appendicitis/stage_act()
 	..()
 	switch(stage)
-		if(1)
-			if(prob(5)) affected_mob.emote("cough")
-		if(2)
-			if(prob(3))
+		if (1)
+			if (prob(5)) affected_mob.emote("cough")
+		if (2)
+			if (prob(3))
 				affected_mob << "\red You feel a stabbing pain in your abdomen!"
 				affected_mob.stunned = rand(2,3)
 				affected_mob.toxloss += 1
-		if(3)
-			if(prob(1))
+		if (3)
+			if (prob(1))
 				if (affected_mob.nutrition > 100)
 					affected_mob.stunned = rand(4,6)
 					affected_mob << "\red You throw up!"

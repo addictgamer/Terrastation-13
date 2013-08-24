@@ -25,17 +25,17 @@
 	set desc = "Confuses and disorients all humanoids in a small radius."
 	set category = "Etheral"
 
-	if(stat)
+	if (stat)
 		return
 
 	visible_message("<b>[src]</b> appears to emit strange throbbing waves.")
 
 	for(var/mob/living/carbon/M in view(3, src))
-		if(M == src)
+		if (M == src)
 			continue
-		if(M.confused <= 10)
+		if (M.confused <= 10)
 			M.confused = 10
-		if(M.eye_blurry <= 10)
+		if (M.eye_blurry <= 10)
 			M.eye_blurry = 10
 		M.drop_item()
 		M << "\red <b>SCREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE</b>"
@@ -48,7 +48,7 @@
 	return
 
 /atom/attack_alien(mob/user as mob)
-	if(istype(user, /mob/living/carbon/alien/humanoid/special/etheral))
+	if (istype(user, /mob/living/carbon/alien/humanoid/special/etheral))
 		attack_ai(user)
 		return
 	..()

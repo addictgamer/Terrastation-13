@@ -3,7 +3,7 @@
 	var/datum/reagents/R = new/datum/reagents(100)
 	reagents = R
 	R.my_atom = src
-	if(src.name == "alien drone")
+	if (src.name == "alien drone")
 		src.name = text("alien drone ([rand(1, 1000)])")
 	src.real_name = src.name
 	spawn (1)
@@ -23,7 +23,7 @@
 	set desc = "Produce an interal egg sac capable of spawning children"
 	set category = "Alien"
 
-	if(powerc(500))
+	if (powerc(500))
 		toxloss -= 500
 		src << "\green You begin to evolve!"
 		for(var/mob/O in viewers(src, null))
@@ -40,7 +40,7 @@
 	set desc = "Produce a wall of resin that blocks entry and line of sight"
 	set category = "Alien"
 
-	if(powerc(100))
+	if (powerc(100))
 		toxloss -= 100
 		src << "\green You begin to shape a wall of resin."
 		for(var/mob/O in viewers(src, null))

@@ -49,7 +49,7 @@
 	var/tburn = 0
 	var/tbrute = 0
 
-	if(burn_dam ==0)
+	if (burn_dam ==0)
 		tburn =0
 	else if (src.burn_dam < (src.max_damage * 0.25 / 2))
 		tburn = 1

@@ -39,12 +39,12 @@
 				if (istype(B,/obj))
 					if (!B:anchored && prob(50))
 						step_towards(B,src)
-						if(prob(10)) B:ex_act(3.0)
+						if (prob(10)) B:ex_act(3.0)
 					else
 						B:anchored = 0
 						//step_towards(B,src)
 						//B:anchored = 1
-						if(prob(10)) B:ex_act(3.0)
+						if (prob(10)) B:ex_act(3.0)
 				else if (istype(B,/turf))
 					if (istype(B,/turf/simulated) && (prob(1) && prob(75)))
 						src.smoke.start()
@@ -55,12 +55,12 @@
 				if (istype(A,/obj))
 					if (!A:anchored && prob(90))
 						step_towards(A,src)
-						if(prob(30)) A:ex_act(2.0)
+						if (prob(30)) A:ex_act(2.0)
 					else
 						A:anchored = 0
 						//step_towards(A,src)
 						//A:anchored = 1
-						if(prob(30)) A:ex_act(2.0)
+						if (prob(30)) A:ex_act(2.0)
 				else if (istype(A,/turf))
 					if (istype(A,/turf/simulated) && prob(1))
 						src.smoke.start()

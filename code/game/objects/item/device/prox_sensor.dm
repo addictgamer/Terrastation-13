@@ -38,14 +38,14 @@
 
 	Process_cooldown()
 		src.cooldown--
-		if(src.cooldown <= 0)	return 0
+		if (src.cooldown <= 0)	return 0
 		spawn(10)
 			src.Process_cooldown()
 		return 1
 
 
 	Activate()
-		if((!secured) || (cooldown > 0))
+		if ((!secured) || (cooldown > 0))
 			return 0
 		cooldown = 2
 		src.timing = !src.timing
@@ -56,33 +56,33 @@
 
 
 	Secure()
-		if(secured)	return 0
+		if (secured)	return 0
 		secured = 1
 		processing_objects.Add(src)//removal is taken care of it process()
 		return 1
 
 
 	Unsecure()
-		if(!secured)	return 0
+		if (!secured)	return 0
 		secured = 0
 		return 1
 
 
 	Attach_Assembly(var/obj/A, var/mob/user)
 		holder = new/obj/item/device/assembly_holder(get_turf(src))
-		if(holder:attach(A,src,user))
+		if (holder:attach(A,src,user))
 			user.show_message("\blue You attach the [A.name] to the [src.name]!")
 			return 1
 		return 0
 
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(W.IsAssembly())
+		if (W.IsAssembly())
 			var/obj/item/device/D = W
-			if((!D:secured) && (!src.secured))
+			if ((!D:secured) && (!src.secured))
 				Attach_Assembly(D,user)
-		if(isscrewdriver(W))
-			if(src.secured)
+		if (isscrewdriver(W))
+			if (src.secured)
 				Unsecure()
 				user.show_message("\blue The [src.name] can now be attached!")
 			else
@@ -103,8 +103,8 @@
 
 
 	sense()
-		if((!secured)||(!scanning)||(cooldown > 0))	return 0
-		if((holder)&&(holder.IsAssemblyHolder()))
+		if ((!secured)||(!scanning)||(cooldown > 0))	return 0
+		if ((holder)&&(holder.IsAssemblyHolder()))
 			spawn(0)
 				holder:Process_Activation(src)
 				return
@@ -117,15 +117,15 @@
 
 
 	process()
-		if((src.timing) && (src.time >= 0))
+		if ((src.timing) && (src.time >= 0))
 			src.time--
-			if(src.time <= 0)
+			if (src.time <= 0)
 				src.timing = 0
 				src.time = 0
 				toggle_scan()
 
-		if(!secured)
-			if(scanning)
+		if (!secured)
+			if (scanning)
 				scanning = 0
 				src.timing = 0
 			processing_objects.Remove(src)
@@ -141,7 +141,7 @@
 
 
 	toggle_scan()
-		if(!secured)	return 0
+		if (!secured)	return 0
 		scanning = !scanning
 		update_icon()
 
@@ -149,13 +149,13 @@
 	update_icon()
 		src.overlays = null
 		src.small_icon_state_overlays = list()
-		if(timing)
+		if (timing)
 			src.overlays += text("prox_timing")
 			src.small_icon_state_overlays += text("prox_timing")
-		if(scanning)
+		if (scanning)
 			src.overlays += text("prox_scanning")
 			src.small_icon_state_overlays += text("prox_scanning")
-		if(holder)
+		if (holder)
 			holder.update_icon()
 		return
 
@@ -178,7 +178,7 @@
 
 
 	attack_self(mob/user as mob)
-		if(!secured)
+		if (!secured)
 			user.show_message("\red The [src.name] is unsecured!")
 			return 0
 		var/second = src.time % 60
@@ -194,7 +194,7 @@
 
 	Topic(href, href_list)
 		..()
-		if(get_dist(src, usr) <= 1)
+		if (get_dist(src, usr) <= 1)
 			if (href_list["scanning"])
 				toggle_scan()
 
@@ -211,7 +211,7 @@
 				usr << browse(null, "window=prox")
 				return
 
-			if(usr)
+			if (usr)
 				src.attack_self(usr)
 
 		else

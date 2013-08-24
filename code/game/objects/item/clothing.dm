@@ -14,7 +14,7 @@ THERMAL GLASSES
 
 /*
 /obj/item/clothing/fire_burn(obj/fire/raging_fire, datum/air_group/environment)
-	if(raging_fire.internal_temperature > src.s_fire)
+	if (raging_fire.internal_temperature > src.s_fire)
 		spawn( 0 )
 			var/t = src.icon_state
 			src.icon_state = ""
@@ -75,14 +75,14 @@ THERMAL GLASSES
 /obj/item/clothing/head/cakehat/var/processing = 0
 
 /obj/item/clothing/head/cakehat/process()
-	if(!onfire)
+	if (!onfire)
 		processing_objects.Remove(src)
 		return
 
 	var/turf/location = src.loc
-	if(istype(location, /mob/))
+	if (istype(location, /mob/))
 		var/mob/living/carbon/human/M = location
-		if(M.l_hand == src || M.r_hand == src || M.head == src)
+		if (M.l_hand == src || M.r_hand == src || M.head == src)
 			location = M.loc
 
 	if (istype(location, /turf))
@@ -90,7 +90,7 @@ THERMAL GLASSES
 
 
 /obj/item/clothing/head/cakehat/attack_self(mob/user as mob)
-	if(status > 1)	return
+	if (status > 1)	return
 	src.onfire = !( src.onfire )
 	if (src.onfire)
 		src.force = 3
@@ -138,13 +138,13 @@ THERMAL GLASSES
 /obj/item/clothing/under/chameleon/attackby(obj/item/clothing/under/U as obj, mob/user as mob)
 	..()
 
-	if(istype(U, /obj/item/clothing/under/chameleon))
+	if (istype(U, /obj/item/clothing/under/chameleon))
 		user << "\red Nothing happens."
 		return
 
-	if(istype(U, /obj/item/clothing/under))
+	if (istype(U, /obj/item/clothing/under))
 
-		if(src.clothing_choices.Find(U))
+		if (src.clothing_choices.Find(U))
 			user << "\red Pattern is already recognised by the suit."
 			return
 
@@ -157,7 +157,7 @@ THERMAL GLASSES
 	set category = "Object"
 	set src in usr
 
-	if(icon_state == "psyche")
+	if (icon_state == "psyche")
 		usr << "\red Your suit is malfunctioning"
 		return
 
@@ -165,7 +165,7 @@ THERMAL GLASSES
 
 	A = input("Select Colour to change it to", "BOOYEA", A) in clothing_choices
 
-	if(!A)
+	if (!A)
 		return
 
 	desc = null
@@ -211,23 +211,23 @@ THERMAL GLASSES
 	var/mob/M = usr
 	if (istype(M, /mob/dead/)) return
 	if (usr.stat) return
-	if(src.has_sensor >= 2)
+	if (src.has_sensor >= 2)
 		usr << "The controls are locked."
 		return 0
-	if(src.has_sensor <= 0)
+	if (src.has_sensor <= 0)
 		usr << "This suit does not have any sensors"
 		return 0
 	src.sensor_mode += 1
-	if(src.sensor_mode > 3)
+	if (src.sensor_mode > 3)
 		src.sensor_mode = 0
 	switch(src.sensor_mode)
-		if(0)
+		if (0)
 			usr << "You disable your suit's remote sensing equipment."
-		if(1)
+		if (1)
 			usr << "Your suit will now report whether you are live or dead."
-		if(2)
+		if (2)
 			usr << "Your suit will now report your vital lifesigns."
-		if(3)
+		if (3)
 			usr << "Your suit will now report your vital lifesigns as well as your coordinate position."
 	..()
 
@@ -235,20 +235,20 @@ THERMAL GLASSES
 	set src in view()
 	..()
 	switch(src.sensor_mode)
-		if(0)
+		if (0)
 			usr << "Its sensors appear to be disabled."
-		if(1)
+		if (1)
 			usr << "Its binary life sensors appear to be enabled."
-		if(2)
+		if (2)
 			usr << "Its vital tracker appears to be enabled."
-		if(3)
+		if (3)
 			usr << "Its vital tracker and tracking beacon appear to be enabled."
 
 
 /obj/item/clothing/head/helmet/welding/verb/toggle()
 	set category = "Object"
 	set name = "Adjust welding mask"
-	if(src.up)
+	if (src.up)
 		src.up = !src.up
 		src.see_face = !src.see_face
 		src.flags |= HEADCOVERSEYES
@@ -264,7 +264,7 @@ THERMAL GLASSES
 /obj/item/clothing/shoes/magboots/verb/toggle()
 	set name = "Toggle Magboots"
 	set category = "Object"
-	if(src.magpulse)
+	if (src.magpulse)
 		src.flags &= ~NOSLIP
 		src.slowdown = SHOES_SLOWDOWN
 		src.magpulse = 0
@@ -281,18 +281,18 @@ THERMAL GLASSES
 	set src in view()
 	..()
 	var/state = "disabled"
-	if(src.flags&NOSLIP)
+	if (src.flags&NOSLIP)
 		state = "enabled"
 	usr << "Its mag-pulse traction system appears to be [state]."
 
 /obj/item/clothing/suit/suit/verb/toggle()
 	set name = "Toggle Jacket Buttons"
 	set category = "Object"
-	if(src.icon_state == "suitjacket_blue_open")
+	if (src.icon_state == "suitjacket_blue_open")
 		src.icon_state = "suitjacket_blue"
 		src.item_state = "suitjacket_blue"
 		usr << "You button up the suit jacket."
-	else if(src.icon_state == "suitjacket_blue")
+	else if (src.icon_state == "suitjacket_blue")
 		src.icon_state = "suitjacket_blue_open"
 		src.item_state = "suitjacket_blue_open"
 		usr << "You unbutton the suit jacket."
@@ -302,46 +302,46 @@ THERMAL GLASSES
 /obj/item/clothing/suit/labcoat/verb/toggle()
 	set name = "Toggle Labcoat Buttons"
 	set category = "Object"
-	if(src.icon_state == "labcoat_open")
+	if (src.icon_state == "labcoat_open")
 		src.icon_state = "labcoat"
 		usr << "You button up the labcoat."
-	else if(src.icon_state == "labcoat")
+	else if (src.icon_state == "labcoat")
 		src.icon_state = "labcoat_open"
 		usr << "You unbutton the labcoat."
-	else if(src.icon_state == "labcoat_cmo_open")
+	else if (src.icon_state == "labcoat_cmo_open")
 		src.icon_state = "labcoat_cmo"
 		usr << "You button up the labcoat."
-	else if(src.icon_state == "labcoat_cmo")
+	else if (src.icon_state == "labcoat_cmo")
 		src.icon_state = "labcoat_cmo_open"
 		usr << "You unbutton the labcoat."
-	else if(src.icon_state == "labcoat_gen_open")
+	else if (src.icon_state == "labcoat_gen_open")
 		src.icon_state = "labcoat_gen"
 		usr << "You button up the labcoat."
-	else if(src.icon_state == "labcoat_gen")
+	else if (src.icon_state == "labcoat_gen")
 		src.icon_state = "labcoat_gen_open"
 		usr << "You unbutton the labcoat."
-	else if(src.icon_state == "labcoat_chem_open")
+	else if (src.icon_state == "labcoat_chem_open")
 		src.icon_state = "labcoat_chem"
 		usr << "You button up the labcoat."
-	else if(src.icon_state == "labcoat_chem")
+	else if (src.icon_state == "labcoat_chem")
 		src.icon_state = "labcoat_chem_open"
 		usr << "You unbutton the labcoat."
-	else if(src.icon_state == "labcoat_vir_open")
+	else if (src.icon_state == "labcoat_vir_open")
 		src.icon_state = "labcoat_vir"
 		usr << "You button up the labcoat."
-	else if(src.icon_state == "labcoat_vir")
+	else if (src.icon_state == "labcoat_vir")
 		src.icon_state = "labcoat_vir_open"
 		usr << "You unbutton the labcoat."
-	else if(src.icon_state == "labcoat_tox_open")
+	else if (src.icon_state == "labcoat_tox_open")
 		src.icon_state = "labcoat_tox"
 		usr << "You button up the labcoat."
-	else if(src.icon_state == "labcoat_tox")
+	else if (src.icon_state == "labcoat_tox")
 		src.icon_state = "labcoat_tox_open"
 		usr << "You unbutton the labcoat."
-	else if(src.icon_state == "labgreen_open")
+	else if (src.icon_state == "labgreen_open")
 		src.icon_state = "labgreen"
 		usr << "You button up the labcoat."
-	else if(src.icon_state == "labgreen")
+	else if (src.icon_state == "labgreen")
 		src.icon_state = "labgreen_open"
 		usr << "You unbutton the labcoat."
 
@@ -349,7 +349,7 @@ THERMAL GLASSES
 		usr << "Sorry! The suit you're wearing doesn't have buttons!"
 
 /obj/item/clothing/head/ushanka/attack_self(mob/user as mob)
-	if(src.icon_state == "ushankadown")
+	if (src.icon_state == "ushankadown")
 		src.icon_state = "ushankaup"
 		src.item_state = "ushankaup"
 		user << "You raise the ear flaps on the ushanka."
@@ -360,10 +360,10 @@ THERMAL GLASSES
 
 
 /obj/item/clothing/glasses/thermal/emp_act(severity)
-	if(istype(src.loc, /mob/living/carbon/human))
+	if (istype(src.loc, /mob/living/carbon/human))
 		var/mob/living/carbon/human/M = src.loc
 		M << "\red The Optical Thermal Scanner overloads and blinds you!"
-		if(M.glasses == src)
+		if (M.glasses == src)
 			M.eye_blind = 3
 			M.eye_blurry = 5
 			M.disabilities |= 1

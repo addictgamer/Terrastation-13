@@ -9,11 +9,11 @@
 	layer = 4
 
 	CanPass(atom/A, turf/T)
-		if(istype(A) && A.checkpass(PASSGLASS))
+		if (istype(A) && A.checkpass(PASSGLASS))
 			return prob(60)
-		else if(istype(A, /mob/living)) // You Shall Not Pass!
+		else if (istype(A, /mob/living)) // You Shall Not Pass!
 			var/mob/living/M = A
-			if(!M.lying)			// unless you're lying down
+			if (!M.lying)			// unless you're lying down
 				return 0
 		return ..()
 

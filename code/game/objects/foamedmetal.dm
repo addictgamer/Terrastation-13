@@ -31,7 +31,7 @@
 		del(src)
 
 	bullet_act()
-		if(metal==1 || prob(50))
+		if (metal==1 || prob(50))
 			del(src)
 
 	attack_paw(var/mob/user)
@@ -59,7 +59,7 @@
 			del(I)
 			del(src)
 			return
-		if(prob(I.force*20 - metal*25))
+		if (prob(I.force*20 - metal*25))
 			user << "\blue You smash through the foamed metal with \the [I]."
 			for(var/mob/O in oviewers(user))
 				if ((O.client && !( O.blinded )))
@@ -74,7 +74,7 @@
 
 	proc
 		updateicon()
-			if(metal == 1)
+			if (metal == 1)
 				icon_state = "metalfoam"
 			else
 				icon_state = "ironfoam"
@@ -82,42 +82,42 @@
 	// shouldn't this be a general procedure?
 	// not sure if this neccessary or overkill
 		update_nearby_tiles(need_rebuild)
-			if(!air_master) return 0
+			if (!air_master) return 0
 			var/turf/simulated/source = loc
 			var/turf/simulated/north = get_step(source,NORTH)
 			var/turf/simulated/south = get_step(source,SOUTH)
 			var/turf/simulated/east = get_step(source,EAST)
 			var/turf/simulated/west = get_step(source,WEST)
-			if(need_rebuild)
-				if(istype(source)) //Rebuild/update nearby group geometry
-					if(source.parent)
+			if (need_rebuild)
+				if (istype(source)) //Rebuild/update nearby group geometry
+					if (source.parent)
 						air_master.groups_to_rebuild += source.parent
 					else
 						air_master.tiles_to_update += source
-				if(istype(north))
-					if(north.parent)
+				if (istype(north))
+					if (north.parent)
 						air_master.groups_to_rebuild += north.parent
 					else
 						air_master.tiles_to_update += north
-				if(istype(south))
-					if(south.parent)
+				if (istype(south))
+					if (south.parent)
 						air_master.groups_to_rebuild += south.parent
 					else
 						air_master.tiles_to_update += south
-				if(istype(east))
-					if(east.parent)
+				if (istype(east))
+					if (east.parent)
 						air_master.groups_to_rebuild += east.parent
 					else
 						air_master.tiles_to_update += east
-				if(istype(west))
-					if(west.parent)
+				if (istype(west))
+					if (west.parent)
 						air_master.groups_to_rebuild += west.parent
 					else
 						air_master.tiles_to_update += west
 			else
-				if(istype(source)) air_master.tiles_to_update += source
-				if(istype(north)) air_master.tiles_to_update += north
-				if(istype(south)) air_master.tiles_to_update += south
-				if(istype(east)) air_master.tiles_to_update += east
-				if(istype(west)) air_master.tiles_to_update += west
+				if (istype(source)) air_master.tiles_to_update += source
+				if (istype(north)) air_master.tiles_to_update += north
+				if (istype(south)) air_master.tiles_to_update += south
+				if (istype(east)) air_master.tiles_to_update += east
+				if (istype(west)) air_master.tiles_to_update += west
 			return 1

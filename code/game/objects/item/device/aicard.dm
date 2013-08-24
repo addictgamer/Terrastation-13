@@ -11,7 +11,7 @@
 
 
 	attack(mob/living/silicon/ai/M as mob, mob/user as mob)
-		if(!istype(M, /mob/living/silicon/ai))//If target is not an AI.
+		if (!istype(M, /mob/living/silicon/ai))//If target is not an AI.
 			return ..()
 
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been carded with [src.name] by [user.name] ([user.ckey])</font>")
@@ -93,8 +93,8 @@
 
 			if ("Wipe")
 				var/confirm = alert("Are you sure you want to wipe this card's memory? This cannot be undone once started.", "Confirm Wipe", "Yes", "No")
-				if(confirm == "Yes")
-					if(isnull(src)||!in_range(src, U)||U.machine!=src)
+				if (confirm == "Yes")
+					if (isnull(src)||!in_range(src, U)||U.machine!=src)
 						U << browse(null, "window=aicard")
 						U.machine = null
 						return

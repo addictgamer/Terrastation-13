@@ -11,7 +11,7 @@
 	proc
 		manifest(var/nosleep = 0)
 			spawn()
-				if(!nosleep)
+				if (!nosleep)
 					sleep(40)
 				for(var/mob/living/carbon/human/H in world)
 					if (!isnull(H.mind) && (H.mind.assigned_role != "MODE"))
@@ -23,7 +23,7 @@
 						if (C)
 							G.fields["rank"] = C.assignment
 						else
-							if(H.job)
+							if (H.job)
 								G.fields["rank"] = H.job
 							else
 								G.fields["rank"] = "Unassigned"
@@ -82,11 +82,11 @@
 			var/datum/data/record/foundrecord
 
 			for(var/datum/data/record/t in data_core.general)
-				if(t.fields["name"] == name)
+				if (t.fields["name"] == name)
 					foundrecord = t
 					break
 
-			if(foundrecord)
+			if (foundrecord)
 				foundrecord.fields["rank"] = assignment
 
 		manifest_inject(var/mob/living/carbon/human/H)
@@ -99,7 +99,7 @@
 				if (C)
 					G.fields["rank"] = C.assignment
 				else
-					if(H.job)
+					if (H.job)
 						G.fields["rank"] = H.job
 					else
 						G.fields["rank"] = "Unassigned"

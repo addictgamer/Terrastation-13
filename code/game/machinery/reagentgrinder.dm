@@ -108,7 +108,7 @@
 
 
 /obj/machinery/reagentgrinder/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	usr.machine = src
 	switch(href_list["action"])
@@ -169,7 +169,7 @@
 
 /obj/machinery/reagentgrinder/proc/grind()
 	power_change()
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 	if (!beaker || beaker.reagents.total_volume >= beaker.reagents.maximum_volume)
 		return

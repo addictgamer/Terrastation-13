@@ -60,7 +60,7 @@
 				user << "\blue You removed the support rods."
 			W:welding = 1
 
-	else if(istype(W, /obj/item/weapon/pickaxe/plasmacutter))
+	else if (istype(W, /obj/item/weapon/pickaxe/plasmacutter))
 		var/turf/T = user.loc
 		if (!( istype(T, /turf) ))
 			return
@@ -99,7 +99,7 @@
 				new /obj/item/stack/rods( src )
 				user << "\blue You removed the support rods."
 
-	else if(istype(W, /obj/item/weapon/melee/energy/blade))
+	else if (istype(W, /obj/item/weapon/melee/energy/blade))
 		user << "\blue This wall is too thick to slice through. You will need to find a different path."
 		return
 
@@ -172,12 +172,12 @@
 			else
 				del(W)
 
-	if(istype(W,/obj/item/apc_frame))
+	if (istype(W,/obj/item/apc_frame))
 		var/obj/item/apc_frame/AH = W
 		AH.try_build(src)
 		return
 
-	if(src.d_state > 0)
+	if (src.d_state > 0)
 		src.icon_state = "r_wall-[d_state]"
 
 	else

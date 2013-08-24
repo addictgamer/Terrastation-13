@@ -54,21 +54,21 @@ var/global/list/cached_icons = list()
 		if ((user.equipped() != src || user.stat || user.restrained()))
 			return
 		switch(t1)
-			if("red")
+			if ("red")
 				color = "FF0000"
-			if("blue")
+			if ("blue")
 				color = "0000FF"
-			if("green")
+			if ("green")
 				color = "00FF00"
-			if("yellow")
+			if ("yellow")
 				color = "FFFF00"
 	/*
-			if("violet")
+			if ("violet")
 				color = "FF00FF"
 	*/
-			if("white")
+			if ("white")
 				color = "FFFFFF"
-			if("black")
+			if ("black")
 				color = "333333"
 		icon_state = "paint_[t1]"
 		add_fingerprint(user)
@@ -76,10 +76,10 @@ var/global/list/cached_icons = list()
 
 
 /obj/item/weapon/paint/afterattack(turf/target, mob/user as mob)
-	if(!istype(target) || istype(target, /turf/space))
+	if (!istype(target) || istype(target, /turf/space))
 		return
 	var/ind = "[initial(target.icon)][color]"
-	if(!cached_icons[ind])
+	if (!cached_icons[ind])
 		var/icon/overlay = new/icon(initial(target.icon))
 		overlay.Blend("#[color]",ICON_MULTIPLY)
 		overlay.SetIntensity(1.4)
@@ -94,6 +94,6 @@ var/global/list/cached_icons = list()
 	icon_state = "paint_neutral"
 
 	afterattack(turf/target, mob/user as mob)
-		if(istype(target) && target.icon != initial(target.icon))
+		if (istype(target) && target.icon != initial(target.icon))
 			target.icon = initial(target.icon)
 		return

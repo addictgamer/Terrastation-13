@@ -21,7 +21,7 @@
 */
 
 /obj/item/weapon/reagent_containers/hypospray/attack(mob/M as mob, mob/user as mob)
-	if(!reagents.total_volume)
+	if (!reagents.total_volume)
 		user << "\red The hypospray is empty."
 		return
 	if (!( istype(M, /mob) ))
@@ -33,7 +33,7 @@
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been injected with [src.name] by [user.name] ([user.ckey])</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to inject [M.name] ([M.ckey])</font>")
 		src.reagents.reaction(M, INGEST)
-		if(M.reagents)
+		if (M.reagents)
 			var/trans = reagents.trans_to(M, amount_per_transfer_from_this)
 			user << "\blue [trans] units injected.  [reagents.total_volume] units remaining in the hypospray."
 	return

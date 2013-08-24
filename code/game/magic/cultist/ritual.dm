@@ -21,7 +21,7 @@ var
 			set category = "Special Verbs"
 			set name = "Check Rune Words"
 			set desc = "Check the rune-word meaning"
-			if(!wordtravel)
+			if (!wordtravel)
 				runerandom()
 			usr << "[wordtravel] is travel, [wordblood] is blood, [wordjoin] is join, [wordhell] is Hell, [worddestr] is destroy, [wordtech] is technology, [wordself] is self, [wordsee] is see, [wordother] is other, [wordhide] is hide."
 

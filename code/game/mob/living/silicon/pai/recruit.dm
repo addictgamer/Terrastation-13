@@ -20,12 +20,12 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 	var/askDelay = 10 * 60 * 1	// One minute [ms * sec * min]
 
 	Topic(href, href_list[])
-		if(href_list["download"])
+		if (href_list["download"])
 			var/datum/paiCandidate/candidate = locate(href_list["candidate"])
 			var/obj/item/device/paicard/card = locate(href_list["device"])
-			if(card.pai)
+			if (card.pai)
 				return
-			if(card && candidate)
+			if (card && candidate)
 				var/mob/living/silicon/pai/pai = new(card)
 				pai.name = candidate.name
 				pai.real_name = pai.name
@@ -34,29 +34,29 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 				card.looking_for_personality = 0
 				pai_candidates.Remove(candidate)
 				usr << browse(null, "window=findPai")
-		if(href_list["new"])
+		if (href_list["new"])
 			var/datum/paiCandidate/candidate = locate(href_list["candidate"])
 			var/option = href_list["option"]
 			switch(option)
-				if("name")
+				if ("name")
 					candidate.name = input("Enter a name for your pAI", "pAI Name", candidate.name) as text
-				if("desc")
+				if ("desc")
 					candidate.description = input("Enter a description for your pAI", "pAI Description", candidate.description) as message
-				if("role")
+				if ("role")
 					candidate.role = input("Enter a role for your pAI", "pAI Role", candidate.role) as text
-				if("ooc")
+				if ("ooc")
 					candidate.comments = input("Enter any OOC comments", "pAI OOC Comments", candidate.comments) as message
 
-				if("save")
+				if ("save")
 					candidate.savefile_save(usr)
-				if("load")
+				if ("load")
 					candidate.savefile_load(usr)
 
-				if("submit")
-					if(candidate)
+				if ("submit")
+					if (candidate)
 						candidate.ready = 1
 						for(var/obj/item/device/paicard/p in world)
-							if(p.looking_for_personality == 1)
+							if (p.looking_for_personality == 1)
 								p.alertUpdate()
 					usr << browse(null, "window=paiRecruit")
 					return
@@ -65,9 +65,9 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 	proc/recruitWindow(var/mob/M as mob)
 		var/datum/paiCandidate/candidate
 		for(var/datum/paiCandidate/c in pai_candidates)
-			if(c.key == M.key)
+			if (c.key == M.key)
 				candidate = c
-		if(!candidate)
+		if (!candidate)
 			candidate = new /datum/paiCandidate()
 			candidate.key = M.key
 			pai_candidates.Add(candidate)
@@ -117,12 +117,12 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 		requestRecruits()
 		var/list/available = list()
 		for(var/datum/paiCandidate/c in paiController.pai_candidates)
-			if(c.ready)
+			if (c.ready)
 				var/found = 0
 				for(var/mob/dead/observer/o in world)
-					if(o.key == c.key)
+					if (o.key == c.key)
 						found = 1
-				if(found)
+				if (found)
 					available.Add(c)
 		var/dat = ""
 
@@ -161,26 +161,26 @@ var/datum/paiController/paiController			// Global handler for pAI candidates
 
 	proc/requestRecruits()
 		for(var/mob/dead/observer/O in world)
-			if(jobban_isbanned(O, "pAI"))
+			if (jobban_isbanned(O, "pAI"))
 				continue
-			if(asked.Find(O.key))
-				if(world.time < asked[O.key] + askDelay)
+			if (asked.Find(O.key))
+				if (world.time < asked[O.key] + askDelay)
 					continue
 				else
 					asked.Remove(O.key)
-			if(O.client)
+			if (O.client)
 				var/hasSubmitted = 0
 				for(var/datum/paiCandidate/c in paiController.pai_candidates)
-					if(c.key == O.key)
+					if (c.key == O.key)
 						hasSubmitted = 1
-				if(!hasSubmitted && O.client.be_pai)
+				if (!hasSubmitted && O.client.be_pai)
 					spawn question(O.client)
 
 	proc/question(var/client/C)
 		asked.Add(C.key)
 		asked[C.key] = world.time
 		var/response = alert(C, "Someone is requesting a pAI personality. Would you like to play as a personal AI?", "pAI Request", "Yes", "No", "Never for this round")
-		if(response == "Yes")
+		if (response == "Yes")
 			recruitWindow(C.mob)
 		else if (response == "Never for this round")
 			C.be_pai = 0

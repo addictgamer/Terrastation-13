@@ -32,7 +32,7 @@
 		..()
 		if (!(usr in view(2)) && usr!=src.loc) return
 		usr << "\blue It contains:"
-		if(reagents && reagents.reagent_list.len)
+		if (reagents && reagents.reagent_list.len)
 			for(var/datum/reagent/R in reagents.reagent_list)
 				usr << "\blue [R.volume] units of [R.name]"
 		else
@@ -40,35 +40,35 @@
 
 	afterattack(obj/target, mob/user , flag)
 		for(var/type in src.can_be_placed_into)
-			if(istype(target, type))
+			if (istype(target, type))
 				return
 
-		if(ismob(target) && target.reagents && reagents.total_volume)
+		if (ismob(target) && target.reagents && reagents.total_volume)
 			user << "\blue You splash the solution onto [target]."
 			for(var/mob/O in viewers(world.view, user))
 				O.show_message(text("\red [] has been splashed with something by []!", target, user), 1)
 			src.reagents.reaction(target, TOUCH)
 			spawn(5) src.reagents.clear_reagents()
 			return
-		else if(istype(target, /obj/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
+		else if (istype(target, /obj/reagent_dispensers)) //A dispenser. Transfer FROM it TO us.
 
-			if(!target.reagents.total_volume && target.reagents)
+			if (!target.reagents.total_volume && target.reagents)
 				user << "\red [target] is empty."
 				return
 
-			if(reagents.total_volume >= reagents.maximum_volume)
+			if (reagents.total_volume >= reagents.maximum_volume)
 				user << "\red [src] is full."
 				return
 
 			var/trans = target.reagents.trans_to(src, target:amount_per_transfer_from_this)
 			user << "\blue You fill [src] with [trans] units of the contents of [target]."
 
-		else if(target.is_open_container() && target.reagents) //Something like a glass. Player probably wants to transfer TO it.
-			if(!reagents.total_volume)
+		else if (target.is_open_container() && target.reagents) //Something like a glass. Player probably wants to transfer TO it.
+			if (!reagents.total_volume)
 				user << "\red [src] is empty."
 				return
 
-			if(target.reagents.total_volume >= target.reagents.maximum_volume)
+			if (target.reagents.total_volume >= target.reagents.maximum_volume)
 				user << "\red [target] is full."
 				return
 
@@ -76,10 +76,10 @@
 			user << "\blue You transfer [trans] units of the solution to [target]."
 
 		//Safety for dumping stuff into a ninja suit. It handles everything through attackby() and this is unnecessary.
-		else if(istype(target, /obj/item/clothing/suit/space/space_ninja))
+		else if (istype(target, /obj/item/clothing/suit/space/space_ninja))
 			return
 
-		else if(reagents.total_volume)
+		else if (reagents.total_volume)
 			user << "\blue You splash the solution onto [target]."
 			src.reagents.reaction(target, TOUCH)
 			spawn(5) src.reagents.clear_reagents()

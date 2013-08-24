@@ -5,7 +5,7 @@
 	slowdown = 1.5
 
 /obj/item/powerarmor/power/nuclear/process()
-	if(!crit_fail)
+	if (!crit_fail)
 		if (prob(src.reliability)) return 1 //No failure
 		if (prob(src.reliability))
 			for (var/mob/M in range(0,src.parent)) //Only a minor failure, enjoy your radiation.

@@ -20,7 +20,7 @@
 		return
 
 	attackby(obj/item/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/device/destTagger))
+		if (istype(W, /obj/item/device/destTagger))
 			var/obj/item/device/destTagger/O = W
 			user << "\blue *TAGGED*"
 			src.sortTag = O.currTag
@@ -44,7 +44,7 @@
 		return
 
 	attackby(obj/item/W as obj, mob/user as mob)
-		if(istype(W, /obj/item/device/destTagger))
+		if (istype(W, /obj/item/device/destTagger))
 			var/obj/item/device/destTagger/O = W
 			user << "\blue *TAGGED*"
 			src.sortTag = O.currTag
@@ -134,7 +134,7 @@
 
 	Topic(href, href_list)
 		src.add_fingerprint(usr)
-		if(href_list["nextTag"])
+		if (href_list["nextTag"])
 			var/n = text2num(href_list["nextTag"])
 			src.currTag = n
 		src.updateUsrDialog()
@@ -187,13 +187,13 @@
 											// travels through the pipes.
 		for(var/obj/bigDelivery/O in src)
 			deliveryCheck = 1
-			if(O.sortTag == 0)
+			if (O.sortTag == 0)
 				O.sortTag = 1
 		for(var/obj/item/smallDelivery/O in src)
 			deliveryCheck = 1
 			if (O.sortTag == 0)
 				O.sortTag = 1
-		if(deliveryCheck == 0)
+		if (deliveryCheck == 0)
 			H.destinationTag = 1
 
 
@@ -210,7 +210,7 @@
 		flushing = 0
 		// now reset disposal state
 		flush = 0
-		if(mode == 2)	// if was ready,
+		if (mode == 2)	// if was ready,
 			mode = 1	// switch to charging
 		update()
 		return

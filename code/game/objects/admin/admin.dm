@@ -25,13 +25,13 @@
 		log_admin("[key_name(usr)] tried to use the admin panel without authorization.")
 		return
 
-	if(href_list["call_shuttle"])
+	if (href_list["call_shuttle"])
 		if (src.rank in list("Trial Admin", "Badmin", "Game Admin", "Game Master"))
-			if( ticker.mode.name == "blob" )
+			if ( ticker.mode.name == "blob" )
 				alert("You can't call the shuttle during blob!")
 				return
 			switch(href_list["call_shuttle"])
-				if("1")
+				if ("1")
 					if ((!( ticker ) || emergency_shuttle.location))
 						return
 					emergency_shuttle.incall()
@@ -39,16 +39,16 @@
 					log_admin("[key_name(usr)] called the Emergency Shuttle")
 					message_admins("\blue [key_name_admin(usr)] called the Emergency Shuttle to the station", 1)
 
-				if("2")
+				if ("2")
 					if ((!( ticker ) || emergency_shuttle.location || emergency_shuttle.direction == 0))
 						return
 					switch(emergency_shuttle.direction)
-						if(-1)
+						if (-1)
 							emergency_shuttle.incall()
 							world << "\blue <B>Alert: The emergency shuttle has been called. It will arrive in [round(emergency_shuttle.timeleft()/60)] minutes.</B>"
 							log_admin("[key_name(usr)] called the Emergency Shuttle")
 							message_admins("\blue [key_name_admin(usr)] called the Emergency Shuttle to the station", 1)
-						if(1)
+						if (1)
 							emergency_shuttle.recall()
 							world << "\blue <B>Alert: The shuttle is going back!</B>"
 							log_admin("[key_name(usr)] sent the Emergency Shuttle back")
@@ -59,7 +59,7 @@
 			alert("You cannot perform this action. You must be of a higher administrative rank!")
 			return
 
-	if(href_list["edit_shuttle_time"])
+	if (href_list["edit_shuttle_time"])
 		if (src.rank in list("Badmin", "Game Admin", "Game Master"))
 			emergency_shuttle.settimeleft( input("Enter new shuttle duration (seconds):","Edit Shuttle Timeleft", emergency_shuttle.timeleft() ) as num )
 			log_admin("[key_name(usr)] edited the Emergency Shuttle's timeleft to [emergency_shuttle.timeleft()]")
@@ -70,18 +70,18 @@
 			return
 
 	/////////////////////////////////////new ban stuff
-	if(href_list["unbanf"])
+	if (href_list["unbanf"])
 		var/banfolder = href_list["unbanf"]
 		Banlist.cd = "/base/[banfolder]"
 		var/key = Banlist["key"]
-		if(alert(usr, "Are you sure you want to unban [key]?", "Confirmation", "Yes", "No") == "Yes")
+		if (alert(usr, "Are you sure you want to unban [key]?", "Confirmation", "Yes", "No") == "Yes")
 			if (RemoveBan(banfolder))
 				unbanpanel()
 			else
 				alert(usr,"This ban has already been lifted / does not exist.","Error","Ok")
 				unbanpanel()
 
-	if(href_list["unbane"])
+	if (href_list["unbane"])
 		UpdateTime()
 		var/reason
 		var/mins = 0
@@ -90,24 +90,24 @@
 		var/reason2 = Banlist["reason"]
 		var/temp = Banlist["temp"]
 		var/minutes = (Banlist["minutes"] - CMinutes)
-		if(!minutes || minutes < 0) minutes = 0
+		if (!minutes || minutes < 0) minutes = 0
 		var/banned_key = Banlist["key"]
 		Banlist.cd = "/base"
 
 		switch(alert("Temporary Ban?",,"Yes","No"))
-			if("Yes")
+			if ("Yes")
 				temp = 1
 				mins = input(usr,"How long (in minutes)? (Default: 1440)","Ban time",minutes ? minutes : 1440) as num
-				if(!mins)
+				if (!mins)
 					return
-				if(mins >= 525600) mins = 525599
+				if (mins >= 525600) mins = 525599
 				reason = input(usr,"Reason?","reason",reason2) as text
-				if(!reason)
+				if (!reason)
 					return
-			if("No")
+			if ("No")
 				temp = 0
 				reason = input(usr,"Reason?","reason",reason2) as text
-				if(!reason)
+				if (!reason)
 					return
 
 		log_admin("[key_name(usr)] edited [banned_key]'s ban. Reason: [reason] Duration: [GetExp(mins)]")
@@ -124,36 +124,36 @@
 
 	/////////////////////////////////////new ban stuff
 
-	if(href_list["jobban2"])
+	if (href_list["jobban2"])
 		var/mob/M = locate(href_list["jobban2"])
 		var/dat = ""
 		var/header = "<b>Pick Job to ban this guy from.<br>"
 		var/body
 		var/jobs = ""
 		for(var/job in uniquelist(occupations + assistant_occupations))
-			if(job == "Tourist")
+			if (job == "Tourist")
 				continue
-			if(jobban_isbanned(M, job))
+			if (jobban_isbanned(M, job))
 				jobs += "<a href='?src=\ref[src];jobban3=[job];jobban4=\ref[M]'><font color=red>[dd_replacetext(job, " ", "&nbsp")]</font></a> "
 			else
 				jobs += "<a href='?src=\ref[src];jobban3=[job];jobban4=\ref[M]'>[dd_replacetext(job, " ", "&nbsp")]</a> "
 
-		if(jobban_isbanned(M, "Captain"))
+		if (jobban_isbanned(M, "Captain"))
 			jobs += "<a href='?src=\ref[src];jobban3=Captain;jobban4=\ref[M]'><font color=red>Captain</font></a> "
 		else
 			jobs += "<a href='?src=\ref[src];jobban3=Captain;jobban4=\ref[M]'>Captain</a> "
 
-		if(jobban_isbanned(M, "AI"))
+		if (jobban_isbanned(M, "AI"))
 			jobs += "<a href='?src=\ref[src];jobban3=AI;jobban4=\ref[M]'><font color=red>AI</font></a> "
 		else
 			jobs += "<a href='?src=\ref[src];jobban3=AI;jobban4=\ref[M]'>AI</a> "
 
-		if(jobban_isbanned(M, "Syndicate"))
+		if (jobban_isbanned(M, "Syndicate"))
 			jobs += "<BR><a href='?src=\ref[src];jobban3=Syndicate;jobban4=\ref[M]'><font color=red>[dd_replacetext("Syndicate", " ", "&nbsp")]</font></a> "
 		else
 			jobs += "<BR><a href='?src=\ref[src];jobban3=Syndicate;jobban4=\ref[M]'>[dd_replacetext("Syndicate", " ", "&nbsp")]</a> "
 
-		if(jobban_isbanned(M, "pAI"))
+		if (jobban_isbanned(M, "pAI"))
 			jobs += "<BR><a href='?src=\ref[src];jobban3=pAI;jobban4=\ref[M]'><font color=red>pAI</font></a> "
 		else
 			jobs += "<BR><a href='?src=\ref[src];jobban3=pAI;jobban4=\ref[M]'>pAI</a> "
@@ -163,7 +163,7 @@
 		usr << browse(dat, "window=jobban2;size=600x180")
 		return
 
-	if(href_list["jobban3"])
+	if (href_list["jobban3"])
 		if (src.rank in list( "Admin Candidate", "Temporary Admin", "Trial Admin", "Badmin", "Game Admin", "Game Master"  ))
 			var/mob/M = locate(href_list["jobban4"])
 			var/job = href_list["jobban3"]
@@ -203,7 +203,7 @@
 	if (href_list["removejobban"])
 		if ((src.rank in list("Game Admin", "Game Master"  )))
 			var/t = href_list["removejobban"]
-			if(t)
+			if (t)
 				log_admin("[key_name(usr)] removed [t]")
 				message_admins("\blue [key_name_admin(usr)] removed [t]", 1)
 				jobban_remove(t)
@@ -212,24 +212,24 @@
 	if (href_list["newban"])
 		if ((src.rank in list( "Temporary Admin", "Admin Candidate", "Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
 			var/mob/M = locate(href_list["newban"])
-			if(!ismob(M)) return
+			if (!ismob(M)) return
 			if ((M.client && M.client.holder && (M.client.holder.level >= src.level)))
 				alert("You cannot perform this action. You must be of a higher administrative rank!")
 				return
 			switch(alert("Temporary Ban?",,"Yes","No", "Cancel"))
-				if("Yes")
+				if ("Yes")
 					var/mins = input(usr,"How long (in minutes)?","Ban time",1440) as num
-					if(!mins)
+					if (!mins)
 						return
-					if(mins >= 525600) mins = 525599
+					if (mins >= 525600) mins = 525599
 					var/reason = input(usr,"Reason?","reason","Griefer") as text
-					if(!reason)
+					if (!reason)
 						return
 					AddBan(M.ckey, M.computer_id, reason, usr.ckey, 1, mins)
 					ban_unban_log_save("[usr.client.ckey] has banned [M.ckey]. - Reason: [reason] - This will be removed in [mins] minutes.")
 					M << "\red<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>"
 					M << "\red This is a temporary ban, it will be removed in [mins] minutes."
-					if(config.banappeals)
+					if (config.banappeals)
 						M << "\red To try to resolve this matter head to [config.banappeals]"
 					else
 						M << "\red No ban appeals URL has been set."
@@ -238,14 +238,14 @@
 
 					del(M.client)
 					//del(M)	// See no reason why to delete mob. Important stuff can be lost. And ban can be lifted before round ends.
-				if("No")
+				if ("No")
 					var/reason = input(usr,"Reason?","reason","Griefer") as text
-					if(!reason)
+					if (!reason)
 						return
 					AddBan(M.ckey, M.computer_id, reason, usr.ckey, 0, 0)
 					M << "\red<BIG><B>You have been banned by [usr.client.ckey].\nReason: [reason].</B></BIG>"
 					M << "\red This is a permanent ban."
-					if(config.banappeals)
+					if (config.banappeals)
 						M << "\red To try to resolve this matter head to [config.banappeals]"
 					else
 						M << "\red No ban appeals URL has been set."
@@ -255,7 +255,7 @@
 
 					del(M.client)
 					//del(M)
-				if("Cancel")
+				if ("Cancel")
 					return
 	if (href_list["newjobban1"])
 		var/mob/M = locate(href_list["newjobban1"])
@@ -281,18 +281,18 @@
 		jobs += "<a href='?src=\ref[src];newjobban2=AI_Cyborg;jobban4=\ref[M]'>AI+Cyborg</a> <br>"
 		jobs += "<a href='?src=\ref[src];newjobban2=Detective_HoS;jobban4=\ref[M]'>Detective+HoS</a> <br><br>"
 		for(var/job in uniquelist(occupations + assistant_occupations))
-			if(job == "Tourist")
+			if (job == "Tourist")
 				continue
-			if(jobban_isbanned(M, job))
+			if (jobban_isbanned(M, job))
 				jobs += "<a href='?src=\ref[src];newjobban2=[job];jobban4=\ref[M]'><font color=red>[dd_replacetext(job, " ", "&nbsp")]</font></a> "
 			else
 				jobs += "<a href='?src=\ref[src];newjobban2=[job];jobban4=\ref[M]'>[dd_replacetext(job, " ", "&nbsp")]</a> " //why doesn't this work the stupid cunt
 
-		if(jobban_isbanned(M, "Captain"))
+		if (jobban_isbanned(M, "Captain"))
 			jobs += "<a href='?src=\ref[src];newjobban2=Captain;jobban4=\ref[M]'><font color=red>Captain</font></a> "
 		else
 			jobs += "<a href='?src=\ref[src];newjobban2=Captain;jobban4=\ref[M]'>Captain</a> " //why doesn't this work the stupid cunt
-		if(jobban_isbanned(M, "Syndicate"))
+		if (jobban_isbanned(M, "Syndicate"))
 			jobs += "<BR><a href='?src=\ref[src];newjobban2=Syndicate;jobban4=\ref[M]'><font color=red>[dd_replacetext("Syndicate", " ", "&nbsp")]</font></a> "
 		else
 			jobs += "<BR><a href='?src=\ref[src];newjobban2=Syndicate;jobban4=\ref[M]'>[dd_replacetext("Syndicate", " ", "&nbsp")]</a> " //why doesn't this work the stupid cunt
@@ -301,28 +301,28 @@
 		dat = "<tt>[header][body]</tt>"
 		usr << browse(dat, "window=jobban2;size=600x250")
 		return
-	if(href_list["newjobban2"])
+	if (href_list["newjobban2"])
 		if ((src.rank in list("Moderator", "Administrator", "Badmin", "Tyrant"  )))
 			var/mob/M = locate(href_list["jobban4"])
 			var/job = href_list["newjobban2"]
-			if(!ismob(M)) return
+			if (!ismob(M)) return
 			//if ((M.client && M.client.holder && (M.client.holder.level >= src.level)))
 			//	alert("You cannot perform this action. You must be of a higher administrative rank!")
 			//	return
 			switch(alert("Temporary Ban?",,"Yes","No", "Cancel"))
-				if("Yes")
+				if ("Yes")
 					var/mins = input(usr,"How long (in days)?","Ban time",7) as num
 					mins = mins * 24 * 60
-					if(!mins)
+					if (!mins)
 						return
-					if(mins >= 525600) mins = 525599
+					if (mins >= 525600) mins = 525599
 					var/reason = input(usr,"Reason?","reason","Griefer") as text
-					if(!reason)
+					if (!reason)
 						return
-					if(AddBanjob(M.ckey, M.computer_id, reason, usr.ckey, 1, mins, job))
+					if (AddBanjob(M.ckey, M.computer_id, reason, usr.ckey, 1, mins, job))
 						M << "\red<BIG><B>You have been jobbanned from [job] by [usr.client.ckey].\nReason: [reason].</B></BIG>"
 						M << "\red This is a temporary ban, it will be removed in [mins] minutes."
-						if(config.banappeals)
+						if (config.banappeals)
 							M << "\red To try to resolve this matter head to [config.banappeals]"
 						else
 							M << "\red No ban appeals URL has been set."
@@ -332,14 +332,14 @@
 
 					//del(M.client)
 					//del(M)	// See no reason why to delete mob. Important stuff can be lost. And ban can be lifted before round ends.
-				if("No")
+				if ("No")
 					var/reason = input(usr,"Reason?","reason","Griefer") as text
-					if(!reason)
+					if (!reason)
 						return
-					if(AddBanjob(M.ckey, M.computer_id, reason, usr.ckey, 0, 0, job))
+					if (AddBanjob(M.ckey, M.computer_id, reason, usr.ckey, 0, 0, job))
 						M << "\red<BIG><B>You have been banned from [job] by [usr.client.ckey].\nReason: [reason].</B></BIG>"
 						M << "\red This is a permanent ban."
-						if(config.banappeals)
+						if (config.banappeals)
 							M << "\red To try to resolve this matter head to [config.banappeals]"
 						else
 							M << "\red No ban appeals URL has been set."
@@ -349,27 +349,27 @@
 
 					//del(M.client)
 					//del(M)
-				if("Cancel")
+				if ("Cancel")
 					return
 
-	if(href_list["unjobbanf"])
+	if (href_list["unjobbanf"])
 		var/banfolder = href_list["unjobbanf"]
 		Banlist.cd = "/base/[banfolder]"
 		var/key = Banlist["key"]
-		if(alert(usr, "Are you sure you want to unban [key]?", "Confirmation", "Yes", "No") == "Yes")
+		if (alert(usr, "Are you sure you want to unban [key]?", "Confirmation", "Yes", "No") == "Yes")
 			if (RemoveBanjob(banfolder))
 				unjobbanpanel()
 			else
 				alert(usr,"This ban has already been lifted / does not exist.","Error","Ok")
 				unjobbanpanel()
 
-	if(href_list["unjobbane"])
+	if (href_list["unjobbane"])
 		return
 /*
 	if (href_list["remove"])
 		if ((src.rank in list( "Admin Candidate", "Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
 			var/t = href_list["remove"]
-			if(t && isgoon(t))
+			if (t && isgoon(t))
 				log_admin("[key_name(usr)] removed [t] from the goonlist.")
 				message_admins("\blue [key_name_admin(usr)] removed [t] from the goonlist.")
 				remove_goon(t)
@@ -438,14 +438,14 @@
 	if (href_list["monkeyone"])
 		if ((src.rank in list( "Admin Candidate", "Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
 			var/mob/M = locate(href_list["monkeyone"])
-			if(!ismob(M))
+			if (!ismob(M))
 				return
-			if(istype(M, /mob/living/carbon/human))
+			if (istype(M, /mob/living/carbon/human))
 				var/mob/living/carbon/human/N = M
 				log_admin("[key_name(usr)] attempting to monkeyize [key_name(M)]")
 				message_admins("\blue [key_name_admin(usr)] attempting to monkeyize [key_name_admin(M)]", 1)
 				N.monkeyize()
-			if(istype(M, /mob/living/silicon))
+			if (istype(M, /mob/living/silicon))
 				alert("The AI can't be monkeyized!", null, null, null, null, null)
 				return
 */
@@ -454,7 +454,7 @@
 			var/mob/M = locate(href_list["forcespeech"])
 			if (ismob(M))
 				var/speech = input("What will [key_name(M)] say?.", "Force speech", "")
-				if(!speech)
+				if (!speech)
 					return
 				M.say(speech)
 				speech = copytext(sanitize(speech), 1, MAX_MESSAGE_LEN)
@@ -468,12 +468,12 @@
 		if ((src.rank in list( "Moderator", "Admin Candidate", "Temporary Admin", "Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
 			var/mob/M = locate(href_list["sendtoprison"])
 			if (ismob(M))
-				if(istype(M, /mob/living/silicon/ai))
+				if (istype(M, /mob/living/silicon/ai))
 					alert("The AI can't be sent to prison you jerk!", null, null, null, null, null)
 					return
 				//strip their stuff before they teleport into a cell :downs:
 				for(var/obj/item/weapon/W in M)
-					if(istype(W, /datum/organ/external))
+					if (istype(W, /datum/organ/external))
 						continue
 	//don't strip organs
 					M.u_equip(W)
@@ -487,7 +487,7 @@
 				M.paralysis += 5
 				sleep(5) //so they black out before warping
 				M.loc = pick(prisonwarp)
-				if(istype(M, /mob/living/carbon/human))
+				if (istype(M, /mob/living/carbon/human))
 					var/mob/living/carbon/human/prisoner = M
 					prisoner.equip_if_possible(new /obj/item/clothing/under/color/orange(prisoner), prisoner.slot_w_uniform)
 					prisoner.equip_if_possible(new /obj/item/clothing/shoes/orange(prisoner), prisoner.slot_shoes)
@@ -503,12 +503,12 @@
 		if ((src.rank in list( "Admin Candidate", "Temporary Admin", "Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
 			var/mob/M = locate(href_list["sendtomaze"])
 			if (ismob(M))
-				if(istype(M, /mob/living/silicon/ai))
+				if (istype(M, /mob/living/silicon/ai))
 					alert("The AI can't be sent to the maze you jerk!", null, null, null, null, null)
 					return
 				//strip their stuff before they teleport into a cell :downs:
 				for(var/obj/item/weapon/W in M)
-					if(istype(W, /datum/organ/external))
+					if (istype(W, /datum/organ/external))
 						continue
 	//don't strip organs
 					M.u_equip(W)
@@ -535,12 +535,12 @@
 		if ((src.rank in list( "Admin Candidate", "Temporary Admin", "Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
 			var/mob/M = locate(href_list["tdome1"])
 			if (ismob(M))
-				if(istype(M, /mob/living/silicon/ai))
+				if (istype(M, /mob/living/silicon/ai))
 					alert("The AI can't be sent to the thunderdome you jerk!", null, null, null, null, null)
 					return
 				for(var/obj/item/W in M)
 					if (istype(W,/obj/item))
-						if(istype(W, /datum/organ/external))
+						if (istype(W, /datum/organ/external))
 							continue
 						M.u_equip(W)
 						if (M.client)
@@ -561,12 +561,12 @@
 		if ((src.rank in list( "Admin Candidate", "Temporary Admin", "Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
 			var/mob/M = locate(href_list["tdome2"])
 			if (ismob(M))
-				if(istype(M, /mob/living/silicon/ai))
+				if (istype(M, /mob/living/silicon/ai))
 					alert("The AI can't be sent to the thunderdome you jerk!", null, null, null, null, null)
 					return
 				for(var/obj/item/W in M)
 					if (istype(W,/obj/item))
-						if(istype(W, /datum/organ/external))
+						if (istype(W, /datum/organ/external))
 							continue
 						M.u_equip(W)
 						if (M.client)
@@ -591,7 +591,7 @@
 
 	if (href_list["chickenz"])
 		if ((src.rank in list( "Admin Candidate", "Temporary Admin", "Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
-			if(!chickenz)
+			if (!chickenz)
 				unleash_chickenz()
 				log_admin("[key_name(usr)] has unleashed the chickenz!")
 			else
@@ -601,7 +601,7 @@
 		if ((src.rank in list( "Admin Candidate", "Temporary Admin", "Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
 			var/mob/M = locate(href_list["tdomeadmin"])
 			if (ismob(M))
-				if(istype(M, /mob/living/silicon/ai))
+				if (istype(M, /mob/living/silicon/ai))
 					alert("The AI can't be sent to the thunderdome you jerk!", null, null, null, null, null)
 					return
 				M.paralysis += 5
@@ -616,12 +616,12 @@
 		if ((src.rank in list( "Admin Candidate", "Temporary Admin", "Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
 			var/mob/M = locate(href_list["tdomeobserve"])
 			if (ismob(M))
-				if(istype(M, /mob/living/silicon/ai))
+				if (istype(M, /mob/living/silicon/ai))
 					alert("The AI can't be sent to the thunderdome you jerk!", null, null, null, null, null)
 					return
 				for(var/obj/item/W in M)
 					if (istype(W,/obj/item))
-						if(istype(W, /datum/organ/external))
+						if (istype(W, /datum/organ/external))
 							continue
 						M.u_equip(W)
 						if (M.client)
@@ -630,7 +630,7 @@
 							W.loc = M.loc
 							W.dropped(M)
 							W.layer = initial(W.layer)
-				if(istype(M, /mob/living/carbon/human))
+				if (istype(M, /mob/living/carbon/human))
 					var/mob/living/carbon/human/observer = M
 					observer.equip_if_possible(new /obj/item/clothing/under/suit_jacket(observer), observer.slot_w_uniform)
 					observer.equip_if_possible(new /obj/item/clothing/shoes/black(observer), observer.slot_shoes)
@@ -656,7 +656,7 @@
 		if ((src.rank in list( "Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
 			var/mob/living/M = locate(href_list["revive"])
 			if (ismob(M))
-				if(config.allow_admin_rev)
+				if (config.allow_admin_rev)
 					M.revive()
 					message_admins("\red Admin [key_name_admin(usr)] healed / revived [key_name_admin(M)]!", 1)
 					log_admin("[key_name(usr)] healed / Rrvived [key_name(M)]")
@@ -670,7 +670,7 @@
 	if (href_list["makeai"]) //Yes, im fucking lazy, so what? it works ... hopefully
 		if (src.level>=3)
 			var/mob/M = locate(href_list["makeai"])
-			if(istype(M, /mob/living/carbon/human))
+			if (istype(M, /mob/living/carbon/human))
 				var/mob/living/carbon/human/H = M
 				message_admins("\red Admin [key_name_admin(usr)] AIized [key_name_admin(M)]!", 1)
 //				if (ticker.mode.name  == "AI malfunction")
@@ -693,11 +693,11 @@
 		else
 			alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
 			return
-	if(href_list["makepirate"])
-		if(src.level >=3)
+	if (href_list["makepirate"])
+		if (src.level >=3)
 			var/mob/M = locate(href_list["makepirate"])
 			//var/mob/living/carbon/human/M = locate(href_list["makeai"])
-			if(istype(M, /mob/living/carbon/human))
+			if (istype(M, /mob/living/carbon/human))
 				//var/mov/living/carbon/human/_M = M
 				var/mob/living/carbon/human/H = M
 				message_admins("\red Admin [key_name_admin(usr)] Piratized [key_name_admin(M)]!", 1)
@@ -713,7 +713,7 @@
 	if (href_list["makealien"])
 		if (src.level>=3)
 			var/mob/M = locate(href_list["makealien"])
-			if(istype(M, /mob/living/carbon/human))
+			if (istype(M, /mob/living/carbon/human))
 				usr.client.cmd_admin_alienize(M)
 			else
 				alert("Wrong mob. Must be human.")
@@ -725,7 +725,7 @@
 	if (href_list["makemetroid"])
 		if (src.level>=3)
 			var/mob/M = locate(href_list["makemetroid"])
-			if(istype(M, /mob/living/carbon/human))
+			if (istype(M, /mob/living/carbon/human))
 				usr.client.cmd_admin_metroidize(M)
 			else
 				alert("Wrong mob. Must be human.")
@@ -737,7 +737,7 @@
 	if (href_list["makerobot"])
 		if (src.level>=3)
 			var/mob/M = locate(href_list["makerobot"])
-			if(istype(M, /mob/living/carbon/human))
+			if (istype(M, /mob/living/carbon/human))
 				usr.client.cmd_admin_robotize(M)
 			else
 				alert("Wrong mob. Must be human.")
@@ -752,20 +752,20 @@
 		for(var/mob/M in world)
 			var/foo = ""
 			if (ismob(M) && M.client)
-				if(!M.client.authenticated && !M.client.authenticating)
+				if (!M.client.authenticated && !M.client.authenticating)
 					foo += text("\[ <A HREF='?src=\ref[];adminauth=\ref[]'>Authorize</A> | ", src, M)
 				else
 					foo += text("\[ <B>Authorized</B> | ")
-				if(M.start)
-					if(!istype(M, /mob/living/carbon/monkey))
+				if (M.start)
+					if (!istype(M, /mob/living/carbon/monkey))
 						foo += text("<A HREF='?src=\ref[];monkeyone=\ref[]'>Monkeyize</A> | ", src, M)
 					else
 						foo += text("<B>Monkeyized</B> | ")
-					if(istype(M, /mob/living/silicon/ai))
+					if (istype(M, /mob/living/silicon/ai))
 						foo += text("<B>Is an AI</B> | ")
 					else
 						foo += text("<A HREF='?src=\ref[];makeai=\ref[]'>Make AI</A> | ", src, M)
-					if(M.z != 2)
+					if (M.z != 2)
 						foo += text("<A HREF='?src=\ref[];sendtoprison=\ref[]'>Prison</A> | ", src, M)
 						foo += text("<A HREF='?src=\ref[];sendtomaze=\ref[]'>Maze</A> | ", src, M)
 					else
@@ -788,7 +788,7 @@
 		show_player_panel(M)
 
 	if (href_list["jumpto"])
-		if(rank in list("Badmin", "Game Admin", "Game Master"))
+		if (rank in list("Badmin", "Game Admin", "Game Master"))
 			var/mob/M = locate(href_list["jumpto"])
 			usr.client.jumptomob(M)
 		else
@@ -796,7 +796,7 @@
 			return
 
 	if (href_list["getmob"])
-		if(rank in list( "Trial Admin", "Badmin", "Game Admin", "Game Master"))
+		if (rank in list( "Trial Admin", "Badmin", "Game Admin", "Game Master"))
 			var/mob/M = locate(href_list["getmob"])
 			usr.client.Getmob(M)
 		else
@@ -804,7 +804,7 @@
 			return
 
 	if (href_list["sendmob"])
-		if(rank in list( "Trial Admin", "Badmin", "Game Admin", "Game Master"))
+		if (rank in list( "Trial Admin", "Badmin", "Game Admin", "Game Master"))
 			var/mob/M = locate(href_list["sendmob"])
 			usr.client.sendmob(M)
 		else
@@ -812,7 +812,7 @@
 			return
 
 	if (href_list["narrateto"])
-		if(rank in list("Game Admin", "Game Master"))
+		if (rank in list("Game Admin", "Game Master"))
 			var/mob/M = locate(href_list["narrateto"])
 			usr.client.cmd_admin_direct_narrate(M)
 		else
@@ -824,14 +824,14 @@
 		usr.client.cmd_admin_subtle_message(M)
 
 	if (href_list["traitor"])
-		if(!ticker || !ticker.mode)
+		if (!ticker || !ticker.mode)
 			alert("The game hasn't started yet!")
 			return
 		var/mob/M = locate(href_list["traitor"])
 		if (!istype(M))
 			player()
 			return
-		if(isalien(M))
+		if (isalien(M))
 			alert("Is an [M.mind ? M.mind.special_role : "Alien"]!", "[M.key]")
 			return
 		if (M:mind)
@@ -867,11 +867,11 @@
 	if (href_list["prom_demot"])
 		if ((src.rank in list("Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
 			var/client/C = locate(href_list["prom_demot"])
-			if(C.holder && (C.holder.level >= src.level))
+			if (C.holder && (C.holder.level >= src.level))
 				alert("This cannot be done as [C] is a [C.holder.rank]")
 				return
 			var/dat = "[C] is a [C.holder ? "[C.holder.rank]" : "non-admin"]<br><br>Change [C]'s rank?<br>"
-			if(src.level == 6)
+			if (src.level == 6)
 			//host
 				dat += {"
 				<A href='?src=\ref[src];chgadlvl=Game Admin;client4ad=\ref[C]'>Game Admin</A> //coder<BR>
@@ -882,7 +882,7 @@
 				<A href='?src=\ref[src];chgadlvl=Moderator;client4ad=\ref[C]'>Moderator</A> // Moderator<BR>
 				<A href='?src=\ref[src];chgadlvl=Admin Observer;client4ad=\ref[C]'>Admin Observer</A> // Filthy Xeno<BR>
 				<A href='?src=\ref[src];chgadlvl=Remove;client4ad=\ref[C]'>Remove Admin</A><BR>"}
-			else if(src.level == 5)
+			else if (src.level == 5)
 			//coder
 				dat += {"
 				<A href='?src=\ref[src];chgadlvl=Badmin;client4ad=\ref[C]'>Badmin</A> // Shit Guy<BR>
@@ -901,7 +901,7 @@
 	//change admin level
 		var/rank = href_list["chgadlvl"]
 		var/client/C = locate(href_list["client4ad"])
-		if(rank == "Remove")
+		if (rank == "Remove")
 			C.clear_admin_verbs()
 			C.update_admins(null)
 			log_admin("[key_name(usr)] has removed [C]'s adminship")
@@ -961,7 +961,7 @@
 				var/Z = offset.len > 2 ? text2num(offset[3]) : 0
 				var/tmp_dir = href_list["object_dir"]
 				var/obj_dir = tmp_dir ? text2num(tmp_dir) : 2
-				if(!obj_dir || !(obj_dir in list(1,2,4,8,5,6,9,10)))
+				if (!obj_dir || !(obj_dir in list(1,2,4,8,5,6,9,10)))
 					obj_dir = 2
 				var/obj_name = sanitize(href_list["object_name"])
 
@@ -970,11 +970,11 @@
 						if ("absolute")
 							for (var/path in paths)
 								var/atom/O = new path(locate(0 + X,0 + Y,0 + Z))
-								if(O)
+								if (O)
 									O.dir = obj_dir
-									if(obj_name)
+									if (obj_name)
 										O.name = obj_name
-										if(istype(O,/mob))
+										if (istype(O,/mob))
 											var/mob/M = O
 											M.real_name = obj_name
 
@@ -982,11 +982,11 @@
 							if (loc)
 								for (var/path in paths)
 									var/atom/O = new path(locate(loc.x + X,loc.y + Y,loc.z + Z))
-									if(O)
+									if (O)
 										O.dir = obj_dir
-										if(obj_name)
+										if (obj_name)
 											O.name = obj_name
-											if(istype(O,/mob))
+											if (istype(O,/mob))
 												var/mob/M = O
 												M.real_name = obj_name
 							else
@@ -995,13 +995,13 @@
 				if (number == 1)
 					log_admin("[key_name(usr)] created a [english_list(paths)]")
 					for(var/path in paths)
-						if(ispath(path, /mob))
+						if (ispath(path, /mob))
 							message_admins("[key_name_admin(usr)] created a [english_list(paths)]", 1)
 							break
 				else
 					log_admin("[key_name(usr)] created [number]ea [english_list(paths)]")
 					for(var/path in paths)
-						if(ispath(path, /mob))
+						if (ispath(path, /mob))
 							message_admins("[key_name_admin(usr)] created [number]ea [english_list(paths)]", 1)
 							break
 				return
@@ -1013,15 +1013,15 @@
 		if ((src.rank in list( "Admin Candidate", "Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
 			var/ok = 0
 			switch(href_list["secretsfun"])
-				if("sec_clothes")
+				if ("sec_clothes")
 					for(var/obj/item/clothing/under/O in world)
 						del(O)
 					ok = 1
-				if("sec_all_clothes")
+				if ("sec_all_clothes")
 					for(var/obj/item/clothing/O in world)
 						del(O)
 					ok = 1
-				if("sec_classic1")
+				if ("sec_classic1")
 					for(var/obj/item/clothing/suit/fire/O in world)
 						del(O)
 					for(var/obj/grille/O in world)
@@ -1034,7 +1034,7 @@
 								M.client.eye = M
 						del(O)
 					ok = 1*/
-				if("toxic")
+				if ("toxic")
 				/*					for(var/obj/machinery/atmoalter/siphs/fullairsiphon/O in world)
 						O.t_status = 3
 					for(var/obj/machinery/atmoalter/siphs/scrubbers/O in world)
@@ -1048,20 +1048,20 @@
 							O.t_status = 3
 				*/
 					usr << "HEH"
-				if("monkey")
+				if ("monkey")
 					for(var/mob/living/carbon/human/H in world)
 						spawn(0)
 							H.monkeyize()
 					ok = 1
-				if("power")
+				if ("power")
 					log_admin("[key_name(usr)] made all areas powered", 1)
 					message_admins("\blue [key_name_admin(usr)] made all areas powered", 1)
 					power_restore()
-				if("unpower")
+				if ("unpower")
 					log_admin("[key_name(usr)] made all areas unpowered", 1)
 					message_admins("\blue [key_name_admin(usr)] made all areas unpowered", 1)
 					power_failure()
-				if("activateprison")
+				if ("activateprison")
 					world << "\blue <B>Transit signature detected.</B>"
 					world << "\blue <B>Incoming shuttle.</B>"
 					/*
@@ -1071,7 +1071,7 @@
 						AM.Move()
 					*/
 					message_admins("\blue [key_name_admin(usr)] sent the prison shuttle to the station.", 1)
-				if("deactivateprison")
+				if ("deactivateprison")
 					/*
 					var/A = locate(/area/shuttle_prison)
 					for(var/atom/movable/AM as mob|obj in A)
@@ -1079,31 +1079,31 @@
 						AM.Move()
 					*/
 					message_admins("\blue [key_name_admin(usr)] sent the prison shuttle back.", 1)
-				if("toggleprisonstatus")
+				if ("toggleprisonstatus")
 					for(var/obj/machinery/computer/prison_shuttle/PS in world)
 						PS.allowedtocall = !(PS.allowedtocall)
 						message_admins("\blue [key_name_admin(usr)] toggled status of prison shuttle to [PS.allowedtocall].", 1)
-				if("prisonwarp")
-					if(!ticker)
+				if ("prisonwarp")
+					if (!ticker)
 						alert("The game hasn't started yet!", null, null, null, null, null)
 						return
 					message_admins("\blue [key_name_admin(usr)] teleported all players to the prison station.", 1)
 					for(var/mob/living/carbon/human/H in world)
 						var/turf/loc = find_loc(H)
 						var/security = 0
-						if(loc.z > 1 || prisonwarped.Find(H))
+						if (loc.z > 1 || prisonwarped.Find(H))
 	//don't warp them if they aren't ready or are already there
 							continue
 						H.paralysis += 5
-						if(H.wear_id)
+						if (H.wear_id)
 							var/obj/item/weapon/card/id/id = H.get_idcard()
 							for(var/A in id.access)
-								if(A == access_security)
+								if (A == access_security)
 									security++
-						if(!security)
+						if (!security)
 							//strip their stuff before they teleport into a cell :downs:
 							for(var/obj/item/weapon/W in H)
-								if(istype(W, /datum/organ/external))
+								if (istype(W, /datum/organ/external))
 									continue
 									//don't strip organs
 								H.u_equip(W)
@@ -1121,17 +1121,17 @@
 							//teleport security person
 							H.loc = pick(prisonsecuritywarp)
 						prisonwarped += H
-				if("traitor_all")
+				if ("traitor_all")
 					if ((src.rank in list( "Admin Candidate", "Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
-						if(!ticker)
+						if (!ticker)
 							alert("The game hasn't started yet!")
 							return
 						var/objective = input("Enter an objective")
-						if(!objective)
+						if (!objective)
 							return
 						for(var/mob/living/carbon/human/H in world)
-							if(H.stat == 2 || !H.client || !H.mind) continue
-							if(is_special_character(H)) continue
+							if (H.stat == 2 || !H.client || !H.mind) continue
+							if (is_special_character(H)) continue
 							//traitorize(H, objective, 0)
 							ticker.mode.traitors += H.mind
 							H.mind.special_role = "traitor"
@@ -1155,43 +1155,43 @@
 						log_admin("[key_name(usr)] used everyone is a traitor secret. Objective is [objective]")
 					else
 						alert("You're not of a high enough rank to do this")
-				if("moveminingshuttle")
+				if ("moveminingshuttle")
 					if ((src.rank in list( "Admin Candidate", "Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
-						if(mining_shuttle_moving)
+						if (mining_shuttle_moving)
 							return
 						move_mining_shuttle()
 						message_admins("\blue [key_name_admin(usr)] moved mining shuttle", 1)
 						log_admin("[key_name(usr)] moved the mining shuttle")
 					else
 						alert("You're not of a high enough rank to do this")
-				if("moveadminshuttle")
+				if ("moveadminshuttle")
 					if ((src.rank in list( "Admin Candidate", "Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
 						move_admin_shuttle()
 						message_admins("\blue [key_name_admin(usr)] moved the centcom administration shuttle", 1)
 						log_admin("[key_name(usr)] moved the centcom administration shuttle")
 					else
 						alert("You're not of a high enough rank to do this")
-				if("moveferry")
+				if ("moveferry")
 					if ((src.rank in list( "Admin Candidate", "Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
 						move_ferry()
 						message_admins("\blue [key_name_admin(usr)] moved the centcom ferry", 1)
 						log_admin("[key_name(usr)] moved the centcom ferry")
 					else
 						alert("You're not of a high enough rank to do this")
-				if("movealienship")
+				if ("movealienship")
 					if ((src.rank in list( "Admin Candidate", "Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
 						move_alien_ship()
 						message_admins("\blue [key_name_admin(usr)] moved the alien dinghy", 1)
 						log_admin("[key_name(usr)] moved the alien dinghy")
 					else
 						alert("You're not of a high enough rank to do this")
-				if("flicklights")
+				if ("flicklights")
 					while(!usr.stat)
 	//knock yourself out to stop the ghosts
 						for(var/mob/M in world)
-							if(M.client && M.stat != 2 && prob(25))
+							if (M.client && M.stat != 2 && prob(25))
 								var/area/AffectedArea = get_area(M)
-								if(AffectedArea.name != "Space" && AffectedArea.name != "Engine Walls" && AffectedArea.name != "Chemical Lab Test Chamber" && AffectedArea.name != "Escape Shuttle" && AffectedArea.name != "Arrival Area" && AffectedArea.name != "Arrival Shuttle" && AffectedArea.name != "start area" && AffectedArea.name != "Engine Combustion Chamber")
+								if (AffectedArea.name != "Space" && AffectedArea.name != "Engine Walls" && AffectedArea.name != "Chemical Lab Test Chamber" && AffectedArea.name != "Escape Shuttle" && AffectedArea.name != "Arrival Area" && AffectedArea.name != "Arrival Shuttle" && AffectedArea.name != "start area" && AffectedArea.name != "Engine Combustion Chamber")
 									AffectedArea.power_light = 0
 									AffectedArea.power_change()
 									spawn(rand(55,185))
@@ -1199,22 +1199,22 @@
 										AffectedArea.power_change()
 									var/Message = rand(1,4)
 									switch(Message)
-										if(1)
+										if (1)
 											M.show_message(text("\blue You shudder as if cold..."), 1)
-										if(2)
+										if (2)
 											M.show_message(text("\blue You feel something gliding across your back..."), 1)
-										if(3)
+										if (3)
 											M.show_message(text("\blue Your eyes twitch, you feel like something you can't see is here..."), 1)
-										if(4)
+										if (4)
 											M.show_message(text("\blue You notice something moving out of the corner of your eye, but nothing is there..."), 1)
 									for(var/obj/W in orange(5,M))
-										if(prob(25) && !W.anchored)
+										if (prob(25) && !W.anchored)
 											step_rand(W)
 						sleep(rand(100,1000))
 					for(var/mob/M in world)
-						if(M.client && M.stat != 2)
+						if (M.client && M.stat != 2)
 							M.show_message(text("\blue The chilling wind suddenly stops..."), 1)
-	/*				if("shockwave")
+	/*				if ("shockwave")
 					ok = 1
 					world << "\red <B><big>ALERT: STATION STRESS CRITICAL</big></B>"
 					sleep(60)
@@ -1256,7 +1256,7 @@
 						spawn(0)
 							sleep(rand(30,400))
 							Wall.ex_act(rand(2,1)) */
-				if("wave")
+				if ("wave")
 					if ((src.rank in list("Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
 						meteor_wave()
 						message_admins("[key_name_admin(usr)] has spawned meteors", 1)
@@ -1265,38 +1265,38 @@
 					else
 						alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
 						return
-				if("hivebots")
+				if ("hivebots")
 					if ((src.rank in list("Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
 						hivebot_invasion()
 						message_admins("[key_name_admin(usr)] has spawned a hivebot invasion!", 1)
 					else
 						alert("You cannot perform this action. You must be of a higher administrative rank!", null, null, null, null, null)
 						return
-				if("chickenz")
-					if(!chickenz) //Make sure not already chickenz.
+				if ("chickenz")
+					if (!chickenz) //Make sure not already chickenz.
 						unleash_chickenz() //UNLEASH.
 						message_admins("[key_name_admin(usr)] has unleashed the chickenz!", 1)
 					else
 						alert("Chickenz already unleashed!")
 						return
-				if("gravanomalies")
+				if ("gravanomalies")
 					command_alert("Gravitational anomalies detected on the station. There is no additional data.", "Anomaly Alert")
 					world << sound('granomalies.ogg')
 					var/turf/T = pick(blobstart)
 					var/obj/bhole/bh = new /obj/bhole( T.loc, 30 )
 					spawn(rand(50, 300))
 						del(bh)
-				if("timeanomalies")
+				if ("timeanomalies")
 					command_alert("Space-time anomalies detected on the station. There is no additional data.", "Anomaly Alert")
 					world << sound('spanomalies.ogg')
 					var/list/turfs = list(	)
 					var/turf/picked
 					for(var/turf/T in world)
-						if(T.z == 1 && istype(T,/turf/simulated/floor) && !istype(T,/turf/space))
+						if (T.z == 1 && istype(T,/turf/simulated/floor) && !istype(T,/turf/space))
 							turfs += T
 					for(var/turf/T in world)
 						set background = 1
-						if(prob(20) && T.z == 1 && istype(T,/turf/simulated/floor))
+						if (prob(20) && T.z == 1 && istype(T,/turf/simulated/floor))
 							spawn(50+rand(0,3000))
 								picked = pick(turfs)
 								var/obj/portal/P = new /obj/portal( T )
@@ -1308,39 +1308,39 @@
 								P.name = "wormhole"
 								spawn(rand(300,600))
 									del(P)
-				if("goblob")
+				if ("goblob")
 					mini_blob_event()
 					message_admins("[key_name_admin(usr)] has spawned blob", 1)
-				if("aliens")
-					if(aliens_allowed)
+				if ("aliens")
+					if (aliens_allowed)
 						alien_infestation()
 						message_admins("[key_name_admin(usr)] has spawned aliens", 1)
-				if("spaceninja")
-					if(toggle_space_ninja)
-						if(space_ninja_arrival())//If the ninja is actually spawned. They may not be depending on a few factors.
+				if ("spaceninja")
+					if (toggle_space_ninja)
+						if (space_ninja_arrival())//If the ninja is actually spawned. They may not be depending on a few factors.
 							message_admins("[key_name_admin(usr)] has sent in a space ninja", 1)
-				if("carp")
+				if ("carp")
 					var/choice = input("You sure you want to spawn carp?") in list("Badmin", "Cancel")
-					if(choice == "Badmin")
+					if (choice == "Badmin")
 						message_admins("[key_name_admin(usr)] has spawned carp.", 1)
 						carp_migration()
-				if("radiation")
+				if ("radiation")
 					message_admins("[key_name_admin(usr)] has has irradiated the station", 1)
 					high_radiation_event()
-				if("immovable")
+				if ("immovable")
 					message_admins("[key_name_admin(usr)] has sent an immovable rod to the station", 1)
 					immovablerod()
-				if("prison_break")
+				if ("prison_break")
 					message_admins("[key_name_admin(usr)] has allowed a prison break", 1)
 					prison_break()
-				if("lightsout")
+				if ("lightsout")
 					message_admins("[key_name_admin(usr)] has broke a lot of lights", 1)
 					lightsout(1,2)
-				if("blackout")
+				if ("blackout")
 					message_admins("[key_name_admin(usr)] broke all lights", 1)
 					lightsout(0,0)
-				if("virus")
-					if(alert("Do you want this to be a random disease or do you have something in mind?",,"Random","Choose")=="Random")
+				if ("virus")
+					if (alert("Do you want this to be a random disease or do you have something in mind?",,"Random","Choose")=="Random")
 						viral_outbreak()
 						message_admins("[key_name_admin(usr)] has triggered a virus outbreak", 1)
 					else
@@ -1348,20 +1348,20 @@
 						var/V = input("Choose the virus to spread", "BIOHAZARD") in viruses
 						viral_outbreak(V)
 						message_admins("[key_name_admin(usr)] has triggered a virus outbreak of [V]", 1)
-				if("retardify")
+				if ("retardify")
 					if (src.rank in list("Badmin", "Game Admin", "Game Master"))
 						for(var/mob/living/carbon/human/H in world)
-							if(H.client)
+							if (H.client)
 								H << "\red <B>You suddenly feel stupid.</B>"
 							H.brainloss = 60
 						message_admins("[key_name_admin(usr)] made everybody retarded")
 					else
 						alert("You cannot perform this action. You must be of a higher administrative rank!")
 						return
-				if("fakeguns")
+				if ("fakeguns")
 					if (src.rank in list("Badmin", "Game Admin", "Game Master"))
 						for(var/obj/item/W in world)
-							if(istype(W, /obj/item/clothing) || istype(W, /obj/item/weapon/card/id) || istype(W, /obj/item/weapon/disk) || istype(W, /obj/item/weapon/tank))
+							if (istype(W, /obj/item/clothing) || istype(W, /obj/item/weapon/card/id) || istype(W, /obj/item/weapon/disk) || istype(W, /obj/item/weapon/tank))
 								continue
 							W.icon = 'gun.dmi'
 							W.icon_state = "revolver"
@@ -1370,7 +1370,7 @@
 					else
 						alert("You cannot perform this action. You must be of a higher administrative rank!")
 						return
-				if("schoolgirl")
+				if ("schoolgirl")
 					if (src.rank in list("Badmin", "Game Admin", "Game Master"))
 						for(var/obj/item/clothing/under/W in world)
 							W.icon_state = "schoolgirl"
@@ -1381,7 +1381,7 @@
 					else
 						alert("You cannot perform this action. You must be of a higher administrative rank!")
 						return
-				if("dorf")
+				if ("dorf")
 					if (src.rank in list("Badmin","Game Admin", "Game Master"))
 						for(var/mob/living/carbon/human/B in world)
 							B.face_icon_state = "facial_wise"
@@ -1390,7 +1390,7 @@
 					else
 						alert("You cannot perform this action. You must be of a higher administrative rank!")
 						return
-				if("ionstorm")
+				if ("ionstorm")
 					if (src.rank in list("Badmin","Game Admin", "Game Master"))
 						IonStorm()
 						message_admins("[key_name_admin(usr)] triggered an ion storm")
@@ -1407,24 +1407,24 @@
 		if ((src.rank in list( "Moderator", "Temporary Admin", "Admin Candidate", "Trial Admin", "Badmin", "Game Admin", "Game Master"  )))
 			var/ok = 0
 			switch(href_list["secretsadmin"])
-				if("clear_bombs")
+				if ("clear_bombs")
 					//I do nothing
-				if("list_bombers")
+				if ("list_bombers")
 					var/dat = "<B>Bombing List<HR>"
 					for(var/l in bombers)
 						dat += text("[l]<BR>")
 					usr << browse(dat, "window=bombers")
-				if("list_signalers")
+				if ("list_signalers")
 					var/dat = "<B>Showing last [length(lastsignalers)] signalers.</B><HR>"
 					for(var/sig in lastsignalers)
 						dat += "[sig]<BR>"
 					usr << browse(dat, "window=lastsignalers;size=800x500")
-				if("list_lawchanges")
+				if ("list_lawchanges")
 					var/dat = "<B>Showing last [length(lawchanges)] law changes.</B><HR>"
 					for(var/sig in lawchanges)
 						dat += "[sig]<BR>"
 					usr << browse(dat, "window=lawchanges;size=800x500")
-				if("check_antagonist")
+				if ("check_antagonist")
 					if (ticker && ticker.current_state >= GAME_STATE_PLAYING)
 						var/dat = "<html><head><title>Round Status</title></head><body><h1><B>Round Status</B></h1>"
 						dat += "Current Game Mode: <B>[ticker.mode.name]</B><BR>"
@@ -1435,17 +1435,17 @@
 						else
 							var/timeleft = emergency_shuttle.timeleft()
 							switch(emergency_shuttle.location)
-								if(0)
+								if (0)
 									dat += "ETA: <a href='?src=\ref[src];edit_shuttle_time=1'>[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]</a><BR>"
 									dat += "<a href='?src=\ref[src];call_shuttle=2'>Send Back</a><br>"
-								if(1)
+								if (1)
 									dat += "ETA: <a href='?src=\ref[src];edit_shuttle_time=1'>[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]</a><BR>"
 
-						if(ticker.mode.syndicates.len)
+						if (ticker.mode.syndicates.len)
 							dat += "<br><table cellspacing=5><tr><td><B>Syndicates</B></td><td></td></tr>"
 							for(var/datum/mind/N in ticker.mode.syndicates)
 								var/mob/M = N.current
-								if(M)
+								if (M)
 									dat += "<tr><td><a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 									dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td></tr>"
 								else
@@ -1455,34 +1455,34 @@
 								dat += "<tr><td>[N.name], "
 								var/atom/disk_loc = N.loc
 								while(!istype(disk_loc, /turf))
-									if(istype(disk_loc, /mob))
+									if (istype(disk_loc, /mob))
 										var/mob/M = disk_loc
 										dat += "carried by <a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a> "
-									if(istype(disk_loc, /obj))
+									if (istype(disk_loc, /obj))
 										var/obj/O = disk_loc
 										dat += "in \a [O.name] "
 									disk_loc = disk_loc.loc
 								dat += "in [disk_loc.loc] at ([disk_loc.x], [disk_loc.y], [disk_loc.z])</td></tr>"
 							dat += "</table>"
 
-						if(ticker.mode.head_revolutionaries.len || ticker.mode.revolutionaries.len)
+						if (ticker.mode.head_revolutionaries.len || ticker.mode.revolutionaries.len)
 							dat += "<br><table cellspacing=5><tr><td><B>Revolutionaries</B></td><td></td></tr>"
 							for(var/datum/mind/N in ticker.mode.head_revolutionaries)
 								var/mob/M = N.current
-								if(!M)
+								if (!M)
 									dat += "<tr><td><i>Head Revolutionary not found!</i></td></tr>"
 								else
 									dat += "<tr><td><a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a> <b>(Leader)</b>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 									dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td></tr>"
 							for(var/datum/mind/N in ticker.mode.revolutionaries)
 								var/mob/M = N.current
-								if(M)
+								if (M)
 									dat += "<tr><td><a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 									dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td></tr>"
 							dat += "</table><table cellspacing=5><tr><td><B>Target(s)</B></td><td></td><td><B>Location</B></td></tr>"
 							for(var/datum/mind/N in ticker.mode.get_living_heads())
 								var/mob/M = N.current
-								if(M)
+								if (M)
 									dat += "<tr><td><a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 									dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td>"
 									var/turf/mob_loc = get_turf_loc(M)
@@ -1491,11 +1491,11 @@
 									dat += "<tr><td><i>Head not found!</i></td></tr>"
 							dat += "</table>"
 
-						if(ticker.mode.changelings.len > 0)
+						if (ticker.mode.changelings.len > 0)
 							dat += "<br><table cellspacing=5><tr><td><B>Changelings</B></td><td></td><td></td></tr>"
 							for(var/datum/mind/changeling in ticker.mode.changelings)
 								var/mob/M = changeling.current
-								if(M)
+								if (M)
 									dat += "<tr><td><a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 									dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td>"
 									dat += "<td><A HREF='?src=\ref[src];traitor=\ref[M]'>Show Objective</A></td></tr>"
@@ -1503,11 +1503,11 @@
 									dat += "<tr><td><i>Changeling not found!</i></td></tr>"
 							dat += "</table>"
 
-						if(ticker.mode.wizards.len > 0)
+						if (ticker.mode.wizards.len > 0)
 							dat += "<br><table cellspacing=5><tr><td><B>Wizards</B></td><td></td><td></td></tr>"
 							for(var/datum/mind/wizard in ticker.mode.wizards)
 								var/mob/M = wizard.current
-								if(M)
+								if (M)
 									dat += "<tr><td><a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 									dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td>"
 									dat += "<td><A HREF='?src=\ref[src];traitor=\ref[M]'>Show Objective</A></td></tr>"
@@ -1515,20 +1515,20 @@
 									dat += "<tr><td><i>Wizard not found!</i></td></tr>"
 							dat += "</table>"
 
-						if(ticker.mode.cult.len)
+						if (ticker.mode.cult.len)
 							dat += "<br><table cellspacing=5><tr><td><B>Cultists</B></td><td></td></tr>"
 							for(var/datum/mind/N in ticker.mode.cult)
 								var/mob/M = N.current
-								if(M)
+								if (M)
 									dat += "<tr><td><a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 									dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td></tr>"
 							dat += "</table>"
 
-						if(ticker.mode.traitors.len > 0)
+						if (ticker.mode.traitors.len > 0)
 							dat += "<br><table cellspacing=5><tr><td><B>Traitors</B></td><td></td><td></td></tr>"
 							for(var/datum/mind/traitor in ticker.mode.traitors)
 								var/mob/M = traitor.current
-								if(M)
+								if (M)
 									dat += "<tr><td><a href='?src=\ref[src];adminplayeropts=\ref[M]'>[M.real_name]</a>[M.client ? "" : " <i>(logged out)</i>"][M.stat == 2 ? " <b><font color=red>(DEAD)</font></b>" : ""]</td>"
 									dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td>"
 									dat += "<td><A HREF='?src=\ref[src];traitor=\ref[M]'>Show Objective</A></td></tr>"
@@ -1540,45 +1540,45 @@
 						usr << browse(dat, "window=roundstatus;size=400x500")
 					else
 						alert("The game hasn't started yet!")
-				if("showailaws")
+				if ("showailaws")
 					for(var/mob/living/silicon/ai/ai in world)
 						usr << "[key_name(ai, usr)]'s Laws:"
 						if (ai.laws == null)
 							usr << "[key_name(ai, usr)]'s Laws are null??"
 						else
 							ai.laws.show_laws(usr)
-				if("showgm")
-					if(!ticker)
+				if ("showgm")
+					if (!ticker)
 						alert("The game hasn't started yet!")
 					else if (ticker.mode)
 						alert("The game mode is [ticker.mode.name]")
 					else alert("For some reason there's a ticker, but not a game mode")
-				if("manifest")
+				if ("manifest")
 					var/dat = "<B>Showing Crew Manifest.</B><HR>"
 					dat += "<table cellspacing=5><tr><th>Name</th><th>Position</th></tr>"
 					for(var/mob/living/carbon/human/H in world)
-						if(H.ckey)
+						if (H.ckey)
 							dat += text("<tr><td>[]</td><td>[]</td></tr>", H.name, H.get_assignment())
 					dat += "</table>"
 					usr << browse(dat, "window=manifest;size=440x410")
-				if("DNA")
+				if ("DNA")
 					var/dat = "<B>Showing DNA from blood.</B><HR>"
 					dat += "<table cellspacing=5><tr><th>Name</th><th>DNA</th><th>Blood Type</th></tr>"
 					for(var/mob/living/carbon/human/H in world)
-						if(H.dna && H.ckey)
+						if (H.dna && H.ckey)
 							dat += "<tr><td>[H]</td><td>[H.dna.unique_enzymes]</td><td>[H.b_type]</td></tr>"
 					dat += "</table>"
 					usr << browse(dat, "window=DNA;size=440x410")
-				if("fingerprints")
+				if ("fingerprints")
 					var/dat = "<B>Showing Fingerprints.</B><HR>"
 					dat += "<table cellspacing=5><tr><th>Name</th><th>Fingerprints</th></tr>"
 					for(var/mob/living/carbon/human/H in world)
-						if(H.ckey)
-							if(H.dna && H.dna.uni_identity)
+						if (H.ckey)
+							if (H.dna && H.dna.uni_identity)
 								dat += "<tr><td>[H]</td><td>[md5(H.dna.uni_identity)]</td></tr>"
-							else if(H.dna && !H.dna.uni_identity)
+							else if (H.dna && !H.dna.uni_identity)
 								dat += "<tr><td>[H]</td><td>H.dna.uni_identity = null</td></tr>"
-							else if(!H.dna)
+							else if (!H.dna)
 								dat += "<tr><td>[H]</td><td>H.dna = null</td></tr>"
 					dat += "</table>"
 					usr << browse(dat, "window=fingerprints;size=440x410")
@@ -1591,11 +1591,11 @@
 	if (href_list["secretscoder"])
 		if ((src.rank in list( "Badmin", "Game Admin", "Game Master" )))
 			switch(href_list["secretscoder"])
-				if("spawn_objects")
+				if ("spawn_objects")
 					var/dat = "<B>Admin Log<HR></B>"
 					for(var/l in admin_log)
 						dat += "<li>[l]</li>"
-					if(!admin_log.len)
+					if (!admin_log.len)
 						dat += "No-one has done anything this round!"
 					usr << browse(dat, "window=admin_log")
 		return
@@ -1607,7 +1607,7 @@
 	set category = "Admin"
 	set name = "Show Player Panel"
 	set desc="Edit player (respawn, ban, heal, etc)"
-	if(!M)
+	if (!M)
 		usr << "You seem to be selecting a mob that doesn't exist anymore."
 		return
 	if (!istype(src,/obj/admins))
@@ -1618,19 +1618,19 @@
 	var/dat = "<html><head><title>Options for [M.key]</title></head>"
 	var/foo = "\[ "
 	if (ismob(M) && M.client)
-		if(!M.client.authenticated && !M.client.authenticating)
+		if (!M.client.authenticated && !M.client.authenticating)
 			foo += text("<A HREF='?src=\ref[src];adminauth=\ref[M]'>Authorize</A> | ")
 		else
 			foo += text("<B>Authorized</B> | ")
 		foo += text("<A HREF='?src=\ref[src];prom_demot=\ref[M.client]'>Promote/Demote</A> | ")
-		if(!istype(M, /mob/new_player))
-			if(!ismonkey(M))
+		if (!istype(M, /mob/new_player))
+			if (!ismonkey(M))
 				foo += text("<A HREF='?src=\ref[src];monkeyone=\ref[M]'>Monkeyize</A> | ")
 			else
 				foo += text("<B>Monkeyized</B> | ")
-			if(isAI(M))
+			if (isAI(M))
 				foo += text("<B>Is an AI</B> | ")
-			else if(ishuman(M))
+			else if (ishuman(M))
 				foo += text("<A HREF='?src=\ref[src];makeai=\ref[M]'>Make AI</A> | ")
 				foo += text("<A HREF='?src=\ref[src];makerobot=\ref[M]'>Make Robot</A> | ")
 				foo += text("<A HREF='?src=\ref[src];makealien=\ref[M]'>Make Alien</A> | ")
@@ -1673,44 +1673,44 @@
 	var/show_karma = 0
 	var/DBConnection/dbcon
 
-	if(config.sql_enabled) // SQL is enabled in config.txt
+	if (config.sql_enabled) // SQL is enabled in config.txt
 		dbcon = new() // Setting up connection
 		dbcon.Connect("dbi:mysql:[sqldb]:[sqladdress]:[sqlport]","[sqllogin]","[sqlpass]")
-		if(dbcon.IsConnected())
+		if (dbcon.IsConnected())
 			show_karma = 1
 		else
 			usr << "\red Unable to connect to karma database. This error can occur if your host has failed to set up an SQL database or improperly configured its login credentials.<br>"
 
-	if(!show_karma)
+	if (!show_karma)
 		for(var/mob/M in mobs)
-			if(M.ckey)
+			if (M.ckey)
 				dat += "<tr><td>[M.name]</td>"
-				if(istype(M, /mob/living/silicon/ai))
+				if (istype(M, /mob/living/silicon/ai))
 					dat += "<td>AI</td>"
-				if(istype(M, /mob/living/silicon/robot))
+				if (istype(M, /mob/living/silicon/robot))
 					dat += "<td>Cyborg</td>"
-				if(istype(M, /mob/living/carbon/human))
+				if (istype(M, /mob/living/carbon/human))
 					dat += "<td>[M.real_name]</td>"
-				if(istype(M, /mob/living/silicon/pai))
+				if (istype(M, /mob/living/silicon/pai))
 					dat += "<td>pAI</td>"
-				if(istype(M, /mob/new_player))
+				if (istype(M, /mob/new_player))
 					dat += "<td>New Player</td>"
-				if(istype(M, /mob/dead/observer))
+				if (istype(M, /mob/dead/observer))
 					dat += "<td>Ghost</td>"
-				if(istype(M, /mob/living/carbon/monkey))
+				if (istype(M, /mob/living/carbon/monkey))
 					dat += "<td>Monkey</td>"
-				if(istype(M, /mob/living/carbon/alien))
+				if (istype(M, /mob/living/carbon/alien))
 					dat += "<td>Alien</td>"
 				dat += {"<td>[M.client?"[M.client]":"No client"]</td>
 				<td align=center><A HREF='?src=\ref[src];adminplayeropts=\ref[M]'>X</A></td>
 				<td align=center><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td>
 				"}
 				switch(is_special_character(M))
-					if(0)
+					if (0)
 						dat += {"<td align=center><A HREF='?src=\ref[src];traitor=\ref[M]'>Traitor?</A></td>"}
-					if(1)
+					if (1)
 						dat += {"<td align=center><A HREF='?src=\ref[src];traitor=\ref[M]'><font color=red>Traitor?</font></A></td>"}
-					if(2)
+					if (2)
 						dat += {"<td align=center><A HREF='?src=\ref[src];traitor=\ref[M]'><font color=red><b>Traitor?</b></font></A></td>"}
 				if (config.sql_enabled)
 					dat += "<td><font color=red>ERROR</font></td></tr>"
@@ -1720,7 +1720,7 @@
 	else
 
 		for(var/mob/M in mobs)
-			if(M.ckey)
+			if (M.ckey)
 
 				var/DBQuery/query = dbcon.NewQuery("SELECT karma FROM karmatotals WHERE byondkey='[M.key]'")
 				query.Execute()
@@ -1730,34 +1730,34 @@
 					currentkarma = query.item[1]
 
 				dat += "<tr><td>[M.name]</td>"
-				if(isAI(M))
+				if (isAI(M))
 					dat += "<td>AI</td>"
-				if(isrobot(M))
+				if (isrobot(M))
 					dat += "<td>Cyborg</td>"
-				if(ishuman(M))
+				if (ishuman(M))
 					dat += "<td>[M.real_name]</td>"
-				if(istype(M, /mob/living/silicon/pai))
+				if (istype(M, /mob/living/silicon/pai))
 					dat += "<td>pAI</td>"
-				if(istype(M, /mob/new_player))
+				if (istype(M, /mob/new_player))
 					dat += "<td>New Player</td>"
-				if(isobserver(M))
+				if (isobserver(M))
 					dat += "<td>Ghost</td>"
-				if(ismonkey(M))
+				if (ismonkey(M))
 					dat += "<td>Monkey</td>"
-				if(isalien(M))
+				if (isalien(M))
 					dat += "<td>Alien</td>"
 				dat += {"<td>[(M.client ? "[M.client]" : "No client")]</td>
 				<td align=center><A HREF='?src=\ref[src];adminplayeropts=\ref[M]'>X</A></td>
 				<td align=center><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td>
 				"}
 				switch(is_special_character(M))
-					if(0)
+					if (0)
 						dat += {"<td align=center><A HREF='?src=\ref[src];traitor=\ref[M]'>Traitor?</A></td>"}
-					if(1)
+					if (1)
 						dat += {"<td align=center><A HREF='?src=\ref[src];traitor=\ref[M]'><font color=red>Traitor?</font></A></td>"}
-					if(2)
+					if (2)
 						dat += {"<td align=center><A HREF='?src=\ref[src];traitor=\ref[M]'><font color=red><b>Traitor?</b></font></A></td>"}
-				if(currentkarma)
+				if (currentkarma)
 					dat += "<td>[currentkarma]</td></tr>"
 				else
 					dat += "<td>0</td></tr>"
@@ -1781,39 +1781,39 @@
 	var/dat
 	var/lvl = 0
 	switch(src.rank)
-		if("Moderator")
+		if ("Moderator")
 			lvl = 1
-		if("Temporary Admin")
+		if ("Temporary Admin")
 			lvl = 2
-		if("Admin Candidate")
+		if ("Admin Candidate")
 			lvl = 3
-		if("Trial Admin")
+		if ("Trial Admin")
 			lvl = 4
-		if("Badmin")
+		if ("Badmin")
 			lvl = 5
-		if("Game Admin")
+		if ("Game Admin")
 			lvl = 6
-		if("Game Master")
+		if ("Game Master")
 			lvl = 7
 
 	dat += "<center><B>Game Panel</B></center><hr>\n"
 
-	if(lvl > 0)
+	if (lvl > 0)
 
-//			if(lvl >= 2 )
+//			if (lvl >= 2 )
 		dat += "<A href='?src=\ref[src];c_mode=1'>Change Game Mode</A><br>"
 
-	if(lvl > 0 && master_mode == "secret")
+	if (lvl > 0 && master_mode == "secret")
 		dat += "<A href='?src=\ref[src];f_secret=1'>(Force Secret Mode)</A><br>"
 
 	dat += "<BR>"
 
-	if(lvl >= 3 )
+	if (lvl >= 3 )
 		dat += "<A href='?src=\ref[src];create_object=1'>Create Object</A><br>"
 		dat += "<A href='?src=\ref[src];create_turf=1'>Create Turf</A><br>"
-	if(lvl >= 5)
+	if (lvl >= 5)
 		dat += "<A href='?src=\ref[src];create_mob=1'>Create Mob</A><br>"
-//			if(lvl == 6 )
+//			if (lvl == 6 )
 	usr << browse(dat, "window=admin2;size=210x180")
 	return
 /*
@@ -1837,19 +1837,19 @@
 
 	var/lvl = 0
 	switch(src.rank)
-		if("Moderator")
+		if ("Moderator")
 			lvl = 1
-		if("Temporary Admin")
+		if ("Temporary Admin")
 			lvl = 2
-		if("Admin Candidate")
+		if ("Admin Candidate")
 			lvl = 3
-		if("Trial Admin")
+		if ("Trial Admin")
 			lvl = 4
-		if("Badmin")
+		if ("Badmin")
 			lvl = 5
-		if("Game Admin")
+		if ("Game Admin")
 			lvl = 6
-		if("Game Master")
+		if ("Game Master")
 			lvl = 7
 
 	var/dat = {"
@@ -1867,7 +1867,7 @@
 <A href='?src=\ref[src];secretsadmin=DNA'>List DNA (Blood)</A><BR>
 <A href='?src=\ref[src];secretsadmin=fingerprints'>List Fingerprints</A><BR><BR>
 <BR>"}
-	if(lvl > 2)
+	if (lvl > 2)
 		dat += {"
 <B>'Random' Events</B><BR>
 <BR>
@@ -1912,7 +1912,7 @@
 <A href='?src=\ref[src];secretsfun=blackout'>Break all lights</A><BR><BR>"}
 //<A href='?src=\ref[src];secretsfun=shockwave'>Station Shockwave</A><BR>
 
-	if(lvl >= 5)
+	if (lvl >= 5)
 		dat += {"
 <B>Coder Secrets</B><BR>
 <BR>
@@ -1926,35 +1926,35 @@
 	var/dat
 	var/lvl = 0
 	switch(src.rank)
-		if("Moderator")
+		if ("Moderator")
 			lvl = 1
-		if("Temporary Admin")
+		if ("Temporary Admin")
 			lvl = 2
-		if("Admin Candidate")
+		if ("Admin Candidate")
 			lvl = 3
-		if("Trial Admin")
+		if ("Trial Admin")
 			lvl = 4
-		if("Badmin")
+		if ("Badmin")
 			lvl = 5
-		if("Game Admin")
+		if ("Game Admin")
 			lvl = 6
-		if("Game Master")
+		if ("Game Master")
 			lvl = 7
 
 
 	dat += "<center><B>Voting</B></center><hr>\n"
 
-	if(lvl > 0)
-//			if(lvl >= 2 )
+	if (lvl > 0)
+//			if (lvl >= 2 )
 		dat += {"
 <A href='?src=\ref[src];votekill=1'>Abort Vote</A><br>
 <A href='?src=\ref[src];vmode=1'>Start Vote</A><br>
 <A href='?src=\ref[src];voteres=1'>Toggle Voting</A><br>
 "}
 
-//			if(lvl >= 3 )
-//			if(lvl >= 5)
-//			if(lvl == 6 )
+//			if (lvl >= 3 )
+//			if (lvl >= 5)
+//			if (lvl == 6 )
 
 	usr << browse(dat, "window=admin2;size=210x160")
 	return
@@ -1972,15 +1972,15 @@
 	if (!usr.client.holder)
 		return
 	var/confirm = alert("What vote would you like to start?", "Vote", "Restart", "Change Game Mode", "Cancel")
-	if(confirm == "Cancel")
+	if (confirm == "Cancel")
 		return
-	if(confirm == "Restart")
+	if (confirm == "Restart")
 		vote.mode = 0
 	// hack to yield 0=restart, 1=changemode
-	if(confirm == "Change Game Mode")
+	if (confirm == "Change Game Mode")
 		vote.mode = 1
-		if(!ticker)
-			if(going)
+		if (!ticker)
+			if (going)
 				world << "<B>The game start has been delayed.</B>"
 				going = 0
 	vote.voting = 1
@@ -1995,15 +1995,15 @@
 	log_admin("Voting to [vote.mode?"change mode":"restart round"] forced by admin [key_name(usr)]")
 
 	for(var/mob/CM in world)
-		if(CM.client)
-			if(config.vote_no_default || (config.vote_no_dead && CM.stat == 2) || !CM.client.authenticated)
+		if (CM.client)
+			if (config.vote_no_default || (config.vote_no_dead && CM.stat == 2) || !CM.client.authenticated)
 				CM.client.vote = "none"
 			else
 				CM.client.vote = "default"
 
 	for(var/mob/CM in world)
-		if(CM.client)
-			if(config.vote_no_default || (config.vote_no_dead && CM.stat == 2) || !CM.client.authenticated)
+		if (CM.client)
+			if (config.vote_no_default || (config.vote_no_dead && CM.stat == 2) || !CM.client.authenticated)
 				CM.client.vote = "none"
 			else
 				CM.client.vote = "default"
@@ -2012,7 +2012,7 @@
 	set category = "Server"
 	set name = "Abort Vote"
 	set desc="Aborts a vote"
-	if(vote.voting == 0)
+	if (vote.voting == 0)
 		alert("No votes in progress")
 		return
 	world << "\red <b>*** Voting aborted by [usr.client.stealth ? "Admin Candidate" : usr.key].</b>"
@@ -2024,7 +2024,7 @@
 
 	for(var/mob/M in world)
 		// clear vote window from all clients
-		if(M.client)
+		if (M.client)
 			M << browse(null, "window=vote")
 			M.client.showvote = 0
 
@@ -2033,21 +2033,21 @@
 	set name = "Toggle Voting"
 	set desc="Toggles Votes"
 	var/confirm = alert("What vote would you like to toggle?", "Vote", "Restart [config.allow_vote_restart ? "Off" : "On"]", "Change Game Mode [config.allow_vote_mode ? "Off" : "On"]", "Cancel")
-	if(confirm == "Cancel")
+	if (confirm == "Cancel")
 		return
-	if(confirm == "Restart [config.allow_vote_restart ? "Off" : "On"]")
+	if (confirm == "Restart [config.allow_vote_restart ? "Off" : "On"]")
 		config.allow_vote_restart = !config.allow_vote_restart
 		world << "<b>Player restart voting toggled to [config.allow_vote_restart ? "On" : "Off"]</b>."
 		log_admin("Restart voting toggled to [config.allow_vote_restart ? "On" : "Off"] by [key_name(usr)].")
 
-		if(config.allow_vote_restart)
+		if (config.allow_vote_restart)
 			vote.nextvotetime = world.timeofday
-	if(confirm == "Change Game Mode [config.allow_vote_mode ? "Off" : "On"]")
+	if (confirm == "Change Game Mode [config.allow_vote_mode ? "Off" : "On"]")
 		config.allow_vote_mode = !config.allow_vote_mode
 		world << "<b>Player mode voting toggled to [config.allow_vote_mode ? "On" : "Off"]</b>."
 		log_admin("Mode voting toggled to [config.allow_vote_mode ? "On" : "Off"] by [key_name(usr)].")
 
-		if(config.allow_vote_mode)
+		if (config.allow_vote_mode)
 			vote.nextvotetime = world.timeofday
 
 /obj/admins/proc/restart()
@@ -2057,9 +2057,9 @@
 	if (!usr.client.holder)
 		return
 	var/confirm = alert("Restart the game world?", "Restart", "Yes", "Cancel")
-	if(confirm == "Cancel")
+	if (confirm == "Cancel")
 		return
-	if(confirm == "Yes")
+	if (confirm == "Yes")
 		world << "\red <b>Restarting world!</b> \blue Initiated by [usr.client.stealth ? "Admin Candidate" : usr.key]!"
 		log_admin("[key_name(usr)] initiated a reboot.")
 
@@ -2072,7 +2072,7 @@
 	set desc="Announce your desires to the world"
 	var/message = input("Global message to send:", "Admin Announce", null, null)  as message
 	if (message)
-		if(usr.client.holder.rank != "Game Admin" && usr.client.holder.rank != "Game Master")
+		if (usr.client.holder.rank != "Game Admin" && usr.client.holder.rank != "Game Master")
 			message = adminscrub(message,500)
 		world << "\blue <b>[usr.client.stealth ? "Administrator" : usr.key] Announces:</b>\n \t [message]"
 		log_admin("Announce: [key_name(usr)] : [message]")
@@ -2110,10 +2110,10 @@
 	set category = "Server"
 	set desc="Start the round RIGHT NOW"
 	set name="Start Now"
-	if(!ticker)
+	if (!ticker)
 		alert("Unable to start the game as it is not set up.")
 		return
-	if(ticker.current_state == GAME_STATE_PREGAME)
+	if (ticker.current_state == GAME_STATE_PREGAME)
 		ticker.current_state = GAME_STATE_SETTING_UP
 		log_admin("[usr.key] has started the game.")
 		message_admins("<font color='blue'>[usr.key] has started the game.</font>")
@@ -2215,7 +2215,7 @@
 	set category = "Server"
 	set desc="Reboots the server post haste"
 	set name="Immediate Reboot"
-	if( alert("Reboot server?",,"Yes","No") == "No")
+	if ( alert("Reboot server?",,"Yes","No") == "No")
 		return
 	world << "\red <b>Rebooting world!</b> \blue Initiated by [usr.client.stealth ? "Admin Candidate" : usr.key]!"
 	log_admin("[key_name(usr)] initiated an immediate reboot.")
@@ -2225,7 +2225,7 @@
 	set category = "Admin"
 	set desc="Toggles Deadchat Visibility"
 	set name="Deadchat Visibility"
-	if(deadchat == 0)
+	if (deadchat == 0)
 		deadchat = 1
 		usr << "Deadchat turned on"
 	else
@@ -2236,7 +2236,7 @@
 	set category = "Admin"
 	set desc="Toggles Prayer Visibility"
 	set name="Prayer Visibility"
-	if(seeprayers == 0)
+	if (seeprayers == 0)
 		seeprayers = 1
 		usr << "Prayer visibility turned on"
 	else
@@ -2259,45 +2259,45 @@
 /////////////////////////////////////////////ADMIN HELPER PROCS///////////////////////////////////////////////////
 
 /proc/is_special_character(mob/M as mob) // returns 1 for specail characters and 2 for heroes of gamemode
-	if(!ticker || !ticker.mode)
+	if (!ticker || !ticker.mode)
 		return 0
 	if (!istype(M))
 		return 0
-	if((M.mind in ticker.mode.head_revolutionaries) || (M.mind in ticker.mode.revolutionaries))
+	if ((M.mind in ticker.mode.head_revolutionaries) || (M.mind in ticker.mode.revolutionaries))
 		if (ticker.mode.config_tag == "revolution")
 			return 2
 		return 1
-	if(M.mind in ticker.mode.cult)
+	if (M.mind in ticker.mode.cult)
 		if (ticker.mode.config_tag == "cult")
 			return 2
 		return 1
-	if(M.mind in ticker.mode.malf_ai)
+	if (M.mind in ticker.mode.malf_ai)
 		if (ticker.mode.config_tag == "malfunction")
 			return 2
 		return 1
-	if(M.mind in ticker.mode.syndicates)
+	if (M.mind in ticker.mode.syndicates)
 		if (ticker.mode.config_tag == "nuclear")
 			return 2
 		return 1
-	if(M.mind in ticker.mode.wizards)
+	if (M.mind in ticker.mode.wizards)
 		if (ticker.mode.config_tag == "wizard")
 			return 2
 		return 1
-	if(M.mind in ticker.mode.changelings)
+	if (M.mind in ticker.mode.changelings)
 		if (ticker.mode.config_tag == "changeling")
 			return 2
 		return 1
 
 	for(var/datum/disease/D in M.viruses)
-		if(istype(D, /datum/disease/jungle_fever))
+		if (istype(D, /datum/disease/jungle_fever))
 			if (ticker.mode.config_tag == "monkey")
 				return 2
 			return 1
-	if(isrobot(M))
+	if (isrobot(M))
 		var/mob/living/silicon/robot/R = M
-		if(R.emagged)
+		if (R.emagged)
 			return 1
-	if(M.mind&&M.mind.special_role)//If they have a mind and special role, they are some type of traitor or antagonist.
+	if (M.mind&&M.mind.special_role)//If they have a mind and special role, they are some type of traitor or antagonist.
 		return 1
 
 	return 0
@@ -2305,17 +2305,17 @@
 /*
 /obj/admins/proc/get_sab_desc(var/target)
 	switch(target)
-		if(1)
+		if (1)
 			return "Destroy at least 70% of the plasma canisters on the station"
-		if(2)
+		if (2)
 			return "Destroy the AI"
-		if(3)
+		if (3)
 			var/count = 0
 			for(var/mob/living/carbon/monkey/Monkey in world)
-				if(Monkey.z == 1)
+				if (Monkey.z == 1)
 					count++
 			return "Kill all [count] of the monkeys on the station"
-		if(4)
+		if (4)
 			return "Cut power to at least 80% of the station"
 		else
 			return "Error: Invalid sabotage target: [target]"
@@ -2325,24 +2325,24 @@
 	set desc= "(atom path) Spawn an atom"
 	set name= "Spawn"
 
-	if(usr.client.holder.level >= 5)
+	if (usr.client.holder.level >= 5)
 		var/list/types = typesof(/atom)
 
 		var/list/matches = new()
 
 		for(var/path in types)
-			if(findtext("[path]", object))
+			if (findtext("[path]", object))
 				matches += path
 
-		if(matches.len==0)
+		if (matches.len==0)
 			return
 
 		var/chosen
-		if(matches.len==1)
+		if (matches.len==1)
 			chosen = matches[1]
 		else
 			chosen = input("Select an atom type", "Spawn Atom", matches[1]) as null|anything in matches
-			if(!chosen)
+			if (!chosen)
 				return
 
 		new chosen(usr.loc)

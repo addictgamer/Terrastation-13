@@ -54,7 +54,7 @@
 	return
 
 /obj/machinery/computer/hologram_comp/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	if (in_range(src, usr))
 		flick("holo_console1", src)

@@ -7,16 +7,16 @@
 	var/mob/living/silicon/robot/current = null
 
 /obj/machinery/computer/borgupload/attackby(obj/item/aiModule/module as obj, mob/user as mob)
-	if(istype(module, /obj/item/aiModule))
+	if (istype(module, /obj/item/aiModule))
 		module.install(src)
 	else
 		return ..()
 
 /obj/machinery/computer/borgupload/attack_hand(var/mob/user as mob)
-	if(src.stat & NOPOWER)
+	if (src.stat & NOPOWER)
 		usr << "The upload computer has no power!"
 		return
-	if(src.stat & BROKEN)
+	if (src.stat & BROKEN)
 		usr << "The upload computer is broken!"
 		return
 

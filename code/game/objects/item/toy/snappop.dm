@@ -16,9 +16,9 @@
 		del(src)
 
 /obj/item/toy/snappop/HasEntered(H as mob|obj)
-	if((ishuman(H))) //i guess carp and shit shouldn't set them off
+	if ((ishuman(H))) //i guess carp and shit shouldn't set them off
 		var/mob/living/carbon/M = H
-		if(M.m_intent == "run")
+		if (M.m_intent == "run")
 			M << "\red You step on the snap pop!"
 
 			var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
@@ -39,8 +39,8 @@
 /obj/item/toy/snappopbox/attack_hand(mob/user as mob, unused, flag)
 	add_fingerprint(user)
 
-	if(user.r_hand == src || user.l_hand == src)
-		if(amount)
+	if (user.r_hand == src || user.l_hand == src)
+		if (amount)
 			var/obj/item/toy/snappop/M = new /obj/item/toy/snappop(src)
 			if (user.hand)
 				user.l_hand = M

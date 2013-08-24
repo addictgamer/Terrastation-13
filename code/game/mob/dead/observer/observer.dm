@@ -18,15 +18,15 @@
 	see_in_dark = 100
 	verbs += /mob/dead/observer/proc/dead_tele
 
-	if(body)
+	if (body)
 		var/turf/location = get_turf(body)//Where is the mob located?
-		if(location)//Found turf.
+		if (location)//Found turf.
 			loc = location
 		else//Safety, in case a turf cannot be found.
 			loc = pick(latejoin)
 		real_name = body.real_name
 		name = body.real_name
-		if(!safety)
+		if (!safety)
 			corpse = body
 			verbs += /mob/dead/observer/proc/reenter_corpse
 
@@ -36,12 +36,12 @@ Works together with spawning an observer, noted above.
 */
 
 /mob/proc/ghostize(var/transfer_mind = 0)
-	if(key)
-		if(client)
+	if (key)
+		if (client)
 			client.screen.len = null//Clear the hud, just to be sure.
 		var/mob/dead/observer/ghost = new(src,transfer_mind)//Transfer safety to observer spawning proc.
-		if(transfer_mind)//When a body is destroyed.
-			if(mind)
+		if (transfer_mind)//When a body is destroyed.
+			if (mind)
 				mind.transfer_to(ghost)
 			else//They may not have a mind and be gibbed/destroyed.
 				ghost.key = key
@@ -52,10 +52,10 @@ Works together with spawning an observer, noted above.
 		if (ghost.client)
 			ghost.client.eye = ghost
 
-	else if(transfer_mind)//Body getting destroyed but the person is not present inside.
+	else if (transfer_mind)//Body getting destroyed but the person is not present inside.
 		for(var/mob/dead/observer/O in world)
-			if(O.corpse == src&&O.key)//If they have the same corpse and are keyed.
-				if(mind)
+			if (O.corpse == src&&O.key)//If they have the same corpse and are keyed.
+				if (mind)
 					O.mind = mind//Transfer their mind if they have one.
 				break
 	return
@@ -68,10 +68,10 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Ghost"
 	set desc = "You cannot be revived as a ghost."
 
-	/*if(stat != 2) //this check causes nothing but troubles. Commented out for Nar-Sie's sake. --rastaf0
+	/*if (stat != 2) //this check causes nothing but troubles. Commented out for Nar-Sie's sake. --rastaf0
 		src << "Only dead people and admins get to ghost, and admins don't use this verb to ghost while alive."
 		return*/
-	if(key)
+	if (key)
 		var/mob/dead/observer/ghost = new(src)
 		ghost.key = key
 		verbs -= /mob/proc/ghost
@@ -80,25 +80,25 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	return
 
 /mob/proc/adminghostize()
-	if(client)
+	if (client)
 		client.mob = new/mob/dead/observer(src)
 	return
 
 /mob/dead/observer/Move(NewLoc, direct)
-	if(NewLoc)
+	if (NewLoc)
 		loc = NewLoc
 		return
-	if((direct & NORTH) && y < world.maxy)
+	if ((direct & NORTH) && y < world.maxy)
 		y++
-	if((direct & SOUTH) && y > 1)
+	if ((direct & SOUTH) && y > 1)
 		y--
-	if((direct & EAST) && x < world.maxx)
+	if ((direct & EAST) && x < world.maxx)
 		x++
-	if((direct & WEST) && x > 1)
+	if ((direct & WEST) && x > 1)
 		x--
 
 /mob/dead/observer/examine()
-	if(usr)
+	if (usr)
 		usr << desc
 
 /mob/dead/observer/can_use_hands()	return 0
@@ -108,15 +108,15 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	..()
 	statpanel("Status")
 	if (client.statpanel == "Status")
-		if(ticker)
-			if(ticker.mode)
+		if (ticker)
+			if (ticker.mode)
 				//world << "DEBUG: ticker not null"
-				if(ticker.mode.name == "AI malfunction")
+				if (ticker.mode.name == "AI malfunction")
 					//world << "DEBUG: malf mode ticker test"
-					if(ticker.mode:malf_mode_declared)
+					if (ticker.mode:malf_mode_declared)
 						stat(null, "Time left: [max(ticker.mode:AI_win_timeleft/(ticker.mode:apcs/3), 0)]")
-		if(emergency_shuttle)
-			if(emergency_shuttle.online && emergency_shuttle.location < 2)
+		if (emergency_shuttle)
+			if (emergency_shuttle.online && emergency_shuttle.location < 2)
 				var/timeleft = emergency_shuttle.timeleft()
 				if (timeleft)
 					stat(null, "ETA-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
@@ -124,23 +124,23 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/dead/observer/proc/reenter_corpse()
 	set category = "Ghost"
 	set name = "Re-enter Corpse"
-	if(!corpse)
+	if (!corpse)
 		alert("You don't have a corpse!")
 		return
-	if(client && client.holder && client.holder.state == 2)
+	if (client && client.holder && client.holder.state == 2)
 		var/rank = client.holder.rank
 		client.clear_admin_verbs()
 		client.holder.state = 1
 		client.update_admins(rank)
-	if(iscultist(corpse) && corpse.ajourn==1 && corpse.stat!=2) //checks if it's an astral-journeying cultistm if it is and he's not on an astral journey rune, re-entering won't work
+	if (iscultist(corpse) && corpse.ajourn==1 && corpse.stat!=2) //checks if it's an astral-journeying cultistm if it is and he's not on an astral journey rune, re-entering won't work
 		var/S=0
 		for(var/obj/rune/R in world)
-			if(corpse.loc==R.loc && R.word1 == wordhell && R.word2 == wordtravel && R.word3 == wordself)
+			if (corpse.loc==R.loc && R.word1 == wordhell && R.word2 == wordtravel && R.word3 == wordself)
 				S=1
-		if(!S)
+		if (!S)
 			usr << "\red The astral cord that ties your body and your spirit has been severed. You are likely to wander the realm beyond until your body is finally dead and thus reunited with you."
 			return
-	if(corpse.ajourn)
+	if (corpse.ajourn)
 		corpse.ajourn=0
 	client.mob = corpse
 	if (corpse.stat==2)
@@ -151,7 +151,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set category = "Ghost"
 	set name = "Teleport"
 	set desc= "Teleport"
-	if((usr.stat != 2) || !istype(usr, /mob/dead/observer))
+	if ((usr.stat != 2) || !istype(usr, /mob/dead/observer))
 		usr << "Not when you're not dead!"
 		return
 	usr.verbs -= /mob/dead/observer/proc/dead_tele
@@ -172,47 +172,47 @@ var/list/karma_spenders = list()
 	set name = "Spend Karma"
 	set category = "Ghost"
 	set desc = "Let the gods know whether someone's been naughty or nice. <One use only>"
-	if(!istype(M, /mob))
+	if (!istype(M, /mob))
 		usr << "\red That's not a mob. You shouldn't have even been able to specify that. Please inform your server administrator post haste."
 		return
 
-	if(!M.client)
+	if (!M.client)
 		usr << "\red That mob has no client connected at the moment."
 		return
-	if(client.karma_spent)
+	if (client.karma_spent)
 		usr << "\red You've already spent your karma for the round."
 		return
 	for(var/a in karma_spenders)
-		if(a == key)
+		if (a == key)
 			usr << "\red You've already spent your karma for the round."
 			return
-	if(M.key == key)
+	if (M.key == key)
 		usr << "\red You can't spend karma on yourself!"
 		return
 	var/choice = input("Give [M.name] good karma or bad karma?", "Karma") in list("Good", "Bad", "Cancel")
 	client.karma_spent = 1
-	if(!choice || choice == "Cancel")
+	if (!choice || choice == "Cancel")
 		return
 	client.karma_spent = 0
-	if(choice == "Good")
+	if (choice == "Good")
 		M.client.karma += 1
-	if(choice == "Bad")
+	if (choice == "Bad")
 		M.client.karma -= 1
 	usr << "[choice] karma spent on [M.name]."
 	client.karma_spent = 1
 	karma_spenders.Add(key)
-	if(M.client.karma <= -2 || M.client.karma >= 2)
+	if (M.client.karma <= -2 || M.client.karma >= 2)
 		var/special_role = "None"
 		var/assigned_role = "None"
 		var/karma_diary = file("data/logs/karma_[time2text(world.realtime, "YYYY/MM-Month/DD-Day")].log")
-		if(M.mind)
-			if(M.mind.special_role)
+		if (M.mind)
+			if (M.mind.special_role)
 				special_role = M.mind.special_role
-			if(M.mind.assigned_role)
+			if (M.mind.assigned_role)
 				assigned_role = M.mind.assigned_role
 		karma_diary << "[M.name] ([M.key]) [assigned_role]/[special_role]: [M.client.karma] - [time2text(world.timeofday, "hh:mm:ss")]"
 	var/isnegative = 1
-	if(choice == "Good")
+	if (choice == "Good")
 		isnegative = 0
 	else
 		isnegative = 1
@@ -222,10 +222,10 @@ var/list/karma_spenders = list()
 	set name = "Toggle Be Alien Candidate"
 	set category = "Ghost"
 	set desc = "Determines whether you will or will not be an alien candidate when someone bursts."
-	if(client.be_alien)
+	if (client.be_alien)
 		client.be_alien = 0
 		src << "You are now excluded from alien candidate lists until end of round."
-	else if(!client.be_alien)
+	else if (!client.be_alien)
 		client.be_alien = 1
 		src << "You are now included in alien candidate lists until end of round."
 
@@ -233,7 +233,7 @@ var/list/karma_spenders = list()
 	set name = "Toggle Be pAI Candidate"
 	set category = "Ghost"
 	set desc = "Receive a pop-up request when a pAI device requests a new personality. (toggle)"
-	if(client.be_pai)
+	if (client.be_pai)
 		client.be_pai = 0
 		src << "You will no longer receive pAI recruitment pop-ups this round."
 	else

@@ -28,9 +28,9 @@
 	set category = "Exosuit Interface"
 	set name = "Toggle leg actuators overload"
 	set src in view(0)
-	if(usr!=src.occupant && usr != src.remote_controlled)
+	if (usr!=src.occupant && usr != src.remote_controlled)
 		return
-	if(overload)
+	if (overload)
 		overload = 0
 		step_in = initial(step_in)
 		src.occupant_message("<font color='blue'>You disable leg actuators overload.</font>")
@@ -44,11 +44,11 @@
 
 
 /obj/mecha/combat/gygax/relaymove(mob/user,direction)
-	if(!..()) return
-	if(overload)
+	if (!..()) return
+	if (overload)
 		use_power(step_energy_drain)
 		health--
-		if(health < initial(health) - initial(health)/3)
+		if (health < initial(health) - initial(health)/3)
 			overload = 0
 			step_in = initial(step_in)
 			src.occupant_message("<font color='red'>Leg actuators damage threshold exceded. Disabling overload.</font>")

@@ -7,7 +7,7 @@
 		..()
 		reagents.add_reagent("nutriment", 3)
 		bitesize = 2
-		if(prob(30))
+		if (prob(30))
 			src.icon_state = "donut2"
 			src.name = "Frosted Chaos Donut"
 			reagents.add_reagent("sprinkles", 3)

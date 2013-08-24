@@ -27,13 +27,13 @@
 	//Only one can exsist in the world!
 	New()
 		for(var/obj/machinery/blackbox_recorder/BR in world)
-			if(BR != src)
+			if (BR != src)
 				del(src)
 		blackbox = src
 
 	proc/find_feedback_datum(var/variable)
 		for(var/datum/feedback_variable/FV in feedback)
-			if(FV.get_variable() == variable)
+			if (FV.get_variable() == variable)
 				return FV
 		var/datum/feedback_variable/FV = new(variable)
 		feedback += FV

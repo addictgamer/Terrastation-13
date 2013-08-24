@@ -36,7 +36,7 @@
 	return src.attack_hand(user)
 
 /obj/machinery/computer/arcade/attack_hand(mob/user as mob)
-	if(..())
+	if (..())
 		return
 	user.machine = src
 	var/dat = "<a href='byond://?src=\ref[src];close=1'>Close</a>"
@@ -59,7 +59,7 @@
 	return
 
 /obj/machinery/computer/arcade/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 
 	if (!src.blocked)
@@ -118,28 +118,28 @@
 		src.gameover = 1
 		src.temp = "[src.enemy_name] has fallen! Rejoice!"
 
-		if(!contents.len)
+		if (!contents.len)
 			var/prizeselect = pick(1,2,3,4,5,6,7,8,9)
 			switch(prizeselect)
-				if(1)
+				if (1)
 					new /obj/item/toy/snappopbox(src.loc)
-				if(2)
+				if (2)
 					new /obj/item/toy/blink(src.loc)
-				if(3)
+				if (3)
 					new /obj/item/clothing/under/syndicate/tacticool(src.loc)
-				if(4)
+				if (4)
 					new /obj/item/toy/sword(src.loc)
-				if(5)
+				if (5)
 					new /obj/item/toy/ammo/gun(src.loc)
 					new /obj/item/toy/gun(src.loc)
-				if(6)
+				if (6)
 					new /obj/item/toy/crossbow(src.loc)
-				if(7)
+				if (7)
 					new /obj/item/clothing/suit/syndicatefake(src.loc)
 					new /obj/item/clothing/head/syndicatefake(src.loc)
-				if(8)
+				if (8)
 					new /obj/item/toy/crayonbox(src.loc)
-				if(9)
+				if (9)
 					new /obj/item/toy/spinningtoy(src.loc)
 		else
 			var/atom/movable/Prize = pick(contents)
@@ -176,10 +176,10 @@
 
 /obj/machinery/computer/arcade/power_change()
 
-	if(stat & BROKEN)
+	if (stat & BROKEN)
 		icon_state = "arcadeb"
 	else
-		if( powered() )
+		if ( powered() )
 			icon_state = initial(icon_state)
 			stat &= ~NOPOWER
 		else

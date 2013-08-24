@@ -24,17 +24,17 @@ datum/shuttle_controller
 	// if not called before, set the endtime to T+600 seconds
 	// otherwise if outgoing, switch to incoming
 	proc/incall(coeff = 1)
-		if(endtime)
-			if(direction == -1)
+		if (endtime)
+			if (direction == -1)
 				setdirection(1)
 		else
 			settimeleft(SHUTTLEARRIVETIME*coeff)
 			online = 1
 
 	proc/recall()
-		if(direction == 1)
+		if (direction == 1)
 			var/timeleft = timeleft()
-			if(timeleft >= 600)
+			if (timeleft >= 600)
 				world << "\blue <B>Shuttle is at Centcom. Unable to recall.</B>"
 				return
 			world << "\blue <B>Alert: The shuttle is going back!</B>"
@@ -46,9 +46,9 @@ datum/shuttle_controller
 	// returns the time (in seconds) before shuttle arrival
 	// note if direction = -1, gives a count-up to SHUTTLEARRIVETIME
 	proc/timeleft()
-		if(online)
+		if (online)
 			var/timeleft = round((endtime - world.timeofday)/10 ,1)
-			if(direction == 1)
+			if (direction == 1)
 				return timeleft
 			else
 				return SHUTTLEARRIVETIME-timeleft
@@ -63,7 +63,7 @@ datum/shuttle_controller
 	// sets the shuttle direction
 	// 1 = towards SS13, -1 = back to centcom
 	proc/setdirection(var/dirn)
-		if(direction == dirn)
+		if (direction == dirn)
 			return
 		direction = dirn
 		// if changing direction, flip the timeleft by SHUTTLEARRIVETIME
@@ -75,25 +75,25 @@ datum/shuttle_controller
 
 	emergency_shuttle
 		process()
-			if(!online) return
+			if (!online) return
 			var/timeleft = timeleft()
-			if(timeleft > 1e5)		// midnight rollover protection
+			if (timeleft > 1e5)		// midnight rollover protection
 				timeleft = 0
 			switch(location)
-				if(0)
-					if(timeleft>timelimit)
+				if (0)
+					if (timeleft>timelimit)
 						online = 0
 						direction = 1
 						endtime = null
 
 						return 0
 
-					else if((fake_recall != 0) && (timeleft <= fake_recall))
+					else if ((fake_recall != 0) && (timeleft <= fake_recall))
 						recall()
 
 						return 0
 
-					else if(timeleft <= 0)
+					else if (timeleft <= 0)
 						location = 1
 						var/area/start_location = locate(/area/shuttle/escape/centcom)
 						var/area/end_location = locate(/area/shuttle/escape/station)
@@ -103,7 +103,7 @@ datum/shuttle_controller
 
 						for(var/turf/T in end_location)
 							dstturfs += T
-							if(T.y < throwy)
+							if (T.y < throwy)
 								throwy = T.y
 
 						// hey you, get out of the way!
@@ -119,7 +119,7 @@ datum/shuttle_controller
 									AM.throw_at(E, 1, 1)
 									return
 								*/
-							if(istype(T, /turf/simulated))
+							if (istype(T, /turf/simulated))
 								del(T)
 
 						start_location.move_contents_to(end_location)
@@ -129,8 +129,8 @@ datum/shuttle_controller
 
 						return 1
 
-				if(1)
-					if(timeleft>0)
+				if (1)
+					if (timeleft>0)
 						return 0
 
 					else

@@ -29,6 +29,6 @@
 	while(src)
 		sleep(10)
 		Flush--
-		if(Flush <= 0)
+		if (Flush <= 0)
 			reagents.clear_reagents()
 			Flush = 30

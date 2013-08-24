@@ -62,9 +62,9 @@ display round(lastgen) and plasmatank amount
 			return
 
 	process()
-		if(active && HasFuel() && !crit_fail && powernet)
-			if(prob(reliability)) add_avail(power_gen)
-			else if(!recent_fault) recent_fault = 1
+		if (active && HasFuel() && !crit_fail && powernet)
+			if (prob(reliability)) add_avail(power_gen)
+			else if (!recent_fault) recent_fault = 1
 			else crit_fail = 1
 			UseFuel()
 		else
@@ -72,14 +72,14 @@ display round(lastgen) and plasmatank amount
 			icon_state = initial(icon_state)
 
 	attack_hand(mob/user as mob)
-		if(..())
+		if (..())
 			return
-		if(!anchored)
+		if (!anchored)
 			return
 
 	examine()
 		set src in oview(1)
-		if(active)
+		if (active)
 			usr << "\blue The generator is on."
 		else
 			usr << "\blue The generator is off."
@@ -107,9 +107,9 @@ display round(lastgen) and plasmatank amount
 		var/temp_rating = 0
 		var/temp_reliability = 0
 		for(var/obj/item/weapon/stock_parts/SP in component_parts)
-			if(istype(SP, /obj/item/weapon/stock_parts/matter_bin))
+			if (istype(SP, /obj/item/weapon/stock_parts/matter_bin))
 				max_coins = SP.rating * SP.rating * 120
-			else if(istype(SP, /obj/item/weapon/stock_parts/micro_laser) || istype(SP, /obj/item/weapon/stock_parts/capacitor))
+			else if (istype(SP, /obj/item/weapon/stock_parts/micro_laser) || istype(SP, /obj/item/weapon/stock_parts/capacitor))
 				temp_rating += SP.rating
 		for(var/obj/item/weapon/CP in component_parts)
 			temp_reliability += CP.reliability
@@ -119,21 +119,21 @@ display round(lastgen) and plasmatank amount
 	examine()
 		..()
 		usr << "\blue The generator has [coins] units of fuel left, producing [power_gen] per cycle."
-		if(crit_fail) usr << "\red The generator seems to have broken down."
+		if (crit_fail) usr << "\red The generator seems to have broken down."
 
 	HasFuel()
-		if(coins)
+		if (coins)
 			return 1
 		return 0
 
 	UseFuel()
-		if(coins)
+		if (coins)
 			coins--
 		return
 
 	attackby(var/obj/item/O as obj, var/mob/user as mob)
-		if(istype(O, text2path(coin_path)))
-			if(coins >= max_coins)
+		if (istype(O, text2path(coin_path)))
+			if (coins >= max_coins)
 				user << "\red The generator already has it's maximum amount of fuel!"
 				return
 			coins++
@@ -141,20 +141,20 @@ display round(lastgen) and plasmatank amount
 			del(O)
 			user << "\blue You add a coin to the generator."
 
-		else if(!active)
-			if(istype(O, /obj/item/weapon/wrench))
+		else if (!active)
+			if (istype(O, /obj/item/weapon/wrench))
 				anchored = !anchored
-				if(anchored)
+				if (anchored)
 					user << "\blue The generator is locked into place."
 				else
 					user << "\blue The generator is unbolted from the floor."
 				makepowernets()
-			else if(istype(O, /obj/item/weapon/screwdriver))
+			else if (istype(O, /obj/item/weapon/screwdriver))
 				open = !open
-			else if(istype(O, /obj/item/weapon/crowbar) && !open)
+			else if (istype(O, /obj/item/weapon/crowbar) && !open)
 				var/obj/machinery/constructable_frame/machine_frame/new_frame = new /obj/machinery/constructable_frame/machine_frame(src.loc)
 				for(var/obj/item/I in component_parts)
-					if(I.reliability < 100)
+					if (I.reliability < 100)
 						I.crit_fail = 1
 					I.loc = src.loc
 				new_frame.state = 2
@@ -163,11 +163,11 @@ display round(lastgen) and plasmatank amount
 
 	attack_hand(mob/user as mob)
 		..()
-		if(!active && HasFuel() && !crit_fail && powernet)
+		if (!active && HasFuel() && !crit_fail && powernet)
 			active = 1
 			icon_state = "portgen1"
 			user << "\blue The generator is on."
-		else if(active)
+		else if (active)
 			active = 0
 			icon_state = "portgen0"
 			user << "\blue The generator is off."
@@ -209,9 +209,9 @@ display round(lastgen) and plasmatank amount
 		var/temp_rating = 0
 		var/temp_reliability = 0
 		for(var/obj/item/weapon/stock_parts/SP in component_parts)
-			if(istype(SP, /obj/item/weapon/stock_parts/matter_bin))
+			if (istype(SP, /obj/item/weapon/stock_parts/matter_bin))
 				max_coins = SP.rating * SP.rating * 120
-			else if(istype(SP, /obj/item/weapon/stock_parts/micro_laser) || istype(SP, /obj/item/weapon/stock_parts/capacitor))
+			else if (istype(SP, /obj/item/weapon/stock_parts/micro_laser) || istype(SP, /obj/item/weapon/stock_parts/capacitor))
 				temp_rating += SP.rating
 		for(var/obj/item/weapon/CP in component_parts)
 			temp_reliability += CP.reliability
@@ -221,21 +221,21 @@ display round(lastgen) and plasmatank amount
 	examine()
 		..()
 		usr << "\blue The generator has [coins] units of fuel left, producing [power_gen] per cycle."
-		if(crit_fail) usr << "\red The generator seems to have broken down."
+		if (crit_fail) usr << "\red The generator seems to have broken down."
 
 	HasFuel()
-		if(coins)
+		if (coins)
 			return 1
 		return 0
 
 	UseFuel()
-		//if(coins)
+		//if (coins)
 			//coins--
 		return
 
 	attackby(var/obj/item/O as obj, var/mob/user as mob)
-		if(istype(O, text2path(coin_path)))
-			if(coins >= max_coins)
+		if (istype(O, text2path(coin_path)))
+			if (coins >= max_coins)
 				user << "\red The generator already has it's maximum amount of fuel!"
 				return
 			coins++
@@ -243,20 +243,20 @@ display round(lastgen) and plasmatank amount
 			del(O)
 			user << "\blue You add a coin to the generator."
 
-		else if(!active)
-			if(istype(O, /obj/item/weapon/wrench))
+		else if (!active)
+			if (istype(O, /obj/item/weapon/wrench))
 				anchored = !anchored
-				if(anchored)
+				if (anchored)
 					user << "\blue The generator is locked into place."
 				else
 					user << "\blue The generator is unbolted from the floor."
 				makepowernets()
-			else if(istype(O, /obj/item/weapon/screwdriver))
+			else if (istype(O, /obj/item/weapon/screwdriver))
 				open = !open
-			else if(istype(O, /obj/item/weapon/crowbar) && !open)
+			else if (istype(O, /obj/item/weapon/crowbar) && !open)
 				var/obj/machinery/constructable_frame/machine_frame/new_frame = new /obj/machinery/constructable_frame/machine_frame(src.loc)
 				for(var/obj/item/I in component_parts)
-					if(I.reliability < 100)
+					if (I.reliability < 100)
 						I.crit_fail = 1
 					I.loc = src.loc
 				new_frame.state = 2
@@ -265,11 +265,11 @@ display round(lastgen) and plasmatank amount
 
 	attack_hand(mob/user as mob)
 		..()
-		if(!active && HasFuel() && !crit_fail && powernet)
+		if (!active && HasFuel() && !crit_fail && powernet)
 			active = 1
 			icon_state = "portgen1"
 			user << "\blue The generator is on."
-		else if(active)
+		else if (active)
 			active = 0
 			icon_state = "portgen0"
 			user << "\blue The generator is off."

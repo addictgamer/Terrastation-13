@@ -14,7 +14,7 @@
 
 /obj/machinery/computer/teleporter/attackby(I as obj, user as mob)
 	if (istype(I, /obj/item/weapon/card/data/))
-		if(stat & (NOPOWER|BROKEN))
+		if (stat & (NOPOWER|BROKEN))
 			src.attack_hand()
 
 		var/obj/S = null
@@ -55,7 +55,7 @@
 	src.attack_hand()
 
 /obj/machinery/computer/teleporter/attack_hand()
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 
 	var/list/L = list()
@@ -64,9 +64,9 @@
 	for(var/obj/item/device/radio/beacon/R in world)
 		var/turf/T = get_turf(R)
 		if (!T)	continue
-		if(T.z == 2)	continue
+		if (T.z == 2)	continue
 		var/tmpname = T.loc.name
-		if(areaindex[tmpname])
+		if (areaindex[tmpname])
 			tmpname = "[tmpname] ([++areaindex[tmpname]])"
 		else
 			areaindex[tmpname] = 1
@@ -81,10 +81,10 @@
 				if (M.timeofdeath + 6000 < world.time)
 					continue
 			var/turf/T = get_turf(M)
-			if(T)	continue
-			if(T.z == 2)	continue
+			if (T)	continue
+			if (T.z == 2)	continue
 			var/tmpname = M.real_name
-			if(areaindex[tmpname])
+			if (areaindex[tmpname])
 				tmpname = "[tmpname] ([++areaindex[tmpname]])"
 			else
 				areaindex[tmpname] = 1
@@ -103,7 +103,7 @@
 	set src in oview(1)
 	set desc = "ID Tag:"
 
-	if(stat & (NOPOWER|BROKEN) || !istype(usr,/mob/living))
+	if (stat & (NOPOWER|BROKEN) || !istype(usr,/mob/living))
 		return
 	if (t)
 		src.id = t
@@ -114,11 +114,11 @@
 	var/turf/T = R.loc
 	while(!istype(T, /turf))
 		T = T.loc
-		if(!T || istype(T, /area))	return null
+		if (!T || istype(T, /area))	return null
 	return T
 
 /obj/machinery/computer/teleporter/security/attack_hand()
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 
 	var/list/L = list()
@@ -128,7 +128,7 @@
 		var/turf/T = find_loc(R)
 		if (!T)	continue
 		var/tmpname = T.loc.name
-		if(areaindex[tmpname])
+		if (areaindex[tmpname])
 			tmpname = "[tmpname] ([++areaindex[tmpname]])"
 		else
 			areaindex[tmpname] = 1
@@ -175,7 +175,7 @@
 			O.show_message("\red Failure: Cannot authenticate locked on coordinates. Please reinstate coordinate matrix.")
 		return
 	if (istype(M, /atom/movable))
-		if(prob(5) && !accurate) //oh dear a problem, put em in deep space
+		if (prob(5) && !accurate) //oh dear a problem, put em in deep space
 			do_teleport(M, locate(rand(5, world.maxx - 5), rand(5, world.maxy - 5), 3), 2)
 		else
 			do_teleport(M, com.locked, 0) //dead-on precision
@@ -188,7 +188,7 @@
 	return
 
 /proc/do_teleport(atom/movable/M as mob|obj, atom/destination, precision)
-	if(istype(M, /obj/effects))
+	if (istype(M, /obj/effects))
 		del(M)
 		return
 	if (istype(M, /obj/item/weapon/disk/nuclear)) // Don't let nuke disks get teleported --NeoFite
@@ -197,7 +197,7 @@
 		return
 	if (istype(M, /mob/living))
 		var/mob/living/MM = M
-		if(MM.check_contents_for(/obj/item/weapon/disk/nuclear))
+		if (MM.check_contents_for(/obj/item/weapon/disk/nuclear))
 			MM << "\red Something you are carrying seems to be unable to pass through the portal. Better drop it if you want to go through."
 			return
 	var/disky = 0
@@ -214,7 +214,7 @@
 			disky = 1
 		if (istype(O, /mob/living))
 			var/mob/living/MM = O
-			if(MM.check_contents_for(/obj/item/weapon/disk/nuclear))
+			if (MM.check_contents_for(/obj/item/weapon/disk/nuclear))
 				disky = 1
 	if (disky)
 		for(var/mob/P in viewers(M, null))
@@ -224,7 +224,7 @@
 //Bags of Holding cause bluespace teleportation to go funky. --NeoFite
 	if (istype(M, /mob/living))
 		var/mob/living/MM = M
-		if(MM.check_contents_for(/obj/item/weapon/storage/backpack/holding))
+		if (MM.check_contents_for(/obj/item/weapon/storage/backpack/holding))
 			MM << "\red The Bluespace interface on your Bag of Holding interferes with the teleport!"
 			precision = rand(1,100)
 	if (istype(M, /obj/item/weapon/storage/backpack/holding))
@@ -242,7 +242,7 @@
 			precision = rand(1,100)
 		if (istype(O, /mob/living))
 			var/mob/living/MM = O
-			if(MM.check_contents_for(/obj/item/weapon/storage/backpack/holding))
+			if (MM.check_contents_for(/obj/item/weapon/storage/backpack/holding))
 				precision = rand(1,100)
 
 
@@ -258,10 +258,10 @@
 	else
 		tmploc = locate(tx, ty, destination.z)
 
-	if(tx == destturf.x && ty == destturf.y && (istype(destination.loc, /obj/closet) || istype(destination.loc, /obj/secure_closet)))
+	if (tx == destturf.x && ty == destturf.y && (istype(destination.loc, /obj/closet) || istype(destination.loc, /obj/secure_closet)))
 		tmploc = destination.loc
 
-	if(tmploc==null)
+	if (tmploc==null)
 		return
 
 	M.loc = tmploc
@@ -292,13 +292,13 @@
 	src.attack_hand()
 
 /obj/machinery/teleport/station/attack_hand()
-	if(engaged)
+	if (engaged)
 		src.disengage()
 	else
 		src.engage()
 
 /obj/machinery/teleport/station/proc/engage()
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		return
 
 	var/atom/l = src.loc
@@ -313,7 +313,7 @@
 	return
 
 /obj/machinery/teleport/station/proc/disengage()
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		return
 
 	var/atom/l = src.loc
@@ -331,7 +331,7 @@
 	set category = "Object"
 	set src in oview(1)
 
-	if(stat & (BROKEN|NOPOWER) || !istype(usr,/mob/living))
+	if (stat & (BROKEN|NOPOWER) || !istype(usr,/mob/living))
 		return
 
 	var/atom/l = src.loc
@@ -351,10 +351,10 @@
 
 /obj/machinery/teleport/station/power_change()
 	..()
-	if(stat & NOPOWER)
+	if (stat & NOPOWER)
 		icon_state = "controller-p"
 		var/obj/machinery/teleport/hub/com = locate(/obj/machinery/teleport/hub, locate(x + 1, y, z))
-		if(com)
+		if (com)
 			com.icon_state = "tele0"
 	else
 		icon_state = "controller"

@@ -9,7 +9,7 @@
 	var/list/construction_cost = list("metal"=500)
 
 	proc/get_mecha_info()
-		if(!in_mecha())
+		if (!in_mecha())
 			return 0
 		var/obj/mecha/M = src.loc
 		var/cell_charge = M.get_charge()
@@ -20,7 +20,7 @@
 							<b>Pilot:</b> [M.occupant||"None"]<br>
 							<b>Location:</b> [get_area(M)||"Unknown"]<br>
 							<b>Active equipment:</b> [M.selected||"None"]"}
-		if(istype(M, /obj/mecha/working/ripley))
+		if (istype(M, /obj/mecha/working/ripley))
 			var/obj/mecha/working/ripley/RM = M
 			answer += "<b>Used cargo space:</b> [RM.cargo.len/RM.cargo_capacity*100]%<br>"
 
@@ -35,18 +35,18 @@
 		return
 
 	proc/in_mecha()
-		if(istype(src.loc, /obj/mecha))
+		if (istype(src.loc, /obj/mecha))
 			return 1
 		return 0
 
 	proc/shock()
-		if(src.in_mecha())
+		if (src.in_mecha())
 			var/obj/mecha/M = src.loc
 			M.emp_act(3)
 		del(src)
 
 	proc/get_mecha_log()
-		if(!src.in_mecha())
+		if (!src.in_mecha())
 			return 0
 		var/obj/mecha/M = src.loc
 		return M.get_log_html()

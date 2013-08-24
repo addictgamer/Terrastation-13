@@ -65,15 +65,15 @@ research holder datum.
 		//Checks to see if tech has all the required pre-reqs.
 		//Input: datum/tech; Output: 0/1 (false/true)
 		TechHasReqs(var/datum/tech/T)
-			if(T.req_tech.len == 0)
+			if (T.req_tech.len == 0)
 				return 1
 			var/matches = 0
 			for(var/req in T.req_tech)
 				for(var/datum/tech/known in known_tech)
-					if((req == known.id) && (known.level >= T.req_tech[req]))
+					if ((req == known.id) && (known.level >= T.req_tech[req]))
 						matches++
 						break
-			if(matches == T.req_tech.len)
+			if (matches == T.req_tech.len)
 				return 1
 			else
 				return 0
@@ -81,15 +81,15 @@ research holder datum.
 		//Checks to see if design has all the required pre-reqs.
 		//Input: datum/design; Output: 0/1 (false/true)
 		DesignHasReqs(var/datum/design/D)
-			if(D.req_tech.len == 0)
+			if (D.req_tech.len == 0)
 				return 1
 			var/matches = 0
 			for(var/req in D.req_tech)
 				for(var/datum/tech/known in known_tech)
-					if((req == known.id) && (known.level >= D.req_tech[req]))
+					if ((req == known.id) && (known.level >= D.req_tech[req]))
 						matches++
 						break
-			if(matches == D.req_tech.len)
+			if (matches == D.req_tech.len)
 				return 1
 			else
 				return 0
@@ -98,8 +98,8 @@ research holder datum.
 		//Input: datum/tech; Output: Null
 		AddTech2Known(var/datum/tech/T)
 			for(var/datum/tech/known in known_tech)
-				if(T.id == known.id)
-					if(T.level > known.level)
+				if (T.id == known.id)
+					if (T.level > known.level)
 						known.level = T.level
 					return
 			known_tech += T
@@ -107,8 +107,8 @@ research holder datum.
 
 		AddDesign2Known(var/datum/design/D)
 			for(var/datum/design/known in known_designs)
-				if(D.id == known.id)
-					if(D.reliability_mod > known.reliability_mod)
+				if (D.id == known.id)
+					if (D.reliability_mod > known.reliability_mod)
 						known.reliability_mod = D.reliability_mod
 					return
 			known_designs += D
@@ -118,10 +118,10 @@ research holder datum.
 		//Input/Output: n/a
 		RefreshResearch()
 			for(var/datum/tech/PT in possible_tech)
-				if(TechHasReqs(PT))
+				if (TechHasReqs(PT))
 					AddTech2Known(PT)
 			for(var/datum/design/PD in possible_designs)
-				if(DesignHasReqs(PD))
+				if (DesignHasReqs(PD))
 					AddDesign2Known(PD)
 			for(var/datum/tech/T in known_tech)
 				T = between(1,T.level,20)
@@ -133,13 +133,13 @@ research holder datum.
 		//Input: Tech's ID and Level; Output: null
 		UpdateTech(var/ID, var/level)
 			for(var/datum/tech/KT in known_tech)
-				if(KT.id == ID)
-					if(KT.level <= level) KT.level = max((KT.level + 1), (level - 1))
+				if (KT.id == ID)
+					if (KT.level <= level) KT.level = max((KT.level + 1), (level - 1))
 			return
 
 		UpdateDesign(var/path)
 			for(var/datum/design/KD in known_designs)
-				if(KD.build_path == path)
+				if (KD.build_path == path)
 					KD.reliability_mod += rand(1,2)
 					break
 			return

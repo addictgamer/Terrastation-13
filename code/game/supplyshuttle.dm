@@ -60,11 +60,11 @@ var/trade_ordernum=0
 	return src.attack_hand(user)
 
 /obj/machinery/computer/supplycomp/attack_hand(var/mob/user as mob)
-	if(!src.allowed(user))
+	if (!src.allowed(user))
 		user << "\red Access Denied."
 		return
 
-	if(..())
+	if (..())
 		return
 	user.machine = src
 	post_signal("supply")
@@ -86,13 +86,13 @@ var/trade_ordernum=0
 	return
 
 /obj/machinery/computer/supplycomp/attackby(I as obj, user as mob)
-	if(istype(I,/obj/item/weapon/card/emag) && !hacked)
+	if (istype(I,/obj/item/weapon/card/emag) && !hacked)
 		user << "\blue Special supplies unlocked."
 		src.hacked = 1
 		return
-	if(istype(I, /obj/item/weapon/screwdriver))
+	if (istype(I, /obj/item/weapon/screwdriver))
 		playsound(src.loc, 'Screwdriver.ogg', 50, 1)
-		if(do_after(user, 20))
+		if (do_after(user, 20))
 			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				var/obj/computerframe/A = new /obj/computerframe( src.loc )
@@ -121,14 +121,14 @@ var/trade_ordernum=0
 	return
 
 /obj/machinery/computer/supplycomp/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 
 	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
 		usr.machine = src
 
 	if (href_list["sendtodock"])
-		if(!supply_shuttle_at_station || supply_shuttle_moving) return
+		if (!supply_shuttle_at_station || supply_shuttle_moving) return
 
 		//if (!supply_can_move())
 		//	usr << "\red The supply shuttle can not transport station employees or homing beacons."
@@ -145,7 +145,7 @@ var/trade_ordernum=0
 		send_supply_shuttle()
 
 	else if (href_list["sendtostation"])
-		if(supply_shuttle_at_station || supply_shuttle_moving) return
+		if (supply_shuttle_at_station || supply_shuttle_moving) return
 
 		//if (!supply_can_move())
 		//	usr << "\red The supply shuttle can not transport station employees or homing beacons."
@@ -166,22 +166,22 @@ var/trade_ordernum=0
 			supply_process()
 
 	if (href_list["order"])
-		if(supply_shuttle_moving) return
+		if (supply_shuttle_moving) return
 		src.temp = "Supply points: [supply_shuttle_points]<BR><HR><BR>Request what?<BR><BR>"
 		for(var/S in (typesof(/datum/supply_packs) - /datum/supply_packs) )
 			var/datum/supply_packs/N = new S()
-			if(N.hidden && !src.hacked) continue													//Have to send the type instead of a reference to
+			if (N.hidden && !src.hacked) continue													//Have to send the type instead of a reference to
 			src.temp += "<A href='?src=\ref[src];doorder=[N.type]'>[N.name]</A> Cost: [N.cost]<BR>" //the obj because it would get caught by the garbage
 		src.temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"								//collector. oh well.
 
 	else if (href_list["doorder"])
 
-		if(locate(href_list["doorder"])) //Comes from the requestlist
+		if (locate(href_list["doorder"])) //Comes from the requestlist
 			var/datum/supply_order/O = locate(href_list["doorder"])
 			var/datum/supply_packs/P = O.object
 			supply_shuttle_requestlist -= O
 
-			if(supply_shuttle_points >= P.cost)
+			if (supply_shuttle_points >= P.cost)
 				supply_shuttle_points -= P.cost
 				O.object = P
 				O.orderedby = usr.name
@@ -197,7 +197,7 @@ var/trade_ordernum=0
 			var/datum/supply_order/O = new/datum/supply_order ()
 			var/supplytype = href_list["doorder"]
 			var/datum/supply_packs/P = new supplytype ()
-			if(supply_shuttle_points >= P.cost)
+			if (supply_shuttle_points >= P.cost)
 				O.object = P
 				O.orderedby = usr.name
 				O.comment = input(usr,"Comment:","Enter comment","")
@@ -205,7 +205,7 @@ var/trade_ordernum=0
 				count = input(usr, "Ammount:","Enter ammount","") as num
 				var/i = 0
 				while(i < count)
-					if(supply_shuttle_points >= P.cost)
+					if (supply_shuttle_points >= P.cost)
 						supply_shuttle_shoppinglist += O
 						supply_shuttle_points -= P.cost
 					i++
@@ -264,7 +264,7 @@ var/trade_ordernum=0
 
 	var/datum/radio_frequency/frequency = radio_controller.return_frequency(1435)
 
-	if(!frequency) return
+	if (!frequency) return
 
 	var/datum/signal/status_signal = new
 	status_signal.source = src
@@ -289,7 +289,7 @@ var/trade_ordernum=0
 	var/area/from = locate(shuttleat)
 	var/area/dest = locate(shuttleto)
 
-	if(!from || !dest) return
+	if (!from || !dest) return
 
 	from.move_contents_to(dest)
 	supply_shuttle_at_station = !supply_shuttle_at_station
@@ -312,7 +312,7 @@ var/trade_ordernum=0
 	return src.attack_hand(user)
 
 /obj/machinery/computer/ordercomp/attack_hand(var/mob/user as mob)
-	if(..())
+	if (..())
 		return
 	user.transform_into_space_pirate()
 	user.machine = src
@@ -334,7 +334,7 @@ var/trade_ordernum=0
 	return
 
 /obj/machinery/computer/ordercomp/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 
 	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
@@ -344,7 +344,7 @@ var/trade_ordernum=0
 		src.temp = "Supply points: [supply_shuttle_points]<BR><HR><BR>Request what?<BR><BR>"
 		for(var/S in (typesof(/datum/supply_packs) - /datum/supply_packs) )
 			var/datum/supply_packs/N = new S()
-			if(N.hidden) continue																	//Have to send the type instead of a reference to
+			if (N.hidden) continue																	//Have to send the type instead of a reference to
 			src.temp += "<A href='?src=\ref[src];doorder=[N.type]'>[N.name]</A> Cost: [N.cost] "    //the obj because it would get caught by the garbage
 			src.temp += "<A href='?src=\ref[src];printform=[N.type]'>Print Requisition</A><br>"     //collector. oh well.
 		src.temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
@@ -359,7 +359,7 @@ var/trade_ordernum=0
 		var/count = input(usr, "Ammount:","Enter ammount","") as num
 		var/i = 0
 		while(i < count)
-			if(supply_shuttle_points >= P.cost)
+			if (supply_shuttle_points >= P.cost)
 				supply_shuttle_requestlist += O
 			i++
 		src.temp = "Thanks for your request. The cargo team will process it as soon as possible.<BR>"
@@ -377,15 +377,15 @@ var/trade_ordernum=0
 		reqform.info += "<h3>[station_name] Supply Requisition Form</h3><hr>"
 
 		if (istype(usr:wear_id, /obj/item/weapon/card/id))
-			if(usr:wear_id.registered)
+			if (usr:wear_id.registered)
 				idname = usr:wear_id.registered
-			if(usr:wear_id.assignment)
+			if (usr:wear_id.assignment)
 				idrank = usr:wear_id.assignment
 		if (istype(usr:wear_id, /obj/item/device/pda))
 			var/obj/item/device/pda/pda = usr:wear_id
-			if(pda.owner)
+			if (pda.owner)
 				idname = pda.owner
-			if(pda.ownjob)
+			if (pda.ownjob)
 				idrank = pda.ownjob
 		else
 			idname = usr.name
@@ -457,7 +457,7 @@ var/trade_ordernum=0
 	while(supply_shuttle_time - world.timeofday > 0)
 		var/ticksleft = supply_shuttle_time - world.timeofday
 
-		if(ticksleft > 1e5)
+		if (ticksleft > 1e5)
 			supply_shuttle_time = world.timeofday + 10	// midnight rollover
 
 
@@ -467,17 +467,17 @@ var/trade_ordernum=0
 	send_supply_shuttle()
 
 /proc/supply_can_move()
-	if(supply_shuttle_moving) return 0
+	if (supply_shuttle_moving) return 0
 
 	var/shuttleat = supply_shuttle_at_station ? SUPPLY_STATION_AREATYPE : SUPPLY_DOCK_AREATYPE
 
 	for(var/turf/T in get_area_turfs(shuttleat) )
-		//if((locate(/mob/living) in T) && (!locate(/mob/living/carbon/monkey) in T)) return 0  //old check for living excluded monkeys
-		if((locate(/mob/living) in T)) return 0
-		if((locate(/obj/item/device/radio/beacon) in T)) return 0
+		//if ((locate(/mob/living) in T) && (!locate(/mob/living/carbon/monkey) in T)) return 0  //old check for living excluded monkeys
+		if ((locate(/mob/living) in T)) return 0
+		if ((locate(/obj/item/device/radio/beacon) in T)) return 0
 		for(var/atom/ATM in T)
-			if((locate(/mob/living) in ATM)) return 0
-			if((locate(/obj/item/device/radio/beacon) in ATM)) return 0
+			if ((locate(/mob/living) in ATM)) return 0
+			if ((locate(/obj/item/device/radio/beacon) in ATM)) return 0
 
 	return 1
 
@@ -498,7 +498,7 @@ var/trade_ordernum=0
 
 	var/list/markers = new/list()
 
-	if(!supply_shuttle_shoppinglist.len) return
+	if (!supply_shuttle_shoppinglist.len) return
 
 	for(var/turf/T in get_area_turfs(shuttleat))
 		for(var/obj/marker/supplymarker/D in T)
@@ -520,7 +520,7 @@ var/trade_ordernum=0
 
 		//supply manifest generation begin
 
-		if(ordernum)
+		if (ordernum)
 			ordernum++
 		else
 			ordernum = rand(500,5000) //pick a random number to start with
@@ -534,14 +534,14 @@ var/trade_ordernum=0
 		slip.info +="CONTENTS:<br><ul>"
 
 		//spawn the stuff, finish generating the manifest while you're at it
-		if(SP.access)
+		if (SP.access)
 			A:req_access = new/list()
 			A:req_access += text2num(SP.access)
 		for(var/B in SP.contains)
-			if(!B)	continue
+			if (!B)	continue
 			var/thepath = text2path(B)
 			var/atom/B2 = new thepath (A)
-			if(SP.amount && B2:amount) B2:amount = SP.amount
+			if (SP.amount && B2:amount) B2:amount = SP.amount
 			slip.info += "<li>[B2.name]</li>" //add the item to the manifest
 
 		//manifest finalisation

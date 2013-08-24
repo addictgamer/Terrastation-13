@@ -16,17 +16,17 @@
 	..()
 
 /turf/simulated/wall/proc/checkForMultipleDoors()
-	if(!src.loc)
+	if (!src.loc)
 		return 0
 	for(var/obj/machinery/door/D in locate(src.x,src.y,src.z))
-		if(!istype(D, /obj/machinery/door/window) && D.density)
+		if (!istype(D, /obj/machinery/door/window) && D.density)
 			return 0
 	//There are no false wall checks because that would be fucking retarded
 	return 1
 
 /turf/simulated/wall/proc/dismantle_wall(devastated=0, explode=0)
-	if(istype(src,/turf/simulated/wall/r_wall))
-		if(!devastated)
+	if (istype(src,/turf/simulated/wall/r_wall))
+		if (!devastated)
 			playsound(src.loc, 'Welder.ogg', 100, 1)
 			new /obj/structure/girder/reinforced(src)
 			new /obj/item/stack/sheet/r_metal( src )
@@ -35,7 +35,7 @@
 			new /obj/item/stack/sheet/metal( src )
 			new /obj/item/stack/sheet/r_metal( src )
 	else
-		if(!devastated)
+		if (!devastated)
 			playsound(src.loc, 'Welder.ogg', 100, 1)
 			new /obj/structure/girder(src)
 			new /obj/item/stack/sheet/metal( src )
@@ -56,17 +56,17 @@
 /turf/simulated/wall/ex_act(severity)
 
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			//SN src = null
 			src.ReplaceWithSpace()
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				dismantle_wall(0,1)
 			else
 				dismantle_wall(1,1)
-		if(3.0)
+		if (3.0)
 			var/proba
 			if (istype(src, /turf/simulated/wall/r_wall))
 				proba = 15
@@ -78,7 +78,7 @@
 	return
 
 /turf/simulated/wall/blob_act()
-	if(prob(50))
+	if (prob(50))
 		dismantle_wall()
 
 /turf/simulated/wall/attack_paw(mob/user as mob)
@@ -184,7 +184,7 @@
 						O.show_message(text("\blue The wall was sliced apart by []!", user), 1, text("\red You hear metal being sliced apart."), 2)
 		return
 
-	else if(istype(W, /obj/item/weapon/pickaxe/diamonddrill))
+	else if (istype(W, /obj/item/weapon/pickaxe/diamonddrill))
 		var/turf/T = user.loc
 		user << "\blue Now drilling through wall."
 		sleep(60)
@@ -194,7 +194,7 @@
 				O.show_message(text("\blue The wall was drilled apart by []!", user), 1, text("\red You hear metal being drilled appart."), 2)
 		return
 
-	else if(istype(W, /obj/item/weapon/melee/energy/blade))
+	else if (istype(W, /obj/item/weapon/melee/energy/blade))
 		var/turf/T = user.loc
 		user << "\blue Now slicing through wall."
 		W:spark_system.start()
@@ -209,7 +209,7 @@
 				O.show_message(text("\blue The wall was sliced apart by []!", user), 1, text("\red You hear metal being sliced and sparks flying."), 2)
 		return
 
-	else if(istype(W,/obj/item/apc_frame))
+	else if (istype(W,/obj/item/apc_frame))
 		var/obj/item/apc_frame/AH = W
 		AH.try_build(src)
 	else

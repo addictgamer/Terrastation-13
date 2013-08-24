@@ -15,7 +15,7 @@
 
 /obj/machinery/the_singularitygen/process()
 	var/turf/T = get_turf(src)
-	if(src.energy >= 200)
+	if (src.energy >= 200)
 		new /obj/machinery/singularity/(T, 50)
 		spawn(0)
 			del(src)
@@ -29,17 +29,17 @@
 */
 
 ///obj/machinery/the_singularitygen/Bumped(atom/A)
-//	if(istype(A,/obj/accelerated_particle))
+//	if (istype(A,/obj/accelerated_particle))
 //		src.energy += A:energy
 //		return
 //	..()
 
 
 /obj/machinery/the_singularitygen/attackby(obj/item/W, mob/user)
-	if(istype(W, /obj/item/weapon/wrench))
+	if (istype(W, /obj/item/weapon/wrench))
 		anchored = !anchored
 		playsound(src.loc, 'Ratchet.ogg', 75, 1)
-		if(anchored)
+		if (anchored)
 			user.visible_message("[user.name] secures [src.name] to the floor.", \
 				"You secure the [src.name] to the floor.", \
 				"You hear ratchet")
@@ -54,6 +54,6 @@
 /proc/singularity_is_surrounded(turf/T)//TODO:Add a timer so we dont need this
 	var/checkpointC = 0
 	for (var/obj/X in orange(4,T)) //TODO: do we need requirement to singularity be actually _surrounded_ by field?
-		if(istype(X, /obj/machinery/containment_field) || istype(X, /obj/machinery/shieldwall))
+		if (istype(X, /obj/machinery/containment_field) || istype(X, /obj/machinery/shieldwall))
 			checkpointC ++
 	return checkpointC >= 20

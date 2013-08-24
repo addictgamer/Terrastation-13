@@ -118,14 +118,14 @@
 						return
 					//world << "nuclearbomb timer"
 					/*for(var/mob/M in world)
-						if(M.client)
-							if(M.client.midis)
+						if (M.client)
+							if (M.client.midis)
 								M << uploaded_sound*/
 					world << sound('nuclearbomb-timer-initiated-music.mid')
 					src.timing = !( src.timing )
 					if (src.timing)
 						src.icon_state = "nuclearbomb2"
-						if(!src.safety)
+						if (!src.safety)
 							bomb_set = 1//There can still be issues with this reseting when there are multiple bombs. Not a big deal tho for Nuke/N
 					else
 						src.icon_state = "nuclearbomb1"
@@ -188,14 +188,14 @@
 		ticker.mode:derp = derp
 
 	for(var/mob/M in world)
-		if(M.client)
+		if (M.client)
 			spawn(0)
 				M.client.station_explosion_cinematic(derp)
 	sleep(110)
 
 	if (ticker && ticker.mode)
 		ticker.mode.explosion_in_progress = 0
-		if(ticker.mode.name == "nuclear emergency")
+		if (ticker.mode.name == "nuclear emergency")
 			ticker.mode:nukes_left --
 			ticker.mode.station_was_nuked = (derp==0)
 
@@ -210,7 +210,7 @@
 			as it will return null). Leaving this for you since you apparently plan to work this further. /N
 			*/
 
-		if(!ticker.mode.check_win())//If the mode does not deal with the nuke going off so just reboot because everyone is stuck as is
+		if (!ticker.mode.check_win())//If the mode does not deal with the nuke going off so just reboot because everyone is stuck as is
 			world << "<B>Resetting in 30 seconds!</B>"
 			sleep(300)
 			log_game("Rebooting due to nuclear detonation")

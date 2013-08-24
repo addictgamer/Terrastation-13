@@ -37,7 +37,7 @@
 
 	if (client)
 		client.mob = O
-	if(mind)
+	if (mind)
 		mind.transfer_to(O)
 	O.a_intent = "hurt"
 	O << "<B>You are now a monkey.</B>"
@@ -46,11 +46,11 @@
 	return O
 
 /mob/living/carbon/human/proc/piratize()
-	if(monkeyizing)
+	if (monkeyizing)
 		return
 	space_pirate = 1
 	/*for(var/obj/item/W in src)
-		if(W==wear_id) //For blarg. Just keep their ID if they transofrm.
+		if (W==wear_id) //For blarg. Just keep their ID if they transofrm.
 			continue
 		del(W)*/
 	/*wear_suit = new /obj/item/clothing/suit/pirate
@@ -88,7 +88,7 @@
 	equip_if_possible(new /obj/item/weapon/plastique(src), slot_r_store)
 	equip_if_possible(new /obj/item/weapon/cloaking_device(src), slot_l_store)
 	equip_if_possible(new /obj/item/device/radio/headset/space_pirate(src), slot_ears)
-	if(gender == FEMALE) //If female, give a bandanna. If male, give a pirate hat.
+	if (gender == FEMALE) //If female, give a bandanna. If male, give a pirate hat.
 		equip_if_possible(new /obj/item/clothing/head/bandana(src), slot_head)
 	else
 		equip_if_possible(new /obj/item/clothing/head/pirate(src), slot_head)
@@ -96,8 +96,8 @@
 	equip_if_possible(new /obj/item/weapon/melee/energy/sword/pirate(src), slot_l_hand)
 
 	//TODO: Check if has client. If not, then set it NPC controlled.
-	//if(!logged_in)
-	if(!client)
+	//if (!logged_in)
+	if (!client)
 		npc = 1
 
 /mob/new_player/AIize()
@@ -124,14 +124,14 @@
 	return ..()
 
 /mob/proc/AIize()
-	if(client)
+	if (client)
 		client.screen.len = null
 	var/mob/living/silicon/ai/O = new (loc, /datum/ai_laws/asimov,,1)//No MMI but safety is in effect.
 	O.invisibility = 0
 	O.aiRestorePowerRoutine = 0
 	O.lastKnownIP = client.address
 
-	if(mind)
+	if (mind)
 		mind.transfer_to(O)
 		O.mind.original = O
 	else
@@ -141,7 +141,7 @@
 		O.mind.assigned_role = "AI"
 		O.key = key
 
-	if(!(O.mind in ticker.minds))
+	if (!(O.mind in ticker.minds))
 		ticker.minds += O.mind//Adds them to regular mind list.
 
 	var/obj/loc_landmark
@@ -154,7 +154,7 @@
 	if (!loc_landmark)
 		for(var/obj/landmark/tripai in world)
 			if (tripai.name == "tripai")
-				if(locate(/mob) in tripai.loc)
+				if (locate(/mob) in tripai.loc)
 					continue
 				loc_landmark = tripai
 	if (!loc_landmark)
@@ -211,7 +211,7 @@
 	invisibility = 101
 	for(var/t in organs)
 		del(organs[text("[t]")])
-	if(client)
+	if (client)
 		//client.screen -= main_hud1.contents
 		client.screen -= hud_used.contents
 		client.screen -= hud_used.adding
@@ -243,7 +243,7 @@
 		mind.original = O
 		mind.transfer_to(O)
 
-	if(!(O.mind in ticker.minds))
+	if (!(O.mind in ticker.minds))
 		ticker.minds += O.mind//Adds them to regular mind list.
 
 	O.loc = loc
@@ -278,11 +278,11 @@
 	var/alien_caste = pick("Hunter","Sentinel","Drone")
 	var/mob/living/carbon/alien/humanoid/new_xeno
 	switch(alien_caste)
-		if("Hunter")
+		if ("Hunter")
 			new_xeno = new /mob/living/carbon/alien/humanoid/hunter (loc)
-		if("Sentinel")
+		if ("Sentinel")
 			new_xeno = new /mob/living/carbon/alien/humanoid/sentinel (loc)
-		if("Drone")
+		if ("Drone")
 			new_xeno = new /mob/living/carbon/alien/humanoid/drone (loc)
 
 	//Honestly not sure why it's giving them DNA.
@@ -315,7 +315,7 @@
 	for(var/t in organs)
 		del(organs[t])
 
-	if(reproduce)
+	if (reproduce)
 		var/number = pick(2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,4)
 		var/list/babies = list()
 		for(var/i=1,i<=number,i++) // reproduce (has a small chance of producing 3 or 4 offspring)
@@ -333,7 +333,7 @@
 		new_metroid.a_intent = "hurt"
 		new_metroid << "<B>You are now a baby Metroid.</B>"
 
-	if(adult)
+	if (adult)
 		var/mob/living/carbon/metroid/adult/new_metroid = new /mob/living/carbon/metroid/adult (loc)
 		new_metroid.mind_initialize(src)
 		new_metroid.key = key

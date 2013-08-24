@@ -82,7 +82,7 @@
 	dat += "Status: <A href='?src=\ref[src];operation=start'>[src.on ? "On" : "Off"]</A><BR>"
 	dat += "Tiles left: [src.amount]<BR>"
 	dat += "Behvaiour controls are [src.locked ? "locked" : "unlocked"]<BR>"
-	if(!src.locked)
+	if (!src.locked)
 		dat += "Improves floors: <A href='?src=\ref[src];operation=improve'>[src.improvefloors ? "Yes" : "No"]</A><BR>"
 		dat += "Finds tiles: <A href='?src=\ref[src];operation=tiles'>[src.eattiles ? "Yes" : "No"]</A><BR>"
 		dat += "Make singles pieces of metal into tiles when empty: <A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A><BR>"
@@ -99,17 +99,17 @@
 
 
 /obj/machinery/bot/floorbot/attackby(var/obj/item/W , mob/user as mob)
-	if(istype(W, /obj/item/stack/tile/steel))
+	if (istype(W, /obj/item/stack/tile/steel))
 		var/obj/item/stack/tile/steel/T = W
-		if(src.amount >= 50)
+		if (src.amount >= 50)
 			return
 		var/loaded = min(50-src.amount, T.amount)
 		T.use(loaded)
 		src.amount += loaded
 		user << "\red You load [loaded] tiles into the floorbot. He now contains [src.amount] tiles!"
 		src.updateicon()
-	else if(istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
-		if(src.allowed(usr))
+	else if (istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
+		if (src.allowed(usr))
 			src.locked = !src.locked
 			user << "You [src.locked ? "lock" : "unlock"] the [src] behaviour controls."
 		else
@@ -120,36 +120,36 @@
 
 
 /obj/machinery/bot/floorbot/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	usr.machine = src
 	src.add_fingerprint(usr)
 	switch(href_list["operation"])
-		if("start")
+		if ("start")
 			if (src.on)
 				turn_off()
 			else
 				turn_on()
-		if("improve")
+		if ("improve")
 			src.improvefloors = !src.improvefloors
 			src.updateUsrDialog()
-		if("tiles")
+		if ("tiles")
 			src.eattiles = !src.eattiles
 			src.updateUsrDialog()
-		if("make")
+		if ("make")
 			src.maketiles = !src.maketiles
 			src.updateUsrDialog()
-		if("bridgemode")
+		if ("bridgemode")
 			switch(src.targetdirection)
-				if(null)
+				if (null)
 					targetdirection = 1
-				if(1)
+				if (1)
 					targetdirection = 2
-				if(2)
+				if (2)
 					targetdirection = 4
-				if(4)
+				if (4)
 					targetdirection = 8
-				if(8)
+				if (8)
 					targetdirection = null
 				else
 					targetdirection = null
@@ -158,98 +158,98 @@
 /obj/machinery/bot/floorbot/process()
 	set background = 1
 
-	if(!src.on)
+	if (!src.on)
 		return
-	if(src.repairing)
+	if (src.repairing)
 		return
 	var/list/floorbottargets = list()
-	if(!src.target || src.target == null)
+	if (!src.target || src.target == null)
 		for(var/obj/machinery/bot/floorbot/bot in world)
-			if(bot != src)
+			if (bot != src)
 				floorbottargets += bot.target
-	if(src.amount <= 0 && ((src.target == null) || !src.target))
-		if(src.eattiles)
+	if (src.amount <= 0 && ((src.target == null) || !src.target))
+		if (src.eattiles)
 			for(var/obj/item/stack/tile/steel/T in view(7, src))
-				if(T != src.oldtarget && !(target in floorbottargets))
+				if (T != src.oldtarget && !(target in floorbottargets))
 					src.oldtarget = T
 					src.target = T
 					break
-		if(src.target == null || !src.target)
-			if(src.maketiles)
-				if(src.target == null || !src.target)
+		if (src.target == null || !src.target)
+			if (src.maketiles)
+				if (src.target == null || !src.target)
 					for(var/obj/item/stack/sheet/metal/M in view(7, src))
-						if(!(M in floorbottargets) && M != src.oldtarget && M.amount == 1 && !(istype(M.loc, /turf/simulated/wall)))
+						if (!(M in floorbottargets) && M != src.oldtarget && M.amount == 1 && !(istype(M.loc, /turf/simulated/wall)))
 							src.oldtarget = M
 							src.target = M
 							break
 		else
 			return
-	if(prob(5))
+	if (prob(5))
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("[src] makes an excited booping beeping sound!"), 1)
 
-	if(!src.target || src.target == null)
-		if(targetdirection != null)
+	if (!src.target || src.target == null)
+		if (targetdirection != null)
 			/*
 			for (var/turf/space/D in view(7,src))
-				if(!(D in floorbottargets) && D != src.oldtarget)			// Added for bridging mode -- TLE
-					if(get_dir(src, D) == targetdirection)
+				if (!(D in floorbottargets) && D != src.oldtarget)			// Added for bridging mode -- TLE
+					if (get_dir(src, D) == targetdirection)
 						src.oldtarget = D
 						src.target = D
 						break
 			*/
 			var/turf/T = get_step(src, targetdirection)
-			if(istype(T, /turf/space))
+			if (istype(T, /turf/space))
 				src.oldtarget = T
 				src.target = T
-		if(!src.target || src.target == null)
+		if (!src.target || src.target == null)
 			for (var/turf/space/D in view(7,src))
-				if(!(D in floorbottargets) && D != src.oldtarget && (D.loc.name != "Space"))
+				if (!(D in floorbottargets) && D != src.oldtarget && (D.loc.name != "Space"))
 					src.oldtarget = D
 					src.target = D
 					break
-		if((!src.target || src.target == null ) && src.improvefloors)
+		if ((!src.target || src.target == null ) && src.improvefloors)
 			for (var/turf/simulated/floor/F in view(7,src))
-				if(!(F in floorbottargets) && F != src.oldtarget && F.icon_state == "Floor1" && !(istype(F, /turf/simulated/floor/plating)))
+				if (!(F in floorbottargets) && F != src.oldtarget && F.icon_state == "Floor1" && !(istype(F, /turf/simulated/floor/plating)))
 					src.oldtarget = F
 					src.target = F
 					break
-		if((!src.target || src.target == null) && src.eattiles)
+		if ((!src.target || src.target == null) && src.eattiles)
 			for(var/obj/item/stack/tile/steel/T in view(7, src))
-				if(!(T in floorbottargets) && T != src.oldtarget)
+				if (!(T in floorbottargets) && T != src.oldtarget)
 					src.oldtarget = T
 					src.target = T
 					break
 
-	if(!src.target || src.target == null)
-		if(src.loc != src.oldloc)
+	if (!src.target || src.target == null)
+		if (src.loc != src.oldloc)
 			src.oldtarget = null
 		return
 
-	if(src.target && (src.target != null) && src.path.len == 0)
+	if (src.target && (src.target != null) && src.path.len == 0)
 		spawn(0)
-			if(!istype(src.target, /turf/))
+			if (!istype(src.target, /turf/))
 				src.path = AStar(src.loc, src.target.loc, /turf/proc/AdjacentTurfsSpace, /turf/proc/Distance, 0, 30)
 			else
 				src.path = AStar(src.loc, src.target, /turf/proc/AdjacentTurfsSpace, /turf/proc/Distance, 0, 30)
 			src.path = reverselist(src.path)
-			if(src.path.len == 0)
+			if (src.path.len == 0)
 				src.oldtarget = src.target
 				src.target = null
 		return
-	if(src.path.len > 0 && src.target && (src.target != null))
+	if (src.path.len > 0 && src.target && (src.target != null))
 		step_to(src, src.path[1])
 		src.path -= src.path[1]
-	else if(src.path.len == 1)
+	else if (src.path.len == 1)
 		step_to(src, target)
 		src.path = new()
 
-	if(src.loc == src.target || src.loc == src.target.loc)
-		if(istype(src.target, /obj/item/stack/tile/steel))
+	if (src.loc == src.target || src.loc == src.target.loc)
+		if (istype(src.target, /obj/item/stack/tile/steel))
 			src.eattile(src.target)
-		else if(istype(src.target, /obj/item/stack/sheet/metal))
+		else if (istype(src.target, /obj/item/stack/sheet/metal))
 			src.maketile(src.target)
-		else if(istype(src.target, /turf/))
+		else if (istype(src.target, /turf/))
 			repair(src.target)
 		src.path = new()
 		return
@@ -258,16 +258,16 @@
 
 
 /obj/machinery/bot/floorbot/proc/repair(var/turf/target)
-	if(istype(target, /turf/space/))
-		if(target.loc.name == "Space")
+	if (istype(target, /turf/space/))
+		if (target.loc.name == "Space")
 			return
-	else if(!istype(target, /turf/simulated/floor))
+	else if (!istype(target, /turf/simulated/floor))
 		return
-	if(src.amount <= 0)
+	if (src.amount <= 0)
 		return
 	src.anchored = 1
 	src.icon_state = "floorbot-c"
-	if(istype(target, /turf/space/))
+	if (istype(target, /turf/space/))
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("\red [src] begins to repair the hole"), 1)
 		var/obj/item/stack/tile/steel/T = new /obj/item/stack/tile/steel
@@ -292,17 +292,17 @@
 			src.target = null
 
 /obj/machinery/bot/floorbot/proc/eattile(var/obj/item/stack/tile/steel/T)
-	if(!istype(T, /obj/item/stack/tile/steel))
+	if (!istype(T, /obj/item/stack/tile/steel))
 		return
 	for(var/mob/O in viewers(src, null))
 		O.show_message(text("\red [src] begins to collect tiles."), 1)
 	src.repairing = 1
 	spawn(20)
-		if(isnull(T))
+		if (isnull(T))
 			src.target = null
 			src.repairing = 0
 			return
-		if(src.amount + T.amount > 50)
+		if (src.amount + T.amount > 50)
 			var/i = 50 - src.amount
 			src.amount += i
 			T.amount -= i
@@ -314,15 +314,15 @@
 		src.repairing = 0
 
 /obj/machinery/bot/floorbot/proc/maketile(var/obj/item/stack/sheet/metal/M)
-	if(!istype(M, /obj/item/stack/sheet/metal))
+	if (!istype(M, /obj/item/stack/sheet/metal))
 		return
-	if(M.amount > 1)
+	if (M.amount > 1)
 		return
 	for(var/mob/O in viewers(src, null))
 		O.show_message(text("\red [src] begins to create tiles."), 1)
 	src.repairing = 1
 	spawn(20)
-		if(isnull(M))
+		if (isnull(M))
 			src.target = null
 			src.repairing = 0
 			return
@@ -334,7 +334,7 @@
 		src.repairing = 0
 
 /obj/machinery/bot/floorbot/proc/updateicon()
-	if(src.amount > 0)
+	if (src.amount > 0)
 		src.icon_state = "floorbot[src.on]"
 	else
 		src.icon_state = "floorbot[src.on]e"
@@ -362,10 +362,10 @@
 
 
 /obj/item/weapon/storage/toolbox/mechanical/attackby(var/obj/item/stack/tile/steel/T, mob/user as mob)
-	if(!istype(T, /obj/item/stack/tile/steel))
+	if (!istype(T, /obj/item/stack/tile/steel))
 		..()
 		return
-	if(src.contents.len >= 1)
+	if (src.contents.len >= 1)
 		user << "They wont fit in as there is already stuff inside!"
 		return
 	if (user.s_active)
@@ -385,7 +385,7 @@
 
 /obj/item/weapon/toolbox_tiles/attackby(var/obj/item/W, mob/user as mob)
 	..()
-	if(istype(W, /obj/item/device/prox_sensor))
+	if (istype(W, /obj/item/device/prox_sensor))
 		var/obj/item/weapon/toolbox_tiles_sensor/B = new /obj/item/weapon/toolbox_tiles_sensor
 		B.loc = user
 		if (user.r_hand == W)
@@ -411,9 +411,9 @@
 
 /obj/item/weapon/toolbox_tiles_sensor/attackby(var/obj/item/W, mob/user as mob)
 	..()
-	if(istype(W, /obj/item/robot_parts/l_arm) || istype(W, /obj/item/robot_parts/r_arm))
+	if (istype(W, /obj/item/robot_parts/l_arm) || istype(W, /obj/item/robot_parts/r_arm))
 		var/obj/machinery/bot/floorbot/A = new /obj/machinery/bot/floorbot
-		if(user.r_hand == src || user.l_hand == src)
+		if (user.r_hand == src || user.l_hand == src)
 			A.loc = user.loc
 		else
 			A.loc = src.loc

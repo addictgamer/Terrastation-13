@@ -28,7 +28,7 @@
 
 	mode = !mode
 	switch (mode)
-		if(1)
+		if (1)
 			usr << "The satchel now picks up all ore in a tile at once."
-		if(0)
+		if (0)
 			usr << "The satchel now picks up one ore at a time."

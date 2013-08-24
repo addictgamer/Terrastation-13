@@ -15,13 +15,13 @@
 
 	if (length(message) >= 2)
 		if (copytext(message, 1, 3) == ":s")
-			if(istype(src, /mob/living/silicon/pai))
+			if (istype(src, /mob/living/silicon/pai))
 				return ..(message)
 			message = copytext(message, 3)
 			message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
 			robot_talk(message)
 		else if (copytext(message, 1, 3) == ":h")
-			if(isAI(src)&&client)//For patching directly into AI holopads.
+			if (isAI(src)&&client)//For patching directly into AI holopads.
 				message = copytext(message, 3)
 				message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
 				holopad_talk(message)
@@ -44,7 +44,7 @@
 		return
 
 	var/obj/machinery/hologram/holopad/T = client.eye//Client eye centers on an object.
-	if(istype(T)&&T.hologram&&T.master==src)//If there is a hologram and its master is the user.
+	if (istype(T)&&T.hologram&&T.master==src)//If there is a hologram and its master is the user.
 		var/message_a = say_quote(message)
 
 		//Human-like, sorta, heard by those who understand humans.
@@ -57,7 +57,7 @@
 
 		src << "<i><span class='game say'>Holopad transmitted, <span class='name'>[real_name]</span> <span class='message'>[message_a]</span></span></i>"//The AI can "hear" its own message.
 		for(var/mob/M in hearers(T.loc))//The location is the object, default distance.
-			if(M.say_understands(src))//If they understand AI speak. Humans and the like will be able to.
+			if (M.say_understands(src))//If they understand AI speak. Humans and the like will be able to.
 				M.show_message(rendered_a, 2)
 			else//If they do not.
 				M.show_message(rendered_b, 2)
@@ -79,9 +79,9 @@
 	var/message_a = say_quote(message)
 	var/rendered = "<i><span class='game say'>Robotic Talk, <span class='name'>[name]</span> <span class='message'>[message_a]</span></span></i>"
 	for (var/mob/living/S in world)
-		if(!S.stat)
-			if(S.robot_talk_understand)
-				if(S.robot_talk_understand == robot_talk_understand)
+		if (!S.stat)
+			if (S.robot_talk_understand)
+				if (S.robot_talk_understand == robot_talk_understand)
 					S.show_message(rendered, 2)
 			else if (S.binarycheck())
 				S.show_message(rendered, 2)
@@ -92,7 +92,7 @@
 
 	var/list/heard = list()
 	for (var/mob/M in listening)
-		if(!istype(M, /mob/living/silicon) && !M.robot_talk_understand)
+		if (!istype(M, /mob/living/silicon) && !M.robot_talk_understand)
 			heard += M
 
 	if (length(heard))

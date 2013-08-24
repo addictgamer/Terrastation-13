@@ -26,9 +26,9 @@
 
 /obj/item/weapon/storage/proc/show_to(mob/user as mob)
 	for(var/obj/item/weapon/mousetrap/MT in src)
-		if(MT.armed)
+		if (MT.armed)
 			for(var/mob/O in viewers(user, null))
-				if(O == user)
+				if (O == user)
 					user.show_message(text("\red <B>You reach into the [src.name], but there was a live mousetrap in there!</B>"), 1)
 				else
 					user.show_message(text("\red <B>[user] reaches into the [src.name] and sets off a hidden mousetrap!</B>"), 1)
@@ -47,7 +47,7 @@
 
 /obj/item/weapon/storage/proc/hide_from(mob/user as mob)
 
-	if(!user.client)
+	if (!user.client)
 		return
 	user.client.screen -= src.boxes
 	user.client.screen -= src.closer
@@ -82,15 +82,15 @@
 	var/col_num = 0
 	var/row_count = min(7,storage_slots) -1
 	if (contents.len > 7)
-		if(contents.len % 7) //So having 14 items keeps them in 2 wors instead of 3
+		if (contents.len % 7) //So having 14 items keeps them in 2 wors instead of 3
 			col_num = round(contents.len / 7) // 7 is the maximum allowed column height for r_hand, l_hand and back storage items.
 	if (src == user.l_hand)
 		src.orient_objs(3-col_num, 3+row_count, 3, 3)
-	else if(src == user.r_hand)
+	else if (src == user.r_hand)
 		src.orient_objs(1, 3+row_count, 1+col_num, 3)
-	else if(src == user.back)
+	else if (src == user.back)
 		src.orient_objs(4-col_num, 3+row_count, 4, 3)
-	else if(istype(user, /mob/living/carbon/human) && src == H.belt)//only humans have belts
+	else if (istype(user, /mob/living/carbon/human) && src == H.belt)//only humans have belts
 		src.orient_objs(1, 3, 8, 3)
 	else
 		src.orient_objs(5, 10, 11, 10)
@@ -99,29 +99,29 @@
 //This proc is called when you want to place an item into the storage item.
 /obj/item/weapon/storage/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
-	if(isrobot(user))
+	if (isrobot(user))
 		user << "\blue You're a robot. No."
 		return //Robots can't interact with storage items.
 
-	if(src.loc == W)
+	if (src.loc == W)
 		return //Means the item is already in the storage item
 
-	if(contents.len >= storage_slots)
+	if (contents.len >= storage_slots)
 		user << "\red The [src] is full, make some space."
 		return //Storage item is full
 
-	if(can_hold.len)
+	if (can_hold.len)
 		var/ok = 0
 		for(var/A in can_hold)
-			if(istype(W, text2path(A) ))
+			if (istype(W, text2path(A) ))
 				ok = 1
 				break
-		if(!ok)
+		if (!ok)
 			user << "\red This [src] cannot hold [W]."
 			return
 
 	for(var/A in cant_hold) //Check for specific items which this container can't hold.
-		if(istype(W, text2path(A) ))
+		if (istype(W, text2path(A) ))
 			user << "\red This [src] cannot hold [W]."
 			return
 
@@ -133,7 +133,7 @@
 	for(var/obj/item/I in contents)
 		sum_w_class += I.w_class //Adds up the combined w_classes which will be in the storage item if the item is added to it.
 
-	if(sum_w_class > max_combined_w_class)
+	if (sum_w_class > max_combined_w_class)
 		user << "\red The [W] cannot fit in the [src]. Remove some items or add a smaller one.."
 		return
 
@@ -203,7 +203,7 @@
 	return
 
 /obj/item/weapon/storage/emp_act(severity)
-	if(!istype(src.loc, /mob/living))
+	if (!istype(src.loc, /mob/living))
 		for(var/obj/O in contents)
 			O.emp_act(severity)
 	..()
@@ -266,7 +266,7 @@
 			new /obj/item/weapon/card/emag(src)
 			return
 
-		if("freedom")
+		if ("freedom")
 			var/obj/item/weapon/implanter/O = new /obj/item/weapon/implanter(src)
 			O.imp = new /obj/item/weapon/implant/freedom(O)
 			var/obj/item/weapon/implanter/U = new /obj/item/weapon/implanter(src)
@@ -339,13 +339,13 @@
 
 	var/newcart = pick(1,2,3,4)
 	switch(newcart)
-		if(1)
+		if (1)
 			new /obj/item/weapon/cartridge/janitor(src)
-		if(2)
+		if (2)
 			new /obj/item/weapon/cartridge/security(src)
-		if(3)
+		if (3)
 			new /obj/item/weapon/cartridge/medical(src)
-		if(4)
+		if (4)
 			new /obj/item/weapon/cartridge/head(src)
 
 	new /obj/item/weapon/cartridge/signal/toxins(src)
@@ -407,9 +407,9 @@
 	flags = FPRINT | TABLEPASS | ONBELT
 
 /obj/item/weapon/storage/utilitybelt/proc/can_use()
-	if(!ismob(loc)) return 0
+	if (!ismob(loc)) return 0
 	var/mob/M = loc
-	if(src in M.get_equipped_items())
+	if (src in M.get_equipped_items())
 		return 1
 	else
 		return 0
@@ -420,7 +420,7 @@
 /obj/item/weapon/storage/utilitybelt/MouseDrop(obj/over_object as obj, src_location, over_location)
 	var/mob/M = usr
 	if (!istype(over_object, /obj/screen))
-		if(can_use())
+		if (can_use())
 			return ..()
 		else
 			M << "\red I need to wear the belt for that."
@@ -445,7 +445,7 @@
 
 /obj/item/weapon/storage/utilitybelt/attack_hand(mob/user as mob)
 	if (src.loc == user)
-		if(can_use())
+		if (can_use())
 			playsound(src.loc, "rustle", 50, 1, -5)
 			if (user.s_active)
 				user.s_active.close(user)
@@ -460,7 +460,7 @@
 
 /obj/item/weapon/storage/utilitybelt/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	//..()  //This will make it impossible to wrap the belt in wrapping paper, but will enable them to work as intended once more.
-	if(!can_use())
+	if (!can_use())
 		user << "\red I need to wear the belt for that."
 		return
 	else

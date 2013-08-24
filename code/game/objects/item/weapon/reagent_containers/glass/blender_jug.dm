@@ -8,9 +8,9 @@
 
 	on_reagent_change()
 		switch(src.reagents.total_volume)
-			if(0)
+			if (0)
 				icon_state = "blender_jug_e"
-			if(1 to 75)
+			if (1 to 75)
 				icon_state = "blender_jug_h"
-			if(76 to 100)
+			if (76 to 100)
 				icon_state = "blender_jug_f"

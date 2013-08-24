@@ -56,7 +56,7 @@
 				M.anchored = 0
 				M.buckled = null
 				N++
-		if(N)
+		if (N)
 			density = 0
 			icon_state = "down"
 		return N

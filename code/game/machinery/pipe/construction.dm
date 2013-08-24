@@ -41,23 +41,23 @@ Buildable meters
 			is_bent = 1
 		if     (istype(make_from, /obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction))
 			src.pipe_type = PIPE_JUNCTION
-		else if(istype(make_from, /obj/machinery/atmospherics/pipe/simple/heat_exchanging))
+		else if (istype(make_from, /obj/machinery/atmospherics/pipe/simple/heat_exchanging))
 			src.pipe_type = PIPE_HE_STRAIGHT + is_bent
-		else if(istype(make_from, /obj/machinery/atmospherics/pipe/simple/insulated))
+		else if (istype(make_from, /obj/machinery/atmospherics/pipe/simple/insulated))
 			src.pipe_type = PIPE_INSULATED_STRAIGHT + is_bent
-		else if(istype(make_from, /obj/machinery/atmospherics/pipe/simple))
+		else if (istype(make_from, /obj/machinery/atmospherics/pipe/simple))
 			src.pipe_type = PIPE_SIMPLE_STRAIGHT + is_bent
-		else if(istype(make_from, /obj/machinery/atmospherics/portables_connector))
+		else if (istype(make_from, /obj/machinery/atmospherics/portables_connector))
 			src.pipe_type = PIPE_CONNECTOR
-		else if(istype(make_from, /obj/machinery/atmospherics/pipe/manifold))
+		else if (istype(make_from, /obj/machinery/atmospherics/pipe/manifold))
 			src.pipe_type = PIPE_MANIFOLD
-		else if(istype(make_from, /obj/machinery/atmospherics/unary/vent_pump))
+		else if (istype(make_from, /obj/machinery/atmospherics/unary/vent_pump))
 			src.pipe_type = PIPE_UVENT
-		else if(istype(make_from, /obj/machinery/atmospherics/valve))
+		else if (istype(make_from, /obj/machinery/atmospherics/valve))
 			src.pipe_type = PIPE_MVALVE
-		else if(istype(make_from, /obj/machinery/atmospherics/binary/pump))
+		else if (istype(make_from, /obj/machinery/atmospherics/binary/pump))
 			src.pipe_type = PIPE_PUMP
-		else if(istype(make_from, /obj/machinery/atmospherics/unary/vent_scrubber))
+		else if (istype(make_from, /obj/machinery/atmospherics/unary/vent_scrubber))
 			src.pipe_type = PIPE_SCRUBBER
 	else
 		src.pipe_type = pipe_type
@@ -119,9 +119,9 @@ Buildable meters
 	src.dir = turn(src.dir, -90)
 
 	if (pipe_type in list (PIPE_SIMPLE_STRAIGHT, PIPE_HE_STRAIGHT, PIPE_INSULATED_STRAIGHT, PIPE_MVALVE))
-		if(dir==2)
+		if (dir==2)
 			dir = 1
-		else if(dir==8)
+		else if (dir==8)
 			dir = 4
 	//src.pipe_dir = get_pipe_dir()
 	return
@@ -132,9 +132,9 @@ Buildable meters
 		&& (src.dir in cardinal))
 		src.dir = src.dir|turn(src.dir, 90)
 	else if (pipe_type in list (PIPE_SIMPLE_STRAIGHT, PIPE_HE_STRAIGHT, PIPE_INSULATED_STRAIGHT, PIPE_MVALVE))
-		if(dir==2)
+		if (dir==2)
 			dir = 1
-		else if(dir==8)
+		else if (dir==8)
 			dir = 4
 	return
 
@@ -148,7 +148,7 @@ Buildable meters
 	var/acw = turn(dir, 90)
 
 	switch(pipe_type)
-		if(	PIPE_SIMPLE_STRAIGHT, \
+		if (	PIPE_SIMPLE_STRAIGHT, \
 			PIPE_INSULATED_STRAIGHT, \
 			PIPE_HE_STRAIGHT, \
 			PIPE_JUNCTION ,\
@@ -156,11 +156,11 @@ Buildable meters
 			PIPE_MVALVE \
 		)
 			return dir|flip
-		if(PIPE_SIMPLE_BENT, PIPE_INSULATED_BENT, PIPE_HE_BENT)
+		if (PIPE_SIMPLE_BENT, PIPE_INSULATED_BENT, PIPE_HE_BENT)
 			return dir //dir|acw
-		if(PIPE_CONNECTOR,PIPE_UVENT,PIPE_SCRUBBER)
+		if (PIPE_CONNECTOR,PIPE_UVENT,PIPE_SCRUBBER)
 			return dir
-		if(PIPE_MANIFOLD)
+		if (PIPE_MANIFOLD)
 			return flip|cw|acw
 	return 0
 
@@ -173,9 +173,9 @@ Buildable meters
 	if (!(pipe_type in list(PIPE_HE_STRAIGHT, PIPE_HE_BENT, PIPE_JUNCTION)))
 		return get_pipe_dir()
 	switch(pipe_type)
-		if(PIPE_HE_STRAIGHT,PIPE_HE_BENT)
+		if (PIPE_HE_STRAIGHT,PIPE_HE_BENT)
 			return 0
-		if(PIPE_JUNCTION)
+		if (PIPE_JUNCTION)
 			return flip
 	return 0
 
@@ -187,11 +187,11 @@ Buildable meters
 //	var/cw = turn(dir, -90)
 
 	switch(pipe_type)
-		if(PIPE_HE_STRAIGHT)
+		if (PIPE_HE_STRAIGHT)
 			return get_pipe_dir()
-		if(PIPE_HE_BENT)
+		if (PIPE_HE_BENT)
 			return get_pipe_dir()
-		if(PIPE_JUNCTION)
+		if (PIPE_JUNCTION)
 			return dir
 		else
 			return 0
@@ -207,14 +207,14 @@ Buildable meters
 	if (!isturf(src.loc))
 		return 1
 	if (pipe_type in list (PIPE_SIMPLE_STRAIGHT, PIPE_HE_STRAIGHT, PIPE_INSULATED_STRAIGHT, PIPE_MVALVE))
-		if(dir==2)
+		if (dir==2)
 			dir = 1
-		else if(dir==8)
+		else if (dir==8)
 			dir = 4
 	var/pipe_dir = get_pipe_dir()
 
 	for(var/obj/machinery/atmospherics/M in src.loc)
-		if(M.initialize_directions & pipe_dir)	// matches at least one direction on either type of pipe
+		if (M.initialize_directions & pipe_dir)	// matches at least one direction on either type of pipe
 			user << "\red There is already a pipe at that location."
 			return 1
 	// no conflicts found
@@ -222,7 +222,7 @@ Buildable meters
 	var/pipefailtext = "\red There's nothing to connect this pipe section to! (with how the pipe code works, at least one end needs to be connected to something, otherwise the game deletes the segment)"
 
 	switch(pipe_type)
-		if(PIPE_SIMPLE_STRAIGHT, PIPE_SIMPLE_BENT)
+		if (PIPE_SIMPLE_STRAIGHT, PIPE_SIMPLE_BENT)
 			var/obj/machinery/atmospherics/pipe/simple/P = new( src.loc )
 			P.dir = src.dir
 			P.initialize_directions = pipe_dir
@@ -240,7 +240,7 @@ Buildable meters
 				P.node2.initialize()
 				P.node2.build_network()
 
-		if(PIPE_HE_STRAIGHT, PIPE_HE_BENT)
+		if (PIPE_HE_STRAIGHT, PIPE_HE_BENT)
 			var/obj/machinery/atmospherics/pipe/simple/heat_exchanging/P = new ( src.loc )
 			P.dir = src.dir
 			P.initialize_directions = 0
@@ -259,7 +259,7 @@ Buildable meters
 				P.node2.initialize()
 				P.node2.build_network()
 
-		if(PIPE_CONNECTOR)		// connector
+		if (PIPE_CONNECTOR)		// connector
 			var/obj/machinery/atmospherics/portables_connector/C = new( src.loc )
 			C.dir = dir
 			C.initialize_directions = pipe_dir
@@ -274,7 +274,7 @@ Buildable meters
 				C.node.build_network()
 
 
-		if(PIPE_MANIFOLD)		//manifold
+		if (PIPE_MANIFOLD)		//manifold
 			var/obj/machinery/atmospherics/pipe/manifold/M = new( src.loc )
 			M.dir = dir
 			M.initialize_directions = pipe_dir
@@ -296,7 +296,7 @@ Buildable meters
 				M.node3.initialize()
 				M.node3.build_network()
 
-		if(PIPE_JUNCTION)
+		if (PIPE_JUNCTION)
 			var/obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction/P = new ( src.loc )
 			P.dir = src.dir
 			P.initialize_directions = src.get_pdir()
@@ -315,7 +315,7 @@ Buildable meters
 				P.node2.initialize()
 				P.node2.build_network()
 
-		if(PIPE_UVENT)		//unary vent
+		if (PIPE_UVENT)		//unary vent
 			var/obj/machinery/atmospherics/unary/vent_pump/V = new( src.loc )
 			V.dir = dir
 			V.initialize_directions = pipe_dir
@@ -330,7 +330,7 @@ Buildable meters
 				V.node.build_network()
 
 
-		if(PIPE_MVALVE)		//manual valve
+		if (PIPE_MVALVE)		//manual valve
 			var/obj/machinery/atmospherics/valve/V = new( src.loc)
 			V.dir = dir
 			V.initialize_directions = pipe_dir
@@ -349,7 +349,7 @@ Buildable meters
 				V.node2.initialize()
 				V.node2.build_network()
 
-		if(PIPE_PUMP)		//gas pump
+		if (PIPE_PUMP)		//gas pump
 			var/obj/machinery/atmospherics/binary/pump/P = new(src.loc)
 			P.dir = dir
 			P.initialize_directions = pipe_dir
@@ -367,7 +367,7 @@ Buildable meters
 				P.node2.build_network()
 
 
-		if(PIPE_SCRUBBER)		//scrubber
+		if (PIPE_SCRUBBER)		//scrubber
 			var/obj/machinery/atmospherics/unary/vent_scrubber/S = new(src.loc)
 			S.dir = dir
 			S.initialize_directions = pipe_dir
@@ -381,7 +381,7 @@ Buildable meters
 				S.node.initialize()
 				S.node.build_network()
 
-		if(PIPE_INSULATED_STRAIGHT, PIPE_INSULATED_BENT)
+		if (PIPE_INSULATED_STRAIGHT, PIPE_INSULATED_BENT)
 			var/obj/machinery/atmospherics/pipe/simple/insulated/P = new( src.loc )
 			P.dir = src.dir
 			P.initialize_directions = pipe_dir
@@ -427,7 +427,7 @@ Buildable meters
 
 	if (!istype(W, /obj/item/weapon/wrench))
 		return ..()
-	if(!locate(/obj/machinery/atmospherics/pipe, src.loc))
+	if (!locate(/obj/machinery/atmospherics/pipe, src.loc))
 		user << "\red You need to fasten it to a pipe"
 		return 1
 	new/obj/machinery/meter( src.loc )

@@ -1,28 +1,28 @@
 
 proc/spawn_asteroid(var/turf/start_loc,var/type,var/size,var/richness)//type: 0 or null - random, 1 - nothing,  2 - iron, 3 - silicon
-	if(!size)
+	if (!size)
 		size = pick(100;2,50;3,35;4,25;6,10;12)
-	if(start_loc.x - size < 5 || start_loc.x + size >= world.maxx - 5 || start_loc.y - size < 5 || start_loc.y + size > world.maxy -5)
+	if (start_loc.x - size < 5 || start_loc.x + size >= world.maxx - 5 || start_loc.y - size < 5 || start_loc.y + size > world.maxy -5)
 		return 0
-	if(!type)
+	if (!type)
 		type = pick(50;1,2,3)
-	if(!richness)
+	if (!richness)
 		richness = rand(10,40)
 //	world << "Asteroid size: [size]; Asteroid type: [type]"
 	var/list/turfs = circlerangeturfs(start_loc,size)
-	if(!islist(turfs) || isemptylist(turfs))
+	if (!islist(turfs) || isemptylist(turfs))
 		return 0
 	var/area/asteroid/AstAr = new
 	AstAr.name = "Asteroid #[start_loc.x][start_loc.y][start_loc.z]"
 	for(var/turf/T in turfs)
 		var/dist = get_dist(start_loc,T)
-		if(abs(GaussRand(dist))<size) //prob(100-(dist*rand(2,4))))//I'm terrible at generating random things.
+		if (abs(GaussRand(dist))<size) //prob(100-(dist*rand(2,4))))//I'm terrible at generating random things.
 			var/turf/simulated/wall/asteroid/A
-			if(type > 1 && prob(richness))
+			if (type > 1 && prob(richness))
 				switch(type)
-					if(2)
+					if (2)
 						A = new /turf/simulated/wall/asteroid/iron(T)
-					if(3)
+					if (3)
 						A = new /turf/simulated/wall/asteroid/silicon(T)
 			else
 				A = new /turf/simulated/wall/asteroid(T)
@@ -30,25 +30,25 @@ proc/spawn_asteroid(var/turf/start_loc,var/type,var/size,var/richness)//type: 0 
 			A.sd_NewOpacity(1)
 			AstAr.contents += A
 
-	if(max_secret_rooms && size >= 10)
+	if (max_secret_rooms && size >= 10)
 		var/x_len = rand(4,size)
 		var/y_len = pick(4,size)
 		var/st_l = locate(start_loc.x-round(x_len/2),start_loc.y-round(y_len/2),start_loc.z)
-		if(st_l)
+		if (st_l)
 			spawn_room(st_l,x_len,y_len)
 			max_secret_rooms--
 
 	return 1
 
 /proc/populate_w_asteroids(var/z,var/density=null)
-	if(!density)
+	if (!density)
 		density = pick(10,20,40)
 	while(density)
 		var/x = rand(1,world.maxx)
 		var/y = rand(1,world.maxy)
 //		world << "Asteroid coords: [x], [y], [z]"
 		var/start_loc = locate(x,y,z)
-		if(start_loc && spawn_asteroid(start_loc))
+		if (start_loc && spawn_asteroid(start_loc))
 			density--
 	return
 
@@ -64,10 +64,10 @@ proc/spawn_asteroid(var/turf/start_loc,var/type,var/size,var/richness)//type: 0 
 	for(x=1,x<=length,x++)
 		for(y=1,y<=length,y++)
 			var/sector
-			if(sectors.len)
+			if (sectors.len)
 				sector = pick(sectors)
 				sectors -= sector
-				if(sector == 0)
+				if (sector == 0)
 					sector = ++world.maxz
 					populate_w_asteroids(sector)
 				global_map[x][y] = sector
@@ -81,9 +81,9 @@ proc/spawn_asteroid(var/turf/start_loc,var/type,var/size,var/richness)//type: 0 
 		for(y=1,y<=y_arr.len,y++)
 			var/t = ""
 			switch(y_arr[y])
-				if(1) t = "SS13"
-				if(3) t = "AI Satellite"
-				if(4) t = "Derelict"
+				if (1) t = "SS13"
+				if (3) t = "AI Satellite"
+				if (4) t = "Derelict"
 				else t = "Empty Cold Space"
 			world << "Global map [x] - [y] contains [t] (Z = [y_arr[y]])"
 	//debug
@@ -102,16 +102,16 @@ proc/spawn_room(var/atom/start_loc,var/x_size,var/y_size,var/wall,var/floor)
 	var/list/room_turfs = list("walls"=list(),"floors"=list())
 
 	//world << "Room spawned at [start_loc.x],[start_loc.y],[start_loc.z]"
-	if(!wall)
+	if (!wall)
 		wall = pick(/turf/simulated/wall/r_wall,/turf/simulated/wall,/obj/alien/resin)
-	if(!floor)
+	if (!floor)
 		floor = pick(/turf/simulated/floor,/turf/simulated/floor/engine)
 
 	for(var/x = 0,x<x_size,x++)
 		for(var/y = 0,y<y_size,y++)
 			var/turf/T
 			var/cur_loc = locate(start_loc.x+x,start_loc.y+y,start_loc.z)
-			if(x == 0 || x==x_size-1 || y==0 || y==y_size-1)
+			if (x == 0 || x==x_size-1 || y==0 || y==y_size-1)
 				T = new wall(cur_loc)
 				room_turfs["walls"] += T
 			else
@@ -129,20 +129,20 @@ proc/admin_spawn_room_at_pos()
 	var/x_len = input("Desired length.","Length",5)
 	var/y_len = input("Desired width.","Width",5)
 	switch(alert("Wall type",null,"Reinforced wall","Regular wall","Asteroid wall","Resin wall"))
-		if("Reinforced wall")
+		if ("Reinforced wall")
 			wall=/turf/simulated/wall/r_wall
-		if("Regular wall")
+		if ("Regular wall")
 			wall=/turf/simulated/wall
-		if("Asteroid wall")
+		if ("Asteroid wall")
 			wall=/turf/simulated/wall/asteroid
-		if("Resin wall")
+		if ("Resin wall")
 			wall=/obj/alien/resin
 	switch(alert("Floor type",null,"Regular floor","Reinforced floor"))
-		if("Regular floor")
+		if ("Regular floor")
 			floor=/turf/simulated/floor
-		if("Reinforced floor")
+		if ("Reinforced floor")
 			floor=/turf/simulated/floor/engine
-	if(x && y && z && wall && floor && x_len && y_len)
+	if (x && y && z && wall && floor && x_len && y_len)
 		spawn_room(locate(x,y,z),x_len,y_len,wall,floor)
 	return
 

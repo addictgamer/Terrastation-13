@@ -13,7 +13,7 @@
 
 	if ((src.health < 0 && src.health > -95.0))
 		src.oxyloss += src.health + 200
-		if(istype(src, /mob/living/silicon))
+		if (istype(src, /mob/living/silicon))
 			src.bruteloss += src.health + 200
 		src.health = 100 - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss
 		src << "\blue You have given up life and succumbed to death."
@@ -24,7 +24,7 @@
 	for(var/i = 1, i<= Proj.mobdamage.len, i++)
 
 		switch(i)
-			if(1)
+			if (1)
 				if (istype(src, /mob/living/carbon/human))
 					var/mob/living/carbon/human/H = src
 					var/dam_zone = pick("chest", "chest", "chest", "groin", "head")
@@ -37,64 +37,64 @@
 					src.updatehealth()
 
 				else
-					if(!nodamage)  src.take_organ_damage(Proj.mobdamage[BRUTE])
+					if (!nodamage)  src.take_organ_damage(Proj.mobdamage[BRUTE])
 
-			if(2)
+			if (2)
 				var/d = Proj.mobdamage[BURN]
-				if(!Proj.nodamage) fireloss += d
+				if (!Proj.nodamage) fireloss += d
 				updatehealth()
-			if(3)
+			if (3)
 				var/d = Proj.mobdamage[TOX]
-				if(!Proj.nodamage) toxloss += d
+				if (!Proj.nodamage) toxloss += d
 				updatehealth()
-			if(4)
+			if (4)
 				var/d = Proj.mobdamage[OXY]
-				if(!Proj.nodamage) oxyloss += d
+				if (!Proj.nodamage) oxyloss += d
 				updatehealth()
-			if(5)
+			if (5)
 				var/d = Proj.mobdamage[CLONE]
-				if(!Proj.nodamage) cloneloss += d
+				if (!Proj.nodamage) cloneloss += d
 				updatehealth()
 
-	if(Proj.effects["stun"] && prob(Proj.effectprob["stun"]))
-		if(Proj.effectmod["stun"] == SET)
+	if (Proj.effects["stun"] && prob(Proj.effectprob["stun"]))
+		if (Proj.effectmod["stun"] == SET)
 			stunned = Proj.effects["stun"]
 		else
 			stunned += Proj.effects["stun"]
 
 
-	if(Proj.effects["weak"] && prob(Proj.effectprob["weak"]))
-		if(Proj.effectmod["weak"] == SET)
+	if (Proj.effects["weak"] && prob(Proj.effectprob["weak"]))
+		if (Proj.effectmod["weak"] == SET)
 			weakened = Proj.effects["weak"]
 		else
 			weakened += Proj.effects["weak"]
 
-	if(Proj.effects["paralysis"] && prob(Proj.effectprob["paralysis"]))
-		if(Proj.effectmod["paralysis"] == SET)
+	if (Proj.effects["paralysis"] && prob(Proj.effectprob["paralysis"]))
+		if (Proj.effectmod["paralysis"] == SET)
 			paralysis = Proj.effects["paralysis"]
 		else
 			paralysis += Proj.effects["paralysis"]
 
-	if(Proj.effects["stutter"] && prob(Proj.effectprob["stutter"]))
-		if(Proj.effectmod["stutter"] == SET)
+	if (Proj.effects["stutter"] && prob(Proj.effectprob["stutter"]))
+		if (Proj.effectmod["stutter"] == SET)
 			stuttering = Proj.effects["stutter"]
 		else
 			stuttering += Proj.effects["stutter"]
 
-	if(Proj.effects["drowsyness"] && prob(Proj.effectprob["drowsyness"]))
-		if(Proj.effectmod["drowsyness"] == SET)
+	if (Proj.effects["drowsyness"] && prob(Proj.effectprob["drowsyness"]))
+		if (Proj.effectmod["drowsyness"] == SET)
 			drowsyness = Proj.effects["drowsyness"]
 		else
 			drowsyness += Proj.effects["drowsyness"]
 
-	if(Proj.effects["radiation"] && prob(Proj.effectprob["radiation"]))
-		if(Proj.effectmod["radiation"] == SET)
+	if (Proj.effects["radiation"] && prob(Proj.effectprob["radiation"]))
+		if (Proj.effectmod["radiation"] == SET)
 			radiation = Proj.effects["radiation"]
 		else
 			radiation += Proj.effects["radiation"]
 
-	if(Proj.effects["eyeblur"] && prob(Proj.effectprob["eyeblur"]))
-		if(Proj.effectmod["eyeblur"] == SET)
+	if (Proj.effects["eyeblur"] && prob(Proj.effectprob["eyeblur"]))
+		if (Proj.effectmod["eyeblur"] == SET)
 			eye_blurry = Proj.effects["eyeblur"]
 		else
 			eye_blurry += Proj.effects["eyeblur"]
@@ -104,7 +104,7 @@
 
 /mob/living/proc/updatehealth()
 	if (!src.nodamage)
-		if(organStructure && organStructure.chest)
+		if (organStructure && organStructure.chest)
 			health = organStructure.chest.maxHealth - oxyloss - toxloss - fireloss - bruteloss
 		else
 			src.health = 100 - src.oxyloss - src.toxloss - src.fireloss - src.bruteloss - src.cloneloss
@@ -114,7 +114,7 @@
 
 //sort of a legacy burn method for /electrocute, /shock, and the e_chair
 /mob/living/proc/burn_skin(burn_amount)
-	if(istype(src, /mob/living/carbon/human))
+	if (istype(src, /mob/living/carbon/human))
 		//world << "DEBUG: burn_skin(), mutations=[mutations]"
 		if (src.mutations & COLD_RESISTANCE) //fireproof
 			return 0
@@ -123,24 +123,24 @@
 		var/datum/organ/external/affecting = null
 		var/extradam = 0	//added to when organ is at max dam
 		for(var/A in H.organs)
-			if(!H.organs[A])	continue
+			if (!H.organs[A])	continue
 			affecting = H.organs[A]
-			if(!istype(affecting, /datum/organ/external))	continue
-			if(affecting.take_damage(0, divided_damage+extradam))
+			if (!istype(affecting, /datum/organ/external))	continue
+			if (affecting.take_damage(0, divided_damage+extradam))
 				extradam = 0
 			else
 				extradam += divided_damage
 		H.UpdateDamageIcon()
 		H.updatehealth()
 		return 1
-	else if(istype(src, /mob/living/carbon/monkey))
+	else if (istype(src, /mob/living/carbon/monkey))
 		if (src.mutations & COLD_RESISTANCE) //fireproof
 			return 0
 		var/mob/living/carbon/monkey/M = src
 		M.fireloss += burn_amount
 		M.updatehealth()
 		return 1
-	else if(istype(src, /mob/living/silicon/ai))
+	else if (istype(src, /mob/living/silicon/ai))
 		return 0
 
 /mob/living/proc/adjustBodyTemp(actual, desired, incrementboost)
@@ -150,16 +150,16 @@
 	var/change = increments*incrementboost	// Get the amount to change by (x per increment)
 
 	// Too cold
-	if(actual < desired)
+	if (actual < desired)
 		temperature += change
-		if(actual > desired)
+		if (actual > desired)
 			temperature = desired
 	// Too hot
-	if(actual > desired)
+	if (actual > desired)
 		temperature -= change
-		if(actual < desired)
+		if (actual < desired)
 			temperature = desired
-//	if(istype(src, /mob/living/carbon/human))
+//	if (istype(src, /mob/living/carbon/human))
 //		world << "[src] ~ [src.bodytemperature] ~ [temperature]"
 	return temperature
 
@@ -186,7 +186,7 @@
 			L += G.gift:return_inv()
 
 	for(var/obj/B in L)
-		if(B.type == A)
+		if (B.type == A)
 			return 1
 	return 0
 
@@ -245,6 +245,6 @@
 	src.heal_overall_damage(1000, 1000)
 	src.buckled = initial(src.buckled)
 	src.handcuffed = initial(src.handcuffed)
-	if(src.stat > 1) src.stat=0
+	if (src.stat > 1) src.stat=0
 	..()
 	return

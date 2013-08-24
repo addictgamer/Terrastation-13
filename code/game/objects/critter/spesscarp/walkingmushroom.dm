@@ -15,16 +15,16 @@
 
 
 	Harvest(var/obj/item/weapon/W, var/mob/living/user)
-		if(..())
+		if (..())
 			var/success = 0
-			if(istype(W, /obj/item/weapon/butch))
+			if (istype(W, /obj/item/weapon/butch))
 				new /obj/item/weapon/reagent_containers/food/snacks/hugemushroomslice(src.loc)
 				new /obj/item/weapon/reagent_containers/food/snacks/hugemushroomslice(src.loc)
 				success = 1
-			if(istype(W, /obj/item/weapon/kitchenknife))
+			if (istype(W, /obj/item/weapon/kitchenknife))
 				new /obj/item/weapon/reagent_containers/food/snacks/hugemushroomslice(src.loc)
 				success = 1
-			if(success)
+			if (success)
 				for(var/mob/O in viewers(src, null))
 					O.show_message("\red [user.name] cuts apart the [src.name]!", 1)
 				del(src)

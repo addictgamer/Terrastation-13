@@ -17,7 +17,7 @@
 
 	message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
 
-	if(ishuman(src))
+	if (ishuman(src))
 		usr.emote("me",1,message)
 	else
 		usr.emote(message)
@@ -50,7 +50,7 @@
 		return 1
 	else if (istype(other, src.type))
 		return 1
-	else if(other.universal_speak || src.universal_speak)
+	else if (other.universal_speak || src.universal_speak)
 		return 1
 	return 0
 

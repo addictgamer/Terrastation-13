@@ -9,9 +9,9 @@
 		var/list/server_ids = list()
 		for(var/obj/machinery/r_n_d/server/S in world)
 			switch(S.server_id)
-				if(-1)
+				if (-1)
 					continue
-				if(0)
+				if (0)
 					no_id_servers += S
 				else
 					server_ids += S.server_id
@@ -19,7 +19,7 @@
 		for(var/obj/machinery/r_n_d/server/S in no_id_servers)
 			var/num = 1
 			while(!S.server_id)
-				if(num in server_ids)
+				if (num in server_ids)
 					num++
 				else
 					S.server_id = num

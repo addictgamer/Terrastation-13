@@ -32,7 +32,7 @@
 
 	var/Sprays[3]
 	for(var/i=1, i<=3, i++) // intialize sprays
-		if(src.reagents.total_volume < 1) break
+		if (src.reagents.total_volume < 1) break
 		var/obj/decal/D = new/obj/decal(get_turf(src))
 		D.name = "chemicals"
 		D.icon = 'chempuff.dmi'
@@ -42,7 +42,7 @@
 		var/rgbcolor[3]
 		var/finalcolor
 		for(var/datum/reagent/re in D.reagents.reagent_list)
-			if(!finalcolor)
+			if (!finalcolor)
 				rgbcolor = GetColors(re.color)
 				finalcolor = re.color
 			else
@@ -70,7 +70,7 @@
 	for(var/i=1, i<=Sprays.len, i++)
 		spawn()
 			var/obj/decal/D = Sprays[i]
-			if(!D) continue
+			if (!D) continue
 
 			// Spreads the sprays a little bit
 			var/turf/my_target = pick(the_targets)
@@ -85,7 +85,7 @@
 			del(D)
 	sleep(1)
 
-	if(isrobot(user)) //Cyborgs can clean forever if they keep charged
+	if (isrobot(user)) //Cyborgs can clean forever if they keep charged
 		var/mob/living/silicon/robot/janitor = user
 		janitor.cell.charge -= 20
 		var/refill = src.reagents.get_master_reagent_id()

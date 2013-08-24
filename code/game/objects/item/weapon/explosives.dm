@@ -22,10 +22,10 @@
 	if (istype(target, /turf/unsimulated) || istype(target, /turf/simulated/shuttle))
 		return
 	user << "Planting explosives..."
-	if(ismob(target))
+	if (ismob(target))
 		user.attack_log += "\[[time_stamp()]\] <font color='red'> [user.real_name] tried planting [name] on [target:real_name] ([target:ckey])</font>"
 		user.visible_message("\red [user.name] is trying to plant some kind of explosive on [target.name]!")
-	if(do_after(user, 50) && in_range(user, target))
+	if (do_after(user, 50) && in_range(user, target))
 		user.drop_item()
 		target = target
 		loc = null
@@ -38,7 +38,7 @@
 		target.overlays += image('assemblies.dmi', "plastic-explosive2")
 		user << "Bomb has been planted. Timer counting down from [timer]."
 		spawn(timer*10)
-			if(target)
+			if (target)
 				explosion(location, -1, -1, 2, 3)
 				if (istype(target, /turf/simulated/wall)) target:dismantle_wall(1)
 				else target.ex_act(1)

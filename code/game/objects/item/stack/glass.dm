@@ -18,13 +18,13 @@ SHARDS
 	var/title = reinf?"Sheet Reinf. Glass":"Sheet-Glass"
 	title += " ([src.amount] sheet\s left)"
 	switch(alert(title, "Would you like full tile glass or one direction?", "one direct", "full (2 sheets)", "cancel", null))
-		if("one direct")
+		if ("one direct")
 			if (src.amount < 1)
 				return 1
 			var/list/directions = new/list(cardinal)
 			for (var/obj/structure/window/win in usr.loc)
 				directions-=win.dir
-				if(!(win.ini_dir in cardinal))
+				if (!(win.ini_dir in cardinal))
 					usr << "\red Can't let you do that."
 					return 1
 			var/dir_to_set = 2
@@ -42,7 +42,7 @@ SHARDS
 				if (WT.dir == dir_to_set)
 					dir_to_set = 2
 			var/obj/structure/window/W
-			if(reinf)
+			if (reinf)
 				W = new /obj/structure/window/reinforced( usr.loc, reinf )
 				W.state = 0
 			else
@@ -51,14 +51,14 @@ SHARDS
 			W.ini_dir = W.dir
 			W.anchored = 0
 			src.use(1)
-		if("full (2 sheets)")
+		if ("full (2 sheets)")
 			if (src.amount < 2)
 				return 1
 			if (locate(/obj/structure/window) in usr.loc)
 				usr << "\red Can't let you do that."
 				return 1
 			var/obj/structure/window/W
-			if(reinf)
+			if (reinf)
 				W = new /obj/structure/window/reinforced( usr.loc, reinf )
 				W.state = 0
 			else
@@ -91,21 +91,21 @@ SHARDS
 
 /obj/item/stack/sheet/glass/attackby(obj/item/W, mob/user)
 	..()
-	if(istype(W,/obj/item/cable_coil))
+	if (istype(W,/obj/item/cable_coil))
 		var/obj/item/cable_coil/CC = W
-		if(CC.amount < 5)
+		if (CC.amount < 5)
 			user << "\b There is not enough wire in this coil. You need 5 lengths."
 		CC.amount -= 5
 		amount -= 1
 		user << "\blue You attack wire to the [name]."
 		new/obj/item/stack/light_w(user.loc)
-		if(CC.amount <= 0)
+		if (CC.amount <= 0)
 			user.u_equip(CC)
 			del(CC)
-		if(src.amount <= 0)
+		if (src.amount <= 0)
 			user.u_equip(src)
 			del(src)
-	else if( istype(W, /obj/item/stack/rods) )
+	else if ( istype(W, /obj/item/stack/rods) )
 		var/obj/item/stack/rods/V  = W
 		var/obj/item/stack/sheet/rglass/RG = new (user.loc)
 		RG.add_fingerprint(user)
@@ -173,13 +173,13 @@ SHARDS
 
 	src.icon_state = pick("large", "medium", "small")
 	switch(src.icon_state)
-		if("small")
+		if ("small")
 			src.pixel_x = rand(1, 18)
 			src.pixel_y = rand(1, 18)
-		if("medium")
+		if ("medium")
 			src.pixel_x = rand(1, 16)
 			src.pixel_y = rand(1, 16)
-		if("large")
+		if ("large")
 			src.pixel_x = rand(1, 10)
 			src.pixel_y = rand(1, 5)
 		else
@@ -196,13 +196,13 @@ SHARDS
 	return ..()
 
 /obj/item/weapon/shard/HasEntered(AM as mob|obj)
-	if(ismob(AM))
+	if (ismob(AM))
 		var/mob/M = AM
 		M << "\red <B>You step in the broken glass!</B>"
 		playsound(src.loc, 'glass_step.ogg', 50, 1)
-		if(ishuman(M))
+		if (ishuman(M))
 			var/mob/living/carbon/human/H = M
-			if(!H.shoes)
+			if (!H.shoes)
 				var/datum/organ/external/affecting = H.organs[pick("l_foot", "r_foot")]
 				H.weakened = max(3, H.weakened)
 				affecting.take_damage(5, 0)

@@ -36,12 +36,12 @@ var/global/list/uneatable = list(
 
 	New(loc, var/starting_energy = 50, var/temp = 0)
 		src.energy = starting_energy
-		if(temp)
+		if (temp)
 			spawn(temp)
 				del(src)
 		..()
 		for(var/obj/machinery/singularity_beacon/singubeacon in world)
-			if(singubeacon.active)
+			if (singubeacon.active)
 				target = singubeacon
 				break
 		return
@@ -63,13 +63,13 @@ var/global/list/uneatable = list(
 
 	ex_act(severity)
 		switch(severity)
-			if(1.0)
-				if(prob(25))
+			if (1.0)
+				if (prob(25))
 					del(src)
 					return
 				else
 					energy += 50
-			if(2.0 to 3.0)
+			if (2.0 to 3.0)
 				energy += round((rand(20,60)/2),1)
 				return
 		return
@@ -89,12 +89,12 @@ var/global/list/uneatable = list(
 		eat()
 		dissipate()
 		check_energy()
-		if(current_size >= 3)
+		if (current_size >= 3)
 			move()
-			if(current_size <= 7)
+			if (current_size <= 7)
 				pulse()
-				if(current_size >= 5)
-					if(prob(event_chance))//Chance for it to run a special event TODO:Come up with one or two more that fit
+				if (current_size >= 5)
+					if (prob(event_chance))//Chance for it to run a special event TODO:Come up with one or two more that fit
 						event()
 		return
 
@@ -105,9 +105,9 @@ var/global/list/uneatable = list(
 
 	proc
 		dissipate()
-			if(!dissipate)
+			if (!dissipate)
 				return
-			if(dissipate_track >= dissipate_delay)
+			if (dissipate_track >= dissipate_delay)
 				src.energy -= dissipate_strength
 				dissipate_track = 0
 			else
@@ -116,10 +116,10 @@ var/global/list/uneatable = list(
 
 		expand(var/force_size = 0)
 			var/temp_allowed_size = src.allowed_size
-			if(force_size)
+			if (force_size)
 				temp_allowed_size = force_size
 			switch(temp_allowed_size)
-				if(1)
+				if (1)
 					current_size = 1
 					icon = 'singularity.dmi'
 					icon_state = "singularity_s1"
@@ -130,7 +130,7 @@ var/global/list/uneatable = list(
 					dissipate_delay = 10
 					dissipate_track = 0
 					dissipate_strength = 1
-				if(3)//1 to 3 does not check for the turfs if you put the gens right next to a 1x1 then its going to eat them
+				if (3)//1 to 3 does not check for the turfs if you put the gens right next to a 1x1 then its going to eat them
 					current_size = 3
 					icon = '96x96.dmi'
 					icon_state = "singularity_s3"
@@ -141,8 +141,8 @@ var/global/list/uneatable = list(
 					dissipate_delay = 5
 					dissipate_track = 0
 					dissipate_strength = 5
-				if(5)
-					if((check_turfs_in(1,2))&&(check_turfs_in(2,2))&&(check_turfs_in(4,2))&&(check_turfs_in(8,2)))
+				if (5)
+					if ((check_turfs_in(1,2))&&(check_turfs_in(2,2))&&(check_turfs_in(4,2))&&(check_turfs_in(8,2)))
 						current_size = 5
 						icon = '160x160.dmi'
 						icon_state = "singularity_s5"
@@ -153,8 +153,8 @@ var/global/list/uneatable = list(
 						dissipate_delay = 4
 						dissipate_track = 0
 						dissipate_strength = 20
-				if(7)
-					if((check_turfs_in(1,3))&&(check_turfs_in(2,3))&&(check_turfs_in(4,3))&&(check_turfs_in(8,3)))
+				if (7)
+					if ((check_turfs_in(1,3))&&(check_turfs_in(2,3))&&(check_turfs_in(4,3))&&(check_turfs_in(8,3)))
 						current_size = 7
 						icon = '224x224.dmi'
 						icon_state = "singularity_s7"
@@ -165,7 +165,7 @@ var/global/list/uneatable = list(
 						dissipate_delay = 10
 						dissipate_track = 0
 						dissipate_strength = 10
-				if(9)//this one also lacks a check for gens because it eats everything
+				if (9)//this one also lacks a check for gens because it eats everything
 					current_size = 9
 					icon = '288x288.dmi'
 					icon_state = "singularity_s9"
@@ -176,86 +176,86 @@ var/global/list/uneatable = list(
 					dissipate = 0 //It cant go smaller due to e loss
 					//world << "http://www.youtube.com/watch?v=wYUhGRynyJw <- That's what's happening to the station right now."
 					//world << sound('chickenz.mid', 1)
-					if(!spawned_chickenz)
+					if (!spawned_chickenz)
 						chickenz = 1 //CHICKENZ.
 						world << "http://www.youtube.com/watch?v=wYUhGRynyJw <- That's what's happening to the station right now."
 						world << sound('chickenz.mid', 1)
-			if(current_size == allowed_size)
+			if (current_size == allowed_size)
 				return 1
-			else if(current_size < (--temp_allowed_size))
+			else if (current_size < (--temp_allowed_size))
 				expand(temp_allowed_size)
 			else
 				return 0
 
 
 		check_energy()
-			if(energy <= 0)
+			if (energy <= 0)
 				del(src)
 				return 0
 			switch(energy)//Some of these numbers might need to be changed up later -Mport
-				if(1 to 199)
+				if (1 to 199)
 					allowed_size = 1
-				if(200 to 499)
+				if (200 to 499)
 					allowed_size = 3
-				if(500 to 999)
+				if (500 to 999)
 					allowed_size = 5
-				if(1000 to 1999)
+				if (1000 to 1999)
 					allowed_size = 7
-				if(2000 to INFINITY)
+				if (2000 to INFINITY)
 					allowed_size = 9
-			if(current_size != allowed_size)
+			if (current_size != allowed_size)
 				expand()
 			return 1
 
 
 		eat()
 			set background = 1
-			if(defer_powernet_rebuild != 2)
+			if (defer_powernet_rebuild != 2)
 				defer_powernet_rebuild = 1
 			for(var/atom/movable/X in orange(consume_range,src))
 				consume(X)
 			for(var/turf/X in orange(consume_range,src))
 				consume(X)
 			for(var/atom/movable/X in orange(grav_pull,src))
-				if(is_type_in_list(X, uneatable))
+				if (is_type_in_list(X, uneatable))
 					continue
-				if((!X:anchored && (!istype(X,/mob/living/carbon/human)))|| (src.current_size >= 9))
+				if ((!X:anchored && (!istype(X,/mob/living/carbon/human)))|| (src.current_size >= 9))
 					step_towards(X,src)
-				else if(istype(X,/mob/living/carbon/human))
+				else if (istype(X,/mob/living/carbon/human))
 					var/mob/living/carbon/human/H = X
-					if(istype(H.shoes,/obj/item/clothing/shoes/magboots))
+					if (istype(H.shoes,/obj/item/clothing/shoes/magboots))
 						var/obj/item/clothing/shoes/magboots/M = H.shoes
-						if(M.magpulse)
+						if (M.magpulse)
 							continue
 					step_towards(H,src)
-			if(defer_powernet_rebuild != 2)
+			if (defer_powernet_rebuild != 2)
 				defer_powernet_rebuild = 0
 			return
 
 
 		consume(var/atom/A)
 			var/gain = 0
-			if(is_type_in_list(A, uneatable))
+			if (is_type_in_list(A, uneatable))
 				return 0
 			if (istype(A,/mob/living))//Mobs get gibbed
 				gain = 20
-				if(istype(A,/mob/living/carbon/human))
-					if(A:mind)
-						if(A:mind:assigned_role == "Station Engineer")// || (A:mind:assigned_role == "Chief Engineer") )
+				if (istype(A,/mob/living/carbon/human))
+					if (A:mind)
+						if (A:mind:assigned_role == "Station Engineer")// || (A:mind:assigned_role == "Chief Engineer") )
 							gain = 100
-						if(A:mind:assigned_role == "Chief Engineer")
+						if (A:mind:assigned_role == "Chief Engineer")
 							gain = 2000
 				spawn()
 					A:gib()
 				sleep(1)
-			else if(istype(A,/obj/))
+			else if (istype(A,/obj/))
 
 				if (istype(A,/obj/item/weapon/storage/backpack/holding))
 					var/dist = max((current_size - 2),1)
 					explosion(src.loc,(dist/4),(dist/2),(dist))
 					return
 
-				if(istype(A, /obj/machinery/singularity))//Welp now you did it
+				if (istype(A, /obj/machinery/singularity))//Welp now you did it
 					var/obj/machinery/singularity/S = A
 					src.energy += (S.energy/2)//Absorb most of it
 					del(S)
@@ -263,22 +263,22 @@ var/global/list/uneatable = list(
 					explosion(src.loc,(dist/4),(dist/2),(dist))
 					return//Quits here, the obj should be gone, hell we might be
 
-				if((teleport_del) && (!istype(A, /obj/machinery)))//Going to see if it does not lag less to tele items over to Z 2
+				if ((teleport_del) && (!istype(A, /obj/machinery)))//Going to see if it does not lag less to tele items over to Z 2
 					var/obj/O = A
 					O.x = 2
 					O.y = 2
 					O.z = 2
 				else
 					A:ex_act(1.0)
-					if(A) del(A)
+					if (A) del(A)
 				gain = 2
-			else if(isturf(A))
+			else if (isturf(A))
 				var/turf/T = A
-				if(T.intact)
+				if (T.intact)
 					for(var/obj/O in T.contents)
-						if(O.level != 1)
+						if (O.level != 1)
 							continue
-						if(O.invisibility == 101)
+						if (O.invisibility == 101)
 							src.consume(O)
 				A:ReplaceWithSpace()
 				gain = 2
@@ -287,29 +287,29 @@ var/global/list/uneatable = list(
 
 
 		move(var/movement_dir = 0)
-			if(!move_self)
+			if (!move_self)
 				return 0
 
-			if(current_size < 9) //Only escaped singularities allowed? Chickenz.
+			if (current_size < 9) //Only escaped singularities allowed? Chickenz.
 				return
 
-			if(target && prob(80))
+			if (target && prob(80))
 				movement_dir = get_dir(src,target) //moves to a singulo beacon, if there is one
-			else if(!(movement_dir in cardinal))
+			else if (!(movement_dir in cardinal))
 				movement_dir = pick(NORTH, SOUTH, EAST, WEST)
 
-			if(movement_dir == last_failed_movement)
+			if (movement_dir == last_failed_movement)
 				var/list/L = new/list(NORTH, SOUTH, EAST, WEST)
 				L.Remove(last_failed_movement)
 				movement_dir = pick(L)
 
-			if(current_size >= 9)//The superlarge one does not care about things in its way
+			if (current_size >= 9)//The superlarge one does not care about things in its way
 				spawn(0)
 					step(src, movement_dir)
 				spawn(1)
 					step(src, movement_dir)
 				return 1
-			else if(check_turfs_in(movement_dir))
+			else if (check_turfs_in(movement_dir))
 				last_failed_movement = 0//Reset this because we moved
 				spawn(0)
 					step(src, movement_dir)
@@ -320,20 +320,20 @@ var/global/list/uneatable = list(
 
 
 		check_turfs_in(var/direction = 0, var/step = 0)
-			if(!direction)
+			if (!direction)
 				return 0
 			var/steps = 0
-			if(!step)
+			if (!step)
 				switch(current_size)
-					if(1)
+					if (1)
 						steps = 1
-					if(3)
+					if (3)
 						steps = 3//Yes this is right
-					if(5)
+					if (5)
 						steps = 3
-					if(7)
+					if (7)
 						steps = 4
-					if(9)
+					if (9)
 						steps = 5
 			else
 				steps = step
@@ -341,49 +341,49 @@ var/global/list/uneatable = list(
 			var/turf/T = src.loc
 			for(var/i = 1 to steps)
 				T = get_step(T,direction)
-			if(!isturf(T))
+			if (!isturf(T))
 				return 0
 			turfs.Add(T)
 			var/dir2 = 0
 			var/dir3 = 0
 			switch(direction)
-				if(NORTH||SOUTH)
+				if (NORTH||SOUTH)
 					dir2 = 4
 					dir3 = 8
-				if(EAST||WEST)
+				if (EAST||WEST)
 					dir2 = 1
 					dir3 = 2
 			var/turf/T2 = T
 			for(var/j = 1 to steps)
 				T2 = get_step(T2,dir2)
-				if(!isturf(T2))
+				if (!isturf(T2))
 					return 0
 				turfs.Add(T2)
 			for(var/k = 1 to steps)
 				T = get_step(T,dir3)
-				if(!isturf(T))
+				if (!isturf(T))
 					return 0
 				turfs.Add(T)
 			for(var/turf/T3 in turfs)
-				if(isnull(T3))
+				if (isnull(T3))
 					continue
-				if(!can_move(T3))
+				if (!can_move(T3))
 					return 0
 			return 1
 
 
 		can_move(var/turf/T)
-			if(!T)
+			if (!T)
 				return 0
-			if((locate(/obj/machinery/containment_field) in T)||(locate(/obj/machinery/shieldwall) in T))
+			if ((locate(/obj/machinery/containment_field) in T)||(locate(/obj/machinery/shieldwall) in T))
 				return 0
-			else if(locate(/obj/machinery/field_generator) in T)
+			else if (locate(/obj/machinery/field_generator) in T)
 				var/obj/machinery/field_generator/G = locate(/obj/machinery/field_generator) in T
-				if(G && G.active)
+				if (G && G.active)
 					return 0
-			else if(locate(/obj/machinery/shieldwallgen) in T)
+			else if (locate(/obj/machinery/shieldwallgen) in T)
 				var/obj/machinery/shieldwallgen/S = locate(/obj/machinery/shieldwallgen) in T
-				if(S && S.active)
+				if (S && S.active)
 					return 0
 			return 1
 
@@ -391,11 +391,11 @@ var/global/list/uneatable = list(
 		event()
 			var/numb = pick(1,2,3,4,5,6)
 			switch(numb)
-				if(1)//EMP
+				if (1)//EMP
 					emp_area()
-				if(2,3)//tox damage all carbon mobs in area
+				if (2,3)//tox damage all carbon mobs in area
 					toxmob()
-				if(4)//Stun mobs who lack optic scanners
+				if (4)//Stun mobs who lack optic scanners
 					mezzer()
 				else
 					return 0
@@ -410,15 +410,15 @@ var/global/list/uneatable = list(
 				toxloss = round(((src.energy-150)/50)*4,1)
 				radiation = round(((src.energy-150)/50)*5,1)
 			for(var/mob/living/carbon/M in view(toxrange, src.loc))
-				if(istype(M,/mob/living/carbon/human))
+				if (istype(M,/mob/living/carbon/human))
 					var/P = 0
-					if(M:wear_suit)
+					if (M:wear_suit)
 						P += M:wear_suit.radiation_protection
-					if(M:head)
+					if (M:head)
 						P += M:head.radiation_protection
 					if (P > 0)
 						if (P >= 1)
-							if(M:wear_suit)
+							if (M:wear_suit)
 								M << "The [M:wear_suit] beeps, indicating it just received a burst of radiation. Good thing you had it on."
 							else if (M:head)
 								M << "The [M:head] beeps, indicating it just received a burst of radiation. Good thing you had it on."
@@ -433,14 +433,14 @@ var/global/list/uneatable = list(
 							radiation = 15 - (15 * P)
 						else
 							radiation = radiation - (P * radiation)
-						if(M:wear_suit)
+						if (M:wear_suit)
 							M << "\red The [M:wear_suit] absorbs some of the radiation from the singularity."
 						else if (M:head)
 							M << "\red The [M:head] absorbs some of the radiation from the singularity."
 						else
 							M << "\red Your body protects you from some of the radiation."
 					else
-						if(prob(50))
+						if (prob(50))
 							M << "\red <b>You feel odd.</b>"
 						else
 							M << "\red <b>You feel sick.</b>"
@@ -452,8 +452,8 @@ var/global/list/uneatable = list(
 
 		mezzer()
 			for(var/mob/living/carbon/M in oviewers(8, src))
-				if(istype(M,/mob/living/carbon/human))
-					if(istype(M:glasses,/obj/item/clothing/glasses/meson))
+				if (istype(M,/mob/living/carbon/human))
+					if (istype(M:glasses,/obj/item/clothing/glasses/meson))
 						M << "\blue You look directly into The [src.name], good thing you had your protective eyewear on!"
 						return
 				M << "\red You look directly into The [src.name] and feel weak."
@@ -471,7 +471,7 @@ var/global/list/uneatable = list(
 
 		pulse()
 			for(var/obj/machinery/power/rad_collector/R in orange(15,src))
-				if(istype(R,/obj/machinery/power/rad_collector))
+				if (istype(R,/obj/machinery/power/rad_collector))
 					R.receive_pulse(energy)
 			return
 
@@ -492,27 +492,27 @@ var/global/list/uneatable = list(
 
 		process()
 			eat()
-			if(!target || prob(5))
+			if (!target || prob(5))
 				pickcultist()
 			move()
-			if(prob(25))
+			if (prob(25))
 				mezzer()
 
 		consume(var/atom/A) //Has its own consume proc because it doesn't need energy and I don't want BoHs to explode it. --NEO
-			if(is_type_in_list(A, uneatable))
+			if (is_type_in_list(A, uneatable))
 				return 0
 			if (istype(A,/mob/living))//Mobs get gibbed
 				A:gib()
-			else if(istype(A,/obj/))
+			else if (istype(A,/obj/))
 				A:ex_act(1.0)
-				if(A) del(A)
-			else if(isturf(A))
+				if (A) del(A)
+			else if (isturf(A))
 				var/turf/T = A
-				if(T.intact)
+				if (T.intact)
 					for(var/obj/O in T.contents)
-						if(O.level != 1)
+						if (O.level != 1)
 							continue
-						if(O.invisibility == 101)
+						if (O.invisibility == 101)
 							src.consume(O)
 				A:ReplaceWithSpace()
 			return
@@ -523,28 +523,28 @@ var/global/list/uneatable = list(
 		proc/pickcultist() //Narsie rewards his cultists with being devoured first, then picks a ghost to follow. --NEO
 			var/list/cultists = list()
 			for(var/datum/mind/cult_nh_mind in ticker.mode.cult)
-				if(!cult_nh_mind.current)
+				if (!cult_nh_mind.current)
 					continue
-				if(cult_nh_mind.current.stat)
+				if (cult_nh_mind.current.stat)
 					continue
 				cultists += cult_nh_mind.current
-			if(cultists.len)
+			if (cultists.len)
 				acquire(pick(cultists))
 				return
 				//If there was living cultists, it picks one to follow.
 			for(var/mob/living/carbon/human/food in world)
-				if(food.stat)
+				if (food.stat)
 					continue
 				cultists += food
-			if(cultists.len)
+			if (cultists.len)
 				acquire(pick(cultists))
 				return
 				//no living cultists, pick a living human instead.
 			for(var/mob/dead/observer/ghost in world)
-				if(!ghost.client)
+				if (!ghost.client)
 					continue
 				cultists += ghost
-			if(cultists.len)
+			if (cultists.len)
 				acquire(pick(cultists))
 				return
 				//no living humans, follow a ghost instead.
@@ -552,7 +552,7 @@ var/global/list/uneatable = list(
 		proc/acquire(var/mob/food)
 			target << "\blue <b>NAR-SIE HAS LOST INTEREST IN YOU</b>"
 			target = food
-			if(ishuman(target))
+			if (ishuman(target))
 				target << "\red <b>NAR-SIE HUNGERS FOR YOUR SOUL</b>"
 			else
 				target << "\red <b>NAR-SIE HAS CHOSEN YOU TO LEAD HIM TO HIS NEXT MEAL</b>"

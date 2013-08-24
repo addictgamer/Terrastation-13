@@ -10,7 +10,7 @@
 		set background = 1
 		..()
 		for(var/turf/T in orange(1,src))
-			if(!IsValidBiomassLoc(T))
+			if (!IsValidBiomassLoc(T))
 				continue
 			var/obj/biomass/starting = new /obj/biomass(T)
 			starting.dir = get_dir(src,starting)

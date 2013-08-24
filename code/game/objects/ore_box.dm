@@ -67,11 +67,11 @@
 		return
 
 	Topic(href, href_list)
-		if(..())
+		if (..())
 			return
 		usr.machine = src
 		src.add_fingerprint(usr)
-		if(href_list["removeall"])
+		if (href_list["removeall"])
 			for (var/obj/item/weapon/ore/O in contents)
 				contents -= O
 				O.loc = src.loc

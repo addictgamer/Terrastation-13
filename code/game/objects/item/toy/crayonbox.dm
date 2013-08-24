@@ -17,12 +17,12 @@
 		updateIcon()
 
 	attackby(obj/item/W as obj, mob/user as mob)
-		if(istype(W,/obj/item/toy/crayon))
+		if (istype(W,/obj/item/toy/crayon))
 			switch(W:colourName)
-				if("mime")
+				if ("mime")
 					usr << "This crayon is too sad to be contained in this box."
 					return
-				if("rainbow")
+				if ("rainbow")
 					usr << "This crayon is too powerful to be contained in this box."
 					return
 				else
@@ -39,14 +39,14 @@
 			..()
 
 	attack_hand(mob/user as mob)
-		if(user.r_hand == src || user.l_hand == src)
-			if(!contents.len)
+		if (user.r_hand == src || user.l_hand == src)
+			if (!contents.len)
 				user << "\red You're out of crayons!"
 				return
 			else
 				var/crayon = pick(contents)
 				user.contents += crayon
-				if(user.hand)
+				if (user.hand)
 					user.l_hand = crayon
 				else
 					user.r_hand = crayon

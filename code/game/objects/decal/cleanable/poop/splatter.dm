@@ -10,7 +10,7 @@
 				var/direction = pick(directions)
 				for (var/i = 0, i < pick(1, 200; 2, 150; 3, 50; 4), i++)
 					sleep(3)
-					if(i > 0)
+					if (i > 0)
 						var/obj/decal/cleanable/poop/splatter/b = new /obj/decal/cleanable/poop/splatter(src.loc)
-					if(step_to(src, get_step(src, direction), 0))
+					if (step_to(src, get_step(src, direction), 0))
 						break

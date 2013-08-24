@@ -18,7 +18,7 @@
 	return src.attack_hand(user)
 
 /obj/machinery/computer/traderequestcomp/attack_hand(var/mob/user as mob)
-	if(..())
+	if (..())
 		return
 	user.machine = src
 	var/dat
@@ -39,7 +39,7 @@
 
 
 /obj/machinery/computer/traderequestcomp/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 
 	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
@@ -49,7 +49,7 @@
 		src.temp = "<BR>Request what?<BR><BR>"
 		for(var/S in (typesof(/datum/trade_packs) - /datum/trade_packs) )
 			var/datum/trade_packs/N = new S()
-			if(N.hidden) continue																	//Have to send the type instead of a reference to
+			if (N.hidden) continue																	//Have to send the type instead of a reference to
 			src.temp += "<A href='?src=\ref[src];doorder=[N.type]'>[N.name]"   						 //the obj because it would get caught by the garbage
 			src.temp += "<A href='?src=\ref[src];printform=[N.type]'>Print Requisition</A><br>"     //collector. oh well.
 		src.temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
@@ -76,15 +76,15 @@
 		reqform.info += "<h3>[station_name] Supply Requisition Form</h3><hr>"
 
 		if (istype(usr:wear_id, /obj/item/weapon/card/id))
-			if(usr:wear_id.registered)
+			if (usr:wear_id.registered)
 				idname = usr:wear_id.registered
-			if(usr:wear_id.assignment)
+			if (usr:wear_id.assignment)
 				idrank = usr:wear_id.assignment
 		if (istype(usr:wear_id, /obj/item/device/pda))
 			var/obj/item/device/pda/pda = usr:wear_id
-			if(pda.owner)
+			if (pda.owner)
 				idname = pda.owner
-			if(pda.ownjob)
+			if (pda.ownjob)
 				idrank = pda.ownjob
 		else
 			idname = usr.name

@@ -9,7 +9,7 @@
 		s.expand(9) //Make it big.
 		found = 1
 
-	if(found)
+	if (found)
 		chickenz = 1
 		world << "http://www.youtube.com/watch?v=wYUhGRynyJw <- That's what's happening to the station right now."
 		world << sound('chickenz.mid', 1)

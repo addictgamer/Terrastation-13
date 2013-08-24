@@ -8,27 +8,27 @@
 		item.add_fingerprint(source)
 	if (!( item ))
 		switch(place)
-			if("head")
+			if ("head")
 				if (!( target.wear_mask ))
 					del(src)
 					return
-			if("l_hand")
+			if ("l_hand")
 				if (!( target.l_hand ))
 					del(src)
 					return
-			if("r_hand")
+			if ("r_hand")
 				if (!( target.r_hand ))
 					del(src)
 					return
-			if("back")
+			if ("back")
 				if (!( target.back ))
 					del(src)
 					return
-			if("handcuff")
+			if ("handcuff")
 				if (!( target.handcuffed ))
 					del(src)
 					return
-			if("internal")
+			if ("internal")
 				if ((!( (istype(target.wear_mask, /obj/item/clothing/mask) && istype(target.back, /obj/item/weapon/tank) && !( target.internal )) ) && !( target.internal )))
 					del(src)
 					return
@@ -40,20 +40,20 @@
 	else
 		var/message = null
 		switch(place)
-			if("mask")
-				if(istype(target.wear_mask, /obj/item/clothing)&&!target.wear_mask:canremove)
+			if ("mask")
+				if (istype(target.wear_mask, /obj/item/clothing)&&!target.wear_mask:canremove)
 					message = text("\red <B>[] fails to take off \a [] from []'s body!</B>", source, target.wear_mask, target)
 				else
 					message = text("\red <B>[] is trying to take off \a [] from []'s head!</B>", source, target.wear_mask, target)
-			if("l_hand")
+			if ("l_hand")
 				message = text("\red <B>[] is trying to take off a [] from []'s left hand!</B>", source, target.l_hand, target)
-			if("r_hand")
+			if ("r_hand")
 				message = text("\red <B>[] is trying to take off a [] from []'s right hand!</B>", source, target.r_hand, target)
-			if("back")
+			if ("back")
 				message = text("\red <B>[] is trying to take off a [] from []'s back!</B>", source, target.back, target)
-			if("handcuff")
+			if ("handcuff")
 				message = text("\red <B>[] is trying to unhandcuff []!</B>", source, target)
-			if("internal")
+			if ("internal")
 				if (target.internal)
 					message = text("\red <B>[] is trying to remove []'s internals</B>", source, target)
 				else
@@ -67,16 +67,16 @@
 	return
 
 /obj/equip_e/monkey/done()
-	if(!source || !target)						return
-	if(source.loc != s_loc)						return
-	if(target.loc != t_loc)						return
-	if(LinkBlocked(s_loc,t_loc))				return
-	if(item && source.equipped() != item)	return
+	if (!source || !target)						return
+	if (source.loc != s_loc)						return
+	if (target.loc != t_loc)						return
+	if (LinkBlocked(s_loc,t_loc))				return
+	if (item && source.equipped() != item)	return
 	if ((source.restrained() || source.stat))	return
 	switch(place)
-		if("mask")
+		if ("mask")
 			if (target.wear_mask)
-				if(istype(target.wear_mask, /obj/item/clothing)&& !target.wear_mask:canremove)
+				if (istype(target.wear_mask, /obj/item/clothing)&& !target.wear_mask:canremove)
 					return
 				var/obj/item/W = target.wear_mask
 				target.u_equip(W)
@@ -94,7 +94,7 @@
 					item.layer = 20
 					target.wear_mask = item
 					item.loc = target
-		if("l_hand")
+		if ("l_hand")
 			if (target.l_hand)
 				var/obj/item/W = target.l_hand
 				target.u_equip(W)
@@ -112,7 +112,7 @@
 					item.layer = 20
 					target.l_hand = item
 					item.loc = target
-		if("r_hand")
+		if ("r_hand")
 			if (target.r_hand)
 				var/obj/item/W = target.r_hand
 				target.u_equip(W)
@@ -130,7 +130,7 @@
 					item.layer = 20
 					target.r_hand = item
 					item.loc = target
-		if("back")
+		if ("back")
 			if (target.back)
 				var/obj/item/W = target.back
 				target.u_equip(W)
@@ -148,7 +148,7 @@
 					item.layer = 20
 					target.back = item
 					item.loc = target
-		if("handcuff")
+		if ("handcuff")
 			if (target.handcuffed)
 				var/obj/item/W = target.handcuffed
 				target.u_equip(W)
@@ -164,7 +164,7 @@
 					source.drop_item()
 					target.handcuffed = item
 					item.loc = target
-		if("internal")
+		if ("internal")
 			if (target.internal)
 				target.internal.add_fingerprint(source)
 				target.internal = null

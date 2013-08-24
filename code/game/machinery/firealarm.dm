@@ -16,8 +16,8 @@
 	power_channel = ENVIRON
 
 /obj/machinery/firealarm/temperature_expose(datum/gas_mixture/air, temperature, volume)
-	if(src.detecting)
-		if(temperature > T0C+200)
+	if (src.detecting)
+		if (temperature > T0C+200)
 			src.alarm()			// added check of detector status here
 			//world << sound('Alarm.ogg')
 	return
@@ -32,7 +32,7 @@
 	return src.attack_hand(user)
 
 /obj/machinery/firealarm/emp_act(severity)
-	if(prob(50/severity)) alarm()
+	if (prob(50/severity)) alarm()
 	..()
 
 /obj/machinery/firealarm/attackby(obj/item/weapon/W as obj, mob/user as mob)
@@ -48,13 +48,13 @@
 	return
 
 /obj/machinery/firealarm/process()
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 
 	var/area/A = src.loc
 	A = A.loc
 
-	if(A.fire)
+	if (A.fire)
 		src.icon_state = "fire1"
 	else
 		src.icon_state = "fire0"
@@ -71,7 +71,7 @@
 	return
 
 /obj/machinery/firealarm/power_change()
-	if(powered(ENVIRON))
+	if (powered(ENVIRON))
 		stat &= ~NOPOWER
 		icon_state = "fire0"
 	else
@@ -80,7 +80,7 @@
 			icon_state = "firep"
 
 /obj/machinery/firealarm/attack_hand(mob/user as mob)
-	if(user.stat || stat & (NOPOWER|BROKEN))
+	if (user.stat || stat & (NOPOWER|BROKEN))
 		return
 
 	user.machine = src
@@ -164,7 +164,7 @@
 		return
 	var/area/A = src.loc
 	A = A.loc
-	if(!A.fire)
+	if (!A.fire)
 		world << sound('Alarm.ogg')
 	if (!( istype(A, /area) ))
 		return

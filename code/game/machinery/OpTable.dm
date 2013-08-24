@@ -17,7 +17,7 @@
 /obj/machinery/optable/New()
 	..()
 	for(var/obj/machinery/computer/operating/O in world)
-		if(src.id == O.id)
+		if (src.id == O.id)
 			src.computer = O
 	spawn(100)
 		process()
@@ -25,23 +25,23 @@
 /obj/machinery/optable/ex_act(severity)
 
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			//SN src = null
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				//SN src = null
 				del(src)
 				return
-		if(3.0)
+		if (3.0)
 			if (prob(25))
 				src.density = 0
 		else
 	return
 
 /obj/machinery/optable/blob_act()
-	if(prob(75))
+	if (prob(75))
 		del(src)
 
 /obj/machinery/optable/hand_p(mob/user as mob)
@@ -77,9 +77,9 @@
 	return
 
 /obj/machinery/optable/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height==0)) return 1
+	if (air_group || (height==0)) return 1
 
-	if(istype(mover) && mover.checkpass(PASSTABLE))
+	if (istype(mover) && mover.checkpass(PASSTABLE))
 		return 1
 	else
 		return 0
@@ -95,9 +95,9 @@
 	return
 
 /obj/machinery/optable/proc/check_victim()
-	if(locate(/mob/living/carbon/human, src.loc))
+	if (locate(/mob/living/carbon/human, src.loc))
 		var/mob/M = locate(/mob/living/carbon/human, src.loc)
-		if(M.resting)
+		if (M.resting)
 			src.victim = M
 			icon_state = "table2-active"
 			return 1
@@ -111,7 +111,7 @@
 /obj/machinery/optable/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
 	if (istype(W, /obj/item/weapon/grab))
-		if(ismob(W:affecting))
+		if (ismob(W:affecting))
 			var/mob/M = W:affecting
 			if (M.client)
 				M.client.perspective = EYE_PERSPECTIVE
@@ -128,6 +128,6 @@
 			del(W)
 			return
 	user.drop_item()
-	if(W && W.loc)
+	if (W && W.loc)
 		W.loc = src.loc
 	return

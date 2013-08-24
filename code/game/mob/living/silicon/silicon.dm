@@ -21,10 +21,10 @@
 
 /mob/living/silicon/emp_act(severity)
 	switch(severity)
-		if(1)
+		if (1)
 			src.take_organ_damage(40)
 			src.stunned = max(src.stunned,rand(5,10))
-		if(2)
+		if (2)
 			src.take_organ_damage(20)
 			src.stunned = max(src.stunned,rand(1,5))
 	flick("noise", src:flash)

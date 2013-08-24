@@ -50,10 +50,10 @@ WELDINGTOOOL
 	return
 
 /obj/item/weapon/screwdriver/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if(!istype(M))	return ..()
-	if(user.zone_sel.selecting != "eyes" && user.zone_sel.selecting != "head")
+	if (!istype(M))	return ..()
+	if (user.zone_sel.selecting != "eyes" && user.zone_sel.selecting != "head")
 		return ..()
-	if((user.mutations & CLOWN) && prob(50))
+	if ((user.mutations & CLOWN) && prob(50))
 		M = user
 	return eyestab(M,user)
 
@@ -101,19 +101,19 @@ WELDINGTOOOL
 
 
 	attackby(obj/item/W as obj, mob/user as mob)
-		if(istype(W,/obj/item/weapon/screwdriver))
-			if(welding)
+		if (istype(W,/obj/item/weapon/screwdriver))
+			if (welding)
 				user << "\red Stop welding first!"
 				return
 			status = !status
-			if(status)
+			if (status)
 				user << "\blue You resecure the welder."
 			else
 				user << "\blue The welder can now be attached and modified."
 			src.add_fingerprint(user)
 			return
 
-		if((!status) && (istype(W,/obj/item/stack/rods)))
+		if ((!status) && (istype(W,/obj/item/stack/rods)))
 			var/obj/item/stack/rods/R = W
 			R.use(1)
 			var/obj/item/weapon/flamethrower/F = new/obj/item/weapon/flamethrower(user.loc)
@@ -140,21 +140,21 @@ WELDINGTOOOL
 
 	process()
 		switch(welding)
-			if(0)
+			if (0)
 				processing_objects.Remove(src)
 				return
-			if(1)
-				if(prob(5))//Welders left on now use up fuel, but lets not have them run out quite that fast
+			if (1)
+				if (prob(5))//Welders left on now use up fuel, but lets not have them run out quite that fast
 					remove_fuel(1)
-			if(2)
-				if(prob(75))
+			if (2)
+				if (prob(75))
 					remove_fuel(1)
 					//if you're actually actively welding, use fuel faster.
 
 		var/turf/location = src.loc
-		if(istype(location, /mob/))
+		if (istype(location, /mob/))
 			var/mob/M = location
-			if(M.l_hand == src || M.r_hand == src)
+			if (M.l_hand == src || M.r_hand == src)
 				location = get_turf(M)
 		if (istype(location, /turf))
 			location.hotspot_expose(700, 5)
@@ -171,7 +171,7 @@ WELDINGTOOOL
 			log_game("[key_name(user)] triggered a fueltank explosion.")
 			user << "\red That was stupid of you."
 			explosion(O.loc,-1,0,2)
-			if(O)
+			if (O)
 				del(O)
 			return
 		if (src.welding)
@@ -196,16 +196,16 @@ WELDINGTOOOL
 ///Will also turn it off if it is out of fuel
 ///The mob argument is not needed but if included will call eyecheck() on it if the welder is on.
 	remove_fuel(var/amount = 1, var/mob/M = null)
-		if(!welding || !check_status())
+		if (!welding || !check_status())
 			return 0
-		if(get_fuel() >= amount)
+		if (get_fuel() >= amount)
 			reagents.remove_reagent("fuel", amount)
 			check_status()
-			if(M)
+			if (M)
 				eyecheck(M)//TODO:eyecheck should really be in mob not here
 			return 1
 		else
-			if(M)
+			if (M)
 				M << "\blue You need more welding fuel to complete this task."
 			return 0
 
@@ -213,7 +213,7 @@ WELDINGTOOOL
 ///Quick check to see if we even have any fuel and should shut off
 ///This could use a better name
 	check_status()
-		if((get_fuel() <= 0) && welding)
+		if ((get_fuel() <= 0) && welding)
 			toggle(1)
 			return 0
 		return 1
@@ -221,7 +221,7 @@ WELDINGTOOOL
 
 //toggles the welder off and on
 	toggle(var/message = 0)
-		if(!status)	return
+		if (!status)	return
 		src.welding = !( src.welding )
 		if (src.welding)
 			if (remove_fuel(1))
@@ -235,7 +235,7 @@ WELDINGTOOOL
 				src.welding = 0
 				return
 		else
-			if(!message)
+			if (!message)
 				usr << "\blue You switch the [src] off."
 			else
 				usr << "\blue The [src] shuts off!"
@@ -247,24 +247,24 @@ WELDINGTOOOL
 
 	eyecheck(mob/user as mob)
 		//check eye protection
-		if(!iscarbon(user))	return 1
+		if (!iscarbon(user))	return 1
 		var/safety = user:eyecheck()
 		switch(safety)
-			if(1)
+			if (1)
 				usr << "\red Your eyes sting a little."
 				user.eye_stat += rand(1, 2)
-				if(user.eye_stat > 12)
+				if (user.eye_stat > 12)
 					user.eye_blurry += rand(3,6)
-			if(0)
+			if (0)
 				usr << "\red Your eyes burn."
 				user.eye_stat += rand(2, 4)
-				if(user.eye_stat > 10)
+				if (user.eye_stat > 10)
 					user.eye_blurry += rand(4,10)
-			if(-1)
+			if (-1)
 				usr << "\red Your thermals intensify the welder's glow. Your eyes itch and burn severely."
 				user.eye_blurry += rand(12,20)
 				user.eye_stat += rand(12, 16)
-		if(user.eye_stat > 10 && safety < 2)
+		if (user.eye_stat > 10 && safety < 2)
 			user << "\red Your eyes are really starting to hurt. This can't be good for you!"
 		if (prob(user.eye_stat - 25 + 1))
 			user << "\red You go blind!"
@@ -317,5 +317,5 @@ WELDINGTOOOL
 	origin_tech = "materials=1;engineering=1"
 
 	New()
-		if(prob(50))
+		if (prob(50))
 			icon_state = "cutters-y"

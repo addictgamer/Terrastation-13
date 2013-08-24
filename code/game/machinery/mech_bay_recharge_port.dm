@@ -15,11 +15,11 @@
 		return
 
 	proc/start_charge(var/obj/mecha/recharging_mecha)
-		if(stat&(NOPOWER|BROKEN))
+		if (stat&(NOPOWER|BROKEN))
 			recharging_mecha.occupant_message("<font color='red'>Power port not responding. Terminating.</font>")
 			return 0
 		else
-			if(recharging_mecha.cell)
+			if (recharging_mecha.cell)
 				recharging_mecha.occupant_message("Now charging...")
 				pr_recharger.start(list(src,recharging_mecha))
 				return 1
@@ -27,19 +27,19 @@
 				return 0
 
 	proc/stop_charge()
-		if(recharge_console && !recharge_console.stat)
+		if (recharge_console && !recharge_console.stat)
 			recharge_console.icon_state = initial(recharge_console.icon_state)
 		pr_recharger.stop()
 		return
 
 	proc/active()
-		if(pr_recharger.active())
+		if (pr_recharger.active())
 			return 1
 		else
 			return 0
 
 	power_change()
-		if(powered())
+		if (powered())
 			stat &= ~NOPOWER
 		else
 			spawn(rand(0, 15))
@@ -48,7 +48,7 @@
 		return
 
 	proc/set_voltage(new_voltage)
-		if(new_voltage && isnum(new_voltage))
+		if (new_voltage && isnum(new_voltage))
 			pr_recharger.max_charge = new_voltage
 			return 1
 		else

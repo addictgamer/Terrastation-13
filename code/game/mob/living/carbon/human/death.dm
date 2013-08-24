@@ -1,7 +1,7 @@
 /mob/living/carbon/human/death(gibbed)
-	if(src.stat == 2)
+	if (src.stat == 2)
 		return
-	if(src.healths)
+	if (src.healths)
 		src.healths.icon_state = "health5"
 	src.stat = 2
 	src.dizziness = 0
@@ -19,7 +19,7 @@
 			explosion(location, 1, 2, 3, 4)
 
 		canmove = 0
-		if(src.client)
+		if (src.client)
 			src.blind.layer = 0
 		lying = 1
 		var/h = src.hand
@@ -32,11 +32,11 @@
 
 		if (client)
 			spawn(10)
-				if(client && src.stat == 2)
+				if (client && src.stat == 2)
 					verbs += /mob/proc/ghost
 
 	var/tod = time2text(world.realtime,"hh:mm:ss") //weasellos time of death patch
-	if(mind)
+	if (mind)
 		mind.store_memory("Time of death: [tod]", 0)
 	sql_report_death(src)
 

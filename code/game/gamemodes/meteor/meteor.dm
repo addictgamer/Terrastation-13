@@ -22,14 +22,14 @@
 
 
 /datum/game_mode/meteor/process()
-	if(nometeors) return
-	if(prob(80))
+	if (nometeors) return
+	if (prob(80))
 		spawn()
 			dust_swarm("norm")
 	else
 		spawn()
 			dust_swarm("strong")
-	if(prob(10)) meteor_wave()
+	if (prob(10)) meteor_wave()
 	else spawn_meteors()
 
 
@@ -51,11 +51,11 @@
 		for(var/survivor in survivors)
 			var/condition = survivors[survivor]
 			switch(condition)
-				if("shuttle")
+				if ("shuttle")
 					world << "\t <B><FONT size = 2>[survivor] escaped on the shuttle!</FONT></B>"
-				if("pod")
+				if ("pod")
 					world << "\t <FONT size = 2>[survivor] escaped on an escape pod!</FONT>"
-				if("alive")
+				if ("alive")
 					world << "\t <FONT size = 1>[survivor] stayed alive. Whereabouts unknown.</FONT>"
 	else
 		world << "\blue <B>No one survived the meteor attack!</B>"

@@ -29,27 +29,27 @@
 	examine()
 		set src in view(1)
 
-		if(amount == 1)
+		if (amount == 1)
 			usr << "A short piece of power cable."
-		else if(amount == 2)
+		else if (amount == 2)
 			usr << "A piece of power cable."
 		else
 			usr << "A coil of power cable. There are [amount] lengths of cable in the coil."
 
 	attackby(obj/item/weapon/W, mob/user)
 		..()
-		if( istype(W, /obj/item/weapon/wirecutters) && src.amount > 1)
+		if ( istype(W, /obj/item/weapon/wirecutters) && src.amount > 1)
 			src.amount--
 			new/obj/item/cable_coil(user.loc, 1,color)
 			user << "You cut a piece off the cable coil."
 			src.updateicon()
 			return
-		else if( istype(W, /obj/item/cable_coil) )
+		else if ( istype(W, /obj/item/cable_coil) )
 			var/obj/item/cable_coil/C = W
-			if(C.amount == MAXCOIL)
+			if (C.amount == MAXCOIL)
 				user << "The coil is too long, you cannot add any more cable to it."
 				return
-			if( (C.amount + src.amount <= MAXCOIL) )
+			if ( (C.amount + src.amount <= MAXCOIL) )
 				C.amount += src.amount
 				user << "You join the cable coils together."
 				C.updateicon()
@@ -67,10 +67,10 @@
 		updateicon()
 			if (!color)
 				color = pick("red", "yellow", "blue", "green")
-			if(amount == 1)
+			if (amount == 1)
 				icon_state = "coil_[color]1"
 				name = "cable piece"
-			else if(amount == 2)
+			else if (amount == 2)
 				icon_state = "coil_[color]2"
 				name = "cable piece"
 			else
@@ -79,7 +79,7 @@
 
 
 		use(var/used)
-			if(src.amount < used)
+			if (src.amount < used)
 				return 0
 			else if (src.amount == used)
 				del(src)
@@ -90,22 +90,22 @@
 
 	// called when cable_coil is clicked on a turf/simulated/floor
 		turf_place(turf/simulated/floor/F, mob/user)
-			if(!isturf(user.loc))
+			if (!isturf(user.loc))
 				return
-			if(get_dist(F,user) > 1)
+			if (get_dist(F,user) > 1)
 				user << "You can't lay cable at a place that far away."
 				return
-			if(F.intact)		// if floor is intact, complain
+			if (F.intact)		// if floor is intact, complain
 				user << "You can't lay cable there unless the floor tiles are removed."
 				return
 			else
 				var/dirn
-				if(user.loc == F)
+				if (user.loc == F)
 					dirn = user.dir			// if laying on the tile we're on, lay in the direction we're facing
 				else
 					dirn = get_dir(F, user)
 				for(var/obj/cable/LC in F)
-					if((LC.d1 == dirn && LC.d2 == 0 ) || ( LC.d2 == dirn && LC.d1 == 0))
+					if ((LC.d1 == dirn && LC.d2 == 0 ) || ( LC.d2 == dirn && LC.d1 == 0))
 						user << "There's already a cable at that position."
 						return
 				var/obj/cable/C = new(F)
@@ -133,19 +133,19 @@
 	// called when cable_coil is click on an installed obj/cable
 		cable_join(obj/cable/C, mob/user)
 			var/turf/U = user.loc
-			if(!isturf(U))
+			if (!isturf(U))
 				return
 			var/turf/T = C.loc
-			if(!isturf(T) || T.intact)		// sanity checks, also stop use interacting with T-scanner revealed cable
+			if (!isturf(T) || T.intact)		// sanity checks, also stop use interacting with T-scanner revealed cable
 				return
-			if(get_dist(C, user) > 1)		// make sure it's close enough
+			if (get_dist(C, user) > 1)		// make sure it's close enough
 				user << "You can't lay cable at a place that far away."
 				return
-			if(U == T)		// do nothing if we clicked a cable we're standing on
+			if (U == T)		// do nothing if we clicked a cable we're standing on
 				return		// may change later if can think of something logical to do
 			var/dirn = get_dir(C, user)
-			if(C.d1 == dirn || C.d2 == dirn)		// one end of the clicked cable is pointing towards us
-				if(U.intact)						// can't place a cable if the floor is complete
+			if (C.d1 == dirn || C.d2 == dirn)		// one end of the clicked cable is pointing towards us
+				if (U.intact)						// can't place a cable if the floor is complete
 					user << "You can't lay cable there unless the floor tiles are removed."
 					return
 				else
@@ -153,7 +153,7 @@
 					// so create a stub pointing at the clicked cable on our tile
 					var/fdirn = turn(dirn, 180)		// the opposite direction
 					for(var/obj/cable/LC in U)		// check to make sure there's not a cable there already
-						if(LC.d1 == fdirn || LC.d2 == fdirn)
+						if (LC.d1 == fdirn || LC.d2 == fdirn)
 							user << "There's already a cable at that position."
 							return
 					var/obj/cable/NC = new(U)
@@ -173,17 +173,17 @@
 							new/obj/item/cable_coil(NC.loc, 1, NC.color)
 							del(NC)
 					return
-			else if(C.d1 == 0)		// exisiting cable doesn't point at our position, so see if it's a stub
+			else if (C.d1 == 0)		// exisiting cable doesn't point at our position, so see if it's a stub
 									// if so, make it a full cable pointing from it's old direction to our dirn
 				var/nd1 = C.d2	// these will be the new directions
 				var/nd2 = dirn
-				if(nd1 > nd2)		// swap directions to match icons/states
+				if (nd1 > nd2)		// swap directions to match icons/states
 					nd1 = dirn
 					nd2 = C.d2
 				for(var/obj/cable/LC in T)		// check to make sure there's no matching cable
-					if(LC == C)			// skip the cable we're interacting with
+					if (LC == C)			// skip the cable we're interacting with
 						continue
-					if((LC.d1 == nd1 && LC.d2 == nd2) || (LC.d1 == nd2 && LC.d2 == nd1) )	// make sure no cable matches either direction
+					if ((LC.d1 == nd1 && LC.d2 == nd2) || (LC.d1 == nd2 && LC.d2 == nd1) )	// make sure no cable matches either direction
 						user << "There's already a cable at that position."
 						return
 				C.cableColor(color)

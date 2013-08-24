@@ -55,10 +55,10 @@
 		return 1
 	if ((usr.contents.Find(src) || (in_range(src,usr) && istype(src.loc, /turf))))
 		usr.machine = src
-		if(href_list["spell_choice"])
-			if(src.uses >= 1 && href_list["spell_choice"] != 14)
+		if (href_list["spell_choice"])
+			if (src.uses >= 1 && href_list["spell_choice"] != 14)
 				src.uses--
-				if(spell_type == "verb")
+				if (spell_type == "verb")
 					switch(href_list["spell_choice"])
 						if ("1")
 							usr.verbs += /client/proc/magicmissile
@@ -111,16 +111,16 @@
 							usr.verbs += /client/proc/knock
 							usr.mind.special_verbs += /client/proc/knock
 							src.temp = "This spell opens nearby doors and does not require wizard garb."
-				else if(spell_type == "object")
+				else if (spell_type == "object")
 					var/list/available_spells = list("Magic Missile","Fireball","Disintegrate","Disable Tech","Smoke","Blind","Mind Transfer","Forcewall","Blink","Teleport","Mutate","Ethereal Jaunt","Knock")
 					var/already_knows = 0
 					for(var/obj/proc_holder/spell/aspell in usr.spell_list)
-						if(available_spells[text2num(href_list["spell_choice"])] == aspell.name)
+						if (available_spells[text2num(href_list["spell_choice"])] == aspell.name)
 							already_knows = 1
 							src.temp = "You already know that spell."
 							src.uses++
 							break
-					if(!already_knows)
+					if (!already_knows)
 						switch(href_list["spell_choice"])
 							if ("1")
 								usr.spell_list += new /obj/proc_holder/spell/targeted/projectile/magic_missile(usr)
@@ -163,7 +163,7 @@
 								src.temp = "This spell opens nearby doors and does not require wizard garb."
 			if (href_list["spell_choice"] == "14")
 				var/area/wizard_station/A = locate()
-				if(usr in A.contents)
+				if (usr in A.contents)
 					src.uses = src.max_uses
 					usr.spellremove(usr,spell_type)
 					src.temp = "All spells have been removed. You may now memorize a new set of spells."

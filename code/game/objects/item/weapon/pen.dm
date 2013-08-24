@@ -59,5 +59,5 @@
 		M << "\red You feel a tiny prick!"
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been stabbed with [src.name]  by [user.name] ([user.ckey])</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to stab [M.name] ([M.ckey])</font>")
-		if(M.reagents) reagents.trans_to(M, 50) //used to be 150
+		if (M.reagents) reagents.trans_to(M, 50) //used to be 150
 	return

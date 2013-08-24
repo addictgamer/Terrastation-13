@@ -11,7 +11,7 @@
 	var/atom/location = O
 	var/i
 	for(i=1, i<=20, i++)
-		if(isarea(location))
+		if (isarea(location))
 			return location
 		else if (istype(location))
 			location = location.loc
@@ -21,12 +21,12 @@
 
 /proc/get_area_name(N) //get area by it's name
 	for(var/area/A in world)
-		if(A.name == N)
+		if (A.name == N)
 			return A
 	return 0
 
 /proc/in_range(source, user)
-	if(get_dist(source, user) <= 1)
+	if (get_dist(source, user) <= 1)
 		return 1
 	else
 		if (istype(user, /mob/living/carbon))
@@ -62,7 +62,7 @@
 	for(var/atom/T in range(radius, centerturf))
 		var/dx = T.x - centerturf.x
 		var/dy = T.y - centerturf.y
-		if(dx*dx + dy*dy <= rsq)
+		if (dx*dx + dy*dy <= rsq)
 			turfs += T
 
 	//turfs += centerturf
@@ -77,7 +77,7 @@
 	for(var/atom/T in view(radius, centerturf))
 		var/dx = T.x - centerturf.x
 		var/dy = T.y - centerturf.y
-		if(dx*dx + dy*dy <= rsq)
+		if (dx*dx + dy*dy <= rsq)
 			turfs += T
 
 	//turfs += centerturf
@@ -100,7 +100,7 @@
 	for(var/turf/T in range(radius, centerturf))
 		var/dx = T.x - centerturf.x
 		var/dy = T.y - centerturf.y
-		if(dx*dx + dy*dy <= rsq)
+		if (dx*dx + dy*dy <= rsq)
 			turfs += T
 	return turfs
 
@@ -113,6 +113,6 @@
 	for(var/turf/T in view(radius, centerturf))
 		var/dx = T.x - centerturf.x
 		var/dy = T.y - centerturf.y
-		if(dx*dx + dy*dy <= rsq)
+		if (dx*dx + dy*dy <= rsq)
 			turfs += T
 	return turfs

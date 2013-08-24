@@ -13,21 +13,21 @@
 
 // common helper procs for all power machines
 /obj/machinery/power/proc/add_avail(var/amount)
-	if(powernet)
+	if (powernet)
 		powernet.newavail += amount
 
 /obj/machinery/power/proc/add_load(var/amount)
-	if(powernet)
+	if (powernet)
 		powernet.newload += amount
 
 /obj/machinery/power/proc/surplus()
-	if(powernet)
+	if (powernet)
 		return powernet.avail-powernet.load
 	else
 		return 0
 
 /obj/machinery/power/proc/avail()
-	if(powernet)
+	if (powernet)
 		return powernet.avail
 	else
 		return 0
@@ -46,18 +46,18 @@
 	for(var/obj/cable/PC in world)
 		PC.netnum = 0
 	for(var/obj/machinery/power/M in machines)
-		if(M.netnum >=0)
+		if (M.netnum >=0)
 			M.netnum = 0
 
 
 	for(var/obj/cable/PC in world)
-		if(!PC.netnum)
+		if (!PC.netnum)
 			PC.netnum = ++netcount
 
-			if(Debug) world.log << "Starting mpn at [PC.x],[PC.y] ([PC.d1]/[PC.d2]) #[netcount]"
+			if (Debug) world.log << "Starting mpn at [PC.x],[PC.y] ([PC.d1]/[PC.d2]) #[netcount]"
 			powernet_nextlink(PC, PC.netnum)
 
-	if(Debug) world.log << "[netcount] powernets found"
+	if (Debug) world.log << "[netcount] powernets found"
 
 	for(var/L = 1 to netcount)
 		var/datum/powernet/PN = new()
@@ -71,7 +71,7 @@
 		PN.cables += C
 
 	for(var/obj/machinery/power/M in machines)
-		if(M.netnum<=0)		// APCs have netnum=-1 so they don't count as network nodes directly
+		if (M.netnum<=0)		// APCs have netnum=-1 so they don't count as network nodes directly
 			continue
 
 		M.powernet = powernets[M.netnum]
@@ -87,20 +87,20 @@
 	var/fdir = (!d)? 0 : turn(d, 180)	// the opposite direction to d (or 0 if d==0)
 
 	for(var/obj/machinery/power/P in T)
-		if(P.netnum < 0)	// exclude APCs
+		if (P.netnum < 0)	// exclude APCs
 			continue
 
-		if(P.directwired)	// true if this machine covers the whole turf (so can be joined to a cable on neighbour turf)
-			if(!unmarked || !P.netnum)
+		if (P.directwired)	// true if this machine covers the whole turf (so can be joined to a cable on neighbour turf)
+			if (!unmarked || !P.netnum)
 				result += P
-		else if(d == 0)		// otherwise, need a 0-X cable on same turf to connect
-			if(!unmarked || !P.netnum)
+		else if (d == 0)		// otherwise, need a 0-X cable on same turf to connect
+			if (!unmarked || !P.netnum)
 				result += P
 
 
 	for(var/obj/cable/C in T)
-		if(C.d1 == fdir || C.d2 == fdir)
-			if(!unmarked || !C.netnum)
+		if (C.d1 == fdir || C.d2 == fdir)
+			if (!unmarked || !C.netnum)
 				result += C
 
 	result -= source
@@ -111,7 +111,7 @@
 
 /obj/machinery/power/proc/get_connections()
 
-	if(!directwired)
+	if (!directwired)
 		return get_indirect_connections()
 
 	var/list/res = list()
@@ -123,10 +123,10 @@
 
 		for(var/obj/cable/C in T)
 
-			if(C.netnum)
+			if (C.netnum)
 				continue
 
-			if(C.d1 == cdir || C.d2 == cdir)
+			if (C.d1 == cdir || C.d2 == cdir)
 				res += C
 
 	return res
@@ -137,10 +137,10 @@
 
 	for(var/obj/cable/C in src.loc)
 
-		if(C.netnum)
+		if (C.netnum)
 			continue
 
-		if(C.d1 == 0)
+		if (C.d1 == 0)
 			res += C
 
 	return res
@@ -155,20 +155,20 @@
 
 	while(1)
 
-		if( istype(O, /obj/cable) )
+		if ( istype(O, /obj/cable) )
 			var/obj/cable/C = O
 
 			C.netnum = num
 			P = C.get_connections()
 
-		else if( istype(O, /obj/machinery/power) )
+		else if ( istype(O, /obj/machinery/power) )
 
 			var/obj/machinery/power/M = O
 
 			M.netnum = num
 			P = M.get_connections()
 
-		if(P.len == 0)
+		if (P.len == 0)
 			//world.log << "end1"
 			return
 
@@ -187,7 +187,7 @@
 /datum/powernet/proc/cut_cable(var/obj/cable/C)
 
 	var/turf/T1 = C.loc
-	if(C.d1)
+	if (C.d1)
 		T1 = get_step(C, C.d1)
 
 	var/turf/T2 = get_step(C, C.d2)
@@ -196,7 +196,7 @@
 
 	var/list/P2 = power_list(T2, C, C.d2)	// what joins on to cut cable in dir2
 
-	if(Debug)
+	if (Debug)
 		for(var/obj/O in P1)
 			world.log << "P1: [O] at [O.x] [O.y] : [istype(O, /obj/cable) ? "[O:d1]/[O:d2]" : null] "
 		for(var/obj/O in P2)
@@ -204,10 +204,10 @@
 
 
 
-	if(P1.len == 0 || P2.len ==0)			// if nothing in either list, then the cable was an endpoint
+	if (P1.len == 0 || P2.len ==0)			// if nothing in either list, then the cable was an endpoint
 											// no need to rebuild the powernet, just remove cut cable from the list
 		cables -= C
-		if(Debug) world.log << "Was end of cable"
+		if (Debug) world.log << "Was end of cable"
 		return
 
 	// zero the netnum of all cables & nodes in this powernet
@@ -232,18 +232,18 @@
 
 	var/notlooped = 0
 	for(var/obj/O in P2)
-		if( istype(O, /obj/machinery/power) )
+		if ( istype(O, /obj/machinery/power) )
 			var/obj/machinery/power/OM = O
-			if(OM.netnum != number)
+			if (OM.netnum != number)
 				notlooped = 1
 				break
-		else if( istype(O, /obj/cable) )
+		else if ( istype(O, /obj/cable) )
 			var/obj/cable/OC = O
-			if(OC.netnum != number)
+			if (OC.netnum != number)
 				notlooped = 1
 				break
 
-	if(notlooped)
+	if (notlooped)
 
 		// not looped, so make a new powernet
 
@@ -252,29 +252,29 @@
 		powernets += PN
 		PN.number = powernets.len
 
-		if(Debug) world.log << "Was not looped: spliting PN#[number] ([cables.len];[nodes.len])"
+		if (Debug) world.log << "Was not looped: spliting PN#[number] ([cables.len];[nodes.len])"
 
 		for(var/obj/cable/OC in cables)
 
-			if(!OC.netnum)		// non-connected cables will have netnum==0, since they weren't reached by propagation
+			if (!OC.netnum)		// non-connected cables will have netnum==0, since they weren't reached by propagation
 
 				OC.netnum = PN.number
 				cables -= OC
 				PN.cables += OC		// remove from old network & add to new one
 
 		for(var/obj/machinery/power/OM in nodes)
-			if(!OM.netnum)
+			if (!OM.netnum)
 				OM.netnum = PN.number
 				OM.powernet = PN
 				nodes -= OM
 				PN.nodes += OM		// same for power machines
 
-		if(Debug)
+		if (Debug)
 			world.log << "Old PN#[number] : ([cables.len];[nodes.len])"
 			world.log << "New PN#[PN.number] : ([PN.cables.len];[PN.nodes.len])"
 
 	else
-		if(Debug)
+		if (Debug)
 			world.log << "Was looped."
 		//there is a loop, so nothing to be done
 		return
@@ -296,17 +296,17 @@
 
 	var/numapc = 0
 
-	if(nodes) // Added to fix a bad list bug -- TLE
+	if (nodes) // Added to fix a bad list bug -- TLE
 		for(var/obj/machinery/power/terminal/term in nodes)
-			if( istype( term.master, /obj/machinery/power/apc ) )
+			if ( istype( term.master, /obj/machinery/power/apc ) )
 				numapc++
 
-	if(numapc)
+	if (numapc)
 		perapc = avail/numapc
 
 	netexcess = avail - load
 
-	if( netexcess > 100)		// if there was excess power last cycle
+	if ( netexcess > 100)		// if there was excess power last cycle
 		for(var/obj/machinery/power/smes/S in nodes)	// find the SMESes in the network
 			S.restore()				// and restore some of the power that was used
 
@@ -344,10 +344,10 @@
 /datum/powernet/proc/merge_powernets(var/datum/powernet/P)
 // The powernet that calls this proc will consume the other powernet - Rockdtben
 
-	if(src == P)
+	if (src == P)
 		return
 
-	if(nodes.len >= P.nodes.len)
+	if (nodes.len >= P.nodes.len)
 		nodes += P.nodes
 	else
 		P.nodes += nodes
@@ -357,7 +357,7 @@
 		M.powernet = powernets[M.netnum] // Thanks to Derp__
 
 
-	if(cables.len >= P.cables.len)
+	if (cables.len >= P.cables.len)
 		cables += P.cables
 	else
 		P.cables += cables
@@ -378,10 +378,10 @@
 	return
 
 /turf/proc/get_cable_node()
-	if(!istype(src, /turf/simulated/floor))
+	if (!istype(src, /turf/simulated/floor))
 		return null
 	for(var/obj/cable/C in src)
-		if(C.d1 == 0)
+		if (C.d1 == 0)
 			return C
 	return null
 
@@ -392,12 +392,12 @@
 //source is an object caused electrocuting (airlock, grille, etc)
 //No animations will be performed by this proc.
 /proc/electrocute_mob(mob/living/carbon/M as mob, var/power_source, var/obj/source, var/siemens_coeff = 1.0)
-	if(istype(M,/mob/living/carbon/human))
+	if (istype(M,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
-		if(H.gloves)
+		if (H.gloves)
 			var/obj/item/clothing/gloves/G = H.gloves
 			var/siem_coef = G.siemens_coefficient
-			if(siem_coef == 0) //to avoid spamming with insulated glvoes on
+			if (siem_coef == 0) //to avoid spamming with insulated glvoes on
 				return 0
 	var/area/source_area
 	if (istype(power_source,/area))
@@ -453,25 +453,25 @@
 
 /obj/machinery/power/attackby(obj/item/weapon/W, mob/user)
 
-	if(istype(W, /obj/item/cable_coil))
+	if (istype(W, /obj/item/cable_coil))
 
 		var/obj/item/cable_coil/coil = W
 
 		var/turf/T = user.loc
 
-		if(T.intact || !istype(T, /turf/simulated/floor))
+		if (T.intact || !istype(T, /turf/simulated/floor))
 			return
 
-		if(get_dist(src, user) > 1)
+		if (get_dist(src, user) > 1)
 			return
 
-		if(!directwired)		// only for attaching to directwired machines
+		if (!directwired)		// only for attaching to directwired machines
 			return
 
 		var/dirn = get_dir(user, src)
 
 		for(var/obj/cable/LC in T)
-			if( (LC.d1 == dirn && LC.d2 == 0 ) || ( LC.d2 == dirn && LC.d1 == 0) )
+			if ( (LC.d1 == dirn && LC.d2 == 0 ) || ( LC.d2 == dirn && LC.d1 == 0) )
 				user << "There's already a cable at that position."
 				return
 
@@ -486,7 +486,7 @@
 
 		NC.mergeConnectedNetworks(NC.d2)
 		NC.mergeConnectedNetworksOnTurf()
-		if(netnum == 0 && NC.netnum == 0)
+		if (netnum == 0 && NC.netnum == 0)
 			var/datum/powernet/PN = new()
 
 			PN.number = powernets.len + 1
@@ -496,7 +496,7 @@
 			PN.cables += NC
 			PN.nodes += src
 			powernet = PN
-		else if(netnum == 0)
+		else if (netnum == 0)
 			netnum = NC.netnum
 			var/datum/powernet/PN = powernets[netnum]
 			powernet = PN

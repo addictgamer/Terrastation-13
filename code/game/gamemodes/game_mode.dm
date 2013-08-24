@@ -33,9 +33,9 @@
 /datum/game_mode/proc/can_start()
 	var/playerC = 0
 	for(var/mob/new_player/player in world)
-		if((player.client)&&(player.ready))
+		if ((player.client)&&(player.ready))
 			playerC++
-	if(playerC >= required_players)
+	if (playerC >= required_players)
 		return 1
 	return 0
 
@@ -59,7 +59,7 @@
 
 
 /datum/game_mode/proc/check_finished() //to be called by ticker
-	if(emergency_shuttle.location==2 || station_was_nuked)
+	if (emergency_shuttle.location==2 || station_was_nuked)
 		return 1
 	return 0
 
@@ -84,14 +84,14 @@
 	for(i = 0, i < number, i++)
 		possible_modes.Remove(pick(possible_modes))
 
-	if(!intercept_hacked)
+	if (!intercept_hacked)
 		possible_modes.Insert(rand(possible_modes.len), "[ticker.mode]")
 
 	shuffle(possible_modes)
 
 	var/datum/intercept_text/i_text = new /datum/intercept_text
 	for(var/A in possible_modes)
-		if(modePlayer.len == 0)
+		if (modePlayer.len == 0)
 			intercepttext += i_text.build(A)
 		else
 			intercepttext += i_text.build(A, pick(modePlayer))
@@ -112,18 +112,18 @@
 /datum/game_mode/proc/get_players_for_role(var/role, override_jobbans=1)
 	var/list/candidates = list()
 	for(var/mob/new_player/player in world)
-		if(player.client && player.ready)
-			if(player.preferences.be_special & role)
-				if(!jobban_isbanned(player, "Syndicate"))
+		if (player.client && player.ready)
+			if (player.preferences.be_special & role)
+				if (!jobban_isbanned(player, "Syndicate"))
 					candidates += player.mind
 
-	if(candidates.len < required_enemies)
+	if (candidates.len < required_enemies)
 		for(var/mob/new_player/player in world)
 			if (player.client && player.ready)
-				if(!jobban_isbanned(player, "Syndicate"))
+				if (!jobban_isbanned(player, "Syndicate"))
 					candidates += player.mind
 
-	if(candidates.len < required_enemies && override_jobbans) //just to be safe. Ignored jobbans are better than broken round. Shouldn't happen usually. --rastaf0
+	if (candidates.len < required_enemies && override_jobbans) //just to be safe. Ignored jobbans are better than broken round. Shouldn't happen usually. --rastaf0
 		for(var/mob/new_player/player in world)
 			if (player.client && player.ready)
 				candidates += player.mind
@@ -131,7 +131,7 @@
 
 
 /datum/game_mode/proc/check_player_role_pref(var/role, var/mob/new_player/player)
-	if(player.preferences.be_special & role)
+	if (player.preferences.be_special & role)
 		return 1
 	return 0
 
@@ -139,7 +139,7 @@
 /datum/game_mode/proc/num_players()
 	. = 0
 	for(var/mob/new_player/P in world)
-		if(P.client && P.ready)
+		if (P.client && P.ready)
 			. ++
 
 
@@ -149,7 +149,7 @@
 /datum/game_mode/proc/get_living_heads()
 	var/list/heads = list()
 	for(var/mob/living/carbon/human/player in world)
-		if(player.stat!=2 && player.mind && (player.mind.assigned_role in head_positions))
+		if (player.stat!=2 && player.mind && (player.mind.assigned_role in head_positions))
 			heads += player.mind
 	return heads
 
@@ -160,6 +160,6 @@
 /datum/game_mode/proc/get_all_heads()
 	var/list/heads = list()
 	for(var/mob/player in world)
-		if(player.mind && (player.mind.assigned_role in head_positions))
+		if (player.mind && (player.mind.assigned_role in head_positions))
 			heads += player.mind
 	return heads

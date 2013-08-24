@@ -18,14 +18,14 @@
 
 
 	Del()
-		if(FG1 && !FG1.clean_up)
+		if (FG1 && !FG1.clean_up)
 			FG1.cleanup()
-		if(FG2 && !FG2.clean_up)
+		if (FG2 && !FG2.clean_up)
 			FG2.cleanup()
 		..()
 
 	attack_hand(mob/user as mob)
-		if(get_dist(src, user) > 1)
+		if (get_dist(src, user) > 1)
 			return 0
 		else
 			shock(user)
@@ -41,10 +41,10 @@
 
 
 	HasProximity(atom/movable/AM as mob|obj)
-		if(istype(AM,/mob/living/silicon) && prob(40))
+		if (istype(AM,/mob/living/silicon) && prob(40))
 			shock(AM)
 			return 1
-		if(istype(AM,/mob/living/carbon) && prob(50))
+		if (istype(AM,/mob/living/carbon) && prob(50))
 			shock(AM)
 			return 1
 		return 0
@@ -52,10 +52,10 @@
 
 	proc
 		shock(mob/living/user as mob)
-			if(!FG1 || !FG2)
+			if (!FG1 || !FG2)
 				del(src)
 				return 0
-			if(iscarbon(user))
+			if (iscarbon(user))
 				var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
 				s.set_up(5, 1, user.loc)
 				s.start()
@@ -66,13 +66,13 @@
 					"\red <B>You feel a powerful shock course through your body sending you flying!</B>", \
 					"\red You hear a heavy electrical crack")
 				var/stun = min(shock_damage, 15)
-				if(user.stunned < shock_damage)	user.stunned = stun
-				if(user.weakened < 10)	user.weakened = 10
+				if (user.stunned < shock_damage)	user.stunned = stun
+				if (user.weakened < 10)	user.weakened = 10
 				user.updatehealth()
 				var/atom/target = get_edge_target_turf(user, get_dir(src, get_step_away(user, src)))
 				user.throw_at(target, 200, 4)
 				return
-			else if(issilicon(user))
+			else if (issilicon(user))
 				var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
 				s.set_up(5, 1, user.loc)
 				s.start()
@@ -81,14 +81,14 @@
 				user.visible_message("\red [user.name] was shocked by the [src.name]!", \
 					"\red <B>Energy pulse detected, system damaged!</B>", \
 					"\red You hear an electrical crack")
-				if(prob(20))
-					if(user.stunned < 2)
+				if (prob(20))
+					if (user.stunned < 2)
 						user.stunned = 2
 				return
 			return
 
 		set_master(var/master1,var/master2)
-			if(!master1 || !master2)
+			if (!master1 || !master2)
 				return 0
 			FG1 = master1
 			FG2 = master2

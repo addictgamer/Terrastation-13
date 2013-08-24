@@ -9,7 +9,7 @@
 
 	if (istype(W, /obj/item/weapon/grab))
 		var/obj/item/weapon/grab/G = W
-		if(G.state<2)
+		if (G.state<2)
 			user << "\red You need a better grip to do that!"
 			return
 		G.affecting.loc = src.loc
@@ -21,8 +21,8 @@
 		return
 
 	if (istype(W, /obj/item/weapon/weldingtool))
-		if(W:welding == 1)
-			if(src.status == 2)
+		if (W:welding == 1)
+			if (src.status == 2)
 				W:welding = 2
 				user << "\blue Now weakening the reinforced table"
 				playsound(src.loc, 'Welder.ogg', 50, 1)
@@ -39,14 +39,14 @@
 				src.status = 2
 				W:welding = 1
 			return
-		if(isrobot(user))
+		if (isrobot(user))
 			return
 		user.drop_item()
-		if(W && W.loc)	W.loc = src.loc
+		if (W && W.loc)	W.loc = src.loc
 		return
 
 	if (istype(W, /obj/item/weapon/wrench))
-		if(src.status == 1)
+		if (src.status == 1)
 			user << "\blue Now disassembling the reinforced table"
 			playsound(src.loc, 'Ratchet.ogg', 50, 1)
 			sleep(50)
@@ -54,10 +54,10 @@
 			playsound(src.loc, 'Deconstruct.ogg', 50, 1)
 			del(src)
 			return
-	if(isrobot(user))
+	if (isrobot(user))
 		return
 
-	if(istype(W, /obj/item/weapon/melee/energy/blade))
+	if (istype(W, /obj/item/weapon/melee/energy/blade))
 		var/datum/effects/system/spark_spread/spark_system = new /datum/effects/system/spark_spread()
 		spark_system.set_up(5, 0, src.loc)
 		spark_system.start()
@@ -70,5 +70,5 @@
 		return
 
 	user.drop_item()
-	if(W && W.loc)	W.loc = src.loc
+	if (W && W.loc)	W.loc = src.loc
 	return

@@ -56,8 +56,8 @@
 			usr << "\red [src.name] has a[src.belt.blood_DNA ? " bloody " : " "] \icon[src.belt] [src.belt.name] on [t_his] belt!"
 		else
 			usr << "\blue [src.name] has a \icon[src.belt] [src.belt.name] on [t_his] belt."
-	if(src.s_store)
-		if(src.s_store.blood_DNA)
+	if (src.s_store)
+		if (src.s_store.blood_DNA)
 			usr << "\red [src.name] has a[src.s_store.blood_DNA ? " bloody " : " "] \icon[src.s_store] [src.s_store.name] on [t_his][src.wear_suit.blood_DNA ? " bloody " : " "] \icon[src.wear_suit] [src.wear_suit.name]!"
 		else
 			usr << "\blue [src.name] has a \icon[src.s_store] [src.s_store.name] on [t_his][src.wear_suit.blood_DNA ? " bloody " : " "] \icon[src.wear_suit] [src.wear_suit.name]."
@@ -79,7 +79,7 @@
 	if (src.wear_id)
 		var/id
 		var/photo = 0
-		if(istype(src:wear_id, /obj/item/device/pda))
+		if (istype(src:wear_id, /obj/item/device/pda))
 			var/obj/item/device/pda/pda = src:wear_id
 			id = pda.owner
 		else
@@ -100,16 +100,16 @@
 
 	if (src.is_jittery)
 		switch(src.jitteriness)
-			if(300 to INFINITY)
+			if (300 to INFINITY)
 				usr << "\red [src] is violently convulsing."
-			if(200 to 300)
+			if (200 to 300)
 				usr << "\red [src] looks extremely jittery."
-			if(100 to 200)
+			if (100 to 200)
 				usr << "\red [src] is twitching ever so slightly."
 
 	if (src.suiciding)
 		switch(src.suiciding)
-			if(1)
+			if (1)
 				usr << "\red [src.name] appears to have bitten [t_his] tongue off!"
 
 	if (src.stat == 2 || (changeling && changeling.changeling_fakedeath == 1))

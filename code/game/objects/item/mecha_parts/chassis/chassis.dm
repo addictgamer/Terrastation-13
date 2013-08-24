@@ -7,7 +7,7 @@
 	flags = FPRINT | CONDUCT
 
 	attackby(obj/item/W as obj, mob/user as mob)
-		if(!construct || !construct.action(W, user))
+		if (!construct || !construct.action(W, user))
 			..()
 		return
 

@@ -24,7 +24,7 @@ var/prison_shuttle_timeleft = 0
 	while(prison_shuttle_time - world.timeofday > 0)
 		var/ticksleft = prison_shuttle_time - world.timeofday
 
-		if(ticksleft > 1e5)
+		if (ticksleft > 1e5)
 			prison_shuttle_time = world.timeofday + 10	// midnight rollover
 
 
@@ -35,7 +35,7 @@ var/prison_shuttle_timeleft = 0
 
 	switch(prison_shuttle_at_station)
 
-		if(0)
+		if (0)
 			prison_shuttle_at_station = 1
 			if (prison_shuttle_moving_to_station || prison_shuttle_moving_to_prison) return
 
@@ -51,7 +51,7 @@ var/prison_shuttle_timeleft = 0
 
 			for(var/turf/T in end_location)
 				dstturfs += T
-				if(T.y < throwy)
+				if (T.y < throwy)
 					throwy = T.y
 
 						// hey you, get out of the way!
@@ -61,13 +61,13 @@ var/prison_shuttle_timeleft = 0
 							//var/turf/E = get_step(D, SOUTH)
 				for(var/atom/movable/AM as mob|obj in T)
 					AM.Move(D)
-				if(istype(T, /turf/simulated))
+				if (istype(T, /turf/simulated))
 					del(T)
 
 			start_location.move_contents_to(end_location)
 
 
-		if(1)
+		if (1)
 			prison_shuttle_at_station = 0
 			if (prison_shuttle_moving_to_station || prison_shuttle_moving_to_prison) return
 
@@ -83,7 +83,7 @@ var/prison_shuttle_timeleft = 0
 
 			for(var/turf/T in end_location)
 				dstturfs += T
-				if(T.y < throwy)
+				if (T.y < throwy)
 					throwy = T.y
 
 						// hey you, get out of the way!
@@ -93,14 +93,14 @@ var/prison_shuttle_timeleft = 0
 							//var/turf/E = get_step(D, SOUTH)
 				for(var/atom/movable/AM as mob|obj in T)
 					AM.Move(D)
-				if(istype(T, /turf/simulated))
+				if (istype(T, /turf/simulated))
 					del(T)
 
 			start_location.move_contents_to(end_location)
 
 
 /proc/prison_can_move()
-	if(prison_shuttle_moving_to_station || prison_shuttle_moving_to_prison) return 0
+	if (prison_shuttle_moving_to_station || prison_shuttle_moving_to_prison) return 0
 
 	else return 1
 
@@ -114,21 +114,21 @@ var/prison_shuttle_timeleft = 0
 	return src.attack_hand(user)
 
 /obj/machinery/computer/prison_shuttle/attackby(I as obj, user as mob)
-	if(istype(I,/obj/item/weapon/card/emag))
+	if (istype(I,/obj/item/weapon/card/emag))
 		user << "\blue Nothing happens."
 	else
 		return src.attack_hand(user)
 
 /obj/machinery/computer/prison_shuttle/attack_hand(var/mob/user as mob)
-	if(!src.allowed(user))
+	if (!src.allowed(user))
 		user << "\red Access Denied."
 		return
 
-	if(prison_break)
+	if (prison_break)
 		user << "\red Unable to locate shuttle."
 		return
 
-	if(..())
+	if (..())
 		return
 	user.machine = src
 	post_signal("prison")
@@ -146,14 +146,14 @@ var/prison_shuttle_timeleft = 0
 	return
 
 /obj/machinery/computer/prison_shuttle/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 
 	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
 		usr.machine = src
 
 	if (href_list["sendtodock"])
-		if(!prison_shuttle_at_station|| prison_shuttle_moving_to_station || prison_shuttle_moving_to_prison) return
+		if (!prison_shuttle_at_station|| prison_shuttle_moving_to_station || prison_shuttle_moving_to_prison) return
 
 		if (!prison_can_move())
 			usr << "\red The prison shuttle is unable to leave."
@@ -172,7 +172,7 @@ var/prison_shuttle_timeleft = 0
 			prison_process()
 
 	else if (href_list["sendtostation"])
-		if(prison_shuttle_at_station || prison_shuttle_moving_to_station || prison_shuttle_moving_to_prison) return
+		if (prison_shuttle_at_station || prison_shuttle_moving_to_station || prison_shuttle_moving_to_prison) return
 
 		if (!prison_can_move())
 			usr << "\red The prison shuttle is unable to leave."
@@ -200,7 +200,7 @@ var/prison_shuttle_timeleft = 0
 /obj/machinery/computer/prison_shuttle/proc/prison_break()
 	switch(prison_break)
 		if (0)
-			if(!prison_shuttle_at_station || prison_shuttle_moving_to_prison) return
+			if (!prison_shuttle_at_station || prison_shuttle_moving_to_prison) return
 
 			prison_shuttle_moving_to_prison = 1
 			prison_shuttle_at_station = prison_shuttle_at_station
@@ -210,14 +210,14 @@ var/prison_shuttle_timeleft = 0
 			spawn(0)
 				prison_process()
 			prison_break = 1
-		if(1)
+		if (1)
 			prison_break = 0
 
 /obj/machinery/computer/prison_shuttle/proc/post_signal(var/command)
 
 	var/datum/radio_frequency/frequency = radio_controller.return_frequency(1311)
 
-	if(!frequency) return
+	if (!frequency) return
 
 	var/datum/signal/status_signal = new
 	status_signal.source = src

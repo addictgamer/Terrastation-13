@@ -6,14 +6,14 @@
 	heat_capacity = 325000
 
 /turf/simulated/floor/engine/attackby(obj/item/weapon/C as obj, mob/user as mob)
-	if(!C)
+	if (!C)
 		return
-	if(!user)
+	if (!user)
 		return
-	if(istype(C, /obj/item/weapon/wrench))
+	if (istype(C, /obj/item/weapon/wrench))
 		user << "\blue Removing rods..."
 		playsound(src.loc, 'Ratchet.ogg', 80, 1)
-		if(do_after(user, 30))
+		if (do_after(user, 30))
 			new /obj/item/stack/rods(src, 2)
 			ReplaceWithFloor()
 			var/turf/simulated/floor/F = src
@@ -42,11 +42,11 @@
 
 /turf/simulated/floor/engine/ex_act(severity)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			ReplaceWithSpace()
 			del(src)
 			return
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				ReplaceWithSpace()
 				del(src)

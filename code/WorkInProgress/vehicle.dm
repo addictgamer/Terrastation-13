@@ -65,7 +65,7 @@
 				ex_act(severity)
 			//SN src = null
 			del(src)
-		if(2.0)
+		if (2.0)
 			if (prob(50))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
@@ -198,46 +198,46 @@
 	return
 
 /obj/machinery/vehicle/space_ship/proc/inspace()
-	if(istype(src.loc, /turf/space))
+	if (istype(src.loc, /turf/space))
 		return 1
 	return 0
 
 /obj/machinery/vehicle/space_ship/remove_air(amount)
-	if(src.internal_tank)
+	if (src.internal_tank)
 		return src.internal_tank.air_contents.remove(amount)
 	else
 		var/turf/T = get_turf(src)
 		return T.remove_air(amount)
 
 /obj/machinery/vehicle/space_ship/return_air()
-	if(src.internal_tank)
+	if (src.internal_tank)
 		return src.internal_tank.return_air()
 	return
 
 /obj/machinery/vehicle/space_ship/proc/return_pressure()
-	if(src.internal_tank)
+	if (src.internal_tank)
 		return src.internal_tank.return_pressure()
 	return 0
 
 /obj/machinery/vehicle/space_ship/proc/return_temperature()
-	if(src.internal_tank)
+	if (src.internal_tank)
 		return src.internal_tank.return_temperature()
 	return 0
 
 /obj/machinery/vehicle/space_ship/Bump(var/atom/movable/A)
-	if(istype(A))
+	if (istype(A))
 		step(A, src.dir)
 	else
-		if(pr_inertial_movement.cur_delay<2)
+		if (pr_inertial_movement.cur_delay<2)
 			take_damage(25)
 		pr_speed_increment.stop()
 		pr_inertial_movement.stop()
 	return
 
 /obj/machinery/vehicle/space_ship/proc/take_damage(value)
-	if(isnum(value))
+	if (isnum(value))
 		src.health -= value
-		if(src.health>0)
+		if (src.health>0)
 			src.spark_system.start()
 			//world << "[src] health is [health]"
 		else
@@ -259,7 +259,7 @@
 			return
 		last_relay = world.time
 		var/speed_change = 0
-		if(direction & NORTH)
+		if (direction & NORTH)
 			pr_inertial_movement.desired_delay = between(pr_inertial_movement.min_delay, pr_inertial_movement.desired_delay-1, pr_inertial_movement.max_delay)
 			speed_change = 1
 		else if (direction & SOUTH)
@@ -269,7 +269,7 @@
 			src.dir = turn(src.dir, -90.0)
 		else if (src.can_rotate && direction & 8)
 			src.dir = turn(src.dir, 90)
-		if(speed_change)
+		if (speed_change)
 //			user << "Desired speed: [get_desired_speed()]%"
 			src.pr_speed_increment.start()
 			src.pr_inertial_movement.start()
@@ -295,16 +295,16 @@
 		return ..()
 
 	process(var/obj/machinery/vehicle/space_ship/SS as obj)
-		if(cur_delay >= max_delay)
+		if (cur_delay >= max_delay)
 			return src.stop()
-		if(world.time - last_move < cur_delay)
+		if (world.time - last_move < cur_delay)
 			return
 		last_move = world.time
 /*
-		if(src.delay>=SS.max_delay)
+		if (src.delay>=SS.max_delay)
 			return src.stop()
 */
-		if(!step(SS, SS.dir) || !SS.inspace())
+		if (!step(SS, SS.dir) || !SS.inspace())
 			src.stop()
 		return
 
@@ -316,7 +316,7 @@
 	delay = 5
 
 	process(var/obj/machinery/vehicle/space_ship/SS as obj)
-		if(SS.pr_inertial_movement.desired_delay!=SS.pr_inertial_movement.cur_delay)
+		if (SS.pr_inertial_movement.desired_delay!=SS.pr_inertial_movement.cur_delay)
 			var/delta = SS.pr_inertial_movement.desired_delay - SS.pr_inertial_movement.cur_delay
 			SS.pr_inertial_movement.cur_delay += delta>0?1:-1
 /*

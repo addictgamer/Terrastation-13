@@ -34,7 +34,7 @@
 
 	HasEntered(mob/living/carbon/M as mob )
 		..()
-		if(istype(M, /mob/living/carbon))
+		if (istype(M, /mob/living/carbon))
 			if (M.internal != null && M.wear_mask && (M.wear_mask.flags & MASKINTERNALS))
 	//		if (M.wear_suit, /obj/item/clothing/suit/wizrobe && (M.hat, /obj/item/clothing/head/wizard) && (M.shoes, /obj/item/clothing/shoes/sandal)) // Work on it later
 				return

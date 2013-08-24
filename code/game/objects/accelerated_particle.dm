@@ -22,7 +22,7 @@
 	New(loc, dir = 2)
 		src.loc = loc
 		src.dir = dir
-		if(movement_range > 20)
+		if (movement_range > 20)
 			movement_range = 20
 		spawn(0)
 			move(1)
@@ -31,15 +31,15 @@
 
 	Bump(atom/A)
 		if (A)
-			if(ismob(A))
+			if (ismob(A))
 				toxmob(A)
-			if((istype(A,/obj/machinery/the_singularitygen))||(istype(A,/obj/machinery/singularity/)))
+			if ((istype(A,/obj/machinery/the_singularitygen))||(istype(A,/obj/machinery/singularity/)))
 				A:energy += energy
 		return
 
 
 	Bumped(atom/A)
-		if(ismob(A))
+		if (ismob(A))
 			Bump(A)
 		return
 
@@ -52,11 +52,11 @@
 	proc
 		toxmob(var/mob/living/M)
 			var/radiation = (energy*2)
-			if(istype(M,/mob/living/carbon/human))
-				if(M:wear_suit) //TODO: check for radiation protection
+			if (istype(M,/mob/living/carbon/human))
+				if (M:wear_suit) //TODO: check for radiation protection
 					radiation = round(radiation/2,1)
-			if(istype(M,/mob/living/carbon/monkey))
-				if(M:wear_suit) //TODO: check for radiation protection
+			if (istype(M,/mob/living/carbon/monkey))
+				if (M:wear_suit) //TODO: check for radiation protection
 					radiation = round(radiation/2,1)
 			M.radiation += radiation
 			M.updatehealth()
@@ -65,10 +65,10 @@
 
 
 		move(var/lag)
-			if(!step(src,dir))
+			if (!step(src,dir))
 				src.loc = get_step(src,dir)
 			movement_range--
-			if(movement_range <= 0)
+			if (movement_range <= 0)
 				del(src)
 			else
 				sleep(lag)

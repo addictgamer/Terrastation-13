@@ -1,5 +1,5 @@
 /mob/proc/make_lesser_changeling()
-	if(!changeling) changeling = new
+	if (!changeling) changeling = new
 	changeling.host = src
 
 	src.verbs += /client/proc/changeling_lesser_transform
@@ -14,7 +14,7 @@
 	return
 
 /mob/proc/make_changeling()
-	if(!changeling) changeling = new
+	if (!changeling) changeling = new
 	changeling.host = src
 
 	src.verbs += /client/proc/changeling_absorb_dna
@@ -60,11 +60,11 @@
 	set category = "Changeling"
 	set name = "Absorb DNA"
 
-	if(!usr.changeling)
+	if (!usr.changeling)
 		usr << "\red You're not a changeling, something's wrong!"
 		return
 
-	if(usr.stat)
+	if (usr.stat)
 		usr << "\red Not when we are incapacitated."
 		return
 
@@ -118,10 +118,10 @@
 	T << "\red <B>You have been absorbed by the changeling!</B>"
 
 	usr.changeling.absorbed_dna[T.real_name] = T.dna
-	if(usr.nutrition < 400) usr.nutrition = min((usr.nutrition + T.nutrition), 400)
+	if (usr.nutrition < 400) usr.nutrition = min((usr.nutrition + T.nutrition), 400)
 	usr.changeling.chem_charges += 5
-	if(T.changeling)
-		if(T.changeling.absorbed_dna)
+	if (T.changeling)
+		if (T.changeling.absorbed_dna)
 			usr.changeling.absorbed_dna |= T.changeling.absorbed_dna //steal all their loot
 			T.changeling.absorbed_dna = list()
 			T.changeling.absorbed_dna[T.real_name] = T.dna
@@ -139,11 +139,11 @@
 	set category = "Changeling"
 	set name = "Transform (5)"
 
-	if(!usr.changeling)
+	if (!usr.changeling)
 		usr << "\red You're not a changeling, something's wrong!"
 		return
 
-	if(usr.stat)
+	if (usr.stat)
 		usr << "\red Not when we are incapacitated."
 		return
 
@@ -151,7 +151,7 @@
 		usr << "\red We have not yet absorbed any compatible DNA."
 		return
 
-	if(usr.changeling.chem_charges < 5)
+	if (usr.changeling.chem_charges < 5)
 		usr << "\red We don't have enough stored chemicals to do that!"
 		return
 
@@ -180,15 +180,15 @@
 	set category = "Changeling"
 	set name = "Lesser Form (1)"
 
-	if(!usr.changeling)
+	if (!usr.changeling)
 		usr << "\red You're not a changeling, something's wrong!"
 		return
 
-	if(usr.stat)
+	if (usr.stat)
 		usr << "\red Not when we are incapacitated."
 		return
 
-	if(usr.changeling.chem_charges < 1)
+	if (usr.changeling.chem_charges < 1)
 		usr << "\red We don't have enough stored chemicals to do that!"
 		return
 
@@ -243,7 +243,7 @@
 		I.implanted = O
 		continue
 
-	if(usr.mind)
+	if (usr.mind)
 		usr.mind.transfer_to(O)
 
 	O.make_lesser_changeling()
@@ -255,11 +255,11 @@
 	set category = "Changeling"
 	set name = "Transform (1)"
 
-	if(!usr.changeling)
+	if (!usr.changeling)
 		usr << "\red You're not a changeling, something's wrong!"
 		return
 
-	if(usr.stat)
+	if (usr.stat)
 		usr << "\red Not when we are incapacitated."
 		return
 
@@ -267,7 +267,7 @@
 		usr << "\red We have not yet absorbed any compatible DNA."
 		return
 
-	if(usr.changeling.chem_charges < 1)
+	if (usr.changeling.chem_charges < 1)
 		usr << "\red We don't have enough stored chemicals to do that!"
 		return
 
@@ -337,7 +337,7 @@
 		I.implanted = O
 		continue
 
-	if(usr.mind)
+	if (usr.mind)
 		usr.mind.transfer_to(O)
 
 	O.make_changeling()
@@ -349,15 +349,15 @@
 	set category = "Changeling"
 	set name = "Regenerative Stasis (20)"
 
-	if(!usr.changeling)
+	if (!usr.changeling)
 		usr << "\red You're not a changeling, something's wrong!"
 		return
 
-	if(usr.stat == 2)
+	if (usr.stat == 2)
 		usr << "\red We are dead."
 		return
 
-	if(usr.changeling.chem_charges < 20)
+	if (usr.changeling.chem_charges < 20)
 		usr << "\red We don't have enough stored chemicals to do that!"
 		return
 
@@ -405,15 +405,15 @@
 	set name = "Ranged Sting (10)"
 	set desc="Your next sting ability can be used against targets 3 squares away."
 
-	if(!usr.changeling)
+	if (!usr.changeling)
 		usr << "\red You're not a changeling, something's wrong!"
 		return
 
-	if(usr.stat)
+	if (usr.stat)
 		usr << "\red Not when we are incapacitated."
 		return
 
-	if(usr.changeling.chem_charges < 10)
+	if (usr.changeling.chem_charges < 10)
 		usr << "\red We don't have enough stored chemicals to do that!"
 		return
 
@@ -434,7 +434,7 @@
 	set name = "Silence sting (10)"
 	set desc="Sting target"
 
-	if(!usr.changeling)
+	if (!usr.changeling)
 		usr << "\red You're not a changeling, something's wrong!"
 		return
 
@@ -442,13 +442,13 @@
 	for(var/mob/living/carbon/C in oview(usr.changeling.sting_range))
 		victims += C
 	var/mob/T = input(usr, "Who do you wish to sting?") as null | anything in victims
-	if(T)
+	if (T)
 
-		if(usr.stat)
+		if (usr.stat)
 			usr << "\red Not when we are incapacitated."
 			return
 
-		if(usr.changeling.chem_charges < 10)
+		if (usr.changeling.chem_charges < 10)
 			usr << "\red We don't have enough stored chemicals to do that!"
 			return
 
@@ -457,7 +457,7 @@
 
 		usr << "\blue We stealthily sting [T]."
 
-		if(!T.changeling)
+		if (!T.changeling)
 			T << "You feel a small prick and a burning sensation in your throat."
 			T.silent += 30
 		else
@@ -475,7 +475,7 @@
 	set name = "Blind sting (20)"
 	set desc="Sting target"
 
-	if(!usr.changeling)
+	if (!usr.changeling)
 		usr << "\red You're not a changeling, something's wrong!"
 		return
 
@@ -483,12 +483,12 @@
 	for(var/mob/living/carbon/C in oview(usr.changeling.sting_range))
 		victims += C
 	var/mob/T = input(usr, "Who do you wish to sting?") as null | anything in victims
-	if(T)
-		if(usr.stat)
+	if (T)
+		if (usr.stat)
 			usr << "\red Not when we are incapacitated."
 			return
 
-		if(usr.changeling.chem_charges < 20)
+		if (usr.changeling.chem_charges < 20)
 			usr << "\red We don't have enough stored chemicals to do that!"
 			return
 
@@ -509,7 +509,7 @@
 			del(B)
 			T.canmove = 1
 
-		if(!T.changeling)
+		if (!T.changeling)
 			T << text("\blue Your eyes cry out in pain!")
 			T.disabilities |= 1
 			spawn(300)
@@ -529,7 +529,7 @@
 	set name = "Deaf sting (5)"
 	set desc="Sting target:"
 
-	if(!usr.changeling)
+	if (!usr.changeling)
 		usr << "\red You're not a changeling, something's wrong!"
 		return
 
@@ -538,12 +538,12 @@
 		victims += C
 	var/mob/T = input(usr, "Who do you wish to sting?") as null | anything in victims
 
-	if(T)
-		if(usr.stat)
+	if (T)
+		if (usr.stat)
 			usr << "\red Not when we are incapacitated."
 			return
 
-		if(usr.changeling.chem_charges < 5)
+		if (usr.changeling.chem_charges < 5)
 			usr << "\red We don't have enough stored chemicals to do that!"
 			return
 
@@ -552,7 +552,7 @@
 
 		usr << "\blue We stealthily sting [T]."
 
-		if(!T.changeling)
+		if (!T.changeling)
 			T.sdisabilities |= 4
 			spawn(300)
 				T.sdisabilities &= ~4
@@ -569,7 +569,7 @@
 	set name = "Paralysis sting (30)"
 	set desc="Sting target"
 
-	if(!usr.changeling)
+	if (!usr.changeling)
 		usr << "\red You're not a changeling, something's wrong!"
 		return
 
@@ -578,13 +578,13 @@
 		victims += C
 	var/mob/T = input(usr, "Who do you wish to sting?") as null | anything in victims
 
-	if(T)
+	if (T)
 
-		if(usr.stat)
+		if (usr.stat)
 			usr << "\red Not when we are incapacitated."
 			return
 
-		if(usr.changeling.chem_charges < 30)
+		if (usr.changeling.chem_charges < 30)
 			usr << "\red We don't have enough stored chemicals to do that!"
 			return
 
@@ -593,7 +593,7 @@
 
 		usr << "\blue We stealthily sting [T]."
 
-		if(!T.changeling)
+		if (!T.changeling)
 			T << "You feel a small prick and a burning sensation."
 
 			if (T.reagents)
@@ -613,7 +613,7 @@
 	set name = "Transformation sting (30)"
 	set desc="Sting target"
 
-	if(!usr.changeling)
+	if (!usr.changeling)
 		usr << "\red You're not a changeling, something's wrong!"
 		return
 
@@ -622,16 +622,16 @@
 		victims += C
 	var/mob/T = input(usr, "Who do you wish to sting?") as null | anything in victims
 
-	if(T)
-		if(usr.stat)
+	if (T)
+		if (usr.stat)
 			usr << "\red Not when we are incapacitated."
 			return
 
-		if(usr.changeling.chem_charges < 30)
+		if (usr.changeling.chem_charges < 30)
 			usr << "\red We don't have enough stored chemicals to do that!"
 			return
 
-		if(T.stat != 2 || (T.mutations & HUSK) || (!ishuman(T) && !ismonkey(T)))
+		if (T.stat != 2 || (T.mutations & HUSK) || (!ishuman(T) && !ismonkey(T)))
 			usr << "\red We can't transform that target!"
 			return
 
@@ -645,7 +645,7 @@
 
 		usr << "\blue We stealthily sting [T]."
 
-		if(!T.changeling)
+		if (!T.changeling)
 			T.visible_message(text("\red <B>[T] transforms!</B>"))
 
 			T.dna = usr.changeling.absorbed_dna[S]
@@ -665,7 +665,7 @@
 	set name = "Unfat sting (5)"
 	set desc = "Sting target"
 
-	if(!usr.changeling)
+	if (!usr.changeling)
 		usr << "\red You're not a changeling, something's wrong!"
 		return
 
@@ -674,12 +674,12 @@
 		victims += C
 	var/mob/T = input(usr, "Who do you wish to sting?") as null | anything in victims
 
-	if(T)
-		if(usr.stat)
+	if (T)
+		if (usr.stat)
 			usr << "\red Not when we are incapacitated."
 			return
 
-		if(usr.changeling.chem_charges < 5)
+		if (usr.changeling.chem_charges < 5)
 			usr << "\red We don't have enough stored chemicals to do that!"
 			return
 
@@ -688,7 +688,7 @@
 
 		usr << "\blue We stealthily sting [T]."
 
-		if(!T.changeling)
+		if (!T.changeling)
 			T << "You feel a small prick and a burning sensation."
 			T.overeatduration = 0
 			T.nutrition -= 100

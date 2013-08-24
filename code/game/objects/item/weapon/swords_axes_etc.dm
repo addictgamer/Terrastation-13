@@ -44,7 +44,7 @@
 	active = !active
 	if (active)
 		force = 30
-		if(istype(src,/obj/item/weapon/melee/energy/sword/pirate))
+		if (istype(src,/obj/item/weapon/melee/energy/sword/pirate))
 			icon_state = "cutlass1"
 		else
 			icon_state = "sword[color]"
@@ -53,7 +53,7 @@
 		user << "\blue [src] is now active."
 	else
 		force = 3
-		if(istype(src,/obj/item/weapon/melee/energy/sword/pirate))
+		if (istype(src,/obj/item/weapon/melee/energy/sword/pirate))
 			icon_state = "cutlass0"
 		else
 			icon_state = "sword0"
@@ -159,7 +159,7 @@
 	origin_tech = "combat=2"
 
 /obj/item/weapon/melee/baton/update_icon()
-	if(src.status)
+	if (src.status)
 		icon_state = "stunbaton_active"
 	else
 		icon_state = "stunbaton"
@@ -192,32 +192,32 @@
 	M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been attacked with [src.name] by [user.name] ([user.ckey]) (INTENT: [uppertext(user.a_intent)])</font>")
 	user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to attack [M.name] ([M.ckey]) (INTENT: [uppertext(user.a_intent)])</font>")
 
-	if(isrobot(M))
+	if (isrobot(M))
 		..()
 		return
 
 	if (status == 0 || (status == 1 && charges ==0))
-		if(user.a_intent == "hurt")
-			if(!..()) return
+		if (user.a_intent == "hurt")
+			if (!..()) return
 			if (M.weakened < 5 && (!(M.mutations & HULK))  /*&& (!istype(H:wear_suit, /obj/item/clothing/suit/judgerobe))*/)
 				M.weakened = 5
 			for(var/mob/O in viewers(M))
 				if (O.client)	O.show_message("\red <B>[M] has been beaten with the stun baton by [user]!</B>", 1)
-			if(status == 1 && charges == 0)
+			if (status == 1 && charges == 0)
 				user << "\red Not enough charge"
 			return
 		else
 			for(var/mob/O in viewers(M))
 				if (O.client)	O.show_message("\red <B>[M] has been prodded with the stun baton by [user]! Luckily it was off.</B>", 1)
-			if(status == 1 && charges == 0)
+			if (status == 1 && charges == 0)
 				user << "\red Not enough charge"
 			return
-	if((charges > 0 && status == 1) && (istype(H, /mob/living/carbon)))
+	if ((charges > 0 && status == 1) && (istype(H, /mob/living/carbon)))
 		flick("baton_active", src)
 		if (user.a_intent == "hurt")
-			if(!..()) return
+			if (!..()) return
 			playsound(src.loc, 'Genhit.ogg', 50, 1, -1)
-			if(isrobot(user))
+			if (isrobot(user))
 				var/mob/living/silicon/robot/R = user
 				R.cell.charge -= 20
 			else
@@ -230,7 +230,7 @@
 				M.stunned = 1
 		else
 			playsound(src.loc, 'Egloves.ogg', 50, 1, -1)
-			if(isrobot(user))
+			if (isrobot(user))
 				var/mob/living/silicon/robot/R = user
 				R.cell.charge -= 20
 			else
@@ -248,9 +248,9 @@
 
 /obj/item/weapon/melee/baton/emp_act(severity)
 	switch(severity)
-		if(1)
+		if (1)
 			src.charges = 0
-		if(2)
+		if (2)
 			charges -= 5
 
 /obj/item/weapon/melee/classic_baton
@@ -266,7 +266,7 @@
 	if ((user.mutations & CLOWN) && prob(50))
 		user << "\red You club yourself over the head."
 		user.weakened = max(3 * force, user.weakened)
-		if(ishuman(user))
+		if (ishuman(user))
 			var/mob/living/carbon/human/H = user
 			H.TakeDamage("head", 2 * force, 0)
 		else
@@ -278,7 +278,7 @@
 	user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to attack [M.name] ([M.ckey])</font>")
 
 	if (user.a_intent == "hurt")
-		if(!..()) return
+		if (!..()) return
 		playsound(src.loc, "swing_hit", 50, 1, -1)
 		if (M.weakened < 8 && (!(M.mutations & HULK))  /*&& (!istype(H:wear_suit, /obj/item/clothing/suit/judgerobe))*/)
 			M.weakened = 8

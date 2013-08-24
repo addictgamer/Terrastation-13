@@ -59,8 +59,8 @@
 
 
 /atom/proc/add_fingerprint(mob/living/M as mob)
-	if(isnull(M)) return
-	if(isnull(M.key)) return
+	if (isnull(M)) return
+	if (isnull(M.key)) return
 	if (!( src.flags ) & 256)
 		return
 	if (ishuman(M))
@@ -68,13 +68,13 @@
 		if (!istype(H.dna, /datum/dna))
 			return 0
 		if (H.gloves)
-			if(src.fingerprintslast != H.key)
+			if (src.fingerprintslast != H.key)
 				src.fingerprintshidden += text("(Wearing gloves). Real name: [], Key: []",H.real_name, H.key)
 				src.fingerprintslast = H.key
 			return 0
 		if (!( src.fingerprints ))
 			src.fingerprints = text("[]", md5(H.dna.uni_identity))
-			if(src.fingerprintslast != H.key)
+			if (src.fingerprintslast != H.key)
 				src.fingerprintshidden += text("Real name: [], Key: []",H.real_name, H.key)
 				src.fingerprintslast = H.key
 			return 1
@@ -85,11 +85,11 @@
 				L -= L[1]
 			L += md5(H.dna.uni_identity)
 			src.fingerprints = list2params(L)
-			if(src.fingerprintslast != H.key)
+			if (src.fingerprintslast != H.key)
 				src.fingerprintshidden += text("Real name: [], Key: []",H.real_name, H.key)
 				src.fingerprintslast = H.key
 	else
-		if(src.fingerprintslast != M.key)
+		if (src.fingerprintslast != M.key)
 			src.fingerprintshidden += text("Real name: [], Key: []",M.real_name, M.key)
 			src.fingerprintslast = M.key
 	return
@@ -116,7 +116,7 @@
 			var/list/objsonturf = range(0,src)
 			var/i
 			for(i=1, i<=objsonturf.len, i++)
-				if(istype(objsonturf[i],/obj/decal/cleanable/blood))
+				if (istype(objsonturf[i],/obj/decal/cleanable/blood))
 					return
 			var/obj/decal/cleanable/blood/this = new /obj/decal/cleanable/blood(source2)
 			this.blood_DNA = M.dna.unique_enzymes
@@ -140,7 +140,7 @@
 	return
 
 /atom/proc/add_vomit_floor(mob/living/carbon/M as mob)
-	if( istype(src, /turf/simulated) )
+	if ( istype(src, /turf/simulated) )
 		var/obj/decal/cleanable/vomit/this = new /obj/decal/cleanable/vomit(src)
 		for(var/datum/disease/D in M.viruses)
 			var/datum/disease/newDisease = new D.type
@@ -149,8 +149,8 @@
 
 // Only adds blood on the floor -- Skie
 /atom/proc/add_blood_floor(mob/living/carbon/M as mob)
-	if( istype(M, /mob/living/carbon/monkey) )
-		if( istype(src, /turf/simulated) )
+	if ( istype(M, /mob/living/carbon/monkey) )
+		if ( istype(src, /turf/simulated) )
 			var/turf/simulated/source1 = src
 			var/obj/decal/cleanable/blood/this = new /obj/decal/cleanable/blood(source1)
 			this.blood_DNA = M.dna.unique_enzymes
@@ -159,8 +159,8 @@
 				this.viruses += newDisease
 				newDisease.holder = this
 
-	else if( istype(M, /mob/living/carbon/alien ))
-		if( istype(src, /turf/simulated) )
+	else if ( istype(M, /mob/living/carbon/alien ))
+		if ( istype(src, /turf/simulated) )
 			var/turf/simulated/source2 = src
 			var/obj/decal/cleanable/xenoblood/this = new /obj/decal/cleanable/xenoblood(source2)
 			for(var/datum/disease/D in M.viruses)
@@ -168,8 +168,8 @@
 				this.viruses += newDisease
 				newDisease.holder = this
 
-	else if( istype(M, /mob/living/silicon/robot ))
-		if( istype(src, /turf/simulated) )
+	else if ( istype(M, /mob/living/silicon/robot ))
+		if ( istype(src, /turf/simulated) )
 			var/turf/simulated/source2 = src
 			var/obj/decal/cleanable/oil/this = new /obj/decal/cleanable/oil(source2)
 			for(var/datum/disease/D in M.viruses)
@@ -213,7 +213,7 @@
 /atom/Click(location,control,params)
 	//world << "atom.Click() on [src] by [usr] : src.type is [src.type]"
 
-	if(usr.client.buildmode)
+	if (usr.client.buildmode)
 		build_click(usr, usr.client.buildmode, location, control, params, src)
 		return
 
@@ -237,14 +237,14 @@
 	..()
 
 
-	if(usr.in_throw_mode)
+	if (usr.in_throw_mode)
 		return usr:throw_item(src)
 
 	var/obj/item/W = usr.equipped()
 
 
-	if(istype(usr, /mob/living/silicon/robot))
-		if(!isnull(usr:module_active))
+	if (istype(usr, /mob/living/silicon/robot))
+		if (!isnull(usr:module_active))
 			W = usr:module_active
 		else
 			W = null
@@ -291,67 +291,67 @@
 				var/turf/Step_1
 				var/turf/Step_2
 				switch(direct)
-					if(5.0)
+					if (5.0)
 						Step_1 = get_step(usr, NORTH)
 						Step_2 = get_step(usr, EAST)
 
-					if(6.0)
+					if (6.0)
 						Step_1 = get_step(usr, SOUTH)
 						Step_2 = get_step(usr, EAST)
 
-					if(9.0)
+					if (9.0)
 						Step_1 = get_step(usr, NORTH)
 						Step_2 = get_step(usr, WEST)
 
-					if(10.0)
+					if (10.0)
 						Step_1 = get_step(usr, SOUTH)
 						Step_2 = get_step(usr, WEST)
 
 					else
-				if(Step_1 && Step_2)
+				if (Step_1 && Step_2)
 					var/check_1 = 0
 					var/check_2 = 0
-					if(step_to(D, Step_1))
+					if (step_to(D, Step_1))
 						check_1 = 1
 						for(var/obj/border_obstacle in Step_1)
-							if(border_obstacle.flags & ON_BORDER)
-								if(!border_obstacle.CheckExit(D, src))
+							if (border_obstacle.flags & ON_BORDER)
+								if (!border_obstacle.CheckExit(D, src))
 									check_1 = 0
 						for(var/obj/border_obstacle in get_turf(src))
-							if((border_obstacle.flags & ON_BORDER) && (src != border_obstacle))
-								if(!border_obstacle.CanPass(D, D.loc, 1, 0))
+							if ((border_obstacle.flags & ON_BORDER) && (src != border_obstacle))
+								if (!border_obstacle.CanPass(D, D.loc, 1, 0))
 									check_1 = 0
 
 					D.loc = usr.loc
-					if(step_to(D, Step_2))
+					if (step_to(D, Step_2))
 						check_2 = 1
 
 						for(var/obj/border_obstacle in Step_2)
-							if(border_obstacle.flags & ON_BORDER)
-								if(!border_obstacle.CheckExit(D, src))
+							if (border_obstacle.flags & ON_BORDER)
+								if (!border_obstacle.CheckExit(D, src))
 									check_2 = 0
 						for(var/obj/border_obstacle in get_turf(src))
-							if((border_obstacle.flags & ON_BORDER) && (src != border_obstacle))
-								if(!border_obstacle.CanPass(D, D.loc, 1, 0))
+							if ((border_obstacle.flags & ON_BORDER) && (src != border_obstacle))
+								if (!border_obstacle.CanPass(D, D.loc, 1, 0))
 									check_2 = 0
-					if(check_1 || check_2)
+					if (check_1 || check_2)
 						ok = 1
 			else
-				if(loc == usr.loc)
+				if (loc == usr.loc)
 					ok = 1
 				else
 					ok = 1
 
 					//Now, check objects to block exit that are on the border
 					for(var/obj/border_obstacle in usr.loc)
-						if(border_obstacle.flags & ON_BORDER)
-							if(!border_obstacle.CheckExit(D, src))
+						if (border_obstacle.flags & ON_BORDER)
+							if (!border_obstacle.CheckExit(D, src))
 								ok = 0
 
 					//Next, check objects to block entry that are on the border
 					for(var/obj/border_obstacle in get_turf(src))
-						if((border_obstacle.flags & ON_BORDER) && (src != border_obstacle))
-							if(!border_obstacle.CanPass(D, D.loc, 1, 0))
+						if ((border_obstacle.flags & ON_BORDER) && (src != border_obstacle))
+							if (!border_obstacle.CanPass(D, D.loc, 1, 0))
 								ok = 0
 
 			del(D)
@@ -368,11 +368,11 @@
 			else
 				if (istype(usr, /mob/living/carbon/human))
 					if (usr:a_intent == "help")
-						if(istype(src, /mob/living/carbon))
+						if (istype(src, /mob/living/carbon))
 							var/mob/living/carbon/C = src
-							if(usr:mutations & HEAL)
+							if (usr:mutations & HEAL)
 
-								if(C.stat != 2)
+								if (C.stat != 2)
 									var/t_him = "it"
 									if (src.gender == MALE)
 										t_him = "his"
@@ -384,7 +384,7 @@
 									else if (usr.gender == FEMALE)
 										t_him = "her"
 
-									if(src != usr)
+									if (src != usr)
 										usr.visible_message( \
 										"\blue <i>[usr] places [u_him] palms on [src], healing [t_him]!</i>", \
 										"\blue You place your palms on [src] and heal [t_him].", \
@@ -426,7 +426,7 @@
 									C.drowsyness = max(0, C.drowsyness-5)
 									C.weakened = max(0, C.weakened-5)
 
-									if(C.client)
+									if (C.client)
 										C.updatehealth()
 										C:handle_regular_hud_updates()
 									usr:nutrition -= rand(1,10)
@@ -448,10 +448,10 @@
 								src.attack_ai(usr, usr.hand)
 
 							else
-								if(istype(usr, /mob/living/carbon/metroid))
+								if (istype(usr, /mob/living/carbon/metroid))
 									src.attack_metroid(usr)
 								else
-									if(istype(usr, /mob/living/simple_animal))
+									if (istype(usr, /mob/living/simple_animal))
 										src.attack_animal(usr)
 		else
 			if (istype(usr, /mob/living/carbon/human))
@@ -499,15 +499,15 @@
 						if (istype(usr, /mob/living/carbon/alien/humanoid))
 							src.hand_al(usr, usr.hand)
 		else
-			if(usr:mutations & LASER && usr:a_intent == "hurt" && world.time >= usr.next_move)
+			if (usr:mutations & LASER && usr:a_intent == "hurt" && world.time >= usr.next_move)
 				var/turf/oloc
 				var/turf/T = get_turf(usr)
 				var/turf/U = get_turf(src)
-				if(istype(src, /turf)) oloc = src
+				if (istype(src, /turf)) oloc = src
 				else
 					oloc = loc
 
-				if(istype(usr, /mob/living/carbon/human))
+				if (istype(usr, /mob/living/carbon/human))
 					usr:nutrition -= rand(1,5)
 					usr:handle_regular_hud_updates()
 
@@ -530,17 +530,17 @@
 
 
 /atom/proc/get_global_map_pos()
-	if(!islist(global_map) || isemptylist(global_map)) return
+	if (!islist(global_map) || isemptylist(global_map)) return
 	var/cur_x = null
 	var/cur_y = null
 	var/list/y_arr = null
 	for(cur_x=1,cur_x<=global_map.len,cur_x++)
 		y_arr = global_map[cur_x]
 		cur_y = y_arr.Find(src.z)
-		if(cur_y)
+		if (cur_y)
 			break
 //	world << "X = [cur_x]; Y = [cur_y]"
-	if(cur_x && cur_y)
+	if (cur_x && cur_y)
 		return list("x"=cur_x,"y"=cur_y)
 	else
 		return 0

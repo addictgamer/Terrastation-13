@@ -34,7 +34,7 @@
 	var/list/rgbcolor = list(0,0,0)
 	var/finalcolor
 	for(var/datum/reagent/re in D.reagents.reagent_list) // natural color mixing bullshit/algorithm
-		if(!finalcolor)
+		if (!finalcolor)
 			rgbcolor = GetColors(re.color)
 			finalcolor = re.color
 		else
@@ -69,7 +69,7 @@
 			sleep(3)
 		del(D)
 
-	if(isrobot(user)) //Cyborgs can clean forever if they keep charged
+	if (isrobot(user)) //Cyborgs can clean forever if they keep charged
 		var/mob/living/silicon/robot/janitor = user
 		janitor.cell.charge -= 20
 		var/refill = src.reagents.get_master_reagent_id()

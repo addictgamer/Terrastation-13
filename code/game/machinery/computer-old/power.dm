@@ -18,21 +18,21 @@ var/reportingpower = 0  //this tracks whether this power monitoring computer is 
 /obj/machinery/power/monitor/attack_ai(mob/user)
 	add_fingerprint(user)
 
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		return
 	interact(user)
 
 /obj/machinery/power/monitor/attack_hand(mob/user)
 	add_fingerprint(user)
 
-	if(stat & (BROKEN|NOPOWER))
+	if (stat & (BROKEN|NOPOWER))
 		return
 	interact(user)
 
 /obj/machinery/power/monitor/attackby(I as obj, user as mob)
-	if(istype(I, /obj/item/weapon/screwdriver))
+	if (istype(I, /obj/item/weapon/screwdriver))
 		playsound(src.loc, 'Screwdriver.ogg', 50, 1)
-		if(do_after(user, 20))
+		if (do_after(user, 20))
 			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				var/obj/computerframe/A = new /obj/computerframe( src.loc )
@@ -75,13 +75,13 @@ var/reportingpower = 0  //this tracks whether this power monitoring computer is 
 	t += "<BR><HR><A href='?src=\ref[src];update=1'>Refresh</A>"
 	t += "<BR><HR><A href='?src=\ref[src];close=1'>Close</A>"
 
-	if(!powernet)
+	if (!powernet)
 		t += "\red No connection"
 	else
 
 		var/list/L = list()
 		for(var/obj/machinery/power/terminal/term in powernet.nodes)
-			if(istype(term.master, /obj/machinery/power/apc))
+			if (istype(term.master, /obj/machinery/power/apc))
 				var/obj/machinery/power/apc/A = term.master
 				L += A
 
@@ -89,7 +89,7 @@ var/reportingpower = 0  //this tracks whether this power monitoring computer is 
 
 		t += "<FONT SIZE=-1>"
 
-		if(L.len > 0)
+		if (L.len > 0)
 
 			t += "Area                           Eqp./Lgt./Env.  Load   Cell<HR>"
 
@@ -109,27 +109,27 @@ var/reportingpower = 0  //this tracks whether this power monitoring computer is 
 
 /obj/machinery/power/monitor/Topic(href, href_list)
 	..()
-	if( href_list["close"] )
+	if ( href_list["close"] )
 		usr << browse(null, "window=powcomp")
 		usr.machine = null
 		return
-	if( href_list["update"] )
+	if ( href_list["update"] )
 		src.updateDialog()
 		return
 
 
 /obj/machinery/power/monitor/process()
-	if(!(stat & (NOPOWER|BROKEN)) )
+	if (!(stat & (NOPOWER|BROKEN)) )
 		use_power(250)
 
 		//muskets 250810
 		//this handles updating the remote power monitoring globals
 
-		if(!powerreport) //if no computer is updating the PDA power monitor
+		if (!powerreport) //if no computer is updating the PDA power monitor
 			reportingpower = 1  //take over updating them
 
-		if(reportingpower)  //if this computer is updating the PDA power monitor
-			if(!powernet)  //if it's not connected to a powernet, don't do anything
+		if (reportingpower)  //if this computer is updating the PDA power monitor
+			if (!powernet)  //if it's not connected to a powernet, don't do anything
 				return
 			else
 				powerreport = powernet  //update the globals from the current powernet - this is a bit of a hack, might need improving
@@ -140,7 +140,7 @@ var/reportingpower = 0  //this tracks whether this power monitoring computer is 
 
 /obj/machinery/power/monitor/power_change()
 
-	if(stat & BROKEN)
+	if (stat & BROKEN)
 		icon_state = "broken"
 		// the following four lines reset the pda power monitoring globals if the computer breaks
 		// this is to stop PDAs reporting incorrect information and to allow another computer to easily take over -- muskets
@@ -149,7 +149,7 @@ var/reportingpower = 0  //this tracks whether this power monitoring computer is 
 		powerreportavail = null
 		powerreportviewload = null
 	else
-		if( powered() )
+		if ( powered() )
 			icon_state = initial(icon_state)
 			stat &= ~NOPOWER
 		else

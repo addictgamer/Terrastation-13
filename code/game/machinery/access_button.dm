@@ -15,13 +15,13 @@ obj/machinery/access_button
 	var/on = 1
 
 	update_icon()
-		if(on)
+		if (on)
 			icon_state = "access_button_standby"
 		else
 			icon_state = "access_button_off"
 
 	attack_hand(mob/user)
-		if(radio_connection)
+		if (radio_connection)
 			var/datum/signal/signal = new
 			signal.transmission_method = 1 //radio signal
 			signal.data["tag"] = master_tag
@@ -42,5 +42,5 @@ obj/machinery/access_button
 	New()
 		..()
 
-		if(radio_controller)
+		if (radio_controller)
 			set_frequency(frequency)

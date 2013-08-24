@@ -15,17 +15,17 @@
 		R.my_atom = chemholder
 
 /datum/effects/system/chem_smoke_spread/proc/set_up(var/datum/reagents/carry = null, n = 5, c = 0, loca, direct)
-	if(n > 20)
+	if (n > 20)
 		n = 20
 	number = n
 	cardinals = c
 	carry.copy_to(chemholder, carry.total_volume)
 
-	if(istype(loca, /turf/))
+	if (istype(loca, /turf/))
 		location = loca
 	else
 		location = get_turf(loca)
-	if(direct)
+	if (direct)
 		direction = direct
 
 
@@ -39,7 +39,7 @@
 	var/list/rgbcolor = list(0,0,0)
 	var/finalcolor
 	for(var/datum/reagent/re in chemholder.reagents.reagent_list)
-		if(!finalcolor)
+		if (!finalcolor)
 			rgbcolor = GetColors(re.color)
 			finalcolor = re.color
 		else
@@ -54,28 +54,28 @@
 
 			finalcolor = rgb(rgbcolor[1], rgbcolor[2], rgbcolor[3])
 
-	if(finalcolor)
+	if (finalcolor)
 		finalcolor = rgb(rgbcolor[1], rgbcolor[2], rgbcolor[3]) // slightly darker color
 
 	for(i=0, i<src.number, i++)
-		if(src.total_smoke > 20)
+		if (src.total_smoke > 20)
 			return
 		spawn(0)
-			if(holder)
+			if (holder)
 				src.location = get_turf(holder)
 			var/obj/effects/chem_smoke/smoke = new /obj/effects/chem_smoke(src.location)
 			src.total_smoke++
 			var/direction = src.direction
-			if(!direction)
-				if(src.cardinals)
+			if (!direction)
+				if (src.cardinals)
 					direction = pick(cardinal)
 				else
 					direction = pick(alldirs)
 
-			if(chemholder.reagents.total_volume != 1) // can't split 1 very well
+			if (chemholder.reagents.total_volume != 1) // can't split 1 very well
 				chemholder.reagents.copy_to(smoke, chemholder.reagents.total_volume / number) // copy reagents to each smoke, divide evenly
 
-			if(finalcolor)
+			if (finalcolor)
 				smoke.icon += finalcolor // give the smoke color, if it has any to begin with
 			else
 				// if no color, just use the old smoke icon

@@ -53,21 +53,21 @@
 			if (src.target)
 				src.task = "chasing"
 				break
-			if((C.name == src.oldtarget_name) && (world.time < src.last_found + 100)) continue
-			if(istype(C, /mob/living/carbon/) && !src.atkcarbon) continue
-			if(istype(C, /mob/living/silicon/) && !src.atksilicon) continue
-			if(C.health < 0) continue
-			if(istype(C, /mob/living/carbon/) && src.atkcarbon)
-				if(C:mind)
-					if(C:mind:special_role == "H.I.V.E")
+			if ((C.name == src.oldtarget_name) && (world.time < src.last_found + 100)) continue
+			if (istype(C, /mob/living/carbon/) && !src.atkcarbon) continue
+			if (istype(C, /mob/living/silicon/) && !src.atksilicon) continue
+			if (C.health < 0) continue
+			if (istype(C, /mob/living/carbon/) && src.atkcarbon)
+				if (C:mind)
+					if (C:mind:special_role == "H.I.V.E")
 						continue
 				src.attack = 1
-			if(istype(C, /mob/living/silicon/) && src.atksilicon)
-				if(C:mind)
-					if(C:mind:special_role == "H.I.V.E")
+			if (istype(C, /mob/living/silicon/) && src.atksilicon)
+				if (C:mind)
+					if (C:mind:special_role == "H.I.V.E")
 						continue
 				src.attack = 1
-			if(src.attack)
+			if (src.attack)
 				T = C
 				break
 
@@ -75,30 +75,30 @@
 			if (src.target)
 				src.task = "chasing"
 				break
-			if((C.name == src.oldtarget_name) && (world.time < src.last_found + 100)) continue
+			if ((C.name == src.oldtarget_name) && (world.time < src.last_found + 100)) continue
 			src.attack = 1
-			if(src.attack)
+			if (src.attack)
 				T = C
 				break
 
 
-		if(!src.attack)
+		if (!src.attack)
 			for(var/obj/critter/C in view(src.seekrange,src))
-				if(istype(C, /obj/critter) && !src.atkcritter) continue
-				if(istype(C, /obj/mecha) && !src.atkmech) continue
-				if(C.health <= 0) continue
-				if(istype(C, /obj/critter) && src.atkcritter)
-					if((istype(C, /obj/critter/hivebot) && !src.atksame) || (C == src))	continue
+				if (istype(C, /obj/critter) && !src.atkcritter) continue
+				if (istype(C, /obj/mecha) && !src.atkmech) continue
+				if (C.health <= 0) continue
+				if (istype(C, /obj/critter) && src.atkcritter)
+					if ((istype(C, /obj/critter/hivebot) && !src.atksame) || (C == src))	continue
 					src.attack = 1
-				if(istype(C, /obj/mecha) && src.atkmech) src.attack = 1
-				if(src.attack)
+				if (istype(C, /obj/mecha) && src.atkmech) src.attack = 1
+				if (src.attack)
 					T = C
 					break
 
-		if(src.attack)
+		if (src.attack)
 			src.target = T
 			src.oldtarget_name = T:name
-			if(src.ranged)
+			if (src.ranged)
 				OpenFire(T)
 				return
 			src.task = "chasing"
@@ -112,7 +112,7 @@
 			O.show_message("\red <b>[src]</b> fires at [src.target]!", 1)
 
 		var/tturf = get_turf(target)
-		if(rapid)
+		if (rapid)
 			spawn(1)
 				Shoot(tturf, src.loc, src)
 			spawn(4)
@@ -130,13 +130,13 @@
 
 
 	Shoot(var/target, var/start, var/user, var/bullet = 0)
-		if(target == start)
+		if (target == start)
 			return
 
 		var/obj/item/projectile/hivebotbullet/A = new /obj/item/projectile/hivebotbullet(user:loc)
 		playsound(user, 'Gunshot.ogg', 100, 1)
 
-		if(!A)	return
+		if (!A)	return
 
 		if (!istype(target, /turf))
 			del(A)

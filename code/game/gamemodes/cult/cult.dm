@@ -11,10 +11,10 @@
 	return istype(M) && M.mind && ticker && ticker.mode && (M.mind in ticker.mode.cult)
 
 /proc/is_convertable_to_cult(datum/mind/mind)
-	if(!istype(mind))	return 0
-	if(istype(mind.current, /mob/living/carbon/human) && (mind.assigned_role in list("Captain", "Head of Security", "Security Officer", "Detective", "Chaplain", "Warden")))	return 0
+	if (!istype(mind))	return 0
+	if (istype(mind.current, /mob/living/carbon/human) && (mind.assigned_role in list("Captain", "Head of Security", "Security Officer", "Detective", "Chaplain", "Warden")))	return 0
 	for(var/obj/item/weapon/implant/loyalty/L in mind.current)
-		if(L && L.implanted)
+		if (L && L.implanted)
 			return 0
 	return 1
 
@@ -49,7 +49,7 @@
 
 
 /datum/game_mode/cult/pre_setup()
-	if(prob(50))
+	if (prob(50))
 		objectives += "survive"
 		objectives += "sacrifice"
 	else
@@ -59,11 +59,11 @@
 	var/list/cultists_possible = get_players_for_role(BE_CULTIST)
 	for(var/datum/mind/player in cultists_possible)
 		for(var/job in restricted_jobs)//Removing heads and such from the list
-			if(player.assigned_role == job)
+			if (player.assigned_role == job)
 				cultists_possible -= player
 
 	for(var/cultists_number = 1 to max_cultists_to_start)
-		if(!cultists_possible.len)
+		if (!cultists_possible.len)
 			break
 		var/datum/mind/cultist = pick(cultists_possible)
 		cultists_possible -= cultist
@@ -73,15 +73,15 @@
 
 /datum/game_mode/cult/post_setup()
 	modePlayer += cult
-	if("sacrifice" in objectives)
+	if ("sacrifice" in objectives)
 		var/list/possible_targets = get_unconvertables()
 
-		if(!possible_targets.len)
+		if (!possible_targets.len)
 			for(var/mob/living/carbon/human/player in world)
-				if(player.mind && !(player.mind in cult))
+				if (player.mind && !(player.mind in cult))
 					possible_targets += player.mind
 
-		if(possible_targets.len > 0)
+		if (possible_targets.len > 0)
 			sacrifice_target = pick(possible_targets)
 
 	for(var/datum/mind/cult_mind in cult)
@@ -101,14 +101,14 @@
 	for(var/obj_count = 1,obj_count <= objectives.len,obj_count++)
 		var/explanation
 		switch(objectives[obj_count])
-			if("survive")
+			if ("survive")
 				explanation = "Our knowledge must live on. Make sure at least [acolytes_needed] acolytes escape on the shuttle to spread their work on an another station."
-			if("sacrifice")
-				if(sacrifice_target && sacrifice_target.current)
+			if ("sacrifice")
+				if (sacrifice_target && sacrifice_target.current)
 					explanation = "Sacrifice [sacrifice_target.current.real_name], the [sacrifice_target.assigned_role]. You will need the sacrifice rune (Hell blood join) and three acolytes to do so."
 				else
 					explanation = "Free objective."
-			if("eldergod")
+			if ("eldergod")
 				explanation = "Summon Nar-Sie via the use of the appropriate rune (Hell join self). It will only work if nine cultists stand on and around it."
 		cult_mind.current << "<B>Objective #[obj_count]</B>: [explanation]"
 		cult_mind.memory += "<B>Objective #[obj_count]</B>: [explanation]<BR>"
@@ -117,7 +117,7 @@
 
 
 /datum/game_mode/proc/equip_cultist(mob/living/carbon/human/mob)
-	if(!istype(mob))
+	if (!istype(mob))
 		return
 	var/obj/item/paper/talisman/supply/T = new(mob)
 	var/list/slots = list (
@@ -137,42 +137,42 @@
 
 /datum/game_mode/cult/grant_runeword(mob/living/carbon/human/cult_mob, var/word)
 	if (!word)
-		if(startwords.len > 0)
+		if (startwords.len > 0)
 			word=pick(startwords)
 			startwords -= word
 	return ..(cult_mob,word)
 
 
 /datum/game_mode/proc/grant_runeword(mob/living/carbon/human/cult_mob, var/word)
-	if(!wordtravel)
+	if (!wordtravel)
 		runerandom()
 	if (!word)
 		word=pick(allwords)
 	var/wordexp
 	switch(word)
-		if("travel")
+		if ("travel")
 			wordexp = "[wordtravel] is travel..."
-		if("blood")
+		if ("blood")
 			wordexp = "[wordblood] is blood..."
-		if("join")
+		if ("join")
 			wordexp = "[wordjoin] is join..."
-		if("hell")
+		if ("hell")
 			wordexp = "[wordhell] is Hell..."
-		if("self")
+		if ("self")
 			wordexp = "[wordself] is self..."
-		if("see")
+		if ("see")
 			wordexp = "[wordsee] is see..."
-		if("tech")
+		if ("tech")
 			wordexp = "[wordtech] is technology..."
-		if("destroy")
+		if ("destroy")
 			wordexp = "[worddestr] is destroy..."
-		if("other")
+		if ("other")
 			wordexp = "[wordother] is other..."
-//		if("hear")
+//		if ("hear")
 //			wordexp = "[wordhear] is hear..."
-//		if("free")
+//		if ("free")
 //			wordexp = "[wordfree] is free..."
-		if("hide")
+		if ("hide")
 			wordexp = "[wordhide] is hide..."
 	cult_mob << "\red You remember one thing from the dark teachings of your master... [wordexp]"
 	cult_mob.mind.store_memory("<B>You remember that</B> [wordexp]", 0, 0)
@@ -181,7 +181,7 @@
 /datum/game_mode/proc/add_cultist(datum/mind/cult_mind) //BASE
 	if (!istype(cult_mind))
 		return 0
-	if(!(cult_mind in cult) && is_convertable_to_cult(cult_mind))
+	if (!(cult_mind in cult) && is_convertable_to_cult(cult_mind))
 		cult += cult_mind
 		update_cult_icons_added(cult_mind)
 		return 1
@@ -194,7 +194,7 @@
 
 
 /datum/game_mode/proc/remove_cultist(datum/mind/cult_mind)
-	if(cult_mind in cult)
+	if (cult_mind in cult)
 		cult -= cult_mind
 		cult_mind.current << "\red <FONT size = 3><B>You have been brainwashed! You are no longer a cultist!</B></FONT>"
 		cult_mind.memory = ""
@@ -206,17 +206,17 @@
 /datum/game_mode/proc/update_all_cult_icons()
 	spawn(0)
 		for(var/datum/mind/cultist in cult)
-			if(cultist.current)
-				if(cultist.current.client)
+			if (cultist.current)
+				if (cultist.current.client)
 					for(var/image/I in cultist.current.client.images)
-						if(I.icon_state == "cult")
+						if (I.icon_state == "cult")
 							del(I)
 
 		for(var/datum/mind/cultist in cult)
-			if(cultist.current)
-				if(cultist.current.client)
+			if (cultist.current)
+				if (cultist.current.client)
 					for(var/datum/mind/cultist_1 in cult)
-						if(cultist_1.current)
+						if (cultist_1.current)
 							var/I = image('mob.dmi', loc = cultist_1.current, icon_state = "cult")
 							cultist.current.client.images += I
 
@@ -224,12 +224,12 @@
 /datum/game_mode/proc/update_cult_icons_added(datum/mind/cult_mind)
 	spawn(0)
 		for(var/datum/mind/cultist in cult)
-			if(cultist.current)
-				if(cultist.current.client)
+			if (cultist.current)
+				if (cultist.current.client)
 					var/I = image('mob.dmi', loc = cult_mind.current, icon_state = "cult")
 					cultist.current.client.images += I
-			if(cult_mind.current)
-				if(cult_mind.current.client)
+			if (cult_mind.current)
+				if (cult_mind.current.client)
 					var/image/J = image('mob.dmi', loc = cultist.current, icon_state = "cult")
 					cult_mind.current.client.images += J
 
@@ -237,35 +237,35 @@
 /datum/game_mode/proc/update_cult_icons_removed(datum/mind/cult_mind)
 	spawn(0)
 		for(var/datum/mind/cultist in cult)
-			if(cultist.current)
-				if(cultist.current.client)
+			if (cultist.current)
+				if (cultist.current.client)
 					for(var/image/I in cultist.current.client.images)
-						if(I.icon_state == "cult" && I.loc == cult_mind.current)
+						if (I.icon_state == "cult" && I.loc == cult_mind.current)
 							del(I)
 
-		if(cult_mind.current)
-			if(cult_mind.current.client)
+		if (cult_mind.current)
+			if (cult_mind.current.client)
 				for(var/image/I in cult_mind.current.client.images)
-					if(I.icon_state == "cult")
+					if (I.icon_state == "cult")
 						del(I)
 
 
 /datum/game_mode/cult/proc/get_unconvertables()
 	var/list/ucs = list()
 	for(var/mob/living/carbon/human/player in world)
-		if(!is_convertable_to_cult(player.mind))
+		if (!is_convertable_to_cult(player.mind))
 			ucs += player.mind
 	return ucs
 
 
 /datum/game_mode/cult/proc/check_cult_victory()
 	var/cult_fail = 0
-	if(objectives.Find("survive"))
+	if (objectives.Find("survive"))
 		cult_fail += check_survive() //the proc returns 1 if there are not enough cultists on the shuttle, 0 otherwise
-	if(objectives.Find("eldergod"))
+	if (objectives.Find("eldergod"))
 		cult_fail += eldergod //1 by default, 0 if the elder god has been summoned at least once
-	if(objectives.Find("sacrifice"))
-		if(!sacrificed.Find(sacrifice_target)) //if the target has been sacrificed, ignore this step. otherwise, add 1 to cult_fail
+	if (objectives.Find("sacrifice"))
+		if (!sacrificed.Find(sacrifice_target)) //if the target has been sacrificed, ignore this step. otherwise, add 1 to cult_fail
 			cult_fail++
 
 	return cult_fail //if any objectives aren't met, failure
@@ -278,7 +278,7 @@
 			var/area/A = get_area(cult_mind.current )
 			if ( is_type_in_list(A, centcom_areas))
 				acolytes_survived++
-	if(acolytes_survived>=acolytes_needed)
+	if (acolytes_survived>=acolytes_needed)
 		return 0
 	else
 		return 1
@@ -286,7 +286,7 @@
 
 /datum/game_mode/cult/declare_completion()
 
-	if(!check_cult_victory())
+	if (!check_cult_victory())
 		world << "\red <FONT size = 3><B> The cult wins! It has succeeded in serving its dark masters!</B></FONT>"
 	else
 		world << "\red <FONT size = 3><B> The staff managed to stop the cult!</B></FONT>"
@@ -298,21 +298,21 @@
 	for(var/obj_count=1,obj_count <= objectives.len,obj_count++)
 		var/explanation
 		switch(objectives[obj_count])
-			if("survive")
-				if(!check_survive())
+			if ("survive")
+				if (!check_survive())
 					explanation = "Make sure at least [acolytes_needed] acolytes escape on the shuttle. \green <b>Success!</b>"
 				else
 					explanation = "Make sure at least [acolytes_needed] acolytes escape on the shuttle. \red Failed."
-			if("sacrifice")
-				if(!sacrifice_target)
+			if ("sacrifice")
+				if (!sacrifice_target)
 					explanation = "Free objective"
 				else
-					if(sacrificed.Find(sacrifice_target))
+					if (sacrificed.Find(sacrifice_target))
 						explanation = "Sacrifice [sacrifice_target.current.real_name], the [sacrifice_target.assigned_role]. \green <b>Success!</b>"
 					else
 						explanation = "Sacrifice [sacrifice_target.current.real_name], the [sacrifice_target.assigned_role]. \red Failed."
-			if("eldergod")
-				if(!eldergod)
+			if ("eldergod")
+				if (!eldergod)
 					explanation = "Summon Nar-Sie. \green <b>Success!</b>"
 				else
 					explanation = "Summon Nar-Sie. \red Failed."
@@ -327,9 +327,9 @@
 		world << "<FONT size = 2><B>The cultists were: </B></FONT>"
 		var/text = ""
 		for(var/datum/mind/cult_nh_mind in cult)
-			if(cult_nh_mind.current)
+			if (cult_nh_mind.current)
 				text += "[cult_nh_mind.current.real_name]"
-				if(cult_nh_mind.current.stat == 2)
+				if (cult_nh_mind.current.stat == 2)
 					text += " (Dead)"
 				else
 					text += " (Survived!)"

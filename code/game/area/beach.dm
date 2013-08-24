@@ -21,15 +21,15 @@
 		process()
 
 	Entered(atom/movable/Obj,atom/OldLoc)
-		if(ismob(Obj))
-			if(Obj:client)
+		if (ismob(Obj))
+			if (Obj:client)
 				mysound.status = SOUND_UPDATE
 				Obj << mysound
 		return
 
 	Exited(atom/movable/Obj)
-		if(ismob(Obj))
-			if(Obj:client)
+		if (ismob(Obj))
+			if (Obj:client)
 				mysound.status = SOUND_PAUSED | SOUND_UPDATE
 				Obj << mysound
 
@@ -38,18 +38,18 @@
 
 		var/sound/S = null
 		var/sound_delay = 0
-		if(prob(25))
+		if (prob(25))
 			S = sound(file=pick('seag1.ogg','seag2.ogg','seag3.ogg'), volume=100)
 			sound_delay = rand(0, 50)
 
 		for(var/mob/living/carbon/human/H in src)
-			if(H.s_tone > -55)
+			if (H.s_tone > -55)
 				H.s_tone--
 				H.update_body()
-			if(H.client)
+			if (H.client)
 				mysound.status = SOUND_UPDATE
 				H << mysound
-				if(S)
+				if (S)
 					spawn(sound_delay)
 						H << S
 

@@ -12,19 +12,19 @@
 	req_access = list(access_change_ids)
 
 /obj/machinery/computer/card/attackby(O as obj, user as mob)
-	if(istype(O, /obj/item/weapon/card/id))
+	if (istype(O, /obj/item/weapon/card/id))
 		var/obj/item/weapon/card/id/idcard = O
-		if(access_change_ids in idcard.access)
-			if(!scan)
+		if (access_change_ids in idcard.access)
+			if (!scan)
 				usr.drop_item()
 				idcard.loc = src
 				scan = idcard
-			else if(!modify)
+			else if (!modify)
 				usr.drop_item()
 				idcard.loc = src
 				modify = idcard
 		else
-			if(!modify)
+			if (!modify)
 				usr.drop_item()
 				idcard.loc = src
 				modify = idcard
@@ -38,7 +38,7 @@
 	return attack_hand(user)
 
 /obj/machinery/computer/card/attack_hand(var/mob/user as mob)
-	if(..())
+	if (..())
 		return
 
 	user.machine = src
@@ -56,26 +56,26 @@
 		var/target_name
 		var/target_owner
 		var/target_rank
-		if(modify)
+		if (modify)
 			target_name = modify.name
 		else
 			target_name = "--------"
-		if(modify && modify.registered)
+		if (modify && modify.registered)
 			target_owner = modify.registered
 		else
 			target_owner = "--------"
-		if(modify && modify.assignment)
+		if (modify && modify.assignment)
 			target_rank = modify.assignment
 		else
 			target_rank = "Unassigned"
 
 		var/scan_name
-		if(scan)
+		if (scan)
 			scan_name = scan.name
 		else
 			scan_name = "--------"
 
-		if(!authenticated)
+		if (!authenticated)
 			header += "<br><i>Please insert the cards into the slots</i><br>"
 			header += "Target: <a href='?src=\ref[src];choice=modify'>[target_name]</a><br>"
 			header += "Confirm Identity: <a href='?src=\ref[src];choice=scan'>[scan_name]</a><br>"
@@ -125,10 +125,10 @@
 			jobs = "<span id='alljobsslot'><a href='#' onclick='showAll()'>[target_rank]</a></span>"
 
 			var/accesses = ""
-			if(istype(src,/obj/machinery/computer/card/centcom))
+			if (istype(src,/obj/machinery/computer/card/centcom))
 				accesses += "<h5>Central Command:</h5>"
 				for(var/A in get_all_centcom_access())
-					if(A in modify.access)
+					if (A in modify.access)
 						accesses += "<a href='?src=\ref[src];choice=access;access_target=[A];allowed=0'><font color=\"red\">[dd_replacetext(get_centcom_access_desc(A), " ", "&nbsp")]</font></a> "
 					else
 						accesses += "<a href='?src=\ref[src];choice=access;access_target=[A];allowed=1'>[dd_replacetext(get_centcom_access_desc(A), " ", "&nbsp")]</a> "
@@ -142,7 +142,7 @@
 				for(var/i = 1; i <= 7; i++)
 					accesses += "<td style='width:14%' valign='top'>"
 					for(var/A in get_region_accesses(i))
-						if(A in modify.access)
+						if (A in modify.access)
 							accesses += "<a href='?src=\ref[src];choice=access;access_target=[A];allowed=0'><font color=\"red\">[dd_replacetext(get_access_desc(A), " ", "&nbsp")]</font></a> "
 						else
 							accesses += "<a href='?src=\ref[src];choice=access;access_target=[A];allowed=1'>[dd_replacetext(get_access_desc(A), " ", "&nbsp")]</a> "
@@ -159,7 +159,7 @@
 	return
 
 /obj/machinery/computer/card/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	usr.machine = src
 	switch(href_list["choice"])
@@ -167,9 +167,9 @@
 			if (modify)
 				data_core.manifest_modify(modify.registered, modify.assignment)
 				modify.name = text("[modify.registered]'s ID Card ([modify.assignment])")
-				if(ishuman(usr))
+				if (ishuman(usr))
 					modify.loc = usr.loc
-					if(!usr.get_active_hand())
+					if (!usr.get_active_hand())
 						usr.put_in_hand(modify)
 					modify = null
 				else
@@ -185,9 +185,9 @@
 
 		if ("scan")
 			if (scan)
-				if(ishuman(usr))
+				if (ishuman(usr))
 					scan.loc = usr.loc
-					if(!usr.get_active_hand())
+					if (!usr.get_active_hand())
 						usr.put_in_hand(scan)
 					scan = null
 				else
@@ -208,19 +208,19 @@
 				usr << "You can't modify an ID without an ID inserted to modify. Once one is in the modify slot on the computer, you can log in."
 		if ("logout")
 			authenticated = 0
-		if("access")
-			if(href_list["allowed"])
-				if(authenticated)
+		if ("access")
+			if (href_list["allowed"])
+				if (authenticated)
 					var/access_type = text2num(href_list["access_target"])
 					var/access_allowed = text2num(href_list["allowed"])
-					if(access_type in (istype(src,/obj/machinery/computer/card/centcom)?get_all_centcom_access() : get_all_accesses()))
+					if (access_type in (istype(src,/obj/machinery/computer/card/centcom)?get_all_centcom_access() : get_all_accesses()))
 						modify.access -= access_type
-						if(access_allowed == 1)
+						if (access_allowed == 1)
 							modify.access += access_type
 		if ("assign")
 			if (authenticated)
 				var/t1 = href_list["assign_target"]
-				if(t1 == "Custom")
+				if (t1 == "Custom")
 					t1 = input("Enter a custom job assignment.","Assignment")
 				else
 					modify.access = ( istype(src,/obj/machinery/computer/card/centcom) ? get_centcom_access(t1) : get_access(t1) )

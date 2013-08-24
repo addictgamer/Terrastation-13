@@ -11,7 +11,7 @@
 	on_reagent_change()
 		if (reagents.reagent_list.len > 0)
 			switch(reagents.get_master_reagent_id())
-				if("metroid")
+				if ("metroid")
 					icon_state = "jar_metroid"
 					name = "metroid jam"
 					desc = "A jar of metroid jam. Delicious!"

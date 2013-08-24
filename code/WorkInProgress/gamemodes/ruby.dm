@@ -23,12 +23,12 @@
 /datum/game_mode/ruby/post_setup()
 	var/list/possible_abominations = get_possible_abominations()
 
-	if(possible_abominations.len>0)
+	if (possible_abominations.len>0)
 		abomination = pick(possible_abominations)
 	/*
-	if(istype(ruby))
+	if (istype(ruby))
 		abomination.special_role = "abomination"
-		if(wizardstart.len == 0)
+		if (wizardstart.len == 0)
 			wizard.current << "<B>\red A starting location for you could not be found, please report this bug!</B>"
 		else
 			var/starting_loc = pick(wizardstart)
@@ -42,27 +42,27 @@
 	*/
 
 /datum/game_mode/ruby/check_finished()
-	if(!macguffin || abominationwins)
+	if (!macguffin || abominationwins)
 		return 1
 	else
 		return 0
 
 /datum/game_mode/ruby/declare_completion()
-	if(abominationwins)
+	if (abominationwins)
 		world << "<B>The Abomination has murdered the station and sacrificed himself to Cjopaze!</B> (played by [winnerkey])"
 	else
 		world << "<B>The Abomination has been stopped and Cjopaze's influence resisted! The station lives another day,</B>"
-		if(killed.len > 0)
+		if (killed.len > 0)
 			world << "Those who were sacrificed shall be remembered: "
 			for(var/mob/M in killed)
-				if(M)
+				if (M)
 					world << "[M.real_name]"
 	/*
 	for(var/datum/mind/traitor in traitors)
 		var/traitorwin = 1
 		var/traitor_name
 
-		if(traitor.current)
+		if (traitor.current)
 			traitor_name = "[traitor.current.real_name] (played by [traitor.key])"
 		else
 			traitor_name = "[traitor.key] (character destroyed)"
@@ -70,14 +70,14 @@
 		world << "<B>The syndicate traitor was [traitor_name]</B>"
 		var/count = 1
 		for(var/datum/objective/objective in traitor.objectives)
-			if(objective.check_completion())
+			if (objective.check_completion())
 				world << "<B>Objective #[count]</B>: [objective.explanation_text] \green <B>Success</B>"
 			else
 				world << "<B>Objective #[count]</B>: [objective.explanation_text] \red Failed"
 				traitorwin = 0
 			count++
 
-		if(traitorwin)
+		if (traitorwin)
 			world << "<B>The traitor was successful!<B>"
 		else
 			world << "<B>The traitor has failed!<B>"
@@ -109,7 +109,7 @@
 	set category = "Abomination"
 	// This is a pretty shitty way to do this. Should use the spell_holder method from Wizard mode
 	/*
-	if(!usr.incorporeal_move)
+	if (!usr.incorporeal_move)
 		usr.sight |= SEE_MOBS
 		usr.sight |= SEE_OBJS
 		usr.sight |= SEE_TURFS
@@ -128,9 +128,9 @@
 /client/proc/vile_ressurection()
 	set name = "Vile Ressurection"
 	set category = "Abomination"
-	if(src.mob.stat != 2 || !src.mob)
+	if (src.mob.stat != 2 || !src.mob)
 		return
-	if(ticker.mode:respawns > 0)
+	if (ticker.mode:respawns > 0)
 		// spawn a new body
 		ticker.mode:respawns -= 1
 	else
@@ -139,7 +139,7 @@
 /client/proc/defile_corpse(var/mob/living/carbon/human/H in view())
 	set name = "Defile Corpse"
 	set category = "Abomination"
-	if(istype(H, /mob/living/carbon/human))
+	if (istype(H, /mob/living/carbon/human))
 		var/datum/game_mode/ruby/rmode = ticker.mode
 		rmode.killed.Add(H)
 		ticker.mode:respawns += 1
@@ -152,8 +152,8 @@
 	set category = "Abomination"
 
 	for(var/obj/item/weapon/rubyweapon/w in world)
-		if(istype(w, /obj/item/weapon/rubyweapon))
-			if(istype(w.loc, /mob))
+		if (istype(w, /obj/item/weapon/rubyweapon))
+			if (istype(w.loc, /mob))
 				var/mob/M = w.loc
 				M.drop_item()
 				w.loc = usr.loc
@@ -169,7 +169,7 @@
 	set desc = "Everything must come to an end. After you have freed them, you must free yourself."
 
 	for(var/mob/living/carbon/human/H in world)
-		if(!H.client || H.client == src)
+		if (!H.client || H.client == src)
 			continue
 		src << "Your work is not done. You will not find release until they are all free."
 		return
@@ -184,15 +184,15 @@
 	var/list/candidates = list()
 
 	for(var/mob/living/carbon/human/H in world)
-		if(!H.client || H.client == src) continue
-		//if(!H.client) continue
+		if (!H.client || H.client == src) continue
+		//if (!H.client) continue
 		candidates.Add(H)
 
 	usr.visible_message(text("\red <B>[usr]'s flesh ripples and parts, revealing dozens of eyes poking from its surface. They all glance wildly around for a few moments before receding again.</B>"))
 
 	var/mob/living/carbon/human/H = pick(candidates)
 
-	if(!H) return
+	if (!H) return
 
 	var/filename="crmap[ckey].tmp"
 	var/html="<html><body bgcolor=black><table border=0 cellspacing=0 cellpadding=0>"
@@ -264,9 +264,9 @@
 	var/mob/owner
 
 	proc/check_owner()
-		if(!owner)
+		if (!owner)
 			sleep(300)
-			if(!owner)
+			if (!owner)
 				spawn() search_for_new_owner()
 		else
 			spawn(1800) check_owner()

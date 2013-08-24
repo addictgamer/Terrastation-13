@@ -4,18 +4,18 @@
 	mineralType = "plasma"
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if(istype(W,/obj/item/weapon/weldingtool))
-			if(W:welding)
+		if (istype(W,/obj/item/weapon/weldingtool))
+			if (W:welding)
 				TemperatureAct(100)
 		..()
 
 	temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
-		if(exposed_temperature > 300)
+		if (exposed_temperature > 300)
 			TemperatureAct(exposed_temperature)
 
 	proc/TemperatureAct(temperature)
 		for(var/turf/simulated/floor/target_tile in range(2,loc))
-			if(target_tile.parent && target_tile.parent.group_processing)
+			if (target_tile.parent && target_tile.parent.group_processing)
 				target_tile.parent.suspend_group_processing()
 			var/datum/gas_mixture/napalm = new
 			var/toxinsToDeduce = temperature/10

@@ -9,7 +9,7 @@
 		reagents.add_reagent("sprinkles", 1)
 		reagents.add_reagent("berryjuice", 5)
 		bitesize = 5
-		if(prob(30))
+		if (prob(30))
 			src.icon_state = "jdonut2"
 			src.name = "Frosted Jelly Donut"
 			reagents.add_reagent("sprinkles", 2)

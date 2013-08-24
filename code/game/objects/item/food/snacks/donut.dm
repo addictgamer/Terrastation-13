@@ -8,7 +8,7 @@
 		reagents.add_reagent("nutriment", 3)
 		reagents.add_reagent("sprinkles", 1)
 		src.bitesize = 3
-		if(prob(30))
+		if (prob(30))
 			src.icon_state = "donut2"
 			src.name = "frosted donut"
 			reagents.add_reagent("sprinkles", 2)

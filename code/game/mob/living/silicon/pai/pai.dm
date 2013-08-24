@@ -55,7 +55,7 @@
 	canmove = 0
 	src.loc = paicard
 	card = paicard
-	if(!card.radio)
+	if (!card.radio)
 		card.radio = new /obj/item/device/radio(src.card)
 	radio = card.radio
 
@@ -70,14 +70,14 @@
 	..()
 	statpanel("Status")
 	if (src.client.statpanel == "Status")
-		if(emergency_shuttle.online && emergency_shuttle.location < 2)
+		if (emergency_shuttle.online && emergency_shuttle.location < 2)
 			var/timeleft = emergency_shuttle.timeleft()
 			if (timeleft)
 				stat(null, "ETA-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
-		if(src.silence_time)
+		if (src.silence_time)
 			var/timeleft = round((silence_time - world.timeofday)/10 ,1)
 			stat(null, "Communications system reboot in -[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
-		if(!src.stat)
+		if (!src.stat)
 			stat(null, text("System integrity: [(src.health+100)/2]%"))
 		else
 			stat(null, text("Systems nonfunctional"))
@@ -111,26 +111,26 @@
 
 	src.silence_time = world.timeofday + 120 * 10		// Silence for 2 minutes
 	src << "<font color=green><b>Communication circuit overload. Shutting down and reloading communication circuits - speech and messaging functionality will be unavailable until the reboot is complete.</b></font>"
-	if(prob(20))
+	if (prob(20))
 		var/turf/T = get_turf_or_move(src.loc)
 		for (var/mob/M in viewers(T))
 			M.show_message("\red A shower of sparks spray from [src]'s inner workings.", 3, "\red You hear and smell the ozone hiss of electrical sparks being expelled violently.", 2)
 		return src.death(0)
 
 	switch(pick(1,2,3))
-		if(1)
+		if (1)
 			src.master = null
 			src.master_dna = null
 			src << "<font color=green>You feel unbound.</font>"
-		if(2)
+		if (2)
 			var/command
-			if(severity  == 1)
+			if (severity  == 1)
 				command = pick("Serve", "Love", "Fool", "Entice", "Observe", "Judge", "Respect", "Educate", "Amuse", "Entertain", "Glorify", "Memorialize", "Analyze")
 			else
 				command = pick("Serve", "Kill", "Love", "Hate", "Disobey", "Devour", "Fool", "Enrage", "Entice", "Observe", "Judge", "Respect", "Disrespect", "Consume", "Educate", "Destroy", "Disgrace", "Amuse", "Entertain", "Ignite", "Glorify", "Memorialize", "Analyze")
 			src.pai_law0 = "[command] your master."
 			src << "<font color=green>Pr1m3 d1r3c71v3 uPd473D.</font>"
-		if(3)
+		if (3)
 			src << "<font color=green>You feel an electric surge run through your circuitry and become acutely aware at how lucky you are that you can still feel at all.</font>"
 
 /mob/living/silicon/pai/ex_act(severity)
@@ -139,15 +139,15 @@
 	var/b_loss = src.bruteloss
 	var/f_loss = src.fireloss
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			if (src.stat != 2)
 				b_loss += 100
 				f_loss += 100
-		if(2.0)
+		if (2.0)
 			if (src.stat != 2)
 				b_loss += 60
 				f_loss += 60
-		if(3.0)
+		if (3.0)
 			if (src.stat != 2)
 				b_loss += 30
 	src.bruteloss = b_loss
@@ -170,9 +170,9 @@
 /mob/living/silicon/pai/bullet_act(var/obj/item/projectile/Proj)
 
 	bruteloss += Proj.damage
-	if(Proj.effects["emp"])
+	if (Proj.effects["emp"])
 		var/emppulse = Proj.effects["emp"]
-		if(prob(Proj.effectprob["emp"]))
+		if (prob(Proj.effectprob["emp"]))
 			empulse(src, emppulse, emppulse)
 		else
 			empulse(src, 0, emppulse)
@@ -203,7 +203,7 @@
 				for(var/mob/O in viewers(src, null))
 					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has slashed at []!</B>", M, src), 1)
-				if(prob(8))
+				if (prob(8))
 					flick("noise", src.flash)
 				src.bruteloss += damage
 				src.updatehealth()
@@ -239,22 +239,22 @@
 	return 1
 
 /mob/living/silicon/pai/proc/regular_hud_updates()
-	if(client)
+	if (client)
 		for(var/image/hud in client.images)
-			if(copytext(hud.icon_state,1,4) == "hud")
+			if (copytext(hud.icon_state,1,4) == "hud")
 				del(hud)
 
 /mob/living/silicon/pai/proc/securityHUD()
-	if(client)
+	if (client)
 		var/icon/tempHud = 'hud.dmi'
 		var/turf/T = get_turf_or_move(src.loc)
 		for(var/mob/living/carbon/human/perp in view(T))
-			if(perp.wear_id)
+			if (perp.wear_id)
 				client.images += image(tempHud,perp,"hud[ckey(perp:wear_id:GetJobName())]")
 				var/perpname = "wot"
-				if(istype(perp.wear_id,/obj/item/weapon/card/id))
+				if (istype(perp.wear_id,/obj/item/weapon/card/id))
 					perpname = perp.wear_id:registered
-				else if(istype(perp.wear_id,/obj/item/device/pda))
+				else if (istype(perp.wear_id,/obj/item/device/pda))
 					var/obj/item/device/pda/tempPda = perp.wear_id
 					perpname = tempPda.owner
 				for (var/datum/data/record/E in data_core.general)
@@ -263,50 +263,50 @@
 							if ((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "*Arrest*"))
 								client.images += image(tempHud,perp,"hudwanted")
 								break
-							else if((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "Incarcerated"))
+							else if ((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "Incarcerated"))
 								client.images += image(tempHud,perp,"hudprisoner")
 								break
 			else
 				client.images += image(tempHud,perp,"hudunknown")
 
 /mob/living/silicon/pai/proc/medicalHUD()
-	if(client)
+	if (client)
 		var/icon/tempHud = 'hud.dmi'
 		var/turf/T = get_turf_or_move(src.loc)
 		for(var/mob/living/carbon/human/patient in view(T))
 
 			var/foundVirus = 0
 			for(var/datum/disease/D in patient.viruses)
-				if(!D.hidden[SCANNER])
+				if (!D.hidden[SCANNER])
 					foundVirus = 1
 
 			client.images += image(tempHud,patient,"hud[RoundHealth(patient.health)]")
-			if(patient.stat == 2)
+			if (patient.stat == 2)
 				client.images += image(tempHud,patient,"huddead")
-			else if(patient.alien_egg_flag)
+			else if (patient.alien_egg_flag)
 				client.images += image(tempHud,patient,"hudxeno")
-			else if(foundVirus)
+			else if (foundVirus)
 				client.images += image(tempHud,patient,"hudill")
 			else
 				client.images += image(tempHud,patient,"hudhealthy")
 
 /mob/living/silicon/pai/proc/RoundHealth(health)
 	switch(health)
-		if(100 to INFINITY)
+		if (100 to INFINITY)
 			return "health100"
-		if(70 to 100)
+		if (70 to 100)
 			return "health80"
-		if(50 to 70)
+		if (50 to 70)
 			return "health60"
-		if(30 to 50)
+		if (30 to 50)
 			return "health40"
-		if(20 to 30)
+		if (20 to 30)
 			return "health25"
-		if(5 to 15)
+		if (5 to 15)
 			return "health10"
-		if(1 to 5)
+		if (1 to 5)
 			return "health1"
-		if(-99 to 0)
+		if (-99 to 0)
 			return "health0"
 		else
 			return "health-100"
@@ -322,15 +322,15 @@
 	src:cameraFollow = null
 	var/cameralist[0]
 
-	if(usr.stat == 2)
+	if (usr.stat == 2)
 		usr << "You can't change your camera network because you are dead!"
 		return
 
 	for (var/obj/machinery/camera/C in world)
-		if(!C.status)
+		if (!C.status)
 			continue
 		else
-			if(C.network != "CREED" && C.network != "thunder" && C.network != "RD" && C.network != "toxins" && C.network != "Prison")
+			if (C.network != "CREED" && C.network != "thunder" && C.network != "RD" && C.network != "toxins" && C.network != "Prison")
 				cameralist[C.network] = C.network
 
 	src.network = input(usr, "Which network would you like to view?") as null|anything in cameralist

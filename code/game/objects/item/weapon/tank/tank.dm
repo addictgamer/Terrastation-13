@@ -22,7 +22,7 @@
 		return
 
 	Del()
-		if(air_contents)
+		if (air_contents)
 			del(air_contents)
 		processing_objects.Remove(src)
 		..()
@@ -52,11 +52,11 @@
 		return
 
 	blob_act()
-		if(prob(50))
+		if (prob(50))
 			var/turf/location = src.loc
 			if (!( istype(location, /turf) ))
 				del(src)
-			if(src.air_contents)
+			if (src.air_contents)
 				location.assume_air(air_contents)
 			del(src)
 
@@ -83,7 +83,7 @@
 				user << "\blue Oxygen: [round(o2_concentration*100)]%"
 				user << "\blue CO2: [round(co2_concentration*100)]%"
 				user << "\blue Plasma: [round(plasma_concentration*100)]%"
-				if(unknown_concentration>0.01)
+				if (unknown_concentration>0.01)
 					user << "\red Unknown: [round(unknown_concentration*100)]%"
 				user << "\blue Temperature: [round(air_contents.temperature-T0C)]&deg;C"
 			else
@@ -100,9 +100,9 @@
 			return
 		user.machine = src
 		var/using_internal
-		if(istype(loc,/mob/living/carbon))
+		if (istype(loc,/mob/living/carbon))
 			var/mob/living/carbon/location = loc
-			if(location.internal==src)
+			if (location.internal==src)
 				using_internal = 1
 		var/message = {"
 	<b>Tank</b><BR>
@@ -126,16 +126,16 @@
 				src.distribute_pressure += cp
 				src.distribute_pressure = min(max(round(src.distribute_pressure), 0), 3*ONE_ATMOSPHERE)
 			if (href_list["stat"])
-				if(istype(loc,/mob/living/carbon))
+				if (istype(loc,/mob/living/carbon))
 					var/mob/living/carbon/location = loc
-					if(location.internal == src)
+					if (location.internal == src)
 						location.internal = null
 						location.internals.icon_state = "internal0"
 						usr << "\blue You close the tank release valve."
 						if (location.internals)
 							location.internals.icon_state = "internal0"
 					else
-						if(location.wear_mask && (location.wear_mask.flags & MASKINTERNALS))
+						if (location.wear_mask && (location.wear_mask.flags & MASKINTERNALS))
 							location.internal = src
 							usr << "\blue You open \the [src] valve."
 							if (location.internals)
@@ -177,21 +177,21 @@
 
 	proc
 		remove_air_volume(volume_to_return)
-			if(!air_contents)
+			if (!air_contents)
 				return null
 			var/tank_pressure = air_contents.return_pressure()
-			if(tank_pressure < distribute_pressure)
+			if (tank_pressure < distribute_pressure)
 				distribute_pressure = tank_pressure
 			var/moles_needed = distribute_pressure*volume_to_return/(R_IDEAL_GAS_EQUATION*air_contents.temperature)
 			return remove_air(moles_needed)
 
 		check_status()
 			//Handle exploding, leaking, and rupturing of the tank
-			if(!air_contents)
+			if (!air_contents)
 				return 0
 			var/pressure = air_contents.return_pressure()
-			if(pressure > TANK_FRAGMENT_PRESSURE)
-				if(!istype(src.loc,/obj/item/device/transfer_valve))
+			if (pressure > TANK_FRAGMENT_PRESSURE)
+				if (!istype(src.loc,/obj/item/device/transfer_valve))
 					message_admins("Explosive tank rupture! last key to touch the tank was [src.fingerprintslast].")
 					log_game("Explosive tank rupture! last key to touch the tank was [src.fingerprintslast].")
 				//world << "\blue[x],[y] tank is exploding: [pressure] kPa"
@@ -206,22 +206,22 @@
 				//world << "\blue Exploding Pressure: [pressure] kPa, intensity: [range]"
 				explosion(epicenter, round(range*0.25), round(range*0.5), round(range), round(range*1.5))
 				del(src)
-			else if(pressure > TANK_RUPTURE_PRESSURE)
+			else if (pressure > TANK_RUPTURE_PRESSURE)
 				//world << "\blue[x],[y] tank is rupturing: [pressure] kPa, integrity [integrity]"
-				if(integrity <= 0)
+				if (integrity <= 0)
 					loc.assume_air(air_contents)
 					//TODO: make pop sound
 					del(src)
 				else
 					integrity--
-			else if(pressure > TANK_LEAK_PRESSURE)
+			else if (pressure > TANK_LEAK_PRESSURE)
 				//world << "\blue[x],[y] tank is leaking: [pressure] kPa, integrity [integrity]"
-				if(integrity <= 0)
+				if (integrity <= 0)
 					var/datum/gas_mixture/leaked_gas = air_contents.remove_ratio(0.25)
 					loc.assume_air(leaked_gas)
 				else
 					integrity--
-			else if(integrity < 3)
+			else if (integrity < 3)
 				integrity++
 	/* redundant. --rastaf0
 	/obj/item/weapon/tank/attack(mob/M as mob, mob/user as mob)
@@ -241,7 +241,7 @@
 			else
 				if (M.stunned < time)
 					M.stunned = time
-			if(M.stat != 2)	M.stat = 1
+			if (M.stat != 2)	M.stat = 1
 			for(var/mob/O in viewers(M, null))
 				if ((O.client && !( O.blinded )))
 					O << text("\red <B>[] has been knocked unconscious!</B>", M)

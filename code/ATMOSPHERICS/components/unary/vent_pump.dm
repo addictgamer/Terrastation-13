@@ -38,7 +38,7 @@
 		if (!id_tag)
 			assign_uid()
 			id_tag = num2text(uid)
-		if(ticker && ticker.current_state == 3)//if the game is running
+		if (ticker && ticker.current_state == 3)//if the game is running
 			src.initialize()
 			src.broadcast_status()
 		..()
@@ -51,8 +51,8 @@
 			air_contents.volume = 1000
 
 	update_icon()
-		if(on && !(stat & (NOPOWER|BROKEN)))
-			if(pump_direction)
+		if (on && !(stat & (NOPOWER|BROKEN)))
+			if (pump_direction)
 				icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]out"
 			else
 				icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]in"
@@ -63,48 +63,48 @@
 
 	process()
 		..()
-		if(stat & (NOPOWER|BROKEN))
+		if (stat & (NOPOWER|BROKEN))
 			return
 		if (!node)
 			on = 0
 		//broadcast_status() // from now air alarm/control computer should request update purposely --rastaf0
-		if(!on)
+		if (!on)
 			return 0
 
-		if(welded)
+		if (welded)
 			return 0
 
 		var/datum/gas_mixture/environment = loc.return_air()
 		var/environment_pressure = environment.return_pressure()
 
-		if(pump_direction) //internal -> external
+		if (pump_direction) //internal -> external
 			var/pressure_delta = 10000
 
-			if(pressure_checks&1)
+			if (pressure_checks&1)
 				pressure_delta = min(pressure_delta, (external_pressure_bound - environment_pressure))
-			if(pressure_checks&2)
+			if (pressure_checks&2)
 				pressure_delta = min(pressure_delta, (air_contents.return_pressure() - internal_pressure_bound))
 
-			if(pressure_delta > 0)
-				if(air_contents.temperature > 0)
+			if (pressure_delta > 0)
+				if (air_contents.temperature > 0)
 					var/transfer_moles = pressure_delta*environment.volume/(air_contents.temperature * R_IDEAL_GAS_EQUATION)
 
 					var/datum/gas_mixture/removed = air_contents.remove(transfer_moles)
 
 					loc.assume_air(removed)
 
-					if(network)
+					if (network)
 						network.update = 1
 
 		else //external -> internal
 			var/pressure_delta = 10000
-			if(pressure_checks&1)
+			if (pressure_checks&1)
 				pressure_delta = min(pressure_delta, (environment_pressure - external_pressure_bound))
-			if(pressure_checks&2)
+			if (pressure_checks&2)
 				pressure_delta = min(pressure_delta, (internal_pressure_bound - air_contents.return_pressure()))
 
-			if(pressure_delta > 0)
-				if(environment.temperature > 0)
+			if (pressure_delta > 0)
+				if (environment.temperature > 0)
 					var/transfer_moles = pressure_delta*air_contents.volume/(environment.temperature * R_IDEAL_GAS_EQUATION)
 
 					var/datum/gas_mixture/removed = loc.remove_air(transfer_moles)
@@ -113,7 +113,7 @@
 
 					air_contents.merge(removed)
 
-					if(network)
+					if (network)
 						network.update = 1
 
 		return 1
@@ -124,11 +124,11 @@
 		set_frequency(new_frequency)
 			radio_controller.remove_object(src, frequency)
 			frequency = new_frequency
-			if(frequency)
+			if (frequency)
 				radio_connection = radio_controller.add_object(src, frequency,radio_filter_in)
 
 		broadcast_status()
-			if(!radio_connection)
+			if (!radio_connection)
 				return 0
 
 			var/datum/signal/signal = new
@@ -159,72 +159,72 @@
 		//some vents work his own spesial way
 		radio_filter_in = frequency==1439?(RADIO_FROM_AIRALARM):null
 		radio_filter_out = frequency==1439?(RADIO_TO_AIRALARM):null
-		if(frequency)
+		if (frequency)
 			set_frequency(frequency)
 
 	receive_signal(datum/signal/signal)
-		if(stat & (NOPOWER|BROKEN))
+		if (stat & (NOPOWER|BROKEN))
 			return
 		//log_admin("DEBUG \[[world.timeofday]\]: /obj/machinery/atmospherics/unary/vent_pump/receive_signal([signal.debug_print()])")
-		if(!signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
+		if (!signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
 			return 0
 
-		if("purge" in signal.data)
+		if ("purge" in signal.data)
 			pressure_checks &= ~1
 			pump_direction = 0
 
-		if("stabalize" in signal.data)
+		if ("stabalize" in signal.data)
 			pressure_checks |= 1
 			pump_direction = 1
 
-		if("power" in signal.data)
+		if ("power" in signal.data)
 			on = text2num(signal.data["power"])
 
-		if("power_toggle" in signal.data)
+		if ("power_toggle" in signal.data)
 			on = !on
 
-		if("checks" in signal.data)
+		if ("checks" in signal.data)
 			pressure_checks = text2num(signal.data["checks"])
 
-		if("checks_toggle" in signal.data)
+		if ("checks_toggle" in signal.data)
 			pressure_checks = (pressure_checks?0:3)
 
-		if("direction" in signal.data)
+		if ("direction" in signal.data)
 			pump_direction = text2num(signal.data["direction"])
 
-		if("set_internal_pressure" in signal.data)
+		if ("set_internal_pressure" in signal.data)
 			internal_pressure_bound = between(
 				0,
 				text2num(signal.data["set_internal_pressure"]),
 				ONE_ATMOSPHERE*50
 			)
 
-		if("set_external_pressure" in signal.data)
+		if ("set_external_pressure" in signal.data)
 			external_pressure_bound = between(
 				0,
 				text2num(signal.data["set_external_pressure"]),
 				ONE_ATMOSPHERE*50
 			)
 
-		if("adjust_internal_pressure" in signal.data)
+		if ("adjust_internal_pressure" in signal.data)
 			internal_pressure_bound = between(
 				0,
 				internal_pressure_bound + text2num(signal.data["adjust_internal_pressure"]),
 				ONE_ATMOSPHERE*50
 			)
 
-		if("adjust_external_pressure" in signal.data)
+		if ("adjust_external_pressure" in signal.data)
 			external_pressure_bound = between(
 				0,
 				external_pressure_bound + text2num(signal.data["adjust_external_pressure"]),
 				ONE_ATMOSPHERE*50
 			)
 
-		if("init" in signal.data)
+		if ("init" in signal.data)
 			name = signal.data["init"]
 			return
 
-		if("status" in signal.data)
+		if ("status" in signal.data)
 			spawn(2)
 				broadcast_status()
 			return //do not update_icon
@@ -236,8 +236,8 @@
 		return
 
 	hide(var/i) //to make the little pipe section invisible, the icon changes.
-		if(on&&node)
-			if(pump_direction)
+		if (on&&node)
+			if (pump_direction)
 				icon_state = "[i == 1 && istype(loc, /turf/simulated) ? "h" : "" ]out"
 			else
 				icon_state = "[i == 1 && istype(loc, /turf/simulated) ? "h" : "" ]in"
@@ -247,13 +247,13 @@
 		return
 
 	attackby(obj/item/W, mob/user)
-		if(istype(W, /obj/item/weapon/weldingtool) && W:welding)
+		if (istype(W, /obj/item/weapon/weldingtool) && W:welding)
 			if (W:remove_fuel(0,user))
 				W:welding = 2
 				user << "\blue Now welding the vent."
-				if(do_after(user, 20))
+				if (do_after(user, 20))
 					playsound(src.loc, 'Welder2.ogg', 50, 1)
-					if(!welded)
+					if (!welded)
 						user.visible_message("[user] welds the vent shut.", "You weld the vent shut.", "You hear welding.")
 						welded = 1
 					else
@@ -266,11 +266,11 @@
 	examine()
 		set src in oview(1)
 		..()
-		if(welded)
+		if (welded)
 			usr << "It seems welded shut."
 
 	power_change()
-		if(powered(power_channel))
+		if (powered(power_channel))
 			stat &= ~NOPOWER
 		else
 			stat |= NOPOWER

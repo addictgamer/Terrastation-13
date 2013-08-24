@@ -8,62 +8,62 @@
 		item.add_fingerprint(source)
 	if (!item)
 		switch(place)
-			if("mask")
+			if ("mask")
 				if (!( target.wear_mask ))
 					//SN src = null
 					del(src)
 					return
-/*			if("headset")
+/*			if ("headset")
 				if (!( target.w_radio ))
 					//SN src = null
 					del(src)
 					return */
-			if("l_hand")
+			if ("l_hand")
 				if (!( target.l_hand ))
 					//SN src = null
 					del(src)
 					return
-			if("r_hand")
+			if ("r_hand")
 				if (!( target.r_hand ))
 					//SN src = null
 					del(src)
 					return
-			if("suit")
+			if ("suit")
 				if (!( target.wear_suit ))
 					//SN src = null
 					del(src)
 					return
-			if("uniform")
+			if ("uniform")
 				if (!( target.w_uniform ))
 					//SN src = null
 					del(src)
 					return
-			if("back")
+			if ("back")
 				if (!( target.back ))
 					//SN src = null
 					del(src)
 					return
-			if("syringe")
+			if ("syringe")
 				return
-			if("pill")
+			if ("pill")
 				return
-			if("fuel")
+			if ("fuel")
 				return
-			if("drink")
+			if ("drink")
 				return
-			if("dnainjector")
+			if ("dnainjector")
 				return
-			if("handcuff")
+			if ("handcuff")
 				if (!( target.handcuffed ))
 					//SN src = null
 					del(src)
 					return
-			if("id")
+			if ("id")
 				if ((!( target.wear_id ) || !( target.w_uniform )))
 					//SN src = null
 					del(src)
 					return
-			if("internal")
+			if ("internal")
 				if ((!( (istype(target.wear_mask, /obj/item/clothing/mask) && istype(target.back, /obj/item/weapon/tank) && !( target.internal )) ) && !( target.internal )))
 					//SN src = null
 					del(src)
@@ -71,7 +71,7 @@
 
 	var/list/L = list( "syringe", "pill", "drink", "dnainjector", "fuel")
 	if ((item && !( L.Find(place) )))
-		if(isrobot(source) && place != "handcuff")
+		if (isrobot(source) && place != "handcuff")
 			del(src)
 			return
 		for(var/mob/O in viewers(target, null))
@@ -85,7 +85,7 @@
 				for(var/mob/O in viewers(target, null))
 					O.show_message(text("\red <B>[] is trying to force [] to swallow []!</B>", source, target, item), 1)
 			else
-				if(place == "fuel")
+				if (place == "fuel")
 					for(var/mob/O in viewers(target, null))
 						O.show_message(text("\red [source] is trying to force [target] to eat the [item:content]!"), 1)
 				else
@@ -99,69 +99,69 @@
 						else
 							var/message = null
 							switch(place)
-								if("mask")
-									if(istype(target.wear_mask, /obj/item/clothing)&&!target.wear_mask:canremove)
+								if ("mask")
+									if (istype(target.wear_mask, /obj/item/clothing)&&!target.wear_mask:canremove)
 										message = text("\red <B>[] fails to take off \a [] from []'s body!</B>", source, target.wear_mask, target)
 									else
 										message = text("\red <B>[] is trying to take off \a [] from []'s head!</B>", source, target.wear_mask, target)
-/*								if("headset")
+/*								if ("headset")
 									message = text("\red <B>[] is trying to take off \a [] from []'s face!</B>", source, target.w_radio, target) */
-								if("l_hand")
+								if ("l_hand")
 									message = text("\red <B>[] is trying to take off \a [] from []'s left hand!</B>", source, target.l_hand, target)
-								if("r_hand")
+								if ("r_hand")
 									message = text("\red <B>[] is trying to take off \a [] from []'s right hand!</B>", source, target.r_hand, target)
-								if("gloves")
-									if(istype(target.gloves, /obj/item/clothing)&&!target.gloves:canremove)
+								if ("gloves")
+									if (istype(target.gloves, /obj/item/clothing)&&!target.gloves:canremove)
 										message = text("\red <B>[] fails to take off \a [] from []'s body!</B>", source, target.gloves, target)
 									else
 										message = text("\red <B>[] is trying to take off the [] from []'s hands!</B>", source, target.gloves, target)
-								if("eyes")
-									if(istype(target.glasses, /obj/item/clothing)&&!target.glasses:canremove)
+								if ("eyes")
+									if (istype(target.glasses, /obj/item/clothing)&&!target.glasses:canremove)
 										message = text("\red <B>[] fails to take off \a [] from []'s body!</B>", source, target.glasses, target)
 									else
 										message = text("\red <B>[] is trying to take off the [] from []'s eyes!</B>", source, target.glasses, target)
-								if("ears")
-									if(istype(target.ears, /obj/item/clothing)&&!target.ears:canremove)
+								if ("ears")
+									if (istype(target.ears, /obj/item/clothing)&&!target.ears:canremove)
 										message = text("\red <B>[] fails to take off \a [] from []'s body!</B>", source, target.ears, target)
 									else
 										message = text("\red <B>[] is trying to take off the [] from []'s ears!</B>", source, target.ears, target)
-								if("head")
-									if(istype(target.head, /obj/item/clothing)&&!target.head:canremove)
+								if ("head")
+									if (istype(target.head, /obj/item/clothing)&&!target.head:canremove)
 										message = text("\red <B>[] fails to take off \a [] from []'s body!</B>", source, target.head, target)
 									else
 										message = text("\red <B>[] is trying to take off the [] from []'s head!</B>", source, target.head, target)
-								if("shoes")
-									if(istype(target.shoes, /obj/item/clothing)&&!target.shoes:canremove)
+								if ("shoes")
+									if (istype(target.shoes, /obj/item/clothing)&&!target.shoes:canremove)
 										message = text("\red <B>[] fails to take off \a [] from []'s body!</B>", source, target.shoes, target)
 									else
 										message = text("\red <B>[] is trying to take off the [] from []'s feet!</B>", source, target.shoes, target)
-								if("belt")
+								if ("belt")
 									message = text("\red <B>[] is trying to take off the [] from []'s belt!</B>", source, target.belt, target)
-								if("suit")
-									if(istype(target.wear_suit, /obj/item/clothing/suit/armor/a_i_a_ptank))//Exception for suicide vests.
+								if ("suit")
+									if (istype(target.wear_suit, /obj/item/clothing/suit/armor/a_i_a_ptank))//Exception for suicide vests.
 										message = text("\red <B>[] fails to take off \a [] from []'s body!</B>", source, target.wear_suit, target)
-									else if(istype(target.wear_suit, /obj/item/clothing)&&!target.wear_suit:canremove)
+									else if (istype(target.wear_suit, /obj/item/clothing)&&!target.wear_suit:canremove)
 										message = text("\red <B>[] fails to take off \a [] from []'s body!</B>", source, target.wear_suit, target)
 									else
 										message = text("\red <B>[] is trying to take off \a [] from []'s body!</B>", source, target.wear_suit, target)
-								if("back")
+								if ("back")
 									message = text("\red <B>[] is trying to take off \a [] from []'s back!</B>", source, target.back, target)
-								if("handcuff")
+								if ("handcuff")
 									message = text("\red <B>[] is trying to unhandcuff []!</B>", source, target)
-								if("uniform")
-									if(istype(target.w_uniform, /obj/item/clothing)&&!target.w_uniform:canremove)
+								if ("uniform")
+									if (istype(target.w_uniform, /obj/item/clothing)&&!target.w_uniform:canremove)
 										message = text("\red <B>[] fails to take off \a [] from []'s body!</B>", source, target.w_uniform, target)
 									else
 										message = text("\red <B>[] is trying to take off \a [] from []'s body!</B>", source, target.w_uniform, target)
-								if("s_store")
+								if ("s_store")
 									message = text("\red <B>[] is trying to take off \a [] from []'s suit!</B>", source, target.s_store, target)
-								if("h_store")
+								if ("h_store")
 									message = text("\red <B>[] is trying to empty []'s hat!</B>", source, target)
-								if("pockets")
+								if ("pockets")
 									for(var/obj/item/weapon/mousetrap/MT in  list(target.l_store, target.r_store))
-										if(MT.armed)
+										if (MT.armed)
 											for(var/mob/O in viewers(target, null))
-												if(O == source)
+												if (O == source)
 													O.show_message(text("\red <B>You reach into the [target]'s pockets, but there was a live mousetrap in there!</B>"), 1)
 												else
 													O.show_message(text("\red <B>[source] reaches into [target]'s pockets and sets off a hidden mousetrap!</B>"), 1)
@@ -173,15 +173,15 @@
 											MT.layer = OBJ_LAYER
 											return
 									message = text("\red <B>[] is trying to empty []'s pockets!!</B>", source, target)
-								if("CPR")
+								if ("CPR")
 									if (target.cpr_time >= world.time + 3)
 										//SN src = null
 										del(src)
 										return
 									message = text("\red <B>[] is trying perform CPR on []!</B>", source, target)
-								if("id")
+								if ("id")
 									message = text("\red <B>[] is trying to take off [] from []'s uniform!</B>", source, target.wear_id, target)
-								if("internal")
+								if ("internal")
 									if (target.internal)
 										message = text("\red <B>[] is trying to remove []'s internals</B>", source, target)
 									else
@@ -204,16 +204,16 @@ The else statement is for equipping stuff to empty slots.
 It can still be worn/put on as normal.
 */
 /obj/equip_e/human/done()
-	if(!source || !target)						return
-	if(source.loc != s_loc)						return
-	if(target.loc != t_loc)						return
-	if(LinkBlocked(s_loc,t_loc))				return
-	if(item && source.equipped() != item)	return
+	if (!source || !target)						return
+	if (source.loc != s_loc)						return
+	if (target.loc != t_loc)						return
+	if (LinkBlocked(s_loc,t_loc))				return
+	if (item && source.equipped() != item)	return
 	if ((source.restrained() || source.stat))	return
 	switch(place)
-		if("mask")
+		if ("mask")
 			if (target.wear_mask)
-				if(istype(target.wear_mask, /obj/item/clothing)&& !target.wear_mask:canremove)
+				if (istype(target.wear_mask, /obj/item/clothing)&& !target.wear_mask:canremove)
 					return
 				var/obj/item/clothing/W = target.wear_mask
 				target.u_equip(W)
@@ -231,7 +231,7 @@ It can still be worn/put on as normal.
 					item.layer = 20
 					target.wear_mask = item
 					item.loc = target
-/*		if("headset")
+/*		if ("headset")
 			if (target.w_radio)
 				var/obj/item/W = target.w_radio
 				target.u_equip(W)
@@ -248,9 +248,9 @@ It can still be worn/put on as normal.
 					item.layer = 20
 					target.w_radio = item
 					item.loc = target*/
-		if("gloves")
+		if ("gloves")
 			if (target.gloves)
-				if(istype(target.gloves, /obj/item/clothing)&& !target.gloves:canremove)
+				if (istype(target.gloves, /obj/item/clothing)&& !target.gloves:canremove)
 					return
 				var/obj/item/clothing/W = target.gloves
 				target.u_equip(W)
@@ -268,9 +268,9 @@ It can still be worn/put on as normal.
 					item.layer = 20
 					target.gloves = item
 					item.loc = target
-		if("eyes")
+		if ("eyes")
 			if (target.glasses)
-				if(istype(target.glasses, /obj/item/clothing)&& !target.glasses:canremove)
+				if (istype(target.glasses, /obj/item/clothing)&& !target.glasses:canremove)
 					return
 				var/obj/item/W = target.glasses
 				target.u_equip(W)
@@ -288,7 +288,7 @@ It can still be worn/put on as normal.
 					item.layer = 20
 					target.glasses = item
 					item.loc = target
-		if("belt")
+		if ("belt")
 			if (target.belt)
 				var/obj/item/W = target.belt
 				target.u_equip(W)
@@ -306,7 +306,7 @@ It can still be worn/put on as normal.
 					item.layer = 20
 					target.belt = item
 					item.loc = target
-		if("s_store")
+		if ("s_store")
 			if (target.s_store)
 				var/obj/item/W = target.s_store
 				target.u_equip(W)
@@ -332,9 +332,9 @@ It can still be worn/put on as normal.
 						item.layer = 20
 						target.s_store = item
 						item.loc = target
-		if("head")
+		if ("head")
 			if (target.head)
-				if(istype(target.head, /obj/item/clothing)&& !target.head:canremove)
+				if (istype(target.head, /obj/item/clothing)&& !target.head:canremove)
 					return
 				var/obj/item/W = target.head
 				target.u_equip(W)
@@ -352,9 +352,9 @@ It can still be worn/put on as normal.
 					item.layer = 20
 					target.head = item
 					item.loc = target
-		if("ears")
+		if ("ears")
 			if (target.ears)
-				if(istype(target.ears, /obj/item/clothing)&& !target.ears:canremove)
+				if (istype(target.ears, /obj/item/clothing)&& !target.ears:canremove)
 					return
 				var/obj/item/W = target.ears
 				target.u_equip(W)
@@ -378,9 +378,9 @@ It can still be worn/put on as normal.
 					item.layer = 20
 					target.ears = item
 					item.loc = target
-		if("shoes")
+		if ("shoes")
 			if (target.shoes)
-				if(istype(target.shoes, /obj/item/clothing)&& !target.shoes:canremove)
+				if (istype(target.shoes, /obj/item/clothing)&& !target.shoes:canremove)
 					return
 				var/obj/item/W = target.shoes
 				target.u_equip(W)
@@ -398,7 +398,7 @@ It can still be worn/put on as normal.
 					item.layer = 20
 					target.shoes = item
 					item.loc = target
-		if("l_hand")
+		if ("l_hand")
 			if (istype(target, /obj/item/clothing/suit/straight_jacket))
 				//SN src = null
 				del(src)
@@ -421,7 +421,7 @@ It can still be worn/put on as normal.
 					target.l_hand = item
 					item.loc = target
 					item.add_fingerprint(target)
-		if("r_hand")
+		if ("r_hand")
 			if (istype(target, /obj/item/clothing/suit/straight_jacket))
 				//SN src = null
 				del(src)
@@ -445,9 +445,9 @@ It can still be worn/put on as normal.
 						target.r_hand = item
 						item.loc = target
 						item.add_fingerprint(target)
-		if("uniform")
+		if ("uniform")
 			if (target.w_uniform)
-				if(istype(target.w_uniform, /obj/item/clothing)&& !target.w_uniform:canremove)
+				if (istype(target.w_uniform, /obj/item/clothing)&& !target.w_uniform:canremove)
 					return
 				var/obj/item/W = target.w_uniform
 				target.u_equip(W)
@@ -492,16 +492,16 @@ It can still be worn/put on as normal.
 					item.layer = 20
 					target.w_uniform = item
 					item.loc = target
-		if("suit")
+		if ("suit")
 			if (target.wear_suit)
-				if(istype(target.wear_suit, /obj/item/clothing/suit/armor/a_i_a_ptank))//triggers suicide vest if someone else tries to take it off/N
+				if (istype(target.wear_suit, /obj/item/clothing/suit/armor/a_i_a_ptank))//triggers suicide vest if someone else tries to take it off/N
 					var/obj/item/clothing/suit/armor/a_i_a_ptank/A = target.wear_suit//mostly a copy from death.dm code.
 					bombers += "[target.key] has detonated a suicide bomb. Temp = [A.part4.air_contents.temperature-T0C]."
-					if(A.status && prob(90))
+					if (A.status && prob(90))
 						A.part4.ignite()
 						return
-				if(istype(target.wear_suit, /obj/item/clothing)&& !target.wear_suit:canremove)
-					if(!istype(target.wear_suit, /obj/item/clothing/suit/armor/a_i_a_ptank))	return//Can remove the suicide vest if it didn't trigger.
+				if (istype(target.wear_suit, /obj/item/clothing)&& !target.wear_suit:canremove)
+					if (!istype(target.wear_suit, /obj/item/clothing/suit/armor/a_i_a_ptank))	return//Can remove the suicide vest if it didn't trigger.
 				var/obj/item/W = target.wear_suit
 				target.u_equip(W)
 				if (target.client)
@@ -518,7 +518,7 @@ It can still be worn/put on as normal.
 					item.layer = 20
 					target.wear_suit = item
 					item.loc = target
-		if("id")
+		if ("id")
 			if (target.wear_id)
 				var/obj/item/W = target.wear_id
 				target.u_equip(W)
@@ -536,7 +536,7 @@ It can still be worn/put on as normal.
 					item.layer = 20
 					target.wear_id = item
 					item.loc = target
-		if("back")
+		if ("back")
 			if (target.back)
 				var/obj/item/W = target.back
 				target.u_equip(W)
@@ -554,7 +554,7 @@ It can still be worn/put on as normal.
 					item.layer = 20
 					target.back = item
 					item.loc = target
-		if("h_store")
+		if ("h_store")
 			if (target.h_store)
 				var/obj/item/W = target.h_store
 				target.u_equip(W)
@@ -565,7 +565,7 @@ It can still be worn/put on as normal.
 					W.dropped(target)
 					W.layer = initial(W.layer)
 				W.add_fingerprint(source)
-		if("handcuff")
+		if ("handcuff")
 			if (target.handcuffed)
 				var/obj/item/W = target.handcuffed
 				target.u_equip(W)
@@ -583,7 +583,7 @@ It can still be worn/put on as normal.
 					source.drop_item()
 					target.handcuffed = item
 					item.loc = target
-		if("CPR")
+		if ("CPR")
 			if (target.cpr_time >= world.time + 30)
 				//SN src = null
 				del(src)
@@ -597,7 +597,7 @@ It can still be worn/put on as normal.
 					O.show_message(text("\red [] performs CPR on []!", source, target), 1)
 				target << "\blue <b>You feel a breath of fresh air enter your lungs. It feels good.</b>"
 				source << "\red Repeat every 7 seconds AT LEAST."
-		if("fuel")
+		if ("fuel")
 			var/obj/item/weapon/fuel/S = item
 			if (!( istype(S, /obj/item/weapon/fuel) ))
 				//SN src = null
@@ -612,9 +612,9 @@ It can still be worn/put on as normal.
 			for(var/mob/O in viewers(source, null))
 				O.show_message(text("\red [source] forced [target] to eat the [a]!"), 1)
 			S.injest(target)
-		if("dnainjector")
+		if ("dnainjector")
 			var/obj/item/weapon/dnainjector/S = item
-			if(item)
+			if (item)
 				item.add_fingerprint(source)
 				item:inject(target, null)
 				if (!( istype(S, /obj/item/weapon/dnainjector) ))
@@ -628,7 +628,7 @@ It can still be worn/put on as normal.
 				S.s_time = world.time
 				for(var/mob/O in viewers(source, null))
 					O.show_message(text("\red [] injects [] with the DNA Injector!", source, target), 1)
-		if("pockets")
+		if ("pockets")
 			if (target.l_store)
 				var/obj/item/W = target.l_store
 				target.u_equip(W)
@@ -649,7 +649,7 @@ It can still be worn/put on as normal.
 					W.dropped(target)
 					W.layer = initial(W.layer)
 				W.add_fingerprint(source)
-		if("internal")
+		if ("internal")
 			if (target.internal)
 				target.internal.add_fingerprint(source)
 				target.internal = null
@@ -672,9 +672,9 @@ It can still be worn/put on as normal.
 						if (target.internals)
 							target.internals.icon_state = "internal1"
 		else
-	if(source)
+	if (source)
 		source.update_clothing()
-	if(target)
+	if (target)
 		target.update_clothing()
 	//SN src = null
 	del(src)

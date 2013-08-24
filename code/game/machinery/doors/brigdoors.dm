@@ -32,7 +32,7 @@
 		stat |= BROKEN
 	targetflashers = list()
 	for(var/obj/machinery/flasher/F in world)
-		if(F.id == src.id)
+		if (F.id == src.id)
 			targetflashers += F
 	update_icon()
 
@@ -60,19 +60,19 @@
 // open/closedoor checks if door_timer has power, if so it checks if the
 // linked door is open/closed (by density) then opens it/closes it.
 /obj/machinery/door_timer/proc/opendoor()
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 	for (var/obj/machinery/door/window/brigdoor/targetdoor in targetdoors)
-		if(targetdoor.density)
+		if (targetdoor.density)
 			spawn( 0 )
 				targetdoor.open()
 	return
 
 /obj/machinery/door_timer/proc/closedoor()
-	if(stat & (NOPOWER|BROKEN))
+	if (stat & (NOPOWER|BROKEN))
 		return
 	for (var/obj/machinery/door/window/brigdoor/targetdoor in targetdoors)
-		if(!targetdoor.density)
+		if (!targetdoor.density)
 			spawn( 0 )
 				targetdoor.close()
 	return
@@ -98,7 +98,7 @@
 // Allows altering timer and the timing boolean.
 // Flasher activation limited to 150 seconds
 /obj/machinery/door_timer/attack_hand(var/mob/user as mob)
-	if(..())
+	if (..())
 		return
 	var/dat = "<HTML><BODY><TT><B>Door [src.id] controls</B>"
 	user.machine = src
@@ -114,7 +114,7 @@
 	if (targetflashers.len)
 		dat += "<BR>"
 	for(var/obj/machinery/flasher/F in targetflashers)
-		if(F.last_flash && (F.last_flash + 150) > world.time)
+		if (F.last_flash && (F.last_flash + 150) > world.time)
 			dat += text("<BR><A href='?src=\ref[];fc=1'>Flash Cell (Charging)</A>", src)
 		else
 			dat += text("<BR><A href='?src=\ref[];fc=1'>Flash Cell</A>", src)
@@ -130,9 +130,9 @@
 //  "fc" activates flasher
 // Also updates dialog window and timer icon
 /obj/machinery/door_timer/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
-	if(!src.allowed(usr))
+	if (!src.allowed(usr))
 		return
 
 	usr.machine = src
@@ -164,13 +164,13 @@
 // if BROKEN, display blue screen of death icon AI uses
 // if timing=true, run update display function
 /obj/machinery/door_timer/update_icon()
-	if(stat & (NOPOWER))
+	if (stat & (NOPOWER))
 		icon_state = "frame"
 		return
-	if(stat & (BROKEN))
+	if (stat & (BROKEN))
 		set_picture("ai_bsod")
 		return
-	if(src.timing)
+	if (src.timing)
 		var/disp1 = uppertext(id)
 		var/timeleft = timeleft()
 		var/disp2 = "[add_zero(num2text((timeleft / 60) % 60),2)]~[add_zero(num2text(timeleft % 60), 2)]"
@@ -188,7 +188,7 @@
 //Checks to see if there's 1 line or 2, adds text-icons-numbers/letters over display
 // Stolen from status_display
 /obj/machinery/door_timer/proc/update_display(var/line1, var/line2)
-	if(line2 == null)		// single line display
+	if (line2 == null)		// single line display
 		overlays = null
 		overlays += texticon(line1, 23, -13)
 	else					// dual line display
@@ -207,7 +207,7 @@
 
 	for(var/d = 1 to len)
 		var/char = copytext(tn, len-d+1, len-d+2)
-		if(char == " ")
+		if (char == " ")
 			continue
 		var/image/ID = image('status_display.dmi', icon_state=char)
 		ID.pixel_x = -(d-1)*5 + px

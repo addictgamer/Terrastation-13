@@ -46,9 +46,9 @@
 			src.last_time = world.time
 			// special power handling
 			var/area/A = get_area(src)
-			if(!isarea(A))
+			if (!isarea(A))
 				return
-			if(!A.powered(EQUIP))
+			if (!A.powered(EQUIP))
 				return
 			A.use_power(EQUIP, 5000)
 			var/light = A.power_light
@@ -63,7 +63,7 @@
 				M << "\red <B>You feel a deep shock course through your body!</B>"
 				sleep(1)
 				M.burn_skin(85)
-				if(M.stunned < 600)
+				if (M.stunned < 600)
 					M.stunned = 600
 			for(var/mob/M in hearers(src, null))
 				M.show_message("\red The electric chair went off!.", 3, "\red You hear a deep sharp shock.", 2)

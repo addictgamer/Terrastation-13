@@ -7,7 +7,7 @@
 
 /datum/sun/New()
 	rate = rand(75,125)/100			// 75% - 125% of standard rotation
-	if(prob(50))
+	if (prob(50))
 		rate = -rate
 
 // calculate the sun's position given the time of day
@@ -15,7 +15,7 @@
 /datum/sun/proc/calc_position()
 
 	counter++
-	if(counter<50)		// count 50 pticks (50 seconds, roughly - about a 5deg change)
+	if (counter<50)		// count 50 pticks (50 seconds, roughly - about a 5deg change)
 		return
 	counter = 0
 
@@ -26,12 +26,12 @@
 	var/s = sin(angle)
 	var/c = cos(angle)
 
-	if(c == 0)
+	if (c == 0)
 
 		dx = 0
 		dy = s
 
-	else if( abs(s) < abs(c))
+	else if ( abs(s) < abs(c))
 
 		dx = s / abs(c)
 		dy = c / abs(c)
@@ -45,7 +45,7 @@
 		T.set_angle(angle)
 
 	for(var/obj/machinery/power/solar/S in machines)
-		if(S.control)
+		if (S.control)
 			occlusion(S)
 
 
@@ -62,10 +62,10 @@
 
 		var/turf/T = locate( round(ax,0.5),round(ay,0.5),S.z)
 
-		if(T.x == 1 || T.x==world.maxx || T.y==1 || T.y==world.maxy)		// not obscured if we reach the edge
+		if (T.x == 1 || T.x==world.maxx || T.y==1 || T.y==world.maxy)		// not obscured if we reach the edge
 			break
 
-		if(T.density)			// if we hit a solid turf, panel is obscured
+		if (T.density)			// if we hit a solid turf, panel is obscured
 			S.obscured = 1
 			return
 
@@ -77,21 +77,21 @@
 
 /proc/dir2angle(var/D)
 	switch(D)
-		if(1)
+		if (1)
 			return 0
-		if(2)
+		if (2)
 			return 180
-		if(4)
+		if (4)
 			return 90
-		if(8)
+		if (8)
 			return 270
-		if(5)
+		if (5)
 			return 45
-		if(6)
+		if (6)
 			return 135
-		if(9)
+		if (9)
 			return 315
-		if(10)
+		if (10)
 			return 225
 		else
 			return null

@@ -22,7 +22,7 @@
 	if (isrobot(usr))
 		return
 	if (istype(O, /obj/item/weapon/extinguisher))
-		if(!EXTINGUISHER)
+		if (!EXTINGUISHER)
 			user.drop_item(O)
 			src.contents += O
 			EXTINGUISHER = O
@@ -34,8 +34,8 @@
 	update_icon()
 
 /obj/closet/extinguisher/attack_hand(mob/user as mob)
-	if(localopened)
-		if(EXTINGUISHER)
+	if (localopened)
+		if (EXTINGUISHER)
 			user.put_in_hand(EXTINGUISHER)
 			EXTINGUISHER = null
 			user << "\blue You take the extinguisher from the [name]."
@@ -64,7 +64,7 @@
 		return
 
 	if (localopened)
-		if(EXTINGUISHER)
+		if (EXTINGUISHER)
 			usr.put_in_hand(EXTINGUISHER)
 			EXTINGUISHER = null
 			usr << "\blue You take the extinguisher from the [name]."
@@ -83,6 +83,6 @@
 
 /obj/closet/extinguisher/update_icon()
 	var/hasextinguisher = 0
-	if(EXTINGUISHER)
+	if (EXTINGUISHER)
 		hasextinguisher = 1
 	icon_state = text("extinguisher[][]",hasextinguisher,src.localopened)

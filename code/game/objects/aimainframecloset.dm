@@ -27,7 +27,7 @@
 		return attack_hand(user)
 
 	attack_hand(mob/user as mob)
-		if(!open)
+		if (!open)
 			var/temp_count
 			for(var/obj/item/aiModule/M in src)
 				M.loc = src.loc

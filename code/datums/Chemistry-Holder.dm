@@ -18,10 +18,10 @@ datum
 				current_list_element = rand(1,reagent_list.len)
 
 				while(total_transfered != amount)
-					if(total_transfered >= amount) break
-					if(total_volume <= 0 || !reagent_list.len) break
+					if (total_transfered >= amount) break
+					if (total_volume <= 0 || !reagent_list.len) break
 
-					if(current_list_element > reagent_list.len) current_list_element = 1
+					if (current_list_element > reagent_list.len) current_list_element = 1
 					var/datum/reagent/current_reagent = reagent_list[current_list_element]
 
 					src.remove_reagent(current_reagent.id, 1)
@@ -37,7 +37,7 @@ datum
 				var/the_name = null
 				var/the_volume = 0
 				for(var/datum/reagent/A in reagent_list)
-					if(A.volume > the_volume)
+					if (A.volume > the_volume)
 						the_volume = A.volume
 						the_name = A.name
 
@@ -47,7 +47,7 @@ datum
 				var/the_id = null
 				var/the_volume = 0
 				for(var/datum/reagent/A in reagent_list)
-					if(A.volume > the_volume)
+					if (A.volume > the_volume)
 						the_volume = A.volume
 						the_id = A.id
 
@@ -64,7 +64,7 @@ datum
 				var/trans_data = null
 				for (var/datum/reagent/current_reagent in src.reagent_list)
 					var/current_reagent_transfer = current_reagent.volume * part
-					if(preserve_data)
+					if (preserve_data)
 						trans_data = current_reagent.data
 					R.add_reagent(current_reagent.id, (current_reagent_transfer * multiplier), trans_data)
 					src.remove_reagent(current_reagent.id, current_reagent_transfer)
@@ -76,9 +76,9 @@ datum
 				return amount
 
 			copy_to(var/obj/target, var/amount=1, var/multiplier=1, var/preserve_data=1)
-				if(!target)
+				if (!target)
 					return
-				if(!target.reagents || src.total_volume<=0)
+				if (!target.reagents || src.total_volume<=0)
 					return
 				var/datum/reagents/R = target.reagents
 				amount = min(min(amount, src.total_volume), R.maximum_volume-R.total_volume)
@@ -86,7 +86,7 @@ datum
 				var/trans_data = null
 				for (var/datum/reagent/current_reagent in src.reagent_list)
 					var/current_reagent_transfer = current_reagent.volume * part
-					if(preserve_data)
+					if (preserve_data)
 						trans_data = current_reagent.data
 					R.add_reagent(current_reagent.id, (current_reagent_transfer * multiplier), trans_data)
 
@@ -103,13 +103,13 @@ datum
 					return
 
 				var/datum/reagents/R = target.reagents
-				if(src.get_reagent_amount(reagent)<amount)
+				if (src.get_reagent_amount(reagent)<amount)
 					amount = src.get_reagent_amount(reagent)
 				amount = min(amount, R.maximum_volume-R.total_volume)
 				var/trans_data = null
 				for (var/datum/reagent/current_reagent in src.reagent_list)
-					if(current_reagent.id == reagent)
-						if(preserve_data)
+					if (current_reagent.id == reagent)
+						if (preserve_data)
 							trans_data = current_reagent.data
 						R.add_reagent(current_reagent.id, amount, trans_data)
 						src.remove_reagent(current_reagent.id, amount, 1)
@@ -127,18 +127,18 @@ datum
 				var/current_list_element = 1
 				var/datum/reagents/R = target.reagents
 				var/trans_data = null
-				//if(R.total_volume + amount > R.maximum_volume) return 0
+				//if (R.total_volume + amount > R.maximum_volume) return 0
 
 				current_list_element = rand(1,reagent_list.len) //Eh, bandaid fix.
 
 				while(total_transfered != amount)
-					if(total_transfered >= amount) break //Better safe than sorry.
-					if(total_volume <= 0 || !reagent_list.len) break
-					if(R.total_volume >= R.maximum_volume) break
+					if (total_transfered >= amount) break //Better safe than sorry.
+					if (total_volume <= 0 || !reagent_list.len) break
+					if (R.total_volume >= R.maximum_volume) break
 
-					if(current_list_element > reagent_list.len) current_list_element = 1
+					if (current_list_element > reagent_list.len) current_list_element = 1
 					var/datum/reagent/current_reagent = reagent_list[current_list_element]
-					if(preserve_data)
+					if (preserve_data)
 						trans_data = current_reagent.data
 					R.add_reagent(current_reagent.id, (1 * multiplier), trans_data)
 					src.remove_reagent(current_reagent.id, 1)
@@ -156,7 +156,7 @@ datum
 			metabolize(var/mob/M)
 				for(var/A in reagent_list)
 					var/datum/reagent/R = A
-					if(M && R)
+					if (M && R)
 						R.on_mob_life(M)
 				update_total()
 
@@ -171,7 +171,7 @@ datum
 				update_total()
 
 			handle_reactions()
-				if(my_atom.flags & NOREACT) return //Yup, no reactions here. No siree.
+				if (my_atom.flags & NOREACT) return //Yup, no reactions here. No siree.
 
 				var/reaction_occured = 0
 				do
@@ -187,40 +187,40 @@ datum
 						var/list/multipliers = new/list()
 
 						for(var/B in C.required_reagents)
-							if(has_reagent(B, C.required_reagents[B]))
+							if (has_reagent(B, C.required_reagents[B]))
 								total_matching_reagents++
 								multipliers += round(get_reagent_amount(B) / C.required_reagents[B])
 						for(var/B in C.required_catalysts)
-							if(has_reagent(B, C.required_catalysts[B]))
+							if (has_reagent(B, C.required_catalysts[B]))
 								total_matching_catalysts++
 
-						if(!C.required_container)
+						if (!C.required_container)
 							matching_container = 1
 
 						else
-							if(my_atom.type == C.required_container)
+							if (my_atom.type == C.required_container)
 								matching_container = 1
 
-						if(!C.required_other)
+						if (!C.required_other)
 							matching_other = 1
 
 						else
-							if(istype(my_atom, /obj/item/metroid_core))
+							if (istype(my_atom, /obj/item/metroid_core))
 								var/obj/item/metroid_core/M = my_atom
 
-								if(M.POWERFLAG == C.required_other)
+								if (M.POWERFLAG == C.required_other)
 									matching_other = 1
 
 
 
 
-						if(total_matching_reagents == total_required_reagents && total_matching_catalysts == total_required_catalysts && matching_container && matching_other)
+						if (total_matching_reagents == total_required_reagents && total_matching_catalysts == total_required_catalysts && matching_container && matching_other)
 							var/multiplier = min(multipliers)
 							for(var/B in C.required_reagents)
 								remove_reagent(B, (multiplier * C.required_reagents[B]), safety = 1)
 
 							var/created_volume = C.result_amount*multiplier
-							if(C.result)
+							if (C.result)
 								multiplier = max(multiplier, 1) //this shouldnt happen ...
 								add_reagent(C.result, C.result_amount*multiplier)
 
@@ -259,7 +259,7 @@ datum
 			update_total()
 				total_volume = 0
 				for(var/datum/reagent/R in reagent_list)
-					if(R.volume < 0.1)
+					if (R.volume < 0.1)
 						del_reagent(R.id)
 					else
 						total_volume += R.volume
@@ -274,40 +274,40 @@ datum
 			reaction(var/atom/A, var/method=TOUCH, var/volume_modifier=0)
 
 				switch(method)
-					if(TOUCH)
+					if (TOUCH)
 						for(var/datum/reagent/R in reagent_list)
-							if(ismob(A))
+							if (ismob(A))
 								spawn(0)
-									if(!R) return
+									if (!R) return
 									else R.reaction_mob(A, TOUCH, R.volume+volume_modifier)
-							if(isturf(A))
+							if (isturf(A))
 								spawn(0)
-									if(!R) return
+									if (!R) return
 									else R.reaction_turf(A, R.volume+volume_modifier)
-							if(isobj(A))
+							if (isobj(A))
 								spawn(0)
-									if(!R) return
+									if (!R) return
 									else R.reaction_obj(A, R.volume+volume_modifier)
-					if(INGEST)
+					if (INGEST)
 						for(var/datum/reagent/R in reagent_list)
-							if(ismob(A) && R)
+							if (ismob(A) && R)
 								spawn(0)
-									if(!R) return
+									if (!R) return
 									else R.reaction_mob(A, INGEST, R.volume+volume_modifier)
-							if(isturf(A) && R)
+							if (isturf(A) && R)
 								spawn(0)
-									if(!R) return
+									if (!R) return
 									else R.reaction_turf(A, R.volume+volume_modifier)
-							if(isobj(A) && R)
+							if (isobj(A) && R)
 								spawn(0)
-									if(!R) return
+									if (!R) return
 									else R.reaction_obj(A, R.volume+volume_modifier)
 				return
 
 			add_reagent(var/reagent, var/amount, var/data=null)
-				if(!isnum(amount)) return 1
+				if (!isnum(amount)) return 1
 				update_total()
-				if(total_volume + amount > maximum_volume) amount = (maximum_volume - total_volume) //Doesnt fit in. Make it disappear. Shouldnt happen. Will happen.
+				if (total_volume + amount > maximum_volume) amount = (maximum_volume - total_volume) //Doesnt fit in. Make it disappear. Shouldnt happen. Will happen.
 
 				for(var/A in reagent_list)
 					var/datum/reagent/R = A
@@ -317,16 +317,16 @@ datum
 						my_atom.on_reagent_change()
 
 						// mix dem viruses
-						if(R.id == "blood" && reagent == "blood")
-							if(R.data && data)
-								if(R.data && R.data["viruses"] || data && data["viruses"])
+						if (R.id == "blood" && reagent == "blood")
+							if (R.data && data)
+								if (R.data && R.data["viruses"] || data && data["viruses"])
 									var/list/this = R.data["viruses"]
 									var/list/that = data["viruses"]
 									this += that // combine the two
 
 									for(var/datum/disease/D in this) // makes sure no two viruses are in the reagent at the same time
 										for(var/datum/disease/d in this)
-											if(d != D)
+											if (d != D)
 												D.cure(0)
 
 						return 0
@@ -351,14 +351,14 @@ datum
 
 			remove_reagent(var/reagent, var/amount, var/safety)//Added a safety check for the trans_id_to
 
-				if(!isnum(amount)) return 1
+				if (!isnum(amount)) return 1
 
 				for(var/A in reagent_list)
 					var/datum/reagent/R = A
 					if (R.id == reagent)
 						R.volume -= amount
 						update_total()
-						if(!safety)//So it does not handle reactions when it need not to
+						if (!safety)//So it does not handle reactions when it need not to
 							handle_reactions()
 						my_atom.on_reagent_change()
 						return 0
@@ -370,9 +370,9 @@ datum
 				for(var/A in reagent_list)
 					var/datum/reagent/R = A
 					if (R.id == reagent)
-						if(!amount) return R
+						if (!amount) return R
 						else
-							if(R.volume >= amount) return R
+							if (R.volume >= amount) return R
 							else return 0
 
 				return 0

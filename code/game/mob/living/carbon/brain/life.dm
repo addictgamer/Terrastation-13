@@ -5,7 +5,7 @@
 		set background = 1
 
 		var/datum/gas_mixture/environment // Added to prevent null location errors-- TLE
-		if(loc)
+		if (loc)
 			environment = loc.return_air()
 
 	//Apparently, the person who wrote this code designed it so that
@@ -18,7 +18,7 @@
 		handle_virus_updates()
 
 	//Handle temperature/pressure differences between body and environment
-		if(environment)	// More error checking -- TLE
+		if (environment)	// More error checking -- TLE
 			handle_environment(environment)
 
 	//Mutations and radiation
@@ -30,7 +30,7 @@
 	//Status updates, death etc.
 		handle_regular_status_updates()
 
-		if(client)
+		if (client)
 			handle_regular_hud_updates()
 
 	// Yup.
@@ -59,26 +59,26 @@
 					src << "\red You feel weak."
 
 				switch(radiation)
-					if(1 to 49)
+					if (1 to 49)
 						radiation--
-						if(prob(25))
+						if (prob(25))
 							toxloss++
 							updatehealth()
 
-					if(50 to 74)
+					if (50 to 74)
 						radiation -= 2
 						toxloss++
-						if(prob(5))
+						if (prob(5))
 							radiation -= 5
 							weakened = 3
 							src << "\red You feel weak."
 //							emote("collapse")
 						updatehealth()
 
-					if(75 to 100)
+					if (75 to 100)
 						radiation -= 3
 						toxloss += 3
-						if(prob(1))
+						if (prob(1))
 							src << "\red You mutate!"
 							randmutb(src)
 							domutcheck(src,null)
@@ -86,43 +86,43 @@
 						updatehealth()
 
 		update_canmove()
-			if(in_contents_of(/obj/mecha))
+			if (in_contents_of(/obj/mecha))
 				canmove = 1
 			else
 				canmove = 0
 			return
 
 		handle_environment(datum/gas_mixture/environment)
-			if(!environment)
+			if (!environment)
 				return
 			var/environment_heat_capacity = environment.heat_capacity()
-			if(istype(loc, /turf/space))
+			if (istype(loc, /turf/space))
 				environment_heat_capacity = loc:heat_capacity
 
-			if((environment.temperature > (T0C + 50)) || (environment.temperature < (T0C + 10)))
+			if ((environment.temperature > (T0C + 50)) || (environment.temperature < (T0C + 10)))
 				var/transfer_coefficient
 
 				transfer_coefficient = 1
-				if(wear_mask && (wear_mask.body_parts_covered & HEAD) && (environment.temperature < wear_mask.protective_temperature))
+				if (wear_mask && (wear_mask.body_parts_covered & HEAD) && (environment.temperature < wear_mask.protective_temperature))
 					transfer_coefficient *= wear_mask.heat_transfer_coefficient
 
 				handle_temperature_damage(HEAD, environment.temperature, environment_heat_capacity*transfer_coefficient)
 
-			if(stat==2)
+			if (stat==2)
 				bodytemperature += 0.1*(environment.temperature - bodytemperature)*environment_heat_capacity/(environment_heat_capacity + 270000)
 
 			//Account for massive pressure differences
 			return //TODO: DEFERRED
 
 		handle_temperature_damage(body_part, exposed_temperature, exposed_intensity)
-			if(nodamage) return
+			if (nodamage) return
 			var/discomfort = min( abs(exposed_temperature - bodytemperature)*(exposed_intensity)/2000000, 1.0)
 			//fireloss += 2.5*discomfort
 			fireloss += 5.0*discomfort
 
 		handle_chemicals_in_body()
 
-			if(reagents) reagents.metabolize(src)
+			if (reagents) reagents.metabolize(src)
 
 			if (drowsyness)
 				drowsyness--
@@ -133,7 +133,7 @@
 
 			confused = max(0, confused - 1)
 			// decrement dizziness counter, clamped to 0
-			if(resting)
+			if (resting)
 				dizziness = max(0, dizziness - 5)
 			else
 				dizziness = max(0, dizziness - 1)
@@ -146,24 +146,24 @@
 
 			health = 100 - (oxyloss + toxloss + fireloss + bruteloss + cloneloss)
 
-			if(oxyloss > 25) paralysis = max(paralysis, 3)
+			if (oxyloss > 25) paralysis = max(paralysis, 3)
 
-			if(sleeping)
+			if (sleeping)
 				paralysis = max(paralysis, 5)
 				if (prob(1) && health) spawn(0) emote("snore")
 
-			if(resting)
+			if (resting)
 				weakened = max(weakened, 5)
 
-			if(health < -100 && stat != 2)
+			if (health < -100 && stat != 2)
 				death()
-			else if(health < 0)
-				if(health <= 20 && prob(1)) spawn(0) emote("gasp")
+			else if (health < 0)
+				if (health <= 20 && prob(1)) spawn(0) emote("gasp")
 
-				//if(!rejuv) oxyloss++
-				if(!reagents.has_reagent("inaprovaline")) oxyloss++
+				//if (!rejuv) oxyloss++
+				if (!reagents.has_reagent("inaprovaline")) oxyloss++
 
-				if(stat != 2)	stat = 1
+				if (stat != 2)	stat = 1
 				paralysis = max(paralysis, 5)
 
 			if (stat != 2) //Alive.
@@ -246,24 +246,24 @@
 			if (healths)
 				if (stat != 2)
 					switch(health)
-						if(100 to INFINITY)
+						if (100 to INFINITY)
 							healths.icon_state = "health0"
-						if(80 to 100)
+						if (80 to 100)
 							healths.icon_state = "health1"
-						if(60 to 80)
+						if (60 to 80)
 							healths.icon_state = "health2"
-						if(40 to 60)
+						if (40 to 60)
 							healths.icon_state = "health3"
-						if(20 to 40)
+						if (20 to 40)
 							healths.icon_state = "health4"
-						if(0 to 20)
+						if (0 to 20)
 							healths.icon_state = "health5"
 						else
 							healths.icon_state = "health6"
 				else
 					healths.icon_state = "health7"
 
-			if(pullin)	pullin.icon_state = "pull[pulling ? 1 : 0]"
+			if (pullin)	pullin.icon_state = "pull[pulling ? 1 : 0]"
 
 			client.screen -= hud_used.blurry
 			client.screen -= hud_used.druggy
@@ -289,13 +289,13 @@
 					if (!( machine.check_eye(src) ))
 						reset_view(null)
 				else
-					if(!client.adminobs)
+					if (!client.adminobs)
 						reset_view(null)
 
 			return 1
 
 		handle_virus_updates()
-			if(bodytemperature > 409)
+			if (bodytemperature > 409)
 				for(var/datum/disease/D in viruses)
 					D.cure()
 			return

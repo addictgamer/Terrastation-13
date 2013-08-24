@@ -224,9 +224,9 @@
 		var/temperature = 0
 
 		proc/Freeze(atom/A as mob|obj|turf|area)
-			if(istype(A, /mob))
+			if (istype(A, /mob))
 				var/mob/M = A
-				if(M.bodytemperature > temperature)
+				if (M.bodytemperature > temperature)
 					M.bodytemperature = temperature
 
 	plasma
@@ -236,29 +236,29 @@
 		var/temperature = 800
 
 		proc/Heat(atom/A as mob|obj|turf|area)
-			if(istype(A, /mob/living/carbon))
+			if (istype(A, /mob/living/carbon))
 				var/mob/M = A
-				if(M.bodytemperature < temperature)
+				if (M.bodytemperature < temperature)
 					M.bodytemperature = temperature
 
 
 
 
 	Bump(atom/A as mob|obj|turf|area)
-		if(A == firer)
+		if (A == firer)
 			loc = A.loc
 			return // cannot shoot yourself
 
-		if(bumped) return
+		if (bumped) return
 
 		bumped = 1
-		if(firer && istype(A, /mob))
+		if (firer && istype(A, /mob))
 			var/mob/M = A
-			if(!istype(A, /mob/living))
+			if (!istype(A, /mob/living))
 				loc = A.loc
 				return // nope.avi
 
-			if(!silenced)
+			if (!silenced)
 				/*
 				for(var/mob/O in viewers(M))
 					O.show_message("\red [A.name] has been shot by [firer.name]!", 1) */
@@ -266,24 +266,24 @@
 				visible_message("\red [A.name] has been shot by [firer.name]!", "\blue You hear a [istype(src, /obj/item/projectile/beam) ? "gunshot" : "laser blast"]!")
 			else
 				M << "\red You've been shot!"
-			if(istype(firer, /mob))
+			if (istype(firer, /mob))
 				M.attack_log += text("\[[]\] <b>[]/[]</b> shot <b>[]/[]</b> with a <b>[]</b>", time_stamp(), firer, firer.ckey, M, M.ckey, src)
 				firer.attack_log += text("\[[]\] <b>[]/[]</b> shot <b>[]/[]</b> with a <b>[]</b>", time_stamp(), firer, firer.ckey, M, M.ckey, src)
 			else
 				M.attack_log += text("\[[]\] <b>UNKOWN SUBJECT (No longer exists)</b> shot <b>[]/[]</b> with a <b>[]</b>", time_stamp(), M, M.ckey, src)
 		spawn(0)
-			if(A)
+			if (A)
 
-				if(istype(src, /obj/item/projectile/freeze))
+				if (istype(src, /obj/item/projectile/freeze))
 					var/obj/item/projectile/freeze/F = src
 					F.Freeze(A)
-				else if(istype(src, /obj/item/projectile/plasma))
+				else if (istype(src, /obj/item/projectile/plasma))
 					var/obj/item/projectile/plasma/P = src
 					P.Heat(A)
 				else
 
 					A.bullet_act(src, def_zone)
-					if(istype(A,/turf) && !istype(src, /obj/item/projectile/beam))
+					if (istype(A,/turf) && !istype(src, /obj/item/projectile/beam))
 						for(var/obj/O in A)
 							O.bullet_act(src, def_zone)
 
@@ -299,9 +299,9 @@
 		return
 
 	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-		if(air_group || (height==0)) return 1
+		if (air_group || (height==0)) return 1
 
-		if(istype(mover, /obj/item/projectile))
+		if (istype(mover, /obj/item/projectile))
 			return prob(95)
 		else
 			return 1
@@ -318,8 +318,8 @@
 
 			sleep( 1 )
 
-			if(!bumped)
-				if(loc == original)
+			if (!bumped)
+				if (loc == original)
 					for(var/mob/living/M in original)
 						Bump(M)
 						sleep( 1 )

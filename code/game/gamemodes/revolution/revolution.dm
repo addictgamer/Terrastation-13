@@ -1,4 +1,4 @@
-// To add a rev to the list of revolutionaries, make sure it's rev (with if(ticker.mode.name == "revolution)),
+// To add a rev to the list of revolutionaries, make sure it's rev (with if (ticker.mode.name == "revolution)),
 // then call ticker.mode:add_revolutionary(_THE_PLAYERS_MIND_)
 // nothing else needs to be done, as that proc will check if they are a valid target.
 // Just make sure the converter is a head before you call it!
@@ -39,13 +39,13 @@
 
 	var/head_check = 0
 	for(var/mob/new_player/player in world)
-		if(player.mind.assigned_role in head_positions)
+		if (player.mind.assigned_role in head_positions)
 			head_check = 1
 			break
 
 	for(var/datum/mind/player in possible_headrevs)
 		for(var/job in restricted_jobs)//Removing heads and such from the list
-			if(player.assigned_role == job)
+			if (player.assigned_role == job)
 				possible_headrevs -= player
 
 	for (var/i=1 to max_headrevs)
@@ -55,7 +55,7 @@
 		possible_headrevs -= lenin
 		head_revolutionaries += lenin
 
-	if((head_revolutionaries.len==0)||(!head_check))
+	if ((head_revolutionaries.len==0)||(!head_check))
 		return 0
 
 	return 1
@@ -86,8 +86,8 @@
 
 /datum/game_mode/revolution/process()
 	checkwin_counter++
-	if(checkwin_counter >= 20)
-		if(!finished)
+	if (checkwin_counter >= 20)
+		if (!finished)
 			ticker.mode.check_win()
 		checkwin_counter = 0
 	return 0
@@ -115,7 +115,7 @@
 //This are equips the rev heads with their gear, and makes the clown not clumsy//
 /////////////////////////////////////////////////////////////////////////////////
 /datum/game_mode/proc/equip_revolutionary(mob/living/carbon/human/mob)
-	if(!istype(mob))
+	if (!istype(mob))
 		return
 	var/obj/item/device/flash/T = new(mob)
 
@@ -137,9 +137,9 @@
 //Checks if the revs have won or not//
 //////////////////////////////////////
 /datum/game_mode/revolution/check_win()
-	if(check_rev_victory())
+	if (check_rev_victory())
 		finished = 1
-	else if(check_heads_victory())
+	else if (check_heads_victory())
 		finished = 2
 	return
 
@@ -147,7 +147,7 @@
 //Checks if the round is over//
 ///////////////////////////////
 /datum/game_mode/revolution/check_finished()
-	if(finished != 0)
+	if (finished != 0)
 		return 1
 	else
 		return 0
@@ -156,9 +156,9 @@
 //Deals with converting players to the revolution//
 ///////////////////////////////////////////////////
 /datum/game_mode/proc/add_revolutionary(datum/mind/rev_mind)
-	if((rev_mind.assigned_role in head_positions) || (rev_mind.assigned_role in list("Security Officer", "Detective", "Warden")))
+	if ((rev_mind.assigned_role in head_positions) || (rev_mind.assigned_role in list("Security Officer", "Detective", "Warden")))
 		return 0
-	if((rev_mind in revolutionaries) || (rev_mind in head_revolutionaries))
+	if ((rev_mind in revolutionaries) || (rev_mind in head_revolutionaries))
 		return 0
 	revolutionaries += rev_mind
 	rev_mind.current << "\red <FONT size = 3> You are now a revolutionary! Help your cause. Do not harm your fellow freedom fighters. You can identify your comrades by the red \"R\" icons, and your leaders by the blue \"R\" icons. Help them kill the heads to win the revolution!</FONT>"
@@ -169,7 +169,7 @@
 //Deals with players being converted from the revolution (Not a rev anymore)//
 //////////////////////////////////////////////////////////////////////////////
 /datum/game_mode/proc/remove_revolutionary(datum/mind/rev_mind)
-	if(rev_mind in revolutionaries)
+	if (rev_mind in revolutionaries)
 		revolutionaries -= rev_mind
 		rev_mind.special_role = null
 		rev_mind.current << "\red <FONT size = 3><B>You have been brainwashed! You are no longer a revolutionary!</B></FONT>"
@@ -188,40 +188,40 @@
 /datum/game_mode/proc/update_all_rev_icons()
 	spawn(0)
 		for(var/datum/mind/head_rev_mind in head_revolutionaries)
-			if(head_rev_mind.current)
-				if(head_rev_mind.current.client)
+			if (head_rev_mind.current)
+				if (head_rev_mind.current.client)
 					for(var/image/I in head_rev_mind.current.client.images)
-						if(I.icon_state == "rev" || I.icon_state == "rev_head")
+						if (I.icon_state == "rev" || I.icon_state == "rev_head")
 							del(I)
 
 		for(var/datum/mind/rev_mind in revolutionaries)
-			if(rev_mind.current)
-				if(rev_mind.current.client)
+			if (rev_mind.current)
+				if (rev_mind.current.client)
 					for(var/image/I in rev_mind.current.client.images)
-						if(I.icon_state == "rev" || I.icon_state == "rev_head")
+						if (I.icon_state == "rev" || I.icon_state == "rev_head")
 							del(I)
 
 		for(var/datum/mind/head_rev in head_revolutionaries)
-			if(head_rev.current)
-				if(head_rev.current.client)
+			if (head_rev.current)
+				if (head_rev.current.client)
 					for(var/datum/mind/rev in revolutionaries)
-						if(rev.current)
+						if (rev.current)
 							var/I = image('mob.dmi', loc = rev.current, icon_state = "rev")
 							head_rev.current.client.images += I
 					for(var/datum/mind/head_rev_1 in head_revolutionaries)
-						if(head_rev_1.current)
+						if (head_rev_1.current)
 							var/I = image('mob.dmi', loc = head_rev_1.current, icon_state = "rev_head")
 							head_rev.current.client.images += I
 
 		for(var/datum/mind/rev in revolutionaries)
-			if(rev.current)
-				if(rev.current.client)
+			if (rev.current)
+				if (rev.current.client)
 					for(var/datum/mind/head_rev in head_revolutionaries)
-						if(head_rev.current)
+						if (head_rev.current)
 							var/I = image('mob.dmi', loc = head_rev.current, icon_state = "rev_head")
 							rev.current.client.images += I
 					for(var/datum/mind/rev_1 in revolutionaries)
-						if(rev_1.current)
+						if (rev_1.current)
 							var/I = image('mob.dmi', loc = rev_1.current, icon_state = "rev")
 							rev.current.client.images += I
 
@@ -232,22 +232,22 @@
 /datum/game_mode/proc/update_rev_icons_added(datum/mind/rev_mind)
 	spawn(0)
 		for(var/datum/mind/head_rev_mind in head_revolutionaries)
-			if(head_rev_mind.current)
-				if(head_rev_mind.current.client)
+			if (head_rev_mind.current)
+				if (head_rev_mind.current.client)
 					var/I = image('mob.dmi', loc = rev_mind.current, icon_state = "rev")
 					head_rev_mind.current.client.images += I
-			if(rev_mind.current)
-				if(rev_mind.current.client)
+			if (rev_mind.current)
+				if (rev_mind.current.client)
 					var/image/J = image('mob.dmi', loc = head_rev_mind.current, icon_state = "rev_head")
 					rev_mind.current.client.images += J
 
 		for(var/datum/mind/rev_mind_1 in revolutionaries)
-			if(rev_mind_1.current)
-				if(rev_mind_1.current.client)
+			if (rev_mind_1.current)
+				if (rev_mind_1.current.client)
 					var/I = image('mob.dmi', loc = rev_mind.current, icon_state = "rev")
 					rev_mind_1.current.client.images += I
-			if(rev_mind.current)
-				if(rev_mind.current.client)
+			if (rev_mind.current)
+				if (rev_mind.current.client)
 					var/image/J = image('mob.dmi', loc = rev_mind_1.current, icon_state = "rev")
 					rev_mind.current.client.images += J
 
@@ -257,23 +257,23 @@
 /datum/game_mode/proc/update_rev_icons_removed(datum/mind/rev_mind)
 	spawn(0)
 		for(var/datum/mind/head_rev_mind in head_revolutionaries)
-			if(head_rev_mind.current)
-				if(head_rev_mind.current.client)
+			if (head_rev_mind.current)
+				if (head_rev_mind.current.client)
 					for(var/image/I in head_rev_mind.current.client.images)
-						if((I.icon_state == "rev" || I.icon_state == "rev_head") && I.loc == rev_mind.current)
+						if ((I.icon_state == "rev" || I.icon_state == "rev_head") && I.loc == rev_mind.current)
 							del(I)
 
 		for(var/datum/mind/rev_mind_1 in revolutionaries)
-			if(rev_mind_1.current)
-				if(rev_mind_1.current.client)
+			if (rev_mind_1.current)
+				if (rev_mind_1.current.client)
 					for(var/image/I in rev_mind_1.current.client.images)
-						if((I.icon_state == "rev" || I.icon_state == "rev_head") && I.loc == rev_mind.current)
+						if ((I.icon_state == "rev" || I.icon_state == "rev_head") && I.loc == rev_mind.current)
 							del(I)
 
-		if(rev_mind.current)
-			if(rev_mind.current.client)
+		if (rev_mind.current)
+			if (rev_mind.current.client)
 				for(var/image/I in rev_mind.current.client.images)
-					if(I.icon_state == "rev" || I.icon_state == "rev_head")
+					if (I.icon_state == "rev" || I.icon_state == "rev_head")
 						del(I)
 
 //////////////////////////
@@ -282,7 +282,7 @@
 /datum/game_mode/revolution/proc/check_rev_victory()
 	for(var/datum/mind/rev_mind in head_revolutionaries)
 		for(var/datum/objective/objective in rev_mind.objectives)
-			if(!(objective.check_completion()))
+			if (!(objective.check_completion()))
 				return 0
 
 		return 1
@@ -292,8 +292,8 @@
 /////////////////////////////
 /datum/game_mode/revolution/proc/check_heads_victory()
 	for(var/datum/mind/rev_mind in head_revolutionaries)
-		if((rev_mind) && (rev_mind.current) && ((rev_mind.current.stat != 2) || (rev_mind.current.z != 1)))
-			if(ishuman(rev_mind.current))
+		if ((rev_mind) && (rev_mind.current) && ((rev_mind.current.stat != 2) || (rev_mind.current.z != 1)))
+			if (ishuman(rev_mind.current))
 				return 0
 	return 1
 
@@ -301,9 +301,9 @@
 //Announces the end of the game with all relavent information stated//
 //////////////////////////////////////////////////////////////////////
 /datum/game_mode/revolution/declare_completion()
-	if(finished == 1)
+	if (finished == 1)
 		world << "\red <FONT size = 3><B> The heads of staff were killed or abandoned the station! The revolutionaries win!</B></FONT>"
-	else if(finished == 2)
+	else if (finished == 2)
 		world << "\red <FONT size = 3><B> The heads of staff managed to stop the revolution!</B></FONT>"
 	..()
 	return 1
@@ -312,11 +312,11 @@
 	if (head_revolutionaries.len!=0 || istype(ticker.mode,/datum/game_mode/revolution))
 		var/list/names = new
 		for(var/datum/mind/i in head_revolutionaries)
-			if(i.current)
+			if (i.current)
 				var/hstatus = ""
-				if(i.current.stat == 2)
+				if (i.current.stat == 2)
 					hstatus = " Dead"
-				else if(i.current.z != 1)
+				else if (i.current.z != 1)
 					hstatus = " Abandoned the station"
 				names += i.current.real_name + " ([hstatus])"
 			else
@@ -326,11 +326,11 @@
 	if (revolutionaries.len!=0 || istype(ticker.mode,/datum/game_mode/revolution))
 		var/list/names = new
 		for(var/datum/mind/i in revolutionaries)
-			if(i.current)
+			if (i.current)
 				var/hstatus = ""
-				if(i.current.stat == 2)
+				if (i.current.stat == 2)
 					hstatus = " Dead"
-				else if(i.current.z != 1)
+				else if (i.current.z != 1)
 					hstatus = " Abandoned the station"
 				names += i.current.real_name + " ([hstatus])"
 			else
@@ -351,11 +351,11 @@
 
 		var/list/names = new
 		for(var/datum/mind/i in heads)
-			if(i.current)
+			if (i.current)
 				var/hstatus = ""
-				if(i.current.stat == 2)
+				if (i.current.stat == 2)
 					hstatus = " Dead"
-				else if(i.current.z != 1)
+				else if (i.current.z != 1)
 					hstatus = " Abandoned the station"
 				names += i.current.real_name + " ([hstatus])" + ((i in targets)?"(target)":"")
 			else

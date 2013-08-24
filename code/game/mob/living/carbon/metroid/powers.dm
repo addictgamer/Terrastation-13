@@ -1,30 +1,30 @@
 /mob/living/carbon/metroid/verb/Feed()
 	set category = "Metroid"
 	set desc = "This will let you feed on any valid creature in the surrounding area. This should also be used to halt the feeding process."
-	if(Victim)
+	if (Victim)
 		Feedstop()
 		return
 
-	if(stat)
+	if (stat)
 		src << "<i>I must be conscious to do this...</i>"
 		return
 
 	var/list/choices = list()
 	for(var/mob/living/C in view(1,src))
-		if(C!=src && !istype(C,/mob/living/carbon/metroid))
+		if (C!=src && !istype(C,/mob/living/carbon/metroid))
 			choices += C
 
 	var/mob/living/carbon/M = input(src,"Who do you wish to feed on?") in null|choices
-	if(!M) return
-	if(M in view(1, src))
+	if (!M) return
+	if (M in view(1, src))
 
-		if(!istype(src, /mob/living/carbon/brain))
-			if(!istype(M, /mob/living/carbon/metroid))
-				if(stat != 2)
-					if(health > -70)
+		if (!istype(src, /mob/living/carbon/brain))
+			if (!istype(M, /mob/living/carbon/metroid))
+				if (stat != 2)
+					if (health > -70)
 
 						for(var/mob/living/carbon/metroid/met in view())
-							if(met.Victim == M && met != src)
+							if (met.Victim == M && met != src)
 								src << "<i>The [met.name] is already feeding on this subject...</i>"
 								return
 						src << "\blue <i>I have latched onto the subject and begun feeding...</i>"
@@ -48,8 +48,8 @@
 	canmove = 0
 	anchored = 1
 	var/lastnut = nutrition
-	//if(M.client) M << "\red You legs become paralyzed!"
-	if(istype(src, /mob/living/carbon/metroid/adult))
+	//if (M.client) M << "\red You legs become paralyzed!"
+	if (istype(src, /mob/living/carbon/metroid/adult))
 		icon_state = "adult metroid eat"
 	else
 		icon_state = "baby metroid eat"
@@ -58,10 +58,10 @@
 		// M.canmove = 0
 		canmove = 0
 
-		if(M in view(1, src))
+		if (M in view(1, src))
 			loc = M.loc
 
-			if(prob(15) && M.client && istype(M, /mob/living/carbon))
+			if (prob(15) && M.client && istype(M, /mob/living/carbon))
 				M << "\red [pick("You can feel your body becoming weak!", \
 				"You feel like you're about to die!", \
 				"You feel every part of your body screaming in agony!", \
@@ -70,58 +70,58 @@
 				"You feel extremely weak!", \
 				"A sharp, deep pain bathes every inch of your body!")]"
 
-			if(istype(M, /mob/living/carbon))
+			if (istype(M, /mob/living/carbon))
 				Victim.cloneloss += rand(1,10)
 				Victim.toxloss += rand(1,2)
-				if(Victim.health <= 0)
+				if (Victim.health <= 0)
 					Victim.toxloss += rand(2,4)
 
-				if(toxloss > 0)
+				if (toxloss > 0)
 					toxloss = max(0, toxloss-10)
 
-				if(oxyloss > 0)
+				if (oxyloss > 0)
 					oxyloss = max(0, oxyloss-10)
 
-				if(bruteloss > 0)
+				if (bruteloss > 0)
 					bruteloss = max(0, bruteloss-10)
 
-				if(fireloss > 0)
+				if (fireloss > 0)
 					fireloss = max(0, fireloss-10)
 
-				if(cloneloss > 0)
+				if (cloneloss > 0)
 					cloneloss = max(0, cloneloss-10)
 
-				if(Victim)
+				if (Victim)
 					for(var/mob/living/carbon/metroid/Metroid in view(1,M))
-						if(Metroid.Victim == M && Metroid != src)
+						if (Metroid.Victim == M && Metroid != src)
 							Metroid.Feedstop()
 
-				if(toxloss<0) toxloss = 0
-				if(oxyloss<0) oxyloss = 0
-				if(bruteloss<0) bruteloss = 0
-				if(fireloss<0) fireloss = 0
-				if(cloneloss<0) cloneloss = 0
+				if (toxloss<0) toxloss = 0
+				if (oxyloss<0) oxyloss = 0
+				if (bruteloss<0) bruteloss = 0
+				if (fireloss<0) fireloss = 0
+				if (cloneloss<0) cloneloss = 0
 
 				nutrition += rand(10,25)
-				if(nutrition >= lastnut + 100)
-					if(prob(60))
+				if (nutrition >= lastnut + 100)
+					if (prob(60))
 						lastnut = nutrition
 						powerlevel++
-						if(powerlevel > 10)
+						if (powerlevel > 10)
 							powerlevel = 10
 
-				if(istype(src, /mob/living/carbon/metroid/adult))
-					if(nutrition > 1200)
+				if (istype(src, /mob/living/carbon/metroid/adult))
+					if (nutrition > 1200)
 						nutrition = 1200
 				else
-					if(nutrition > 1000)
+					if (nutrition > 1000)
 						nutrition = 1000
 
 				Victim.updatehealth()
 				updatehealth()
 
 			else
-				if(prob(25))
+				if (prob(25))
 					src << "\red <i>[pick("This subject is incompatable", \
 					"This subject does not have a life energy", "This subject is empty", \
 					"I am not satisified", "I can not feed from this subject", \
@@ -132,12 +132,12 @@
 		else
 			break
 
-	if(stat == 2)
-		if(!istype(src, /mob/living/carbon/metroid/adult))
+	if (stat == 2)
+		if (!istype(src, /mob/living/carbon/metroid/adult))
 			icon_state = "baby metroid dead"
 
 	else
-		if(istype(src, /mob/living/carbon/metroid/adult))
+		if (istype(src, /mob/living/carbon/metroid/adult))
 			icon_state = "adult metroid"
 		else
 			icon_state = "baby metroid"
@@ -145,40 +145,40 @@
 	canmove = 1
 	anchored = 0
 
-	if(M.health <= -70)
+	if (M.health <= -70)
 		M.canmove = 0
-		if(!client)
-			if(Victim && !rabid && !attacked)
-				if(Victim.LAssailant && Victim.LAssailant != Victim)
-					if(prob(50))
+		if (!client)
+			if (Victim && !rabid && !attacked)
+				if (Victim.LAssailant && Victim.LAssailant != Victim)
+					if (prob(50))
 						var/Found = 0
 						for(var/mob/F in Friends)
-							if(F == Victim.LAssailant)
+							if (F == Victim.LAssailant)
 								Found = 1
 
-						if(!Found)
+						if (!Found)
 							Friends += Victim.LAssailant
 
-		if(M.client && istype(src, /mob/living/carbon/human))
-			if(prob(85))
+		if (M.client && istype(src, /mob/living/carbon/human))
+			if (prob(85))
 				rabid = 1 // UUUNNBGHHHH GONNA EAT JUUUUUU
 
-		if(client) src << "<i>This subject does not have a strong enough life energy anymore...</i>"
+		if (client) src << "<i>This subject does not have a strong enough life energy anymore...</i>"
 	else
 		M.canmove = 1
 
-		if(client) src << "<i>I have stopped feeding...</i>"
+		if (client) src << "<i>I have stopped feeding...</i>"
 
 	Victim = null
 
 /mob/living/carbon/metroid/proc/Feedstop()
-	if(Victim)
-		if(Victim.client) Victim << "[src] has let go of your head!"
+	if (Victim)
+		if (Victim.client) Victim << "[src] has let go of your head!"
 		Victim = null
 
 /mob/living/carbon/metroid/proc/UpdateFeed(var/mob/M)
-	if(Victim)
-		if(Victim == M)
+	if (Victim)
+		if (Victim == M)
 			loc = M.loc // simple "attach to head" effect!
 
 
@@ -186,11 +186,11 @@
 	set category = "Metroid"
 	set desc = "This will let you evolve from baby to adult metroid."
 
-	if(stat)
+	if (stat)
 		src << "<i>I must be conscious to do this...</i>"
 		return
-	if(!istype(src, /mob/living/carbon/metroid/adult))
-		if(amount_grown >= 10)
+	if (!istype(src, /mob/living/carbon/metroid/adult))
+		if (amount_grown >= 10)
 			var/mob/living/carbon/metroid/adult/new_metroid = new /mob/living/carbon/metroid/adult (loc)
 			new_metroid.mind_initialize(src)
 			new_metroid.key = key
@@ -209,21 +209,21 @@
 	set category = "Metroid"
 	set desc = "This will make you split into a random number of Metroids (usually 2). NOTE: this will KILL you, but you will be transferred into one of the babies."
 
-	if(stat)
+	if (stat)
 		src << "<i>I must be conscious to do this...</i>"
 		return
 
-	if(istype(src, /mob/living/carbon/metroid/adult))
-		if(amount_grown >= 10)
+	if (istype(src, /mob/living/carbon/metroid/adult))
+		if (amount_grown >= 10)
 			switch(input("Are you absolutely sure you want to reproduce? Your current body will cease to be, but your consciousness will be transferred into a produced metroid.") in list("Yes","No"))
-				if("Yes")
+				if ("Yes")
 					var/number = pick(2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,4)
 					var/list/babies = list()
 					for(var/i=1,i<=number,i++) // reproduce (has a small chance of producing 3 or 4 offspring)
 						var/mob/living/carbon/metroid/M = new/mob/living/carbon/metroid(loc)
 						M.nutrition = round(nutrition/number)
 						M.powerlevel = round(powerlevel / number)
-						if(i != 1) step_away(M,src)
+						if (i != 1) step_away(M,src)
 						babies += M
 
 
@@ -248,40 +248,40 @@
 	set category = "Metroid"
 
 
-	if(istype(src, /mob/living/carbon/metroid/adult))
+	if (istype(src, /mob/living/carbon/metroid/adult))
 		src << "<i>I am much too big to fit in this small vent...</i>"
 		return
 
-	if(!stat)
+	if (!stat)
 
-		if(Victim)
+		if (Victim)
 			src << "<i>Not while I am a feeding...</i>"
 			return
 		var/obj/machinery/atmospherics/unary/vent_pump/vent_found
 		for(var/obj/machinery/atmospherics/unary/vent_pump/v in range(1,src))
-			if(!v.welded)
+			if (!v.welded)
 				vent_found = v
 			else
 				src << "\red <i>That vent is welded...</i>"
-		if(vent_found)
-			if(vent_found.network&&vent_found.network.normal_members.len)
+		if (vent_found)
+			if (vent_found.network&&vent_found.network.normal_members.len)
 				var/list/vents = list()
 				for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in vent_found.network.normal_members)
-					if(temp_vent.loc == loc)
+					if (temp_vent.loc == loc)
 						continue
 					vents.Add(temp_vent)
 				var/list/choices = list()
 				for(var/obj/machinery/atmospherics/unary/vent_pump/vent in vents)
-					if(vent.loc.z != loc.z)
+					if (vent.loc.z != loc.z)
 						continue
 					var/atom/a = get_turf_loc(vent)
 					choices.Add(a.loc)
 				var/turf/startloc = loc
 				var/obj/selection = input("Select a destination.", "Duct System") in choices
 				var/selection_position = choices.Find(selection)
-				if(loc==startloc)
+				if (loc==startloc)
 					var/obj/target_vent = vents[selection_position]
-					if(target_vent)
+					if (target_vent)
 						for(var/mob/O in oviewers())
 							if ((O.client && !( O.blinded )))
 								O.show_message(text("<B>[src] scrambles into the ventillation ducts!</B>"), 1)

@@ -12,7 +12,7 @@
 	clamp_values()
 	handle_regular_status_updates()
 
-	if(client)
+	if (client)
 		UpdateLuminosity()
 		handle_regular_hud_updates()
 		update_items()
@@ -42,7 +42,7 @@
 		use_power()
 
 			if (src.cell)
-				if(src.cell.charge <= 0)
+				if (src.cell.charge <= 0)
 					uneq_all()
 					src.stat = 1
 				else if (src.cell.charge <= 100)
@@ -53,11 +53,11 @@
 					src.sight_mode = 0
 					src.cell.use(1)
 				else
-					if(src.module_state_1)
+					if (src.module_state_1)
 						src.cell.use(5)
-					if(src.module_state_2)
+					if (src.module_state_2)
 						src.cell.use(5)
-					if(src.module_state_3)
+					if (src.module_state_3)
 						src.cell.use(5)
 					if (sight_mode & BORGMESON)
 						src.cell.use(50)
@@ -74,12 +74,12 @@
 
 
 		update_canmove()
-			if(paralysis || stunned || weakened || buckled || lockcharge) canmove = 0
+			if (paralysis || stunned || weakened || buckled || lockcharge) canmove = 0
 			else canmove = 1
 
 
 		update_mind()
-			if(!mind && client)
+			if (!mind && client)
 				mind = new
 				mind.current = src
 				mind.assigned_role = "Hunter"
@@ -89,26 +89,26 @@
 		handle_regular_status_updates()
 
 			//Stop AI using us as a camera
-			if(src.stat)
+			if (src.stat)
 				src.camera.status = 0.0
 
 			health = 300 - (oxyloss + fireloss + bruteloss)
 
-			if(oxyloss > 50) paralysis = max(paralysis, 3)
+			if (oxyloss > 50) paralysis = max(paralysis, 3)
 
-			if(src.sleeping)
+			if (src.sleeping)
 				src.paralysis = max(src.paralysis, 3)
 				src.sleeping--
 
-			if(src.resting)
+			if (src.resting)
 				src.weakened = max(src.weakened, 5)
 
-	//		if(emagged && prob(10))
+	//		if (emagged && prob(10))
 	//			src.overlays += "emag"		//Causes the emag pulse to activate again at random. Causes metagaming to activate constantly.
 	//		else
 	//			src.overlays -= "emag"
 
-			if(health < 0 && src.stat != 2) //die only once
+			if (health < 0 && src.stat != 2) //die only once
 				death()
 
 			if (src.stat != 2) //Alive.
@@ -194,17 +194,17 @@
 			if (src.healths)
 				if (src.stat != 2)
 					switch(health)
-						if(300 to INFINITY)
+						if (300 to INFINITY)
 							src.healths.icon_state = "health0"
-						if(250 to 300)
+						if (250 to 300)
 							src.healths.icon_state = "health1"
-						if(200 to 250)
+						if (200 to 250)
 							src.healths.icon_state = "health2"
-						if(150 to 200)
+						if (150 to 200)
 							src.healths.icon_state = "health3"
-						if(100 to 150)
+						if (100 to 150)
 							src.healths.icon_state = "health4"
-						if(0 to 100)
+						if (0 to 100)
 							src.healths.icon_state = "health5"
 						else
 							src.healths.icon_state = "health6"
@@ -212,16 +212,16 @@
 					src.healths.icon_state = "health7"
 
 			if (src.syndicate && src.client)
-				if(ticker.mode.name == "traitor")
+				if (ticker.mode.name == "traitor")
 					for(var/datum/mind/tra in ticker.mode.traitors)
-						if(tra.current)
+						if (tra.current)
 							var/I = image('mob.dmi', loc = tra.current, icon_state = "traitor")
 							src.client.images += I
-				if(src.connected_ai)
+				if (src.connected_ai)
 					src.connected_ai.connected_robots -= src
 					src.connected_ai = null
-				if(src.mind)
-					if(!src.mind.special_role)
+				if (src.mind)
+					if (!src.mind.special_role)
 						src.mind.special_role = "traitor"
 						ticker.mode.traitors += src.mind
 
@@ -230,13 +230,13 @@
 				if (src.cell)
 					var/cellcharge = src.cell.charge/src.cell.maxcharge
 					switch(cellcharge)
-						if(0.75 to INFINITY)
+						if (0.75 to INFINITY)
 							src.cells.icon_state = "charge4"
-						if(0.5 to 0.75)
+						if (0.5 to 0.75)
 							src.cells.icon_state = "charge3"
-						if(0.25 to 0.5)
+						if (0.25 to 0.5)
 							src.cells.icon_state = "charge2"
-						if(0 to 0.25)
+						if (0 to 0.25)
 							src.cells.icon_state = "charge1"
 						else
 							src.cells.icon_state = "charge0"
@@ -245,19 +245,19 @@
 
 			switch(src.bodytemperature) //310.055 optimal body temp
 
-				if(335 to INFINITY)
+				if (335 to INFINITY)
 					src.bodytemp.icon_state = "temp2"
-				if(320 to 335)
+				if (320 to 335)
 					src.bodytemp.icon_state = "temp1"
-				if(300 to 320)
+				if (300 to 320)
 					src.bodytemp.icon_state = "temp0"
-				if(260 to 300)
+				if (260 to 300)
 					src.bodytemp.icon_state = "temp-1"
 				else
 					src.bodytemp.icon_state = "temp-2"
 
 
-			if(src.pullin)	src.pullin.icon_state = "pull[src.pulling ? 1 : 0]"
+			if (src.pullin)	src.pullin.icon_state = "pull[src.pulling ? 1 : 0]"
 //Oxygen and fire does nothing yet!!
 //			if (src.oxygen) src.oxygen.icon_state = "oxy[src.oxygen_alert ? 1 : 0]"
 //			if (src.fire) src.fire.icon_state = "fire[src.fire_alert ? 1 : 0]"
@@ -286,7 +286,7 @@
 					if (!( src.machine.check_eye(src) ))
 						src.reset_view(null)
 				else
-					if(!client.adminobs)
+					if (!client.adminobs)
 						reset_view(null)
 
 			return 1
@@ -295,30 +295,30 @@
 			if (src.client)
 				src.client.screen -= src.contents
 				src.client.screen += src.contents
-			if(src.module_state_1)
+			if (src.module_state_1)
 				src.module_state_1:screen_loc = ui_inv1
-			if(src.module_state_2)
+			if (src.module_state_2)
 				src.module_state_2:screen_loc = ui_inv2
-			if(src.module_state_3)
+			if (src.module_state_3)
 				src.module_state_3:screen_loc = ui_inv3
 
 
 		process_killswitch()
-			if(killswitch)
+			if (killswitch)
 				killswitch_time --
-				if(killswitch_time <= 0)
-					if(src.client)
+				if (killswitch_time <= 0)
+					if (src.client)
 						src << "\red <B>Killswitch Activated"
 					killswitch = 0
 					spawn(5)
 						gib(src)
 
 		process_locks()
-			if(weapon_lock)
+			if (weapon_lock)
 				uneq_all()
 				weaponlock_time --
-				if(weaponlock_time <= 0)
-					if(src.client)
+				if (weaponlock_time <= 0)
+					if (src.client)
 						src << "\red <B>Weapon Lock Timed Out!"
 					weapon_lock = 0
 					weaponlock_time = 120

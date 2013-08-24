@@ -1,53 +1,53 @@
 proc/sql_poll_players()
-	if(!sqllogging)
+	if (!sqllogging)
 		return
 	var/playercount = 0
 	for(var/mob/M in world)
-		if(M.client)
+		if (M.client)
 			playercount += 1
 	var/DBConnection/dbcon = new()
 	dbcon.Connect("dbi:mysql:[sqldb]:[sqladdress]:[sqlport]","[sqllogin]","[sqlpass]")
-	if(!dbcon.IsConnected())
+	if (!dbcon.IsConnected())
 		log_game("SQL ERROR during player polling. Failed to connect.")
 	else
 		var/sqltime = time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")
 		var/DBQuery/query = dbcon.NewQuery("INSERT INTO population (playercount, time) VALUES ([playercount], '[sqltime]')")
-		if(!query.Execute())
+		if (!query.Execute())
 			var/err = query.ErrorMsg()
 			log_game("SQL ERROR during player polling. Error : \[[err]\]\n")
 	dbcon.Disconnect()
 
 
 proc/sql_poll_admins()
-	if(!sqllogging)
+	if (!sqllogging)
 		return
 	var/admincount = 0
 	for (var/mob/M in world)
-		if(M && M.client && M.client.holder && M.client.authenticated)
+		if (M && M.client && M.client.holder && M.client.authenticated)
 			admincount += 1
 	var/DBConnection/dbcon = new()
 	dbcon.Connect("dbi:mysql:[sqldb]:[sqladdress]:[sqlport]","[sqllogin]","[sqlpass]")
-	if(!dbcon.IsConnected())
+	if (!dbcon.IsConnected())
 		log_game("SQL ERROR during admin polling. Failed to connect.")
 	else
 		var/sqltime = time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")
 		var/DBQuery/query = dbcon.NewQuery("INSERT INTO population (admincount, time) VALUES ([admincount], '[sqltime]')")
-		if(!query.Execute())
+		if (!query.Execute())
 			var/err = query.ErrorMsg()
 			log_game("SQL ERROR during admin polling. Error : \[[err]\]\n")
 	dbcon.Disconnect()
 
 proc/sql_report_round_start()
 	// TODO
-	if(!sqllogging)
+	if (!sqllogging)
 		return
 proc/sql_report_round_end()
 	// TODO
-	if(!sqllogging)
+	if (!sqllogging)
 		return
 
 proc/sql_report_karma(var/mob/spender, var/mob/receiver, var/isnegative = 1)
-	if(!sqllogging)
+	if (!sqllogging)
 		return
 	var/sqlspendername = spender.name
 	var/sqlspenderkey = spender.key
@@ -57,27 +57,27 @@ proc/sql_report_karma(var/mob/spender, var/mob/receiver, var/isnegative = 1)
 	var/sqlreceiverspecial = "None"
 	var/sqlisnegative = "TRUE"
 
-	if(isnegative)
+	if (isnegative)
 		sqlisnegative = "TRUE"
 	else
 		sqlisnegative = "FALSE"
 
 	var/sqlspenderip = spender.client.address
 
-	if(receiver.mind)
-		if(receiver.mind.special_role)
+	if (receiver.mind)
+		if (receiver.mind.special_role)
 			sqlreceiverspecial = receiver.mind.special_role
-		if(receiver.mind.assigned_role)
+		if (receiver.mind.assigned_role)
 			sqlreceiverrole = receiver.mind.assigned_role
 
 	var/DBConnection/dbcon = new()
 	dbcon.Connect("dbi:mysql:[sqldb]:[sqladdress]:[sqlport]","[sqllogin]","[sqlpass]")
-	if(!dbcon.IsConnected())
+	if (!dbcon.IsConnected())
 		log_game("SQL ERROR during karma logging. Failed to connect.")
 	else
 		var/sqltime = time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")
 		var/DBQuery/query = dbcon.NewQuery("INSERT INTO karma (spendername, spenderkey, receivername, receiverkey, receiverrole, receiverspecial, isnegative, spenderip, time) VALUES ('[sqlspendername]', '[sqlspenderkey]', '[sqlreceivername]', '[sqlreceiverkey]', '[sqlreceiverrole]', '[sqlreceiverspecial]', [sqlisnegative], '[sqlspenderip]', '[sqltime]')")
-		if(!query.Execute())
+		if (!query.Execute())
 			var/err = query.ErrorMsg()
 			log_game("SQL ERROR during karma logging. Error : \[[err]\]\n")
 
@@ -90,37 +90,37 @@ proc/sql_report_karma(var/mob/spender, var/mob/receiver, var/isnegative = 1)
 		while(query.NextRow())
 			id = query.item[1]
 			karma = text2num(query.item[3])
-		if(karma == null)
-			if(isnegative)
+		if (karma == null)
+			if (isnegative)
 				karma = -1
 			else
 				karma = 1
 			query = dbcon.NewQuery("INSERT INTO karmatotals (byondkey, karma) VALUES ('[receiver.key]', [karma])")
-			if(!query.Execute())
+			if (!query.Execute())
 				var/err = query.ErrorMsg()
 				log_game("SQL ERROR during karmatotal logging (adding new key). Error : \[[err]\]\n")
 		else
-			if(isnegative && sqlreceiverspecial != "None") // Toss out negative karma applied to traitors/wizards/etc.
+			if (isnegative && sqlreceiverspecial != "None") // Toss out negative karma applied to traitors/wizards/etc.
 				dbcon.Disconnect()
 				return
-			if(isnegative)
+			if (isnegative)
 				karma -= 1
 			else
 				karma += 1
 
 			query = dbcon.NewQuery("UPDATE karmatotals SET karma=[karma] WHERE id=[id]")
-			if(!query.Execute())
+			if (!query.Execute())
 				var/err = query.ErrorMsg()
 				log_game("SQL ERROR during karmatotal logging (updating existing entry). Error : \[[err]\]\n")
 	dbcon.Disconnect()
 
 
 proc/sql_report_death(var/mob/living/carbon/human/H)
-	if(!sqllogging)
+	if (!sqllogging)
 		return
-	if(!H)
+	if (!H)
 		return
-	if(!H.key || !H.mind)
+	if (!H.key || !H.mind)
 		return
 
 	var/turf/T = H.loc
@@ -134,7 +134,7 @@ proc/sql_report_death(var/mob/living/carbon/human/H)
 	var/sqljob = dd_replacetext(H.mind.assigned_role, "'", "''")
 	var/laname
 	var/lakey
-	if(H.lastattacker)
+	if (H.lastattacker)
 		laname = dd_replacetext(H.lastattacker:real_name, "'", "''")
 		lakey = dd_replacetext(H.lastattacker:key, "'", "''")
 	var/sqltime = time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")
@@ -142,22 +142,22 @@ proc/sql_report_death(var/mob/living/carbon/human/H)
 	//world << "INSERT INTO death (name, byondkey, job, special, pod, tod, laname, lakey, gender, bruteloss, fireloss, brainloss, oxyloss) VALUES ('[sqlname]', '[sqlkey]', '[sqljob]', '[sqlspecial]', '[sqlpod]', '[sqltime]', '[laname]', '[lakey]', '[H.gender]', [H.bruteloss], [H.fireloss], [H.brainloss], [H.oxyloss])"
 	var/DBConnection/dbcon = new()
 	dbcon.Connect("dbi:mysql:[sqldb]:[sqladdress]:[sqlport]","[sqllogin]","[sqlpass]")
-	if(!dbcon.IsConnected())
+	if (!dbcon.IsConnected())
 		log_game("SQL ERROR during death reporting. Failed to connect.")
 	else
 		var/DBQuery/query = dbcon.NewQuery("INSERT INTO death (name, byondkey, job, special, pod, tod, laname, lakey, gender, bruteloss, fireloss, brainloss, oxyloss, coord) VALUES ('[sqlname]', '[sqlkey]', '[sqljob]', '[sqlspecial]', '[sqlpod]', '[sqltime]', '[laname]', '[lakey]', '[H.gender]', [H.bruteloss], [H.fireloss], [H.brainloss], [H.oxyloss], '[coord]')")
-		if(!query.Execute())
+		if (!query.Execute())
 			var/err = query.ErrorMsg()
 			log_game("SQL ERROR during death reporting. Error : \[[err]\]\n")
 	dbcon.Disconnect()
 
 
 proc/sql_report_cyborg_death(var/mob/living/silicon/robot/H)
-	if(!sqllogging)
+	if (!sqllogging)
 		return
-	if(!H)
+	if (!H)
 		return
-	if(!H.key || !H.mind)
+	if (!H.key || !H.mind)
 		return
 
 	var/turf/T = H.loc
@@ -171,7 +171,7 @@ proc/sql_report_cyborg_death(var/mob/living/silicon/robot/H)
 	var/sqljob = dd_replacetext(H.mind.assigned_role, "'", "''")
 	var/laname
 	var/lakey
-	if(H.lastattacker)
+	if (H.lastattacker)
 		laname = dd_replacetext(H.lastattacker:real_name, "'", "''")
 		lakey = dd_replacetext(H.lastattacker:key, "'", "''")
 	var/sqltime = time2text(world.realtime, "YYYY-MM-DD hh:mm:ss")
@@ -179,18 +179,18 @@ proc/sql_report_cyborg_death(var/mob/living/silicon/robot/H)
 	//world << "INSERT INTO death (name, byondkey, job, special, pod, tod, laname, lakey, gender, bruteloss, fireloss, brainloss, oxyloss) VALUES ('[sqlname]', '[sqlkey]', '[sqljob]', '[sqlspecial]', '[sqlpod]', '[sqltime]', '[laname]', '[lakey]', '[H.gender]', [H.bruteloss], [H.fireloss], [H.brainloss], [H.oxyloss])"
 	var/DBConnection/dbcon = new()
 	dbcon.Connect("dbi:mysql:[sqldb]:[sqladdress]:[sqlport]","[sqllogin]","[sqlpass]")
-	if(!dbcon.IsConnected())
+	if (!dbcon.IsConnected())
 		log_game("SQL ERROR during death reporting. Failed to connect.")
 	else
 		var/DBQuery/query = dbcon.NewQuery("INSERT INTO death (name, byondkey, job, special, pod, tod, laname, lakey, gender, bruteloss, fireloss, brainloss, oxyloss, coord) VALUES ('[sqlname]', '[sqlkey]', '[sqljob]', '[sqlspecial]', '[sqlpod]', '[sqltime]', '[laname]', '[lakey]', '[H.gender]', [H.bruteloss], [H.fireloss], [H.brainloss], [H.oxyloss], '[coord]')")
-		if(!query.Execute())
+		if (!query.Execute())
 			var/err = query.ErrorMsg()
 			log_game("SQL ERROR during death reporting. Error : \[[err]\]\n")
 	dbcon.Disconnect()
 
 
 proc/statistic_cycle()
-	if(!sqllogging)
+	if (!sqllogging)
 		return
 	while(1)
 		sql_poll_players()
@@ -200,20 +200,20 @@ proc/statistic_cycle()
 
 //This proc is used for feedback. It is executed at round end.
 proc/sql_commit_feedback()
-	if(!blackbox)
+	if (!blackbox)
 		log_game("Round ended without a blackbox recorder. No feedback was sent to the database.")
 		return
 
 	//content is a list of lists. Each item in the list is a list with two fields, a variable name and a value. Items MUST only have these two values.
 	var/list/datum/feedback_variable/content = blackbox.get_round_feedback()
 
-	if(!content)
+	if (!content)
 		log_game("Round ended without any feedback being generated. No feedback was sent to the database.")
 		return
 
 	var/DBConnection/dbcon = new()
 	dbcon.Connect("dbi:mysql:[sqldb]:[sqladdress]:[sqlport]","[sqllogin]","[sqlpass]")
-	if(!dbcon.IsConnected())
+	if (!dbcon.IsConnected())
 		log_game("SQL ERROR during feedback reporting. Failed to connect.")
 	else
 
@@ -225,10 +225,10 @@ proc/sql_commit_feedback()
 		while(max_query.NextRow())
 			newroundid = max_query.item[1]
 
-		if(!(isnum(newroundid)))
+		if (!(isnum(newroundid)))
 			newroundid = text2num(newroundid)
 
-		if(isnum(newroundid))
+		if (isnum(newroundid))
 			newroundid++
 		else
 			newroundid = 1
@@ -238,7 +238,7 @@ proc/sql_commit_feedback()
 			var/value = item.get_value()
 
 			var/DBQuery/query = dbcon.NewQuery("INSERT INTO erro_feedback (id, roundid, time, variable, value) VALUES (null, [newroundid], Now(), '[variable]', '[value]')")
-			if(!query.Execute())
+			if (!query.Execute())
 				var/err = query.ErrorMsg()
 				log_game("SQL ERROR during death reporting. Error : \[[err]\]\n")
 
@@ -246,14 +246,14 @@ proc/sql_commit_feedback()
 
 
 proc/debug_sql_commit_feedback()
-	if(!blackbox)
+	if (!blackbox)
 		world << "Round ended without a blackbox recorder. No feedback was sent to the database."
 		return
 
 	//content is a list of lists. Each item in the list is a list with two fields, a variable name and a value. Items MUST only have these two values.
 	var/list/datum/feedback_variable/content = blackbox.get_round_feedback()
 
-	if(!content)
+	if (!content)
 		world << "Round ended without any feedback being generated. No feedback was sent to the database."
 		return
 

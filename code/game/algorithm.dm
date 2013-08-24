@@ -24,9 +24,9 @@ Starting up. [time2text(world.timeofday, "hh:mm.ss")]
 
 /world/proc/KickInactiveClients()
 	for(var/client/C)
-		if(!C.holder && ((C.inactivity/10)/60) >= 10)
-			if(C.mob)
-				if(!istype(C.mob, /mob/dead/))
+		if (!C.holder && ((C.inactivity/10)/60) >= 10)
+			if (C.mob)
+				if (!istype(C.mob, /mob/dead/))
 					log_access("AFK: [key_name(C)]")
 					C << "\red You have been inactive for more than 10 minutes and have been disconnected."
 					C.mob.logged_in = 0
@@ -39,7 +39,7 @@ Starting up. [time2text(world.timeofday, "hh:mm.ss")]
 proc/countJob(rank)
 	var/jobCount = 0
 	for(var/mob/H in world)
-		if(H.mind && H.mind.assigned_role == rank)
+		if (H.mind && H.mind.assigned_role == rank)
 			jobCount++
 	return jobCount
 
@@ -75,96 +75,96 @@ proc/countJob(rank)
 /mob/living/carbon/human/proc/equip_if_possible(obj/item/W, slot, del_on_fail = 1) // since byond doesn't seem to have pointers, this seems like the best way to do this :/
 	//warning: icky code
 	var/equipped = 0
-	if((slot == l_store || slot == r_store || slot == belt || slot == wear_id) && !src.w_uniform)
+	if ((slot == l_store || slot == r_store || slot == belt || slot == wear_id) && !src.w_uniform)
 		del(W)
 		return
-	if(slot == s_store && !src.wear_suit)
+	if (slot == s_store && !src.wear_suit)
 		del(W)
 		return
-	if(slot == h_store && !src.head)
+	if (slot == h_store && !src.head)
 		del(W)
 		return
 	switch(slot)
-		if(slot_back)
-			if(!src.back)
+		if (slot_back)
+			if (!src.back)
 				src.back = W
 				equipped = 1
-		if(slot_wear_mask)
-			if(!src.wear_mask)
+		if (slot_wear_mask)
+			if (!src.wear_mask)
 				src.wear_mask = W
 				equipped = 1
-		if(slot_handcuffed)
-			if(!src.handcuffed)
+		if (slot_handcuffed)
+			if (!src.handcuffed)
 				src.handcuffed = W
 				equipped = 1
-		if(slot_l_hand)
-			if(!src.l_hand)
+		if (slot_l_hand)
+			if (!src.l_hand)
 				src.l_hand = W
 				equipped = 1
-		if(slot_r_hand)
-			if(!src.r_hand)
+		if (slot_r_hand)
+			if (!src.r_hand)
 				src.r_hand = W
 				equipped = 1
-		if(slot_belt)
-			if(!src.belt)
+		if (slot_belt)
+			if (!src.belt)
 				src.belt = W
 				equipped = 1
-		if(slot_wear_id)
-			if(!src.wear_id)
+		if (slot_wear_id)
+			if (!src.wear_id)
 				src.wear_id = W
 				equipped = 1
-		if(slot_ears)
-			if(!src.ears)
+		if (slot_ears)
+			if (!src.ears)
 				src.ears = W
 				equipped = 1
-		if(slot_glasses)
-			if(!src.glasses)
+		if (slot_glasses)
+			if (!src.glasses)
 				src.glasses = W
 				equipped = 1
-		if(slot_gloves)
-			if(!src.gloves)
+		if (slot_gloves)
+			if (!src.gloves)
 				src.gloves = W
 				equipped = 1
-		if(slot_head)
-			if(!src.head)
+		if (slot_head)
+			if (!src.head)
 				src.head = W
 				equipped = 1
-		if(slot_shoes)
-			if(!src.shoes)
+		if (slot_shoes)
+			if (!src.shoes)
 				src.shoes = W
 				equipped = 1
-		if(slot_wear_suit)
-			if(!src.wear_suit)
+		if (slot_wear_suit)
+			if (!src.wear_suit)
 				src.wear_suit = W
 				equipped = 1
-		if(slot_w_uniform)
-			if(!src.w_uniform)
+		if (slot_w_uniform)
+			if (!src.w_uniform)
 				src.w_uniform = W
 				equipped = 1
-		if(slot_l_store)
-			if(!src.l_store)
+		if (slot_l_store)
+			if (!src.l_store)
 				src.l_store = W
 				equipped = 1
-		if(slot_r_store)
-			if(!src.r_store)
+		if (slot_r_store)
+			if (!src.r_store)
 				src.r_store = W
 				equipped = 1
-		if(slot_s_store)
-			if(!src.s_store)
+		if (slot_s_store)
+			if (!src.s_store)
 				src.s_store = W
 				equipped = 1
-		if(slot_in_backpack)
+		if (slot_in_backpack)
 			if (src.back && istype(src.back, /obj/item/weapon/storage/backpack))
 				var/obj/item/weapon/storage/backpack/B = src.back
-				if(B.contents.len < B.storage_slots && W.w_class <= B.max_w_class)
+				if (B.contents.len < B.storage_slots && W.w_class <= B.max_w_class)
 					W.loc = B
 					equipped = 1
-		if(slot_h_store)
-			if(!src.h_store)
+		if (slot_h_store)
+			if (!src.h_store)
 				src.h_store = W
 				equipped = 1
 
-	if(equipped)
+	if (equipped)
 		W.layer = 20
 	else
 		if (del_on_fail)

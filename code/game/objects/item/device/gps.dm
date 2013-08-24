@@ -13,7 +13,7 @@
 	var/active = 0
 
 	attack_self()
-		if(!active)
+		if (!active)
 			active = 1
 			work()
 			usr << "\blue You activate the GPS"
@@ -24,19 +24,19 @@
 
 	proc/work()
 		while(active)
-			if(!beacon)
+			if (!beacon)
 				for(var/obj/structure/ship_landing_beacon/B in world)
-					if(B.name == "Beacon - SS13")
+					if (B.name == "Beacon - SS13")
 						beacon = B
 						break
 
-				if(!beacon)
+				if (!beacon)
 					usr << "\red Unable to detect beacon signal."
 					active = 0
 					icon_state = "pinonnull"
 					return
 
-			if(!istype(src.loc, /turf) && !istype(src.loc, /mob))
+			if (!istype(src.loc, /turf) && !istype(src.loc, /mob))
 				usr << "\red Too much interference. Please hold the device in hand or place it on belt."
 				active = 0
 				icon_state = "pinonnull"
@@ -46,22 +46,22 @@
 
 			var/atom/cur_loc = src.loc
 
-			if(cur_loc.z == beacon.z)
+			if (cur_loc.z == beacon.z)
 				src.dir = get_dir(cur_loc,beacon)
 			else
 				var/list/beacon_global_loc = beacon.get_global_map_pos()
 				var/list/src_global_loc = cur_loc.get_global_map_pos()
-				if(beacon_global_loc && src_global_loc)
+				if (beacon_global_loc && src_global_loc)
 					var/hor_dir = 0
 					var/ver_dir = 0
-					if(beacon_global_loc["x"]>src_global_loc["x"])
+					if (beacon_global_loc["x"]>src_global_loc["x"])
 						hor_dir = EAST
-					else if(beacon_global_loc["x"]<src_global_loc["x"])
+					else if (beacon_global_loc["x"]<src_global_loc["x"])
 						hor_dir = WEST
 
-					if(beacon_global_loc["y"]>src_global_loc["y"])
+					if (beacon_global_loc["y"]>src_global_loc["y"])
 						ver_dir = NORTH
-					else if(beacon_global_loc["y"]<src_global_loc["y"])
+					else if (beacon_global_loc["y"]<src_global_loc["y"])
 						ver_dir = SOUTH
 
 					src.dir = hor_dir|ver_dir

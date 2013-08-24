@@ -13,7 +13,7 @@
 	//Placeholder for effects that trigger on eating that aren't tied to reagents.
 	proc/On_Consume()
 		if (!trash) return
-		if(!reagents.total_volume)
+		if (!reagents.total_volume)
 			var/mob/M = usr
 			switch(trash)
 				if ("raisins")
@@ -62,12 +62,12 @@
 	attack_self(mob/user as mob)
 		return
 	attack(mob/M as mob, mob/user as mob, def_zone)
-		if(!reagents.total_volume)						//Shouldn't be needed but it checks to see if it has anything left in it.
+		if (!reagents.total_volume)						//Shouldn't be needed but it checks to see if it has anything left in it.
 			user << "\red None of [src] left, oh no!"
 			del(src)
 			return 0
-		if(istype(M, /mob/living/carbon))
-			if(M == user)								//If you're eating it yourself.
+		if (istype(M, /mob/living/carbon))
+			if (M == user)								//If you're eating it yourself.
 				var/fullness = M.nutrition + (M.reagents.get_reagent_amount("nutriment") * 25)
 				if (fullness <= 50)
 					M << "\red You hungrily chew out a piece of [src] and gobble it!"
@@ -81,7 +81,7 @@
 					M << "\red You cannot force any more of [src] to go down your throat."
 					return 0
 			else
-				if(!istype(M, /mob/living/carbon/metroid))		//If you're feeding it to someone else.
+				if (!istype(M, /mob/living/carbon/metroid))		//If you're feeding it to someone else.
 					var/fullness = M.nutrition + (M.reagents.get_reagent_amount("nutriment") * 25)
 					if (fullness <= (550 * (1 + M.overeatduration / 1000)))
 						for(var/mob/O in viewers(world.view, user))
@@ -91,7 +91,7 @@
 							O.show_message("\red [user] cannot force anymore of [src] down [M]'s throat.", 1)
 							return 0
 
-					if(!do_mob(user, M)) return
+					if (!do_mob(user, M)) return
 
 					M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been fed [src.name] by [user.name] ([user.ckey]) Reagents: \ref[reagents]</font>")
 					user.attack_log += text("\[[time_stamp()]\] <font color='red'>Fed [M.name] by [M.name] ([M.ckey]) Reagents: \ref[reagents]</font>")
@@ -103,11 +103,11 @@
 					user << "This creature does not seem to have a mouth!"
 					return
 
-			if(reagents)								//Handle ingestion of the reagent.
-				if(reagents.total_volume)
+			if (reagents)								//Handle ingestion of the reagent.
+				if (reagents.total_volume)
 					reagents.reaction(M, INGEST)
 					spawn(5)
-						if(reagents.total_volume > bitesize)
+						if (reagents.total_volume > bitesize)
 							/*
 							 * I totally cannot understand what this code supposed to do.
 							 * Right now every snack consumes in 2 bites, my popcorn does not work right, so I simplify it. -- rastaf0
@@ -119,8 +119,8 @@
 							reagents.trans_to(M, reagents.total_volume)
 						bitecount++
 						On_Consume()
-						if(!reagents.total_volume)
-							if(M == user) user << "\red You finish eating [src]."
+						if (!reagents.total_volume)
+							if (M == user) user << "\red You finish eating [src]."
 							else user << "\red [M] finishes eating [src]."
 							del(src)
 				playsound(M.loc,'eatfood.ogg', rand(10,50), 1)
@@ -148,16 +148,16 @@
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
 
-		if((slices_num <= 0 || !slices_num) || !slice_path)
+		if ((slices_num <= 0 || !slices_num) || !slice_path)
 			return 1
 		var/inaccurate = 0
-		if( \
+		if ( \
 				istype(W, /obj/item/weapon/kitchenknife) || \
 				istype(W, /obj/item/weapon/butch) || \
 				istype(W, /obj/item/weapon/scalpel) || \
 				istype(W, /obj/item/weapon/kitchen/utensil/knife) \
 			)
-		else if( \
+		else if ( \
 				istype(W, /obj/item/weapon/circular_saw) || \
 				istype(W, /obj/item/weapon/melee/energy/sword) && W:active || \
 				istype(W, /obj/item/weapon/melee/energy/blade) || \
@@ -195,14 +195,14 @@
 		return
 
 	attack_animal(var/mob/M)
-		if(isanimal(M))
-			if(iscorgi(M))
-				if(bitecount == 0 || prob(50))
+		if (isanimal(M))
+			if (iscorgi(M))
+				if (bitecount == 0 || prob(50))
 					M.emote("nibbles away at the [src]")
 				bitecount++
-				if(bitecount >= 5)
+				if (bitecount >= 5)
 					var/sattisfaction_text = pick("burps from enjoyment", "yaps for more", "woofs twice", "looks at the area where the [src] was")
-					if(sattisfaction_text)
+					if (sattisfaction_text)
 						M.emote("[sattisfaction_text]")
 					del(src)
 

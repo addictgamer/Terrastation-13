@@ -16,8 +16,8 @@
 			usr << "\blue It is loaded with [bullets] foam darts!"
 
 	attackby(obj/item/I as obj, mob/user as mob)
-		if(istype(I, /obj/item/toy/ammo/crossbow))
-			if(bullets <= 4)
+		if (istype(I, /obj/item/toy/ammo/crossbow))
+			if (bullets <= 4)
 				user.drop_item()
 				del(I)
 				bullets++
@@ -27,8 +27,8 @@
 
 
 	afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
-		if(!isturf(target.loc) || target == user) return
-		if(flag) return
+		if (!isturf(target.loc) || target == user) return
+		if (flag) return
 
 		if (locate (/obj/table, src.loc))
 			return
@@ -42,12 +42,12 @@
 
 			for(var/i=0, i<6, i++)
 				if (D)
-					if(D.loc == trg) break
+					if (D.loc == trg) break
 					step_towards(D,trg)
 
 					for(var/mob/living/M in D.loc)
-						if(!istype(M,/mob/living)) continue
-						if(M == user) continue
+						if (!istype(M,/mob/living)) continue
+						if (M == user) continue
 						for(var/mob/O in viewers(world.view, D))
 							O.show_message(text("\red [] was hit by the foam dart!", M), 1)
 						new /obj/item/toy/ammo/crossbow(M.loc)
@@ -55,15 +55,15 @@
 						return
 
 					for(var/atom/A in D.loc)
-						if(A == user) continue
-						if(A.density)
+						if (A == user) continue
+						if (A.density)
 							new /obj/item/toy/ammo/crossbow(A.loc)
 							del(D)
 
 				sleep(1)
 
 			spawn(10)
-				if(D)
+				if (D)
 					new /obj/item/toy/ammo/crossbow(D.loc)
 					del(D)
 
@@ -82,7 +82,7 @@
 		if (src.bullets > 0 && M.lying)
 
 			for(var/mob/O in viewers(M, null))
-				if(O.client)
+				if (O.client)
 					O.show_message(text("\red <B>[] casually lines up a shot with []'s head and pulls the trigger!</B>", user, M), 1, "\red You hear the sound of foam against skull", 2)
 					O.show_message(text("\red [] was hit in the head by the foam dart!", M), 1)
 

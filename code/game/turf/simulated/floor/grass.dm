@@ -11,6 +11,6 @@
 		spawn(4)
 			update_icon()
 			for(var/direction in cardinal)
-				if(istype(get_step(src,direction),/turf/simulated/floor))
+				if (istype(get_step(src,direction),/turf/simulated/floor))
 					var/turf/simulated/floor/FF = get_step(src,direction)
 					FF.update_icon() //so siding get updated properly

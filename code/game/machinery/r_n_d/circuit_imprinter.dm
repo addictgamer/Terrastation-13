@@ -56,7 +56,7 @@ Used to print new circuit boards (for computers and similar systems) and AI modu
 		if (istype(O, /obj/item/weapon/screwdriver))
 			if (!opened)
 				opened = 1
-				if(linked_console)
+				if (linked_console)
 					linked_console.linked_imprinter = null
 					linked_console = null
 				icon_state = "circuit_imprinter_t"
@@ -67,18 +67,18 @@ Used to print new circuit boards (for computers and similar systems) and AI modu
 				user << "You close the maintenance hatch of [src]."
 			return
 		if (opened)
-			if(istype(O, /obj/item/weapon/crowbar))
+			if (istype(O, /obj/item/weapon/crowbar))
 				playsound(src.loc, 'Crowbar.ogg', 50, 1)
 				var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(src.loc)
 				M.state = 2
 				M.icon_state = "box_1"
 				for(var/obj/I in component_parts)
-					if(istype(I, /obj/item/weapon/reagent_containers/glass/beaker))
+					if (istype(I, /obj/item/weapon/reagent_containers/glass/beaker))
 						reagents.trans_to(I, reagents.total_volume)
-					if(I.reliability != 100 && crit_fail)
+					if (I.reliability != 100 && crit_fail)
 						I.crit_fail = 1
 					I.loc = src.loc
-				if(g_amount >= 3750)
+				if (g_amount >= 3750)
 					var/obj/item/stack/sheet/glass/G = new /obj/item/stack/sheet/glass(src.loc)
 					G.amount = round(g_amount / 3750)
 				del(src)
@@ -109,9 +109,9 @@ Used to print new circuit boards (for computers and similar systems) and AI modu
 		var/amount = 1
 		var/title = "[stack.name]: [stack.amount] sheet\s left"
 		switch(alert(title, "How many sheets do you want to load?", "one", "max", "cancel", null))
-			if("one")
+			if ("one")
 				amount = 1
-			if("max")
+			if ("max")
 				amount = min(stack.amount, round((max_material_amount-TotalMaterials())/3750))
 			else
 				return 1
@@ -120,11 +120,11 @@ Used to print new circuit boards (for computers and similar systems) and AI modu
 		use_power(max(1000, (3750*amount/10)))
 		spawn(16)
 			user << "\blue You add [amount] sheets to the [src.name]."
-			if(istype(stack, /obj/item/stack/sheet/glass))
+			if (istype(stack, /obj/item/stack/sheet/glass))
 				g_amount += amount * 3750
-			else if(istype(stack, /obj/item/stack/sheet/gold))
+			else if (istype(stack, /obj/item/stack/sheet/gold))
 				gold_amount += amount * 3750
-			else if(istype(stack, /obj/item/stack/sheet/diamond))
+			else if (istype(stack, /obj/item/stack/sheet/diamond))
 				diamond_amount += amount * 3750
 			stack.use(amount)
 			busy = 0

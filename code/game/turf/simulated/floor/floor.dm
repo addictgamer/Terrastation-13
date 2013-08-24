@@ -29,7 +29,7 @@ var/list/plating_icons = list("plating","platingdmg1","platingdmg2","platingdmg3
 
 /turf/simulated/floor/New()
 	..()
-	if(icon_state in icons_to_ignore_at_floor_init) //so damaged/burned tiles or plating icons aren't saved as the default
+	if (icon_state in icons_to_ignore_at_floor_init) //so damaged/burned tiles or plating icons aren't saved as the default
 		icon_regular_floor = "floor"
 	else
 		icon_regular_floor = icon_state
@@ -43,23 +43,23 @@ var/list/plating_icons = list("plating","platingdmg1","platingdmg2","platingdmg3
 /turf/simulated/floor/ex_act(severity)
 	//set src in oview(1)
 	switch(severity)
-		if(1.0)
+		if (1.0)
 			src.ReplaceWithSpace()
-		if(2.0)
+		if (2.0)
 			switch(pick(1,2;75,3))
 				if (1)
 					src.ReplaceWithLattice()
-					if(prob(33)) new /obj/item/stack/sheet/metal(src)
-				if(2)
+					if (prob(33)) new /obj/item/stack/sheet/metal(src)
+				if (2)
 					src.ReplaceWithSpace()
-				if(3)
-					if(prob(80))
+				if (3)
+					if (prob(80))
 						src.break_tile_to_plating()
 					else
 						src.break_tile()
 					src.hotspot_expose(1000,CELL_VOLUME)
-					if(prob(33)) new /obj/item/stack/sheet/metal(src)
-		if(3.0)
+					if (prob(33)) new /obj/item/stack/sheet/metal(src)
+		if (3.0)
 			if (prob(50))
 				src.break_tile()
 				src.hotspot_expose(1000,CELL_VOLUME)
@@ -69,50 +69,50 @@ var/list/plating_icons = list("plating","platingdmg1","platingdmg2","platingdmg3
 	return
 
 turf/simulated/floor/proc/update_icon()
-	if(is_steel_floor())
-		if(!broken && !burnt)
+	if (is_steel_floor())
+		if (!broken && !burnt)
 			icon_state = icon_regular_floor
-	if(is_plating())
-		if(!broken && !burnt)
+	if (is_plating())
+		if (!broken && !burnt)
 			icon_state = icon_plating //Because asteroids are 'platings' too.
-	if(is_light_floor())
+	if (is_light_floor())
 		var/obj/item/stack/tile/light/T = floor_tile
-		if(T.on)
+		if (T.on)
 			switch(T.state)
-				if(0)
+				if (0)
 					icon_state = "light_on"
 					sd_SetLuminosity(5)
-				if(1)
+				if (1)
 					var/num = pick("1","2","3","4")
 					icon_state = "light_on_flicker[num]"
 					sd_SetLuminosity(5)
-				if(2)
+				if (2)
 					icon_state = "light_on_broken"
 					sd_SetLuminosity(5)
-				if(3)
+				if (3)
 					icon_state = "light_off"
 					sd_SetLuminosity(0)
 		else
 			sd_SetLuminosity(0)
 			icon_state = "light_off"
-	if(is_grass_floor())
-		if(!broken && !burnt)
-			if(!(icon_state in list("grass1","grass2","grass3","grass4")))
+	if (is_grass_floor())
+		if (!broken && !burnt)
+			if (!(icon_state in list("grass1","grass2","grass3","grass4")))
 				icon_state = "grass[pick("1","2","3","4")]"
 	spawn(1)
-		if(istype(src,/turf/simulated/floor)) //Was throwing runtime errors due to a chance of it changing to space halfway through.
-			if(air)
+		if (istype(src,/turf/simulated/floor)) //Was throwing runtime errors due to a chance of it changing to space halfway through.
+			if (air)
 				update_visuals(air)
 
 turf/simulated/floor/return_siding_icon_state()
 	..()
-	if(is_grass_floor())
+	if (is_grass_floor())
 		var/dir_sum = 0
 		for(var/direction in cardinal)
 			var/turf/T = get_step(src,direction)
-			if(!(T.is_grass_floor()))
+			if (!(T.is_grass_floor()))
 				dir_sum += direction
-		if(dir_sum)
+		if (dir_sum)
 			return "wood_siding[dir_sum]"
 		else
 			return 0
@@ -146,79 +146,79 @@ turf/simulated/floor/return_siding_icon_state()
 	return
 
 /turf/simulated/floor/proc/break_tile_to_plating()
-	if(!is_plating())
+	if (!is_plating())
 		make_plating()
 	break_tile()
 
 /turf/simulated/floor/is_steel_floor()
-	if(istype(floor_tile,/obj/item/stack/tile/steel))
+	if (istype(floor_tile,/obj/item/stack/tile/steel))
 		return 1
 	else
 		return 0
 
 /turf/simulated/floor/is_light_floor()
-	if(istype(floor_tile,/obj/item/stack/tile/light))
+	if (istype(floor_tile,/obj/item/stack/tile/light))
 		return 1
 	else
 		return 0
 
 /turf/simulated/floor/is_grass_floor()
-	if(istype(floor_tile,/obj/item/stack/tile/grass))
+	if (istype(floor_tile,/obj/item/stack/tile/grass))
 		return 1
 	else
 		return 0
 
 /turf/simulated/floor/is_plating()
-	if(!floor_tile)
+	if (!floor_tile)
 		return 1
 	return 0
 
 /turf/simulated/floor/proc/break_tile()
-	if(istype(src,/turf/simulated/floor/engine)) return
-	if(istype(src,/turf/simulated/floor/mech_bay_recharge_floor))
+	if (istype(src,/turf/simulated/floor/engine)) return
+	if (istype(src,/turf/simulated/floor/mech_bay_recharge_floor))
 		src.ReplaceWithPlating()
-	if(broken) return
-	if(is_steel_floor())
+	if (broken) return
+	if (is_steel_floor())
 		src.icon_state = "damaged[pick(1,2,3,4,5)]"
 		broken = 1
-	else if(is_steel_floor())
+	else if (is_steel_floor())
 		src.icon_state = "light_broken"
 		broken = 1
-	else if(is_plating())
+	else if (is_plating())
 		src.icon_state = "platingdmg[pick(1,2,3)]"
 		broken = 1
-	else if(is_grass_floor())
+	else if (is_grass_floor())
 		src.icon_state = "sand[pick("1","2","3")]"
 		broken = 1
 
 /turf/simulated/floor/proc/burn_tile()
-	if(istype(src,/turf/simulated/floor/engine)) return
-	if(broken || burnt) return
-	if(is_steel_floor())
+	if (istype(src,/turf/simulated/floor/engine)) return
+	if (broken || burnt) return
+	if (is_steel_floor())
 		src.icon_state = "damaged[pick(1,2,3,4,5)]"
 		burnt = 1
-	else if(is_steel_floor())
+	else if (is_steel_floor())
 		src.icon_state = "floorscorched[pick(1,2)]"
 		burnt = 1
-	else if(is_plating())
+	else if (is_plating())
 		src.icon_state = "panelscorched"
 		burnt = 1
-	else if(is_grass_floor())
+	else if (is_grass_floor())
 		src.icon_state = "sand[pick("1","2","3")]"
 		burnt = 1
 
 //This proc will delete the floor_tile and the update_iocn() proc will then change the icon_state of the turf
 //This proc auto corrects the grass tiles' siding.
 /turf/simulated/floor/proc/make_plating()
-	if(istype(src,/turf/simulated/floor/engine)) return
+	if (istype(src,/turf/simulated/floor/engine)) return
 
-	if(is_grass_floor())
+	if (is_grass_floor())
 		for(var/direction in cardinal)
-			if(istype(get_step(src,direction),/turf/simulated/floor))
+			if (istype(get_step(src,direction),/turf/simulated/floor))
 				var/turf/simulated/floor/FF = get_step(src,direction)
 				FF.update_icon() //so siding get updated properly
 
-	if(!floor_tile) return
+	if (!floor_tile) return
 	del(floor_tile)
 	icon_plating = "plating"
 	sd_SetLuminosity(0)
@@ -238,8 +238,8 @@ turf/simulated/floor/return_siding_icon_state()
 	burnt = 0
 	intact = 1
 	sd_SetLuminosity(0)
-	if(T)
-		if(istype(T,/obj/item/stack/tile/steel))
+	if (T)
+		if (istype(T,/obj/item/stack/tile/steel))
 			floor_tile = T
 			if (icon_regular_floor)
 				icon_state = icon_regular_floor
@@ -264,8 +264,8 @@ turf/simulated/floor/return_siding_icon_state()
 	broken = 0
 	burnt = 0
 	intact = 1
-	if(T)
-		if(istype(T,/obj/item/stack/tile/light))
+	if (T)
+		if (istype(T,/obj/item/stack/tile/light))
 			floor_tile = T
 			update_icon()
 			levelupdate()
@@ -282,8 +282,8 @@ turf/simulated/floor/return_siding_icon_state()
 	broken = 0
 	burnt = 0
 	intact = 1
-	if(T)
-		if(istype(T,/obj/item/stack/tile/grass))
+	if (T)
+		if (istype(T,/obj/item/stack/tile/grass))
 			floor_tile = T
 			update_icon()
 			levelupdate()
@@ -296,13 +296,13 @@ turf/simulated/floor/return_siding_icon_state()
 
 /turf/simulated/floor/attackby(obj/item/C as obj, mob/user as mob)
 
-	if(!C || !user)
+	if (!C || !user)
 		return 0
 
-	if(istype(C,/obj/item/weapon/light/bulb)) //only for light tiles
-		if(is_light_floor())
+	if (istype(C,/obj/item/weapon/light/bulb)) //only for light tiles
+		if (is_light_floor())
 			var/obj/item/stack/tile/light/T = floor_tile
-			if(T.state)
+			if (T.state)
 				user.u_equip(C)
 				del(C)
 				T.state = C //fixing it by bashing it with a light bulb, fun eh?
@@ -311,8 +311,8 @@ turf/simulated/floor/return_siding_icon_state()
 			else
 				user << "\blue The lightbulb seems fine, no need to replace it."
 
-	if(istype(C, /obj/item/weapon/crowbar) && (!(is_plating())))
-		if(broken || burnt)
+	if (istype(C, /obj/item/weapon/crowbar) && (!(is_plating())))
+		if (broken || burnt)
 			user << "\red You remove the broken plating."
 		else
 			user << "\red You remove the [floor_tile.name]."
@@ -323,11 +323,11 @@ turf/simulated/floor/return_siding_icon_state()
 
 		return
 
-	if(istype(C, /obj/item/stack/rods))
+	if (istype(C, /obj/item/stack/rods))
 		if (is_plating())
 			if (C:amount >= 2)
 				user << "\blue Reinforcing the floor..."
-				if(do_after(user, 30) && C && C:amount >= 2 && is_plating())
+				if (do_after(user, 30) && C && C:amount >= 2 && is_plating())
 					ReplaceWithEngineFloor()
 					playsound(src.loc, 'Deconstruct.ogg', 80, 1)
 					C:use(2)
@@ -338,17 +338,17 @@ turf/simulated/floor/return_siding_icon_state()
 			user << "\red You must remove the plating first."
 		return
 
-	if(istype(C, /obj/item/stack/tile))
-		if(is_plating())
+	if (istype(C, /obj/item/stack/tile))
+		if (is_plating())
 			var/obj/item/stack/tile/T = C
 			floor_tile = new T.type
 			intact = 1
-			if(istype(T,/obj/item/stack/tile/light))
+			if (istype(T,/obj/item/stack/tile/light))
 				floor_tile:state = T:state
 				floor_tile:on = T:on
-			if(istype(T,/obj/item/stack/tile/grass))
+			if (istype(T,/obj/item/stack/tile/grass))
 				for(var/direction in cardinal)
-					if(istype(get_step(src,direction),/turf/simulated/floor))
+					if (istype(get_step(src,direction),/turf/simulated/floor))
 						var/turf/simulated/floor/FF = get_step(src,direction)
 						FF.update_icon() //so siding get updated properly
 			T.use(1)
@@ -359,15 +359,15 @@ turf/simulated/floor/return_siding_icon_state()
 			user << "\blue This section already has a tile on it. Use a crowbar to pry it off."
 
 
-	if(istype(C, /obj/item/cable_coil))
-		if(is_plating())
+	if (istype(C, /obj/item/cable_coil))
+		if (is_plating())
 			var/obj/item/cable_coil/coil = C
 			coil.turf_place(src, user)
 		else
 			user << "\red You must remove the plating first."
 
-	if(istype(C, /obj/item/weapon/shovel))
-		if(is_grass_floor())
+	if (istype(C, /obj/item/weapon/shovel))
+		if (is_grass_floor())
 			new /obj/item/weapon/ore/glass(src)
 			new /obj/item/weapon/ore/glass(src) //Make some sand if you shovel grass
 			user << "\blue You shovel the grass."

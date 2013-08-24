@@ -11,7 +11,7 @@
 									/obj/item/mecha_parts/part/ripley_left_leg,
 									/obj/item/mecha_parts/part/ripley_right_leg)
 		for(var/i=0;i<2;i++)
-			if(!isemptylist(parts) && prob(40))
+			if (!isemptylist(parts) && prob(40))
 				var/part = pick(parts)
 				welder_salvage += part
 				parts -= part

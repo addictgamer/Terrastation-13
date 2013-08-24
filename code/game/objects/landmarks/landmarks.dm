@@ -65,7 +65,7 @@
 		blobstart += loc
 		del(src)
 
-	if(name == "xeno_spawn")
+	if (name == "xeno_spawn")
 		xeno_spawn += loc
 		del(src)
 

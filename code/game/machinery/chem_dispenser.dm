@@ -10,8 +10,8 @@
 	var/list/dispensable_reagents = list("hydrogen","lithium","carbon","nitrogen","oxygen","fluorine","sodium","aluminum","silicon","phosphorus","sulfur","chlorine","potassium","iron","copper","mercury","radium","water","ethanol","sugar","acid",)
 	proc
 		recharge()
-			if(stat & BROKEN) return
-			if(energy != max_energy)
+			if (stat & BROKEN) return
+			if (energy != max_energy)
 				energy++
 				use_power(50)
 			spawn(600) recharge()
@@ -21,10 +21,10 @@
 
 	ex_act(severity)
 		switch(severity)
-			if(1.0)
+			if (1.0)
 				del(src)
 				return
-			if(2.0)
+			if (2.0)
 				if (prob(50))
 					del(src)
 					return
@@ -38,25 +38,25 @@
 		return
 
 	Topic(href, href_list)
-		if(stat & BROKEN) return
-		if(usr.stat || usr.restrained()) return
-		if(!in_range(src, usr)) return
+		if (stat & BROKEN) return
+		if (usr.stat || usr.restrained()) return
+		if (!in_range(src, usr)) return
 
 		usr.machine = src
 
 		if (href_list["dispense"])
-			if(!energy)
+			if (!energy)
 				var/dat = "Not enough energy.<BR><A href='?src=\ref[src];ok=1'>OK</A>"
 				usr << browse("<TITLE>Chemical Dispenser</TITLE>Chemical dispenser:<BR>Energy = [energy]/[max_energy]<BR><BR>[dat]", "window=chem_dispenser")
 				return
 			var/id = href_list["dispense"]
 			var/obj/item/weapon/reagent_containers/glass/dispenser/G = new/obj/item/weapon/reagent_containers/glass/dispenser(src.loc)
 			switch(text2num(href_list["state"]))
-				if(LIQUID)
+				if (LIQUID)
 					G.icon_state = "liquid"
-				if(GAS)
+				if (GAS)
 					G.icon_state = "vapour"
-				if(SOLID)
+				if (SOLID)
 					G.icon_state = "solid"
 			G.pixel_x = rand(-7, 7)
 			G.pixel_y = rand(-7, 7)
@@ -79,14 +79,14 @@
 		return src.attack_hand(user)
 
 	attack_hand(mob/user as mob)
-		if(stat & BROKEN)
+		if (stat & BROKEN)
 			return
 		user.machine = src
 		var/dat = ""
 		for(var/re in dispensable_reagents)
 			for(var/da in typesof(/datum/reagent) - /datum/reagent)
 				var/datum/reagent/temp = new da()
-				if(temp.id == re)
+				if (temp.id == re)
 					dat += "<A href='?src=\ref[src];dispense=[temp.id];state=[temp.reagent_state];name=[temp.name]'>[temp.name]</A><BR>"
 					dat += "[temp.description]<BR><BR>"
 		user << browse("<TITLE>Chemical Dispenser</TITLE>Chemical dispenser:<BR>Energy = [energy]/[max_energy]<BR><BR>[dat]", "window=chem_dispenser")

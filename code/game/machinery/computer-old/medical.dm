@@ -22,7 +22,7 @@
 	return src.attack_hand(user)
 
 /obj/machinery/computer/med_data/attack_hand(mob/user as mob)
-	if(..())
+	if (..())
 		return
 	var/dat
 	if (src.temp)
@@ -31,7 +31,7 @@
 		dat = text("Confirm Identity: <A href='?src=\ref[];scan=1'>[]</A><HR>", src, (src.scan ? text("[]", src.scan.name) : "----------"))
 		if (src.authenticated)
 			switch(src.screen)
-				if(1.0)
+				if (1.0)
 					dat += {"
 <A href='?src=\ref[src];search=1'>Search Records</A>
 <BR><A href='?src=\ref[src];screen=2'>List Records</A>
@@ -42,15 +42,15 @@
 <BR><A href='?src=\ref[src];screen=3'>Record Maintenance</A>
 <BR><A href='?src=\ref[src];logout=1'>{Log Out}</A><BR>
 "}
-				if(2.0)
+				if (2.0)
 					dat += "<B>Record List</B>:<HR>"
 					for(var/datum/data/record/R in data_core.general)
 						dat += text("<A href='?src=\ref[];d_rec=\ref[]'>[]: []<BR>", src, R, R.fields["id"], R.fields["name"])
 						//Foreach goto(132)
 					dat += text("<HR><A href='?src=\ref[];screen=1'>Back</A>", src)
-				if(3.0)
+				if (3.0)
 					dat += text("<B>Records Maintenance</B><HR>\n<A href='?src=\ref[];back=1'>Backup To Disk</A><BR>\n<A href='?src=\ref[];u_load=1'>Upload From disk</A><BR>\n<A href='?src=\ref[];del_all=1'>Delete All Records</A><BR>\n<BR>\n<A href='?src=\ref[];screen=1'>Back</A>", src, src, src, src)
-				if(4.0)
+				if (4.0)
 					dat += "<CENTER><B>Medical Record</B></CENTER><BR>"
 					if ((istype(src.active1, /datum/data/record) && data_core.general.Find(src.active1)))
 						dat += text("Name: [] ID: []<BR>\nSex: <A href='?src=\ref[];field=sex'>[]</A><BR>\nAge: <A href='?src=\ref[];field=age'>[]</A><BR>\nFingerprint: <A href='?src=\ref[];field=fingerprint'>[]</A><BR>\nPhysical Status: <A href='?src=\ref[];field=p_stat'>[]</A><BR>\nMental Status: <A href='?src=\ref[];field=m_stat'>[]</A><BR>", src.active1.fields["name"], src.active1.fields["id"], src, src.active1.fields["sex"], src, src.active1.fields["age"], src, src.active1.fields["fingerprint"], src, src.active1.fields["p_stat"], src, src.active1.fields["m_stat"])
@@ -68,15 +68,15 @@
 						dat += "<B>Medical Record Lost!</B><BR>"
 						dat += text("<A href='?src=\ref[src];new=1'>New Record</A><BR><BR>")
 					dat += text("\n<A href='?src=\ref[];print_p=1'>Print Record</A><BR>\n<A href='?src=\ref[];screen=2'>Back</A><BR>", src, src)
-				if(5.0)
+				if (5.0)
 					dat += "<CENTER><B>Virus Database</B></CENTER>"
 					for(var/Dt in typesof(/datum/disease/))
 						var/datum/disease/Dis = new Dt(0)
-						if(!Dis.desc)
+						if (!Dis.desc)
 							continue
 						dat += "<br><a href='?src=\ref[src];vir=[Dt]'>[Dis.name]</a>"
 					dat += "<br><a href='?src=\ref[src];screen=1'>Back</a>"
-				if(6.0)
+				if (6.0)
 					dat += "<center><b>Medical Robot Monitor</b></center>"
 					dat += "<a href='?src=\ref[src];screen=1'>Back</a>"
 					dat += "<br><b>Medical Robots:</b>"
@@ -84,12 +84,12 @@
 					for(var/obj/machinery/bot/medbot/M in world)
 						var/turf/bl = get_turf(M)
 						bdat += "[M.name] - <b>\[[bl.x],[bl.y]\]</b> - [M.on ? "Online" : "Offline"]<br>"
-						if((!isnull(M.reagent_glass)) && M.use_beaker)
+						if ((!isnull(M.reagent_glass)) && M.use_beaker)
 							bdat += "Reservoir: \[[M.reagent_glass.reagents.total_volume]/[M.reagent_glass.reagents.maximum_volume]\]<br>"
 						else
 							bdat += "Using Internal Synthesizer.<br>"
 
-					if(!bdat)
+					if (!bdat)
 						dat += "<br><center>None detected</center>"
 					else
 						dat += "<br>[bdat]"
@@ -102,7 +102,7 @@
 	return
 
 /obj/machinery/computer/med_data/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	if (!( data_core.general.Find(src.active1) ))
 		src.active1 = null
@@ -143,15 +143,15 @@
 					src.screen = 1
 		if (src.authenticated)
 
-			if(href_list["screen"])
+			if (href_list["screen"])
 				src.screen = text2num(href_list["screen"])
-				if(src.screen < 1)
+				if (src.screen < 1)
 					src.screen = 1
 
 				src.active1 = null
 				src.active2 = null
 
-			if(href_list["vir"])
+			if (href_list["vir"])
 				var/type = href_list["vir"]
 				var/datum/disease/Dis = new type(0)
 				var/AfS = ""
@@ -181,88 +181,88 @@
 				var/a1 = src.active1
 				var/a2 = src.active2
 				switch(href_list["field"])
-					if("fingerprint")
+					if ("fingerprint")
 						if (istype(src.active1, /datum/data/record))
 							var/t1 = input("Please input fingerprint hash:", "Med. records", src.active1.fields["fingerprint"], null)  as text
 							if ((!( t1 ) || !( src.authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || src.active1 != a1))
 								return
 							src.active1.fields["fingerprint"] = t1
-					if("sex")
+					if ("sex")
 						if (istype(src.active1, /datum/data/record))
 							if (src.active1.fields["sex"] == "Male")
 								src.active1.fields["sex"] = "Female"
 							else
 								src.active1.fields["sex"] = "Male"
-					if("age")
+					if ("age")
 						if (istype(src.active1, /datum/data/record))
 							var/t1 = input("Please input age:", "Med. records", src.active1.fields["age"], null)  as text
 							if ((!( t1 ) || !( src.authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || src.active1 != a1))
 								return
 							src.active1.fields["age"] = t1
-					if("mi_dis")
+					if ("mi_dis")
 						if (istype(src.active2, /datum/data/record))
 							var/t1 = input("Please input minor disabilities list:", "Med. records", src.active2.fields["mi_dis"], null)  as text
 							if ((!( t1 ) || !( src.authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || src.active2 != a2))
 								return
 							src.active2.fields["mi_dis"] = t1
-					if("mi_dis_d")
+					if ("mi_dis_d")
 						if (istype(src.active2, /datum/data/record))
 							var/t1 = input("Please summarize minor dis.:", "Med. records", src.active2.fields["mi_dis_d"], null)  as message
 							if ((!( t1 ) || !( src.authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || src.active2 != a2))
 								return
 							src.active2.fields["mi_dis_d"] = t1
-					if("ma_dis")
+					if ("ma_dis")
 						if (istype(src.active2, /datum/data/record))
 							var/t1 = input("Please input major diabilities list:", "Med. records", src.active2.fields["ma_dis"], null)  as text
 							if ((!( t1 ) || !( src.authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || src.active2 != a2))
 								return
 							src.active2.fields["ma_dis"] = t1
-					if("ma_dis_d")
+					if ("ma_dis_d")
 						if (istype(src.active2, /datum/data/record))
 							var/t1 = input("Please summarize major dis.:", "Med. records", src.active2.fields["ma_dis_d"], null)  as message
 							if ((!( t1 ) || !( src.authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || src.active2 != a2))
 								return
 							src.active2.fields["ma_dis_d"] = t1
-					if("alg")
+					if ("alg")
 						if (istype(src.active2, /datum/data/record))
 							var/t1 = input("Please state allergies:", "Med. records", src.active2.fields["alg"], null)  as text
 							if ((!( t1 ) || !( src.authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || src.active2 != a2))
 								return
 							src.active2.fields["alg"] = t1
-					if("alg_d")
+					if ("alg_d")
 						if (istype(src.active2, /datum/data/record))
 							var/t1 = input("Please summarize allergies:", "Med. records", src.active2.fields["alg_d"], null)  as message
 							if ((!( t1 ) || !( src.authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || src.active2 != a2))
 								return
 							src.active2.fields["alg_d"] = t1
-					if("cdi")
+					if ("cdi")
 						if (istype(src.active2, /datum/data/record))
 							var/t1 = input("Please state diseases:", "Med. records", src.active2.fields["cdi"], null)  as text
 							if ((!( t1 ) || !( src.authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || src.active2 != a2))
 								return
 							src.active2.fields["cdi"] = t1
-					if("cdi_d")
+					if ("cdi_d")
 						if (istype(src.active2, /datum/data/record))
 							var/t1 = input("Please summarize diseases:", "Med. records", src.active2.fields["cdi_d"], null)  as message
 							if ((!( t1 ) || !( src.authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || src.active2 != a2))
 								return
 							src.active2.fields["cdi_d"] = t1
-					if("notes")
+					if ("notes")
 						if (istype(src.active2, /datum/data/record))
 							var/t1 = input("Please summarize notes:", "Med. records", src.active2.fields["notes"], null)  as message
 							if ((!( t1 ) || !( src.authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || src.active2 != a2))
 								return
 							src.active2.fields["notes"] = t1
-					if("p_stat")
+					if ("p_stat")
 						if (istype(src.active1, /datum/data/record))
 							src.temp = text("<B>Physical Condition:</B><BR>\n\t<A href='?src=\ref[];temp=1;p_stat=deceased'>*Deceased*</A><BR>\n\t<A href='?src=\ref[];temp=1;p_stat=unconscious'>*Unconscious*</A><BR>\n\t<A href='?src=\ref[];temp=1;p_stat=active'>Active</A><BR>\n\t<A href='?src=\ref[];temp=1;p_stat=unfit'>Physically Unfit</A><BR>", src, src, src, src)
-					if("m_stat")
+					if ("m_stat")
 						if (istype(src.active1, /datum/data/record))
 							src.temp = text("<B>Mental Condition:</B><BR>\n\t<A href='?src=\ref[];temp=1;m_stat=insane'>*Insane*</A><BR>\n\t<A href='?src=\ref[];temp=1;m_stat=unstable'>*Unstable*</A><BR>\n\t<A href='?src=\ref[];temp=1;m_stat=watch'>*Watch*</A><BR>\n\t<A href='?src=\ref[];temp=1;m_stat=stable'>Stable</A><BR>", src, src, src, src)
-					if("b_type")
+					if ("b_type")
 						if (istype(src.active2, /datum/data/record))
 							src.temp = text("<B>Blood Type:</B><BR>\n\t<A href='?src=\ref[];temp=1;b_type=an'>A-</A> <A href='?src=\ref[];temp=1;b_type=ap'>A+</A><BR>\n\t<A href='?src=\ref[];temp=1;b_type=bn'>B-</A> <A href='?src=\ref[];temp=1;b_type=bp'>B+</A><BR>\n\t<A href='?src=\ref[];temp=1;b_type=abn'>AB-</A> <A href='?src=\ref[];temp=1;b_type=abp'>AB+</A><BR>\n\t<A href='?src=\ref[];temp=1;b_type=on'>O-</A> <A href='?src=\ref[];temp=1;b_type=op'>O+</A><BR>", src, src, src, src, src, src, src, src)
-					if("b_dna")
+					if ("b_dna")
 						if (istype(src.active1, /datum/data/record))
 							var/t1 = input("Please input DNA hash:", "Med. records", src.active1.fields["dna"], null)  as text
 							if ((!( t1 ) || !( src.authenticated ) || usr.stat || usr.restrained() || (!in_range(src, usr) && (!istype(usr, /mob/living/silicon))) || src.active1 != a1))
@@ -273,46 +273,46 @@
 			if (href_list["p_stat"])
 				if (src.active1)
 					switch(href_list["p_stat"])
-						if("deceased")
+						if ("deceased")
 							src.active1.fields["p_stat"] = "*Deceased*"
-						if("unconscious")
+						if ("unconscious")
 							src.active1.fields["p_stat"] = "*Unconscious*"
-						if("active")
+						if ("active")
 							src.active1.fields["p_stat"] = "Active"
-						if("unfit")
+						if ("unfit")
 							src.active1.fields["p_stat"] = "Physically Unfit"
 
 			if (href_list["m_stat"])
 				if (src.active1)
 					switch(href_list["m_stat"])
-						if("insane")
+						if ("insane")
 							src.active1.fields["m_stat"] = "*Insane*"
-						if("unstable")
+						if ("unstable")
 							src.active1.fields["m_stat"] = "*Unstable*"
-						if("watch")
+						if ("watch")
 							src.active1.fields["m_stat"] = "*Watch*"
-						if("stable")
+						if ("stable")
 							src.active2.fields["m_stat"] = "Stable"
 
 
 			if (href_list["b_type"])
 				if (src.active2)
 					switch(href_list["b_type"])
-						if("an")
+						if ("an")
 							src.active2.fields["b_type"] = "A-"
-						if("bn")
+						if ("bn")
 							src.active2.fields["b_type"] = "B-"
-						if("abn")
+						if ("abn")
 							src.active2.fields["b_type"] = "AB-"
-						if("on")
+						if ("on")
 							src.active2.fields["b_type"] = "O-"
-						if("ap")
+						if ("ap")
 							src.active2.fields["b_type"] = "A+"
-						if("bp")
+						if ("bp")
 							src.active2.fields["b_type"] = "B+"
-						if("abp")
+						if ("abp")
 							src.active2.fields["b_type"] = "AB+"
-						if("op")
+						if ("op")
 							src.active2.fields["b_type"] = "O+"
 
 

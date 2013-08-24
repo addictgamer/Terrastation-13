@@ -17,7 +17,7 @@
 /obj/machinery/partyalarm/attack_paw(mob/user as mob)
 	return src.attack_hand(user)
 /obj/machinery/partyalarm/attack_hand(mob/user as mob)
-	if(user.stat || stat & (NOPOWER|BROKEN))
+	if (user.stat || stat & (NOPOWER|BROKEN))
 		return
 
 	user.machine = src

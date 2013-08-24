@@ -13,21 +13,21 @@
 /turf/simulated/Entered(atom/A, atom/OL)
 	if (istype(A,/mob/living/carbon))
 		var/mob/living/carbon/M = A
-		if(M.lying)
+		if (M.lying)
 			return
-		if(istype(M, /mob/living/carbon/human))			// Split this into two seperate if checks, when non-humans were being checked it would throw a null error -- TLE
-			if(istype(M:shoes, /obj/item/clothing/shoes/clown_shoes))
-				if(M.m_intent == "run")
-					if(M.footstep >= 2)
+		if (istype(M, /mob/living/carbon/human))			// Split this into two seperate if checks, when non-humans were being checked it would throw a null error -- TLE
+			if (istype(M:shoes, /obj/item/clothing/shoes/clown_shoes))
+				if (M.m_intent == "run")
+					if (M.footstep >= 2)
 						M.footstep = 0
 					else
 						M.footstep++
-					if(M.footstep == 0)
+					if (M.footstep == 0)
 						playsound(src, "clownstep", 50, 1) // this will get annoying very fast.
 				else
 					playsound(src, "clownstep", 20, 1)
 		switch (src.wet)
-			if(1)
+			if (1)
 				if (istype(M, /mob/living/carbon/human)) // Added check since monkeys don't have shoes
 					if ((M.m_intent == "run") && !(istype(M:shoes, /obj/item/clothing/shoes) && M:shoes.flags&NOSLIP))
 						M.pulling = null
@@ -39,7 +39,7 @@
 					else
 						M.inertia_dir = 0
 						return
-				else if(!istype(M, /mob/living/carbon/metroid))
+				else if (!istype(M, /mob/living/carbon/metroid))
 					if (M.m_intent == "run")
 						M.pulling = null
 						step(M, M.dir)
@@ -51,8 +51,8 @@
 						M.inertia_dir = 0
 						return
 
-			if(2) //lube
-				if(!istype(M, /mob/living/carbon/metroid))
+			if (2) //lube
+				if (!istype(M, /mob/living/carbon/metroid))
 					M.pulling = null
 					step(M, M.dir)
 					spawn(1) step(M, M.dir)

@@ -24,16 +24,16 @@
 	var/stunchance = 10 // chance to tackle things down
 
 	Harvest(var/obj/item/weapon/W, var/mob/living/user)
-		if(..())
+		if (..())
 			var/success = 0
-			if(istype(W, /obj/item/weapon/butch))
+			if (istype(W, /obj/item/weapon/butch))
 				new/obj/item/weapon/reagent_containers/food/snacks/carpmeat(src.loc)
 				new/obj/item/weapon/reagent_containers/food/snacks/carpmeat(src.loc)
 				success = 1
-			if(istype(W, /obj/item/weapon/kitchenknife))
+			if (istype(W, /obj/item/weapon/kitchenknife))
 				new/obj/item/weapon/reagent_containers/food/snacks/carpmeat(src.loc)
 				success = 1
-			if(success)
+			if (success)
 				for(var/mob/O in viewers(src, null))
 					O.show_message("\red [user.name] cuts apart the [src.name]!", 1)
 				del(src)
@@ -41,8 +41,8 @@
 			return 0
 
 	AfterAttack(var/mob/living/target)
-		if(prob(stunchance))
-			if(target.weakened <= 0)
+		if (prob(stunchance))
+			if (target.weakened <= 0)
 				target.weakened += rand(10, 15)
 				for(var/mob/O in viewers(src, null))
 					O.show_message("\red <B>[src]</B> knocks down [target]!", 1)

@@ -13,7 +13,7 @@
 	var/datum/reagents/R = new/datum/reagents(100)
 	reagents = R
 	R.my_atom = src
-	if(name == "alien larva")
+	if (name == "alien larva")
 		name = text("alien larva ([rand(1, 1000)])")
 	real_name = name
 	spawn (1)
@@ -36,12 +36,12 @@
 		if ((!( yes ) || now_pushing))
 			return
 		now_pushing = 1
-		if(ismob(AM))
+		if (ismob(AM))
 			var/mob/tmob = AM
-			if(istype(tmob, /mob/living/carbon/human) && tmob.mutations & FAT)
-				if(prob(70))
+			if (istype(tmob, /mob/living/carbon/human) && tmob.mutations & FAT)
+				if (prob(70))
 					for(var/mob/M in viewers(src, null))
-						if(M.client)
+						if (M.client)
 							M << "\red <B>[src] fails to push [tmob]'s fat ass out of the way.</B>"
 					now_pushing = 0
 					return
@@ -79,9 +79,9 @@
 //This is okay I guess unless we add alien shields or something. Should be cleaned up a bit.
 /mob/living/carbon/alien/larva/bullet_act(var/obj/item/projectile/Proj)
 
-	if(prob(80))
+	if (prob(80))
 		for(var/mob/living/carbon/metroid/M in view(1,src))
-			if(M.Victim == src)
+			if (M.Victim == src)
 				M.bullet_act(Proj)
 				return
 
@@ -103,69 +103,69 @@
 	for(var/i = 1, i<= Proj.mobdamage.len, i++)
 
 		switch(i)
-			if(1)
+			if (1)
 				var/d = Proj.mobdamage[BRUTE]
-				if(!Proj.nodamage) bruteloss += d
+				if (!Proj.nodamage) bruteloss += d
 				updatehealth()
-			if(2)
+			if (2)
 				var/d = Proj.mobdamage[BURN]
-				if(!Proj.nodamage) fireloss += d
+				if (!Proj.nodamage) fireloss += d
 				updatehealth()
-			if(3)
+			if (3)
 				var/d = Proj.mobdamage[TOX]
-				if(!Proj.nodamage) toxloss += d
+				if (!Proj.nodamage) toxloss += d
 				updatehealth()
-			if(4)
+			if (4)
 				var/d = Proj.mobdamage[OXY]
-				if(!Proj.nodamage) oxyloss += d
+				if (!Proj.nodamage) oxyloss += d
 				updatehealth()
-			if(5)
+			if (5)
 				var/d = Proj.mobdamage[CLONE]
-				if(!Proj.nodamage) cloneloss += d
+				if (!Proj.nodamage) cloneloss += d
 				updatehealth()
 
-	if(Proj.effects["stun"] && prob(Proj.effectprob["stun"]))
-		if(Proj.effectmod["stun"] == SET)
+	if (Proj.effects["stun"] && prob(Proj.effectprob["stun"]))
+		if (Proj.effectmod["stun"] == SET)
 			stunned = Proj.effects["stun"]
 		else
 			stunned += Proj.effects["stun"]
 
 
-	if(Proj.effects["weak"] && prob(Proj.effectprob["weak"]))
-		if(Proj.effectmod["weak"] == SET)
+	if (Proj.effects["weak"] && prob(Proj.effectprob["weak"]))
+		if (Proj.effectmod["weak"] == SET)
 			weakened = Proj.effects["weak"]
 		else
 			weakened += Proj.effects["weak"]
 
-	if(Proj.effects["paralysis"] && prob(Proj.effectprob["paralysis"]))
-		if(Proj.effectmod["paralysis"] == SET)
+	if (Proj.effects["paralysis"] && prob(Proj.effectprob["paralysis"]))
+		if (Proj.effectmod["paralysis"] == SET)
 			paralysis = Proj.effects["paralysis"]
 		else
 			paralysis += Proj.effects["paralysis"]
 
-	if(Proj.effects["stutter"] && prob(Proj.effectprob["stutter"]))
-		if(Proj.effectmod["stutter"] == SET)
+	if (Proj.effects["stutter"] && prob(Proj.effectprob["stutter"]))
+		if (Proj.effectmod["stutter"] == SET)
 			stuttering = Proj.effects["stutter"]
 		else
 			stuttering += Proj.effects["stutter"]
 
-	if(Proj.effects["drowsyness"] && prob(Proj.effectprob["drowsyness"]))
-		if(Proj.effectmod["drowsyness"] == SET)
+	if (Proj.effects["drowsyness"] && prob(Proj.effectprob["drowsyness"]))
+		if (Proj.effectmod["drowsyness"] == SET)
 			drowsyness = Proj.effects["drowsyness"]
 		else
 			drowsyness += Proj.effects["drowsyness"]
 
 	// Aliums not effected by radiation damage
 
-	if(Proj.effects["eyeblur"] && prob(Proj.effectprob["eyeblur"]))
-		if(Proj.effectmod["eyeblur"] == SET)
+	if (Proj.effects["eyeblur"] && prob(Proj.effectprob["eyeblur"]))
+		if (Proj.effectmod["eyeblur"] == SET)
 			eye_blurry = Proj.effects["eyeblur"]
 		else
 			eye_blurry += Proj.effects["eyeblur"]
 
-	if(Proj.effects["emp"])
+	if (Proj.effects["emp"])
 		var/emppulse = Proj.effects["emp"]
-		if(prob(Proj.effectprob["emp"]))
+		if (prob(Proj.effectprob["emp"]))
 			empulse(src, emppulse, emppulse)
 		else
 			empulse(src, 0, emppulse)
@@ -205,7 +205,7 @@
 			ear_damage += 30
 			ear_deaf += 120
 
-		if(3.0)
+		if (3.0)
 			b_loss += 30
 			if (prob(50))
 				paralysis += 1
@@ -228,7 +228,7 @@
 	if (stat != 2)
 		damage = rand(10,30)
 
-	if(shielded)
+	if (shielded)
 		damage /= 4
 
 		//paralysis += 1
@@ -272,16 +272,16 @@
 		. = ..()
 
 		if (pulling && pulling.loc)
-			if(!( isturf(pulling.loc) ))
+			if (!( isturf(pulling.loc) ))
 				pulling = null
 				return
 			else
-				if(Debug)
+				if (Debug)
 					diary <<"pulling disappeared? at __LINE__ in mob.dm - pulling = [pulling]"
 					diary <<"REPORT THIS"
 
 		/////
-		if(pulling && pulling.anchored)
+		if (pulling && pulling.anchored)
 			pulling = null
 			return
 
@@ -354,7 +354,7 @@
 
 	if (alien_invis)
 		invisibility = 2
-		if(istype(loc, /turf))//If they are standing on a turf.
+		if (istype(loc, /turf))//If they are standing on a turf.
 			AddCamoOverlay(loc)//Overlay camo.
 	else
 		invisibility = 0
@@ -388,7 +388,7 @@
 	return
 
 /mob/living/carbon/alien/larva/attack_paw(mob/living/carbon/monkey/M as mob)
-	if(!(istype(M, /mob/living/carbon/monkey)))	return//Fix for aliens receiving double messages when attacking other aliens.
+	if (!(istype(M, /mob/living/carbon/monkey)))	return//Fix for aliens receiving double messages when attacking other aliens.
 
 	if (!ticker)
 		M << "You cannot attack people before the game has started."
@@ -421,7 +421,7 @@
 		M << "You cannot attack people before the game has started."
 		return
 
-	if(M.Victim) return // can't attack while eating!
+	if (M.Victim) return // can't attack while eating!
 
 	if (health > -100)
 
@@ -431,7 +431,7 @@
 
 		var/damage = rand(1, 3)
 
-		if(istype(src, /mob/living/carbon/metroid/adult))
+		if (istype(src, /mob/living/carbon/metroid/adult))
 			damage = rand(20, 40)
 		else
 			damage = rand(5, 35)
@@ -454,8 +454,8 @@
 
 	..()
 
-	if(M.gloves && M.gloves.elecgen == 1)//Stungloves. Any contact will stun the alien.
-		if(M.gloves.uses > 0)
+	if (M.gloves && M.gloves.elecgen == 1)//Stungloves. Any contact will stun the alien.
+		if (M.gloves.uses > 0)
 			M.gloves.uses--
 			if (weakened < 5)
 				weakened = 5
@@ -608,7 +608,7 @@
 
 /* Commented out because it's duplicated in life.dm
 /mob/living/carbon/alien/larva/proc/grow() // Larvae can grow into full fledged Xenos if they survive long enough -- TLE
-	if(icon_state == "larva_l" && !canmove) // This is a shit death check. It is made of shit and death. Fix later.
+	if (icon_state == "larva_l" && !canmove) // This is a shit death check. It is made of shit and death. Fix later.
 		return
 	else
 		var/mob/living/carbon/alien/humanoid/A = new(loc)
