@@ -1,4 +1,4 @@
-
+/*
 /obj/machinery/travel
 	name = "travel thingie"
 	desc = "it is used for travel idunno"
@@ -24,7 +24,7 @@
 	var/current_floor = 1 //current floor the elevator is on. do NOT confuse with current z-level of the elevator
 	var/list/elevators_connected = list() //list of elevators it is connected to
 	var/list/floors = list() //dependant on the number of elevators, converts z-levels to floors, basically
-
+*/
 
 /obj/machinery/travel/ladder/New()
 	for(var/i=src.z,i<=world.maxz,i++)

@@ -1,6 +1,7 @@
-var
-	hsboxspawn = 1
-	list
+//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
+
+var/hsboxspawn = 1
+var/list
 		hrefs = list(
 					"hsbsuit" = "Suit Up (Space Travel Gear)",
 					"hsbmetal" = "Spawn 50 Metal",
@@ -15,8 +16,7 @@ var
 					"hsbmedkit" = "Spawn Medical Kit")
 
 mob
-	var
-		datum/hSB/sandbox = null
+	var/datum/hSB/sandbox = null
 	proc
 		CanBuild()
 			if (master_mode == "sandbox")
@@ -30,9 +30,8 @@ mob
 				sandbox.update()
 
 datum/hSB
-	var
-		owner = null
-		admin = 0
+	var/owner = null
+	var/admin = 0
 	proc
 		update()
 			var/hsbpanel = "<center><b>h_Sandbox Panel</b></center><hr>"
@@ -137,17 +136,13 @@ datum/hSB
 							continue
 						if (istype(O, /obj/item/assembly))
 							continue
-						if (istype(O, /obj/item/weapon/camera))
+						if (istype(O, /obj/item/device/camera))
 							continue
 						if (istype(O, /obj/item/weapon/cloaking_device))
 							continue
 						if (istype(O, /obj/item/weapon/dummy))
 							continue
 						if (istype(O, /obj/item/weapon/melee/energy/sword))
-							continue
-						if (istype(O, /obj/item/device/shield))
-							continue
-						if (istype(O, /obj/critter))
 							continue
 						if (istype(O, /obj/structure))
 							continue

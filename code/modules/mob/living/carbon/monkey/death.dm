@@ -1,44 +1,56 @@
+/mob/living/carbon/monkey/gib()
+	death(1)
+	var/atom/movable/overlay/animation = null
+	monkeyizing = 1
+	canmove = 0
+	icon = null
+	invisibility = 101
+
+	animation = new(loc)
+	animation.icon_state = "blank"
+	animation.icon = 'icons/mob/mob.dmi'
+	animation.master = src
+
+	flick("gibbed-m", animation)
+	gibs(loc, viruses, dna)
+
+	spawn(15)
+		if (animation)	del(animation)
+		if (src)			del(src)
+
+/mob/living/carbon/monkey/dust()
+	death(1)
+	var/atom/movable/overlay/animation = null
+	monkeyizing = 1
+	canmove = 0
+	icon = null
+	invisibility = 101
+
+	animation = new(loc)
+	animation.icon_state = "blank"
+	animation.icon = 'icons/mob/mob.dmi'
+	animation.master = src
+
+	flick("dust-m", animation)
+	new /obj/effect/decal/cleanable/ash(loc)
+
+	spawn(15)
+		if (animation)	del(animation)
+		if (src)			del(src)
+
+
 /mob/living/carbon/monkey/death(gibbed)
-	if (src.stat == 2)
-		return
-	var/cancel
-	if (src.healths)
-		src.healths.icon_state = "health5"
+	if (stat == DEAD)	return
+	if (healths)			healths.icon_state = "health5"
+	stat = DEAD
+
 	if (!gibbed)
 		for(var/mob/O in viewers(src, null))
-			O.show_message("<b>The [src.name]</b> lets out a faint chimper as it collapses and stops moving...", 1) //ded -- Urist
+			O.show_message("<b>The [name]</b> lets out a faint chimper as it collapses and stops moving...", 1) //ded -- Urist
 
-	src.stat = 2
-	src.canmove = 0
-	if (src.blind)
-		src.blind.layer = 0
-	src.lying = 1
-
-	var/h = src.hand
-	src.hand = 0
-	drop_item()
-	src.hand = 1
-	drop_item()
-	src.hand = h
-
-	//var/tod = time2text(world.realtime,"hh:mm:ss") //weasellos time of death patch
-	//mind.store_memory("Time of death: [tod]", 0)
+	update_canmove()
+	if (blind)	blind.layer = 0
 
 	ticker.mode.check_win()
-	//src.icon_state = "dead"
-	for(var/mob/M in world)
-		if ((M.client && !( M.stat )))
-			cancel = 1
-			break
-	if (!( cancel ))
-		world << "<B>Everyone is dead! Resetting in 30 seconds!</B>"
-		spawn( 300 )
-			log_game("Rebooting because of no live players")
-			world.Reboot()
-			return
-	if (src.key)
-		spawn(50)
-			if (src.key && src.stat == 2)
-				src.verbs += /mob/proc/ghost
 
 	return ..(gibbed)

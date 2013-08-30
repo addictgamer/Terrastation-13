@@ -2,29 +2,43 @@
 	if (!message)
 		return
 
-	if (muted)
-		return
+	if (src.client)
+		if (client.prefs.muted & MUTE_IC)
+			src << "You cannot send IC messages (muted)."
+			return
+		if (src.client.handle_spam_prevention(message,MUTE_IC))
+			return
 
 	if (stat == 2)
 		message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
 		return say_dead(message)
 
-	// wtf?
+	//Must be concious to speak
 	if (stat)
 		return
 
 	if (length(message) >= 2)
-		if (copytext(message, 1, 3) == ":s")
+		var/prefix = copytext(message, 1, 3)
+		if (department_radio_keys[prefix] == "binary")
 			if (istype(src, /mob/living/silicon/pai))
 				return ..(message)
 			message = copytext(message, 3)
 			message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
+
+			// TODO: move the component system up to silicon so we don't have to use this ugly hack..
+			if (istype(src, /mob/living/silicon/robot))
+				var/mob/living/silicon/robot/R = src
+				if (!R.is_component_functioning("comms"))
+					src << "\red Your binary communications component isn't functional."
+					return
+
 			robot_talk(message)
-		else if (copytext(message, 1, 3) == ":h")
+		else if (department_radio_keys[prefix] == "department")
 			if (isAI(src)&&client)//For patching directly into AI holopads.
+				var/mob/living/silicon/ai/U = src
 				message = copytext(message, 3)
 				message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
-				holopad_talk(message)
+				U.holopad_talk(message)
 			else//Will not allow anyone by an active AI to use this function.
 				src << "This function is not available to you."
 				return
@@ -34,7 +48,7 @@
 		return ..(message)
 
 //For holopads only. Usable by AI.
-/mob/living/proc/holopad_talk(var/message)
+/mob/living/silicon/ai/proc/holopad_talk(var/message)
 
 	log_say("[key_name(src)] : [message]")
 
@@ -43,8 +57,8 @@
 	if (!message)
 		return
 
-	var/obj/machinery/hologram/holopad/T = client.eye//Client eye centers on an object.
-	if (istype(T)&&T.hologram&&T.master==src)//If there is a hologram and its master is the user.
+	var/obj/machinery/hologram/holopad/T = src.current
+	if (istype(T) && T.hologram && T.master == src)//If there is a hologram and its master is the user.
 		var/message_a = say_quote(message)
 
 		//Human-like, sorta, heard by those who understand humans.
@@ -78,12 +92,21 @@
 
 	var/message_a = say_quote(message)
 	var/rendered = "<i><span class='game say'>Robotic Talk, <span class='name'>[name]</span> <span class='message'>[message_a]</span></span></i>"
-	for (var/mob/living/S in world)
-		if (!S.stat)
-			if (S.robot_talk_understand)
-				if (S.robot_talk_understand == robot_talk_understand)
-					S.show_message(rendered, 2)
-			else if (S.binarycheck())
+
+	for (var/mob/living/S in living_mob_list)
+		if (S.robot_talk_understand && (S.robot_talk_understand == robot_talk_understand)) // This SHOULD catch everything caught by the one below, but I'm not going to change it.
+			if (istype(S , /mob/living/silicon/ai))
+				var/renderedAI = "<i><span class='game say'>Robotic Talk, <a href='byond://?src=\ref[S];track2=\ref[S];track=\ref[src]'><span class='name'>[name]</span></a> <span class='message'>[message_a]</span></span></i>"
+				S.show_message(renderedAI, 2)
+			else
+				S.show_message(rendered, 2)
+
+
+		else if (S.binarycheck())
+			if (istype(S , /mob/living/silicon/ai))
+				var/renderedAI = "<i><span class='game say'>Robotic Talk, <a href='byond://?src=\ref[S];track2=\ref[S];track=\ref[src]'><span class='name'>[name]</span></a> <span class='message'>[message_a]</span></span></i>"
+				S.show_message(renderedAI, 2)
+			else
 				S.show_message(rendered, 2)
 
 	var/list/listening = hearers(1, src)
@@ -111,8 +134,6 @@
 
 	rendered = "<i><span class='game say'>Robotic Talk, <span class='name'>[name]</span> <span class='message'>[message_a]</span></span></i>"
 
-	for (var/mob/M in world)
-		if (istype(M, /mob/new_player))
-			continue
-		if (M.stat > 1)
+	for (var/mob/M in dead_mob_list)
+		if (!istype(M,/mob/new_player) && !istype(M,/mob/living/carbon/brain)) //No meta-evesdropping
 			M.show_message(rendered, 2)

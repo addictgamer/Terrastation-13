@@ -38,7 +38,7 @@
 
 			var/dat = "\blue Analyzing Results for [C]:\n"
 			dat += "\blue \t Overall Status: [C.stat > 1 ? "dead" : "[C.health]% healthy"]\n"
-			dat += "\blue \t Damage Specifics: [C.oxyloss > 50 ? "\red" : "\blue"][C.oxyloss]-[C.toxloss > 50 ? "\red" : "\blue"][C.toxloss]-[C.fireloss > 50 ? "\red" : "\blue"][C.fireloss]-[C.bruteloss > 50 ? "\red" : "\blue"][C.bruteloss]\n"
+			dat += "\blue \t Damage Specifics: [C.getOxyLoss() > 50 ? "\red" : "\blue"][C.getOxyLoss()]-[C.getToxLoss() > 50 ? "\red" : "\blue"][C.getToxLoss()]-[C.getFireLoss() > 50 ? "\red" : "\blue"][C.getFireLoss()]-[C.getBruteLoss() > 50 ? "\red" : "\blue"][C.getBruteLoss()]\n"
 			dat += "\blue \t Key: Suffocation/Toxin/Burns/Brute\n"
 			dat += "\blue \t Body Temperature: [C.bodytemperature-T0C]&deg;C ([C.bodytemperature*1.8-459.67]&deg;F)"
 			if (C.virus)
@@ -62,10 +62,12 @@
 					dat += "\blue Unable to scan [A]'s fingerprints.\n"
 				else
 					dat += "\blue [H]'s Fingerprints: [md5(H.dna.uni_identity)]\n"
-				if ( !(H.blood_DNA) )
+				if ( !(H.blood_DNA.len) )
 					dat += "\blue No blood found on [H]\n"
 				else
-					dat += "\blue Blood type: [H.blood_type]\nDNA: [H.blood_DNA]\n"
+					for(var/i = 1, i < H.blood_DNA.len, i++)
+						var/list/templist = H.blood_DNA[i]
+						user << "\blue Blood type: [templist[2]]\nDNA: [templist[1]]"
 
 			if (!A.fingerprints)
 				dat += "\blue Unable to locate any fingerprints on [A]!\n"

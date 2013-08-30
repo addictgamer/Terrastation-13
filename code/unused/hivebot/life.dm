@@ -32,10 +32,8 @@
 			paralysis = max(min(paralysis, 1), 0)
 			weakened = max(min(weakened, 15), 0)
 			sleeping = max(min(sleeping, 1), 0)
-			bruteloss = max(bruteloss, 0)
-			toxloss = 0
-			oxyloss = 0
-			fireloss = max(fireloss, 0)
+			setToxLoss(0)
+			setOxyLoss(0)
 
 		use_power()
 
@@ -70,7 +68,7 @@
 
 		handle_regular_status_updates()
 
-			health = src.health_max - (fireloss + bruteloss)
+			health = src.health_max - (getFireLoss() + getBruteLoss())
 
 			if (health <= 0)
 				death()
@@ -118,18 +116,18 @@
 
 		handle_regular_hud_updates()
 
-			if (src.stat == 2 || src.mutations & XRAY)
+			if (src.stat == 2 || XRAY in src.mutations)
 				src.sight |= SEE_TURFS
 				src.sight |= SEE_MOBS
 				src.sight |= SEE_OBJS
 				src.see_in_dark = 8
-				src.see_invisible = 2
+				src.see_invisible = SEE_INVISIBLE_LEVEL_TWO
 			else if (src.stat != 2)
 				src.sight &= ~SEE_MOBS
 				src.sight &= ~SEE_TURFS
 				src.sight &= ~SEE_OBJS
 				src.see_in_dark = 8
-				src.see_invisible = 2
+				src.see_invisible = SEE_INVISIBLE_LEVEL_TWO
 
 			if (src.healths)
 				if (src.stat != 2)

@@ -34,7 +34,7 @@
 
 /mob/living/silicon/hivebot/blob_act()
 	if (src.stat != 2)
-		src.bruteloss += 60
+		src.adjustBruteLoss(60)
 		src.updatehealth()
 		return 1
 	return 0
@@ -58,7 +58,8 @@
 	return 0
 
 /mob/living/silicon/hivebot/ex_act(severity)
-	flick("flash", src.flash)
+	if (!blinded)
+		flick("flash", src.flash)
 
 	if (src.stat == 2 && src.client)
 		src.gib(1)
@@ -68,24 +69,21 @@
 		del(src)
 		return
 
-	var/b_loss = src.bruteloss
-	var/f_loss = src.fireloss
 	switch(severity)
 		if (1.0)
 			if (src.stat != 2)
-				b_loss += 100
-				f_loss += 100
+				adjustBruteLoss(100)
+				adjustFireLoss(100)
 				src.gib(1)
 				return
 		if (2.0)
 			if (src.stat != 2)
-				b_loss += 60
-				f_loss += 60
+				adjustBruteLoss(60)
+				adjustFireLoss(60)
 		if (3.0)
 			if (src.stat != 2)
-				b_loss += 30
-	src.bruteloss = b_loss
-	src.fireloss = f_loss
+				adjustBruteLoss(30)
+
 	src.updatehealth()
 
 /mob/living/silicon/hivebot/meteorhit(obj/O as obj)
@@ -93,9 +91,9 @@
 		M.show_message(text("\red [src] has been hit by [O]"), 1)
 		//Foreach goto(19)
 	if (src.health > 0)
-		src.bruteloss += 30
+		src.adjustBruteLoss(30)
 		if ((O.icon_state == "flaming"))
-			src.fireloss += 40
+			src.adjustFireLoss(40)
 		src.updatehealth()
 	return
 
@@ -161,14 +159,14 @@
 		src.now_pushing = 1
 		if (ismob(AM))
 			var/mob/tmob = AM
-			if (istype(tmob, /mob/living/carbon/human) && tmob.mutations & FAT)
+			/*if (istype(tmob, /mob/living/carbon/human) && (FAT in tmob.mutations))
 				if (prob(20))
 					for(var/mob/M in viewers(src, null))
 						if (M.client)
 							M << M << "\red <B>[src] fails to push [tmob]'s fat ass out of the way.</B>"
 					src.now_pushing = 0
 					//src.unlock_medal("That's No Moon, That's A Gourmand!", 1)
-					return
+					return*/
 		src.now_pushing = 0
 		..()
 		if (!istype(AM, /atom/movable))
@@ -186,8 +184,7 @@
 /mob/living/silicon/hivebot/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if (istype(W, /obj/item/weapon/weldingtool) && W:welding)
 		if (W:remove_fuel(0))
-			src.bruteloss -= 30
-			if (src.bruteloss < 0) src.bruteloss = 0
+			src.adjustBruteLoss(-30)
 			src.updatehealth()
 			src.add_fingerprint(user)
 			for(var/mob/O in viewers(user, null))
@@ -211,7 +208,7 @@
 		G.affecting = src
 		src.grabbed_by += G
 		G.synch()
-		playsound(src.loc, 'thudswoosh.ogg', 50, 1, -1)
+		playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("\red [] has grabbed [] passively!", M, src), 1)
 
@@ -225,15 +222,15 @@
 					src.weakened = max(src.weakened,4)
 					src.stunned = max(src.stunned,4)
 		*/
-			playsound(src.loc, 'slash.ogg', 25, 1, -1)
+			playsound(src.loc, 'sound/weapons/slash.ogg', 25, 1, -1)
 			for(var/mob/O in viewers(src, null))
 				O.show_message(text("\red <B>[] has slashed at []!</B>", M, src), 1)
 			if (prob(8))
 				flick("noise", src.flash)
-			src.bruteloss += damage
+			src.adjustBruteLoss(damage)
 			src.updatehealth()
 		else
-			playsound(src.loc, 'slashmiss.ogg', 25, 1, -1)
+			playsound(src.loc, 'sound/weapons/slashmiss.ogg', 25, 1, -1)
 			for(var/mob/O in viewers(src, null))
 				O.show_message(text("\red <B>[] took a swipe at []!</B>", M, src), 1)
 			return
@@ -245,11 +242,11 @@
 				src.stunned = 5
 				step(src,get_dir(M,src))
 				spawn(5) step(src,get_dir(M,src))
-				playsound(src.loc, 'slash.ogg', 50, 1, -1)
+				playsound(src.loc, 'sound/weapons/slash.ogg', 50, 1, -1)
 				for(var/mob/O in viewers(src, null))
 					O.show_message(text("\red <B>[] has pushed back []!</B>", M, src), 1)
 			else
-				playsound(src.loc, 'slashmiss.ogg', 25, 1, -1)
+				playsound(src.loc, 'sound/weapons/slashmiss.ogg', 25, 1, -1)
 				for(var/mob/O in viewers(src, null))
 					O.show_message(text("\red <B>[] attempted to push back []!</B>", M, src), 1)
 	return
@@ -281,7 +278,7 @@
 
 /mob/living/silicon/hivebot/proc/updateicon()
 
-	src.overlays = null
+	src.overlays.Cut()
 
 	if (src.stat == 0)
 		src.overlays += "eyes"
@@ -432,7 +429,7 @@ Frequency:
 		return
 
 	if (src.restrained())
-		src.pulling = null
+		src.stop_pulling()
 
 	var/t7 = 1
 	if (src.restrained())
@@ -445,7 +442,7 @@ Frequency:
 
 		if (src.pulling && src.pulling.loc)
 			if (!( isturf(src.pulling.loc) ))
-				src.pulling = null
+				src.stop_pulling()
 				return
 			else
 				if (Debug)
@@ -454,7 +451,7 @@ Frequency:
 
 		/////
 		if (src.pulling && src.pulling.anchored)
-			src.pulling = null
+			src.stop_pulling()
 			return
 
 		if (!src.restrained())
@@ -478,15 +475,15 @@ Frequency:
 						if (locate(/obj/item/weapon/grab, M.grabbed_by.len))
 							ok = 0
 					if (ok)
-						var/t = M.pulling
-						M.pulling = null
+						var/atom/movable/t = M.pulling
+						M.stop_pulling()
 						step(src.pulling, get_dir(src.pulling.loc, T))
-						M.pulling = t
+						M.start_pulling(t)
 				else
 					if (src.pulling)
 						step(src.pulling, get_dir(src.pulling.loc, T))
 	else
-		src.pulling = null
+		src.stop_pulling()
 		. = ..()
 	if ((src.s_active && !( s_active in src.contents ) ))
 		src.s_active.close(src)

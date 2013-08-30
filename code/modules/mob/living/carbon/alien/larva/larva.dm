@@ -1,23 +1,28 @@
+/mob/living/carbon/alien/larva
+	name = "alien larva"
+	real_name = "alien larva"
+	icon_state = "larva0"
+	pass_flags = PASSTABLE
+
+	maxHealth = 25
+	health = 25
+	storedPlasma = 50
+	max_plasma = 50
+
+	var/amount_grown = 0
+	var/max_grown = 200
+	var/time_of_birth
+
 //This is fine right now, if we're adding organ specific damage this needs to be updated
 /mob/living/carbon/alien/larva/New()
 	var/datum/reagents/R = new/datum/reagents(100)
 	reagents = R
 	R.my_atom = src
 	if (name == "alien larva")
-		name = text("alien larva ([rand(1, 1000)])")
+		name = "alien larva ([rand(1, 1000)])"
 	real_name = name
-	spawn (1)
-		update_clothing()
-		src << "\blue Your icons have been generated!"
-//	spawn(1200) grow()  Grow after 120 seconds -- TLE Commented out because life.dm has better version -- Urist
+	regenerate_icons()
 	..()
-
-/mob/living/carbon/alien/larva/proc/mind_initialize(mob/G, alien_caste)
-	mind = new
-	mind.current = src
-	mind.assigned_role = "Alien"
-	mind.special_role = alien_caste
-	mind.key = G.key
 
 //This is fine, works the same as a human
 /mob/living/carbon/alien/larva/Bump(atom/movable/AM as mob|obj, yes)
@@ -28,11 +33,12 @@
 		now_pushing = 1
 		if (ismob(AM))
 			var/mob/tmob = AM
-			if (istype(tmob, /mob/living/carbon/human) && tmob.mutations & FAT)
+			if (istype(tmob, /mob/living/carbon/human) && (FAT in tmob.mutations))
 				if (prob(70))
-					for(var/mob/M in viewers(src, null))
-						if (M.client)
-							M << "\red <B>[src] fails to push [tmob]'s fat ass out of the way.</B>"
+					src << "\red <B>You fail to push [tmob]'s fat ass out of the way.</B>"
+					now_pushing = 0
+					return
+				if (!(tmob.status_flags & CANPUSH))
 					now_pushing = 0
 					return
 			tmob.LAssailant = src
@@ -53,137 +59,24 @@
 //This needs to be fixed
 /mob/living/carbon/alien/larva/Stat()
 	..()
+	stat(null, "Progress: [amount_grown]/[max_grown]")
 
-	statpanel("Status")
-	if (client && client.holder)
-		stat(null, "([x], [y], [z])")
-
-	stat(null, "Intent: [a_intent]")
-	stat(null, "Move Mode: [m_intent]")
-
-	if (client.statpanel == "Status")
-		stat(null, "Progress: [amount_grown]/200")
-		stat(null, "Plasma Stored: [toxloss]")
-
-
-//This is okay I guess unless we add alien shields or something. Should be cleaned up a bit.
-/mob/living/carbon/alien/larva/bullet_act(var/obj/item/projectile/Proj)
-
-	if (prob(80))
-		for(var/mob/living/carbon/metroid/M in view(1,src))
-			if (M.Victim == src)
-				M.bullet_act(Proj)
-				return
-
-
-	if (locate(/obj/item/weapon/grab, src))
-		var/mob/safe = null
-		if (istype(l_hand, /obj/item/weapon/grab))
-			var/obj/item/weapon/grab/G = l_hand
-			if ((G.state == 3 && get_dir(src, Proj) == dir))
-				safe = G.affecting
-		if (istype(r_hand, /obj/item/weapon/grab))
-			var/obj/item/weapon.grab/G = r_hand
-			if ((G.state == 3 && get_dir(src, Proj) == dir))
-				safe = G.affecting
-		if (safe)
-			return safe.bullet_act(Proj)
-
-
-	for(var/i = 1, i<= Proj.mobdamage.len, i++)
-
-		switch(i)
-			if (1)
-				var/d = Proj.mobdamage[BRUTE]
-				if (!Proj.nodamage) bruteloss += d
-				updatehealth()
-			if (2)
-				var/d = Proj.mobdamage[BURN]
-				if (!Proj.nodamage) fireloss += d
-				updatehealth()
-			if (3)
-				var/d = Proj.mobdamage[TOX]
-				if (!Proj.nodamage) toxloss += d
-				updatehealth()
-			if (4)
-				var/d = Proj.mobdamage[OXY]
-				if (!Proj.nodamage) oxyloss += d
-				updatehealth()
-			if (5)
-				var/d = Proj.mobdamage[CLONE]
-				if (!Proj.nodamage) cloneloss += d
-				updatehealth()
-
-	if (Proj.effects["stun"] && prob(Proj.effectprob["stun"]))
-		if (Proj.effectmod["stun"] == SET)
-			stunned = Proj.effects["stun"]
-		else
-			stunned += Proj.effects["stun"]
-
-
-	if (Proj.effects["weak"] && prob(Proj.effectprob["weak"]))
-		if (Proj.effectmod["weak"] == SET)
-			weakened = Proj.effects["weak"]
-		else
-			weakened += Proj.effects["weak"]
-
-	if (Proj.effects["paralysis"] && prob(Proj.effectprob["paralysis"]))
-		if (Proj.effectmod["paralysis"] == SET)
-			paralysis = Proj.effects["paralysis"]
-		else
-			paralysis += Proj.effects["paralysis"]
-
-	if (Proj.effects["stutter"] && prob(Proj.effectprob["stutter"]))
-		if (Proj.effectmod["stutter"] == SET)
-			stuttering = Proj.effects["stutter"]
-		else
-			stuttering += Proj.effects["stutter"]
-
-	if (Proj.effects["drowsyness"] && prob(Proj.effectprob["drowsyness"]))
-		if (Proj.effectmod["drowsyness"] == SET)
-			drowsyness = Proj.effects["drowsyness"]
-		else
-			drowsyness += Proj.effects["drowsyness"]
-
-	// Aliums not effected by radiation damage
-
-	if (Proj.effects["eyeblur"] && prob(Proj.effectprob["eyeblur"]))
-		if (Proj.effectmod["eyeblur"] == SET)
-			eye_blurry = Proj.effects["eyeblur"]
-		else
-			eye_blurry += Proj.effects["eyeblur"]
-
-	if (Proj.effects["emp"])
-		var/emppulse = Proj.effects["emp"]
-		if (prob(Proj.effectprob["emp"]))
-			empulse(src, emppulse, emppulse)
-		else
-			empulse(src, 0, emppulse)
-
-	return
-
-/mob/living/carbon/alien/larva/emp_act(severity)
-	..()
+/mob/living/carbon/alien/larva/adjustToxLoss(amount)
+	if (stat != DEAD)
+		amount_grown = min(amount_grown + 1, max_grown)
+	..(amount)
 
 
 /mob/living/carbon/alien/larva/ex_act(severity)
-	flick("flash", flash)
-
-	if (stat == 2 && client)
-		gib(1)
-		return
-
-	else if (stat == 2 && !client)
-		gibs(loc, viruses)
-		del(src)
-		return
+	if (!blinded)
+		flick("flash", flash)
 
 	var/b_loss = null
 	var/f_loss = null
 	switch (severity)
 		if (1.0)
 			b_loss += 500
-			gib(1)
+			gib()
 			return
 
 		if (2.0)
@@ -198,12 +91,12 @@
 		if (3.0)
 			b_loss += 30
 			if (prob(50))
-				paralysis += 1
+				Paralyse(1)
 			ear_damage += 15
 			ear_deaf += 60
 
-	bruteloss += b_loss
-	fireloss += f_loss
+	adjustBruteLoss(b_loss)
+	adjustFireLoss(f_loss)
 
 	updatehealth()
 
@@ -225,17 +118,14 @@
 
 	show_message("\red The blob attacks you!")
 
-	fireloss += damage
+	adjustFireLoss(damage)
 
 	updatehealth()
 	return
 
-//can't unequip since it can't equip anything
-/mob/living/carbon/alien/larva/u_equip(obj/item/W as obj)
-	return
 
 //can't equip anything
-/mob/living/carbon/alien/larva/db_click(text, t1)
+/mob/living/carbon/alien/larva/attack_ui(slot_id)
 	return
 
 /mob/living/carbon/alien/larva/meteorhit(O as obj)
@@ -243,117 +133,11 @@
 		if ((M.client && !( M.blinded )))
 			M.show_message(text("\red [] has been hit by []", src, O), 1)
 	if (health > 0)
-		bruteloss += (istype(O, /obj/meteor/small) ? 10 : 25)
-		fireloss += 30
+		adjustBruteLoss((istype(O, /obj/effect/meteor/small) ? 10 : 25))
+		adjustFireLoss(30)
 
 		updatehealth()
 	return
-
-/mob/living/carbon/alien/larva/Move(a, b, flag)
-
-	var/t7 = 1
-	if (restrained())
-		for(var/mob/M in range(src, 1))
-			if ((M.pulling == src && M.stat == 0 && !( M.restrained() )))
-				t7 = null
-
-	if ((t7 && (pulling && ((get_dist(src, pulling) <= 1 || pulling.loc == loc) && (client && client.moving)))))
-		var/turf/T = loc
-		. = ..()
-
-		if (pulling && pulling.loc)
-			if (!( isturf(pulling.loc) ))
-				pulling = null
-				return
-			else
-				if (Debug)
-					diary <<"pulling disappeared? at __LINE__ in mob.dm - pulling = [pulling]"
-					diary <<"REPORT THIS"
-
-		/////
-		if (pulling && pulling.anchored)
-			pulling = null
-			return
-
-		if (!restrained())
-			var/diag = get_dir(src, pulling)
-			if ((diag - 1) & diag)
-			else
-				diag = null
-			if ((get_dist(src, pulling) > 1 || diag))
-				if (ismob(pulling))
-					var/mob/M = pulling
-					var/ok = 1
-					if (locate(/obj/item/weapon/grab, M.grabbed_by))
-						if (prob(75))
-							var/obj/item/weapon/grab/G = pick(M.grabbed_by)
-							if (istype(G, /obj/item/weapon/grab))
-								for(var/mob/O in viewers(M, null))
-									O.show_message(text("\red [] has been pulled from []'s grip by []", G.affecting, G.assailant, src), 1)
-								//G = null
-								del(G)
-						else
-							ok = 0
-						if (locate(/obj/item/weapon/grab, M.grabbed_by.len))
-							ok = 0
-					if (ok)
-						var/t = M.pulling
-						M.pulling = null
-						step(pulling, get_dir(pulling.loc, T))
-						M.pulling = t
-				else
-					if (pulling)
-						step(pulling, get_dir(pulling.loc, T))
-	else
-		pulling = null
-		. = ..()
-	if ((s_active && !( s_active in contents ) ))
-		s_active.close(src)
-
-	for(var/mob/living/carbon/metroid/M in view(1,src))
-		M.UpdateFeed(src)
-
-	return
-
-/mob/living/carbon/alien/larva/update_clothing()
-	..()
-
-	if (monkeyizing)
-		return
-
-
-	if (client)
-		if (i_select)
-			if (intent)
-				client.screen += hud_used.intents
-
-				var/list/L = dd_text2list(intent, ",")
-				L[1] += ":-11"
-				i_select.screen_loc = dd_list2text(L,",") //ICONS4, FUCKING SHIT
-			else
-				i_select.screen_loc = null
-		if (m_select)
-			if (m_int)
-				client.screen += hud_used.mov_int
-
-				var/list/L = dd_text2list(m_int, ",")
-				L[1] += ":-11"
-				m_select.screen_loc = dd_list2text(L,",") //ICONS4, FUCKING SHIT
-			else
-				m_select.screen_loc = null
-
-	if (alien_invis)
-		invisibility = 2
-		if (istype(loc, /turf))//If they are standing on a turf.
-			AddCamoOverlay(loc)//Overlay camo.
-	else
-		invisibility = 0
-
-	for (var/mob/M in viewers(1, src))
-		if ((M.client && M.machine == src))
-			spawn (0)
-				show_inv(M)
-				return
 
 
 /mob/living/carbon/alien/larva/hand_p(mob/M as mob)
@@ -371,11 +155,26 @@
 					O.show_message(text("\red <B>[M.name] has bit []!</B>", src), 1)
 			var/damage = rand(1, 3)
 
-			bruteloss += damage
+			adjustBruteLoss(damage)
 
 			updatehealth()
 
 	return
+
+
+/mob/living/carbon/alien/larva/attack_animal(mob/living/simple_animal/M as mob)
+	if (M.melee_damage_upper == 0)
+		M.emote("[M.friendly] [src]")
+	else
+		for(var/mob/O in viewers(src, null))
+			O.show_message("\red <B>[M]</B> [M.attacktext] [src]!", 1)
+		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
+		adjustBruteLoss(damage)
+		M.attack_log += text("\[[time_stamp()]\] <font color='red'>attacked [src.name] ([src.ckey])</font>")
+		src.attack_log += text("\[[time_stamp()]\] <font color='orange'>was attacked by [M.name] ([M.ckey])</font>")
+		updatehealth()
+
+
 
 /mob/living/carbon/alien/larva/attack_paw(mob/living/carbon/monkey/M as mob)
 	if (!(istype(M, /mob/living/carbon/monkey)))	return//Fix for aliens receiving double messages when attacking other aliens.
@@ -397,16 +196,16 @@
 			if (istype(wear_mask, /obj/item/clothing/mask/muzzle))
 				return
 			if (health > 0)
-				playsound(loc, 'bite.ogg', 50, 1, -1)
+				playsound(loc, 'sound/weapons/bite.ogg', 50, 1, -1)
 				for(var/mob/O in viewers(src, null))
 					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[M.name] has bit [src]!</B>"), 1)
-				bruteloss  += rand(1, 3)
+				adjustBruteLoss(rand(1, 3))
 				updatehealth()
 	return
 
 
-/mob/living/carbon/alien/larva/attack_metroid(mob/living/carbon/metroid/M as mob)
+/mob/living/carbon/alien/larva/attack_slime(mob/living/carbon/slime/M as mob)
 	if (!ticker)
 		M << "You cannot attack people before the game has started."
 		return
@@ -417,16 +216,16 @@
 
 		for(var/mob/O in viewers(src, null))
 			if ((O.client && !( O.blinded )))
-				O.show_message(text("\red <B>The [M.name] has [pick("bit","slashed")] []!</B>", src), 1)
+				O.show_message(text("\red <B>The [M.name] glomps []!</B>", src), 1)
 
 		var/damage = rand(1, 3)
 
-		if (istype(src, /mob/living/carbon/metroid/adult))
+		if (istype(src, /mob/living/carbon/slime/adult))
 			damage = rand(20, 40)
 		else
 			damage = rand(5, 35)
 
-		bruteloss += damage
+		adjustBruteLoss(damage)
 
 
 		updatehealth()
@@ -444,18 +243,25 @@
 
 	..()
 
-	if (M.gloves && M.gloves.elecgen == 1)//Stungloves. Any contact will stun the alien.
-		if (M.gloves.uses > 0)
-			M.gloves.uses--
-			if (weakened < 5)
-				weakened = 5
-			if (stuttering < 5)
-				stuttering = 5
-			if (stunned < 5)
-				stunned = 5
-			for(var/mob/O in viewers(src, null))
-				if ((O.client && !( O.blinded )))
-					O.show_message("\red <B>[src] has been touched with the stun gloves by [M]!</B>", 1, "\red You hear someone fall.", 2)
+	if (M.gloves && istype(M.gloves,/obj/item/clothing/gloves))
+		var/obj/item/clothing/gloves/G = M.gloves
+		if (G.cell)
+			if (M.a_intent == "hurt")//Stungloves. Any contact will stun the alien.
+				if (G.cell.charge >= 2500)
+					G.cell.charge -= 2500
+
+					Weaken(5)
+					if (stuttering < 5)
+						stuttering = 5
+					Stun(5)
+
+					for(var/mob/O in viewers(src, null))
+						if ((O.client && !( O.blinded )))
+							O.show_message("\red <B>[src] has been touched with the stun gloves by [M]!</B>", 1, "\red You hear someone fall.", 2)
+					return
+				else
+					M << "\red Not enough charge! "
+					return
 
 	switch(M.a_intent)
 
@@ -467,7 +273,7 @@
 					if ((M.head && M.head.flags & 4) || (M.wear_mask && !( M.wear_mask.flags & 32 )) )
 						M << "\blue <B>Remove that mask!</B>"
 						return
-					var/obj/equip_e/human/O = new /obj/equip_e/human(  )
+					var/obj/effect/equip_e/human/O = new /obj/effect/equip_e/human(  )
 					O.source = M
 					O.target = src
 					O.s_loc = M.loc
@@ -481,20 +287,16 @@
 		if ("grab")
 			if (M == src)
 				return
-			var/obj/item/weapon/grab/G = new /obj/item/weapon/grab( M )
-			G.assailant = M
-			if (M.hand)
-				M.l_hand = G
-			else
-				M.r_hand = G
-			G.layer = 20
-			G.affecting = src
+			var/obj/item/weapon/grab/G = new /obj/item/weapon/grab( M, M, src )
+
+			M.put_in_active_hand(G)
+
 			grabbed_by += G
 			G.synch()
 
 			LAssailant = M
 
-			playsound(loc, 'thudswoosh.ogg', 50, 1, -1)
+			playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 			for(var/mob/O in viewers(src, null))
 				if ((O.client && !( O.blinded )))
 					O.show_message(text("\red [] has grabbed [] passively!", M, src), 1)
@@ -502,10 +304,10 @@
 		else
 			var/damage = rand(1, 9)
 			if (prob(90))
-				if (M.mutations & HULK)
+				if (HULK in M.mutations)
 					damage += 5
 					spawn(0)
-						paralysis += 1
+						Paralyse(1)
 						step_away(src,M,15)
 						sleep(3)
 						step_away(src,M,15)
@@ -514,15 +316,14 @@
 					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has punched []!</B>", M, src), 1)
 				if (damage > 4.9)
-					if (weakened < 10)
-						weakened = rand(10, 15)
+					Weaken(rand(10,15))
 					for(var/mob/O in viewers(M, null))
 						if ((O.client && !( O.blinded )))
 							O.show_message(text("\red <B>[] has weakened []!</B>", M, src), 1, "\red You hear someone fall.", 2)
-				bruteloss += damage
+				adjustBruteLoss(damage)
 				updatehealth()
 			else
-				playsound(loc, 'punchmiss.ogg', 25, 1, -1)
+				playsound(loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
 				for(var/mob/O in viewers(src, null))
 					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has attempted to punch []!</B>", M, src), 1)
@@ -542,23 +343,23 @@
 	switch(M.a_intent)
 
 		if ("help")
-			sleeping = 0
+			sleeping = max(0,sleeping-5)
 			resting = 0
-			if (paralysis >= 3) paralysis -= 3
-			if (stunned >= 3) stunned -= 3
-			if (weakened >= 3) weakened -= 3
+			AdjustParalysis(-3)
+			AdjustStunned(-3)
+			AdjustWeakened(-3)
 			for(var/mob/O in viewers(src, null))
 				if ((O.client && !( O.blinded )))
 					O.show_message(text("\blue [M.name] nuzzles [] trying to wake it up!", src), 1)
 
 		else
 			if (health > 0)
-				playsound(loc, 'bite.ogg', 50, 1, -1)
+				playsound(loc, 'sound/weapons/bite.ogg', 50, 1, -1)
 				var/damage = rand(1, 3)
 				for(var/mob/O in viewers(src, null))
 					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[M.name] has bit []!</B>", src), 1)
-				bruteloss += damage
+				adjustBruteLoss(damage)
 				updatehealth()
 			else
 				M << "\green <B>[name] is too injured for that.</B>"
@@ -576,7 +377,7 @@
 
 /mob/living/carbon/alien/larva/show_inv(mob/user as mob)
 
-	user.machine = src
+	user.set_machine(src)
 	var/dat = {"
 	<B><HR><FONT size=3>[name]</FONT></B>
 	<BR><HR><BR>
@@ -585,16 +386,6 @@
 	user << browse(dat, text("window=mob[name];size=340x480"))
 	onclose(user, "mob[name]")
 	return
-
-/mob/living/carbon/alien/larva/updatehealth()
-	if (nodamage == 0)
-	//oxyloss is only used for suicide
-	//toxloss isn't used for aliens, its actually used as alien powers!!
-		health = 25 - oxyloss - fireloss - bruteloss
-	else
-		health = 25
-		stat = 0
-
 
 /* Commented out because it's duplicated in life.dm
 /mob/living/carbon/alien/larva/proc/grow() // Larvae can grow into full fledged Xenos if they survive long enough -- TLE

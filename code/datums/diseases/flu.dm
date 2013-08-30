@@ -15,7 +15,13 @@
 	..()
 	switch(stage)
 		if (2)
-			if (affected_mob.sleeping && prob(20))
+/*
+			if (affected_mob.sleeping && prob(20))  //removed until sleeping is fixed --Blaank
+				affected_mob << "\blue You feel better."
+				stage--
+				return
+*/
+			if (affected_mob.lying && prob(20))  //added until sleeping is fixed --Blaank
 				affected_mob << "\blue You feel better."
 				stage--
 				return
@@ -30,11 +36,17 @@
 			if (prob(1))
 				affected_mob << "\red Your stomach hurts."
 				if (prob(20))
-					affected_mob.toxloss += 1
+					affected_mob.adjustToxLoss(1)
 					affected_mob.updatehealth()
 
 		if (3)
-			if (affected_mob.sleeping && prob(15))
+/*
+			if (affected_mob.sleeping && prob(15))  //removed until sleeping is fixed
+				affected_mob << "\blue You feel better."
+				stage--
+				return
+*/
+			if (affected_mob.lying && prob(15))  //added until sleeping is fixed
 				affected_mob << "\blue You feel better."
 				stage--
 				return
@@ -49,6 +61,6 @@
 			if (prob(1))
 				affected_mob << "\red Your stomach hurts."
 				if (prob(20))
-					affected_mob.toxloss += 1
+					affected_mob.adjustToxLoss(1)
 					affected_mob.updatehealth()
 	return

@@ -1,7 +1,7 @@
 /obj/item/weapon/stamp
-	desc = "A rubber stamp for stamping important documents."
 	name = "rubber stamp"
-	icon = 'items.dmi'
+	desc = "A rubber stamp for stamping important documents."
+	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "stamp-qm"
 	item_state = "stamp"
 	flags = FPRINT | TABLEPASS
@@ -10,8 +10,9 @@
 	throw_speed = 7
 	throw_range = 15
 	m_amt = 60
-	var color = "cargo"
-	pressure_resistance = 5
+	color = "cargo"
+	pressure_resistance = 2
+	attack_verb = list("stamped")
 
 /obj/item/weapon/stamp/captain
 	name = "captain's rubber stamp"
@@ -45,10 +46,14 @@
 
 /obj/item/weapon/stamp/denied
 	name = "\improper DENIED rubber stamp"
-	icon_state = "stamp-qm"
+	icon_state = "stamp-deny"
 	color = "redcoat"
 
 /obj/item/weapon/stamp/clown
 	name = "clown's rubber stamp"
 	icon_state = "stamp-clown"
 	color = "clown"
+
+
+/obj/item/weapon/stamp/attack_paw(mob/user as mob)
+	return attack_hand(user)

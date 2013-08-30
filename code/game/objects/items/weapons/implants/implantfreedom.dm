@@ -1,10 +1,11 @@
+//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
+
 /obj/item/weapon/implant/freedom
 	name = "freedom"
 	desc = "Use this to escape from those evil Red Shirts."
 	color = "r"
-	var
-		activation_emote = "chuckle"
-		uses = 1.0
+	var/activation_emote = "chuckle"
+	var/uses = 1.0
 
 
 	New()
@@ -14,7 +15,7 @@
 		return
 
 
-	trigger(emote, mob/source as mob)
+	trigger(emote, mob/living/carbon/source as mob)
 		if (src.uses < 1)	return 0
 		if (emote == src.activation_emote)
 			src.uses--
@@ -22,6 +23,18 @@
 			if (source.handcuffed)
 				var/obj/item/weapon/W = source.handcuffed
 				source.handcuffed = null
+				source.update_inv_handcuffed()
+				if (source.client)
+					source.client.screen -= W
+				if (W)
+					W.loc = source.loc
+					dropped(source)
+					if (W)
+						W.layer = initial(W.layer)
+			if (source.legcuffed)
+				var/obj/item/weapon/W = source.legcuffed
+				source.legcuffed = null
+				source.update_inv_legcuffed()
 				if (source.client)
 					source.client.screen -= W
 				if (W)
@@ -32,10 +45,10 @@
 		return
 
 
-	implanted(mob/source as mob)
+	implanted(mob/living/carbon/source)
 		source.mind.store_memory("Freedom implant can be activated by using the [src.activation_emote] emote, <B>say *[src.activation_emote]</B> to attempt to activate.", 0, 0)
 		source << "The implanted freedom implant can be activated by using the [src.activation_emote] emote, <B>say *[src.activation_emote]</B> to attempt to activate."
-		return
+		return 1
 
 
 	get_data()

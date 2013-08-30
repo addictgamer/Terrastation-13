@@ -2,7 +2,7 @@
 /obj/item/weapon/toolbox_tiles
 	desc = "It's a toolbox with tiles sticking out the top"
 	name = "tiles and toolbox"
-	icon = 'aibots.dmi'
+	icon = 'icons/obj/aibots.dmi'
 	icon_state = "toolbox_tiles"
 	force = 3.0
 	throwforce = 10.0
@@ -15,7 +15,7 @@
 /obj/item/weapon/toolbox_tiles_sensor
 	desc = "It's a toolbox with tiles sticking out the top and a sensor attached"
 	name = "tiles, toolbox and sensor arrangement"
-	icon = 'aibots.dmi'
+	icon = 'icons/obj/aibots.dmi'
 	icon_state = "toolbox_tiles_sensor"
 	force = 3.0
 	throwforce = 10.0
@@ -29,7 +29,7 @@
 /obj/machinery/bot/floorbot
 	name = "Floorbot"
 	desc = "A little floor repairing robot, he looks so excited!"
-	icon = 'aibots.dmi'
+	icon = 'icons/obj/aibots.dmi'
 	icon_state = "floorbot0"
 	layer = 5.0
 	density = 0
@@ -42,11 +42,10 @@
 	var/improvefloors = 0
 	var/eattiles = 0
 	var/maketiles = 0
-	var/locked = 1
 	var/turf/target
 	var/turf/oldtarget
 	var/oldloc = null
-	req_access = list(access_atmospherics)
+	req_access = list(access_construction)
 	var/path[] = new()
 	var/targetdirection
 
@@ -73,16 +72,17 @@
 	. = ..()
 	if (.)
 		return
-	usr.machine = src
+	usr.set_machine(src)
 	interact(user)
 
-/obj/machinery/bot/floorbot/proc/interact(mob/user as mob)
+/obj/machinery/bot/floorbot/interact(mob/user as mob)
 	var/dat
 	dat += "<TT><B>Automatic Station Floor Repairer v1.0</B></TT><BR><BR>"
 	dat += "Status: <A href='?src=\ref[src];operation=start'>[src.on ? "On" : "Off"]</A><BR>"
+	dat += "Maintenance panel panel is [src.open ? "opened" : "closed"]<BR>"
 	dat += "Tiles left: [src.amount]<BR>"
 	dat += "Behvaiour controls are [src.locked ? "locked" : "unlocked"]<BR>"
-	if (!src.locked)
+	if (!src.locked || issilicon(user))
 		dat += "Improves floors: <A href='?src=\ref[src];operation=improve'>[src.improvefloors ? "Yes" : "No"]</A><BR>"
 		dat += "Finds tiles: <A href='?src=\ref[src];operation=tiles'>[src.eattiles ? "Yes" : "No"]</A><BR>"
 		dat += "Make singles pieces of metal into tiles when empty: <A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A><BR>"
@@ -99,30 +99,39 @@
 
 
 /obj/machinery/bot/floorbot/attackby(var/obj/item/W , mob/user as mob)
-	if (istype(W, /obj/item/stack/tile/steel))
-		var/obj/item/stack/tile/steel/T = W
+	if (istype(W, /obj/item/stack/tile/plasteel))
+		var/obj/item/stack/tile/plasteel/T = W
 		if (src.amount >= 50)
 			return
 		var/loaded = min(50-src.amount, T.amount)
 		T.use(loaded)
 		src.amount += loaded
-		user << "\red You load [loaded] tiles into the floorbot. He now contains [src.amount] tiles!"
+		user << "<span class='notice'>You load [loaded] tiles into the floorbot. He now contains [src.amount] tiles.</span>"
 		src.updateicon()
 	else if (istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
-		if (src.allowed(usr))
+		if (src.allowed(usr) && !open && !emagged)
 			src.locked = !src.locked
-			user << "You [src.locked ? "lock" : "unlock"] the [src] behaviour controls."
+			user << "<span class='notice'>You [src.locked ? "lock" : "unlock"] the [src] behaviour controls.</span>"
 		else
-			user << "The [src] doesn't seem to accept your authority."
+			if (emagged)
+				user << "<span class='warning'>ERROR</span>"
+			if (open)
+				user << "<span class='warning'>Please close the access panel before locking it.</span>"
+			else
+				user << "<span class='warning'>Access denied.</span>"
 		src.updateUsrDialog()
 	else
 		..()
 
+/obj/machinery/bot/floorbot/Emag(mob/user as mob)
+	..()
+	if (open && !locked)
+		if (user) user << "<span class='notice'>The [src] buzzes and beeps.</span>"
 
 /obj/machinery/bot/floorbot/Topic(href, href_list)
 	if (..())
 		return
-	usr.machine = src
+	usr.set_machine(src)
 	src.add_fingerprint(usr)
 	switch(href_list["operation"])
 		if ("start")
@@ -163,13 +172,9 @@
 	if (src.repairing)
 		return
 	var/list/floorbottargets = list()
-	if (!src.target || src.target == null)
-		for(var/obj/machinery/bot/floorbot/bot in world)
-			if (bot != src)
-				floorbottargets += bot.target
 	if (src.amount <= 0 && ((src.target == null) || !src.target))
 		if (src.eattiles)
-			for(var/obj/item/stack/tile/steel/T in view(7, src))
+			for(var/obj/item/stack/tile/plasteel/T in view(7, src))
 				if (T != src.oldtarget && !(target in floorbottargets))
 					src.oldtarget = T
 					src.target = T
@@ -185,10 +190,9 @@
 		else
 			return
 	if (prob(5))
-		for(var/mob/O in viewers(src, null))
-			O.show_message(text("[src] makes an excited booping beeping sound!"), 1)
+		visible_message("[src] makes an excited booping beeping sound!")
 
-	if (!src.target || src.target == null)
+	if ((!src.target || src.target == null) && emagged < 2)
 		if (targetdirection != null)
 			/*
 			for (var/turf/space/D in view(7,src))
@@ -215,10 +219,18 @@
 					src.target = F
 					break
 		if ((!src.target || src.target == null) && src.eattiles)
-			for(var/obj/item/stack/tile/steel/T in view(7, src))
+			for(var/obj/item/stack/tile/plasteel/T in view(7, src))
 				if (!(T in floorbottargets) && T != src.oldtarget)
 					src.oldtarget = T
 					src.target = T
+					break
+
+	if ((!src.target || src.target == null) && emagged == 2)
+		if (!src.target || src.target == null)
+			for (var/turf/simulated/floor/D in view(7,src))
+				if (!(D in floorbottargets) && D != src.oldtarget && D.floor_tile)
+					src.oldtarget = D
+					src.target = D
 					break
 
 	if (!src.target || src.target == null)
@@ -229,10 +241,10 @@
 	if (src.target && (src.target != null) && src.path.len == 0)
 		spawn(0)
 			if (!istype(src.target, /turf/))
-				src.path = AStar(src.loc, src.target.loc, /turf/proc/AdjacentTurfsSpace, /turf/proc/Distance, 0, 30)
+				src.path = AStar(src.loc, src.target.loc, /turf/proc/AdjacentTurfsSpace, /turf/proc/Distance, 0, 30, id=botcard)
 			else
-				src.path = AStar(src.loc, src.target, /turf/proc/AdjacentTurfsSpace, /turf/proc/Distance, 0, 30)
-			src.path = reverselist(src.path)
+				src.path = AStar(src.loc, src.target, /turf/proc/AdjacentTurfsSpace, /turf/proc/Distance, 0, 30, id=botcard)
+			if (!src.path) src.path = list()
 			if (src.path.len == 0)
 				src.oldtarget = src.target
 				src.target = null
@@ -245,12 +257,26 @@
 		src.path = new()
 
 	if (src.loc == src.target || src.loc == src.target.loc)
-		if (istype(src.target, /obj/item/stack/tile/steel))
+		if (istype(src.target, /obj/item/stack/tile/plasteel))
 			src.eattile(src.target)
 		else if (istype(src.target, /obj/item/stack/sheet/metal))
 			src.maketile(src.target)
-		else if (istype(src.target, /turf/))
+		else if (istype(src.target, /turf/) && emagged < 2)
 			repair(src.target)
+		else if (emagged == 2 && istype(src.target,/turf/simulated/floor))
+			var/turf/simulated/floor/F = src.target
+			src.anchored = 1
+			src.repairing = 1
+			if (prob(90))
+				F.break_tile_to_plating()
+			else
+				F.ReplaceWithLattice()
+			visible_message("\red [src] makes an excited booping sound.")
+			spawn(50)
+				src.amount ++
+				src.anchored = 0
+				src.repairing = 0
+				src.target = null
 		src.path = new()
 		return
 
@@ -268,9 +294,8 @@
 	src.anchored = 1
 	src.icon_state = "floorbot-c"
 	if (istype(target, /turf/space/))
-		for(var/mob/O in viewers(src, null))
-			O.show_message(text("\red [src] begins to repair the hole"), 1)
-		var/obj/item/stack/tile/steel/T = new /obj/item/stack/tile/steel
+		visible_message("\red [src] begins to repair the hole")
+		var/obj/item/stack/tile/plasteel/T = new /obj/item/stack/tile/plasteel
 		src.repairing = 1
 		spawn(50)
 			T.build(src.loc)
@@ -280,8 +305,7 @@
 			src.anchored = 0
 			src.target = null
 	else
-		for(var/mob/O in viewers(src, null))
-			O.show_message(text("\red [src] begins to improve the floor."), 1)
+		visible_message("\red [src] begins to improve the floor.")
 		src.repairing = 1
 		spawn(50)
 			src.loc.icon_state = "floor"
@@ -291,11 +315,10 @@
 			src.anchored = 0
 			src.target = null
 
-/obj/machinery/bot/floorbot/proc/eattile(var/obj/item/stack/tile/steel/T)
-	if (!istype(T, /obj/item/stack/tile/steel))
+/obj/machinery/bot/floorbot/proc/eattile(var/obj/item/stack/tile/plasteel/T)
+	if (!istype(T, /obj/item/stack/tile/plasteel))
 		return
-	for(var/mob/O in viewers(src, null))
-		O.show_message(text("\red [src] begins to collect tiles."), 1)
+	visible_message("\red [src] begins to collect tiles.")
 	src.repairing = 1
 	spawn(20)
 		if (isnull(T))
@@ -318,15 +341,14 @@
 		return
 	if (M.amount > 1)
 		return
-	for(var/mob/O in viewers(src, null))
-		O.show_message(text("\red [src] begins to create tiles."), 1)
+	visible_message("\red [src] begins to create tiles.")
 	src.repairing = 1
 	spawn(20)
 		if (isnull(M))
 			src.target = null
 			src.repairing = 0
 			return
-		var/obj/item/stack/tile/steel/T = new /obj/item/stack/tile/steel
+		var/obj/item/stack/tile/plasteel/T = new /obj/item/stack/tile/plasteel
 		T.amount = 4
 		T.loc = M.loc
 		del(M)
@@ -344,64 +366,60 @@
 	src.visible_message("\red <B>[src] blows apart!</B>", 1)
 	var/turf/Tsec = get_turf(src)
 
-	new /obj/item/weapon/storage/toolbox/mechanical(Tsec)
+	var/obj/item/weapon/storage/toolbox/mechanical/N = new /obj/item/weapon/storage/toolbox/mechanical(Tsec)
+	N.contents = list()
 
-	new /obj/item/device/prox_sensor(Tsec)
+	new /obj/item/device/assembly/prox_sensor(Tsec)
 
 	if (prob(50))
 		new /obj/item/robot_parts/l_arm(Tsec)
 
-	if (amount)
-		new /obj/item/stack/tile/steel(Tsec) // only one tile, yes
+	while (amount)//Dumps the tiles into the appropriate sized stacks
+		if (amount >= 16)
+			var/obj/item/stack/tile/plasteel/T = new (Tsec)
+			T.amount = 16
+			amount -= 16
+		else
+			var/obj/item/stack/tile/plasteel/T = new (Tsec)
+			T.amount = src.amount
+			amount = 0
 
-	var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
+	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 	s.set_up(3, 1, src)
 	s.start()
 	del(src)
 	return
 
 
-/obj/item/weapon/storage/toolbox/mechanical/attackby(var/obj/item/stack/tile/steel/T, mob/user as mob)
-	if (!istype(T, /obj/item/stack/tile/steel))
+/obj/item/weapon/storage/toolbox/mechanical/attackby(var/obj/item/stack/tile/plasteel/T, mob/user as mob)
+	if (!istype(T, /obj/item/stack/tile/plasteel))
 		..()
 		return
 	if (src.contents.len >= 1)
-		user << "They wont fit in as there is already stuff inside!"
+		user << "<span class='notice'>They wont fit in as there is already stuff inside.</span>"
 		return
 	if (user.s_active)
 		user.s_active.close(user)
-	var/obj/item/weapon/toolbox_tiles/B = new /obj/item/weapon/toolbox_tiles
-	B.loc = user
-	if (user.r_hand == T)
-		user.u_equip(T)
-		user.r_hand = B
-	else
-		user.u_equip(T)
-		user.l_hand = B
-	B.layer = 20
-	user << "You add the tiles into the empty toolbox. They stick oddly out the top."
 	del(T)
+	var/obj/item/weapon/toolbox_tiles/B = new /obj/item/weapon/toolbox_tiles
+	user.put_in_hands(B)
+	user << "<span class='notice'>You add the tiles into the empty toolbox. They protrude from the top.</span>"
+	user.drop_from_inventory(src)
 	del(src)
 
 /obj/item/weapon/toolbox_tiles/attackby(var/obj/item/W, mob/user as mob)
 	..()
-	if (istype(W, /obj/item/device/prox_sensor))
-		var/obj/item/weapon/toolbox_tiles_sensor/B = new /obj/item/weapon/toolbox_tiles_sensor
-		B.loc = user
-		if (user.r_hand == W)
-			user.u_equip(W)
-			user.r_hand = B
-		else
-			user.u_equip(W)
-			user.l_hand = B
-		B.created_name = src.created_name
-		B.layer = 20
-		user << "You add the sensor to the toolbox and tiles!"
+	if (isprox(W))
 		del(W)
+		var/obj/item/weapon/toolbox_tiles_sensor/B = new /obj/item/weapon/toolbox_tiles_sensor()
+		B.created_name = src.created_name
+		user.put_in_hands(B)
+		user << "<span class='notice'>You add the sensor to the toolbox and tiles!</span>"
+		user.drop_from_inventory(src)
 		del(src)
+
 	else if (istype(W, /obj/item/weapon/pen))
-		var/t = input(user, "Enter new robot name", src.name, src.created_name) as text
-		t = copytext(sanitize(t), 1, MAX_MESSAGE_LEN)
+		var/t = copytext(stripped_input(user, "Enter new robot name", src.name, src.created_name),1,MAX_NAME_LEN)
 		if (!t)
 			return
 		if (!in_range(src, usr) && src.loc != usr)
@@ -412,18 +430,16 @@
 /obj/item/weapon/toolbox_tiles_sensor/attackby(var/obj/item/W, mob/user as mob)
 	..()
 	if (istype(W, /obj/item/robot_parts/l_arm) || istype(W, /obj/item/robot_parts/r_arm))
-		var/obj/machinery/bot/floorbot/A = new /obj/machinery/bot/floorbot
-		if (user.r_hand == src || user.l_hand == src)
-			A.loc = user.loc
-		else
-			A.loc = src.loc
-		A.name = src.created_name
-		user << "You add the robot arm to the odd looking toolbox assembly! Boop beep!"
 		del(W)
+		var/turf/T = get_turf(user.loc)
+		var/obj/machinery/bot/floorbot/A = new /obj/machinery/bot/floorbot(T)
+		A.name = src.created_name
+		user << "<span class='notice'>You add the robot arm to the odd looking toolbox assembly! Boop beep!</span>"
+		user.drop_from_inventory(src)
 		del(src)
 	else if (istype(W, /obj/item/weapon/pen))
-		var/t = input(user, "Enter new robot name", src.name, src.created_name) as text
-		t = copytext(sanitize(t), 1, MAX_MESSAGE_LEN)
+		var/t = stripped_input(user, "Enter new robot name", src.name, src.created_name)
+
 		if (!t)
 			return
 		if (!in_range(src, usr) && src.loc != usr)

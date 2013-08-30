@@ -1,3 +1,10 @@
+/* Holograms!
+ * Contains:
+ *		Holopad
+ *		Hologram
+ *		Other stuff
+ */
+
 /*
 Revised. Original based on space ninja hologram code. Which is also mine. /N
 How it works:
@@ -9,17 +16,49 @@ AI may cancel the hologram at any time by clicking on the holopad once more.
 
 Possible to do for anyone motivated enough:
 	Give an AI variable for different hologram icons.
-	Itegrate EMP effects to disable the unit.
+	Itegrate EMP effect to disable the unit.
 */
+
+
+/*
+ * Holopad
+ */
+
+// HOLOPAD MODE
+// 0 = RANGE BASED
+// 1 = AREA BASED
+var/const/HOLOPAD_MODE = 0
+
+/obj/machinery/hologram/holopad
+	name = "\improper AI holopad"
+	desc = "It's a floor-mounted device for projecting holographic images. It is activated remotely."
+	icon_state = "holopad0"
+	var/mob/living/silicon/ai/master//Which AI, if any, is controlling the object? Only one AI may control a hologram at any time.
+	var/last_request = 0 //to prevent request spam. ~Carn
+	var/holo_range = 5 // Change to change how far the AI can move away from the holopad before deactivating.
+
+/obj/machinery/hologram/holopad/attack_hand(var/mob/living/carbon/human/user) //Carn: Hologram requests.
+	if (!istype(user))
+		return
+	if (alert(user,"Would you like to request an AI's presence?",,"Yes","No") == "Yes")
+		if (last_request + 200 < world.time) //don't spam the AI with requests you jerk!
+			last_request = world.time
+			user << "<span class='notice'>You request an AI's presence.</span>"
+			var/area/area = get_area(src)
+			for(var/mob/living/silicon/ai/AI in living_mob_list)
+				if (!AI.client)	continue
+				AI << "<span class='info'>Your presence is requested at <a href='?src=\ref[AI];jumptoholopad=\ref[src]'>\the [area]</a>.</span>"
+		else
+			user << "<span class='notice'>A request for AI presence was already sent recently.</span>"
+
 /obj/machinery/hologram/holopad/attack_ai(mob/living/silicon/ai/user)
 	if (!istype(user))
 		return
 	/*There are pretty much only three ways to interact here.
 	I don't need to check for client since they're clicking on an object.
 	This may change in the future but for now will suffice.*/
-	if (user.client.eye!=src)//Set client eye on the object if it's not already.
-		user.current = src
-		user.reset_view(src)
+	if (user.eyeobj.loc != src.loc)//Set client eye on the object if it's not already.
+		user.eyeobj.setLoc(get_turf(src))
 	else if (!hologram)//If there is no hologram, possibly make one.
 		activate_holo(user)
 	else if (master==user)//If there is a hologram, remove it. But only if the user is the master. Otherwise do nothing.
@@ -27,11 +66,10 @@ Possible to do for anyone motivated enough:
 	return
 
 /obj/machinery/hologram/holopad/proc/activate_holo(mob/living/silicon/ai/user)
-	if (!(stat & NOPOWER)&&user.client.eye==src)//If the projector has power and client eye is on it.
+	if (!(stat & NOPOWER) && user.eyeobj.loc == src.loc)//If the projector has power and client eye is on it.
 		if (!hologram)//If there is not already a hologram.
 			create_holo(user)//Create one.
-			for(var/mob/M in viewers())
-				M.show_message("A holographic image of [user] flicks to life right before your eyes!",1)
+			src.visible_message("A holographic image of [user] flicks to life right before your eyes!")
 		else
 			user << "\red ERROR: \black Image feed in progress."
 	else
@@ -40,13 +78,11 @@ Possible to do for anyone motivated enough:
 
 /*This is the proc for special two-way communication between AI and holopad/people talking near holopad.
 For the other part of the code, check silicon say.dm. Particularly robot talk.*/
-/obj/machinery/hologram/holopad/hear_talk(mob/M, text)
+/obj/machinery/hologram/holopad/hear_talk(mob/living/M, text)
 	if (M&&hologram&&master)//Master is mostly a safety in case lag hits or something.
 		if (!master.say_understands(M))//The AI will be able to understand most mobs talking through the holopad.
 			text = stars(text)
-		var/name_used = M.name
-		if (istype(M.wear_mask, /obj/item/clothing/mask/gas/voice)&&M.wear_mask:vchange)//Can't forget the ninjas.
-			name_used = M.wear_mask:voice
+		var/name_used = M.GetVoice()
 		//This communication is imperfect because the holopad "filters" voices and is only designed to connect to the master only.
 		var/rendered = "<i><span class='game say'>Holopad received, <span class='name'>[name_used]</span> <span class='message'>[M.say_quote(text)]</span></span></i>"
 		master.show_message(rendered, 2)
@@ -57,31 +93,62 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	hologram.icon = A.holo_icon
 	hologram.mouse_opacity = 0//So you can't click on it.
 	hologram.layer = FLY_LAYER//Above all the other objects/mobs. Or the vast majority of them.
-	hologram.sd_SetLuminosity(1)//To make it glowy.
 	hologram.anchored = 1//So space wind cannot drag it.
-	hologram.name = "AI hologram"//If someone decides to right click.
-	sd_SetLuminosity(1)//To make the pad glowy.
+	hologram.name = "[A.name] (Hologram)"//If someone decides to right click.
+	hologram.SetLuminosity(2)	//hologram lighting
+	SetLuminosity(2)			//pad lighting
 	icon_state = "holopad1"
+	A.current = src
 	master = A//AI is the master.
 	use_power = 2//Active power usage.
 	return 1
 
 /obj/machinery/hologram/holopad/proc/clear_holo()
-	hologram.sd_SetLuminosity(0)//Clear lighting.
+//	hologram.SetLuminosity(0)//Clear lighting.	//handled by the lighting controller when its ower is deleted
 	del(hologram)//Get rid of hologram.
+	if (master.current == src)
+		master.current = null
 	master = null//Null the master, since no-one is using it now.
-	sd_SetLuminosity(0)//Clear lighting for the parent.
+	SetLuminosity(0)			//pad lighting (hologram lighting will be handled automatically since its owner was deleted)
 	icon_state = "holopad0"
 	use_power = 1//Passive power usage.
 	return 1
 
 /obj/machinery/hologram/holopad/process()
 	if (hologram)//If there is a hologram.
-		if (master&&!master.stat&&master.client&&master.client.eye==src)//If there is an AI attached, it's not incapacitated, it has a client, and the client eye is centered on the projector.
-			if ( !(get_dist(src,hologram.loc)>3||stat & NOPOWER) )//If the hologram is not out of bounds and the machine has power.
-				return 1
+		if (master && !master.stat && master.client && master.eyeobj)//If there is an AI attached, it's not incapacitated, it has a client, and the client eye is centered on the projector.
+			if (!(stat & NOPOWER))//If the  machine has power.
+				if ((HOLOPAD_MODE == 0 && (get_dist(master.eyeobj, src) <= holo_range)))
+					return 1
+
+				else if (HOLOPAD_MODE == 1)
+
+					var/area/holo_area = get_area(src)
+					var/area/eye_area = get_area(master.eyeobj)
+
+					if (eye_area in holo_area.master.related)
+						return 1
+
 		clear_holo()//If not, we want to get rid of the hologram.
 	return 1
+
+/obj/machinery/hologram/holopad/proc/move_hologram()
+	if (hologram)
+		step_to(hologram, master.eyeobj) // So it turns.
+		hologram.loc = get_turf(master.eyeobj)
+
+	return 1
+
+/*
+ * Hologram
+ */
+
+/obj/machinery/hologram
+	anchored = 1
+	use_power = 1
+	idle_power_usage = 5
+	active_power_usage = 100
+	var/obj/effect/overlay/hologram//The projection itself. If there is one, the instrument is on, off otherwise.
 
 /obj/machinery/hologram/power_change()
 	if (powered())
@@ -122,13 +189,13 @@ Holographic project of everything else.
 	set name = "Hologram Debug New"
 	set category = "CURRENT DEBUG"
 
-	var/obj/overlay/hologram = new(loc)//Spawn a blank effect at the location.
+	var/obj/effect/overlay/hologram = new(loc)//Spawn a blank effect at the location.
 	var/icon/flat_icon = icon(getFlatIcon(src,0))//Need to make sure it's a new icon so the old one is not reused.
 	flat_icon.ColorTone(rgb(125,180,225))//Let's make it bluish.
 	flat_icon.ChangeOpacity(0.5)//Make it half transparent.
-	var/input = input("Select what icon state to use in effects.",,"")
+	var/input = input("Select what icon state to use in effect.",,"")
 	if (input)
-		var/icon/alpha_mask = new('effects.dmi', "[input]")
+		var/icon/alpha_mask = new('icons/effects/effects.dmi', "[input]")
 		flat_icon.AddAlphaMask(alpha_mask)//Finally, let's mix in a distortion effect.
 		hologram.icon = flat_icon
 
@@ -136,107 +203,11 @@ Holographic project of everything else.
 	return
 */
 
-/obj/machinery/hologram_ai
-	name = "Hologram Projector Platform"
-	icon = 'stationobjs.dmi'
+/*
+ * Other Stuff: Is this even used?
+ */
+/obj/machinery/hologram/projector
+	name = "hologram projector"
+	desc = "It makes a hologram appear...with magnets or something..."
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "hologram0"
-	var/atom/projection = null
-	var/temp = null
-	var/lumens = 0.0
-	var/h_r = 245.0
-	var/h_g = 245.0
-	var/h_b = 245.0
-	anchored = 1.0
-
-/obj/machinery/hologram_ai/wall_projector
-	name = "Hologram Wall Projector"
-	icon_state = "wall_hologram0"
-
-/obj/machinery/hologram_ai/New()
-	..()
-
-/obj/machinery/hologram_ai/attack_ai(user as mob)
-	src.show_console(user)
-	return
-
-/obj/machinery/hologram_ai/proc/render()
-	var/icon/I = new /icon('human.dmi', "body_m_s")
-
-	if (src.lumens >= 0)
-		I.Blend(rgb(src.lumens, src.lumens, src.lumens), ICON_ADD)
-	else
-		I.Blend(rgb(- src.lumens,  -src.lumens,  -src.lumens), ICON_SUBTRACT)
-
-	I.Blend(new /icon('human.dmi', "mouth_m_s"), ICON_OVERLAY)
-	I.Blend(new /icon('human.dmi', "underwear1_m_s"), ICON_OVERLAY)
-
-	var/icon/U = new /icon('human_face.dmi', "hair_a_s")
-	U.Blend(rgb(src.h_r, src.h_g, src.h_b), ICON_ADD)
-
-	I.Blend(U, ICON_OVERLAY)
-
-	I.Blend(new /icon('uniform.dmi', "aqua_s"), ICON_OVERLAY)
-
-	src.projection.icon = I
-
-/obj/machinery/hologram_ai/proc/show_console(var/mob/user as mob)
-	var/dat
-	user.machine = src
-	if (src.temp)
-		dat = text("[]<BR><BR><A href='?src=\ref[];temp=1'>Clear</A>", src.temp, src)
-	else
-		dat = text("<B>Hologram Status:</B><HR>\nPower: <A href='?src=\ref[];power=1'>[]</A><HR>\n<B>Hologram Control:</B><BR>\nColor Luminosity: []/220 <A href='?src=\ref[];reset=1'>\[Reset\]</A><BR>\nLighten: <A href='?src=\ref[];light=1'>1</A> <A href='?src=\ref[];light=10'>10</A><BR>\nDarken: <A href='?src=\ref[];light=-1'>1</A> <A href='?src=\ref[];light=-10'>10</A><BR>\n<BR>\nHair Color: ([],[],[]) <A href='?src=\ref[];h_reset=1'>\[Reset\]</A><BR>\nRed (0-255): <A href='?src=\ref[];h_r=-300'>\[0\]</A> <A href='?src=\ref[];h_r=-10'>-10</A> <A href='?src=\ref[];h_r=-1'>-1</A> [] <A href='?src=\ref[];h_r=1'>1</A> <A href='?src=\ref[];h_r=10'>10</A> <A href='?src=\ref[];h_r=300'>\[255\]</A><BR>\nGreen (0-255): <A href='?src=\ref[];h_g=-300'>\[0\]</A> <A href='?src=\ref[];h_g=-10'>-10</A> <A href='?src=\ref[];h_g=-1'>-1</A> [] <A href='?src=\ref[];h_g=1'>1</A> <A href='?src=\ref[];h_g=10'>10</A> <A href='?src=\ref[];h_g=300'>\[255\]</A><BR>\nBlue (0-255): <A href='?src=\ref[];h_b=-300'>\[0\]</A> <A href='?src=\ref[];h_b=-10'>-10</A> <A href='?src=\ref[];h_b=-1'>-1</A> [] <A href='?src=\ref[];h_b=1'>1</A> <A href='?src=\ref[];h_b=10'>10</A> <A href='?src=\ref[];h_b=300'>\[255\]</A><BR>", src, (src.projection ? "On" : "Off"),  -src.lumens + 35, src, src, src, src, src, src.h_r, src.h_g, src.h_b, src, src, src, src, src.h_r, src, src, src, src, src, src, src.h_g, src, src, src, src, src, src, src.h_b, src, src, src)
-	user << browse(dat, "window=hologram_console")
-	onclose(user, "hologram_console")
-	return
-
-/obj/machinery/hologram_ai/Topic(href, href_list)
-	..()
-	if (!istype(usr, /mob/living/silicon/ai))
-		return
-
-	if (href_list["power"])
-		if (src.projection)
-			if (istype(src, /obj/machinery/hologram_ai/wall_projector))
-				src.icon_state = "wall_hologram0"
-			else
-				src.icon_state = "hologram0"
-
-			//src.projector.projection = null
-			del(src.projection)
-		else
-			src.projection = new /obj/projection( src.loc )
-			src.projection.icon = 'human.dmi'
-			src.projection.icon_state = "male"
-			if (istype(src, /obj/machinery/hologram_ai/wall_projector))
-				src.icon_state = "wall_hologram1"
-			else
-				src.icon_state = "hologram1"
-			src.render()
-	else if (href_list["h_r"])
-		if (src.projection)
-			src.h_r += text2num(href_list["h_r"])
-			src.h_r = min(max(src.h_r, 0), 255)
-			render()
-	else if (href_list["h_g"])
-		if (src.projection)
-			src.h_g += text2num(href_list["h_g"])
-			src.h_g = min(max(src.h_g, 0), 255)
-			render()
-	else if (href_list["h_b"])
-		if (src.projection)
-			src.h_b += text2num(href_list["h_b"])
-			src.h_b = min(max(src.h_b, 0), 255)
-			render()
-	else if (href_list["light"])
-		if (src.projection)
-			src.lumens += text2num(href_list["light"])
-			src.lumens = min(max(src.lumens, -185.0), 35)
-			render()
-	else if (href_list["reset"])
-		if (src.projection)
-			src.lumens = 0
-			render()
-	else if (href_list["temp"])
-		src.temp = null
-	src.show_console(usr)

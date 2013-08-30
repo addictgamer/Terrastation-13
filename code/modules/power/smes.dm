@@ -4,20 +4,13 @@
 #define SMESMAXCHARGELEVEL 200000
 #define SMESMAXOUTPUT 200000
 
-/obj/machinery/power/smes/magical
-	name = "magical power storage unit"
-	desc = "A high-capacity superconducting magnetic energy storage (SMES) unit. Magically produces power."
-	process()
-		capacity = INFINITY
-		charge = INFINITY
-		..()
-
 /obj/machinery/power/smes
 	name = "power storage unit"
 	desc = "A high-capacity superconducting magnetic energy storage (SMES) unit."
 	icon_state = "smes"
 	density = 1
 	anchored = 1
+	use_power = 0
 	var/output = 50000
 	var/lastout = 0
 	var/loaddemand = 0
@@ -34,7 +27,6 @@
 
 /obj/machinery/power/smes/New()
 	..()
-
 	spawn(5)
 		dir_loop:
 			for(var/d in cardinal)
@@ -43,46 +35,41 @@
 					if (term && term.dir == turn(d, 180))
 						terminal = term
 						break dir_loop
-
 		if (!terminal)
 			stat |= BROKEN
 			return
-
 		terminal.master = src
-
 		updateicon()
+	return
 
 
 /obj/machinery/power/smes/proc/updateicon()
+	overlays.Cut()
+	if (stat & BROKEN)	return
 
-	overlays = null
-	if (stat & BROKEN)
-		return
-
-
-	overlays += image('power.dmi', "smes-op[online]")
+	overlays += image('icons/obj/power.dmi', "smes-op[online]")
 
 	if (charging)
-		overlays += image('power.dmi', "smes-oc1")
+		overlays += image('icons/obj/power.dmi', "smes-oc1")
 	else
 		if (chargemode)
-			overlays += image('power.dmi', "smes-oc0")
+			overlays += image('icons/obj/power.dmi', "smes-oc0")
 
 	var/clevel = chargedisplay()
 	if (clevel>0)
-		overlays += image('power.dmi', "smes-og[clevel]")
+		overlays += image('icons/obj/power.dmi', "smes-og[clevel]")
+	return
+
 
 /obj/machinery/power/smes/proc/chargedisplay()
-	return round(5.5*charge/capacity)
+	return round(5.5*charge/(capacity ? capacity : 5e6))
 
 #define SMESRATE 0.05			// rate of internal charge to external power
 
 
 /obj/machinery/power/smes/process()
 
-	if (stat & BROKEN)
-		return
-
+	if (stat & BROKEN)	return
 
 	//store machine state to see if we need to update the icon overlays
 	var/last_disp = chargedisplay()
@@ -132,13 +119,12 @@
 	if (last_disp != chargedisplay() || last_chrg != charging || last_onln != online)
 		updateicon()
 
-	for(var/mob/M in viewers(1, src))
-		if ((M.client && M.machine == src))
-			src.interact(M)
-	AutoUpdateAI(src)
+	updateDialog()
+	return
 
 // called after all power processes are finished
 // restores charge level to smes if there was excess this ptick
+
 
 /obj/machinery/power/smes/proc/restore()
 	if (stat & BROKEN)
@@ -165,19 +151,19 @@
 
 	if (clev != chargedisplay() )
 		updateicon()
+	return
 
 
 /obj/machinery/power/smes/add_load(var/amount)
 	if (terminal && terminal.powernet)
 		terminal.powernet.newload += amount
 
+
 /obj/machinery/power/smes/attack_ai(mob/user)
-
 	add_fingerprint(user)
-
 	if (stat & BROKEN) return
-
 	interact(user)
+
 
 /obj/machinery/power/smes/attack_hand(mob/user)
 	add_fingerprint(user)
@@ -187,19 +173,16 @@
 		if (istype(user:gloves, /obj/item/clothing/gloves/space_ninja)&&user:gloves:candrain&&!user:gloves:draining)
 			call(/obj/item/clothing/gloves/space_ninja/proc/drain)("SMES",src,user:wear_suit)
 			return
-
 	interact(user)
 
-/obj/machinery/power/smes/proc/interact(mob/user)
 
-	if ( (get_dist(src, user) > 1 ))
-		if (!istype(user, /mob/living/silicon/ai))
-			user.machine = null
-			user << browse(null, "window=smes")
-			return
+/obj/machinery/power/smes/interact(mob/user)
+	if (get_dist(src, user) > 1 && !istype(user, /mob/living/silicon))
+		user.unset_machine()
+		user << browse(null, "window=smes")
+		return
 
-	user.machine = src
-
+	user.set_machine(src)
 
 	var/t = "<TT><B>SMES Power Storage Unit</B> [n_tag? "([n_tag])" : null]<HR><PRE>"
 
@@ -225,6 +208,7 @@
 	onclose(user, "smes")
 	return
 
+
 /obj/machinery/power/smes/Topic(href, href_list)
 	..()
 
@@ -235,14 +219,14 @@
 			usr << "\red You don't have the dexterity to do this!"
 			return
 
-	//world << "[href] ; [href_list[href]]"
+//world << "[href] ; [href_list[href]]"
 
 	if (( usr.machine==src && ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon/ai)))
 
 
 		if ( href_list["close"] )
 			usr << browse(null, "window=smes")
-			usr.machine = null
+			usr.unset_machine()
 			return
 
 		else if ( href_list["cmode"] )
@@ -308,14 +292,14 @@
 			output += d
 			output = max(0, min(SMESMAXOUTPUT, output))	// clamp to range
 
-
+		investigate_log("input/output; [chargelevel>output?"<font color='green'>":"<font color='red'>"][chargelevel]/[output]</font> | Output-mode: [online?"<font color='green'>on</font>":"<font color='red'>off</font>"] | Input-mode: [chargemode?"<font color='green'>auto</font>":"<font color='red'>off</font>"] by [usr.key]","singulo")
 		src.updateUsrDialog()
 
 	else
 		usr << browse(null, "window=smes")
-		usr.machine = null
-
+		usr.unset_machine()
 	return
+
 
 /obj/machinery/power/smes/proc/ion_act()
 	if (src.z == 1)
@@ -324,7 +308,7 @@
 			for(var/mob/M in viewers(src))
 				M.show_message("\red The [src.name] is making strange noises!", 3, "\red You hear sizzling electronics.", 2)
 			sleep(10*pick(4,5,6,7,10,14))
-			var/datum/effects/system/harmless_smoke_spread/smoke = new /datum/effects/system/harmless_smoke_spread()
+			var/datum/effect/effect/system/harmless_smoke_spread/smoke = new /datum/effect/effect/system/harmless_smoke_spread()
 			smoke.set_up(3, 0, src.loc)
 			smoke.attach(src)
 			smoke.start()
@@ -333,7 +317,7 @@
 			return
 		if (prob(15)) //Power drain
 			world << "\red SMES power drain in [src.loc.loc]"
-			var/datum/effects/system/spark_spread/s = new /datum/effects/system/spark_spread
+			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 			s.set_up(3, 1, src)
 			s.start()
 			if (prob(50))
@@ -342,10 +326,11 @@
 				emp_act(2)
 		if (prob(5)) //smoke only
 			world << "\red SMES smoke in [src.loc.loc]"
-			var/datum/effects/system/harmless_smoke_spread/smoke = new /datum/effects/system/harmless_smoke_spread()
+			var/datum/effect/effect/system/harmless_smoke_spread/smoke = new /datum/effect/effect/system/harmless_smoke_spread()
 			smoke.set_up(3, 0, src.loc)
 			smoke.attach(src)
 			smoke.start()
+
 
 /obj/machinery/power/smes/emp_act(severity)
 	online = 0
@@ -360,8 +345,23 @@
 		online = initial(online)
 	..()
 
+
+
+/obj/machinery/power/smes/magical
+	name = "magical power storage unit"
+	desc = "A high-capacity superconducting magnetic energy storage (SMES) unit. Magically produces power."
+	process()
+		capacity = INFINITY
+		charge = INFINITY
+		..()
+
+
+
 /proc/rate_control(var/S, var/V, var/C, var/Min=1, var/Max=5, var/Limit=null)
 	var/href = "<A href='?src=\ref[S];rate control=1;[V]"
 	var/rate = "[href]=-[Max]'>-</A>[href]=-[Min]'>-</A> [(C?C : 0)] [href]=[Min]'>+</A>[href]=[Max]'>+</A>"
 	if (Limit) return "[href]=-[Limit]'>-</A>"+rate+"[href]=[Limit]'>+</A>"
 	return rate
+
+
+#undef SMESRATE

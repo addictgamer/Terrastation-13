@@ -1,15 +1,15 @@
 /obj/machinery/atmospherics/unary/vent_pump
-	icon = 'vent_pump.dmi'
+	icon = 'icons/obj/atmospherics/vent_pump.dmi'
 	icon_state = "off"
 
 	name = "Air Vent"
 	desc = "Has a valve and pump attached to it"
+	use_power = 1
 
+	var/area/initial_loc
 	level = 1
-	layer = TURF_LAYER
 	var/area_uid
 	var/id_tag = null
-	power_channel = ENVIRON
 
 	var/on = 0
 	var/pump_direction = 1 //0 = siphoning, 1 = releasing
@@ -30,11 +30,23 @@
 	var/radio_filter_out
 	var/radio_filter_in
 
+	on
+		on = 1
+		icon_state = "out"
+
+	siphon
+		pump_direction = 0
+		icon_state = "off"
+
+		on
+			on = 1
+			icon_state = "in"
+
 	New()
-		var/area/A = get_area(loc)
-		if (A.master)
-			A = A.master
-		area_uid = A.uid
+		initial_loc = get_area(loc)
+		if (initial_loc.master)
+			initial_loc = initial_loc.master
+		area_uid = initial_loc.uid
 		if (!id_tag)
 			assign_uid()
 			id_tag = num2text(uid)
@@ -51,6 +63,9 @@
 			air_contents.volume = 1000
 
 	update_icon()
+		if (welded)
+			icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]weld"
+			return
 		if (on && !(stat & (NOPOWER|BROKEN)))
 			if (pump_direction)
 				icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]out"
@@ -148,6 +163,12 @@
 				"sigtype" = "status"
 			)
 
+			if (!initial_loc.air_vent_names[id_tag])
+				var/new_name = "[initial_loc.name] Vent Pump #[initial_loc.air_vent_names.len+1]"
+				initial_loc.air_vent_names[id_tag] = new_name
+				src.name = new_name
+			initial_loc.air_vent_info[id_tag] = signal.data
+
 			radio_connection.post_signal(src, signal, radio_filter_out)
 
 			return 1
@@ -169,62 +190,62 @@
 		if (!signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
 			return 0
 
-		if ("purge" in signal.data)
+		if (signal.data["purge"] != null)
 			pressure_checks &= ~1
 			pump_direction = 0
 
-		if ("stabalize" in signal.data)
+		if (signal.data["stabalize"] != null)
 			pressure_checks |= 1
 			pump_direction = 1
 
-		if ("power" in signal.data)
+		if (signal.data["power"] != null)
 			on = text2num(signal.data["power"])
 
-		if ("power_toggle" in signal.data)
+		if (signal.data["power_toggle"] != null)
 			on = !on
 
-		if ("checks" in signal.data)
+		if (signal.data["checks"] != null)
 			pressure_checks = text2num(signal.data["checks"])
 
-		if ("checks_toggle" in signal.data)
+		if (signal.data["checks_toggle"] != null)
 			pressure_checks = (pressure_checks?0:3)
 
-		if ("direction" in signal.data)
+		if (signal.data["direction"] != null)
 			pump_direction = text2num(signal.data["direction"])
 
-		if ("set_internal_pressure" in signal.data)
+		if (signal.data["set_internal_pressure"] != null)
 			internal_pressure_bound = between(
 				0,
 				text2num(signal.data["set_internal_pressure"]),
 				ONE_ATMOSPHERE*50
 			)
 
-		if ("set_external_pressure" in signal.data)
+		if (signal.data["set_external_pressure"] != null)
 			external_pressure_bound = between(
 				0,
 				text2num(signal.data["set_external_pressure"]),
 				ONE_ATMOSPHERE*50
 			)
 
-		if ("adjust_internal_pressure" in signal.data)
+		if (signal.data["adjust_internal_pressure"] != null)
 			internal_pressure_bound = between(
 				0,
 				internal_pressure_bound + text2num(signal.data["adjust_internal_pressure"]),
 				ONE_ATMOSPHERE*50
 			)
 
-		if ("adjust_external_pressure" in signal.data)
+		if (signal.data["adjust_external_pressure"] != null)
 			external_pressure_bound = between(
 				0,
 				external_pressure_bound + text2num(signal.data["adjust_external_pressure"]),
 				ONE_ATMOSPHERE*50
 			)
 
-		if ("init" in signal.data)
+		if (signal.data["init"] != null)
 			name = signal.data["init"]
 			return
 
-		if ("status" in signal.data)
+		if (signal.data["status"] != null)
 			spawn(2)
 				broadcast_status()
 			return //do not update_icon
@@ -236,6 +257,9 @@
 		return
 
 	hide(var/i) //to make the little pipe section invisible, the icon changes.
+		if (welded)
+			icon_state = "[i == 1 && istype(loc, /turf/simulated) ? "h" : "" ]weld"
+			return
 		if (on&&node)
 			if (pump_direction)
 				icon_state = "[i == 1 && istype(loc, /turf/simulated) ? "h" : "" ]out"
@@ -247,19 +271,23 @@
 		return
 
 	attackby(obj/item/W, mob/user)
-		if (istype(W, /obj/item/weapon/weldingtool) && W:welding)
-			if (W:remove_fuel(0,user))
-				W:welding = 2
+		if (istype(W, /obj/item/weapon/weldingtool))
+			var/obj/item/weapon/weldingtool/WT = W
+			if (WT.remove_fuel(0,user))
 				user << "\blue Now welding the vent."
 				if (do_after(user, 20))
-					playsound(src.loc, 'Welder2.ogg', 50, 1)
+					if (!src || !WT.isOn()) return
+					playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
 					if (!welded)
 						user.visible_message("[user] welds the vent shut.", "You weld the vent shut.", "You hear welding.")
 						welded = 1
+						update_icon()
 					else
 						user.visible_message("[user] unwelds the vent.", "You unweld the vent.", "You hear welding.")
 						welded = 0
-				W:welding = 1
+						update_icon()
+				else
+					user << "\blue The welding tool needs to be on to start this task."
 			else
 				user << "\blue You need more welding fuel to complete this task."
 				return 1
@@ -292,7 +320,7 @@
 			user << "\red You cannot unwrench this [src], it too exerted due to internal pressure."
 			add_fingerprint(user)
 			return 1
-		playsound(src.loc, 'Ratchet.ogg', 50, 1)
+		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		user << "\blue You begin to unfasten \the [src]..."
 		if (do_after(user, 40))
 			user.visible_message( \
@@ -301,3 +329,10 @@
 				"You hear ratchet.")
 			new /obj/item/pipe(loc, make_from=src)
 			del(src)
+
+/obj/machinery/atmospherics/unary/vent_pump/Del()
+	if (initial_loc)
+		initial_loc.air_vent_info -= id_tag
+		initial_loc.air_vent_names -= id_tag
+	..()
+	return

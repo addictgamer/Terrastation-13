@@ -3,9 +3,9 @@
 	max_stages = 4
 	spread = "On contact"
 	spread_type = CONTACT_GENERAL
-	cure = "Ryetalin"
-	cure = "ryetalyn"
-	curable = 0
+	cure = "Ryetalyn"
+	cure_id = "ryetalyn"
+	curable = 1
 	agent = "S4E1 retrovirus"
 	affected_species = list("Human")
 	var/list/original_dna = list()
@@ -29,7 +29,7 @@
 			if (prob(1))
 				affected_mob << "\red Your stomach hurts."
 				if (prob(20))
-					affected_mob.toxloss += 2
+					affected_mob.adjustToxLoss(2)
 					affected_mob.updatehealth()
 		if (4)
 			if (!src.transformed)

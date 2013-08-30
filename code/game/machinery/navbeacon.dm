@@ -3,7 +3,7 @@
 
 /obj/machinery/navbeacon
 
-	icon = 'objects.dmi'
+	icon = 'icons/obj/objects.dmi'
 	icon_state = "navbeacon0-f"
 	name = "navigation beacon"
 	desc = "A radio beacon used for bot navigation."
@@ -39,7 +39,7 @@
 
 		codes = new()
 
-		var/list/entries = dd_text2List(codes_txt, ";")	// entries are separated by semicolons
+		var/list/entries = text2list(codes_txt, ";")	// entries are separated by semicolons
 
 		for(var/e in entries)
 			var/index = findtext(e, "=")		// format is "key=value"
@@ -132,7 +132,7 @@
 	attack_hand(var/mob/user)
 		interact(user, 0)
 
-	proc/interact(var/mob/user, var/ai = 0)
+	interact(var/mob/user, var/ai = 0)
 		var/turf/T = loc
 		if (T.intact)
 			return		// prevent intraction when T-scanner revealed
@@ -186,14 +186,14 @@ Transponder Codes:<UL>"}
 			return
 		if ((in_range(src, usr) && istype(src.loc, /turf)) || (istype(usr, /mob/living/silicon)))
 			if (open && !locked)
-				usr.machine = src
+				usr.set_machine(src)
 
 				if (href_list["freq"])
 					freq = sanitize_frequency(freq + text2num(href_list["freq"]))
 					updateDialog()
 
 				else if (href_list["locedit"])
-					var/newloc = input("Enter New Location", "Navigation Beacon", location) as text|null
+					var/newloc = copytext(sanitize(input("Enter New Location", "Navigation Beacon", location) as text|null),1,MAX_MESSAGE_LEN)
 					if (newloc)
 						location = newloc
 						updateDialog()

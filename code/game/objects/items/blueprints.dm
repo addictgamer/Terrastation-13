@@ -1,15 +1,20 @@
 /obj/item/blueprints
+	name = "station blueprints"
+	desc = "Blueprints of the station. There's stamp \"Classified\" and several coffee stains on it."
+	icon = 'icons/obj/items.dmi'
+	icon_state = "blueprints"
+	attack_verb = list("attacked", "bapped", "hit")
 	var/const/AREA_ERRNONE = 0
 	var/const/AREA_STATION = 1
 	var/const/AREA_SPACE =   2
 	var/const/AREA_SPECIAL = 3
-	
+
 	var/const/BORDER_ERROR = 0
 	var/const/BORDER_NONE = 1
 	var/const/BORDER_BETWEEN =   2
 	var/const/BORDER_2NDTILE = 3
 	var/const/BORDER_SPACE = 4
-	
+
 	var/const/ROOM_ERR_LOLWAT = 0
 	var/const/ROOM_ERR_SPACE = -1
 	var/const/ROOM_ERR_TOOLARGE = -2
@@ -20,10 +25,10 @@
 		return
 	interact()
 	return
-	
+
 /obj/item/blueprints/Topic(href, href_list)
 	..()
-	if ((usr.restrained() || usr.stat || usr.equipped() != src))
+	if ((usr.restrained() || usr.stat || usr.get_active_hand() != src))
 		return
 	if (!href_list["action"])
 		return
@@ -39,7 +44,7 @@
 				return
 			edit_area()
 
-/obj/item/blueprints/proc/interact()
+/obj/item/blueprints/interact()
 	var/area/A = get_area()
 	var/text = {"<HTML><head><title>[src]</title></head><BODY>
 <h2>[station_name()] blueprints</h2>
@@ -59,7 +64,7 @@ move an amendment</a> to the drawing.</p>
 "}
 		if (AREA_SPECIAL)
 			text += {"
-<p>This place doesn't noted on this blueprints.</p>
+<p>This place isn't noted on these blueprints.</p>
 "}
 		else
 			return
@@ -93,7 +98,7 @@ move an amendment</a> to the drawing.</p>
 		if ( istype(A,type) )
 			return AREA_SPECIAL
 	return AREA_STATION
-	
+
 /obj/item/blueprints/proc/create_area()
 	//world << "DEBUG: create_area"
 	var/res = detect_room(get_turf_loc(usr))
@@ -109,7 +114,7 @@ move an amendment</a> to the drawing.</p>
 				usr << "\red Error! Please notify administration!"
 				return
 	var/list/turf/turfs = res
-	var/str = sanitize(trim(input(usr,"New area title","Blueprints editing")))
+	var/str = trim(stripped_input(usr,"New area title","Blueprints editing", "", MAX_NAME_LEN))
 	if (!str || !length(str)) //cancel
 		return
 	if (length(str) > 50)
@@ -124,7 +129,14 @@ move an amendment</a> to the drawing.</p>
 	A.power_equip = 0
 	A.power_light = 0
 	A.power_environ = 0
+	A.always_unpowered = 0
 	move_turfs_to_area(turfs, A)
+
+	A.always_unpowered = 0
+	for(var/turf/T in A.contents)
+		T.lighting_changed = 1
+		lighting_controller.changed_turfs += T
+
 	spawn(5)
 		//ma = A.master ? "[A.master]" : "(null)"
 		//world << "DEBUG: create_area(5): <br>A.name=[A.name]<br>A.tag=[A.tag]<br>A.master=[ma]"
@@ -142,7 +154,7 @@ move an amendment</a> to the drawing.</p>
 	var/area/A = get_area()
 	//world << "DEBUG: edit_area"
 	var/prevname = A.name
-	var/str = sanitize(trim(input(usr,"New area title","Blueprints editing",prevname)))
+	var/str = trim(stripped_input(usr,"New area title","Blueprints editing", prevname, MAX_NAME_LEN))
 	if (!str || !length(str) || str==prevname) //cancel
 		return
 	if (length(str) > 50)
@@ -158,19 +170,19 @@ move an amendment</a> to the drawing.</p>
 
 
 /obj/item/blueprints/proc/set_area_machinery_title(var/area/A,var/title,var/oldtitle)
-	if (!oldtitle) // or dd_replacetext goes to infinite loop
+	if (!oldtitle) // or replacetext goes to infinite loop
 		return
 	for(var/area/RA in A.related)
 		for(var/obj/machinery/alarm/M in RA)
-			M.name = dd_replacetext(M.name,oldtitle,title)
+			M.name = replacetext(M.name,oldtitle,title)
 		for(var/obj/machinery/power/apc/M in RA)
-			M.name = dd_replacetext(M.name,oldtitle,title)
+			M.name = replacetext(M.name,oldtitle,title)
 		for(var/obj/machinery/atmospherics/unary/vent_scrubber/M in RA)
-			M.name = dd_replacetext(M.name,oldtitle,title)
+			M.name = replacetext(M.name,oldtitle,title)
 		for(var/obj/machinery/atmospherics/unary/vent_pump/M in RA)
-			M.name = dd_replacetext(M.name,oldtitle,title)
+			M.name = replacetext(M.name,oldtitle,title)
 		for(var/obj/machinery/door/M in RA)
-			M.name = dd_replacetext(M.name,oldtitle,title)
+			M.name = replacetext(M.name,oldtitle,title)
 	//TODO: much much more. Unnamed airlocks, cameras, etc.
 
 /obj/item/blueprints/proc/check_tile_is_border(var/turf/T2,var/dir)
@@ -184,8 +196,8 @@ move an amendment</a> to the drawing.</p>
 		return BORDER_2NDTILE
 	if (!istype(T2, /turf/simulated))
 		return BORDER_BETWEEN
-		
-	for (var/obj/window/W in T2)
+
+	for (var/obj/structure/window/W in T2)
 		if (turn(dir,180) == W.dir)
 			return BORDER_BETWEEN
 		if (W.dir in list(NORTHEAST,SOUTHEAST,NORTHWEST,SOUTHWEST))
@@ -195,11 +207,11 @@ move an amendment</a> to the drawing.</p>
 			return BORDER_BETWEEN
 	if (locate(/obj/machinery/door) in T2)
 		return BORDER_2NDTILE
-	if (locate(/obj/falsewall) in T2)
+	if (locate(/obj/structure/falsewall) in T2)
 		return BORDER_2NDTILE
-	if (locate(/obj/falserwall) in T2)
+	if (locate(/obj/structure/falserwall) in T2)
 		return BORDER_2NDTILE
-	
+
 	return BORDER_NONE
 
 /obj/item/blueprints/proc/detect_room(var/turf/first)
@@ -212,7 +224,7 @@ move an amendment</a> to the drawing.</p>
 		pending -= T
 		for (var/dir in cardinal)
 			var/skip = 0
-			for (var/obj/window/W in T)
+			for (var/obj/structure/window/W in T)
 				if (dir == W.dir || (W.dir in list(NORTHEAST,SOUTHEAST,NORTHWEST,SOUTHWEST)))
 					skip = 1; break
 			if (skip) continue
@@ -236,32 +248,3 @@ move an amendment</a> to the drawing.</p>
 					return ROOM_ERR_SPACE
 		found+=T
 	return found
-
-/*
-/proc/check_apc(var/area/A)
-	for(var/area/RA in A.related)
-		for(var/obj/machinery/power/apc/FINDME in RA)
-			return 1
-	return 0
-
-/proc/fuckingfreemachinery()
-	for(var/obj/machinery/machine in machines)
-		if (istype(machine,/obj/machinery/power/solar))
-			continue
-		var/area/A = machine.loc.loc		// make sure it's in an area
-		if (istype(A,/area/tdome))
-			continue
-		if (istype(A,/area/shuttle))
-			continue
-		if (!A || !isarea(A))
-			world << "DEBUG: @[machine.x],[machine.y],[machine.z] ([A.name]) machine \"[machine.name]\" ([machine.type]) hasnt area!"
-			continue
-		A = A.master
-		if (A.name=="Space")
-			world << "DEBUG: @[machine.x],[machine.y],[machine.z] ([A.name]) machine \"[machine.name]\" ([machine.type]) work in space!"
-			continue
-		if (!check_apc(A))
-			world << "DEBUG: @[machine.x],[machine.y],[machine.z] ([A.name]) machine \"[machine.name]\" ([machine.type]) work without APC!"
-	world << "\red END ====="
- 
-*/

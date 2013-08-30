@@ -1,9 +1,10 @@
-/obj/proc_holder/spell/targeted/inflict_handler
+/obj/effect/proc_holder/spell/targeted/inflict_handler
 	name = "Inflict Handler"
 	desc = "This spell blinds and/or destroys/damages/heals and/or weakens/stuns the target."
 
-	var/amt_weaken = 0
-	var/amt_paralysis = 0 //stun
+	var/amt_weakened = 0
+	var/amt_paralysis = 0
+	var/amt_stunned = 0
 
 	//set to negatives for healing
 	var/amt_dam_fire = 0
@@ -16,11 +17,18 @@
 
 	var/destroys = "none" //can be "none", "gib" or "disintegrate"
 
-/obj/proc_holder/spell/targeted/inflict_handler/cast(list/targets)
+/obj/effect/proc_holder/spell/targeted/inflict_handler/cast(list/targets)
 
 	for(var/mob/living/target in targets)
 		switch(destroys)
 			if ("gib")
+				target.gib()
+			if ("gib_brain")
+				if (ishuman(target) || ismonkey(target))
+					var/mob/living/carbon/C = target
+					if (C.brain_op_stage != 4) // Their brain is already taken out
+						var/obj/item/brain/B = new(C.loc)
+						B.transfer_identity(C)
 				target.gib()
 			if ("disintegrate")
 				target.dust()
@@ -40,11 +48,12 @@
 				target.heal_overall_damage(amt_dam_brute,0)
 			else if (amt_dam_fire <= 0)
 				target.heal_overall_damage(amt_dam_brute,amt_dam_fire)
-		target.toxloss += amt_dam_tox
+		target.adjustToxLoss(amt_dam_tox)
 		target.oxyloss += amt_dam_oxy
 		//disabling
-		target.weakened += amt_weaken
-		target.paralysis += amt_paralysis
+		target.Weaken(amt_weakened)
+		target.Paralyse(amt_paralysis)
+		target.Stun(amt_stunned)
 
 		target.eye_blind += amt_eye_blind
 		target.eye_blurry += amt_eye_blurry

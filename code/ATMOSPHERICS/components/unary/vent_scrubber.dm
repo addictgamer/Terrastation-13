@@ -1,13 +1,14 @@
 /obj/machinery/atmospherics/unary/vent_scrubber
-	icon = 'vent_scrubber.dmi'
+	icon = 'icons/obj/atmospherics/vent_scrubber.dmi'
 	icon_state = "off"
 
 	name = "Air Scrubber"
 	desc = "Has a valve and pump attached to it"
+	use_power = 1
 
 	level = 1
-	layer = TURF_LAYER
 
+	var/area/initial_loc
 	var/id_tag = null
 	var/frequency = 1439
 	var/datum/radio_frequency/radio_connection
@@ -25,10 +26,10 @@
 	var/radio_filter_out
 	var/radio_filter_in
 	New()
-		var/area/A = get_area(loc)
-		if (A.master)
-			A = A.master
-		area_uid = A.uid
+		initial_loc = get_area(loc)
+		if (initial_loc.master)
+			initial_loc = initial_loc.master
+		area_uid = initial_loc.uid
 		if (!id_tag)
 			assign_uid()
 			id_tag = num2text(uid)
@@ -73,6 +74,11 @@
 				"filter_n2o" = scrub_N2O,
 				"sigtype" = "status"
 			)
+			if (!initial_loc.air_scrub_names[id_tag])
+				var/new_name = "[initial_loc.name] Air Scrubber #[initial_loc.air_scrub_names.len+1]"
+				initial_loc.air_scrub_names[id_tag] = new_name
+				src.name = new_name
+			initial_loc.air_scrub_info[id_tag] = signal.data
 			radio_connection.post_signal(src, signal, radio_filter_out)
 
 			return 1
@@ -167,13 +173,13 @@
 		if (!signal.data["tag"] || (signal.data["tag"] != id_tag) || (signal.data["sigtype"]!="command"))
 			return 0
 
-		if ("power" in signal.data)
+		if (signal.data["power"] != null)
 			on = text2num(signal.data["power"])
-		if ("power_toggle" in signal.data)
+		if (signal.data["power_toggle"] != null)
 			on = !on
 
-		if ("panic_siphon" in signal.data) //must be before if ("scrubbing" thing
-			panic = text2num(signal.data["panic_siphon"])
+		if (signal.data["panic_siphon"]) //must be before if ("scrubbing" thing
+			panic = text2num(signal.data["panic_siphon"] != null)
 			if (panic)
 				on = 1
 				scrubbing = 0
@@ -181,7 +187,7 @@
 			else
 				scrubbing = 1
 				volume_rate = initial(volume_rate)
-		if ("toggle_panic_siphon" in signal.data)
+		if (signal.data["toggle_panic_siphon"] != null)
 			panic = !panic
 			if (panic)
 				on = 1
@@ -191,31 +197,31 @@
 				scrubbing = 1
 				volume_rate = initial(volume_rate)
 
-		if ("scrubbing" in signal.data)
+		if (signal.data["scrubbing"] != null)
 			scrubbing = text2num(signal.data["scrubbing"])
-		if ("toggle_scrubbing" in signal.data)
+		if (signal.data["toggle_scrubbing"])
 			scrubbing = !scrubbing
 
-		if ("co2_scrub" in signal.data)
+		if (signal.data["co2_scrub"] != null)
 			scrub_CO2 = text2num(signal.data["co2_scrub"])
-		if ("toggle_co2_scrub" in signal.data)
+		if (signal.data["toggle_co2_scrub"])
 			scrub_CO2 = !scrub_CO2
 
-		if ("tox_scrub" in signal.data)
+		if (signal.data["tox_scrub"] != null)
 			scrub_Toxins = text2num(signal.data["tox_scrub"])
-		if ("toggle_tox_scrub" in signal.data)
+		if (signal.data["toggle_tox_scrub"])
 			scrub_Toxins = !scrub_Toxins
 
-		if ("n2o_scrub" in signal.data)
+		if (signal.data["n2o_scrub"] != null)
 			scrub_N2O = text2num(signal.data["n2o_scrub"])
-		if ("toggle_n2o_scrub" in signal.data)
+		if (signal.data["toggle_n2o_scrub"])
 			scrub_N2O = !scrub_N2O
 
-		if ("init" in signal.data)
+		if (signal.data["init"] != null)
 			name = signal.data["init"]
 			return
 
-		if ("status" in signal.data)
+		if (signal.data["status"] != null)
 			spawn(2)
 				broadcast_status()
 			return //do not update_icon
@@ -227,7 +233,7 @@
 		return
 
 	power_change()
-		if (powered(ENVIRON))
+		if (powered(power_channel))
 			stat &= ~NOPOWER
 		else
 			stat |= NOPOWER
@@ -249,7 +255,7 @@
 			user << "\red You cannot unwrench this [src], it too exerted due to internal pressure."
 			add_fingerprint(user)
 			return 1
-		playsound(src.loc, 'Ratchet.ogg', 50, 1)
+		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		user << "\blue You begin to unfasten \the [src]..."
 		if (do_after(user, 40))
 			user.visible_message( \
@@ -258,3 +264,10 @@
 				"You hear ratchet.")
 			new /obj/item/pipe(loc, make_from=src)
 			del(src)
+
+/obj/machinery/atmospherics/unary/vent_scrubber/Del()
+	if (initial_loc)
+		initial_loc.air_scrub_info -= id_tag
+		initial_loc.air_scrub_names -= id_tag
+	..()
+	return

@@ -1,5 +1,6 @@
 /obj/machinery/portable_atmospherics
 	name = "atmoalter"
+	use_power = 0
 	var/datum/gas_mixture/air_contents = new
 
 	var/obj/machinery/atmospherics/portables_connector/connected_port
@@ -18,6 +19,14 @@
 
 		return 1
 
+	initialize()
+		. = ..()
+		spawn()
+			var/obj/machinery/atmospherics/portables_connector/port = locate() in loc
+			if (port)
+				connect(port)
+				update_icon()
+	
 	process()
 		if (!connected_port) //only react when pipe_network will ont it do it for you
 			//Allow for reactions
@@ -89,12 +98,14 @@
 		if (connected_port)
 			disconnect()
 			user << "\blue You disconnect [name] from the port."
+			update_icon()
 			return
 		else
 			var/obj/machinery/atmospherics/portables_connector/possible_port = locate(/obj/machinery/atmospherics/portables_connector/) in loc
 			if (possible_port)
 				if (connect(possible_port))
 					user << "\blue You connect [name] to the port."
+					update_icon()
 					return
 				else
 					user << "\blue [name] failed to connect to the port."
@@ -103,9 +114,8 @@
 				user << "\blue Nothing happens."
 				return
 
-	else if ((istype(W, /obj/item/device/analyzer) || (istype(W, /obj/item/device/pda))) && get_dist(user, src) <= 1)
-		for (var/mob/O in viewers(user, null))
-			O << "\red [user] has used [W] on \icon[icon]"
+	else if ((istype(W, /obj/item/device/analyzer)) && get_dist(user, src) <= 1)
+		visible_message("\red [user] has used [W] on \icon[icon]")
 		if (air_contents)
 			var/pressure = air_contents.return_pressure()
 			var/total_moles = air_contents.total_moles()

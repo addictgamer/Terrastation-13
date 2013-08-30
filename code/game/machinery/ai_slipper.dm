@@ -1,6 +1,6 @@
 /obj/machinery/ai_slipper
 	name = "AI Liquid Dispenser"
-	icon = 'device.dmi'
+	icon = 'icons/obj/device.dmi'
 	icon_state = "motion3"
 	layer = 3
 	anchored = 1.0
@@ -23,7 +23,6 @@
 			icon_state = "motion0"
 			stat |= NOPOWER
 
-
 /obj/machinery/ai_slipper/proc/setState(var/enabled, var/uses)
 	src.disabled = disabled
 	src.uses = uses
@@ -40,7 +39,7 @@
 			user << "You [ locked ? "lock" : "unlock"] the device."
 			if (locked)
 				if (user.machine==src)
-					user.machine = null
+					user.unset_machine()
 					user << browse(null, "window=ai_slipper")
 			else
 				if (user.machine==src)
@@ -59,11 +58,11 @@
 	if ( (get_dist(src, user) > 1 ))
 		if (!istype(user, /mob/living/silicon))
 			user << text("Too far away.")
-			user.machine = null
+			user.unset_machine()
 			user << browse(null, "window=ai_slipper")
 			return
 
-	user.machine = src
+	user.set_machine(src)
 	var/loc = src.loc
 	if (istype(loc, /turf))
 		loc = loc:loc
@@ -96,7 +95,7 @@
 		if (cooldown_on || disabled)
 			return
 		else
-			new /obj/effects/foam(src.loc)
+			new /obj/effect/effect/foam(src.loc)
 			src.uses--
 			cooldown_on = 1
 			cooldown_time = world.timeofday + 100

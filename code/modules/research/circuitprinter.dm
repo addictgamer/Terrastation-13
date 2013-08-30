@@ -8,11 +8,12 @@ using metal and glass, it uses glass and reagents (usually sulfuric acis).
 	name = "Circuit Imprinter"
 	icon_state = "circuit_imprinter"
 	flags = OPENCONTAINER
-	var
-		g_amount = 0
-		gold_amount = 0
-		diamond_amount = 0
-		max_material_amount = 75000.0
+
+	var/g_amount = 0
+	var/gold_amount = 0
+	var/diamond_amount = 0
+	var/uranium_amount = 0
+	var/max_material_amount = 75000.0
 
 	New()
 		..()
@@ -46,7 +47,7 @@ using metal and glass, it uses glass and reagents (usually sulfuric acis).
 		return
 
 	proc/TotalMaterials()
-		return g_amount + gold_amount + diamond_amount
+		return g_amount + gold_amount + diamond_amount + uranium_amount
 
 	attackby(var/obj/item/O as obj, var/mob/user as mob)
 		if (shocked)
@@ -66,7 +67,7 @@ using metal and glass, it uses glass and reagents (usually sulfuric acis).
 			return
 		if (opened)
 			if (istype(O, /obj/item/weapon/crowbar))
-				playsound(src.loc, 'Crowbar.ogg', 50, 1)
+				playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
 				var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(src.loc)
 				M.state = 2
 				M.icon_state = "box_1"
@@ -79,19 +80,29 @@ using metal and glass, it uses glass and reagents (usually sulfuric acis).
 				if (g_amount >= 3750)
 					var/obj/item/stack/sheet/glass/G = new /obj/item/stack/sheet/glass(src.loc)
 					G.amount = round(g_amount / 3750)
+				if (gold_amount >= 2000)
+					var/obj/item/stack/sheet/mineral/gold/G = new /obj/item/stack/sheet/mineral/gold(src.loc)
+					G.amount = round(gold_amount / 2000)
+				if (diamond_amount >= 2000)
+					var/obj/item/stack/sheet/mineral/diamond/G = new /obj/item/stack/sheet/mineral/diamond(src.loc)
+					G.amount = round(diamond_amount / 2000)
+				if (uranium_amount >= 2000)
+					var/obj/item/stack/sheet/mineral/uranium/G = new /obj/item/stack/sheet/mineral/uranium(src.loc)
+					G.amount = round(uranium_amount / 2000)
 				del(src)
 				return 1
 			else
 				user << "\red You can't load the [src.name] while it's opened."
 				return 1
 		if (disabled)
+			user << "\The [name] appears to not be working!"
 			return
 		if (!linked_console)
 			user << "\The [name] must be linked to an R&D console first!"
 			return 1
 		if (O.is_open_container())
 			return 1
-		if (!istype(O, /obj/item/stack/sheet/glass) && !istype(O, /obj/item/stack/sheet/gold) && !istype(O, /obj/item/stack/sheet/diamond))
+		if (!istype(O, /obj/item/stack/sheet/glass) && !istype(O, /obj/item/stack/sheet/mineral/gold) && !istype(O, /obj/item/stack/sheet/mineral/diamond) && !istype(O, /obj/item/stack/sheet/mineral/uranium))
 			user << "\red You cannot insert this item into the [name]!"
 			return 1
 		if (stat)
@@ -99,31 +110,35 @@ using metal and glass, it uses glass and reagents (usually sulfuric acis).
 		if (busy)
 			user << "\red The [name] is busy. Please wait for completion of previous operation."
 			return 1
-		if ((TotalMaterials() + 3750) > max_material_amount)
+		var/obj/item/stack/sheet/stack = O
+		if ((TotalMaterials() + stack.perunit) > max_material_amount)
 			user << "\red The [name] is full. Please remove glass from the protolathe in order to insert more."
 			return 1
 
-		var/obj/item/stack/stack = O
-		var/amount = 1
-		var/title = "[stack.name]: [stack.amount] sheet\s left"
-		switch(alert(title, "How many sheets do you want to load?", "one", "max", "cancel", null))
-			if ("one")
-				amount = 1
-			if ("max")
-				amount = min(stack.amount, round((max_material_amount-TotalMaterials())/3750))
-			else
-				return 1
+		var/amount = round(input("How many sheets do you want to add?") as num)
+		if (amount < 0)
+			amount = 0
+		if (amount == 0)
+			return
+		if (amount > stack.amount)
+			amount = min(stack.amount, round((max_material_amount-TotalMaterials())/stack.perunit))
 
 		busy = 1
 		use_power(max(1000, (3750*amount/10)))
-		spawn(16)
+		var/stacktype = stack.type
+		stack.use(amount)
+		if (do_after(usr,16))
 			user << "\blue You add [amount] sheets to the [src.name]."
-			if (istype(stack, /obj/item/stack/sheet/glass))
-				g_amount += amount * 3750
-			else if (istype(stack, /obj/item/stack/sheet/gold))
-				gold_amount += amount * 3750
-			else if (istype(stack, /obj/item/stack/sheet/diamond))
-				diamond_amount += amount * 3750
-			stack.use(amount)
-			busy = 0
-			src.updateUsrDialog()
+			switch(stacktype)
+				if (/obj/item/stack/sheet/glass)
+					g_amount += amount * 3750
+				if (/obj/item/stack/sheet/mineral/gold)
+					gold_amount += amount * 2000
+				if (/obj/item/stack/sheet/mineral/diamond)
+					diamond_amount += amount * 2000
+				if (/obj/item/stack/sheet/mineral/uranium)
+					uranium_amount += amount * 2000
+		else
+			new stacktype(src.loc, amount)
+		busy = 0
+		src.updateUsrDialog()

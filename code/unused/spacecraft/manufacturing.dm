@@ -1,3 +1,5 @@
+//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:33
+
 // Entirely unfinished. Mostly just bouncing ideas off the code.
 
 
@@ -7,11 +9,10 @@
 // Crate
 
 /obj/deploycrate
-	icon = 'mining.dmi'
+	icon = 'icons/obj/mining.dmi'
 	icon_state = "deploycrate"
 	density = 1
-	var
-		payload
+	var/payload
 
 /obj/deploycrate/attack_hand(mob/user as mob)
 	switch(payload)
@@ -26,24 +27,23 @@
 
 
 /obj/machinery/nanosprayer
-	icon = 'mining.dmi'
+	icon = 'icons/obj/mining.dmi'
 	icon_state = "sprayer"
 	density = 1
 	anchored = 1
-	var
-		payload
-		hacked = 0
-		temp = 100
+	var/payload
+	var/hacked = 0
+	var/temp = 100
 
-		usr_density = 5
-		usr_lastupdate = 0
+	var/usr_density = 5
+	var/usr_lastupdate = 0
 
-		time_started = 0
+	var/time_started = 0
 
-		points = 0
-		totalpoints = 0
+	var/points = 0
+	var/totalpoints = 0
 
-		state = 0 // 0 - Idle, 1 - Spraying, 2 - Done, 3 - Overheated
+	var/state = 0 // 0 - Idle, 1 - Spraying, 2 - Done, 3 - Overheated
 
 obj/machinery/nanosprayer/proc/update_temp()
 	// 1 second : 1 degree
@@ -102,7 +102,7 @@ obj/machinery/nanosprayer/attack_hand(user as mob)
 	var/dat
 	if (..())
 		return
-	dat += text("Core Temp: [temp]°C<BR>")
+	dat += text("Core Temp: [temp]ï¿½C<BR>")
 	dat += text("Nanocloud Density: [usr_density] million<BR>")
 	dat += text("\[<A href='?src=\ref[src];minus=1'>-</A> / <A href='?src=\ref[src];plus=1'>+</A>\]<BR>")
 	if (payload)
@@ -167,16 +167,15 @@ obj/machinery/nanosprayer/Topic(href, href_list)
 	src.updateUsrDialog()
 
 /obj/machinery/smelter
-	icon = 'mining.dmi'
+	icon = 'icons/obj/mining.dmi'
 	icon_state = "sprayer"
 	density = 1
 	anchored = 1
-	var
-		locked = 0
-		closed = 0
-		state = 0 // 0 - Idle, 1 - Smelt, 2 - Cool, 3 - Clean
-		slag = 0
-		hacked = 0
+	var/locked = 0
+	var/closed = 0
+	var/state = 0 // 0 - Idle, 1 - Smelt, 2 - Cool, 3 - Clean
+	var/slag = 0
+	var/hacked = 0
 
 obj/machinery/smelter/attack_hand(user as mob)
 	var/dat
@@ -226,7 +225,7 @@ obj/machinery/smelter/Topic(href, href_list)
 
 
 /obj/machinery/slaggrinder
-	icon = 'mining.dmi'
+	icon = 'icons/obj/mining.dmi'
 
 	density = 1
 	anchored = 1
@@ -234,14 +233,13 @@ obj/machinery/smelter/Topic(href, href_list)
 
 
 /obj/machinery/adminmachine
-	icon = 'mining.dmi'
+	icon = 'icons/obj/mining.dmi'
 	icon_state = "sprayer"
 	density = 1
 	anchored = 1
 
-	var
-		gameticker
-		gameworld
+	var/gameticker
+	var/gameworld
 
 	New()
 		..()

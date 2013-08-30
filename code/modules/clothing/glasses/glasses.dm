@@ -1,9 +1,14 @@
-/obj/item/clothing/glasses/blindfold
-	name = "blindfold"
-	desc = "Makes you like...blind."
-	icon_state = "blindfold"
-	item_state = "blindfold"
-	vision_flags = BLIND
+
+/obj/item/clothing/glasses
+	name = "glasses"
+	icon = 'glasses.dmi'
+	//w_class = 2.0
+	//flags = GLASSESCOVERSEYES
+	//slot_flags = SLOT_EYES
+	//var/vision_flags = 0
+	//var/darkness_view = 0//Base human is 2
+	//var/invisa_view = 0
+	var/prescription = 0
 
 /obj/item/clothing/glasses/meson
 	name = "Optical Meson Scanner"
@@ -13,6 +18,17 @@
 	origin_tech = "magnets=2;engineering=2"
 	vision_flags = SEE_TURFS
 
+/obj/item/clothing/glasses/meson/prescription
+	name = "prescription mesons"
+	desc = "Optical Meson Scanner with prescription lenses."
+	prescription = 1
+
+/obj/item/clothing/glasses/science
+	name = "Science Goggles"
+	desc = "nothing"
+	icon_state = "purple"
+	item_state = "glasses"
+
 /obj/item/clothing/glasses/night
 	name = "Night Vision Goggles"
 	desc = "You can totally see in the dark now!."
@@ -21,6 +37,18 @@
 	origin_tech = "magnets=2"
 	vision_flags = SEE_TURFS
 	darkness_view = 3
+
+/obj/item/clothing/glasses/eyepatch
+	name = "eyepatch"
+	desc = "Yarr."
+	icon_state = "eyepatch"
+	item_state = "eyepatch"
+
+/obj/item/clothing/glasses/monocle
+	name = "monocle"
+	desc = "Such a dapper eyepiece!"
+	icon_state = "monocle"
+	item_state = "headset" // lol
 
 /obj/item/clothing/glasses/material
 	name = "Optical Material Scanner"
@@ -35,6 +63,13 @@
 	desc = "Made by Nerd. Co."
 	icon_state = "glasses"
 	item_state = "glasses"
+	prescription = 1
+
+/obj/item/clothing/glasses/regular/hipster
+	name = "Prescription Glasses"
+	desc = "Made by Uncool. Co."
+	icon_state = "hipster_glasses"
+	item_state = "hipster_glasses"
 
 /obj/item/clothing/glasses/gglasses
 	name = "Green Glasses"
@@ -44,11 +79,66 @@
 
 /obj/item/clothing/glasses/sunglasses
 	desc = "Strangely ancient technology used to help provide rudimentary eye cover. Enhanced shielding blocks many flashes."
-	name = "Sunglasses"
+	name = "sunglasses"
 	icon_state = "sun"
 	item_state = "sunglasses"
-	protective_temperature = 1300
 	darkness_view = -1
+
+/obj/item/clothing/glasses/welding
+	name = "welding goggles"
+	desc = "Protects the eyes from welders, approved by the mad scientist association."
+	icon_state = "welding-g"
+	item_state = "welding-g"
+	icon_action_button = "action_welding_g"
+	var/up = 0
+
+/obj/item/clothing/glasses/welding/attack_self()
+	toggle()
+
+
+/obj/item/clothing/glasses/welding/verb/toggle()
+	set category = "Object"
+	set name = "Adjust welding goggles"
+	set src in usr
+
+	if (usr.canmove && !usr.stat && !usr.restrained())
+		if (src.up)
+			src.up = !src.up
+			src.flags |= GLASSESCOVERSEYES
+			flags_inv |= HIDEEYES
+			icon_state = initial(icon_state)
+			usr << "You flip the [src] down to protect your eyes."
+		else
+			src.up = !src.up
+			src.flags &= ~HEADCOVERSEYES
+			flags_inv &= ~HIDEEYES
+			icon_state = "[initial(icon_state)]up"
+			usr << "You push the [src] up out of your face."
+
+		usr.update_inv_glasses()
+
+/obj/item/clothing/glasses/welding/superior
+	name = "superior welding goggles"
+	desc = "Welding goggles made from more expensive materials, strangely smells like potatoes."
+	icon_state = "rwelding-g"
+	item_state = "rwelding-g"
+	icon_action_button = "action_welding_g"
+
+/obj/item/clothing/glasses/sunglasses/blindfold
+	name = "blindfold"
+	desc = "Covers the eyes, preventing sight."
+	icon_state = "blindfold"
+	item_state = "blindfold"
+	vision_flags = BLIND
+
+/obj/item/clothing/glasses/sunglasses/prescription
+	name = "prescription sunglasses"
+	prescription = 1
+
+/obj/item/clothing/glasses/sunglasses/big
+	desc = "Strangely ancient technology used to help provide rudimentary eye cover. Larger than average enhanced shielding blocks many flashes."
+	icon_state = "bigsunglasses"
+	item_state = "bigsunglasses"
 
 /obj/item/clothing/glasses/sunglasses/sechud
 	name = "HUDSunglasses"
@@ -70,6 +160,24 @@
 	vision_flags = SEE_MOBS
 	invisa_view = 2
 
+	emp_act(severity)
+		if (istype(src.loc, /mob/living/carbon/human))
+			var/mob/living/carbon/human/M = src.loc
+			M << "\red The Optical Thermal Scanner overloads and blinds you!"
+			if (M.glasses == src)
+				M.eye_blind = 3
+				M.eye_blurry = 5
+				M.disabilities |= NEARSIGHTED
+				spawn(100)
+					M.disabilities &= ~NEARSIGHTED
+		..()
+
+/obj/item/clothing/glasses/thermal/syndi	//These are now a traitor item, concealed as mesons.	-Pete
+	name = "Optical Meson Scanner"
+	desc = "Used for seeing walls, floors, and stuff through anything."
+	icon_state = "meson"
+	origin_tech = "magnets=3;syndicate=4"
+
 /obj/item/clothing/glasses/thermal/monocle
 	name = "Thermoncle"
 	desc = "A monocle thermal."
@@ -81,3 +189,9 @@
 	desc = "An eyepatch with built-in thermal optics"
 	icon_state = "eyepatch"
 	item_state = "eyepatch"
+
+/obj/item/clothing/glasses/thermal/jensen
+	name = "Optical Thermal Implants"
+	desc = "A set of implantable lenses designed to augment your vision"
+	icon_state = "thermalimplants"
+	item_state = "syringe_kit"

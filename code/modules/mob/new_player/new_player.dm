@@ -1,7 +1,11 @@
-mob/new_player
-	var/datum/preferences/preferences
+//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:33
+
+/mob/new_player
 	var/ready = 0
 	var/spawning = 0//Referenced when you want to delete the new_player later on in the code.
+	var/totalPlayers = 0		 //Player counts for the Lobby tab
+	var/totalPlayersReady = 0
+	universal_speak = 1
 
 	invisibility = 101
 
@@ -10,143 +14,63 @@ mob/new_player
 	canmove = 0
 
 	anchored = 1	//  don't get pushed around
-//	var/list/jobs_restricted_by_gamemode
 
-	Login()
-		//Next line is commented out because seem it does nothing helpful and on the other hand it calls mob/new_player/Move() to EACH turf in the world. --rastaf0
-		//..()
+	New()
+		mob_list += src
 
-		if (!preferences)
-			preferences = new
-
-		src << browse(rules, "window=rules;size=480x320")
-		src << browse(space_law, "window=space_law;size=480x320")
-
-		if (!mind)
-			mind = new
-			mind.key = key
-			mind.current = src
-
-		var/starting_loc = pick(newplayer_start)
-		loc = starting_loc
-		sight |= SEE_TURFS
-		var/list/watch_locations = list()
-		for(var/obj/landmark/landmark in world)
-			if (landmark.tag == "landmark*new_player")
-				watch_locations += landmark.loc
-
-		if (watch_locations.len>0)
-			loc = pick(watch_locations)
-
-		if (!preferences.savefile_load(src, 0))
-			preferences.ShowChoices(src)
-			if (!client.changes)
-				changes()
-		else
-			var/lastchangelog = length('html/changelog.html')
-			if (!client.changes && preferences.lastchangelog!=lastchangelog)
-				changes()
-				preferences.lastchangelog = lastchangelog
-				preferences.savefile_save(src)
-
-		new_player_panel()
-		//PDA Resource Initialisation =======================================================>
-		/*
-		Quick note: local dream daemon instances don't seem to cache images right. Might be
-		a local problem with my machine but it's annoying nontheless.
-		*/
-		if (client)
-			//load the PDA iconset into the client
-			src << browse_rsc('pda_atmos.png')
-			src << browse_rsc('pda_back.png')
-			src << browse_rsc('pda_bell.png')
-			src << browse_rsc('pda_blank.png')
-			src << browse_rsc('pda_boom.png')
-			src << browse_rsc('pda_bucket.png')
-			src << browse_rsc('pda_crate.png')
-			src << browse_rsc('pda_cuffs.png')
-			src << browse_rsc('pda_eject.png')
-			src << browse_rsc('pda_exit.png')
-			src << browse_rsc('pda_flashlight.png')
-			src << browse_rsc('pda_honk.png')
-			src << browse_rsc('pda_mail.png')
-			src << browse_rsc('pda_medical.png')
-			src << browse_rsc('pda_menu.png')
-			src << browse_rsc('pda_mule.png')
-			src << browse_rsc('pda_notes.png')
-			src << browse_rsc('pda_power.png')
-			src << browse_rsc('pda_rdoor.png')
-			src << browse_rsc('pda_reagent.png')
-			src << browse_rsc('pda_refresh.png')
-			src << browse_rsc('pda_scanner.png')
-			src << browse_rsc('pda_signaler.png')
-			src << browse_rsc('pda_status.png')
-			//Loads icons for SpiderOS into client
-			src << browse_rsc('sos_1.png')
-			src << browse_rsc('sos_2.png')
-			src << browse_rsc('sos_3.png')
-			src << browse_rsc('sos_4.png')
-			src << browse_rsc('sos_5.png')
-			src << browse_rsc('sos_6.png')
-			src << browse_rsc('sos_7.png')
-			src << browse_rsc('sos_8.png')
-			src << browse_rsc('sos_9.png')
-			src << browse_rsc('sos_10.png')
-			src << browse_rsc('sos_11.png')
-			src << browse_rsc('sos_12.png')
-			src << browse_rsc('sos_13.png')
-			src << browse_rsc('sos_14.png')
-		//End PDA Resource Initialisation =====================================================>
-
-	Logout()
-		ready = 0
-		..()
-		if (!spawning)//Here so that if they are spawning and log out, the other procs can play out and they will have a mob to come back to.
-			key = null//We null their key before deleting the mob, so they are properly kicked out.
-			del(src)
-		return
-
-	verb
-		new_player_panel()
-			set src = usr
-			new_player_panel_proc()
-
-
-	proc
+	verb/new_player_panel()
+		set src = usr
 		new_player_panel_proc()
 
-			var/output = "<B>New Player Options</B>"
-			/*output += " | <a href='byond://?src=\ref[src];refresh=1'>Refresh</A><hr>"
 
-			output += "<b>Name:</b> [preferences.be_random_name ? "Random" :preferences.real_name]"*/
+	proc/new_player_panel_proc()
+		var/output = "<div align='center'><B>New Player Options</B>"
+		output +="<hr>"
+		output += "<p><a href='byond://?src=\ref[src];show_preferences=1'>Setup Character</A></p>"
 
-			output +="<hr>"
+		if (!ticker || ticker.current_state <= GAME_STATE_PREGAME)
+			if (!ready)	output += "<p><a href='byond://?src=\ref[src];ready=1'>Declare Ready</A></p>"
+			else	output += "<p><b>You are ready</b> (<a href='byond://?src=\ref[src];ready=2'>Cancel</A>)</p>"
 
-			/*output += "<b>Preferred jobs:</b><br>"
-			output += "[preferences.occupation[1]]<br>"
-			output += "[preferences.occupation[2]]<br>"
-			output += "[preferences.occupation[3]]<hr>"*/
+		else
+			output += "<a href='byond://?src=\ref[src];manifest=1'>View the Crew Manifest</A><br><br>"
+			output += "<p><a href='byond://?src=\ref[src];late_join=1'>Join Game!</A></p>"
 
-			output += "<br><a href='byond://?src=\ref[src];show_preferences=1'>Setup Character</A><BR><BR>"
-			if (!ticker || ticker.current_state <= GAME_STATE_PREGAME)
-				if (!ready)
-					output += "<a href='byond://?src=\ref[src];ready=1'>Declare Ready</A><BR>"
+		output += "<p><a href='byond://?src=\ref[src];observe=1'>Observe</A></p>"
+
+		if (!IsGuestKey(src.key))
+			establish_db_connection()
+
+			if (dbcon.IsConnected())
+				var/isadmin = 0
+				if (src.client && src.client.holder)
+					isadmin = 1
+				var/DBQuery/query = dbcon.NewQuery("SELECT id FROM erro_poll_question WHERE [(isadmin ? "" : "adminonly = false AND")] Now() BETWEEN starttime AND endtime AND id NOT IN (SELECT pollid FROM erro_poll_vote WHERE ckey = \"[ckey]\") AND id NOT IN (SELECT pollid FROM erro_poll_textreply WHERE ckey = \"[ckey]\")")
+				query.Execute()
+				var/newpoll = 0
+				while(query.NextRow())
+					newpoll = 1
+					break
+
+				if (newpoll)
+					output += "<p><b><a href='byond://?src=\ref[src];showpoll=1'>Show Player Polls</A> (NEW!)</b></p>"
 				else
-					output += "<b>You are ready</b> (<a href='byond://?src=\ref[src];ready=2'>Cancel</A>)<BR>"
-			else
-				output += "<a href='byond://?src=\ref[src];late_join=1'>Join Game!</A><BR>"
+					output += "<p><a href='byond://?src=\ref[src];showpoll=1'>Show Player Polls</A></p>"
 
-			output += "<BR><a href='byond://?src=\ref[src];observe=1'>Observe</A><BR>"
+		output += "</div>"
 
-			output += "<BR>AND FOR THE LOVE OF ALL READ THE RULES YOU TWIT (type rules)</BR>"
-
-			src << browse(output,"window=playersetup;size=250x250;can_close=0")
+		src << browse(output,"window=playersetup;size=210x240;can_close=0")
+		return
 
 	Stat()
 		..()
 
-		statpanel("Game")
-		if (client.statpanel=="Game" && ticker)
+		statpanel("Status")
+		if (client.statpanel == "Status" && ticker)
+			if (ticker.current_state != GAME_STATE_PREGAME)
+				stat(null, "Station Time: [worldtime2text()]")
+		statpanel("Lobby")
+		if (client.statpanel=="Lobby" && ticker)
 			if (ticker.hide_mode)
 				stat("Game Mode:", "Secret")
 			else
@@ -157,419 +81,319 @@ mob/new_player
 			if ((ticker.current_state == GAME_STATE_PREGAME) && !going)
 				stat("Time To Start:", "DELAYED")
 
-		statpanel("Lobby")
-		if (client.statpanel=="Lobby" && ticker)
 			if (ticker.current_state == GAME_STATE_PREGAME)
-				for(var/mob/new_player/player in world)
+				stat("Players: [totalPlayers]", "Players Ready: [totalPlayersReady]")
+				totalPlayers = 0
+				totalPlayersReady = 0
+				for(var/mob/new_player/player in player_list)
 					stat("[player.key]", (player.ready)?("(Playing)"):(null))
+					totalPlayers++
+					if (player.ready)totalPlayersReady++
 
 	Topic(href, href_list[])
+		if (!client)	return 0
+
 		if (href_list["show_preferences"])
-			preferences.ShowChoices(src)
+			client.prefs.ShowChoices(src)
 			return 1
 
 		if (href_list["ready"])
-			if (!src.client.authenticated)
-				src << "You are not authorized to enter the game."
-				return
-
-			if (!ready)
-				ready = 1
-			else
-				ready = 0
+			ready = !ready
 
 		if (href_list["refresh"])
 			src << browse(null, "window=playersetup") //closes the player setup window
 			new_player_panel_proc()
 
 		if (href_list["observe"])
-			if (!usr.client.authenticated)
-				src << "You are not authorized to enter the game."
-				return
 
-			if (alert(src,"Are you sure you wish to observe? You will not be able to play this round!","Player Setup","Yes","No") == "Yes")
+			if (alert(src,"Are you sure you wish to observe? You will have to wait 30 minutes before being able to respawn!","Player Setup","Yes","No") == "Yes")
+				if (!client)	return 1
 				var/mob/dead/observer/observer = new()
 
 				spawning = 1
+				src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // MAD JAMS cant last forever yo
 
+				observer.started_as_observer = 1
 				close_spawn_windows()
 				var/obj/O = locate("landmark*Observer-Start")
 				src << "\blue Now teleporting."
 				observer.loc = O.loc
+				if (client.prefs.be_random_name)
+					client.prefs.real_name = random_name(client.prefs.gender)
+				observer.real_name = client.prefs.real_name
+				observer.name = observer.real_name
 				observer.key = key
-				if (preferences.be_random_name)
-					preferences.randomize_name()
-				observer.name = preferences.real_name
-				observer.real_name = observer.name
 
 				del(src)
 				return 1
 
 		if (href_list["late_join"])
+			if (!ticker || ticker.current_state != GAME_STATE_PLAYING)
+				usr << "\red The round is either not ready, or has already finished..."
+				return
+
+			if (client.prefs.species != "Human")
+
+				if (!is_alien_whitelisted(src, client.prefs.species) && config.usealienwhitelist)
+					src << alert("You are currently not whitelisted to play [client.prefs.species].")
+					return 0
+
 			LateChoices()
 
+		if (href_list["manifest"])
+			ViewManifest()
+
 		if (href_list["SelectedJob"])
-			if (!usr.client.authenticated)
-				src << "You are not authorized to enter the game."
-				return
 
 			if (!enter_allowed)
 				usr << "\blue There is an administrative lock on entering the game!"
 				return
 
-			switch(href_list["SelectedJob"])
-				if ("1")
-					AttemptLateSpawn("Captain", captainMax)
-				if ("2")
-					AttemptLateSpawn("Head of Security", hosMax)
-				if ("3")
-					AttemptLateSpawn("Head of Personnel", hopMax)
-				if ("4")
-					AttemptLateSpawn("Station Engineer", engineerMax)
-				if ("5")
-					AttemptLateSpawn("Bartender", barmanMax)
-				if ("6")
-					AttemptLateSpawn("Scientist", scientistMax)
-				if ("7")
-					AttemptLateSpawn("Chemist", chemistMax)
-				if ("8")
-					AttemptLateSpawn("Geneticist", geneticistMax)
-				if ("9")
-					AttemptLateSpawn("Security Officer", securityMax)
-				if ("10")
-					AttemptLateSpawn("Medical Doctor", doctorMax)
-				if ("11")
-					AttemptLateSpawn("Atmospheric Technician", atmosMax)
-				if ("12")
-					AttemptLateSpawn("Detective", detectiveMax)
-				if ("13")
-					AttemptLateSpawn("Chaplain", chaplainMax)
-				if ("14")
-					AttemptLateSpawn("Janitor", janitorMax)
-				if ("15")
-					AttemptLateSpawn("Clown", clownMax)
-				if ("16")
-					AttemptLateSpawn("Chef", chefMax)
-				if ("17")
-					AttemptLateSpawn("Roboticist", roboticsMax)
-				if ("18")
-					AttemptLateSpawn("Assistant", 10000)
-				if ("19")
-					AttemptLateSpawn("Quartermaster", cargoMax)
-				if ("20")
-					AttemptLateSpawn("Research Director", directorMax)
-				if ("21")
-					AttemptLateSpawn("Chief Engineer", chiefMax)
-				if ("22")
-					AttemptLateSpawn("Botanist", hydroponicsMax)
-				if ("23")
-					AttemptLateSpawn("Librarian", librarianMax)
-				if ("24")
-					AttemptLateSpawn("Virologist", viroMax)
-				if ("25")
-					AttemptLateSpawn("Lawyer", lawyerMax)
-				if ("26")
-					AttemptLateSpawn("Cargo Technician", cargotechMax)
-				if ("27")
-					AttemptLateSpawn("Chief Medical Officer", cmoMax)
-				if ("28")
-					AttemptLateSpawn("Warden", wardenMax)
-				if ("29")
-					AttemptLateSpawn("Shaft Miner", minerMax)
-				if ("30")
-					AttemptLateSpawn("Mime", mimeMax)
-				if ("31")
-					AttemptLateSpawn("AI", 1)
-				if ("32")
-					AttemptLateSpawn("Cyborg", 1000)
+			if (!is_alien_whitelisted(src, client.prefs.species) && config.usealienwhitelist)
+				src << alert("You are currently not whitelisted to play [client.prefs.species].")
+				return 0
 
-		if (!ready && href_list["preferences"])
-			preferences.process_link(src, href_list)
+			AttemptLateSpawn(href_list["SelectedJob"])
+			return
+
+		if (href_list["privacy_poll"])
+			establish_db_connection()
+			if (!dbcon.IsConnected())
+				return
+			var/voted = 0
+
+			//First check if the person has not voted yet.
+			var/DBQuery/query = dbcon.NewQuery("SELECT * FROM erro_privacy WHERE ckey='[src.ckey]'")
+			query.Execute()
+			while(query.NextRow())
+				voted = 1
+				break
+
+			//This is a safety switch, so only valid options pass through
+			var/option = "UNKNOWN"
+			switch(href_list["privacy_poll"])
+				if ("signed")
+					option = "SIGNED"
+				if ("anonymous")
+					option = "ANONYMOUS"
+				if ("nostats")
+					option = "NOSTATS"
+				if ("later")
+					usr << browse(null,"window=privacypoll")
+					return
+				if ("abstain")
+					option = "ABSTAIN"
+
+			if (option == "UNKNOWN")
+				return
+
+			if (!voted)
+				var/sql = "INSERT INTO erro_privacy VALUES (null, Now(), '[src.ckey]', '[option]')"
+				var/DBQuery/query_insert = dbcon.NewQuery(sql)
+				query_insert.Execute()
+				usr << "<b>Thank you for your vote!</b>"
+				usr << browse(null,"window=privacypoll")
+
+		if (!ready && href_list["preference"])
+			if (client)
+				client.prefs.process_link(src, href_list)
 		else if (!href_list["late_join"])
 			new_player_panel()
 
-	proc/IsJobAvailable(rank, maxAllowed)
-		if (countJob(rank) < maxAllowed && !jobban_isbanned(src,rank))
-			return 1
-		else
+		if (href_list["showpoll"])
+
+			handle_player_polling()
+			return
+
+		if (href_list["pollid"])
+
+			var/pollid = href_list["pollid"]
+			if (istext(pollid))
+				pollid = text2num(pollid)
+			if (isnum(pollid))
+				src.poll_player(pollid)
+			return
+
+		if (href_list["votepollid"] && href_list["votetype"])
+			var/pollid = text2num(href_list["votepollid"])
+			var/votetype = href_list["votetype"]
+			switch(votetype)
+				if ("OPTION")
+					var/optionid = text2num(href_list["voteoptionid"])
+					vote_on_poll(pollid, optionid)
+				if ("TEXT")
+					var/replytext = href_list["replytext"]
+					log_text_poll_reply(pollid, replytext)
+				if ("NUMVAL")
+					var/id_min = text2num(href_list["minid"])
+					var/id_max = text2num(href_list["maxid"])
+
+					if ( (id_max - id_min) > 100 )	//Basic exploit prevention
+						usr << "The option ID difference is too big. Please contact administration or the database admin."
+						return
+
+					for(var/optionid = id_min; optionid <= id_max; optionid++)
+						if (!isnull(href_list["o[optionid]"]))	//Test if this optionid was replied to
+							var/rating
+							if (href_list["o[optionid]"] == "abstain")
+								rating = null
+							else
+								rating = text2num(href_list["o[optionid]"])
+								if (!isnum(rating))
+									return
+
+							vote_on_numval_poll(pollid, optionid, rating)
+				if ("MULTICHOICE")
+					var/id_min = text2num(href_list["minoptionid"])
+					var/id_max = text2num(href_list["maxoptionid"])
+
+					if ( (id_max - id_min) > 100 )	//Basic exploit prevention
+						usr << "The option ID difference is too big. Please contact administration or the database admin."
+						return
+
+					for(var/optionid = id_min; optionid <= id_max; optionid++)
+						if (!isnull(href_list["option_[optionid]"]))	//Test if this optionid was selected
+							vote_on_poll(pollid, optionid, 1)
+
+	proc/IsJobAvailable(rank)
+		var/datum/job/job = job_master.GetJob(rank)
+		if (!job)	return 0
+		if ((job.current_positions >= job.total_positions) && job.total_positions != -1)	return 0
+		if (jobban_isbanned(src,rank))	return 0
+		if (!job.player_old_enough(src.client))	return 0
+		return 1
+
+
+	proc/AttemptLateSpawn(rank)
+		if (src != usr)
+			return 0
+		if (!ticker || ticker.current_state != GAME_STATE_PLAYING)
+			usr << "\red The round is either not ready, or has already finished..."
+			return 0
+		if (!enter_allowed)
+			usr << "\blue There is an administrative lock on entering the game!"
+			return 0
+		if (!IsJobAvailable(rank))
+			src << alert("[rank] is not available. Please try another.")
 			return 0
 
-	proc/AttemptLateSpawn(rank, maxAllowed)
-		if (IsJobAvailable(rank, maxAllowed))
-			var/mob/living/carbon/human/character = create_character()
-			var/icon/char_icon = getFlatIcon(character,0)//We're creating out own cache so it's not needed.
-			if (character)
-				character.Equip_Rank(rank, joined_late=1)
-				if (character.mind)
-					if (character.mind.assigned_role != "Cyborg")
-						ManifestLateSpawn(character,char_icon)
-				if (ticker)
-					character.loc = pick(latejoin)
-					AnnounceArrival(character, rank)
-					if (character.mind)
-						if (character.mind.assigned_role == "Cyborg")
-							character.Robotize()
-						else//Adds late joiners to minds so they can be linked to objectives.
-							ticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.
-					del(src)
+		job_master.AssignRole(src, rank, 1)
+
+		var/mob/living/carbon/human/character = create_character()	//creates the human and transfers vars and mind
+		job_master.EquipRank(character, rank, 1)					//equips the human
+		EquipCustomItems(character)
+		character.loc = pick(latejoin)
+		character.lastarea = get_area(loc)
+
+		ticker.mode.latespawn(character)
+
+		//ticker.mode.latespawn(character)
+
+		if (character.mind.assigned_role != "Cyborg")
+			data_core.manifest_inject(character)
+			ticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.	//TODO!!!!! ~Carn
+			AnnounceArrival(character, rank)
+
 		else
-			src << alert("[rank] is not available. Please try another.")
+			character.Robotize()
+		del(src)
 
 	proc/AnnounceArrival(var/mob/living/carbon/human/character, var/rank)
 		if (ticker.current_state == GAME_STATE_PLAYING)
-			var/ailist[] = list()
-			for (var/mob/living/silicon/ai/A in world)
-				if (!A.stat)
-					ailist += A
-			if (ailist.len)
-				var/mob/living/silicon/ai/announcer = pick(ailist)
-				if (character.mind)
-					if ((character.mind.assigned_role != "Cyborg") && (character.mind.special_role != "MODE"))
-						announcer.say("[character.real_name] has signed up as [rank].")
+			var/obj/item/device/radio/intercom/a = new /obj/item/device/radio/intercom(null)// BS12 EDIT Arrivals Announcement Computer, rather than the AI.
+			if (character.mind.role_alt_title)
+				rank = character.mind.role_alt_title
+			a.autosay("[character.real_name],[rank ? " [rank]," : " visitor," ] has arrived on the station.", "Arrivals Announcement Computer")
+			del(a)
 
-
-	proc/ManifestLateSpawn(var/mob/living/carbon/human/H, icon/H_icon) // Attempted fix to add late joiners to various databases -- TLE
-		// This is basically ripped wholesale from the normal code for adding people to the databases during a fresh round
-		if (!isnull(H.mind) && (H.mind.assigned_role != "MODE"))
-			var/datum/data/record/G = new()
-			var/datum/data/record/M = new()
-			var/datum/data/record/S = new()
-			var/datum/data/record/L = new()
-			var/obj/item/weapon/card/id/C = H.wear_id
-			if (C)
-				G.fields["rank"] = C.assignment
-			else
-				G.fields["rank"] = "Unassigned"
-			G.fields["name"] = H.real_name
-			G.fields["id"] = text("[]", add_zero(num2hex(rand(1, 1.6777215E7)), 6))
-			M.fields["name"] = G.fields["name"]
-			M.fields["id"] = G.fields["id"]
-			S.fields["name"] = G.fields["name"]
-			S.fields["id"] = G.fields["id"]
-			if (H.gender == FEMALE)
-				G.fields["sex"] = "Female"
-			else
-				G.fields["sex"] = "Male"
-			G.fields["age"] = text("[]", H.age)
-			G.fields["fingerprint"] = text("[]", md5(H.dna.uni_identity))
-			G.fields["p_stat"] = "Active"
-			G.fields["m_stat"] = "Stable"
-			M.fields["b_type"] = text("[]", H.b_type)
-			M.fields["b_dna"] = H.dna.unique_enzymes
-			M.fields["mi_dis"] = "None"
-			M.fields["mi_dis_d"] = "No minor disabilities have been declared."
-			M.fields["ma_dis"] = "None"
-			M.fields["ma_dis_d"] = "No major disabilities have been diagnosed."
-			M.fields["alg"] = "None"
-			M.fields["alg_d"] = "No allergies have been detected in this patient."
-			M.fields["cdi"] = "None"
-			M.fields["cdi_d"] = "No diseases have been diagnosed at the moment."
-			M.fields["notes"] = "No notes."
-			S.fields["criminal"] = "None"
-			S.fields["mi_crim"] = "None"
-			S.fields["mi_crim_d"] = "No minor crime convictions."
-			S.fields["ma_crim"] = "None"
-			S.fields["ma_crim_d"] = "No major crime convictions."
-			S.fields["notes"] = "No notes."
-
-			//Begin locked reporting
-			L.fields["name"] = H.real_name
-			L.fields["sex"] = H.gender
-			L.fields["age"] = H.age
-			L.fields["id"] = md5("[H.real_name][H.mind.assigned_role]")
-			L.fields["rank"] = H.mind.assigned_role
-			L.fields["b_type"] = H.b_type
-			L.fields["b_dna"] = H.dna.unique_enzymes
-			L.fields["enzymes"] = H.dna.struc_enzymes
-			L.fields["identity"] = H.dna.uni_identity
-			L.fields["image"] = H_icon//What the person looks like. Naked, in this case.
-			//End locked reporting
-
-			data_core.general += G
-			data_core.medical += M
-			data_core.security += S
-			data_core.locked += L
-		return
-
-// This fxn creates positions for assistants based on existing positions. This could be more elegant.
 	proc/LateChoices()
-		var/dat = "<html><body>"
+		var/mills = world.time // 1/10 of a second, not real milliseconds but whatever
+		//var/secs = ((mills % 36000) % 600) / 10 //Not really needed, but I'll leave it here for refrence.. or something
+		var/mins = (mills % 36000) / 600
+		var/hours = mills / 36000
+
+		var/dat = "<html><body><center>"
+		dat += "Round Duration: [round(hours)]h [round(mins)]m<br>"
+
+		if (emergency_shuttle) //In case Nanotrasen decides reposess CentComm's shuttles.
+			if (emergency_shuttle.direction == 2) //Shuttle is going to centcomm, not recalled
+				dat += "<font color='red'><b>The station has been evacuated.</b></font><br>"
+			if (emergency_shuttle.direction == 1 && emergency_shuttle.timeleft() < 300 && emergency_shuttle.alert == 0) // Emergency shuttle is past the point of no recall
+				dat += "<font color='red'>The station is currently undergoing evacuation procedures.</font><br>"
+			if (emergency_shuttle.direction == 1 && emergency_shuttle.alert == 1) // Crew transfer initiated
+				dat += "<font color='red'>The station is currently undergoing crew transfer procedures.</font><br>"
+
 		dat += "Choose from the following open positions:<br>"
-		if (IsJobAvailable("Captain",captainMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=1'>Captain</a><br>"
+		for(var/datum/job/job in job_master.occupations)
+			if (job && IsJobAvailable(job.title))
+				var/active = 0
+				// Only players with the job assigned and AFK for less than 10 minutes count as active
+				for(var/mob/M in player_list) if (M.mind && M.client && M.mind.assigned_role == job.title && M.client.inactivity <= 10 * 60 * 10)
+					active++
+				dat += "<a href='byond://?src=\ref[src];SelectedJob=[job.title]'>[job.title] ([job.current_positions]) (Active: [active])</a><br>"
 
-		if (IsJobAvailable("Head of Security",hosMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=2'>Head of Security</a><br>"
+		dat += "</center>"
+		src << browse(dat, "window=latechoices;size=300x640;can_close=1")
 
-		if (IsJobAvailable("Head of Personnel",hopMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=3'>Head of Personnel</a><br>"
-
-		if (IsJobAvailable("Research Director",directorMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=20'>Research Director</a><br>"
-
-		if (IsJobAvailable("Chief Engineer",chiefMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=21'>Chief Engineer</a><br>"
-
-		if (IsJobAvailable("Station Engineer",engineerMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=4'>Station Engineer</a><br>"
-
-		if (IsJobAvailable("Bartender",barmanMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=5'>Bartender</a><br>"
-
-		if (IsJobAvailable("Scientist",scientistMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=6'>Scientist</a><br>"
-
-		if (IsJobAvailable("Chemist",chemistMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=7'>Chemist</a><br>"
-
-		if (IsJobAvailable("Geneticist",geneticistMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=8'>Geneticist</a><br>"
-
-		if (IsJobAvailable("Security Officer",securityMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=9'>Security Officer</a><br>"
-
-		if (IsJobAvailable("Medical Doctor",doctorMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=10'>Medical Doctor</a><br>"
-
-		if (IsJobAvailable("Atmospheric Technician",atmosMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=11'>Atmospheric Technician</a><br>"
-
-		if (IsJobAvailable("Detective",detectiveMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=12'>Detective</a><br>"
-
-		if (IsJobAvailable("Chaplain",chaplainMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=13'>Chaplain</a><br>"
-
-		if (IsJobAvailable("Janitor",janitorMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=14'>Janitor</a><br>"
-
-		if (IsJobAvailable("Clown",clownMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=15'>Clown</a><br>"
-
-		if (IsJobAvailable("Mime",mimeMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=30'>Mime</a><br>"
-
-		if (IsJobAvailable("Chef",chefMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=16'>Chef</a><br>"
-
-		if (IsJobAvailable("Roboticist",roboticsMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=17'>Roboticist</a><br>"
-
-		if (IsJobAvailable("Quartermaster",cargoMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=19'>Quartermaster</a><br>"
-
-		if (IsJobAvailable("Botanist",hydroponicsMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=22'>Botanist</a><br>"
-
-		if (IsJobAvailable("Librarian",librarianMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=23'>Librarian</a><br>"
-
-		if (IsJobAvailable("Virologist",viroMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=24'>Virologist</a><br>"
-
-		if (IsJobAvailable("Lawyer",lawyerMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=25'>Lawyer</a><br>"
-
-		if (IsJobAvailable("Cargo Technician",cargotechMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=26'>Cargo Technician</a><br>"
-
-		if (IsJobAvailable("Chief Medical Officer",cmoMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=27'>Chief Medical Officer</a><br>"
-
-		if (IsJobAvailable("Warden", wardenMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=28'>Warden</a><br>"
-
-		if (IsJobAvailable("Shaft Miner",minerMax))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=29'>Shaft Miner</a><br>"
-
-		if (IsJobAvailable("AI",1))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=31'>AI</a><br>"
-
-		if (IsJobAvailable("Cyborg",1000))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=32'>Cyborg</a><br>"
-
-		if (!jobban_isbanned(src,"Assistant"))
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=18'>Assistant</a><br>"
-
-		src << browse(dat, "window=latechoices;size=300x640;can_close=0")
 
 	proc/create_character()
 		spawning = 1
-		var/mob/living/carbon/human/new_character = new(loc)
-
 		close_spawn_windows()
 
-		//if (!gaylord)
-		preferences.copy_to(new_character)
+		var/mob/living/carbon/human/new_character = new(loc)
+		new_character.lastarea = get_area(loc)
 
-		var/gaylord = 0
-		if (client)
-			//world << "Has client."
-			//world << "Name = [new_character.name]"
-			//world << "Real name = [new_character.real_name]"
-			if (new_character.name == "Gaylord" || new_character.real_name == "Gaylord")
-				//world << "\blue Somebody chose to be a gaylord. Gay."
-				if (src.client.key == "addictgamer" || src.client.key == "Addictgamer") //Not sure which capitalization it looks for.
-					world << "\red GAYLORD IS HERE. GAY."
-					gaylord = 1
+		var/datum/species/chosen_species
+		if (client.prefs.species)
+			chosen_species = all_species[client.prefs.species]
+		if (chosen_species)
+			if (is_alien_whitelisted(src, client.prefs.species) || !config.usealienwhitelist || !(chosen_species.flags & WHITELISTED) || (client.holder.rights & R_ADMIN) )// Have to recheck admin due to no usr at roundstart. Latejoins are fine though.
+				new_character.set_species(client.prefs.species)
+				if (chosen_species.language)
+					new_character.add_language(chosen_species.language)
+
+		var/datum/language/chosen_language
+		if (client.prefs.language)
+			chosen_language = all_languages[client.prefs.language]
+		if (chosen_language)
+			if (is_alien_whitelisted(src, client.prefs.language) || !config.usealienwhitelist || !(chosen_language.flags & WHITELISTED))
+				new_character.add_language(client.prefs.language)
+
+		if (ticker.random_players)
+			new_character.gender = pick(MALE, FEMALE)
+			client.prefs.real_name = random_name(new_character.gender)
+			client.prefs.randomize_appearance_for(new_character)
+		else
+			client.prefs.copy_to(new_character)
+
+		src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // MAD JAMS cant last forever yo
+
 		if (mind)
-			mind.transfer_to(new_character)
+			mind.active = 0					//we wish to transfer the key manually
+			if (mind.assigned_role == "Clown")				//give them a clownname if they are a clown
+				new_character.real_name = pick(clown_names)	//I hate this being here of all places but unfortunately dna is based on real_name!
+				new_character.rename_self("clown")
 			mind.original = new_character
+			mind.transfer_to(new_character)					//won't transfer key since the mind is not active
 
-		if (gaylord == 1)
-			world << "Making gaylord."
-			new_character.gender = "male"
-			new_character.real_name = "Gaylord"
-
-			new_character.age = 9001
-			new_character.b_type = "D"
-
-			new_character.r_eyes = 255
-			new_character.g_eyes = 0
-			new_character.b_eyes = 0
-
-			new_character.r_hair = 242
-			new_character.g_hair = 237
-			new_character.b_hair = 237
-
-			new_character.r_facial = 0
-			new_character.g_facial = 0
-			new_character.b_facial = 0
-
-			new_character.s_tone = 30
-
-			new_character.h_style = "Spike"
-			new_character.f_style = "Shaved"
-
-			new_character.hair_icon_state = "hair_spike"
-
-			new_character.face_icon_state = "bald"
-
-			new_character.underwear = 0
-
-			new_character.gaylord = 1 //GAYLORD.
-
-			//var/obj/proc_holder/spell/S = input("Choose the spell to give to that guy", "ABRAKADABRA") in spells
-			//T.spell_list += new S
-			for (var/obj/proc_holder/spell/S in spells)
-				new_character.spell_list += new S //TODO: This doesn't work for some reason.
-			new_character.verbs += /client/proc/jaunt
-			new_character.verbs += /client/proc/magicmissile
-			new_character.verbs += /client/proc/fireball
-			new_character.verbs += /mob/proc/kill
-			new_character.verbs += /mob/proc/tech
-			new_character.verbs += /client/proc/smokecloud
-			new_character.verbs += /client/proc/blind
-			new_character.verbs += /client/proc/forcewall
-			new_character.verbs += /mob/proc/teleport
-			new_character.verbs += /client/proc/mutate
-			new_character.verbs += /client/proc/knock
-			new_character.verbs += /mob/proc/swap
-			new_character.verbs += /client/proc/blink
+		new_character.name = real_name
 		new_character.dna.ready_dna(new_character)
+		new_character.dna.b_type = client.prefs.b_type
 
+		if (client.prefs.disabilities)
+			new_character.dna.struc_enzymes = setblock(new_character.dna.struc_enzymes,GLASSESBLOCK,toggledblock(getblock(new_character.dna.struc_enzymes,GLASSESBLOCK,3)),3)
+			new_character.disabilities |= NEARSIGHTED
+
+		new_character.key = key		//Manually transfer the key to log them in
 
 		return new_character
+
+	proc/ViewManifest()
+		var/dat = "<html><body>"
+		dat += "<h4>Crew Manifest</h4>"
+		dat += data_core.get_manifest(OOC = 1)
+
+		src << browse(dat, "window=manifest;size=370x420;can_close=1")
 
 	Move()
 		return 0

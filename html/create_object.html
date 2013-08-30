@@ -27,7 +27,7 @@
 	<form name="spawner" action="byond://?src=/* ref src */" method="get">
 		<input type="hidden" name="src" value="/* ref src */">
 		
-		Type <input type="text" name="filter" value="" onkeyup="updateSearch()" onkeypress="submitFirst(event)" style="width:350px"><br>
+		Type <input type="text" name="filter" value="" onkeypress="submitFirst(event)" style="width:350px"> <input type = "button" value = "Search" onclick = "updateSearch()" /><br>
 		Offset: <input type="text" name="offset" value="x,y,z" style="width:250px">
 		
 		A <input type="radio" name="offset_type" value="absolute">
@@ -35,9 +35,16 @@
 		
 		Number: <input type="text" name="object_count" value="1" style="width:30px">
 		Dir: <input type="text" name="object_dir" value="2" style="width:30px">
-		Name: <input type="text" name="object_name" value="" style="width:180px"><br><br>
-		<select name="object_list" id="object_list" size="20" multiple style="width:400px"></select><br>
-		<input type="submit" value="spawn">
+		Name: <input type="text" name="object_name" value="" style="width:180px"><br>
+		Where: 
+			<select name='object_where' style="width:320px">
+				<option value='onfloor'>On floor below own mob</option>
+				<!-- <option value='inhand'>In own mob's hand</option> -->
+				<option value='inmarked'>In marked object</option>
+			</select>
+		<br><br>
+		<select name="object_list" id="object_list" size="18" multiple style="width:98%"></select><br>
+		<input type="submit" value="Spawn">
 	</form>
 	
 	<script language="JavaScript">
@@ -65,19 +72,12 @@
 		
 		function updateSearch()
 		{
-			if (old_search == document.spawner.filter.value)
-			{
-				return;
-			}
-			
 			old_search = document.spawner.filter.value;
 			
-			
 			var filtered = new Array();
-			var i;
-			for (i in objects)
+			for(var i in objects)
 			{
-				if (objects[i].search(old_search) < 0)
+				if (objects[i].indexOf(old_search) < 0)
 				{
 					continue;
 				}

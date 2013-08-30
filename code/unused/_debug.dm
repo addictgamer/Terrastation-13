@@ -23,12 +23,12 @@
 	if (Debug)
 		for(var/turf/T in range(5))
 
-			var/obj/mark/O = locate(/obj/mark/, T)
+			var/obj/effect/mark/O = locate(/obj/effect/mark/, T)
 
 			if (!O)
-				O = new /obj/mark(T)
+				O = new /obj/effect/mark(T)
 			else
-				O.overlays = null
+				O.overlays.Cut()
 
 			var/obj/move/OM = locate(/obj/move/, T)
 
@@ -43,13 +43,13 @@ Doing this because FindTurfs() isn't even used
 				for(var/atom/U in OM.FindTurfs() )
 					var/dirn = get_dir(OM, U)
 					if (dirn == 1)
-						O.overlays += image('mark.dmi', OM.airdir==1?"up":"fup")
+						O.overlays += image('icons/misc/mark.dmi', OM.airdir==1?"up":"fup")
 					else if (dirn == 2)
-						O.overlays += image('mark.dmi', OM.airdir==2?"dn":"fdn")
+						O.overlays += image('icons/misc/mark.dmi', OM.airdir==2?"dn":"fdn")
 					else if (dirn == 4)
-						O.overlays += image('mark.dmi', OM.airdir==4?"rt":"frt")
+						O.overlays += image('icons/misc/mark.dmi', OM.airdir==4?"rt":"frt")
 					else if (dirn == 8)
-						O.overlays += image('mark.dmi', OM.airdir==8?"lf":"flf")
+						O.overlays += image('icons/misc/mark.dmi', OM.airdir==8?"lf":"flf")
 */
 			else
 
@@ -59,29 +59,29 @@ Doing this because FindTurfs() isn't even used
 					O.icon_state = "blank"
 
 				if (T.airN)
-					O.overlays += image('mark.dmi', T.airdir==1?"up":"fup")
+					O.overlays += image('icons/misc/mark.dmi', T.airdir==1?"up":"fup")
 
 				if (T.airS)
-					O.overlays += image('mark.dmi', T.airdir==2?"dn":"fdn")
+					O.overlays += image('icons/misc/mark.dmi', T.airdir==2?"dn":"fdn")
 
 				if (T.airW)
-					O.overlays += image('mark.dmi', T.airdir==8?"lf":"flf")
+					O.overlays += image('icons/misc/mark.dmi', T.airdir==8?"lf":"flf")
 
 				if (T.airE)
-					O.overlays += image('mark.dmi', T.airdir==4?"rt":"frt")
+					O.overlays += image('icons/misc/mark.dmi', T.airdir==4?"rt":"frt")
 
 
 				if (T.condN)
-					O.overlays += image('mark.dmi', T.condN == 1?"yup":"rup")
+					O.overlays += image('icons/misc/mark.dmi', T.condN == 1?"yup":"rup")
 
 				if (T.condS)
-					O.overlays += image('mark.dmi', T.condS == 1?"ydn":"rdn")
+					O.overlays += image('icons/misc/mark.dmi', T.condS == 1?"ydn":"rdn")
 
 				if (T.condE)
-					O.overlays += image('mark.dmi', T.condE == 1?"yrt":"rrt")
+					O.overlays += image('icons/misc/mark.dmi', T.condE == 1?"yrt":"rrt")
 
 				if (T.condW)
-					O.overlays += image('mark.dmi', T.condW == 1?"ylf":"rlf")
+					O.overlays += image('icons/misc/mark.dmi', T.condW == 1?"ylf":"rlf")
 	else
 		alert("Debugging off")
 		return
@@ -90,7 +90,7 @@ Doing this because FindTurfs() isn't even used
 	set category = "Debug"
 	//set hidden = 1
 	if (Debug)
-		for(var/obj/mark/O in world)
+		for(var/obj/effect/mark/O in world)
 			del(O)
 	else
 		alert("Debugging off")
@@ -98,7 +98,7 @@ Doing this because FindTurfs() isn't even used
 
 /proc/numbericon(var/tn as text,var/s = 0)
 	if (Debug)
-		var/image/I = image('mark.dmi', "blank")
+		var/image/I = image('icons/misc/mark.dmi', "blank")
 
 		if (lentext(tn)>8)
 			tn = "*"
@@ -113,7 +113,7 @@ Doing this because FindTurfs() isn't even used
 			if (char == " ")
 				continue
 
-			var/image/ID = image('mark.dmi', char)
+			var/image/ID = image('icons/misc/mark.dmi', char)
 
 			ID.pixel_x = -(d-1)*4
 			ID.pixel_y = s
@@ -132,12 +132,12 @@ Doing this because FindTurfs() isn't even used
 	set category = "Debug"
 	for(var/turf/T in range(5))
 
-		var/obj/mark/O = locate(/obj/mark/, T)
+		var/obj/effect/mark/O = locate(/obj/effect/mark/, T)
 
 		if (!O)
-			O = new /obj/mark(T)
+			O = new /obj/effect/mark(T)
 		else
-			O.overlays = null
+			O.overlays.Cut()
 
 
 		var/temp = round(T.temp-T0C, 0.1)
@@ -163,12 +163,12 @@ Doing this because FindTurfs() isn't even used
 			if (M && M.p_dir)
 
 				//world << "Accepted"
-				var/obj/mark/O = locate(/obj/mark/, T)
+				var/obj/effect/mark/O = locate(/obj/effect/mark/, T)
 
 				if (!O)
-					O = new /obj/mark(T)
+					O = new /obj/effect/mark(T)
 				else
-					O.overlays = null
+					O.overlays.Cut()
 
 				if (istype(M, /obj/machinery/pipes))
 					var/obj/machinery/pipes/P = M
@@ -194,22 +194,22 @@ Doing this because FindTurfs() isn't even used
 
 			//world << "Turf [T] at ([T.x],[T.y])"
 
-			var/obj/mark/O = locate(/obj/mark/, T)
+			var/obj/effect/mark/O = locate(/obj/effect/mark/, T)
 
 			if (!O)
-				O = new /obj/mark(T)
+				O = new /obj/effect/mark(T)
 			else
-				O.overlays = null
+				O.overlays.Cut()
 
 			var/marked = 0
 			for(var/obj/M in T)
 				//world <<" Mach [M] with pdir=[M.p_dir]"
 
 
-				if (M && istype(M, /obj/cable/))
+				if (M && istype(M, /obj/structure/cable/))
 
 
-					var/obj/cable/C = M
+					var/obj/structure/cable/C = M
 					//world << "Accepted"
 
 					O.overlays += numbericon("[C.netnum]  " ,  marked)
@@ -237,12 +237,12 @@ Doing this because FindTurfs() isn't even used
 
 			//world << "Turf [T] at ([T.x],[T.y])"
 
-			var/obj/mark/O = locate(/obj/mark/, T)
+			var/obj/effect/mark/O = locate(/obj/effect/mark/, T)
 
 			if (!O)
-				O = new /obj/mark(T)
+				O = new /obj/effect/mark(T)
 			else
-				O.overlays = null
+				O.overlays.Cut()
 
 
 			var/obj/machinery/power/solar/S
@@ -277,7 +277,7 @@ Doing this because FindTurfs() isn't even used
 
 			T = get_step(P, ndirs[1])
 
-			var/obj/mark/O = new(T)
+			var/obj/effect/mark/O = new(T)
 
 			O.overlays += numbericon("[num] * 1  ", -4)
 			O.overlays += numbericon("[ndirs[1]] - [ndirs[2]]",-16)
@@ -469,10 +469,10 @@ Doing this because FindTurfs() isn't even used
 /mob/verb/Revive()
 	set category = "Debug"
 	if (Debug)
-		fireloss = 0
-		toxloss = 0
-		bruteloss = 0
-		oxyloss = 0
+		adjustFireLoss(0 - getBruteLoss())
+		setToxLoss(0)
+		adjustBruteLoss(0 - getBruteLoss())
+		setOxyLoss(0)
 		paralysis = 0
 		stunned = 0
 		weakened = 0
@@ -486,9 +486,13 @@ Doing this because FindTurfs() isn't even used
 			e.bandaged = 0.0
 			e.wound_size = 0.0
 			e.max_damage = initial(e.max_damage)
+			e.broken = 0
+			e.destroyed = 0
+			e.perma_injury = 0
 			e.update_icon()
 		if (src.type == /mob/living/carbon/human)
 			var/mob/living/carbon/human/H = src
+			H.update_body()
 			H.UpdateDamageIcon()
 	else
 		alert("Debugging off")
@@ -497,7 +501,7 @@ Doing this because FindTurfs() isn't even used
 /mob/verb/Smoke()
 	set category = "Debug"
 	if (Debug)
-		var/obj/effects/smoke/O = new /obj/effects/smoke( src.loc )
+		var/obj/effect/smoke/O = new /obj/effect/smoke( src.loc )
 		O.dir = pick(NORTH, SOUTH, EAST, WEST)
 		spawn( 0 )
 			O.Life()
@@ -508,10 +512,10 @@ Doing this because FindTurfs() isn't even used
 /mob/verb/revent(number as num)
 	set category = "Debug"
 	set name = "Change event %"
-	if (!src.authenticated || !src.holder)
+	if (!src.holder)
 		src << "Only administrators may use this command."
 		return
-	if (src.authenticated && src.holder)
+	if (src.holder)
 		eventchance = number
 		log_admin("[src.key] set the random event chance to [eventchance]%")
 		message_admins("[src.key] set the random event chance to [eventchance]%")
@@ -520,7 +524,7 @@ Doing this because FindTurfs() isn't even used
 /mob/verb/funbutton()
 	set category = "Admin"
 	set name = "Random Expl.(REMOVE ME)"
-	if (!src.authenticated || !src.holder)
+	if (!src.holder)
 		src << "Only administrators may use this command."
 		return
 	for(var/turf/T in world)
@@ -544,7 +548,7 @@ Doing this because FindTurfs() isn't even used
 /mob/verb/removeplasma()
 	set category = "Debug"
 	set name = "Stabilize Atmos."
-	if (!src.authenticated || !src.holder)
+	if (!src.holder)
 		src << "Only administrators may use this command."
 		return
 	spawn(0)
@@ -571,7 +575,7 @@ Doing this because FindTurfs() isn't even used
 /mob/verb/fire(turf/T as turf in world)
 	set category = "Special Verbs"
 	set name = "Create Fire"
-	if (!src.authenticated || !src.holder)
+	if (!src.holder)
 		src << "Only administrators may use this command."
 		return
 	world << "[usr.key] created fire"
@@ -582,7 +586,7 @@ Doing this because FindTurfs() isn't even used
 /mob/verb/co2(turf/T as turf in world)
 	set category = "Special Verbs"
 	set name = "Create CO2"
-	if (!src.authenticated || !src.holder)
+	if (!src.holder)
 		src << "Only administrators may use this command."
 		return
 	world << "[usr.key] created CO2"
@@ -592,7 +596,7 @@ Doing this because FindTurfs() isn't even used
 /mob/verb/n2o(turf/T as turf in world)
 	set category = "Special Verbs"
 	set name = "Create N2O"
-	if (!src.authenticated || !src.holder)
+	if (!src.holder)
 		src << "Only administrators may use this command."
 		return
 	world << "[usr.key] created N2O"
@@ -602,12 +606,14 @@ Doing this because FindTurfs() isn't even used
 /mob/verb/explosion(T as obj|mob|turf in world)
 	set category = "Special Verbs"
 	set name = "Create Explosion"
-	if (!src.authenticated || !src.holder)
+	if (!src.holder)
 		src << "Only administrators may use this command."
 		return
 	world << "[usr.key] created an explosion"
 	var/obj/item/weapon/tank/plasmatank/pt = new /obj/item/weapon/tank/plasmatank( T )
 	playsound(pt.loc, "explosion", 100, 1,3)
-	playsound(pt.loc, 'explosionfar.ogg', 100, 1,10)
+	playsound(pt.loc, 'sound/effects/explosionfar.ogg', 100, 1,10)
 	pt.gas.temperature = 500+T0C
 	pt.ignite()
+
+

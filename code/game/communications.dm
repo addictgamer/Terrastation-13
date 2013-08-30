@@ -74,7 +74,6 @@ Radio:
 1359 - Security
 1441 - death squad
 1443 - Confession Intercom
-1349 - Miners
 1347 - Cargo techs
 
 Devices:
@@ -91,7 +90,7 @@ On the map:
 1443 for atmospherics - distribution loop/mixed air tank
 1445 for bot nav beacons
 1447 for mulebot, secbot and ed209 control
-1449 for airlock controls, electropack
+1449 for airlock controls, electropack, magnets
 1451 for toxin lab access
 1453 for engineering access
 1455 for AI access
@@ -104,15 +103,26 @@ var/list/radiochannels = list(
 	"Medical" = 1355,
 	"Engineering" = 1357,
 	"Security" = 1359,
+	"Response Team" = 1443,
 	"Deathsquad" = 1441,
 	"Syndicate" = 1213,
-	"Mining" = 1349,
-	"Cargo" = 1347,
+	"Supply" = 1347,
 )
 //depenging helpers
-var/list/DEPT_FREQS = list(1351,1355,1357,1359,1213,1441,1349,1347)
+var/list/DEPT_FREQS = list(1351, 1355, 1357, 1359, 1213, 1443, 1441, 1347)
+
+// central command channels, i.e deathsquid & response teams
+var/list/CENT_FREQS = list(1441, 1443)
+
 var/const/COMM_FREQ = 1353 //command, colored gold in chat window
 var/const/SYND_FREQ = 1213
+
+// department channels
+var/const/SEC_FREQ = 1359
+var/const/ENG_FREQ = 1357
+var/const/SCI_FREQ = 1351
+var/const/MED_FREQ = 1355
+var/const/SUP_FREQ = 1347
 
 #define TRANSMISSION_WIRE	0
 #define TRANSMISSION_RADIO	1
@@ -126,6 +136,7 @@ var/const/RADIO_NAVBEACONS = "5"
 var/const/RADIO_AIRLOCK = "6"
 var/const/RADIO_SECBOT = "7"
 var/const/RADIO_MULEBOT = "8"
+var/const/RADIO_MAGNETS = "9"
 
 var/global/datum/controller/radio/radio_controller
 
@@ -157,9 +168,16 @@ datum/controller/radio
 
 		return 1
 
-	proc/return_frequency(var/frequency as num)
-		var/f_text = num2text(frequency)
-		return frequencies[f_text]
+	proc/return_frequency(var/new_frequency as num)
+		var/f_text = num2text(new_frequency)
+		var/datum/radio_frequency/frequency = frequencies[f_text]
+
+		if (!frequency)
+			frequency = new
+			frequency.frequency = new_frequency
+			frequencies[f_text] = frequency
+
+		return frequency
 
 datum/radio_frequency
 	var/frequency as num
@@ -221,7 +239,7 @@ datum/radio_frequency
 //			log_admin("DEBUG: post_signal(source=[source] ([source.x], [source.y], [source.z]),filter=[filter]) frequency=[frequency], N_f=[N_f], N_nf=[N_nf]")
 
 
-			del(signal)
+//			del(signal)
 
 		add_listener(obj/device as obj, var/filter as text|null)
 			if (!filter)
@@ -246,7 +264,7 @@ datum/radio_frequency
 				if (devices_line.len==0)
 					devices -= devices_filter
 					del(devices_line)
-					
+
 
 obj/proc
 	receive_signal(datum/signal/signal, receive_method, receive_param)
@@ -258,15 +276,19 @@ datum/signal
 	var/transmission_method = 0
 	//0 = wire
 	//1 = radio transmission
+	//2 = subspace transmission
 
 	var/data = list()
 	var/encryption
+
+	var/frequency = 0
 
 	proc/copy_from(datum/signal/model)
 		source = model.source
 		transmission_method = model.transmission_method
 		data = model.data
 		encryption = model.encryption
+		frequency = model.frequency
 
 	proc/debug_print()
 		if (source)
@@ -275,3 +297,7 @@ datum/signal
 			. = "signal = {source = '[source]' ()\n"
 		for (var/i in data)
 			. += "data\[\"[i]\"\] = \"[data[i]]\"\n"
+			if (islist(data[i]))
+				var/list/L = data[i]
+				for(var/t in L)
+					. += "data\[\"[i]\"\] list has: [t]"

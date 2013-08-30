@@ -36,7 +36,7 @@
 				affected_mob.take_organ_damage(5)
 			if (prob(4))
 				affected_mob << "\red You feel a stabbing pain in your head."
-				affected_mob.paralysis += 2
+				affected_mob.Paralyse(2)
 			if (prob(4))
 				affected_mob << "\red You can feel something move...inside."
 		if (4)
@@ -49,16 +49,17 @@
 				affected_mob << "\red You can feel... something...inside you."
 		if (5)
 			affected_mob <<"\red Your skin feels as if it's about to burst off..."
-			affected_mob.toxloss += 10
+			affected_mob.adjustToxLoss(10)
 			affected_mob.updatehealth()
 			if (prob(40)) //So everyone can feel like robot Seth Brundle
-				ASSERT(src.gibbed == 0)
+				if (src.gibbed != 0) return 0
 				var/turf/T = find_loc(affected_mob)
 				gibs(T)
 				src.cure(0)
 				gibbed = 1
-				if (!jobban_isbanned(affected_mob, "Cyborg"))
-					affected_mob:Robotize()
+				var/mob/living/carbon/human/H = affected_mob
+				if (istype(H) && !jobban_isbanned(affected_mob, "Cyborg"))
+					H.Robotize()
 				else
 					affected_mob.death(1)
 

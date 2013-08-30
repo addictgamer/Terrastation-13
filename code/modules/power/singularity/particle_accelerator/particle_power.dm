@@ -1,7 +1,10 @@
-/obj/particle_accelerator/power_box
-	name = "Particle Accelerator"
-	desc = "Part of a Particle Accelerator, this part seems to have a maintenance panel on it."
-	icon = 'particle_accelerator.dmi'
+/obj/structure/particle_accelerator/power_box
+	name = "Particle Focusing EM Lens"
+	desc_holder = "This uses electromagnetic waves to focus the Alpha-Particles."
+	icon = 'icons/obj/machines/particle_accelerator.dmi'
 	icon_state = "power_box"
-	anchored = 0
-	density = 1
+	reference = "power_box"
+
+/obj/structure/particle_accelerator/power_box/update_icon()
+	..()
+	return

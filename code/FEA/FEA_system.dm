@@ -8,7 +8,7 @@ Why are you archiving data before modifying it?
 	This prevents abnormalities like air/fire spreading rapidly in one direction and super slowly in the other.
 
 Why not just archive everything and then calculate?
-	Efficiency. While a for-loop that goes through all tils and groups to archive their information before doing any calculations seems simple, it is
+	Efficiency. While a for-loop that goes through all tiles and groups to archive their information before doing any calculations seems simple, it is
 		slightly less efficient than the archive-before-modify/read method.
 
 Why is there a cycle check for calculating data as well?
@@ -152,19 +152,10 @@ datum
 				var/start_time = world.timeofday
 
 				for(var/turf/simulated/S in world)
-					if (!S.blocks_air && !S.parent && S.z < 5) // Added last check to force skipping asteroid z-levels -- TLE
+					if (!S.blocks_air && !S.parent)
 						assemble_group_turf(S)
-				for(var/turf/simulated/S in world) //Update all pathing and border information as well
-					if (S.z > 4) // Skipping asteroids -- TLE
-						continue
 					S.update_air_properties()
-/*
-				for(var/obj/movable/floor/S in world)
-					if (!S.parent)
-						assemble_group_object(S)
-				for(var/obj/movable/floor/S in world) //Update all pathing and border information as well
-					S.update_air_properties()
-*/
+
 				world << "\red \b Geometry processed in [(world.timeofday-start_time)/10] seconds!"
 
 			assemble_group_turf(turf/simulated/base)
@@ -296,7 +287,8 @@ datum
 				var/turf/list/turfs = list()
 
 				for(var/datum/air_group/turf/turf_AG in groups_to_rebuild) //Deconstruct groups, gathering their old members
-					for(var/turf/simulated/T in turf_AG.members)
+					for(var/turf in turf_AG.members)
+						var/turf/simulated/T = turf
 						T.parent = null
 						turfs += T
 					del(turf_AG)
@@ -309,7 +301,7 @@ datum
 
 //				var/obj/movable/list/movable_objects = list()
 
-				for(var/datum/air_group/object/object_AG in groups_to_rebuild) //Deconstruct groups, gathering their old members
+//				for(var/datum/air_group/object/object_AG in groups_to_rebuild) //Deconstruct groups, gathering their old members
 /*
 					for(var/obj/movable/floor/OM in object_AG.members)
 						OM.parent = null

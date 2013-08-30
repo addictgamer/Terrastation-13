@@ -1,3 +1,5 @@
+//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
+
 /obj/item/weapon/implantcase
 	name = "Glass Case"
 	desc = "A case containing an implant."
@@ -6,8 +8,7 @@
 	throw_speed = 1
 	throw_range = 5
 	w_class = 1.0
-	var
-		obj/item/weapon/implant/imp = null
+	var/obj/item/weapon/implant/imp = null
 	proc
 		update()
 
@@ -24,7 +25,7 @@
 		..()
 		if (istype(I, /obj/item/weapon/pen))
 			var/t = input(user, "What would you like the label to be?", text("[]", src.name), null)  as text
-			if (user.equipped() != I)
+			if (user.get_active_hand() != I)
 				return
 			if ((!in_range(src, usr) && src.loc != user))
 				return
@@ -36,7 +37,7 @@
 		else if (istype(I, /obj/item/weapon/reagent_containers/syringe))
 			if (!src.imp)	return
 			if (!src.imp.allow_reagents)	return
-			if (src.imp.reagents.total_volume >= 10)
+			if (src.imp.reagents.total_volume >= src.imp.reagents.maximum_volume)
 				user << "\red [src] is full."
 			else
 				spawn(5)
@@ -67,7 +68,7 @@
 /obj/item/weapon/implantcase/tracking
 	name = "Glass Case- 'Tracking'"
 	desc = "A case containing a tracking implant."
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "implantcase-b"
 
 
@@ -81,7 +82,7 @@
 /obj/item/weapon/implantcase/explosive
 	name = "Glass Case- 'Explosive'"
 	desc = "A case containing an explosive implant."
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "implantcase-r"
 
 
@@ -95,7 +96,7 @@
 /obj/item/weapon/implantcase/chem
 	name = "Glass Case- 'Chem'"
 	desc = "A case containing a chemical implant."
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "implantcase-b"
 /obj/item/weapon/implantcase/chem/New()
 
@@ -107,11 +108,23 @@
 /obj/item/weapon/implantcase/loyalty
 	name = "Glass Case- 'Loyalty'"
 	desc = "A case containing a loyalty implant."
-	icon = 'items.dmi'
+	icon = 'icons/obj/items.dmi'
 	icon_state = "implantcase-r"
 
 
 	New()
 		src.imp = new /obj/item/weapon/implant/loyalty( src )
+		..()
+		return
+
+
+/obj/item/weapon/implantcase/death_alarm
+	name = "Glass Case- 'Death Alarm'"
+	desc = "A case containing a death alarm implant."
+	icon = 'items.dmi'
+	icon_state = "implantcase-b"
+
+	New()
+		src.imp = new /obj/item/weapon/implant/death_alarm( src )
 		..()
 		return

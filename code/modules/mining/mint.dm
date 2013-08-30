@@ -3,7 +3,7 @@
 
 /obj/machinery/mineral/mint
 	name = "Coin press"
-	icon = 'stationobjs.dmi'
+	icon = 'icons/obj/stationobjs.dmi'
 	icon_state = "coinpress0"
 	density = 1
 	anchored = 1.0
@@ -17,6 +17,7 @@
 	var/amt_uranium = 0
 	var/amt_clown = 0
 	var/amt_adamantine = 0
+	var/amt_mythril = 0
 	var/newCoins = 0   //how many coins the machine made in it's last load
 	var/processing = 0
 	var/chosen = "metal" //which material will be used to make coins
@@ -42,28 +43,28 @@
 		var/obj/item/stack/sheet/O
 		O = locate(/obj/item/stack/sheet, input.loc)
 		if (O)
-			if (istype(O,/obj/item/stack/sheet/gold))
+			if (istype(O,/obj/item/stack/sheet/mineral/gold))
 				amt_gold += 100 * O.amount
 				del(O)
-			if (istype(O,/obj/item/stack/sheet/silver))
+			if (istype(O,/obj/item/stack/sheet/mineral/silver))
 				amt_silver += 100 * O.amount
 				del(O)
-			if (istype(O,/obj/item/stack/sheet/diamond))
+			if (istype(O,/obj/item/stack/sheet/mineral/diamond))
 				amt_diamond += 100 * O.amount
 				del(O)
-			if (istype(O,/obj/item/stack/sheet/plasma))
+			if (istype(O,/obj/item/stack/sheet/mineral/plasma))
 				amt_plasma += 100 * O.amount
 				del(O)
-			if (istype(O,/obj/item/stack/sheet/uranium))
+			if (istype(O,/obj/item/stack/sheet/mineral/uranium))
 				amt_uranium += 100 * O.amount
 				del(O)
 			if (istype(O,/obj/item/stack/sheet/metal))
 				amt_iron += 100 * O.amount
 				del(O)
-			if (istype(O,/obj/item/stack/sheet/clown))
+			if (istype(O,/obj/item/stack/sheet/mineral/clown))
 				amt_clown += 100 * O.amount
 				del(O)
-			if (istype(O,/obj/item/stack/sheet/adamantine))
+			if (istype(O,/obj/item/stack/sheet/mineral/adamantine))
 				amt_adamantine += 100 * O.amount
 				del(O) //Commented out for now. -Durandan
 
@@ -137,7 +138,7 @@
 /obj/machinery/mineral/mint/Topic(href, href_list)
 	if (..())
 		return
-	usr.machine = src
+	usr.set_machine(src)
 	src.add_fingerprint(usr)
 	if (processing==1)
 		usr << "\blue The machine is processing."
@@ -245,6 +246,18 @@
 							M = new/obj/item/weapon/moneybag(output.loc)
 						new /obj/item/weapon/coin/adamantine(M)
 						amt_adamantine -= 20
+						coinsToProduce--
+						newCoins++
+						src.updateUsrDialog()
+						sleep(5);
+				if ("mythril")
+					while(amt_adamantine > 0 && coinsToProduce > 0)
+						if (locate(/obj/item/weapon/moneybag,output.loc))
+							M = locate(/obj/item/weapon/moneybag,output.loc)
+						else
+							M = new/obj/item/weapon/moneybag(output.loc)
+						new /obj/item/weapon/coin/mythril(M)
+						amt_mythril -= 20
 						coinsToProduce--
 						newCoins++
 						src.updateUsrDialog()

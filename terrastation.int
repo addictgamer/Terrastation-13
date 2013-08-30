@@ -1,12 +1,11 @@
 // BEGIN_INTERNALS
 /*
 MAP_ICON_TYPE: 0
-WINDOW: maps\blarg2.dmm;code\defines\area\Space Station 13 areas.dm;code\game\trade\ruskiestuff.dm;code\modules\mining\mine_items.dm
-LAST_COMPILE_VERSION: 496.1145
-UPDATE_OBJ_TREE: ON
-DIR: code code\datums code\defines code\defines\area code\defines\mob code\defines\mob\living code\defines\mob\living\carbon code\defines\mob\living\silicon code\defines\obj code\defines\obj\closet code\defines\obj\clothing code\game code\game\objects\closets\secure code\game\trade code\modules code\modules\admin code\modules\clothing\spacesuits code\modules\critters\spesscarp code\modules\mining code\modules\power\reactor\energyfunnel maps 
-FILE: code\game\trade\ruskiestuff.dm
-LAST_COMPILE_TIME: 1372031305
+LAST_COMPILE_VERSION: 499.1194
+WINDOW: code\hub.dm;code\world.dm;code\controllers\configuration.dm
+DIR: code code\controllers 
+FILE: code\controllers\configuration.dm
+LAST_COMPILE_TIME: 1377632285
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS

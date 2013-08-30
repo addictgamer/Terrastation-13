@@ -1,7 +1,7 @@
 
 /obj/machinery/processor
 	name = "Food Processor"
-	icon = 'kitchen.dmi'
+	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "processor"
 	layer = 2.9
 	density = 1
@@ -25,10 +25,6 @@
 			del(what)
 
 	/* objs */
-	wheat
-		input = /obj/item/weapon/reagent_containers/food/snacks/grown/wheat
-		output = /obj/item/weapon/reagent_containers/food/snacks/flour
-
 	meat
 		input = /obj/item/weapon/reagent_containers/food/snacks/meat
 		output = /obj/item/weapon/reagent_containers/food/snacks/faggot
@@ -57,9 +53,6 @@
 		input = /obj/item/weapon/reagent_containers/food/snacks/grown/soybeans
 		output = /obj/item/weapon/reagent_containers/food/snacks/soydope
 
-	flour
-		input = /obj/item/weapon/reagent_containers/food/snacks/flour
-		output = /obj/item/weapon/reagent_containers/food/snacks/spagetti
 
 	/* mobs */
 	mob
@@ -67,9 +60,9 @@
 			..()
 
 
-		metroid
-			input = /mob/living/carbon/metroid
-			output = /obj/item/weapon/reagent_containers/food/drinks/jar
+		slime
+			input = /mob/living/carbon/slime
+			output = /obj/item/weapon/reagent_containers/glass/beaker/slime
 
 		monkey
 			process(loc, what)
@@ -89,7 +82,7 @@
 
 				for(var/datum/disease/D in O.viruses)
 					if (D.spread_type != SPECIAL)
-						B.data["viruses"] = new D.type(0)
+						B.data["viruses"] += D.Copy()
 
 				B.data["blood_DNA"] = copytext(O.dna.unique_enzymes,1,0)
 				if (O.resistances&&O.resistances.len)
@@ -151,7 +144,7 @@
 		user.visible_message("\blue [user] turns on \a [src].", \
 			"You turn on \a [src].", \
 			"You hear a food processor")
-		playsound(src.loc, 'blender.ogg', 50, 1)
+		playsound(src.loc, 'sound/machines/blender.ogg', 50, 1)
 		use_power(500)
 		sleep(P.time)
 		P.process(src.loc, O)

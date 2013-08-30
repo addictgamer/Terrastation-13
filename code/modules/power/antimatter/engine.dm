@@ -2,7 +2,7 @@
 	icon = 'AM_Engine.dmi'
 	density = 1
 	anchored = 1.0
-	flags = 512.0
+	flags = ON_BORDER
 
 /obj/machinery/power/am_engine/bits
 	name = "Antimatter Engine"
@@ -181,7 +181,7 @@
 			if (energy > convert2energy(8e-12))	//FAR TOO MUCH ENERGY STILL
 				for(var/mob/M in hearers(src, null))
 					M.show_message(text("\red <big>BANG!</big>"))
-				new /obj/bhole(src.loc)
+				new /obj/effect/bhole(src.loc)
 
 		else	//this amount of energy is okay so it does the proper output thing
 

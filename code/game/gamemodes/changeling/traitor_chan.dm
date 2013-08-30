@@ -2,8 +2,11 @@
 	name = "traitor+changeling"
 	config_tag = "traitorchan"
 	traitors_possible = 3 //hard limit on traitors if scaling is turned off
-	required_players = 20
+	restricted_jobs = list("AI", "Cyborg")
+	required_players = 3
+	required_players_secret = 10
 	required_enemies = 2
+	recommended_enemies = 3
 
 /datum/game_mode/traitor/changeling/announce()
 	world << "<B>The current game mode is - Traitor+Changeling!</B>"
@@ -11,6 +14,9 @@
 
 
 /datum/game_mode/traitor/changeling/pre_setup()
+	if (config.protect_roles_from_antagonist)
+		restricted_jobs += protected_jobs
+
 	var/list/datum/mind/possible_changelings = get_players_for_role(BE_CHANGELING)
 
 	for(var/datum/mind/player in possible_changelings)

@@ -1,56 +1,47 @@
-/mob/Login()
-	/*if (ticker.current_state == GAME_STATE_PREGAME || ticker.current_state == GAME_STATE_SETTING_UP)
-		src.client.music = sound('lobby3.mid')
-		src.client << sound(src.client.music,1)
-		src.client.playing_lobby_music = 1
-		world << "Playing lobby music. (from mob login)"*/
-	log_access("Login: [key_name(src)] from [src.client.address ? src.client.address : "localhost"]")
-	src.lastKnownIP = src.client.address
-	src.computer_id = src.client.computer_id
+//handles setting lastKnownIP and computer_id for use by the ban systems as well as checking for multikeying
+/mob/proc/update_Login_details()
+	//Multikey checks and logging
+	lastKnownIP	= client.address
+	computer_id	= client.computer_id
+	log_access("Login: [key_name(src)] from [lastKnownIP ? lastKnownIP : "localhost"]-[computer_id] || BYOND v[client.byond_version]")
 	if (config.log_access)
-		for (var/mob/M in world)
-			if (M == src)
-				continue
-			if (M.client && M.client.address == src.client.address)
-				log_access("Notice: [key_name(src)] has same IP address as [key_name(M)]")
-				message_admins("<font color='red'><B>Notice: </B><font color='blue'><A href='?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same IP address as <A href='?src=\ref[usr];priv_msg=\ref[M]'>[key_name_admin(M)]</A></font>", 1)
-			else if (M.lastKnownIP && M.lastKnownIP == src.client.address && M.ckey != src.ckey && M.key)
-				log_access("Notice: [key_name(src)] has same IP address as [key_name(M)] did ([key_name(M)] is no longer logged in).")
-				message_admins("<font color='red'><B>Notice: </B><font color='blue'><A href='?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same IP address as [key_name_admin(M)] did ([key_name_admin(M)] is no longer logged in).</font>", 1)
-			if (M.client && M.client.computer_id == src.client.computer_id)
-				log_access("Notice: [key_name(src)] has same computer ID as [key_name(M)]")
-				message_admins("<font color='red'><B>Notice: </B><font color='blue'><A href='?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same <font color='red'><B>computer ID</B><font color='blue'> as <A href='?src=\ref[usr];priv_msg=\ref[M]'>[key_name_admin(M)]</A></font>", 1)
-				spawn() alert("You have logged in already with another key this round, please log out of this one NOW or risk being banned!")
-			else if (M.computer_id && M.computer_id == src.client.computer_id && M.ckey != src.ckey && M.key)
-				log_access("Notice: [key_name(src)] has same computer ID as [key_name(M)] did ([key_name(M)] is no longer logged in).")
-				message_admins("<font color='red'><B>Notice: </B><font color='blue'><A href='?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same <font color='red'><B>computer ID</B><font color='blue'> as [key_name_admin(M)] did ([key_name_admin(M)] is no longer logged in).</font>", 1)
-				spawn() alert("You have logged in already with another key this round, please log out of this one NOW or risk being banned!")
-	if (!src.dna) src.dna = new /datum/dna(null)
-	//src.client.screen -= main_hud1.contents
+		for(var/mob/M in player_list)
+			if (M == src)	continue
+			if ( M.key && (M.key != key) )
+				var/matches
+				if ( (M.lastKnownIP == client.address) )
+					matches += "IP ([client.address])"
+				if ( (M.computer_id == client.computer_id) )
+					if (matches)	matches += " and "
+					matches += "ID ([client.computer_id])"
+					spawn() alert("You have logged in already with another key this round, please log out of this one NOW or risk being banned!")
+				if (matches)
+					if (M.client)
+						message_admins("<font color='red'><B>Notice: </B><font color='blue'><A href='?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same [matches] as <A href='?src=\ref[usr];priv_msg=\ref[M]'>[key_name_admin(M)]</A>.</font>", 1)
+						log_access("Notice: [key_name(src)] has the same [matches] as [key_name(M)].")
+					else
+						message_admins("<font color='red'><B>Notice: </B><font color='blue'><A href='?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same [matches] as [key_name_admin(M)] (no longer logged in). </font>", 1)
+						log_access("Notice: [key_name(src)] has the same [matches] as [key_name(M)] (no longer logged in).")
+
+/mob/Login()
+	player_list |= src
+	update_Login_details()
 	world.update_status()
-	if (chickenz)
-		src << "http://www.youtube.com/watch?v=wYUhGRynyJw <- That's what's happening to the station right now."
-		src << sound('chickenz.mid', 1)
 
-	//if (!src.hud_used)
-	//	src.hud_used = main_hud1
+	client.images = null				//remove the images such as AIs being unable to see runes
+	client.screen = null				//remove hud items just in case
+	if (hud_used)	del(hud_used)		//remove the hud objects
+	hud_used = new /datum/hud(src)
 
-	if (!src.hud_used)
-		src.hud_used = new/obj/hud( src )
+	next_move = 1
+	sight |= SEE_SELF
+	..()
+
+	if (loc && !isturf(loc))
+		client.eye = loc
+		client.perspective = EYE_PERSPECTIVE
 	else
-		del(src.hud_used)
-		src.hud_used = new/obj/hud( src )
+		client.eye = src
+		client.perspective = MOB_PERSPECTIVE
 
-	src.next_move = 1
-	src.sight |= SEE_SELF
-	src.logged_in = 1
-	if (istype (src, /mob/living))
-		if (ticker)
-			if (ticker.mode)
-				if (ticker.mode.name == "revolution")
-					if ((src.mind in ticker.mode:revolutionaries) || (src.mind in ticker.mode:head_revolutionaries))
-						ticker.mode:update_rev_icons_added(src.mind)
-				if (ticker.mode.name == "cult")
-					if (src.mind in ticker.mode:cult)
-						ticker.mode:update_cult_icons_added(src.mind)
-		..()
+

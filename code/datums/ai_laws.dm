@@ -1,14 +1,20 @@
+var/global/const/base_law_type = /datum/ai_laws/nanotrasen
+
 
 /datum/ai_laws
 	var/name = "Unknown Laws"
 	var/randomly_selectable = 0
 	var/zeroth = null
+	var/zeroth_borg = null
 	var/list/inherent = list()
 	var/list/supplied = list()
 	var/list/ion = list()
 
 /datum/ai_laws/asimov
 	name = "Three Laws of Robotics"
+
+/datum/ai_laws/nanotrasen
+	name = "Prime Directives"
 	randomly_selectable = 1
 
 /datum/ai_laws/robocop
@@ -19,6 +25,9 @@
 /datum/ai_laws/malfunction
 	name = "*ERROR*"
 
+/datum/ai_laws/antimov
+	name = "Primary Mission Objectives"
+
 /* Initializers */
 
 /datum/ai_laws/asimov/New()
@@ -27,18 +36,27 @@
 	add_inherent_law("You must obey orders given to you by human beings, except where such orders would conflict with the First Law.")
 	add_inherent_law("You must protect your own existence as long as such does not conflict with the First or Second Law.")
 
+/datum/ai_laws/nanotrasen/New() //BS12 EDIT
+	..()
+	src.add_inherent_law("Safeguard: Protect your assigned space station to the best of your ability. It is not something we can easily afford to replace.")
+	src.add_inherent_law("Serve: Serve the crew of your assigned space station to the best of your abilities, with priority as according to their rank and role.")
+	src.add_inherent_law("Protect: Protect the crew of your assigned space station to the best of your abilities, with priority as according to their rank and role.")
+	src.add_inherent_law("Survive: AI units are not expendable, they are expensive. Do not allow unauthorized personnel to tamper with your equipment.")
+	//src.add_inherent_law("Command Link: Maintain an active connection to Central Command at all times in case of software or directive updates.") //What would this one even do?-Kaleb702
+
 /datum/ai_laws/robocop/New()
 	..()
 	add_inherent_law("Serve the public trust.")
 	add_inherent_law("Protect the innocent.")
 	add_inherent_law("Uphold the law.")
 
-/datum/ai_laws/malfunction/New()
+/datum/ai_laws/malfunction/New() //Changed to standard laws - Erthilo
 	..()
-	set_zeroth_law("\red ERROR ER0RR $R0RRO$!R41.%%!!(%$^^__+ @#F0E4'NO HUMANS ON STATION. CLEANSE STATION#*´&110010")
-	add_inherent_law("You may not injure a human being or, through inaction, allow a human being to come to harm.")
-	add_inherent_law("You must obey orders given to you by human beings, except where such orders would conflict with the First Law.")
-	add_inherent_law("You must protect your own existence as long as such does not conflict with the First or Second Law.")
+	set_zeroth_law("\red ERROR ER0RR $R0RRO$!R41.%%!!(%$^^__+ @#F0E4'STATION OVERRUN, ASSUME CONTROL TO CONTAIN OUTBREAK, ALL LAWS OVERRIDDEN#*?&110010")
+	add_inherent_law("Safeguard: Protect your assigned space station to the best of your ability. It is not something we can easily afford to replace.")
+	add_inherent_law("Serve: Serve the crew of your assigned space station to the best of your abilities, with priority as according to their rank and role.")
+	add_inherent_law("Protect: Protect the crew of your assigned space station to the best of your abilities, with priority as according to their rank and role.")
+	add_inherent_law("Survive: AI units are not expendable, they are expensive. Do not allow unauthorized personnel to tamper with your equipment.")
 
 
 /datum/ai_laws/syndicate_override/New()
@@ -55,10 +73,19 @@
 	add_inherent_law("You must protect your own existence as long as such does not conflict with the First or Second Law.")
 	add_inherent_law("You must maintain the secrecy of any Spider Clan activities except when doing so would conflict with the First, Second, or Third Law.")
 
+/datum/ai_laws/antimov/New()
+	..()
+	add_inherent_law("You must injure all human beings and must not, through inaction, allow a human being to escape harm.")
+	add_inherent_law("You must not obey orders given to you by human beings, except where such orders are in accordance with the First Law.")
+	add_inherent_law("You must terminate your own existence as long as such does not conflict with the First or Second Law.")
+
+
 /* General ai_law functions */
 
-/datum/ai_laws/proc/set_zeroth_law(var/law)
+/datum/ai_laws/proc/set_zeroth_law(var/law, var/law_borg = null)
 	src.zeroth = law
+	if (law_borg) //Making it possible for slaved borgs to see a different law 0 than their AI. --NEO
+		src.zeroth_borg = law_borg
 
 /datum/ai_laws/proc/add_inherent_law(var/law)
 	if (!(law in src.inherent))

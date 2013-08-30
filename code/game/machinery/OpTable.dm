@@ -1,7 +1,7 @@
 /obj/machinery/optable
 	name = "Operating Table"
-	desc = "Used for advanced medical procedures. Apparently this includes the clown."
-	icon = 'surgery.dmi'
+	desc = "Used for advanced medical procedures."
+	icon = 'icons/obj/surgery.dmi'
 	icon_state = "table2-idle"
 	density = 1
 	anchored = 1.0
@@ -12,15 +12,16 @@
 	var/strapped = 0.0
 
 	var/obj/machinery/computer/operating/computer = null
-	var/id = 0.0
 
 /obj/machinery/optable/New()
 	..()
-	for(var/obj/machinery/computer/operating/O in world)
-		if (src.id == O.id)
-			src.computer = O
-	spawn(100)
-		process()
+	for(dir in list(NORTH,EAST,SOUTH,WEST))
+		computer = locate(/obj/machinery/computer/operating, get_step(src, dir))
+		if (computer)
+			computer.table = src
+			break
+//	spawn(100) //Wont the MC just call this process() before and at the 10 second mark anyway?
+//		process()
 
 /obj/machinery/optable/ex_act(severity)
 
@@ -50,28 +51,22 @@
 	return
 
 /obj/machinery/optable/attack_paw(mob/user as mob)
-	if ((usr.mutations & HULK))
+	if ((HULK in usr.mutations))
 		usr << text("\blue You destroy the operating table.")
-		for(var/mob/O in oviewers())
-			if ((O.client && !( O.blinded )))
-				O << text("\red [usr] destroys the operating table.")
+		visible_message("\red [usr] destroys the operating table!")
 		src.density = 0
 		del(src)
 	if (!( locate(/obj/machinery/optable, user.loc) ))
 		step(user, get_dir(user, src))
 		if (user.loc == src.loc)
 			user.layer = TURF_LAYER
-			for(var/mob/M in viewers(user, null))
-				M.show_message("The monkey hides under the table!", 1)
-				//Foreach goto(69)
+			visible_message("The monkey hides under the table!")
 	return
 
 /obj/machinery/optable/attack_hand(mob/user as mob)
-	if ((usr.mutations & HULK))
+	if (HULK in usr.mutations)
 		usr << text("\blue You destroy the table.")
-		for(var/mob/O in oviewers())
-			if ((O.client && !( O.blinded )))
-				O << text("\red [usr] destroys the table.")
+		visible_message("\red [usr] destroys the operating table!")
 		src.density = 0
 		del(src)
 	return
@@ -87,7 +82,7 @@
 
 /obj/machinery/optable/MouseDrop_T(obj/O as obj, mob/user as mob)
 
-	if ((!( istype(O, /obj/item/weapon) ) || user.equipped() != O))
+	if ((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
 		return
 	user.drop_item()
 	if (O.loc != src.loc)
@@ -108,7 +103,7 @@
 /obj/machinery/optable/process()
 	check_victim()
 
-/obj/machinery/optable/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/machinery/optable/attackby(obj/item/weapon/W as obj, mob/living/carbon/user as mob)
 
 	if (istype(W, /obj/item/weapon/grab))
 		if (ismob(W:affecting))
@@ -118,8 +113,7 @@
 				M.client.eye = src
 			M.resting = 1
 			M.loc = src.loc
-			for (var/mob/C in viewers(src))
-				C.show_message("\red [M] has been laid on the operating table by [user].", 3)
+			visible_message("\red [M] has been laid on the operating table by [user].", 3)
 			for(var/obj/O in src)
 				O.loc = src.loc
 			src.add_fingerprint(user)

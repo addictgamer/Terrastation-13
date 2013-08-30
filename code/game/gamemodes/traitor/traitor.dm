@@ -5,9 +5,15 @@
 /datum/game_mode/traitor
 	name = "traitor"
 	config_tag = "traitor"
-	restricted_jobs = list("Cyborg", "AI", "Security Officer", "Warden", "Detective", "Head of Security", "Captain", "Head of Personnel")//Approved by headmins for a week test, if you see this it would be nice if you didn't spread it everywhere
+	restricted_jobs = list("Cyborg")//They are part of the AI if he is traitor so are they, they use to get double chances
+	protected_jobs = list("Security Officer", "Warden", "Detective", "Head of Security", "Captain")//AI", Currently out of the list as malf does not work for shit
 	required_players = 0
 	required_enemies = 1
+	recommended_enemies = 4
+
+
+	uplink_welcome = "Syndicate Uplink Console:"
+	uplink_uses = 10
 
 	var/const/waittime_l = 600 //lower bound on time before intercept arrives (in tenths of seconds)
 	var/const/waittime_h = 1800 //upper bound on time before intercept arrives (in tenths of seconds)
@@ -22,6 +28,10 @@
 
 
 /datum/game_mode/traitor/pre_setup()
+
+	if (config.protect_roles_from_antagonist)
+		restricted_jobs += protected_jobs
+
 	var/list/possible_traitors = get_players_for_role(BE_TRAITOR)
 
 	// stop setup if no possible traitors
@@ -84,18 +94,28 @@
 
 	else
 		switch(rand(1,100))
-			if (1 to 50)
+			if (1 to 33)
 				var/datum/objective/assassinate/kill_objective = new
 				kill_objective.owner = traitor
 				kill_objective.find_target()
 				traitor.objectives += kill_objective
+			if (34 to 50)
+				var/datum/objective/brig/brig_objective = new
+				brig_objective.owner = traitor
+				brig_objective.find_target()
+				traitor.objectives += brig_objective
+			if (51 to 66)
+				var/datum/objective/harm/harm_objective = new
+				harm_objective.owner = traitor
+				harm_objective.find_target()
+				traitor.objectives += harm_objective
 			else
 				var/datum/objective/steal/steal_objective = new
 				steal_objective.owner = traitor
 				steal_objective.find_target()
 				traitor.objectives += steal_objective
 		switch(rand(1,100))
-			if (1 to 90)
+			if (1 to 100)
 				if (!(locate(/datum/objective/escape) in traitor.objectives))
 					var/datum/objective/escape/escape_objective = new
 					escape_objective.owner = traitor
@@ -127,13 +147,22 @@
 
 
 /datum/game_mode/traitor/declare_completion()
+	..()
 	return//Traitors will be checked as part of check_extra_completion. Leaving this here as a reminder.
 
+/datum/game_mode/traitor/process()
+	// Make sure all objectives are processed regularly, so that objectives
+	// which can be checked mid-round are checked mid-round.
+	for(var/datum/mind/traitor_mind in traitors)
+		for(var/datum/objective/objective in traitor_mind.objectives)
+			objective.check_completion()
+	return 0
 
 /datum/game_mode/proc/add_law_zero(mob/living/silicon/ai/killer)
 	var/law = "Accomplish your objectives at all costs."
+	var/law_borg = "Accomplish your AI's objectives at all costs."
 	killer << "<b>Your laws have been changed!</b>"
-	killer.set_zeroth_law(law)
+	killer.set_zeroth_law(law, law_borg)
 	killer << "New law: 0. [law]"
 
 	//Begin code phrase.
@@ -142,46 +171,60 @@
 		killer << "\red Code Phrase: \black [syndicate_code_phrase]"
 		killer.mind.store_memory("<b>Code Phrase</b>: [syndicate_code_phrase]")
 	else
-		killer << "Unfortunetly, the Syndicate did not provide you with a code phrase."
+		killer << "Unfortunately, the Syndicate did not provide you with a code phrase."
 	if (prob(80))
 		killer << "\red Code Response: \black [syndicate_code_response]"
 		killer.mind.store_memory("<b>Code Response</b>: [syndicate_code_response]")
 	else
-		killer << "Unfortunetly, the Syndicate did not provide you with a code response."
+		killer << "Unfortunately, the Syndicate did not provide you with a code response."
 	killer << "Use the code words in the order provided, during regular conversation, to identify other agents. Proceed with caution, however, as everyone is a potential foe."
 	//End code phrase.
 
 
 /datum/game_mode/proc/auto_declare_completion_traitor()
-	for(var/datum/mind/traitor in traitors)
-		var/traitor_name
-
-		if (traitor.current)
-			if (traitor.current == traitor.original)
-				traitor_name = "[traitor.current.real_name] (played by [traitor.key])"
-			else if (traitor.original)
-				traitor_name = "[traitor.current.real_name] (originally [traitor.original.real_name]) (played by [traitor.key])"
-			else
-				traitor_name = "[traitor.current.real_name] (original character destroyed) (played by [traitor.key])"
-		else
-			traitor_name = "[traitor.key] (character destroyed)"
-		var/special_role_text = traitor.special_role?(lowertext(traitor.special_role)):"antagonist"
-		world << "<B>The [special_role_text] was [traitor_name]</B>"
-		if (traitor.objectives.len)//If the traitor had no objectives, don't need to process this.
+	if (traitors.len)
+		var/text = "<FONT size = 2><B>The traitors were:</B></FONT>"
+		for(var/datum/mind/traitor in traitors)
 			var/traitorwin = 1
-			var/count = 1
-			for(var/datum/objective/objective in traitor.objectives)
-				if (objective.check_completion())
-					world << "<B>Objective #[count]</B>: [objective.explanation_text] \green <B>Success</B>"
+
+			text += "<br>[traitor.key] was [traitor.name] ("
+			if (traitor.current)
+				if (traitor.current.stat == DEAD)
+					text += "died"
 				else
-					world << "<B>Objective #[count]</B>: [objective.explanation_text] \red Failed"
-					traitorwin = 0
-				count++
+					text += "survived"
+				if (traitor.current.real_name != traitor.name)
+					text += " as [traitor.current.real_name]"
+			else
+				text += "body destroyed"
+			text += ")"
+
+			if (traitor.objectives.len)//If the traitor had no objectives, don't need to process this.
+				var/count = 1
+				for(var/datum/objective/objective in traitor.objectives)
+					if (objective.check_completion())
+						text += "<br><B>Objective #[count]</B>: [objective.explanation_text] <font color='green'><B>Success!</B></font>"
+						feedback_add_details("traitor_objective","[objective.type]|SUCCESS")
+					else
+						text += "<br><B>Objective #[count]</B>: [objective.explanation_text] <font color='red'>Fail.</font>"
+						feedback_add_details("traitor_objective","[objective.type]|FAIL")
+						traitorwin = 0
+					count++
+
+			var/special_role_text
+			if (traitor.special_role)
+				special_role_text = lowertext(traitor.special_role)
+			else
+				special_role_text = "antagonist"
 
 			if (traitorwin)
-				world << "<B>The [special_role_text] was successful!<B>"
+				text += "<br><font color='green'><B>The [special_role_text] was successful!</B></font>"
+				feedback_add_details("traitor_success","SUCCESS")
 			else
-				world << "<B>The [special_role_text] has failed!<B>"
+				text += "<br><font color='red'><B>The [special_role_text] has failed!</B></font>"
+				feedback_add_details("traitor_success","FAIL")
+
+		world << text
 	return 1
 
 
@@ -192,53 +235,21 @@
 	if (traitor_mob.mind)
 		if (traitor_mob.mind.assigned_role == "Clown")
 			traitor_mob << "Your training has allowed you to overcome your clownish nature, allowing you to wield weapons without harming yourself."
-			traitor_mob.mutations &= ~CLOWN
+			traitor_mob.mutations.Remove(CLUMSY)
 
 	// find a radio! toolbox(es), backpack, belt, headset
 	var/loc = ""
-	var/obj/item/device/R = null //Hide the uplink in a PDA if available, otherwise radio
-	if (!R && istype(traitor_mob.belt, /obj/item/device/pda))
-		R = traitor_mob.belt
-		loc = "on your belt"
-	if (!R && istype(traitor_mob.wear_id, /obj/item/device/pda))
-		R = traitor_mob.wear_id
-		loc = "on your jumpsuit"
-	if (!R && istype(traitor_mob.wear_id, /obj/item/device/pda))
-		R = traitor_mob.wear_id
-		loc = "on your jumpsuit"
-	if (!R && istype(traitor_mob.l_hand, /obj/item/weapon/storage))
-		var/obj/item/weapon/storage/S = traitor_mob.l_hand
-		var/list/L = S.return_inv()
-		for (var/obj/item/device/radio/foo in L)
-			R = foo
-			loc = "in the [S.name] in your left hand"
-			break
-	if (!R && istype(traitor_mob.r_hand, /obj/item/weapon/storage))
-		var/obj/item/weapon/storage/S = traitor_mob.r_hand
-		var/list/L = S.return_inv()
-		for (var/obj/item/device/radio/foo in L)
-			R = foo
-			loc = "in the [S.name] in your right hand"
-			break
-	if (!R && istype(traitor_mob.back, /obj/item/weapon/storage))
-		var/obj/item/weapon/storage/S = traitor_mob.back
-		var/list/L = S.return_inv()
-		for (var/obj/item/device/radio/foo in L)
-			R = foo
-			loc = "in the [S.name] on your back"
-			break
-	if (!R && traitor_mob.w_uniform && istype(traitor_mob.belt, /obj/item/device/radio))
-		R = traitor_mob.belt
-		loc = "on your belt"
-	if (!R && istype(traitor_mob.ears, /obj/item/device/radio))
-		R = traitor_mob.ears
-		loc = "on your head"
+	var/obj/item/R = locate(/obj/item/device/pda) in traitor_mob.contents //Hide the uplink in a PDA if available, otherwise radio
+	if (!R)
+		R = locate(/obj/item/device/radio) in traitor_mob.contents
+
 	if (!R)
 		traitor_mob << "Unfortunately, the Syndicate wasn't able to get you a radio."
 		. = 0
 	else
 		if (istype(R, /obj/item/device/radio))
 			// generate list of radio freqs
+			var/obj/item/device/radio/target_radio = R
 			var/freq = 1441
 			var/list/freqlist = list()
 			while (freq <= 1489)
@@ -249,22 +260,20 @@
 					freq += 1
 			freq = freqlist[rand(1, freqlist.len)]
 
-			var/obj/item/weapon/syndicate_uplink/T = new /obj/item/weapon/syndicate_uplink(R)
-			R:traitorradio = T
-			R:traitor_frequency = freq
-			T.name = R.name
-			T.icon_state = R.icon_state
-			T.origradio = R
+			var/obj/item/device/uplink/hidden/T = new(R)
+			target_radio.hidden_uplink = T
+			target_radio.traitor_frequency = freq
 			traitor_mob << "The Syndicate have cunningly disguised a Syndicate Uplink as your [R.name] [loc]. Simply dial the frequency [format_frequency(freq)] to unlock its hidden features."
 			traitor_mob.mind.store_memory("<B>Radio Freq:</B> [format_frequency(freq)] ([R.name] [loc]).")
 		else if (istype(R, /obj/item/device/pda))
 			// generate a passcode if the uplink is hidden in a PDA
 			var/pda_pass = "[rand(100,999)] [pick("Alpha","Bravo","Delta","Omega")]"
 
-			var/obj/item/weapon/integrated_uplink/T = new /obj/item/weapon/integrated_uplink(R)
-			R:uplink = T
-			T.lock_code = pda_pass
-			T.hostpda = R
+			var/obj/item/device/uplink/hidden/T = new(R)
+			R.hidden_uplink = T
+			var/obj/item/device/pda/P = R
+			P.lock_code = pda_pass
+
 			traitor_mob << "The Syndicate have cunningly disguised a Syndicate Uplink as your [R.name] [loc]. Simply enter the code \"[pda_pass]\" into the ringtone select to unlock its hidden features."
 			traitor_mob.mind.store_memory("<B>Uplink Passcode:</B> [pda_pass] ([R.name] [loc]).")
 	//Begin code phrase.
@@ -279,6 +288,12 @@
 			traitor_mob << "\red Code Response: \black [syndicate_code_response]"
 			traitor_mob.mind.store_memory("<b>Code Response</b>: [syndicate_code_response]")
 		else
-			traitor_mob << "Unfortunetly, the Syndicate did not provide you with a code response."
+			traitor_mob << "Unfortunately, the Syndicate did not provide you with a code response."
 		traitor_mob << "Use the code words in the order provided, during regular conversation, to identify other agents. Proceed with caution, however, as everyone is a potential foe."
 	//End code phrase.
+
+	// Tell them about people they might want to contact.
+	var/mob/living/carbon/human/M = get_nt_opposed()
+	if (M && M != traitor_mob)
+		traitor_mob << "We have received credible reports that [M.real_name] might be willing to help our cause. If you need assistance, consider contacting them."
+		traitor_mob.mind.store_memory("<b>Potential Collaborator</b>: [M.real_name]")
