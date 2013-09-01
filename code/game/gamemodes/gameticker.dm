@@ -37,10 +37,14 @@ var/global/datum/controller/gameticker/ticker
 	var/triai = 0//Global holder for Triumvirate
 
 /datum/controller/gameticker/proc/pregame()
+	//login_music = pick(\
+	//'sound/music/space.ogg',
+	//'sound/music/traitor.ogg',
+	//'sound/music/space_oddity.ogg') //Ground Control to Major Tom, this song is cool, what's going on?
 	login_music = pick(\
-	/*'sound/music/space.ogg',*/\
-	/*'sound/music/traitor.ogg'*/,\
-	'sound/music/lobby.mid,\3
+	'sound/music/space.ogg',
+	'sound/music/traitor.ogg',
+	'sound/music/lobby3.mid',\
 	'sound/music/space_oddity.ogg') //Ground Control to Major Tom, this song is cool, what's going on?
 	do
 		pregame_timeleft = 180
