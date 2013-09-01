@@ -1,11 +1,12 @@
 // BEGIN_INTERNALS
 /*
 MAP_ICON_TYPE: 0
-LAST_COMPILE_VERSION: 499.1194
-WINDOW: code\hub.dm;code\world.dm;code\controllers\configuration.dm
-DIR: code code\controllers 
-FILE: code\controllers\configuration.dm
-LAST_COMPILE_TIME: 1377632285
+WINDOW: maps\Rockstation.dmm
+LAST_COMPILE_VERSION: 496.1145
+UPDATE_OBJ_TREE: ON
+DIR: code code\controllers maps maps\RandomZLevels 
+FILE: maps\Rockstation.dmm
+LAST_COMPILE_TIME: 1378021548
 AUTO_FILE_DIR: ON
 */
 // END_INTERNALS
