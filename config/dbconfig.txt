@@ -11,10 +11,10 @@ PORT 3306
 DATABASE terrastation
 
 # Username/Login used to access the database
-LOGIN mylogin
+LOGIN terrastationsql
 
 # Password used to access the database
-PASSWORD mypassword
+PASSWORD asdf
 
 # The following information is for feedback tracking via the blackbox server
 FEEDBACK_DATABASE terrastationfeedback
