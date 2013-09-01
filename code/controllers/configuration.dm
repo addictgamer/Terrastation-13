@@ -41,6 +41,8 @@
 	var/Tickcomp = 0
 	var/socket_talk	= 0					// use socket_talk to communicate with other processes
 	var/list/resource_urls = null
+	var/hub_password = "SORRYNOPASSWORD"
+	var/hub_name = "Terrastation"
 
 	var/list/mode_names = list()
 	var/list/modes = list()				// allowed modes
@@ -288,6 +290,12 @@
 
 				if ("server")
 					config.server = value
+
+				if ("hub_name")
+					config.hub_name = value
+
+				if ("hub_password")
+					config.hub_password = value
 
 				if ("banappeals")
 					config.banappeals = value

@@ -202,6 +202,8 @@
 /world/proc/load_configuration()
 	config = new /datum/configuration()
 	config.load("config/config.txt")
+	world.name = config.hub_name
+	world.hub_password = config.hub_password
 	config.load("config/game_options.txt","game_options")
 	config.loadsql("config/dbconfig.txt")
 	config.loadforumsql("config/forumdbconfig.txt")
