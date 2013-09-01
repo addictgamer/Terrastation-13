@@ -1,6 +1,4 @@
 .directory
-terrastation.dmb
 terrastation.int
 *.lk
-*.rsc
 data/logs/
