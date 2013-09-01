@@ -98,16 +98,16 @@
 	if(byond_version < MIN_CLIENT_VERSION)		//Out of date client.
 		return null
 
-	if(IsGuestKey(key))
+	/*if(IsGuestKey(key))
 		alert(src,"Baystation12 doesn't allow guest accounts to play. Please go to http://www.byond.com/ and register for a key.","Guest","OK")
 		del(src)
-		return
+		return*/
 
 	// Change the way they should download resources.
 	if(config.resource_urls)
 		src.preload_rsc = pick(config.resource_urls)
 	else src.preload_rsc = 1 // If config.resource_urls is not set, preload like normal.
-	
+
 	src << "\red If the title screen is black, resources are still downloading. Please be patient until the title screen appears."
 
 
