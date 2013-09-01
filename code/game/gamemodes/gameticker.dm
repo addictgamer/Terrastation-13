@@ -42,8 +42,6 @@ var/global/datum/controller/gameticker/ticker
 	//'sound/music/traitor.ogg',
 	//'sound/music/space_oddity.ogg') //Ground Control to Major Tom, this song is cool, what's going on?
 	login_music = pick(\
-	'sound/music/space.ogg',
-	'sound/music/traitor.ogg',
 	'sound/music/lobby3.mid',\
 	'sound/music/space_oddity.ogg') //Ground Control to Major Tom, this song is cool, what's going on?
 	do
