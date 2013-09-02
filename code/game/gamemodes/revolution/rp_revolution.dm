@@ -43,7 +43,7 @@
 				possible_headrevs -= player
 
 	for (var/i=1 to max_headrevs)
-		if(possible_headrevs.len==0)
+		if (possible_headrevs.len==0)
 			break
 		var/datum/mind/lenin = pick(possible_headrevs)
 		possible_headrevs -= lenin
@@ -79,7 +79,7 @@
 
 /datum/game_mode/revolution/rp_revolution/greet_revolutionary(var/datum/mind/rev_mind, var/you_are=1)
 	var/obj_count = 1
-	if(you_are)
+	if (you_are)
 		rev_mind.current << "\blue You are a member of the revolutionaries' leadership!"
 	for(var/datum/objective/objective in rev_mind.objectives)
 		rev_mind.current << "<B>Objective #[obj_count]</B>: [objective.explanation_text]"
@@ -231,7 +231,7 @@
 
 /datum/game_mode/revolution/rp_revolution/proc/command_report(message)
 	for (var/obj/machinery/computer/communications/comm in world)
-		if(!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
+		if (!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
 			var/obj/item/weapon/paper/intercept = new /obj/item/weapon/paper( comm.loc )
 			intercept.name = "paper- 'Cent. Com. Announcement'"
 			intercept.info = message

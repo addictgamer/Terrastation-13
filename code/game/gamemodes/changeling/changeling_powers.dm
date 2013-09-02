@@ -306,15 +306,15 @@
 
 	for(var/obj/item/W in src)
 		C.u_equip(W)
-		if(C.client)
+		if (C.client)
 			C.client.screen -= W
-		if(W)
+		if (W)
 			W.loc = C.loc
 			W.dropped(C)
 			W.layer = initial(W.layer)
 
 	var/mob/living/carbon/human/O = new /mob/living/carbon/human( src )
-	if(isblockon(getblock(C.dna.uni_identity, 11,3),11))
+	if (isblockon(getblock(C.dna.uni_identity, 11,3),11))
 		O.gender = FEMALE
 	else
 		O.gender = MALE

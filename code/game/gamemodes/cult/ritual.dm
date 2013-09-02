@@ -287,9 +287,9 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 
 
 	Topic(href,href_list[])
-		if(src.loc == usr)
+		if (src.loc == usr)
 			var/number = text2num(href_list["number"])
-			if(usr.stat|| usr.restrained())
+			if (usr.stat|| usr.restrained())
 				return
 			switch(href_list["action"])
 				if("clear")
@@ -297,7 +297,7 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 				if("change")
 					words[words[number]] = input("Enter the translation for [words[number]]", "Word notes") in engwords
 					for (var/w in words)
-						if((words[w] == words[words[number]]) && (w != words[number]))
+						if ((words[w] == words[words[number]]) && (w != words[number]))
 							words[w] = w
 			notedat = {"
 						<br><b>Word translation notes</b> <br>
@@ -338,10 +338,10 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 //		usr << browse(null, "window=tank")
 
 	attack(mob/living/M as mob, mob/living/user as mob)
+
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has had the [name] used on him by [user.name] ([user.ckey])</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used [name] on [M.name] ([M.ckey])</font>")
-
-		log_attack("<font color='red'>[user.name] ([user.ckey]) used [name] on [M.name] ([M.ckey])</font>")
+		msg_admin_attack("[user.name] ([user.ckey]) used [name] on [M.name] ([M.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 		if(istype(M,/mob/dead))
 			M.invisibility = 0
@@ -373,14 +373,14 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 			var/C = 0
 			for(var/obj/effect/rune/N in world)
 				C++
-			if(!istype(user.loc,/turf))
+			if (!istype(user.loc,/turf))
 				user << "\red You do not have enough space to write a proper rune."
 				return
 
 
 
 
-			if(C>=26+runedec+ticker.mode.cult.len) //including the useless rune at the secret room, shouldn't count against the limit of 25 runes - Urist
+			if (C>=26+runedec+ticker.mode.cult.len) //including the useless rune at the secret room, shouldn't count against the limit of 25 runes - Urist
 				alert("The cloth of reality can't take that much of a strain. Remove some runes first!")
 				return
 			else
@@ -423,17 +423,17 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 			if(usr)
 				w1 = input("Write your first rune:", "Rune Scribing") in english
 				for (var/w in words)
-					if(words[w] == w1)
+					if (words[w] == w1)
 						w1 = w
 			if(usr)
 				w2 = input("Write your second rune:", "Rune Scribing") in english
 				for (var/w in words)
-					if(words[w] == w2)
+					if (words[w] == w2)
 						w2 = w
 			if(usr)
 				w3 = input("Write your third rune:", "Rune Scribing") in english
 				for (var/w in words)
-					if(words[w] == w3)
+					if (words[w] == w3)
 						w3 = w
 
 			if(usr.get_active_hand() != src)
@@ -466,7 +466,7 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 				if("cancel")
 					return
 	//		var/list/nearby = viewers(1,src) //- Fuck this as well. No clue why this doesnt work. -K0000
-	//			if(T.loc != user)
+	//			if (T.loc != user)
 	//				return
 	//		for(var/mob/M in nearby)
 	//			if(M == user)
@@ -492,7 +492,7 @@ var/engwords = list("travel", "blood", "join", "hell", "destroy", "technology", 
 			runerandom()
 		if(user)
 			var/r
-			if(!istype(user.loc,/turf))
+			if (!istype(user.loc,/turf))
 				user << "\red You do not have enough space to write a proper rune."
 			var/list/runes = list("teleport", "itemport", "tome", "armor", "convert", "tear in reality", "emp", "drain", "seer", "raise", "obscure", "reveal", "astral journey", "manifest", "imbue talisman", "sacrifice", "wall", "freedom", "cultsummon", "deafen", "blind", "bloodboil", "communicate", "stun")
 			r = input("Choose a rune to scribe", "Rune Scribing") in runes //not cancellable.

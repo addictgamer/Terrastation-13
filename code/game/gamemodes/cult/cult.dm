@@ -128,8 +128,8 @@
 	if(!istype(mob))
 		return
 
-	if(mob.mind)
-		if(mob.mind.assigned_role == "Clown")
+	if (mob.mind)
+		if (mob.mind.assigned_role == "Clown")
 			mob << "Your training has allowed you to overcome your clownish nature, allowing you to wield weapons without harming yourself."
 			mob.mutations.Remove(CLUMSY)
 
@@ -143,7 +143,7 @@
 		"right hand" = slot_r_hand,
 	)
 	var/where = mob.equip_in_one_of_slots(T, slots)
-	if(!where)
+	if (!where)
 		mob << "Unfortunately, you weren't able to get a talisman. This is very bad and you should adminhelp immediately."
 	else
 		mob << "You have a talisman in your [where], one that will help you start the cult on this station. Use it well and remember - there are others."
@@ -152,7 +152,7 @@
 
 
 /datum/game_mode/cult/grant_runeword(mob/living/carbon/human/cult_mob, var/word)
-	if(!word)
+	if (!word)
 		if(startwords.len > 0)
 			word=pick(startwords)
 			startwords -= word
@@ -162,7 +162,7 @@
 /datum/game_mode/proc/grant_runeword(mob/living/carbon/human/cult_mob, var/word)
 	if(!cultwords["travel"])
 		runerandom()
-	if(!word)
+	if (!word)
 		word=pick(allwords)
 	var/wordexp = "[cultwords[word]] is [word]..."
 	cult_mob << "\red You remember one thing from the dark teachings of your master... [wordexp]"
@@ -170,7 +170,7 @@
 
 
 /datum/game_mode/proc/add_cultist(datum/mind/cult_mind) //BASE
-	if(!istype(cult_mind))
+	if (!istype(cult_mind))
 		return 0
 	if(!(cult_mind in cult) && is_convertable_to_cult(cult_mind))
 		cult += cult_mind
@@ -179,7 +179,7 @@
 
 
 /datum/game_mode/cult/add_cultist(datum/mind/cult_mind) //INHERIT
-	if(!..(cult_mind))
+	if (!..(cult_mind))
 		return
 	memoize_cult_objectives(cult_mind)
 
@@ -265,9 +265,9 @@
 /datum/game_mode/cult/proc/check_survive()
 	acolytes_survived = 0
 	for(var/datum/mind/cult_mind in cult)
-		if(cult_mind.current && cult_mind.current.stat!=2)
+		if (cult_mind.current && cult_mind.current.stat!=2)
 			var/area/A = get_area(cult_mind.current )
-			if( is_type_in_list(A, centcom_areas))
+			if ( is_type_in_list(A, centcom_areas))
 				acolytes_survived++
 	if(acolytes_survived>=acolytes_needed)
 		return 0

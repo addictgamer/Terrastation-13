@@ -97,7 +97,7 @@
 
 /obj/effect/meteor/Move()
 	var/turf/T = src.loc
-	if(istype(T, /turf))
+	if (istype(T, /turf))
 		T.hotspot_expose(METEOR_TEMPERATURE, 1000)
 	..()
 	return
@@ -107,10 +107,10 @@
 		for(var/mob/M in range(10, src))
 			if(!M.stat && !istype(M, /mob/living/silicon/ai)) //bad idea to shake an ai's view
 				shake_camera(M, 3, 1)
-		if(A)
+		if (A)
 			A.meteorhit(src)
 			playsound(src.loc, 'sound/effects/meteorimpact.ogg', 40, 1)
-		if(--src.hits <= 0)
+		if (--src.hits <= 0)
 
 			//Prevent meteors from blowing up the singularity's containment.
 			//Changing emitter and generator ex_act would result in them being bomb and C4 proof.
@@ -126,7 +126,7 @@
 
 /obj/effect/meteor/ex_act(severity)
 
-	if(severity < 4)
+	if (severity < 4)
 		del(src)
 	return
 
@@ -149,10 +149,10 @@
 			for(var/mob/M in range(10, src))
 				if(!M.stat && !istype(M, /mob/living/silicon/ai)) //bad idea to shake an ai's view
 					shake_camera(M, 3, 1)
-			if(A)
+			if (A)
 				explosion(src.loc, 0, 1, 2, 3, 0)
 				playsound(src.loc, 'sound/effects/meteorimpact.ogg', 40, 1)
-			if(--src.hits <= 0)
+			if (--src.hits <= 0)
 				if(prob(15) && !istype(A, /obj/structure/grille))
 					explosion(src.loc, 1, 2, 3, 4, 0)
 					playsound(src.loc, "explosion", 50, 1)

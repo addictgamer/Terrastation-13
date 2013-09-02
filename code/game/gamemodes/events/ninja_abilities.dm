@@ -165,9 +165,9 @@ This could be a lot better but I'm too tired atm.*/
 
 			var/turf/curloc = U.loc
 			var/atom/targloc = get_turf(target)
-			if(!targloc || !istype(targloc, /turf) || !curloc)
+			if (!targloc || !istype(targloc, /turf) || !curloc)
 				return
-			if(targloc == curloc)
+			if (targloc == curloc)
 				return
 			var/obj/item/projectile/energy/dart/A = new /obj/item/projectile/energy/dart(U.loc)
 			A.current = curloc

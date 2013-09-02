@@ -105,25 +105,25 @@ var/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","Epsilon"
 
 	switch(rand(1,100))
 		if(1 to 80)
-			if(!(locate(/datum/objective/escape) in changeling.objectives))
+			if (!(locate(/datum/objective/escape) in changeling.objectives))
 				var/datum/objective/escape/escape_objective = new
 				escape_objective.owner = changeling
 				changeling.objectives += escape_objective
 		else
-			if(!(locate(/datum/objective/survive) in changeling.objectives))
+			if (!(locate(/datum/objective/survive) in changeling.objectives))
 				var/datum/objective/survive/survive_objective = new
 				survive_objective.owner = changeling
 				changeling.objectives += survive_objective
 	return
 
 /datum/game_mode/proc/greet_changeling(var/datum/mind/changeling, var/you_are=1)
-	if(you_are)
+	if (you_are)
 		changeling.current << "<B>\red You are a changeling!</B>"
 	changeling.current << "<b>\red Use say \":g message\" to communicate with your fellow changelings. Remember: you get all of their absorbed DNA if you absorb them.</b>"
 	changeling.current << "<B>You must complete the following tasks:</B>"
 
-	if(changeling.current.mind)
-		if(changeling.current.mind.assigned_role == "Clown")
+	if (changeling.current.mind)
+		if (changeling.current.mind.assigned_role == "Clown")
 			changeling.current << "You have evolved beyond your clownish nature, allowing you to wield weapons without harming yourself."
 			changeling.current.mutations.Remove(CLUMSY)
 
@@ -142,11 +142,11 @@ var/list/possible_changeling_IDs = list("Alpha","Beta","Gamma","Delta","Epsilon"
 			continue
 		changelings_alive++
 
-	if(changelings_alive)
+	if (changelings_alive)
 		changelingdeath = 0
 		return ..()
 	else
-		if(!changelingdeath)
+		if (!changelingdeath)
 			changelingdeathtime = world.time
 			changelingdeath = 1
 		if(world.time-changelingdeathtime > TIME_TO_GET_REVIVED)

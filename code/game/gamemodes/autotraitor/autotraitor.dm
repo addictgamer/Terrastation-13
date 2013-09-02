@@ -83,11 +83,11 @@
 		var/possible_traitors[0]
 		for(var/mob/living/player in mob_list)
 
-			if(player.client && player.stat != 2)
+			if (player.client && player.stat != 2)
 				playercount += 1
-			if(player.client && player.mind && player.mind.special_role && player.stat != 2)
+			if (player.client && player.mind && player.mind.special_role && player.stat != 2)
 				traitorcount += 1
-			if(player.client && player.mind && !player.mind.special_role && player.stat != 2 && (player.client && player.client.prefs.be_special & BE_TRAITOR) && !jobban_isbanned(player, "Syndicate"))
+			if (player.client && player.mind && !player.mind.special_role && player.stat != 2 && (player.client && player.client.prefs.be_special & BE_TRAITOR) && !jobban_isbanned(player, "Syndicate"))
 				possible_traitors += player
 		for(var/datum/mind/player in possible_traitors)
 			for(var/job in restricted_jobs)
@@ -124,7 +124,12 @@
 				//message_admins("[newtraitor.real_name] is the new Traitor.")
 
 				forge_traitor_objectives(newtraitor.mind)
-				equip_traitor(newtraitor)
+
+				if(istype(newtraitor, /mob/living/silicon))
+					add_law_zero(newtraitor)
+				else
+					equip_traitor(newtraitor)
+
 				traitors += newtraitor.mind
 				newtraitor << "\red <B>ATTENTION:</B> \black It is time to pay your debt to the Syndicate..."
 				newtraitor << "<B>You are now a traitor.</B>"
@@ -155,9 +160,9 @@
 		var/traitorcount = 0
 		for(var/mob/living/player in mob_list)
 
-			if(player.client && player.stat != 2)
+			if (player.client && player.stat != 2)
 				playercount += 1
-			if(player.client && player.mind && player.mind.special_role && player.stat != 2)
+			if (player.client && player.mind && player.mind.special_role && player.stat != 2)
 				traitorcount += 1
 		//message_admins("Live Players: [playercount]")
 		//message_admins("Live Traitors: [traitorcount]")
@@ -173,7 +178,7 @@
 
 		//target_traitors = max(1, min(round((playercount + r) / 10, 1), traitors_possible))
 		//message_admins("Target Traitor Count is: [target_traitors]")
-		if(traitorcount < max_traitors)
+		if (traitorcount < max_traitors)
 			//message_admins("Number of Traitors is below maximum.  Rolling for New Arrival Traitor.")
 			//message_admins("The probability of a new traitor is [traitor_prob]%")
 			if(prob(traitor_prob))

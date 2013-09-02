@@ -43,7 +43,7 @@
 		intercepttext += i_text.build(A, pick(head_revolutionaries))
 
 	for (var/obj/machinery/computer/communications/comm in world)
-		if(!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
+		if (!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
 			var/obj/item/weapon/paper/intercept = new /obj/item/weapon/paper( comm.loc )
 			intercept.name = "paper - 'Cent. Com. Status Summary'"
 			intercept.info = intercepttext
@@ -114,7 +114,7 @@
 		intercepttext += i_text.build(A, pick(head_revolutionaries))
 
 	for (var/obj/machinery/computer/communications/comm in world)
-		if(!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
+		if (!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
 			var/obj/item/weapon/paper/intercept = new /obj/item/weapon/paper( comm.loc )
 			intercept.name = "paper - 'Cent. Com. Status Summary'"
 			intercept.info = intercepttext
@@ -132,7 +132,7 @@
 			intercepttext += "<br>[revmind.current.real_name]"
 		intercepttext += "<br>Please arrest them at once."
 		for (var/obj/machinery/computer/communications/comm in world)
-			if(!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
+			if (!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
 				var/obj/item/weapon/paper/intercept = new /obj/item/weapon/paper( comm.loc )
 				intercept.name = "paper - 'Cent. Com. Status Summary'"
 				intercept.info = intercepttext
@@ -157,9 +157,9 @@
 //		return
 
 //	spawn (100)
-//		if(rev_mob.r_store)
+//		if (rev_mob.r_store)
 //			rev_mob.equip_if_possible(new /obj/item/weapon/paper/communist_manifesto(rev_mob), rev_mob.slot_l_store)
-//		if(rev_mob.l_store)
+//		if (rev_mob.l_store)
 //			rev_mob.equip_if_possible(new /obj/item/weapon/paper/communist_manifesto(rev_mob), rev_mob.slot_r_store)
 
 

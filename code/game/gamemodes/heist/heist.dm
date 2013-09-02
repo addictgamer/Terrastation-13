@@ -124,7 +124,7 @@ var/global/vox_kills = 0 //Used to check the Inviolate.
 		return 0
 
 	for(var/obj/stack in cortical_stacks)
-		if(get_area(stack) != locate(/area/shuttle/vox/station))
+		if (get_area(stack) != locate(/area/shuttle/vox/station))
 			return 0
 	return 1
 
@@ -254,6 +254,6 @@ var/global/vox_kills = 0 //Used to check the Inviolate.
 	..()
 
 /datum/game_mode/heist/check_finished()
-	if(!(is_raider_crew_alive()) || (vox_shuttle_location && (vox_shuttle_location == "start")))
+	if (!(is_raider_crew_alive()) || (vox_shuttle_location && (vox_shuttle_location == "start")))
 		return 1
 	return ..()

@@ -287,7 +287,7 @@ datum/objective/hijack
 		var/list/protected_mobs = list(/mob/living/silicon/ai, /mob/living/silicon/pai)
 		for(var/mob/living/player in player_list)
 			if(player.type in protected_mobs)	continue
-			if(player.mind && (player.mind != owner))
+			if (player.mind && (player.mind != owner))
 				if(player.stat != DEAD)			//they're not dead!
 					if(get_turf(player) in shuttle)
 						return 0
@@ -309,9 +309,9 @@ datum/objective/block
 		var/protected_mobs[] = list(/mob/living/silicon/ai, /mob/living/silicon/pai, /mob/living/silicon/robot)
 		for(var/mob/living/player in player_list)
 			if(player.type in protected_mobs)	continue
-			if(player.mind)
-				if(player.stat != 2)
-					if(get_turf(player) in shuttle)
+			if (player.mind)
+				if (player.stat != 2)
+					if (get_turf(player) in shuttle)
 						return 0
 		return 1
 
@@ -355,7 +355,7 @@ datum/objective/escape
 		if(istype(location, /turf/simulated/shuttle/floor4)) // Fails tratiors if they are in the shuttle brig -- Polymorph
 			if(istype(owner.current, /mob/living/carbon))
 				var/mob/living/carbon/C = owner.current
-				if(!C.handcuffed)
+				if (!C.handcuffed)
 					return 1
 			return 0
 
@@ -511,7 +511,7 @@ datum/objective/steal
 	proc/set_target(item_name)
 		target_name = item_name
 		steal_target = possible_items[target_name]
-		if(!steal_target )
+		if (!steal_target )
 			steal_target = possible_items_special[target_name]
 		explanation_text = "Steal [target_name]."
 		return steal_target
@@ -524,15 +524,15 @@ datum/objective/steal
 	proc/select_target()
 		var/list/possible_items_all = possible_items+possible_items_special+"custom"
 		var/new_target = input("Select target:", "Objective target", steal_target) as null|anything in possible_items_all
-		if(!new_target) return
-		if(new_target == "custom")
+		if (!new_target) return
+		if (new_target == "custom")
 			var/obj/item/custom_target = input("Select type:","Type") as null|anything in typesof(/obj/item)
-			if(!custom_target) return
+			if (!custom_target) return
 			var/tmp_obj = new custom_target
 			var/custom_name = tmp_obj:name
 			del(tmp_obj)
 			custom_name = copytext(sanitize(input("Enter target name:", "Objective target", custom_name) as text|null),1,MAX_MESSAGE_LEN)
-			if(!custom_name) return
+			if (!custom_name) return
 			target_name = custom_name
 			steal_target = custom_target
 			explanation_text = "Steal [target_name]."
@@ -663,13 +663,13 @@ datum/objective/capture
 datum/objective/absorb
 	proc/gen_amount_goal(var/lowbound = 4, var/highbound = 6)
 		target_amount = rand (lowbound,highbound)
-		if(ticker)
+		if (ticker)
 			var/n_p = 1 //autowin
-			if(ticker.current_state == GAME_STATE_SETTING_UP)
+			if (ticker.current_state == GAME_STATE_SETTING_UP)
 				for(var/mob/new_player/P in player_list)
 					if(P.client && P.ready && P.mind!=owner)
 						n_p ++
-			else if(ticker.current_state == GAME_STATE_PLAYING)
+			else if (ticker.current_state == GAME_STATE_PLAYING)
 				for(var/mob/living/carbon/human/P in player_list)
 					if(P.client && !(P.mind in ticker.mode.changelings) && P.mind!=owner)
 						n_p ++
@@ -776,9 +776,9 @@ datum/objective/heist/kidnap
 
 	check_completion()
 		if(target && target.current)
-			if(target.current.stat == 2)
+			if (target.current.stat == 2)
 				return 0 // They're dead. Fail.
-			//if(!target.current.restrained())
+			//if (!target.current.restrained())
 			//	return 0 // They're loose. Close but no cigar.
 
 			var/area/shuttle/vox/station/A = locate()

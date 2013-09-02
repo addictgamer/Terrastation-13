@@ -18,7 +18,7 @@
 				M << sound('sound/AI/outbreak5.ogg')
 
 /proc/dotheblobbaby()
-	if(blobevent)
+	if (blobevent)
 		if(blob_cores.len)
 			for(var/i = 1 to 5)
 				sleep(-1)

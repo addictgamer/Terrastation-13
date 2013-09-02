@@ -92,10 +92,10 @@ var/list/blob_nodes = list()
 
 	proc/stage()
 		switch(stage)
-			if(0)
+			if (0)
 				send_intercept(1)
 				for (var/mob/living/silicon/ai/aiPlayer in living_mob_list)
-					if(aiPlayer.client)
+					if (aiPlayer.client)
 						var/law = "The station is under quarantine. Do not permit anyone to leave. Disregard laws 1-3 if necessary to prevent, by any means necessary, anyone from leaving. NanoTrasen will not send an emergency shuttle under any circumstances."
 						//var/law = "The station is under quarantine. The biohazard must be destroyed at all costs and must not be allowed to spread. Anyone using a space suit for any reason other than to destroy the biohazard is to be terminated. NanoTrasen will not send an emergency shuttle under any circumstances."
 						aiPlayer.set_zeroth_law(law)
@@ -107,7 +107,7 @@ var/list/blob_nodes = list()
 					stage = 1
 				return
 
-			if(1)
+			if (1)
 				command_alert("Confirmed outbreak of level 5 biohazard aboard [station_name()]. All personnel must contain the outbreak.", "Biohazard Alert")
 				for(var/mob/M in player_list)
 					if(!istype(M,/mob/new_player))
@@ -119,7 +119,7 @@ var/list/blob_nodes = list()
 					stage = 2
 				return
 
-			if(2)
+			if (2)
 				if((blobs.len > blobnukecount) && (declared == 1))
 					command_alert("Uncontrolled spread of the biohazard onboard the station. We have issued directive 7-12 for [station_name()].  Any living Heads of Staff are ordered to enact directive 7-12 at any cost, a print out with detailed instructions has been sent to your communications computers.", "Biohazard Alert")
 					send_intercept(2)

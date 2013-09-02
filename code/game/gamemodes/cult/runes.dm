@@ -18,7 +18,7 @@ var/list/sacrificed = list()
 					allrunesloc[index] = R.loc
 			if(index >= 5)
 				user << "\red You feel pain, as rune disappears in reality shift caused by too much wear of space-time fabric"
-				if(istype(user, /mob/living))
+				if (istype(user, /mob/living))
 					user.take_overall_damage(5, 0)
 				del(src)
 			if(allrunesloc && index != 0)
@@ -55,7 +55,7 @@ var/list/sacrificed = list()
 					runecount++
 			if(runecount >= 2)
 				user << "\red You feel pain, as rune disappears in reality shift caused by too much wear of space-time fabric"
-				if(istype(user, /mob/living))
+				if (istype(user, /mob/living))
 					user.take_overall_damage(5, 0)
 				del(src)
 			for(var/mob/living/carbon/C in orange(1,src))
@@ -254,7 +254,7 @@ var/list/sacrificed = list()
 									break find_sacrifice
 
 			if(!body_to_sacrifice)
-				if(is_sacrifice_target)
+				if (is_sacrifice_target)
 					usr << "\red The Geometer of blood wants that corpse for himself."
 				else
 					usr << "\red The sacrifical corpse is not dead. You must free it from this world of illusions before it may be used."
@@ -420,8 +420,8 @@ var/list/sacrificed = list()
 					break
 				else
 					unsuitable_newtalisman = 1
-			if(!newtalisman)
-				if(unsuitable_newtalisman)
+			if (!newtalisman)
+				if (unsuitable_newtalisman)
 					usr << "\red The blank is tainted. It is unsuitable."
 				return fizzle()
 
@@ -481,7 +481,7 @@ var/list/sacrificed = list()
 					T.imbue = "runestun"
 					imbued_from = R
 					break
-			if(imbued_from)
+			if (imbued_from)
 				for (var/mob/V in viewers(src))
 					V.show_message("\red The runes turn into dust, which then forms into an arcane image on the paper.", 3)
 				usr.say("H'drak v[pick("'","`")]loso, mir'kanas verbot!")
@@ -503,7 +503,7 @@ var/list/sacrificed = list()
 			"\red You hear faint rustle.")
 			for(,user.stat==2)
 				sleep(600)
-				if(!user)
+				if (!user)
 					return
 			runedec-=10
 			return
@@ -516,7 +516,7 @@ var/list/sacrificed = list()
 			. = 1 // Default output is 1. If the rune is deleted it will return 1
 			var/input = stripped_input(usr, "Please choose a message to tell to the other acolytes.", "Voice of Blood", "")
 			if(!input)
-				if(istype(src))
+				if (istype(src))
 					fizzle()
 					return 0
 				else
@@ -531,7 +531,7 @@ var/list/sacrificed = list()
 			else
 				usr.whisper("[input]")
 			for(var/datum/mind/H in ticker.mode.cult)
-				if(H.current)
+				if (H.current)
 					H.current << "\red \b [input]"
 			del(src)
 			return 1
@@ -560,7 +560,7 @@ var/list/sacrificed = list()
 					cultsinrange += C
 					C.say("Barhah hra zar[pick("'","`")]garis!")
 			for(var/mob/H in victims)
-				if(ticker.mode.name == "cult")
+				if (ticker.mode.name == "cult")
 					if(H.mind == ticker.mode:sacrifice_target)
 						if(cultsinrange.len >= 3)
 							sacrificed += H.mind
@@ -648,7 +648,7 @@ var/list/sacrificed = list()
 							else
 								H.gib()
 			for(var/mob/living/carbon/monkey/M in src.loc)
-				if(ticker.mode.name == "cult")
+				if (ticker.mode.name == "cult")
 					if(M.mind == ticker.mode:sacrifice_target)
 						if(cultsinrange.len >= 3)
 							sacrificed += M.mind
@@ -672,7 +672,7 @@ var/list/sacrificed = list()
 				for(var/mob/K in cultsinrange)
 					K.say("Barhah hra zar'garis!")
 				A.dust()      /// A.gib() doesnt work for some reason, and dust() leaves that skull and bones thingy which we dont really need.
-				if(ticker.mode.name == "cult")
+				if (ticker.mode.name == "cult")
 					if(prob(75))
 						usr << "\red The Geometer of Blood accepts your exotic sacrifice."
 						ticker.mode:grant_runeword(usr)
@@ -693,10 +693,10 @@ var/list/sacrificed = list()
 			if(istype(W,/obj/effect/rune))
 				rad = 6
 				go = 1
-			if(istype(W,/obj/item/weapon/paper/talisman))
+			if (istype(W,/obj/item/weapon/paper/talisman))
 				rad = 4
 				go = 1
-			if(istype(W,/obj/item/weapon/nullrod))
+			if (istype(W,/obj/item/weapon/nullrod))
 				rad = 1
 				go = 1
 			if(go)
@@ -747,7 +747,7 @@ var/list/sacrificed = list()
 			var/mob/living/user = usr
 			var/list/mob/living/carbon/cultists = new
 			for(var/datum/mind/H in ticker.mode.cult)
-				if(istype(H.current,/mob/living/carbon))
+				if (istype(H.current,/mob/living/carbon))
 					cultists+=H.current
 			var/list/mob/living/carbon/users = new
 			for(var/mob/living/carbon/C in orange(1,src))
@@ -757,7 +757,7 @@ var/list/sacrificed = list()
 				var/mob/living/carbon/cultist = input("Choose the one who you want to free", "Followers of Geometer") as null|anything in (cultists - users)
 				if(!cultist)
 					return fizzle()
-				if(cultist == user) //just to be sure.
+				if (cultist == user) //just to be sure.
 					return
 				if(!(cultist.buckled || \
 					cultist.handcuffed || \
@@ -769,15 +769,15 @@ var/list/sacrificed = list()
 					user << "\red The [cultist] is already free."
 					return
 				cultist.buckled = null
-				if(cultist.handcuffed)
+				if (cultist.handcuffed)
 					cultist.handcuffed.loc = cultist.loc
 					cultist.handcuffed = null
 					cultist.update_inv_handcuffed()
-				if(cultist.legcuffed)
+				if (cultist.legcuffed)
 					cultist.legcuffed.loc = cultist.loc
 					cultist.legcuffed = null
 					cultist.update_inv_legcuffed()
-				if(istype(cultist.wear_mask, /obj/item/clothing/mask/muzzle))
+				if (istype(cultist.wear_mask, /obj/item/clothing/mask/muzzle))
 					cultist.u_equip(cultist.wear_mask)
 				if(istype(cultist.loc, /obj/structure/closet)&&cultist.loc:welded)
 					cultist.loc:welded = 0
@@ -797,7 +797,7 @@ var/list/sacrificed = list()
 			var/mob/living/user = usr
 			var/list/mob/living/carbon/cultists = new
 			for(var/datum/mind/H in ticker.mode.cult)
-				if(istype(H.current,/mob/living/carbon))
+				if (istype(H.current,/mob/living/carbon))
 					cultists+=H.current
 			var/list/mob/living/carbon/users = new
 			for(var/mob/living/carbon/C in orange(1,src))
@@ -807,7 +807,7 @@ var/list/sacrificed = list()
 				var/mob/living/carbon/cultist = input("Choose the one who you want to summon", "Followers of Geometer") as null|anything in (cultists - user)
 				if(!cultist)
 					return fizzle()
-				if(cultist == user) //just to be sure.
+				if (cultist == user) //just to be sure.
 					return
 				if(cultist.buckled || cultist.handcuffed || (!isturf(cultist.loc) && !istype(cultist.loc, /obj/structure/closet)))
 					user << "\red You cannot summon the [cultist], for his shackles of blood are strong"
@@ -831,7 +831,7 @@ var/list/sacrificed = list()
 			if(istype(src,/obj/effect/rune))
 				var/affected = 0
 				for(var/mob/living/carbon/C in range(7,src))
-					if(iscultist(C))
+					if (iscultist(C))
 						continue
 					var/obj/item/weapon/nullrod/N = locate() in C
 					if(N)
@@ -850,7 +850,7 @@ var/list/sacrificed = list()
 			else
 				var/affected = 0
 				for(var/mob/living/carbon/C in range(7,usr))
-					if(iscultist(C))
+					if (iscultist(C))
 						continue
 					var/obj/item/weapon/nullrod/N = locate() in C
 					if(N)
@@ -871,7 +871,7 @@ var/list/sacrificed = list()
 			if(istype(src,/obj/effect/rune))
 				var/affected = 0
 				for(var/mob/living/carbon/C in viewers(src))
-					if(iscultist(C))
+					if (iscultist(C))
 						continue
 					var/obj/item/weapon/nullrod/N = locate() in C
 					if(N)
@@ -893,7 +893,7 @@ var/list/sacrificed = list()
 			else
 				var/affected = 0
 				for(var/mob/living/carbon/C in view(2,usr))
-					if(iscultist(C))
+					if (iscultist(C))
 						continue
 					var/obj/item/weapon/nullrod/N = locate() in C
 					if(N)
@@ -913,7 +913,7 @@ var/list/sacrificed = list()
 /*
 			var/list/mob/living/carbon/cultists = new
 			for(var/datum/mind/H in ticker.mode.cult)
-				if(istype(H.current,/mob/living/carbon))
+				if (istype(H.current,/mob/living/carbon))
 					cultists+=H.current
 */
 			var/culcount = 0 //also, wording for it is old wording for obscure rune, which is now hide-see-blood.
@@ -957,7 +957,7 @@ var/list/sacrificed = list()
 					if(R.blood_DNA == src.blood_DNA)
 						for(var/mob/living/M in orange(2,R))
 							M.take_overall_damage(0,15)
-							if(R.invisibility>M.see_invisible)
+							if (R.invisibility>M.see_invisible)
 								M << "\red Aargh it burns!"
 							else
 								M << "\red Rune suddenly ignites, burning you!"
@@ -1010,7 +1010,7 @@ var/list/sacrificed = list()
 					else if(iscarbon(T))
 						var/mob/living/carbon/C = T
 						flick("e_flash", C.flash)
-						if(!(HULK in C.mutations))
+						if (!(HULK in C.mutations))
 							C.silent += 15
 						C.Weaken(25)
 						C.Stun(25)

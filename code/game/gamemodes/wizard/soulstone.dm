@@ -18,10 +18,10 @@
 			return ..()
 		if(istype(M, /mob/living/carbon/human/dummy))
 			return..()
+
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has had their soul captured with [src.name] by [user.name] ([user.ckey])</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to capture the soul of [M.name] ([M.ckey])</font>")
-
-		log_attack("<font color='red'>[user.name] ([user.ckey]) used the [src.name] to capture the soul of [M.name] ([M.ckey])</font>")
+		msg_admin_attack("[user.name] ([user.ckey]) used the [src.name] to capture the soul of [M.name] ([M.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 		transfer_soul("VICTIM", M, user)
 		return
@@ -36,7 +36,7 @@
 ///////////////////Options for using captured souls///////////////////////////////////////
 
 	attack_self(mob/user)
-		if(!in_range(src, user))
+		if (!in_range(src, user))
 			return
 		user.set_machine(src)
 		var/dat = "<TT><B>Soul Stone</B><BR>"
@@ -54,7 +54,7 @@
 
 	Topic(href, href_list)
 		var/mob/U = usr
-		if(!in_range(src, U)||U.machine!=src)
+		if (!in_range(src, U)||U.machine!=src)
 			U << browse(null, "window=aicard")
 			U.unset_machine()
 			return
@@ -63,12 +63,12 @@
 		U.set_machine(src)
 
 		switch(href_list["choice"])//Now we switch based on choice.
-			if("Close")
+			if ("Close")
 				U << browse(null, "window=aicard")
 				U.unset_machine()
 				return
 
-			if("Summon")
+			if ("Summon")
 				for(var/mob/living/simple_animal/shade/A in src)
 					A.status_flags &= ~GODMODE
 					A.canmove = 1
@@ -102,7 +102,7 @@
 			if(C.imprinted != "empty")
 				U << "\red <b>Capture failed!</b>: \black The soul stone has already been imprinted with [C.imprinted]'s mind!"
 			else
-				if(T.stat == 0)
+				if (T.stat == 0)
 					U << "\red <b>Capture failed!</b>: \black Kill or maim the victim first!"
 				else
 					if(T.client == null)
@@ -127,7 +127,7 @@
 							S.canmove = 0//Can't move out of the soul stone
 							S.name = "Shade of [T.real_name]"
 							S.real_name = "Shade of [T.real_name]"
-							if(T.client)
+							if (T.client)
 								T.client.mob = S
 							S.cancel_camera()
 							C.icon_state = "soulstone2"
@@ -140,7 +140,7 @@
 		if("SHADE")
 			var/mob/living/simple_animal/shade/T = target
 			var/obj/item/device/soulstone/C = src
-			if(T.stat == DEAD)
+			if (T.stat == DEAD)
 				U << "\red <b>Capture failed!</b>: \black The shade has already been banished!"
 			else
 				if(C.contents.len)

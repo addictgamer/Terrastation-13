@@ -126,7 +126,7 @@
 	return
 
 /datum/game_mode/proc/greet_meme(var/datum/mind/meme, var/you_are=1)
-	if(you_are)
+	if (you_are)
 		meme.current << "<B>\red You are a meme!</B>"
 
 	var/obj_count = 1
@@ -144,7 +144,7 @@
 			continue
 		memes_alive++
 
-	if(memes_alive)
+	if (memes_alive)
 		return ..()
 	else
 		return 1

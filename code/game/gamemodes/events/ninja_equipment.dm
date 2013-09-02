@@ -309,7 +309,7 @@ ________________________________________________________________________________
 		if(1)
 			dat += "<h4><img src=sos_5.png> Atmospheric Scan:</h4>"//Headers don't need breaks. They are automatically placed.
 			var/turf/T = get_turf_or_move(U.loc)
-			if(isnull(T))
+			if (isnull(T))
 				dat += "Unable to obtain a reading."
 			else
 				var/datum/gas_mixture/environment = T.return_air()
@@ -319,7 +319,7 @@ ________________________________________________________________________________
 
 				dat += "Air Pressure: [round(pressure,0.1)] kPa"
 
-				if(total_moles)
+				if (total_moles)
 					var/o2_level = environment.oxygen/total_moles
 					var/n2_level = environment.nitrogen/total_moles
 					var/co2_level = environment.carbon_dioxide/total_moles
@@ -343,13 +343,13 @@ ________________________________________________________________________________
 			dat += "<ul>"
 			var/count = 0
 			for (var/obj/item/device/pda/P in world)
-				if(!P.owner||P.toff)
+				if (!P.owner||P.toff)
 					continue
 				dat += "<li><a href='byond://?src=\ref[src];choice=Message;target=\ref[P]'>[P]</a>"
 				dat += "</li>"
 				count++
 			dat += "</ul>"
-			if(count == 0)
+			if (count == 0)
 				dat += "None detected.<br>"
 		if(32)
 			dat += "<h4><img src=sos_1.png> Hidden Menu:</h4>"
@@ -417,31 +417,31 @@ ________________________________________________________________________________
 				dat += "System integrity: [(A.health+100)/2]%<br>"
 
 				//I personally think this makes things a little more fun. Ninjas can override all but law 0.
-				//if(A.laws.zeroth)
+				//if (A.laws.zeroth)
 				//	laws += "<li>0: [A.laws.zeroth]</li>"
 
 				for (var/index = 1, index <= A.laws.ion.len, index++)
 					var/law = A.laws.ion[index]
-					if(length(law) > 0)
+					if (length(law) > 0)
 						var/num = ionnum()
 						laws += "<li>[num]. [law]</li>"
 
 				var/number = 1
 				for (var/index = 1, index <= A.laws.inherent.len, index++)
 					var/law = A.laws.inherent[index]
-					if(length(law) > 0)
+					if (length(law) > 0)
 						laws += "<li>[number]: [law]</li>"
 						number++
 
 				for (var/index = 1, index <= A.laws.supplied.len, index++)
 					var/law = A.laws.supplied[index]
-					if(length(law) > 0)
+					if (length(law) > 0)
 						laws += "<li>[number]: [law]</li>"
 						number++
 
 				dat += "<h4>Laws:</h4><ul>[laws]<li><a href='byond://?src=\ref[src];choice=Override AI Laws'><i>*Override Laws*</i></a></li></ul>"
 
-				if(!flush)
+				if (!flush)
 					dat += "<A href='byond://?src=\ref[src];choice=Purge AI'>Purge AI</A><br>"
 				else
 					dat += "<b>Purge in progress...</b><br>"
@@ -536,7 +536,7 @@ ________________________________________________________________________________
 				display_spideros()
 				return
 			P.tnote += "<i><b>&larr; From [!s_control?(A):"an unknown source"]:</b></i><br>[t]<br>"
-			if(!P.silent)
+			if (!P.silent)
 				playsound(P.loc, 'sound/machines/twobeep.ogg', 50, 1)
 				for (var/mob/O in hearers(3, P.loc))
 					O.show_message(text("\icon[P] *[P.ttone]*"))
@@ -828,7 +828,7 @@ ________________________________________________________________________________
 		else if(istype(I, /obj/item/weapon/cell))
 			if(I:maxcharge>cell.maxcharge&&n_gloves&&n_gloves.candrain)
 				U << "\blue Higher maximum capacity detected.\nUpgrading..."
-				if(n_gloves&&n_gloves.candrain&&do_after(U,s_delay))
+				if (n_gloves&&n_gloves.candrain&&do_after(U,s_delay))
 					U.drop_item()
 					I.loc = src
 					I:charge = min(I:charge+cell.charge, I:maxcharge)
@@ -966,7 +966,7 @@ ________________________________________________________________________________
 					if(S.cell.charge+drain>S.cell.maxcharge)
 						drain = S.cell.maxcharge-S.cell.charge
 						maxcapacity = 1//Reached maximum battery capacity.
-					if(do_after(U,10))
+					if (do_after(U,10))
 						spark_system.start()
 						playsound(A.loc, "sparks", 50, 1)
 						A.cell.charge-=drain
@@ -994,7 +994,7 @@ ________________________________________________________________________________
 					if(S.cell.charge+drain>S.cell.maxcharge)
 						drain = S.cell.maxcharge-S.cell.charge
 						maxcapacity = 1
-					if(do_after(U,10))
+					if (do_after(U,10))
 						spark_system.start()
 						playsound(A.loc, "sparks", 50, 1)
 						A.charge-=drain
@@ -1008,7 +1008,7 @@ ________________________________________________________________________________
 		if("CELL")
 			var/obj/item/weapon/cell/A = target
 			if(A.charge)
-				if(G.candrain&&do_after(U,30))
+				if (G.candrain&&do_after(U,30))
 					U << "\blue Gained <B>[A.charge]</B> energy from the cell."
 					if(S.cell.charge+A.charge>S.cell.maxcharge)
 						S.cell.charge=S.cell.maxcharge
@@ -1121,7 +1121,7 @@ ________________________________________________________________________________
 					if(S.cell.charge+drain>S.cell.maxcharge)
 						drain = S.cell.maxcharge-S.cell.charge
 						maxcapacity = 1
-					if(do_after(U,10))
+					if (do_after(U,10))
 						A.spark_system.start()
 						playsound(A.loc, "sparks", 50, 1)
 						A.cell.use(drain)
@@ -1144,7 +1144,7 @@ ________________________________________________________________________________
 					if(S.cell.charge+drain>S.cell.maxcharge)
 						drain = S.cell.maxcharge-S.cell.charge
 						maxcapacity = 1
-					if(do_after(U,10))
+					if (do_after(U,10))
 						A.spark_system.start()
 						playsound(A.loc, "sparks", 50, 1)
 						A.cell.charge-=drain
@@ -1430,7 +1430,7 @@ It is possible to destroy the net by the occupant or someone else.
 		return
 
 	attack_hand()
-		if(HULK in usr.mutations)
+		if (HULK in usr.mutations)
 			usr << text("\blue You easily destroy the energy net.")
 			for(var/mob/O in oviewers(src))
 				O.show_message(text("\red [] rips the energy net apart!", usr), 1)
@@ -1442,7 +1442,7 @@ It is possible to destroy the net by the occupant or someone else.
 		return attack_hand()
 
 	attack_alien()
-		if(islarva(usr))
+		if (islarva(usr))
 			return
 		usr << text("\green You claw at the net.")
 		for(var/mob/O in oviewers(src))

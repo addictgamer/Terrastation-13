@@ -228,10 +228,10 @@
 			continue
 		if(istype(H,/mob/living/carbon/human))
 			H.apply_effect((rand(15,75)),IRRADIATE,0)
-			if(prob(5))
+			if (prob(5))
 				H.apply_effect((rand(90,150)),IRRADIATE,0)
-			if(prob(25))
-				if(prob(75))
+			if (prob(25))
+				if (prob(75))
 					randmutb(H)
 					domutcheck(H,null,1)
 				else

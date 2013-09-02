@@ -51,7 +51,7 @@
 				possible_traitors -= player
 
 	for(var/j = 0, j < num_traitors, j++)
-		if(!possible_traitors.len)
+		if (!possible_traitors.len)
 			break
 		var/datum/mind/traitor = pick(possible_traitors)
 		traitors += traitor
@@ -116,13 +116,13 @@
 				traitor.objectives += steal_objective
 		switch(rand(1,100))
 			if(1 to 100)
-				if(!(locate(/datum/objective/escape) in traitor.objectives))
+				if (!(locate(/datum/objective/escape) in traitor.objectives))
 					var/datum/objective/escape/escape_objective = new
 					escape_objective.owner = traitor
 					traitor.objectives += escape_objective
 
 			else
-				if(!(locate(/datum/objective/hijack) in traitor.objectives))
+				if (!(locate(/datum/objective/hijack) in traitor.objectives))
 					var/datum/objective/hijack/hijack_objective = new
 					hijack_objective.owner = traitor
 					traitor.objectives += hijack_objective
@@ -139,7 +139,7 @@
 
 
 /datum/game_mode/proc/finalize_traitor(var/datum/mind/traitor)
-	if(istype(traitor.current, /mob/living/silicon))
+	if (istype(traitor.current, /mob/living/silicon))
 		add_law_zero(traitor.current)
 	else
 		equip_traitor(traitor.current)
@@ -229,11 +229,11 @@
 
 
 /datum/game_mode/proc/equip_traitor(mob/living/carbon/human/traitor_mob, var/safety = 0)
-	if(!istype(traitor_mob))
+	if (!istype(traitor_mob))
 		return
 	. = 1
-	if(traitor_mob.mind)
-		if(traitor_mob.mind.assigned_role == "Clown")
+	if (traitor_mob.mind)
+		if (traitor_mob.mind.assigned_role == "Clown")
 			traitor_mob << "Your training has allowed you to overcome your clownish nature, allowing you to wield weapons without harming yourself."
 			traitor_mob.mutations.Remove(CLUMSY)
 
@@ -243,20 +243,20 @@
 	if(!R)
 		R = locate(/obj/item/device/radio) in traitor_mob.contents
 
-	if(!R)
+	if (!R)
 		traitor_mob << "Unfortunately, the Syndicate wasn't able to get you a radio."
 		. = 0
 	else
-		if(istype(R, /obj/item/device/radio))
+		if (istype(R, /obj/item/device/radio))
 			// generate list of radio freqs
 			var/obj/item/device/radio/target_radio = R
 			var/freq = 1441
 			var/list/freqlist = list()
 			while (freq <= 1489)
-				if(freq < 1451 || freq > 1459)
+				if (freq < 1451 || freq > 1459)
 					freqlist += freq
 				freq += 2
-				if((freq % 2) == 0)
+				if ((freq % 2) == 0)
 					freq += 1
 			freq = freqlist[rand(1, freqlist.len)]
 
@@ -265,7 +265,7 @@
 			target_radio.traitor_frequency = freq
 			traitor_mob << "The Syndicate have cunningly disguised a Syndicate Uplink as your [R.name] [loc]. Simply dial the frequency [format_frequency(freq)] to unlock its hidden features."
 			traitor_mob.mind.store_memory("<B>Radio Freq:</B> [format_frequency(freq)] ([R.name] [loc]).")
-		else if(istype(R, /obj/item/device/pda))
+		else if (istype(R, /obj/item/device/pda))
 			// generate a passcode if the uplink is hidden in a PDA
 			var/pda_pass = "[rand(100,999)] [pick("Alpha","Bravo","Delta","Omega")]"
 

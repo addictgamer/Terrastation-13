@@ -35,7 +35,7 @@
 		if(ninjastart.len == 0 && latejoin.len > 0)
 			ninja.current << "<B>\red Still no spawneable locations could be found. Defaulting to latejoin.</B>"
 			return 1
-		else if(ninjastart.len == 0)
+		else if (ninjastart.len == 0)
 			ninja.current << "<B>\red Still no spawneable locations could be found. Aborting.</B>"
 			return 0
 	return 1
@@ -71,7 +71,7 @@
 		if(ninja.current.stat==2)
 			continue
 		ninjas_alive++
-	if(ninjas_alive)
+	if (ninjas_alive)
 		return ..()
 	else
 		finished = 1

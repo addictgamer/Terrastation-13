@@ -21,7 +21,7 @@
 		..()
 
 /obj/effect/biomass/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(!W || !user || !W.type) return
+	if (!W || !user || !W.type) return
 	switch(W.type)
 		if(/obj/item/weapon/circular_saw) del src
 		if(/obj/item/weapon/kitchen/utensil/knife) del src
@@ -145,11 +145,11 @@
 			del(src)
 			return
 		if(2.0)
-			if(prob(90))
+			if (prob(90))
 				del(src)
 				return
 		if(3.0)
-			if(prob(50))
+			if (prob(50))
 				del(src)
 				return
 	return
