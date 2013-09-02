@@ -91,4 +91,8 @@
 /client/proc/playtitlemusic()
 	if(!ticker || !ticker.login_music)	return
 	if(prefs.toggles & SOUND_LOBBY)
-		src << sound(ticker.login_music, repeat = 0, wait = 0, volume = 85, channel = 1) // MAD JAMS
+		var/login_music = pick(\
+		'sound/music/lobby3.mid',\
+		'sound/music/space_oddity.ogg') //Ground Control to Major Tom, this song is cool, what's going on?
+		src.music << sound(login_music, repeat = 1, wait = 0, volume = 85, channel = 1) // MAD JAMS
+		src << sound(src.music, 1)

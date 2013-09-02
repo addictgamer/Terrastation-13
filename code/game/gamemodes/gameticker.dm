@@ -41,9 +41,9 @@ var/global/datum/controller/gameticker/ticker
 	//'sound/music/space.ogg',
 	//'sound/music/traitor.ogg',
 	//'sound/music/space_oddity.ogg') //Ground Control to Major Tom, this song is cool, what's going on?
-	login_music = pick(\
-	'sound/music/lobby3.mid',\
-	'sound/music/space_oddity.ogg') //Ground Control to Major Tom, this song is cool, what's going on?
+	//login_music = pick(\
+	//'sound/music/lobby3.mid',\
+	//'sound/music/space_oddity.ogg') //Ground Control to Major Tom, this song is cool, what's going on?
 	do
 		pregame_timeleft = 180
 		world << "<B><FONT color='blue'>Welcome to the pre-game lobby!</FONT></B>"
@@ -142,6 +142,7 @@ var/global/datum/controller/gameticker/ticker
 
 	var/admins_number = 0
 	for(var/client/C)
+		C.music.status = SOUND_PAUSED | SOUND_UPDATE
 		if(C.holder)
 			admins_number++
 	if(admins_number == 0)

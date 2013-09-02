@@ -1087,7 +1087,8 @@ datum/preferences
 					if("lobby_music")
 						toggles ^= SOUND_LOBBY
 						if(toggles & SOUND_LOBBY)
-							user << sound(ticker.login_music, repeat = 0, wait = 0, volume = 85, channel = 1)
+							//user << sound(ticker.login_music, repeat = 0, wait = 0, volume = 85, channel = 1)
+							user.client.playtitlemusic()
 						else
 							user << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1)
 
