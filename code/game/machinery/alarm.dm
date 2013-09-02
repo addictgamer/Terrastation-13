@@ -1488,6 +1488,8 @@ FIRE ALARM
 		return
 	var/area/A = src.loc
 	A = A.loc
+	if (!A.fire)
+		world << sound('sound/machines/firealarm.ogg')
 	if (!( istype(A, /area) ))
 		return
 	A.firealert()
