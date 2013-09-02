@@ -20,14 +20,14 @@
 
 
 	check_eye(var/mob/user as mob)
-		if((get_dist(user, src) > 1 || !( user.canmove ) || user.blinded || !( current ) || !( current.status )) && (!istype(user, /mob/living/silicon)))
+		if ((get_dist(user, src) > 1 || !( user.canmove ) || user.blinded || !( current ) || !( current.status )) && (!istype(user, /mob/living/silicon)))
 			return null
 		user.reset_view(current)
 		return 1
 
 
 	attack_hand(var/mob/user as mob)
-		if(src.z > 6)
+		if (src.z > 6)
 			user << "\red <b>Unable to establish a connection</b>: \black You're too far away from the station!"
 			return
 		if(stat & (NOPOWER|BROKEN))	return
@@ -71,7 +71,7 @@
 		return 0
 
 	proc/switch_to_camera(var/mob/user, var/obj/machinery/camera/C)
-		if((get_dist(user, src) > 1 || user.machine != src || user.blinded || !( user.canmove ) || !( C.can_use() )) && (!istype(user, /mob/living/silicon/ai)))
+		if ((get_dist(user, src) > 1 || user.machine != src || user.blinded || !( user.canmove ) || !( C.can_use() )) && (!istype(user, /mob/living/silicon/ai)))
 			if(!C.can_use() && !isAI(user))
 				src.current = null
 			return 0
@@ -89,7 +89,7 @@
 		if(istype(I, /obj/item/weapon/screwdriver))
 			playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 			if(do_after(user, 20))
-				if(stat & BROKEN)
+				if (stat & BROKEN)
 					user << "\blue The broken glass falls out."
 					var/obj/structure/computerframe/CF = new /obj/structure/computerframe(loc)
 					new /obj/item/weapon/shard(loc)
@@ -162,7 +162,7 @@
 			T = get_step(T,direct)
 		console.jump_on_click(src,T)
 		return
-	..(n,direct)
+	return ..(n,direct)
 
 /obj/machinery/computer/security/telescreen
 	name = "Telescreen"

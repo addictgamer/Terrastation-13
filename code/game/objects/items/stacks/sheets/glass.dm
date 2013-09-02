@@ -41,7 +41,7 @@
 		src = null
 		var/replace = (user.get_inactive_hand()==G)
 		G.use(1)
-		if(!G && !RG && replace)
+		if (!G && !RG && replace)
 			user.put_in_hands(RG)
 	else
 		return ..()
@@ -234,7 +234,7 @@
 /obj/item/weapon/shard/Bump()
 
 	spawn( 0 )
-		if(prob(20))
+		if (prob(20))
 			src.force = 15
 		else
 			src.force = 4
@@ -260,7 +260,7 @@
 
 /obj/item/weapon/shard/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
-	if( istype(W, /obj/item/weapon/weldingtool))
+	if ( istype(W, /obj/item/weapon/weldingtool))
 		var/obj/item/weapon/weldingtool/WT = W
 		if(WT.remove_fuel(0, user))
 			var/obj/item/stack/sheet/glass/NG = new (user.loc)
@@ -283,7 +283,7 @@
 		playsound(src.loc, 'sound/effects/glass_step.ogg', 50, 1)
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
-			if(!H.shoes)
+			if(!H.shoes && !(H.wear_suit.body_parts_covered & FEET))
 				var/datum/organ/external/affecting = H.get_organ(pick("l_foot", "r_foot"))
 				if(affecting.status & ORGAN_ROBOT)
 					return

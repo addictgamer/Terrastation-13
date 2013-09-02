@@ -16,31 +16,31 @@
 
 
 	trigger(emote, mob/living/carbon/source as mob)
-		if(src.uses < 1)	return 0
-		if(emote == src.activation_emote)
+		if (src.uses < 1)	return 0
+		if (emote == src.activation_emote)
 			src.uses--
 			source << "You feel a faint click."
-			if(source.handcuffed)
+			if (source.handcuffed)
 				var/obj/item/weapon/W = source.handcuffed
 				source.handcuffed = null
 				source.update_inv_handcuffed()
-				if(source.client)
+				if (source.client)
 					source.client.screen -= W
-				if(W)
+				if (W)
 					W.loc = source.loc
 					dropped(source)
-					if(W)
+					if (W)
 						W.layer = initial(W.layer)
-			if(source.legcuffed)
+			if (source.legcuffed)
 				var/obj/item/weapon/W = source.legcuffed
 				source.legcuffed = null
 				source.update_inv_legcuffed()
-				if(source.client)
+				if (source.client)
 					source.client.screen -= W
-				if(W)
+				if (W)
 					W.loc = source.loc
 					dropped(source)
-					if(W)
+					if (W)
 						W.layer = initial(W.layer)
 		return
 

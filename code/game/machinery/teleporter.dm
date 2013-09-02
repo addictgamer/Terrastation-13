@@ -75,7 +75,7 @@
 
 	for(var/obj/item/device/radio/beacon/R in world)
 		var/turf/T = get_turf(R)
-		if(!T)
+		if (!T)
 			continue
 		if(T.z == 2 || T.z > 7)
 			continue
@@ -87,12 +87,12 @@
 		L[tmpname] = R
 
 	for (var/obj/item/weapon/implant/tracking/I in world)
-		if(!I.implanted || !ismob(I.loc))
+		if (!I.implanted || !ismob(I.loc))
 			continue
 		else
 			var/mob/M = I.loc
-			if(M.stat == 2)
-				if(M.timeofdeath + 6000 < world.time)
+			if (M.stat == 2)
+				if (M.timeofdeath + 6000 < world.time)
 					continue
 			var/turf/T = get_turf(M)
 			if(T)	continue
@@ -119,12 +119,12 @@
 
 	if(stat & (NOPOWER|BROKEN) || !istype(usr,/mob/living))
 		return
-	if(t)
+	if (t)
 		src.id = t
 	return
 
 /proc/find_loc(obj/R as obj)
-	if(!R)	return null
+	if (!R)	return null
 	var/turf/T = R.loc
 	while(!istype(T, /turf))
 		T = T.loc
@@ -150,7 +150,7 @@
 
 /obj/machinery/teleport/hub/Bumped(M as mob|obj)
 	spawn()
-		if(src.icon_state == "tele1")
+		if (src.icon_state == "tele1")
 			teleport(M)
 			use_power(5000)
 	return
@@ -158,13 +158,13 @@
 /obj/machinery/teleport/hub/proc/teleport(atom/movable/M as mob|obj)
 	var/atom/l = src.loc
 	var/obj/machinery/computer/teleporter/com = locate(/obj/machinery/computer/teleporter, locate(l.x - 2, l.y, l.z))
-	if(!com)
+	if (!com)
 		return
-	if(!com.locked)
+	if (!com.locked)
 		for(var/mob/O in hearers(src, null))
 			O.show_message("\red Failure: Cannot authenticate locked on coordinates. Please reinstate coordinate matrix.")
 		return
-	if(istype(M, /atom/movable))
+	if (istype(M, /atom/movable))
 		if(prob(5) && !accurate) //oh dear a problem, put em in deep space
 			do_teleport(M, locate(rand((2*TRANSITIONEDGE), world.maxx - (2*TRANSITIONEDGE)), rand((2*TRANSITIONEDGE), world.maxy - (2*TRANSITIONEDGE)), 3), 2)
 		else
@@ -185,56 +185,56 @@
 	if(istype(M, /obj/effect))
 		del(M)
 		return
-	if(istype(M, /obj/item/weapon/disk/nuclear)) // Don't let nuke disks get teleported --NeoFite
+	if (istype(M, /obj/item/weapon/disk/nuclear)) // Don't let nuke disks get teleported --NeoFite
 		for(var/mob/O in viewers(M, null))
 			O.show_message(text("\red <B>The [] bounces off of the portal!</B>", M.name), 1)
 		return
-	if(istype(M, /mob/living))
+	if (istype(M, /mob/living))
 		var/mob/living/MM = M
 		if(MM.check_contents_for(/obj/item/weapon/disk/nuclear))
 			MM << "\red Something you are carrying seems to be unable to pass through the portal. Better drop it if you want to go through."
 			return
 	var/disky = 0
 	for (var/atom/O in M.contents) //I'm pretty sure this accounts for the maximum amount of container in container stacking. --NeoFite
-		if(istype(O, /obj/item/weapon/storage) || istype(O, /obj/item/weapon/gift))
+		if (istype(O, /obj/item/weapon/storage) || istype(O, /obj/item/weapon/gift))
 			for (var/obj/OO in O.contents)
-				if(istype(OO, /obj/item/weapon/storage) || istype(OO, /obj/item/weapon/gift))
+				if (istype(OO, /obj/item/weapon/storage) || istype(OO, /obj/item/weapon/gift))
 					for (var/obj/OOO in OO.contents)
-						if(istype(OOO, /obj/item/weapon/disk/nuclear))
+						if (istype(OOO, /obj/item/weapon/disk/nuclear))
 							disky = 1
-				if(istype(OO, /obj/item/weapon/disk/nuclear))
+				if (istype(OO, /obj/item/weapon/disk/nuclear))
 					disky = 1
-		if(istype(O, /obj/item/weapon/disk/nuclear))
+		if (istype(O, /obj/item/weapon/disk/nuclear))
 			disky = 1
-		if(istype(O, /mob/living))
+		if (istype(O, /mob/living))
 			var/mob/living/MM = O
 			if(MM.check_contents_for(/obj/item/weapon/disk/nuclear))
 				disky = 1
-	if(disky)
+	if (disky)
 		for(var/mob/P in viewers(M, null))
 			P.show_message(text("\red <B>The [] bounces off of the portal!</B>", M.name), 1)
 		return
 
 //Bags of Holding cause bluespace teleportation to go funky. --NeoFite
-	if(istype(M, /mob/living))
+	if (istype(M, /mob/living))
 		var/mob/living/MM = M
 		if(MM.check_contents_for(/obj/item/weapon/storage/backpack/holding))
 			MM << "\red The Bluespace interface on your Bag of Holding interferes with the teleport!"
 			precision = rand(1,100)
-	if(istype(M, /obj/item/weapon/storage/backpack/holding))
+	if (istype(M, /obj/item/weapon/storage/backpack/holding))
 		precision = rand(1,100)
 	for (var/atom/O in M.contents) //I'm pretty sure this accounts for the maximum amount of container in container stacking. --NeoFite
-		if(istype(O, /obj/item/weapon/storage) || istype(O, /obj/item/weapon/gift))
+		if (istype(O, /obj/item/weapon/storage) || istype(O, /obj/item/weapon/gift))
 			for (var/obj/OO in O.contents)
-				if(istype(OO, /obj/item/weapon/storage) || istype(OO, /obj/item/weapon/gift))
+				if (istype(OO, /obj/item/weapon/storage) || istype(OO, /obj/item/weapon/gift))
 					for (var/obj/OOO in OO.contents)
-						if(istype(OOO, /obj/item/weapon/storage/backpack/holding))
+						if (istype(OOO, /obj/item/weapon/storage/backpack/holding))
 							precision = rand(1,100)
-				if(istype(OO, /obj/item/weapon/storage/backpack/holding))
+				if (istype(OO, /obj/item/weapon/storage/backpack/holding))
 					precision = rand(1,100)
-		if(istype(O, /obj/item/weapon/storage/backpack/holding))
+		if (istype(O, /obj/item/weapon/storage/backpack/holding))
 			precision = rand(1,100)
-		if(istype(O, /mob/living))
+		if (istype(O, /mob/living))
 			var/mob/living/MM = O
 			if(MM.check_contents_for(/obj/item/weapon/storage/backpack/holding))
 				precision = rand(1,100)
@@ -247,7 +247,7 @@
 
 	var/tmploc
 
-	if(ismob(destination.loc)) //If this is an implant.
+	if (ismob(destination.loc)) //If this is an implant.
 		tmploc = locate(tx, ty, destturf.z)
 	else
 		tmploc = locate(tx, ty, destination.z)
@@ -298,7 +298,7 @@
 
 	var/atom/l = src.loc
 	var/atom/com = locate(/obj/machinery/teleport/hub, locate(l.x + 1, l.y, l.z))
-	if(com)
+	if (com)
 		com.icon_state = "tele1"
 		use_power(5000)
 		for(var/mob/O in hearers(src, null))
@@ -313,7 +313,7 @@
 
 	var/atom/l = src.loc
 	var/atom/com = locate(/obj/machinery/teleport/hub, locate(l.x + 1, l.y, l.z))
-	if(com)
+	if (com)
 		com.icon_state = "tele0"
 		for(var/mob/O in hearers(src, null))
 			O.show_message("\blue Teleporter disengaged!", 2)
@@ -331,7 +331,7 @@
 
 	var/atom/l = src.loc
 	var/obj/machinery/teleport/hub/com = locate(/obj/machinery/teleport/hub, locate(l.x + 1, l.y, l.z))
-	if(com && !active)
+	if (com && !active)
 		active = 1
 		for(var/mob/O in hearers(src, null))
 			O.show_message("\blue Test firing!", 2)

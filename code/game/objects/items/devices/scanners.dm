@@ -77,7 +77,7 @@ MASS SPECTROMETER
 
 
 /obj/item/device/healthanalyzer/attack(mob/living/M as mob, mob/living/user as mob)
-	if(( (CLUMSY in user.mutations) || user.getBrainLoss() >= 60) && prob(50))
+	if (( (CLUMSY in user.mutations) || user.getBrainLoss() >= 60) && prob(50))
 		user << text("\red You try to analyze the floor's vitals!")
 		for(var/mob/O in viewers(M, null))
 			O.show_message(text("\red [user] has analyzed the floor's vitals!"), 1)
@@ -86,7 +86,7 @@ MASS SPECTROMETER
 		user.show_message("\blue Key: Suffocation/Toxin/Burns/Brute", 1)
 		user.show_message("\blue Body Temperature: ???", 1)
 		return
-	if(!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+	if (!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
 		usr << "\red You don't have the dexterity to do this!"
 		return
 	user.visible_message("<span class='notice'> [user] has analyzed [M]'s vitals.","<span class='notice'> You have analyzed [M]'s vitals.")
@@ -126,28 +126,28 @@ MASS SPECTROMETER
 	if(M.status_flags & FAKEDEATH)
 		OX = fake_oxy > 50 ? 		"\red Severe oxygen deprivation detected\blue" 	: 	"Subject bloodstream oxygen level normal"
 	user.show_message("[OX] | [TX] | [BU] | [BR]")
-	if(istype(M, /mob/living/carbon))
+	if (istype(M, /mob/living/carbon))
 		if(M:reagents.total_volume > 0)
 			user.show_message(text("\red Warning: Unknown substance detected in subject's blood."))
 		if(M:virus2.len)
 			var/mob/living/carbon/C = M
 			for (var/ID in C.virus2)
-				if(ID in virusDB)
+				if (ID in virusDB)
 					var/datum/data/record/V = virusDB[ID]
 					user.show_message(text("\red Warning: Pathogen [V.fields["name"]] detected in subject's blood. Known antigen : [V.fields["antigen"]]"))
 //			user.show_message(text("\red Warning: Unknown pathogen detected in subject's blood."))
-	if(M.getCloneLoss())
+	if (M.getCloneLoss())
 		user.show_message("\red Subject appears to have been imperfectly cloned.")
 	for(var/datum/disease/D in M.viruses)
 		if(!D.hidden[SCANNER])
 			user.show_message(text("\red <b>Warning: [D.form] Detected</b>\nName: [D.name].\nType: [D.spread].\nStage: [D.stage]/[D.max_stages].\nPossible Cure: [D.cure]"))
-	if(M.reagents && M.reagents.get_reagent_amount("inaprovaline"))
+	if (M.reagents && M.reagents.get_reagent_amount("inaprovaline"))
 		user.show_message("\blue Bloodstream Analysis located [M.reagents:get_reagent_amount("inaprovaline")] units of rejuvenation chemicals.")
-	if(M.getBrainLoss() >= 100 || istype(M, /mob/living/carbon/human) && M:brain_op_stage == 4.0)
+	if (M.getBrainLoss() >= 100 || istype(M, /mob/living/carbon/human) && M:brain_op_stage == 4.0)
 		user.show_message("\red Subject is brain dead.")
-	else if(M.getBrainLoss() >= 60)
+	else if (M.getBrainLoss() >= 60)
 		user.show_message("\red Severe brain damage detected. Subject likely to have mental retardation.")
-	else if(M.getBrainLoss() >= 10)
+	else if (M.getBrainLoss() >= 10)
 		user.show_message("\red Significant brain damage detected. Subject may have had a concussion.")
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
@@ -212,14 +212,14 @@ MASS SPECTROMETER
 
 /obj/item/device/analyzer/attack_self(mob/user as mob)
 
-	if(user.stat)
+	if (user.stat)
 		return
-	if(!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+	if (!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
 		usr << "\red You don't have the dexterity to do this!"
 		return
 
 	var/turf/location = user.loc
-	if(!( istype(location, /turf) ))
+	if (!( istype(location, /turf) ))
 		return
 
 	var/datum/gas_mixture/environment = location.return_air()
@@ -295,12 +295,12 @@ MASS SPECTROMETER
 		icon_state = initial(icon_state)
 
 /obj/item/device/mass_spectrometer/attack_self(mob/user as mob)
-	if(user.stat)
+	if (user.stat)
 		return
-	if(crit_fail)
+	if (crit_fail)
 		user << "\red This device has critically failed and is no longer functional!"
 		return
-	if(!(istype(user, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+	if (!(istype(user, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
 		user << "\red You don't have the dexterity to do this!"
 		return
 	if(reagents.total_volume)

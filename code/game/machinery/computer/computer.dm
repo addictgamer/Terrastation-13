@@ -44,15 +44,15 @@
 			del(src)
 			return
 		if(2.0)
-			if(prob(25))
+			if (prob(25))
 				del(src)
 				return
-			if(prob(50))
+			if (prob(50))
 				for(var/x in verbs)
 					verbs -= x
 				set_broken()
 		if(3.0)
-			if(prob(25))
+			if (prob(25))
 				for(var/x in verbs)
 					verbs -= x
 				set_broken()
@@ -66,7 +66,7 @@
 
 
 /obj/machinery/computer/blob_act()
-	if(prob(75))
+	if (prob(75))
 		for(var/x in verbs)
 			verbs -= x
 		set_broken()
@@ -106,7 +106,7 @@
 			A.anchored = 1
 			for (var/obj/C in src)
 				C.loc = src.loc
-			if(src.stat & BROKEN)
+			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				new /obj/item/weapon/shard( src.loc )
 				A.state = 3

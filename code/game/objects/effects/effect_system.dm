@@ -40,7 +40,7 @@ would spawn and follow the beaker, even if it is carried or thrown.
 /obj/effect/effect/water/New()
 	..()
 	//var/turf/T = src.loc
-	//if(istype(T, /turf))
+	//if (istype(T, /turf))
 	//	T.firelevel = 0 //TODO: FIX
 	spawn( 70 )
 		delete()
@@ -49,16 +49,16 @@ would spawn and follow the beaker, even if it is carried or thrown.
 
 /obj/effect/effect/water/Del()
 	//var/turf/T = src.loc
-	//if(istype(T, /turf))
+	//if (istype(T, /turf))
 	//	T.firelevel = 0 //TODO: FIX
 	..()
 	return
 
 /obj/effect/effect/water/Move(turf/newloc)
 	//var/turf/T = src.loc
-	//if(istype(T, /turf))
+	//if (istype(T, /turf))
 	//	T.firelevel = 0 //TODO: FIX
-	if(--src.life < 1)
+	if (--src.life < 1)
 		//SN src = null
 		delete()
 	if(newloc.density)
@@ -158,7 +158,7 @@ steam.start() -- spawns the effect
 	..()
 	playsound(src.loc, "sparks", 100, 1)
 	var/turf/T = src.loc
-	if(istype(T, /turf))
+	if (istype(T, /turf))
 		T.hotspot_expose(1000,100)
 	spawn (100)
 		delete()
@@ -166,7 +166,7 @@ steam.start() -- spawns the effect
 
 /obj/effect/effect/sparks/Del()
 	var/turf/T = src.loc
-	if(istype(T, /turf))
+	if (istype(T, /turf))
 		T.hotspot_expose(1000,100)
 	..()
 	return
@@ -174,7 +174,7 @@ steam.start() -- spawns the effect
 /obj/effect/effect/sparks/Move()
 	..()
 	var/turf/T = src.loc
-	if(istype(T, /turf))
+	if (istype(T, /turf))
 		T.hotspot_expose(1000,100)
 	return
 
@@ -310,11 +310,11 @@ steam.start() -- spawns the effect
 /obj/effect/effect/bad_smoke/Move()
 	..()
 	for(var/mob/living/carbon/M in get_turf(src))
-		if(M.internal != null && M.wear_mask && (M.wear_mask.flags & MASKINTERNALS))
+		if (M.internal != null && M.wear_mask && (M.wear_mask.flags & MASKINTERNALS))
 		else
 			M.drop_item()
 			M.adjustOxyLoss(1)
-			if(M.coughedtime != 1)
+			if (M.coughedtime != 1)
 				M.coughedtime = 1
 				M.emote("cough")
 				spawn ( 20 )
@@ -333,12 +333,12 @@ steam.start() -- spawns the effect
 /obj/effect/effect/bad_smoke/HasEntered(mob/living/carbon/M as mob )
 	..()
 	if(istype(M, /mob/living/carbon))
-		if(M.internal != null && M.wear_mask && (M.wear_mask.flags & MASKINTERNALS))
+		if (M.internal != null && M.wear_mask && (M.wear_mask.flags & MASKINTERNALS))
 			return
 		else
 			M.drop_item()
 			M.adjustOxyLoss(1)
-			if(M.coughedtime != 1)
+			if (M.coughedtime != 1)
 				M.coughedtime = 1
 				M.emote("cough")
 				spawn ( 20 )
@@ -540,12 +540,12 @@ steam.start() -- spawns the effect
 /obj/effect/effect/sleep_smoke/Move()
 	..()
 	for(var/mob/living/carbon/M in get_turf(src))
-		if(M.internal != null && M.wear_mask && (M.wear_mask.flags & MASKINTERNALS))
-//		if(M.wear_suit, /obj/item/clothing/suit/wizrobe && (M.hat, /obj/item/clothing/head/wizard) && (M.shoes, /obj/item/clothing/shoes/sandal))  // I'll work on it later
+		if (M.internal != null && M.wear_mask && (M.wear_mask.flags & MASKINTERNALS))
+//		if (M.wear_suit, /obj/item/clothing/suit/wizrobe && (M.hat, /obj/item/clothing/head/wizard) && (M.shoes, /obj/item/clothing/shoes/sandal))  // I'll work on it later
 		else
 			M.drop_item()
 			M:sleeping += 1
-			if(M.coughedtime != 1)
+			if (M.coughedtime != 1)
 				M.coughedtime = 1
 				M.emote("cough")
 				spawn ( 20 )
@@ -555,13 +555,13 @@ steam.start() -- spawns the effect
 /obj/effect/effect/sleep_smoke/HasEntered(mob/living/carbon/M as mob )
 	..()
 	if(istype(M, /mob/living/carbon))
-		if(M.internal != null && M.wear_mask && (M.wear_mask.flags & MASKINTERNALS))
-//		if(M.wear_suit, /obj/item/clothing/suit/wizrobe && (M.hat, /obj/item/clothing/head/wizard) && (M.shoes, /obj/item/clothing/shoes/sandal)) // Work on it later
+		if (M.internal != null && M.wear_mask && (M.wear_mask.flags & MASKINTERNALS))
+//		if (M.wear_suit, /obj/item/clothing/suit/wizrobe && (M.hat, /obj/item/clothing/head/wizard) && (M.shoes, /obj/item/clothing/shoes/sandal)) // Work on it later
 			return
 		else
 			M.drop_item()
 			M:sleeping += 1
-			if(M.coughedtime != 1)
+			if (M.coughedtime != 1)
 				M.coughedtime = 1
 				M.emote("cough")
 				spawn ( 20 )
@@ -630,10 +630,10 @@ steam.start() -- spawns the effect
 /obj/effect/effect/mustard_gas/Move()
 	..()
 	for(var/mob/living/carbon/human/R in get_turf(src))
-		if(R.internal != null && usr.wear_mask && (R.wear_mask.flags & MASKINTERNALS) && R.wear_suit != null && !istype(R.wear_suit, /obj/item/clothing/suit/storage/labcoat) && !istype(R.wear_suit, /obj/item/clothing/suit/straight_jacket) && !istype(R.wear_suit, /obj/item/clothing/suit/straight_jacket && !istype(R.wear_suit, /obj/item/clothing/suit/armor)))
+		if (R.internal != null && usr.wear_mask && (R.wear_mask.flags & MASKINTERNALS) && R.wear_suit != null && !istype(R.wear_suit, /obj/item/clothing/suit/storage/labcoat) && !istype(R.wear_suit, /obj/item/clothing/suit/straight_jacket) && !istype(R.wear_suit, /obj/item/clothing/suit/straight_jacket && !istype(R.wear_suit, /obj/item/clothing/suit/armor)))
 		else
 			R.burn_skin(0.75)
-			if(R.coughedtime != 1)
+			if (R.coughedtime != 1)
 				R.coughedtime = 1
 				R.emote("gasp")
 				spawn (20)
@@ -643,11 +643,11 @@ steam.start() -- spawns the effect
 
 /obj/effect/effect/mustard_gas/HasEntered(mob/living/carbon/human/R as mob )
 	..()
-	if(istype(R, /mob/living/carbon/human))
-		if(R.internal != null && usr.wear_mask && (R.wear_mask.flags & MASKINTERNALS) && R.wear_suit != null && !istype(R.wear_suit, /obj/item/clothing/suit/storage/labcoat) && !istype(R.wear_suit, /obj/item/clothing/suit/straight_jacket) && !istype(R.wear_suit, /obj/item/clothing/suit/straight_jacket && !istype(R.wear_suit, /obj/item/clothing/suit/armor)))
+	if (istype(R, /mob/living/carbon/human))
+		if (R.internal != null && usr.wear_mask && (R.wear_mask.flags & MASKINTERNALS) && R.wear_suit != null && !istype(R.wear_suit, /obj/item/clothing/suit/storage/labcoat) && !istype(R.wear_suit, /obj/item/clothing/suit/straight_jacket) && !istype(R.wear_suit, /obj/item/clothing/suit/straight_jacket && !istype(R.wear_suit, /obj/item/clothing/suit/armor)))
 			return
 		R.burn_skin(0.75)
-		if(R.coughedtime != 1)
+		if (R.coughedtime != 1)
 			R.coughedtime = 1
 			R.emote("gasp")
 			spawn (20)
@@ -867,7 +867,7 @@ steam.start() -- spawns the effect
 		F.amount = amount
 		if(!metal)
 			F.create_reagents(10)
-			if(reagents)
+			if (reagents)
 				for(var/datum/reagent/R in reagents.reagent_list)
 					F.reagents.add_reagent(R.id,1)
 
@@ -885,9 +885,9 @@ steam.start() -- spawns the effect
 	if(metal)
 		return
 
-	if(istype(AM, /mob/living/carbon))
+	if (istype(AM, /mob/living/carbon))
 		var/mob/M =	AM
-		if(istype(M, /mob/living/carbon/human) && (istype(M:shoes, /obj/item/clothing/shoes) && M:shoes.flags&NOSLIP))
+		if (istype(M, /mob/living/carbon/human) && (istype(M:shoes, /obj/item/clothing/shoes) && M:shoes.flags&NOSLIP))
 			return
 
 		M.stop_pulling()
@@ -991,10 +991,10 @@ steam.start() -- spawns the effect
 		return
 
 	attack_hand(var/mob/user)
-		if((HULK in user.mutations) || (prob(75 - metal*25)))
+		if ((HULK in user.mutations) || (prob(75 - metal*25)))
 			user << "\blue You smash through the metal foam wall."
 			for(var/mob/O in oviewers(user))
-				if((O.client && !( O.blinded )))
+				if ((O.client && !( O.blinded )))
 					O << "\red [user] smashes through the foamed metal."
 
 			del(src)
@@ -1005,11 +1005,11 @@ steam.start() -- spawns the effect
 
 	attackby(var/obj/item/I, var/mob/user)
 
-		if(istype(I, /obj/item/weapon/grab))
+		if (istype(I, /obj/item/weapon/grab))
 			var/obj/item/weapon/grab/G = I
 			G.affecting.loc = src.loc
 			for(var/mob/O in viewers(src))
-				if(O.client)
+				if (O.client)
 					O << "\red [G.assailant] smashes [G.affecting] through the foamed metal wall."
 			del(I)
 			del(src)
@@ -1018,7 +1018,7 @@ steam.start() -- spawns the effect
 		if(prob(I.force*20 - metal*25))
 			user << "\blue You smash through the foamed metal with \the [I]."
 			for(var/mob/O in oviewers(user))
-				if((O.client && !( O.blinded )))
+				if ((O.client && !( O.blinded )))
 					O << "\red [user] smashes through the foamed metal."
 			del(src)
 		else
@@ -1064,7 +1064,7 @@ steam.start() -- spawns the effect
 		return
 
 	start()
-		if(amount <= 2)
+		if (amount <= 2)
 			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 			s.set_up(2, 1, location)
 			s.start()
@@ -1072,7 +1072,7 @@ steam.start() -- spawns the effect
 			for(var/mob/M in viewers(5, location))
 				M << "\red The solution violently explodes."
 			for(var/mob/M in viewers(1, location))
-				if(prob (50 * amount))
+				if (prob (50 * amount))
 					M << "\red The explosion knocks you down."
 					M.Weaken(rand(1,5))
 			return
@@ -1083,16 +1083,16 @@ steam.start() -- spawns the effect
 			var/flash = -1
 
 			// Clamp all values to MAX_EXPLOSION_RANGE
-			if(round(amount/12) > 0)
+			if (round(amount/12) > 0)
 				devastation = min (MAX_EXPLOSION_RANGE, devastation + round(amount/12))
 
-			if(round(amount/6) > 0)
+			if (round(amount/6) > 0)
 				heavy = min (MAX_EXPLOSION_RANGE, heavy + round(amount/6))
 
-			if(round(amount/3) > 0)
+			if (round(amount/3) > 0)
 				light = min (MAX_EXPLOSION_RANGE, light + round(amount/3))
 
-			if(flash && flashing_factor)
+			if (flash && flashing_factor)
 				flash += (round(amount/4) * flashing_factor)
 
 			for(var/mob/M in viewers(8, location))
@@ -1104,11 +1104,11 @@ steam.start() -- spawns the effect
 		if(holder)
 			var/dmglevel = 4
 
-			if(round(amount/8) > 0)
+			if (round(amount/8) > 0)
 				dmglevel = 1
-			else if(round(amount/4) > 0)
+			else if (round(amount/4) > 0)
 				dmglevel = 2
-			else if(round(amount/2) > 0)
+			else if (round(amount/2) > 0)
 				dmglevel = 3
 
 			if(dmglevel<4) holder.ex_act(dmglevel)

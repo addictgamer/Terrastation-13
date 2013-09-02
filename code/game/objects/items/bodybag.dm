@@ -39,14 +39,14 @@
 
 
 	attackby(W as obj, mob/user as mob)
-		if(istype(W, /obj/item/weapon/pen))
+		if (istype(W, /obj/item/weapon/pen))
 			var/t = input(user, "What would you like the label to be?", text("[]", src.name), null)  as text
-			if(user.get_active_hand() != W)
+			if (user.get_active_hand() != W)
 				return
-			if(!in_range(src, user) && src.loc != user)
+			if (!in_range(src, user) && src.loc != user)
 				return
 			t = copytext(sanitize(t),1,MAX_MESSAGE_LEN)
-			if(t)
+			if (t)
 				src.name = "body bag - "
 				src.name += t
 				src.overlays += image(src.icon, "bodybag_label")

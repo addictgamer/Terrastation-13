@@ -20,13 +20,13 @@
 
 /*
 /obj/item/stack/tile/plasteel/attack_self(mob/user as mob)
-	if(usr.stat)
+	if (usr.stat)
 		return
 	var/T = user.loc
-	if(!( istype(T, /turf) ))
+	if (!( istype(T, /turf) ))
 		user << "\red You must be on the ground!"
 		return
-	if(!( istype(T, /turf/space) ))
+	if (!( istype(T, /turf/space) ))
 		user << "\red You cannot build on or repair this turf!"
 		return
 	src.build(T)
@@ -36,7 +36,7 @@
 */
 
 /obj/item/stack/tile/plasteel/proc/build(turf/S as turf)
-	if(istype(S,/turf/space))
+	if (istype(S,/turf/space))
 		S.ChangeTurf(/turf/simulated/floor/plating/airless)
 	else
 		S.ChangeTurf(/turf/simulated/floor/plating)

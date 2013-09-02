@@ -41,7 +41,7 @@
 	if(istype(I, /obj/item/weapon/screwdriver))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20))
-			if(src.stat & BROKEN)
+			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 				new /obj/item/weapon/shard( src.loc )
@@ -70,8 +70,8 @@
 
 /obj/machinery/power/monitor/interact(mob/user)
 
-	if( (get_dist(src, user) > 1 ) || (stat & (BROKEN|NOPOWER)) )
-		if(!istype(user, /mob/living/silicon))
+	if ( (get_dist(src, user) > 1 ) || (stat & (BROKEN|NOPOWER)) )
+		if (!istype(user, /mob/living/silicon))
 			user.unset_machine()
 			user << browse(null, "window=powcomp")
 			return

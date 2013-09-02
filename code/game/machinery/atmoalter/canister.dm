@@ -52,7 +52,7 @@
 /obj/machinery/portable_atmospherics/canister/update_icon()
 	src.overlays = 0
 
-	if(src.destroyed)
+	if (src.destroyed)
 		src.icon_state = text("[]-1", src.color)
 
 	else
@@ -65,11 +65,11 @@
 
 		var/tank_pressure = air_contents.return_pressure()
 
-		if(tank_pressure < 10)
+		if (tank_pressure < 10)
 			overlays += image('icons/obj/atmos.dmi', "can-o0")
-		else if(tank_pressure < ONE_ATMOSPHERE)
+		else if (tank_pressure < ONE_ATMOSPHERE)
 			overlays += image('icons/obj/atmos.dmi', "can-o1")
-		else if(tank_pressure < 15*ONE_ATMOSPHERE)
+		else if (tank_pressure < 15*ONE_ATMOSPHERE)
 			overlays += image('icons/obj/atmos.dmi', "can-o2")
 		else
 			overlays += image('icons/obj/atmos.dmi', "can-o3")
@@ -84,7 +84,7 @@
 	if(destroyed)
 		return 1
 
-	if(src.health <= 10)
+	if (src.health <= 10)
 		var/atom/location = src.loc
 		location.assume_air(air_contents)
 
@@ -93,7 +93,7 @@
 		src.density = 0
 		update_icon()
 
-		if(src.holding)
+		if (src.holding)
 			src.holding.loc = src.loc
 			src.holding = null
 
@@ -102,7 +102,7 @@
 		return 1
 
 /obj/machinery/portable_atmospherics/canister/process()
-	if(destroyed)
+	if (destroyed)
 		return
 
 	..()
@@ -205,7 +205,7 @@
 	return src.interact(user)
 
 /obj/machinery/portable_atmospherics/canister/interact(var/mob/user as mob)
-	if(src.destroyed)
+	if (src.destroyed)
 		return
 
 	user.set_machine(src)
@@ -237,36 +237,36 @@ Release Pressure: <A href='?src=\ref[src];pressure_adj=-1000'>-</A> <A href='?sr
 		onclose(usr, "canister")
 		return
 
-	if(((get_dist(src, usr) <= 1) && istype(src.loc, /turf)))
+	if (((get_dist(src, usr) <= 1) && istype(src.loc, /turf)))
 		usr.set_machine(src)
 
 		if(href_list["toggle"])
-			if(valve_open)
-				if(holding)
+			if (valve_open)
+				if (holding)
 					release_log += "Valve was <b>closed</b> by [usr], stopping the transfer into the [holding]<br>"
 				else
 					release_log += "Valve was <b>closed</b> by [usr], stopping the transfer into the <font color='red'><b>air</b></font><br>"
 			else
-				if(holding)
+				if (holding)
 					release_log += "Valve was <b>opened</b> by [usr], starting the transfer into the [holding]<br>"
 				else
 					release_log += "Valve was <b>opened</b> by [usr], starting the transfer into the <font color='red'><b>air</b></font><br>"
 			valve_open = !valve_open
 
-		if(href_list["remove_tank"])
+		if (href_list["remove_tank"])
 			if(holding)
 				holding.loc = loc
 				holding = null
 
-		if(href_list["pressure_adj"])
+		if (href_list["pressure_adj"])
 			var/diff = text2num(href_list["pressure_adj"])
 			if(diff > 0)
 				release_pressure = min(10*ONE_ATMOSPHERE, release_pressure+diff)
 			else
 				release_pressure = max(ONE_ATMOSPHERE/10, release_pressure+diff)
 
-		if(href_list["relabel"])
-			if(can_label)
+		if (href_list["relabel"])
+			if (can_label)
 				var/list/colors = list(\
 					"\[N2O\]" = "redws", \
 					"\[N2\]" = "red", \
@@ -277,7 +277,7 @@ Release Pressure: <A href='?src=\ref[src];pressure_adj=-1000'>-</A> <A href='?sr
 					"\[CAUTION\]" = "yellow", \
 				)
 				var/label = input("Choose canister label", "Gas canister") as null|anything in colors
-				if(label)
+				if (label)
 					src.color = colors[label]
 					src.icon_state = colors[label]
 					src.name = "Canister: [label]"
@@ -327,7 +327,7 @@ Release Pressure: <A href='?src=\ref[src];pressure_adj=-1000'>-</A> <A href='?sr
 	trace_gas.moles = 9*4000
 	spawn(10)
 		var/turf/simulated/location = src.loc
-		if(istype(src.loc))
+		if (istype(src.loc))
 			while (!location.air)
 				sleep(10)
 			location.assume_air(air_contents)

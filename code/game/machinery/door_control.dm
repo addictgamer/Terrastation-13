@@ -42,7 +42,7 @@
 
 /obj/machinery/door_control/attackby(obj/item/weapon/W, mob/user as mob)
 	/* For later implementation
-	if(istype(W, /obj/item/weapon/screwdriver))
+	if (istype(W, /obj/item/weapon/screwdriver))
 	{
 		if(wiresexposed)
 			icon_state = "doorctrl0"
@@ -80,12 +80,16 @@
 	if(normaldoorcontrol)
 		for(var/obj/machinery/door/airlock/D in range(range))
 			if(D.id_tag == src.id)
+				if(specialfunctions & OPEN)
+					if (D.density)
+						spawn(0)
+							D.open()
+							return
+					else
+						spawn(0)
+							D.close()
+							return
 				if(desiredstate == 1)
-					if(specialfunctions & OPEN)
-						if(D.density)
-							spawn( 0 )
-								D.open()
-								return
 					if(specialfunctions & IDSCAN)
 						D.aiDisabledIdScanner = 1
 					if(specialfunctions & BOLTS)
@@ -95,13 +99,7 @@
 						D.secondsElectrified = -1
 					if(specialfunctions & SAFE)
 						D.safe = 0
-
 				else
-					if(specialfunctions & OPEN)
-						if(!D.density)
-							spawn( 0 )
-								D.close()
-								return
 					if(specialfunctions & IDSCAN)
 						D.aiDisabledIdScanner = 0
 					if(specialfunctions & BOLTS)
@@ -115,8 +113,8 @@
 
 	else
 		for(var/obj/machinery/door/poddoor/M in world)
-			if(M.id == src.id)
-				if(M.density)
+			if (M.id == src.id)
+				if (M.density)
 					spawn( 0 )
 						M.open()
 						return
@@ -164,7 +162,7 @@
 	icon_state = "launcheract"
 
 	for(var/obj/machinery/door/poddoor/M in world)
-		if(M.id == src.id)
+		if (M.id == src.id)
 			spawn( 0 )
 				M.open()
 				return
@@ -178,7 +176,7 @@
 	sleep(50)
 
 	for(var/obj/machinery/door/poddoor/M in world)
-		if(M.id == src.id)
+		if (M.id == src.id)
 			spawn( 0 )
 				M.close()
 				return

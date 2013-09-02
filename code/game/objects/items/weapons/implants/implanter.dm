@@ -12,7 +12,7 @@
 
 
 /obj/item/weapon/implanter/update()
-	if(src.imp)
+	if (src.imp)
 		src.icon_state = "implanter1"
 	else
 		src.icon_state = "implanter0"
@@ -20,27 +20,28 @@
 
 
 /obj/item/weapon/implanter/attack(mob/M as mob, mob/user as mob)
-	if(!istype(M, /mob/living/carbon))
+	if (!istype(M, /mob/living/carbon))
 		return
-	if(user && src.imp)
+	if (user && src.imp)
 		for (var/mob/O in viewers(M, null))
 			O.show_message("\red [user] is attemping to implant [M].", 1)
 
 		var/turf/T1 = get_turf(M)
-		if(T1 && ((M == user) || do_after(user, 50)))
+		if (T1 && ((M == user) || do_after(user, 50)))
 			if(user && M && (get_turf(M) == T1) && src && src.imp)
 				for (var/mob/O in viewers(M, null))
 					O.show_message("\red [M] has been implanted by [user].", 1)
+
 				M.attack_log += text("\[[time_stamp()]\] <font color='orange'> Implanted with [src.name] ([src.imp.name])  by [user.name] ([user.ckey])</font>")
 				user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] ([src.imp.name]) to implant [M.name] ([M.ckey])</font>")
-				log_attack("<font color='red'>[user.name] ([user.ckey]) implanted [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>")
+				msg_admin_attack("[user.name] ([user.ckey]) implanted [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 				user.show_message("\red You implanted the implant into [M].")
 				if(src.imp.implanted(M))
 					src.imp.loc = M
 					src.imp.imp_in = M
 					src.imp.implanted = 1
-					if(ishuman(M))
+					if (ishuman(M))
 						var/mob/living/carbon/human/H = M
 						var/datum/organ/external/affected = H.get_organ(user.zone_sel.selecting)
 						affected.implants += src.imp
@@ -92,7 +93,7 @@
 	return
 
 /obj/item/weapon/implanter/compressed/update()
-	if(imp)
+	if (imp)
 		var/obj/item/weapon/implant/compressed/c = imp
 		if(!c.scanned)
 			icon_state = "cimplanter1"
@@ -104,8 +105,8 @@
 
 /obj/item/weapon/implanter/compressed/attack(mob/M as mob, mob/user as mob)
 	var/obj/item/weapon/implant/compressed/c = imp
-	if(!c)	return
-	if(c.scanned == null)
+	if (!c)	return
+	if (c.scanned == null)
 		user << "Please scan an object with the implanter first."
 		return
 	..()
@@ -113,7 +114,7 @@
 /obj/item/weapon/implanter/compressed/afterattack(atom/A, mob/user as mob)
 	if(istype(A,/obj/item) && imp)
 		var/obj/item/weapon/implant/compressed/c = imp
-		if(c.scanned)
+		if (c.scanned)
 			user << "\red Something is already scanned inside the implant!"
 			return
 		imp:scanned = A

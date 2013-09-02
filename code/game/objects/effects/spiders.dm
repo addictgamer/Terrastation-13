@@ -13,10 +13,10 @@
 		if(1.0)
 			del(src)
 		if(2.0)
-			if(prob(50))
+			if (prob(50))
 				del(src)
 		if(3.0)
-			if(prob(5))
+			if (prob(5))
 				del(src)
 	return
 

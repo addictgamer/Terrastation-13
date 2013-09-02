@@ -63,8 +63,8 @@
 
 
 /obj/machinery/floodlight/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/screwdriver))
-		if(!open)
+	if (istype(W, /obj/item/weapon/screwdriver))
+		if (!open)
 			if(unlocked)
 				unlocked = 0
 				user << "You screw the battery panel in place."
@@ -72,7 +72,7 @@
 				unlocked = 1
 				user << "You unscrew the battery panel."
 
-	if(istype(W, /obj/item/weapon/crowbar))
+	if (istype(W, /obj/item/weapon/crowbar))
 		if(unlocked)
 			if(open)
 				open = 0
@@ -83,7 +83,7 @@
 					open = 1
 					user << "You remove the battery panel."
 
-	if(istype(W, /obj/item/weapon/cell))
+	if (istype(W, /obj/item/weapon/cell))
 		if(open)
 			if(cell)
 				user << "There is a power cell already installed."

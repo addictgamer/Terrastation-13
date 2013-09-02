@@ -48,11 +48,11 @@
 			del(src)
 			return
 		if(2.0)
-			if(prob(50))
+			if (prob(50))
 				del(src)
 				return
 		if(3.0)
-			if(prob(5))
+			if (prob(5))
 				del(src)
 				return
 		else
@@ -101,28 +101,28 @@
 		if(5.0)
 			size = "huge"
 		else
-	//if((CLUMSY in usr.mutations) && prob(50)) t = "funny-looking"
+	//if ((CLUMSY in usr.mutations) && prob(50)) t = "funny-looking"
 	usr << "This is a [src.blood_DNA ? "bloody " : ""]\icon[src][src.name]. It is a [size] item."
 	if(src.desc)
 		usr << src.desc
 	return
 
 /obj/item/attack_hand(mob/user as mob)
-	if(!user) return
-	if(hasorgans(user))
+	if (!user) return
+	if (hasorgans(user))
 		var/datum/organ/external/temp = user:organs_by_name["r_hand"]
-		if(user.hand)
+		if (user.hand)
 			temp = user:organs_by_name["l_hand"]
 		if(temp && !temp.is_usable())
 			user << "<span class='notice'>You try to move your [temp.display_name], but cannot!"
 			return
 
-	if(istype(src.loc, /obj/item/weapon/storage))
+	if (istype(src.loc, /obj/item/weapon/storage))
 		var/obj/item/weapon/storage/S = src.loc
 		S.remove_from_storage(src)
 
 	src.throwing = 0
-	if(src.loc == user)
+	if (src.loc == user)
 		//canremove==0 means that object may not be removed. You can still wear it. This only applies to clothing. /N
 		if(!src.canremove)
 			return
@@ -150,13 +150,13 @@
 			user << "Your claws aren't capable of such fine manipulation."
 			return
 
-	if(istype(src.loc, /obj/item/weapon/storage))
+	if (istype(src.loc, /obj/item/weapon/storage))
 		for(var/mob/M in range(1, src.loc))
-			if(M.s_active == src.loc)
-				if(M.client)
+			if (M.s_active == src.loc)
+				if (M.client)
 					M.client.screen -= src
 	src.throwing = 0
-	if(src.loc == user)
+	if (src.loc == user)
 		//canremove==0 means that object may not be removed. You can still wear it. This only applies to clothing. /N
 		if(istype(src, /obj/item/clothing) && !src:canremove)
 			return
@@ -207,27 +207,26 @@
 
 /obj/item/proc/attack(mob/living/M as mob, mob/living/user as mob, def_zone)
 
-	if(!istype(M)) // not sure if this is the right thing...
+	if (!istype(M)) // not sure if this is the right thing...
 		return
 
-	if(can_operate(M))	//Checks if mob is lying down on table for surgery
-		if(do_surgery(M,user,src))
+	if (can_operate(M))	//Checks if mob is lying down on table for surgery
+		if (do_surgery(M,user,src))
 			return
 
 	var/messagesource = M
 
-	if(istype(M,/mob/living/carbon/brain))
+	if (istype(M,/mob/living/carbon/brain))
 		messagesource = M:container
-	if(src.hitsound)
+	if (src.hitsound)
 		playsound(src.loc, hitsound, 50, 1, -1)
 	/////////////////////////
 	user.lastattacked = M
 	M.lastattacker = user
 
-	user.attack_log += "\[[time_stamp()]\]<font color='red'> Attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)]) (DAMTYE: [uppertext(src.damtype)])</font>"
 	M.attack_log += "\[[time_stamp()]\]<font color='orange'> Attacked by [user.name] ([user.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)]) (DAMTYE: [uppertext(src.damtype)])</font>"
-	log_attack("<font color='red'>[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)]) (DAMTYE: [uppertext(src.damtype)])</font>" )
-	msg_admin_attack("ATTACK: [user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])") //BS12 EDIT ALG
+	user.attack_log += "\[[time_stamp()]\]<font color='red'> Attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)]) (DAMTYE: [uppertext(src.damtype)])</font>"
+	msg_admin_attack("[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)]) (DAMTYE: [uppertext(src.damtype)]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)") //BS12 EDIT ALG
 
 	//spawn(1800)			// this wont work right
 	//	M.lastattacker = null
@@ -338,12 +337,12 @@
 				else
 
 					M.take_organ_damage(power)
-					if(prob(33)) // Added blood for whacking non-humans too
+					if (prob(33)) // Added blood for whacking non-humans too
 						var/turf/simulated/location = M.loc
-						if(istype(location))
+						if (istype(location))
 							location.add_blood_floor(M)
 			if("fire")
-				if(!(COLD_RESISTANCE in M.mutations))
+				if (!(COLD_RESISTANCE in M.mutations))
 					M.take_organ_damage(0, power)
 					M << "Aargh it burns!"
 		M.updatehealth()
@@ -537,7 +536,7 @@
 					return 0
 				return 1
 			if(slot_in_backpack)
-				if(H.back && istype(H.back, /obj/item/weapon/storage/backpack))
+				if (H.back && istype(H.back, /obj/item/weapon/storage/backpack))
 					var/obj/item/weapon/storage/backpack/B = H.back
 					if(B.contents.len < B.storage_slots && w_class <= B.max_w_class)
 						return 1
@@ -646,8 +645,7 @@
 
 	user.attack_log += "\[[time_stamp()]\]<font color='red'> Attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>"
 	M.attack_log += "\[[time_stamp()]\]<font color='orange'> Attacked by [user.name] ([user.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>"
-	msg_admin_attack("ATTACK: [user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])") //BS12 EDIT ALG
-	log_attack("<font color='red'> [user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>")
+	msg_admin_attack("[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)") //BS12 EDIT ALG
 
 	src.add_fingerprint(user)
 	//if((CLUMSY in user.mutations) && prob(50))
@@ -676,7 +674,7 @@
 		M.take_organ_damage(7)
 	M.eye_blurry += rand(3,4)
 	M.eye_stat += rand(2,4)
-	if(M.eye_stat >= 10)
+	if (M.eye_stat >= 10)
 		M.eye_blurry += 15+(0.1*M.eye_blurry)
 		M.disabilities |= NEARSIGHTED
 		if(M.stat != 2)
@@ -688,7 +686,7 @@
 			M.eye_blurry += 10
 			M.Paralyse(1)
 			M.Weaken(4)
-		if(prob(M.eye_stat - 10 + 1))
+		if (prob(M.eye_stat - 10 + 1))
 			if(M.stat != 2)
 				M << "\red You go blind!"
 			M.sdisabilities |= BLIND
@@ -704,7 +702,7 @@
 
 
 /obj/item/add_blood(mob/living/carbon/human/M as mob)
-	if(!..())
+	if (!..())
 		return 0
 
 	if(istype(src, /obj/item/weapon/melee/energy))

@@ -187,7 +187,7 @@
 
 /obj/machinery/porta_turret/attack_hand(mob/user as mob)
 	. = ..()
-	if(.)
+	if (.)
 		return
 	var/dat
 
@@ -232,11 +232,11 @@ Status: []<BR>"},
 	return
 
 /obj/machinery/porta_turret/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	usr.set_machine(src)
 	src.add_fingerprint(usr)
-	if((href_list["power"]) && (src.allowed(usr)))
+	if ((href_list["power"]) && (src.allowed(usr)))
 		if(anchored) // you can't turn a turret on/off if it's not anchored/secured
 			on = !on // toggle on/off
 		else
@@ -248,11 +248,11 @@ Status: []<BR>"},
 	switch(href_list["operation"])
 		// toggles customizable behavioural protocols
 
-		if("authweapon")
+		if ("authweapon")
 			src.auth_weapons = !src.auth_weapons
-		if("checkrecords")
+		if ("checkrecords")
 			src.check_records = !src.check_records
-		if("shootcrooks")
+		if ("shootcrooks")
 			src.criminals = !src.criminals
 		if("shootall")
 			stun_all = !stun_all
@@ -268,8 +268,8 @@ Status: []<BR>"},
 		icon_state = "[lasercolor]destroyed_target_prism"
 	else
 		if( powered() )
-			if(on)
-				if(installation == /obj/item/weapon/gun/energy/laser || installation == /obj/item/weapon/gun/energy/pulse_rifle)
+			if (on)
+				if (installation == /obj/item/weapon/gun/energy/laser || installation == /obj/item/weapon/gun/energy/pulse_rifle)
 					// laser guns and pulse rifles have an orange icon
 					icon_state = "[lasercolor]orange_target_prism"
 				else
@@ -307,7 +307,7 @@ Status: []<BR>"},
 			del(src)
 
 
-	if((istype(W, /obj/item/weapon/card/emag)) && (!src.emagged))
+	if ((istype(W, /obj/item/weapon/card/emag)) && (!src.emagged))
 		// Emagging the turret makes it go bonkers and stun everyone. It also makes
 		// the turret shoot much, much faster.
 
@@ -338,9 +338,9 @@ Status: []<BR>"},
 			invisibility = 0
 			del(cover) // deletes the cover, and the turret instance itself becomes its own cover.
 
-	else if(istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
+	else if (istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
 		// Behavior lock/unlock mangement
-		if(allowed(user))
+		if (allowed(user))
 			locked = !src.locked
 			user << "Controls are now [locked ? "locked." : "unlocked."]"
 		else
@@ -349,9 +349,9 @@ Status: []<BR>"},
 	else
 		// if the turret was attacked with the intention of harming it:
 		src.health -= W.force * 0.5
-		if(src.health <= 0)
+		if (src.health <= 0)
 			src.die()
-		if((W.force * 0.5) > 1) // if the force of impact dealt at least 1 damage, the turret gets pissed off
+		if ((W.force * 0.5) > 1) // if the force of impact dealt at least 1 damage, the turret gets pissed off
 			if(!attacked && !emagged)
 				attacked = 1
 				spawn()
@@ -372,7 +372,7 @@ Status: []<BR>"},
 	src.health -= Proj.damage
 	..()
 	if(prob(45) && Proj.damage > 0) src.spark_system.start()
-	if(src.health <= 0)
+	if (src.health <= 0)
 		src.die() // the death process :(
 	if((src.lasercolor == "b") && (src.disabled == 0))
 		if(istype(Proj, /obj/item/projectile/beam/lastertag/red))
@@ -428,7 +428,7 @@ Status: []<BR>"},
 	set background = 1
 
 	if(src.cover==null && anchored) // if it has no cover and is anchored
-		if(stat & BROKEN) // if the turret is borked
+		if (stat & BROKEN) // if the turret is borked
 			del(cover) // delete its cover, assuming it has one. Workaround for a pesky little bug
 		else
 
@@ -462,11 +462,11 @@ Status: []<BR>"},
 			if(emagged) // if emagged, HOLY SHIT EVERYONE IS DANGEROUS beep boop beep
 				targets += C
 			else
-				if(C.stat || C.handcuffed) // if the perp is handcuffed or dead/dying, no need to bother really
+				if (C.stat || C.handcuffed) // if the perp is handcuffed or dead/dying, no need to bother really
 					continue // move onto next potential victim!
 
 				var/dst = get_dist(src, C) // if it's too far away, why bother?
-				if(dst > 7)
+				if (dst > 7)
 					continue
 
 				if(ai) // If it's set to attack all nonsilicons, target them!
@@ -480,26 +480,26 @@ Status: []<BR>"},
 						targets += C
 						continue
 
-				if(istype(C, /mob/living/carbon/human)) // if the target is a human, analyze threat level
+				if (istype(C, /mob/living/carbon/human)) // if the target is a human, analyze threat level
 					if(src.assess_perp(C)<4)
 						continue // if threat level < 4, keep going
 
-				else if(istype(C, /mob/living/carbon/monkey))
+				else if (istype(C, /mob/living/carbon/monkey))
 					continue // Don't target monkeys or borgs/AIs you dumb shit
 
-				if(C.lying) // if the perp is lying down, it's still a target but a less-important target
+				if (C.lying) // if the perp is lying down, it's still a target but a less-important target
 					secondarytargets += C
 					continue
 
 				targets += C // if the perp has passed all previous tests, congrats, it is now a "shoot-me!" nominee
 
-	if(targets.len>0) // if there are targets to shoot
+	if (targets.len>0) // if there are targets to shoot
 
 		var/atom/t = pick(targets) // pick a perp from the list of targets. Targets go first because they are the most important
 
-		if(istype(t, /mob/living)) // if a mob
+		if (istype(t, /mob/living)) // if a mob
 			var/mob/living/M = t // simple typecasting
-			if(M.stat!=2) // if the target is not dead
+			if (M.stat!=2) // if the target is not dead
 				spawn() popUp() // pop the turret up if it's not already up.
 				dir=get_dir(src,M) // even if you can't shoot, follow the target
 				spawn() shootAt(M) // shoot the target, finally
@@ -507,8 +507,8 @@ Status: []<BR>"},
 	else
 		if(secondarytargets.len>0) // if there are no primary targets, go for secondary targets
 			var/mob/t = pick(secondarytargets)
-			if(istype(t, /mob/living))
-				if(t.stat!=2)
+			if (istype(t, /mob/living))
+				if (t.stat!=2)
 					spawn() popUp()
 					dir=get_dir(src,t)
 					shootAt(t)
@@ -590,18 +590,18 @@ Status: []<BR>"},
 		if(istype(perp.belt, /obj/item/weapon/gun/energy/laser/bluetag))
 			threatcount += 2
 
-	if(src.check_records) // if the turret can check the records, check if they are set to *Arrest* on records
+	if (src.check_records) // if the turret can check the records, check if they are set to *Arrest* on records
 		for (var/datum/data/record/E in data_core.general)
 
 			var/perpname = perp.name
-			if(perp.wear_id)
+			if (perp.wear_id)
 				var/obj/item/weapon/card/id/id = perp.wear_id.GetID()
-				if(id)
+				if (id)
 					perpname = id.registered_name
 
-			if(E.fields["name"] == perpname)
+			if (E.fields["name"] == perpname)
 				for (var/datum/data/record/R in data_core.security)
-					if((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "*Arrest*"))
+					if ((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "*Arrest*"))
 						threatcount = 4
 						break
 
@@ -631,10 +631,10 @@ Status: []<BR>"},
 
 	var/turf/T = get_turf(src)
 	var/turf/U = get_turf(target)
-	if(!istype(T) || !istype(U))
+	if (!istype(T) || !istype(U))
 		return
 
-	if(!raised) // the turret has to be raised in order to fire - makes sense, right?
+	if (!raised) // the turret has to be raised in order to fire - makes sense, right?
 		return
 
 
@@ -734,7 +734,7 @@ Status: []<BR>"},
 			else if(istype(W, /obj/item/weapon/weldingtool))
 				var/obj/item/weapon/weldingtool/WT = W
 				if(!WT.isOn()) return
-				if(WT.get_fuel() < 5) // uses up 5 fuel.
+				if (WT.get_fuel() < 5) // uses up 5 fuel.
 					user << "\red You need more fuel to complete this task."
 					return
 
@@ -802,7 +802,7 @@ Status: []<BR>"},
 			if(istype(W, /obj/item/weapon/weldingtool))
 				var/obj/item/weapon/weldingtool/WT = W
 				if(!WT.isOn()) return
-				if(WT.get_fuel() < 5)
+				if (WT.get_fuel() < 5)
 					user << "\red You need more fuel to complete this task."
 
 				playsound(src.loc, pick('sound/items/Welder.ogg', 'sound/items/Welder2.ogg'), 50, 1)
@@ -830,12 +830,12 @@ Status: []<BR>"},
 				build_step = 6
 				return
 
-	if(istype(W, /obj/item/weapon/pen)) // you can rename turrets like bots!
+	if (istype(W, /obj/item/weapon/pen)) // you can rename turrets like bots!
 		var/t = input(user, "Enter new turret name", src.name, src.finish_name) as text
 		t = copytext(sanitize(t), 1, MAX_MESSAGE_LEN)
-		if(!t)
+		if (!t)
 			return
-		if(!in_range(src, usr) && src.loc != usr)
+		if (!in_range(src, usr) && src.loc != usr)
 			return
 
 		src.finish_name = t
@@ -888,7 +888,7 @@ Status: []<BR>"},
 
 /obj/machinery/porta_turret_cover/attack_ai(mob/user as mob)
 	. = ..()
-	if(.)
+	if (.)
 		return
 	var/dat
 	if(!(Parent_Turret.lasercolor))
@@ -925,7 +925,7 @@ Status: []<BR>"},
 
 /obj/machinery/porta_turret_cover/attack_hand(mob/user as mob)
 	. = ..()
-	if(.)
+	if (.)
 		return
 	var/dat
 	if(!(Parent_Turret.lasercolor))
@@ -969,14 +969,14 @@ Status: []<BR>"},
 	return
 
 /obj/machinery/porta_turret_cover/Topic(href, href_list)
-	if(..())
+	if (..())
 		return
 	usr.set_machine(src)
 	Parent_Turret.add_fingerprint(usr)
 	src.add_fingerprint(usr)
-	if((href_list["power"]) && (Parent_Turret.allowed(usr)))
+	if ((href_list["power"]) && (Parent_Turret.allowed(usr)))
 		if(Parent_Turret.anchored)
-			if(Parent_Turret.on)
+			if (Parent_Turret.on)
 				Parent_Turret.on=0
 			else
 				Parent_Turret.on=1
@@ -987,11 +987,11 @@ Status: []<BR>"},
 		return
 
 	switch(href_list["operation"])
-		if("authweapon")
+		if ("authweapon")
 			Parent_Turret.auth_weapons = !Parent_Turret.auth_weapons
-		if("checkrecords")
+		if ("checkrecords")
 			Parent_Turret.check_records = !Parent_Turret.check_records
-		if("shootcrooks")
+		if ("shootcrooks")
 			Parent_Turret.criminals = !Parent_Turret.criminals
 		if("shootall")
 			Parent_Turret.stun_all = !Parent_Turret.stun_all
@@ -1004,7 +1004,7 @@ Status: []<BR>"},
 
 /obj/machinery/porta_turret_cover/attackby(obj/item/W as obj, mob/user as mob)
 
-	if((istype(W, /obj/item/weapon/card/emag)) && (!Parent_Turret.emagged))
+	if ((istype(W, /obj/item/weapon/card/emag)) && (!Parent_Turret.emagged))
 		user << "\red You short out [Parent_Turret]'s threat assessment circuits."
 		spawn(0)
 			for(var/mob/O in hearers(Parent_Turret, null))
@@ -1029,8 +1029,8 @@ Status: []<BR>"},
 			Parent_Turret.invisibility = 0
 			del(src)
 
-	else if(istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
-		if(Parent_Turret.allowed(user))
+	else if (istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
+		if (Parent_Turret.allowed(user))
 			Parent_Turret.locked = !Parent_Turret.locked
 			user << "Controls are now [Parent_Turret.locked ? "locked." : "unlocked."]"
 			updateUsrDialog()
@@ -1039,9 +1039,9 @@ Status: []<BR>"},
 
 	else
 		Parent_Turret.health -= W.force * 0.5
-		if(Parent_Turret.health <= 0)
+		if (Parent_Turret.health <= 0)
 			Parent_Turret.die()
-		if((W.force * 0.5) > 2)
+		if ((W.force * 0.5) > 2)
 			if(!Parent_Turret.attacked && !Parent_Turret.emagged)
 				Parent_Turret.attacked = 1
 				spawn()

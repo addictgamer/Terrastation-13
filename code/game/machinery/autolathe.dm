@@ -105,24 +105,24 @@ var/global/list/autolathe_recipes_hidden = list( \
 			dat = text("<B>Metal Amount:</B> [src.m_amount] cm<sup>3</sup> (MAX: [max_m_amount])<BR>\n<FONT color=blue><B>Glass Amount:</B></FONT> [src.g_amount] cm<sup>3</sup> (MAX: [max_g_amount])<HR>")
 			var/list/objs = list()
 			objs += src.L
-			if(src.hacked)
+			if (src.hacked)
 				objs += src.LL
 			for(var/obj/t in objs)
 				var/title = "[t.name] ([t.m_amt] m /[t.g_amt] g)"
-				if(m_amount<t.m_amt || g_amount<t.g_amt)
+				if (m_amount<t.m_amt || g_amount<t.g_amt)
 					dat += title + "<br>"
 					continue
 				dat += "<A href='?src=\ref[src];make=\ref[t]'>[title]</A>"
-				if(istype(t, /obj/item/stack))
+				if (istype(t, /obj/item/stack))
 					var/obj/item/stack/S = t
 					var/max_multiplier = min(S.max_amount, S.m_amt?round(m_amount/S.m_amt):INFINITY, S.g_amt?round(g_amount/S.g_amt):INFINITY)
-					if(max_multiplier>1)
+					if (max_multiplier>1)
 						dat += " |"
-					if(max_multiplier>10)
+					if (max_multiplier>10)
 						dat += " <A href='?src=\ref[src];make=\ref[t];multiplier=[10]'>x[10]</A>"
-					if(max_multiplier>25)
+					if (max_multiplier>25)
 						dat += " <A href='?src=\ref[src];make=\ref[t];multiplier=[25]'>x[25]</A>"
-					if(max_multiplier>1)
+					if (max_multiplier>1)
 						dat += " <A href='?src=\ref[src];make=\ref[t];multiplier=[max_multiplier]'>x[max_multiplier]</A>"
 				dat += "<br>"
 			user << browse("<HTML><HEAD><TITLE>Autolathe Control Panel</TITLE></HEAD><BODY><TT>[dat]</TT></BODY></HTML>", "window=autolathe_regular")
@@ -136,7 +136,7 @@ var/global/list/autolathe_recipes_hidden = list( \
 			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 			s.set_up(5, 1, src)
 			s.start()
-			if(electrocute_mob(user, get_area(src), src, 0.7))
+			if (electrocute_mob(user, get_area(src), src, 0.7))
 				return 1
 			else
 				return 0
@@ -144,25 +144,25 @@ var/global/list/autolathe_recipes_hidden = list( \
 	interact(mob/user as mob)
 		if(..())
 			return
-		if(src.shocked)
+		if (src.shocked)
 			src.shock(user,50)
-		if(src.opened)
+		if (src.opened)
 			wires_win(user,50)
 			return
-		if(src.disabled)
+		if (src.disabled)
 			user << "\red You press the button, but nothing happens."
 			return
 		regular_win(user)
 		return
 
 	attackby(var/obj/item/O as obj, var/mob/user as mob)
-		if(stat)
+		if (stat)
 			return 1
-		if(busy)
+		if (busy)
 			user << "\red The autolathe is busy. Please wait for completion of previous operation."
 			return 1
-		if(istype(O, /obj/item/weapon/screwdriver))
-			if(!opened)
+		if (istype(O, /obj/item/weapon/screwdriver))
+			if (!opened)
 				src.opened = 1
 				src.icon_state = "autolathe_t"
 				user << "You open the maintenance hatch of [src]."
@@ -171,7 +171,7 @@ var/global/list/autolathe_recipes_hidden = list( \
 				src.icon_state = "autolathe"
 				user << "You close the maintenance hatch of [src]."
 			return 1
-		if(opened)
+		if (opened)
 			if(istype(O, /obj/item/weapon/crowbar))
 				playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
 				var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(src.loc)
@@ -194,19 +194,19 @@ var/global/list/autolathe_recipes_hidden = list( \
 				interact(user)
 				return 1
 
-		if(src.m_amount + O.m_amt > max_m_amount)
+		if (src.m_amount + O.m_amt > max_m_amount)
 			user << "\red The autolathe is full. Please remove metal from the autolathe in order to insert more."
 			return 1
-		if(src.g_amount + O.g_amt > max_g_amount)
+		if (src.g_amount + O.g_amt > max_g_amount)
 			user << "\red The autolathe is full. Please remove glass from the autolathe in order to insert more."
 			return 1
-		if(O.m_amt == 0 && O.g_amt == 0)
+		if (O.m_amt == 0 && O.g_amt == 0)
 			user << "\red This object does not contain significant amounts of metal or glass, or cannot be accepted by the autolathe due to size or hazardous materials."
 			return 1
 	/*
-		if(istype(O, /obj/item/weapon/grab) && src.hacked)
+		if (istype(O, /obj/item/weapon/grab) && src.hacked)
 			var/obj/item/weapon/grab/G = O
-			if(prob(25) && G.affecting)
+			if (prob(25) && G.affecting)
 				G.affecting.gib()
 				m_amount += 50000
 			return
@@ -216,13 +216,13 @@ var/global/list/autolathe_recipes_hidden = list( \
 		var/obj/item/stack/stack
 		var/m_amt = O.m_amt
 		var/g_amt = O.g_amt
-		if(istype(O, /obj/item/stack))
+		if (istype(O, /obj/item/stack))
 			stack = O
 			amount = stack.amount
-			if(m_amt)
+			if (m_amt)
 				amount = min(amount, round((max_m_amount-src.m_amount)/m_amt))
 				flick("autolathe_o",src)//plays metal insertion animation
-			if(g_amt)
+			if (g_amt)
 				amount = min(amount, round((max_g_amount-src.g_amount)/g_amt))
 				flick("autolathe_r",src)//plays glass insertion animation
 			stack.use(amount)
@@ -235,7 +235,7 @@ var/global/list/autolathe_recipes_hidden = list( \
 		src.m_amount += m_amt * amount
 		src.g_amount += g_amt * amount
 		user << "You insert [amount] sheet[amount>1 ? "s" : ""] to the autolathe."
-		if(O && O.loc == src)
+		if (O && O.loc == src)
 			del(O)
 		busy = 0
 		src.updateUsrDialog()
@@ -253,12 +253,12 @@ var/global/list/autolathe_recipes_hidden = list( \
 			return
 		usr.set_machine(src)
 		src.add_fingerprint(usr)
-		if(!busy)
+		if (!busy)
 			if(href_list["make"])
 				var/turf/T = get_step(src.loc, get_dir(src,usr))
 				var/obj/template = locate(href_list["make"])
 				var/multiplier = text2num(href_list["multiplier"])
-				if(!multiplier) multiplier = 1
+				if (!multiplier) multiplier = 1
 				var/power = max(2000, (template.m_amt+template.g_amt)*multiplier/5)
 				if(src.m_amount >= template.m_amt*multiplier && src.g_amount >= template.g_amt*multiplier)
 					busy = 1
@@ -277,7 +277,7 @@ var/global/list/autolathe_recipes_hidden = list( \
 								if(src.g_amount < 0)
 									src.g_amount = 0
 								var/obj/new_item = new template.type(T)
-								if(multiplier>1)
+								if (multiplier>1)
 									var/obj/item/stack/S = new_item
 									S.amount = multiplier
 								busy = 0
@@ -285,7 +285,7 @@ var/global/list/autolathe_recipes_hidden = list( \
 			if(href_list["act"])
 				var/temp_wire = href_list["wire"]
 				if(href_list["act"] == "pulse")
-					if(!istype(usr.get_active_hand(), /obj/item/device/multitool))
+					if (!istype(usr.get_active_hand(), /obj/item/device/multitool))
 						usr << "You need a multitool!"
 					else
 						if(src.wires[temp_wire])
@@ -303,7 +303,7 @@ var/global/list/autolathe_recipes_hidden = list( \
 								src.shock(usr,50)
 								spawn(100) src.shocked = !src.shocked
 				if(href_list["act"] == "wire")
-					if(!istype(usr.get_active_hand(), /obj/item/weapon/wirecutters))
+					if (!istype(usr.get_active_hand(), /obj/item/weapon/wirecutters))
 						usr << "You need wirecutters!"
 					else
 						wires[temp_wire] = !wires[temp_wire]

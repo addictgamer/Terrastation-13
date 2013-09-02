@@ -100,14 +100,14 @@
 
 /obj/machinery/bot/medbot/attack_hand(mob/user as mob)
 	. = ..()
-	if(.)
+	if (.)
 		return
 	var/dat
 	dat += "<TT><B>Automatic Medical Unit v1.0</B></TT><BR><BR>"
 	dat += "Status: <A href='?src=\ref[src];power=1'>[src.on ? "On" : "Off"]</A><BR>"
 	dat += "Maintenance panel panel is [src.open ? "opened" : "closed"]<BR>"
 	dat += "Beaker: "
-	if(src.reagent_glass)
+	if (src.reagent_glass)
 		dat += "<A href='?src=\ref[src];eject=1'>Loaded \[[src.reagent_glass.reagents.total_volume]/[src.reagent_glass.reagents.maximum_volume]\]</a>"
 	else
 		dat += "None Loaded"
@@ -141,8 +141,8 @@
 		return
 	usr.set_machine(src)
 	src.add_fingerprint(usr)
-	if((href_list["power"]) && (src.allowed(usr)))
-		if(src.on)
+	if ((href_list["power"]) && (src.allowed(usr)))
+		if (src.on)
 			turn_off()
 		else
 			turn_on()
@@ -166,22 +166,22 @@
 	else if((href_list["use_beaker"]) && (!src.locked || issilicon(usr)))
 		src.use_beaker = !src.use_beaker
 
-	else if(href_list["eject"] && (!isnull(src.reagent_glass)))
+	else if (href_list["eject"] && (!isnull(src.reagent_glass)))
 		if(!src.locked)
 			src.reagent_glass.loc = get_turf(src)
 			src.reagent_glass = null
 		else
 			usr << "<span class='notice'>You cannot eject the beaker because the panel is locked.</span>"
 
-	else if((href_list["togglevoice"]) && (!src.locked || issilicon(usr)))
+	else if ((href_list["togglevoice"]) && (!src.locked || issilicon(usr)))
 		src.shut_up = !src.shut_up
 
 	src.updateUsrDialog()
 	return
 
 /obj/machinery/bot/medbot/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
-		if(src.allowed(user) && !open && !emagged)
+	if (istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
+		if (src.allowed(user) && !open && !emagged)
 			src.locked = !src.locked
 			user << "<span class='notice'>Controls are now [src.locked ? "locked." : "unlocked."]</span>"
 			src.updateUsrDialog()
@@ -193,7 +193,7 @@
 			else
 				user << "<span class='warning'>Access denied.</span>"
 
-	else if(istype(W, /obj/item/weapon/reagent_containers/glass))
+	else if (istype(W, /obj/item/weapon/reagent_containers/glass))
 		if(src.locked)
 			user << "<span class='notice'>You cannot insert a beaker because the panel is locked.</span>"
 			return
@@ -210,7 +210,7 @@
 
 	else
 		..()
-		if(health < maxhealth && !istype(W, /obj/item/weapon/screwdriver) && W.force)
+		if (health < maxhealth && !istype(W, /obj/item/weapon/screwdriver) && W.force)
 			step_to(src, (get_step_away(src,user)))
 
 /obj/machinery/bot/medbot/Emag(mob/user as mob)
@@ -263,10 +263,10 @@
 			src.speak(message)
 
 		for (var/mob/living/carbon/C in view(7,src)) //Time to find a patient!
-			if((C.stat == 2) || !istype(C, /mob/living/carbon/human))
+			if ((C.stat == 2) || !istype(C, /mob/living/carbon/human))
 				continue
 
-			if((C == src.oldpatient) && (world.time < src.last_found + 100))
+			if ((C == src.oldpatient) && (world.time < src.last_found + 100))
 				continue
 
 			if(src.assess_patient(C))
@@ -299,7 +299,7 @@
 	if(src.patient && src.path.len == 0 && (get_dist(src,src.patient) > 1))
 		spawn(0)
 			src.path = AStar(src.loc, get_turf(src.patient), /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 30,id=botcard)
-			if(!path) path = list()
+			if (!path) path = list()
 			if(src.path.len == 0)
 				src.oldpatient = src.patient
 				src.patient = null
@@ -355,7 +355,7 @@
 	for(var/datum/disease/D in C.viruses)
 		if((D.stage > 1) || (D.spread_type == AIRBORNE))
 
-			if(!C.reagents.has_reagent(src.treatment_virus))
+			if (!C.reagents.has_reagent(src.treatment_virus))
 				return 1 //STOP DISEASE FOREVER
 
 	return 0
@@ -393,23 +393,23 @@
 	for(var/datum/disease/D in C.viruses)
 		virus = 1
 
-	if(!reagent_id && (virus))
+	if (!reagent_id && (virus))
 		if(!C.reagents.has_reagent(src.treatment_virus))
 			reagent_id = src.treatment_virus
 
-	if(!reagent_id && (C.getBruteLoss() >= heal_threshold))
+	if (!reagent_id && (C.getBruteLoss() >= heal_threshold))
 		if(!C.reagents.has_reagent(src.treatment_brute))
 			reagent_id = src.treatment_brute
 
-	if(!reagent_id && (C.getOxyLoss() >= (15 + heal_threshold)))
+	if (!reagent_id && (C.getOxyLoss() >= (15 + heal_threshold)))
 		if(!C.reagents.has_reagent(src.treatment_oxy))
 			reagent_id = src.treatment_oxy
 
-	if(!reagent_id && (C.getFireLoss() >= heal_threshold))
+	if (!reagent_id && (C.getFireLoss() >= heal_threshold))
 		if(!C.reagents.has_reagent(src.treatment_fire))
 			reagent_id = src.treatment_fire
 
-	if(!reagent_id && (C.getToxLoss() >= heal_threshold))
+	if (!reagent_id && (C.getToxLoss() >= heal_threshold))
 		if(!C.reagents.has_reagent(src.treatment_tox))
 			reagent_id = src.treatment_tox
 
@@ -425,7 +425,7 @@
 		src.icon_state = "medibots"
 		visible_message("\red <B>[src] is trying to inject [src.patient]!</B>")
 		spawn(30)
-			if((get_dist(src, src.patient) <= 1) && (src.on))
+			if ((get_dist(src, src.patient) <= 1) && (src.on))
 				if((reagent_id == "internal_beaker") && (src.reagent_glass) && (src.reagent_glass.reagents.total_volume))
 					src.reagent_glass.reagents.trans_to(src.patient,src.injection_amount) //Inject from beaker instead.
 					src.reagent_glass.reagents.reaction(src.patient, 2)
@@ -468,7 +468,7 @@
 		src.reagent_glass.loc = Tsec
 		src.reagent_glass = null
 
-	if(prob(50))
+	if (prob(50))
 		new /obj/item/robot_parts/l_arm(Tsec)
 
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
@@ -478,12 +478,12 @@
 	return
 
 /obj/machinery/bot/medbot/Bump(M as mob|obj) //Leave no door unopened!
-	if((istype(M, /obj/machinery/door)) && (!isnull(src.botcard)))
+	if ((istype(M, /obj/machinery/door)) && (!isnull(src.botcard)))
 		var/obj/machinery/door/D = M
-		if(!istype(D, /obj/machinery/door/firedoor) && D.check_access(src.botcard))
+		if (!istype(D, /obj/machinery/door/firedoor) && D.check_access(src.botcard))
 			D.open()
 			src.frustration = 0
-	else if((istype(M, /mob/living/)) && (!src.anchored))
+	else if ((istype(M, /mob/living/)) && (!src.anchored))
 		src.loc = M:loc
 		src.frustration = 0
 	return
@@ -491,7 +491,7 @@
 /* terrible
 /obj/machinery/bot/medbot/Bumped(atom/movable/M as mob|obj)
 	spawn(0)
-		if(M)
+		if (M)
 			var/turf/T = get_turf(src)
 			M:loc = T
 */
@@ -517,7 +517,7 @@
 		if(O.density && !istype(O, /obj/structure/window) && !istype(O, /obj/machinery/door))
 			return 1
 
-		if(O.density && (istype(O, /obj/machinery/door)) && (access.len))
+		if (O.density && (istype(O, /obj/machinery/door)) && (access.len))
 			var/obj/machinery/door/D = O
 			for(var/req in D.req_access)
 				if(!(req in access)) //doesn't have this access
@@ -532,7 +532,7 @@
 
 /obj/item/weapon/storage/firstaid/attackby(var/obj/item/robot_parts/S, mob/user as mob)
 
-	if((!istype(S, /obj/item/robot_parts/l_arm)) && (!istype(S, /obj/item/robot_parts/r_arm)))
+	if ((!istype(S, /obj/item/robot_parts/l_arm)) && (!istype(S, /obj/item/robot_parts/r_arm)))
 		..()
 		return
 
@@ -560,9 +560,9 @@
 	..()
 	if(istype(W, /obj/item/weapon/pen))
 		var/t = copytext(stripped_input(user, "Enter new robot name", src.name, src.created_name),1,MAX_NAME_LEN)
-		if(!t)
+		if (!t)
 			return
-		if(!in_range(src, usr) && src.loc != usr)
+		if (!in_range(src, usr) && src.loc != usr)
 			return
 		src.created_name = t
 	else

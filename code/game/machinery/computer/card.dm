@@ -48,9 +48,9 @@
 
 	user.set_machine(src)
 	var/dat
-	if(!( ticker ))
+	if (!( ticker ))
 		return
-	if(mode) // accessing crew manifest
+	if (mode) // accessing crew manifest
 
 		dat += "<h4>Crew Manifest</h4>"
 		dat += "Entries cannot be modified from this terminal.<br><br>"
@@ -114,7 +114,7 @@
 
 
 		var/body
-		if(authenticated && modify)
+		if (authenticated && modify)
 			var/carddesc = {"<script type="text/javascript">
 								function markRed(){
 									var nameField = document.getElementById('namefield');
@@ -197,8 +197,8 @@
 		return
 	usr.set_machine(src)
 	switch(href_list["choice"])
-		if("modify")
-			if(modify)
+		if ("modify")
+			if (modify)
 				data_core.manifest_modify(modify.registered_name, modify.assignment)
 				modify.name = text("[modify.registered_name]'s ID Card ([modify.assignment])")
 				if(ishuman(usr))
@@ -211,14 +211,14 @@
 					modify = null
 			else
 				var/obj/item/I = usr.get_active_hand()
-				if(istype(I, /obj/item/weapon/card/id))
+				if (istype(I, /obj/item/weapon/card/id))
 					usr.drop_item()
 					I.loc = src
 					modify = I
 			authenticated = 0
 
-		if("scan")
-			if(scan)
+		if ("scan")
+			if (scan)
 				if(ishuman(usr))
 					scan.loc = usr.loc
 					if(!usr.get_active_hand())
@@ -229,18 +229,18 @@
 					scan = null
 			else
 				var/obj/item/I = usr.get_active_hand()
-				if(istype(I, /obj/item/weapon/card/id))
+				if (istype(I, /obj/item/weapon/card/id))
 					usr.drop_item()
 					I.loc = src
 					scan = I
 			authenticated = 0
-		if("auth")
-			if((!( authenticated ) && (scan || (istype(usr, /mob/living/silicon))) && (modify || mode)))
-				if(check_access(scan))
+		if ("auth")
+			if ((!( authenticated ) && (scan || (istype(usr, /mob/living/silicon))) && (modify || mode)))
+				if (check_access(scan))
 					authenticated = 1
-			else if((!( authenticated ) && (istype(usr, /mob/living/silicon))) && (!modify))
+			else if ((!( authenticated ) && (istype(usr, /mob/living/silicon))) && (!modify))
 				usr << "You can't modify an ID without an ID inserted to modify. Once one is in the modify slot on the computer, you can log in."
-		if("logout")
+		if ("logout")
 			authenticated = 0
 		if("access")
 			if(href_list["allowed"])
@@ -251,8 +251,8 @@
 						modify.access -= access_type
 						if(access_allowed == 1)
 							modify.access += access_type
-		if("assign")
-			if(authenticated)
+		if ("assign")
+			if (authenticated)
 				var/t1 = href_list["assign_target"]
 				if(t1 == "Custom")
 					var/temp_t = copytext(sanitize(input("Enter a custom job assignment.","Assignment")),1,MAX_MESSAGE_LEN)
@@ -271,30 +271,30 @@
 						return
 
 					modify.access = ( istype(src,/obj/machinery/computer/card/centcom) ? get_centcom_access(t1) : jobdatum.get_access() )
-					if(modify)
+					if (modify)
 						modify.assignment = t1
 						modify.rank = t1
-		if("reg")
-			if(authenticated)
+		if ("reg")
+			if (authenticated)
 				var/t2 = modify
 				//var/t1 = input(usr, "What name?", "ID computer", null)  as text
-				if((authenticated && modify == t2 && (in_range(src, usr) || (istype(usr, /mob/living/silicon))) && istype(loc, /turf)))
+				if ((authenticated && modify == t2 && (in_range(src, usr) || (istype(usr, /mob/living/silicon))) && istype(loc, /turf)))
 					var/temp_name = reject_bad_name(href_list["reg"])
 					if(temp_name)
 						modify.registered_name = temp_name
 					else
 						src.visible_message("<span class='notice'>[src] buzzes rudely.</span>")
-		if("account")
-			if(authenticated)
+		if ("account")
+			if (authenticated)
 				var/t2 = modify
 				//var/t1 = input(usr, "What name?", "ID computer", null)  as text
-				if((authenticated && modify == t2 && (in_range(src, usr) || (istype(usr, /mob/living/silicon))) && istype(loc, /turf)))
+				if ((authenticated && modify == t2 && (in_range(src, usr) || (istype(usr, /mob/living/silicon))) && istype(loc, /turf)))
 					var/account_num = text2num(href_list["account"])
 					modify.associated_account_number = account_num
-		if("mode")
+		if ("mode")
 			mode = text2num(href_list["mode_target"])
-		if("print")
-			if(!( printing ))
+		if ("print")
+			if (!( printing ))
 				printing = 1
 				sleep(50)
 				var/obj/item/weapon/paper/P = new /obj/item/weapon/paper( loc )
@@ -314,7 +314,7 @@
 				P.info = t1
 				P.name = "paper- 'Crew Manifest'"
 				printing = null
-	if(modify)
+	if (modify)
 		modify.name = text("[modify.registered_name]'s ID Card ([modify.assignment])")
 	updateUsrDialog()
 	return

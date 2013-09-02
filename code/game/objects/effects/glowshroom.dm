@@ -138,11 +138,11 @@
 			del(src)
 			return
 		if(2.0)
-			if(prob(50))
+			if (prob(50))
 				del(src)
 				return
 		if(3.0)
-			if(prob(5))
+			if (prob(5))
 				del(src)
 				return
 		else

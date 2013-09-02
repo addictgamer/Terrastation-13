@@ -141,11 +141,11 @@ Class Procs:
 			del(src)
 			return
 		if(2.0)
-			if(prob(50))
+			if (prob(50))
 				del(src)
 				return
 		if(3.0)
-			if(prob(25))
+			if (prob(25))
 				del(src)
 				return
 		else
@@ -170,7 +170,7 @@ Class Procs:
 		return 1
 	if(usr.restrained() || usr.lying || usr.stat)
 		return 1
-	if( ! (istype(usr, /mob/living/carbon/human) || \
+	if ( ! (istype(usr, /mob/living/carbon/human) || \
 			istype(usr, /mob/living/silicon) || \
 			istype(usr, /mob/living/carbon/monkey) && ticker && ticker.mode.name == "monkey") )
 		usr << "\red You don't have the dexterity to do this!"
@@ -185,7 +185,7 @@ Class Procs:
 			norange = 1
 
 	if(!norange)
-		if((!in_range(src, usr) || !istype(src.loc, /turf)) && !istype(usr, /mob/living/silicon))
+		if ((!in_range(src, usr) || !istype(src.loc, /turf)) && !istype(usr, /mob/living/silicon))
 			return 1
 
 	src.add_fingerprint(usr)
@@ -208,17 +208,17 @@ Class Procs:
 		return 1
 	if(user.lying || user.stat)
 		return 1
-	if( ! (istype(usr, /mob/living/carbon/human) || \
+	if ( ! (istype(usr, /mob/living/carbon/human) || \
 			istype(usr, /mob/living/silicon) || \
 			istype(usr, /mob/living/carbon/monkey) && ticker && ticker.mode.name == "monkey") )
 		usr << "\red You don't have the dexterity to do this!"
 		return 1
 /*
 	//distance checks are made by atom/proc/DblClick
-	if((get_dist(src, user) > 1 || !istype(src.loc, /turf)) && !istype(user, /mob/living/silicon))
+	if ((get_dist(src, user) > 1 || !istype(src.loc, /turf)) && !istype(user, /mob/living/silicon))
 		return 1
 */
-	if(ishuman(user))
+	if (ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.getBrainLoss() >= 60)
 			visible_message("\red [H] stares cluelessly at [src] and drools.")

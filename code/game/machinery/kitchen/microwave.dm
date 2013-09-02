@@ -29,7 +29,7 @@
 	//..() //do not need this
 	reagents = new/datum/reagents(100)
 	reagents.my_atom = src
-	if(!available_recipes)
+	if (!available_recipes)
 		available_recipes = new
 		for (var/type in (typesof(/datum/recipe)-/datum/recipe))
 			available_recipes+= new type
@@ -40,7 +40,7 @@
 				acceptable_items |= item
 			for (var/reagent in recipe.reagents)
 				acceptable_reagents |= reagent
-			if(recipe.items)
+			if (recipe.items)
 				max_n_of_items = max(max_n_of_items,recipe.items.len)
 
 /*******************
@@ -54,7 +54,7 @@
 				"\blue [user] starts to fix part of the microwave.", \
 				"\blue You start to fix part of the microwave." \
 			)
-			if(do_after(user,20))
+			if (do_after(user,20))
 				user.visible_message( \
 					"\blue [user] fixes part of the microwave.", \
 					"\blue You have fixed part of the microwave." \
@@ -65,7 +65,7 @@
 				"\blue [user] starts to fix part of the microwave.", \
 				"\blue You start to fix part of the microwave." \
 			)
-			if(do_after(user,20))
+			if (do_after(user,20))
 				user.visible_message( \
 					"\blue [user] fixes the microwave.", \
 					"\blue You have fixed the microwave." \
@@ -83,7 +83,7 @@
 				"\blue [user] starts to clean the microwave.", \
 				"\blue You start to clean the microwave." \
 			)
-			if(do_after(user,20))
+			if (do_after(user,20))
 				user.visible_message( \
 					"\blue [user]  has cleaned  the microwave.", \
 					"\blue You have cleaned the microwave." \
@@ -96,10 +96,10 @@
 			user << "\red It's dirty!"
 			return 1
 	else if(is_type_in_list(O,acceptable_items))
-		if(contents.len>=max_n_of_items)
+		if (contents.len>=max_n_of_items)
 			user << "\red This [src] is full of ingredients, you cannot put more."
 			return 1
-		if(istype(O,/obj/item/stack) && O:amount>1)
+		if (istype(O,/obj/item/stack) && O:amount>1)
 			new O.type (src)
 			O:use(1)
 			user.visible_message( \
@@ -116,10 +116,10 @@
 	        istype(O,/obj/item/weapon/reagent_containers/food/drinks) || \
 	        istype(O,/obj/item/weapon/reagent_containers/food/condiment) \
 		)
-		if(!O.reagents)
+		if (!O.reagents)
 			return 1
 		for (var/datum/reagent/R in O.reagents.reagent_list)
-			if(!(R.id in acceptable_reagents))
+			if (!(R.id in acceptable_reagents))
 				user << "\red Your [O] contains components unsuitable for cookery."
 				return 1
 		//G.reagents.trans_to(src,G.amount_per_transfer_from_this)
@@ -160,42 +160,42 @@
 		var/list/items_measures_p = new
 		for (var/obj/O in contents)
 			var/display_name = O.name
-			if(istype(O,/obj/item/weapon/reagent_containers/food/snacks/egg))
+			if (istype(O,/obj/item/weapon/reagent_containers/food/snacks/egg))
 				items_measures[display_name] = "egg"
 				items_measures_p[display_name] = "eggs"
-			if(istype(O,/obj/item/weapon/reagent_containers/food/snacks/tofu))
+			if (istype(O,/obj/item/weapon/reagent_containers/food/snacks/tofu))
 				items_measures[display_name] = "tofu chunk"
 				items_measures_p[display_name] = "tofu chunks"
-			if(istype(O,/obj/item/weapon/reagent_containers/food/snacks/meat)) //any meat
+			if (istype(O,/obj/item/weapon/reagent_containers/food/snacks/meat)) //any meat
 				items_measures[display_name] = "slab of meat"
 				items_measures_p[display_name] = "slabs of meat"
-			if(istype(O,/obj/item/weapon/reagent_containers/food/snacks/donkpocket))
+			if (istype(O,/obj/item/weapon/reagent_containers/food/snacks/donkpocket))
 				display_name = "Turnovers"
 				items_measures[display_name] = "turnover"
 				items_measures_p[display_name] = "turnovers"
-			if(istype(O,/obj/item/weapon/reagent_containers/food/snacks/carpmeat))
+			if (istype(O,/obj/item/weapon/reagent_containers/food/snacks/carpmeat))
 				items_measures[display_name] = "fillet of meat"
 				items_measures_p[display_name] = "fillets of meat"
 			items_counts[display_name]++
 		for (var/O in items_counts)
 			var/N = items_counts[O]
-			if(!(O in items_measures))
+			if (!(O in items_measures))
 				dat += {"<B>[capitalize(O)]:</B> [N] [lowertext(O)]\s<BR>"}
 			else
-				if(N==1)
+				if (N==1)
 					dat += {"<B>[capitalize(O)]:</B> [N] [items_measures[O]]<BR>"}
 				else
 					dat += {"<B>[capitalize(O)]:</B> [N] [items_measures_p[O]]<BR>"}
 
 		for (var/datum/reagent/R in reagents.reagent_list)
 			var/display_name = R.name
-			if(R.id == "capsaicin")
+			if (R.id == "capsaicin")
 				display_name = "Hotsauce"
-			if(R.id == "frostoil")
+			if (R.id == "frostoil")
 				display_name = "Coldsauce"
 			dat += {"<B>[display_name]:</B> [R.volume] unit\s<BR>"}
 
-		if(items_counts.len==0 && reagents.reagent_list.len==0)
+		if (items_counts.len==0 && reagents.reagent_list.len==0)
 			dat = {"<B>The microwave is empty</B><BR>"}
 		else
 			dat = {"<b>Ingredients:</b><br>[dat]"}
@@ -218,8 +218,8 @@
 	if(stat & (NOPOWER|BROKEN))
 		return
 	start()
-	if(reagents.total_volume==0 && !(locate(/obj) in contents)) //dry run
-		if(!wzhzhzh(10))
+	if (reagents.total_volume==0 && !(locate(/obj) in contents)) //dry run
+		if (!wzhzhzh(10))
 			abort()
 			return
 		stop()
@@ -227,10 +227,10 @@
 
 	var/datum/recipe/recipe = select_recipe(available_recipes,src)
 	var/obj/cooked
-	if(!recipe)
+	if (!recipe)
 		dirty += 1
-		if(prob(max(10,dirty*5)))
-			if(!wzhzhzh(4))
+		if (prob(max(10,dirty*5)))
+			if (!wzhzhzh(4))
 				abort()
 				return
 			muck_start()
@@ -239,8 +239,8 @@
 			cooked = fail()
 			cooked.loc = src.loc
 			return
-		else if(has_extra_item())
-			if(!wzhzhzh(4))
+		else if (has_extra_item())
+			if (!wzhzhzh(4))
 				abort()
 				return
 			broke()
@@ -248,7 +248,7 @@
 			cooked.loc = src.loc
 			return
 		else
-			if(!wzhzhzh(10))
+			if (!wzhzhzh(10))
 				abort()
 				return
 			stop()
@@ -257,10 +257,10 @@
 			return
 	else
 		var/halftime = round(recipe.time/10/2)
-		if(!wzhzhzh(halftime))
+		if (!wzhzhzh(halftime))
 			abort()
 			return
-		if(!wzhzhzh(halftime))
+		if (!wzhzhzh(halftime))
 			abort()
 			cooked = fail()
 			cooked.loc = src.loc
@@ -273,7 +273,7 @@
 
 /obj/machinery/microwave/proc/wzhzhzh(var/seconds as num)
 	for (var/i=1 to seconds)
-		if(stat & (NOPOWER|BROKEN))
+		if (stat & (NOPOWER|BROKEN))
 			return 0
 		use_power(500)
 		sleep(10)
@@ -281,7 +281,7 @@
 
 /obj/machinery/microwave/proc/has_extra_item()
 	for (var/obj/O in contents)
-		if( \
+		if ( \
 				!istype(O,/obj/item/weapon/reagent_containers/food) && \
 				!istype(O, /obj/item/weapon/grown) \
 			)
@@ -308,7 +308,7 @@
 /obj/machinery/microwave/proc/dispose()
 	for (var/obj/O in contents)
 		O.loc = src.loc
-	if(src.reagents.total_volume)
+	if (src.reagents.total_volume)
 		src.dirty++
 	src.reagents.clear_reagents()
 	usr << "\blue You dispose of the microwave contents."
@@ -343,9 +343,9 @@
 	var/amount = 0
 	for (var/obj/O in contents-ffuu)
 		amount++
-		if(O.reagents)
+		if (O.reagents)
 			var/id = O.reagents.get_master_reagent_id()
-			if(id)
+			if (id)
 				amount+=O.reagents.get_reagent_amount(id)
 		del(O)
 	src.reagents.clear_reagents()
@@ -363,9 +363,9 @@
 		return
 
 	switch(href_list["action"])
-		if("cook")
+		if ("cook")
 			cook()
 
-		if("dispose")
+		if ("dispose")
 			dispose()
 	return

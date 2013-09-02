@@ -170,7 +170,7 @@ LOOK FOR SURGERY.DM*/
 						M:appendix_op_stage = 5.0
 		return
 
-	if(user.zone_sel.selecting == "eyes")
+	if (user.zone_sel.selecting == "eyes")
 
 		var/mob/living/carbon/human/H = M
 		if(istype(H) && ( \
@@ -294,7 +294,7 @@ LOOK FOR SURGERY.DM*/
 							appendicitis.cure()
 		return
 
-	if(user.zone_sel.selecting == "eyes")
+	if (user.zone_sel.selecting == "eyes")
 
 		var/mob/living/carbon/human/H = M
 		if(istype(H) && ( \

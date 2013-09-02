@@ -94,12 +94,12 @@
 	onclose(user, "cryo")
 
 /obj/machinery/atmospherics/unary/cryo_cell/Topic(href, href_list)
-	if((get_dist(src, usr) <= 1) || istype(usr, /mob/living/silicon/ai))
+	if ((get_dist(src, usr) <= 1) || istype(usr, /mob/living/silicon/ai))
 		if(href_list["start"])
 			on = !on
 			update_icon()
 		if(href_list["eject"])
-			if(beaker)
+			if (beaker)
 				var/obj/item/weapon/reagent_containers/glass/B = beaker
 				B.loc = get_step(loc, SOUTH)
 				beaker = null
@@ -158,7 +158,7 @@
 				occupant.adjustOxyLoss(-1)
 			//severe damage should heal waaay slower without proper chemicals
 			if(occupant.bodytemperature < 225)
-				if(occupant.getToxLoss())
+				if (occupant.getToxLoss())
 					occupant.adjustToxLoss(max(-1, -20/occupant.getToxLoss()))
 				var/heal_brute = occupant.getBruteLoss() ? min(1, 20/occupant.getBruteLoss()) : 0
 				var/heal_fire = occupant.getFireLoss() ? min(1, 20/occupant.getFireLoss()) : 0
@@ -195,30 +195,30 @@
 		return
 	//for(var/obj/O in src)
 	//	O.loc = loc
-	if(occupant.client)
+	if (occupant.client)
 		occupant.client.eye = occupant.client.mob
 		occupant.client.perspective = MOB_PERSPECTIVE
 	occupant.loc = get_step(loc, SOUTH)	//this doesn't account for walls or anything, but i don't forsee that being a problem.
-	if(occupant.bodytemperature < 261 && occupant.bodytemperature > 140) //Patch by Aranclanos to stop people from taking burn damage after being ejected
+	if (occupant.bodytemperature < 261 && occupant.bodytemperature > 140) //Patch by Aranclanos to stop people from taking burn damage after being ejected
 		occupant.bodytemperature = 261
 //	occupant.metabslow = 0
 	occupant = null
 	update_icon()
 	return
 /obj/machinery/atmospherics/unary/cryo_cell/proc/put_mob(mob/living/carbon/M as mob)
-	if(!istype(M))
+	if (!istype(M))
 		usr << "\red <B>The cryo cell cannot handle such liveform!</B>"
 		return
-	if(occupant)
+	if (occupant)
 		usr << "\red <B>The cryo cell is already occupied!</B>"
 		return
-	if(M.abiotic())
+	if (M.abiotic())
 		usr << "\red Subject may not have abiotic items on."
 		return
 	if(!node)
 		usr << "\red The cell is not correctly connected to its pipe network!"
 		return
-	if(M.client)
+	if (M.client)
 		M.client.perspective = EYE_PERSPECTIVE
 		M.client.eye = src
 	M.stop_pulling()
@@ -236,7 +236,7 @@
 	set category = "Object"
 	set src in oview(1)
 	if(usr == occupant)//If the user is inside the tube...
-		if(usr.stat == 2)//and he's not dead....
+		if (usr.stat == 2)//and he's not dead....
 			return
 		usr << "\blue Release sequence activated. This will take two minutes."
 		sleep(1200)
@@ -244,7 +244,7 @@
 			return
 		go_out()//and release him from the eternal prison.
 	else
-		if(usr.stat != 0)
+		if (usr.stat != 0)
 			return
 		go_out()
 	add_fingerprint(usr)
@@ -258,7 +258,7 @@
 		if(M.Victim == usr)
 			usr << "You're too busy getting your life sucked out of you."
 			return
-	if(usr.stat != 0 || stat & (NOPOWER|BROKEN))
+	if (usr.stat != 0 || stat & (NOPOWER|BROKEN))
 		return
 	put_mob(usr)
 	return

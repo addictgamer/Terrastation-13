@@ -17,7 +17,7 @@
 	..()
 	for(dir in list(NORTH,EAST,SOUTH,WEST))
 		computer = locate(/obj/machinery/computer/operating, get_step(src, dir))
-		if(computer)
+		if (computer)
 			computer.table = src
 			break
 //	spawn(100) //Wont the MC just call this process() before and at the 10 second mark anyway?
@@ -31,12 +31,12 @@
 			del(src)
 			return
 		if(2.0)
-			if(prob(50))
+			if (prob(50))
 				//SN src = null
 				del(src)
 				return
 		if(3.0)
-			if(prob(25))
+			if (prob(25))
 				src.density = 0
 		else
 	return
@@ -51,20 +51,20 @@
 	return
 
 /obj/machinery/optable/attack_paw(mob/user as mob)
-	if((HULK in usr.mutations))
+	if ((HULK in usr.mutations))
 		usr << text("\blue You destroy the operating table.")
 		visible_message("\red [usr] destroys the operating table!")
 		src.density = 0
 		del(src)
-	if(!( locate(/obj/machinery/optable, user.loc) ))
+	if (!( locate(/obj/machinery/optable, user.loc) ))
 		step(user, get_dir(user, src))
-		if(user.loc == src.loc)
+		if (user.loc == src.loc)
 			user.layer = TURF_LAYER
 			visible_message("The monkey hides under the table!")
 	return
 
 /obj/machinery/optable/attack_hand(mob/user as mob)
-	if(HULK in usr.mutations)
+	if (HULK in usr.mutations)
 		usr << text("\blue You destroy the table.")
 		visible_message("\red [usr] destroys the operating table!")
 		src.density = 0
@@ -82,10 +82,10 @@
 
 /obj/machinery/optable/MouseDrop_T(obj/O as obj, mob/user as mob)
 
-	if((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
+	if ((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
 		return
 	user.drop_item()
-	if(O.loc != src.loc)
+	if (O.loc != src.loc)
 		step(O, get_dir(O, src))
 	return
 
@@ -105,10 +105,10 @@
 
 /obj/machinery/optable/attackby(obj/item/weapon/W as obj, mob/living/carbon/user as mob)
 
-	if(istype(W, /obj/item/weapon/grab))
+	if (istype(W, /obj/item/weapon/grab))
 		if(ismob(W:affecting))
 			var/mob/M = W:affecting
-			if(M.client)
+			if (M.client)
 				M.client.perspective = EYE_PERSPECTIVE
 				M.client.eye = src
 			M.resting = 1

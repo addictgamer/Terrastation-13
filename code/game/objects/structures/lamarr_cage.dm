@@ -12,16 +12,16 @@
 
 /obj/structure/lamarr/ex_act(severity)
 	switch(severity)
-		if(1)
+		if (1)
 			new /obj/item/weapon/shard( src.loc )
 			Break()
 			del(src)
-		if(2)
-			if(prob(50))
+		if (2)
+			if (prob(50))
 				src.health -= 15
 				src.healthcheck()
-		if(3)
-			if(prob(50))
+		if (3)
+			if (prob(50))
 				src.health -= 5
 				src.healthcheck()
 
@@ -34,7 +34,7 @@
 
 
 /obj/structure/lamarr/blob_act()
-	if(prob(75))
+	if (prob(75))
 		new /obj/item/weapon/shard( src.loc )
 		Break()
 		del(src)
@@ -47,8 +47,8 @@
 
 
 /obj/structure/lamarr/proc/healthcheck()
-	if(src.health <= 0)
-		if(!( src.destroyed ))
+	if (src.health <= 0)
+		if (!( src.destroyed ))
 			src.density = 0
 			src.destroyed = 1
 			new /obj/item/weapon/shard( src.loc )
@@ -76,12 +76,12 @@
 	return src.attack_hand(user)
 
 /obj/structure/lamarr/attack_hand(mob/user as mob)
-	if(src.destroyed)
+	if (src.destroyed)
 		return
 	else
 		usr << text("\blue You kick the lab cage.")
 		for(var/mob/O in oviewers())
-			if((O.client && !( O.blinded )))
+			if ((O.client && !( O.blinded )))
 				O << text("\red [] kicks the lab cage.", usr)
 		src.health -= 2
 		healthcheck()

@@ -201,7 +201,7 @@
 		var/shock_charges = 4
 
 	proc/unlock()
-		if(!istype(loc, /obj/item/device/pda))
+		if (!istype(loc, /obj/item/device/pda))
 			return
 
 		generate_menu()
@@ -209,12 +209,12 @@
 		return
 
 	proc/print_to_host(var/text)
-		if(!istype(loc, /obj/item/device/pda))
+		if (!istype(loc, /obj/item/device/pda))
 			return
 		loc:cart = text
 
 		for (var/mob/M in viewers(1, loc.loc))
-			if(M.client && M.machine == loc)
+			if (M.client && M.machine == loc)
 				loc:attack_self(M)
 
 		return
@@ -268,7 +268,7 @@ Code:
 <a href='byond://?src=\ref[src];choice=Signal Code;scode=1'>+</a>
 <a href='byond://?src=\ref[src];choice=Signal Code;scode=5'>+</a><br>"}
 
-			if(42) //status displays
+			if (42) //status displays
 				menu = "<h4><img src=pda_status.png> Station Status Display Interlink</h4>"
 
 				menu += "\[ <A HREF='?src=\ref[src];choice=Status;statdisp=blank'>Clear</A> \]<BR>"
@@ -281,7 +281,7 @@ Code:
 				menu += " <A HREF='?src=\ref[src];choice=Status;statdisp=alert;alert=lockdown'>Lockdown</A> |"
 				menu += " <A HREF='?src=\ref[src];choice=Status;statdisp=alert;alert=biohazard'>Biohazard</A> \]<BR>"
 
-			if(43) //Muskets' and Rockdtben's power monitor :D
+			if (43) //Muskets' and Rockdtben's power monitor :D
 				menu = "<h4><img src=pda_power.png> Power Monitors - Please select one</h4><BR>"
 				powmonitor = null
 				powermonitors = list()
@@ -307,7 +307,7 @@ Code:
 
 					menu += "</FONT>"
 
-			if(433) //Muskets' and Rockdtben's power monitor :D
+			if (433) //Muskets' and Rockdtben's power monitor :D
 				menu = "<h4><img src=pda_power.png> Power Monitor </h4><BR>"
 				if(!powmonitor)
 					menu += "\red No connection<BR>"
@@ -334,7 +334,7 @@ Code:
 
 					menu += "</FONT></PRE>"
 
-			if(44) //medical records //This thing only displays a single screen so it's hard to really get the sub-menu stuff working.
+			if (44) //medical records //This thing only displays a single screen so it's hard to really get the sub-menu stuff working.
 				menu = "<h4><img src=pda_medical.png> Medical Record List</h4>"
 				if(!isnull(data_core.general))
 					for (var/datum/data/record/R in sortRecord(data_core.general))
@@ -343,7 +343,7 @@ Code:
 			if(441)
 				menu = "<h4><img src=pda_medical.png> Medical Record</h4>"
 
-				if(istype(active1, /datum/data/record) && (active1 in data_core.general))
+				if (istype(active1, /datum/data/record) && (active1 in data_core.general))
 					menu += "Name: [active1.fields["name"]] ID: [active1.fields["id"]]<br>"
 					menu += "Sex: [active1.fields["sex"]]<br>"
 					menu += "Age: [active1.fields["age"]]<br>"
@@ -357,7 +357,7 @@ Code:
 				menu += "<br>"
 
 				menu += "<h4><img src=pda_medical.png> Medical Data</h4>"
-				if(istype(active2, /datum/data/record) && (active2 in data_core.medical))
+				if (istype(active2, /datum/data/record) && (active2 in data_core.medical))
 					menu += "Blood Type: [active2.fields["b_type"]]<br><br>"
 
 					menu += "Minor Disabilities: [active2.fields["mi_dis"]]<br>"
@@ -377,7 +377,7 @@ Code:
 					menu += "<b>Record Lost!</b><br>"
 
 				menu += "<br>"
-			if(45) //security records
+			if (45) //security records
 				menu = "<h4><img src=pda_cuffs.png> Security Record List</h4>"
 				if(!isnull(data_core.general))
 					for (var/datum/data/record/R in sortRecord(data_core.general))
@@ -387,7 +387,7 @@ Code:
 			if(451)
 				menu = "<h4><img src=pda_cuffs.png> Security Record</h4>"
 
-				if(istype(active1, /datum/data/record) && (active1 in data_core.general))
+				if (istype(active1, /datum/data/record) && (active1 in data_core.general))
 					menu += "Name: [active1.fields["name"]] ID: [active1.fields["id"]]<br>"
 					menu += "Sex: [active1.fields["sex"]]<br>"
 					menu += "Age: [active1.fields["age"]]<br>"
@@ -401,7 +401,7 @@ Code:
 				menu += "<br>"
 
 				menu += "<h4><img src=pda_cuffs.png> Security Data</h4>"
-				if(istype(active3, /datum/data/record) && (active3 in data_core.security))
+				if (istype(active3, /datum/data/record) && (active3 in data_core.security))
 					menu += "Criminal Status: [active3.fields["criminal"]]<br>"
 
 					menu += "Minor Crimes: [active3.fields["mi_crim"]]<br>"
@@ -416,7 +416,7 @@ Code:
 					menu += "<b>Record Lost!</b><br>"
 
 				menu += "<br>"
-			if(46) //beepsky control
+			if (46) //beepsky control
 				var/obj/item/radio/integrated/beepsky/SC = radio
 				if(!SC)
 					menu = "Interlink Error - Please reinsert cartridge."
@@ -431,7 +431,7 @@ Code:
 
 					else
 						for(var/obj/machinery/bot/B in SC.botlist)
-							if(B)
+							if (B)
 								menu += "<A href='byond://?src=\ref[SC];op=control;bot=\ref[B]'>[B] at [B.loc.loc]</A><BR>"
 
 					menu += "<BR><A href='byond://?src=\ref[SC];op=scanbots'><img src=pda_scanner.png> Scan for active bots</A><BR>"
@@ -466,7 +466,7 @@ Code:
 						menu += "\[<A href='byond://?src=\ref[SC];op=summon'>Summon Bot</A>\]<BR>"
 						menu += "<HR><A href='byond://?src=\ref[SC];op=botlist'><img src=pda_back.png>Return to bot list</A>"
 
-			if(47) //quartermaster order records
+			if (47) //quartermaster order records
 				menu = "<h4><img src=pda_crate.png> Supply Record Interlink</h4>"
 
 				menu += "<BR><B>Supply shuttle</B><BR>"
@@ -483,7 +483,7 @@ Code:
 					menu += "<li>#[SO.ordernum] - [SO.object.name] requested by [SO.orderedby]</li>"
 				menu += "</ol><font size=\"-3\">Upgrade NOW to Space Parts & Space Vendors PLUS for full remote order control and inventory management."
 
-			if(48) //mulebot control
+			if (48) //mulebot control
 				var/obj/item/radio/integrated/mule/QC = radio
 				if(!QC)
 					menu = "Interlink Error - Please reinsert cartridge."
@@ -540,11 +540,11 @@ Code:
 						menu += "\[<A href='byond://?src=\ref[QC];op=home'>Return Home</A>\]<BR>"
 						menu += "<HR><A href='byond://?src=\ref[QC];op=botlist'><img src=pda_back.png>Return to bot list</A>"
 
-			if(49) //janitorial locator
+			if (49) //janitorial locator
 				menu = "<h4><img src=pda_bucket.png> Persistent Custodial Object Locator</h4>"
 
 				var/turf/cl = get_turf(src)
-				if(cl)
+				if (cl)
 					menu += "Current Orbital Location: <b>\[[cl.x],[cl.y]\]</b>"
 
 					menu += "<h4>Located Mops:</h4>"
@@ -554,12 +554,12 @@ Code:
 						var/turf/ml = get_turf(M)
 
 						if(ml)
-							if(ml.z != cl.z)
+							if (ml.z != cl.z)
 								continue
 							var/direction = get_dir(src, M)
 							ldat += "Mop - <b>\[[ml.x],[ml.y] ([uppertext(dir2text(direction))])\]</b> - [M.reagents.total_volume ? "Wet" : "Dry"]<br>"
 
-					if(!ldat)
+					if (!ldat)
 						menu += "None"
 					else
 						menu += "[ldat]"
@@ -571,12 +571,12 @@ Code:
 						var/turf/bl = get_turf(B)
 
 						if(bl)
-							if(bl.z != cl.z)
+							if (bl.z != cl.z)
 								continue
 							var/direction = get_dir(src, B)
 							ldat += "Bucket - <b>\[[bl.x],[bl.y] ([uppertext(dir2text(direction))])\]</b> - Water level: [B.reagents.total_volume]/100<br>"
 
-					if(!ldat)
+					if (!ldat)
 						menu += "None"
 					else
 						menu += "[ldat]"
@@ -588,12 +588,12 @@ Code:
 						var/turf/bl = get_turf(B)
 
 						if(bl)
-							if(bl.z != cl.z)
+							if (bl.z != cl.z)
 								continue
 							var/direction = get_dir(src, B)
 							ldat += "Cleanbot - <b>\[[bl.x],[bl.y] ([uppertext(dir2text(direction))])\]</b> - [B.on ? "Online" : "Offline"]<br>"
 
-					if(!ldat)
+					if (!ldat)
 						menu += "None"
 					else
 						menu += "[ldat]"
@@ -606,7 +606,7 @@ Code:
 /obj/item/weapon/cartridge/Topic(href, href_list)
 	..()
 
-	if(!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
+	if (!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
 		usr.unset_machine()
 		usr << browse(null, "window=pda")
 		return
@@ -617,9 +617,9 @@ Code:
 			var/datum/data/record/M = locate(href_list["target"])
 			loc:mode = 441
 			mode = 441
-			if(R in data_core.general)
+			if (R in data_core.general)
 				for (var/datum/data/record/E in data_core.medical)
-					if((E.fields["name"] == R.fields["name"] || E.fields["id"] == R.fields["id"]))
+					if ((E.fields["name"] == R.fields["name"] || E.fields["id"] == R.fields["id"]))
 						M = E
 						break
 				active1 = R
@@ -630,9 +630,9 @@ Code:
 			var/datum/data/record/S = locate(href_list["target"])
 			loc:mode = 451
 			mode = 451
-			if(R in data_core.general)
+			if (R in data_core.general)
 				for (var/datum/data/record/E in data_core.security)
-					if((E.fields["name"] == R.fields["name"] || E.fields["id"] == R.fields["id"]))
+					if ((E.fields["name"] == R.fields["name"] || E.fields["id"] == R.fields["id"]))
 						S = E
 						break
 				active1 = R

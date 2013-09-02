@@ -108,7 +108,7 @@
 		B.loc = get_turf(src)
 		user << "You armed the robot frame"
 		W:use(1)
-		if(user.get_inactive_hand()==src)
+		if (user.get_inactive_hand()==src)
 			user.before_take_item(src)
 			user.put_in_inactive_hand(B)
 		del(src)
@@ -228,11 +228,11 @@
 		else
 			user << "\blue The MMI must go in after everything else!"
 
-	if(istype(W, /obj/item/weapon/pen))
+	if (istype(W, /obj/item/weapon/pen))
 		var/t = stripped_input(user, "Enter new robot name", src.name, src.created_name, MAX_NAME_LEN)
-		if(!t)
+		if (!t)
 			return
-		if(!in_range(src, usr) && src.loc != usr)
+		if (!in_range(src, usr) && src.loc != usr)
 			return
 
 		src.created_name = t

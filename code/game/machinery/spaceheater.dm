@@ -31,7 +31,7 @@
 
 	examine()
 		set src in oview(12)
-		if(!( usr ))
+		if (!( usr ))
 			return
 		usr << "This is \icon[src] \an [src.name]."
 		usr << src.desc
@@ -120,9 +120,9 @@
 
 
 	Topic(href, href_list)
-		if(usr.stat)
+		if (usr.stat)
 			return
-		if((in_range(src, usr) && istype(src.loc, /turf)) || (istype(usr, /mob/living/silicon)))
+		if ((in_range(src, usr) && istype(src.loc, /turf)) || (istype(usr, /mob/living/silicon)))
 			usr.set_machine(src)
 
 			switch(href_list["op"])

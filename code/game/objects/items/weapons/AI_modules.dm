@@ -22,7 +22,7 @@ AI MODULES
 
 
 /obj/item/weapon/aiModule/proc/install(var/obj/machinery/computer/C)
-	if(istype(C, /obj/machinery/computer/aiupload))
+	if (istype(C, /obj/machinery/computer/aiupload))
 		var/obj/machinery/computer/aiupload/comp = C
 		if(comp.stat & NOPOWER)
 			usr << "The upload computer has no power!"
@@ -30,7 +30,7 @@ AI MODULES
 		if(comp.stat & BROKEN)
 			usr << "The upload computer is broken!"
 			return
-		if(!comp.current)
+		if (!comp.current)
 			usr << "You haven't selected an AI to transmit laws to!"
 			return
 
@@ -38,9 +38,9 @@ AI MODULES
 			usr << "Law uploads have been disabled by NanoTrasen!"
 			return
 
-		if(comp.current.stat == 2 || comp.current.control_disabled == 1)
+		if (comp.current.stat == 2 || comp.current.control_disabled == 1)
 			usr << "Upload failed. No signal is being detected from the AI."
-		else if(comp.current.see_in_dark == 0)
+		else if (comp.current.see_in_dark == 0)
 			usr << "Upload failed. Only a faint signal is being detected from the AI, and it is not responding to our requests. It may be low on power."
 		else
 			src.transmitInstructions(comp.current, usr)
@@ -53,7 +53,7 @@ AI MODULES
 			usr << "Upload complete. The AI's laws have been modified."
 
 
-	else if(istype(C, /obj/machinery/computer/borgupload))
+	else if (istype(C, /obj/machinery/computer/borgupload))
 		var/obj/machinery/computer/borgupload/comp = C
 		if(comp.stat & NOPOWER)
 			usr << "The upload computer has no power!"
@@ -61,13 +61,13 @@ AI MODULES
 		if(comp.stat & BROKEN)
 			usr << "The upload computer is broken!"
 			return
-		if(!comp.current)
+		if (!comp.current)
 			usr << "You haven't selected a robot to transmit laws to!"
 			return
 
-		if(comp.current.stat == 2 || comp.current.emagged)
+		if (comp.current.stat == 2 || comp.current.emagged)
 			usr << "Upload failed. No signal is being detected from the robot."
-		else if(comp.current.connected_ai)
+		else if (comp.current.connected_ai)
 			usr << "Upload failed. The robot is slaved to an AI."
 		else
 			src.transmitInstructions(comp.current, usr)
@@ -136,7 +136,7 @@ AI MODULES
 /obj/item/weapon/aiModule/oneHuman/transmitInstructions(var/mob/living/silicon/ai/target, var/mob/sender)
 	..()
 	var/law = "Only [targetName] is human."
-	if(!is_special_character(target)) // Makes sure the AI isn't a traitor before changing their law 0. --NeoFite
+	if (!is_special_character(target)) // Makes sure the AI isn't a traitor before changing their law 0. --NeoFite
 		target << law
 		target.set_zeroth_law(law)
 		lawchanges.Add("The law specified [targetName]")
@@ -291,7 +291,7 @@ AI MODULES
 
 /obj/item/weapon/aiModule/reset/transmitInstructions(var/mob/living/silicon/ai/target, var/mob/sender)
 	..()
-	if(!is_special_character(target))
+	if (!is_special_character(target))
 		target.set_zeroth_law("")
 	target.clear_supplied_laws()
 	target.clear_ion_laws()
@@ -307,7 +307,7 @@ AI MODULES
 
 /obj/item/weapon/aiModule/purge/transmitInstructions(var/mob/living/silicon/ai/target, var/mob/sender)
 	..()
-	if(!is_special_character(target))
+	if (!is_special_character(target))
 		target.set_zeroth_law("")
 	target << "[sender.real_name] attempted to wipe your laws using a purge module."
 	target.clear_supplied_laws()

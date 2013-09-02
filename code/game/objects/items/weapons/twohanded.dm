@@ -66,7 +66,7 @@
 	if(wielded) //Trying to unwield it
 		unwield()
 		user << "<span class='notice'>You are now carrying the [name] with one hand.</span>"
-		if(src.unwieldsound)
+		if (src.unwieldsound)
 			playsound(src.loc, unwieldsound, 50, 1)
 
 		var/obj/item/weapon/twohanded/offhand/O = user.get_inactive_hand()
@@ -80,7 +80,7 @@
 			return
 		wield()
 		user << "<span class='notice'>You grab the [initial(name)] with both hands.</span>"
-		if(src.wieldsound)
+		if (src.wieldsound)
 			playsound(src.loc, wieldsound, 50, 1)
 
 		var/obj/item/weapon/twohanded/offhand/O = new(user) ////Let's reserve his other hand~
@@ -128,7 +128,7 @@
 			new /obj/item/weapon/shard( W.loc )
 			if(W.reinf) new /obj/item/stack/rods( W.loc)
 
-			if(W.dir == SOUTHWEST)
+			if (W.dir == SOUTHWEST)
 				new /obj/item/weapon/shard( W.loc )
 				if(W.reinf) new /obj/item/stack/rods( W.loc)
 		del(A)

@@ -27,7 +27,7 @@
 	attack_verb = list("attacked", "stabbed", "poked")
 
 /obj/item/weapon/kitchen/utensil/New()
-	if(prob(60))
+	if (prob(60))
 		src.pixel_y = rand(0, 4)
 	return
 
@@ -61,7 +61,7 @@
 	if(user.zone_sel.selecting != "eyes" && user.zone_sel.selecting != "head")
 		return ..()
 
-	if(src.icon_state == "forkloaded") //This is a poor way of handling it, but a proper rewrite of the fork to allow for a more varied foodening can happen when I'm in the mood. --NEO
+	if (src.icon_state == "forkloaded") //This is a poor way of handling it, but a proper rewrite of the fork to allow for a more varied foodening can happen when I'm in the mood. --NEO
 		if(M == user)
 			for(var/mob/O in viewers(M, null))
 				O.show_message(text("\blue [] eats a delicious forkful of omelette!", user), 1)
@@ -89,7 +89,7 @@
 	if(user.zone_sel.selecting != "eyes" && user.zone_sel.selecting != "head")
 		return ..()
 
-	if(src.icon_state == "forkloaded") //This is a poor way of handling it, but a proper rewrite of the fork to allow for a more varied foodening can happen when I'm in the mood. --NEO
+	if (src.icon_state == "forkloaded") //This is a poor way of handling it, but a proper rewrite of the fork to allow for a more varied foodening can happen when I'm in the mood. --NEO
 		if(M == user)
 			for(var/mob/O in viewers(M, null))
 				O.show_message(text("\blue [] eats a delicious forkful of omelette!", user), 1)
@@ -122,7 +122,7 @@
 		return (BRUTELOSS)
 
 /obj/item/weapon/kitchen/utensil/knife/attack(target as mob, mob/living/user as mob)
-	if((CLUMSY in user.mutations) && prob(50))
+	if ((CLUMSY in user.mutations) && prob(50))
 		user << "\red You accidentally cut yourself with the [src]."
 		user.take_organ_damage(20)
 		return
@@ -137,7 +137,7 @@
 	throwforce = 10.0
 
 /obj/item/weapon/kitchen/utensil/knife/attack(target as mob, mob/living/user as mob)
-	if((CLUMSY in user.mutations) && prob(50))
+	if ((CLUMSY in user.mutations) && prob(50))
 		user << "\red You somehow managed to cut yourself with the [src]."
 		user.take_organ_damage(20)
 		return
@@ -213,27 +213,27 @@
 	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "whacked") //I think the rollingpin attackby will end up ignoring this anyway.
 
 /obj/item/weapon/kitchen/rollingpin/attack(mob/living/M as mob, mob/living/user as mob)
-	if((CLUMSY in user.mutations) && prob(50))
+	if ((CLUMSY in user.mutations) && prob(50))
 		user << "\red The [src] slips out of your hand and hits your head."
 		user.take_organ_damage(10)
 		user.Paralyse(2)
 		return
+
 	M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been attacked with [src.name] by [user.name] ([user.ckey])</font>")
 	user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to attack [M.name] ([M.ckey])</font>")
-
-	log_attack("<font color='red'>[user.name] ([user.ckey]) used the [src.name] to attack [M.name] ([M.ckey])</font>")
+	msg_admin_attack("[user.name] ([user.ckey]) used the [src.name] to attack [M.name] ([M.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 	var/t = user:zone_sel.selecting
-	if(t == "head")
+	if (t == "head")
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
-			if(H.stat < 2 && H.health < 50 && prob(90))
+			if (H.stat < 2 && H.health < 50 && prob(90))
 				// ******* Check
-				if(istype(H, /obj/item/clothing/head) && H.flags & 8 && prob(80))
+				if (istype(H, /obj/item/clothing/head) && H.flags & 8 && prob(80))
 					H << "\red The helmet protects you from being hit hard in the head!"
 					return
 				var/time = rand(2, 6)
-				if(prob(75))
+				if (prob(75))
 					H.Paralyse(time)
 				else
 					H.Stun(time)
@@ -313,13 +313,12 @@
 		if(prob(33))
 			src.add_blood(H)
 			var/turf/location = H.loc
-			if(istype(location, /turf/simulated))
+			if (istype(location, /turf/simulated))
 				location.add_blood(H)     ///Plik plik, the sound of blood
 
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been attacked with [src.name] by [user.name] ([user.ckey])</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to attack [M.name] ([M.ckey])</font>")
-
-		log_attack("<font color='red'>[user.name] ([user.ckey]) used the [src.name] to attack [M.name] ([M.ckey])</font>")
+		msg_admin_attack("[user.name] ([user.ckey]) used the [src.name] to attack [M.name] ([M.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 		if(prob(15))
 			M.Weaken(3)
@@ -344,14 +343,14 @@
 		M << "\red You get slammed in the face with the tray, against your mask!"
 		if(prob(33))
 			src.add_blood(H)
-			if(H.wear_mask)
+			if (H.wear_mask)
 				H.wear_mask.add_blood(H)
-			if(H.head)
+			if (H.head)
 				H.head.add_blood(H)
-			if(H.glasses && prob(33))
+			if (H.glasses && prob(33))
 				H.glasses.add_blood(H)
 			var/turf/location = H.loc
-			if(istype(location, /turf/simulated))     //Addin' blood! At least on the floor and item :v
+			if (istype(location, /turf/simulated))     //Addin' blood! At least on the floor and item :v
 				location.add_blood(H)
 
 		if(prob(50))
@@ -375,7 +374,7 @@
 		if(prob(33))
 			src.add_blood(M)
 			var/turf/location = H.loc
-			if(istype(location, /turf/simulated))
+			if (istype(location, /turf/simulated))
 				location.add_blood(H)
 
 		if(prob(50))
@@ -486,35 +485,35 @@
 
 /*/obj/item/weapon/tray/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/weapon/kitchen/utensil/fork))
-		if(W.icon_state == "forkloaded")
+		if (W.icon_state == "forkloaded")
 			user << "\red You already have omelette on your fork."
 			return
 		W.icon = 'icons/obj/kitchen.dmi'
 		W.icon_state = "forkloaded"
 		viewers(3,user) << "[user] takes a piece of omelette with his fork!"
 		reagents.remove_reagent("nutriment", 1)
-		if(reagents.total_volume <= 0)
+		if (reagents.total_volume <= 0)
 			del(src)*/
 
 
-/*			if(prob(33))
+/*			if (prob(33))
 						var/turf/location = H.loc
-						if(istype(location, /turf/simulated))
+						if (istype(location, /turf/simulated))
 							location.add_blood(H)
-					if(H.wear_mask)
+					if (H.wear_mask)
 						H.wear_mask.add_blood(H)
-					if(H.head)
+					if (H.head)
 						H.head.add_blood(H)
-					if(H.glasses && prob(33))
+					if (H.glasses && prob(33))
 						H.glasses.add_blood(H)
-					if(istype(user, /mob/living/carbon/human))
+					if (istype(user, /mob/living/carbon/human))
 						var/mob/living/carbon/human/user2 = user
-						if(user2.gloves)
+						if (user2.gloves)
 							user2.gloves.add_blood(H)
 						else
 							user2.add_blood(H)
-						if(prob(15))
-							if(user2.wear_suit)
+						if (prob(15))
+							if (user2.wear_suit)
 								user2.wear_suit.add_blood(H)
-							else if(user2.w_uniform)
+							else if (user2.w_uniform)
 								user2.w_uniform.add_blood(H)*/

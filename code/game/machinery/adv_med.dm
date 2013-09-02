@@ -14,7 +14,7 @@
 	return 0*/
 
 /obj/machinery/bodyscanner/relaymove(mob/user as mob)
-	if(user.stat)
+	if (user.stat)
 		return
 	src.go_out()
 	return
@@ -24,7 +24,7 @@
 	set category = "Object"
 	set name = "Eject Body Scanner"
 
-	if(usr.stat != 0)
+	if (usr.stat != 0)
 		return
 	src.go_out()
 	add_fingerprint(usr)
@@ -35,12 +35,12 @@
 	set category = "Object"
 	set name = "Enter Body Scanner"
 
-	if(usr.stat != 0)
+	if (usr.stat != 0)
 		return
-	if(src.occupant)
+	if (src.occupant)
 		usr << "\blue <B>The scanner is already occupied!</B>"
 		return
-	if(usr.abiotic())
+	if (usr.abiotic())
 		usr << "\blue <B>Subject cannot have abiotic items on.</B>"
 		return
 	usr.pulling = null
@@ -57,12 +57,12 @@
 	return
 
 /obj/machinery/bodyscanner/proc/go_out()
-	if((!( src.occupant ) || src.locked))
+	if ((!( src.occupant ) || src.locked))
 		return
 	for(var/obj/O in src)
 		O.loc = src.loc
 		//Foreach goto(30)
-	if(src.occupant.client)
+	if (src.occupant.client)
 		src.occupant.client.eye = src.occupant.client.mob
 		src.occupant.client.perspective = MOB_PERSPECTIVE
 	src.occupant.loc = src.loc
@@ -71,16 +71,16 @@
 	return
 
 /obj/machinery/bodyscanner/attackby(obj/item/weapon/grab/G as obj, user as mob)
-	if((!( istype(G, /obj/item/weapon/grab) ) || !( ismob(G.affecting) )))
+	if ((!( istype(G, /obj/item/weapon/grab) ) || !( ismob(G.affecting) )))
 		return
-	if(src.occupant)
+	if (src.occupant)
 		user << "\blue <B>The scanner is already occupied!</B>"
 		return
-	if(G.affecting.abiotic())
+	if (G.affecting.abiotic())
 		user << "\blue <B>Subject cannot have abiotic items on.</B>"
 		return
 	var/mob/M = G.affecting
-	if(M.client)
+	if (M.client)
 		M.client.perspective = EYE_PERSPECTIVE
 		M.client.eye = src
 	M.loc = src
@@ -105,7 +105,7 @@
 			del(src)
 			return
 		if(2.0)
-			if(prob(50))
+			if (prob(50))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
 					ex_act(severity)
@@ -114,7 +114,7 @@
 				del(src)
 				return
 		if(3.0)
-			if(prob(25))
+			if (prob(25))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
 					ex_act(severity)
@@ -139,7 +139,7 @@
 			del(src)
 			return
 		if(2.0)
-			if(prob(50))
+			if (prob(50))
 				//SN src = null
 				del(src)
 				return
@@ -186,12 +186,12 @@
 	use_power(250) // power stuff
 
 //	var/mob/M //occupant
-//	if(!( src.status )) //remove this
+//	if (!( src.status )) //remove this
 //		return
-//	if((src.connected && src.connected.occupant)) //connected & occupant ok
+//	if ((src.connected && src.connected.occupant)) //connected & occupant ok
 //		M = src.connected.occupant
 //	else
-//		if(istype(M, /mob))
+//		if (istype(M, /mob))
 //		//do stuff
 //		else
 ///			src.temphtml = "Process terminated due to lack of occupant in scanning chamber."
@@ -213,15 +213,15 @@
 		user << "\red This device can only scan compatible lifeforms."
 		return
 	var/dat
-	if(src.delete && src.temphtml) //Window in buffer but its just simple message, so nothing
+	if (src.delete && src.temphtml) //Window in buffer but its just simple message, so nothing
 		src.delete = src.delete
-	else if(!src.delete && src.temphtml) //Window in buffer - its a menu, dont add clear message
+	else if (!src.delete && src.temphtml) //Window in buffer - its a menu, dont add clear message
 		dat = text("[]<BR><BR><A href='?src=\ref[];clear=1'>Main Menu</A>", src.temphtml, src)
 	else
-		if(src.connected) //Is something connected?
+		if (src.connected) //Is something connected?
 			var/mob/living/carbon/human/occupant = src.connected.occupant
 			dat = "<font color='blue'><B>Occupant Statistics:</B></FONT><BR>" //Blah obvious
-			if(istype(occupant)) //is there REALLY someone in there?
+			if (istype(occupant)) //is there REALLY someone in there?
 				var/t1
 				switch(occupant.stat) // obvious, see what their status is
 					if(0)
@@ -230,7 +230,7 @@
 						t1 = "Unconscious"
 					else
 						t1 = "*dead*"
-				if(!istype(occupant,/mob/living/carbon/human))
+				if (!istype(occupant,/mob/living/carbon/human))
 					dat += "<font color='red'>This device can only scan human occupants.</FONT>"
 				else
 					dat += text("[]\tHealth %: [] ([])</FONT><BR>", (occupant.health > 50 ? "<font color='blue'>" : "<font color='red'>"), occupant.health, t1)

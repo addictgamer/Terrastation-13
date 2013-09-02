@@ -28,7 +28,7 @@
 	src.sd_SetLuminosity(2)
 */
 /obj/machinery/flasher/power_change()
-	if( powered() )
+	if ( powered() )
 		stat &= ~NOPOWER
 		icon_state = "[base_state]1"
 //		src.sd_SetLuminosity(2)
@@ -39,26 +39,26 @@
 
 //Don't want to render prison breaks impossible
 /obj/machinery/flasher/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/wirecutters))
+	if (istype(W, /obj/item/weapon/wirecutters))
 		add_fingerprint(user)
 		src.disable = !src.disable
-		if(src.disable)
+		if (src.disable)
 			user.visible_message("\red [user] has disconnected the [src]'s flashbulb!", "\red You disconnect the [src]'s flashbulb!")
-		if(!src.disable)
+		if (!src.disable)
 			user.visible_message("\red [user] has connected the [src]'s flashbulb!", "\red You connect the [src]'s flashbulb!")
 
 //Let the AI trigger them directly.
 /obj/machinery/flasher/attack_ai()
-	if(src.anchored)
+	if (src.anchored)
 		return src.flash()
 	else
 		return
 
 /obj/machinery/flasher/proc/flash()
-	if(!(powered()))
+	if (!(powered()))
 		return
 
-	if((src.disable) || (src.last_flash && world.time < src.last_flash + 150))
+	if ((src.disable) || (src.last_flash && world.time < src.last_flash + 150))
 		return
 
 	playsound(src.loc, 'sound/weapons/flash.ogg', 100, 1)
@@ -67,19 +67,19 @@
 	use_power(1000)
 
 	for (var/mob/O in viewers(src, null))
-		if(get_dist(src, O) > src.range)
+		if (get_dist(src, O) > src.range)
 			continue
 
-		if(istype(O, /mob/living/carbon/human))
+		if (istype(O, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = O
 			if(!H.eyecheck() <= 0)
 				continue
 
-		if(istype(O, /mob/living/carbon/alien))//So aliens don't get flashed (they have no external eyes)/N
+		if (istype(O, /mob/living/carbon/alien))//So aliens don't get flashed (they have no external eyes)/N
 			continue
 
 		O.Weaken(strength)
-		if((O.eye_stat > 15 && prob(O.eye_stat + 50)))
+		if ((O.eye_stat > 15 && prob(O.eye_stat + 50)))
 			flick("e_flash", O:flash)
 			O.eye_stat += rand(1, 2)
 		else
@@ -97,24 +97,24 @@
 	..(severity)
 
 /obj/machinery/flasher/portable/HasProximity(atom/movable/AM as mob|obj)
-	if((src.disable) || (src.last_flash && world.time < src.last_flash + 150))
+	if ((src.disable) || (src.last_flash && world.time < src.last_flash + 150))
 		return
 
 	if(istype(AM, /mob/living/carbon))
 		var/mob/living/carbon/M = AM
-		if((M.m_intent != "walk") && (src.anchored))
+		if ((M.m_intent != "walk") && (src.anchored))
 			src.flash()
 
 /obj/machinery/flasher/portable/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/wrench))
+	if (istype(W, /obj/item/weapon/wrench))
 		add_fingerprint(user)
 		src.anchored = !src.anchored
 
-		if(!src.anchored)
+		if (!src.anchored)
 			user.show_message(text("\red [src] can now be moved."))
 			src.overlays.Cut()
 
-		else if(src.anchored)
+		else if (src.anchored)
 			user.show_message(text("\red [src] is now secured."))
 			src.overlays += "[base_state]-s"
 

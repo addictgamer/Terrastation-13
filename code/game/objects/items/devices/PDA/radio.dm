@@ -10,7 +10,7 @@
 
 	New()
 		..()
-		if(istype(loc.loc, /obj/item/device/pda))
+		if (istype(loc.loc, /obj/item/device/pda))
 			hostpda = loc.loc
 
 	proc/post_signal(var/freq, var/key, var/value, var/key2, var/value2, var/key3, var/value3, s_filter)
@@ -32,12 +32,12 @@
 		frequency.post_signal(src, signal, filter = s_filter)
 
 	proc/print_to_host(var/text)
-		if(isnull(src.hostpda))
+		if (isnull(src.hostpda))
 			return
 		src.hostpda.cart = text
 
 		for (var/mob/M in viewers(1, src.hostpda.loc))
-			if(M.client && M.machine == src.hostpda)
+			if (M.client && M.machine == src.hostpda)
 				src.hostpda.cartridge.unlock()
 
 		return
@@ -70,7 +70,7 @@
 		for(var/d in signal.data)
 			world << "- [d] = [signal.data[d]]"
 		*/
-		if(signal.data["type"] == "secbot")
+		if (signal.data["type"] == "secbot")
 			if(!botlist)
 				botlist = new()
 
@@ -81,7 +81,7 @@
 				var/list/b = signal.data
 				botstatus = b.Copy()
 
-//		if(istype(P)) P.updateSelfDialog()
+//		if (istype(P)) P.updateSelfDialog()
 
 	Topic(href, href_list)
 		..()
@@ -229,7 +229,7 @@
 			initialize()
 
 	initialize()
-		if(src.frequency < 1441 || src.frequency > 1489)
+		if (src.frequency < 1441 || src.frequency > 1489)
 			src.frequency = sanitize_frequency(src.frequency)
 
 		set_frequency(frequency)

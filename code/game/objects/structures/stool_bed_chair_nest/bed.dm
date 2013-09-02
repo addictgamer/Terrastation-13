@@ -71,18 +71,18 @@
 	return
 
 /obj/structure/stool/bed/proc/buckle_mob(mob/M as mob, mob/user as mob)
-	if(!ticker)
+	if (!ticker)
 		user << "You can't buckle anyone in before the game starts."
-	if( !ismob(M) || (get_dist(src, user) > 1) || (M.loc != src.loc) || user.restrained() || user.lying || user.stat || M.buckled || istype(user, /mob/living/silicon/pai) )
+	if ( !ismob(M) || (get_dist(src, user) > 1) || (M.loc != src.loc) || user.restrained() || user.lying || user.stat || M.buckled || istype(user, /mob/living/silicon/pai) )
 		return
 
-	if(istype(M, /mob/living/carbon/slime))
+	if (istype(M, /mob/living/carbon/slime))
 		user << "The [M] is too squishy to buckle in."
 		return
 
 	unbuckle()
 
-	if(M == usr)
+	if (M == usr)
 		M.visible_message(\
 			"\blue [M.name] buckles in!",\
 			"You buckle yourself to [src].",\
@@ -130,7 +130,7 @@
 			buckled_mob = null
 
 /obj/structure/stool/bed/roller/buckle_mob(mob/M as mob, mob/user as mob)
-	if( !ismob(M) || (get_dist(src, user) > 1) || (M.loc != src.loc) || user.restrained() || user.lying || user.stat || M.buckled || istype(usr, /mob/living/silicon/pai) )
+	if ( !ismob(M) || (get_dist(src, user) > 1) || (M.loc != src.loc) || user.restrained() || user.lying || user.stat || M.buckled || istype(usr, /mob/living/silicon/pai) )
 		return
 	M.pixel_y = 6
 	density = 1

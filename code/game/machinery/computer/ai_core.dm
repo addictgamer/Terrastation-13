@@ -73,7 +73,7 @@
 						icon_state = "3"
 		if(3)
 			if(istype(P, /obj/item/weapon/wirecutters))
-				if(brain)
+				if (brain)
 					user << "Get that brain out of there first"
 				else
 					playsound(loc, 'sound/items/Wirecutter.ogg', 50, 1)
@@ -87,7 +87,7 @@
 				if(P:amount >= 2)
 					playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
 					if(do_after(user, 20))
-						if(P)
+						if (P)
 							P:amount -= 2
 							if(!P:amount) del(P)
 							user << "\blue You put in the glass panel."
@@ -151,7 +151,7 @@
 				playsound(loc, 'sound/items/Crowbar.ogg', 50, 1)
 				user << "\blue You remove the glass panel."
 				state = 3
-				if(brain)
+				if (brain)
 					icon_state = "3b"
 				else
 					icon_state = "3"
@@ -205,10 +205,10 @@ That prevents a few funky behaviors.
 						if(C.contents.len)//If there is an AI on card.
 							U << "\red <b>Transfer failed</b>: \black Existing AI found on this terminal. Remove existing AI to install a new one."
 						else
-							if(ticker.mode.name == "AI malfunction")
+							if (ticker.mode.name == "AI malfunction")
 								var/datum/game_mode/malfunction/malf = ticker.mode
 								for (var/datum/mind/malfai in malf.malf_ai)
-									if(T.mind == malfai)
+									if (T.mind == malfai)
 										U << "\red <b>ERROR</b>: \black Remote transfer interface disabled."//Do ho ho ho~
 										return
 							new /obj/structure/AIcore/deactivated(T.loc)//Spawns a deactivated terminal at AI location.
@@ -216,7 +216,7 @@ That prevents a few funky behaviors.
 							T.control_disabled = 1//Can't control things remotely if you're stuck in a card!
 							T.loc = C//Throw AI into the card.
 							C.name = "inteliCard - [T.name]"
-							if(T.stat == 2)
+							if (T.stat == 2)
 								C.icon_state = "aicard-404"
 							else
 								C.icon_state = "aicard-full"
@@ -228,10 +228,10 @@ That prevents a few funky behaviors.
 						if(C.AI)//If there is an AI on card.
 							U << "\red <b>Transfer failed</b>: \black Existing AI found on this terminal. Remove existing AI to install a new one."
 						else
-							if(ticker.mode.name == "AI malfunction")
+							if (ticker.mode.name == "AI malfunction")
 								var/datum/game_mode/malfunction/malf = ticker.mode
 								for (var/datum/mind/malfai in malf.malf_ai)
-									if(T.mind == malfai)
+									if (T.mind == malfai)
 										U << "\red <b>ERROR</b>: \black Remote transfer interface disabled."
 										return
 							if(T.stat)//If the ai is dead/dying.
@@ -279,7 +279,7 @@ That prevents a few funky behaviors.
 					if("AICARD")
 						var/obj/item/device/aicard/C = src
 						if(!T.contents.len)
-							if(!C.contents.len)
+							if (!C.contents.len)
 								U << "No AI to copy over!"//Well duh
 							else for(var/mob/living/silicon/ai/A in C)
 								C.icon_state = "aicard"
@@ -288,7 +288,7 @@ That prevents a few funky behaviors.
 								A.loc = T
 								T.occupant = A
 								A.control_disabled = 1
-								if(A.stat == 2)
+								if (A.stat == 2)
 									T.overlays += image('icons/obj/computer.dmi', "ai-fixer-404")
 								else
 									T.overlays += image('icons/obj/computer.dmi', "ai-fixer-full")
@@ -300,7 +300,7 @@ That prevents a few funky behaviors.
 							if(!C.contents.len && T.occupant && !T.active)
 								C.name = "inteliCard - [T.occupant.name]"
 								T.overlays += image('icons/obj/computer.dmi', "ai-fixer-empty")
-								if(T.occupant.stat == 2)
+								if (T.occupant.stat == 2)
 									C.icon_state = "aicard-404"
 									T.overlays -= image('icons/obj/computer.dmi', "ai-fixer-404")
 								else
@@ -311,16 +311,16 @@ That prevents a few funky behaviors.
 								T.occupant.loc = C
 								T.occupant.cancel_camera()
 								T.occupant = null
-							else if(C.contents.len)
+							else if (C.contents.len)
 								U << "\red <b>ERROR</b>: \black Artificial intelligence detected on terminal."
-							else if(T.active)
+							else if (T.active)
 								U << "\red <b>ERROR</b>: \black Reconstruction in progress."
-							else if(!T.occupant)
+							else if (!T.occupant)
 								U << "\red <b>ERROR</b>: \black Unable to locate artificial intelligence."
 					if("NINJASUIT")
 						var/obj/item/clothing/suit/space/space_ninja/C = src
 						if(!T.contents.len)
-							if(!C.AI)
+							if (!C.AI)
 								U << "No AI to copy over!"
 							else
 								var/mob/living/silicon/ai/A = C.AI
@@ -335,7 +335,7 @@ That prevents a few funky behaviors.
 								U << "\blue <b>Transfer successful</b>: \black [A.name] ([rand(1000,9999)].exe) installed and executed succesfully. Local copy has been removed."
 						else
 							if(!C.AI && T.occupant && !T.active)
-								if(T.occupant.stat)
+								if (T.occupant.stat)
 									U << "\red <b>ERROR</b>: \black [T.occupant.name] data core is corrupted. Unable to install."
 								else
 									T.overlays += image('icons/obj/computer.dmi', "ai-fixer-empty")
@@ -345,11 +345,11 @@ That prevents a few funky behaviors.
 									T.occupant.loc = C
 									T.occupant.cancel_camera()
 									T.occupant = null
-							else if(C.AI)
+							else if (C.AI)
 								U << "\red <b>ERROR</b>: \black Artificial intelligence detected on terminal."
-							else if(T.active)
+							else if (T.active)
 								U << "\red <b>ERROR</b>: \black Reconstruction in progress."
-							else if(!T.occupant)
+							else if (!T.occupant)
 								U << "\red <b>ERROR</b>: \black Unable to locate artificial intelligence."
 			if("NINJASUIT")//Ninjasuit
 				var/obj/item/clothing/suit/space/space_ninja/T = target

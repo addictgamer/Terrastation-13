@@ -51,13 +51,13 @@
 
 /obj/machinery/gibber/update_icon()
 	overlays.Cut()
-	if(dirty)
+	if (dirty)
 		src.overlays += image('icons/obj/kitchen.dmi', "grbloody")
 	if(stat & (NOPOWER|BROKEN))
 		return
-	if(!occupant)
+	if (!occupant)
 		src.overlays += image('icons/obj/kitchen.dmi', "grjam")
-	else if(operating)
+	else if (operating)
 		src.overlays += image('icons/obj/kitchen.dmi', "gruse")
 	else
 		src.overlays += image('icons/obj/kitchen.dmi', "gridle")
@@ -82,7 +82,7 @@
 	if(src.occupant)
 		user << "\red The gibber is full, empty it first!"
 		return
-	if(!( istype(G, /obj/item/weapon/grab)) || !(istype(G.affecting, /mob/living/carbon/human)))
+	if (!( istype(G, /obj/item/weapon/grab)) || !(istype(G.affecting, /mob/living/carbon/human)))
 		user << "\red This item is not suitable for the gibber!"
 		return
 	if(G.affecting.abiotic(1))
@@ -107,18 +107,18 @@
 	set name = "Empty Gibber"
 	set src in oview(1)
 
-	if(usr.stat != 0)
+	if (usr.stat != 0)
 		return
 	src.go_out()
 	add_fingerprint(usr)
 	return
 
 /obj/machinery/gibber/proc/go_out()
-	if(!src.occupant)
+	if (!src.occupant)
 		return
 	for(var/obj/O in src)
 		O.loc = src.loc
-	if(src.occupant.client)
+	if (src.occupant.client)
 		src.occupant.client.eye = src.occupant.client.mob
 		src.occupant.client.perspective = MOB_PERSPECTIVE
 	src.occupant.loc = src.loc
@@ -155,7 +155,7 @@
 
 	src.occupant.attack_log += "\[[time_stamp()]\] Was gibbed by <b>[user]/[user.ckey]</b>" //One shall not simply gib a mob unnoticed!
 	user.attack_log += "\[[time_stamp()]\] Gibbed <b>[src.occupant]/[src.occupant.ckey]</b>"
-	log_attack("\[[time_stamp()]\] <b>[user]/[user.ckey]</b> gibbed <b>[src.occupant]/[src.occupant.ckey]</b>")
+	msg_admin_attack("[user.name] ([user.ckey]) gibbed [src.occupant] ([src.occupant.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 	src.occupant.death(1)
 	src.occupant.ghostize()
@@ -168,7 +168,7 @@
 			var/turf/Tx = locate(src.x - i, src.y, src.z)
 			meatslab.loc = src.loc
 			meatslab.throw_at(Tx,i,3)
-			if(!Tx.density)
+			if (!Tx.density)
 				new /obj/effect/decal/cleanable/blood/gibs(Tx,i)
 		src.operating = 0
 		update_icon()

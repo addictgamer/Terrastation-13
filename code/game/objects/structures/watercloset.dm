@@ -143,7 +143,7 @@
 	on = !on
 	update_icon()
 	if(on)
-		if(M.loc == loc)
+		if (M.loc == loc)
 			wash(M)
 			check_heat(M)
 		for (var/atom/movable/G in src.loc)
@@ -232,9 +232,9 @@
 				washears = !(H.head.flags_inv & HIDEEARS)
 
 			if(H.wear_mask)
-				if(washears)
+				if (washears)
 					washears = !(H.wear_mask.flags_inv & HIDEEARS)
-				if(washglasses)
+				if (washglasses)
 					washglasses = !(H.wear_mask.flags_inv & HIDEEYES)
 
 			if(H.head)
@@ -346,15 +346,15 @@
 		user << "\red Someone's already washing here."
 		return
 
-	if(istype(O, /obj/item/weapon/reagent_containers))
+	if (istype(O, /obj/item/weapon/reagent_containers))
 		var/obj/item/weapon/reagent_containers/RG = O
 		RG.reagents.add_reagent("water", min(RG.volume - RG.reagents.total_volume, RG.amount_per_transfer_from_this))
 		user.visible_message("\blue [user] fills the [RG] using \the [src].","\blue You fill the [RG] using \the [src].")
 		return
 
-	else if(istype(O, /obj/item/weapon/melee/baton))
+	else if (istype(O, /obj/item/weapon/melee/baton))
 		var/obj/item/weapon/melee/baton/B = O
-		if(B.charges > 0 && B.status == 1)
+		if (B.charges > 0 && B.status == 1)
 			flick("baton_active", src)
 			user.Stun(10)
 			user.stuttering = 10

@@ -26,10 +26,10 @@ obj/machinery/recharger/attackby(obj/item/weapon/G as obj, mob/user as mob)
 			user << "\red The [name] blinks red as you try to insert the item!"
 			return
 
-		if(istype(G, /obj/item/weapon/gun/energy/gun/nuclear) || istype(G, /obj/item/weapon/gun/energy/crossbow))
+		if (istype(G, /obj/item/weapon/gun/energy/gun/nuclear) || istype(G, /obj/item/weapon/gun/energy/crossbow))
 			user << "<span class='notice'>Your gun's recharge port was removed to make room for a miniaturized reactor.</span>"
 			return
-		if(istype(G, /obj/item/weapon/gun/energy/staff))
+		if (istype(G, /obj/item/weapon/gun/energy/staff))
 			return
 		user.drop_item()
 		G.loc = src

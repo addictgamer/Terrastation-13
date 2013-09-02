@@ -16,21 +16,20 @@
 
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been carded with [src.name] by [user.name] ([user.ckey])</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to card [M.name] ([M.ckey])</font>")
-
-		log_attack("<font color='red'>[user.name] ([user.ckey]) used the [src.name] to card [M.name] ([M.ckey])</font>")
+		msg_admin_attack("[user.name] ([user.ckey]) used the [src.name] to card [M.name] ([M.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 		transfer_ai("AICORE", "AICARD", M, user)
 		return
 
 	attack(mob/living/silicon/decoy/M as mob, mob/user as mob)
-		if(!istype (M, /mob/living/silicon/decoy))
+		if (!istype (M, /mob/living/silicon/decoy))
 			return ..()
 		else
 			M.death()
 			user << "<b>ERROR ERROR ERROR</b>"
 
 	attack_self(mob/user)
-		if(!in_range(src, user))
+		if (!in_range(src, user))
 			return
 		user.set_machine(src)
 		var/dat = "<TT><B>Intelicard</B><BR>"
@@ -40,32 +39,32 @@
 
 			for (var/index = 1, index <= A.laws.ion.len, index++)
 				var/law = A.laws.ion[index]
-				if(length(law) > 0)
+				if (length(law) > 0)
 					var/num = ionnum()
 					laws += "[num]. [law]"
 
-			if(A.laws.zeroth)
+			if (A.laws.zeroth)
 				laws += "0: [A.laws.zeroth]<BR>"
 
 			var/number = 1
 			for (var/index = 1, index <= A.laws.inherent.len, index++)
 				var/law = A.laws.inherent[index]
-				if(length(law) > 0)
+				if (length(law) > 0)
 					laws += "[number]: [law]<BR>"
 					number++
 
 			for (var/index = 1, index <= A.laws.supplied.len, index++)
 				var/law = A.laws.supplied[index]
-				if(length(law) > 0)
+				if (length(law) > 0)
 					laws += "[number]: [law]<BR>"
 					number++
 
 			dat += "Laws:<br>[laws]<br>"
 
-			if(A.stat == 2)
+			if (A.stat == 2)
 				dat += "<b>AI nonfunctional</b>"
 			else
-				if(!src.flush)
+				if (!src.flush)
 					dat += {"<A href='byond://?src=\ref[src];choice=Wipe'>Wipe AI</A>"}
 				else
 					dat += "<b>Wipe in progress</b>"
@@ -79,7 +78,7 @@
 
 	Topic(href, href_list)
 		var/mob/U = usr
-		if(!in_range(src, U)||U.machine!=src)//If they are not in range of 1 or less or their machine is not the card (ie, clicked on something else).
+		if (!in_range(src, U)||U.machine!=src)//If they are not in range of 1 or less or their machine is not the card (ie, clicked on something else).
 			U << browse(null, "window=aicard")
 			U.unset_machine()
 			return
@@ -88,12 +87,12 @@
 		U.set_machine(src)
 
 		switch(href_list["choice"])//Now we switch based on choice.
-			if("Close")
+			if ("Close")
 				U << browse(null, "window=aicard")
 				U.unset_machine()
 				return
 
-			if("Wipe")
+			if ("Wipe")
 				var/confirm = alert("Are you sure you want to wipe this card's memory? This cannot be undone once started.", "Confirm Wipe", "Yes", "No")
 				if(confirm == "Yes")
 					if(isnull(src)||!in_range(src, U)||U.machine!=src)
@@ -111,11 +110,11 @@
 								sleep(10)
 							flush = 0
 
-			if("Wireless")
+			if ("Wireless")
 				for(var/mob/living/silicon/ai/A in src)
 					A.control_disabled = !A.control_disabled
 					A << "The intelicard's wireless port has been [A.control_disabled ? "disabled" : "enabled"]!"
-					if(A.control_disabled)
+					if (A.control_disabled)
 						overlays -= image('icons/obj/pda.dmi', "aicard-on")
 					else
 						overlays += image('icons/obj/pda.dmi', "aicard-on")

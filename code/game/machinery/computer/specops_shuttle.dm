@@ -132,9 +132,9 @@ var/specops_shuttle_timeleft = 0
 	specops_shuttle_moving_to_centcom = 0
 
 	specops_shuttle_at_station = 1
-	if(specops_shuttle_moving_to_station || specops_shuttle_moving_to_centcom) return
+	if (specops_shuttle_moving_to_station || specops_shuttle_moving_to_centcom) return
 
-	if(!specops_can_move())
+	if (!specops_can_move())
 		usr << "\red The Special Operations shuttle is unable to leave."
 		return
 
@@ -263,7 +263,7 @@ var/specops_shuttle_timeleft = 0
 		return
 
 //Commented out so admins can do shenanigans at their leisure. Also makes the force-spawned admin ERTs able to use the shuttle.
-//	if(sent_strike_team == 0 && send_emergency_team == 0)
+//	if (sent_strike_team == 0 && send_emergency_team == 0)
 //		usr << "\red The strike team has not yet deployed."
 //		return
 
@@ -272,7 +272,7 @@ var/specops_shuttle_timeleft = 0
 
 	user.machine = src
 	var/dat
-	if(temp)
+	if (temp)
 		dat = temp
 	else
 		dat += {"<BR><B>Special Operations Shuttle</B><HR>
@@ -288,16 +288,16 @@ var/specops_shuttle_timeleft = 0
 	if(..())
 		return
 
-	if((usr.contents.Find(src) || (in_range(src, usr) && istype(loc, /turf))) || (istype(usr, /mob/living/silicon)))
+	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(loc, /turf))) || (istype(usr, /mob/living/silicon)))
 		usr.machine = src
 
-	if(href_list["sendtodock"])
+	if (href_list["sendtodock"])
 		if(!specops_shuttle_at_station|| specops_shuttle_moving_to_station || specops_shuttle_moving_to_centcom) return
 
-		if(!specops_can_move())
+		if (!specops_can_move())
 			usr << "\blue Central Command will not allow the Special Operations shuttle to return yet."
 			if(world.timeofday <= specops_shuttle_timereset)
-				if(((world.timeofday - specops_shuttle_timereset)/10) > 60)
+				if (((world.timeofday - specops_shuttle_timereset)/10) > 60)
 					usr << "\blue [-((world.timeofday - specops_shuttle_timereset)/10)/60] minutes remain!"
 				usr << "\blue [-(world.timeofday - specops_shuttle_timereset)/10] seconds remain!"
 			return
@@ -312,10 +312,10 @@ var/specops_shuttle_timeleft = 0
 		spawn(0)
 			specops_return()
 
-	else if(href_list["sendtostation"])
+	else if (href_list["sendtostation"])
 		if(specops_shuttle_at_station || specops_shuttle_moving_to_station || specops_shuttle_moving_to_centcom) return
 
-		if(!specops_can_move())
+		if (!specops_can_move())
 			usr << "\red The Special Operations shuttle is unable to leave."
 			return
 
@@ -333,7 +333,7 @@ var/specops_shuttle_timeleft = 0
 		spawn(0)
 			specops_process()
 
-	else if(href_list["mainmenu"])
+	else if (href_list["mainmenu"])
 		temp = null
 
 	add_fingerprint(usr)
@@ -397,9 +397,9 @@ var/specops_shuttle_timeleft = 0
 	specops_shuttle_moving_to_centcom = 0
 
 	specops_shuttle_at_station = 1
-	if(specops_shuttle_moving_to_station || specops_shuttle_moving_to_centcom) return
+	if (specops_shuttle_moving_to_station || specops_shuttle_moving_to_centcom) return
 
-	if(!specops_can_move())
+	if (!specops_can_move())
 		usr << "\red The Special Operations shuttle is unable to leave."
 		return
 
@@ -521,7 +521,7 @@ var/specops_shuttle_timeleft = 0
 		user << "\red Access Denied."
 		return
 
-//	if(sent_strike_team == 0)
+//	if (sent_strike_team == 0)
 //		usr << "\red The strike team has not yet deployed."
 //		return
 
@@ -530,7 +530,7 @@ var/specops_shuttle_timeleft = 0
 
 	user.set_machine(src)
 	var/dat
-	if(temp)
+	if (temp)
 		dat = temp
 	else
 		dat += {"<BR><B>Special Operations Shuttle</B><HR>
@@ -546,19 +546,19 @@ var/specops_shuttle_timeleft = 0
 	if(..())
 		return
 
-	if((usr.contents.Find(src) || (in_range(src, usr) && istype(loc, /turf))) || (istype(usr, /mob/living/silicon)))
+	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(loc, /turf))) || (istype(usr, /mob/living/silicon)))
 		usr.set_machine(src)
 
-	if(href_list["sendtodock"])
+	if (href_list["sendtodock"])
 		if(!specops_shuttle_at_station|| specops_shuttle_moving_to_station || specops_shuttle_moving_to_centcom) return
 
 		usr << "\blue Central Command will not allow the Special Operations shuttle to return."
 		return
 
-	else if(href_list["sendtostation"])
+	else if (href_list["sendtostation"])
 		if(specops_shuttle_at_station || specops_shuttle_moving_to_station || specops_shuttle_moving_to_centcom) return
 
-		if(!specops_can_move())
+		if (!specops_can_move())
 			usr << "\red The Special Operations shuttle is unable to leave."
 			return
 
@@ -576,7 +576,7 @@ var/specops_shuttle_timeleft = 0
 		spawn(0)
 			specops_process()
 
-	else if(href_list["mainmenu"])
+	else if (href_list["mainmenu"])
 		temp = null
 
 	add_fingerprint(usr)

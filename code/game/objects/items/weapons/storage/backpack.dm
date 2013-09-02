@@ -57,8 +57,8 @@
 		..()
 
 	proc/failcheck(mob/user as mob)
-		if(prob(src.reliability)) return 1 //No failure
-		if(prob(src.reliability))
+		if (prob(src.reliability)) return 1 //No failure
+		if (prob(src.reliability))
 			user << "\red The Bluespace portal resists your attempt to add another item." //light failure
 		else
 			user << "\red The Bluespace generator malfunctions!"

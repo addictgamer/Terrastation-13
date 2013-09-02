@@ -27,11 +27,11 @@
 	color = pick("red","blue","green","purple")
 
 /obj/item/weapon/melee/energy/sword/attack_self(mob/living/user as mob)
-	if((CLUMSY in user.mutations) && prob(50))
+	if ((CLUMSY in user.mutations) && prob(50))
 		user << "\red You accidentally cut yourself with [src]."
 		user.take_organ_damage(5,5)
 	active = !active
-	if(active)
+	if (active)
 		force = 30
 		if(istype(src,/obj/item/weapon/melee/energy/sword/pirate))
 			icon_state = "cutlass1"
@@ -66,7 +66,7 @@
 	force = 10
 
 /obj/item/weapon/melee/classic_baton/attack(mob/M as mob, mob/living/user as mob)
-	if((CLUMSY in user.mutations) && prob(50))
+	if ((CLUMSY in user.mutations) && prob(50))
 		user << "\red You club yourself over the head."
 		user.Weaken(3 * force)
 		if(ishuman(user))
@@ -82,26 +82,26 @@
 
 	log_attack("<font color='red'>[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>")
 */
-	if(user.a_intent == "hurt")
+	if (user.a_intent == "hurt")
 		if(!..()) return
 		playsound(src.loc, "swing_hit", 50, 1, -1)
-		if(M.stuttering < 8 && (!(HULK in M.mutations))  /*&& (!istype(H:wear_suit, /obj/item/clothing/suit/judgerobe))*/)
+		if (M.stuttering < 8 && (!(HULK in M.mutations))  /*&& (!istype(H:wear_suit, /obj/item/clothing/suit/judgerobe))*/)
 			M.stuttering = 8
 		M.Stun(8)
 		M.Weaken(8)
 		for(var/mob/O in viewers(M))
-			if(O.client)	O.show_message("\red <B>[M] has been beaten with \the [src] by [user]!</B>", 1, "\red You hear someone fall", 2)
+			if (O.client)	O.show_message("\red <B>[M] has been beaten with \the [src] by [user]!</B>", 1, "\red You hear someone fall", 2)
 	else
 		playsound(src.loc, 'sound/weapons/Genhit.ogg', 50, 1, -1)
 		M.Stun(5)
 		M.Weaken(5)
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been attacked with [src.name] by [user.name] ([user.ckey])</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to attack [M.name] ([M.ckey])</font>")
-		log_attack("<font color='red'>[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>")
+		log_attack("[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])")
 		src.add_fingerprint(user)
 
 		for(var/mob/O in viewers(M))
-			if(O.client)	O.show_message("\red <B>[M] has been stunned with \the [src] by [user]!</B>", 1, "\red You hear someone fall", 2)
+			if (O.client)	O.show_message("\red <B>[M] has been stunned with \the [src] by [user]!</B>", 1, "\red You hear someone fall", 2)
 
 //Telescopic baton
 /obj/item/weapon/melee/telebaton
@@ -154,7 +154,7 @@
 
 /obj/item/weapon/melee/telebaton/attack(mob/target as mob, mob/living/user as mob)
 	if(on)
-		if((CLUMSY in user.mutations) && prob(50))
+		if ((CLUMSY in user.mutations) && prob(50))
 			user << "\red You club yourself over the head."
 			user.Weaken(3 * force)
 			if(ishuman(user))
@@ -208,7 +208,7 @@
 
 /obj/item/weapon/melee/energy/axe/attack_self(mob/user as mob)
 	src.active = !( src.active )
-	if(src.active)
+	if (src.active)
 		user << "\blue The axe is now energised."
 		src.force = 150
 		src.icon_state = "axe1"
@@ -232,11 +232,11 @@
 		return 0
 
 /obj/item/weapon/shield/energy/attack_self(mob/living/user as mob)
-	if((CLUMSY in user.mutations) && prob(50))
+	if ((CLUMSY in user.mutations) && prob(50))
 		user << "\red You beat yourself in the head with [src]."
 		user.take_organ_damage(5)
 	active = !active
-	if(active)
+	if (active)
 		force = 10
 		icon_state = "eshield[active]"
 		w_class = 4

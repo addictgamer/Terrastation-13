@@ -34,10 +34,10 @@
 
 /obj/item/device/flash/attack(mob/living/M as mob, mob/user as mob)
 	if(!user || !M)	return	//sanity
+
 	M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been flashed (attempt) with [src.name]  by [user.name] ([user.ckey])</font>")
 	user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to flash [M.name] ([M.ckey])</font>")
-
-	log_attack("<font color='red'>[user.name] ([user.ckey]) Used the [src.name] to flash [M.name] ([M.ckey])</font>")
+	msg_admin_attack("[user.name] ([user.ckey]) Used the [src.name] to flash [M.name] ([M.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 	if(!clown_check(user))	return
 	if(broken)
@@ -159,7 +159,7 @@
 
 	for(var/mob/living/carbon/M in oviewers(3, null))
 		if(prob(50))
-			if(locate(/obj/item/weapon/cloaking_device, M))
+			if (locate(/obj/item/weapon/cloaking_device, M))
 				for(var/obj/item/weapon/cloaking_device/S in M)
 					S.active = 0
 					S.icon_state = "shield0"

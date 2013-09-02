@@ -8,12 +8,12 @@
 
 	attackby(var/obj/item/weapon/card/W as obj, var/mob/user as mob)
 		if(stat & (BROKEN|NOPOWER))	return
-		if((!( istype(W, /obj/item/weapon/card) ) || !( ticker ) || emergency_shuttle.location != 1 || !( user )))	return
-		if(istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
-			if(istype(W, /obj/item/device/pda))
+		if ((!( istype(W, /obj/item/weapon/card) ) || !( ticker ) || emergency_shuttle.location != 1 || !( user )))	return
+		if (istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
+			if (istype(W, /obj/item/device/pda))
 				var/obj/item/device/pda/pda = W
 				W = pda.id
-			if(!W:access) //no access
+			if (!W:access) //no access
 				user << "The access level of [W:registered_name]\'s card is not high enough. "
 				return
 
@@ -33,7 +33,7 @@
 				if("Authorize")
 					src.authorized -= W:registered_name
 					src.authorized += W:registered_name
-					if(src.auth_need - src.authorized.len > 0)
+					if (src.auth_need - src.authorized.len > 0)
 						message_admins("[key_name_admin(user)] has authorized early shuttle launch")
 						log_game("[user.ckey] has authorized early shuttle launch")
 						world << text("\blue <B>Alert: [] authorizations needed until shuttle is launched early</B>", src.auth_need - src.authorized.len)
@@ -56,7 +56,7 @@
 					src.authorized.len = 0
 					src.authorized = list(  )
 
-		else if(istype(W, /obj/item/weapon/card/emag) && !emagged)
+		else if (istype(W, /obj/item/weapon/card/emag) && !emagged)
 			var/choice = alert(user, "Would you like to launch the shuttle?","Shuttle control", "Launch", "Cancel")
 
 			if(!emagged && emergency_shuttle.location == 1 && user.get_active_hand() == W)

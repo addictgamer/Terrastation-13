@@ -70,7 +70,7 @@
 
 /obj/machinery/bot/floorbot/attack_hand(mob/user as mob)
 	. = ..()
-	if(.)
+	if (.)
 		return
 	usr.set_machine(src)
 	interact(user)
@@ -87,7 +87,7 @@
 		dat += "Finds tiles: <A href='?src=\ref[src];operation=tiles'>[src.eattiles ? "Yes" : "No"]</A><BR>"
 		dat += "Make singles pieces of metal into tiles when empty: <A href='?src=\ref[src];operation=make'>[src.maketiles ? "Yes" : "No"]</A><BR>"
 		var/bmode
-		if(src.targetdirection)
+		if (src.targetdirection)
 			bmode = dir2text(src.targetdirection)
 		else
 			bmode = "Disabled"
@@ -135,7 +135,7 @@
 	src.add_fingerprint(usr)
 	switch(href_list["operation"])
 		if("start")
-			if(src.on)
+			if (src.on)
 				turn_off()
 			else
 				turn_on()
@@ -244,7 +244,7 @@
 				src.path = AStar(src.loc, src.target.loc, /turf/proc/AdjacentTurfsSpace, /turf/proc/Distance, 0, 30, id=botcard)
 			else
 				src.path = AStar(src.loc, src.target, /turf/proc/AdjacentTurfsSpace, /turf/proc/Distance, 0, 30, id=botcard)
-			if(!src.path) src.path = list()
+			if (!src.path) src.path = list()
 			if(src.path.len == 0)
 				src.oldtarget = src.target
 				src.target = null
@@ -371,7 +371,7 @@
 
 	new /obj/item/device/assembly/prox_sensor(Tsec)
 
-	if(prob(50))
+	if (prob(50))
 		new /obj/item/robot_parts/l_arm(Tsec)
 
 	while (amount)//Dumps the tiles into the appropriate sized stacks
@@ -418,11 +418,11 @@
 		user.drop_from_inventory(src)
 		del(src)
 
-	else if(istype(W, /obj/item/weapon/pen))
+	else if (istype(W, /obj/item/weapon/pen))
 		var/t = copytext(stripped_input(user, "Enter new robot name", src.name, src.created_name),1,MAX_NAME_LEN)
-		if(!t)
+		if (!t)
 			return
-		if(!in_range(src, usr) && src.loc != usr)
+		if (!in_range(src, usr) && src.loc != usr)
 			return
 
 		src.created_name = t
@@ -437,12 +437,12 @@
 		user << "<span class='notice'>You add the robot arm to the odd looking toolbox assembly! Boop beep!</span>"
 		user.drop_from_inventory(src)
 		del(src)
-	else if(istype(W, /obj/item/weapon/pen))
+	else if (istype(W, /obj/item/weapon/pen))
 		var/t = stripped_input(user, "Enter new robot name", src.name, src.created_name)
 
-		if(!t)
+		if (!t)
 			return
-		if(!in_range(src, usr) && src.loc != usr)
+		if (!in_range(src, usr) && src.loc != usr)
 			return
 
 		src.created_name = t

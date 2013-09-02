@@ -51,7 +51,7 @@ Growing it to term with nothing injected will grab a ghost from the observers. *
 			user << "Nothing happens."
 			return
 
-		if(!istype(source))
+		if (!istype(source))
 			return
 
 		if(source.ckey)
@@ -104,7 +104,7 @@ Growing it to term with nothing injected will grab a ghost from the observers. *
 			return
 		if(response == "Yes")
 			transfer_personality(C)
-		else if(response == "Never for this round")
+		else if (response == "Never for this round")
 			C.prefs.be_special ^= BE_PLANT
 
 /obj/item/seeds/replicapod/proc/transfer_personality(var/client/player)
@@ -133,17 +133,17 @@ Growing it to term with nothing injected will grab a ghost from the observers. *
 
 	// Update mode specific HUD icons.
 	switch(ticker.mode.name)
-		if("revolution")
-			if(podman.mind in ticker.mode:revolutionaries)
+		if ("revolution")
+			if (podman.mind in ticker.mode:revolutionaries)
 				ticker.mode:add_revolutionary(podman.mind)
 				ticker.mode:update_all_rev_icons() //So the icon actually appears
-			if(podman.mind in ticker.mode:head_revolutionaries)
+			if (podman.mind in ticker.mode:head_revolutionaries)
 				ticker.mode:update_all_rev_icons()
-		if("nuclear emergency")
-			if(podman.mind in ticker.mode:syndicates)
+		if ("nuclear emergency")
+			if (podman.mind in ticker.mode:syndicates)
 				ticker.mode:update_all_synd_icons()
-		if("cult")
-			if(podman.mind in ticker.mode:cult)
+		if ("cult")
+			if (podman.mind in ticker.mode:cult)
 				ticker.mode:add_cultist(podman.mind)
 				ticker.mode:update_all_cult_icons() //So the icon actually appears
 		// -- End mode specific stuff
@@ -155,7 +155,7 @@ Growing it to term with nothing injected will grab a ghost from the observers. *
 	podman << "<B>Too much darkness will send you into shock and starve you, but light will help you heal.</B>"
 	if(!realName)
 		var/newname = input(podman,"Enter a name, or leave blank for the default name.", "Name change","") as text
-		if(newname != "")
+		if (newname != "")
 			podman.real_name = newname
 
 	parent.visible_message("\blue The pod disgorges a fully-formed plant person!")

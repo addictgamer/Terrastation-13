@@ -79,7 +79,7 @@ obj/machinery/scanner/attack_hand(mob/living/carbon/human/user)
 	print.stamped = 1
 
 	for(var/datum/data/record/test in data_core.general)
-		if(test.fields["name"] == mname)
+		if (test.fields["name"] == mname)
 			return
 
 	var/datum/data/record/G = new()

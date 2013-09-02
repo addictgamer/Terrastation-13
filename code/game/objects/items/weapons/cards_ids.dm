@@ -34,7 +34,7 @@
 	set category = "Object"
 	set src in usr
 
-	if(t)
+	if (t)
 		src.name = text("Data Disk- '[]'", t)
 	else
 		src.name = "Data Disk"

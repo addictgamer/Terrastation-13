@@ -77,7 +77,7 @@
 					else
 						if(S.amount < 2) return ..()
 						user << "\blue Now adding plating..."
-						if(do_after(user,40))
+						if (do_after(user,40))
 							if(!src || !S || S.amount < 2) return
 							S.use(2)
 							user << "\blue You added the plating!"
@@ -96,7 +96,7 @@
 						new /obj/structure/falserwall (src.loc)
 						del(src)
 					else
-						if(src.icon_state == "reinforced") //I cant believe someone would actually write this line of code...
+						if (src.icon_state == "reinforced") //I cant believe someone would actually write this line of code...
 							if(S.amount < 1) return ..()
 							user << "\blue Now finalising reinforced wall."
 							if(do_after(user, 50))
@@ -112,7 +112,7 @@
 						else
 							if(S.amount < 1) return ..()
 							user << "\blue Now reinforcing girders"
-							if(do_after(user,60))
+							if (do_after(user,60))
 								if(!src || !S || S.amount < 1) return
 								S.use(1)
 								user << "\blue Girders reinforced!"
@@ -132,7 +132,7 @@
 				else
 					if(S.amount < 2) return ..()
 					user << "\blue Now adding plating..."
-					if(do_after(user,40))
+					if (do_after(user,40))
 						if(!src || !S || S.amount < 2) return
 						S.use(2)
 						user << "\blue You added the plating!"
@@ -147,7 +147,7 @@
 
 		else if(istype(W, /obj/item/pipe))
 			var/obj/item/pipe/P = W
-			if(P.pipe_type in list(0, 1, 5))	//simple pipes, simple bends, and simple manifolds.
+			if (P.pipe_type in list(0, 1, 5))	//simple pipes, simple bends, and simple manifolds.
 				user.drop_item()
 				P.loc = src.loc
 				user << "\blue You fit the pipe into the [src]!"
@@ -166,13 +166,13 @@
 				del(src)
 				return
 			if(2.0)
-				if(prob(30))
+				if (prob(30))
 					var/remains = pick(/obj/item/stack/rods,/obj/item/stack/sheet/metal)
 					new remains(loc)
 					del(src)
 				return
 			if(3.0)
-				if(prob(5))
+				if (prob(5))
 					var/remains = pick(/obj/item/stack/rods,/obj/item/stack/sheet/metal)
 					new remains(loc)
 					del(src)
@@ -227,12 +227,12 @@
 				del(src)
 				return
 			if(2.0)
-				if(prob(30))
+				if (prob(30))
 					new /obj/effect/decal/remains/human(loc)
 					del(src)
 				return
 			if(3.0)
-				if(prob(5))
+				if (prob(5))
 					new /obj/effect/decal/remains/human(loc)
 					del(src)
 				return

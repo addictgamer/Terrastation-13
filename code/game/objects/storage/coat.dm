@@ -17,7 +17,7 @@
 		L += S.return_inv()
 	for(var/obj/item/weapon/gift/G in src)
 		L += G.gift
-		if(istype(G.gift, /obj/item/weapon/storage))
+		if (istype(G.gift, /obj/item/weapon/storage))
 			L += G.gift:return_inv()
 	return L
 
@@ -56,7 +56,7 @@
 		O.screen_loc = text("[cx],[cy]")
 		O.layer = 20
 		cx++
-		if(cx > mx)
+		if (cx > mx)
 			cx = tx
 			cy--
 	src.closer.screen_loc = text("[mx+1],[my]")
@@ -71,7 +71,7 @@
 		O.screen_loc = text("[cx]:16,[cy]:16")
 		O.layer = 20
 		cx++
-		if(cx > (4+cols))
+		if (cx > (4+cols))
 			cx = 4
 			cy--
 	src.closer.screen_loc = text("[4+cols+1]:16,2:16")
@@ -82,7 +82,7 @@
 	//var/mob/living/carbon/human/H = user
 	var/row_num = 0
 	var/col_count = min(7,storage_slots) -1
-	if(contents.len > 7)
+	if (contents.len > 7)
 		row_num = round((contents.len-1) / 7) // 7 is the maximum allowed width.
 	src.standard_orient_objs(row_num,col_count)
 	return
@@ -119,7 +119,7 @@
 			user << "\red \The [src] cannot hold \the [W]."
 			return
 
-	if(W.w_class > max_w_class)
+	if (W.w_class > max_w_class)
 		user << "\red \The [W] is too big for \the [src]"
 		return
 
@@ -139,7 +139,7 @@
 	user.u_equip(W)
 	playsound(src.loc, "rustle", 50, 1, -5)
 	W.loc = src
-	if((user.client && user.s_active != src))
+	if ((user.client && user.s_active != src))
 		user.client.screen -= W
 	src.orient2hud(user)
 	W.dropped(user)
@@ -153,20 +153,20 @@
 /obj/item/clothing/suit/storage/MouseDrop(atom/over_object)
 	if(ishuman(usr))
 		var/mob/living/carbon/human/M = usr
-		if(!( istype(over_object, /obj/screen) ))
+		if (!( istype(over_object, /obj/screen) ))
 			return ..()
 		playsound(src.loc, "rustle", 50, 1, -5)
-		if((!( M.restrained() ) && !( M.stat ) && M.wear_suit == src))
-			if(over_object.name == "r_hand")
+		if ((!( M.restrained() ) && !( M.stat ) && M.wear_suit == src))
+			if (over_object.name == "r_hand")
 				M.u_equip(src)
 				M.put_in_r_hand(src)
-			//	if(!( M.r_hand ))
+			//	if (!( M.r_hand ))
 			//		M.u_equip(src)
 			//		M.r_hand = src
-			else if(over_object.name == "l_hand")
+			else if (over_object.name == "l_hand")
 				M.u_equip(src)
 				M.put_in_l_hand(src)
-				//	if(!( M.l_hand ))
+				//	if (!( M.l_hand ))
 				//		M.u_equip(src)
 				//		M.l_hand = src
 			M.update_inv_wear_suit()
@@ -184,14 +184,14 @@
 /obj/item/clothing/suit/storage/attack_hand(mob/user as mob)
 	playsound(src.loc, "rustle", 50, 1, -5)
 	src.orient2hud(user)
-	if(src.loc == user)
-		if(user.s_active)
+	if (src.loc == user)
+		if (user.s_active)
 			user.s_active.close(user)
 		src.show_to(user)
 	else
 		..()
 		for(var/mob/M in range(1))
-			if(M.s_active == src)
+			if (M.s_active == src)
 				src.close(M)
 	src.add_fingerprint(user)
 	return

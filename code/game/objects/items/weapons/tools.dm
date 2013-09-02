@@ -55,29 +55,29 @@
 
 /obj/item/weapon/screwdriver/New()
 	switch(pick("red","blue","purple","brown","green","cyan","yellow"))
-		if("red")
+		if ("red")
 			icon_state = "screwdriver2"
 			item_state = "screwdriver"
-		if("blue")
+		if ("blue")
 			icon_state = "screwdriver"
 			item_state = "screwdriver_blue"
-		if("purple")
+		if ("purple")
 			icon_state = "screwdriver3"
 			item_state = "screwdriver_purple"
-		if("brown")
+		if ("brown")
 			icon_state = "screwdriver4"
 			item_state = "screwdriver_brown"
-		if("green")
+		if ("green")
 			icon_state = "screwdriver5"
 			item_state = "screwdriver_green"
-		if("cyan")
+		if ("cyan")
 			icon_state = "screwdriver6"
 			item_state = "screwdriver_cyan"
-		if("yellow")
+		if ("yellow")
 			icon_state = "screwdriver7"
 			item_state = "screwdriver_yellow"
 
-	if(prob(75))
+	if (prob(75))
 		src.pixel_y = rand(0, 16)
 	return
 
@@ -186,16 +186,16 @@
 		var/obj/item/weapon/flamethrower/F = new/obj/item/weapon/flamethrower(user.loc)
 		src.loc = F
 		F.weldtool = src
-		if(user.client)
+		if (user.client)
 			user.client.screen -= src
-		if(user.r_hand == src)
+		if (user.r_hand == src)
 			user.u_equip(src)
 		else
 			user.u_equip(src)
 		src.master = F
 		src.layer = initial(src.layer)
 		user.u_equip(src)
-		if(user.client)
+		if (user.client)
 			user.client.screen -= src
 		src.loc = F
 		src.add_fingerprint(user)
@@ -239,27 +239,27 @@
 		var/mob/M = location
 		if(M.l_hand == src || M.r_hand == src)
 			location = get_turf(M)
-	if(istype(location, /turf))
+	if (istype(location, /turf))
 		location.hotspot_expose(700, 5)
 
 
 /obj/item/weapon/weldingtool/afterattack(obj/O as obj, mob/user as mob)
-	if(istype(O, /obj/structure/reagent_dispensers/fueltank) && get_dist(src,O) <= 1 && !src.welding)
+	if (istype(O, /obj/structure/reagent_dispensers/fueltank) && get_dist(src,O) <= 1 && !src.welding)
 		O.reagents.trans_to(src, max_fuel)
 		user << "\blue Welder refueled"
 		playsound(src.loc, 'sound/effects/refill.ogg', 50, 1, -6)
 		return
-	else if(istype(O, /obj/structure/reagent_dispensers/fueltank) && get_dist(src,O) <= 1 && src.welding)
+	else if (istype(O, /obj/structure/reagent_dispensers/fueltank) && get_dist(src,O) <= 1 && src.welding)
 		message_admins("[key_name_admin(user)] triggered a fueltank explosion.")
 		log_game("[key_name(user)] triggered a fueltank explosion.")
 		user << "\red That was stupid of you."
 		var/obj/structure/reagent_dispensers/fueltank/tank = O
 		tank.explode()
 		return
-	if(src.welding)
+	if (src.welding)
 		remove_fuel(1)
 		var/turf/location = get_turf(user)
-		if(istype(location, /turf))
+		if (istype(location, /turf))
 			location.hotspot_expose(700, 50, 1)
 	return
 
@@ -297,7 +297,7 @@
 /obj/item/weapon/weldingtool/proc/setWelding(var/temp_welding)
 	//If we're turning it on
 	if(temp_welding > 0)
-		if(remove_fuel(1))
+		if (remove_fuel(1))
 			usr << "\blue The [src] switches on."
 			src.force = 15
 			src.damtype = "fire"
@@ -327,8 +327,8 @@
 /obj/item/weapon/weldingtool/proc/toggle(var/message = 0)
 	if(!status)	return
 	src.welding = !( src.welding )
-	if(src.welding)
-		if(remove_fuel(1))
+	if (src.welding)
+		if (remove_fuel(1))
 			usr << "\blue You switch the [src] on."
 			src.force = 15
 			src.damtype = "fire"
@@ -370,10 +370,10 @@
 			user.eye_stat += rand(12, 16)
 	if(user.eye_stat > 10 && safety < 2)
 		user << "\red Your eyes are really starting to hurt. This can't be good for you!"
-	if(prob(user.eye_stat - 25 + 1))
+	if (prob(user.eye_stat - 25 + 1))
 		user << "\red You go blind!"
 		user.sdisabilities |= BLIND
-	else if(prob(user.eye_stat - 15 + 1))
+	else if (prob(user.eye_stat - 15 + 1))
 		user << "\red You go blind!"
 		user.eye_blind = 5
 		user.eye_blurry = 5
@@ -443,7 +443,7 @@
 /obj/item/weapon/weldingtool/attack(mob/M as mob, mob/user as mob)
 	if(hasorgans(M))
 		var/datum/organ/external/S = M:organs_by_name[user.zone_sel.selecting]
-		if(!S) return
+		if (!S) return
 		if(!(S.status & ORGAN_ROBOT) || user.a_intent != "help")
 			return ..()
 		if(S.brute_dam)

@@ -13,11 +13,11 @@
 			del(src)
 			return
 		if(2.0)
-			if(prob(50))
+			if (prob(50))
 				del(src)
 				return
 		if(3.0)
-			if(prob(5))
+			if (prob(5))
 				del(src)
 				return
 	return
@@ -35,9 +35,9 @@
 	return
 
 /obj/structure/stool/MouseDrop(atom/over_object)
-	if(istype(over_object, /mob/living/carbon/human))
+	if (istype(over_object, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = over_object
-		if(!H.restrained() && !H.stat && in_range(src, over_object))
+		if (!H.restrained() && !H.stat && in_range(src, over_object))
 			var/obj/item/weapon/stool/S = new/obj/item/weapon/stool()
 			S.origin = src
 			src.loc = S
@@ -62,7 +62,7 @@
 	del src
 
 /obj/item/weapon/stool/attack(mob/M as mob, mob/user as mob)
-	if(prob(5) && istype(M,/mob/living))
+	if (prob(5) && istype(M,/mob/living))
 		user.visible_message("\red [user] breaks [src] over [M]'s back!.")
 		user.u_equip(src)
 		var/obj/item/stack/sheet/metal/m = new/obj/item/stack/sheet/metal

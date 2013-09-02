@@ -25,7 +25,7 @@
 	else if(is_special_character(user))
 		user << "Even to a heart as dark as yours, you know nothing good will come of this.  Something instinctual makes you pull away."
 
-	else if(!insisting)
+	else if (!insisting)
 		user << "Your first touch makes the Wish Granter stir, listening to you.  Are you really sure you want to do this?"
 		insisting++
 
@@ -36,22 +36,22 @@
 		charges--
 		insisting = 0
 
-		if(!(HULK in user.mutations))
+		if (!(HULK in user.mutations))
 			user.mutations.Add(HULK)
 
-		if(!(LASER in user.mutations))
+		if (!(LASER in user.mutations))
 			user.mutations.Add(LASER)
 
-		if(!(XRAY in user.mutations))
+		if (!(XRAY in user.mutations))
 			user.mutations.Add(XRAY)
 			user.sight |= (SEE_MOBS|SEE_OBJS|SEE_TURFS)
 			user.see_in_dark = 8
 			user.see_invisible = SEE_INVISIBLE_LEVEL_TWO
 
-		if(!(COLD_RESISTANCE in user.mutations))
+		if (!(COLD_RESISTANCE in user.mutations))
 			user.mutations.Add(COLD_RESISTANCE)
 
-		if(!(TK in user.mutations))
+		if (!(TK in user.mutations))
 			user.mutations.Add(TK)
 
 		if(!(HEAL in user.mutations))

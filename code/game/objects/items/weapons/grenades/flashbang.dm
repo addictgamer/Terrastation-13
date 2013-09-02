@@ -24,7 +24,7 @@
 		return
 
 	proc/bang(var/turf/T , var/mob/living/carbon/M)						// Added a new proc called 'bang' that takes a location and a person to be banged.
-		if(locate(/obj/item/weapon/cloaking_device, M))			// Called during the loop that bangs people in lockers/containers and when banging
+		if (locate(/obj/item/weapon/cloaking_device, M))			// Called during the loop that bangs people in lockers/containers and when banging
 			for(var/obj/item/weapon/cloaking_device/S in M)			// people in normal view.  Could theroetically be called during other explosions.
 				S.active = 0										// -- Polymorph
 				S.icon_state = "shield0"
@@ -62,7 +62,7 @@
 			else
 				M.Stun(10)
 				M.Weaken(3)
-				if((prob(14) || (M == src.loc && prob(70))))
+				if ((prob(14) || (M == src.loc && prob(70))))
 					M.ear_damage += rand(1, 10)
 				else
 					M.ear_damage += rand(0, 5)
@@ -80,21 +80,21 @@
 			M.ear_deaf = max(M.ear_deaf,5)
 
 //This really should be in mob not every check
-		if(M.eye_stat >= 20)
+		if (M.eye_stat >= 20)
 			M << "\red Your eyes start to burn badly!"
 			M.disabilities |= NEARSIGHTED
 			if(!banglet && !(istype(src , /obj/item/weapon/grenade/flashbang/clusterbang)))
-				if(prob(M.eye_stat - 20 + 1))
+				if (prob(M.eye_stat - 20 + 1))
 					M << "\red You can't see anything!"
 					M.sdisabilities |= BLIND
-		if(M.ear_damage >= 15)
+		if (M.ear_damage >= 15)
 			M << "\red Your ears start to ring badly!"
 			if(!banglet && !(istype(src , /obj/item/weapon/grenade/flashbang/clusterbang)))
-				if(prob(M.ear_damage - 10 + 5))
+				if (prob(M.ear_damage - 10 + 5))
 					M << "\red You can't hear anything!"
 					M.sdisabilities |= DEAF
 		else
-			if(M.ear_damage >= 5)
+			if (M.ear_damage >= 5)
 				M << "\red Your ears start to ring!"
 		M.update_icons()
 

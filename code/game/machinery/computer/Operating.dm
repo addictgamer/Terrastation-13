@@ -13,7 +13,7 @@
 	..()
 	for(dir in list(NORTH,EAST,SOUTH,WEST))
 		table = locate(/obj/machinery/optable, get_step(src, dir))
-		if(table)
+		if (table)
 			table.computer = src
 			break
 
@@ -32,8 +32,8 @@
 
 
 /obj/machinery/computer/operating/interact(mob/user)
-	if( (get_dist(src, user) > 1 ) || (stat & (BROKEN|NOPOWER)) )
-		if(!istype(user, /mob/living/silicon))
+	if ( (get_dist(src, user) > 1 ) || (stat & (BROKEN|NOPOWER)) )
+		if (!istype(user, /mob/living/silicon))
 			user.unset_machine()
 			user << browse(null, "window=op")
 			return
@@ -72,7 +72,7 @@
 /obj/machinery/computer/operating/Topic(href, href_list)
 	if(..())
 		return
-	if((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
+	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
 		usr.set_machine(src)
 	return
 

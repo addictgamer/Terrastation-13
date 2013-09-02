@@ -37,24 +37,24 @@
 
 /obj/item/weapon/tank/examine()
 	var/obj/icon = src
-	if(istype(src.loc, /obj/item/assembly))
+	if (istype(src.loc, /obj/item/assembly))
 		icon = src.loc
-	if(!in_range(src, usr))
-		if(icon == src) usr << "\blue It's \a \icon[icon][src]! If you want any more information you'll need to get closer."
+	if (!in_range(src, usr))
+		if (icon == src) usr << "\blue It's \a \icon[icon][src]! If you want any more information you'll need to get closer."
 		return
 
 	var/celsius_temperature = src.air_contents.temperature-T0C
 	var/descriptive
 
-	if(celsius_temperature < 20)
+	if (celsius_temperature < 20)
 		descriptive = "cold"
-	else if(celsius_temperature < 40)
+	else if (celsius_temperature < 40)
 		descriptive = "room temperature"
-	else if(celsius_temperature < 80)
+	else if (celsius_temperature < 80)
 		descriptive = "lukewarm"
-	else if(celsius_temperature < 100)
+	else if (celsius_temperature < 100)
 		descriptive = "warm"
-	else if(celsius_temperature < 300)
+	else if (celsius_temperature < 300)
 		descriptive = "hot"
 	else
 		descriptive = "furiously hot"
@@ -66,7 +66,7 @@
 /obj/item/weapon/tank/blob_act()
 	if(prob(50))
 		var/turf/location = src.loc
-		if(!( istype(location, /turf) ))
+		if (!( istype(location, /turf) ))
 			del(src)
 
 		if(src.air_contents)
@@ -78,10 +78,10 @@
 	..()
 	var/obj/icon = src
 
-	if(istype(src.loc, /obj/item/assembly))
+	if (istype(src.loc, /obj/item/assembly))
 		icon = src.loc
 
-	if((istype(W, /obj/item/device/analyzer)) && get_dist(user, src) <= 1)
+	if ((istype(W, /obj/item/device/analyzer)) && get_dist(user, src) <= 1)
 		for (var/mob/O in viewers(user, null))
 			O << "\red [user] has used [W] on \icon[icon] [src]"
 
@@ -90,7 +90,7 @@
 		var/total_moles = air_contents.total_moles()
 
 		user << "\blue Results of analysis of \icon[icon]"
-		if(total_moles>0)
+		if (total_moles>0)
 			var/o2_concentration = air_contents.oxygen/total_moles
 			var/n2_concentration = air_contents.nitrogen/total_moles
 			var/co2_concentration = air_contents.carbon_dioxide/total_moles
@@ -109,7 +109,7 @@
 		else
 			user << "\blue Tank is empty!"
 		src.add_fingerprint(user)
-	else if(istype(W,/obj/item/latexballon))
+	else if (istype(W,/obj/item/latexballon))
 		var/obj/item/latexballon/LB = W
 		LB.blow(src)
 		src.add_fingerprint(user)
@@ -118,7 +118,7 @@
 		bomb_assemble(W,user)
 
 /obj/item/weapon/tank/attack_self(mob/user as mob)
-	if(!(src.air_contents))
+	if (!(src.air_contents))
 		return
 	user.set_machine(src)
 
@@ -141,28 +141,28 @@
 
 /obj/item/weapon/tank/Topic(href, href_list)
 	..()
-	if(usr.stat|| usr.restrained())
+	if (usr.stat|| usr.restrained())
 		return
-	if(src.loc == usr)
+	if (src.loc == usr)
 		usr.set_machine(src)
-		if(href_list["dist_p"])
+		if (href_list["dist_p"])
 			var/cp = text2num(href_list["dist_p"])
 			src.distribute_pressure += cp
 			src.distribute_pressure = min(max(round(src.distribute_pressure), 0), 3*ONE_ATMOSPHERE)
-		if(href_list["stat"])
+		if (href_list["stat"])
 			if(istype(loc,/mob/living/carbon))
 				var/mob/living/carbon/location = loc
 				if(location.internal == src)
 					location.internal = null
 					location.internals.icon_state = "internal0"
 					usr << "\blue You close the tank release valve."
-					if(location.internals)
+					if (location.internals)
 						location.internals.icon_state = "internal0"
 				else
 					if(location.wear_mask && (location.wear_mask.flags & MASKINTERNALS))
 						location.internal = src
 						usr << "\blue You open \the [src] valve."
-						if(location.internals)
+						if (location.internals)
 							location.internals.icon_state = "internal1"
 					else
 						usr << "\blue You need something to connect to \the [src]."
@@ -171,7 +171,7 @@
 /*
  * the following is needed for a tank lying on the floor. But currently we restrict players to use not weared tanks as intrals. --rastaf
 		for(var/mob/M in viewers(1, src.loc))
-			if((M.client && M.machine == src))
+			if ((M.client && M.machine == src))
 				src.attack_self(M)
 */
 		src.attack_self(usr)

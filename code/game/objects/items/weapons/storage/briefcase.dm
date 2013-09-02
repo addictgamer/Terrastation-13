@@ -16,7 +16,7 @@
 /obj/item/weapon/storage/briefcase/attack(mob/living/M as mob, mob/living/user as mob)
 	//..()
 
-	if((CLUMSY in user.mutations) && prob(50))
+	if ((CLUMSY in user.mutations) && prob(50))
 		user << "\red The [src] slips out of your hand and hits your head."
 		user.take_organ_damage(10)
 		user.Paralyse(2)
@@ -25,17 +25,16 @@
 
 	M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been attacked with [src.name] by [user.name] ([user.ckey])</font>")
 	user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to attack [M.name] ([M.ckey])</font>")
+	msg_admin_attack("[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)]) (<A HREF='?_src_=holder;adminmoreinfo=\ref[user]'>?</A>)")
 
-	log_attack("<font color='red'>[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>")
-
-	if(M.stat < 2 && M.health < 50 && prob(90))
+	if (M.stat < 2 && M.health < 50 && prob(90))
 		var/mob/H = M
 		// ******* Check
-		if((istype(H, /mob/living/carbon/human) && istype(H, /obj/item/clothing/head) && H.flags & 8 && prob(80)))
+		if ((istype(H, /mob/living/carbon/human) && istype(H, /obj/item/clothing/head) && H.flags & 8 && prob(80)))
 			M << "\red The helmet protects you from being hit hard in the head!"
 			return
 		var/time = rand(2, 6)
-		if(prob(75))
+		if (prob(75))
 			M.Paralyse(time)
 		else
 			M.Stun(time)

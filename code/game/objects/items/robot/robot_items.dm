@@ -12,18 +12,17 @@
 	attack(mob/M as mob, mob/living/silicon/robot/user as mob)
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been attacked with [src.name] by [user.name] ([user.ckey])</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to attack [M.name] ([M.ckey])</font>")
-
-		log_attack(" <font color='red'>[user.name] ([user.ckey]) used the [src.name] to attack [M.name] ([M.ckey])</font>")
+		msg_admin_attack("[user.name] ([user.ckey]) used the [src.name] to attack [M.name] ([M.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 		user.cell.charge -= 30
 
 		M.Weaken(5)
-		if(M.stuttering < 5)
+		if (M.stuttering < 5)
 			M.stuttering = 5
 		M.Stun(5)
 
 		for(var/mob/O in viewers(M, null))
-			if(O.client)
+			if (O.client)
 				O.show_message("\red <B>[user] has prodded [M] with an electrically-charged arm!</B>", 1, "\red You hear someone fall", 2)
 
 /obj/item/borg/overdrive

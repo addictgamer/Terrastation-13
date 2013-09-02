@@ -19,7 +19,7 @@
 			del(src)
 			return
 		if(2.0)
-			if(prob(50))
+			if (prob(50))
 				//SN src = null
 				del(src)
 				return
@@ -47,10 +47,10 @@
 /obj/machinery/sleep_console/attack_hand(mob/user as mob)
 	if(..())
 		return
-	if(src.connected)
+	if (src.connected)
 		var/mob/living/occupant = src.connected.occupant
 		var/dat = "<font color='blue'><B>Occupant Statistics:</B></FONT><BR>"
-		if(occupant)
+		if (occupant)
 			var/t1
 			switch(occupant.stat)
 				if(0)
@@ -88,18 +88,18 @@
 /obj/machinery/sleep_console/Topic(href, href_list)
 	if(..())
 		return
-	if((usr.contents.Find(src) || ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon/ai)))
+	if ((usr.contents.Find(src) || ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon/ai)))
 		usr.set_machine(src)
-		if(href_list["chemical"])
-			if(src.connected)
-				if(src.connected.occupant)
-					if(src.connected.occupant.stat == DEAD)
+		if (href_list["chemical"])
+			if (src.connected)
+				if (src.connected.occupant)
+					if (src.connected.occupant.stat == DEAD)
 						usr << "\red \b This person has no life for to preserve anymore. Take them to a department capable of reanimating them."
 					else if(src.connected.occupant.health > 0 || href_list["chemical"] == "inaprovaline")
 						src.connected.inject_chemical(usr,href_list["chemical"],text2num(href_list["amount"]))
 					else
 						usr << "\red \b This person is not in good enough condition for sleepers to be effective! Use another means of treatment, such as cryogenics!"
-		if(href_list["refresh"])
+		if (href_list["refresh"])
 			src.updateUsrDialog()
 		src.add_fingerprint(usr)
 	return
@@ -234,8 +234,8 @@
 		..(severity)
 
 	alter_health(mob/living/M as mob)
-		if(M.health > 0)
-			if(M.getOxyLoss() >= 10)
+		if (M.health > 0)
+			if (M.getOxyLoss() >= 10)
 				var/amount = max(0.15, 1)
 				M.adjustOxyLoss(-amount)
 			else
@@ -247,7 +247,7 @@
 		M.Paralyse(1)
 		M.Weaken(1)
 		M.Stun(1)
-		if(M:reagents.get_reagent_amount("inaprovaline") < 5)
+		if (M:reagents.get_reagent_amount("inaprovaline") < 5)
 			M:reagents.add_reagent("inaprovaline", 5)
 		return
 

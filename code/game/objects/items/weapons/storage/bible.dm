@@ -44,7 +44,7 @@
 
 	log_attack("<font color='red'>[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>")
 
-	if(!(istype(user, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+	if (!(istype(user, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
 		user << "\red You don't have the dexterity to do this!"
 		return
 	if(!chaplain)
@@ -52,7 +52,7 @@
 		user.take_organ_damage(0,10)
 		return
 
-	if((CLUMSY in user.mutations) && prob(50))
+	if ((CLUMSY in user.mutations) && prob(50))
 		user << "\red The [src] slips out of your hand and hits your head."
 		user.take_organ_damage(10)
 		user.Paralyse(20)
@@ -61,7 +61,7 @@
 //	if(..() == BLOCKED)
 //		return
 
-	if(M.stat !=2)
+	if (M.stat !=2)
 		if(M.mind && (M.mind.assigned_role == "Chaplain"))
 			user << "\red You can't heal yourself!"
 			return
@@ -69,7 +69,7 @@
 			M << "\red The power of [src.deity_name] clears your mind of heresy!"
 			user << "\red You see how [M]'s eyes become clear, the cult no longer holds control over him!"
 			ticker.mode.remove_cultist(M.mind)*/
-		if((istype(M, /mob/living/carbon/human) && prob(60)))
+		if ((istype(M, /mob/living/carbon/human) && prob(60)))
 			bless(M)
 			for(var/mob/O in viewers(M, null))
 				O.show_message(text("\red <B>[] heals [] with the power of [src.deity_name]!</B>", user, M), 1)
@@ -89,7 +89,7 @@
 	return
 */
 /obj/item/weapon/storage/bible/afterattack(atom/A, mob/user as mob)
-/*	if(istype(A, /turf/simulated/floor))
+/*	if (istype(A, /turf/simulated/floor))
 		user << "\blue You hit the floor with the bible."
 		if(user.mind && (user.mind.assigned_role == "Chaplain"))
 			call(/obj/effect/rune/proc/revealrunes)(src)*/

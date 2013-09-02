@@ -104,7 +104,7 @@
 		new /obj/item/weapon/shard(loc)
 		if(reinf) new /obj/item/stack/rods(loc)
 		del(src)
-	else if(usr.a_intent == "hurt")
+	else if (usr.a_intent == "hurt")
 		playsound(src.loc, 'glassknock.ogg', 80, 1)
 		usr.visible_message("\red [usr.name] bangs against the [src.name]!", \
 							"\red You bang against the [src.name]!", \
@@ -152,9 +152,9 @@
 /obj/structure/window/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if(!istype(W)) return//I really wish I did not need this
 
-	if(istype(W, /obj/item/weapon/grab) && get_dist(src,user)<2)
+	if (istype(W, /obj/item/weapon/grab) && get_dist(src,user)<2)
 		var/obj/item/weapon/grab/G = W
-		if(istype(G.affecting, /mob/living))
+		if (istype(G.affecting, /mob/living))
 			var/mob/living/M = G.affecting
 			var/state = G.state
 			del(W)	//gotta delete it here because if window breaks, it won't get deleted
@@ -164,7 +164,7 @@
 					hit(10)
 					visible_message("\red [user] slams [M] against \the [src]!")
 				if(2)
-					if(prob(50))
+					if (prob(50))
 						M.Weaken(1)
 					M.apply_damage(10)
 					hit(25)

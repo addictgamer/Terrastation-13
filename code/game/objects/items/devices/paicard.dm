@@ -22,7 +22,7 @@
 	..()
 
 /obj/item/device/paicard/attack_self(mob/user)
-	if(!in_range(src, user))
+	if (!in_range(src, user))
 		return
 	user.set_machine(src)
 	var/dat = "<TT><B>Personal AI Device</B><BR>"
@@ -87,7 +87,7 @@
 			removePersonality()
 	if(href_list["wires"])
 		var/t1 = text2num(href_list["wires"])
-		if(radio.wires & t1)
+		if (radio.wires & t1)
 			radio.wires &= ~t1
 		else
 			radio.wires |= t1

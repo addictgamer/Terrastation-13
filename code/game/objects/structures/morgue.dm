@@ -21,10 +21,10 @@
 	anchored = 1.0
 
 /obj/structure/morgue/proc/update()
-	if(src.connected)
+	if (src.connected)
 		src.icon_state = "morgue0"
 	else
-		if(src.contents.len)
+		if (src.contents.len)
 			src.icon_state = "morgue2"
 		else
 			src.icon_state = "morgue1"
@@ -39,14 +39,14 @@
 			del(src)
 			return
 		if(2.0)
-			if(prob(50))
+			if (prob(50))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
 					ex_act(severity)
 				del(src)
 				return
 		if(3.0)
-			if(prob(5))
+			if (prob(5))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
 					ex_act(severity)
@@ -61,9 +61,9 @@
 	return src.attack_hand(user)
 
 /obj/structure/morgue/attack_hand(mob/user as mob)
-	if(src.connected)
+	if (src.connected)
 		for(var/atom/movable/A as mob|obj in src.connected.loc)
-			if(!( A.anchored ))
+			if (!( A.anchored ))
 				A.loc = src
 		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 		//src.connected = null
@@ -74,7 +74,7 @@
 		step(src.connected, src.dir)
 		src.connected.layer = OBJ_LAYER
 		var/turf/T = get_step(src, src.dir)
-		if(T.contents.Find(src.connected))
+		if (T.contents.Find(src.connected))
 			src.connected.connected = src
 			src.icon_state = "morgue0"
 			for(var/atom/movable/A as mob|obj in src)
@@ -89,14 +89,14 @@
 	return
 
 /obj/structure/morgue/attackby(P as obj, mob/user as mob)
-	if(istype(P, /obj/item/weapon/pen))
+	if (istype(P, /obj/item/weapon/pen))
 		var/t = input(user, "What would you like the label to be?", text("[]", src.name), null)  as text
-		if(user.get_active_hand() != P)
+		if (user.get_active_hand() != P)
 			return
-		if((!in_range(src, usr) && src.loc != user))
+		if ((!in_range(src, usr) && src.loc != user))
 			return
 		t = copytext(sanitize(t),1,MAX_MESSAGE_LEN)
-		if(t)
+		if (t)
 			src.name = text("Morgue- '[]'", t)
 		else
 			src.name = "Morgue"
@@ -104,13 +104,13 @@
 	return
 
 /obj/structure/morgue/relaymove(mob/user as mob)
-	if(user.stat)
+	if (user.stat)
 		return
 	src.connected = new /obj/structure/m_tray( src.loc )
 	step(src.connected, EAST)
 	src.connected.layer = OBJ_LAYER
 	var/turf/T = get_step(src, EAST)
-	if(T.contents.Find(src.connected))
+	if (T.contents.Find(src.connected))
 		src.connected.connected = src
 		src.icon_state = "morgue0"
 		for(var/atom/movable/A as mob|obj in src)
@@ -137,7 +137,7 @@
 	anchored = 1.0
 
 /obj/structure/m_tray/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(istype(mover, /obj/item/weapon/dummy))
+	if (istype(mover, /obj/item/weapon/dummy))
 		return 1
 	else
 		return ..()
@@ -146,9 +146,9 @@
 	return src.attack_hand(user)
 
 /obj/structure/m_tray/attack_hand(mob/user as mob)
-	if(src.connected)
+	if (src.connected)
 		for(var/atom/movable/A as mob|obj in src.loc)
-			if(!( A.anchored ))
+			if (!( A.anchored ))
 				A.loc = src.connected
 			//Foreach goto(26)
 		src.connected.connected = null
@@ -160,14 +160,14 @@
 	return
 
 /obj/structure/m_tray/MouseDrop_T(atom/movable/O as mob|obj, mob/user as mob)
-	if((!( istype(O, /atom/movable) ) || O.anchored || get_dist(user, src) > 1 || get_dist(user, O) > 1 || user.contents.Find(src) || user.contents.Find(O)))
+	if ((!( istype(O, /atom/movable) ) || O.anchored || get_dist(user, src) > 1 || get_dist(user, O) > 1 || user.contents.Find(src) || user.contents.Find(O)))
 		return
-	if(!ismob(O) && !istype(O, /obj/structure/closet/body_bag))
+	if (!ismob(O) && !istype(O, /obj/structure/closet/body_bag))
 		return
 	O.loc = src.loc
-	if(user != O)
+	if (user != O)
 		for(var/mob/B in viewers(user, 3))
-			if((B.client && !( B.blinded )))
+			if ((B.client && !( B.blinded )))
 				B << text("\red [] stuffs [] into []!", user, O, src)
 	return
 
@@ -189,10 +189,10 @@
 	var/locked = 0
 
 /obj/structure/crematorium/proc/update()
-	if(src.connected)
+	if (src.connected)
 		src.icon_state = "crema0"
 	else
-		if(src.contents.len)
+		if (src.contents.len)
 			src.icon_state = "crema2"
 		else
 			src.icon_state = "crema1"
@@ -207,14 +207,14 @@
 			del(src)
 			return
 		if(2.0)
-			if(prob(50))
+			if (prob(50))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
 					ex_act(severity)
 				del(src)
 				return
 		if(3.0)
-			if(prob(5))
+			if (prob(5))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
 					ex_act(severity)
@@ -229,29 +229,29 @@
 	return src.attack_hand(user)
 
 /obj/structure/crematorium/attack_hand(mob/user as mob)
-//	if(cremating) AWW MAN! THIS WOULD BE SO MUCH MORE FUN ... TO WATCH
+//	if (cremating) AWW MAN! THIS WOULD BE SO MUCH MORE FUN ... TO WATCH
 //		user.show_message("\red Uh-oh, that was a bad idea.", 1)
 //		//usr << "Uh-oh, that was a bad idea."
 //		src:loc:poison += 20000000
 //		src:loc:firelevel = src:loc:poison
 //		return
-	if(cremating)
+	if (cremating)
 		usr << "\red It's locked."
 		return
-	if((src.connected) && (src.locked == 0))
+	if ((src.connected) && (src.locked == 0))
 		for(var/atom/movable/A as mob|obj in src.connected.loc)
-			if(!( A.anchored ))
+			if (!( A.anchored ))
 				A.loc = src
 		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 		//src.connected = null
 		del(src.connected)
-	else if(src.locked == 0)
+	else if (src.locked == 0)
 		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 		src.connected = new /obj/structure/c_tray( src.loc )
 		step(src.connected, SOUTH)
 		src.connected.layer = OBJ_LAYER
 		var/turf/T = get_step(src, SOUTH)
-		if(T.contents.Find(src.connected))
+		if (T.contents.Find(src.connected))
 			src.connected.connected = src
 			src.icon_state = "crema0"
 			for(var/atom/movable/A as mob|obj in src)
@@ -264,14 +264,14 @@
 	update()
 
 /obj/structure/crematorium/attackby(P as obj, mob/user as mob)
-	if(istype(P, /obj/item/weapon/pen))
+	if (istype(P, /obj/item/weapon/pen))
 		var/t = input(user, "What would you like the label to be?", text("[]", src.name), null)  as text
-		if(user.get_active_hand() != P)
+		if (user.get_active_hand() != P)
 			return
-		if((!in_range(src, usr) > 1 && src.loc != user))
+		if ((!in_range(src, usr) > 1 && src.loc != user))
 			return
 		t = copytext(sanitize(t),1,MAX_MESSAGE_LEN)
-		if(t)
+		if (t)
 			src.name = text("Crematorium- '[]'", t)
 		else
 			src.name = "Crematorium"
@@ -279,13 +279,13 @@
 	return
 
 /obj/structure/crematorium/relaymove(mob/user as mob)
-	if(user.stat || locked)
+	if (user.stat || locked)
 		return
 	src.connected = new /obj/structure/c_tray( src.loc )
 	step(src.connected, SOUTH)
 	src.connected.layer = OBJ_LAYER
 	var/turf/T = get_step(src, SOUTH)
-	if(T.contents.Find(src.connected))
+	if (T.contents.Find(src.connected))
 		src.connected.connected = src
 		src.icon_state = "crema0"
 		for(var/atom/movable/A as mob|obj in src)
@@ -321,7 +321,7 @@
 		locked = 1
 
 		for(var/mob/living/M in contents)
-			if(M.stat!=2)
+			if (M.stat!=2)
 				M.emote("scream")
 			//Logging for this causes runtimes resulting in the cremator locking up. Commenting it out until that's figured out.
 			//M.attack_log += "\[[time_stamp()]\] Has been cremated by <b>[user]/[user.ckey]</b>" //No point in this when the mob's about to be deleted
@@ -356,7 +356,7 @@
 	anchored = 1.0
 
 /obj/structure/c_tray/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(istype(mover, /obj/item/weapon/dummy))
+	if (istype(mover, /obj/item/weapon/dummy))
 		return 1
 	else
 		return ..()
@@ -365,9 +365,9 @@
 	return src.attack_hand(user)
 
 /obj/structure/c_tray/attack_hand(mob/user as mob)
-	if(src.connected)
+	if (src.connected)
 		for(var/atom/movable/A as mob|obj in src.loc)
-			if(!( A.anchored ))
+			if (!( A.anchored ))
 				A.loc = src.connected
 			//Foreach goto(26)
 		src.connected.connected = null
@@ -379,14 +379,14 @@
 	return
 
 /obj/structure/c_tray/MouseDrop_T(atom/movable/O as mob|obj, mob/user as mob)
-	if((!( istype(O, /atom/movable) ) || O.anchored || get_dist(user, src) > 1 || get_dist(user, O) > 1 || user.contents.Find(src) || user.contents.Find(O)))
+	if ((!( istype(O, /atom/movable) ) || O.anchored || get_dist(user, src) > 1 || get_dist(user, O) > 1 || user.contents.Find(src) || user.contents.Find(O)))
 		return
-	if(!ismob(O) && !istype(O, /obj/structure/closet/body_bag))
+	if (!ismob(O) && !istype(O, /obj/structure/closet/body_bag))
 		return
 	O.loc = src.loc
-	if(user != O)
+	if (user != O)
 		for(var/mob/B in viewers(user, 3))
-			if((B.client && !( B.blinded )))
+			if ((B.client && !( B.blinded )))
 				B << text("\red [] stuffs [] into []!", user, O, src)
 			//Foreach goto(99)
 	return
@@ -394,8 +394,8 @@
 /obj/machinery/crema_switch/attack_hand(mob/user as mob)
 	if(src.allowed(usr))
 		for (var/obj/structure/crematorium/C in world)
-			if(C.id == id)
-				if(!C.cremating)
+			if (C.id == id)
+				if (!C.cremating)
 					C.cremate(user)
 	else
 		usr << "\red Access denied."

@@ -56,7 +56,7 @@
 	playsound(src.loc, 'sound/effects/EMPulse.ogg', 75, 1)
 
 
-	if(src.health <= 0)
+	if (src.health <= 0)
 		visible_message("\blue The [src] dissapates")
 		del(src)
 		return
@@ -91,13 +91,13 @@
 /obj/machinery/shield/ex_act(severity)
 	switch(severity)
 		if(1.0)
-			if(prob(75))
+			if (prob(75))
 				del(src)
 		if(2.0)
-			if(prob(50))
+			if (prob(50))
 				del(src)
 		if(3.0)
-			if(prob(25))
+			if (prob(25))
 				del(src)
 	return
 
@@ -130,7 +130,7 @@
 	playsound(src.loc, 'sound/effects/EMPulse.ogg', 100, 1)
 
 	//Handle the destruction of the shield
-	if(src.health <= 0)
+	if (src.health <= 0)
 		visible_message("\blue The [src] dissapates")
 		del(src)
 		return
@@ -175,8 +175,8 @@
 	update_icon()
 
 	for(var/turf/target_tile in range(2, src))
-		if(istype(target_tile,/turf/space) && !(locate(/obj/machinery/shield) in target_tile))
-			if(malfunction && prob(33) || !malfunction)
+		if (istype(target_tile,/turf/space) && !(locate(/obj/machinery/shield) in target_tile))
+			if (malfunction && prob(33) || !malfunction)
 				deployed_shields += new /obj/machinery/shield(target_tile)
 
 /obj/machinery/shieldgen/proc/shields_down()
@@ -205,7 +205,7 @@
 
 /obj/machinery/shieldgen/meteorhit(obj/O as obj)
 	src.health -= max_health*0.25 //A quarter of the machine's health
-	if(prob(5))
+	if (prob(5))
 		src.malfunction = 1
 	src.checkhp()
 	return
@@ -217,7 +217,7 @@
 			src.checkhp()
 		if(2.0)
 			src.health -= 30
-			if(prob(15))
+			if (prob(15))
 				src.malfunction = 1
 			src.checkhp()
 		if(3.0)
@@ -245,7 +245,7 @@
 		user << "The panel must be closed before operating this machine."
 		return
 
-	if(src.active)
+	if (src.active)
 		user.visible_message("\blue \icon[src] [user] deactivated the shield generator.", \
 			"\blue \icon[src] You deactivate the shield generator.", \
 			"You hear heavy droning fade out.")
@@ -508,7 +508,7 @@
 			return
 
 	if(istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
-		if(src.allowed(user))
+		if (src.allowed(user))
 			src.locked = !src.locked
 			user << "Controls are now [src.locked ? "locked." : "unlocked."]"
 		else
@@ -640,7 +640,7 @@
 	if(istype(mover) && mover.checkpass(PASSGLASS))
 		return prob(20)
 	else
-		if(istype(mover, /obj/item/projectile))
+		if (istype(mover, /obj/item/projectile))
 			return prob(10)
 		else
 			return !src.density

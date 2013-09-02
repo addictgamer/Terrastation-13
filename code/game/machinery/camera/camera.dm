@@ -71,9 +71,9 @@
 				if(can_use())
 					cameranet.addCamera(src)
 			for(var/mob/O in mob_list)
-				if(istype(O.machine, /obj/machinery/computer/security))
+				if (istype(O.machine, /obj/machinery/computer/security))
 					var/obj/machinery/computer/security/S = O.machine
-					if(S.current == src)
+					if (S.current == src)
 						O.unset_machine()
 						O.reset_view(null)
 						O << "The screen bursts into static."
@@ -132,7 +132,7 @@
 
 
 	// OTHER
-	else if((istype(W, /obj/item/weapon/paper) || istype(W, /obj/item/device/pda)) && isliving(user))
+	else if ((istype(W, /obj/item/weapon/paper) || istype(W, /obj/item/device/pda)) && isliving(user))
 		var/mob/living/U = user
 		var/obj/item/weapon/paper/X = null
 		var/obj/item/device/pda/P = null
@@ -154,16 +154,16 @@
 			else O << "<b><a href='byond://?src=\ref[O];track2=\ref[O];track=\ref[U]'>[U]</a></b> holds \a [itemname] up to one of your cameras ..."
 			O << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", itemname, info), text("window=[]", itemname))
 		for(var/mob/O in player_list)
-			if(istype(O.machine, /obj/machinery/computer/security))
+			if (istype(O.machine, /obj/machinery/computer/security))
 				var/obj/machinery/computer/security/S = O.machine
-				if(S.current == src)
+				if (S.current == src)
 					O << "[U] holds \a [itemname] up to one of the cameras ..."
 					O << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", itemname, info), text("window=[]", itemname))
-	else if(istype(W, /obj/item/weapon/camera_bug))
-		if(!src.can_use())
+	else if (istype(W, /obj/item/weapon/camera_bug))
+		if (!src.can_use())
 			user << "\blue Camera non-functional"
 			return
-		if(src.bugged)
+		if (src.bugged)
 			user << "\blue Camera bug removed."
 			src.bugged = 0
 		else
@@ -185,7 +185,7 @@
 /obj/machinery/camera/proc/deactivate(user as mob, var/choice = 1)
 	if(choice==1)
 		status = !( src.status )
-		if(!(src.status))
+		if (!(src.status))
 			visible_message("\red [user] has deactivated [src]!")
 			playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
 			icon_state = "[initial(icon_state)]1"
@@ -199,9 +199,9 @@
 	//Apparently, this will disconnect anyone even if the camera was re-activated.
 	//I guess that doesn't matter since they can't use it anyway?
 	for(var/mob/O in player_list)
-		if(istype(O.machine, /obj/machinery/computer/security))
+		if (istype(O.machine, /obj/machinery/computer/security))
 			var/obj/machinery/computer/security/S = O.machine
-			if(S.current == src)
+			if (S.current == src)
 				O.unset_machine()
 				O.reset_view(null)
 				O << "The screen bursts into static."

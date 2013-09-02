@@ -357,7 +357,7 @@
 
 /obj/structure/closet/crate/secure/attack_hand(mob/user as mob)
 	if(locked && !broken)
-		if(allowed(user))
+		if (allowed(user))
 			user << "<span class='notice'>You unlock [src].</span>"
 			src.locked = 0
 			overlays.Cut()
@@ -376,7 +376,7 @@
 		overlays.Cut()
 		overlays += redlight
 		return
-	else if( (istype(W, /obj/item/weapon/card/emag)||istype(W, /obj/item/weapon/melee/energy/blade)) && locked &&!broken)
+	else if ( (istype(W, /obj/item/weapon/card/emag)||istype(W, /obj/item/weapon/melee/energy/blade)) && locked &&!broken)
 		overlays.Cut()
 		overlays += emag
 		overlays += sparks
@@ -462,7 +462,7 @@
 			del(src)
 			return
 		if(3.0)
-			if(prob(50))
+			if (prob(50))
 				del(src)
 			return
 		else

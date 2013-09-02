@@ -79,13 +79,13 @@
 		return
 	user.set_machine(src)
 	var/dat = "<TITLE>Biogenerator</TITLE>Biogenerator:<BR>"
-	if(processing)
+	if (processing)
 		dat += "<FONT COLOR=red>Biogenerator is processing! Please wait...</FONT>"
 	else
 		dat += "Biomass: [points] points.<HR>"
 		switch(menustat)
 			if("menu")
-				if(beaker)
+				if (beaker)
 					dat += "<A href='?src=\ref[src];action=activate'>Activate Biogenerator!</A><BR>"
 					dat += "<A href='?src=\ref[src];action=detach'>Detach Container</A><BR><BR>"
 					dat += "Food<BR>"
@@ -121,9 +121,9 @@
 	interact(user)
 
 /obj/machinery/biogenerator/proc/activate()
-	if(usr.stat != 0)
+	if (usr.stat != 0)
 		return
-	if(src.stat != 0) //NOPOWER etc
+	if (src.stat != 0) //NOPOWER etc
 		return
 	if(src.processing)
 		usr << "\red The biogenerator is in the process of working."

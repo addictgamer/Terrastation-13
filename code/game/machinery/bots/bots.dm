@@ -30,7 +30,7 @@
 	del(src)
 
 /obj/machinery/bot/proc/healthcheck()
-	if(src.health <= 0)
+	if (src.health <= 0)
 		src.explode()
 
 /obj/machinery/bot/proc/Emag(mob/user as mob)
@@ -44,8 +44,8 @@
 /obj/machinery/bot/examine()
 	set src in view()
 	..()
-	if(src.health < maxhealth)
-		if(src.health > maxhealth/3)
+	if (src.health < maxhealth)
+		if (src.health > maxhealth/3)
 			usr << "<span class='warning'>[src]'s parts look loose.</span>"
 		else
 			usr << "<span class='danger'>[src]'s parts look very loose!</span>"
@@ -86,7 +86,7 @@
 				user << "<span class='notice'>Unable to repair with the maintenance panel closed.</span>"
 		else
 			user << "<span class='notice'>[src] does not need a repair.</span>"
-	else if(istype(W, /obj/item/weapon/card/emag) && emagged < 2)
+	else if (istype(W, /obj/item/weapon/card/emag) && emagged < 2)
 		Emag(user)
 	else
 		if(hasvar(W,"force") && hasvar(W,"damtype"))
@@ -125,7 +125,7 @@
 			healthcheck()
 			return
 		if(3.0)
-			if(prob(50))
+			if (prob(50))
 				src.health -= rand(1,5)*fire_dam_coeff
 				src.health -= rand(1,5)*brute_dam_coeff
 				healthcheck()
@@ -144,11 +144,11 @@
 
 	spawn(10)
 		pulse2.delete()
-	if(on)
+	if (on)
 		turn_off()
 	spawn(severity*300)
 		stat &= ~EMPED
-		if(was_on)
+		if (was_on)
 			turn_on()
 
 

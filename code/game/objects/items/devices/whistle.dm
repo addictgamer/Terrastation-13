@@ -11,7 +11,7 @@
 	var/insults = 0//just in case
 
 /obj/item/device/hailer/attack_self(mob/living/carbon/user as mob)
-	if(spamcheck)
+	if (spamcheck)
 		return
 
 	if(emagged)

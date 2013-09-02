@@ -432,7 +432,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 /obj/machinery/newscaster/Topic(href, href_list)
 	if(..())
 		return
-	if((usr.contents.Find(src) || ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
+	if ((usr.contents.Find(src) || ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
 		usr.set_machine(src)
 		if(href_list["set_channel_name"])
 			src.channel_name = sanitizeSQL(strip_html_simple(input(usr, "Provide a Feed Channel Name", "Network Channel Handler", "")))
@@ -674,7 +674,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 
 		else if(href_list["setScreen"]) //Brings us to the main menu and resets all fields~
 			src.screen = text2num(href_list["setScreen"])
-			if(src.screen == 0)
+			if (src.screen == 0)
 				src.scanned_user = "Unknown";
 				msg = "";
 				src.c_locked=0;
@@ -700,7 +700,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 
 /obj/machinery/newscaster/attackby(obj/item/I as obj, mob/user as mob)
 
-/*	if(istype(I, /obj/item/weapon/card/id) || istype(I, /obj/item/device/pda) ) //Name verification for channels or messages
+/*	if (istype(I, /obj/item/weapon/card/id) || istype(I, /obj/item/device/pda) ) //Name verification for channels or messages
 		if(src.screen == 4 || src.screen == 5)
 			if( istype(I, /obj/item/device/pda) )
 				var/obj/item/device/pda/P = I
@@ -712,7 +712,7 @@ var/list/obj/machinery/newscaster/allCasters = list() //Global list that will co
 				src.scanned_user = text("[T.registered_name] ([T.assignment])")
 				src.screen=2*/  //Obsolete after autorecognition
 
-	if(src.isbroken)
+	if (src.isbroken)
 		playsound(src.loc, 'sound/effects/hit_on_shattered_glass.ogg', 100, 1)
 		for (var/mob/O in hearers(5, src.loc))
 			O.show_message("<EM>[user.name]</EM> further abuses the shattered [src.name].")
@@ -866,7 +866,7 @@ obj/item/weapon/newspaper/attack_self(mob/user as mob)
 obj/item/weapon/newspaper/Topic(href, href_list)
 	var/mob/living/U = usr
 	..()
-	if((src in U.contents) || ( istype(loc, /turf) && in_range(src, U) ))
+	if ((src in U.contents) || ( istype(loc, /turf) && in_range(src, U) ))
 		U.set_machine(src)
 		if(href_list["next_page"])
 			if(curr_page==src.pages+1)
@@ -891,7 +891,7 @@ obj/item/weapon/newspaper/Topic(href, href_list)
 			src.curr_page--
 			playsound(src.loc, "pageturn", 50, 1)
 
-		if(istype(src.loc, /mob))
+		if (istype(src.loc, /mob))
 			src.attack_self(src.loc)
 
 
@@ -902,9 +902,9 @@ obj/item/weapon/newspaper/attackby(obj/item/weapon/W as obj, mob/user as mob)
 		else
 			var/s = strip_html( input(user, "Write something", "Newspaper", "") )
 			s = copytext(sanitize(s), 1, MAX_MESSAGE_LEN)
-			if(!s)
+			if (!s)
 				return
-			if(!in_range(src, usr) && src.loc != usr)
+			if (!in_range(src, usr) && src.loc != usr)
 				return
 			src.scribble_page = src.curr_page
 			src.scribble = s

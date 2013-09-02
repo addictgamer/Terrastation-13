@@ -20,12 +20,12 @@
 	..()
 
 /obj/structure/mopbucket/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/mop))
-		if(src.reagents.total_volume >= 2)
+	if (istype(W, /obj/item/weapon/mop))
+		if (src.reagents.total_volume >= 2)
 			src.reagents.trans_to(W, 2)
 			user << "\blue You wet the mop"
 			playsound(src.loc, 'sound/effects/slosh.ogg', 25, 1)
-		if(src.reagents.total_volume < 1)
+		if (src.reagents.total_volume < 1)
 			user << "\blue Out of water!"
 	return
 
@@ -35,10 +35,10 @@
 			del(src)
 			return
 		if(2.0)
-			if(prob(50))
+			if (prob(50))
 				del(src)
 				return
 		if(3.0)
-			if(prob(5))
+			if (prob(5))
 				del(src)
 				return

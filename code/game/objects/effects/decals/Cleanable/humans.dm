@@ -27,14 +27,14 @@
 		if(src.loc && isturf(src.loc))
 			for(var/obj/effect/decal/cleanable/blood/B in src.loc)
 				if(B != src)
-					if(B.blood_DNA)
+					if (B.blood_DNA)
 						blood_DNA |= B.blood_DNA.Copy()
 					del(B)
 	spawn(DRYING_TIME * (amount+1))
 		dry()
 
 /obj/effect/decal/cleanable/blood/HasEntered(mob/living/carbon/human/perp)
-	if(!istype(perp))
+	if (!istype(perp))
 		return
 	if(amount < 1)
 		return
@@ -123,14 +123,14 @@
 		var/direction = pick(directions)
 		for (var/i = 0, i < pick(1, 200; 2, 150; 3, 50; 4), i++)
 			sleep(3)
-			if(i > 0)
+			if (i > 0)
 				var/obj/effect/decal/cleanable/blood/b = new /obj/effect/decal/cleanable/blood/splatter(src.loc)
 				for(var/datum/disease/D in src.viruses)
 					var/datum/disease/ND = D.Copy(1)
 					b.viruses += ND
 					ND.holder = b
 
-			if(step_to(src, get_step(src, direction), 0))
+			if (step_to(src, get_step(src, direction), 0))
 				break
 
 

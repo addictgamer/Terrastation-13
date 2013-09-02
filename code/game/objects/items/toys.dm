@@ -38,7 +38,7 @@
 	return
 
 /obj/item/toy/balloon/afterattack(atom/A as mob|obj, mob/user as mob)
-	if(istype(A, /obj/structure/reagent_dispensers/watertank) && get_dist(src,A) <= 1)
+	if (istype(A, /obj/structure/reagent_dispensers/watertank) && get_dist(src,A) <= 1)
 		A.reagents.trans_to(src, 10)
 		user << "\blue You fill the balloon with the contents of [A]."
 		src.desc = "A translucent balloon with some form of liquid sloshing around in it."
@@ -139,14 +139,14 @@
 
 	attackby(obj/item/toy/ammo/gun/A as obj, mob/user as mob)
 
-		if(istype(A, /obj/item/toy/ammo/gun))
-			if(src.bullets >= 7)
+		if (istype(A, /obj/item/toy/ammo/gun))
+			if (src.bullets >= 7)
 				user << "\blue It's already fully loaded!"
 				return 1
-			if(A.amount_left <= 0)
+			if (A.amount_left <= 0)
 				user << "\red There is no more caps!"
 				return 1
-			if(A.amount_left < (7 - src.bullets))
+			if (A.amount_left < (7 - src.bullets))
 				src.bullets += A.amount_left
 				user << text("\red You reload [] caps\s!", A.amount_left)
 				A.amount_left = 0
@@ -159,13 +159,13 @@
 		return
 
 	afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
-		if(flag)
+		if (flag)
 			return
-		if(!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+		if (!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
 			usr << "\red You don't have the dexterity to do this!"
 			return
 		src.add_fingerprint(user)
-		if(src.bullets < 1)
+		if (src.bullets < 1)
 			user.show_message("\red *click* *click*", 2)
 			playsound(user, 'sound/weapons/empty.ogg', 100, 1)
 			return
@@ -208,7 +208,7 @@
 	examine()
 		set src in view(2)
 		..()
-		if(bullets)
+		if (bullets)
 			usr << "\blue It is loaded with [bullets] foam darts!"
 
 	attackby(obj/item/I as obj, mob/user as mob)
@@ -226,9 +226,9 @@
 		if(!isturf(target.loc) || target == user) return
 		if(flag) return
 
-		if(locate (/obj/structure/table, src.loc))
+		if (locate (/obj/structure/table, src.loc))
 			return
-		else if(bullets)
+		else if (bullets)
 			var/turf/trg = get_turf(target)
 			var/obj/effect/foam_dart_dummy/D = new/obj/effect/foam_dart_dummy(get_turf(src))
 			bullets--
@@ -237,7 +237,7 @@
 			playsound(user.loc, 'sound/items/syringeproj.ogg', 50, 1)
 
 			for(var/i=0, i<6, i++)
-				if(D)
+				if (D)
 					if(D.loc == trg) break
 					step_towards(D,trg)
 
@@ -264,7 +264,7 @@
 					del(D)
 
 			return
-		else if(bullets == 0)
+		else if (bullets == 0)
 			user.Weaken(5)
 			for(var/mob/O in viewers(world.view, user))
 				O.show_message(text("\red [] realized they were out of ammo and starting scrounging for some!", user), 1)
@@ -275,7 +275,7 @@
 
 // ******* Check
 
-		if(src.bullets > 0 && M.lying)
+		if (src.bullets > 0 && M.lying)
 
 			for(var/mob/O in viewers(M, null))
 				if(O.client)
@@ -285,9 +285,9 @@
 			playsound(user.loc, 'sound/items/syringeproj.ogg', 50, 1)
 			new /obj/item/toy/ammo/crossbow(M.loc)
 			src.bullets--
-		else if(M.lying && src.bullets == 0)
+		else if (M.lying && src.bullets == 0)
 			for(var/mob/O in viewers(M, null))
-				if(O.client)	O.show_message(text("\red <B>[] casually lines up a shot with []'s head, pulls the trigger, then realizes they are out of ammo and drops to the floor in search of some!</B>", user, M), 1, "\red You hear someone fall", 2)
+				if (O.client)	O.show_message(text("\red <B>[] casually lines up a shot with []'s head, pulls the trigger, then realizes they are out of ammo and drops to the floor in search of some!</B>", user, M), 1, "\red You hear someone fall", 2)
 			user.Weaken(5)
 		return
 
@@ -324,7 +324,7 @@
 
 	attack_self(mob/user as mob)
 		src.active = !( src.active )
-		if(src.active)
+		if (src.active)
 			user << "\blue You extend the plastic blade with a quick flick of your wrist."
 			playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
 			src.icon_state = "swordblue"
@@ -430,18 +430,18 @@
 
 /obj/item/toy/waterflower/afterattack(atom/A as mob|obj, mob/user as mob)
 
-	if(istype(A, /obj/item/weapon/storage/backpack ))
+	if (istype(A, /obj/item/weapon/storage/backpack ))
 		return
 
-	else if(locate (/obj/structure/table, src.loc))
+	else if (locate (/obj/structure/table, src.loc))
 		return
 
-	else if(istype(A, /obj/structure/reagent_dispensers/watertank) && get_dist(src,A) <= 1)
+	else if (istype(A, /obj/structure/reagent_dispensers/watertank) && get_dist(src,A) <= 1)
 		A.reagents.trans_to(src, 10)
 		user << "\blue You refill your flower!"
 		return
 
-	else if(src.reagents.total_volume < 1)
+	else if (src.reagents.total_volume < 1)
 		src.empty = 1
 		user << "\blue Your flower has run dry!"
 		return

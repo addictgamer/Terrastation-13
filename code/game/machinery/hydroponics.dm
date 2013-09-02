@@ -31,7 +31,7 @@
 		if(planted && myseed.yield == 0)//Oh god don't divide by zero you'll doom us all.
 			myseed.yield += 1
 			//world << "Yield increased by 1, from 0, to a total of [myseed.yield]"
-		else if(planted && (prob(1/(myseed.yield * myseed.yield) *100)))//This formula gives you diminishing returns based on yield. 100% with 1 yield, decreasing to 25%, 11%, 6, 4, 2...
+		else if (planted && (prob(1/(myseed.yield * myseed.yield) *100)))//This formula gives you diminishing returns based on yield. 100% with 1 yield, decreasing to 25%, 11%, 6, 4, 2...
 			myseed.yield += 1
 			//world << "Yield increased by 1, to a total of [myseed.yield]"
 	else
@@ -97,7 +97,7 @@ obj/machinery/hydroponics/process()
 //Pests & Weeds//////////////////////////////////////////////////////////
 
 			// Too many pests cause the plant to be sick
-			if(pestlevel > 10 ) // Make sure it won't go overoboard
+			if (pestlevel > 10 ) // Make sure it won't go overoboard
 				pestlevel = 10
 
 			else if(pestlevel >= 5)
@@ -148,7 +148,7 @@ obj/machinery/hydroponics/process()
 
 		// Weeeeeeeeeeeeeeedddssss
 
-		if(weedlevel >= 10 && prob(50)) // At this point the plant is kind of fucked. Weeds can overtake the plant spot.
+		if (weedlevel >= 10 && prob(50)) // At this point the plant is kind of fucked. Weeds can overtake the plant spot.
 			if(planted)
 				if(myseed.plant_type == 0) // If a normal plant
 					weedinvasion()
@@ -315,35 +315,35 @@ obj/machinery/hydroponics/proc/hardmutate() // Strongly mutates the current seed
 
 obj/machinery/hydroponics/proc/mutatespecie() // Mutagent produced a new plant!
 
-	if( istype(myseed, /obj/item/seeds/nettleseed ))
+	if ( istype(myseed, /obj/item/seeds/nettleseed ))
 		del(myseed)
 		myseed = new /obj/item/seeds/deathnettleseed
 
-	else if( istype(myseed, /obj/item/seeds/amanitamycelium ))
+	else if ( istype(myseed, /obj/item/seeds/amanitamycelium ))
 		del(myseed)
 		myseed = new /obj/item/seeds/angelmycelium
 
-	else if( istype(myseed, /obj/item/seeds/lemonseed ))
+	else if ( istype(myseed, /obj/item/seeds/lemonseed ))
 		del(myseed)
 		myseed = new /obj/item/seeds/cashseed
 
-	else if( istype(myseed, /obj/item/seeds/ambrosiavulgarisseed ))
+	else if ( istype(myseed, /obj/item/seeds/ambrosiavulgarisseed ))
 		del(myseed)
 		myseed = new /obj/item/seeds/ambrosiadeusseed
 
-	else if( istype(myseed, /obj/item/seeds/plumpmycelium ))
+	else if ( istype(myseed, /obj/item/seeds/plumpmycelium ))
 		del(myseed)
 		myseed = new /obj/item/seeds/walkingmushroommycelium
 
-	else if( istype(myseed, /obj/item/seeds/chiliseed ))
+	else if ( istype(myseed, /obj/item/seeds/chiliseed ))
 		del(myseed)
 		myseed = new /obj/item/seeds/icepepperseed
 
-	else if( istype(myseed, /obj/item/seeds/appleseed ))
+	else if ( istype(myseed, /obj/item/seeds/appleseed ))
 		del(myseed)
 		myseed = new /obj/item/seeds/goldappleseed
 
-	else if( istype(myseed, /obj/item/seeds/berryseed ))
+	else if ( istype(myseed, /obj/item/seeds/berryseed ))
 		del(myseed)
 		switch(rand(1,100))
 			if(1 to 50)
@@ -351,11 +351,11 @@ obj/machinery/hydroponics/proc/mutatespecie() // Mutagent produced a new plant!
 			if(51 to 100)
 				myseed = new /obj/item/seeds/glowberryseed
 
-	else if( istype(myseed, /obj/item/seeds/poisonberryseed ))
+	else if ( istype(myseed, /obj/item/seeds/poisonberryseed ))
 		del(myseed)
 		myseed = new /obj/item/seeds/deathberryseed
 
-	else if( istype(myseed, /obj/item/seeds/tomatoseed ))
+	else if ( istype(myseed, /obj/item/seeds/tomatoseed ))
 		del(myseed)
 		switch(rand(1,100))
 			if(1 to 35)
@@ -365,19 +365,19 @@ obj/machinery/hydroponics/proc/mutatespecie() // Mutagent produced a new plant!
 			if(71 to 100)
 				myseed = new /obj/item/seeds/killertomatoseed
 
-	else if( istype(myseed, /obj/item/seeds/bluetomatoseed ))
+	else if ( istype(myseed, /obj/item/seeds/bluetomatoseed ))
 		del(myseed)
 		myseed = new /obj/item/seeds/bluespacetomatoseed
 
-	else if( istype(myseed, /obj/item/seeds/grapeseed ))
+	else if ( istype(myseed, /obj/item/seeds/grapeseed ))
 		del(myseed)
 		myseed = new /obj/item/seeds/greengrapeseed
 /*
-	else if( istype(myseed, /obj/item/seeds/tomatoseed ))
+	else if ( istype(myseed, /obj/item/seeds/tomatoseed ))
 		del(myseed)
 		myseed = new /obj/item/seeds/gibtomatoseed
 */
-	else if( istype(myseed, /obj/item/seeds/eggplantseed ))
+	else if ( istype(myseed, /obj/item/seeds/eggplantseed ))
 		del(myseed)
 		myseed = new /obj/item/seeds/eggyseed
 
@@ -402,7 +402,7 @@ obj/machinery/hydroponics/proc/mutatespecie() // Mutagent produced a new plant!
 
 
 obj/machinery/hydroponics/proc/mutateweed() // If the weeds gets the mutagent instead. Mind you, this pretty much destroys the old plant
-	if( weedlevel > 5 )
+	if ( weedlevel > 5 )
 		del(myseed)
 		var/newWeed = pick(/obj/item/seeds/libertymycelium, /obj/item/seeds/angelmycelium, /obj/item/seeds/deathnettleseed, /obj/item/seeds/kudzuseed)
 		myseed = new newWeed
@@ -435,7 +435,7 @@ obj/machinery/hydroponics/proc/plantdies() // OH NOES!!!!! I put this all in one
 
 
 obj/machinery/hydroponics/proc/mutatepest()  // Until someone makes a spaceworm, this is commented out
-	if( pestlevel > 5 )
+	if ( pestlevel > 5 )
  	visible_message("The pests seem to behave oddly...")
 //		spawn(10)
 //		new /obj/effect/alien/spaceworm(loc)
@@ -448,7 +448,7 @@ obj/machinery/hydroponics/proc/mutatepest()  // Until someone makes a spaceworm,
 obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 
 	//Called when mob user "attacks" it with object O
-	if(istype(O, /obj/item/weapon/reagent_containers/glass/bucket))
+	if (istype(O, /obj/item/weapon/reagent_containers/glass/bucket))
 		var/b_amount = O.reagents.get_reagent_amount("water")
 		if(b_amount > 0 && waterlevel < 100)
 			if(b_amount + waterlevel > 100)
@@ -460,7 +460,7 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 
 	//		Toxicity dilutation code. The more water you put in, the lesser the toxin concentration.
 			toxic -= round(b_amount/4)
-			if(toxic < 0 ) // Make sure it won't go overoboard
+			if (toxic < 0 ) // Make sure it won't go overoboard
 				toxic = 0
 
 		else if(waterlevel >= 100)
@@ -469,7 +469,7 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 			user << "\red The bucket is not filled with water."
 		updateicon()
 
-	else if( istype(O, /obj/item/nutrient) )
+	else if ( istype(O, /obj/item/nutrient) )
 		var/obj/item/nutrient/myNut = O
 		user.u_equip(O)
 		nutrilevel = 10
@@ -481,8 +481,8 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 
 	else if(istype(O, /obj/item/weapon/reagent_containers/syringe))  // Syringe stuff
 		var/obj/item/weapon/reagent_containers/syringe/S = O
-		if(planted)
-			if(S.mode == 1)
+		if (planted)
+			if (S.mode == 1)
 				if(!S.reagents.total_volume)
 					user << "\red The syringe is empty."
 					return
@@ -492,13 +492,13 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 
 				if(S.reagents.has_reagent("mutagen", 5))
 					switch(rand(100))
-						if(91  to 100)	plantdies()
-						if(81  to 90)  mutatespecie()
-						if(66	to 80)	hardmutate()
-						if(41  to 65)  mutate()
-						if(21  to 41)  user << "The plants don't seem to react..."
-						if(11	to 20)  mutateweed()
-						if(1   to 10)  mutatepest()
+						if (91  to 100)	plantdies()
+						if (81  to 90)  mutatespecie()
+						if (66	to 80)	hardmutate()
+						if (41  to 65)  mutate()
+						if (21  to 41)  user << "The plants don't seem to react..."
+						if (11	to 20)  mutateweed()
+						if (1   to 10)  mutatepest()
 						else 			user << "Nothing happens..."
 
 				// Antitoxin binds shit pretty well. So the tox goes significantly down
@@ -607,13 +607,13 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 					toxic += round(S.reagents.get_reagent_amount("radium")*2)
 				if(S.reagents.has_reagent("radium", 10))
 					switch(rand(100))
-						if(91  to 100)	plantdies()
-						if(81  to 90)  mutatespecie()
-						if(66	to 80)	hardmutate()
-						if(41  to 65)  mutate()
-						if(21  to 41)  user << "The plants don't seem to react..."
-						if(11	to 20)  mutateweed()
-						if(1   to 10)  mutatepest()
+						if (91  to 100)	plantdies()
+						if (81  to 90)  mutatespecie()
+						if (66	to 80)	hardmutate()
+						if (41  to 65)  mutate()
+						if (21  to 41)  user << "The plants don't seem to react..."
+						if (11	to 20)  mutateweed()
+						if (1   to 10)  mutatepest()
 						else 			user << "Nothing happens..."
 
 				// The best stuff there is. For testing/debugging.
@@ -625,27 +625,27 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 					weedlevel -= rand(1,5)
 				if(S.reagents.has_reagent("adminordrazine", 5))
 					switch(rand(100))
-						if(66  to 100)  mutatespecie()
-						if(33	to 65)  mutateweed()
-						if(1   to 32)  mutatepest()
+						if (66  to 100)  mutatespecie()
+						if (33	to 65)  mutateweed()
+						if (1   to 32)  mutatepest()
 						else 			user << "Nothing happens..."
 
 				S.reagents.clear_reagents()
-				if(weedlevel < 0 ) // The following checks are to prevent the stats from going out of bounds.
+				if (weedlevel < 0 ) // The following checks are to prevent the stats from going out of bounds.
 					weedlevel = 0
-				if(health < 0 )
+				if (health < 0 )
 					health = 0
-				if(waterlevel > 100 )
+				if (waterlevel > 100 )
 					waterlevel = 100
-				if(waterlevel < 0 )
+				if (waterlevel < 0 )
 					waterlevel = 0
-				if(toxic < 0 )
+				if (toxic < 0 )
 					toxic = 0
-				if(toxic > 100 )
+				if (toxic > 100 )
 					toxic = 100
-				if(pestlevel < 0 )
+				if (pestlevel < 0 )
 					pestlevel = 0
-				if(nutrilevel > 10 )
+				if (nutrilevel > 10 )
 					nutrilevel = 10
 			else
 				user << "You can't get any extract out of this plant."
@@ -653,7 +653,7 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 			user << "There's nothing to apply the solution into."
 		updateicon()
 
-	else if( istype(O, /obj/item/seeds/) )
+	else if ( istype(O, /obj/item/seeds/) )
 		if(!planted)
 			user.u_equip(O)
 			user << "You plant the [O.name]"
@@ -672,7 +672,7 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 		else
 			user << "\red The [src] already has seeds in it!"
 
-	else if(istype(O, /obj/item/device/analyzer/plant_analyzer))
+	else if (istype(O, /obj/item/device/analyzer/plant_analyzer))
 		if(planted && myseed)
 			user << "*** <B>[myseed.plantname]</B> ***" //Carn: now reports the plants growing, not the seeds.
 			user << "-Plant Age: \blue [age]"
@@ -698,7 +698,7 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 			user << "-Nutrition level: \blue [nutrilevel]/10"
 			user << ""
 
-	else if(istype(O, /obj/item/weapon/reagent_containers/spray/plantbgone))
+	else if (istype(O, /obj/item/weapon/reagent_containers/spray/plantbgone))
 		if(planted && myseed)
 			health -= rand(5,20)
 
@@ -716,7 +716,7 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 			playsound(loc, 'sound/effects/spray3.ogg', 50, 1, -6)
 			updateicon()
 
-	else if(istype(O, /obj/item/weapon/minihoe))  // The minihoe
+	else if (istype(O, /obj/item/weapon/minihoe))  // The minihoe
 		//var/deweeding
 		if(weedlevel > 0)
 			user.visible_message("\red [user] starts uprooting the weeds.", "\red You remove the weeds from the [src].")
@@ -726,21 +726,21 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 		else
 			user << "\red This plot is completely devoid of weeds. It doesn't need uprooting."
 
-	else if( istype(O, /obj/item/weapon/weedspray) )
+	else if ( istype(O, /obj/item/weapon/weedspray) )
 		var/obj/item/weedkiller/myWKiller = O
 		user.u_equip(O)
 		toxic += myWKiller.toxicity
 		weedlevel -= myWKiller.WeedKillStr
-		if(weedlevel < 0 ) // Make sure it won't go overoboard
+		if (weedlevel < 0 ) // Make sure it won't go overoboard
 			weedlevel = 0
-		if(toxic > 100 ) // Make sure it won't go overoboard
+		if (toxic > 100 ) // Make sure it won't go overoboard
 			toxic = 100
 		user << "You apply the weedkiller solution into the [src]."
 		playsound(loc, 'sound/effects/spray3.ogg', 50, 1, -6)
 		del(O)
 		updateicon()
 
-	else if(istype(O, /obj/item/weapon/storage/bag/plants))
+	else if (istype(O, /obj/item/weapon/storage/bag/plants))
 		attack_hand(user)
 		var/obj/item/weapon/storage/bag/plants/S = O
 		for (var/obj/item/weapon/reagent_containers/food/snacks/grown/G in locate(user.x,user.y,user.z))
@@ -748,14 +748,14 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 				return
 			S.handle_item_insertion(G, 1)
 
-	else if( istype(O, /obj/item/weapon/pestspray) )
+	else if ( istype(O, /obj/item/weapon/pestspray) )
 		var/obj/item/pestkiller/myPKiller = O
 		user.u_equip(O)
 		toxic += myPKiller.toxicity
 		pestlevel -= myPKiller.PestKillStr
-		if(pestlevel < 0 ) // Make sure it won't go overoboard
+		if (pestlevel < 0 ) // Make sure it won't go overoboard
 			pestlevel = 0
-		if(toxic > 100 ) // Make sure it won't go overoboard
+		if (toxic > 100 ) // Make sure it won't go overoboard
 			toxic = 100
 		user << "You apply the pestkiller solution into the [src]."
 		playsound(loc, 'sound/effects/spray3.ogg', 50, 1, -6)

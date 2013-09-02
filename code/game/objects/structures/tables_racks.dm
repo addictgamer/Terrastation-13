@@ -210,7 +210,7 @@
 					icon_state = "tabledir2"
 				if(6)
 					icon_state = "tabledir3"
-		if(dir_sum in list(1,2,4,8,5,6,9,10))
+		if (dir_sum in list(1,2,4,8,5,6,9,10))
 			dir = dir_sum
 		else
 			dir = 2
@@ -221,11 +221,11 @@
 			del(src)
 			return
 		if(2.0)
-			if(prob(50))
+			if (prob(50))
 				del(src)
 				return
 		if(3.0)
-			if(prob(25))
+			if (prob(25))
 				destroy()
 		else
 	return
@@ -275,24 +275,24 @@
 
 /obj/structure/table/MouseDrop_T(obj/O as obj, mob/user as mob)
 
-	if((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
+	if ((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
 		return
 	if(isrobot(user))
 		return
 	user.drop_item()
-	if(O.loc != src.loc)
+	if (O.loc != src.loc)
 		step(O, get_dir(O, src))
 	return
 
 
 /obj/structure/table/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/grab) && get_dist(src,user)<2)
+	if (istype(W, /obj/item/weapon/grab) && get_dist(src,user)<2)
 		var/obj/item/weapon/grab/G = W
-		if(istype(G.affecting, /mob/living))
+		if (istype(G.affecting, /mob/living))
 			var/mob/living/M = G.affecting
-			if(G.state < 2)
+			if (G.state < 2)
 				if(user.a_intent == "hurt")
-					if(prob(15))	M.Weaken(5)
+					if (prob(15))	M.Weaken(5)
 					M.apply_damage(8,def_zone = "head")
 					visible_message("\red [G.assailant] slams [G.affecting]'s face against \the [src]!")
 					playsound(src.loc, 'sound/weapons/tablehit1.ogg', 50, 1)
@@ -306,7 +306,7 @@
 			del(W)
 			return
 
-	if(istype(W, /obj/item/weapon/wrench))
+	if (istype(W, /obj/item/weapon/wrench))
 		user << "\blue Now disassembling table"
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		if(do_after(user,50))
@@ -351,27 +351,27 @@
 
 
 /obj/structure/table/reinforced/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/weldingtool))
+	if (istype(W, /obj/item/weapon/weldingtool))
 		var/obj/item/weapon/weldingtool/WT = W
 		if(WT.remove_fuel(0, user))
 			if(src.status == 2)
 				user << "\blue Now weakening the reinforced table"
 				playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
-				if(do_after(user, 50))
+				if (do_after(user, 50))
 					if(!src || !WT.isOn()) return
 					user << "\blue Table weakened"
 					src.status = 1
 			else
 				user << "\blue Now strengthening the reinforced table"
 				playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
-				if(do_after(user, 50))
+				if (do_after(user, 50))
 					if(!src || !WT.isOn()) return
 					user << "\blue Table strengthened"
 					src.status = 2
 			return
 		return
 
-	if(istype(W, /obj/item/weapon/wrench))
+	if (istype(W, /obj/item/weapon/wrench))
 		if(src.status == 2)
 			return
 
@@ -422,17 +422,17 @@
 		return 0
 
 /obj/structure/rack/MouseDrop_T(obj/O as obj, mob/user as mob)
-	if((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
+	if ((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
 		return
 	if(isrobot(user))
 		return
 	user.drop_item()
-	if(O.loc != src.loc)
+	if (O.loc != src.loc)
 		step(O, get_dir(O, src))
 	return
 
 /obj/structure/rack/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/wrench))
+	if (istype(W, /obj/item/weapon/wrench))
 		new /obj/item/weapon/rack_parts( src.loc )
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		del(src)

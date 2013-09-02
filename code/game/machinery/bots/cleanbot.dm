@@ -75,7 +75,7 @@
 
 /obj/machinery/bot/cleanbot/attack_hand(mob/user as mob)
 	. = ..()
-	if(.)
+	if (.)
 		return
 	usr.set_machine(src)
 	interact(user)
@@ -110,7 +110,7 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 	src.add_fingerprint(usr)
 	switch(href_list["operation"])
 		if("start")
-			if(src.on)
+			if (src.on)
 				turn_off()
 			else
 				turn_on()
@@ -124,7 +124,7 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 			src.updateUsrDialog()
 		if("freq")
 			var/freq = text2num(input("Select frequency for  navigation beacons", "Frequnecy", num2text(beacon_freq / 10))) * 10
-			if(freq > 0)
+			if (freq > 0)
 				src.beacon_freq = freq
 			src.updateUsrDialog()
 		if("screw")
@@ -137,7 +137,7 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 			src.updateUsrDialog()
 
 /obj/machinery/bot/cleanbot/attackby(obj/item/weapon/W, mob/user as mob)
-	if(istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
+	if (istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
 		if(src.allowed(usr) && !open && !emagged)
 			src.locked = !src.locked
 			user << "<span class='notice'>You [ src.locked ? "lock" : "unlock"] the [src] behaviour controls.</span>"
@@ -181,7 +181,7 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 				T.wet_overlay = image('icons/effects/water.dmi',T,"wet_floor")
 				T.overlays += T.wet_overlay
 				spawn(800)
-					if(istype(T) && T.wet < 2)
+					if (istype(T) && T.wet < 2)
 						T.wet = 0
 						if(T.wet_overlay)
 							T.overlays -= T.wet_overlay
@@ -203,10 +203,10 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 		if(src.loc != src.oldloc)
 			src.oldtarget = null
 
-		if(!should_patrol)
+		if (!should_patrol)
 			return
 
-		if(!patrol_path || patrol_path.len < 1)
+		if (!patrol_path || patrol_path.len < 1)
 			var/datum/radio_frequency/frequency = radio_controller.return_frequency(beacon_freq)
 
 			if(!frequency) return
@@ -221,9 +221,9 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 			signal.data = list("findbeacon" = "patrol")
 			frequency.post_signal(src, signal, filter = RADIO_NAVBEACONS)
 			spawn(5)
-				if(!next_dest_loc)
+				if (!next_dest_loc)
 					next_dest_loc = closest_loc
-				if(next_dest_loc)
+				if (next_dest_loc)
 					src.patrol_path = AStar(src.loc, next_dest_loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 120, id=botcard, exclude=null)
 		else
 			patrol_move()
@@ -234,7 +234,7 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 		spawn(0)
 			if(!src || !target) return
 			src.path = AStar(src.loc, src.target.loc, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 30, id=botcard)
-			if(!path) path = list()
+			if (!path) path = list()
 			if(src.path.len == 0)
 				src.oldtarget = src.target
 				src.target = null
@@ -256,18 +256,18 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 	src.oldloc = src.loc
 
 /obj/machinery/bot/cleanbot/proc/patrol_move()
-	if(src.patrol_path.len <= 0)
+	if (src.patrol_path.len <= 0)
 		return
 
 	var/next = src.patrol_path[1]
 	src.patrol_path -= next
-	if(next == src.loc)
+	if (next == src.loc)
 		return
 
 	var/moved = step_towards(src, next)
-	if(!moved)
+	if (!moved)
 		failed_steps++
-	if(failed_steps > 4)
+	if (failed_steps > 4)
 		patrol_path = null
 		next_dest = null
 		failed_steps = 0
@@ -281,12 +281,12 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 		return
 
 	var/dist = get_dist(src, signal.source.loc)
-	if(dist < closest_dist && signal.source.loc != src.loc)
+	if (dist < closest_dist && signal.source.loc != src.loc)
 		closest_dist = dist
 		closest_loc = signal.source.loc
 		next_dest = signal.data["next_patrol"]
 
-	if(recv == next_dest)
+	if (recv == next_dest)
 		next_dest_loc = signal.source.loc
 		next_dest = signal.data["next_patrol"]
 
@@ -327,7 +327,7 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 
 	new /obj/item/device/assembly/prox_sensor(Tsec)
 
-	if(prob(50))
+	if (prob(50))
 		new /obj/item/robot_parts/l_arm(Tsec)
 
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
@@ -348,10 +348,10 @@ text("<A href='?src=\ref[src];operation=oddbutton'>[src.oddbutton ? "Yes" : "No"
 		user.drop_from_inventory(src)
 		del(src)
 
-	else if(istype(W, /obj/item/weapon/pen))
+	else if (istype(W, /obj/item/weapon/pen))
 		var/t = copytext(stripped_input(user, "Enter new robot name", src.name, src.created_name),1,MAX_NAME_LEN)
-		if(!t)
+		if (!t)
 			return
-		if(!in_range(src, usr) && src.loc != usr)
+		if (!in_range(src, usr) && src.loc != usr)
 			return
 		src.created_name = t

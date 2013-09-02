@@ -165,7 +165,7 @@
 /*		if(istype(D, /obj/item/weapon/screwdriver))
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 			if(do_after(user, 20))
-				if(src.stat & BROKEN)
+				if (src.stat & BROKEN)
 					user << "\blue The broken glass falls out."
 					var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 					new /obj/item/weapon/shard( src.loc )
@@ -430,7 +430,7 @@
 
 
 /obj/structure/table/holotable/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/grab) && get_dist(src,user)<2)
+	if (istype(W, /obj/item/weapon/grab) && get_dist(src,user)<2)
 		var/obj/item/weapon/grab/G = W
 		if(G.state<2)
 			user << "\red You need a better grip to do that!"
@@ -441,7 +441,7 @@
 		del(W)
 		return
 
-	if(istype(W, /obj/item/weapon/wrench))
+	if (istype(W, /obj/item/weapon/wrench))
 		user << "It's a holotable!  There are no bolts!"
 		return
 
@@ -511,7 +511,7 @@
 
 /obj/item/weapon/holo/esword/attack_self(mob/living/user as mob)
 	active = !active
-	if(active)
+	if (active)
 		force = 30
 		icon_state = "sword[color]"
 		w_class = 4
@@ -546,7 +546,7 @@
 	throwpass = 1
 
 /obj/structure/holohoop/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/grab) && get_dist(src,user)<2)
+	if (istype(W, /obj/item/weapon/grab) && get_dist(src,user)<2)
 		var/obj/item/weapon/grab/G = W
 		if(G.state<2)
 			user << "\red You need a better grip to do that!"
@@ -556,13 +556,13 @@
 		visible_message("\red [G.assailant] dunks [G.affecting] into the [src]!", 3)
 		del(W)
 		return
-	else if(istype(W, /obj/item) && get_dist(src,user)<2)
+	else if (istype(W, /obj/item) && get_dist(src,user)<2)
 		user.drop_item(src)
 		visible_message("\blue [user] dunks [W] into the [src]!", 3)
 		return
 
 /obj/structure/holohoop/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(istype(mover,/obj/item) && mover.throwing)
+	if (istype(mover,/obj/item) && mover.throwing)
 		var/obj/item/I = mover
 		if(istype(I, /obj/item/weapon/dummy) || istype(I, /obj/item/projectile))
 			return
@@ -627,7 +627,7 @@
 	var/numready = 0
 	for(var/obj/machinery/readybutton/button in currentarea)
 		numbuttons++
-		if(button.ready)
+		if (button.ready)
 			numready++
 
 	if(numbuttons == numready)

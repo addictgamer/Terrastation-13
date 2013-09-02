@@ -25,7 +25,7 @@
 
 
 	attackby(obj/item/weapon/O as obj, mob/user as mob)
-		if(user.z > 6)
+		if (user.z > 6)
 			user << "\red <b>Unable to establish a connection</b>: \black You're too far away from the station!"
 			return
 		if(istype(O, /obj/item/weapon/aiModule))
@@ -45,7 +45,7 @@
 
 		src.current = select_active_ai(user)
 
-		if(!src.current)
+		if (!src.current)
 			usr << "No active AIs detected."
 		else
 			usr << "[src.current.name] selected for law changes."
@@ -78,7 +78,7 @@
 
 		src.current = freeborg()
 
-		if(!src.current)
+		if (!src.current)
 			usr << "No free cyborgs detected."
 		else
 			usr << "[src.current.name] selected for law changes."
