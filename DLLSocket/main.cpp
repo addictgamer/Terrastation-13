@@ -49,7 +49,7 @@ extern "C" DLL_EXPORT const char* establish_connection(int n, char *v[])
 {
     // extract args
     // ------------
-    if (n < 2) return 0;
+    if(n < 2) return 0;
     const char* ip = v[0];
     const char* port_s = v[1];
     unsigned short port = atoi(port_s);
@@ -88,7 +88,7 @@ extern "C" DLL_EXPORT const char* establish_connection(int n, char *v[])
 extern "C" DLL_EXPORT const char* send_message(int n, char *v[])
 {
     // extract the args
-    if (n < 1) return 0;
+    if(n < 1) return 0;
     const char* msg = v[0];
 
     // send the message
@@ -114,10 +114,10 @@ extern "C" DLL_EXPORT const char* recv_message(int n, char *v[])
     // Try receiving messages until we receive one that's valid, or there are no more messages
     while(1) {
         int rc = recvfrom(sock, return_buffer, BUFFER_SIZE,0,(SOCKADDR*) &sender,&sender_byte_length);
-        if (rc > 0) {
+        if(rc > 0) {
             // we could read something
 
-            if (sender.sin_addr.s_addr != addr.sin_addr.s_addr) {
+            if(sender.sin_addr.s_addr != addr.sin_addr.s_addr) {
                 continue; // not our connection, ignore and try again
             } else {
                 return_buffer[rc] = 0; // 0-terminate the string
