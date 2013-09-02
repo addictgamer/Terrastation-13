@@ -37,11 +37,11 @@
 
 /mob/living/simple_animal/hostile/syndicate/Die()
 	..()
-	if (corpse)
+	if(corpse)
 		new corpse (src.loc)
-	if (weapon1)
+	if(weapon1)
 		new weapon1 (src.loc)
-	if (weapon2)
+	if(weapon2)
 		new weapon2 (src.loc)
 	del src
 	return
@@ -59,10 +59,10 @@
 	status_flags = 0
 
 /mob/living/simple_animal/hostile/syndicate/melee/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	if (O.force)
-		if (prob(80))
+	if(O.force)
+		if(prob(80))
 			var/damage = O.force
-			if (O.damtype == HALLOSS)
+			if(O.damtype == HALLOSS)
 				damage = 0
 			health -= damage
 			visible_message("\red \b [src] has been attacked with the [O] by [user]. ")
@@ -74,8 +74,8 @@
 
 
 /mob/living/simple_animal/hostile/syndicate/melee/bullet_act(var/obj/item/projectile/Proj)
-	if (!Proj)	return
-	if (prob(65))
+	if(!Proj)	return
+	if(prob(65))
 		src.health -= Proj.damage
 	else
 		visible_message("\red <B>[src] blocks [Proj] with its shield!</B>")

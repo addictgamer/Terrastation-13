@@ -38,7 +38,7 @@
 	return
 
 /obj/item/toy/balloon/afterattack(atom/A as mob|obj, mob/user as mob)
-	if (istype(A, /obj/structure/reagent_dispensers/watertank) && get_dist(src,A) <= 1)
+	if(istype(A, /obj/structure/reagent_dispensers/watertank) && get_dist(src,A) <= 1)
 		A.reagents.trans_to(src, 10)
 		user << "\blue You fill the balloon with the contents of [A]."
 		src.desc = "A translucent balloon with some form of liquid sloshing around in it."
@@ -46,12 +46,12 @@
 	return
 
 /obj/item/toy/balloon/attackby(obj/O as obj, mob/user as mob)
-	if (istype(O, /obj/item/weapon/reagent_containers/glass))
-		if (O.reagents)
-			if (O.reagents.total_volume < 1)
+	if(istype(O, /obj/item/weapon/reagent_containers/glass))
+		if(O.reagents)
+			if(O.reagents.total_volume < 1)
 				user << "The [O] is empty."
-			else if (O.reagents.total_volume >= 1)
-				if (O.reagents.has_reagent("pacid", 1))
+			else if(O.reagents.total_volume >= 1)
+				if(O.reagents.has_reagent("pacid", 1))
 					user << "The acid chews through the balloon!"
 					O.reagents.reaction(user)
 					del(src)
@@ -63,19 +63,19 @@
 	return
 
 /obj/item/toy/balloon/throw_impact(atom/hit_atom)
-	if (src.reagents.total_volume >= 1)
+	if(src.reagents.total_volume >= 1)
 		src.visible_message("\red The [src] bursts!","You hear a pop and a splash.")
 		src.reagents.reaction(get_turf(hit_atom))
 		for(var/atom/A in get_turf(hit_atom))
 			src.reagents.reaction(A)
 		src.icon_state = "burst"
 		spawn(5)
-			if (src)
+			if(src)
 				del(src)
 	return
 
 /obj/item/toy/balloon/update_icon()
-	if (src.reagents.total_volume >= 1)
+	if(src.reagents.total_volume >= 1)
 		icon_state = "waterballoon"
 		item_state = "balloon"
 	else
@@ -139,14 +139,14 @@
 
 	attackby(obj/item/toy/ammo/gun/A as obj, mob/user as mob)
 
-		if (istype(A, /obj/item/toy/ammo/gun))
-			if (src.bullets >= 7)
+		if(istype(A, /obj/item/toy/ammo/gun))
+			if(src.bullets >= 7)
 				user << "\blue It's already fully loaded!"
 				return 1
-			if (A.amount_left <= 0)
+			if(A.amount_left <= 0)
 				user << "\red There is no more caps!"
 				return 1
-			if (A.amount_left < (7 - src.bullets))
+			if(A.amount_left < (7 - src.bullets))
 				src.bullets += A.amount_left
 				user << text("\red You reload [] caps\s!", A.amount_left)
 				A.amount_left = 0
@@ -159,13 +159,13 @@
 		return
 
 	afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
-		if (flag)
+		if(flag)
 			return
-		if (!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+		if(!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
 			usr << "\red You don't have the dexterity to do this!"
 			return
 		src.add_fingerprint(user)
-		if (src.bullets < 1)
+		if(src.bullets < 1)
 			user.show_message("\red *click* *click*", 2)
 			playsound(user, 'sound/weapons/empty.ogg', 100, 1)
 			return
@@ -208,12 +208,12 @@
 	examine()
 		set src in view(2)
 		..()
-		if (bullets)
+		if(bullets)
 			usr << "\blue It is loaded with [bullets] foam darts!"
 
 	attackby(obj/item/I as obj, mob/user as mob)
-		if (istype(I, /obj/item/toy/ammo/crossbow))
-			if (bullets <= 4)
+		if(istype(I, /obj/item/toy/ammo/crossbow))
+			if(bullets <= 4)
 				user.drop_item()
 				del(I)
 				bullets++
@@ -223,12 +223,12 @@
 
 
 	afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
-		if (!isturf(target.loc) || target == user) return
-		if (flag) return
+		if(!isturf(target.loc) || target == user) return
+		if(flag) return
 
-		if (locate (/obj/structure/table, src.loc))
+		if(locate (/obj/structure/table, src.loc))
 			return
-		else if (bullets)
+		else if(bullets)
 			var/turf/trg = get_turf(target)
 			var/obj/effect/foam_dart_dummy/D = new/obj/effect/foam_dart_dummy(get_turf(src))
 			bullets--
@@ -237,13 +237,13 @@
 			playsound(user.loc, 'sound/items/syringeproj.ogg', 50, 1)
 
 			for(var/i=0, i<6, i++)
-				if (D)
-					if (D.loc == trg) break
+				if(D)
+					if(D.loc == trg) break
 					step_towards(D,trg)
 
 					for(var/mob/living/M in D.loc)
-						if (!istype(M,/mob/living)) continue
-						if (M == user) continue
+						if(!istype(M,/mob/living)) continue
+						if(M == user) continue
 						for(var/mob/O in viewers(world.view, D))
 							O.show_message(text("\red [] was hit by the foam dart!", M), 1)
 						new /obj/item/toy/ammo/crossbow(M.loc)
@@ -251,20 +251,20 @@
 						return
 
 					for(var/atom/A in D.loc)
-						if (A == user) continue
-						if (A.density)
+						if(A == user) continue
+						if(A.density)
 							new /obj/item/toy/ammo/crossbow(A.loc)
 							del(D)
 
 				sleep(1)
 
 			spawn(10)
-				if (D)
+				if(D)
 					new /obj/item/toy/ammo/crossbow(D.loc)
 					del(D)
 
 			return
-		else if (bullets == 0)
+		else if(bullets == 0)
 			user.Weaken(5)
 			for(var/mob/O in viewers(world.view, user))
 				O.show_message(text("\red [] realized they were out of ammo and starting scrounging for some!", user), 1)
@@ -275,19 +275,19 @@
 
 // ******* Check
 
-		if (src.bullets > 0 && M.lying)
+		if(src.bullets > 0 && M.lying)
 
 			for(var/mob/O in viewers(M, null))
-				if (O.client)
+				if(O.client)
 					O.show_message(text("\red <B>[] casually lines up a shot with []'s head and pulls the trigger!</B>", user, M), 1, "\red You hear the sound of foam against skull", 2)
 					O.show_message(text("\red [] was hit in the head by the foam dart!", M), 1)
 
 			playsound(user.loc, 'sound/items/syringeproj.ogg', 50, 1)
 			new /obj/item/toy/ammo/crossbow(M.loc)
 			src.bullets--
-		else if (M.lying && src.bullets == 0)
+		else if(M.lying && src.bullets == 0)
 			for(var/mob/O in viewers(M, null))
-				if (O.client)	O.show_message(text("\red <B>[] casually lines up a shot with []'s head, pulls the trigger, then realizes they are out of ammo and drops to the floor in search of some!</B>", user, M), 1, "\red You hear someone fall", 2)
+				if(O.client)	O.show_message(text("\red <B>[] casually lines up a shot with []'s head, pulls the trigger, then realizes they are out of ammo and drops to the floor in search of some!</B>", user, M), 1, "\red You hear someone fall", 2)
 			user.Weaken(5)
 		return
 
@@ -324,7 +324,7 @@
 
 	attack_self(mob/user as mob)
 		src.active = !( src.active )
-		if (src.active)
+		if(src.active)
 			user << "\blue You extend the plastic blade with a quick flick of your wrist."
 			playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
 			src.icon_state = "swordblue"
@@ -394,9 +394,9 @@
 		del(src)
 
 /obj/item/toy/snappop/HasEntered(H as mob|obj)
-	if ((ishuman(H))) //i guess carp and shit shouldn't set them off
+	if((ishuman(H))) //i guess carp and shit shouldn't set them off
 		var/mob/living/carbon/M = H
-		if (M.m_intent == "run")
+		if(M.m_intent == "run")
 			M << "\red You step on the snap pop!"
 
 			var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
@@ -430,18 +430,18 @@
 
 /obj/item/toy/waterflower/afterattack(atom/A as mob|obj, mob/user as mob)
 
-	if (istype(A, /obj/item/weapon/storage/backpack ))
+	if(istype(A, /obj/item/weapon/storage/backpack ))
 		return
 
-	else if (locate (/obj/structure/table, src.loc))
+	else if(locate (/obj/structure/table, src.loc))
 		return
 
-	else if (istype(A, /obj/structure/reagent_dispensers/watertank) && get_dist(src,A) <= 1)
+	else if(istype(A, /obj/structure/reagent_dispensers/watertank) && get_dist(src,A) <= 1)
 		A.reagents.trans_to(src, 10)
 		user << "\blue You refill your flower!"
 		return
 
-	else if (src.reagents.total_volume < 1)
+	else if(src.reagents.total_volume < 1)
 		src.empty = 1
 		user << "\blue Your flower has run dry!"
 		return
@@ -464,7 +464,7 @@
 				D.reagents.reaction(get_turf(D))
 				for(var/atom/T in get_turf(D))
 					D.reagents.reaction(T)
-					if (ismob(T) && T:client)
+					if(ismob(T) && T:client)
 						T:client << "\red [user] has sprayed you with water!"
 				sleep(4)
 			del(D)
@@ -488,14 +488,14 @@
 
 //all credit to skasi for toy mech fun ideas
 /obj/item/toy/prize/attack_self(mob/user as mob)
-	if (cooldown < world.time - 8)
+	if(cooldown < world.time - 8)
 		user << "<span class='notice'>You play with [src].</span>"
 		playsound(user, 'sound/mecha/mechstep.ogg', 20, 1)
 		cooldown = world.time
 
 /obj/item/toy/prize/attack_hand(mob/user as mob)
-	if (loc == user)
-		if (cooldown < world.time - 8)
+	if(loc == user)
+		if(cooldown < world.time - 8)
 			user << "<span class='notice'>You play with [src].</span>"
 			playsound(user, 'sound/mecha/mechturn.ogg', 20, 1)
 			cooldown = world.time

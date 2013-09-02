@@ -55,7 +55,7 @@
 	Sets <curToken> to the next token in the <tokens> list, or null if there are no more tokens.
 */
 		NextToken()
-			if (index>=tokens.len)
+			if(index>=tokens.len)
 				curToken=null
 			else
 				curToken=tokens[++index]
@@ -85,40 +85,40 @@
 		for(,src.index<=src.tokens.len, src.index++)
 			curToken=tokens[index]
 			switch(curToken.type)
-				if (/token/keyword)
+				if(/token/keyword)
 					var/n_Keyword/kw=options.keywords[curToken.value]
 					kw=new kw()
-					if (kw)
-						if (!kw.Parse(src))
+					if(kw)
+						if(!kw.Parse(src))
 							return
-				if (/token/word)
+				if(/token/word)
 					var/token/ntok
-					if (index+1>tokens.len)
+					if(index+1>tokens.len)
 						errors+=new/scriptError/BadToken(curToken)
 						continue
 					ntok=tokens[index+1]
-					if (!istype(ntok, /token/symbol))
+					if(!istype(ntok, /token/symbol))
 						errors+=new/scriptError/BadToken(ntok)
 						continue
-					if (ntok.value=="(")
+					if(ntok.value=="(")
 						ParseFunctionStatement()
-					else if (options.assign_operators.Find(ntok.value))
+					else if(options.assign_operators.Find(ntok.value))
 						ParseAssignment()
 					else
 						errors+=new/scriptError/BadToken(ntok)
 						continue
-					if (!istype(curToken, /token/end))
+					if(!istype(curToken, /token/end))
 						errors+=new/scriptError/ExpectedToken(";", curToken)
 						continue
-				if (/token/symbol)
-					if (curToken.value=="}")
-						if (!EndBlock())
+				if(/token/symbol)
+					if(curToken.value=="}")
+						if(!EndBlock())
 							errors+=new/scriptError/BadToken(curToken)
 							continue
 					else
 						errors+=new/scriptError/BadToken(curToken)
 						continue
-				if (/token/end)
+				if(/token/end)
 					warnings+=new/scriptError/BadToken(curToken)
 					continue
 				else
@@ -128,11 +128,11 @@
 
 	proc
 		CheckToken(val, type, err=1, skip=1)
-			if (curToken.value!=val || !istype(curToken,type))
-				if (err)
+			if(curToken.value!=val || !istype(curToken,type))
+				if(err)
 					errors+=new/scriptError/ExpectedToken(val, curToken)
 				return 0
-			if (skip)NextToken()
+			if(skip)NextToken()
 			return 1
 
 		AddBlock(node/BlockDefinition/B)
@@ -140,13 +140,13 @@
 			curBlock=B
 
 		EndBlock()
-			if (curBlock==global_block) return 0
+			if(curBlock==global_block) return 0
 			curBlock=blocks.Pop()
 			return 1
 
 		ParseAssignment()
 			var/name=curToken.value
-			if (!options.IsValidID(name))
+			if(!options.IsValidID(name))
 				errors+=new/scriptError/InvalidID(curToken)
 				return
 			NextToken()
@@ -154,7 +154,7 @@
 			var/node/statement/VariableAssignment/stmt=new()
 			stmt.var_name=new(name)
 			NextToken()
-			if (t)
+			if(t)
 				stmt.value=new t()
 				stmt.value:exp=new/node/expression/value/variable(stmt.var_name)
 				stmt.value:exp2=ParseExpression()
@@ -163,27 +163,27 @@
 			curBlock.statements+=stmt
 
 		ParseFunctionStatement()
-			if (!istype(curToken, /token/word))
+			if(!istype(curToken, /token/word))
 				errors+=new/scriptError("Bad identifier in function call.")
 				return
 			var/node/statement/FunctionCall/stmt=new
 			stmt.func_name=curToken.value
 			NextToken() //skip function name
-			if (!CheckToken("(", /token/symbol)) //Check for and skip open parenthesis
+			if(!CheckToken("(", /token/symbol)) //Check for and skip open parenthesis
 				return
 			var/loops = 0
 			for()
 				loops++
-				if (loops>=6000)
+				if(loops>=6000)
 					CRASH("Something TERRIBLE has gone wrong in ParseFunctionStatement ;__;")
 
-				if (!curToken)
+				if(!curToken)
 					errors+=new/scriptError/EndOfFile()
 					return
-				if (istype(curToken, /token/symbol) && curToken.value==")")
+				if(istype(curToken, /token/symbol) && curToken.value==")")
 					curBlock.statements+=stmt
 					NextToken() //Skip close parenthesis
 					return
 				var/node/expression/P=ParseParamExpression()
 				stmt.parameters+=P
-				if (istype(curToken, /token/symbol) && curToken.value==",") NextToken()
+				if(istype(curToken, /token/symbol) && curToken.value==",") NextToken()

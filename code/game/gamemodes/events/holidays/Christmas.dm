@@ -1,6 +1,6 @@
 /proc/Christmas_Game_Start()
 	for(var/obj/structure/flora/tree/pine/xmas in world)
-		if (xmas.z != 1)	continue
+		if(xmas.z != 1)	continue
 		for(var/turf/simulated/floor/T in orange(1,xmas))
 			for(var/i=1,i<=rand(1,5),i++)
 				new /obj/item/weapon/a_gift(T)
@@ -27,7 +27,7 @@
 	..()
 
 /obj/item/weapon/toy/xmas_cracker/attack(mob/target, mob/user)
-	if ( !cracked && istype(target,/mob/living/carbon/human) && (target.stat == CONSCIOUS) && !target.get_active_hand() )
+	if( !cracked && istype(target,/mob/living/carbon/human) && (target.stat == CONSCIOUS) && !target.get_active_hand() )
 		target.visible_message("<span class='notice'>[user] and [target] pop \an [src]! *pop*</span>", "<span class='notice'>You pull \an [src] with [target]! *pop*</span>", "<span class='notice'>You hear a *pop*.</span>")
 		var/obj/item/weapon/paper/Joke = new /obj/item/weapon/paper(user.loc)
 		Joke.name = "[pick("awful","terrible","unfunny")] joke"

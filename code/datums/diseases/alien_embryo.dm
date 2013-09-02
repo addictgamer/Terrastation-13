@@ -4,13 +4,13 @@
 
 //Our own special process so that dead hosts still chestburst
 /datum/disease/alien_embryo/process()
-	if (!holder) return
-	if (holder == affected_mob)
+	if(!holder) return
+	if(holder == affected_mob)
 		stage_act()
-	if (affected_mob)
-		if (affected_mob.stat == DEAD)
-			if (prob(50))
-				if (--longevity<=0)
+	if(affected_mob)
+		if(affected_mob.stat == DEAD)
+			if(prob(50))
+				if(--longevity<=0)
 					cure(0)
 	else //the virus is in inanimate obj
 		cure(0)
@@ -20,13 +20,13 @@
 	..()
 	/* Special Hud for xenos */
 	spawn(0)
-		if (affected_mob)
+		if(affected_mob)
 			AddInfectionImages(affected_mob)
 
 /datum/disease/alien_embryo/cure(var/resistance=1)
 	..()
 	spawn(0)
-		if (affected_mob)
+		if(affected_mob)
 			RemoveInfectionImages(affected_mob)
 
 /datum/disease/alien_embryo
@@ -47,35 +47,35 @@
 /datum/disease/alien_embryo/stage_act()
 	..()
 	switch(stage)
-		if (2, 3)
-			if (prob(1))
+		if(2, 3)
+			if(prob(1))
 				affected_mob.emote("sneeze")
-			if (prob(1))
+			if(prob(1))
 				affected_mob.emote("cough")
-			if (prob(1))
+			if(prob(1))
 				affected_mob << "\red Your throat feels sore."
-			if (prob(1))
+			if(prob(1))
 				affected_mob << "\red Mucous runs down the back of your throat."
-		if (4)
-			if (prob(1))
+		if(4)
+			if(prob(1))
 				affected_mob.emote("sneeze")
-			if (prob(1))
+			if(prob(1))
 				affected_mob.emote("cough")
-			if (prob(2))
+			if(prob(2))
 				affected_mob << "\red Your muscles ache."
-				if (prob(20))
+				if(prob(20))
 					affected_mob.take_organ_damage(1)
-			if (prob(2))
+			if(prob(2))
 				affected_mob << "\red Your stomach hurts."
-				if (prob(20))
+				if(prob(20))
 					affected_mob.adjustToxLoss(1)
 					affected_mob.updatehealth()
-		if (5)
+		if(5)
 			affected_mob << "\red You feel something tearing its way out of your stomach..."
 			affected_mob.adjustToxLoss(10)
 			affected_mob.updatehealth()
-			if (prob(50))
-				if (gibbed != 0) return 0
+			if(prob(50))
+				if(gibbed != 0) return 0
 				var/list/candidates = get_alien_candidates()
 				var/picked = null
 
@@ -84,9 +84,9 @@
 				// he will become the alien but if he doesn't then we will set the stage
 				// to 2, so we don't do a process heavy check everytime.
 
-				if (candidates.len)
+				if(candidates.len)
 					picked = pick(candidates)
-				else if (affected_mob.client)
+				else if(affected_mob.client)
 					picked = affected_mob.key
 				else
 					stage = 2 // Let's try again later.
@@ -110,16 +110,16 @@ Des: Removes all infection images from aliens and places an infection image on a
 /datum/disease/alien_embryo/proc/RefreshInfectionImage()
 	spawn(0)
 		for (var/mob/living/carbon/alien/alien in player_list)
-			if (alien.client)
+			if(alien.client)
 				for(var/image/I in alien.client.images)
-					if (dd_hasprefix_case(I.icon_state, "infected"))
+					if(dd_hasprefix_case(I.icon_state, "infected"))
 						del(I)
 
 		for (var/mob/living/carbon/alien/alien in player_list)
-			if (alien.client)
+			if(alien.client)
 				for (var/mob/living/carbon/C in mob_list)
-					if (C)
-						if (C.status_flags & XENO_HOST)
+					if(C)
+						if(C.status_flags & XENO_HOST)
 							var/I = image('icons/mob/alien.dmi', loc = C, icon_state = "infected[stage]")
 							alien.client.images += I
 		return
@@ -129,10 +129,10 @@ Proc: AddInfectionImages(C)
 Des: Checks if the passed mob (C) is infected with the alien egg, then gives each alien client an infected image at C.
 ----------------------------------------*/
 /datum/disease/alien_embryo/proc/AddInfectionImages(var/mob/living/carbon/C)
-	if (C)
+	if(C)
 		for (var/mob/living/carbon/alien/alien in player_list)
-			if (alien.client)
-				if (C.status_flags & XENO_HOST)
+			if(alien.client)
+				if(C.status_flags & XENO_HOST)
 					var/I = image('icons/mob/alien.dmi', loc = C, icon_state = "infected[stage]")
 					alien.client.images += I
 	return
@@ -143,11 +143,11 @@ Des: Removes the alien infection image from all aliens in the world located in p
 ----------------------------------------*/
 
 /datum/disease/alien_embryo/proc/RemoveInfectionImages(var/mob/living/carbon/C)
-	if (C)
+	if(C)
 		for (var/mob/living/carbon/alien/alien in player_list)
-			if (alien.client)
+			if(alien.client)
 				for(var/image/I in alien.client.images)
-					if (I.loc == C)
-						if (dd_hasprefix_case(I.icon_state, "infected"))
+					if(I.loc == C)
+						if(dd_hasprefix_case(I.icon_state, "infected"))
 							del(I)
 	return

@@ -4,19 +4,19 @@
 	lastKnownIP	= client.address
 	computer_id	= client.computer_id
 	log_access("Login: [key_name(src)] from [lastKnownIP ? lastKnownIP : "localhost"]-[computer_id] || BYOND v[client.byond_version]")
-	if (config.log_access)
+	if(config.log_access)
 		for(var/mob/M in player_list)
-			if (M == src)	continue
-			if ( M.key && (M.key != key) )
+			if(M == src)	continue
+			if( M.key && (M.key != key) )
 				var/matches
-				if ( (M.lastKnownIP == client.address) )
+				if( (M.lastKnownIP == client.address) )
 					matches += "IP ([client.address])"
-				if ( (M.computer_id == client.computer_id) )
-					if (matches)	matches += " and "
+				if( (M.computer_id == client.computer_id) )
+					if(matches)	matches += " and "
 					matches += "ID ([client.computer_id])"
 					spawn() alert("You have logged in already with another key this round, please log out of this one NOW or risk being banned!")
-				if (matches)
-					if (M.client)
+				if(matches)
+					if(M.client)
 						message_admins("<font color='red'><B>Notice: </B><font color='blue'><A href='?src=\ref[usr];priv_msg=\ref[src]'>[key_name_admin(src)]</A> has the same [matches] as <A href='?src=\ref[usr];priv_msg=\ref[M]'>[key_name_admin(M)]</A>.</font>", 1)
 						log_access("Notice: [key_name(src)] has the same [matches] as [key_name(M)].")
 					else
@@ -30,14 +30,14 @@
 
 	client.images = null				//remove the images such as AIs being unable to see runes
 	client.screen = null				//remove hud items just in case
-	if (hud_used)	del(hud_used)		//remove the hud objects
+	if(hud_used)	del(hud_used)		//remove the hud objects
 	hud_used = new /datum/hud(src)
 
 	next_move = 1
 	sight |= SEE_SELF
 	..()
 
-	if (loc && !isturf(loc))
+	if(loc && !isturf(loc))
 		client.eye = loc
 		client.perspective = EYE_PERSPECTIVE
 	else

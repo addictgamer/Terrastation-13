@@ -9,9 +9,9 @@
  * Banana Peals
  */
 /obj/item/weapon/bananapeel/HasEntered(AM as mob|obj)
-	if (istype(AM, /mob/living/carbon))
+	if(istype(AM, /mob/living/carbon))
 		var/mob/M =	AM
-		if (istype(M, /mob/living/carbon/human) && (isobj(M:shoes) && M:shoes.flags&NOSLIP))
+		if(istype(M, /mob/living/carbon/human) && (isobj(M:shoes) && M:shoes.flags&NOSLIP))
 			return
 
 		M.stop_pulling()
@@ -24,9 +24,9 @@
  * Soap
  */
 /obj/item/weapon/soap/HasEntered(AM as mob|obj) //EXACTLY the same as bananapeel for now, so it makes sense to put it in the same dm -- Urist
-	if (istype(AM, /mob/living/carbon))
+	if(istype(AM, /mob/living/carbon))
 		var/mob/M =	AM
-		if (istype(M, /mob/living/carbon/human) && (isobj(M:shoes) && M:shoes.flags&NOSLIP))
+		if(istype(M, /mob/living/carbon/human) && (isobj(M:shoes) && M:shoes.flags&NOSLIP))
 			return
 
 		M.stop_pulling()
@@ -38,9 +38,9 @@
 /obj/item/weapon/soap/afterattack(atom/target, mob/user as mob)
 	//I couldn't feasibly  fix the overlay bugs caused by cleaning items we are wearing.
 	//So this is a workaround. This also makes more sense from an IC standpoint. ~Carn
-	if (user.client && (target in user.client.screen))
+	if(user.client && (target in user.client.screen))
 		user << "<span class='notice'>You need to take that [target.name] off before cleaning it.</span>"
-	else if (istype(target,/obj/effect/decal/cleanable))
+	else if(istype(target,/obj/effect/decal/cleanable))
 		user << "<span class='notice'>You scrub \the [target.name] out.</span>"
 		del(target)
 	else
@@ -49,7 +49,7 @@
 	return
 
 /obj/item/weapon/soap/attack(mob/target as mob, mob/user as mob)
-	if (target && user && ishuman(target) && ishuman(user) && !target.stat && !user.stat && user.zone_sel &&user.zone_sel.selecting == "mouth" )
+	if(target && user && ishuman(target) && ishuman(user) && !target.stat && !user.stat && user.zone_sel &&user.zone_sel.selecting == "mouth" )
 		user.visible_message("\red \the [user] washes \the [target]'s mouth out with soap!")
 		return
 	..()
@@ -58,7 +58,7 @@
  * Bike Horns
  */
 /obj/item/weapon/bikehorn/attack_self(mob/user as mob)
-	if (spam_flag == 0)
+	if(spam_flag == 0)
 		spam_flag = 1
 		playsound(src.loc, 'sound/items/bikehorn.ogg', 50, 1)
 		src.add_fingerprint(user)

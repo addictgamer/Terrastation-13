@@ -41,11 +41,11 @@
 	/* // Use this to look for cameras that have the same c_tag.
 	for(var/obj/machinery/camera/C in cameranet.cameras)
 		var/list/tempnetwork = C.network&src.network
-		if (C != src && C.c_tag == src.c_tag && tempnetwork.len)
+		if(C != src && C.c_tag == src.c_tag && tempnetwork.len)
 			world.log << "[src.c_tag] [src.x] [src.y] [src.z] conflicts with [C.c_tag] [C.x] [C.y] [C.z]"
 	*/
-	if (!src.network || src.network.len < 1)
-		if (loc)
+	if(!src.network || src.network.len < 1)
+		if(loc)
 			error("[src.name] in [get_area(src)] (x:[src.x] y:[src.y] z:[src.z] has errored. [src.network?"Empty network list":"Null network list"]")
 		else
 			error("[src.name] in [get_area(src)]has errored. [src.network?"Empty network list":"Null network list"]")
@@ -54,8 +54,8 @@
 	..()
 
 /obj/machinery/camera/emp_act(severity)
-	if (!isEmpProof())
-		if (prob(100/severity))
+	if(!isEmpProof())
+		if(prob(100/severity))
 			icon_state = "[initial(icon_state)]emp"
 			var/list/previous_network = network
 			network = list()
@@ -68,12 +68,12 @@
 				icon_state = initial(icon_state)
 				stat &= ~EMPED
 				cancelCameraAlarm()
-				if (can_use())
+				if(can_use())
 					cameranet.addCamera(src)
 			for(var/mob/O in mob_list)
-				if (istype(O.machine, /obj/machinery/computer/security))
+				if(istype(O.machine, /obj/machinery/computer/security))
 					var/obj/machinery/computer/security/S = O.machine
-					if (S.current == src)
+					if(S.current == src)
 						O.unset_machine()
 						O.reset_view(null)
 						O << "The screen bursts into static."
@@ -81,7 +81,7 @@
 
 
 /obj/machinery/camera/ex_act(severity)
-	if (src.invuln)
+	if(src.invuln)
 		return
 	else
 		..(severity)
@@ -95,12 +95,12 @@
 	cameranet.updateVisibility(src, 0)
 
 /obj/machinery/camera/proc/shock(var/mob/living/user)
-	if (!istype(user))
+	if(!istype(user))
 		return
 	user.electrocute_act(10, src)
 
 /obj/machinery/camera/attack_paw(mob/living/carbon/alien/humanoid/user as mob)
-	if (!istype(user))
+	if(!istype(user))
 		return
 	status = 0
 	visible_message("<span class='warning'>\The [user] slashes at [src]!</span>")
@@ -112,34 +112,34 @@
 /obj/machinery/camera/attackby(W as obj, mob/living/user as mob)
 
 	// DECONSTRUCTION
-	if (isscrewdriver(W))
+	if(isscrewdriver(W))
 		//user << "<span class='notice'>You start to [panel_open ? "close" : "open"] the camera's panel.</span>"
-		//if (toggle_panel(user)) // No delay because no one likes screwdrivers trying to be hip and have a duration cooldown
+		//if(toggle_panel(user)) // No delay because no one likes screwdrivers trying to be hip and have a duration cooldown
 		panel_open = !panel_open
 		user.visible_message("<span class='warning'>[user] screws the camera's panel [panel_open ? "open" : "closed"]!</span>",
 		"<span class='notice'>You screw the camera's panel [panel_open ? "open" : "closed"].</span>")
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 
-	else if ((iswirecutter(W) || ismultitool(W)) && panel_open)
+	else if((iswirecutter(W) || ismultitool(W)) && panel_open)
 		interact(user)
 
-	else if (iswelder(W) && canDeconstruct())
-		if (weld(W, user))
-			if (assembly)
+	else if(iswelder(W) && canDeconstruct())
+		if(weld(W, user))
+			if(assembly)
 				assembly.loc = src.loc
 				assembly.state = 1
 			del(src)
 
 
 	// OTHER
-	else if ((istype(W, /obj/item/weapon/paper) || istype(W, /obj/item/device/pda)) && isliving(user))
+	else if((istype(W, /obj/item/weapon/paper) || istype(W, /obj/item/device/pda)) && isliving(user))
 		var/mob/living/U = user
 		var/obj/item/weapon/paper/X = null
 		var/obj/item/device/pda/P = null
 
 		var/itemname = ""
 		var/info = ""
-		if (istype(W, /obj/item/weapon/paper))
+		if(istype(W, /obj/item/weapon/paper))
 			X = W
 			itemname = X.name
 			info = X.info
@@ -149,27 +149,27 @@
 			info = P.notehtml
 		U << "You hold \a [itemname] up to the camera ..."
 		for(var/mob/living/silicon/ai/O in living_mob_list)
-			if (!O.client) continue
-			if (U.name == "Unknown") O << "<b>[U]</b> holds \a [itemname] up to one of your cameras ..."
+			if(!O.client) continue
+			if(U.name == "Unknown") O << "<b>[U]</b> holds \a [itemname] up to one of your cameras ..."
 			else O << "<b><a href='byond://?src=\ref[O];track2=\ref[O];track=\ref[U]'>[U]</a></b> holds \a [itemname] up to one of your cameras ..."
 			O << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", itemname, info), text("window=[]", itemname))
 		for(var/mob/O in player_list)
-			if (istype(O.machine, /obj/machinery/computer/security))
+			if(istype(O.machine, /obj/machinery/computer/security))
 				var/obj/machinery/computer/security/S = O.machine
-				if (S.current == src)
+				if(S.current == src)
 					O << "[U] holds \a [itemname] up to one of the cameras ..."
 					O << browse(text("<HTML><HEAD><TITLE>[]</TITLE></HEAD><BODY><TT>[]</TT></BODY></HTML>", itemname, info), text("window=[]", itemname))
-	else if (istype(W, /obj/item/weapon/camera_bug))
-		if (!src.can_use())
+	else if(istype(W, /obj/item/weapon/camera_bug))
+		if(!src.can_use())
 			user << "\blue Camera non-functional"
 			return
-		if (src.bugged)
+		if(src.bugged)
 			user << "\blue Camera bug removed."
 			src.bugged = 0
 		else
 			user << "\blue Camera bugged."
 			src.bugged = 1
-	else if (istype(W, /obj/item/weapon/melee/energy/blade))//Putting it here last since it's a special case. I wonder if there is a better way to do these than type casting.
+	else if(istype(W, /obj/item/weapon/melee/energy/blade))//Putting it here last since it's a special case. I wonder if there is a better way to do these than type casting.
 		deactivate(user,2)//Here so that you can disconnect anyone viewing the camera, regardless if it's on or off.
 		var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 		spark_system.set_up(5, 0, loc)
@@ -183,9 +183,9 @@
 	return
 
 /obj/machinery/camera/proc/deactivate(user as mob, var/choice = 1)
-	if (choice==1)
+	if(choice==1)
 		status = !( src.status )
-		if (!(src.status))
+		if(!(src.status))
 			visible_message("\red [user] has deactivated [src]!")
 			playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
 			icon_state = "[initial(icon_state)]1"
@@ -199,9 +199,9 @@
 	//Apparently, this will disconnect anyone even if the camera was re-activated.
 	//I guess that doesn't matter since they can't use it anyway?
 	for(var/mob/O in player_list)
-		if (istype(O.machine, /obj/machinery/computer/security))
+		if(istype(O.machine, /obj/machinery/computer/security))
 			var/obj/machinery/computer/security/S = O.machine
-			if (S.current == src)
+			if(S.current == src)
 				O.unset_machine()
 				O.reset_view(null)
 				O << "The screen bursts into static."
@@ -218,16 +218,16 @@
 		S.cancelAlarm("Camera", get_area(src), list(src), src)
 
 /obj/machinery/camera/proc/can_use()
-	if (!status)
+	if(!status)
 		return 0
-	if (stat & EMPED)
+	if(stat & EMPED)
 		return 0
 	return 1
 
 /obj/machinery/camera/proc/can_see()
 	var/list/see = null
 	var/turf/pos = get_turf(src)
-	if (isXRay())
+	if(isXRay())
 		see = range(view_range, pos)
 	else
 		see = hear(view_range, pos)
@@ -238,16 +238,16 @@
 	var/turf/simulated/wall/T = null
 	for(var/i = 1, i <= 8; i += i)
 		T = get_ranged_target_turf(src, i, 1)
-		if (istype(T))
+		if(istype(T))
 			//If someone knows a better way to do this, let me know. -Giacom
 			switch(i)
-				if (NORTH)
+				if(NORTH)
 					src.dir = SOUTH
-				if (SOUTH)
+				if(SOUTH)
 					src.dir = NORTH
-				if (WEST)
+				if(WEST)
 					src.dir = EAST
-				if (EAST)
+				if(EAST)
 					src.dir = WEST
 			break
 
@@ -255,7 +255,7 @@
 //or null if none
 /proc/seen_by_camera(var/mob/M)
 	for(var/obj/machinery/camera/C in oview(4, M))
-		if (C.can_use())	// check if camera disabled
+		if(C.can_use())	// check if camera disabled
 			return C
 			break
 	return null
@@ -263,7 +263,7 @@
 /proc/near_range_camera(var/mob/M)
 
 	for(var/obj/machinery/camera/C in range(4, M))
-		if (C.can_use())	// check if camera disabled
+		if(C.can_use())	// check if camera disabled
 			return C
 			break
 
@@ -271,9 +271,9 @@
 
 /obj/machinery/camera/proc/weld(var/obj/item/weapon/weldingtool/WT, var/mob/user)
 
-	if (busy)
+	if(busy)
 		return 0
-	if (!WT.isOn())
+	if(!WT.isOn())
 		return 0
 
 	// Do after stuff here
@@ -281,9 +281,9 @@
 	playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
 	WT.eyecheck(user)
 	busy = 1
-	if (do_after(user, 100))
+	if(do_after(user, 100))
 		busy = 0
-		if (!WT.isOn())
+		if(!WT.isOn())
 			return 0
 		return 1
 	busy = 0

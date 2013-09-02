@@ -149,7 +149,7 @@
 					if(objholder in removed_paths)
 						alert("That path is not allowed.")
 						objholder = "/obj/structure/closet"
-					else if (dd_hasprefix(objholder, "/mob") && !check_rights(R_DEBUG,0))
+					else if(dd_hasprefix(objholder, "/mob") && !check_rights(R_DEBUG,0))
 						objholder = "/obj/structure/closet"
 				if(3)
 					var/list/locked = list("vars", "key", "ckey", "client", "firemut", "ishulk", "telekinesis", "xray", "virus", "viruses", "cuffed", "ka", "last_eaten", "urine")

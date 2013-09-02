@@ -49,9 +49,9 @@
 
 /mob/living/simple_animal/hostile/pirate/Die()
 	..()
-	if (corpse)
+	if(corpse)
 		new corpse (src.loc)
-	if (weapon1)
+	if(weapon1)
 		new weapon1 (src.loc)
 	del src
 	return

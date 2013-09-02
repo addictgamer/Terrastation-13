@@ -156,7 +156,7 @@ turf/simulated/wall/impassable_rock
 	set background = 1
 	var/turf/U = get_turf(src)
 /*
-	if (locate(/obj/movable, U))
+	if(locate(/obj/movable, U))
 		U = locate(/obj/movable, U)
 		if(U.density == 1)
 			del(src)
@@ -168,7 +168,7 @@ Alien plants should do something if theres a lot of poison
 		update()
 		return
 */
-	if (istype(U, /turf/space))
+	if(istype(U, /turf/space))
 		del(src)
 		return
 
@@ -176,13 +176,13 @@ Alien plants should do something if theres a lot of poison
 		for(var/dirn in cardinal)
 			var/turf/T = get_step(src, dirn)
 
-			if (!istype(T) || T.density || locate(/obj/effect/alien/flesh/weeds) in T || istype(T.loc, /area/arrival) || istype(T, /turf/space))
+			if(!istype(T) || T.density || locate(/obj/effect/alien/flesh/weeds) in T || istype(T.loc, /area/arrival) || istype(T, /turf/space))
 				continue
 
 			if(!linked_node || get_dist(linked_node, src) > linked_node.node_range)
 				return
 
-	//		if (locate(/obj/movable, T)) // don't propogate into movables
+	//		if(locate(/obj/movable, T)) // don't propogate into movables
 	//			continue
 
 			for(var/obj/O in T)
@@ -197,10 +197,10 @@ Alien plants should do something if theres a lot of poison
 		if(1.0)
 			del(src)
 		if(2.0)
-			if (prob(50))
+			if(prob(50))
 				del(src)
 		if(3.0)
-			if (prob(5))
+			if(prob(5))
 				del(src)
 	return
 
@@ -233,7 +233,7 @@ Alien plants should do something if theres a lot of poison
 		healthcheck()
 
 /*/obj/effect/alien/weeds/burn(fi_amount)
-	if (fi_amount > 18000)
+	if(fi_amount > 18000)
 		spawn( 0 )
 			del(src)
 			return
@@ -354,7 +354,7 @@ Alien plants should do something if theres a lot of poison
 
 
 	Die()
-		if (!src.alive) return
+		if(!src.alive) return
 		src.alive = 0
 		walk_to(src,0)
 		src.visible_message("<b>[src]</b> disintegrates into mush!")
@@ -367,7 +367,7 @@ Alien plants should do something if theres a lot of poison
 		src.anchored = 0
 		var/T = null
 		for(var/mob/living/C in view(src.seekrange,src))//TODO: mess with this
-			if (src.target)
+			if(src.target)
 				src.task = "chasing"
 				break
 			if((C.name == src.oldtarget_name) && (world.time < src.last_found + 100)) continue
@@ -448,7 +448,7 @@ Alien plants should do something if theres a lot of poison
 
 		if(!A)	return
 
-		if (!istype(target, /turf))
+		if(!istype(target, /turf))
 			del(A)
 			return
 		A.current = target

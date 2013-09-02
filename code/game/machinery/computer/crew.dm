@@ -21,17 +21,17 @@
 
 /obj/machinery/computer/crew/attack_hand(mob/user)
 	add_fingerprint(user)
-	if (stat & (BROKEN|NOPOWER))
+	if(stat & (BROKEN|NOPOWER))
 		return
 	interact(user)
 
 
 /obj/machinery/computer/crew/update_icon()
 
-	if (stat & BROKEN)
+	if(stat & BROKEN)
 		icon_state = "crewb"
 	else
-		if (stat & NOPOWER)
+		if(stat & NOPOWER)
 			src.icon_state = "c_unpowered"
 			stat |= NOPOWER
 		else
@@ -40,23 +40,23 @@
 
 
 /obj/machinery/computer/crew/Topic(href, href_list)
-	if (..()) return
-	if (src.z > 6)
+	if(..()) return
+	if(src.z > 6)
 		usr << "\red <b>Unable to establish a connection</b>: \black You're too far away from the station!"
 		return
-	if ( href_list["close"] )
+	if( href_list["close"] )
 		usr << browse(null, "window=crewcomp")
 		usr.unset_machine()
 		return
-	if (href_list["update"])
+	if(href_list["update"])
 		src.updateDialog()
 		return
 
 
 /obj/machinery/computer/crew/interact(mob/user)
-	if (stat & (BROKEN|NOPOWER))
+	if(stat & (BROKEN|NOPOWER))
 		return
-	if (!istype(user, /mob/living/silicon) && get_dist(src, user) > 1)
+	if(!istype(user, /mob/living/silicon) && get_dist(src, user) > 1)
 		user.unset_machine()
 		user << browse(null, "window=powcomp")
 		return
@@ -70,8 +70,8 @@
 	for(var/obj/item/clothing/under/C in src.tracked)
 		var/log = ""
 		var/turf/pos = get_turf(C)
-		if ((C) && (C.has_sensor) && (pos) && (pos.z == src.z) && C.sensor_mode)
-			if (istype(C.loc, /mob/living/carbon/human))
+		if((C) && (C.has_sensor) && (pos) && (pos.z == src.z) && C.sensor_mode)
+			if(istype(C.loc, /mob/living/carbon/human))
 
 				var/mob/living/carbon/human/H = C.loc
 
@@ -83,17 +83,17 @@
 				var/life_status = "[H.stat > 1 ? "<font color=red>Deceased</font>" : "Living"]"
 				var/damage_report = "(<font color='blue'>[dam1]</font>/<font color='green'>[dam2]</font>/<font color='orange'>[dam3]</font>/<font color='red'>[dam4]</font>)"
 
-				if (H.wear_id)
+				if(H.wear_id)
 					log += "<tr><td width='40%'>[H.wear_id.name]</td>"
 				else
 					log += "<tr><td width='40%'>Unknown</td>"
 
 				switch(C.sensor_mode)
-					if (1)
+					if(1)
 						log += "<td width='15%'>[life_status]</td><td width='40%'>Not Available</td></tr>"
-					if (2)
+					if(2)
 						log += "<td width='20%'>[life_status] [damage_report]</td><td width='40%'>Not Available</td></tr>"
-					if (3)
+					if(3)
 						var/area/player_area = get_area(H)
 						log += "<td width='20%'>[life_status] [damage_report]</td><td width='40%'>[player_area.name] ([pos.x], [pos.y])</td></tr>"
 		logs += log
@@ -108,12 +108,12 @@
 
 /obj/machinery/computer/crew/proc/scan()
 	for(var/obj/item/clothing/under/C in world)
-		if ((C.has_sensor) && (istype(C.loc, /mob/living/carbon/human)))
+		if((C.has_sensor) && (istype(C.loc, /mob/living/carbon/human)))
 			var/check = 0
 			for(var/O in src.tracked)
-				if (O == C)
+				if(O == C)
 					check = 1
 					break
-			if (!check)
+			if(!check)
 				src.tracked.Add(C)
 	return 1

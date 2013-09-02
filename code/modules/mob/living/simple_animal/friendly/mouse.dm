@@ -30,27 +30,27 @@
 
 /mob/living/simple_animal/mouse/Life()
 	..()
-	if (!stat && prob(speak_chance))
+	if(!stat && prob(speak_chance))
 		for(var/mob/M in view())
 			M << 'sound/effects/mousesqueek.ogg'
 
-	if (!ckey && stat == CONSCIOUS && prob(0.5))
+	if(!ckey && stat == CONSCIOUS && prob(0.5))
 		stat = UNCONSCIOUS
 		icon_state = "mouse_[color]_sleep"
 		wander = 0
 		speak_chance = 0
 		//snuffles
-	else if (stat == UNCONSCIOUS)
-		if (ckey || prob(1))
+	else if(stat == UNCONSCIOUS)
+		if(ckey || prob(1))
 			stat = CONSCIOUS
 			icon_state = "mouse_[color]"
 			wander = 1
-		else if (prob(5))
+		else if(prob(5))
 			emote("snuffles")
 
 /mob/living/simple_animal/mouse/New()
 	..()
-	if (!color)
+	if(!color)
 		color = pick( list("brown","gray","white") )
 	icon_state = "mouse_[color]"
 	icon_living = "mouse_[color]"
@@ -63,7 +63,7 @@
 	src.stat = DEAD
 	src.icon_dead = "mouse_[color]_splat"
 	src.icon_state = "mouse_[color]_splat"
-	if (client)
+	if(client)
 		client.time_died_as_mouse = world.time
 
 //copy paste from alien/larva, if that func is updated please update this one also
@@ -72,41 +72,41 @@
 	set desc = "Enter an air vent and crawl through the pipe system."
 	set category = "Mouse"
 
-//	if (!istype(V,/obj/machinery/atmoalter/siphs/fullairsiphon/air_vent))
+//	if(!istype(V,/obj/machinery/atmoalter/siphs/fullairsiphon/air_vent))
 //		return
 
-	if (src.stat != CONSCIOUS)	return
+	if(src.stat != CONSCIOUS)	return
 
 	var/obj/machinery/atmospherics/unary/vent_pump/vent_found
 	var/welded = 0
 	for(var/obj/machinery/atmospherics/unary/vent_pump/v in range(1,src))
-		if (!v.welded)
+		if(!v.welded)
 			vent_found = v
 			break
 		else
 			welded = 1
-	if (vent_found)
-		if (vent_found.network&&vent_found.network.normal_members.len)
+	if(vent_found)
+		if(vent_found.network&&vent_found.network.normal_members.len)
 			var/list/vents = list()
 			for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in vent_found.network.normal_members)
-				if (temp_vent.loc == loc)
+				if(temp_vent.loc == loc)
 					continue
 				vents.Add(temp_vent)
 			var/list/choices = list()
 			for(var/obj/machinery/atmospherics/unary/vent_pump/vent in vents)
-				if (vent.loc.z != loc.z)
+				if(vent.loc.z != loc.z)
 					continue
 				var/atom/a = get_turf(vent)
 				choices.Add(a.loc)
 			var/turf/startloc = loc
 			var/obj/selection = input("Select a destination.", "Duct System") in choices
 			var/selection_position = choices.Find(selection)
-			if (loc==startloc)
+			if(loc==startloc)
 				var/obj/target_vent = vents[selection_position]
-				if (target_vent)
+				if(target_vent)
 					/*
 					for(var/mob/O in oviewers(src, null))
-						if ((O.client && !( O.blinded )))
+						if((O.client && !( O.blinded )))
 							O.show_message(text("<B>[src] scrambles into the ventillation ducts!</B>"), 1)
 					*/
 					loc = target_vent.loc
@@ -114,7 +114,7 @@
 				src << "\blue You need to remain still while entering a vent."
 		else
 			src << "\blue This vent is not connected to anything."
-	else if (welded)
+	else if(welded)
 		src << "\red That vent is welded."
 	else
 		src << "\blue You must be standing on or beside an air vent to enter it."
@@ -126,12 +126,12 @@
 	set desc = "Allows to hide beneath tables or certain items. Toggled on or off."
 	set category = "Mouse"
 
-	if (layer != TURF_LAYER+0.2)
+	if(layer != TURF_LAYER+0.2)
 		layer = TURF_LAYER+0.2
 		src << text("\blue You are now hiding.")
 		/*
 		for(var/mob/O in oviewers(src, null))
-			if ((O.client && !( O.blinded )))
+			if((O.client && !( O.blinded )))
 				O << text("<B>[] scurries to the ground!</B>", src)
 		*/
 	else
@@ -139,7 +139,7 @@
 		src << text("\blue You have stopped hiding.")
 		/*
 		for(var/mob/O in oviewers(src, null))
-			if ((O.client && !( O.blinded )))
+			if((O.client && !( O.blinded )))
 				O << text("[] slowly peaks up from the ground...", src)
 		*/
 
@@ -150,16 +150,16 @@
 	var/turf/target_turf = get_step(src,dir)
 	//CanReachThrough(src.loc, target_turf, src)
 	var/can_fit_under = 0
-	if (target_turf.ZCanPass(get_turf(src),1))
+	if(target_turf.ZCanPass(get_turf(src),1))
 		can_fit_under = 1
 
 	..(dir)
-	if (can_fit_under)
+	if(can_fit_under)
 		src.loc = target_turf
 	for(var/d in cardinal)
 		var/turf/O = get_step(T,d)
 		//Simple pass check.
-		if (O.ZCanPass(T, 1) && !(O in open) && !(O in closed) && O in possibles)
+		if(O.ZCanPass(T, 1) && !(O in open) && !(O in closed) && O in possibles)
 			open += O
 			*/
 
@@ -171,15 +171,15 @@
 	return
 
 /mob/living/simple_animal/mouse/HasEntered(AM as mob|obj)
-	if ( ishuman(AM) )
-		if (!stat)
+	if( ishuman(AM) )
+		if(!stat)
 			var/mob/M = AM
 			M << "\blue \icon[src] Squeek!"
 			M << 'sound/effects/mousesqueek.ogg'
 	..()
 
 /mob/living/simple_animal/mouse/Die()
-	if (client)
+	if(client)
 		client.time_died_as_mouse = world.time
 	..()
 

@@ -20,16 +20,16 @@
 		var/datum/reagents/R = new/datum/reagents(1000)
 		reagents = R
 		R.my_atom = src
-		if (!possible_transfer_amounts)
+		if(!possible_transfer_amounts)
 			src.verbs -= /obj/structure/reagent_dispensers/verb/set_APTFT
 		..()
 
 	examine()
 		set src in view()
 		..()
-		if (!(usr in view(2)) && usr!=src.loc) return
+		if(!(usr in view(2)) && usr!=src.loc) return
 		usr << "\blue It contains:"
-		if (reagents && reagents.reagent_list.len)
+		if(reagents && reagents.reagent_list.len)
 			for(var/datum/reagent/R in reagents.reagent_list)
 				usr << "\blue [R.volume] units of [R.name]"
 		else
@@ -40,21 +40,21 @@
 		set category = "Object"
 		set src in view(1)
 		var/N = input("Amount per transfer from this:","[src]") as null|anything in possible_transfer_amounts
-		if (N)
+		if(N)
 			amount_per_transfer_from_this = N
 
 	ex_act(severity)
 		switch(severity)
-			if (1.0)
+			if(1.0)
 				del(src)
 				return
-			if (2.0)
-				if (prob(50))
+			if(2.0)
+				if(prob(50))
 					new /obj/effect/effect/water(src.loc)
 					del(src)
 					return
-			if (3.0)
-				if (prob(5))
+			if(3.0)
+				if(prob(5))
 					new /obj/effect/effect/water(src.loc)
 					del(src)
 					return
@@ -62,7 +62,7 @@
 		return
 
 	blob_act()
-		if (prob(50))
+		if(prob(50))
 			new /obj/effect/effect/water(src.loc)
 			del(src)
 
@@ -98,36 +98,36 @@
 	examine()
 		set src in view()
 		..()
-		if (!(usr in view(2)) && usr!=src.loc) return
-		if (modded)
+		if(!(usr in view(2)) && usr!=src.loc) return
+		if(modded)
 			usr << "\red Fuel faucet is wrenched open, leaking the fuel!"
-		if (rig)
+		if(rig)
 			usr << "<span class='notice'>There is some kind of device rigged to the tank."
 
 	attack_hand()
-		if (rig)
+		if(rig)
 			usr.visible_message("[usr] begins to detach [rig] from \the [src].", "You begin to detach [rig] from \the [src]")
-			if (do_after(usr, 20))
+			if(do_after(usr, 20))
 				usr.visible_message("\blue [usr] detaches [rig] from \the [src].", "\blue  You detach [rig] from \the [src]")
 				rig.loc = get_turf(usr)
 				rig = null
 				overlays = new/list()
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if (istype(W,/obj/item/weapon/wrench))
+		if(istype(W,/obj/item/weapon/wrench))
 			user.visible_message("[user] wrenches [src]'s faucet [modded ? "closed" : "open"].", \
 				"You wrench [src]'s faucet [modded ? "closed" : "open"]")
 			modded = modded ? 0 : 1
-		if (istype(W,/obj/item/device/assembly_holder))
-			if (rig)
+		if(istype(W,/obj/item/device/assembly_holder))
+			if(rig)
 				user << "\red There is another device in the way."
 				return ..()
 			user.visible_message("[user] begins rigging [W] to \the [src].", "You begin rigging [W] to \the [src]")
-			if (do_after(user, 20))
+			if(do_after(user, 20))
 				user.visible_message("\blue [user] rigs [W] to \the [src].", "\blue  You rig [W] to \the [src]")
 
 				var/obj/item/device/assembly_holder/H = W
-				if (istype(H.a_left,/obj/item/device/assembly/igniter) || istype(H.a_right,/obj/item/device/assembly/igniter))
+				if(istype(H.a_left,/obj/item/device/assembly/igniter) || istype(H.a_right,/obj/item/device/assembly/igniter))
 					message_admins("[key_name_admin(user)] rigged fueltank at ([loc.x],[loc.y],[loc.z]) for explosion.")
 					log_game("[key_name(user)] rigged fueltank at ([loc.x],[loc.y],[loc.z]) for explosion.")
 
@@ -144,8 +144,8 @@
 
 
 	bullet_act(var/obj/item/projectile/Proj)
-		if (istype(Proj ,/obj/item/projectile/beam)||istype(Proj,/obj/item/projectile/bullet))
-			if (!istype(Proj ,/obj/item/projectile/beam/lastertag) && !istype(Proj ,/obj/item/projectile/beam/practice) )
+		if(istype(Proj ,/obj/item/projectile/beam)||istype(Proj,/obj/item/projectile/bullet))
+			if(!istype(Proj ,/obj/item/projectile/beam/lastertag) && !istype(Proj ,/obj/item/projectile/beam/practice) )
 				explode()
 
 	blob_act()
@@ -155,13 +155,13 @@
 		explode()
 
 	proc/explode()
-		if (reagents.total_volume > 500)
+		if(reagents.total_volume > 500)
 			explosion(src.loc,1,2,4)
-		else if (reagents.total_volume > 100)
+		else if(reagents.total_volume > 100)
 			explosion(src.loc,0,1,3)
 		else
 			explosion(src.loc,-1,1,2)
-		if (src)
+		if(src)
 			del(src)
 
 /obj/structure/reagent_dispensers/peppertank

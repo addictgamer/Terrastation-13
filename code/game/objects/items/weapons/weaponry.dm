@@ -41,24 +41,24 @@
 	message_admins("ATTACK: [user] ([user.ckey]) attacked [M] ([M.ckey]) with [src].")
 	log_attack("<font color='red'>[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>")
 
-	if (!(istype(user, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+	if(!(istype(user, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
 		user << "\red You don't have the dexterity to do this!"
 		return
 
-	if ((CLUMSY in user.mutations) && prob(50))
+	if((CLUMSY in user.mutations) && prob(50))
 		user << "\red The rod slips out of your hand and hits your head."
 		user.take_organ_damage(10)
 		user.Paralyse(20)
 		return
 
-	if (M.stat !=2)
-		if ((M.mind in ticker.mode.cult) && prob(33))
+	if(M.stat !=2)
+		if((M.mind in ticker.mode.cult) && prob(33))
 			M << "\red The power of [src] clears your mind of the cult's influence!"
 			user << "\red You wave [src] over [M]'s head and see their eyes become clear, their mind returning to normal."
 			ticker.mode.remove_cultist(M.mind)
 			for(var/mob/O in viewers(M, null))
 				O.show_message(text("\red [] waves [] over []'s head.", user, src, M), 1)
-		else if (prob(10))
+		else if(prob(10))
 			user << "\red The rod slips in your hand."
 			..()
 		else
@@ -68,7 +68,7 @@
 			return
 
 /obj/item/weapon/nullrod/afterattack(atom/A, mob/user as mob)
-	if (istype(A, /turf/simulated/floor))
+	if(istype(A, /turf/simulated/floor))
 		user << "\blue You hit the floor with the [src]."
 		call(/obj/effect/rune/proc/revealrunes)(src)
 

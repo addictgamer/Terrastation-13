@@ -15,32 +15,32 @@
 	lying_prev = lying	//so we don't update overlays for lying/standing unless our stance changes again
 	update_hud()		//TODO: remove the need for this to be here
 	overlays.Cut()
-	if (stat == DEAD)
+	if(stat == DEAD)
 		//If we mostly took damage from fire
-		if (fireloss > 125)
+		if(fireloss > 125)
 			icon_state = "alien[caste]_husked"
 		else
 			icon_state = "alien[caste]_dead"
 		for(var/image/I in overlays_lying)
 			overlays += I
-	else if (lying)
-		if (resting)
+	else if(lying)
+		if(resting)
 			icon_state = "alien[caste]_sleep"
-		else if (stat == UNCONSCIOUS)
+		else if(stat == UNCONSCIOUS)
 			icon_state = "alien[caste]_unconscious"
 		else
 			icon_state = "alien[caste]_l"
 		for(var/image/I in overlays_lying)
 			overlays += I
 	else
-		if (m_intent == "run")		icon_state = "alien[caste]_running"
+		if(m_intent == "run")		icon_state = "alien[caste]_running"
 		else						icon_state = "alien[caste]_s"
 		for(var/image/I in overlays_standing)
 			overlays += I
 
 /mob/living/carbon/alien/humanoid/regenerate_icons()
 	..()
-	if (monkeyizing)	return
+	if(monkeyizing)	return
 
 	update_inv_head(0)
 	update_inv_wear_suit(0)
@@ -53,30 +53,30 @@
 
 /mob/living/carbon/alien/humanoid/update_hud()
 	//TODO
-	if (client)
-//		if (other)	client.screen |= hud_used.other		//Not used
+	if(client)
+//		if(other)	client.screen |= hud_used.other		//Not used
 //		else		client.screen -= hud_used.other		//Not used
 		client.screen |= contents
 
 
 
 /mob/living/carbon/alien/humanoid/update_inv_wear_suit(var/update_icons=1)
-	if (wear_suit)
+	if(wear_suit)
 		var/t_state = wear_suit.item_state
-		if (!t_state)	t_state = wear_suit.icon_state
+		if(!t_state)	t_state = wear_suit.icon_state
 		var/image/lying		= image("icon" = 'icons/mob/mob.dmi', "icon_state" = "[t_state]2")
 		var/image/standing	= image("icon" = 'icons/mob/mob.dmi', "icon_state" = "[t_state]")
 
-		if (wear_suit.blood_DNA)
+		if(wear_suit.blood_DNA)
 			var/t_suit = "suit"
-			if ( istype(wear_suit, /obj/item/clothing/suit/armor) )
+			if( istype(wear_suit, /obj/item/clothing/suit/armor) )
 				t_suit = "armor"
 			lying.overlays		+= image("icon" = 'icons/effects/blood.dmi', "icon_state" = "[t_suit]blood2")
 			standing.overlays	+= image("icon" = 'icons/effects/blood.dmi', "icon_state" = "[t_suit]blood")
 
 		//TODO
 		wear_suit.screen_loc = ui_alien_oclothing
-		if (istype(wear_suit, /obj/item/clothing/suit/straight_jacket))
+		if(istype(wear_suit, /obj/item/clothing/suit/straight_jacket))
 			drop_from_inventory(handcuffed)
 			drop_r_hand()
 			drop_l_hand()
@@ -86,16 +86,16 @@
 	else
 		overlays_lying[X_SUIT_LAYER]	= null
 		overlays_standing[X_SUIT_LAYER]	= null
-	if (update_icons)	update_icons()
+	if(update_icons)	update_icons()
 
 
 /mob/living/carbon/alien/humanoid/update_inv_head(var/update_icons=1)
-	if (head)
+	if(head)
 		var/t_state = head.item_state
-		if (!t_state)	t_state = head.icon_state
+		if(!t_state)	t_state = head.icon_state
 		var/image/lying		= image("icon" = 'icons/mob/mob.dmi', "icon_state" = "[t_state]2")
 		var/image/standing	= image("icon" = 'icons/mob/mob.dmi', "icon_state" = "[t_state]")
-		if (head.blood_DNA)
+		if(head.blood_DNA)
 			lying.overlays		+= image("icon" = 'icons/effects/blood.dmi', "icon_state" = "helmetblood2")
 			standing.overlays	+= image("icon" = 'icons/effects/blood.dmi', "icon_state" = "helmetblood")
 		head.screen_loc = ui_alien_head
@@ -104,46 +104,46 @@
 	else
 		overlays_lying[X_HEAD_LAYER]	= null
 		overlays_standing[X_HEAD_LAYER]	= null
-	if (update_icons)	update_icons()
+	if(update_icons)	update_icons()
 
 
 /mob/living/carbon/alien/humanoid/update_inv_pockets(var/update_icons=1)
-	if (l_store)		l_store.screen_loc = ui_storage1
-	if (r_store)		r_store.screen_loc = ui_storage2
-	if (update_icons)	update_icons()
+	if(l_store)		l_store.screen_loc = ui_storage1
+	if(r_store)		r_store.screen_loc = ui_storage2
+	if(update_icons)	update_icons()
 
 
 /mob/living/carbon/alien/humanoid/update_inv_r_hand(var/update_icons=1)
-	if (r_hand)
+	if(r_hand)
 		var/t_state = r_hand.item_state
-		if (!t_state)	t_state = r_hand.icon_state
+		if(!t_state)	t_state = r_hand.icon_state
 		r_hand.screen_loc = ui_rhand
 		overlays_standing[X_R_HAND_LAYER]	= image("icon" = 'icons/mob/items_righthand.dmi', "icon_state" = t_state)
 	else
 		overlays_standing[X_R_HAND_LAYER]	= null
-	if (update_icons)	update_icons()
+	if(update_icons)	update_icons()
 
 /mob/living/carbon/alien/humanoid/update_inv_l_hand(var/update_icons=1)
-	if (l_hand)
+	if(l_hand)
 		var/t_state = l_hand.item_state
-		if (!t_state)	t_state = l_hand.icon_state
+		if(!t_state)	t_state = l_hand.icon_state
 		l_hand.screen_loc = ui_lhand
 		overlays_standing[X_L_HAND_LAYER]	= image("icon" = 'icons/mob/items_lefthand.dmi', "icon_state" = t_state)
 	else
 		overlays_standing[X_L_HAND_LAYER]	= null
-	if (update_icons)	update_icons()
+	if(update_icons)	update_icons()
 
 //Call when target overlay should be added/removed
 /mob/living/carbon/alien/humanoid/update_targeted(var/update_icons=1)
-	if (targeted_by && target_locked)
+	if(targeted_by && target_locked)
 		overlays_lying[TARGETED_LAYER]		= target_locked
 		overlays_standing[TARGETED_LAYER]	= target_locked
-	else if (!targeted_by && target_locked)
+	else if(!targeted_by && target_locked)
 		del(target_locked)
-	if (!targeted_by)
+	if(!targeted_by)
 		overlays_lying[TARGETED_LAYER]		= null
 		overlays_standing[TARGETED_LAYER]	= null
-	if (update_icons)		update_icons()
+	if(update_icons)		update_icons()
 
 //Xeno Overlays Indexes//////////
 #undef X_HEAD_LAYER

@@ -20,7 +20,7 @@
 	var/const/ROOM_ERR_TOOLARGE = -2
 
 /obj/item/blueprints/attack_self(mob/M as mob)
-	if (!istype(M,/mob/living/carbon/human))
+	if(!istype(M,/mob/living/carbon/human))
 		M << "This is stack of useless pieces of harsh paper." //monkeys cannot into projecting
 		return
 	interact()
@@ -28,18 +28,18 @@
 
 /obj/item/blueprints/Topic(href, href_list)
 	..()
-	if ((usr.restrained() || usr.stat || usr.get_active_hand() != src))
+	if((usr.restrained() || usr.stat || usr.get_active_hand() != src))
 		return
-	if (!href_list["action"])
+	if(!href_list["action"])
 		return
 	switch(href_list["action"])
-		if ("create_area")
-			if (get_area_type()!=AREA_SPACE)
+		if("create_area")
+			if(get_area_type()!=AREA_SPACE)
 				interact()
 				return
 			create_area()
-		if ("edit_area")
-			if (get_area_type()!=AREA_STATION)
+		if("edit_area")
+			if(get_area_type()!=AREA_STATION)
 				interact()
 				return
 			edit_area()
@@ -51,18 +51,18 @@
 <small>Property of Nanotrasen. For heads of staff only. Store in high-secure storage.</small><hr>
 "}
 	switch (get_area_type())
-		if (AREA_SPACE)
+		if(AREA_SPACE)
 			text += {"
 <p>According this blueprints you are in <b>open space</b> now.</p>
 <p><a href='?src=\ref[src];action=create_area'>Mark this place as new area.</a></p>
 "}
-		if (AREA_STATION)
+		if(AREA_STATION)
 			text += {"
 <p>According this blueprints you are in <b>[A.name]</b> now.</p>
 <p>You may <a href='?src=\ref[src];action=edit_area'>
 move an amendment</a> to the drawing.</p>
 "}
-		if (AREA_SPECIAL)
+		if(AREA_SPECIAL)
 			text += {"
 <p>This place isn't noted on these blueprints.</p>
 "}
@@ -80,7 +80,7 @@ move an amendment</a> to the drawing.</p>
 	return A
 
 /obj/item/blueprints/proc/get_area_type(var/area/A = get_area())
-	if (A.name == "Space")
+	if(A.name == "Space")
 		return AREA_SPACE
 	var/list/SPECIALS = list(
 		/area/shuttle,
@@ -95,19 +95,19 @@ move an amendment</a> to the drawing.</p>
 		// /area/derelict //commented out, all hail derelict-rebuilders!
 	)
 	for (var/type in SPECIALS)
-		if ( istype(A,type) )
+		if( istype(A,type) )
 			return AREA_SPECIAL
 	return AREA_STATION
 
 /obj/item/blueprints/proc/create_area()
 	//world << "DEBUG: create_area"
 	var/res = detect_room(get_turf_loc(usr))
-	if (!istype(res,/list))
+	if(!istype(res,/list))
 		switch(res)
-			if (ROOM_ERR_SPACE)
+			if(ROOM_ERR_SPACE)
 				usr << "\red New area must be complete airtight!"
 				return
-			if (ROOM_ERR_TOOLARGE)
+			if(ROOM_ERR_TOOLARGE)
 				usr << "\red New area too large!"
 				return
 			else
@@ -115,9 +115,9 @@ move an amendment</a> to the drawing.</p>
 				return
 	var/list/turf/turfs = res
 	var/str = trim(stripped_input(usr,"New area title","Blueprints editing", "", MAX_NAME_LEN))
-	if (!str || !length(str)) //cancel
+	if(!str || !length(str)) //cancel
 		return
-	if (length(str) > 50)
+	if(length(str) > 50)
 		usr << "\red Text too long."
 		return
 	var/area/A = new
@@ -155,9 +155,9 @@ move an amendment</a> to the drawing.</p>
 	//world << "DEBUG: edit_area"
 	var/prevname = A.name
 	var/str = trim(stripped_input(usr,"New area title","Blueprints editing", prevname, MAX_NAME_LEN))
-	if (!str || !length(str) || str==prevname) //cancel
+	if(!str || !length(str) || str==prevname) //cancel
 		return
-	if (length(str) > 50)
+	if(length(str) > 50)
 		usr << "\red Text too long."
 		return
 	set_area_machinery_title(A,str,prevname)
@@ -170,7 +170,7 @@ move an amendment</a> to the drawing.</p>
 
 
 /obj/item/blueprints/proc/set_area_machinery_title(var/area/A,var/title,var/oldtitle)
-	if (!oldtitle) // or replacetext goes to infinite loop
+	if(!oldtitle) // or replacetext goes to infinite loop
 		return
 	for(var/area/RA in A.related)
 		for(var/obj/machinery/alarm/M in RA)
@@ -186,30 +186,30 @@ move an amendment</a> to the drawing.</p>
 	//TODO: much much more. Unnamed airlocks, cameras, etc.
 
 /obj/item/blueprints/proc/check_tile_is_border(var/turf/T2,var/dir)
-	if (istype(T2, /turf/space))
+	if(istype(T2, /turf/space))
 		return BORDER_SPACE //omg hull breach we all going to die here
-	if (istype(T2, /turf/simulated/shuttle))
+	if(istype(T2, /turf/simulated/shuttle))
 		return BORDER_SPACE
-	if (get_area_type(T2.loc)!=AREA_SPACE)
+	if(get_area_type(T2.loc)!=AREA_SPACE)
 		return BORDER_BETWEEN
-	if (istype(T2, /turf/simulated/wall))
+	if(istype(T2, /turf/simulated/wall))
 		return BORDER_2NDTILE
-	if (!istype(T2, /turf/simulated))
+	if(!istype(T2, /turf/simulated))
 		return BORDER_BETWEEN
 
 	for (var/obj/structure/window/W in T2)
-		if (turn(dir,180) == W.dir)
+		if(turn(dir,180) == W.dir)
 			return BORDER_BETWEEN
-		if (W.dir in list(NORTHEAST,SOUTHEAST,NORTHWEST,SOUTHWEST))
+		if(W.dir in list(NORTHEAST,SOUTHEAST,NORTHWEST,SOUTHWEST))
 			return BORDER_2NDTILE
 	for(var/obj/machinery/door/window/D in T2)
-		if (turn(dir,180) == D.dir)
+		if(turn(dir,180) == D.dir)
 			return BORDER_BETWEEN
-	if (locate(/obj/machinery/door) in T2)
+	if(locate(/obj/machinery/door) in T2)
 		return BORDER_2NDTILE
-	if (locate(/obj/structure/falsewall) in T2)
+	if(locate(/obj/structure/falsewall) in T2)
 		return BORDER_2NDTILE
-	if (locate(/obj/structure/falserwall) in T2)
+	if(locate(/obj/structure/falserwall) in T2)
 		return BORDER_2NDTILE
 
 	return BORDER_NONE
@@ -218,33 +218,33 @@ move an amendment</a> to the drawing.</p>
 	var/list/turf/found = new
 	var/list/turf/pending = list(first)
 	while(pending.len)
-		if (found.len+pending.len > 300)
+		if(found.len+pending.len > 300)
 			return ROOM_ERR_TOOLARGE
 		var/turf/T = pending[1] //why byond havent list::pop()?
 		pending -= T
 		for (var/dir in cardinal)
 			var/skip = 0
 			for (var/obj/structure/window/W in T)
-				if (dir == W.dir || (W.dir in list(NORTHEAST,SOUTHEAST,NORTHWEST,SOUTHWEST)))
+				if(dir == W.dir || (W.dir in list(NORTHEAST,SOUTHEAST,NORTHWEST,SOUTHWEST)))
 					skip = 1; break
-			if (skip) continue
+			if(skip) continue
 			for(var/obj/machinery/door/window/D in T)
-				if (dir == D.dir)
+				if(dir == D.dir)
 					skip = 1; break
-			if (skip) continue
+			if(skip) continue
 
 			var/turf/NT = get_step(T,dir)
-			if (!isturf(NT) || (NT in found) || (NT in pending))
+			if(!isturf(NT) || (NT in found) || (NT in pending))
 				continue
 
 			switch(check_tile_is_border(NT,dir))
-				if (BORDER_NONE)
+				if(BORDER_NONE)
 					pending+=NT
-				if (BORDER_BETWEEN)
+				if(BORDER_BETWEEN)
 					//do nothing, may be later i'll add 'rejected' list as optimization
-				if (BORDER_2NDTILE)
+				if(BORDER_2NDTILE)
 					found+=NT //tile included to new area, but we dont seek more
-				if (BORDER_SPACE)
+				if(BORDER_SPACE)
 					return ROOM_ERR_SPACE
 		found+=T
 	return found

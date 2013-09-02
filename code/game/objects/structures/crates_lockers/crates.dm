@@ -97,7 +97,7 @@
 
 	return_air()
 		var/datum/gas_mixture/gas = (..())
-		if (!gas)	return null
+		if(!gas)	return null
 		var/datum/gas_mixture/newgas = new/datum/gas_mixture()
 		newgas.oxygen = gas.oxygen
 		newgas.carbon_dioxide = gas.carbon_dioxide
@@ -105,9 +105,9 @@
 		newgas.toxins = gas.toxins
 		newgas.volume = gas.volume
 		newgas.temperature = gas.temperature
-		if (newgas.temperature <= target_temp)	return
+		if(newgas.temperature <= target_temp)	return
 
-		if ((newgas.temperature - cooling_power) > target_temp)
+		if((newgas.temperature - cooling_power) > target_temp)
 			newgas.temperature -= cooling_power
 		else
 			newgas.temperature = target_temp
@@ -193,15 +193,15 @@
 	//we can hold up to one large item
 	var/found = 0
 	for(var/obj/structure/S in src.loc)
-		if (S == src)
+		if(S == src)
 			continue
-		if (!S.anchored)
+		if(!S.anchored)
 			found = 1
 			S.loc = src
 			break
-	if (!found)
+	if(!found)
 		for(var/obj/machinery/M in src.loc)
-			if (!M.anchored)
+			if(!M.anchored)
 				M.loc = src
 				break
 	..()
@@ -238,15 +238,15 @@
 	//we can hold up to one large item
 	var/found = 0
 	for(var/obj/structure/S in src.loc)
-		if (S == src)
+		if(S == src)
 			continue
-		if (!S.anchored)
+		if(!S.anchored)
 			found = 1
 			S.loc = src
 			break
-	if (!found)
+	if(!found)
 		for(var/obj/machinery/M in src.loc)
-			if (!M.anchored)
+			if(!M.anchored)
 				M.loc = src
 				break
 	..()
@@ -283,7 +283,7 @@
 
 /obj/structure/closet/crate/secure/New()
 	..()
-	if (locked)
+	if(locked)
 		overlays.Cut()
 		overlays += redlight
 	else
@@ -323,15 +323,15 @@
 	var/itemcount = 0
 
 	for(var/obj/O in get_turf(src))
-		if (itemcount >= storage_capacity)
+		if(itemcount >= storage_capacity)
 			break
 
-		if (O.density || O.anchored || istype(O,/obj/structure/closet))
+		if(O.density || O.anchored || istype(O,/obj/structure/closet))
 			continue
 
-		if (istype(O, /obj/structure/stool/bed)) //This is only necessary because of rollerbeds and swivel chairs.
+		if(istype(O, /obj/structure/stool/bed)) //This is only necessary because of rollerbeds and swivel chairs.
 			var/obj/structure/stool/bed/B = O
-			if (B.buckled_mob)
+			if(B.buckled_mob)
 				continue
 
 		O.loc = src
@@ -341,13 +341,13 @@
 	src.opened = 0
 
 /obj/structure/closet/crate/attack_hand(mob/user as mob)
-	if (opened)
+	if(opened)
 		close()
 	else
-		if (rigged && locate(/obj/item/device/radio/electropack) in src)
-			if (isliving(user))
+		if(rigged && locate(/obj/item/device/radio/electropack) in src)
+			if(isliving(user))
 				var/mob/living/L = user
-				if (L.electrocute_act(17, src))
+				if(L.electrocute_act(17, src))
 					var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 					s.set_up(5, 1, src)
 					s.start()
@@ -356,8 +356,8 @@
 	return
 
 /obj/structure/closet/crate/secure/attack_hand(mob/user as mob)
-	if (locked && !broken)
-		if (allowed(user))
+	if(locked && !broken)
+		if(allowed(user))
 			user << "<span class='notice'>You unlock [src].</span>"
 			src.locked = 0
 			overlays.Cut()
@@ -370,13 +370,13 @@
 		..()
 
 /obj/structure/closet/crate/secure/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/weapon/card) && src.allowed(user) && !locked && !opened && !broken)
+	if(istype(W, /obj/item/weapon/card) && src.allowed(user) && !locked && !opened && !broken)
 		user << "<span class='notice'>You lock \the [src].</span>"
 		src.locked = 1
 		overlays.Cut()
 		overlays += redlight
 		return
-	else if ( (istype(W, /obj/item/weapon/card/emag)||istype(W, /obj/item/weapon/melee/energy/blade)) && locked &&!broken)
+	else if( (istype(W, /obj/item/weapon/card/emag)||istype(W, /obj/item/weapon/melee/energy/blade)) && locked &&!broken)
 		overlays.Cut()
 		overlays += emag
 		overlays += sparks
@@ -393,16 +393,16 @@
 	return attack_hand(user)
 
 /obj/structure/closet/crate/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (opened)
-		if (isrobot(user))
+	if(opened)
+		if(isrobot(user))
 			return
 		user.drop_item()
-		if (W)
+		if(W)
 			W.loc = src.loc
-	else if (istype(W, /obj/item/weapon/packageWrap))
+	else if(istype(W, /obj/item/weapon/packageWrap))
 		return
-	else if (istype(W, /obj/item/weapon/cable_coil))
-		if (rigged)
+	else if(istype(W, /obj/item/weapon/cable_coil))
+		if(rigged)
 			user << "<span class='notice'>[src] is already rigged!</span>"
 			return
 		user  << "<span class='notice'>You rig [src].</span>"
@@ -410,14 +410,14 @@
 		del(W)
 		rigged = 1
 		return
-	else if (istype(W, /obj/item/device/radio/electropack))
-		if (rigged)
+	else if(istype(W, /obj/item/device/radio/electropack))
+		if(rigged)
 			user  << "<span class='notice'>You attach [W] to [src].</span>"
 			user.drop_item()
 			W.loc = src
 			return
-	else if (istype(W, /obj/item/weapon/wirecutters))
-		if (rigged)
+	else if(istype(W, /obj/item/weapon/wirecutters))
+		if(rigged)
 			user  << "<span class='notice'>You cut away the wiring.</span>"
 			playsound(loc, 'sound/items/Wirecutter.ogg', 100, 1)
 			rigged = 0
@@ -427,8 +427,8 @@
 /obj/structure/closet/crate/secure/emp_act(severity)
 	for(var/obj/O in src)
 		O.emp_act(severity)
-	if (!broken && !opened  && prob(50/severity))
-		if (!locked)
+	if(!broken && !opened  && prob(50/severity))
+		if(!locked)
 			src.locked = 1
 			overlays.Cut()
 			overlays += redlight
@@ -439,8 +439,8 @@
 			spawn(6) overlays -= sparks //Tried lots of stuff but nothing works right. so i have to use this *sadface*
 			playsound(src.loc, 'sound/effects/sparks4.ogg', 75, 1)
 			src.locked = 0
-	if (!opened && prob(20/severity))
-		if (!locked)
+	if(!opened && prob(20/severity))
+		if(!locked)
 			open()
 		else
 			src.req_access = list()
@@ -450,19 +450,19 @@
 
 /obj/structure/closet/crate/ex_act(severity)
 	switch(severity)
-		if (1.0)
+		if(1.0)
 			for(var/obj/O in src.contents)
 				del(O)
 			del(src)
 			return
-		if (2.0)
+		if(2.0)
 			for(var/obj/O in src.contents)
-				if (prob(50))
+				if(prob(50))
 					del(O)
 			del(src)
 			return
-		if (3.0)
-			if (prob(50))
+		if(3.0)
+			if(prob(50))
 				del(src)
 			return
 		else

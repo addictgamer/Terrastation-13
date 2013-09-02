@@ -52,10 +52,10 @@
 	return ..()
 
 /mob/living/silicon/ai/attack_ai(var/mob/user as mob)
-	if (user != src)
+	if(user != src)
 		return
 
-	if (stat == 2)
+	if(stat == 2)
 		return
 
 	var/list/L = list()
@@ -67,13 +67,13 @@
 
 	var/list/D = list()
 	for (var/obj/machinery/camera/C in L)
-		if ( C.network in src.networks )
+		if( C.network in src.networks )
 			D[text("[]: [][]", C.network, C.c_tag, (C.status ? null : " (Deactivated)"))] = C
 	D["Cancel"] = "Cancel"
 
 	var/t = input(user, "Which camera should you change to?") as null|anything in D
 
-	if (!t || t == "Cancel")
+	if(!t || t == "Cancel")
 		return 0
 
 	var/obj/machinery/camera/C = D[t]
@@ -90,7 +90,7 @@
 	machine = null
 
 /mob/living/silicon/ai/reset_view(atom/A)
-	if (client)
+	if(client)
 		if(!eyeobj)
 			eyeobj = new()
 			eyeobj.ai = src
@@ -98,7 +98,7 @@
 		client.eye = eyeobj
 		client.perspective = EYE_PERSPECTIVE
 
-		if (istype(A, /atom/movable))
+		if(istype(A, /atom/movable))
 			eyeobj.loc = locate(A.x, A.y, A.z)
 
 		else

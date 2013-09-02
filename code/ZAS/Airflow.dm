@@ -280,9 +280,9 @@ proc/AirflowSpace(zone/A)
 			sleep(max(1,10-(airflow_speed+3)) * tick_multiplier)
 		if(od)
 			density = 1
-		if ((!( src.airflow_dest ) || src.loc == src.airflow_dest))
+		if((!( src.airflow_dest ) || src.loc == src.airflow_dest))
 			src.airflow_dest = locate(min(max(src.x + xo, 1), world.maxx), min(max(src.y + yo, 1), world.maxy), src.z)
-		if ((src.x == 1 || src.x == world.maxx || src.y == 1 || src.y == world.maxy))
+		if((src.x == 1 || src.x == world.maxx || src.y == 1 || src.y == world.maxy))
 			return
 		if(!istype(loc, /turf))
 			return
@@ -339,9 +339,9 @@ proc/AirflowSpace(zone/A)
 				sleep(1 * tick_multiplier)
 		else
 			sleep(max(1,10-(airflow_speed+3)) * tick_multiplier)
-		if ((!( src.airflow_dest ) || src.loc == src.airflow_dest))
+		if((!( src.airflow_dest ) || src.loc == src.airflow_dest))
 			src.airflow_dest = locate(min(max(src.x + xo, 1), world.maxx), min(max(src.y + yo, 1), world.maxy), src.z)
-		if ((src.x == 1 || src.x == world.maxx || src.y == 1 || src.y == world.maxy))
+		if((src.x == 1 || src.x == world.maxx || src.y == 1 || src.y == world.maxy))
 			return
 		if(!istype(loc, /turf))
 			return
@@ -388,9 +388,9 @@ mob/living/carbon/human/airflow_hit(atom/A)
 //		M.show_message("\red <B>[src] slams into [A]!</B>",1,"\red You hear a loud slam!",2)
 	playsound(src.loc, "punch", 25, 1, -1)
 	loc:add_blood(src)
-	if (src.wear_suit)
+	if(src.wear_suit)
 		src.wear_suit.add_blood(src)
-	if (src.w_uniform)
+	if(src.w_uniform)
 		src.w_uniform.add_blood(src)
 	var/b_loss = airflow_speed * vsc.airflow_damage
 

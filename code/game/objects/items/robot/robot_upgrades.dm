@@ -13,7 +13,7 @@
 	var/installed = 0
 
 /obj/item/borg/upgrade/proc/action(var/mob/living/silicon/robot/R)
-	if (R.stat == DEAD)
+	if(R.stat == DEAD)
 		usr << "\red The [src] will not function on a deceased robot."
 		return 1
 	return 0
@@ -26,7 +26,7 @@
 	require_module = 1
 
 /obj/item/borg/upgrade/reset/action(var/mob/living/silicon/robot/R)
-	if (..()) return 0
+	if(..()) return 0
 	R.uneq_all()
 	R.hands.icon_state = "nomod"
 	R.icon_state = "robot"
@@ -51,7 +51,7 @@
 	heldname = stripped_input(user, "Enter new robot name", "Robot Reclassification", heldname, MAX_NAME_LEN)
 
 /obj/item/borg/upgrade/rename/action(var/mob/living/silicon/robot/R)
-	if (..()) return 0
+	if(..()) return 0
 	R.name = heldname
 	R.custom_name = heldname
 	R.real_name = heldname
@@ -66,13 +66,13 @@
 
 
 /obj/item/borg/upgrade/restart/action(var/mob/living/silicon/robot/R)
-	if (R.health < 0)
+	if(R.health < 0)
 		usr << "You have to repair the robot before using this module!"
 		return 0
 
-	if (!R.key)
+	if(!R.key)
 		for(var/mob/dead/observer/ghost in player_list)
-			if (ghost.mind && ghost.mind.current == R)
+			if(ghost.mind && ghost.mind.current == R)
 				R.key = ghost.key
 
 	R.stat = CONSCIOUS
@@ -87,9 +87,9 @@
 	require_module = 1
 
 /obj/item/borg/upgrade/vtec/action(var/mob/living/silicon/robot/R)
-	if (..()) return 0
+	if(..()) return 0
 
-	if (R.speed == -1)
+	if(R.speed == -1)
 		return 0
 
 	R.speed--
@@ -105,23 +105,23 @@
 
 
 /obj/item/borg/upgrade/tasercooler/action(var/mob/living/silicon/robot/R)
-	if (..()) return 0
+	if(..()) return 0
 
-	if (!istype(R.module, /obj/item/weapon/robot_module/security))
+	if(!istype(R.module, /obj/item/weapon/robot_module/security))
 		R << "Upgrade mounting error!  No suitable hardpoint detected!"
 		usr << "There's no mounting point for the module!"
 		return 0
 
 	var/obj/item/weapon/gun/energy/taser/cyborg/T = locate() in R.module
-	if (!T)
+	if(!T)
 		T = locate() in R.module.contents
-	if (!T)
+	if(!T)
 		T = locate() in R.module.modules
-	if (!T)
+	if(!T)
 		usr << "This robot has had its taser removed!"
 		return 0
 
-	if (T.recharge_time <= 2)
+	if(T.recharge_time <= 2)
 		R << "Maximum cooling achieved for this hardpoint!"
 		usr << "There's no room for another cooling unit!"
 		return 0
@@ -139,9 +139,9 @@
 	require_module = 1
 
 /obj/item/borg/upgrade/jetpack/action(var/mob/living/silicon/robot/R)
-	if (..()) return 0
+	if(..()) return 0
 
-	if (!istype(R.module, /obj/item/weapon/robot_module/miner))
+	if(!istype(R.module, /obj/item/weapon/robot_module/miner))
 		R << "Upgrade mounting error!  No suitable hardpoint detected!"
 		usr << "There's no mounting point for the module!"
 		return 0
@@ -161,9 +161,9 @@
 	require_module = 1
 
 /obj/item/borg/upgrade/syndicate/action(var/mob/living/silicon/robot/R)
-	if (..()) return 0
+	if(..()) return 0
 
-	if (R.emagged == 1)
+	if(R.emagged == 1)
 		return 0
 
 	R.emagged = 1

@@ -11,7 +11,7 @@
 
 //Returns an integer given a hex input
 /proc/hex2num(hex)
-	if (!( istext(hex) ))
+	if(!( istext(hex) ))
 		return
 
 	var/num = 0
@@ -46,11 +46,11 @@
 //Returns the hex value of a number given a value assumed to be a base-ten value
 /proc/num2hex(num, placeholder)
 
-	if (placeholder == null)
+	if(placeholder == null)
 		placeholder = 2
-	if (!( isnum(num) ))
+	if(!( isnum(num) ))
 		return
-	if (!( num ))
+	if(!( num ))
 		return "0"
 	var/hex = ""
 	var/i = 0

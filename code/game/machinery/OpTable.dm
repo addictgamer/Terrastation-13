@@ -17,7 +17,7 @@
 	..()
 	for(dir in list(NORTH,EAST,SOUTH,WEST))
 		computer = locate(/obj/machinery/computer/operating, get_step(src, dir))
-		if (computer)
+		if(computer)
 			computer.table = src
 			break
 //	spawn(100) //Wont the MC just call this process() before and at the 10 second mark anyway?
@@ -26,23 +26,23 @@
 /obj/machinery/optable/ex_act(severity)
 
 	switch(severity)
-		if (1.0)
+		if(1.0)
 			//SN src = null
 			del(src)
 			return
-		if (2.0)
-			if (prob(50))
+		if(2.0)
+			if(prob(50))
 				//SN src = null
 				del(src)
 				return
-		if (3.0)
-			if (prob(25))
+		if(3.0)
+			if(prob(25))
 				src.density = 0
 		else
 	return
 
 /obj/machinery/optable/blob_act()
-	if (prob(75))
+	if(prob(75))
 		del(src)
 
 /obj/machinery/optable/hand_p(mob/user as mob)
@@ -51,20 +51,20 @@
 	return
 
 /obj/machinery/optable/attack_paw(mob/user as mob)
-	if ((HULK in usr.mutations))
+	if((HULK in usr.mutations))
 		usr << text("\blue You destroy the operating table.")
 		visible_message("\red [usr] destroys the operating table!")
 		src.density = 0
 		del(src)
-	if (!( locate(/obj/machinery/optable, user.loc) ))
+	if(!( locate(/obj/machinery/optable, user.loc) ))
 		step(user, get_dir(user, src))
-		if (user.loc == src.loc)
+		if(user.loc == src.loc)
 			user.layer = TURF_LAYER
 			visible_message("The monkey hides under the table!")
 	return
 
 /obj/machinery/optable/attack_hand(mob/user as mob)
-	if (HULK in usr.mutations)
+	if(HULK in usr.mutations)
 		usr << text("\blue You destroy the table.")
 		visible_message("\red [usr] destroys the operating table!")
 		src.density = 0
@@ -72,9 +72,9 @@
 	return
 
 /obj/machinery/optable/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if (air_group || (height==0)) return 1
+	if(air_group || (height==0)) return 1
 
-	if (istype(mover) && mover.checkpass(PASSTABLE))
+	if(istype(mover) && mover.checkpass(PASSTABLE))
 		return 1
 	else
 		return 0
@@ -82,17 +82,17 @@
 
 /obj/machinery/optable/MouseDrop_T(obj/O as obj, mob/user as mob)
 
-	if ((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
+	if((!( istype(O, /obj/item/weapon) ) || user.get_active_hand() != O))
 		return
 	user.drop_item()
-	if (O.loc != src.loc)
+	if(O.loc != src.loc)
 		step(O, get_dir(O, src))
 	return
 
 /obj/machinery/optable/proc/check_victim()
-	if (locate(/mob/living/carbon/human, src.loc))
+	if(locate(/mob/living/carbon/human, src.loc))
 		var/mob/M = locate(/mob/living/carbon/human, src.loc)
-		if (M.resting)
+		if(M.resting)
 			src.victim = M
 			icon_state = "table2-active"
 			return 1
@@ -105,10 +105,10 @@
 
 /obj/machinery/optable/attackby(obj/item/weapon/W as obj, mob/living/carbon/user as mob)
 
-	if (istype(W, /obj/item/weapon/grab))
-		if (ismob(W:affecting))
+	if(istype(W, /obj/item/weapon/grab))
+		if(ismob(W:affecting))
 			var/mob/M = W:affecting
-			if (M.client)
+			if(M.client)
 				M.client.perspective = EYE_PERSPECTIVE
 				M.client.eye = src
 			M.resting = 1
@@ -122,6 +122,6 @@
 			del(W)
 			return
 	user.drop_item()
-	if (W && W.loc)
+	if(W && W.loc)
 		W.loc = src.loc
 	return

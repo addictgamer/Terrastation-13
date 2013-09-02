@@ -32,8 +32,8 @@
 
 
 /obj/machinery/vehicle/process()
-	if (src.speed)
-		if (src.speed <= 10)
+	if(src.speed)
+		if(src.speed <= 10)
 			var/t1 = 10 - src.speed
 			while(t1 > 0)
 				step(src, src.dir)
@@ -52,21 +52,21 @@
 
 	for (var/mob/M in src)
 		M.loc = src.loc
-		if (M.client)
+		if(M.client)
 			M.client.eye = M.client.mob
 			M.client.perspective = MOB_PERSPECTIVE
 	del(src)
 
 /obj/machinery/vehicle/ex_act(severity)
 	switch (severity)
-		if (1.0)
+		if(1.0)
 			for(var/atom/movable/A as mob|obj in src)
 				A.loc = src.loc
 				ex_act(severity)
 			//SN src = null
 			del(src)
-		if (2.0)
-			if (prob(50))
+		if(2.0)
+			if(prob(50))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
 					ex_act(severity)
@@ -87,30 +87,30 @@
 	return
 
 /obj/machinery/vehicle/relaymove(mob/user as mob, direction)
-	if (user.stat)
+	if(user.stat)
 		return
 
-	if ((user in src))
-		if (direction & 1)
+	if((user in src))
+		if(direction & 1)
 			src.speed = max(src.speed - 1, 1)
-		else if (direction & 2)
+		else if(direction & 2)
 			src.speed = min(src.maximum_speed, src.speed + 1)
-		else if (src.can_rotate && direction & 4)
+		else if(src.can_rotate && direction & 4)
 			src.dir = turn(src.dir, -90.0)
-		else if (src.can_rotate && direction & 8)
+		else if(src.can_rotate && direction & 8)
 			src.dir = turn(src.dir, 90)
-		else if (direction & 16 && src.can_maximize_speed)
+		else if(direction & 16 && src.can_maximize_speed)
 			src.speed = src.maximum_speed
 
 /obj/machinery/vehicle/verb/eject()
 	set src = usr.loc
 
-	if (usr.stat)
+	if(usr.stat)
 		return
 
 	var/mob/M = usr
 	M.loc = src.loc
-	if (M.client)
+	if(M.client)
 		M.client.eye = M.client.mob
 		M.client.perspective = MOB_PERSPECTIVE
 	step(M, turn(src.dir, 180))
@@ -119,15 +119,15 @@
 /obj/machinery/vehicle/verb/board()
 	set src in oview(1)
 
-	if (usr.stat)
+	if(usr.stat)
 		return
 
-	if (src.one_person_only && locate(/mob, src))
+	if(src.one_person_only && locate(/mob, src))
 		usr << "There is no room! You can only fit one person."
 		return
 
 	var/mob/M = usr
-	if (M.client)
+	if(M.client)
 		M.client.perspective = EYE_PERSPECTIVE
 		M.client.eye = src
 
@@ -136,43 +136,43 @@
 /obj/machinery/vehicle/verb/unload(var/atom/movable/A in src)
 	set src in oview(1)
 
-	if (usr.stat)
+	if(usr.stat)
 		return
 
-	if (istype(A, /atom/movable))
+	if(istype(A, /atom/movable))
 		A.loc = src.loc
 		for(var/mob/O in view(src, null))
-			if ((O.client && !(O.blinded)))
+			if((O.client && !(O.blinded)))
 				O << text("\blue <B> [] unloads [] from []!</B>", usr, A, src)
 
-		if (ismob(A))
+		if(ismob(A))
 			var/mob/M = A
-			if (M.client)
+			if(M.client)
 				M.client.perspective = MOB_PERSPECTIVE
 				M.client.eye = M
 
 /obj/machinery/vehicle/verb/load()
 	set src in oview(1)
 
-	if (usr.stat)
+	if(usr.stat)
 		return
 
-	if (((istype(usr, /mob/living/carbon/human)) && (!(ticker) || (ticker && ticker.mode != "monkey"))))
+	if(((istype(usr, /mob/living/carbon/human)) && (!(ticker) || (ticker && ticker.mode != "monkey"))))
 		var/mob/living/carbon/human/H = usr
 
-		if ((H.pulling && !(H.pulling.anchored)))
-			if (src.one_person_only && !(istype(H.pulling, /obj/item/weapon)))
+		if((H.pulling && !(H.pulling.anchored)))
+			if(src.one_person_only && !(istype(H.pulling, /obj/item/weapon)))
 				usr << "You may only place items in."
 			else
 				H.pulling.loc = src
-				if (ismob(H.pulling))
+				if(ismob(H.pulling))
 					var/mob/M = H.pulling
-					if (M.client)
+					if(M.client)
 						M.client.perspective = EYE_PERSPECTIVE
 						M.client.eye = src
 
 				for(var/mob/O in viewers(src, null))
-					if ((O.client && !( O.blinded )))
+					if((O.client && !( O.blinded )))
 						O << text("\blue <B> [] loads [] into []!</B>", H, H.pulling, src)
 
 				H.stop_pulling()
@@ -198,46 +198,46 @@
 		return
 
 	proc/inspace()
-		if (istype(src.loc, /turf/space))
+		if(istype(src.loc, /turf/space))
 			return 1
 		return 0
 
 	remove_air(amount)
-		if (src.internal_tank)
+		if(src.internal_tank)
 			return src.internal_tank.air_contents.remove(amount)
 		else
 			var/turf/T = get_turf(src)
 			return T.remove_air(amount)
 
 	return_air()
-		if (src.internal_tank)
+		if(src.internal_tank)
 			return src.internal_tank.return_air()
 		return
 
 	proc/return_pressure()
-		if (src.internal_tank)
+		if(src.internal_tank)
 			return src.internal_tank.return_pressure()
 		return 0
 
 	proc/return_temperature()
-		if (src.internal_tank)
+		if(src.internal_tank)
 			return src.internal_tank.return_temperature()
 		return 0
 
 	Bump(var/atom/movable/A)
-		if (istype(A))
+		if(istype(A))
 			step(A, src.dir)
 		else
-			if (pr_inertial_movement.cur_delay<2)
+			if(pr_inertial_movement.cur_delay<2)
 				take_damage(25)
 			pr_speed_increment.stop()
 			pr_inertial_movement.stop()
 		return
 
 	proc/take_damage(value)
-		if (isnum(value))
+		if(isnum(value))
 			src.health -= value
-			if (src.health>0)
+			if(src.health>0)
 				src.spark_system.start()
 //				world << "[src] health is [health]"
 			else
@@ -255,21 +255,21 @@
 
 /obj/machinery/vehicle/space_ship/relaymove(mob/user as mob, direction)
 	spawn()
-		if (user.stat || world.time-last_relay<2)
+		if(user.stat || world.time-last_relay<2)
 			return
 		last_relay = world.time
 		var/speed_change = 0
-		if (direction & NORTH)
+		if(direction & NORTH)
 			pr_inertial_movement.desired_delay = between(pr_inertial_movement.min_delay, pr_inertial_movement.desired_delay-1, pr_inertial_movement.max_delay)
 			speed_change = 1
-		else if (direction & SOUTH)
+		else if(direction & SOUTH)
 			pr_inertial_movement.desired_delay = between(pr_inertial_movement.min_delay, pr_inertial_movement.desired_delay+1, pr_inertial_movement.max_delay)
 			speed_change = 1
-		else if (src.can_rotate && direction & 4)
+		else if(src.can_rotate && direction & 4)
 			src.dir = turn(src.dir, -90.0)
-		else if (src.can_rotate && direction & 8)
+		else if(src.can_rotate && direction & 8)
 			src.dir = turn(src.dir, 90)
-		if (speed_change)
+		if(speed_change)
 //			user << "Desired speed: [get_desired_speed()]%"
 			src.pr_speed_increment.start()
 			src.pr_inertial_movement.start()
@@ -295,16 +295,16 @@
 		return ..()
 
 	process(var/obj/machinery/vehicle/space_ship/SS as obj)
-		if (cur_delay >= max_delay)
+		if(cur_delay >= max_delay)
 			return src.stop()
-		if (world.time - last_move < cur_delay)
+		if(world.time - last_move < cur_delay)
 			return
 		last_move = world.time
 /*
-		if (src.delay>=SS.max_delay)
+		if(src.delay>=SS.max_delay)
 			return src.stop()
 */
-		if (!step(SS, SS.dir) || !SS.inspace())
+		if(!step(SS, SS.dir) || !SS.inspace())
 			src.stop()
 		return
 
@@ -316,7 +316,7 @@
 	delay = 5
 
 	process(var/obj/machinery/vehicle/space_ship/SS as obj)
-		if (SS.pr_inertial_movement.desired_delay!=SS.pr_inertial_movement.cur_delay)
+		if(SS.pr_inertial_movement.desired_delay!=SS.pr_inertial_movement.cur_delay)
 			var/delta = SS.pr_inertial_movement.desired_delay - SS.pr_inertial_movement.cur_delay
 			SS.pr_inertial_movement.cur_delay += delta>0?1:-1
 /*

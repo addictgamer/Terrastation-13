@@ -22,14 +22,14 @@
 
 	//stops TK grabs being equipped anywhere but into hands
 	equipped(var/mob/user, var/slot)
-		if ( (slot == slot_l_hand) || (slot== slot_r_hand) )	return
+		if( (slot == slot_l_hand) || (slot== slot_r_hand) )	return
 		del(src)
 		return
 
 /*
 	attack_self(mob/user as mob)
-		if (!istype(focus,/obj/item))	return
-		if (!check_path())	return//No clear path
+		if(!istype(focus,/obj/item))	return
+		if(!check_path())	return//No clear path
 
 		user.put_in_hands(focus)
 		add_fingerprint(user)
@@ -41,26 +41,26 @@
 */
 
 	afterattack(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, flag)//TODO: go over this
-		if (!target || !user)	return
-		if (last_throw+3 > world.time)	return
-		if (!host)
+		if(!target || !user)	return
+		if(last_throw+3 > world.time)	return
+		if(!host)
 			del(src)
 			return
-		if (!(TK in host.mutations))
+		if(!(TK in host.mutations))
 			del(src)
 			return
-		if (isobj(target))
-			if (!target.loc || !isturf(target.loc))
+		if(isobj(target))
+			if(!target.loc || !isturf(target.loc))
 				del(src)
 				return
-		if (!focus)
+		if(!focus)
 			focus_object(target, user)
 			return
 		var/focusturf = get_turf(focus)
-		if (get_dist(focusturf, target) <= 1 && !istype(target, /turf))
+		if(get_dist(focusturf, target) <= 1 && !istype(target, /turf))
 			target.attackby(focus, user, user:get_organ_target())
 
-		else if (get_dist(focusturf, target) <= 16)
+		else if(get_dist(focusturf, target) <= 16)
 			apply_focus_overlay()
 			focus.throw_at(target, 10, 1)
 			last_throw = world.time
@@ -68,11 +68,11 @@
 
 
 	proc/focus_object(var/obj/target, var/mob/living/user)
-		if (!istype(target,/obj))	return//Cant throw non objects atm might let it do mobs later
-		if (target.anchored)
+		if(!istype(target,/obj))	return//Cant throw non objects atm might let it do mobs later
+		if(target.anchored)
 			target.attack_hand(user) // you can use shit now!
 			return//No throwing anchored things
-		if (!isturf(target.loc))
+		if(!isturf(target.loc))
 			return
 		focus = target
 		update_icon()
@@ -81,7 +81,7 @@
 
 
 	proc/apply_focus_overlay()
-		if (!focus)	return
+		if(!focus)	return
 		var/obj/effect/overlay/O = new /obj/effect/overlay(locate(focus.x,focus.y,focus.z))
 		O.name = "sparkles"
 		O.anchored = 1
@@ -98,7 +98,7 @@
 
 	update_icon()
 		overlays.Cut()
-		if (focus && focus.icon && focus.icon_state)
+		if(focus && focus.icon && focus.icon_state)
 			overlays += icon(focus.icon,focus.icon_state)
 		return
 
@@ -106,20 +106,20 @@
 	proc/check_path()
 		var/turf/ref = get_turf(src.loc)
 		var/turf/target = get_turf(focus.loc)
-		if (!ref || !target)	return 0
+		if(!ref || !target)	return 0
 		var/distance = get_dist(ref, target)
-		if (distance >= 10)	return 0
+		if(distance >= 10)	return 0
 		for(var/i = 1 to distance)
 			ref = get_step_to(ref, target, 0)
-		if (ref != target)	return 0
+		if(ref != target)	return 0
 		return 1
 */
 
 //equip_to_slot_or_del(obj/item/W, slot, del_on_fail = 1)
 /*
-		if (istype(user, /mob/living/carbon))
-			if (user:mutations & TK && get_dist(source, user) <= 7)
-				if (user:get_active_hand())	return 0
+		if(istype(user, /mob/living/carbon))
+			if(user:mutations & TK && get_dist(source, user) <= 7)
+				if(user:get_active_hand())	return 0
 				var/X = source:x
 				var/Y = source:y
 				var/Z = source:z

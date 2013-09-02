@@ -23,23 +23,23 @@
 		spawn(5)
 			for(var/i in cardinal)
 				var/obj/machinery/mineral/input/input_obj = locate( /obj/machinery/mineral/input, get_step(src.loc, i) )
-				if (input_obj)
-					if (isturf(input_obj.loc))
+				if(input_obj)
+					if(isturf(input_obj.loc))
 						input_plate = input_obj.loc
 						del(input_obj)
 						break
 
-			if (!input_plate)
+			if(!input_plate)
 				diary << "a [src] didn't find an input plate."
 				return
 
 	Bumped(var/atom/A)
-		if (!input_plate) return
+		if(!input_plate) return
 
-		if (ismob(A))
+		if(ismob(A))
 			var/mob/M = A
 
-			if (M.loc == input_plate
+			if(M.loc == input_plate
 			)
 				M.loc = src
 				M.gib()
@@ -51,13 +51,13 @@
 
 /obj/machinery/gibber/update_icon()
 	overlays.Cut()
-	if (dirty)
+	if(dirty)
 		src.overlays += image('icons/obj/kitchen.dmi', "grbloody")
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		return
-	if (!occupant)
+	if(!occupant)
 		src.overlays += image('icons/obj/kitchen.dmi', "grjam")
-	else if (operating)
+	else if(operating)
 		src.overlays += image('icons/obj/kitchen.dmi', "gruse")
 	else
 		src.overlays += image('icons/obj/kitchen.dmi', "gridle")
@@ -70,31 +70,31 @@
 	return
 
 /obj/machinery/gibber/attack_hand(mob/user as mob)
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		return
-	if (operating)
+	if(operating)
 		user << "\red It's locked and running"
 		return
 	else
 		src.startgibbing(user)
 
 /obj/machinery/gibber/attackby(obj/item/weapon/grab/G as obj, mob/user as mob)
-	if (src.occupant)
+	if(src.occupant)
 		user << "\red The gibber is full, empty it first!"
 		return
-	if (!( istype(G, /obj/item/weapon/grab)) || !(istype(G.affecting, /mob/living/carbon/human)))
+	if(!( istype(G, /obj/item/weapon/grab)) || !(istype(G.affecting, /mob/living/carbon/human)))
 		user << "\red This item is not suitable for the gibber!"
 		return
-	if (G.affecting.abiotic(1))
+	if(G.affecting.abiotic(1))
 		user << "\red Subject may not have abiotic items on."
 		return
 
 	user.visible_message("\red [user] starts to put [G.affecting] into the gibber!")
 	src.add_fingerprint(user)
-	if (do_after(user, 30) && G && G.affecting && !occupant)
+	if(do_after(user, 30) && G && G.affecting && !occupant)
 		user.visible_message("\red [user] stuffs [G.affecting] into the gibber!")
 		var/mob/M = G.affecting
-		if (M.client)
+		if(M.client)
 			M.client.perspective = EYE_PERSPECTIVE
 			M.client.eye = src
 		M.loc = src
@@ -107,18 +107,18 @@
 	set name = "Empty Gibber"
 	set src in oview(1)
 
-	if (usr.stat != 0)
+	if(usr.stat != 0)
 		return
 	src.go_out()
 	add_fingerprint(usr)
 	return
 
 /obj/machinery/gibber/proc/go_out()
-	if (!src.occupant)
+	if(!src.occupant)
 		return
 	for(var/obj/O in src)
 		O.loc = src.loc
-	if (src.occupant.client)
+	if(src.occupant.client)
 		src.occupant.client.eye = src.occupant.client.mob
 		src.occupant.client.perspective = MOB_PERSPECTIVE
 	src.occupant.loc = src.loc
@@ -128,9 +128,9 @@
 
 
 /obj/machinery/gibber/proc/startgibbing(mob/user as mob)
-	if (src.operating)
+	if(src.operating)
 		return
-	if (!src.occupant)
+	if(!src.occupant)
 		visible_message("\red You hear a loud metallic grinding sound.")
 		return
 	use_power(1000)
@@ -168,7 +168,7 @@
 			var/turf/Tx = locate(src.x - i, src.y, src.z)
 			meatslab.loc = src.loc
 			meatslab.throw_at(Tx,i,3)
-			if (!Tx.density)
+			if(!Tx.density)
 				new /obj/effect/decal/cleanable/blood/gibs(Tx,i)
 		src.operating = 0
 		update_icon()

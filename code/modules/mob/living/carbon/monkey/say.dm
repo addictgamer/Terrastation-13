@@ -1,5 +1,5 @@
 /mob/living/carbon/monkey/say(var/message)
-	if (silent)
+	if(silent)
 		return
 	else
 		return ..()

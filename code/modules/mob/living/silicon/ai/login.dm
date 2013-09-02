@@ -17,7 +17,7 @@
 	blind.layer = 0
 	client.screen.Add( blind, flash )
 
-	if (stat != DEAD)
+	if(stat != DEAD)
 		for(var/obj/machinery/ai_status_display/O in machines) //change status
 			O.mode = 1
 			O.emotion = "Neutral"

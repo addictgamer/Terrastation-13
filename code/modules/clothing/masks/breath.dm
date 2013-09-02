@@ -14,8 +14,8 @@
 		set name = "Adjust mask"
 		set src in usr
 
-		if (usr.canmove && !usr.stat && !usr.restrained())
-			if (!src.hanging)
+		if(usr.canmove && !usr.stat && !usr.restrained())
+			if(!src.hanging)
 				src.hanging = !src.hanging
 				gas_transfer_coefficient = 1 //gas is now escaping to the turf and vice versa
 				flags_inv |= MASKCOVERSMOUTH | MASKINTERNALS
@@ -53,7 +53,7 @@
 
 /obj/item/clothing/mask/breath/vox/mob_can_equip(M as mob, slot)
 	var/mob/living/carbon/human/V = M
-	if (V.species.name != "Vox")
+	if(V.species.name != "Vox")
 		V << "<span class='warning'>This clearly isn't designed for your species!</span>"
 		return 0
 

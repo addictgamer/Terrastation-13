@@ -16,31 +16,31 @@ s_cooldown ticks off each second based on the suit recharge proc, in seconds. De
 */
 /obj/item/clothing/suit/space/space_ninja/proc/ninjacost(C = 0,X = 0)
 	var/mob/living/carbon/human/U = affecting
-	if ( (U.stat||U.incorporeal_move)&&X!=3 )//Will not return if user is using an adrenaline booster since you can use them when stat==1.
+	if( (U.stat||U.incorporeal_move)&&X!=3 )//Will not return if user is using an adrenaline booster since you can use them when stat==1.
 		U << "\red You must be conscious and solid to do this."//It's not a problem of stat==2 since the ninja will explode anyway if they die.
 		return 1
-	else if (C&&cell.charge<C*10)
+	else if(C&&cell.charge<C*10)
 		U << "\red Not enough energy."
 		return 1
 	switch(X)
-		if (1)
+		if(1)
 			cancel_stealth()//Get rid of it.
-		if (2)
-			if (s_bombs<=0)
+		if(2)
+			if(s_bombs<=0)
 				U << "\red There are no more smoke bombs remaining."
 				return 1
-		if (3)
-			if (a_boost<=0)
+		if(3)
+			if(a_boost<=0)
 				U << "\red You do not have any more adrenaline boosters."
 				return 1
 	return (s_coold)//Returns the value of the variable which counts down to zero.
 
 //=======//TELEPORT GRAB CHECK//=======//
 /obj/item/clothing/suit/space/space_ninja/proc/handle_teleport_grab(turf/T, mob/living/U)
-	if (istype(U.get_active_hand(),/obj/item/weapon/grab))//Handles grabbed persons.
+	if(istype(U.get_active_hand(),/obj/item/weapon/grab))//Handles grabbed persons.
 		var/obj/item/weapon/grab/G = U.get_active_hand()
 		G.affecting.loc = locate(T.x+rand(-1,1),T.y+rand(-1,1),T.z)//variation of position.
-	if (istype(U.get_inactive_hand(),/obj/item/weapon/grab))
+	if(istype(U.get_inactive_hand(),/obj/item/weapon/grab))
 		var/obj/item/weapon/grab/G = U.get_inactive_hand()
 		G.affecting.loc = locate(T.x+rand(-1,1),T.y+rand(-1,1),T.z)//variation of position.
 	return
@@ -54,7 +54,7 @@ Not sure why this would be useful (it's not) but whatever. Ninjas need their smo
 	set category = "Ninja Ability"
 	set popup_menu = 0//Will not see it when right clicking.
 
-	if (!ninjacost(,2))
+	if(!ninjacost(,2))
 		var/mob/living/carbon/human/U = affecting
 		U << "\blue There are <B>[s_bombs]</B> smoke bombs remaining."
 		var/datum/effect/effect/system/bad_smoke_spread/smoke = new /datum/effect/effect/system/bad_smoke_spread()
@@ -75,10 +75,10 @@ Not sure why this would be useful (it's not) but whatever. Ninjas need their smo
 	set src = usr.contents//Fixes verbs not attaching properly for objects. Praise the DM reference guide!
 
 	var/C = 200
-	if (!ninjacost(C,1))
+	if(!ninjacost(C,1))
 		var/mob/living/carbon/human/U = affecting
 		var/turf/mobloc = get_turf(U.loc)//To make sure that certain things work properly below.
-		if ((!T.density)&&istype(mobloc, /turf))
+		if((!T.density)&&istype(mobloc, /turf))
 			spawn(0)
 				playsound(U.loc, 'sound/effects/sparks4.ogg', 50, 1)
 				anim(mobloc,src,'icons/mob/mob.dmi',,"phaseout",,U.dir)
@@ -104,7 +104,7 @@ Not sure why this would be useful (it's not) but whatever. Ninjas need their smo
 	set popup_menu = 0
 
 	var/C = 250
-	if (!ninjacost(C,100)) // EMP's now cost 1,000Energy about 30%
+	if(!ninjacost(C,100)) // EMP's now cost 1,000Energy about 30%
 		var/mob/living/carbon/human/U = affecting
 		playsound(U.loc, 'sound/effects/EMPulse.ogg', 60, 2)
 		empulse(U, 2, 3) //Procs sure are nice. Slightly weaker than wizard's disable tch.
@@ -121,10 +121,10 @@ Not sure why this would be useful (it's not) but whatever. Ninjas need their smo
 	set popup_menu = 0
 
 	var/C = 50
-	if (!ninjacost(C, 800)) //Same spawn cost but higher upkeep cost
+	if(!ninjacost(C, 800)) //Same spawn cost but higher upkeep cost
 		var/mob/living/carbon/human/U = affecting
-		if (!kamikaze)
-			if (!U.get_active_hand()&&!istype(U.get_inactive_hand(), /obj/item/weapon/melee/energy/blade))
+		if(!kamikaze)
+			if(!U.get_active_hand()&&!istype(U.get_inactive_hand(), /obj/item/weapon/melee/energy/blade))
 				var/obj/item/weapon/melee/energy/blade/W = new()
 				spark_system.start()
 				playsound(U.loc, "sparks", 50, 1)
@@ -133,10 +133,10 @@ Not sure why this would be useful (it's not) but whatever. Ninjas need their smo
 			else
 				U << "\red You can only summon one blade. Try dropping an item first."
 		else//Else you can run around with TWO energy blades. I don't know why you'd want to but cool factor remains.
-			if (!U.get_active_hand())
+			if(!U.get_active_hand())
 				var/obj/item/weapon/melee/energy/blade/W = new()
 				U.put_in_hands(W)
-			if (!U.get_inactive_hand())
+			if(!U.get_inactive_hand())
 				var/obj/item/weapon/melee/energy/blade/W = new()
 				U.put_in_inactive_hand(W)
 			spark_system.start()
@@ -154,20 +154,20 @@ This could be a lot better but I'm too tired atm.*/
 	set popup_menu = 0
 
 	var/C = 50
-	if (!ninjacost(C,1))
+	if(!ninjacost(C,1))
 		var/mob/living/carbon/human/U = affecting
 		var/targets[] = list()//So yo can shoot while yo throw dawg
 		for(var/mob/living/M in oview(loc))
-			if (M.stat)	continue//Doesn't target corpses or paralyzed persons.
+			if(M.stat)	continue//Doesn't target corpses or paralyzed persons.
 			targets.Add(M)
-		if (targets.len)
+		if(targets.len)
 			var/mob/living/target=pick(targets)//The point here is to pick a random, living mob in oview to shoot stuff at.
 
 			var/turf/curloc = U.loc
 			var/atom/targloc = get_turf(target)
-			if (!targloc || !istype(targloc, /turf) || !curloc)
+			if(!targloc || !istype(targloc, /turf) || !curloc)
 				return
-			if (targloc == curloc)
+			if(targloc == curloc)
 				return
 			var/obj/item/projectile/energy/dart/A = new /obj/item/projectile/energy/dart(U.loc)
 			A.current = curloc
@@ -189,13 +189,13 @@ Must right click on a mob to activate.*/
 	set src = usr.contents
 
 	var/C = 500
-	if (!ninjacost(C,80)&&iscarbon(M)) // Nets now cost 8,000
+	if(!ninjacost(C,80)&&iscarbon(M)) // Nets now cost 8,000
 		var/mob/living/carbon/human/U = affecting
-		if (M.client)//Monkeys without a client can still step_to() and bypass the net. Also, netting inactive people is lame.
-		//if (M)//DEBUG
-			if (!locate(/obj/effect/energy_net) in M.loc)//Check if they are already being affected by an energy net.
+		if(M.client)//Monkeys without a client can still step_to() and bypass the net. Also, netting inactive people is lame.
+		//if(M)//DEBUG
+			if(!locate(/obj/effect/energy_net) in M.loc)//Check if they are already being affected by an energy net.
 				for(var/turf/T in getline(U.loc, M.loc))
-					if (T.density)//Don't want them shooting nets through walls. It's kind of cheesy.
+					if(T.density)//Don't want them shooting nets through walls. It's kind of cheesy.
 						U << "You may not use an energy net through solid obstacles!"
 						return
 				spawn(0)
@@ -226,7 +226,7 @@ Movement impairing would indicate drugs and the like.*/
 	set category = "Ninja Ability"
 	set popup_menu = 0
 
-	if (!ninjacost(,3))//Have to make sure stat is not counted for this ability.
+	if(!ninjacost(,3))//Have to make sure stat is not counted for this ability.
 		var/mob/living/carbon/human/U = affecting
 		//Wouldn't need to track adrenaline boosters if there was a miracle injection to get rid of paralysis and the like instantly.
 		//For now, adrenaline boosters ARE the miracle injection. Well, radium, really.
@@ -265,7 +265,7 @@ Or otherwise known as anime mode. Which also happens to be ridiculously powerful
 	set popup_menu = 0
 
 	var/mob/living/carbon/human/U = affecting
-	if (!U.incorporeal_move)
+	if(!U.incorporeal_move)
 		U.incorporeal_move = 2
 		U << "\blue You will now phase through solid matter."
 	else
@@ -281,11 +281,11 @@ Or otherwise known as anime mode. Which also happens to be ridiculously powerful
 	set category = "Ninja Ability"
 	set popup_menu = 0
 
-	if (!ninjacost())
+	if(!ninjacost())
 		var/mob/living/carbon/human/U = affecting
 		var/turf/destination = get_teleport_loc(U.loc,U,5)
 		var/turf/mobloc = get_turf(U.loc)//To make sure that certain things work properly below.
-		if (destination&&istype(mobloc, /turf))
+		if(destination&&istype(mobloc, /turf))
 			U.say("Ai Satsugai!")
 			spawn(0)
 				playsound(U.loc, "sparks", 50, 1)
@@ -295,7 +295,7 @@ Or otherwise known as anime mode. Which also happens to be ridiculously powerful
 				for(var/turf/T in getline(mobloc, destination))
 					spawn(0)
 						T.kill_creatures(U)
-					if (T==mobloc||T==destination)	continue
+					if(T==mobloc||T==destination)	continue
 					spawn(0)
 						anim(T,U,'icons/mob/mob.dmi',,"phasein",,U.dir)
 
@@ -321,42 +321,42 @@ This is so anime it hurts. But that's the point.*/
 	set category = "Ninja Ability"
 	set popup_menu = 0
 
-	if (!ninjacost())//Simply checks for stat.
+	if(!ninjacost())//Simply checks for stat.
 		var/mob/living/carbon/human/U = affecting
 		var/targets[]
 		targets = new()
 		for(var/mob/living/M in oview(6))
-			if (M.stat)	continue//Doesn't target corpses or paralyzed people.
+			if(M.stat)	continue//Doesn't target corpses or paralyzed people.
 			targets.Add(M)
-		if (targets.len)
+		if(targets.len)
 			var/mob/living/target=pick(targets)
 			var/locx
 			var/locy
 			var/turf/mobloc = get_turf(target.loc)
 			var/safety = 0
 			switch(target.dir)
-				if (NORTH)
+				if(NORTH)
 					locx = mobloc.x
 					locy = (mobloc.y-1)
-					if (locy<1)
+					if(locy<1)
 						safety = 1
-				if (SOUTH)
+				if(SOUTH)
 					locx = mobloc.x
 					locy = (mobloc.y+1)
-					if (locy>world.maxy)
+					if(locy>world.maxy)
 						safety = 1
-				if (EAST)
+				if(EAST)
 					locy = mobloc.y
 					locx = (mobloc.x-1)
-					if (locx<1)
+					if(locx<1)
 						safety = 1
-				if (WEST)
+				if(WEST)
 					locy = mobloc.y
 					locx = (mobloc.x+1)
-					if (locx>world.maxx)
+					if(locx>world.maxx)
 						safety = 1
 				else	safety=1
-			if (!safety&&istype(mobloc, /turf))
+			if(!safety&&istype(mobloc, /turf))
 				U.say("Kumo no Shinkiro!")
 				var/turf/picked = locate(locx,locy,mobloc.z)
 				spawn(0)
@@ -366,11 +366,11 @@ This is so anime it hurts. But that's the point.*/
 				spawn(0)
 					var/limit = 4
 					for(var/turf/T in oview(5))
-						if (prob(20))
+						if(prob(20))
 							spawn(0)
 								anim(T,U,'icons/mob/mob.dmi',,"phasein",,U.dir)
 							limit--
-						if (limit<=0)	break
+						if(limit<=0)	break
 
 				handle_teleport_grab(picked, U)
 				U.loc = picked

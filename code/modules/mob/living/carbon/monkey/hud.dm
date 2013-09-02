@@ -88,7 +88,7 @@
 	inv_box.dir = WEST
 	inv_box.icon = ui_style
 	inv_box.icon_state = "hand_inactive"
-	if (mymob && !mymob.hand)	//This being 0 or null means the right hand is in use
+	if(mymob && !mymob.hand)	//This being 0 or null means the right hand is in use
 		inv_box.icon_state = "hand_active"
 	inv_box.screen_loc = ui_rhand
 	inv_box.slot_id = slot_r_hand
@@ -101,7 +101,7 @@
 	inv_box.dir = EAST
 	inv_box.icon = ui_style
 	inv_box.icon_state = "hand_inactive"
-	if (mymob && mymob.hand)	//This being 1 means the left hand is in use
+	if(mymob && mymob.hand)	//This being 1 means the left hand is in use
 		inv_box.icon_state = "hand_active"
 	inv_box.screen_loc = ui_lhand
 	inv_box.slot_id = slot_l_hand
@@ -222,20 +222,20 @@
 
 	//Handle the gun settings buttons
 	mymob.gun_setting_icon = new /obj/screen/gun/mode(null)
-	if (mymob.client)
-		if (mymob.client.gun_mode) // If in aim mode, correct the sprite
+	if(mymob.client)
+		if(mymob.client.gun_mode) // If in aim mode, correct the sprite
 			mymob.gun_setting_icon.dir = 2
 	for(var/obj/item/weapon/gun/G in mymob) // If targeting someone, display other buttons
-		if (G.target)
+		if(G.target)
 			mymob.item_use_icon = new /obj/screen/gun/item(null)
-			if (mymob.client.target_can_click)
+			if(mymob.client.target_can_click)
 				mymob.item_use_icon.dir = 1
 			src.adding += mymob.item_use_icon
 			mymob.gun_move_icon = new /obj/screen/gun/move(null)
-			if (mymob.client.target_can_move)
+			if(mymob.client.target_can_move)
 				mymob.gun_move_icon.dir = 1
 				mymob.gun_run_icon = new /obj/screen/gun/run(null)
-				if (mymob.client.target_can_run)
+				if(mymob.client.target_can_run)
 					mymob.gun_run_icon.dir = 1
 				src.adding += mymob.gun_run_icon
 			src.adding += mymob.gun_move_icon

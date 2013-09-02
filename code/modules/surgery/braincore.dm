@@ -102,7 +102,7 @@
 		user.visible_message("\red [user]'s hand slips, cutting a vein in [target]'s brain with \the [tool]!", \
 		"\red Your hand slips, cutting a vein in [target]'s brain with \the [tool]!")
 		target.apply_damage(30, BRUTE, "head", 1)
-		if (ishuman(user))
+		if(ishuman(user))
 			user:bloody_body(target)
 			user:bloody_hands(target, 0)
 
@@ -161,7 +161,7 @@
 		user.visible_message("\blue [user] mends hematoma in [target]'s brain with \the [tool].",	\
 		"\blue You mend hematoma in [target]'s brain with \the [tool].")
 		var/datum/organ/internal/brain/sponge = target.internal_organs["brain"]
-		if (sponge)
+		if(sponge)
 			sponge.damage = 0
 
 
@@ -251,9 +251,9 @@
 		user.visible_message("\blue [user] cuts out one of [target]'s cores with \the [tool].",,	\
 		"\blue You cut out one of [target]'s cores with \the [tool]. [target.cores] cores left.")
 
-		if (target.cores >= 0)
+		if(target.cores >= 0)
 			new target.coretype(target.loc)
-		if (target.cores <= 0)
+		if(target.cores <= 0)
 			var/origstate = initial(target.icon_state)
 			target.icon_state = "[origstate] dead-nocore"
 

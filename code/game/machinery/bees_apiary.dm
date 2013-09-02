@@ -30,13 +30,13 @@
 	overlays += image('icons/obj/apiary_bees_etc.dmi', icon_state="apiary")
 
 /obj/machinery/apiary/bullet_act(var/obj/item/projectile/Proj) //Works with the Somatoray to modify plant variables.
-	if (istype(Proj ,/obj/item/projectile/energy/floramut))
+	if(istype(Proj ,/obj/item/projectile/energy/floramut))
 		mut++
-	else if (istype(Proj ,/obj/item/projectile/energy/florayield))
-		if (!yieldmod)
+	else if(istype(Proj ,/obj/item/projectile/energy/florayield))
+		if(!yieldmod)
 			yieldmod += 1
 			//world << "Yield increased by 1, from 0, to a total of [myseed.yield]"
-		else if (prob(1/(yieldmod * yieldmod) *100))//This formula gives you diminishing returns based on yield. 100% with 1 yield, decreasing to 25%, 11%, 6, 4, 2...
+		else if(prob(1/(yieldmod * yieldmod) *100))//This formula gives you diminishing returns based on yield. 100% with 1 yield, decreasing to 25%, 11%, 6, 4, 2...
 			yieldmod += 1
 			//world << "Yield increased by 1, to a total of [myseed.yield]"
 	else
@@ -44,8 +44,8 @@
 		return
 
 /obj/machinery/apiary/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	if (istype(O, /obj/item/queen_bee))
-		if (health > 0)
+	if(istype(O, /obj/item/queen_bee))
+		if(health > 0)
 			user << "\red There is already a queen in there."
 		else
 			health = 10
@@ -54,43 +54,43 @@
 			del(O)
 			user << "\blue You carefully insert the queen into [src], she gets busy making a hive."
 			bees_in_hive = 0
-	else if (istype(O, /obj/item/beezeez))
+	else if(istype(O, /obj/item/beezeez))
 		beezeez += 100
 		nutrilevel += 10
 		user.drop_item()
-		if (health > 0)
+		if(health > 0)
 			user << "\blue You insert [O] into [src]. A relaxed humming appears to pick up."
 		else
 			user << "\blue You insert [O] into [src]. Now it just needs some bees."
 		del(O)
-	else if (istype(O, /obj/item/weapon/minihoe))
-		if (health > 0)
+	else if(istype(O, /obj/item/weapon/minihoe))
+		if(health > 0)
 			user << "\red <b>You begin to dislodge the apiary from the tray, the bees don't like that.</b>"
 			angry_swarm(user)
 		else
 			user << "\blue You begin to dislodge the dead apiary from the tray."
-		if (do_after(user, 50))
+		if(do_after(user, 50))
 			new hydrotray_type(src.loc)
 			new /obj/item/apiary(src.loc)
 			user << "\red You dislodge the apiary from the tray."
 			del(src)
-	else if (istype(O, /obj/item/weapon/bee_net))
+	else if(istype(O, /obj/item/weapon/bee_net))
 		var/obj/item/weapon/bee_net/N = O
-		if (N.caught_bees > 0)
+		if(N.caught_bees > 0)
 			user << "\blue You empty the bees into the apiary."
 			bees_in_hive += N.caught_bees
 			N.caught_bees = 0
 		else
 			user << "\blue There are no more bees in the net."
-	else if (istype(O, /obj/item/weapon/reagent_containers/glass))
+	else if(istype(O, /obj/item/weapon/reagent_containers/glass))
 		var/obj/item/weapon/reagent_containers/glass/G = O
-		if (harvestable_honey > 0)
-			if (health > 0)
+		if(harvestable_honey > 0)
+			if(health > 0)
 				user << "\red You begin to harvest the honey. The bees don't seem to like it."
 				angry_swarm(user)
 			else
 				user << "\blue You begin to harvest the honey."
-			if (do_after(user,50))
+			if(do_after(user,50))
 				G.reagents.add_reagent("honey",harvestable_honey)
 				harvestable_honey = 0
 				user << "\blue You successfully harvest the honey."
@@ -101,33 +101,33 @@
 		..()
 
 /obj/machinery/apiary/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if (air_group || (height==0)) return 1
+	if(air_group || (height==0)) return 1
 
-	if (istype(mover) && mover.checkpass(PASSTABLE))
+	if(istype(mover) && mover.checkpass(PASSTABLE))
 		return 1
 	else
 		return 0
 
 /obj/machinery/apiary/process()
 
-	if (swarming > 0)
+	if(swarming > 0)
 		swarming -= 1
-		if (swarming <= 0)
+		if(swarming <= 0)
 			for(var/mob/living/simple_animal/bee/B in src.loc)
 				bees_in_hive += B.strength
 				del(B)
-	else if (bees_in_hive < 10)
+	else if(bees_in_hive < 10)
 		for(var/mob/living/simple_animal/bee/B in src.loc)
 			bees_in_hive += B.strength
 			del(B)
 
-	if (world.time > (lastcycle + cycledelay))
+	if(world.time > (lastcycle + cycledelay))
 		lastcycle = world.time
-		if (health < 0)
+		if(health < 0)
 			return
 
 		//magical bee formula
-		if (beezeez > 0)
+		if(beezeez > 0)
 			beezeez -= 1
 
 			nutrilevel += 2
@@ -136,32 +136,32 @@
 
 		//handle nutrients
 		nutrilevel -= bees_in_hive / 10 + owned_bee_swarms.len / 5
-		if (nutrilevel > 0)
+		if(nutrilevel > 0)
 			bees_in_hive += 1 * yieldmod
-			if (health < maxhealth)
+			if(health < maxhealth)
 				health++
 		else
 			//nutrilevel is less than 1, so we're effectively subtracting here
 			health += max(nutrilevel - 1, round(-health / 2))
 			bees_in_hive += max(nutrilevel - 1, round(-bees_in_hive / 2))
-			if (owned_bee_swarms.len)
+			if(owned_bee_swarms.len)
 				var/mob/living/simple_animal/bee/B = pick(owned_bee_swarms)
 				B.target_turf = get_turf(src)
 
 		//clear out some toxins
-		if (toxic > 0)
+		if(toxic > 0)
 			toxic -= 1
 			health -= 1
 
-		if (health <= 0)
+		if(health <= 0)
 			return
 
 		//make a bit of honey
-		if (harvestable_honey < 50)
+		if(harvestable_honey < 50)
 			harvestable_honey += 0.5
 
 		//make some new bees
-		if (bees_in_hive >= 10 && prob(bees_in_hive * 10))
+		if(bees_in_hive >= 10 && prob(bees_in_hive * 10))
 			var/mob/living/simple_animal/bee/B = new(get_turf(src), src)
 			owned_bee_swarms.Add(B)
 			B.mut = mut
@@ -170,39 +170,39 @@
 
 		//find some plants, harvest
 		for(var/obj/machinery/hydroponics/H in view(7, src))
-			if (H.planted && !H.dead && H.myseed && prob(owned_bee_swarms.len * 10))
+			if(H.planted && !H.dead && H.myseed && prob(owned_bee_swarms.len * 10))
 				src.nutrilevel++
 				H.nutrilevel++
-				if (mut < H.mutmod - 1)
+				if(mut < H.mutmod - 1)
 					mut = H.mutmod - 1
-				else if (mut > H.mutmod - 1)
+				else if(mut > H.mutmod - 1)
 					H.mutmod = mut
 
 				//flowers give us pollen (nutrients)
 /* - All plants should be giving nutrients to the hive.
-				if (H.myseed.type == /obj/item/seeds/harebell || H.myseed.type == /obj/item/seeds/sunflowerseed)
+				if(H.myseed.type == /obj/item/seeds/harebell || H.myseed.type == /obj/item/seeds/sunflowerseed)
 					src.nutrilevel++
 					H.nutrilevel++
 */
 				//have a few beneficial effects on nearby plants
-				if (prob(10))
+				if(prob(10))
 					H.lastcycle -= 5
-				if (prob(10))
+				if(prob(10))
 					H.myseed.lifespan = max(initial(H.myseed.lifespan) * 1.5, H.myseed.lifespan + 1)
-				if (prob(10))
+				if(prob(10))
 					H.myseed.endurance = max(initial(H.myseed.endurance) * 1.5, H.myseed.endurance + 1)
-				if (H.toxic && prob(10))
+				if(H.toxic && prob(10))
 					H.toxic = min(0, H.toxic - 1)
 					toxic++
 
 /obj/machinery/apiary/proc/die()
-	if (owned_bee_swarms.len)
+	if(owned_bee_swarms.len)
 		var/mob/living/simple_animal/bee/B = pick(owned_bee_swarms)
 		B.target_turf = get_turf(src)
 		B.strength -= 1
-		if (B.strength <= 0)
+		if(B.strength <= 0)
 			del(B)
-		else if (B.strength <= 5)
+		else if(B.strength <= 5)
 			B.icon_state = "bees[B.strength]"
 	bees_in_hive = 0
 	health = 0
@@ -216,7 +216,7 @@
 
 	while(bees_in_hive > 0)
 		var/spawn_strength = bees_in_hive
-		if (bees_in_hive >= 5)
+		if(bees_in_hive >= 5)
 			spawn_strength = 6
 
 		var/mob/living/simple_animal/bee/B = new(get_turf(src), src)
@@ -235,7 +235,7 @@
 	while(health > 15)
 		health -= 15
 		var/obj/item/weapon/reagent_containers/food/snacks/honeycomb/H = new(src.loc)
-		if (toxic > 0)
+		if(toxic > 0)
 			H.reagents.add_reagent("toxin", toxic)
 
 	usr << "\blue You harvest the honeycomb from the hive. There is a wild buzzing!"

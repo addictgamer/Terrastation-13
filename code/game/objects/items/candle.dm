@@ -14,9 +14,9 @@
 
 	update_icon()
 		var/i
-		if (wax>150)
+		if(wax>150)
 			i = 1
-		else if (wax>80)
+		else if(wax>80)
 			i = 2
 		else i = 3
 		icon_state = "candle[i][lit ? "_lit" : ""]"
@@ -24,26 +24,26 @@
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
 		..()
-		if (istype(W, /obj/item/weapon/weldingtool))
+		if(istype(W, /obj/item/weapon/weldingtool))
 			var/obj/item/weapon/weldingtool/WT = W
-			if (WT.isOn()) //Badasses dont get blinded by lighting their candle with a welding tool
+			if(WT.isOn()) //Badasses dont get blinded by lighting their candle with a welding tool
 				light("\red [user] casually lights the [name] with [W], what a badass.")
-		else if (istype(W, /obj/item/weapon/lighter))
+		else if(istype(W, /obj/item/weapon/lighter))
 			var/obj/item/weapon/lighter/L = W
-			if (L.lit)
+			if(L.lit)
 				light()
-		else if (istype(W, /obj/item/weapon/match))
+		else if(istype(W, /obj/item/weapon/match))
 			var/obj/item/weapon/match/M = W
-			if (M.lit)
+			if(M.lit)
 				light()
-		else if (istype(W, /obj/item/candle))
+		else if(istype(W, /obj/item/candle))
 			var/obj/item/candle/C = W
-			if (C.lit)
+			if(C.lit)
 				light()
 
 
 	light(var/flavor_text = "\red [usr] lights the [name].")
-		if (!src.lit)
+		if(!src.lit)
 			src.lit = 1
 			//src.damtype = "fire"
 			for(var/mob/O in viewers(usr, null))
@@ -53,22 +53,22 @@
 
 
 	process()
-		if (!lit)
+		if(!lit)
 			return
 		wax--
-		if (!wax)
+		if(!wax)
 			new/obj/item/trash/candle(src.loc)
-			if (istype(src.loc, /mob))
+			if(istype(src.loc, /mob))
 				src.dropped()
 			del(src)
 		update_icon()
-		if (istype(loc, /turf)) //start a fire if possible
+		if(istype(loc, /turf)) //start a fire if possible
 			var/turf/T = loc
 			T.hotspot_expose(700, 5)
 
 
 	attack_self(mob/user as mob)
-		if (lit)
+		if(lit)
 			lit = 0
 			update_icon()
 			SetLuminosity(0)
@@ -76,12 +76,12 @@
 
 
 	pickup(mob/user)
-		if (lit)
+		if(lit)
 			SetLuminosity(0)
 			user.SetLuminosity(user.luminosity + CANDLE_LUM)
 
 
 	dropped(mob/user)
-		if (lit)
+		if(lit)
 			user.SetLuminosity(user.luminosity - CANDLE_LUM)
 			SetLuminosity(CANDLE_LUM)

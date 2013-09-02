@@ -8,12 +8,12 @@ var/research_shuttle_moving = 0
 var/research_shuttle_location = 0 // 0 = station 13, 1 = research station
 
 proc/move_research_shuttle()
-	if (research_shuttle_moving)	return
+	if(research_shuttle_moving)	return
 	research_shuttle_moving = 1
 	spawn(research_shuttle_tickstomove*10)
 		var/area/fromArea
 		var/area/toArea
-		if (research_shuttle_location == 1)
+		if(research_shuttle_location == 1)
 			fromArea = locate(/area/shuttle/research/outpost)
 			toArea = locate(/area/shuttle/research/station)
 		else
@@ -26,7 +26,7 @@ proc/move_research_shuttle()
 
 		for(var/turf/T in toArea)
 			dstturfs += T
-			if (T.y < throwy)
+			if(T.y < throwy)
 				throwy = T.y
 
 		// hey you, get out of the way!
@@ -43,7 +43,7 @@ proc/move_research_shuttle()
 					return
 				*/
 
-			if (istype(T, /turf/simulated))
+			if(istype(T, /turf/simulated))
 				del(T)
 
 		for(var/mob/living/carbon/bug in toArea) // If someone somehow is still in the shuttle's docking area...
@@ -53,7 +53,7 @@ proc/move_research_shuttle()
 			pest.gib()
 
 		fromArea.move_contents_to(toArea)
-		if (research_shuttle_location)
+		if(research_shuttle_location)
 			research_shuttle_location = 0
 		else
 			research_shuttle_location = 1
@@ -76,17 +76,17 @@ proc/move_research_shuttle()
 	user << browse("[dat]", "window=researchshuttle;size=200x100")
 
 /obj/machinery/computer/research_shuttle/Topic(href, href_list)
-	if (..())
+	if(..())
 		return
 	usr.machine = src
 	src.add_fingerprint(usr)
-	if (href_list["move"])
-		//if (ticker.mode.name == "blob")
-		//	if (ticker.mode:declared)
+	if(href_list["move"])
+		//if(ticker.mode.name == "blob")
+		//	if(ticker.mode:declared)
 		//		usr << "Under directive 7-10, [station_name()] is quarantined until further notice."
 		//		return
 
-		if (!research_shuttle_moving)
+		if(!research_shuttle_moving)
 			usr << "\blue Shuttle recieved message and will be sent shortly."
 			move_research_shuttle()
 		else
@@ -94,9 +94,9 @@ proc/move_research_shuttle()
 
 /obj/machinery/computer/research_shuttle/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
-	if (istype(W, /obj/item/weapon/card/emag))
+	if(istype(W, /obj/item/weapon/card/emag))
 		var/obj/item/weapon/card/emag/E = W
-		if (E.uses)
+		if(E.uses)
 			E.uses--
 		else
 			return
@@ -104,9 +104,9 @@ proc/move_research_shuttle()
 		hacked = 1
 		usr << "You fried the consoles ID checking system. It's now available to everyone!"
 
-	else if (istype(W, /obj/item/weapon/screwdriver))
+	else if(istype(W, /obj/item/weapon/screwdriver))
 		playsound(src.loc, 'Screwdriver.ogg', 50, 1)
-		if (do_after(user, 20))
+		if(do_after(user, 20))
 			var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 			var/obj/item/weapon/circuitboard/research_shuttle/M = new /obj/item/weapon/circuitboard/research_shuttle( A )
 			for (var/obj/C in src)
@@ -114,7 +114,7 @@ proc/move_research_shuttle()
 			A.circuit = M
 			A.anchored = 1
 
-			if (src.stat & BROKEN)
+			if(src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				new /obj/item/weapon/shard( src.loc )
 				A.state = 3

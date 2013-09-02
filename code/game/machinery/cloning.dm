@@ -51,19 +51,19 @@
 
 //Find a dead mob with a brain and client.
 /proc/find_dead_player(var/find_key)
-	if (isnull(find_key))
+	if(isnull(find_key))
 		return
 
 	var/mob/selected = null
 	for(var/mob/M in player_list)
 		//Dead people only thanks!
-		if ((M.stat != 2) || (!M.client))
+		if((M.stat != 2) || (!M.client))
 			continue
 		//They need a brain!
-		if ((istype(M, /mob/living/carbon/human)) && (M:brain_op_stage >= 4.0))
+		if((istype(M, /mob/living/carbon/human)) && (M:brain_op_stage >= 4.0))
 			continue
 
-		if (M.ckey == find_key)
+		if(M.ckey == find_key)
 			selected = M
 			break
 	return selected
@@ -91,13 +91,13 @@
 	var/healthstring = ""
 
 /obj/item/weapon/implant/health/proc/sensehealth()
-	if (!src.implanted)
+	if(!src.implanted)
 		return "ERROR"
 	else
-		if (isliving(src.implanted))
+		if(isliving(src.implanted))
 			var/mob/living/L = src.implanted
 			src.healthstring = "[round(L.getOxyLoss())] - [round(L.getFireLoss())] - [round(L.getToxLoss())] - [round(L.getBruteLoss())]"
-		if (!src.healthstring)
+		if(!src.healthstring)
 			src.healthstring = "ERROR"
 		return src.healthstring
 
@@ -106,9 +106,9 @@
 /obj/machinery/clonepod/attack_paw(mob/user as mob)
 	return attack_hand(user)
 /obj/machinery/clonepod/attack_hand(mob/user as mob)
-	if ((isnull(src.occupant)) || (stat & NOPOWER))
+	if((isnull(src.occupant)) || (stat & NOPOWER))
 		return
-	if ((!isnull(src.occupant)) && (src.occupant.stat != 2))
+	if((!isnull(src.occupant)) && (src.occupant.stat != 2))
 		var/completion = (100 * ((src.occupant.health + 100) / (src.heal_level + 100)))
 		user << "Current clone cycle is [round(completion)]% complete."
 	return
@@ -117,20 +117,20 @@
 
 //Start growing a human clone in the pod!
 /obj/machinery/clonepod/proc/growclone(var/ckey, var/clonename, var/ui, var/se, var/mindref, var/datum/species/mrace)
-	if (mess || attempting)
+	if(mess || attempting)
 		return 0
 	var/datum/mind/clonemind = locate(mindref)
-	if (!istype(clonemind,/datum/mind))	//not a mind
+	if(!istype(clonemind,/datum/mind))	//not a mind
 		return 0
-	if ( clonemind.current && clonemind.current.stat != DEAD )	//mind is associated with a non-dead body
+	if( clonemind.current && clonemind.current.stat != DEAD )	//mind is associated with a non-dead body
 		return 0
-	if (clonemind.active)	//somebody is using that mind
-		if ( ckey(clonemind.key)!=ckey )
+	if(clonemind.active)	//somebody is using that mind
+		if( ckey(clonemind.key)!=ckey )
 			return 0
 	else
 		for(var/mob/dead/observer/G in player_list)
-			if (G.ckey == ckey)
-				if (G.can_reenter_corpse)
+			if(G.ckey == ckey)
+				if(G.can_reenter_corpse)
 					break
 				else
 					return 0
@@ -147,7 +147,7 @@
 	var/mob/living/carbon/human/H = new /mob/living/carbon/human(src)
 	occupant = H
 
-	if (!clonename)	//to prevent null names
+	if(!clonename)	//to prevent null names
 		clonename = "clone ([rand(0,999)])"
 	H.real_name = clonename
 
@@ -167,31 +167,31 @@
 	// -- Mode/mind specific stuff goes here
 
 	switch(ticker.mode.name)
-		if ("revolution")
-			if ((H.mind in ticker.mode:revolutionaries) || (H.mind in ticker.mode:head_revolutionaries))
+		if("revolution")
+			if((H.mind in ticker.mode:revolutionaries) || (H.mind in ticker.mode:head_revolutionaries))
 				ticker.mode.update_all_rev_icons() //So the icon actually appears
-		if ("nuclear emergency")
-			if (H.mind in ticker.mode.syndicates)
+		if("nuclear emergency")
+			if(H.mind in ticker.mode.syndicates)
 				ticker.mode.update_all_synd_icons()
-		if ("cult")
-			if (H.mind in ticker.mode.cult)
+		if("cult")
+			if(H.mind in ticker.mode.cult)
 				ticker.mode.add_cultist(src.occupant.mind)
 				ticker.mode.update_all_cult_icons() //So the icon actually appears
 
 	// -- End mode specific stuff
 
-	if (!H.dna)
+	if(!H.dna)
 		H.dna = new /datum/dna()
 		H.dna.real_name = H.real_name
-	if (ui)
+	if(ui)
 		H.dna.uni_identity = ui
 		updateappearance(H, ui)
-	if (se)
+	if(se)
 		H.dna.struc_enzymes = se
 		randmutb(H) //Sometimes the clones come out wrong.
 
 	H.f_style = "Shaved"
-	if (mrace.name == "Human") //no more xenos losing ears/tentacles
+	if(mrace.name == "Human") //no more xenos losing ears/tentacles
 		H.h_style = pick("Bedhead", "Bedhead 2", "Bedhead 3")
 
 	H.species = mrace
@@ -203,20 +203,20 @@
 //Grow clones to maturity then kick them out.  FREELOADERS
 /obj/machinery/clonepod/process()
 
-	if (stat & NOPOWER) //Autoeject if power is lost
-		if (src.occupant)
+	if(stat & NOPOWER) //Autoeject if power is lost
+		if(src.occupant)
 			src.locked = 0
 			src.go_out()
 		return
 
-	if ((src.occupant) && (src.occupant.loc == src))
-		if ((src.occupant.stat == DEAD) || (src.occupant.suiciding) || !occupant.key)  //Autoeject corpses and suiciding dudes.
+	if((src.occupant) && (src.occupant.loc == src))
+		if((src.occupant.stat == DEAD) || (src.occupant.suiciding) || !occupant.key)  //Autoeject corpses and suiciding dudes.
 			src.locked = 0
 			src.go_out()
 			src.connected_message("Clone Rejected: Deceased.")
 			return
 
-		else if (src.occupant.health < src.heal_level)
+		else if(src.occupant.health < src.heal_level)
 			src.occupant.Paralyse(4)
 
 			 //Slowly get that clone healed and finished.
@@ -226,7 +226,7 @@
 			src.occupant.adjustBrainLoss(-1)
 
 			//So clones don't die of oxyloss in a running pod.
-			if (src.occupant.reagents.get_reagent_amount("inaprovaline") < 30)
+			if(src.occupant.reagents.get_reagent_amount("inaprovaline") < 30)
 				src.occupant.reagents.add_reagent("inaprovaline", 60)
 
 			//Also heal some oxyloss ourselves because inaprovaline is so bad at preventing it!!
@@ -235,17 +235,17 @@
 			use_power(7500) //This might need tweaking.
 			return
 
-		else if ((src.occupant.health >= src.heal_level) && (!src.eject_wait))
+		else if((src.occupant.health >= src.heal_level) && (!src.eject_wait))
 			src.connected_message("Cloning Process Complete.")
 			src.locked = 0
 			src.go_out()
 			return
 
-	else if ((!src.occupant) || (src.occupant.loc != src))
+	else if((!src.occupant) || (src.occupant.loc != src))
 		src.occupant = null
-		if (src.locked)
+		if(src.locked)
 			src.locked = 0
-		if (!src.mess)
+		if(!src.mess)
 			icon_state = "pod_0"
 		use_power(200)
 		return
@@ -254,26 +254,26 @@
 
 //Let's unlock this early I guess.  Might be too early, needs tweaking.
 /obj/machinery/clonepod/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
-		if (!src.check_access(W))
+	if(istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
+		if(!src.check_access(W))
 			user << "\red Access Denied."
 			return
-		if ((!src.locked) || (isnull(src.occupant)))
+		if((!src.locked) || (isnull(src.occupant)))
 			return
-		if ((src.occupant.health < -20) && (src.occupant.stat != 2))
+		if((src.occupant.health < -20) && (src.occupant.stat != 2))
 			user << "\red Access Refused."
 			return
 		else
 			src.locked = 0
 			user << "System unlocked."
-	else if (istype(W, /obj/item/weapon/card/emag))
-		if (isnull(src.occupant))
+	else if(istype(W, /obj/item/weapon/card/emag))
+		if(isnull(src.occupant))
 			return
 		user << "You force an emergency ejection."
 		src.locked = 0
 		src.go_out()
 		return
-	else if (istype(W, /obj/item/weapon/reagent_containers/food/snacks/meat))
+	else if(istype(W, /obj/item/weapon/reagent_containers/food/snacks/meat))
 		user << "\blue \The [src] processes \the [W]."
 		biomass += 50
 		user.drop_item()
@@ -284,9 +284,9 @@
 
 //Put messages in the connected computer's temp var for display.
 /obj/machinery/clonepod/proc/connected_message(var/message)
-	if ((isnull(src.connected)) || (!istype(src.connected, /obj/machinery/computer/cloning)))
+	if((isnull(src.connected)) || (!istype(src.connected, /obj/machinery/computer/cloning)))
 		return 0
-	if (!message)
+	if(!message)
 		return 0
 
 	src.connected.temp = message
@@ -298,17 +298,17 @@
 	set category = "Object"
 	set src in oview(1)
 
-	if (usr.stat != 0)
+	if(usr.stat != 0)
 		return
 	src.go_out()
 	add_fingerprint(usr)
 	return
 
 /obj/machinery/clonepod/proc/go_out()
-	if (src.locked)
+	if(src.locked)
 		return
 
-	if (src.mess) //Clean that mess and dump those gibs!
+	if(src.mess) //Clean that mess and dump those gibs!
 		src.mess = 0
 		gibs(src.loc)
 		src.icon_state = "pod_0"
@@ -319,7 +319,7 @@
 		*/
 		return
 
-	if (!(src.occupant))
+	if(!(src.occupant))
 		return
 
 	/*
@@ -327,7 +327,7 @@
 		O.loc = src.loc
 	*/
 
-	if (src.occupant.client)
+	if(src.occupant.client)
 		src.occupant.client.eye = src.occupant.client.mob
 		src.occupant.client.perspective = MOB_PERSPECTIVE
 	src.occupant.loc = src.loc
@@ -342,7 +342,7 @@
 	return
 
 /obj/machinery/clonepod/proc/malfunction()
-	if (src.occupant)
+	if(src.occupant)
 		src.connected_message("Critical Error!")
 		src.mess = 1
 		src.icon_state = "pod_g"
@@ -352,32 +352,32 @@
 	return
 
 /obj/machinery/clonepod/relaymove(mob/user as mob)
-	if (user.stat)
+	if(user.stat)
 		return
 	src.go_out()
 	return
 
 /obj/machinery/clonepod/emp_act(severity)
-	if (prob(100/severity)) malfunction()
+	if(prob(100/severity)) malfunction()
 	..()
 
 /obj/machinery/clonepod/ex_act(severity)
 	switch(severity)
-		if (1.0)
+		if(1.0)
 			for(var/atom/movable/A as mob|obj in src)
 				A.loc = src.loc
 				ex_act(severity)
 			del(src)
 			return
-		if (2.0)
-			if (prob(50))
+		if(2.0)
+			if(prob(50))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
 					ex_act(severity)
 				del(src)
 				return
-		if (3.0)
-			if (prob(25))
+		if(3.0)
+			if(prob(25))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
 					ex_act(severity)
@@ -434,6 +434,6 @@
 
 //SOME SCRAPS I GUESS
 /* EMP grenade/spell effect
-		if (istype(A, /obj/machinery/clonepod))
+		if(istype(A, /obj/machinery/clonepod))
 			A:malfunction()
 */

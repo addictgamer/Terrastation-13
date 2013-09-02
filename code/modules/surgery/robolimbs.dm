@@ -6,15 +6,15 @@
 /datum/surgery_step/limb/
 	can_infect = 1
 	can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-		if (!hasorgans(target))
+		if(!hasorgans(target))
 			return 0
 		var/datum/organ/external/affected = target.get_organ(target_zone)
-		if (!affected)
+		if(!affected)
 			return 0
-		if (!(affected.status & ORGAN_DESTROYED))
+		if(!(affected.status & ORGAN_DESTROYED))
 			return 0
-		if (affected.parent)
-			if (affected.parent.status & ORGAN_DESTROYED)
+		if(affected.parent)
+			if(affected.parent.status & ORGAN_DESTROYED)
 				return 0
 		return 1
 
@@ -43,7 +43,7 @@
 
 	fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/datum/organ/external/affected = target.get_organ(target_zone)
-		if (affected.parent)
+		if(affected.parent)
 			affected = affected.parent
 			user.visible_message("\red [user]'s hand slips, cutting [target]'s [affected.display_name] open!", \
 			"\red Your hand slips,  cutting [target]'s [affected.display_name] open!")
@@ -77,7 +77,7 @@
 
 	fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/datum/organ/external/affected = target.get_organ(target_zone)
-		if (affected.parent)
+		if(affected.parent)
 			affected = affected.parent
 			user.visible_message("\red [user]'s hand slips, tearing flesh on [target]'s [affected.display_name]!", \
 			"\red Your hand slips, tearing flesh on [target]'s [affected.display_name]!")
@@ -116,7 +116,7 @@
 
 	fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/datum/organ/external/affected = target.get_organ(target_zone)
-		if (affected.parent)
+		if(affected.parent)
 			affected = affected.parent
 			user.visible_message("\red [user]'s hand slips, searing [target]'s [affected.display_name]!", \
 			"\red Your hand slips, searing [target]'s [affected.display_name]!")
@@ -132,8 +132,8 @@
 
 	can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/obj/item/robot_parts/p = tool
-		if (p.part)
-			if (!(target_zone in p.part))
+		if(p.part)
+			if(!(target_zone in p.part))
 				return 0
 		var/datum/organ/external/affected = target.get_organ(target_zone)
 		return ..() && affected.status & ORGAN_ATTACHABLE
@@ -149,7 +149,7 @@
 		user.visible_message("\blue [user] has attached [tool] where [target]'s [affected.display_name] used to be.",	\
 		"\blue You have attached [tool] where [target]'s [affected.display_name] used to be.")
 		affected.robotize()
-		if (L.sabotaged)
+		if(L.sabotaged)
 			affected.sabotaged = 1
 		else
 			affected.sabotaged = 0

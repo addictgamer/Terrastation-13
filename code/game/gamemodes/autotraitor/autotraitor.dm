@@ -15,19 +15,19 @@
 
 /datum/game_mode/traitor/autotraitor/pre_setup()
 
-	if (config.protect_roles_from_antagonist)
+	if(config.protect_roles_from_antagonist)
 		restricted_jobs += protected_jobs
 
 	possible_traitors = get_players_for_role(BE_TRAITOR)
 
 	for(var/datum/mind/player in possible_traitors)
 		for(var/job in restricted_jobs)
-			if (player.assigned_role == job)
+			if(player.assigned_role == job)
 				possible_traitors -= player
 
 
 	for(var/mob/new_player/P in world)
-		if (P.client && P.ready)
+		if(P.client && P.ready)
 			num_players++
 
 	//var/r = rand(5)
@@ -38,10 +38,10 @@
 	traitor_prob = (num_players - (max_traitors - 1) * 10) * 10
 
 	// Stop setup if no possible traitors
-	if (!possible_traitors.len)
+	if(!possible_traitors.len)
 		return 0
 
-	if (config.traitor_scaling)
+	if(config.traitor_scaling)
 		num_traitors = max_traitors - 1 + prob(traitor_prob)
 		log_game("Number of traitors: [num_traitors]")
 		message_admins("Players counted: [num_players]  Number of traitors chosen: [num_traitors]")
@@ -55,13 +55,13 @@
 		possible_traitors.Remove(traitor)
 
 	for(var/datum/mind/traitor in traitors)
-		if (!traitor || !istype(traitor))
+		if(!traitor || !istype(traitor))
 			traitors.Remove(traitor)
 			continue
-		if (istype(traitor))
+		if(istype(traitor))
 			traitor.special_role = "traitor"
 
-//	if (!traitors.len)
+//	if(!traitors.len)
 //		return 0
 	return 1
 
@@ -75,7 +75,7 @@
 
 /datum/game_mode/traitor/autotraitor/proc/traitorcheckloop()
 	spawn(9000)
-		if (emergency_shuttle.departed)
+		if(emergency_shuttle.departed)
 			return
 		//message_admins("Performing AutoTraitor Check")
 		var/playercount = 0
@@ -83,15 +83,15 @@
 		var/possible_traitors[0]
 		for(var/mob/living/player in mob_list)
 
-			if (player.client && player.stat != 2)
+			if(player.client && player.stat != 2)
 				playercount += 1
-			if (player.client && player.mind && player.mind.special_role && player.stat != 2)
+			if(player.client && player.mind && player.mind.special_role && player.stat != 2)
 				traitorcount += 1
-			if (player.client && player.mind && !player.mind.special_role && player.stat != 2 && (player.client && player.client.prefs.be_special & BE_TRAITOR) && !jobban_isbanned(player, "Syndicate"))
+			if(player.client && player.mind && !player.mind.special_role && player.stat != 2 && (player.client && player.client.prefs.be_special & BE_TRAITOR) && !jobban_isbanned(player, "Syndicate"))
 				possible_traitors += player
 		for(var/datum/mind/player in possible_traitors)
 			for(var/job in restricted_jobs)
-				if (player.assigned_role == job)
+				if(player.assigned_role == job)
 					possible_traitors -= player
 
 		//message_admins("Live Players: [playercount]")
@@ -106,17 +106,17 @@
 		var/traitor_prob = 0
 		max_traitors = round(playercount / 10) + 1
 		traitor_prob = (playercount - (max_traitors - 1) * 10) * 5
-		if (traitorcount < max_traitors - 1)
+		if(traitorcount < max_traitors - 1)
 			traitor_prob += 50
 
 
-		if (traitorcount < max_traitors)
+		if(traitorcount < max_traitors)
 			//message_admins("Number of Traitors is below maximum.  Rolling for new Traitor.")
 			//message_admins("The probability of a new traitor is [traitor_prob]%")
 
-			if (prob(traitor_prob))
+			if(prob(traitor_prob))
 				message_admins("Making a new Traitor.")
-				if (!possible_traitors.len)
+				if(!possible_traitors.len)
 					message_admins("No potential traitors.  Cancelling new traitor.")
 					traitorcheckloop()
 					return
@@ -145,19 +145,19 @@
 
 /datum/game_mode/traitor/autotraitor/latespawn(mob/living/carbon/human/character)
 	..()
-	if (emergency_shuttle.departed)
+	if(emergency_shuttle.departed)
 		return
 	//message_admins("Late Join Check")
-	if ((character.client && character.client.prefs.be_special & BE_TRAITOR) && !jobban_isbanned(character, "Syndicate"))
+	if((character.client && character.client.prefs.be_special & BE_TRAITOR) && !jobban_isbanned(character, "Syndicate"))
 		//message_admins("Late Joiner has Be Syndicate")
 		//message_admins("Checking number of players")
 		var/playercount = 0
 		var/traitorcount = 0
 		for(var/mob/living/player in mob_list)
 
-			if (player.client && player.stat != 2)
+			if(player.client && player.stat != 2)
 				playercount += 1
-			if (player.client && player.mind && player.mind.special_role && player.stat != 2)
+			if(player.client && player.mind && player.mind.special_role && player.stat != 2)
 				traitorcount += 1
 		//message_admins("Live Players: [playercount]")
 		//message_admins("Live Traitors: [traitorcount]")
@@ -168,15 +168,15 @@
 		var/traitor_prob = 0
 		max_traitors = round(playercount / 10) + 1
 		traitor_prob = (playercount - (max_traitors - 1) * 10) * 5
-		if (traitorcount < max_traitors - 1)
+		if(traitorcount < max_traitors - 1)
 			traitor_prob += 50
 
 		//target_traitors = max(1, min(round((playercount + r) / 10, 1), traitors_possible))
 		//message_admins("Target Traitor Count is: [target_traitors]")
-		if (traitorcount < max_traitors)
+		if(traitorcount < max_traitors)
 			//message_admins("Number of Traitors is below maximum.  Rolling for New Arrival Traitor.")
 			//message_admins("The probability of a new traitor is [traitor_prob]%")
-			if (prob(traitor_prob))
+			if(prob(traitor_prob))
 				message_admins("New traitor roll passed.  Making a new Traitor.")
 				forge_traitor_objectives(character.mind)
 				equip_traitor(character)

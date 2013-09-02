@@ -144,11 +144,11 @@
 	color = "ana_badge"
 
 /obj/item/fluff/ana_issek_2/attack_self(mob/user as mob)
-	if (isliving(user))
+	if(isliving(user))
 		user.visible_message("\red [user] flashes their golden security badge.\nIt reads: Ana Issek, NT Security.","\red You display the faded bage.\nIt reads: Ana Issek, NT Security.")
 
 /obj/item/fluff/ana_issek_2/attack(mob/living/carbon/human/M, mob/living/user)
-	if (isliving(user))
+	if(isliving(user))
 		user.visible_message("\red [user] invades [M]'s personal space, thrusting [src] into their face insistently.","\red You invade [M]'s personal space, thrusting [src] into their face insistently. You are the law.")
 
 /obj/item/weapon/soap/fluff/azare_siraj_1 //mister fox: Azare Siraj
@@ -247,7 +247,7 @@
 	item_state = "purplecomb"
 
 	attack_self(mob/user)
-		if (user.r_hand == src || user.l_hand == src)
+		if(user.r_hand == src || user.l_hand == src)
 			for(var/mob/O in viewers(user, null))
 				O.show_message(text("\red [] uses [] to comb their hair with incredible style and sophistication. What a guy.", user, src), 1)
 		return
@@ -377,33 +377,33 @@
 	user << "\blue You click \the [src] but get no reaction. Must be dead."
 
 /obj/item/weapon/reagent_containers/hypospray/fluff/asher_spock_1/attack(mob/M as mob, mob/user as mob)
-	if (user.ckey != "nerezza") //Because this can end up in the wrong hands, let's make it useless for them!
+	if(user.ckey != "nerezza") //Because this can end up in the wrong hands, let's make it useless for them!
 		user << "\blue You click \the [src] but get no reaction. Must be dead."
 		return
-	if (!reagents.total_volume)
+	if(!reagents.total_volume)
 		user << "\red \The [src] is empty."
 		return
-	if (!( istype(M, /mob) ))
+	if(!( istype(M, /mob) ))
 		return
-	if (reagents.total_volume)
-		if (M == user && user.ckey == "nerezza") //Make sure this is being used by the right person, for the right reason (self injection)
+	if(reagents.total_volume)
+		if(M == user && user.ckey == "nerezza") //Make sure this is being used by the right person, for the right reason (self injection)
 			visible_message("\blue [user] presses their \
 				penlight against their skin, quickly clicking the button once.", \
 				"\blue You press the disguised autoinjector against your skin and click the button. There's a sharp pain at the injection site that rapidly fades.", \
 				"You hear a rustle as someone moves nearby, then a sharp click.")
-		if (M != user && user.ckey == "nerezza") //Woah now, you better be careful partner
+		if(M != user && user.ckey == "nerezza") //Woah now, you better be careful partner
 			user << "\blue You don't want to contaminate the autoinjector."
 			return
 		src.reagents.reaction(M, INGEST)
-		if (M.reagents)
+		if(M.reagents)
 			var/trans = reagents.trans_to(M, amount_per_transfer_from_this)
 			user << "\blue [trans] units injected. [reagents.total_volume] units remaining in \the [src]."
 	return
 
 /obj/item/weapon/reagent_containers/hypospray/fluff/asher_spock_1/examine(mob/user as mob)
 	..()
-	if (user.ckey != "nerezza") return //Only the owner knows how to examine the contents.
-	if (reagents && reagents.reagent_list.len)
+	if(user.ckey != "nerezza") return //Only the owner knows how to examine the contents.
+	if(reagents && reagents.reagent_list.len)
 		for(var/datum/reagent/R in reagents.reagent_list)
 			usr << "\blue You examine the penlight closely and see that it has [R.volume] units of [R.name] stored."
 	else
@@ -722,10 +722,10 @@
 	set category = "Object"
 	set src in usr
 
-	if (!usr.canmove || usr.stat || usr.restrained())
+	if(!usr.canmove || usr.stat || usr.restrained())
 		return 0
 
-	if (src.icon_state == "jane_sid_suit_down")
+	if(src.icon_state == "jane_sid_suit_down")
 		src.color = "jane_sid_suit"
 		usr << "You zip up the [src]."
 	else
@@ -798,14 +798,14 @@
 	var/obj/item/held //Item inside locket.
 
 /obj/item/clothing/tie/fluff/konaa_hirano/attack_self(mob/user as mob)
-	if (held)
+	if(held)
 		user << "You open [src] and [held] falls out."
 		held.loc = get_turf(user)
 		src.held = null
 
 /obj/item/clothing/tie/fluff/konaa_hirano/attackby(var/obj/item/O as obj, mob/user as mob)
-	if (istype(O,/obj/item/weapon/paper))
-		if (held)
+	if(istype(O,/obj/item/weapon/paper))
+		if(held)
 			usr << "[src] already has something inside it."
 		else
 			usr << "You slip [O] into [src]."
@@ -909,13 +909,13 @@
 /obj/item/weapon/gun/projectile/detective/fluff/callum_leamas/update_icon()
 
 	..()
-	if (loaded.len)
+	if(loaded.len)
 		icon_state = "leamas-loaded"
 	else
 		icon_state = "leamas-empty"
 
 /obj/item/weapon/gun/projectile/attackby(var/obj/item/A as obj, mob/user as mob)
 
-	if (istype(A, /obj/item/ammo_magazine))
+	if(istype(A, /obj/item/ammo_magazine))
 		flick("leamas-reloading",src)
 	..()

@@ -22,13 +22,13 @@
 
 
 /obj/item/weapon/dnainjector/proc/inject(mob/M as mob, mob/user as mob)
-	if (istype(M,/mob/living))
+	if(istype(M,/mob/living))
 		M.radiation += rand(5,20)
 
-	if (!(NOCLONE in M.mutations)) // prevents drained people from having their DNA changed
-		if (dnatype == "ui")
-			if (!block) //isolated block?
-				if (ue) //unique enzymes? yes
+	if(!(NOCLONE in M.mutations)) // prevents drained people from having their DNA changed
+		if(dnatype == "ui")
+			if(!block) //isolated block?
+				if(ue) //unique enzymes? yes
 					M.dna.uni_identity = dna
 					updateappearance(M, M.dna.uni_identity)
 					M.real_name = ue
@@ -42,8 +42,8 @@
 				M.dna.uni_identity = setblock(M.dna.uni_identity,block,dna,3)
 				updateappearance(M, M.dna.uni_identity)
 				uses--
-		if (dnatype == "se")
-			if (!block) //isolated block?
+		if(dnatype == "se")
+			if(!block) //isolated block?
 				M.dna.struc_enzymes = dna
 				domutcheck(M, null)
 				uses--
@@ -51,19 +51,19 @@
 				M.dna.struc_enzymes = setblock(M.dna.struc_enzymes,block,dna,3)
 				domutcheck(M, null,1)
 				uses--
-			if (prob(5))
+			if(prob(5))
 				trigger_side_effect(M)
 
 	spawn(0)//this prevents the collapse of space-time continuum
-		if (user)
+		if(user)
 			user.drop_from_inventory(src)
 		del(src)
 	return uses
 
 /obj/item/weapon/dnainjector/attack(mob/M as mob, mob/user as mob)
-	if (!istype(M, /mob))
+	if(!istype(M, /mob))
 		return
-	if (!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+	if(!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
 		user << "\red You don't have the dexterity to do this!"
 		return
 	M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been injected with [name] by [user.name] ([user.ckey])</font>")
@@ -71,9 +71,9 @@
 
 	log_attack("<font color='red'>[user.name] ([user.ckey]) used the [name] to inject [M.name] ([M.ckey])</font>")
 
-	if (user)
-		if (istype(M, /mob/living/carbon/human))
-			if (!inuse)
+	if(user)
+		if(istype(M, /mob/living/carbon/human))
+			if(!inuse)
 				var/obj/effect/equip_e/human/O = new /obj/effect/equip_e/human(  )
 				O.source = user
 				O.target = M
@@ -85,8 +85,8 @@
 				spawn(50) // Not the best fix. There should be an failure proc, for /effect/equip_e/, which is called when the first initital checks fail
 					inuse = 0
 				M.requests += O
-				if (dnatype == "se")
-					if (isblockon(getblock(dna, 14,3),14) && istype(M, /mob/living/carbon/human))
+				if(dnatype == "se")
+					if(isblockon(getblock(dna, 14,3),14) && istype(M, /mob/living/carbon/human))
 						message_admins("[key_name_admin(user)] injected [key_name_admin(M)] with the [name] \red(MONKEY)")
 						log_attack("[key_name(user)] injected [key_name(M)] with the [name] (MONKEY)")
 					else
@@ -100,16 +100,16 @@
 					O.process()
 					return
 		else
-			if (!inuse)
+			if(!inuse)
 
 				for(var/mob/O in viewers(M, null))
 					O.show_message(text("\red [] has been injected with [] by [].", M, src, user), 1)
 					//Foreach goto(192)
-				if (!(istype(M, /mob/living/carbon/human) || istype(M, /mob/living/carbon/monkey)))
+				if(!(istype(M, /mob/living/carbon/human) || istype(M, /mob/living/carbon/monkey)))
 					user << "\red Apparently it didn't work."
 					return
-				if (dnatype == "se")
-					if (isblockon(getblock(dna, 14,3),14) && istype(M, /mob/living/carbon/human))
+				if(dnatype == "se")
+					if(isblockon(getblock(dna, 14,3),14) && istype(M, /mob/living/carbon/human))
 						message_admins("[key_name_admin(user)] injected [key_name_admin(M)] with the [name] \red(MONKEY)")
 						log_game("[key_name(user)] injected [key_name(M)] with the [name] (MONKEY)")
 					else
@@ -127,8 +127,8 @@
 				I don't have the time to figure out how this code works so this will do for now.
 				I did rearrange things a bit.
 				*/
-				if (user)//If the user still exists. Their mob may not.
-					if (M)//Runtime fix: If the mob doesn't exist, mob.name doesnt work. - Nodrak
+				if(user)//If the user still exists. Their mob may not.
+					if(M)//Runtime fix: If the mob doesn't exist, mob.name doesnt work. - Nodrak
 						user.show_message(text("\red You inject [M.name]"))
 					else
 						user.show_message(text("\red You finish the injection."))

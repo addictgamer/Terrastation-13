@@ -16,16 +16,16 @@
 
 	ex_act(severity)
 		switch(severity)
-			if (1.0)
+			if(1.0)
 				del(src)
 				return
-			if (2.0)
-				if (prob(50))
+			if(2.0)
+				if(prob(50))
 					del(src)
 					return
 
 	blob_act()
-		if (prob(25))
+		if(prob(25))
 			del(src)
 
 	meteorhit()
@@ -33,10 +33,10 @@
 		return
 
 	attackby(var/obj/B as obj, var/mob/user as mob)
-		if (istype(B, /obj/item/weapon/reagent_containers/glass) || istype(B,/obj/item/weapon/reagent_containers/syringe))
+		if(istype(B, /obj/item/weapon/reagent_containers/glass) || istype(B,/obj/item/weapon/reagent_containers/syringe))
 
-			if (src.beaker)
-				if (istype(beaker,/obj/item/weapon/reagent_containers/syringe))
+			if(src.beaker)
+				if(istype(beaker,/obj/item/weapon/reagent_containers/syringe))
 					user << "A syringe is already loaded into the machine."
 				else
 					user << "A beaker is already loaded into the machine."
@@ -45,50 +45,50 @@
 			src.beaker =  B
 			user.drop_item()
 			B.loc = src
-			if (istype(B,/obj/item/weapon/reagent_containers/syringe))
+			if(istype(B,/obj/item/weapon/reagent_containers/syringe))
 				user << "You add the syringe to the machine!"
 				src.updateUsrDialog()
 			else
 				user << "You add the beaker to the machine!"
 				src.updateUsrDialog()
 		else
-			if (istype(B,/obj/item/weapon/virusdish))
-				if (src.dish)
+			if(istype(B,/obj/item/weapon/virusdish))
+				if(src.dish)
 					user << "A dish is already loaded into the machine."
 					return
 
 				src.dish =  B
 				user.drop_item()
 				B.loc = src
-				if (istype(B,/obj/item/weapon/virusdish))
+				if(istype(B,/obj/item/weapon/virusdish))
 					user << "You add the dish to the machine!"
 					src.updateUsrDialog()
 
 	Topic(href, href_list)
-		if (stat & BROKEN) return
-		if (usr.stat || usr.restrained()) return
-		if (!in_range(src, usr)) return
+		if(stat & BROKEN) return
+		if(usr.stat || usr.restrained()) return
+		if(!in_range(src, usr)) return
 
 		usr.machine = src
-		if (!dish) return
+		if(!dish) return
 
-		if (href_list["power"])
+		if(href_list["power"])
 			on = !on
-			if (on)
+			if(on)
 				icon_state = "incubator_on"
 			else
 				icon_state = "incubator"
-		if (href_list["ejectchem"])
-			if (beaker)
+		if(href_list["ejectchem"])
+			if(beaker)
 				beaker.loc = src.loc
 				beaker = null
-		if (href_list["ejectdish"])
-			if (dish)
+		if(href_list["ejectdish"])
+			if(dish)
 				dish.loc = src.loc
 				dish = null
-		if (href_list["rad"])
+		if(href_list["rad"])
 			radiation += 10
-		if (href_list["flush"])
+		if(href_list["flush"])
 			radiation = 0
 			toxins = 0
 			foodsupply = 0
@@ -98,15 +98,15 @@
 		src.updateUsrDialog()
 
 	attack_hand(mob/user as mob)
-		if (stat & BROKEN)
+		if(stat & BROKEN)
 			return
 		user.machine = src
 		var/dat = ""
-		if (!dish)
+		if(!dish)
 			dat = "Please insert dish into the incubator.<BR>"
 			dat += "<A href='?src=\ref[src];close=1'>Close</A>"
 		var/string = "Off"
-		if (on)
+		if(on)
 			string = "On"
 		dat += "Power status : <A href='?src=\ref[src];power=1'>[string]</a>"
 		dat += "<BR>"
@@ -116,10 +116,10 @@
 		dat += "<BR>"
 		dat += "Toxins : [toxins]"
 		dat += "<BR><BR>"
-		if (beaker)
+		if(beaker)
 			dat += "Eject chemicals : <A href='?src=\ref[src];ejectchem=1'> Eject</a>"
 			dat += "<BR>"
-		if (dish)
+		if(dish)
 			dat += "Eject Virus dish : <A href='?src=\ref[src];ejectdish=1'> Eject</a>"
 			dat += "<BR>"
 		dat += "<BR><BR>"
@@ -135,40 +135,40 @@
 
 	process()
 
-		if (dish && on && dish.virus2)
+		if(dish && on && dish.virus2)
 			use_power(50,EQUIP)
-			if (!powered(EQUIP))
+			if(!powered(EQUIP))
 				on = 0
 				icon_state = "incubator"
-			if (foodsupply)
+			if(foodsupply)
 				foodsupply -= 1
 				dish.growth += 1
-				if (dish.growth == 100)
+				if(dish.growth == 100)
 					state("The [src.name] pings")
-			if (radiation)
-				if (radiation > 50 & prob(5))
+			if(radiation)
+				if(radiation > 50 & prob(5))
 					dish.virus2.majormutate()
-					if (dish.info)
+					if(dish.info)
 						dish.info = "OUTDATED : [dish.info]"
 						dish.analysed = 0
 					state("The [src.name] beeps")
 
-				else if (prob(5))
+				else if(prob(5))
 					dish.virus2.minormutate()
 				 radiation -= 1
-			if (toxins && prob(5))
+			if(toxins && prob(5))
 				dish.virus2.infectionchance -= 1
-			if (toxins > 50)
+			if(toxins > 50)
 				dish.virus2 = null
-		else if (!dish)
+		else if(!dish)
 			on = 0
 			icon_state = "incubator"
 
 
-		if (beaker)
-			if (!beaker.reagents.remove_reagent("virusfood",5))
+		if(beaker)
+			if(!beaker.reagents.remove_reagent("virusfood",5))
 				foodsupply += 20
-			if (!beaker.reagents.remove_reagent("toxins",1))
+			if(!beaker.reagents.remove_reagent("toxins",1))
 				toxins += 1
 
 	proc/state(var/msg)

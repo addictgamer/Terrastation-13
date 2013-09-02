@@ -7,12 +7,12 @@
 
 /obj/effect/proc_holder/spell/targeted/area_teleport/perform(list/targets, recharge = 1)
 	var/thearea = before_cast(targets)
-	if (!thearea || !cast_check(1))
+	if(!thearea || !cast_check(1))
 		revert_cast()
 		return
 	invocation(thearea)
 	spawn(0)
-		if (charge_type == "recharge" && recharge)
+		if(charge_type == "recharge" && recharge)
 			start_recharge()
 	cast(targets,thearea)
 	after_cast(targets)
@@ -20,7 +20,7 @@
 /obj/effect/proc_holder/spell/targeted/area_teleport/before_cast(list/targets)
 	var/A = null
 
-	if (!randomise_selection)
+	if(!randomise_selection)
 		A = input("Area to teleport to", "Teleport", A) in teleportlocs
 	else
 		A = pick(teleportlocs)
@@ -33,20 +33,20 @@
 	for(var/mob/living/target in targets)
 		var/list/L = list()
 		for(var/turf/T in get_area_turfs(thearea.type))
-			if (!T.density)
+			if(!T.density)
 				var/clear = 1
 				for(var/obj/O in T)
-					if (O.density)
+					if(O.density)
 						clear = 0
 						break
-				if (clear)
+				if(clear)
 					L+=T
 
-		if (!L.len)
+		if(!L.len)
 			usr <<"The spell matrix was unable to locate a suitable teleport destination for an unknown reason. Sorry."
 			return
 
-		if (target && target.buckled)
+		if(target && target.buckled)
 			target.buckled.unbuckle()
 
 		var/list/tempL = L
@@ -55,28 +55,28 @@
 		while(tempL.len)
 			attempt = pick(tempL)
 			success = target.Move(attempt)
-			if (!success)
+			if(!success)
 				tempL.Remove(attempt)
 			else
 				break
 
-		if (!success)
+		if(!success)
 			target.loc = pick(L)
 
 	return
 
 /obj/effect/proc_holder/spell/targeted/area_teleport/invocation(area/chosenarea = null)
-	if (!invocation_area || !chosenarea)
+	if(!invocation_area || !chosenarea)
 		..()
 	else
 		switch(invocation_type)
-			if ("shout")
+			if("shout")
 				usr.say("[invocation] [uppertext(chosenarea.name)]")
-				if (usr.gender==MALE)
+				if(usr.gender==MALE)
 					playsound(usr.loc, pick('sound/misc/null.ogg','sound/misc/null.ogg'), 100, 1)
 				else
 					playsound(usr.loc, pick('sound/misc/null.ogg','sound/misc/null.ogg'), 100, 1)
-			if ("whisper")
+			if("whisper")
 				usr.whisper("[invocation] [uppertext(chosenarea.name)]")
 
 	return

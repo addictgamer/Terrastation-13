@@ -81,7 +81,7 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 		return
 
 	Topic(href, href_list)
-		if (href_list["buy_item"])
+		if(href_list["buy_item"])
 /*			if(href_list["buy_item"] == "random")
 				var/list/randomItems = list()
 
@@ -209,7 +209,7 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 
 	proc
 		unlock()
-			if ((isnull(src.hostpda)) || (src.active))
+			if((isnull(src.hostpda)) || (src.active))
 				return
 
 			src.orignote = src.hostpda.note
@@ -220,27 +220,27 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 			print_to_host(menu_message)
 
 			for (var/mob/M in viewers(1, src.hostpda.loc))
-				if (M.client && M.machine == src.hostpda)
+				if(M.client && M.machine == src.hostpda)
 					src.hostpda.attack_self(M)
 
 			return
 
 		print_to_host(var/text)
-			if (isnull(hostpda))
+			if(isnull(hostpda))
 				return
 			hostpda.note = text
 
 			for (var/mob/M in viewers(1, hostpda.loc))
-				if (M.client && M.machine == hostpda)
+				if(M.client && M.machine == hostpda)
 					hostpda.attack_self(M)
 			return
 
 		shutdown_uplink()
-			if (isnull(src.hostpda))
+			if(isnull(src.hostpda))
 				return
 			active = 0
 			hostpda.note = orignote
-			if (hostpda.mode==1)
+			if(hostpda.mode==1)
 				hostpda.mode = 0
 				hostpda.updateDialog()
 			return
@@ -251,10 +251,10 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 
 
 	Topic(href, href_list)
-		if ((isnull(src.hostpda)) || (!src.active))
+		if((isnull(src.hostpda)) || (!src.active))
 			return
 
-		if (usr.stat || usr.restrained() || !in_range(src.hostpda, usr))
+		if(usr.stat || usr.restrained() || !in_range(src.hostpda, usr))
 			return
 
 		if(..() == 1) // We can afford the item
@@ -329,15 +329,15 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 	attack_self(mob/user as mob)
 		var/dat
 
-		if (src.selfdestruct)
+		if(src.selfdestruct)
 			dat = "Self Destructing..."
 		else
-			if (src.temp)
+			if(src.temp)
 				dat = "[src.temp]<BR><BR><A href='byond://?src=\ref[src];clear_selfdestruct=1'>Clear</A>"
 			else
 				src.generate_menu()
 				dat = src.menu_message
-				if (src.origradio) // Checking because sometimes the radio uplink may be spawned by itself, not as a normal unlockable radio
+				if(src.origradio) // Checking because sometimes the radio uplink may be spawned by itself, not as a normal unlockable radio
 					dat += "<A href='byond://?src=\ref[src];lock=1'>Lock</A><BR>"
 					dat += "<HR>"
 				dat += "<A href='byond://?src=\ref[src];selfdestruct=1'>Self-Destruct</A>"
@@ -347,13 +347,13 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 		return
 
 	Topic(href, href_list)
-		if (usr.stat || usr.restrained())
+		if(usr.stat || usr.restrained())
 			return
 
-		if (!( istype(usr, /mob/living/carbon/human)))
+		if(!( istype(usr, /mob/living/carbon/human)))
 			return 1
 
-		if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf)) || istype(src.loc,/obj/item/weapon/implant/uplink)))
+		if((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf)) || istype(src.loc,/obj/item/weapon/implant/uplink)))
 			usr.machine = src
 
 			if(href_list["buy_item"])
@@ -381,7 +381,7 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 				src.attack_self(usr)
 				return
 
-			else if (href_list["lock"] && src.origradio)
+			else if(href_list["lock"] && src.origradio)
 				// presto chango, a regular radio again! (reset the freq too...)
 				usr.machine = null
 				usr << browse(null, "window=radio")
@@ -391,9 +391,9 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 				T.loc = usr
 				// R.layer = initial(R.layer)
 				R.layer = 0
-				if (usr.client)
+				if(usr.client)
 					usr.client.screen -= R
-				if (usr.r_hand == R)
+				if(usr.r_hand == R)
 					usr.u_equip(R)
 					usr.r_hand = T
 
@@ -406,24 +406,24 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 				T.attack_self(usr)
 				return
 
-			else if (href_list["selfdestruct"])
+			else if(href_list["selfdestruct"])
 				src.temp = "<A href='byond://?src=\ref[src];selfdestruct2=1'>Self-Destruct</A>"
 
-			else if (href_list["selfdestruct2"])
+			else if(href_list["selfdestruct2"])
 				src.selfdestruct = 1
 				spawn (100)
 					explode()
 					return
 
-			else if (href_list["clear_selfdestruct"])
+			else if(href_list["clear_selfdestruct"])
 				src.temp = null
 
 			attack_self(usr)
-//			if (istype(src.loc, /mob))
+//			if(istype(src.loc, /mob))
 //				attack_self(src.loc)
 //			else
 //				for(var/mob/M in viewers(1, src))
-//					if (M.client)
+//					if(M.client)
 //						src.attack_self(M)
 		return
 
@@ -438,11 +438,11 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 		return
 
 	proc/shutdown_uplink()
-		if (!src.origradio)
+		if(!src.origradio)
 			return
 		var/list/nearby = viewers(1, src)
 		for(var/mob/M in nearby)
-			if (M.client && M.machine == src)
+			if(M.client && M.machine == src)
 				M << browse(null, "window=radio")
 				M.machine = null
 
@@ -453,10 +453,10 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 		T.loc = L
 		// R.layer = initial(R.layer)
 		R.layer = 0
-		if (istype(L))
-			if (L.client)
+		if(istype(L))
+			if(L.client)
 				L.client.screen -= R
-			if (L.r_hand == R)
+			if(L.r_hand == R)
 				L.u_equip(R)
 				L.r_hand = T
 			else

@@ -17,23 +17,23 @@
 /datum/disease/dnaspread/stage_act()
 	..()
 	switch(stage)
-		if (2 || 3) //Pretend to be a cold and give time to spread.
-			if (prob(8))
+		if(2 || 3) //Pretend to be a cold and give time to spread.
+			if(prob(8))
 				affected_mob.emote("sneeze")
-			if (prob(8))
+			if(prob(8))
 				affected_mob.emote("cough")
-			if (prob(1))
+			if(prob(1))
 				affected_mob << "\red Your muscles ache."
-				if (prob(20))
+				if(prob(20))
 					affected_mob.take_organ_damage(1)
-			if (prob(1))
+			if(prob(1))
 				affected_mob << "\red Your stomach hurts."
-				if (prob(20))
+				if(prob(20))
 					affected_mob.adjustToxLoss(2)
 					affected_mob.updatehealth()
-		if (4)
-			if (!src.transformed)
-				if ((!strain_data["name"]) || (!strain_data["UI"]) || (!strain_data["SE"]))
+		if(4)
+			if(!src.transformed)
+				if((!strain_data["name"]) || (!strain_data["UI"]) || (!strain_data["SE"]))
 					del(affected_mob.virus)
 					return
 
@@ -55,7 +55,7 @@
 	return
 
 /datum/disease/dnaspread/Del()
-	if ((original_dna["name"]) && (original_dna["UI"]) && (original_dna["SE"]))
+	if((original_dna["name"]) && (original_dna["UI"]) && (original_dna["SE"]))
 		affected_mob.dna.uni_identity = original_dna["UI"]
 		updateappearance(affected_mob, affected_mob.dna.uni_identity)
 		affected_mob.dna.struc_enzymes = original_dna["SE"]

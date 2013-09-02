@@ -18,12 +18,12 @@
 		user.cell.charge -= 30
 
 		M.Weaken(5)
-		if (M.stuttering < 5)
+		if(M.stuttering < 5)
 			M.stuttering = 5
 		M.Stun(5)
 
 		for(var/mob/O in viewers(M, null))
-			if (O.client)
+			if(O.client)
 				O.show_message("\red <B>[user] has prodded [M] with an electrically-charged arm!</B>", 1, "\red You hear someone fall", 2)
 
 /obj/item/borg/overdrive

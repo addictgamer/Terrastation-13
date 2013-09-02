@@ -20,13 +20,13 @@ mob/living/carbon/proc/dream()
 			dreams -= dream_image
 			src << "\blue <i>... [dream_image] ...</i>"
 			sleep(rand(40,70))
-			if (paralysis <= 0)
+			if(paralysis <= 0)
 				dreaming = 0
 				return 0
 		dreaming = 0
 		return 1
 
 mob/living/carbon/proc/handle_dreams()
-	if (prob(5) && !dreaming) dream()
+	if(prob(5) && !dreaming) dream()
 
 mob/living/carbon/var/dreaming = 0

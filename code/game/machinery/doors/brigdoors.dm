@@ -32,18 +32,18 @@
 
 	spawn(20)
 		for(var/obj/machinery/door/window/brigdoor/M in world)
-			if (M.id == src.id)
+			if(M.id == src.id)
 				targets += M
 
 		for(var/obj/machinery/flasher/F in world)
-			if (F.id == src.id)
+			if(F.id == src.id)
 				targets += F
 
 		for(var/obj/structure/closet/secure_closet/brig/C in world)
-			if (C.id == src.id)
+			if(C.id == src.id)
 				targets += C
 
-		if (targets.len==0)
+		if(targets.len==0)
 			stat |= BROKEN
 		update_icon()
 		return
@@ -55,17 +55,17 @@
 // update the door_timer window and the icon
 /obj/machinery/door_timer/process()
 
-	if (stat & (NOPOWER|BROKEN))	return
-	if (src.timing)
+	if(stat & (NOPOWER|BROKEN))	return
+	if(src.timing)
 
 		// poorly done midnight rollover
 		// (no seriously there's gotta be a better way to do this)
 		var/timeleft = timeleft()
-		if (timeleft > 1e5)
+		if(timeleft > 1e5)
 			src.releasetime = 0
 
 
-		if (world.timeofday > src.releasetime)
+		if(world.timeofday > src.releasetime)
 			src.timer_end() // open doors, reset timer, clear status screen
 			src.timing = 0
 
@@ -90,19 +90,19 @@
 
 // Closes and locks doors, power check
 /obj/machinery/door_timer/proc/timer_start()
-	if (stat & (NOPOWER|BROKEN))	return 0
+	if(stat & (NOPOWER|BROKEN))	return 0
 
 	// Set releasetime
 	releasetime = world.timeofday + timetoset
 
 	for(var/obj/machinery/door/window/brigdoor/door in targets)
-		if (door.density)	continue
+		if(door.density)	continue
 		spawn(0)
 			door.close()
 
 	for(var/obj/structure/closet/secure_closet/brig/C in targets)
-		if (C.broken)	continue
-		if (C.opened && !C.close())	continue
+		if(C.broken)	continue
+		if(C.opened && !C.close())	continue
 		C.locked = 1
 		C.icon_state = C.icon_locked
 	return 1
@@ -110,19 +110,19 @@
 
 // Opens and unlocks doors, power check
 /obj/machinery/door_timer/proc/timer_end()
-	if (stat & (NOPOWER|BROKEN))	return 0
+	if(stat & (NOPOWER|BROKEN))	return 0
 
 	// Reset releasetime
 	releasetime = 0
 
 	for(var/obj/machinery/door/window/brigdoor/door in targets)
-		if (!door.density)	continue
+		if(!door.density)	continue
 		spawn(0)
 			door.open()
 
 	for(var/obj/structure/closet/secure_closet/brig/C in targets)
-		if (C.broken)	continue
-		if (C.opened)	continue
+		if(C.broken)	continue
+		if(C.opened)	continue
 		C.locked = 0
 		C.icon_state = C.icon_closed
 
@@ -132,14 +132,14 @@
 // Check for releasetime timeleft
 /obj/machinery/door_timer/proc/timeleft()
 	. = (releasetime - world.timeofday)/10
-	if (. < 0)
+	if(. < 0)
 		. = 0
 
 // Set timetoset
 /obj/machinery/door_timer/proc/timeset(var/seconds)
 	timetoset = seconds * 10
 
-	if (timetoset <= 0)
+	if(timetoset <= 0)
 		timetoset = 0
 
 	return
@@ -154,7 +154,7 @@
 // Allows altering timer and the timing boolean.
 // Flasher activation limited to 150 seconds
 /obj/machinery/door_timer/attack_hand(var/mob/user as mob)
-	if (..())
+	if(..())
 		return
 
 	// Used for the 'time left' display
@@ -174,7 +174,7 @@
 	dat += " <b>Door [src.id] controls</b><br/>"
 
 	// Start/Stop timer
-	if (src.timing)
+	if(src.timing)
 		dat += "<a href='?src=\ref[src];timing=0'>Stop Timer and open door</a><br/>"
 	else
 		dat += "<a href='?src=\ref[src];timing=1'>Activate Timer and close door</a><br/>"
@@ -184,7 +184,7 @@
 	dat += "<br/>"
 
 	// Set Timer display (uses timetoset)
-	if (src.timing)
+	if(src.timing)
 		dat += "Set Timer: [(setminute ? text("[setminute]:") : null)][setsecond]  <a href='?src=\ref[src];change=1'>Set</a><br/>"
 	else
 		dat += "Set Timer: [(setminute ? text("[setminute]:") : null)][setsecond]<br/>"
@@ -194,7 +194,7 @@
 
 	// Mounted flash controls
 	for(var/obj/machinery/flasher/F in targets)
-		if (F.last_flash && (F.last_flash + 150) > world.time)
+		if(F.last_flash && (F.last_flash + 150) > world.time)
 			dat += "<br/><A href='?src=\ref[src];fc=1'>Flash Charging</A>"
 		else
 			dat += "<br/><A href='?src=\ref[src];fc=1'>Activate Flash</A>"
@@ -215,23 +215,23 @@
 // 	"change" resets the timer to the timetoset amount while the timer is counting down
 // Also updates dialog window and timer icon
 /obj/machinery/door_timer/Topic(href, href_list)
-	if (..())
+	if(..())
 		return
-	if (!src.allowed(usr))
+	if(!src.allowed(usr))
 		return
 
 	usr.set_machine(src)
 
-	if (href_list["timing"])
+	if(href_list["timing"])
 		src.timing = text2num(href_list["timing"])
 
-		if (src.timing)
+		if(src.timing)
 			src.timer_start()
 		else
 			src.timer_end()
 
 	else
-		if (href_list["tp"])  //adjust timer, close door if not already closed
+		if(href_list["tp"])  //adjust timer, close door if not already closed
 			var/tp = text2num(href_list["tp"])
 			var/addtime = (timetoset / 10)
 			addtime += tp
@@ -239,18 +239,18 @@
 
 			timeset(addtime)
 
-		if (href_list["fc"])
+		if(href_list["fc"])
 			for(var/obj/machinery/flasher/F in targets)
 				F.flash()
 
-		if (href_list["change"])
+		if(href_list["change"])
 			src.timer_start()
 
 	src.add_fingerprint(usr)
 	src.updateUsrDialog()
 	src.update_icon()
 
-	/* if (src.timing)
+	/* if(src.timing)
 		src.timer_start()
 
 	else
@@ -264,13 +264,13 @@
 // if BROKEN, display blue screen of death icon AI uses
 // if timing=true, run update display function
 /obj/machinery/door_timer/update_icon()
-	if (stat & (NOPOWER))
+	if(stat & (NOPOWER))
 		icon_state = "frame"
 		return
-	if (stat & (BROKEN))
+	if(stat & (BROKEN))
 		set_picture("ai_bsod")
 		return
-	if (src.timing)
+	if(src.timing)
 		var/disp1 = uppertext(id)
 		var/timeleft = timeleft()
 		var/disp2 = "[add_zero(num2text((timeleft / 60) % 60),2)]~[add_zero(num2text(timeleft % 60), 2)]"
@@ -291,7 +291,7 @@
 //Checks to see if there's 1 line or 2, adds text-icons-numbers/letters over display
 // Stolen from status_display
 /obj/machinery/door_timer/proc/update_display(var/line1, var/line2)
-	if (line2 == null)		// single line display
+	if(line2 == null)		// single line display
 		overlays.Cut()
 		overlays += texticon(line1, 23, -13)
 	else					// dual line display
@@ -311,7 +311,7 @@
 
 	for(var/d = 1 to len)
 		var/char = copytext(tn, len-d+1, len-d+2)
-		if (char == " ")
+		if(char == " ")
 			continue
 		var/image/ID = image('icons/obj/status_display.dmi', icon_state=char)
 		ID.pixel_x = -(d-1)*5 + px

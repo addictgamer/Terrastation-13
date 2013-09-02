@@ -24,10 +24,10 @@
 
 /mob/living/simple_animal/cat/Life()
 	//MICE!
-	if ((src.loc) && isturf(src.loc))
-		if (!stat && !resting && !buckled)
+	if((src.loc) && isturf(src.loc))
+		if(!stat && !resting && !buckled)
 			for(var/mob/living/simple_animal/mouse/M in view(1,src))
-				if (!M.stat)
+				if(!M.stat)
 					M.splat()
 					emote(pick("\red splats the [M]!","\red toys with the [M]","worries the [M]"))
 					movement_target = null
@@ -37,26 +37,26 @@
 	..()
 
 	for(var/mob/living/simple_animal/mouse/snack in oview(src, 3))
-		if (prob(15))
+		if(prob(15))
 			emote(pick("hisses and spits!","mrowls fiercely!","eyes [snack] hungrily."))
 		break
 
-	if (!stat && !resting && !buckled)
+	if(!stat && !resting && !buckled)
 		turns_since_scan++
-		if (turns_since_scan > 5)
+		if(turns_since_scan > 5)
 			walk_to(src,0)
 			turns_since_scan = 0
-			if ((movement_target) && !(isturf(movement_target.loc) || ishuman(movement_target.loc) ))
+			if((movement_target) && !(isturf(movement_target.loc) || ishuman(movement_target.loc) ))
 				movement_target = null
 				stop_automated_movement = 0
-			if ( !movement_target || !(movement_target.loc in oview(src, 3)) )
+			if( !movement_target || !(movement_target.loc in oview(src, 3)) )
 				movement_target = null
 				stop_automated_movement = 0
 				for(var/mob/living/simple_animal/mouse/snack in oview(src,3))
-					if (isturf(snack.loc) && !snack.stat)
+					if(isturf(snack.loc) && !snack.stat)
 						movement_target = snack
 						break
-			if (movement_target)
+			if(movement_target)
 				stop_automated_movement = 1
 				walk_to(src,movement_target,0,3)
 

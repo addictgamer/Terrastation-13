@@ -139,7 +139,7 @@
 
 /obj/proc/check_access(obj/item/weapon/card/id/I)
 
-	if (istype(I, /obj/item/device/pda))
+	if(istype(I, /obj/item/device/pda))
 		var/obj/item/device/pda/pda = I
 		I = pda.id
 
@@ -505,7 +505,7 @@
 	return list("VIP Guest","Custodian","Thunderdome Overseer","Intel Officer","Medical Officer","Death Commando","Research Officer","BlackOps Commander","Supreme Commander")
 
 /obj/proc/GetJobName()
-	if (!istype(src, /obj/item/device/pda) && !istype(src,/obj/item/weapon/card/id))
+	if(!istype(src, /obj/item/device/pda) && !istype(src,/obj/item/weapon/card/id))
 		return
 
 	var/jobName

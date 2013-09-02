@@ -58,23 +58,23 @@ PriorityQueue
 				j >>= 1
 
 		Dequeue()
-			if (!L.len) return 0
+			if(!L.len) return 0
 			. = L[1]
 			Remove(1)
 
 		Remove(i)
-			if (i > L.len) return 0
+			if(i > L.len) return 0
 			L.Swap(i,L.len)
 			L.Cut(L.len)
-			if (i < L.len)
+			if(i < L.len)
 				_Fix(i)
 		_Fix(i)
 			var/child = i + i
 			var/item = L[i]
 			while(child <= L.len)
-				if (child + 1 <= L.len && call(cmp)(L[child],L[child + 1]) > 0)
+				if(child + 1 <= L.len && call(cmp)(L[child],L[child + 1]) > 0)
 					child++
-				if (call(cmp)(item,L[child]) > 0)
+				if(call(cmp)(item,L[child]) > 0)
 					L[i] = L[child]
 					i = child
 				else
@@ -90,7 +90,7 @@ PriorityQueue
 			return ret
 		RemoveItem(i)
 			var/ind = L.Find(i)
-			if (ind)
+			if(ind)
 				Remove(ind)
 PathNode
 	var/datum/source
@@ -121,7 +121,7 @@ proc
 		var/closed[] = new()
 		var/path[]
 		start = get_turf(start)
-		if (!start) return 0
+		if(!start) return 0
 
 		open.Enqueue(new /PathNode(start,null,0,call(start,dist)(end)))
 
@@ -131,10 +131,10 @@ proc
 			closed.Add(cur.source)
 
 			var/closeenough
-			if (mintargetdist)
+			if(mintargetdist)
 				closeenough = call(cur.source,dist)(end) <= mintargetdist
 
-			if (cur.source == end || closeenough)
+			if(cur.source == end || closeenough)
 				path = new()
 				path.Add(cur.source)
 				while(cur.prevNode)
@@ -143,29 +143,29 @@ proc
 				break
 
 			var/L[] = call(cur.source,adjacent)(id)
-			if (minnodedist && maxnodedepth)
-				if (call(cur.source,minnodedist)(end) + cur.nt >= maxnodedepth)
+			if(minnodedist && maxnodedepth)
+				if(call(cur.source,minnodedist)(end) + cur.nt >= maxnodedepth)
 					continue
-			else if (maxnodedepth)
-				if (cur.nt >= maxnodedepth)
+			else if(maxnodedepth)
+				if(cur.nt >= maxnodedepth)
 					continue
 
 			for(var/datum/d in L)
-				if (d == exclude)
+				if(d == exclude)
 					continue
 				var/ng = cur.g + call(cur.source,dist)(d)
-				if (d.bestF)
-					if (ng + call(d,dist)(end) < d.bestF)
+				if(d.bestF)
+					if(ng + call(d,dist)(end) < d.bestF)
 						for(var/i = 1; i <= open.L.len; i++)
 							var/PathNode/n = open.L[i]
-							if (n.source == d)
+							if(n.source == d)
 								open.Remove(i)
 								break
 					else
 						continue
 
 				open.Enqueue(new /PathNode(d,cur,ng,call(d,dist)(end),cur.nt+1))
-				if (maxnodes && open.L.len > maxnodes)
+				if(maxnodes && open.L.len > maxnodes)
 					open.L.Cut(open.L.len)
 		}
 
@@ -178,7 +178,7 @@ proc
 			temp.bestF = 0
 			closed.Cut(closed.len)
 
-		if (path)
+		if(path)
 			for(var/i = 1; i <= path.len/2; i++)
 				path.Swap(i,path.len-i+1)
 

@@ -55,19 +55,19 @@
 /obj/item/weapon/extinguisher/afterattack(atom/target, mob/user , flag)
 	//TODO; Add support for reagents in water.
 
-	if ( istype(target, /obj/structure/reagent_dispensers/watertank) && get_dist(src,target) <= 1)
+	if( istype(target, /obj/structure/reagent_dispensers/watertank) && get_dist(src,target) <= 1)
 		var/obj/o = target
 		o.reagents.trans_to(src, 50)
 		user << "\blue \The [src] is now refilled"
 		playsound(src.loc, 'sound/effects/refill.ogg', 50, 1, -6)
 		return
 
-	if (!safety)
-		if (src.reagents.total_volume < 1)
+	if(!safety)
+		if(src.reagents.total_volume < 1)
 			usr << "\red \The [src] is empty."
 			return
 
-		if (world.time < src.last_use + 20)
+		if(world.time < src.last_use + 20)
 			return
 
 		src.last_use = world.time
@@ -76,7 +76,7 @@
 
 		var/direction = get_dir(src,target)
 
-		if (usr.buckled && isobj(usr.buckled) && !usr.buckled.anchored )
+		if(usr.buckled && isobj(usr.buckled) && !usr.buckled.anchored )
 			spawn(0)
 				var/obj/B = usr.buckled
 				var/movementdirection = turn(direction,180)
@@ -109,22 +109,22 @@
 				var/obj/effect/effect/water/W = new /obj/effect/effect/water( get_turf(src) )
 				var/turf/my_target = pick(the_targets)
 				var/datum/reagents/R = new/datum/reagents(5)
-				if (!W) return
+				if(!W) return
 				W.reagents = R
 				R.my_atom = W
-				if (!W || !src) return
+				if(!W || !src) return
 				src.reagents.trans_to(W,1)
 				for(var/b=0, b<5, b++)
 					step_towards(W,my_target)
-					if (!W) return
+					if(!W) return
 					W.reagents.reaction(get_turf(W))
 					for(var/atom/atm in get_turf(W))
-						if (!W) return
+						if(!W) return
 						W.reagents.reaction(atm)
-					if (W.loc == my_target) break
+					if(W.loc == my_target) break
 					sleep(2)
 
-		if ((istype(usr.loc, /turf/space)) || (usr.lastarea.has_gravity == 0))
+		if((istype(usr.loc, /turf/space)) || (usr.lastarea.has_gravity == 0))
 			user.inertia_dir = get_dir(target, user)
 			step(user, user.inertia_dir)
 	else

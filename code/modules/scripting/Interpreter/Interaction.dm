@@ -46,7 +46,7 @@
 	- <Block.SetVar()>
 */
 		SetVar(name, value)
-			if (!istext(name))
+			if(!istext(name))
 				//CRASH("Invalid variable name")
 				return
 			AssignVariable(name, value)
@@ -62,10 +62,10 @@
 	params 	- Only required if object is not null, a list of the names of parameters the proc takes.
 */
 		SetProc(name, path, object=null, list/params=null)
-			if (!istext(name))
+			if(!istext(name))
 				//CRASH("Invalid function name")
 				return
-			if (!object)
+			if(!object)
 				globalScope.functions[name] = path
 			else
 				var/node/statement/FunctionDefinition/S = new()
@@ -104,7 +104,7 @@
 	- <VarExists()>
 */
 		GetVar(name)
-			if (!VarExists(name))
+			if(!VarExists(name))
 				//CRASH("No variable named '[name]'.")
 				return
 			var/x = globalScope.variables[name]
@@ -119,11 +119,11 @@
 	- <ProcExists()>
 */
 		CallProc(name, params[]=null)
-			if (!ProcExists(name))
+			if(!ProcExists(name))
 				//CRASH("No function named '[name]'.")
 				return
 			var/node/statement/FunctionDefinition/func = globalScope.functions[name]
-			if (istype(func))
+			if(istype(func))
 				var/node/statement/FunctionCall/stmt = new
 				stmt.func_name  = func.func_name
 				stmt.parameters = params

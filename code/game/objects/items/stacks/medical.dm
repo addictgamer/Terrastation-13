@@ -11,30 +11,30 @@
 	var/heal_burn = 0
 
 /obj/item/stack/medical/attack(mob/living/carbon/M as mob, mob/user as mob)
-	if (!istype(M))
+	if(!istype(M))
 		user << "\red \The [src] cannot be applied to [M]!"
 		return 1
 
-	if ( ! (istype(user, /mob/living/carbon/human) || \
+	if( ! (istype(user, /mob/living/carbon/human) || \
 			istype(user, /mob/living/silicon) || \
 			istype(user, /mob/living/carbon/monkey) && ticker && ticker.mode.name == "monkey") )
 		user << "\red You don't have the dexterity to do this!"
 		return 1
 
-	if (istype(M, /mob/living/carbon/human))
+	if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		var/datum/organ/external/affecting = H.get_organ(user.zone_sel.selecting)
 
-		if (affecting.display_name == "head")
-			if (H.head && istype(H.head,/obj/item/clothing/head/helmet/space))
+		if(affecting.display_name == "head")
+			if(H.head && istype(H.head,/obj/item/clothing/head/helmet/space))
 				user << "\red You can't apply [src] through [H.head]!"
 				return 1
 		else
-			if (H.wear_suit && istype(H.wear_suit,/obj/item/clothing/suit/space))
+			if(H.wear_suit && istype(H.wear_suit,/obj/item/clothing/suit/space))
 				user << "\red You can't apply [src] through [H.wear_suit]!"
 				return 1
 
-		if (affecting.status & ORGAN_ROBOT)
+		if(affecting.status & ORGAN_ROBOT)
 			user << "\red This isn't useful at all on a robotic limb.."
 			return 1
 
@@ -58,25 +58,25 @@
 	origin_tech = "biotech=1"
 
 /obj/item/stack/medical/bruise_pack/attack(mob/living/carbon/M as mob, mob/user as mob)
-	if (..())
+	if(..())
 		return 1
 
-	if (istype(M, /mob/living/carbon/human))
+	if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		var/datum/organ/external/affecting = H.get_organ(user.zone_sel.selecting)
 
-		if (!affecting.bandage())
+		if(!affecting.bandage())
 			user << "\red The wounds on [M]'s [affecting.display_name] have already been bandaged."
 			return 1
 		else
 			for (var/datum/wound/W in affecting.wounds)
-				if (W.internal)
+				if(W.internal)
 					continue
-				if (W.current_stage <= W.max_bleeding_stage)
+				if(W.current_stage <= W.max_bleeding_stage)
 					user.visible_message( 	"\blue [user] bandages [W.desc] on [M]'s [affecting.display_name].", \
 									"\blue You bandage [W.desc] on [M]'s [affecting.display_name]." )
 					//H.add_side_effect("Itch")
-				else if (istype(W,/datum/wound/bruise))
+				else if(istype(W,/datum/wound/bruise))
 					user.visible_message( 	"\blue [user] places bruise patch over [W.desc] on [M]'s [affecting.display_name].", \
 									"\blue You place bruise patch over [W.desc] on [M]'s [affecting.display_name]." )
 				else
@@ -94,14 +94,14 @@
 	origin_tech = "biotech=1"
 
 /obj/item/stack/medical/ointment/attack(mob/living/carbon/M as mob, mob/user as mob)
-	if (..())
+	if(..())
 		return 1
 
-	if (istype(M, /mob/living/carbon/human))
+	if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		var/datum/organ/external/affecting = H.get_organ(user.zone_sel.selecting)
 
-		if (!affecting.salve())
+		if(!affecting.salve())
 			user << "\red The wounds on [M]'s [affecting.display_name] have already been salved."
 			return 1
 		else
@@ -134,25 +134,25 @@
 	origin_tech = "biotech=1"
 
 /obj/item/stack/medical/advanced/bruise_pack/attack(mob/living/carbon/M as mob, mob/user as mob)
-	if (..())
+	if(..())
 		return 1
 
-	if (istype(M, /mob/living/carbon/human))
+	if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		var/datum/organ/external/affecting = H.get_organ(user.zone_sel.selecting)
 
-		if (!affecting.bandage())
+		if(!affecting.bandage())
 			user << "\red The wounds on [M]'s [affecting.display_name] have already been treated."
 			return 1
 		else
 			for (var/datum/wound/W in affecting.wounds)
-				if (W.internal)
+				if(W.internal)
 					continue
-				if (W.current_stage <= W.max_bleeding_stage)
+				if(W.current_stage <= W.max_bleeding_stage)
 					user.visible_message( 	"\blue [user] cleans [W.desc] on [M]'s [affecting.display_name] and seals edges with bioglue.", \
 									"\blue You clean and seal [W.desc] on [M]'s [affecting.display_name]." )
 					//H.add_side_effect("Itch")
-				else if (istype(W,/datum/wound/bruise))
+				else if(istype(W,/datum/wound/bruise))
 					user.visible_message( 	"\blue [user] places medicine patch over [W.desc] on [M]'s [affecting.display_name].", \
 									"\blue You place medicine patch over [W.desc] on [M]'s [affecting.display_name]." )
 				else
@@ -171,14 +171,14 @@
 
 
 /obj/item/stack/medical/advanced/ointment/attack(mob/living/carbon/M as mob, mob/user as mob)
-	if (..())
+	if(..())
 		return 1
 
-	if (istype(M, /mob/living/carbon/human))
+	if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		var/datum/organ/external/affecting = H.get_organ(user.zone_sel.selecting)
 
-		if (!affecting.salve())
+		if(!affecting.salve())
 			user << "\red The wounds on [M]'s [affecting.display_name] have already been salved."
 			return 1
 		else
@@ -199,31 +199,31 @@
 
 
 /obj/item/stack/medical/splint/attack(mob/living/carbon/M as mob, mob/user as mob)
-	if (..())
+	if(..())
 		return 1
 
-	if (istype(M, /mob/living/carbon/human))
+	if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		var/datum/organ/external/affecting = H.get_organ(user.zone_sel.selecting)
 		var/limb = affecting.display_name
-		if (!((affecting.name == "l_arm") || (affecting.name == "r_arm") || (affecting.name == "l_leg") || (affecting.name == "r_leg")))
+		if(!((affecting.name == "l_arm") || (affecting.name == "r_arm") || (affecting.name == "l_leg") || (affecting.name == "r_leg")))
 			user << "\red You can't apply a splint there!"
 			return
-		if (affecting.status & ORGAN_SPLINTED)
+		if(affecting.status & ORGAN_SPLINTED)
 			user << "\red [M]'s [limb] is already splinted!"
 			return
-		if (M != user)
+		if(M != user)
 			user.visible_message("\red [user] starts to apply \the [src] to [M]'s [limb].", "\red You start to apply \the [src] to [M]'s [limb].", "\red You hear something being wrapped.")
 		else
-			if ((!user.hand && affecting.name == "r_arm") || (user.hand && affecting.name == "l_arm"))
+			if((!user.hand && affecting.name == "r_arm") || (user.hand && affecting.name == "l_arm"))
 				user << "\red You can't apply a splint to the arm you're using!"
 				return
 			user.visible_message("\red [user] starts to apply \the [src] to their [limb].", "\red You start to apply \the [src] to your [limb].", "\red You hear something being wrapped.")
-		if (do_after(user, 50))
-			if (M != user)
+		if(do_after(user, 50))
+			if(M != user)
 				user.visible_message("\red [user] finishes applying \the [src] to [M]'s [limb].", "\red You finish applying \the [src] to [M]'s [limb].", "\red You hear something being wrapped.")
 			else
-				if (prob(25))
+				if(prob(25))
 					user.visible_message("\red [user] successfully applies \the [src] to their [limb].", "\red You successfully apply \the [src] to your [limb].", "\red You hear something being wrapped.")
 				else
 					user.visible_message("\red [user] fumbles \the [src].", "\red You fumble \the [src].", "\red You hear something being wrapped.")

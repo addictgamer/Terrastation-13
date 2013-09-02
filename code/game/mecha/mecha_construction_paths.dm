@@ -3,32 +3,32 @@
 ////////////////////////////////
 
 /datum/construction/mecha/custom_action(step, atom/used_atom, mob/user)
-	if (istype(used_atom, /obj/item/weapon/weldingtool))
+	if(istype(used_atom, /obj/item/weapon/weldingtool))
 		var/obj/item/weapon/weldingtool/W = used_atom
-		if (W.remove_fuel(0, user))
+		if(W.remove_fuel(0, user))
 			playsound(holder, 'sound/items/Welder2.ogg', 50, 1)
 		else
 			return 0
-	else if (istype(used_atom, /obj/item/weapon/wrench))
+	else if(istype(used_atom, /obj/item/weapon/wrench))
 		playsound(holder, 'sound/items/Ratchet.ogg', 50, 1)
 
-	else if (istype(used_atom, /obj/item/weapon/screwdriver))
+	else if(istype(used_atom, /obj/item/weapon/screwdriver))
 		playsound(holder, 'sound/items/Screwdriver.ogg', 50, 1)
 
-	else if (istype(used_atom, /obj/item/weapon/wirecutters))
+	else if(istype(used_atom, /obj/item/weapon/wirecutters))
 		playsound(holder, 'sound/items/Wirecutter.ogg', 50, 1)
 
-	else if (istype(used_atom, /obj/item/weapon/cable_coil))
+	else if(istype(used_atom, /obj/item/weapon/cable_coil))
 		var/obj/item/weapon/cable_coil/C = used_atom
-		if (C.amount<4)
+		if(C.amount<4)
 			user << ("There's not enough cable to finish the task.")
 			return 0
 		else
 			C.use(4)
 			playsound(holder, 'sound/items/Deconstruct.ogg', 50, 1)
-	else if (istype(used_atom, /obj/item/stack))
+	else if(istype(used_atom, /obj/item/stack))
 		var/obj/item/stack/S = used_atom
-		if (S.amount < 5)
+		if(S.amount < 5)
 			user << ("There's not enough material in this stack.")
 			return 0
 		else
@@ -36,32 +36,32 @@
 	return 1
 
 /datum/construction/reversible/mecha/custom_action(index as num, diff as num, atom/used_atom, mob/user as mob)
-	if (istype(used_atom, /obj/item/weapon/weldingtool))
+	if(istype(used_atom, /obj/item/weapon/weldingtool))
 		var/obj/item/weapon/weldingtool/W = used_atom
-		if (W.remove_fuel(0, user))
+		if(W.remove_fuel(0, user))
 			playsound(holder, 'sound/items/Welder2.ogg', 50, 1)
 		else
 			return 0
-	else if (istype(used_atom, /obj/item/weapon/wrench))
+	else if(istype(used_atom, /obj/item/weapon/wrench))
 		playsound(holder, 'sound/items/Ratchet.ogg', 50, 1)
 
-	else if (istype(used_atom, /obj/item/weapon/screwdriver))
+	else if(istype(used_atom, /obj/item/weapon/screwdriver))
 		playsound(holder, 'sound/items/Screwdriver.ogg', 50, 1)
 
-	else if (istype(used_atom, /obj/item/weapon/wirecutters))
+	else if(istype(used_atom, /obj/item/weapon/wirecutters))
 		playsound(holder, 'sound/items/Wirecutter.ogg', 50, 1)
 
-	else if (istype(used_atom, /obj/item/weapon/cable_coil))
+	else if(istype(used_atom, /obj/item/weapon/cable_coil))
 		var/obj/item/weapon/cable_coil/C = used_atom
-		if (C.amount<4)
+		if(C.amount<4)
 			user << ("There's not enough cable to finish the task.")
 			return 0
 		else
 			C.use(4)
 			playsound(holder, 'sound/items/Deconstruct.ogg', 50, 1)
-	else if (istype(used_atom, /obj/item/stack))
+	else if(istype(used_atom, /obj/item/stack))
 		var/obj/item/stack/S = used_atom
-		if (S.amount < 5)
+		if(S.amount < 5)
 			user << ("There's not enough material in this stack.")
 			return 0
 		else
@@ -162,30 +162,30 @@
 		return check_step(used_atom,user)
 
 	custom_action(index, diff, atom/used_atom, mob/user)
-		if (!..())
+		if(!..())
 			return 0
 
 		//TODO: better messages.
 		switch(index)
-			if (14)
+			if(14)
 				user.visible_message("[user] connects [holder] hydraulic systems", "You connect [holder] hydraulic systems.")
 				holder.icon_state = "ripley1"
-			if (13)
-				if (diff==FORWARD)
+			if(13)
+				if(diff==FORWARD)
 					user.visible_message("[user] activates [holder] hydraulic systems.", "You activate [holder] hydraulic systems.")
 					holder.icon_state = "ripley2"
 				else
 					user.visible_message("[user] disconnects [holder] hydraulic systems", "You disconnect [holder] hydraulic systems.")
 					holder.icon_state = "ripley0"
-			if (12)
-				if (diff==FORWARD)
+			if(12)
+				if(diff==FORWARD)
 					user.visible_message("[user] adds the wiring to [holder].", "You add the wiring to [holder].")
 					holder.icon_state = "ripley3"
 				else
 					user.visible_message("[user] deactivates [holder] hydraulic systems.", "You deactivate [holder] hydraulic systems.")
 					holder.icon_state = "ripley1"
-			if (11)
-				if (diff==FORWARD)
+			if(11)
+				if(diff==FORWARD)
 					user.visible_message("[user] adjusts the wiring of [holder].", "You adjust the wiring of [holder].")
 					holder.icon_state = "ripley4"
 				else
@@ -193,47 +193,47 @@
 					var/obj/item/weapon/cable_coil/coil = new /obj/item/weapon/cable_coil(get_turf(holder))
 					coil.amount = 4
 					holder.icon_state = "ripley2"
-			if (10)
-				if (diff==FORWARD)
+			if(10)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs the central control module into [holder].", "You install the central computer mainboard into [holder].")
 					del used_atom
 					holder.icon_state = "ripley5"
 				else
 					user.visible_message("[user] disconnects the wiring of [holder].", "You disconnect the wiring of [holder].")
 					holder.icon_state = "ripley3"
-			if (9)
-				if (diff==FORWARD)
+			if(9)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures the mainboard.", "You secure the mainboard.")
 					holder.icon_state = "ripley6"
 				else
 					user.visible_message("[user] removes the central control module from [holder].", "You remove the central computer mainboard from [holder].")
 					new /obj/item/weapon/circuitboard/mecha/ripley/main(get_turf(holder))
 					holder.icon_state = "ripley4"
-			if (8)
-				if (diff==FORWARD)
+			if(8)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs the peripherals control module into [holder].", "You install the peripherals control module into [holder].")
 					del used_atom
 					holder.icon_state = "ripley7"
 				else
 					user.visible_message("[user] unfastens the mainboard.", "You unfasten the mainboard.")
 					holder.icon_state = "ripley5"
-			if (7)
-				if (diff==FORWARD)
+			if(7)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures the peripherals control module.", "You secure the peripherals control module.")
 					holder.icon_state = "ripley8"
 				else
 					user.visible_message("[user] removes the peripherals control module from [holder].", "You remove the peripherals control module from [holder].")
 					new /obj/item/weapon/circuitboard/mecha/ripley/peripherals(get_turf(holder))
 					holder.icon_state = "ripley6"
-			if (6)
-				if (diff==FORWARD)
+			if(6)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs internal armor layer to [holder].", "You install internal armor layer to [holder].")
 					holder.icon_state = "ripley9"
 				else
 					user.visible_message("[user] unfastens the peripherals control module.", "You unfasten the peripherals control module.")
 					holder.icon_state = "ripley7"
-			if (5)
-				if (diff==FORWARD)
+			if(5)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures internal armor layer.", "You secure internal armor layer.")
 					holder.icon_state = "ripley10"
 				else
@@ -241,22 +241,22 @@
 					var/obj/item/stack/sheet/metal/MS = new /obj/item/stack/sheet/metal(get_turf(holder))
 					MS.amount = 5
 					holder.icon_state = "ripley8"
-			if (4)
-				if (diff==FORWARD)
+			if(4)
+				if(diff==FORWARD)
 					user.visible_message("[user] welds internal armor layer to [holder].", "You weld the internal armor layer to [holder].")
 					holder.icon_state = "ripley11"
 				else
 					user.visible_message("[user] unfastens the internal armor layer.", "You unfasten the internal armor layer.")
 					holder.icon_state = "ripley9"
-			if (3)
-				if (diff==FORWARD)
+			if(3)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs external reinforced armor layer to [holder].", "You install external reinforced armor layer to [holder].")
 					holder.icon_state = "ripley12"
 				else
 					user.visible_message("[user] cuts internal armor layer from [holder].", "You cut the internal armor layer from [holder].")
 					holder.icon_state = "ripley10"
-			if (2)
-				if (diff==FORWARD)
+			if(2)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures external armor layer.", "You secure external reinforced armor layer.")
 					holder.icon_state = "ripley13"
 				else
@@ -264,8 +264,8 @@
 					var/obj/item/stack/sheet/plasteel/MS = new /obj/item/stack/sheet/plasteel(get_turf(holder))
 					MS.amount = 5
 					holder.icon_state = "ripley11"
-			if (1)
-				if (diff==FORWARD)
+			if(1)
+				if(diff==FORWARD)
 					user.visible_message("[user] welds external armor layer to [holder].", "You weld external armor layer to [holder].")
 				else
 					user.visible_message("[user] unfastens the external armor layer.", "You unfasten the external armor layer.")
@@ -396,30 +396,30 @@
 		return check_step(used_atom,user)
 
 	custom_action(index, diff, atom/used_atom, mob/user)
-		if (!..())
+		if(!..())
 			return 0
 
 		//TODO: better messages.
 		switch(index)
-			if (20)
+			if(20)
 				user.visible_message("[user] connects [holder] hydraulic systems", "You connect [holder] hydraulic systems.")
 				holder.icon_state = "gygax1"
-			if (19)
-				if (diff==FORWARD)
+			if(19)
+				if(diff==FORWARD)
 					user.visible_message("[user] activates [holder] hydraulic systems.", "You activate [holder] hydraulic systems.")
 					holder.icon_state = "gygax2"
 				else
 					user.visible_message("[user] disconnects [holder] hydraulic systems", "You disconnect [holder] hydraulic systems.")
 					holder.icon_state = "gygax0"
-			if (18)
-				if (diff==FORWARD)
+			if(18)
+				if(diff==FORWARD)
 					user.visible_message("[user] adds the wiring to [holder].", "You add the wiring to [holder].")
 					holder.icon_state = "gygax3"
 				else
 					user.visible_message("[user] deactivates [holder] hydraulic systems.", "You deactivate [holder] hydraulic systems.")
 					holder.icon_state = "gygax1"
-			if (17)
-				if (diff==FORWARD)
+			if(17)
+				if(diff==FORWARD)
 					user.visible_message("[user] adjusts the wiring of [holder].", "You adjust the wiring of [holder].")
 					holder.icon_state = "gygax4"
 				else
@@ -427,95 +427,95 @@
 					var/obj/item/weapon/cable_coil/coil = new /obj/item/weapon/cable_coil(get_turf(holder))
 					coil.amount = 4
 					holder.icon_state = "gygax2"
-			if (16)
-				if (diff==FORWARD)
+			if(16)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs the central control module into [holder].", "You install the central computer mainboard into [holder].")
 					del used_atom
 					holder.icon_state = "gygax5"
 				else
 					user.visible_message("[user] disconnects the wiring of [holder].", "You disconnect the wiring of [holder].")
 					holder.icon_state = "gygax3"
-			if (15)
-				if (diff==FORWARD)
+			if(15)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures the mainboard.", "You secure the mainboard.")
 					holder.icon_state = "gygax6"
 				else
 					user.visible_message("[user] removes the central control module from [holder].", "You remove the central computer mainboard from [holder].")
 					new /obj/item/weapon/circuitboard/mecha/gygax/main(get_turf(holder))
 					holder.icon_state = "gygax4"
-			if (14)
-				if (diff==FORWARD)
+			if(14)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs the peripherals control module into [holder].", "You install the peripherals control module into [holder].")
 					del used_atom
 					holder.icon_state = "gygax7"
 				else
 					user.visible_message("[user] unfastens the mainboard.", "You unfasten the mainboard.")
 					holder.icon_state = "gygax5"
-			if (13)
-				if (diff==FORWARD)
+			if(13)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures the peripherals control module.", "You secure the peripherals control module.")
 					holder.icon_state = "gygax8"
 				else
 					user.visible_message("[user] removes the peripherals control module from [holder].", "You remove the peripherals control module from [holder].")
 					new /obj/item/weapon/circuitboard/mecha/gygax/peripherals(get_turf(holder))
 					holder.icon_state = "gygax6"
-			if (12)
-				if (diff==FORWARD)
+			if(12)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs the weapon control module into [holder].", "You install the weapon control module into [holder].")
 					del used_atom
 					holder.icon_state = "gygax9"
 				else
 					user.visible_message("[user] unfastens the peripherals control module.", "You unfasten the peripherals control module.")
 					holder.icon_state = "gygax7"
-			if (11)
-				if (diff==FORWARD)
+			if(11)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures the weapon control module.", "You secure the weapon control module.")
 					holder.icon_state = "gygax10"
 				else
 					user.visible_message("[user] removes the weapon control module from [holder].", "You remove the weapon control module from [holder].")
 					new /obj/item/weapon/circuitboard/mecha/gygax/targeting(get_turf(holder))
 					holder.icon_state = "gygax8"
-			if (10)
-				if (diff==FORWARD)
+			if(10)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs advanced scanner module to [holder].", "You install advanced scanner module to [holder].")
 					del used_atom
 					holder.icon_state = "gygax11"
 				else
 					user.visible_message("[user] unfastens the weapon control module.", "You unfasten the weapon control module.")
 					holder.icon_state = "gygax9"
-			if (9)
-				if (diff==FORWARD)
+			if(9)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures the advanced scanner module.", "You secure the advanced scanner module.")
 					holder.icon_state = "gygax12"
 				else
 					user.visible_message("[user] removes the advanced scanner module from [holder].", "You remove the advanced scanner module from [holder].")
 					new /obj/item/weapon/stock_parts/scanning_module/adv(get_turf(holder))
 					holder.icon_state = "gygax10"
-			if (8)
-				if (diff==FORWARD)
+			if(8)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs advanced capacitor to [holder].", "You install advanced capacitor to [holder].")
 					del used_atom
 					holder.icon_state = "gygax13"
 				else
 					user.visible_message("[user] unfastens the advanced scanner module.", "You unfasten the advanced scanner module.")
 					holder.icon_state = "gygax11"
-			if (7)
-				if (diff==FORWARD)
+			if(7)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures the advanced capacitor.", "You secure the advanced capacitor.")
 					holder.icon_state = "gygax14"
 				else
 					user.visible_message("[user] removes the advanced capacitor from [holder].", "You remove the advanced capacitor from [holder].")
 					new /obj/item/weapon/stock_parts/capacitor/adv(get_turf(holder))
 					holder.icon_state = "gygax12"
-			if (6)
-				if (diff==FORWARD)
+			if(6)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs internal armor layer to [holder].", "You install internal armor layer to [holder].")
 					holder.icon_state = "gygax15"
 				else
 					user.visible_message("[user] unfastens the advanced capacitor.", "You unfasten the advanced capacitor.")
 					holder.icon_state = "gygax13"
-			if (5)
-				if (diff==FORWARD)
+			if(5)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures internal armor layer.", "You secure internal armor layer.")
 					holder.icon_state = "gygax16"
 				else
@@ -523,31 +523,31 @@
 					var/obj/item/stack/sheet/metal/MS = new /obj/item/stack/sheet/metal(get_turf(holder))
 					MS.amount = 5
 					holder.icon_state = "gygax14"
-			if (4)
-				if (diff==FORWARD)
+			if(4)
+				if(diff==FORWARD)
 					user.visible_message("[user] welds internal armor layer to [holder].", "You weld the internal armor layer to [holder].")
 					holder.icon_state = "gygax17"
 				else
 					user.visible_message("[user] unfastens the internal armor layer.", "You unfasten the internal armor layer.")
 					holder.icon_state = "gygax15"
-			if (3)
-				if (diff==FORWARD)
+			if(3)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs Gygax Armour Plates to [holder].", "You install Gygax Armour Plates to [holder].")
 					del used_atom
 					holder.icon_state = "gygax18"
 				else
 					user.visible_message("[user] cuts internal armor layer from [holder].", "You cut the internal armor layer from [holder].")
 					holder.icon_state = "gygax16"
-			if (2)
-				if (diff==FORWARD)
+			if(2)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures Gygax Armour Plates.", "You secure Gygax Armour Plates.")
 					holder.icon_state = "gygax19"
 				else
 					user.visible_message("[user] pries Gygax Armour Plates from [holder].", "You prie Gygax Armour Plates from [holder].")
 					new /obj/item/mecha_parts/part/gygax_armour(get_turf(holder))
 					holder.icon_state = "gygax17"
-			if (1)
-				if (diff==FORWARD)
+			if(1)
+				if(diff==FORWARD)
 					user.visible_message("[user] welds Gygax Armour Plates to [holder].", "You weld Gygax Armour Plates to [holder].")
 				else
 					user.visible_message("[user] unfastens Gygax Armour Plates.", "You unfasten Gygax Armour Plates.")
@@ -658,30 +658,30 @@
 		return check_step(used_atom,user)
 
 	custom_action(index, diff, atom/used_atom, mob/user)
-		if (!..())
+		if(!..())
 			return 0
 
 		//TODO: better messages.
 		switch(index)
-			if (15)
+			if(15)
 				user.visible_message("[user] connects [holder] hydraulic systems", "You connect [holder] hydraulic systems.")
 				holder.icon_state = "fireripley1"
-			if (14)
-				if (diff==FORWARD)
+			if(14)
+				if(diff==FORWARD)
 					user.visible_message("[user] activates [holder] hydraulic systems.", "You activate [holder] hydraulic systems.")
 					holder.icon_state = "fireripley2"
 				else
 					user.visible_message("[user] disconnects [holder] hydraulic systems", "You disconnect [holder] hydraulic systems.")
 					holder.icon_state = "fireripley0"
-			if (13)
-				if (diff==FORWARD)
+			if(13)
+				if(diff==FORWARD)
 					user.visible_message("[user] adds the wiring to [holder].", "You add the wiring to [holder].")
 					holder.icon_state = "fireripley3"
 				else
 					user.visible_message("[user] deactivates [holder] hydraulic systems.", "You deactivate [holder] hydraulic systems.")
 					holder.icon_state = "fireripley1"
-			if (12)
-				if (diff==FORWARD)
+			if(12)
+				if(diff==FORWARD)
 					user.visible_message("[user] adjusts the wiring of [holder].", "You adjust the wiring of [holder].")
 					holder.icon_state = "fireripley4"
 				else
@@ -689,48 +689,48 @@
 					var/obj/item/weapon/cable_coil/coil = new /obj/item/weapon/cable_coil(get_turf(holder))
 					coil.amount = 4
 					holder.icon_state = "fireripley2"
-			if (11)
-				if (diff==FORWARD)
+			if(11)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs the central control module into [holder].", "You install the central computer mainboard into [holder].")
 					del used_atom
 					holder.icon_state = "fireripley5"
 				else
 					user.visible_message("[user] disconnects the wiring of [holder].", "You disconnect the wiring of [holder].")
 					holder.icon_state = "fireripley3"
-			if (10)
-				if (diff==FORWARD)
+			if(10)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures the mainboard.", "You secure the mainboard.")
 					holder.icon_state = "fireripley6"
 				else
 					user.visible_message("[user] removes the central control module from [holder].", "You remove the central computer mainboard from [holder].")
 					new /obj/item/weapon/circuitboard/mecha/ripley/main(get_turf(holder))
 					holder.icon_state = "fireripley4"
-			if (9)
-				if (diff==FORWARD)
+			if(9)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs the peripherals control module into [holder].", "You install the peripherals control module into [holder].")
 					del used_atom
 					holder.icon_state = "fireripley7"
 				else
 					user.visible_message("[user] unfastens the mainboard.", "You unfasten the mainboard.")
 					holder.icon_state = "fireripley5"
-			if (8)
-				if (diff==FORWARD)
+			if(8)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures the peripherals control module.", "You secure the peripherals control module.")
 					holder.icon_state = "fireripley8"
 				else
 					user.visible_message("[user] removes the peripherals control module from [holder].", "You remove the peripherals control module from [holder].")
 					new /obj/item/weapon/circuitboard/mecha/ripley/peripherals(get_turf(holder))
 					holder.icon_state = "fireripley6"
-			if (7)
-				if (diff==FORWARD)
+			if(7)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs internal armor layer to [holder].", "You install internal armor layer to [holder].")
 					holder.icon_state = "fireripley9"
 				else
 					user.visible_message("[user] unfastens the peripherals control module.", "You unfasten the peripherals control module.")
 					holder.icon_state = "fireripley7"
 
-			if (6)
-				if (diff==FORWARD)
+			if(6)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures internal armor layer.", "You secure internal armor layer.")
 					holder.icon_state = "fireripley10"
 				else
@@ -738,22 +738,22 @@
 					var/obj/item/stack/sheet/plasteel/MS = new /obj/item/stack/sheet/plasteel(get_turf(holder))
 					MS.amount = 5
 					holder.icon_state = "fireripley8"
-			if (5)
-				if (diff==FORWARD)
+			if(5)
+				if(diff==FORWARD)
 					user.visible_message("[user] welds internal armor layer to [holder].", "You weld the internal armor layer to [holder].")
 					holder.icon_state = "fireripley11"
 				else
 					user.visible_message("[user] unfastens the internal armor layer.", "You unfasten the internal armor layer.")
 					holder.icon_state = "fireripley9"
-			if (4)
-				if (diff==FORWARD)
+			if(4)
+				if(diff==FORWARD)
 					user.visible_message("[user] starts to install the external armor layer to [holder].", "You start to install the external armor layer to [holder].")
 					holder.icon_state = "fireripley12"
 				else
 					user.visible_message("[user] cuts internal armor layer from [holder].", "You cut the internal armor layer from [holder].")
 					holder.icon_state = "fireripley10"
-			if (3)
-				if (diff==FORWARD)
+			if(3)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs external reinforced armor layer to [holder].", "You install external reinforced armor layer to [holder].")
 					holder.icon_state = "fireripley13"
 				else
@@ -761,8 +761,8 @@
 					var/obj/item/stack/sheet/plasteel/MS = new /obj/item/stack/sheet/plasteel(get_turf(holder))
 					MS.amount = 5
 					holder.icon_state = "fireripley11"
-			if (2)
-				if (diff==FORWARD)
+			if(2)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures external armor layer.", "You secure external reinforced armor layer.")
 					holder.icon_state = "fireripley14"
 				else
@@ -770,8 +770,8 @@
 					var/obj/item/stack/sheet/plasteel/MS = new /obj/item/stack/sheet/plasteel(get_turf(holder))
 					MS.amount = 5
 					holder.icon_state = "fireripley12"
-			if (1)
-				if (diff==FORWARD)
+			if(1)
+				if(diff==FORWARD)
 					user.visible_message("[user] welds external armor layer to [holder].", "You weld external armor layer to [holder].")
 				else
 					user.visible_message("[user] unfastens the external armor layer.", "You unfasten the external armor layer.")
@@ -831,28 +831,28 @@
 		return check_step(used_atom,user)
 
 	custom_action(step, atom/used_atom, mob/user)
-		if (!..())
+		if(!..())
 			return 0
 
-		if (istype(used_atom, /obj/item/weapon/bikehorn))
+		if(istype(used_atom, /obj/item/weapon/bikehorn))
 			playsound(holder, 'sound/items/bikehorn.ogg', 50, 1)
 			user.visible_message("HONK!")
 
 		//TODO: better messages.
 		switch(step)
-			if (10)
+			if(10)
 				user.visible_message("[user] installs the central control module into [holder].", "You install the central control module into [holder].")
 				del used_atom
-			if (8)
+			if(8)
 				user.visible_message("[user] installs the peripherals control module into [holder].", "You install the peripherals control module into [holder].")
 				del used_atom
-			if (6)
+			if(6)
 				user.visible_message("[user] installs the weapon control module into [holder].", "You install the weapon control module into [holder].")
 				del used_atom
-			if (4)
+			if(4)
 				user.visible_message("[user] puts clown wig and mask on [holder].", "You put clown wig and mask on [holder].")
 				del used_atom
-			if (2)
+			if(2)
 				user.visible_message("[user] puts clown boots on [holder].", "You put clown boots on [holder].")
 				del used_atom
 		return 1
@@ -979,30 +979,30 @@
 		return check_step(used_atom,user)
 
 	custom_action(index, diff, atom/used_atom, mob/user)
-		if (!..())
+		if(!..())
 			return 0
 
 		//TODO: better messages.
 		switch(index)
-			if (20)
+			if(20)
 				user.visible_message("[user] connects [holder] hydraulic systems", "You connect [holder] hydraulic systems.")
 				holder.icon_state = "durand1"
-			if (19)
-				if (diff==FORWARD)
+			if(19)
+				if(diff==FORWARD)
 					user.visible_message("[user] activates [holder] hydraulic systems.", "You activate [holder] hydraulic systems.")
 					holder.icon_state = "durand2"
 				else
 					user.visible_message("[user] disconnects [holder] hydraulic systems", "You disconnect [holder] hydraulic systems.")
 					holder.icon_state = "durand0"
-			if (18)
-				if (diff==FORWARD)
+			if(18)
+				if(diff==FORWARD)
 					user.visible_message("[user] adds the wiring to [holder].", "You add the wiring to [holder].")
 					holder.icon_state = "durand3"
 				else
 					user.visible_message("[user] deactivates [holder] hydraulic systems.", "You deactivate [holder] hydraulic systems.")
 					holder.icon_state = "durand1"
-			if (17)
-				if (diff==FORWARD)
+			if(17)
+				if(diff==FORWARD)
 					user.visible_message("[user] adjusts the wiring of [holder].", "You adjust the wiring of [holder].")
 					holder.icon_state = "durand4"
 				else
@@ -1010,95 +1010,95 @@
 					var/obj/item/weapon/cable_coil/coil = new /obj/item/weapon/cable_coil(get_turf(holder))
 					coil.amount = 4
 					holder.icon_state = "durand2"
-			if (16)
-				if (diff==FORWARD)
+			if(16)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs the central control module into [holder].", "You install the central computer mainboard into [holder].")
 					del used_atom
 					holder.icon_state = "durand5"
 				else
 					user.visible_message("[user] disconnects the wiring of [holder].", "You disconnect the wiring of [holder].")
 					holder.icon_state = "durand3"
-			if (15)
-				if (diff==FORWARD)
+			if(15)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures the mainboard.", "You secure the mainboard.")
 					holder.icon_state = "durand6"
 				else
 					user.visible_message("[user] removes the central control module from [holder].", "You remove the central computer mainboard from [holder].")
 					new /obj/item/weapon/circuitboard/mecha/durand/main(get_turf(holder))
 					holder.icon_state = "durand4"
-			if (14)
-				if (diff==FORWARD)
+			if(14)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs the peripherals control module into [holder].", "You install the peripherals control module into [holder].")
 					del used_atom
 					holder.icon_state = "durand7"
 				else
 					user.visible_message("[user] unfastens the mainboard.", "You unfasten the mainboard.")
 					holder.icon_state = "durand5"
-			if (13)
-				if (diff==FORWARD)
+			if(13)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures the peripherals control module.", "You secure the peripherals control module.")
 					holder.icon_state = "durand8"
 				else
 					user.visible_message("[user] removes the peripherals control module from [holder].", "You remove the peripherals control module from [holder].")
 					new /obj/item/weapon/circuitboard/mecha/durand/peripherals(get_turf(holder))
 					holder.icon_state = "durand6"
-			if (12)
-				if (diff==FORWARD)
+			if(12)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs the weapon control module into [holder].", "You install the weapon control module into [holder].")
 					del used_atom
 					holder.icon_state = "durand9"
 				else
 					user.visible_message("[user] unfastens the peripherals control module.", "You unfasten the peripherals control module.")
 					holder.icon_state = "durand7"
-			if (11)
-				if (diff==FORWARD)
+			if(11)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures the weapon control module.", "You secure the weapon control module.")
 					holder.icon_state = "durand10"
 				else
 					user.visible_message("[user] removes the weapon control module from [holder].", "You remove the weapon control module from [holder].")
 					new /obj/item/weapon/circuitboard/mecha/durand/targeting(get_turf(holder))
 					holder.icon_state = "durand8"
-			if (10)
-				if (diff==FORWARD)
+			if(10)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs advanced scanner module to [holder].", "You install advanced scanner module to [holder].")
 					del used_atom
 					holder.icon_state = "durand11"
 				else
 					user.visible_message("[user] unfastens the weapon control module.", "You unfasten the weapon control module.")
 					holder.icon_state = "durand9"
-			if (9)
-				if (diff==FORWARD)
+			if(9)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures the advanced scanner module.", "You secure the advanced scanner module.")
 					holder.icon_state = "durand12"
 				else
 					user.visible_message("[user] removes the advanced scanner module from [holder].", "You remove the advanced scanner module from [holder].")
 					new /obj/item/weapon/stock_parts/scanning_module/adv(get_turf(holder))
 					holder.icon_state = "durand10"
-			if (8)
-				if (diff==FORWARD)
+			if(8)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs advanced capacitor to [holder].", "You install advanced capacitor to [holder].")
 					del used_atom
 					holder.icon_state = "durand13"
 				else
 					user.visible_message("[user] unfastens the advanced scanner module.", "You unfasten the advanced scanner module.")
 					holder.icon_state = "durand11"
-			if (7)
-				if (diff==FORWARD)
+			if(7)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures the advanced capacitor.", "You secure the advanced capacitor.")
 					holder.icon_state = "durand14"
 				else
 					user.visible_message("[user] removes the advanced capacitor from [holder].", "You remove the advanced capacitor from [holder].")
 					new /obj/item/weapon/stock_parts/capacitor/adv(get_turf(holder))
 					holder.icon_state = "durand12"
-			if (6)
-				if (diff==FORWARD)
+			if(6)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs internal armor layer to [holder].", "You install internal armor layer to [holder].")
 					holder.icon_state = "durand15"
 				else
 					user.visible_message("[user] unfastens the advanced capacitor.", "You unfasten the advanced capacitor.")
 					holder.icon_state = "durand13"
-			if (5)
-				if (diff==FORWARD)
+			if(5)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures internal armor layer.", "You secure internal armor layer.")
 					holder.icon_state = "durand16"
 				else
@@ -1106,31 +1106,31 @@
 					var/obj/item/stack/sheet/metal/MS = new /obj/item/stack/sheet/metal(get_turf(holder))
 					MS.amount = 5
 					holder.icon_state = "durand14"
-			if (4)
-				if (diff==FORWARD)
+			if(4)
+				if(diff==FORWARD)
 					user.visible_message("[user] welds internal armor layer to [holder].", "You weld the internal armor layer to [holder].")
 					holder.icon_state = "durand17"
 				else
 					user.visible_message("[user] unfastens the internal armor layer.", "You unfasten the internal armor layer.")
 					holder.icon_state = "durand15"
-			if (3)
-				if (diff==FORWARD)
+			if(3)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs Durand Armour Plates to [holder].", "You install Durand Armour Plates to [holder].")
 					del used_atom
 					holder.icon_state = "durand18"
 				else
 					user.visible_message("[user] cuts internal armor layer from [holder].", "You cut the internal armor layer from [holder].")
 					holder.icon_state = "durand16"
-			if (2)
-				if (diff==FORWARD)
+			if(2)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures Durand Armour Plates.", "You secure Durand Armour Plates.")
 					holder.icon_state = "durand19"
 				else
 					user.visible_message("[user] pries Durand Armour Plates from [holder].", "You prie Durand Armour Plates from [holder].")
 					new /obj/item/mecha_parts/part/durand_armour(get_turf(holder))
 					holder.icon_state = "durand17"
-			if (1)
-				if (diff==FORWARD)
+			if(1)
+				if(diff==FORWARD)
 					user.visible_message("[user] welds Durand Armour Plates to [holder].", "You weld Durand Armour Plates to [holder].")
 				else
 					user.visible_message("[user] unfastens Durand Armour Plates.", "You unfasten Durand Armour Plates.")
@@ -1258,30 +1258,30 @@
 		return check_step(used_atom,user)
 
 	custom_action(index, diff, atom/used_atom, mob/user)
-		if (!..())
+		if(!..())
 			return 0
 
 		//TODO: better messages.
 		switch(index)
-			if (14)
+			if(14)
 				user.visible_message("[user] connects [holder] hydraulic systems", "You connect [holder] hydraulic systems.")
 				holder.icon_state = "odysseus1"
-			if (13)
-				if (diff==FORWARD)
+			if(13)
+				if(diff==FORWARD)
 					user.visible_message("[user] activates [holder] hydraulic systems.", "You activate [holder] hydraulic systems.")
 					holder.icon_state = "odysseus2"
 				else
 					user.visible_message("[user] disconnects [holder] hydraulic systems", "You disconnect [holder] hydraulic systems.")
 					holder.icon_state = "odysseus0"
-			if (12)
-				if (diff==FORWARD)
+			if(12)
+				if(diff==FORWARD)
 					user.visible_message("[user] adds the wiring to [holder].", "You add the wiring to [holder].")
 					holder.icon_state = "odysseus3"
 				else
 					user.visible_message("[user] deactivates [holder] hydraulic systems.", "You deactivate [holder] hydraulic systems.")
 					holder.icon_state = "odysseus1"
-			if (11)
-				if (diff==FORWARD)
+			if(11)
+				if(diff==FORWARD)
 					user.visible_message("[user] adjusts the wiring of [holder].", "You adjust the wiring of [holder].")
 					holder.icon_state = "odysseus4"
 				else
@@ -1289,47 +1289,47 @@
 					var/obj/item/weapon/cable_coil/coil = new /obj/item/weapon/cable_coil(get_turf(holder))
 					coil.amount = 4
 					holder.icon_state = "odysseus2"
-			if (10)
-				if (diff==FORWARD)
+			if(10)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs the central control module into [holder].", "You install the central computer mainboard into [holder].")
 					del used_atom
 					holder.icon_state = "odysseus5"
 				else
 					user.visible_message("[user] disconnects the wiring of [holder].", "You disconnect the wiring of [holder].")
 					holder.icon_state = "odysseus3"
-			if (9)
-				if (diff==FORWARD)
+			if(9)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures the mainboard.", "You secure the mainboard.")
 					holder.icon_state = "odysseus6"
 				else
 					user.visible_message("[user] removes the central control module from [holder].", "You remove the central computer mainboard from [holder].")
 					new /obj/item/weapon/circuitboard/mecha/odysseus/main(get_turf(holder))
 					holder.icon_state = "odysseus4"
-			if (8)
-				if (diff==FORWARD)
+			if(8)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs the peripherals control module into [holder].", "You install the peripherals control module into [holder].")
 					del used_atom
 					holder.icon_state = "odysseus7"
 				else
 					user.visible_message("[user] unfastens the mainboard.", "You unfasten the mainboard.")
 					holder.icon_state = "odysseus5"
-			if (7)
-				if (diff==FORWARD)
+			if(7)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures the peripherals control module.", "You secure the peripherals control module.")
 					holder.icon_state = "odysseus8"
 				else
 					user.visible_message("[user] removes the peripherals control module from [holder].", "You remove the peripherals control module from [holder].")
 					new /obj/item/weapon/circuitboard/mecha/odysseus/peripherals(get_turf(holder))
 					holder.icon_state = "odysseus6"
-			if (6)
-				if (diff==FORWARD)
+			if(6)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs internal armor layer to [holder].", "You install internal armor layer to [holder].")
 					holder.icon_state = "odysseus9"
 				else
 					user.visible_message("[user] unfastens the peripherals control module.", "You unfasten the peripherals control module.")
 					holder.icon_state = "odysseus7"
-			if (5)
-				if (diff==FORWARD)
+			if(5)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures internal armor layer.", "You secure internal armor layer.")
 					holder.icon_state = "odysseus10"
 				else
@@ -1337,22 +1337,22 @@
 					var/obj/item/stack/sheet/metal/MS = new /obj/item/stack/sheet/metal(get_turf(holder))
 					MS.amount = 5
 					holder.icon_state = "odysseus8"
-			if (4)
-				if (diff==FORWARD)
+			if(4)
+				if(diff==FORWARD)
 					user.visible_message("[user] welds internal armor layer to [holder].", "You weld the internal armor layer to [holder].")
 					holder.icon_state = "odysseus11"
 				else
 					user.visible_message("[user] unfastens the internal armor layer.", "You unfasten the internal armor layer.")
 					holder.icon_state = "odysseus9"
-			if (3)
-				if (diff==FORWARD)
+			if(3)
+				if(diff==FORWARD)
 					user.visible_message("[user] installs [used_atom] layer to [holder].", "You install external reinforced armor layer to [holder].")
 
 					holder.icon_state = "odysseus12"
 				else
 					user.visible_message("[user] cuts internal armor layer from [holder].", "You cut the internal armor layer from [holder].")
 					holder.icon_state = "odysseus10"
-				if (diff==FORWARD)
+				if(diff==FORWARD)
 					user.visible_message("[user] secures external armor layer.", "You secure external reinforced armor layer.")
 					holder.icon_state = "odysseus13"
 				else
@@ -1360,8 +1360,8 @@
 					MS.amount = 5
 					user.visible_message("[user] pries [MS] from [holder].", "You prie [MS] from [holder].")
 					holder.icon_state = "odysseus11"
-			if (1)
-				if (diff==FORWARD)
+			if(1)
+				if(diff==FORWARD)
 					user.visible_message("[user] welds external armor layer to [holder].", "You weld external armor layer to [holder].")
 					holder.icon_state = "odysseus14"
 				else

@@ -4,15 +4,15 @@
 
 
 	Bumped(atom/AM)
-		if (src.locked)
+		if(src.locked)
 			return
 		..()
 		return
 
 
 	attackby(obj/item/I as obj, mob/user as mob)
-		if (istype(I, /obj/item/weapon/card/emag)||istype(I, /obj/item/weapon/melee/energy/blade))	return
-		if (src.locked)	return
+		if(istype(I, /obj/item/weapon/card/emag)||istype(I, /obj/item/weapon/melee/energy/blade))	return
+		if(src.locked)	return
 		..()
 		return
 

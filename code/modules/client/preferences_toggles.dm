@@ -21,7 +21,7 @@
 	set name = "Show/Hide RadioChatter"
 	set category = "Preferences"
 	set desc = "Toggle seeing radiochatter from nearby radios and speakers"
-	if (!holder) return
+	if(!holder) return
 	prefs.toggles ^= CHAT_RADIO
 	prefs.save_preferences()
 	usr << "You will [(prefs.toggles & CHAT_RADIO) ? "now" : "no longer"] see radio chatter from nearby radios or speakers"
@@ -31,7 +31,7 @@
 	set name = "Hear/Silence Adminhelps"
 	set category = "Preferences"
 	set desc = "Toggle hearing a notification when admin PMs are recieved"
-	if (!holder)	return
+	if(!holder)	return
 	prefs.toggles ^= SOUND_ADMINHELP
 	prefs.save_preferences()
 	usr << "You will [(prefs.toggles & SOUND_ADMINHELP) ? "now" : "no longer"] hear a sound when adminhelps arrive."
@@ -44,7 +44,7 @@
 	prefs.toggles ^= CHAT_DEAD
 	prefs.save_preferences()
 
-	if (src.holder)
+	if(src.holder)
 		src << "You will [(prefs.toggles & CHAT_DEAD) ? "now" : "no longer"] see deadchat."
 	else
 		src << "As a ghost, you will [(prefs.toggles & CHAT_DEAD) ? "now" : "no longer"] see deadchat."
@@ -66,13 +66,13 @@
 	set desc = "Toggles hearing the GameLobby music"
 	prefs.toggles ^= SOUND_LOBBY
 	prefs.save_preferences()
-	if (prefs.toggles & SOUND_LOBBY)
+	if(prefs.toggles & SOUND_LOBBY)
 		src << "You will now hear music in the game lobby."
-		if (istype(mob, /mob/new_player))
+		if(istype(mob, /mob/new_player))
 			playtitlemusic()
 	else
 		src << "You will no longer hear music in the game lobby."
-		if (istype(mob, /mob/new_player))
+		if(istype(mob, /mob/new_player))
 			src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // stop the jamsz
 	feedback_add_details("admin_verb","TLobby") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
@@ -82,7 +82,7 @@
 	set desc = "Toggles hearing sounds uploaded by admins"
 	prefs.toggles ^= SOUND_MIDI
 	prefs.save_preferences()
-	if (prefs.toggles & SOUND_MIDI)
+	if(prefs.toggles & SOUND_MIDI)
 		src << "You will now hear any sounds uploaded by admins."
 		var/sound/break_sound = sound(null, repeat = 0, wait = 0, channel = 777)
 		break_sound.priority = 250
@@ -117,7 +117,7 @@
 	set desc = "Toggles hearing ambient sound effects"
 	prefs.toggles ^= SOUND_AMBIENCE
 	prefs.save_preferences()
-	if (prefs.toggles & SOUND_AMBIENCE)
+	if(prefs.toggles & SOUND_AMBIENCE)
 		src << "You will now hear ambient sounds."
 	else
 		src << "You will no longer hear ambient sounds."
@@ -131,7 +131,7 @@
 	set category = "Preferences"
 	set desc = "Toggles which special roles you would like to be a candidate for, during events."
 	var/role_flag = be_special_flags[role]
-	if (!role_flag)	return
+	if(!role_flag)	return
 	prefs.be_special ^= role_flag
 	prefs.save_preferences()
 	src << "You will [(prefs.be_special & role_flag) ? "now" : "no longer"] be considered for [role] events (where possible)."

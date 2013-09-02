@@ -565,13 +565,13 @@ mob
 				S.icon = 'icons/Testing/turf_analysis.dmi'
 				if(S.parent)
 					if(S.parent.group_processing)
-						if (S.parent.check_delay < 2)
+						if(S.parent.check_delay < 2)
 							S.parent.marker=1
-						else if (S.parent.check_delay < 5)
+						else if(S.parent.check_delay < 5)
 							S.parent.marker=2
-						else if (S.parent.check_delay < 15)
+						else if(S.parent.check_delay < 15)
 							S.parent.marker=3
-						else if (S.parent.check_delay < 30)
+						else if(S.parent.check_delay < 30)
 							S.parent.marker=4
 						else
 							S.parent.marker=5
@@ -581,13 +581,13 @@ mob
 							S.icon_state = "on[S.parent.marker]"
 
 					else
-						if (S.check_delay < 2)
+						if(S.check_delay < 2)
 							S.icon_state= "on1_border"
-						else if (S.check_delay < 5)
+						else if(S.check_delay < 5)
 							S.icon_state= "on2_border"
-						else if (S.check_delay < 15)
+						else if(S.check_delay < 15)
 							S.icon_state= "on3_border"
-						else if (S.check_delay < 30)
+						else if(S.check_delay < 30)
 							S.icon_state= "on4_border"
 						else
 							S.icon_state = "suspended"
@@ -639,7 +639,7 @@ mob
 
 			var/datum/air_group/dead_groups = list()
 			for(var/datum/air_group/group in air_master.air_groups)
-				if (!group.group_processing)
+				if(!group.group_processing)
 					dead_groups += group
 			var/datum/air_group/dest_group = pick(dead_groups)
 			usr.loc = pick(dest_group.members)*/

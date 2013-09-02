@@ -16,7 +16,7 @@
 	req_access = list(access_tcomsat)
 
 	attack_hand(mob/user as mob)
-		if (stat & (BROKEN|NOPOWER))
+		if(stat & (BROKEN|NOPOWER))
 			return
 		user.set_machine(src)
 		var/dat = "<TITLE>Telecommunication Server Monitor</TITLE><center><b>Telecommunications Server Monitor</b></center>"
@@ -26,10 +26,10 @@
 
 		  // --- Main Menu ---
 
-			if (0)
+			if(0)
 				dat += "<br>[temp]<br>"
 				dat += "<br>Current Network: <a href='?src=\ref[src];network=1'>[network]</a><br>"
-				if (servers.len)
+				if(servers.len)
 					dat += "<br>Detected Telecommunication Servers:<ul>"
 					for(var/obj/machinery/telecomms/T in servers)
 						dat += "<li><a href='?src=\ref[src];viewserver=[T.id]'>\ref[T] [T.name]</a> ([T.id])</li>"
@@ -42,13 +42,13 @@
 
 		  // --- Viewing Server ---
 
-			if (1)
+			if(1)
 				dat += "<br>[temp]<br>"
 				dat += "<center><a href='?src=\ref[src];operation=mainmenu'>\[Main Menu\]</a>     <a href='?src=\ref[src];operation=refresh'>\[Refresh\]</a></center>"
 				dat += "<br>Current Network: [network]"
 				dat += "<br>Selected Server: [SelectedServer.id]"
 
-				if (SelectedServer.totaltraffic >= 1024)
+				if(SelectedServer.totaltraffic >= 1024)
 					dat += "<br>Total recorded traffic: [round(SelectedServer.totaltraffic / 1024)] Terrabytes<br><br>"
 				else
 					dat += "<br>Total recorded traffic: [SelectedServer.totaltraffic] Gigabytes<br><br>"
@@ -61,7 +61,7 @@
 
 
 					// If the log is a speech file
-					if (C.input_type == "Speech File")
+					if(C.input_type == "Speech File")
 
 						dat += "<li><font color = #008F00>[C.name]</font color>  <font color = #FF0000><a href='?src=\ref[src];delete=[i]'>\[X\]</a></font color><br>"
 
@@ -72,21 +72,21 @@
 						var/mobtype = C.parameters["mobtype"]
 						var/mob/M = new mobtype
 
-						if (ishuman(M) || isbrain(M))
+						if(ishuman(M) || isbrain(M))
 							race = "Human"
 
-						else if (ismonkey(M))
+						else if(ismonkey(M))
 							race = "Monkey"
 							language = race
 
-						else if (issilicon(M) || C.parameters["job"] == "AI") // sometimes M gets deleted prematurely for AIs... just check the job
+						else if(issilicon(M) || C.parameters["job"] == "AI") // sometimes M gets deleted prematurely for AIs... just check the job
 							race = "Artificial Life"
 
-						else if (isslime(M)) // NT knows a lot about slimes, but not aliens. Can identify slimes
+						else if(isslime(M)) // NT knows a lot about slimes, but not aliens. Can identify slimes
 							race = "slime"
 							language = race
 
-						else if (isanimal(M))
+						else if(isanimal(M))
 							race = "Domestic Animal"
 							language = race
 
@@ -98,7 +98,7 @@
 
 						// -- If the orator is a human, or universal translate is active, OR mob has universal speech on --
 
-						if (language == "Human" || universal_translate || C.parameters["uspeech"])
+						if(language == "Human" || universal_translate || C.parameters["uspeech"])
 							dat += "<u><font color = #18743E>Data type</font color></u>: [C.input_type]<br>"
 							dat += "<u><font color = #18743E>Source</font color></u>: [C.parameters["name"]] (Job: [C.parameters["job"]])<br>"
 							dat += "<u><font color = #18743E>Class</font color></u>: [race]<br>"
@@ -115,7 +115,7 @@
 
 						dat += "</li><br>"
 
-					else if (C.input_type == "Execution Error")
+					else if(C.input_type == "Execution Error")
 
 						dat += "<li><font color = #990000>[C.name]</font color>  <font color = #FF0000><a href='?src=\ref[src];delete=[i]'>\[X\]</a></font color><br>"
 						dat += "<u><font color = #787700>Output</font color></u>: \"[C.parameters["message"]]\"<br>"
@@ -134,53 +134,53 @@
 
 
 	Topic(href, href_list)
-		if (..())
+		if(..())
 			return
 
 
 		add_fingerprint(usr)
 		usr.set_machine(src)
 
-		if (href_list["viewserver"])
+		if(href_list["viewserver"])
 			screen = 1
 			for(var/obj/machinery/telecomms/T in servers)
-				if (T.id == href_list["viewserver"])
+				if(T.id == href_list["viewserver"])
 					SelectedServer = T
 					break
 
-		if (href_list["operation"])
+		if(href_list["operation"])
 			switch(href_list["operation"])
 
-				if ("release")
+				if("release")
 					servers = list()
 					screen = 0
 
-				if ("mainmenu")
+				if("mainmenu")
 					screen = 0
 
-				if ("scan")
-					if (servers.len > 0)
+				if("scan")
+					if(servers.len > 0)
 						temp = "<font color = #D70B00>- FAILED: CANNOT PROBE WHEN BUFFER FULL -</font color>"
 
 					else
 						for(var/obj/machinery/telecomms/server/T in range(25, src))
-							if (T.network == network)
+							if(T.network == network)
 								servers.Add(T)
 
-						if (!servers.len)
+						if(!servers.len)
 							temp = "<font color = #D70B00>- FAILED: UNABLE TO LOCATE SERVERS IN \[[network]\] -</font color>"
 						else
 							temp = "<font color = #336699>- [servers.len] SERVERS PROBED & BUFFERED -</font color>"
 
 						screen = 0
 
-		if (href_list["delete"])
+		if(href_list["delete"])
 
-			if (!src.allowed(usr) && !emagged)
+			if(!src.allowed(usr) && !emagged)
 				usr << "\red ACCESS DENIED."
 				return
 
-			if (SelectedServer)
+			if(SelectedServer)
 
 				var/datum/comm_log_entry/D = SelectedServer.log_entries[text2num(href_list["delete"])]
 
@@ -192,12 +192,12 @@
 			else
 				temp = "<font color = #D70B00>- FAILED: NO SELECTED MACHINE -</font color>"
 
-		if (href_list["network"])
+		if(href_list["network"])
 
 			var/newnet = input(usr, "Which network do you want to view?", "Comm Monitor", network) as null|text
 
-			if (newnet && ((usr in range(1, src) || issilicon(usr))))
-				if (length(newnet) > 15)
+			if(newnet && ((usr in range(1, src) || issilicon(usr))))
+				if(length(newnet) > 15)
 					temp = "<font color = #D70B00>- FAILED: NETWORK TAG STRING TOO LENGHTLY -</font color>"
 
 				else
@@ -211,10 +211,10 @@
 		return
 
 	attackby(var/obj/item/weapon/D as obj, var/mob/user as mob)
-		if (istype(D, /obj/item/weapon/screwdriver))
+		if(istype(D, /obj/item/weapon/screwdriver))
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
-			if (do_after(user, 20))
-				if (src.stat & BROKEN)
+			if(do_after(user, 20))
+				if(src.stat & BROKEN)
 					user << "\blue The broken glass falls out."
 					var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 					new /obj/item/weapon/shard( src.loc )
@@ -237,7 +237,7 @@
 					A.icon_state = "4"
 					A.anchored = 1
 					del(src)
-		else if (istype(D, /obj/item/weapon/card/emag) && !emagged)
+		else if(istype(D, /obj/item/weapon/card/emag) && !emagged)
 			playsound(src.loc, 'sound/effects/sparks4.ogg', 75, 1)
 			emagged = 1
 			user << "\blue You you disable the security protocols"

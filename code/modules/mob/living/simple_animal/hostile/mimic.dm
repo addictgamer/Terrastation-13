@@ -38,7 +38,7 @@
 
 /mob/living/simple_animal/hostile/mimic/FindTarget()
 	. = ..()
-	if (.)
+	if(.)
 		emote("growls at [.]")
 
 /mob/living/simple_animal/hostile/mimic/Die()
@@ -70,28 +70,28 @@
 
 /mob/living/simple_animal/hostile/mimic/crate/DestroySurroundings()
 	..()
-	if (prob(90))
+	if(prob(90))
 		icon_state = "[initial(icon_state)]open"
 	else
 		icon_state = initial(icon_state)
 
 /mob/living/simple_animal/hostile/mimic/crate/ListTargets()
-	if (attempt_open)
+	if(attempt_open)
 		return ..()
 	return view(src, 1)
 
 /mob/living/simple_animal/hostile/mimic/crate/FindTarget()
 	. = ..()
-	if (.)
+	if(.)
 		trigger()
 
 /mob/living/simple_animal/hostile/mimic/crate/AttackingTarget()
 	. = ..()
-	if (.)
+	if(.)
 		icon_state = initial(icon_state)
 
 /mob/living/simple_animal/hostile/mimic/crate/proc/trigger()
-	if (!attempt_open)
+	if(!attempt_open)
 		visible_message("<b>[src]</b> starts to move!")
 		attempt_open = 1
 
@@ -118,8 +118,8 @@
 /mob/living/simple_animal/hostile/mimic/crate/AttackingTarget()
 	. =..()
 	var/mob/living/L = .
-	if (istype(L))
-		if (prob(15))
+	if(istype(L))
+		if(prob(15))
 			L.Weaken(2)
 			L.visible_message("<span class='danger'>\the [src] knocks down \the [L]!</span>")
 
@@ -154,7 +154,7 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 
 /mob/living/simple_animal/hostile/mimic/copy/proc/CopyObject(var/obj/O, var/mob/living/creator)
 
-	if ((istype(O, /obj/item) || istype(O, /obj/structure)) && !is_type_in_list(O, protected_objects))
+	if((istype(O, /obj/item) || istype(O, /obj/structure)) && !is_type_in_list(O, protected_objects))
 
 		O.loc = src
 		name = O.name
@@ -163,14 +163,14 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 		icon_state = O.icon_state
 		icon_living = icon_state
 
-		if (istype(O, /obj/structure))
+		if(istype(O, /obj/structure))
 			health = (anchored * 50) + 50
 			destroy_objects = 1
-			if (O.density && O.anchored)
+			if(O.density && O.anchored)
 				knockdown_people = 1
 				melee_damage_lower *= 2
 				melee_damage_upper *= 2
-		else if (istype(O, /obj/item))
+		else if(istype(O, /obj/item))
 			var/obj/item/I = O
 			health = 15 * I.w_class
 			melee_damage_lower = 2 + I.force
@@ -178,21 +178,21 @@ var/global/list/protected_objects = list(/obj/structure/table, /obj/structure/ca
 			move_to_delay = 2 * I.w_class
 
 		maxHealth = health
-		if (creator)
+		if(creator)
 			src.creator = creator
 			faction = "\ref[creator]" // very unique
 		return 1
 	return
 
 /mob/living/simple_animal/hostile/mimic/copy/DestroySurroundings()
-	if (destroy_objects)
+	if(destroy_objects)
 		..()
 
 /mob/living/simple_animal/hostile/mimic/copy/AttackingTarget()
 	. =..()
-	if (knockdown_people)
+	if(knockdown_people)
 		var/mob/living/L = .
-		if (istype(L))
-			if (prob(15))
+		if(istype(L))
+			if(prob(15))
 				L.Weaken(1)
 				L.visible_message("<span class='danger'>\the [src] knocks down \the [L]!</span>")

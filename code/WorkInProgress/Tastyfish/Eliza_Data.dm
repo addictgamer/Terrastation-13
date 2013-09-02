@@ -366,9 +366,9 @@
 		// find PDA
 		var/obj/item/device/pda/pda
 		for (var/obj/item/device/pda/P in world)
-			if (!P.owner)
+			if(!P.owner)
 				continue
-			else if (P.toff)
+			else if(P.toff)
 				continue
 
 			if(!cmptext(name, P.owner))
@@ -390,7 +390,7 @@
 				for(var/mob/living/silicon/ai/ai in world)
 					ai.show_message("<i>Intercepted message from <b>[who]</b>: [object]</i>")
 
-			if (!pda.silent)
+			if(!pda.silent)
 				playsound(pda.loc, 'twobeep.ogg', 50, 1)
 				for (var/mob/O in hearers(3, pda.loc))
 					O.show_message(text("\icon[pda] *[pda.ttone]*"))

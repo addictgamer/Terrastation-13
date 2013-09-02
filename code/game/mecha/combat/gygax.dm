@@ -43,7 +43,7 @@
 	return
 
 /obj/mecha/combat/gygax/dark/add_cell(var/obj/item/weapon/cell/C=null)
-	if (C)
+	if(C)
 		C.forceMove(src)
 		cell = C
 		return
@@ -57,9 +57,9 @@
 	set name = "Toggle leg actuators overload"
 	set src = usr.loc
 	set popup_menu = 0
-	if (usr!=src.occupant)
+	if(usr!=src.occupant)
 		return
-	if (overload)
+	if(overload)
 		overload = 0
 		step_in = initial(step_in)
 		step_energy_drain = initial(step_energy_drain)
@@ -73,10 +73,10 @@
 	return
 
 /obj/mecha/combat/gygax/dyndomove(direction)
-	if (!..()) return
-	if (overload)
+	if(!..()) return
+	if(overload)
 		health--
-		if (health < initial(health) - initial(health)/3)
+		if(health < initial(health) - initial(health)/3)
 			overload = 0
 			step_in = initial(step_in)
 			step_energy_drain = initial(step_energy_drain)
@@ -102,6 +102,6 @@
 
 /obj/mecha/combat/gygax/Topic(href, href_list)
 	..()
-	if (href_list["toggle_leg_overload"])
+	if(href_list["toggle_leg_overload"])
 		src.overload()
 	return

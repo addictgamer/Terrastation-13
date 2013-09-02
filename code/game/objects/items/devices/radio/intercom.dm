@@ -29,25 +29,25 @@
 		attack_self(user)
 
 /obj/item/device/radio/intercom/receive_range(freq, level)
-	if (!on)
+	if(!on)
 		return -1
-	if (!(src.wires & WIRE_RECEIVE))
+	if(!(src.wires & WIRE_RECEIVE))
 		return -1
-	if (!(0 in level))
+	if(!(0 in level))
 		var/turf/position = get_turf(src)
-		if (isnull(position) || !(position.z in level))
+		if(isnull(position) || !(position.z in level))
 			return -1
-	if (!src.listening)
+	if(!src.listening)
 		return -1
-	if (freq == SYND_FREQ)
-		if (!(src.syndie))
+	if(freq == SYND_FREQ)
+		if(!(src.syndie))
 			return -1//Prevents broadcast of messages over devices lacking the encryption
 
 	return canhear_range
 
 
 /obj/item/device/radio/intercom/hear_talk(mob/M as mob, msg)
-	if (!src.anyai && !(M in src.ai))
+	if(!src.anyai && !(M in src.ai))
 		return
 	..()
 
@@ -56,16 +56,16 @@
 	// Simple loop, checks for power. Strictly for intercoms
 	while(src)
 
-		if (!src.loc)
+		if(!src.loc)
 			on = 0
 		else
 			var/area/A = src.loc.loc
-			if (!A || !isarea(A) || !A.master)
+			if(!A || !isarea(A) || !A.master)
 				on = 0
 			else
 				on = A.master.powered(EQUIP) // set "on" to the power status
 
-		if (!on)
+		if(!on)
 			icon_state = "intercom-p"
 		else
 			icon_state = "intercom"

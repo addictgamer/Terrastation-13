@@ -71,13 +71,13 @@ I said no!
 		var/human_name
 		var/human_job
 		for (var/obj/item/weapon/reagent_containers/food/snacks/meat/human/HM in container)
-			if (!HM.subjectname)
+			if(!HM.subjectname)
 				continue
 			human_name = HM.subjectname
 			human_job = HM.subjectjob
 			break
 		var/lastname_index = findtext(human_name, " ")
-		if (lastname_index)
+		if(lastname_index)
 			human_name = copytext(human_name,lastname_index+1)
 
 		var/obj/item/weapon/reagent_containers/food/snacks/human/HB = ..(container)
@@ -214,7 +214,7 @@ I said no!
 	result = /obj/item/weapon/reagent_containers/food/snacks/donkpocket //SPECIAL
 	make_food(var/obj/container as obj)
 		var/obj/item/weapon/reagent_containers/food/snacks/donkpocket/being_cooked = locate() in container
-		if (being_cooked && !being_cooked.warm)
+		if(being_cooked && !being_cooked.warm)
 			warm_up(being_cooked)
 		return being_cooked
 
@@ -493,9 +493,9 @@ I said no!
 		return being_cooked
 	check_items(var/obj/container as obj)
 		. = ..()
-		if (.)
+		if(.)
 			var/obj/item/weapon/paper/paper = locate() in container
-			if (!paper.info)
+			if(!paper.info)
 				return 0
 		return .
 

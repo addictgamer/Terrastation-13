@@ -21,18 +21,18 @@
 
 /obj/structure/bookcase/initialize()
 	for(var/obj/item/I in loc)
-		if (istype(I, /obj/item/weapon/book))
+		if(istype(I, /obj/item/weapon/book))
 			I.loc = src
 	update_icon()
 
 /obj/structure/bookcase/attackby(obj/O as obj, mob/user as mob)
-	if (istype(O, /obj/item/weapon/book))
+	if(istype(O, /obj/item/weapon/book))
 		user.drop_item()
 		O.loc = src
 		update_icon()
-	else if (istype(O, /obj/item/weapon/pen))
+	else if(istype(O, /obj/item/weapon/pen))
 		var/newname = stripped_input(usr, "What would you like to title this bookshelf?")
-		if (!newname)
+		if(!newname)
 			return
 		else
 			name = ("bookcase ([sanitize(newname)])")
@@ -40,13 +40,13 @@
 		..()
 
 /obj/structure/bookcase/attack_hand(var/mob/user as mob)
-	if (contents.len)
+	if(contents.len)
 		var/obj/item/weapon/book/choice = input("Which book would you like to remove from the shelf?") in contents as obj|null
-		if (choice)
-			if (!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
+		if(choice)
+			if(!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
 				return
-			if (ishuman(user))
-				if (!user.get_active_hand())
+			if(ishuman(user))
+				if(!user.get_active_hand())
 					user.put_in_hands(choice)
 			else
 				choice.loc = get_turf(src)
@@ -54,19 +54,19 @@
 
 /obj/structure/bookcase/ex_act(severity)
 	switch(severity)
-		if (1.0)
+		if(1.0)
 			for(var/obj/item/weapon/book/b in contents)
 				del(b)
 			del(src)
 			return
-		if (2.0)
+		if(2.0)
 			for(var/obj/item/weapon/book/b in contents)
-				if (prob(50)) b.loc = (get_turf(src))
+				if(prob(50)) b.loc = (get_turf(src))
 				else del(b)
 			del(src)
 			return
-		if (3.0)
-			if (prob(50))
+		if(3.0)
+			if(prob(50))
 				for(var/obj/item/weapon/book/b in contents)
 					b.loc = (get_turf(src))
 				del(src)
@@ -75,7 +75,7 @@
 	return
 
 /obj/structure/bookcase/update_icon()
-	if (contents.len < 5)
+	if(contents.len < 5)
 		icon_state = "book-[contents.len]"
 	else
 		icon_state = "book-5"
@@ -133,8 +133,8 @@
 	var/obj/item/store	//What's in the book?
 
 /obj/item/weapon/book/attack_self(var/mob/user as mob)
-	if (carved)
-		if (store)
+	if(carved)
+		if(store)
 			user << "<span class='notice'>[store] falls out of [title]!</span>"
 			store.loc = get_turf(src.loc)
 			store = null
@@ -142,7 +142,7 @@
 		else
 			user << "<span class='notice'>The pages of [title] have been cut out!</span>"
 			return
-	if (src.dat)
+	if(src.dat)
 		user << browse("<TT><I>Penned by [author].</I></TT> <BR>" + "[dat]", "window=book")
 		user.visible_message("[user] opens a book titled \"[src.title]\" and begins reading intently.")
 		onclose(user, "book")
@@ -150,9 +150,9 @@
 		user << "This book is completely blank!"
 
 /obj/item/weapon/book/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (carved)
-		if (!store)
-			if (W.w_class < 3)
+	if(carved)
+		if(!store)
+			if(W.w_class < 3)
 				user.drop_item()
 				W.loc = src
 				store = W
@@ -164,69 +164,69 @@
 		else
 			user << "<span class='notice'>There's already something in [title]!</span>"
 			return
-	if (istype(W, /obj/item/weapon/pen))
-		if (unique)
+	if(istype(W, /obj/item/weapon/pen))
+		if(unique)
 			user << "These pages don't seem to take the ink well. Looks like you can't modify it."
 			return
 		var/choice = input("What would you like to change?") in list("Title", "Contents", "Author", "Cancel")
 		switch(choice)
-			if ("Title")
+			if("Title")
 				var/newtitle = reject_bad_text(stripped_input(usr, "Write a new title:"))
-				if (!newtitle)
+				if(!newtitle)
 					usr << "The title is invalid."
 					return
 				else
 					src.name = newtitle
 					src.title = newtitle
-			if ("Contents")
+			if("Contents")
 				var/content = strip_html(input(usr, "Write your book's contents (HTML NOT allowed):"),8192) as message|null
-				if (!content)
+				if(!content)
 					usr << "The content is invalid."
 					return
 				else
 					src.dat += content
-			if ("Author")
+			if("Author")
 				var/newauthor = stripped_input(usr, "Write the author's name:")
-				if (!newauthor)
+				if(!newauthor)
 					usr << "The name is invalid."
 					return
 				else
 					src.author = newauthor
 			else
 				return
-	else if (istype(W, /obj/item/weapon/barcodescanner))
+	else if(istype(W, /obj/item/weapon/barcodescanner))
 		var/obj/item/weapon/barcodescanner/scanner = W
-		if (!scanner.computer)
+		if(!scanner.computer)
 			user << "[W]'s screen flashes: 'No associated computer found!'"
 		else
 			switch(scanner.mode)
-				if (0)
+				if(0)
 					scanner.book = src
 					user << "[W]'s screen flashes: 'Book stored in buffer.'"
-				if (1)
+				if(1)
 					scanner.book = src
 					scanner.computer.buffer_book = src.name
 					user << "[W]'s screen flashes: 'Book stored in buffer. Book title stored in associated computer buffer.'"
-				if (2)
+				if(2)
 					scanner.book = src
 					for(var/datum/borrowbook/b in scanner.computer.checkouts)
-						if (b.bookname == src.name)
+						if(b.bookname == src.name)
 							scanner.computer.checkouts.Remove(b)
 							user << "[W]'s screen flashes: 'Book stored in buffer. Book has been checked in.'"
 							return
 					user << "[W]'s screen flashes: 'Book stored in buffer. No active check-out record found for current title.'"
-				if (3)
+				if(3)
 					scanner.book = src
 					for(var/obj/item/weapon/book in scanner.computer.inventory)
-						if (book == src)
+						if(book == src)
 							user << "[W]'s screen flashes: 'Book stored in buffer. Title already present in inventory, aborting to avoid duplicate entry.'"
 							return
 					scanner.computer.inventory.Add(src)
 					user << "[W]'s screen flashes: 'Book stored in buffer. Title added to general inventory.'"
-	else if (istype(W, /obj/item/weapon/kitchenknife) || istype(W, /obj/item/weapon/wirecutters))
-		if (carved)	return
+	else if(istype(W, /obj/item/weapon/kitchenknife) || istype(W, /obj/item/weapon/wirecutters))
+		if(carved)	return
 		user << "<span class='notice'>You begin to carve out [title].</span>"
-		if (do_after(user, 30))
+		if(do_after(user, 30))
 			user << "<span class='notice'>You carve out the pages from [title]! You didn't want to read it anyway.</span>"
 			carved = 1
 			return
@@ -251,23 +251,23 @@
 
 	attack_self(mob/user as mob)
 		mode += 1
-		if (mode > 3)
+		if(mode > 3)
 			mode = 0
 		user << "[src] Status Display:"
 		var/modedesc
 		switch(mode)
-			if (0)
+			if(0)
 				modedesc = "Scan book to local buffer."
-			if (1)
+			if(1)
 				modedesc = "Scan book to local buffer and set associated computer buffer to match."
-			if (2)
+			if(2)
 				modedesc = "Scan book to local buffer, attempt to check in scanned book."
-			if (3)
+			if(3)
 				modedesc = "Scan book to local buffer, attempt to add book to general inventory."
 			else
 				modedesc = "ERROR"
 		user << " - Mode [mode] : [modedesc]"
-		if (src.computer)
+		if(src.computer)
 			user << "<font color=green>Computer has been associated with this unit.</font>"
 		else
 			user << "<font color=red>No associated computer found. Only local scans will function properly.</font>"

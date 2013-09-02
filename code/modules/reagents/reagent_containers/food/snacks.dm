@@ -12,18 +12,18 @@
 
 	//Placeholder for effect that trigger on eating that aren't tied to reagents.
 /obj/item/weapon/reagent_containers/food/snacks/proc/On_Consume(var/mob/M)
-	if (!usr)	return
-	if (!reagents.total_volume)
-		if (M == usr)
+	if(!usr)	return
+	if(!reagents.total_volume)
+		if(M == usr)
 			usr << "<span class='notice'>You finish eating \the [src].</span>"
 		usr.visible_message("<span class='notice'>[usr] finishes eating \the [src].</span>")
 		usr.drop_from_inventory(src)	//so icons update :[
 
-		if (trash)
-			if (ispath(trash,/obj/item))
+		if(trash)
+			if(ispath(trash,/obj/item))
 				var/obj/item/TrashItem = new trash(usr)
 				usr.put_in_hands(TrashItem)
-			else if (istype(trash,/obj/item))
+			else if(istype(trash,/obj/item))
 				usr.put_in_hands(trash)
 		del(src)
 	return
@@ -32,29 +32,29 @@
 	return
 
 /obj/item/weapon/reagent_containers/food/snacks/attack(mob/M as mob, mob/user as mob, def_zone)
-	if (!reagents.total_volume)						//Shouldn't be needed but it checks to see if it has anything left in it.
+	if(!reagents.total_volume)						//Shouldn't be needed but it checks to see if it has anything left in it.
 		user << "\red None of [src] left, oh no!"
 		M.drop_from_inventory(src)	//so icons update :[
 		del(src)
 		return 0
-	if (istype(M, /mob/living/carbon))
-		if (M == user)								//If you're eating it yourself.
+	if(istype(M, /mob/living/carbon))
+		if(M == user)								//If you're eating it yourself.
 			var/fullness = M.nutrition + (M.reagents.get_reagent_amount("nutriment") * 25)
-			if (fullness <= 50)
+			if(fullness <= 50)
 				M << "\red You hungrily chew out a piece of [src] and gobble it!"
-			if (fullness > 50 && fullness <= 150)
+			if(fullness > 50 && fullness <= 150)
 				M << "\blue You hungrily begin to eat [src]."
-			if (fullness > 150 && fullness <= 350)
+			if(fullness > 150 && fullness <= 350)
 				M << "\blue You take a bite of [src]."
-			if (fullness > 350 && fullness <= 550)
+			if(fullness > 350 && fullness <= 550)
 				M << "\blue You unwillingly chew a bit of [src]."
-			if (fullness > (550 * (1 + M.overeatduration / 2000)))	// The more you eat - the more you can eat
+			if(fullness > (550 * (1 + M.overeatduration / 2000)))	// The more you eat - the more you can eat
 				M << "\red You cannot force any more of [src] to go down your throat."
 				return 0
 		else
-			if (!istype(M, /mob/living/carbon/slime))		//If you're feeding it to someone else.
+			if(!istype(M, /mob/living/carbon/slime))		//If you're feeding it to someone else.
 				var/fullness = M.nutrition + (M.reagents.get_reagent_amount("nutriment") * 25)
-				if (fullness <= (550 * (1 + M.overeatduration / 1000)))
+				if(fullness <= (550 * (1 + M.overeatduration / 1000)))
 					for(var/mob/O in viewers(world.view, user))
 						O.show_message("\red [user] attempts to feed [M] [src].", 1)
 				else
@@ -62,7 +62,7 @@
 						O.show_message("\red [user] cannot force anymore of [src] down [M]'s throat.", 1)
 						return 0
 
-				if (!do_mob(user, M)) return
+				if(!do_mob(user, M)) return
 
 				M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been fed [src.name] by [user.name] ([user.ckey]) Reagents: [reagentlist(src)]</font>")
 				user.attack_log += text("\[[time_stamp()]\] <font color='red'>Fed [src.name] by [M.name] ([M.ckey]) Reagents: [reagentlist(src)]</font>")
@@ -76,12 +76,12 @@
 				user << "This creature does not seem to have a mouth!"
 				return
 
-		if (reagents)								//Handle ingestion of the reagent.
+		if(reagents)								//Handle ingestion of the reagent.
 			playsound(M.loc,'sound/items/eatfood.ogg', rand(10,50), 1)
-			if (reagents.total_volume)
+			if(reagents.total_volume)
 				reagents.reaction(M, INGEST)
 				spawn(5)
-					if (reagents.total_volume > bitesize)
+					if(reagents.total_volume > bitesize)
 						/*
 						 * I totally cannot understand what this code supposed to do.
 						 * Right now every snack consumes in 2 bites, my popcorn does not work right, so I simplify it. -- rastaf0
@@ -109,31 +109,31 @@
 /obj/item/weapon/reagent_containers/food/snacks/examine()
 	set src in view()
 	..()
-	if (!(usr in range(0)) && usr!=src.loc) return
-	if (bitecount==0)
+	if(!(usr in range(0)) && usr!=src.loc) return
+	if(bitecount==0)
 		return
-	else if (bitecount==1)
+	else if(bitecount==1)
 		usr << "\blue \The [src] was bitten by someone!"
-	else if (bitecount<=3)
+	else if(bitecount<=3)
 		usr << "\blue \The [src] was bitten [bitecount] times!"
 	else
 		usr << "\blue \The [src] was bitten multiple times!"
 
 /obj/item/weapon/reagent_containers/food/snacks/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W,/obj/item/weapon/storage))
+	if(istype(W,/obj/item/weapon/storage))
 		..() // -> item/attackby()
-	if (istype(W,/obj/item/weapon/storage))
+	if(istype(W,/obj/item/weapon/storage))
 		..() // -> item/attackby()
-	if ((slices_num <= 0 || !slices_num) || !slice_path)
+	if((slices_num <= 0 || !slices_num) || !slice_path)
 		return 1
 	var/inaccurate = 0
-	if ( \
+	if( \
 			istype(W, /obj/item/weapon/kitchenknife) || \
 			istype(W, /obj/item/weapon/butch) || \
 			istype(W, /obj/item/weapon/scalpel) || \
 			istype(W, /obj/item/weapon/kitchen/utensil/knife) \
 		)
-	else if ( \
+	else if( \
 			istype(W, /obj/item/weapon/circular_saw) || \
 			istype(W, /obj/item/weapon/melee/energy/sword) && W:active || \
 			istype(W, /obj/item/weapon/melee/energy/blade) || \
@@ -141,12 +141,12 @@
 			istype(W, /obj/item/weapon/hatchet) \
 		)
 		inaccurate = 1
-	else if (W.w_class <= 2 && istype(src,/obj/item/weapon/reagent_containers/food/snacks/sliceable))
-		if (!iscarbon(user))
+	else if(W.w_class <= 2 && istype(src,/obj/item/weapon/reagent_containers/food/snacks/sliceable))
+		if(!iscarbon(user))
 			return 1
 		user << "\red You slip [W] inside [src]."
 		user.u_equip(W)
-		if ((user.client && user.s_active != src))
+		if((user.client && user.s_active != src))
 			user.client.screen -= W
 		W.dropped(user)
 		add_fingerprint(user)
@@ -154,7 +154,7 @@
 		return
 	else
 		return 1
-	if ( \
+	if( \
 			!isturf(src.loc) || \
 			!(locate(/obj/structure/table) in src.loc) && \
 			!(locate(/obj/machinery/optable) in src.loc) && \
@@ -163,7 +163,7 @@
 		user << "\red You cannot slice [src] here! You need a table or at least a tray to do it."
 		return 1
 	var/slices_lost = 0
-	if (!inaccurate)
+	if(!inaccurate)
 		user.visible_message( \
 			"\blue [user] slices \the [src]!", \
 			"\blue You slice \the [src]!" \
@@ -182,26 +182,26 @@
 	return
 
 /obj/item/weapon/reagent_containers/food/snacks/Del()
-	if (contents)
+	if(contents)
 		for(var/atom/movable/something in contents)
 			something.loc = get_turf(src)
 	..()
 
 /obj/item/weapon/reagent_containers/food/snacks/attack_animal(var/mob/M)
-	if (isanimal(M))
-		if (iscorgi(M))
-			if (bitecount == 0 || prob(50))
+	if(isanimal(M))
+		if(iscorgi(M))
+			if(bitecount == 0 || prob(50))
 				M.emote("nibbles away at the [src]")
 			bitecount++
-			if (bitecount >= 5)
+			if(bitecount >= 5)
 				var/sattisfaction_text = pick("burps from enjoyment", "yaps for more", "woofs twice", "looks at the area where the [src] was")
-				if (sattisfaction_text)
+				if(sattisfaction_text)
 					M.emote("[sattisfaction_text]")
 				del(src)
-		if (ismouse(M))
+		if(ismouse(M))
 			var/mob/living/simple_animal/mouse/N = M
 			N << text("\blue You nibble away at [src].")
-			if (prob(50))
+			if(prob(50))
 				N.visible_message("[N] nibbles away at [src].", "")
 			//N.emote("nibbles away at the [src]")
 			N.health = min(N.health + 1, N.maxHealth)
@@ -348,7 +348,7 @@
 		reagents.add_reagent("nutriment", 3)
 		reagents.add_reagent("sprinkles", 1)
 		src.bitesize = 3
-		if (prob(30))
+		if(prob(30))
 			src.icon_state = "donut2"
 			src.name = "frosted donut"
 			reagents.add_reagent("sprinkles", 2)
@@ -364,27 +364,27 @@
 		bitesize = 10
 		var/chaosselect = pick(1,2,3,4,5,6,7,8,9,10)
 		switch(chaosselect)
-			if (1)
+			if(1)
 				reagents.add_reagent("nutriment", 3)
-			if (2)
+			if(2)
 				reagents.add_reagent("capsaicin", 3)
-			if (3)
+			if(3)
 				reagents.add_reagent("frostoil", 3)
-			if (4)
+			if(4)
 				reagents.add_reagent("sprinkles", 3)
-			if (5)
+			if(5)
 				reagents.add_reagent("plasma", 3)
-			if (6)
+			if(6)
 				reagents.add_reagent("coco", 3)
-			if (7)
+			if(7)
 				reagents.add_reagent("slimejelly", 3)
-			if (8)
+			if(8)
 				reagents.add_reagent("banana", 3)
-			if (9)
+			if(9)
 				reagents.add_reagent("berryjuice", 3)
-			if (10)
+			if(10)
 				reagents.add_reagent("tricordrazine", 3)
-		if (prob(30))
+		if(prob(30))
 			src.icon_state = "donut2"
 			src.name = "Frosted Chaos Donut"
 			reagents.add_reagent("sprinkles", 2)
@@ -400,7 +400,7 @@
 		reagents.add_reagent("sprinkles", 1)
 		reagents.add_reagent("berryjuice", 5)
 		bitesize = 5
-		if (prob(30))
+		if(prob(30))
 			src.icon_state = "jdonut2"
 			src.name = "Frosted Jelly Donut"
 			reagents.add_reagent("sprinkles", 2)
@@ -415,7 +415,7 @@
 		reagents.add_reagent("sprinkles", 1)
 		reagents.add_reagent("slimejelly", 5)
 		bitesize = 5
-		if (prob(30))
+		if(prob(30))
 			src.icon_state = "jdonut2"
 			src.name = "Frosted Jelly Donut"
 			reagents.add_reagent("sprinkles", 2)
@@ -430,7 +430,7 @@
 		reagents.add_reagent("sprinkles", 1)
 		reagents.add_reagent("cherryjelly", 5)
 		bitesize = 5
-		if (prob(30))
+		if(prob(30))
 			src.icon_state = "jdonut2"
 			src.name = "Frosted Jelly Donut"
 			reagents.add_reagent("sprinkles", 2)
@@ -451,11 +451,11 @@
 		del(src)
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if (istype( W, /obj/item/toy/crayon ))
+		if(istype( W, /obj/item/toy/crayon ))
 			var/obj/item/toy/crayon/C = W
 			var/clr = C.colourName
 
-			if (!(clr in list("blue","green","mime","orange","purple","rainbow","red","yellow")))
+			if(!(clr in list("blue","green","mime","orange","purple","rainbow","red","yellow")))
 				usr << "\blue The egg refuses to take on this color!"
 				return
 
@@ -635,7 +635,7 @@
 
 	var/warm = 0
 	proc/cooltime() //Not working, derp?
-		if (src.warm)
+		if(src.warm)
 			spawn( 4200 )
 				src.warm = 0
 				src.reagents.del_reagent("tricordrazine")
@@ -765,13 +765,13 @@
 		reagents.add_reagent("nutriment", 8)
 		bitesize = 1
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if (istype(W,/obj/item/weapon/kitchen/utensil/fork))
-			if (W.icon_state == "forkloaded")
+		if(istype(W,/obj/item/weapon/kitchen/utensil/fork))
+			if(W.icon_state == "forkloaded")
 				user << "\red You already have omelette on your fork."
 				return
 			//W.icon = 'icons/obj/kitchen.dmi'
 			W.icon_state = "forkloaded"
-			/*if (herp)
+			/*if(herp)
 				world << "[user] takes a piece of omelette with his fork!"*/
 				//Why this unecessary check? Oh I know, because I'm bad >:C
 				// Yes, you are. You griefing my badmin toys. --rastaf0
@@ -780,7 +780,7 @@
 				"\blue You take a piece of omelette with your fork!" \
 			)
 			reagents.remove_reagent("nutriment", 1)
-			if (reagents.total_volume <= 0)
+			if(reagents.total_volume <= 0)
 				del(src)
 /*
  * Unsused.
@@ -908,7 +908,7 @@
 	icon_state = "plump_pie"
 	New()
 		..()
-		if (prob(10))
+		if(prob(10))
 			name = "exceptional plump pie"
 			desc = "Microwave is taken by a fey mood! It has cooked an exceptional plump pie!"
 			reagents.add_reagent("nutriment", 8)
@@ -993,7 +993,7 @@
 		reagents.add_reagent("nutriment", 2)
 		bitesize = 0.1 //this snack is supposed to be eating during looooong time. And this it not dinner food! --rastaf0
 	On_Consume()
-		if (prob(unpopped))	//lol ...what's the point?
+		if(prob(unpopped))	//lol ...what's the point?
 			usr << "\red You bite down on an un-popped kernel!"
 			unpopped = max(0, unpopped-1)
 		..()
@@ -1236,37 +1236,37 @@
 		..()
 		var/mysteryselect = pick(1,2,3,4,5,6,7,8,9,10)
 		switch(mysteryselect)
-			if (1)
+			if(1)
 				reagents.add_reagent("nutriment", 6)
 				reagents.add_reagent("capsaicin", 3)
 				reagents.add_reagent("tomatojuice", 2)
-			if (2)
+			if(2)
 				reagents.add_reagent("nutriment", 6)
 				reagents.add_reagent("frostoil", 3)
 				reagents.add_reagent("tomatojuice", 2)
-			if (3)
+			if(3)
 				reagents.add_reagent("nutriment", 5)
 				reagents.add_reagent("water", 5)
 				reagents.add_reagent("tricordrazine", 5)
-			if (4)
+			if(4)
 				reagents.add_reagent("nutriment", 5)
 				reagents.add_reagent("water", 10)
-			if (5)
+			if(5)
 				reagents.add_reagent("nutriment", 2)
 				reagents.add_reagent("banana", 10)
-			if (6)
+			if(6)
 				reagents.add_reagent("nutriment", 6)
 				reagents.add_reagent("blood", 10)
-			if (7)
+			if(7)
 				reagents.add_reagent("slimejelly", 10)
 				reagents.add_reagent("water", 10)
-			if (8)
+			if(8)
 				reagents.add_reagent("carbon", 10)
 				reagents.add_reagent("toxin", 10)
-			if (9)
+			if(9)
 				reagents.add_reagent("nutriment", 5)
 				reagents.add_reagent("tomatojuice", 10)
-			if (10)
+			if(10)
 				reagents.add_reagent("nutriment", 6)
 				reagents.add_reagent("tomatojuice", 5)
 				reagents.add_reagent("imidazoline", 5)
@@ -1281,7 +1281,7 @@
 		..()
 		reagents.add_reagent("water", 10)
 		bitesize = 5
-		if (prob(25))
+		if(prob(25))
 			src.desc = "A wish come true!"
 			reagents.add_reagent("nutriment", 8)
 
@@ -1322,7 +1322,7 @@
 		reagents.add_reagent("nutriment", 4)
 		baconbeacon = new /obj/item/device/radio/beacon/bacon(src)
 	On_Consume()
-		if (!reagents.total_volume)
+		if(!reagents.total_volume)
 			baconbeacon.loc = usr
 			baconbeacon.digest_delay()
 */
@@ -1339,14 +1339,14 @@
 		reagents.add_reagent("nutriment",10)
 
 	afterattack(obj/O as obj, mob/user as mob)
-		if (istype(O,/obj/structure/sink) && !wrapped)
+		if(istype(O,/obj/structure/sink) && !wrapped)
 			user << "You place [name] under a stream of water..."
 			loc = get_turf(O)
 			return Expand()
 		..()
 
 	attack_self(mob/user as mob)
-		if (wrapped)
+		if(wrapped)
 			Unwrap(user)
 
 	proc/Expand()
@@ -1379,14 +1379,14 @@
 		reagents.add_reagent("nutriment",10)
 
 	afterattack(obj/O as obj, mob/user as mob)
-		if (istype(O,/obj/structure/sink) && !wrapped)
+		if(istype(O,/obj/structure/sink) && !wrapped)
 			user << "You place [name] under a stream of water..."
 			loc = get_turf(O)
 			return Expand()
 		..()
 
 	attack_self(mob/user as mob)
-		if (wrapped)
+		if(wrapped)
 			Unwrap(user)
 
 	proc/Expand()
@@ -1414,14 +1414,14 @@
 		reagents.add_reagent("nutriment",10)
 
 	afterattack(obj/O as obj, mob/user as mob)
-		if (istype(O,/obj/structure/sink) && !wrapped)
+		if(istype(O,/obj/structure/sink) && !wrapped)
 			user << "You place [name] under a stream of water..."
 			loc = get_turf(O)
 			return Expand()
 		..()
 
 	attack_self(mob/user as mob)
-		if (wrapped)
+		if(wrapped)
 			Unwrap(user)
 
 	proc/Expand()
@@ -1448,14 +1448,14 @@
 		reagents.add_reagent("nutriment",10)
 
 	afterattack(obj/O as obj, mob/user as mob)
-		if (istype(O,/obj/structure/sink) && !wrapped)
+		if(istype(O,/obj/structure/sink) && !wrapped)
 			user << "You place [name] under a stream of water..."
 			loc = get_turf(O)
 			return Expand()
 		..()
 
 	attack_self(mob/user as mob)
-		if (wrapped)
+		if(wrapped)
 			Unwrap(user)
 
 	proc/Expand()
@@ -1856,7 +1856,7 @@
 	icon_state = "phelmbiscuit"
 	New()
 		..()
-		if (prob(10))
+		if(prob(10))
 			name = "exceptional plump helmet biscuit"
 			desc = "Microwave is taken by a fey mood! It has cooked an exceptional plump helmet biscuit!"
 			reagents.add_reagent("nutriment", 8)
@@ -1884,17 +1884,17 @@
 	New()
 		..()
 		switch(rand(1,6))
-			if (1)
+			if(1)
 				name = "borsch"
-			if (2)
+			if(2)
 				name = "bortsch"
-			if (3)
+			if(3)
 				name = "borstch"
-			if (4)
+			if(4)
 				name = "borsh"
-			if (5)
+			if(5)
 				name = "borshch"
-			if (6)
+			if(6)
 				name = "borscht"
 		reagents.add_reagent("nutriment", 8)
 		bitesize = 2
@@ -2371,29 +2371,29 @@
 	overlays = list()
 
 	// Set appropriate description
-	if ( open && pizza )
+	if( open && pizza )
 		desc = "A box suited for pizzas. It appears to have a [pizza.name] inside."
-	else if ( boxes.len > 0 )
+	else if( boxes.len > 0 )
 		desc = "A pile of boxes suited for pizzas. There appears to be [boxes.len + 1] boxes in the pile."
 
 		var/obj/item/pizzabox/topbox = boxes[boxes.len]
 		var/toptag = topbox.boxtag
-		if ( toptag != "" )
+		if( toptag != "" )
 			desc = "[desc] The box on top has a tag, it reads: '[toptag]'."
 	else
 		desc = "A box suited for pizzas."
 
-		if ( boxtag != "" )
+		if( boxtag != "" )
 			desc = "[desc] The box has a tag, it reads: '[boxtag]'."
 
 	// Icon states and overlays
-	if ( open )
-		if ( ismessy )
+	if( open )
+		if( ismessy )
 			icon_state = "pizzabox_messy"
 		else
 			icon_state = "pizzabox_open"
 
-		if ( pizza )
+		if( pizza )
 			var/image/pizzaimg = image("food.dmi", icon_state = pizza.icon_state)
 			pizzaimg.pixel_y = -3
 			overlays += pizzaimg
@@ -2402,15 +2402,15 @@
 	else
 		// Stupid code because byondcode sucks
 		var/doimgtag = 0
-		if ( boxes.len > 0 )
+		if( boxes.len > 0 )
 			var/obj/item/pizzabox/topbox = boxes[boxes.len]
-			if ( topbox.boxtag != "" )
+			if( topbox.boxtag != "" )
 				doimgtag = 1
 		else
-			if ( boxtag != "" )
+			if( boxtag != "" )
 				doimgtag = 1
 
-		if ( doimgtag )
+		if( doimgtag )
 			var/image/tagimg = image("food.dmi", icon_state = "pizzabox_tag")
 			tagimg.pixel_y = boxes.len * 3
 			overlays += tagimg
@@ -2419,7 +2419,7 @@
 
 /obj/item/pizzabox/attack_hand( mob/user as mob )
 
-	if ( open && pizza )
+	if( open && pizza )
 		user.put_in_hands( pizza )
 
 		user << "\red You take the [src.pizza] out of the [src]."
@@ -2427,8 +2427,8 @@
 		update_icon()
 		return
 
-	if ( boxes.len > 0 )
-		if ( user.get_inactive_hand() != src )
+	if( boxes.len > 0 )
+		if( user.get_inactive_hand() != src )
 			..()
 			return
 
@@ -2444,28 +2444,28 @@
 
 /obj/item/pizzabox/attack_self( mob/user as mob )
 
-	if ( boxes.len > 0 )
+	if( boxes.len > 0 )
 		return
 
 	open = !open
 
-	if ( open && pizza )
+	if( open && pizza )
 		ismessy = 1
 
 	update_icon()
 
 /obj/item/pizzabox/attackby( obj/item/I as obj, mob/user as mob )
-	if ( istype(I, /obj/item/pizzabox/) )
+	if( istype(I, /obj/item/pizzabox/) )
 		var/obj/item/pizzabox/box = I
 
-		if ( !box.open && !src.open )
+		if( !box.open && !src.open )
 			// Make a list of all boxes to be added
 			var/list/boxestoadd = list()
 			boxestoadd += box
 			for(var/obj/item/pizzabox/i in box.boxes)
 				boxestoadd += i
 
-			if ( (boxes.len+1) + boxestoadd.len <= 5 )
+			if( (boxes.len+1) + boxestoadd.len <= 5 )
 				user.drop_item()
 
 				box.loc = src
@@ -2483,9 +2483,9 @@
 
 		return
 
-	if ( istype(I, /obj/item/weapon/reagent_containers/food/snacks/sliceable/pizza/) ) // Long ass fucking object name
+	if( istype(I, /obj/item/weapon/reagent_containers/food/snacks/sliceable/pizza/) ) // Long ass fucking object name
 
-		if ( src.open )
+		if( src.open )
 			user.drop_item()
 			I.loc = src
 			src.pizza = I
@@ -2497,15 +2497,15 @@
 			user << "\red You try to push the [I] through the lid but it doesn't work!"
 		return
 
-	if ( istype(I, /obj/item/weapon/pen/) )
+	if( istype(I, /obj/item/weapon/pen/) )
 
-		if ( src.open )
+		if( src.open )
 			return
 
 		var/t = input("Enter what you want to add to the tag:", "Write", null, null) as text
 
 		var/obj/item/pizzabox/boxtotagto = src
-		if ( boxes.len > 0 )
+		if( boxes.len > 0 )
 			boxtotagto = boxes[boxes.len]
 
 		boxtotagto.boxtag = copytext("[boxtotagto.boxtag][t]", 1, 30)

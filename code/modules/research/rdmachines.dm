@@ -38,22 +38,22 @@
 
 /obj/machinery/r_n_d/proc/
 	shock(mob/user, prb)
-		if (stat & (BROKEN|NOPOWER))		// unpowered, no shock
+		if(stat & (BROKEN|NOPOWER))		// unpowered, no shock
 			return 0
-		if (!prob(prb))
+		if(!prob(prb))
 			return 0
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 		s.set_up(5, 1, src)
 		s.start()
-		if (electrocute_mob(user, get_area(src), src, 0.7))
+		if(electrocute_mob(user, get_area(src), src, 0.7))
 			return 1
 		else
 			return 0
 
 /obj/machinery/r_n_d/attack_hand(mob/user as mob)
-	if (shocked)
+	if(shocked)
 		shock(user,50)
-	if (opened)
+	if(opened)
 		var/dat as text
 		dat += "[src.name] Wires:<BR>"
 		for(var/wire in src.wires)
@@ -67,41 +67,41 @@
 
 
 /obj/machinery/r_n_d/Topic(href, href_list)
-	if (..())
+	if(..())
 		return
 	usr.set_machine(src)
 	src.add_fingerprint(usr)
-	if (href_list["pulse"])
+	if(href_list["pulse"])
 		var/temp_wire = href_list["wire"]
-		if (!istype(usr.get_active_hand(), /obj/item/device/multitool))
+		if(!istype(usr.get_active_hand(), /obj/item/device/multitool))
 			usr << "You need a multitool!"
 		else
-			if (src.wires[temp_wire])
+			if(src.wires[temp_wire])
 				usr << "You can't pulse a cut wire."
 			else
-				if (src.hack_wire == href_list["wire"])
+				if(src.hack_wire == href_list["wire"])
 					src.hacked = !src.hacked
 					spawn(100) src.hacked = !src.hacked
-				if (src.disable_wire == href_list["wire"])
+				if(src.disable_wire == href_list["wire"])
 					src.disabled = !src.disabled
 					src.shock(usr,50)
 					spawn(100) src.disabled = !src.disabled
-				if (src.shock_wire == href_list["wire"])
+				if(src.shock_wire == href_list["wire"])
 					src.shocked = !src.shocked
 					src.shock(usr,50)
 					spawn(100) src.shocked = !src.shocked
-	if (href_list["cut"])
-		if (!istype(usr.get_active_hand(), /obj/item/weapon/wirecutters))
+	if(href_list["cut"])
+		if(!istype(usr.get_active_hand(), /obj/item/weapon/wirecutters))
 			usr << "You need wirecutters!"
 		else
 			var/temp_wire = href_list["wire"]
 			wires[temp_wire] = !wires[temp_wire]
-			if (src.hack_wire == temp_wire)
+			if(src.hack_wire == temp_wire)
 				src.hacked = !src.hacked
-			if (src.disable_wire == temp_wire)
+			if(src.disable_wire == temp_wire)
 				src.disabled = !src.disabled
 				src.shock(usr,50)
-			if (src.shock_wire == temp_wire)
+			if(src.shock_wire == temp_wire)
 				src.shocked = !src.shocked
 				src.shock(usr,50)
 	src.updateUsrDialog()

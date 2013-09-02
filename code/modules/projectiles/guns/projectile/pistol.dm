@@ -29,7 +29,7 @@
 
 	afterattack(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, flag)
 		..()
-		if (!loaded.len && empty_mag)
+		if(!loaded.len && empty_mag)
 			empty_mag.loc = get_turf(src.loc)
 			empty_mag = null
 			playsound(user, 'sound/weapons/smg_empty_alarm.ogg', 40, 1)
@@ -69,7 +69,7 @@
 
 	afterattack(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, flag)
 		..()
-		if (!loaded.len && empty_mag)
+		if(!loaded.len && empty_mag)
 			empty_mag.loc = get_turf(src.loc)
 			empty_mag = null
 			playsound(user, 'sound/weapons/smg_empty_alarm.ogg', 40, 1)
@@ -78,7 +78,7 @@
 
 	update_icon()
 		..()
-		if (empty_mag)
+		if(empty_mag)
 			icon_state = "gyropistolloaded"
 		else
 			icon_state = "gyropistol"
@@ -103,15 +103,15 @@
 
 /obj/item/weapon/gun/projectile/pistol/afterattack(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, flag)
 	..()
-	if (!loaded.len && empty_mag)
+	if(!loaded.len && empty_mag)
 		empty_mag.loc = get_turf(src.loc)
 		empty_mag = null
 	return
 
 /obj/item/weapon/gun/projectile/pistol/attack_hand(mob/user as mob)
-	if (loc == user)
-		if (silenced)
-			if (user.l_hand != src && user.r_hand != src)
+	if(loc == user)
+		if(silenced)
+			if(user.l_hand != src && user.r_hand != src)
 				..()
 				return
 			user << "<span class='notice'>You unscrew [silenced] from [src].</span>"
@@ -124,8 +124,8 @@
 
 
 /obj/item/weapon/gun/projectile/pistol/attackby(obj/item/I as obj, mob/user as mob)
-	if (istype(I, /obj/item/weapon/silencer))
-		if (user.l_hand != src && user.r_hand != src)	//if we're not in his hands
+	if(istype(I, /obj/item/weapon/silencer))
+		if(user.l_hand != src && user.r_hand != src)	//if we're not in his hands
 			user << "<span class='notice'>You'll need [src] in your hands to do that.</span>"
 			return
 		user.drop_item()
@@ -139,7 +139,7 @@
 
 /obj/item/weapon/gun/projectile/pistol/update_icon()
 	..()
-	if (silenced)
+	if(silenced)
 		icon_state = "pistol-silencer"
 	else
 		icon_state = "pistol"

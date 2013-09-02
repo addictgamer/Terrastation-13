@@ -34,23 +34,23 @@
 	return
 
 /mob/living/simple_animal/vox/armalis/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	if (O.force)
-		if (O.force >= 25)
+	if(O.force)
+		if(O.force >= 25)
 			var/damage = O.force
-			if (O.damtype == HALLOSS)
+			if(O.damtype == HALLOSS)
 				damage = 0
 			health -= damage
 			for(var/mob/M in viewers(src, null))
-				if ((M.client && !( M.blinded )))
+				if((M.client && !( M.blinded )))
 					M.show_message("\red \b [src] has been attacked with the [O] by [user]. ")
 		else
 			for(var/mob/M in viewers(src, null))
-				if ((M.client && !( M.blinded )))
+				if((M.client && !( M.blinded )))
 					M.show_message("\red \b The [O] bounces harmlessly off of [src]. ")
 	else
 		usr << "\red This weapon is ineffective, it does no damage."
 		for(var/mob/M in viewers(src, null))
-			if ((M.client && !( M.blinded )))
+			if((M.client && !( M.blinded )))
 				M.show_message("\red [user] gently taps [src] with the [O]. ")
 
 /mob/living/simple_animal/vox/armalis/verb/fire_quill(mob/target as mob in oview())
@@ -59,12 +59,12 @@
 	set desc = "Fires a viciously pointed quill at a high speed."
 	set category = "Alien"
 
-	if (quills<=0)
+	if(quills<=0)
 		return
 
 	src << "\red You launch a razor-sharp quill at [target]!"
 	for(var/mob/O in oviewers())
-		if ((O.client && !( O.blinded )))
+		if((O.client && !( O.blinded )))
 			O << "\red [src] launches a razor-sharp quill at [target]!"
 
 	var/obj/item/weapon/arrow/quill/Q = new(loc)
@@ -89,19 +89,19 @@
 	target = input("Select a creature!", "Speak to creature", null, null) as null|anything in targets
 	text = input("What would you like to say?", "Speak to creature", null, null)
 
-	if (!target || !text)
+	if(!target || !text)
 		return
 
 	var/mob/M = targets[target]
 
-	if (istype(M, /mob/dead/observer) || M.stat == DEAD)
+	if(istype(M, /mob/dead/observer) || M.stat == DEAD)
 		src << "Not even the armalis can speak to the dead."
 		return
 
 	M << "\blue Like lead slabs crashing into the ocean, alien thoughts drop into your mind: [text]"
-	if (istype(M,/mob/living/carbon/human))
+	if(istype(M,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
-		if (H.species.name == "Vox")
+		if(H.species.name == "Vox")
 			return
 		H << "\red Your nose begins to bleed..."
 		H.drip(1)
@@ -112,7 +112,7 @@
 	set desc = "Give voice to a psychic shriek."
 
 /mob/living/simple_animal/vox/armalis/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	if (istype(O,/obj/item/vox/armalis_armour))
+	if(istype(O,/obj/item/vox/armalis_armour))
 		user.drop_item()
 		armour = O
 		speed = 1
@@ -122,7 +122,7 @@
 		visible_message("\blue [src] is quickly outfitted in [O] by [user].","\blue You quickly outfit [src] in [O].")
 		regenerate_icons()
 		return
-	if (istype(O,/obj/item/vox/armalis_amp))
+	if(istype(O,/obj/item/vox/armalis_amp))
 		user.drop_item()
 		amp = O
 		O.loc = src
@@ -134,11 +134,11 @@
 /mob/living/simple_animal/vox/armalis/regenerate_icons()
 
 	overlays = list()
-	if (armour)
+	if(armour)
 		var/icon/armour = image('icons/mob/vox.dmi',"armour")
 		speed = 1
 		overlays += armour
-	if (amp)
+	if(amp)
 		var/icon/amp = image('icons/mob/vox.dmi',"amplifier")
 		overlays += amp
 	return

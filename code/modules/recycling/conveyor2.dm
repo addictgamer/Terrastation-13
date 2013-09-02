@@ -22,61 +22,61 @@
 	// create a conveyor
 /obj/machinery/conveyor/New(loc, newdir, on = 0)
 	..(loc)
-	if (newdir)
+	if(newdir)
 		dir = newdir
 	switch(dir)
-		if (NORTH)
+		if(NORTH)
 			forwards = NORTH
 			backwards = SOUTH
-		if (SOUTH)
+		if(SOUTH)
 			forwards = SOUTH
 			backwards = NORTH
-		if (EAST)
+		if(EAST)
 			forwards = EAST
 			backwards = WEST
-		if (WEST)
+		if(WEST)
 			forwards = WEST
 			backwards = EAST
-		if (NORTHEAST)
+		if(NORTHEAST)
 			forwards = EAST
 			backwards = SOUTH
-		if (NORTHWEST)
+		if(NORTHWEST)
 			forwards = SOUTH
 			backwards = WEST
-		if (SOUTHEAST)
+		if(SOUTHEAST)
 			forwards = NORTH
 			backwards = EAST
-		if (SOUTHWEST)
+		if(SOUTHWEST)
 			forwards = WEST
 			backwards = NORTH
-	if (on)
+	if(on)
 		operating = 1
 		setmove()
 
 /obj/machinery/conveyor/proc/setmove()
-	if (operating == 1)
+	if(operating == 1)
 		movedir = forwards
 	else
 		movedir = backwards
 	update()
 
 /obj/machinery/conveyor/proc/update()
-	if (stat & BROKEN)
+	if(stat & BROKEN)
 		icon_state = "conveyor-broken"
 		operating = 0
 		return
-	if (!operable)
+	if(!operable)
 		operating = 0
-	if (stat & NOPOWER)
+	if(stat & NOPOWER)
 		operating = 0
 	icon_state = "conveyor[operating]"
 
 	// machine process
 	// move items to the target location
 /obj/machinery/conveyor/process()
-	if (stat & (BROKEN | NOPOWER))
+	if(stat & (BROKEN | NOPOWER))
 		return
-	if (!operating)
+	if(!operating)
 		return
 	use_power(100)
 
@@ -84,29 +84,29 @@
 	spawn(1)	// slight delay to prevent infinite propagation due to map order	//TODO: please no spawn() in process(). It's a very bad idea
 		var/items_moved = 0
 		for(var/atom/movable/A in affecting)
-			if (!A.anchored)
-				if (A.loc == src.loc) // prevents the object from being affected if it's not currently here.
+			if(!A.anchored)
+				if(A.loc == src.loc) // prevents the object from being affected if it's not currently here.
 					step(A,movedir)
 					items_moved++
-			if (items_moved >= 10)
+			if(items_moved >= 10)
 				break
 
 // attack with item, place item on conveyor
 /obj/machinery/conveyor/attackby(var/obj/item/I, mob/user)
-	if (isrobot(user))	return //Carn: fix for borgs dropping their modules on conveyor belts
+	if(isrobot(user))	return //Carn: fix for borgs dropping their modules on conveyor belts
 	user.drop_item()
-	if (I && I.loc)	I.loc = src.loc
+	if(I && I.loc)	I.loc = src.loc
 	return
 
 // attack with hand, move pulled object onto conveyor
 /obj/machinery/conveyor/attack_hand(mob/user as mob)
-	if ((!( user.canmove ) || user.restrained() || !( user.pulling )))
+	if((!( user.canmove ) || user.restrained() || !( user.pulling )))
 		return
-	if (user.pulling.anchored)
+	if(user.pulling.anchored)
 		return
-	if ((user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1))
+	if((user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1))
 		return
-	if (ismob(user.pulling))
+	if(ismob(user.pulling))
 		var/mob/M = user.pulling
 		M.stop_pulling()
 		step(user.pulling, get_dir(user.pulling.loc, src))
@@ -124,11 +124,11 @@
 	update()
 
 	var/obj/machinery/conveyor/C = locate() in get_step(src, dir)
-	if (C)
+	if(C)
 		C.set_operable(dir, id, 0)
 
 	C = locate() in get_step(src, turn(dir,180))
-	if (C)
+	if(C)
 		C.set_operable(turn(dir,180), id, 0)
 
 
@@ -136,13 +136,13 @@
 
 /obj/machinery/conveyor/proc/set_operable(stepdir, match_id, op)
 
-	if (id != match_id)
+	if(id != match_id)
 		return
 	operable = op
 
 	update()
 	var/obj/machinery/conveyor/C = locate() in get_step(src, stepdir)
-	if (C)
+	if(C)
 		C.set_operable(stepdir, id, op)
 
 /*
@@ -183,15 +183,15 @@
 	spawn(5)		// allow map load
 		conveyors = list()
 		for(var/obj/machinery/conveyor/C in world)
-			if (C.id == id)
+			if(C.id == id)
 				conveyors += C
 
 // update the icon depending on the position
 
 /obj/machinery/conveyor_switch/proc/update()
-	if (position<0)
+	if(position<0)
 		icon_state = "switch-rev"
-	else if (position>0)
+	else if(position>0)
 		icon_state = "switch-fwd"
 	else
 		icon_state = "switch-off"
@@ -201,7 +201,7 @@
 // if the switch changed, update the linked conveyors
 
 /obj/machinery/conveyor_switch/process()
-	if (!operated)
+	if(!operated)
 		return
 	operated = 0
 
@@ -211,8 +211,8 @@
 
 // attack with hand, switch position
 /obj/machinery/conveyor_switch/attack_hand(mob/user)
-	if (position == 0)
-		if (last_pos < 0)
+	if(position == 0)
+		if(last_pos < 0)
 			position = 1
 			last_pos = 0
 		else
@@ -227,7 +227,7 @@
 
 	// find any switches with same id as this one, and set their positions to match us
 	for(var/obj/machinery/conveyor_switch/S in world)
-		if (S.id == src.id)
+		if(S.id == src.id)
 			S.position = position
 			S.update()
 
@@ -237,7 +237,7 @@
 
 // attack with hand, switch position
 /obj/machinery/conveyor_switch/oneway/attack_hand(mob/user)
-	if (position == 0)
+	if(position == 0)
 		position = convdir
 	else
 		position = 0
@@ -247,6 +247,6 @@
 
 	// find any switches with same id as this one, and set their positions to match us
 	for(var/obj/machinery/conveyor_switch/S in world)
-		if (S.id == src.id)
+		if(S.id == src.id)
 			S.position = position
 			S.update()

@@ -23,37 +23,37 @@
 
 
 /obj/item/weapon/flamethrower/Del()
-	if (weldtool)
+	if(weldtool)
 		del(weldtool)
-	if (igniter)
+	if(igniter)
 		del(igniter)
-	if (ptank)
+	if(ptank)
 		del(ptank)
 	..()
 	return
 
 
 /obj/item/weapon/flamethrower/process()
-	if (!lit)
+	if(!lit)
 		processing_objects.Remove(src)
 		return null
 	var/turf/location = loc
-	if (istype(location, /mob/))
+	if(istype(location, /mob/))
 		var/mob/M = location
-		if (M.l_hand == src || M.r_hand == src)
+		if(M.l_hand == src || M.r_hand == src)
 			location = M.loc
-	if (isturf(location)) //start a fire if possible
+	if(isturf(location)) //start a fire if possible
 		location.hotspot_expose(700, 2)
 	return
 
 
 /obj/item/weapon/flamethrower/update_icon()
 	overlays.Cut()
-	if (igniter)
+	if(igniter)
 		overlays += "+igniter[status]"
-	if (ptank)
+	if(ptank)
 		overlays += "+ptank"
-	if (lit)
+	if(lit)
 		overlays += "+lit"
 		item_state = "flamethrower_1"
 	else
@@ -62,47 +62,47 @@
 
 /obj/item/weapon/flamethrower/afterattack(atom/target, mob/user, flag)
 	// Make sure our user is still holding us
-	if (user && user.get_active_hand() == src)
+	if(user && user.get_active_hand() == src)
 		var/turf/target_turf = get_turf(target)
-		if (target_turf)
+		if(target_turf)
 			var/turflist = getline(user, target_turf)
 			flame_turf(turflist)
 
 /obj/item/weapon/flamethrower/attackby(obj/item/W as obj, mob/user as mob)
-	if (user.stat || user.restrained() || user.lying)	return
-	if (iswrench(W) && !status)//Taking this apart
+	if(user.stat || user.restrained() || user.lying)	return
+	if(iswrench(W) && !status)//Taking this apart
 		var/turf/T = get_turf(src)
-		if (weldtool)
+		if(weldtool)
 			weldtool.loc = T
 			weldtool = null
-		if (igniter)
+		if(igniter)
 			igniter.loc = T
 			igniter = null
-		if (ptank)
+		if(ptank)
 			ptank.loc = T
 			ptank = null
 		new /obj/item/stack/rods(T)
 		del(src)
 		return
 
-	if (isscrewdriver(W) && igniter && !lit)
+	if(isscrewdriver(W) && igniter && !lit)
 		status = !status
 		user << "<span class='notice'>[igniter] is now [status ? "secured" : "unsecured"]!</span>"
 		update_icon()
 		return
 
-	if (isigniter(W))
+	if(isigniter(W))
 		var/obj/item/device/assembly/igniter/I = W
-		if (I.secured)	return
-		if (igniter)		return
+		if(I.secured)	return
+		if(igniter)		return
 		user.drop_item()
 		I.loc = src
 		igniter = I
 		update_icon()
 		return
 
-	if (istype(W,/obj/item/weapon/tank/plasma))
-		if (ptank)
+	if(istype(W,/obj/item/weapon/tank/plasma))
+		if(ptank)
 			user << "<span class='notice'>There appears to already be a plasma tank loaded in [src]!</span>"
 			return
 		user.drop_item()
@@ -111,14 +111,14 @@
 		update_icon()
 		return
 
-	if (istype(W, /obj/item/device/analyzer) && ptank)
+	if(istype(W, /obj/item/device/analyzer) && ptank)
 		var/obj/item/weapon/icon = src
 		user.visible_message("<span class='notice'>[user] has used the analyzer on \icon[icon]</span>")
 		var/pressure = ptank.air_contents.return_pressure()
 		var/total_moles = ptank.air_contents.total_moles()
 
 		user << "\blue Results of analysis of \icon[icon]"
-		if (total_moles>0)
+		if(total_moles>0)
 			var/o2_concentration = ptank.air_contents.oxygen/total_moles
 			var/n2_concentration = ptank.air_contents.nitrogen/total_moles
 			var/co2_concentration = ptank.air_contents.carbon_dioxide/total_moles
@@ -131,7 +131,7 @@
 			user << "\blue Oxygen: [round(o2_concentration*100)]%"
 			user << "\blue CO2: [round(co2_concentration*100)]%"
 			user << "\blue Plasma: [round(plasma_concentration*100)]%"
-			if (unknown_concentration>0.01)
+			if(unknown_concentration>0.01)
 				user << "\red Unknown: [round(unknown_concentration*100)]%"
 			user << "\blue Temperature: [round(ptank.air_contents.temperature-T0C)]&deg;C"
 		else
@@ -142,9 +142,9 @@
 
 
 /obj/item/weapon/flamethrower/attack_self(mob/user as mob)
-	if (user.stat || user.restrained() || user.lying)	return
+	if(user.stat || user.restrained() || user.lying)	return
 	user.set_machine(src)
-	if (!ptank)
+	if(!ptank)
 		user << "<span class='notice'>Attach a plasma tank first!</span>"
 		return
 	var/dat = text("<TT><B>Flamethrower (<A HREF='?src=\ref[src];light=1'>[lit ? "<font color='red'>Lit</font>" : "Unlit"]</a>)</B><BR>\n Tank Pressure: [ptank.air_contents.return_pressure()]<BR>\nAmount to throw: <A HREF='?src=\ref[src];amount=-100'>-</A> <A HREF='?src=\ref[src];amount=-10'>-</A> <A HREF='?src=\ref[src];amount=-1'>-</A> [throw_amount] <A HREF='?src=\ref[src];amount=1'>+</A> <A HREF='?src=\ref[src];amount=10'>+</A> <A HREF='?src=\ref[src];amount=100'>+</A><BR>\n<A HREF='?src=\ref[src];remove=1'>Remove plasmatank</A> - <A HREF='?src=\ref[src];close=1'>Close</A></TT>")
@@ -154,31 +154,31 @@
 
 
 /obj/item/weapon/flamethrower/Topic(href,href_list[])
-	if (href_list["close"])
+	if(href_list["close"])
 		usr.unset_machine()
 		usr << browse(null, "window=flamethrower")
 		return
-	if (usr.stat || usr.restrained() || usr.lying)	return
+	if(usr.stat || usr.restrained() || usr.lying)	return
 	usr.set_machine(src)
-	if (href_list["light"])
-		if (!ptank)	return
-		if (ptank.air_contents.toxins < 1)	return
-		if (!status)	return
+	if(href_list["light"])
+		if(!ptank)	return
+		if(ptank.air_contents.toxins < 1)	return
+		if(!status)	return
 		lit = !lit
-		if (lit)
+		if(lit)
 			processing_objects.Add(src)
-	if (href_list["amount"])
+	if(href_list["amount"])
 		throw_amount = throw_amount + text2num(href_list["amount"])
 		throw_amount = max(50, min(5000, throw_amount))
-	if (href_list["remove"])
-		if (!ptank)	return
+	if(href_list["remove"])
+		if(!ptank)	return
 		usr.put_in_hands(ptank)
 		ptank = null
 		lit = 0
 		usr.unset_machine()
 		usr << browse(null, "window=flamethrower")
 	for(var/mob/M in viewers(1, loc))
-		if ((M.client && M.machine == src))
+		if((M.client && M.machine == src))
 			attack_self(M)
 	update_icon()
 	return
@@ -186,22 +186,22 @@
 
 //Called from turf.dm turf/dblclick
 /obj/item/weapon/flamethrower/proc/flame_turf(turflist)
-	if (!lit || operating)	return
+	if(!lit || operating)	return
 	operating = 1
 	for(var/turf/T in turflist)
-		if (T.density || istype(T, /turf/space))
+		if(T.density || istype(T, /turf/space))
 			break
-		if (!previousturf && length(turflist)>1)
+		if(!previousturf && length(turflist)>1)
 			previousturf = get_turf(src)
 			continue	//so we don't burn the tile we be standin on
-		if (previousturf && LinkBlocked(previousturf, T))
+		if(previousturf && LinkBlocked(previousturf, T))
 			break
 		ignite_turf(T)
 		sleep(1)
 	previousturf = null
 	operating = 0
 	for(var/mob/M in viewers(1, loc))
-		if ((M.client && M.machine == src))
+		if((M.client && M.machine == src))
 			attack_self(M)
 	return
 

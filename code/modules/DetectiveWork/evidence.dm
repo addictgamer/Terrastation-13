@@ -9,35 +9,35 @@
 	w_class = 1
 
 /obj/item/weapon/evidencebag/afterattack(obj/item/I, mob/user as mob)
-	if (!in_range(I, user))
+	if(!in_range(I, user))
 		return
 
-	if (!istype(I) || I.anchored == 1)
+	if(!istype(I) || I.anchored == 1)
 		return ..()
 
-	if (istype(I, /obj/item/weapon/storage))
+	if(istype(I, /obj/item/weapon/storage))
 		return ..()
 
-	if (istype(I, /obj/item/weapon/evidencebag))
+	if(istype(I, /obj/item/weapon/evidencebag))
 		user << "<span class='notice'>You find putting an evidence bag in another evidence bag to be slightly absurd.</span>"
 		return
 
-	if (I.w_class > 3)
+	if(I.w_class > 3)
 		user << "<span class='notice'>[I] won't fit in [src].</span>"
 		return
 
-	if (contents.len)
+	if(contents.len)
 		user << "<span class='notice'>[src] already has something inside it.</span>"
 		return ..()
 
-	if (!isturf(I.loc)) //If it isn't on the floor. Do some checks to see if it's in our hands or a box. Otherwise give up.
-		if (istype(I.loc,/obj/item/weapon/storage))	//in a container.
+	if(!isturf(I.loc)) //If it isn't on the floor. Do some checks to see if it's in our hands or a box. Otherwise give up.
+		if(istype(I.loc,/obj/item/weapon/storage))	//in a container.
 			var/obj/item/weapon/storage/U = I.loc
 			user.client.screen -= I
 			U.contents.Remove(I)
-		else if (user.l_hand == I)					//in a hand
+		else if(user.l_hand == I)					//in a hand
 			user.drop_l_hand()
-		else if (user.r_hand == I)					//in a hand
+		else if(user.r_hand == I)					//in a hand
 			user.drop_r_hand()
 		else
 			return
@@ -64,7 +64,7 @@
 
 
 /obj/item/weapon/evidencebag/attack_self(mob/user as mob)
-	if (contents.len)
+	if(contents.len)
 		var/obj/item/I = contents[1]
 		user.visible_message("[user] takes [I] out of [src]", "You take [I] out of [src].",\
 		"You hear someone rustle around in a plastic bag, and remove something.")

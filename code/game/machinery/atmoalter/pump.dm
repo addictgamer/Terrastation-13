@@ -14,28 +14,28 @@
 /obj/machinery/portable_atmospherics/pump/update_icon()
 	src.overlays = 0
 
-	if (on)
+	if(on)
 		icon_state = "psiphon:1"
 	else
 		icon_state = "psiphon:0"
 
-	if (holding)
+	if(holding)
 		overlays += "siphon-open"
 
-	if (connected_port)
+	if(connected_port)
 		overlays += "siphon-connector"
 
 	return
 
 /obj/machinery/portable_atmospherics/pump/emp_act(severity)
-	if (stat & (BROKEN|NOPOWER))
+	if(stat & (BROKEN|NOPOWER))
 		..(severity)
 		return
 
-	if (prob(50/severity))
+	if(prob(50/severity))
 		on = !on
 
-	if (prob(100/severity))
+	if(prob(100/severity))
 		direction_out = !direction_out
 
 	target_pressure = rand(0,1300)
@@ -45,24 +45,24 @@
 
 /obj/machinery/portable_atmospherics/pump/process()
 	..()
-	if (on)
+	if(on)
 		var/datum/gas_mixture/environment
-		if (holding)
+		if(holding)
 			environment = holding.air_contents
 		else
 			environment = loc.return_air()
-		if (direction_out)
+		if(direction_out)
 			var/pressure_delta = target_pressure - environment.return_pressure()
 			//Can not have a pressure delta that would cause environment pressure > tank pressure
 
 			var/transfer_moles = 0
-			if (air_contents.temperature > 0)
+			if(air_contents.temperature > 0)
 				transfer_moles = pressure_delta*environment.volume/(air_contents.temperature * R_IDEAL_GAS_EQUATION)
 
 				//Actually transfer the gas
 				var/datum/gas_mixture/removed = air_contents.remove(transfer_moles)
 
-				if (holding)
+				if(holding)
 					environment.merge(removed)
 				else
 					loc.assume_air(removed)
@@ -71,12 +71,12 @@
 			//Can not have a pressure delta that would cause environment pressure > tank pressure
 
 			var/transfer_moles = 0
-			if (environment.temperature > 0)
+			if(environment.temperature > 0)
 				transfer_moles = pressure_delta*air_contents.volume/(environment.temperature * R_IDEAL_GAS_EQUATION)
 
 				//Actually transfer the gas
 				var/datum/gas_mixture/removed
-				if (holding)
+				if(holding)
 					removed = environment.remove(transfer_moles)
 				else
 					removed = loc.remove_air(transfer_moles)
@@ -101,7 +101,7 @@
 	user.set_machine(src)
 	var/holding_text
 
-	if (holding)
+	if(holding)
 		holding_text = {"<BR><B>Tank Pressure</B>: [holding.air_contents.return_pressure()] KPa<BR>
 <A href='?src=\ref[src];remove_tank=1'>Remove Tank</A><BR>
 "}
@@ -124,24 +124,24 @@ Target Pressure: <A href='?src=\ref[src];pressure_adj=-1000'>-</A> <A href='?src
 
 /obj/machinery/portable_atmospherics/pump/Topic(href, href_list)
 	..()
-	if (usr.stat || usr.restrained())
+	if(usr.stat || usr.restrained())
 		return
 
-	if (((get_dist(src, usr) <= 1) && istype(src.loc, /turf)))
+	if(((get_dist(src, usr) <= 1) && istype(src.loc, /turf)))
 		usr.set_machine(src)
 
-		if (href_list["power"])
+		if(href_list["power"])
 			on = !on
 
-		if (href_list["direction"])
+		if(href_list["direction"])
 			direction_out = !direction_out
 
-		if (href_list["remove_tank"])
-			if (holding)
+		if(href_list["remove_tank"])
+			if(holding)
 				holding.loc = loc
 				holding = null
 
-		if (href_list["pressure_adj"])
+		if(href_list["pressure_adj"])
 			var/diff = text2num(href_list["pressure_adj"])
 			target_pressure = min(10*ONE_ATMOSPHERE, max(0, target_pressure+diff))
 

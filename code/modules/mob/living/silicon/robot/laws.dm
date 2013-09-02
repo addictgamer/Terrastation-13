@@ -7,19 +7,19 @@
 	laws_sanity_check()
 	var/who
 
-	if (everyone)
+	if(everyone)
 		who = world
 	else
 		who = src
-	if (lawupdate)
-		if (connected_ai)
-			if (connected_ai.stat || connected_ai.control_disabled)
+	if(lawupdate)
+		if(connected_ai)
+			if(connected_ai.stat || connected_ai.control_disabled)
 				src << "<b>AI signal lost, unable to sync laws.</b>"
 
 			else
 				lawsync()
 				src << "<b>Laws synced with AI, be sure to note any changes.</b>"
-				if (mind && mind.special_role == "traitor" && mind.original == src)
+				if(mind && mind.special_role == "traitor" && mind.original == src)
 					src << "<b>Remember, your AI does NOT share or know about your law 0."
 		else
 			src << "<b>No AI selected to sync laws with, disabling lawsync protocol.</b>"
@@ -27,11 +27,11 @@
 
 	who << "<b>Obey these laws:</b>"
 	laws.show_laws(who)
-	if (mind && (mind.special_role == "traitor" && mind.original == src) && connected_ai)
+	if(mind && (mind.special_role == "traitor" && mind.original == src) && connected_ai)
 		who << "<b>Remember, [connected_ai.name] is technically your master, but your objective comes first.</b>"
-	else if (connected_ai)
+	else if(connected_ai)
 		who << "<b>Remember, [connected_ai.name] is your master, other AIs can be ignored.</b>"
-	else if (emagged)
+	else if(emagged)
 		who << "<b>Remember, you are not required to listen to the AI.</b>"
 	else
 		who << "<b>Remember, you are not bound to any AI, you are not required to listen to them.</b>"
@@ -41,15 +41,15 @@
 	laws_sanity_check()
 	var/datum/ai_laws/master = connected_ai ? connected_ai.laws : null
 	var/temp
-	if (master)
+	if(master)
 		laws.ion.len = master.ion.len
 		for (var/index = 1, index <= master.ion.len, index++)
 			temp = master.ion[index]
-			if (length(temp) > 0)
+			if(length(temp) > 0)
 				laws.ion[index] = temp
 
-		if (!is_special_character(src) || mind.original != src)
-			if (master.zeroth_borg) //If the AI has a defined law zero specifically for its borgs, give it that one, otherwise give it the same one. --NEO
+		if(!is_special_character(src) || mind.original != src)
+			if(master.zeroth_borg) //If the AI has a defined law zero specifically for its borgs, give it that one, otherwise give it the same one. --NEO
 				temp = master.zeroth_borg
 			else
 				temp = master.zeroth
@@ -58,18 +58,18 @@
 		laws.inherent.len = master.inherent.len
 		for (var/index = 1, index <= master.inherent.len, index++)
 			temp = master.inherent[index]
-			if (length(temp) > 0)
+			if(length(temp) > 0)
 				laws.inherent[index] = temp
 
 		laws.supplied.len = master.supplied.len
 		for (var/index = 1, index <= master.supplied.len, index++)
 			temp = master.supplied[index]
-			if (length(temp) > 0)
+			if(length(temp) > 0)
 				laws.supplied[index] = temp
 	return
 
 /mob/living/silicon/robot/proc/laws_sanity_check()
-	if (!laws)
+	if(!laws)
 		laws = new base_law_type
 
 /mob/living/silicon/robot/proc/set_zeroth_law(var/law)

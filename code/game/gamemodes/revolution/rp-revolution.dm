@@ -1,4 +1,4 @@
-// To add a rev to the list of revolutionaries, make sure it's rev (with if (ticker.mode.name == "revolution)),
+// To add a rev to the list of revolutionaries, make sure it's rev (with if(ticker.mode.name == "revolution)),
 // then call ticker.mode:add_revolutionary(_THE_PLAYERS_MIND_)
 // nothing else needs to be done, as that proc will check if they are a valid target.
 // Just make sure the converter is a head before you call it!
@@ -43,7 +43,7 @@
 		intercepttext += i_text.build(A, pick(head_revolutionaries))
 
 	for (var/obj/machinery/computer/communications/comm in world)
-		if (!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
+		if(!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
 			var/obj/item/weapon/paper/intercept = new /obj/item/weapon/paper( comm.loc )
 			intercept.name = "paper - 'Cent. Com. Status Summary'"
 			intercept.info = intercepttext
@@ -61,13 +61,13 @@
 	heads = get_living_heads()
 	var/rev_number = 0
 
-	if (!revs_possible || !heads)
+	if(!revs_possible || !heads)
 		world << "<B> \red Not enough players for RP revolution game mode. Restarting world in 5 seconds."
 		sleep(50)
 		world.Reboot()
 		return
 
-	if (revs_possible.len >= 3)
+	if(revs_possible.len >= 3)
 		rev_number = 3
 	else
 		rev_number = revs_possible.len
@@ -114,7 +114,7 @@
 		intercepttext += i_text.build(A, pick(head_revolutionaries))
 
 	for (var/obj/machinery/computer/communications/comm in world)
-		if (!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
+		if(!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
 			var/obj/item/weapon/paper/intercept = new /obj/item/weapon/paper( comm.loc )
 			intercept.name = "paper - 'Cent. Com. Status Summary'"
 			intercept.info = intercepttext
@@ -132,7 +132,7 @@
 			intercepttext += "<br>[revmind.current.real_name]"
 		intercepttext += "<br>Please arrest them at once."
 		for (var/obj/machinery/computer/communications/comm in world)
-			if (!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
+			if(!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
 				var/obj/item/weapon/paper/intercept = new /obj/item/weapon/paper( comm.loc )
 				intercept.name = "paper - 'Cent. Com. Status Summary'"
 				intercept.info = intercepttext
@@ -147,31 +147,31 @@
 	. = ""
 	for(var/i = 1, i <= head_revolutionaries.len,i++)
 		var/datum/mind/revmind = head_revolutionaries[i]
-		if (i < head_revolutionaries.len)
+		if(i < head_revolutionaries.len)
 			. += "[revmind.current.real_name],"
 		else
 			. += "and [revmind.current.real_name]"
 
 ///datum/game_mode/rp_revolution/proc/equip_revolutionary(mob/living/carbon/human/rev_mob)
-//	if (!istype(rev_mob))
+//	if(!istype(rev_mob))
 //		return
 
 //	spawn (100)
-//		if (rev_mob.r_store)
+//		if(rev_mob.r_store)
 //			rev_mob.equip_if_possible(new /obj/item/weapon/paper/communist_manifesto(rev_mob), rev_mob.slot_l_store)
-//		if (rev_mob.l_store)
+//		if(rev_mob.l_store)
 //			rev_mob.equip_if_possible(new /obj/item/weapon/paper/communist_manifesto(rev_mob), rev_mob.slot_r_store)
 
 
 /datum/game_mode/rp_revolution/check_win()
-	if (check_rev_victory())
+	if(check_rev_victory())
 		finished = 1
-	else if (check_heads_victory())
+	else if(check_heads_victory())
 		finished = 2
 	return
 
 /datum/game_mode/rp_revolution/check_finished()
-	if (finished != 0)
+	if(finished != 0)
 		return 1
 	else
 		return 0
@@ -180,20 +180,20 @@
 	var/list/candidates = list()
 
 	for(var/mob/living/carbon/human/player in world)
-		if (player.client)
-			if (player.client.be_syndicate & BE_REV)
+		if(player.client)
+			if(player.client.be_syndicate & BE_REV)
 				candidates += player.mind
 
-	if (candidates.len < 1)
+	if(candidates.len < 1)
 		for(var/mob/living/carbon/human/player in world)
-			if (player.client)
+			if(player.client)
 				candidates += player.mind
 
 	var/list/uncons = get_unconvertables()
 	for(var/datum/mind/mind in uncons)
 		candidates -= mind
 
-	if (candidates.len < 1)
+	if(candidates.len < 1)
 		return null
 	else
 		return candidates
@@ -201,9 +201,9 @@
 /datum/game_mode/rp_revolution/proc/get_unconvertables()
 	var/list/ucs = list()
 	for(var/mob/living/carbon/human/player in world)
-		if (player.mind)
+		if(player.mind)
 			var/role = player.mind.assigned_role
-			if (role in list("Captain", "Head of Security", "Head of Personnel", "Chief Engineer", "Research Director", "Security Officer", "Forensic Technician", "AI"))
+			if(role in list("Captain", "Head of Security", "Head of Personnel", "Chief Engineer", "Research Director", "Security Officer", "Forensic Technician", "AI"))
 				ucs += player.mind
 
 	return ucs
@@ -211,34 +211,34 @@
 /datum/game_mode/rp_revolution/proc/check_rev_victory()
 	for(var/datum/mind/rev_mind in head_revolutionaries)
 		for(var/datum/objective/objective in rev_mind.objectives)
-			if (!(objective.check_completion()))
+			if(!(objective.check_completion()))
 				return 0
 
 		return 1
 
 /datum/game_mode/rp_revolution/proc/check_heads_victory()
 	for(var/datum/mind/rev_mind in head_revolutionaries)
-		if (rev_mind.current.stat != 2)
+		if(rev_mind.current.stat != 2)
 			var/turf/revloc = rev_mind.current.loc
-			if (!istype(revloc.loc,/area/security/brig) && !rev_mind.current.handcuffed)
+			if(!istype(revloc.loc,/area/security/brig) && !rev_mind.current.handcuffed)
 				return 0
-		else if (RPREV_REQUIRE_REVS_ALIVE) return 0
+		else if(RPREV_REQUIRE_REVS_ALIVE) return 0
 	return 1
 
 /datum/game_mode/rp_revolution/declare_completion()
 
 	var/text = ""
-	if (finished == 1)
+	if(finished == 1)
 		world << "\red <FONT size = 3><B> The heads of staff were relieved of their posts! The revolutionaries win!</B></FONT>"
-	else if (finished == 2)
+	else if(finished == 2)
 		world << "\red <FONT size = 3><B> The heads of staff managed to stop the revolution!</B></FONT>"
 
 	world << "<FONT size = 2><B>The head revolutionaries were: </B></FONT>"
 	for(var/datum/mind/rev_mind in head_revolutionaries)
 		text = ""
-		if (rev_mind.current)
+		if(rev_mind.current)
 			text += "[rev_mind.current.real_name]"
-			if (rev_mind.current.stat == 2)
+			if(rev_mind.current.stat == 2)
 				text += " (Dead)"
 			else
 				text += " (Survived!)"
@@ -250,9 +250,9 @@
 	text = ""
 	world << "<FONT size = 2><B>The converted revolutionaries were: </B></FONT>"
 	for(var/datum/mind/rev_nh_mind in revolutionaries)
-		if (rev_nh_mind.current)
+		if(rev_nh_mind.current)
 			text += "[rev_nh_mind.current.real_name]"
-			if (rev_nh_mind.current.stat == 2)
+			if(rev_nh_mind.current.stat == 2)
 				text += " (Dead)"
 			else
 				text += " (Survived!)"
@@ -267,9 +267,9 @@
 	heads = get_all_heads()
 	for(var/datum/mind/head_mind in heads)
 		text = ""
-		if (head_mind.current)
+		if(head_mind.current)
 			text += "[head_mind.current.real_name]"
-			if (head_mind.current.stat == 2)
+			if(head_mind.current.stat == 2)
 				text += " (Dead)"
 			else
 				text += " (Survived!)"
@@ -284,24 +284,24 @@
 mob/living/carbon/human/proc
 	RevConvert(mob/M as mob in oview(src))
 		set name = "Rev-Convert"
-		if (((src.mind in ticker.mode:head_revolutionaries) || (src.mind in ticker.mode:revolutionaries)))
-			if ((M.mind in ticker.mode:head_revolutionaries) || (M.mind in ticker.mode:revolutionaries))
+		if(((src.mind in ticker.mode:head_revolutionaries) || (src.mind in ticker.mode:revolutionaries)))
+			if((M.mind in ticker.mode:head_revolutionaries) || (M.mind in ticker.mode:revolutionaries))
 				src << "\red <b>[M] is already be a revolutionary!</b>"
-			else if (src.mind in ticker.mode:get_unconvertables())
+			else if(src.mind in ticker.mode:get_unconvertables())
 				src << "\red <b>[M] cannot be a revolutionary!</b>"
 			else
-				if (world.time < M.mind.rev_cooldown)
+				if(world.time < M.mind.rev_cooldown)
 					src << "\red Wait five seconds before reconversion attempt."
 					return
 				src << "\red Attempting to convert [M]..."
 				log_admin("[src]([src.ckey]) attempted to convert [M].")
 				message_admins("\red [src]([src.ckey]) attempted to convert [M].")
 				var/choice = alert(M,"Asked by [src]: Do you want to join the revolution?","Align Thyself with the Revolution!","No!","Yes!")
-				if (choice == "Yes!")
+				if(choice == "Yes!")
 					ticker.mode:add_revolutionary(M.mind)
 					M << "\blue You join the revolution!"
 					src << "\blue <b>[M] joins the revolution!</b>"
-				else if (choice == "No!")
+				else if(choice == "No!")
 					M << "\red You reject this traitorous cause!"
 					src << "\red <b>[M] does not support the revolution!</b>"
 				M.mind.rev_cooldown = world.time+50

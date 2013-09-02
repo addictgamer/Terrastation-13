@@ -8,27 +8,27 @@
 	var/stage = 0
 
 /datum/disease2/effectholder/proc/runeffect(var/mob/living/carbon/human/mob,var/stage)
-	if (happensonce > -1 && effect.stage <= stage && prob(chance))
+	if(happensonce > -1 && effect.stage <= stage && prob(chance))
 		effect.activate(mob)
-		if (happensonce == 1)
+		if(happensonce == 1)
 			happensonce = -1
 
 /datum/disease2/effectholder/proc/getrandomeffect(var/badness = 1)
 	var/list/datum/disease2/effect/list = list()
 	for(var/e in (typesof(/datum/disease2/effect) - /datum/disease2/effect))
 		var/datum/disease2/effect/f = new e
-		if (f.badness > badness)	//we don't want such strong effects
+		if(f.badness > badness)	//we don't want such strong effects
 			continue
-		if (f.stage == src.stage)
+		if(f.stage == src.stage)
 			list += f
 	effect = pick(list)
 	chance = rand(1,6)
 
 /datum/disease2/effectholder/proc/minormutate()
 	switch(pick(1,2,3,4,5))
-		if (1)
+		if(1)
 			chance = rand(0,effect.chance_maxm)
-		if (2)
+		if(2)
 			multiplier = rand(1,effect.maxm)
 
 /datum/disease2/effectholder/proc/majormutate()
@@ -55,8 +55,8 @@
 		mob << "\red You feel something tearing its way out of your stomach..."
 		mob.adjustToxLoss(10)
 		mob.updatehealth()
-		if (prob(40))
-			if (mob.client)
+		if(prob(40))
+			if(mob.client)
 				mob.client.mob = new/mob/living/carbon/alien/larva(mob.loc)
 			else
 				new/mob/living/carbon/alien/larva(mob.loc)
@@ -97,7 +97,7 @@
 	stage = 4
 	badness = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		if (istype(mob,/mob/living/carbon/human))
+		if(istype(mob,/mob/living/carbon/human))
 			var/mob/living/carbon/human/h = mob
 			h.monkeyize()
 
@@ -132,16 +132,16 @@
 	name = "Shutdown Syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		if (istype(mob, /mob/living/carbon/human))
+		if(istype(mob, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = mob
 			var/datum/organ/external/E = pick(H.organs)
-			if (!(E.status & ORGAN_DEAD))
+			if(!(E.status & ORGAN_DEAD))
 				E.status |= ORGAN_DEAD
 				H << "<span class='notice'>You can't feel your [E.display_name] anymore...</span>"
 		mob.adjustToxLoss(15*multiplier)
 
 	deactivate(var/mob/living/carbon/mob,var/multiplier)
-		if (istype(mob, /mob/living/carbon/human))
+		if(istype(mob, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = mob
 			for (var/datum/organ/external/E in H.organs)
 				E.status &= ~ORGAN_DEAD
@@ -150,16 +150,16 @@
 	name = "Longevity Syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		if (istype(mob, /mob/living/carbon/human))
+		if(istype(mob, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = mob
 			for (var/datum/organ/external/E in H.organs)
-				if (E.status & ORGAN_BROKEN && prob(30))
+				if(E.status & ORGAN_BROKEN && prob(30))
 					E.status ^= ORGAN_BROKEN
 		var/heal_amt = -5*multiplier
 		mob.apply_damages(heal_amt,heal_amt,heal_amt,heal_amt)
 
 	deactivate(var/mob/living/carbon/mob,var/multiplier)
-		if (istype(mob, /mob/living/carbon/human))
+		if(istype(mob, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = mob
 			H << "<span class='notice'>You suddenly feel hurt and old...</span>"
 			H.age += 8
@@ -172,13 +172,13 @@
 	name = "Fragile Bones Syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		if (istype(mob, /mob/living/carbon/human))
+		if(istype(mob, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = mob
 			for (var/datum/organ/external/E in H.organs)
 				E.min_broken_damage = max(5, E.min_broken_damage - 30)
 
 	deactivate(var/mob/living/carbon/mob,var/multiplier)
-		if (istype(mob, /mob/living/carbon/human))
+		if(istype(mob, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = mob
 			for (var/datum/organ/external/E in H.organs)
 				E.min_broken_damage = initial(E.min_broken_damage)
@@ -210,7 +210,7 @@
 	name = "Lazy Mind Syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		if (istype(mob, /mob/living/carbon/human))
+		if(istype(mob, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = mob
 			var/datum/organ/internal/brain/B = H.internal_organs["brain"]
 			B.take_damage(5)
@@ -286,9 +286,9 @@
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*cough")
 		for(var/mob/living/carbon/M in view(1,mob))
-			if (airborne_can_reach(get_turf(mob), get_turf(M)))
+			if(airborne_can_reach(get_turf(mob), get_turf(M)))
 				for (var/datum/disease2/disease/V in mob.virus2)
-					if (V.spreadtype == "Airborne")
+					if(V.spreadtype == "Airborne")
 						infect_virus2(M,V)
 
 /datum/disease2/effect/hungry
@@ -307,9 +307,9 @@
 	name = "Hair Loss"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		if (istype(mob, /mob/living/carbon/human))
+		if(istype(mob, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = mob
-			if (H.species.name == "Human" && !(H.h_style == "Bald") && !(H.h_style == "Balding Hair"))
+			if(H.species.name == "Human" && !(H.h_style == "Bald") && !(H.h_style == "Balding Hair"))
 				H << "<span class='danger'>Your hair starts to fall out in clumps...</span>"
 				spawn(50)
 					H.h_style = "Balding Hair"
@@ -320,9 +320,9 @@
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob << "<span class='notice'>You feel a rush of energy inside you!</span>"
-		if (mob.reagents.get_reagent_amount("hyperzine") < 30)
+		if(mob.reagents.get_reagent_amount("hyperzine") < 30)
 			mob.reagents.add_reagent("hyperzine", 10)
-		if (prob(30))
+		if(prob(30))
 			mob.jitteriness += 10
 
 ////////////////////////STAGE 1/////////////////////////////////
@@ -332,7 +332,7 @@
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*sneeze")
-		if (prob(50))
+		if(prob(50))
 			var/obj/effect/decal/cleanable/mucus/M = new(get_turf(mob))
 			M.virus2 = virus_copylist(mob.virus2)
 

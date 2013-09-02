@@ -2,21 +2,21 @@
 	var/list/enemies = list()
 
 /mob/living/simple_animal/hostile/retaliate/Found(var/atom/A)
-	if (isliving(A))
+	if(isliving(A))
 		var/mob/living/L = A
-		if (!L.stat)
+		if(!L.stat)
 			stance = HOSTILE_STANCE_ATTACK
 			return L
 		else
 			enemies -= L
-	else if (istype(A, /obj/mecha))
+	else if(istype(A, /obj/mecha))
 		var/obj/mecha/M = A
-		if (M.occupant)
+		if(M.occupant)
 			stance = HOSTILE_STANCE_ATTACK
 			return A
 
 /mob/living/simple_animal/hostile/retaliate/ListTargets()
-	if (!enemies.len)
+	if(!enemies.len)
 		return list()
 	var/list/see = ..()
 	see &= enemies // Remove all entries that aren't in enemies
@@ -27,20 +27,20 @@
 	var/list/around = view(src, 7)
 
 	for(var/atom/movable/A in around)
-		if (A == src)
+		if(A == src)
 			continue
-		if (isliving(A))
+		if(isliving(A))
 			var/mob/living/M = A
-			if (!attack_same && M.faction != faction)
+			if(!attack_same && M.faction != faction)
 				enemies |= M
-		else if (istype(A, /obj/mecha))
+		else if(istype(A, /obj/mecha))
 			var/obj/mecha/M = A
-			if (M.occupant)
+			if(M.occupant)
 				enemies |= M
 				enemies |= M.occupant
 
 	for(var/mob/living/simple_animal/hostile/retaliate/H in around)
-		if (!attack_same && !H.attack_same && H.faction == faction)
+		if(!attack_same && !H.attack_same && H.faction == faction)
 			H.enemies |= enemies
 	return 0
 

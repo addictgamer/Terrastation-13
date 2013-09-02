@@ -24,7 +24,7 @@
 
 /obj/structure/powerswitch/examine()
 	..()
-	if (on)
+	if(on)
 		usr << "The switch is in the on position"
 	else
 		usr << "The switch is in the off position"
@@ -35,7 +35,7 @@
 
 /obj/structure/powerswitch/attack_hand(mob/user)
 
-	if (busy)
+	if(busy)
 		user << "\red This switch is already being toggled."
 		return
 
@@ -45,7 +45,7 @@
 	for(var/mob/O in viewers(user))
 		O.show_message(text("\red [user] started pulling the [src]."), 1)
 
-	if (do_after(user, 50))
+	if(do_after(user, 50))
 		set_state(!on)
 		for(var/mob/O in viewers(user))
 			O.show_message(text("\red [user] flipped the [src] into the [on ? "on": "off"] position."), 1)
@@ -53,12 +53,12 @@
 
 /obj/structure/powerswitch/proc/set_state(var/state)
 	on = state
-	if (on)
+	if(on)
 		icon_state = icon_state_on
 		var/list/connection_dirs = list()
 		for(var/direction in list(1,2,4,8,5,6,9,10))
 			for(var/obj/structure/cable/C in get_step(src,direction))
-				if (C.d1 == turn(direction, 180) || C.d2 == turn(direction, 180))
+				if(C.d1 == turn(direction, 180) || C.d2 == turn(direction, 180))
 					connection_dirs += direction
 					break
 

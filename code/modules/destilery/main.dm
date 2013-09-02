@@ -26,12 +26,12 @@
 	active_power_usage = 1000
 
 /obj/machinery/mill/process()
-	if (error)
+	if(error)
 		return
 
-	if (!busy)
+	if(!busy)
 		use_power = 1
-		if (input.len)
+		if(input.len)
 			milled_item = input[1]
 			input -= milled_item
 			progress = 0
@@ -40,14 +40,14 @@
 		return
 
 	progress++
-	if (progress < 10)	//Edit this value to make milling faster or slower
+	if(progress < 10)	//Edit this value to make milling faster or slower
 		return	//Not done yet.
 
 	switch(milled_item.type)
-		if (/obj/item/weapon/reagent_containers/food/snacks/grown/wheat)	//Wheat becomes flour
+		if(/obj/item/weapon/reagent_containers/food/snacks/grown/wheat)	//Wheat becomes flour
 			var/obj/item/weapon/reagent_containers/food/drinks/flour/F = new(src)
 			output += F
-		if (/obj/item/weapon/reagent_containers/food/drinks/flour)	//Flour is still flour
+		if(/obj/item/weapon/reagent_containers/food/drinks/flour)	//Flour is still flour
 			var/obj/item/weapon/reagent_containers/food/drinks/flour/F = new(src)
 			output += F
 		else
@@ -57,7 +57,7 @@
 	busy = 0
 
 /obj/machinery/mill/attackby(var/obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W,/obj/item/weapon/reagent_containers/food))
+	if(istype(W,/obj/item/weapon/reagent_containers/food))
 		user.u_equip(W)
 		W.loc = src
 		input += W
@@ -94,12 +94,12 @@
 	active_power_usage = 500
 
 /obj/machinery/fermenter/process()
-	if (error)
+	if(error)
 		return
 
-	if (!busy)
+	if(!busy)
 		use_power = 1
-		if (input.len)
+		if(input.len)
 			fermenting_item = input[1]
 			input -= fermenting_item
 			progress = 0
@@ -107,17 +107,17 @@
 			use_power = 2
 		return
 
-	if (!water_level)
+	if(!water_level)
 		return
 
 	water_level--
 
 	progress++
-	if (progress < 10)	//Edit this value to make milling faster or slower
+	if(progress < 10)	//Edit this value to make milling faster or slower
 		return	//Not done yet.
 
 	switch(fermenting_item.type)
-		if (/obj/item/weapon/reagent_containers/food/drinks/flour)	//Flour is still flour
+		if(/obj/item/weapon/reagent_containers/food/drinks/flour)	//Flour is still flour
 			var/obj/item/weapon/reagent_containers/food/drinks/beer/B = new(src)
 			output += B
 		else
@@ -127,7 +127,7 @@
 	busy = 0
 
 /obj/machinery/fermenter/attackby(var/obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W,/obj/item/weapon/reagent_containers/food))
+	if(istype(W,/obj/item/weapon/reagent_containers/food))
 		user.u_equip(W)
 		W.loc = src
 		input += W
@@ -160,12 +160,12 @@
 	active_power_usage = 10000
 
 /obj/machinery/still/process()
-	if (error)
+	if(error)
 		return
 
-	if (!busy)
+	if(!busy)
 		use_power = 1
-		if (input.len)
+		if(input.len)
 			destilling_item = input[1]
 			input -= destilling_item
 			progress = 0
@@ -174,11 +174,11 @@
 		return
 
 	progress++
-	if (progress < 10)	//Edit this value to make distilling faster or slower
+	if(progress < 10)	//Edit this value to make distilling faster or slower
 		return	//Not done yet.
 
 	switch(destilling_item.type)
-		if (/obj/item/weapon/reagent_containers/food/drinks/beer)	//Flour is still flour
+		if(/obj/item/weapon/reagent_containers/food/drinks/beer)	//Flour is still flour
 			var/obj/item/weapon/reagent_containers/food/drinks/bottle/vodka/V = new(src)
 			output += V
 		else
@@ -188,7 +188,7 @@
 	busy = 0
 
 /obj/machinery/still/attackby(var/obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W,/obj/item/weapon/reagent_containers/food))
+	if(istype(W,/obj/item/weapon/reagent_containers/food))
 		user.u_equip(W)
 		W.loc = src
 		input += W
@@ -246,12 +246,12 @@
 	active_power_usage = 10000
 
 /obj/machinery/centrifuge/process()
-	if (error)
+	if(error)
 		return
 
-	if (!busy)
+	if(!busy)
 		use_power = 1
-		if (input.len)
+		if(input.len)
 			spinning_item = input[1]
 			input -= spinning_item
 			progress = 0
@@ -260,12 +260,12 @@
 		return
 
 	progress++
-	if (progress < 10)	//Edit this value to make milling faster or slower
+	if(progress < 10)	//Edit this value to make milling faster or slower
 		return	//Not done yet.
 
 	var/transfer_enzymes = spinning_item.reagents.get_reagent_amount("enzyme")
 
-	if (transfer_enzymes)
+	if(transfer_enzymes)
 		enzymes += transfer_enzymes
 		spinning_item.reagents.remove_reagent("enzyme",transfer_enzymes)
 
@@ -273,7 +273,7 @@
 	busy = 0
 
 /obj/machinery/centrifuge/attackby(var/obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W,/obj/item/weapon/reagent_containers/food))
+	if(istype(W,/obj/item/weapon/reagent_containers/food))
 		user.u_equip(W)
 		W.loc = src
 		input += W

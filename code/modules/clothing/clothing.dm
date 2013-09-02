@@ -57,11 +57,11 @@ BLIND     // can't see anything
 	return
 
 /obj/item/clothing/gloves/emp_act(severity)
-	if (cell)
+	if(cell)
 		cell.charge -= 1000 / severity
-		if (cell.charge < 0)
+		if(cell.charge < 0)
 			cell.charge = 0
-		if (cell.reliability != 100 && prob(50/severity))
+		if(cell.reliability != 100 && prob(50/severity))
 			cell.reliability -= 10 / severity
 	..()
 
@@ -162,19 +162,19 @@ BLIND     // can't see anything
 	var/displays_id = 1
 
 /obj/item/clothing/under/attackby(obj/item/I, mob/user)
-	if (!hastie && istype(I, /obj/item/clothing/tie))
+	if(!hastie && istype(I, /obj/item/clothing/tie))
 		user.drop_item()
 		hastie = I
 		I.loc = src
 		user << "<span class='notice'>You attach [I] to [src].</span>"
 
-		if (istype(hastie,/obj/item/clothing/tie/holster))
+		if(istype(hastie,/obj/item/clothing/tie/holster))
 			verbs += /obj/item/clothing/under/proc/holster
 
-		if (istype(hastie,/obj/item/clothing/tie/storage))
+		if(istype(hastie,/obj/item/clothing/tie/storage))
 			verbs += /obj/item/clothing/under/proc/storage
 
-		if (istype(loc, /mob/living/carbon/human))
+		if(istype(loc, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = loc
 			H.update_inv_w_uniform()
 
@@ -186,15 +186,15 @@ BLIND     // can't see anything
 	set src in view()
 	..()
 	switch(src.sensor_mode)
-		if (0)
+		if(0)
 			usr << "Its sensors appear to be disabled."
-		if (1)
+		if(1)
 			usr << "Its binary life sensors appear to be enabled."
-		if (2)
+		if(2)
 			usr << "Its vital tracker appears to be enabled."
-		if (3)
+		if(3)
 			usr << "Its vital tracker and tracking beacon appear to be enabled."
-	if (hastie)
+	if(hastie)
 		usr << "\A [hastie] is clipped to it."
 
 /obj/item/clothing/under/verb/toggle()
@@ -202,25 +202,25 @@ BLIND     // can't see anything
 	set category = "Object"
 	set src in usr
 	var/mob/M = usr
-	if (istype(M, /mob/dead/)) return
-	if (usr.stat) return
-	if (src.has_sensor >= 2)
+	if(istype(M, /mob/dead/)) return
+	if(usr.stat) return
+	if(src.has_sensor >= 2)
 		usr << "The controls are locked."
 		return 0
-	if (src.has_sensor <= 0)
+	if(src.has_sensor <= 0)
 		usr << "This suit does not have any sensors."
 		return 0
 	src.sensor_mode += 1
-	if (src.sensor_mode > 3)
+	if(src.sensor_mode > 3)
 		src.sensor_mode = 0
 	switch(src.sensor_mode)
-		if (0)
+		if(0)
 			usr << "You disable your suit's remote sensing equipment."
-		if (1)
+		if(1)
 			usr << "Your suit will now report whether you are live or dead."
-		if (2)
+		if(2)
 			usr << "Your suit will now report your vital lifesigns."
-		if (3)
+		if(3)
 			usr << "Your suit will now report your vital lifesigns as well as your coordinate position."
 	..()
 
@@ -228,23 +228,23 @@ BLIND     // can't see anything
 	set name = "Remove Accessory"
 	set category = "Object"
 	set src in usr
-	if (!istype(usr, /mob/living)) return
-	if (usr.stat) return
+	if(!istype(usr, /mob/living)) return
+	if(usr.stat) return
 
-	if (hastie)
+	if(hastie)
 		usr.put_in_hands(hastie)
 		hastie = null
 
-		if (istype(hastie,/obj/item/clothing/tie/holster))
+		if(istype(hastie,/obj/item/clothing/tie/holster))
 			verbs -= /obj/item/clothing/under/proc/holster
 
-		if (istype(hastie,/obj/item/clothing/tie/storage))
+		if(istype(hastie,/obj/item/clothing/tie/storage))
 			verbs -= /obj/item/clothing/under/proc/storage
 			var/obj/item/clothing/tie/storage/W = hastie
-			if (W.hold)
+			if(W.hold)
 				W.hold.loc = hastie
 
-		if (istype(loc, /mob/living/carbon/human))
+		if(istype(loc, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = loc
 			H.update_inv_w_uniform()
 
@@ -256,20 +256,20 @@ BLIND     // can't see anything
 	set name = "Holster"
 	set category = "Object"
 	set src in usr
-	if (!istype(usr, /mob/living)) return
-	if (usr.stat) return
+	if(!istype(usr, /mob/living)) return
+	if(usr.stat) return
 
-	if (!hastie || !istype(hastie,/obj/item/clothing/tie/holster))
+	if(!hastie || !istype(hastie,/obj/item/clothing/tie/holster))
 		usr << "\red You need a holster for that!"
 		return
 	var/obj/item/clothing/tie/holster/H = hastie
 
-	if (!H.holstered)
-		if (!istype(usr.get_active_hand(), /obj/item/weapon/gun))
+	if(!H.holstered)
+		if(!istype(usr.get_active_hand(), /obj/item/weapon/gun))
 			usr << "\blue You need your gun equiped to holster it."
 			return
 		var/obj/item/weapon/gun/W = usr.get_active_hand()
-		if (!W.isHandgun())
+		if(!W.isHandgun())
 			usr << "\red This gun won't fit in \the [H]!"
 			return
 		H.holstered = usr.get_active_hand()
@@ -277,10 +277,10 @@ BLIND     // can't see anything
 		H.holstered.loc = src
 		usr.visible_message("\blue \The [usr] holsters \the [H.holstered].", "You holster \the [H.holstered].")
 	else
-		if (istype(usr.get_active_hand(),/obj) && istype(usr.get_inactive_hand(),/obj))
+		if(istype(usr.get_active_hand(),/obj) && istype(usr.get_inactive_hand(),/obj))
 			usr << "\red You need an empty hand to draw the gun!"
 		else
-			if (usr.a_intent == "hurt")
+			if(usr.a_intent == "hurt")
 				usr.visible_message("\red \The [usr] draws \the [H.holstered], ready to shoot!", \
 				"\red You draw \the [H.holstered], ready to shoot!")
 			else
@@ -293,15 +293,15 @@ BLIND     // can't see anything
 	set name = "Look in storage"
 	set category = "Object"
 	set src in usr
-	if (!istype(usr, /mob/living)) return
-	if (usr.stat) return
+	if(!istype(usr, /mob/living)) return
+	if(usr.stat) return
 
-	if (!hastie || !istype(hastie,/obj/item/clothing/tie/storage))
+	if(!hastie || !istype(hastie,/obj/item/clothing/tie/storage))
 		usr << "\red You need something to store items in for that!"
 		return
 	var/obj/item/clothing/tie/storage/W = hastie
 
-	if (!istype(W.hold))
+	if(!istype(W.hold))
 		return
 
 	W.hold.loc = usr

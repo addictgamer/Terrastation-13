@@ -43,12 +43,12 @@
 	reagents = R
 	R.my_atom = src
 
-	if (name == "monkey" || name == "farwa" || name == "stok" || name == "neara") //Hideous but necessary to stop Pun-Pun becoming generic.
+	if(name == "monkey" || name == "farwa" || name == "stok" || name == "neara") //Hideous but necessary to stop Pun-Pun becoming generic.
 		name = "[name] ([rand(1, 1000)])"
 		real_name = name
 
-	if (!(dna))
-		if (gender == NEUTER)
+	if(!(dna))
+		if(gender == NEUTER)
 			gender = pick(MALE, FEMALE)
 		dna = new /datum/dna( null )
 		dna.real_name = real_name
@@ -57,7 +57,7 @@
 		dna.unique_enzymes = md5(name)
 				//////////blah
 		var/gendervar
-		if (gender == MALE)
+		if(gender == MALE)
 			gendervar = add_zero2(num2hex((rand(1,2049)),1), 3)
 		else
 			gendervar = add_zero2(num2hex((rand(2051,4094)),1), 3)
@@ -86,46 +86,46 @@
 
 /mob/living/carbon/monkey/movement_delay()
 	var/tally = 0
-	if (reagents)
-		if (reagents.has_reagent("hyperzine")) return -1
+	if(reagents)
+		if(reagents.has_reagent("hyperzine")) return -1
 
-		if (reagents.has_reagent("nuka_cola")) return -1
+		if(reagents.has_reagent("nuka_cola")) return -1
 
 	var/health_deficiency = (100 - health)
-	if (health_deficiency >= 45) tally += (health_deficiency / 25)
+	if(health_deficiency >= 45) tally += (health_deficiency / 25)
 
-	if (bodytemperature < 283.222)
+	if(bodytemperature < 283.222)
 		tally += (283.222 - bodytemperature) / 10 * 1.75
 	return tally+config.monkey_delay
 
 /mob/living/carbon/monkey/Bump(atom/movable/AM as mob|obj, yes)
 
 	spawn( 0 )
-		if ((!( yes ) || now_pushing))
+		if((!( yes ) || now_pushing))
 			return
 		now_pushing = 1
-		if (ismob(AM))
+		if(ismob(AM))
 			var/mob/tmob = AM
-			if (istype(tmob, /mob/living/carbon/human) && (HULK in tmob.mutations))
-				if (prob(70))
+			if(istype(tmob, /mob/living/carbon/human) && (HULK in tmob.mutations))
+				if(prob(70))
 					usr << "\red <B>You fail to push [tmob]'s fat ass out of the way.</B>"
 					now_pushing = 0
 					return
-			if (!(tmob.status_flags & CANPUSH))
+			if(!(tmob.status_flags & CANPUSH))
 				now_pushing = 0
 				return
 
 			tmob.LAssailant = src
 		now_pushing = 0
 		..()
-		if (!( istype(AM, /atom/movable) ))
+		if(!( istype(AM, /atom/movable) ))
 			return
-		if (!( now_pushing ))
+		if(!( now_pushing ))
 			now_pushing = 1
-			if (!( AM.anchored ))
+			if(!( AM.anchored ))
 				var/t = get_dir(src, AM)
-				if (istype(AM, /obj/structure/window))
-					if (AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
+				if(istype(AM, /obj/structure/window))
+					if(AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
 						for(var/obj/structure/window/win in get_step(AM,t))
 							now_pushing = 0
 							return
@@ -136,11 +136,11 @@
 
 /mob/living/carbon/monkey/Topic(href, href_list)
 	..()
-	if (href_list["mach_close"])
+	if(href_list["mach_close"])
 		var/t1 = text("window=[]", href_list["mach_close"])
 		unset_machine()
 		src << browse(null, t1)
-	if ((href_list["item"] && !( usr.stat ) && !( usr.restrained() ) && in_range(src, usr) ))
+	if((href_list["item"] && !( usr.stat ) && !( usr.restrained() ) && in_range(src, usr) ))
 		var/obj/effect/equip_e/monkey/O = new /obj/effect/equip_e/monkey(  )
 		O.source = usr
 		O.target = src
@@ -158,10 +158,10 @@
 /mob/living/carbon/monkey/meteorhit(obj/O as obj)
 	for(var/mob/M in viewers(src, null))
 		M.show_message(text("\red [] has been hit by []", src, O), 1)
-	if (health > 0)
+	if(health > 0)
 		var/shielded = 0
 		adjustBruteLoss(30)
-		if ((O.icon_state == "flaming" && !( shielded )))
+		if((O.icon_state == "flaming" && !( shielded )))
 			adjustFireLoss(40)
 		health = 100 - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss()
 	return
@@ -169,17 +169,17 @@
 //mob/living/carbon/monkey/bullet_act(var/obj/item/projectile/Proj)taken care of in living
 
 /mob/living/carbon/monkey/hand_p(mob/M as mob)
-	if ((M.a_intent == "hurt" && !( istype(wear_mask, /obj/item/clothing/mask/muzzle) )))
-		if ((prob(75) && health > 0))
+	if((M.a_intent == "hurt" && !( istype(wear_mask, /obj/item/clothing/mask/muzzle) )))
+		if((prob(75) && health > 0))
 			for(var/mob/O in viewers(src, null))
 				O.show_message(text("\red <B>[M.name] has bit []!</B>", src), 1)
 			var/damage = rand(1, 5)
-			if (HULK in mutations) damage += 10
+			if(HULK in mutations) damage += 10
 			adjustBruteLoss(damage)
 			updatehealth()
 
 			for(var/datum/disease/D in M.viruses)
-				if (istype(D, /datum/disease/jungle_fever))
+				if(istype(D, /datum/disease/jungle_fever))
 					contract_disease(D,1,0)
 		else
 			for(var/mob/O in viewers(src, null))
@@ -189,11 +189,11 @@
 /mob/living/carbon/monkey/attack_paw(mob/M as mob)
 	..()
 
-	if (M.a_intent == "help")
+	if(M.a_intent == "help")
 		help_shake_act(M)
 	else
-		if ((M.a_intent == "hurt" && !( istype(wear_mask, /obj/item/clothing/mask/muzzle) )))
-			if ((prob(75) && health > 0))
+		if((M.a_intent == "hurt" && !( istype(wear_mask, /obj/item/clothing/mask/muzzle) )))
+			if((prob(75) && health > 0))
 				playsound(loc, 'sound/weapons/bite.ogg', 50, 1, -1)
 				for(var/mob/O in viewers(src, null))
 					O.show_message("\red <B>[M.name] has bit [name]!</B>", 1)
@@ -201,7 +201,7 @@
 				adjustBruteLoss(damage)
 				health = 100 - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss()
 				for(var/datum/disease/D in M.viruses)
-					if (istype(D, /datum/disease/jungle_fever))
+					if(istype(D, /datum/disease/jungle_fever))
 						contract_disease(D,1,0)
 			else
 				for(var/mob/O in viewers(src, null))
@@ -209,51 +209,51 @@
 	return
 
 /mob/living/carbon/monkey/attack_hand(mob/living/carbon/human/M as mob)
-	if (!ticker)
+	if(!ticker)
 		M << "You cannot attack people before the game has started."
 		return
 
-	if (istype(loc, /turf) && istype(loc.loc, /area/start))
+	if(istype(loc, /turf) && istype(loc.loc, /area/start))
 		M << "No attacking people at spawn, you jackass."
 		return
 
-	if (M.gloves && istype(M.gloves,/obj/item/clothing/gloves))
+	if(M.gloves && istype(M.gloves,/obj/item/clothing/gloves))
 		var/obj/item/clothing/gloves/G = M.gloves
-		if (G.cell)
-			if (M.a_intent == "hurt")//Stungloves. Any contact will stun the alien.
-				if (G.cell.charge >= 2500)
+		if(G.cell)
+			if(M.a_intent == "hurt")//Stungloves. Any contact will stun the alien.
+				if(G.cell.charge >= 2500)
 					G.cell.charge -= 2500
 					Weaken(5)
-					if (stuttering < 5)
+					if(stuttering < 5)
 						stuttering = 5
 					Stun(5)
 
 					for(var/mob/O in viewers(src, null))
-						if (O.client)
+						if(O.client)
 							O.show_message("\red <B>[src] has been touched with the stun gloves by [M]!</B>", 1, "\red You hear someone fall", 2)
 					return
 				else
 					M << "\red Not enough charge! "
 					return
 
-	if (M.a_intent == "help")
+	if(M.a_intent == "help")
 		help_shake_act(M)
 	else
-		if (M.a_intent == "hurt")
-			if ((prob(75) && health > 0))
+		if(M.a_intent == "hurt")
+			if((prob(75) && health > 0))
 				for(var/mob/O in viewers(src, null))
-					if ((O.client && !( O.blinded )))
+					if((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has punched [name]!</B>", M), 1)
 
 				playsound(loc, "punch", 25, 1, -1)
 				var/damage = rand(5, 10)
-				if (prob(40))
+				if(prob(40))
 					damage = rand(10, 15)
-					if (paralysis < 5)
+					if(paralysis < 5)
 						Paralyse(rand(10, 15))
 						spawn( 0 )
 							for(var/mob/O in viewers(src, null))
-								if ((O.client && !( O.blinded )))
+								if((O.client && !( O.blinded )))
 									O.show_message(text("\red <B>[] has knocked out [name]!</B>", M), 1)
 							return
 				adjustBruteLoss(damage)
@@ -261,11 +261,11 @@
 			else
 				playsound(loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
 				for(var/mob/O in viewers(src, null))
-					if ((O.client && !( O.blinded )))
+					if((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has attempted to punch [name]!</B>", M), 1)
 		else
-			if (M.a_intent == "grab")
-				if (M == src)
+			if(M.a_intent == "grab")
+				if(M == src)
 					return
 
 				var/obj/item/weapon/grab/G = new /obj/item/weapon/grab( M, M, src )
@@ -281,61 +281,61 @@
 				for(var/mob/O in viewers(src, null))
 					O.show_message(text("\red [] has grabbed [name] passively!", M), 1)
 			else
-				if (!( paralysis ))
-					if (prob(25))
+				if(!( paralysis ))
+					if(prob(25))
 						Paralyse(2)
 						playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 						for(var/mob/O in viewers(src, null))
-							if ((O.client && !( O.blinded )))
+							if((O.client && !( O.blinded )))
 								O.show_message(text("\red <B>[] has pushed down [name]!</B>", M), 1)
 					else
 						drop_item()
 						playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 						for(var/mob/O in viewers(src, null))
-							if ((O.client && !( O.blinded )))
+							if((O.client && !( O.blinded )))
 								O.show_message(text("\red <B>[] has disarmed [name]!</B>", M), 1)
 	return
 
 /mob/living/carbon/monkey/attack_alien(mob/living/carbon/alien/humanoid/M as mob)
-	if (!ticker)
+	if(!ticker)
 		M << "You cannot attack people before the game has started."
 		return
 
-	if (istype(loc, /turf) && istype(loc.loc, /area/start))
+	if(istype(loc, /turf) && istype(loc.loc, /area/start))
 		M << "No attacking people at spawn, you jackass."
 		return
 
 	switch(M.a_intent)
-		if ("help")
+		if("help")
 			for(var/mob/O in viewers(src, null))
-				if ((O.client && !( O.blinded )))
+				if((O.client && !( O.blinded )))
 					O.show_message(text("\blue [M] caresses [src] with its scythe like arm."), 1)
 
-		if ("hurt")
-			if ((prob(95) && health > 0))
+		if("hurt")
+			if((prob(95) && health > 0))
 				playsound(loc, 'sound/weapons/slice.ogg', 25, 1, -1)
 				var/damage = rand(15, 30)
-				if (damage >= 25)
+				if(damage >= 25)
 					damage = rand(20, 40)
-					if (paralysis < 15)
+					if(paralysis < 15)
 						Paralyse(rand(10, 15))
 					for(var/mob/O in viewers(src, null))
-						if ((O.client && !( O.blinded )))
+						if((O.client && !( O.blinded )))
 							O.show_message(text("\red <B>[] has wounded [name]!</B>", M), 1)
 				else
 					for(var/mob/O in viewers(src, null))
-						if ((O.client && !( O.blinded )))
+						if((O.client && !( O.blinded )))
 							O.show_message(text("\red <B>[] has slashed [name]!</B>", M), 1)
 				adjustBruteLoss(damage)
 				updatehealth()
 			else
 				playsound(loc, 'sound/weapons/slashmiss.ogg', 25, 1, -1)
 				for(var/mob/O in viewers(src, null))
-					if ((O.client && !( O.blinded )))
+					if((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has attempted to lunge at [name]!</B>", M), 1)
 
-		if ("grab")
-			if (M == src)
+		if("grab")
+			if(M == src)
 				return
 			var/obj/item/weapon/grab/G = new /obj/item/weapon/grab( M, M, src )
 
@@ -350,28 +350,28 @@
 			for(var/mob/O in viewers(src, null))
 				O.show_message(text("\red [] has grabbed [name] passively!", M), 1)
 
-		if ("disarm")
+		if("disarm")
 			playsound(loc, 'sound/weapons/pierce.ogg', 25, 1, -1)
 			var/damage = 5
-			if (prob(95))
+			if(prob(95))
 				Weaken(15)
 				for(var/mob/O in viewers(src, null))
-					if ((O.client && !( O.blinded )))
+					if((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has tackled down [name]!</B>", M), 1)
 			else
 				drop_item()
 				for(var/mob/O in viewers(src, null))
-					if ((O.client && !( O.blinded )))
+					if((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has disarmed [name]!</B>", M), 1)
 			adjustBruteLoss(damage)
 			updatehealth()
 	return
 
 /mob/living/carbon/monkey/attack_animal(mob/living/simple_animal/M as mob)
-	if (M.melee_damage_upper == 0)
+	if(M.melee_damage_upper == 0)
 		M.emote("[M.friendly] [src]")
 	else
-		if (M.attack_sound)
+		if(M.attack_sound)
 			playsound(loc, M.attack_sound, 50, 1, 1)
 		for(var/mob/O in viewers(src, null))
 			O.show_message("\red <B>[M]</B> [M.attacktext] [src]!", 1)
@@ -383,50 +383,50 @@
 
 
 /mob/living/carbon/monkey/attack_slime(mob/living/carbon/slime/M as mob)
-	if (!ticker)
+	if(!ticker)
 		M << "You cannot attack people before the game has started."
 		return
 
-	if (M.Victim) return // can't attack while eating!
+	if(M.Victim) return // can't attack while eating!
 
-	if (health > -100)
+	if(health > -100)
 
 		for(var/mob/O in viewers(src, null))
-			if ((O.client && !( O.blinded )))
+			if((O.client && !( O.blinded )))
 				O.show_message(text("\red <B>The [M.name] glomps []!</B>", src), 1)
 
 		var/damage = rand(1, 3)
 
-		if (istype(src, /mob/living/carbon/slime/adult))
+		if(istype(src, /mob/living/carbon/slime/adult))
 			damage = rand(20, 40)
 		else
 			damage = rand(5, 35)
 
 		adjustBruteLoss(damage)
 
-		if (M.powerlevel > 0)
+		if(M.powerlevel > 0)
 			var/stunprob = 10
 			var/power = M.powerlevel + rand(0,3)
 
 			switch(M.powerlevel)
-				if (1 to 2) stunprob = 20
-				if (3 to 4) stunprob = 30
-				if (5 to 6) stunprob = 40
-				if (7 to 8) stunprob = 60
-				if (9) 	   stunprob = 70
-				if (10) 	   stunprob = 95
+				if(1 to 2) stunprob = 20
+				if(3 to 4) stunprob = 30
+				if(5 to 6) stunprob = 40
+				if(7 to 8) stunprob = 60
+				if(9) 	   stunprob = 70
+				if(10) 	   stunprob = 95
 
-			if (prob(stunprob))
+			if(prob(stunprob))
 				M.powerlevel -= 3
-				if (M.powerlevel < 0)
+				if(M.powerlevel < 0)
 					M.powerlevel = 0
 
 				for(var/mob/O in viewers(src, null))
-					if ((O.client && !( O.blinded )))
+					if((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>The [M.name] has shocked []!</B>", src), 1)
 
 				Weaken(power)
-				if (stuttering < power)
+				if(stuttering < power)
 					stuttering = power
 				Stun(power)
 
@@ -434,7 +434,7 @@
 				s.set_up(5, 1, src)
 				s.start()
 
-				if (prob(stunprob) && M.powerlevel >= 8)
+				if(prob(stunprob) && M.powerlevel >= 8)
 					adjustFireLoss(M.powerlevel * rand(6,10))
 
 
@@ -447,9 +447,9 @@
 	statpanel("Status")
 	stat(null, text("Intent: []", a_intent))
 	stat(null, text("Move Mode: []", m_intent))
-	if (client && mind)
-		if (client.statpanel == "Status")
-			if (mind.changeling)
+	if(client && mind)
+		if(client.statpanel == "Status")
+			if(mind.changeling)
 				stat("Chemical Storage", mind.changeling.chem_charges)
 				stat("Genetic Damage Time", mind.changeling.geneticdamage)
 	return
@@ -465,49 +465,49 @@
 /mob/living/carbon/monkey/var/temperature_resistance = T0C+75
 
 /mob/living/carbon/monkey/emp_act(severity)
-	if (wear_id) wear_id.emp_act(severity)
+	if(wear_id) wear_id.emp_act(severity)
 	..()
 
 /mob/living/carbon/monkey/ex_act(severity)
-	if (!blinded)
+	if(!blinded)
 		flick("flash", flash)
 
 	switch(severity)
-		if (1.0)
-			if (stat != 2)
+		if(1.0)
+			if(stat != 2)
 				adjustBruteLoss(200)
 				health = 100 - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss()
-		if (2.0)
-			if (stat != 2)
+		if(2.0)
+			if(stat != 2)
 				adjustBruteLoss(60)
 				adjustFireLoss(60)
 				health = 100 - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss()
-		if (3.0)
-			if (stat != 2)
+		if(3.0)
+			if(stat != 2)
 				adjustBruteLoss(30)
 				health = 100 - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss()
-			if (prob(50))
+			if(prob(50))
 				Paralyse(10)
 		else
 	return
 
 /mob/living/carbon/monkey/blob_act()
-	if (stat != 2)
+	if(stat != 2)
 		adjustFireLoss(60)
 		health = 100 - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss()
-	if (prob(50))
+	if(prob(50))
 		Paralyse(10)
-	if (stat == DEAD && client)
+	if(stat == DEAD && client)
 		gib()
 		return
-	if (stat == DEAD && !client)
+	if(stat == DEAD && !client)
 		gibs(loc, viruses)
 		del(src)
 		return
 
 
 /mob/living/carbon/monkey/IsAdvancedToolUser()//Unless its monkey mode monkeys cant use advanced tools
-	if (!ticker)	return 0
-	if (!ticker.mode.name == "monkey")	return 0
+	if(!ticker)	return 0
+	if(!ticker.mode.name == "monkey")	return 0
 	return 1
 

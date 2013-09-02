@@ -14,12 +14,12 @@
 
 /obj/machinery/sleep_console/ex_act(severity)
 	switch(severity)
-		if (1.0)
+		if(1.0)
 			//SN src = null
 			del(src)
 			return
-		if (2.0)
-			if (prob(50))
+		if(2.0)
+			if(prob(50))
 				//SN src = null
 				del(src)
 				return
@@ -29,7 +29,7 @@
 /obj/machinery/sleep_console/New()
 	..()
 	spawn( 5 )
-		if (orient == "RIGHT")
+		if(orient == "RIGHT")
 			icon_state = "sleeperconsole-r"
 			src.connected = locate(/obj/machinery/sleeper, get_step(src, EAST))
 		else
@@ -45,23 +45,23 @@
 	return src.attack_hand(user)
 
 /obj/machinery/sleep_console/attack_hand(mob/user as mob)
-	if (..())
+	if(..())
 		return
-	if (src.connected)
+	if(src.connected)
 		var/mob/living/occupant = src.connected.occupant
 		var/dat = "<font color='blue'><B>Occupant Statistics:</B></FONT><BR>"
-		if (occupant)
+		if(occupant)
 			var/t1
 			switch(occupant.stat)
-				if (0)
+				if(0)
 					t1 = "Conscious"
-				if (1)
+				if(1)
 					t1 = "<font color='blue'>Unconscious</font>"
-				if (2)
+				if(2)
 					t1 = "<font color='red'>*dead*</font>"
 				else
 			dat += text("[]\tHealth %: [] ([])</FONT><BR>", (occupant.health > 50 ? "<font color='blue'>" : "<font color='red'>"), occupant.health, t1)
-			if (iscarbon(occupant))
+			if(iscarbon(occupant))
 				var/mob/living/carbon/C = occupant
 				dat += text("[]\t-Pulse, bpm: []</FONT><BR>", (C.pulse == PULSE_NONE || C.pulse == PULSE_THREADY ? "<font color='red'>" : "<font color='blue'>"), C.get_pulse(GETPULSE_TOOL))
 			dat += text("[]\t-Brute Damage %: []</FONT><BR>", (occupant.getBruteLoss() < 60 ? "<font color='blue'>" : "<font color='red'>"), occupant.getBruteLoss())
@@ -69,7 +69,7 @@
 			dat += text("[]\t-Toxin Content %: []</FONT><BR>", (occupant.getToxLoss() < 60 ? "<font color='blue'>" : "<font color='red'>"), occupant.getToxLoss())
 			dat += text("[]\t-Burn Severity %: []</FONT><BR>", (occupant.getFireLoss() < 60 ? "<font color='blue'>" : "<font color='red'>"), occupant.getFireLoss())
 			dat += text("<HR>Paralysis Summary %: [] ([] seconds left!)<BR>", occupant.paralysis, round(occupant.paralysis / 4))
-			if (occupant.reagents)
+			if(occupant.reagents)
 				for(var/chemical in connected.available_chemicals)
 					dat += "[connected.available_chemicals[chemical]]: [occupant.reagents.get_reagent_amount(chemical)] units<br>"
 			dat += "<HR><A href='?src=\ref[src];refresh=1'>Refresh meter readings each second</A><BR>"
@@ -86,26 +86,26 @@
 	return
 
 /obj/machinery/sleep_console/Topic(href, href_list)
-	if (..())
+	if(..())
 		return
-	if ((usr.contents.Find(src) || ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon/ai)))
+	if((usr.contents.Find(src) || ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon/ai)))
 		usr.set_machine(src)
-		if (href_list["chemical"])
-			if (src.connected)
-				if (src.connected.occupant)
-					if (src.connected.occupant.stat == DEAD)
+		if(href_list["chemical"])
+			if(src.connected)
+				if(src.connected.occupant)
+					if(src.connected.occupant.stat == DEAD)
 						usr << "\red \b This person has no life for to preserve anymore. Take them to a department capable of reanimating them."
-					else if (src.connected.occupant.health > 0 || href_list["chemical"] == "inaprovaline")
+					else if(src.connected.occupant.health > 0 || href_list["chemical"] == "inaprovaline")
 						src.connected.inject_chemical(usr,href_list["chemical"],text2num(href_list["amount"]))
 					else
 						usr << "\red \b This person is not in good enough condition for sleepers to be effective! Use another means of treatment, such as cryogenics!"
-		if (href_list["refresh"])
+		if(href_list["refresh"])
 			src.updateUsrDialog()
 		src.add_fingerprint(usr)
 	return
 
 /obj/machinery/sleep_console/process()
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		return
 	src.updateUsrDialog()
 	return
@@ -139,7 +139,7 @@
 	New()
 		..()
 		spawn( 5 )
-			if (orient == "RIGHT")
+			if(orient == "RIGHT")
 				icon_state = "sleeper_0-r"
 			return
 		return
@@ -155,7 +155,7 @@
 
 
 	blob_act()
-		if (prob(75))
+		if(prob(75))
 			for(var/atom/movable/A as mob|obj in src)
 				A.loc = src.loc
 				A.blob_act()
@@ -164,32 +164,32 @@
 
 
 	attackby(obj/item/weapon/grab/G as obj, mob/user as mob)
-		if ((!( istype(G, /obj/item/weapon/grab)) || !( ismob(G.affecting))))
+		if((!( istype(G, /obj/item/weapon/grab)) || !( ismob(G.affecting))))
 			return
-		if (src.occupant)
+		if(src.occupant)
 			user << "\blue <B>The sleeper is already occupied!</B>"
 			return
 
 		for(var/mob/living/carbon/slime/M in range(1,G.affecting))
-			if (M.Victim == G.affecting)
+			if(M.Victim == G.affecting)
 				usr << "[G.affecting.name] will not fit into the sleeper because they have a slime latched onto their head."
 				return
 
 		visible_message("[user] starts putting [G.affecting.name] into the sleeper.", 3)
 
-		if (do_after(user, 20))
-			if (src.occupant)
+		if(do_after(user, 20))
+			if(src.occupant)
 				user << "\blue <B>The sleeper is already occupied!</B>"
 				return
-			if (!G || !G.affecting) return
+			if(!G || !G.affecting) return
 			var/mob/M = G.affecting
-			if (M.client)
+			if(M.client)
 				M.client.perspective = EYE_PERSPECTIVE
 				M.client.eye = src
 			M.loc = src
 			src.occupant = M
 			src.icon_state = "sleeper_1"
-			if (orient == "RIGHT")
+			if(orient == "RIGHT")
 				icon_state = "sleeper_1-r"
 
 			M << "\blue <b>You feel cool air surround you. You go numb as your senses turn inward.</b>"
@@ -204,21 +204,21 @@
 
 	ex_act(severity)
 		switch(severity)
-			if (1.0)
+			if(1.0)
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
 					ex_act(severity)
 				del(src)
 				return
-			if (2.0)
-				if (prob(50))
+			if(2.0)
+				if(prob(50))
 					for(var/atom/movable/A as mob|obj in src)
 						A.loc = src.loc
 						ex_act(severity)
 					del(src)
 					return
-			if (3.0)
-				if (prob(25))
+			if(3.0)
+				if(prob(25))
 					for(var/atom/movable/A as mob|obj in src)
 						A.loc = src.loc
 						ex_act(severity)
@@ -226,16 +226,16 @@
 					return
 		return
 	emp_act(severity)
-		if (stat & (BROKEN|NOPOWER))
+		if(stat & (BROKEN|NOPOWER))
 			..(severity)
 			return
-		if (occupant)
+		if(occupant)
 			go_out()
 		..(severity)
 
 	alter_health(mob/living/M as mob)
-		if (M.health > 0)
-			if (M.getOxyLoss() >= 10)
+		if(M.health > 0)
+			if(M.getOxyLoss() >= 10)
 				var/amount = max(0.15, 1)
 				M.adjustOxyLoss(-amount)
 			else
@@ -247,29 +247,29 @@
 		M.Paralyse(1)
 		M.Weaken(1)
 		M.Stun(1)
-		if (M:reagents.get_reagent_amount("inaprovaline") < 5)
+		if(M:reagents.get_reagent_amount("inaprovaline") < 5)
 			M:reagents.add_reagent("inaprovaline", 5)
 		return
 
 
 	proc/go_out()
-		if (!src.occupant)
+		if(!src.occupant)
 			return
 		for(var/obj/O in src)
 			O.loc = src.loc
-		if (src.occupant.client)
+		if(src.occupant.client)
 			src.occupant.client.eye = src.occupant.client.mob
 			src.occupant.client.perspective = MOB_PERSPECTIVE
 		src.occupant.loc = src.loc
 		src.occupant = null
-		if (orient == "RIGHT")
+		if(orient == "RIGHT")
 			icon_state = "sleeper_0-r"
 		return
 
 
 	proc/inject_chemical(mob/living/user as mob, chemical, amount)
-		if (src.occupant && src.occupant.reagents)
-			if (src.occupant.reagents.get_reagent_amount(chemical) + amount <= 40)
+		if(src.occupant && src.occupant.reagents)
+			if(src.occupant.reagents.get_reagent_amount(chemical) + amount <= 40)
 				src.occupant.reagents.add_reagent(chemical, amount)
 				user << "Occupant now has [src.occupant.reagents.get_reagent_amount(chemical)] units of [available_chemicals[chemical]] in his/her bloodstream."
 				return
@@ -278,15 +278,15 @@
 
 
 	proc/check(mob/living/user as mob)
-		if (src.occupant)
+		if(src.occupant)
 			user << text("\blue <B>Occupant ([]) Statistics:</B>", src.occupant)
 			var/t1
 			switch(src.occupant.stat)
-				if (0.0)
+				if(0.0)
 					t1 = "Conscious"
-				if (1.0)
+				if(1.0)
 					t1 = "Unconscious"
-				if (2.0)
+				if(2.0)
 					t1 = "*dead*"
 				else
 			user << text("[]\t Health %: [] ([])", (src.occupant.health > 50 ? "\blue " : "\red "), src.occupant.health, t1)
@@ -306,9 +306,9 @@
 		set name = "Eject Sleeper"
 		set category = "Object"
 		set src in oview(1)
-		if (usr.stat != 0)
+		if(usr.stat != 0)
 			return
-		if (orient == "RIGHT")
+		if(orient == "RIGHT")
 			icon_state = "sleeper_0-r"
 		src.icon_state = "sleeper_0"
 		src.go_out()
@@ -321,20 +321,20 @@
 		set category = "Object"
 		set src in oview(1)
 
-		if (usr.stat != 0 || !(ishuman(usr) || ismonkey(usr)))
+		if(usr.stat != 0 || !(ishuman(usr) || ismonkey(usr)))
 			return
 
-		if (src.occupant)
+		if(src.occupant)
 			usr << "\blue <B>The sleeper is already occupied!</B>"
 			return
 
 		for(var/mob/living/carbon/slime/M in range(1,usr))
-			if (M.Victim == usr)
+			if(M.Victim == usr)
 				usr << "You're too busy getting your life sucked out of you."
 				return
 		visible_message("[usr] starts climbing into the sleeper.", 3)
-		if (do_after(usr, 20))
-			if (src.occupant)
+		if(do_after(usr, 20))
+			if(src.occupant)
 				usr << "\blue <B>The sleeper is already occupied!</B>"
 				return
 			usr.stop_pulling()
@@ -343,7 +343,7 @@
 			usr.loc = src
 			src.occupant = usr
 			src.icon_state = "sleeper_1"
-			if (orient == "RIGHT")
+			if(orient == "RIGHT")
 				icon_state = "sleeper_1-r"
 
 			for(var/obj/O in src)

@@ -165,11 +165,7 @@
 "di" = (/obj/machinery/mineral/mint,/turf/simulated/floor/plating,/area/awaymission/wwrefine)
 "dj" = (/obj/structure/window/reinforced{dir = 5; health = 1e+007},/turf/simulated/floor/wood,/area/awaymission/wwmines)
 "dk" = (/obj/structure/shuttle/engine/propulsion/burst/left,/turf/simulated/wall/mineral/sandstone,/area/awaymission/wwmines)
-<<<<<<< HEAD
-"dl" = (/obj/structure/sign/maltesefalcon/right,/turf/simulated/wall/mineral/sandstone,/area/awaymission/wwmines)
-=======
 "dl" = (/obj/structure/sign/double/map/right,/turf/simulated/wall/mineral/sandstone,/area/awaymission/wwmines)
->>>>>>> origin/master
 "dm" = (/obj/structure/mineral_door/wood{tag = "icon-woodopening"; icon_state = "woodopening"},/turf/simulated/floor/plating/ironsand{tag = "icon-ironsand1"; icon_state = "ironsand1"},/area/awaymission/wwmines)
 "dn" = (/obj/structure/mineral_door/wood{tag = "icon-woodopening"; icon_state = "woodopening"},/obj/effect/decal/cleanable/blood/tracks,/turf/simulated/floor/plating/ironsand{tag = "icon-ironsand1"; icon_state = "ironsand1"},/area/awaymission/wwmines)
 "do" = (/obj/structure/window/reinforced{dir = 4},/turf/space,/area)

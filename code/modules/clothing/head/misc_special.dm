@@ -34,8 +34,8 @@
 	set name = "Adjust welding mask"
 	set src in usr
 
-	if (usr.canmove && !usr.stat && !usr.restrained())
-		if (src.up)
+	if(usr.canmove && !usr.stat && !usr.restrained())
+		if(src.up)
 			src.up = !src.up
 			src.flags |= (HEADCOVERSEYES | HEADCOVERSMOUTH)
 			flags_inv |= (HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE)
@@ -64,23 +64,23 @@
 	var/processing = 0 //I dont think this is used anywhere.
 
 /obj/item/clothing/head/cakehat/process()
-	if (!onfire)
+	if(!onfire)
 		processing_objects.Remove(src)
 		return
 
 	var/turf/location = src.loc
-	if (istype(location, /mob/))
+	if(istype(location, /mob/))
 		var/mob/living/carbon/human/M = location
-		if (M.l_hand == src || M.r_hand == src || M.head == src)
+		if(M.l_hand == src || M.r_hand == src || M.head == src)
 			location = M.loc
 
-	if (istype(location, /turf))
+	if(istype(location, /turf))
 		location.hotspot_expose(700, 1)
 
 /obj/item/clothing/head/cakehat/attack_self(mob/user as mob)
-	if (status > 1)	return
+	if(status > 1)	return
 	src.onfire = !( src.onfire )
-	if (src.onfire)
+	if(src.onfire)
 		src.force = 3
 		src.damtype = "fire"
 		src.icon_state = "cake1"
@@ -103,7 +103,7 @@
 	flags_inv = HIDEEARS
 
 /obj/item/clothing/head/ushanka/attack_self(mob/user as mob)
-	if (src.icon_state == "ushankadown")
+	if(src.icon_state == "ushankadown")
 		src.icon_state = "ushankaup"
 		src.item_state = "ushankaup"
 		user << "You raise the ear flaps on the ushanka."
@@ -127,24 +127,24 @@
 	var/on = 0
 
 	attack_self(mob/user)
-		if (!isturf(user.loc))
+		if(!isturf(user.loc))
 			user << "You cannot turn the light on while in this [user.loc]" //To prevent some lighting anomalities.
 			return
 		on = !on
 		icon_state = "hardhat[on]_[color]"
 		item_state = "hardhat[on]_[color]"
 
-		if (on)	user.SetLuminosity(user.luminosity + brightness_on)
+		if(on)	user.SetLuminosity(user.luminosity + brightness_on)
 		else	user.SetLuminosity(user.luminosity - brightness_on)
 
 	pickup(mob/user)
-		if (on)
+		if(on)
 			user.SetLuminosity(user.luminosity + brightness_on)
 //			user.UpdateLuminosity()
 			SetLuminosity(0)
 
 	dropped(mob/user)
-		if (on)
+		if(on)
 			user.SetLuminosity(user.luminosity - brightness_on)
 //			user.UpdateLuminosity()
 			SetLuminosity(brightness_on)
@@ -162,7 +162,7 @@
 	siemens_coefficient = 1.5
 
 	update_icon(var/mob/living/carbon/human/user)
-		if (!istype(user)) return
+		if(!istype(user)) return
 		mob = new/icon("icon" = 'icons/mob/head.dmi', "icon_state" = "kitty")
 		mob2 = new/icon("icon" = 'icons/mob/head.dmi', "icon_state" = "kitty2")
 		mob.Blend(rgb(user.r_hair, user.g_hair, user.b_hair), ICON_ADD)

@@ -38,36 +38,36 @@ var/const/HOLOPAD_MODE = 0
 	var/holo_range = 5 // Change to change how far the AI can move away from the holopad before deactivating.
 
 /obj/machinery/hologram/holopad/attack_hand(var/mob/living/carbon/human/user) //Carn: Hologram requests.
-	if (!istype(user))
+	if(!istype(user))
 		return
-	if (alert(user,"Would you like to request an AI's presence?",,"Yes","No") == "Yes")
-		if (last_request + 200 < world.time) //don't spam the AI with requests you jerk!
+	if(alert(user,"Would you like to request an AI's presence?",,"Yes","No") == "Yes")
+		if(last_request + 200 < world.time) //don't spam the AI with requests you jerk!
 			last_request = world.time
 			user << "<span class='notice'>You request an AI's presence.</span>"
 			var/area/area = get_area(src)
 			for(var/mob/living/silicon/ai/AI in living_mob_list)
-				if (!AI.client)	continue
+				if(!AI.client)	continue
 				AI << "<span class='info'>Your presence is requested at <a href='?src=\ref[AI];jumptoholopad=\ref[src]'>\the [area]</a>.</span>"
 		else
 			user << "<span class='notice'>A request for AI presence was already sent recently.</span>"
 
 /obj/machinery/hologram/holopad/attack_ai(mob/living/silicon/ai/user)
-	if (!istype(user))
+	if(!istype(user))
 		return
 	/*There are pretty much only three ways to interact here.
 	I don't need to check for client since they're clicking on an object.
 	This may change in the future but for now will suffice.*/
-	if (user.eyeobj.loc != src.loc)//Set client eye on the object if it's not already.
+	if(user.eyeobj.loc != src.loc)//Set client eye on the object if it's not already.
 		user.eyeobj.setLoc(get_turf(src))
-	else if (!hologram)//If there is no hologram, possibly make one.
+	else if(!hologram)//If there is no hologram, possibly make one.
 		activate_holo(user)
-	else if (master==user)//If there is a hologram, remove it. But only if the user is the master. Otherwise do nothing.
+	else if(master==user)//If there is a hologram, remove it. But only if the user is the master. Otherwise do nothing.
 		clear_holo()
 	return
 
 /obj/machinery/hologram/holopad/proc/activate_holo(mob/living/silicon/ai/user)
-	if (!(stat & NOPOWER) && user.eyeobj.loc == src.loc)//If the projector has power and client eye is on it.
-		if (!hologram)//If there is not already a hologram.
+	if(!(stat & NOPOWER) && user.eyeobj.loc == src.loc)//If the projector has power and client eye is on it.
+		if(!hologram)//If there is not already a hologram.
 			create_holo(user)//Create one.
 			src.visible_message("A holographic image of [user] flicks to life right before your eyes!")
 		else
@@ -79,8 +79,8 @@ var/const/HOLOPAD_MODE = 0
 /*This is the proc for special two-way communication between AI and holopad/people talking near holopad.
 For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 /obj/machinery/hologram/holopad/hear_talk(mob/living/M, text)
-	if (M&&hologram&&master)//Master is mostly a safety in case lag hits or something.
-		if (!master.say_understands(M))//The AI will be able to understand most mobs talking through the holopad.
+	if(M&&hologram&&master)//Master is mostly a safety in case lag hits or something.
+		if(!master.say_understands(M))//The AI will be able to understand most mobs talking through the holopad.
 			text = stars(text)
 		var/name_used = M.GetVoice()
 		//This communication is imperfect because the holopad "filters" voices and is only designed to connect to the master only.
@@ -106,7 +106,7 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 /obj/machinery/hologram/holopad/proc/clear_holo()
 //	hologram.SetLuminosity(0)//Clear lighting.	//handled by the lighting controller when its ower is deleted
 	del(hologram)//Get rid of hologram.
-	if (master.current == src)
+	if(master.current == src)
 		master.current = null
 	master = null//Null the master, since no-one is using it now.
 	SetLuminosity(0)			//pad lighting (hologram lighting will be handled automatically since its owner was deleted)
@@ -115,25 +115,25 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	return 1
 
 /obj/machinery/hologram/holopad/process()
-	if (hologram)//If there is a hologram.
-		if (master && !master.stat && master.client && master.eyeobj)//If there is an AI attached, it's not incapacitated, it has a client, and the client eye is centered on the projector.
-			if (!(stat & NOPOWER))//If the  machine has power.
-				if ((HOLOPAD_MODE == 0 && (get_dist(master.eyeobj, src) <= holo_range)))
+	if(hologram)//If there is a hologram.
+		if(master && !master.stat && master.client && master.eyeobj)//If there is an AI attached, it's not incapacitated, it has a client, and the client eye is centered on the projector.
+			if(!(stat & NOPOWER))//If the  machine has power.
+				if((HOLOPAD_MODE == 0 && (get_dist(master.eyeobj, src) <= holo_range)))
 					return 1
 
-				else if (HOLOPAD_MODE == 1)
+				else if(HOLOPAD_MODE == 1)
 
 					var/area/holo_area = get_area(src)
 					var/area/eye_area = get_area(master.eyeobj)
 
-					if (eye_area in holo_area.master.related)
+					if(eye_area in holo_area.master.related)
 						return 1
 
 		clear_holo()//If not, we want to get rid of the hologram.
 	return 1
 
 /obj/machinery/hologram/holopad/proc/move_hologram()
-	if (hologram)
+	if(hologram)
 		step_to(hologram, master.eyeobj) // So it turns.
 		hologram.loc = get_turf(master.eyeobj)
 
@@ -151,7 +151,7 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	var/obj/effect/overlay/hologram//The projection itself. If there is one, the instrument is on, off otherwise.
 
 /obj/machinery/hologram/power_change()
-	if (powered())
+	if(powered())
 		stat &= ~NOPOWER
 	else
 		stat |= ~NOPOWER
@@ -159,13 +159,13 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 //Destruction procs.
 /obj/machinery/hologram/ex_act(severity)
 	switch(severity)
-		if (1.0)
+		if(1.0)
 			del(src)
-		if (2.0)
-			if (prob(50))
+		if(2.0)
+			if(prob(50))
 				del(src)
-		if (3.0)
-			if (prob(5))
+		if(3.0)
+			if(prob(5))
 				del(src)
 	return
 
@@ -178,7 +178,7 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 	return
 
 /obj/machinery/hologram/Del()
-	if (hologram)
+	if(hologram)
 		src:clear_holo()
 	..()
 
@@ -194,7 +194,7 @@ Holographic project of everything else.
 	flat_icon.ColorTone(rgb(125,180,225))//Let's make it bluish.
 	flat_icon.ChangeOpacity(0.5)//Make it half transparent.
 	var/input = input("Select what icon state to use in effect.",,"")
-	if (input)
+	if(input)
 		var/icon/alpha_mask = new('icons/effects/effects.dmi', "[input]")
 		flat_icon.AddAlphaMask(alpha_mask)//Finally, let's mix in a distortion effect.
 		hologram.icon = flat_icon

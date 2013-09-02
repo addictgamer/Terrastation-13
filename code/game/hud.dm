@@ -208,81 +208,81 @@ datum/hud/New(mob/owner)
 
 
 /datum/hud/proc/hidden_inventory_update()
-	if (!mymob) return
-	if (ishuman(mymob))
+	if(!mymob) return
+	if(ishuman(mymob))
 		var/mob/living/carbon/human/H = mymob
-		if (inventory_shown && hud_shown)
-			if (H.shoes)		H.shoes.screen_loc = ui_shoes
-			if (H.gloves)	H.gloves.screen_loc = ui_gloves
-			if (H.ears)		H.ears.screen_loc = ui_ears
-			if (H.glasses)	H.glasses.screen_loc = ui_glasses
-			if (H.w_uniform)	H.w_uniform.screen_loc = ui_iclothing
-			if (H.wear_suit)	H.wear_suit.screen_loc = ui_oclothing
-			if (H.wear_mask)	H.wear_mask.screen_loc = ui_mask
-			if (H.head)		H.head.screen_loc = ui_head
+		if(inventory_shown && hud_shown)
+			if(H.shoes)		H.shoes.screen_loc = ui_shoes
+			if(H.gloves)	H.gloves.screen_loc = ui_gloves
+			if(H.ears)		H.ears.screen_loc = ui_ears
+			if(H.glasses)	H.glasses.screen_loc = ui_glasses
+			if(H.w_uniform)	H.w_uniform.screen_loc = ui_iclothing
+			if(H.wear_suit)	H.wear_suit.screen_loc = ui_oclothing
+			if(H.wear_mask)	H.wear_mask.screen_loc = ui_mask
+			if(H.head)		H.head.screen_loc = ui_head
 		else
-			if (H.shoes)		H.shoes.screen_loc = null
-			if (H.gloves)	H.gloves.screen_loc = null
-			if (H.ears)		H.ears.screen_loc = null
-			if (H.glasses)	H.glasses.screen_loc = null
-			if (H.w_uniform)	H.w_uniform.screen_loc = null
-			if (H.wear_suit)	H.wear_suit.screen_loc = null
-			if (H.wear_mask)	H.wear_mask.screen_loc = null
-			if (H.head)		H.head.screen_loc = null
+			if(H.shoes)		H.shoes.screen_loc = null
+			if(H.gloves)	H.gloves.screen_loc = null
+			if(H.ears)		H.ears.screen_loc = null
+			if(H.glasses)	H.glasses.screen_loc = null
+			if(H.w_uniform)	H.w_uniform.screen_loc = null
+			if(H.wear_suit)	H.wear_suit.screen_loc = null
+			if(H.wear_mask)	H.wear_mask.screen_loc = null
+			if(H.head)		H.head.screen_loc = null
 
 /datum/hud/proc/persistant_inventory_update()
-	if (!mymob) return
-	if (ishuman(mymob))
+	if(!mymob) return
+	if(ishuman(mymob))
 		var/mob/living/carbon/human/H = mymob
-		if (hud_shown)
-			if (H.s_store)	H.s_store.screen_loc = ui_sstore1
-			if (H.wear_id)	H.wear_id.screen_loc = ui_id
-			if (H.belt)		H.belt.screen_loc = ui_belt
-			if (H.back)		H.back.screen_loc = ui_back
-			if (H.l_store)	H.l_store.screen_loc = ui_storage1
-			if (H.r_store)	H.r_store.screen_loc = ui_storage2
+		if(hud_shown)
+			if(H.s_store)	H.s_store.screen_loc = ui_sstore1
+			if(H.wear_id)	H.wear_id.screen_loc = ui_id
+			if(H.belt)		H.belt.screen_loc = ui_belt
+			if(H.back)		H.back.screen_loc = ui_back
+			if(H.l_store)	H.l_store.screen_loc = ui_storage1
+			if(H.r_store)	H.r_store.screen_loc = ui_storage2
 		else
-			if (H.s_store)	H.s_store.screen_loc = null
-			if (H.wear_id)	H.wear_id.screen_loc = null
-			if (H.belt)		H.belt.screen_loc = null
-			if (H.back)		H.back.screen_loc = null
-			if (H.l_store)	H.l_store.screen_loc = null
-			if (H.r_store)	H.r_store.screen_loc = null
+			if(H.s_store)	H.s_store.screen_loc = null
+			if(H.wear_id)	H.wear_id.screen_loc = null
+			if(H.belt)		H.belt.screen_loc = null
+			if(H.back)		H.back.screen_loc = null
+			if(H.l_store)	H.l_store.screen_loc = null
+			if(H.r_store)	H.r_store.screen_loc = null
 
 
 /datum/hud/proc/instantiate()
-	if (!ismob(mymob)) return 0
-	if (!mymob.client) return 0
+	if(!ismob(mymob)) return 0
+	if(!mymob.client) return 0
 	var/ui_style = ui_style2icon(mymob.client.prefs.UI_style)
 
-	if (ishuman(mymob))
+	if(ishuman(mymob))
 		human_hud(ui_style) // Pass the player the UI style chosen in preferences
 
-	else if (ismonkey(mymob))
+	else if(ismonkey(mymob))
 		monkey_hud(ui_style)
 
-	else if (isbrain(mymob))
+	else if(isbrain(mymob))
 		brain_hud(ui_style)
 
-	else if (islarva(mymob))
+	else if(islarva(mymob))
 		larva_hud()
 
-	else if (isalien(mymob))
+	else if(isalien(mymob))
 		alien_hud()
 
-	else if (isAI(mymob))
+	else if(isAI(mymob))
 		ai_hud()
 
-	else if (isrobot(mymob))
+	else if(isrobot(mymob))
 		robot_hud()
 
-//	else if (ishivebot(mymob))
+//	else if(ishivebot(mymob))
 //		hivebot_hud()
 
-//	else if (ishivemainframe(mymob))
+//	else if(ishivemainframe(mymob))
 //		hive_mainframe_hud()
 
-	else if (isobserver(mymob))
+	else if(isobserver(mymob))
 		ghost_hud()
 
 	return

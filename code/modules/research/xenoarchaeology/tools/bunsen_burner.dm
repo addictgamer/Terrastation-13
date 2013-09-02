@@ -10,8 +10,8 @@
 	var/heat_time = 50
 
 /obj/machinery/bunsen_burner/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/weapon/reagent_containers))
-		if (held_container)
+	if(istype(W, /obj/item/weapon/reagent_containers))
+		if(held_container)
 			user << "\red You must remove the [held_container] first."
 		else
 			user.drop_item(src)
@@ -20,14 +20,14 @@
 			user << "\blue You put the [held_container] onto the [src]."
 			var/image/I = image("icon"=W, "layer"=FLOAT_LAYER)
 			underlays += I
-			if (heating)
+			if(heating)
 				spawn(heat_time)
 					try_heating()
 	else
 		user << "\red You can't put the [W] onto the [src]."
 
 /obj/machinery/bunsen_burner/attack_hand(mob/user as mob)
-	if (held_container)
+	if(held_container)
 		underlays = null
 		user << "\blue You remove the [held_container] from the [src]."
 		held_container.loc = src.loc
@@ -38,7 +38,7 @@
 
 /obj/machinery/bunsen_burner/proc/try_heating()
 	src.visible_message("\blue \icon[src] [src] hisses.")
-	if (held_container && heating)
+	if(held_container && heating)
 		heated = 1
 		held_container.reagents.handle_reactions()
 		heated = 0
@@ -52,6 +52,6 @@
 
 	heating = !heating
 	icon_state = "bunsen[heating]"
-	if (heating)
+	if(heating)
 		spawn(heat_time)
 			try_heating()

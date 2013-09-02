@@ -8,7 +8,7 @@
 	prime()
 		..()
 		for(var/obj/structure/closet/L in view(get_turf(src), null))
-			if (locate(/mob/living/carbon/, L))
+			if(locate(/mob/living/carbon/, L))
 				for(var/mob/living/carbon/M in L)
 					bang(get_turf(src), M)
 
@@ -24,7 +24,7 @@
 		return
 
 	proc/bang(var/turf/T , var/mob/living/carbon/M)						// Added a new proc called 'bang' that takes a location and a person to be banged.
-		if (locate(/obj/item/weapon/cloaking_device, M))			// Called during the loop that bangs people in lockers/containers and when banging
+		if(locate(/obj/item/weapon/cloaking_device, M))			// Called during the loop that bangs people in lockers/containers and when banging
 			for(var/obj/item/weapon/cloaking_device/S in M)			// people in normal view.  Could theroetically be called during other explosions.
 				S.active = 0										// -- Polymorph
 				S.icon_state = "shield0"
@@ -35,18 +35,18 @@
 //Checking for protections
 		var/eye_safety = 0
 		var/ear_safety = 0
-		if (iscarbon(M))
+		if(iscarbon(M))
 			eye_safety = M.eyecheck()
-			if (ishuman(M))
-				if (istype(M:ears, /obj/item/clothing/ears/earmuffs))
+			if(ishuman(M))
+				if(istype(M:ears, /obj/item/clothing/ears/earmuffs))
 					ear_safety += 2
-				if (HULK in M.mutations)
+				if(HULK in M.mutations)
 					ear_safety += 1
-				if (istype(M:head, /obj/item/clothing/head/helmet))
+				if(istype(M:head, /obj/item/clothing/head/helmet))
 					ear_safety += 1
 
 //Flashing everyone
-		if (eye_safety < 1)
+		if(eye_safety < 1)
 			flick("e_flash", M.flash)
 			M.eye_stat += rand(1, 3)
 			M.Stun(2)
@@ -55,46 +55,46 @@
 
 
 //Now applying sound
-		if ((get_dist(M, T) <= 2 || src.loc == M.loc || src.loc == M))
-			if (ear_safety > 0)
+		if((get_dist(M, T) <= 2 || src.loc == M.loc || src.loc == M))
+			if(ear_safety > 0)
 				M.Stun(2)
 				M.Weaken(1)
 			else
 				M.Stun(10)
 				M.Weaken(3)
-				if ((prob(14) || (M == src.loc && prob(70))))
+				if((prob(14) || (M == src.loc && prob(70))))
 					M.ear_damage += rand(1, 10)
 				else
 					M.ear_damage += rand(0, 5)
 					M.ear_deaf = max(M.ear_deaf,15)
 
-		else if (get_dist(M, T) <= 5)
-			if (!ear_safety)
+		else if(get_dist(M, T) <= 5)
+			if(!ear_safety)
 				M.Stun(8)
 				M.ear_damage += rand(0, 3)
 				M.ear_deaf = max(M.ear_deaf,10)
 
-		else if (!ear_safety)
+		else if(!ear_safety)
 			M.Stun(4)
 			M.ear_damage += rand(0, 1)
 			M.ear_deaf = max(M.ear_deaf,5)
 
 //This really should be in mob not every check
-		if (M.eye_stat >= 20)
+		if(M.eye_stat >= 20)
 			M << "\red Your eyes start to burn badly!"
 			M.disabilities |= NEARSIGHTED
-			if (!banglet && !(istype(src , /obj/item/weapon/grenade/flashbang/clusterbang)))
-				if (prob(M.eye_stat - 20 + 1))
+			if(!banglet && !(istype(src , /obj/item/weapon/grenade/flashbang/clusterbang)))
+				if(prob(M.eye_stat - 20 + 1))
 					M << "\red You can't see anything!"
 					M.sdisabilities |= BLIND
-		if (M.ear_damage >= 15)
+		if(M.ear_damage >= 15)
 			M << "\red Your ears start to ring badly!"
-			if (!banglet && !(istype(src , /obj/item/weapon/grenade/flashbang/clusterbang)))
-				if (prob(M.ear_damage - 10 + 5))
+			if(!banglet && !(istype(src , /obj/item/weapon/grenade/flashbang/clusterbang)))
+				if(prob(M.ear_damage - 10 + 5))
 					M << "\red You can't hear anything!"
 					M.sdisabilities |= DEAF
 		else
-			if (M.ear_damage >= 5)
+			if(M.ear_damage >= 5)
 				M << "\red Your ears start to ring!"
 		M.update_icons()
 
@@ -109,7 +109,7 @@
 	var/numspawned = rand(4,8)
 	var/again = 0
 	for(var/more = numspawned,more > 0,more--)
-		if (prob(35))
+		if(prob(35))
 			again++
 			numspawned --
 
@@ -147,7 +147,7 @@
 /obj/item/weapon/grenade/flashbang/clusterbang/segment/prime()
 	var/numspawned = rand(4,8)
 	for(var/more = numspawned,more > 0,more--)
-		if (prob(35))
+		if(prob(35))
 			numspawned --
 
 	for(,numspawned > 0, numspawned--)

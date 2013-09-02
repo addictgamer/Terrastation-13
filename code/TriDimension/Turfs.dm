@@ -55,11 +55,11 @@ atom/movable/Move() //Hackish
 
 
 	Enter(var/atom/movable/AM)
-		if (..()) //TODO make this check if gravity is active (future use) - Sukasa
+		if(..()) //TODO make this check if gravity is active (future use) - Sukasa
 			spawn(1)
 				if(AM)
 					AM.Move(floorbelow)
-					if (istype(AM, /mob/living/carbon/human))
+					if(istype(AM, /mob/living/carbon/human))
 						var/mob/living/carbon/human/H = AM
 						var/damage = rand(5,15)
 						H.apply_damage(2*damage, BRUTE, "head")

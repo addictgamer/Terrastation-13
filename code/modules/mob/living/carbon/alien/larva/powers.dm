@@ -4,20 +4,20 @@
 	set desc = "Allows to hide beneath tables or certain items. Toggled on or off."
 	set category = "Alien"
 
-	if (stat != CONSCIOUS)
+	if(stat != CONSCIOUS)
 		return
 
-	if (layer != TURF_LAYER+0.2)
+	if(layer != TURF_LAYER+0.2)
 		layer = TURF_LAYER+0.2
 		src << text("\green You are now hiding.")
 		for(var/mob/O in oviewers(src, null))
-			if ((O.client && !( O.blinded )))
+			if((O.client && !( O.blinded )))
 				O << text("<B>[] scurries to the ground!</B>", src)
 	else
 		layer = MOB_LAYER
 		src << text("\green You have stopped hiding.")
 		for(var/mob/O in oviewers(src, null))
-			if ((O.client && !( O.blinded )))
+			if((O.client && !( O.blinded )))
 				O << text("[] slowly peaks up from the ground...", src)
 
 /mob/living/carbon/alien/larva/verb/evolve()
@@ -25,13 +25,13 @@
 	set desc = "Evolve into a fully grown Alien."
 	set category = "Alien"
 
-	if (stat != CONSCIOUS)
+	if(stat != CONSCIOUS)
 		return
 
-	if (handcuffed || legcuffed)
+	if(handcuffed || legcuffed)
 		src << "\red You cannot evolve when you are cuffed."
 
-	if (amount_grown >= max_grown)	//TODO ~Carn
+	if(amount_grown >= max_grown)	//TODO ~Carn
 		//green is impossible to read, so i made these blue and changed the formatting slightly
 		src << "\blue <b>You are growing into a beautiful alien! It is time to choose a caste.</b>"
 		src << "\blue There are three to choose from:"
@@ -42,13 +42,13 @@
 
 		var/mob/living/carbon/alien/humanoid/new_xeno
 		switch(alien_caste)
-			if ("Hunter")
+			if("Hunter")
 				new_xeno = new /mob/living/carbon/alien/humanoid/hunter(loc)
-			if ("Sentinel")
+			if("Sentinel")
 				new_xeno = new /mob/living/carbon/alien/humanoid/sentinel(loc)
-			if ("Drone")
+			if("Drone")
 				new_xeno = new /mob/living/carbon/alien/humanoid/drone(loc)
-		if (mind)	mind.transfer_to(new_xeno)
+		if(mind)	mind.transfer_to(new_xeno)
 		del(src)
 		return
 	else

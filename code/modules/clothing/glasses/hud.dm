@@ -20,21 +20,21 @@
 
 	RoundHealth(health)
 		switch(health)
-			if (100 to INFINITY)
+			if(100 to INFINITY)
 				return "health100"
-			if (70 to 100)
+			if(70 to 100)
 				return "health80"
-			if (50 to 70)
+			if(50 to 70)
 				return "health60"
-			if (30 to 50)
+			if(30 to 50)
 				return "health40"
-			if (18 to 30)
+			if(18 to 30)
 				return "health25"
-			if (5 to 18)
+			if(5 to 18)
 				return "health10"
-			if (1 to 5)
+			if(1 to 5)
 				return "health1"
-			if (-99 to 0)
+			if(-99 to 0)
 				return "health0"
 			else
 				return "health-100"
@@ -42,36 +42,36 @@
 
 
 	process_hud(var/mob/M)
-		if (!M)	return
-		if (!M.client)	return
+		if(!M)	return
+		if(!M.client)	return
 		var/client/C = M.client
 		var/image/holder
 		for(var/mob/living/carbon/human/patient in view(get_turf(M)))
-			if (M.see_invisible < patient.invisibility)
+			if(M.see_invisible < patient.invisibility)
 				continue
 			var/foundVirus = 0
 			for(var/datum/disease/D in patient.viruses)
-				if (!D.hidden[SCANNER])
+				if(!D.hidden[SCANNER])
 					foundVirus++
 			for (var/ID in patient.virus2)
-				if (ID in virusDB)
+				if(ID in virusDB)
 					foundVirus = 1
 					break
-			if (!C) continue
+			if(!C) continue
 
 			holder = patient.hud_list[HEALTH_HUD]
-			if (patient.stat == 2)
+			if(patient.stat == 2)
 				holder.icon_state = "hudhealth-100"
 			else
 				holder.icon_state = "hud[RoundHealth(patient.health)]"
 			C.images += holder
 
 			holder = patient.hud_list[STATUS_HUD]
-			if (patient.stat == 2)
+			if(patient.stat == 2)
 				holder.icon_state = "huddead"
-			else if (patient.status_flags & XENO_HOST)
+			else if(patient.status_flags & XENO_HOST)
 				holder.icon_state = "hudxeno"
-			else if (foundVirus)
+			else if(foundVirus)
 				holder.icon_state = "hudill"
 			else
 				holder.icon_state = "hudhealthy"
@@ -92,19 +92,19 @@
 	invisa_view = 2
 
 /obj/item/clothing/glasses/hud/security/process_hud(var/mob/M)
-	if (!M)	return
-	if (!M.client)	return
+	if(!M)	return
+	if(!M.client)	return
 	var/client/C = M.client
 	var/image/holder
 	for(var/mob/living/carbon/human/perp in view(get_turf(M)))
-		if (M.see_invisible < perp.invisibility)
+		if(M.see_invisible < perp.invisibility)
 			continue
-		if (!C) continue
+		if(!C) continue
 		var/perpname = perp.name
 		holder = perp.hud_list[ID_HUD]
-		if (perp.wear_id)
+		if(perp.wear_id)
 			var/obj/item/weapon/card/id/I = perp.wear_id.GetID()
-			if (I)
+			if(I)
 				perpname = I.registered_name
 				holder.icon_state = "hud[ckey(I.GetJobName())]"
 				C.images += holder
@@ -118,36 +118,36 @@
 			C.images += holder
 
 		for(var/datum/data/record/E in data_core.general)
-			if (E.fields["name"] == perpname)
+			if(E.fields["name"] == perpname)
 				holder = perp.hud_list[WANTED_HUD]
 				for (var/datum/data/record/R in data_core.security)
-					if ((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "*Arrest*"))
+					if((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "*Arrest*"))
 						holder.icon_state = "hudwanted"
 						C.images += holder
 						break
-					else if ((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "Incarcerated"))
+					else if((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "Incarcerated"))
 						holder.icon_state = "hudprisoner"
 						C.images += holder
 						break
-					else if ((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "Parolled"))
+					else if((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "Parolled"))
 						holder.icon_state = "hudparolled"
 						C.images += holder
 						break
-					else if ((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "Released"))
+					else if((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "Released"))
 						holder.icon_state = "hudreleased"
 						C.images += holder
 						break
 		for(var/obj/item/weapon/implant/I in perp)
-			if (I.implanted)
-				if (istype(I,/obj/item/weapon/implant/tracking))
+			if(I.implanted)
+				if(istype(I,/obj/item/weapon/implant/tracking))
 					holder = perp.hud_list[IMPTRACK_HUD]
 					holder.icon_state = "hud_imp_tracking"
 					C.images += holder
-				if (istype(I,/obj/item/weapon/implant/loyalty))
+				if(istype(I,/obj/item/weapon/implant/loyalty))
 					holder = perp.hud_list[IMPLOYAL_HUD]
 					holder.icon_state = "hud_imp_loyal"
 					C.images += holder
-				if (istype(I,/obj/item/weapon/implant/chem))
+				if(istype(I,/obj/item/weapon/implant/chem))
 					holder = perp.hud_list[IMPCHEM_HUD]
 					holder.icon_state = "hud_imp_chem"
 					C.images += holder

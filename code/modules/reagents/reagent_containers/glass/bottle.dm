@@ -14,13 +14,13 @@
 
 	New()
 		..()
-		if (!icon_state)
+		if(!icon_state)
 			icon_state = "bottle[rand(1,20)]"
 
 	update_icon()
 		overlays.Cut()
 
-		if (!is_open_container())
+		if(!is_open_container())
 			var/image/lid = image(icon, src, "lid_bottle")
 			overlays += lid
 

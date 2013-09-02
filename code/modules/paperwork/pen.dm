@@ -43,7 +43,7 @@
 
 
 /obj/item/weapon/pen/attack(mob/M as mob, mob/user as mob)
-	if (!ismob(M))
+	if(!ismob(M))
 		return
 	user << "<span class='warning'>You stab [M] with the pen.</span>"
 	M << "\red You feel a tiny prick!"
@@ -74,11 +74,11 @@
 
 
 /obj/item/weapon/pen/sleepypen/attack(mob/M as mob, mob/user as mob)
-	if (!(istype(M,/mob)))
+	if(!(istype(M,/mob)))
 		return
 	..()
-	if (reagents.total_volume)
-		if (M.reagents) reagents.trans_to(M, 50) //used to be 150
+	if(reagents.total_volume)
+		if(M.reagents) reagents.trans_to(M, 50) //used to be 150
 	return
 
 
@@ -92,11 +92,11 @@
 
 
 /obj/item/weapon/pen/paralysis/attack(mob/M as mob, mob/user as mob)
-	if (!(istype(M,/mob)))
+	if(!(istype(M,/mob)))
 		return
 	..()
-	if (reagents.total_volume)
-		if (M.reagents) reagents.trans_to(M, 50)
+	if(reagents.total_volume)
+		if(M.reagents) reagents.trans_to(M, 50)
 	return
 
 

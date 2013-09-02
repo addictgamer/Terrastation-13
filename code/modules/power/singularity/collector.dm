@@ -26,8 +26,8 @@ var/global/list/rad_collectors = list()
 	..()
 
 /obj/machinery/power/rad_collector/process()
-	if (P)
-		if (P.air_contents.toxins <= 0)
+	if(P)
+		if(P.air_contents.toxins <= 0)
 			investigate_log("<font color='red'>out of fuel</font>.","singulo")
 			P.air_contents.toxins = 0
 			eject()
@@ -37,8 +37,8 @@ var/global/list/rad_collectors = list()
 
 
 /obj/machinery/power/rad_collector/attack_hand(mob/user as mob)
-	if (anchored)
-		if (!src.locked)
+	if(anchored)
+		if(!src.locked)
 			toggle_power()
 			user.visible_message("[user.name] turns the [src.name] [active? "on":"off"].", \
 			"You turn the [src.name] [active? "on":"off"].")
@@ -51,26 +51,26 @@ var/global/list/rad_collectors = list()
 
 
 /obj/machinery/power/rad_collector/attackby(obj/item/W, mob/user)
-	if (istype(W, /obj/item/device/analyzer))
+	if(istype(W, /obj/item/device/analyzer))
 		user << "\blue The [W.name] detects that [last_power]W were recently produced."
 		return 1
-	else if (istype(W, /obj/item/weapon/tank/plasma))
-		if (!src.anchored)
+	else if(istype(W, /obj/item/weapon/tank/plasma))
+		if(!src.anchored)
 			user << "\red The [src] needs to be secured to the floor first."
 			return 1
-		if (src.P)
+		if(src.P)
 			user << "\red There's already a plasma tank loaded."
 			return 1
 		user.drop_item()
 		src.P = W
 		W.loc = src
 		update_icons()
-	else if (istype(W, /obj/item/weapon/crowbar))
-		if (P && !src.locked)
+	else if(istype(W, /obj/item/weapon/crowbar))
+		if(P && !src.locked)
 			eject()
 			return 1
-	else if (istype(W, /obj/item/weapon/wrench))
-		if (P)
+	else if(istype(W, /obj/item/weapon/wrench))
+		if(P)
 			user << "\blue Remove the plasma tank first."
 			return 1
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
@@ -78,13 +78,13 @@ var/global/list/rad_collectors = list()
 		user.visible_message("[user.name] [anchored? "secures":"unsecures"] the [src.name].", \
 			"You [anchored? "secure":"undo"] the external bolts.", \
 			"You hear a ratchet")
-		if (anchored)
+		if(anchored)
 			connect_to_network()
 		else
 			disconnect_from_network()
-	else if (istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
-		if (src.allowed(user))
-			if (active)
+	else if(istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
+		if(src.allowed(user))
+			if(active)
 				src.locked = !src.locked
 				user << "The controls are now [src.locked ? "locked." : "unlocked."]"
 			else
@@ -100,7 +100,7 @@ var/global/list/rad_collectors = list()
 
 /obj/machinery/power/rad_collector/ex_act(severity)
 	switch(severity)
-		if (2, 3)
+		if(2, 3)
 			eject()
 	return ..()
 
@@ -108,18 +108,18 @@ var/global/list/rad_collectors = list()
 /obj/machinery/power/rad_collector/proc/eject()
 	locked = 0
 	var/obj/item/weapon/tank/plasma/Z = src.P
-	if (!Z)
+	if(!Z)
 		return
 	Z.loc = get_turf(src)
 	Z.layer = initial(Z.layer)
 	src.P = null
-	if (active)
+	if(active)
 		toggle_power()
 	else
 		update_icons()
 
 /obj/machinery/power/rad_collector/proc/receive_pulse(var/pulse_strength)
-	if (P && active)
+	if(P && active)
 		var/power_produced = 0
 		power_produced = P.air_contents.toxins*pulse_strength*20
 		add_avail(power_produced)
@@ -130,17 +130,17 @@ var/global/list/rad_collectors = list()
 
 /obj/machinery/power/rad_collector/proc/update_icons()
 	overlays.Cut()
-	if (P)
+	if(P)
 		overlays += image('icons/obj/singularity.dmi', "ptank")
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		return
-	if (active)
+	if(active)
 		overlays += image('icons/obj/singularity.dmi', "on")
 
 
 /obj/machinery/power/rad_collector/proc/toggle_power()
 	active = !active
-	if (active)
+	if(active)
 		icon_state = "ca_on"
 		flick("ca_active", src)
 	else

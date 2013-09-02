@@ -73,14 +73,14 @@
 	var/target_area = attack_location(user.zone_sel.selecting)
 	for(var/mob/O in viewers(src,7))
 		O << "\red \b [user.name] attacks [target.name] in the [target_area] with [src.name]!"
-	if (!target.stat && target.zone_sel.selecting == target_area) //parrying occurs here
-		if (istype(target.r_hand,/obj/item/weapon/training)
-			if (prob(target.r_hand:chance_parry))
+	if(!target.stat && target.zone_sel.selecting == target_area) //parrying occurs here
+		if(istype(target.r_hand,/obj/item/weapon/training)
+			if(prob(target.r_hand:chance_parry))
 				for(var/mob/O in viewers(src,7))
 					O << "\red \b [target.name] deftly parries the attack with [target.r_hand.name]!"
 					return
-		if (istype(target.l_hand,/obj/item/weapon/training)
-			if (prob(target.l_hand:chance_parry))
+		if(istype(target.l_hand,/obj/item/weapon/training)
+			if(prob(target.l_hand:chance_parry))
 				for(var/mob/O in viewers(src,7))
 					O << "\red \b [target.name] deftly parries the attack with [target.l_hand.name]!"
 					return
@@ -93,99 +93,99 @@
 	var/modifier_disarm = 0.0
 
 	switch(target_area)
-		if ("eyes")
+		if("eyes")
 			modifier_weaken = 2.0
 			modifier_stun = 0.5
 			modifier_knockdown = 0.0
-		if ("head")
+		if("head")
 			modifier_stun = 0.8
 			modifier_knockout = 1.5
 			modifier_weaken = 1.2
 			modifier_knockdown = 0.0
-		if ("chest")
-		if ("right arm","r_arm")
-		if ("left arm","l_arm")
-		if ("right hand","r_hand")
-		if ("left hand","l_hand")
-		if ("groin")
-		if ("right leg","r_leg")
-		if ("left leg","l_leg")
-		if ("right foot","r_foot")
-		if ("left foot","l_foot")
+		if("chest")
+		if("right arm","r_arm")
+		if("left arm","l_arm")
+		if("right hand","r_hand")
+		if("left hand","l_hand")
+		if("groin")
+		if("right leg","r_leg")
+		if("left leg","l_leg")
+		if("right foot","r_foot")
+		if("left foot","l_foot")
 
 
 /proc/attack_location(var/initloc = "chest") //proc to randomise actual hit loc based on where you're aiming at
 	var/resultloc = "chest" //also forgot hands/feet. bleh
 	var/percentage = rand(1,100)
 	switch(initloc)
-		if ("eyes")
+		if("eyes")
 			switch(percentage)
-				if (1 to 10)
+				if(1 to 10)
 					resultloc = "eyes"
-				if (11 to 30)
+				if(11 to 30)
 					resultloc = "head"
-				if (31 to 100)
+				if(31 to 100)
 					resultloc = "chest"
-		if ("head")
+		if("head")
 			switch(percentage)
-				if (1 to 5)
+				if(1 to 5)
 					resultloc = "eyes"
-				if (6 to 40)
+				if(6 to 40)
 					resultloc = "head"
-				if (41 to 100)
+				if(41 to 100)
 					resultloc = "chest"
-		if ("chest")
+		if("chest")
 			switch(percentage)
-				if (1 to 80)
+				if(1 to 80)
 					resultloc = "chest"
-				if (81 to 84)
+				if(81 to 84)
 					resultloc = "right arm"
-				if (85 to 88)
+				if(85 to 88)
 					resultloc = "left arm"
-				if (89 to 92)
+				if(89 to 92)
 					resultloc = "right leg"
-				if (93 to 96)
+				if(93 to 96)
 					resultloc = "left leg"
-				if (97 to 98)
+				if(97 to 98)
 					resultloc = "groin"
-				if (99 to 100)
+				if(99 to 100)
 					resultloc = "head"
-		if ("l_arm")
+		if("l_arm")
 			switch(percentage)
-				if (1 to 60)
+				if(1 to 60)
 					resultloc = "left arm"
-				if (61 to 100)
+				if(61 to 100)
 					resultloc = "chest"
-		if ("r_arm")
+		if("r_arm")
 			switch(percentage)
-				if (1 to 60)
+				if(1 to 60)
 					resultloc = "right arm"
-				if (61 to 100)
+				if(61 to 100)
 					resultloc = "chest"
-		if ("groin")
+		if("groin")
 			switch(percentage)
-				if (1 to 35)
+				if(1 to 35)
 					resultloc = "groin"
-				if (36 to 50)
+				if(36 to 50)
 					resultloc = "left leg"
-				if (51 to 65)
+				if(51 to 65)
 					resultloc = "right leg"
-				if (66 to 100)
+				if(66 to 100)
 					resultloc = "chest"
-		if ("l_leg")
+		if("l_leg")
 			switch(percentage)
-				if (1 to 60)
+				if(1 to 60)
 					resultloc = "left leg"
-				if (61 to 70)
+				if(61 to 70)
 					resultloc = "groin"
-				if (71 to 100)
+				if(71 to 100)
 					resultloc = "chest"
-		if ("r_leg")
+		if("r_leg")
 			switch(percentage)
-				if (1 to 60)
+				if(1 to 60)
 					resultloc = "right leg"
-				if (61 to 70)
+				if(61 to 70)
 					resultloc = "groin"
-				if (71 to 100)
+				if(71 to 100)
 					resultloc = "chest"
 	return resultloc

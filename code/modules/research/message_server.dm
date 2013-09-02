@@ -7,11 +7,11 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 
 /datum/data_pda_msg/New(var/param_rec = "",var/param_sender = "",var/param_message = "")
 
-	if (param_rec)
+	if(param_rec)
 		recipient = param_rec
-	if (param_sender)
+	if(param_sender)
 		sender = param_sender
-	if (param_message)
+	if(param_message)
 		message = param_message
 
 /datum/data_rc_msg
@@ -23,23 +23,23 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	var/priority = "Normal"
 
 /datum/data_rc_msg/New(var/param_rec = "",var/param_sender = "",var/param_message = "",var/param_stamp = "",var/param_id_auth = "",var/param_priority)
-	if (param_rec)
+	if(param_rec)
 		rec_dpt = param_rec
-	if (param_sender)
+	if(param_sender)
 		send_dpt = param_sender
-	if (param_message)
+	if(param_message)
 		message = param_message
-	if (param_stamp)
+	if(param_stamp)
 		stamp = param_stamp
-	if (param_id_auth)
+	if(param_id_auth)
 		id_auth = param_id_auth
-	if (param_priority)
+	if(param_priority)
 		switch(param_priority)
-			if (1)
+			if(1)
 				priority = "Normal"
-			if (2)
+			if(2)
 				priority = "High"
-			if (3)
+			if(3)
 				priority = "Extreme"
 			else
 				priority = "Undetermined"
@@ -80,9 +80,9 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	return newKey
 
 /obj/machinery/message_server/process()
-	//if (decryptkey == "password")
+	//if(decryptkey == "password")
 	//	decryptkey = generateKey()
-	if (active && (stat & (BROKEN|NOPOWER)))
+	if(active && (stat & (BROKEN|NOPOWER)))
 		active = 0
 		return
 	update_icon()
@@ -103,9 +103,9 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	return
 
 /obj/machinery/message_server/update_icon()
-	if ((stat & (BROKEN|NOPOWER)))
+	if((stat & (BROKEN|NOPOWER)))
 		icon_state = "server-nopower"
-	else if (!active)
+	else if(!active)
 		icon_state = "server-off"
 	else
 		icon_state = "server-on"
@@ -123,27 +123,27 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	value = param_value
 
 /datum/feedback_variable/proc/inc(var/num = 1)
-	if (isnum(value))
+	if(isnum(value))
 		value += num
 	else
 		value = text2num(value)
-		if (isnum(value))
+		if(isnum(value))
 			value += num
 		else
 			value = num
 
 /datum/feedback_variable/proc/dec(var/num = 1)
-	if (isnum(value))
+	if(isnum(value))
 		value -= num
 	else
 		value = text2num(value)
-		if (isnum(value))
+		if(isnum(value))
 			value -= num
 		else
 			value = -num
 
 /datum/feedback_variable/proc/set_value(var/num)
-	if (isnum(num))
+	if(isnum(num))
 		value = num
 
 /datum/feedback_variable/proc/get_value()
@@ -153,12 +153,12 @@ var/global/list/obj/machinery/message_server/message_servers = list()
 	return variable
 
 /datum/feedback_variable/proc/set_details(var/text)
-	if (istext(text))
+	if(istext(text))
 		details = text
 
 /datum/feedback_variable/proc/add_details(var/text)
-	if (istext(text))
-		if (!details)
+	if(istext(text))
+		if(!details)
 			details = text
 		else
 			details += " [text]"
@@ -198,14 +198,14 @@ var/obj/machinery/blackbox_recorder/blackbox
 
 	//Only one can exsist in the world!
 /obj/machinery/blackbox_recorder/New()
-	if (blackbox)
-		if (istype(blackbox,/obj/machinery/blackbox_recorder))
+	if(blackbox)
+		if(istype(blackbox,/obj/machinery/blackbox_recorder))
 			del(src)
 	blackbox = src
 
 /obj/machinery/blackbox_recorder/Del()
 	var/turf/T = locate(1,1,2)
-	if (T)
+	if(T)
 		blackbox = null
 		var/obj/machinery/blackbox_recorder/BR = new/obj/machinery/blackbox_recorder(T)
 		BR.msg_common = msg_common
@@ -221,13 +221,13 @@ var/obj/machinery/blackbox_recorder/blackbox
 		BR.feedback = feedback
 		BR.messages = messages
 		BR.messages_admin = messages_admin
-		if (blackbox != BR)
+		if(blackbox != BR)
 			blackbox = BR
 	..()
 
 /obj/machinery/blackbox_recorder/proc/find_feedback_datum(var/variable)
 	for(var/datum/feedback_variable/FV in feedback)
-		if (FV.get_variable() == variable)
+		if(FV.get_variable() == variable)
 			return FV
 	var/datum/feedback_variable/FV = new(variable)
 	feedback += FV
@@ -242,9 +242,9 @@ var/obj/machinery/blackbox_recorder/blackbox
 	var/rc_msg_amt = 0
 
 	for(var/obj/machinery/message_server/MS in machines)
-		if (MS.pda_msgs.len > pda_msg_amt)
+		if(MS.pda_msgs.len > pda_msg_amt)
 			pda_msg_amt = MS.pda_msgs.len
-		if (MS.rc_msgs.len > rc_msg_amt)
+		if(MS.rc_msgs.len > rc_msg_amt)
 			rc_msg_amt = MS.rc_msgs.len
 
 	feedback_set_details("radio_usage","")
@@ -269,11 +269,11 @@ var/obj/machinery/blackbox_recorder/blackbox
 
 //This proc is only to be called at round end.
 /obj/machinery/blackbox_recorder/proc/save_all_data_to_sql()
-	if (!feedback) return
+	if(!feedback) return
 
 	round_end_data_gathering() //round_end time logging and some other data processing
 	establish_db_connection()
-	if (!dbcon.IsConnected()) return
+	if(!dbcon.IsConnected()) return
 	var/round_id
 
 	var/DBQuery/query = dbcon.NewQuery("SELECT MAX(round_id) AS round_id FROM erro_feedback")
@@ -281,7 +281,7 @@ var/obj/machinery/blackbox_recorder/blackbox
 	while(query.NextRow())
 		round_id = query.item[1]
 
-	if (!isnum(round_id))
+	if(!isnum(round_id))
 		round_id = text2num(round_id)
 	round_id++
 
@@ -298,58 +298,58 @@ proc/sql_sanitize_text(var/text)
 	return text
 
 proc/feedback_set(var/variable,var/value)
-	if (!blackbox) return
+	if(!blackbox) return
 
 	variable = sql_sanitize_text(variable)
 
 	var/datum/feedback_variable/FV = blackbox.find_feedback_datum(variable)
 
-	if (!FV) return
+	if(!FV) return
 
 	FV.set_value(value)
 
 proc/feedback_inc(var/variable,var/value)
-	if (!blackbox) return
+	if(!blackbox) return
 
 	variable = sql_sanitize_text(variable)
 
 	var/datum/feedback_variable/FV = blackbox.find_feedback_datum(variable)
 
-	if (!FV) return
+	if(!FV) return
 
 	FV.inc(value)
 
 proc/feedback_dec(var/variable,var/value)
-	if (!blackbox) return
+	if(!blackbox) return
 
 	variable = sql_sanitize_text(variable)
 
 	var/datum/feedback_variable/FV = blackbox.find_feedback_datum(variable)
 
-	if (!FV) return
+	if(!FV) return
 
 	FV.dec(value)
 
 proc/feedback_set_details(var/variable,var/details)
-	if (!blackbox) return
+	if(!blackbox) return
 
 	variable = sql_sanitize_text(variable)
 	details = sql_sanitize_text(details)
 
 	var/datum/feedback_variable/FV = blackbox.find_feedback_datum(variable)
 
-	if (!FV) return
+	if(!FV) return
 
 	FV.set_details(details)
 
 proc/feedback_add_details(var/variable,var/details)
-	if (!blackbox) return
+	if(!blackbox) return
 
 	variable = sql_sanitize_text(variable)
 	details = sql_sanitize_text(details)
 
 	var/datum/feedback_variable/FV = blackbox.find_feedback_datum(variable)
 
-	if (!FV) return
+	if(!FV) return
 
 	FV.add_details(details)

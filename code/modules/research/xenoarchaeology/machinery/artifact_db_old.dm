@@ -17,7 +17,7 @@
 
 /obj/machinery/computer/artifact_database/Topic(href, href_list)
 	..()
-	if ( href_list["close"] )
+	if( href_list["close"] )
 		usr << browse(null, "window=artifact_db")
 		usr.machine = null
 	updateDialog()
@@ -27,8 +27,8 @@
 	updateDialog()
 
 /obj/machinery/computer/artifact_database/interact(mob/user)
-	if ( (get_dist(src, user) > 1 ) || (stat & (BROKEN|NOPOWER)) )
-		if (!istype(user, /mob/living/silicon))
+	if( (get_dist(src, user) > 1 ) || (stat & (BROKEN|NOPOWER)) )
+		if(!istype(user, /mob/living/silicon))
 			user.machine = null
 			user << browse(null, "window=artifact_db")
 			return

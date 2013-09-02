@@ -10,19 +10,19 @@ The "dust" will damage the hull of the station causin minor hull breaches.
 /proc/dust_swarm(var/strength = "weak")
 	var/numbers = 1
 	switch(strength)
-		if ("weak")
+		if("weak")
 		 numbers = rand(2,4)
 		 for(var/i = 0 to numbers)
 		 	new/obj/effect/space_dust/weak()
-		if ("norm")
+		if("norm")
 		 numbers = rand(5,10)
 		 for(var/i = 0 to numbers)
 		 	new/obj/effect/space_dust()
-		if ("strong")
+		if("strong")
 		 numbers = rand(10,15)
 		 for(var/i = 0 to numbers)
 		 	new/obj/effect/space_dust/strong()
-		if ("super")
+		if("super")
 		 numbers = rand(15,25)
 		 for(var/i = 0 to numbers)
 		 	new/obj/effect/space_dust/super()
@@ -60,22 +60,22 @@ The "dust" will damage the hull of the station causin minor hull breaches.
 		var/startside = pick(cardinal)
 
 		switch(startside)
-			if (NORTH)
+			if(NORTH)
 				starty = world.maxy-(TRANSITIONEDGE+1)
 				startx = rand((TRANSITIONEDGE+1), world.maxx-(TRANSITIONEDGE+1))
 				endy = TRANSITIONEDGE
 				endx = rand(TRANSITIONEDGE, world.maxx-TRANSITIONEDGE)
-			if (EAST)
+			if(EAST)
 				starty = rand((TRANSITIONEDGE+1),world.maxy-(TRANSITIONEDGE+1))
 				startx = world.maxx-(TRANSITIONEDGE+1)
 				endy = rand(TRANSITIONEDGE, world.maxy-TRANSITIONEDGE)
 				endx = TRANSITIONEDGE
-			if (SOUTH)
+			if(SOUTH)
 				starty = (TRANSITIONEDGE+1)
 				startx = rand((TRANSITIONEDGE+1), world.maxx-(TRANSITIONEDGE+1))
 				endy = world.maxy-TRANSITIONEDGE
 				endx = rand(TRANSITIONEDGE, world.maxx-TRANSITIONEDGE)
-			if (WEST)
+			if(WEST)
 				starty = rand((TRANSITIONEDGE+1), world.maxy-(TRANSITIONEDGE+1))
 				startx = (TRANSITIONEDGE+1)
 				endy = rand(TRANSITIONEDGE,world.maxy-TRANSITIONEDGE)
@@ -91,20 +91,20 @@ The "dust" will damage the hull of the station causin minor hull breaches.
 
 	Bump(atom/A)
 		spawn(0)
-			if (prob(50))
+			if(prob(50))
 				for(var/mob/M in range(10, src))
-					if (!M.stat && !istype(M, /mob/living/silicon/ai))
+					if(!M.stat && !istype(M, /mob/living/silicon/ai))
 						shake_camera(M, 3, 1)
-			if (A)
+			if(A)
 				playsound(src.loc, 'sound/effects/meteorimpact.ogg', 40, 1)
 
-				if (ismob(A))
+				if(ismob(A))
 					A.meteorhit(src)//This should work for now I guess
-				else if (!istype(A,/obj/machinery/power/emitter) && !istype(A,/obj/machinery/field_generator)) //Protect the singularity from getting released every round!
+				else if(!istype(A,/obj/machinery/power/emitter) && !istype(A,/obj/machinery/field_generator)) //Protect the singularity from getting released every round!
 					A.ex_act(strength) //Changing emitter/field gen ex_act would make it immune to bombs and C4
 
 				life--
-				if (life <= 0)
+				if(life <= 0)
 					walk(src,0)
 					spawn(1)
 						del(src)

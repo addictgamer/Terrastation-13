@@ -21,7 +21,7 @@
 /datum/organ/internal/New(mob/living/carbon/human/H)
 	..()
 	var/datum/organ/external/E = H.organs_by_name[src.parent_organ]
-	if (E.internal_organs == null)
+	if(E.internal_organs == null)
 		E.internal_organs = list()
 	E.internal_organs += src
 	H.internal_organs[src.name] = src
@@ -31,7 +31,7 @@
 	src.damage += amount
 
 	var/datum/organ/external/parent = owner.get_organ(parent_organ)
-	if (!silent)
+	if(!silent)
 		owner.custom_pain("Something inside your [parent.display_name] hurts a lot.", 1)
 
 /****************************************************
@@ -48,11 +48,11 @@
 	parent_organ = "chest"
 
 	process()
-		if (is_bruised())
-			if (prob(2))
+		if(is_bruised())
+			if(prob(2))
 				spawn owner.emote("me", 1, "coughs up blood!")
 				owner.drip(10)
-			if (prob(4))
+			if(prob(4))
 				spawn owner.emote("me", 1, "gasps for air!")
 				owner.losebreath += 5
 
@@ -62,14 +62,14 @@
 	var/process_accuracy = 10
 
 	process()
-		if (owner.life_tick % process_accuracy == 0)
-			if (src.damage < 0)
+		if(owner.life_tick % process_accuracy == 0)
+			if(src.damage < 0)
 				src.damage = 0
 
 			//High toxins levels are dangerous
-			if (owner.getToxLoss() >= 60 && !owner.reagents.has_reagent("anti_toxin"))
+			if(owner.getToxLoss() >= 60 && !owner.reagents.has_reagent("anti_toxin"))
 				//Healthy liver suffers on its own
-				if (src.damage < min_broken_damage)
+				if(src.damage < min_broken_damage)
 					src.damage += 0.2 * process_accuracy
 				//Damaged one shares the fun
 				else
@@ -78,19 +78,19 @@
 					O.damage += 0.2  * process_accuracy
 
 			//Detox can heal small amounts of damage
-			if (src.damage && src.damage < src.min_bruised_damage && owner.reagents.has_reagent("anti_toxin"))
+			if(src.damage && src.damage < src.min_bruised_damage && owner.reagents.has_reagent("anti_toxin"))
 				src.damage -= 0.2 * process_accuracy
 
 			// Damaged liver means some chemicals are very dangerous
-			if (src.damage >= src.min_bruised_damage)
+			if(src.damage >= src.min_bruised_damage)
 				for(var/datum/reagent/R in owner.reagents.reagent_list)
 					// Ethanol and all drinks are bad
-					if (istype(R, /datum/reagent/ethanol))
+					if(istype(R, /datum/reagent/ethanol))
 						owner.adjustToxLoss(0.1 * process_accuracy)
 
 				// Can't cope with toxins at all
 				for(var/toxin in list("toxin", "plasma", "sacid", "pacid", "cyanide", "lexorin", "amatoxin", "chloralhydrate", "carpotoxin", "zombiepowder", "mindbreaker"))
-					if (owner.reagents.has_reagent(toxin))
+					if(owner.reagents.has_reagent(toxin))
 						owner.adjustToxLoss(0.3 * process_accuracy)
 
 /datum/organ/internal/kidney

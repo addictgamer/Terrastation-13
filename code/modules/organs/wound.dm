@@ -76,7 +76,7 @@
 
 	// returns 1 if there's a next stage, 0 otherwise
 	proc/next_stage()
-		if (current_stage + 1 > src.desc_list.len)
+		if(current_stage + 1 > src.desc_list.len)
 			return 0
 
 		current_stage++
@@ -92,27 +92,27 @@
 	// checks whether the wound has been appropriately treated
 	// always returns 1 for wounds that don't need to be treated
 	proc/is_treated()
-		if (!needs_treatment) return 1
+		if(!needs_treatment) return 1
 
-		if (damage_type == BRUISE || damage_type == CUT)
+		if(damage_type == BRUISE || damage_type == CUT)
 			return bandaged
-		else if (damage_type == BURN)
+		else if(damage_type == BURN)
 			return salved
 
 	// checks if wound is considered open for external infections
 	// untreated cuts (and bleeding bruises) and burns are possibly infectable, chance higher if wound is bigger
 	proc/can_infect()
-		if (is_treated() && damage < 10)
+		if(is_treated() && damage < 10)
 			return 0
-		if (disinfected)
+		if(disinfected)
 			return 0
 		var/dam_coef = round(damage/10)
 		switch (damage_type)
-			if (BRUISE)
+			if(BRUISE)
 				return prob(dam_coef*5) && bleeding() //bruises only infectable if bleeding
-			if (BURN)
+			if(BURN)
 				return prob(dam_coef*10)
-			if (CUT)
+			if(CUT)
 				return prob(dam_coef*20)
 
 		return 0
@@ -120,7 +120,7 @@
 	// than what needed to be healed, return how much heal was left
 	// set @heals_internal to also heal internal organ damage
 	proc/heal_damage(amount, heals_internal = 0)
-		if (src.internal && !heals_internal)
+		if(src.internal && !heals_internal)
 			// heal nothing
 			return amount
 

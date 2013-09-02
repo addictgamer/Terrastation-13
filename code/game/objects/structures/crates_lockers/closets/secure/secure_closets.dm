@@ -17,13 +17,13 @@
 	health = 200
 
 /obj/structure/closet/secure_closet/can_open()
-	if (src.locked)
+	if(src.locked)
 		return 0
 	return ..()
 
 /obj/structure/closet/secure_closet/close()
-	if (..())
-		if (broken)
+	if(..())
+		if(broken)
 			icon_state = src.icon_off
 		return 1
 	else
@@ -32,12 +32,12 @@
 /obj/structure/closet/secure_closet/emp_act(severity)
 	for(var/obj/O in src)
 		O.emp_act(severity)
-	if (!broken)
-		if (prob(50/severity))
+	if(!broken)
+		if(prob(50/severity))
 			src.locked = !src.locked
 			src.update_icon()
-		if (prob(20/severity) && !opened)
-			if (!locked)
+		if(prob(20/severity) && !opened)
+			if(!locked)
 				open()
 			else
 				src.req_access = list()
@@ -45,43 +45,43 @@
 	..()
 
 /obj/structure/closet/secure_closet/proc/togglelock(mob/user as mob)
-	if (src.opened)
+	if(src.opened)
 		user << "<span class='notice'>Close the locker first.</span>"
 		return
-	if (src.broken)
+	if(src.broken)
 		user << "<span class='warning'>The locker appears to be broken.</span>"
 		return
-	if (user.loc == src)
+	if(user.loc == src)
 		user << "<span class='notice'>You can't reach the lock from inside.</span>"
 		return
-	if (src.allowed(user))
+	if(src.allowed(user))
 		src.locked = !src.locked
 		for(var/mob/O in viewers(user, 3))
-			if ((O.client && !( O.blinded )))
+			if((O.client && !( O.blinded )))
 				O << "<span class='notice'>The locker has been [locked ? null : "un"]locked by [user].</span>"
 		update_icon()
 	else
 		user << "<span class='notice'>Access Denied</span>"
 
 /obj/structure/closet/secure_closet/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (src.opened)
-		if (istype(W, /obj/item/weapon/grab))
-			if (src.large)
+	if(src.opened)
+		if(istype(W, /obj/item/weapon/grab))
+			if(src.large)
 				src.MouseDrop_T(W:affecting, user)	//act like they were dragged onto the closet
 			else
 				user << "<span class='notice'>The locker is too small to stuff [W:affecting] into!</span>"
-		if (isrobot(user))
+		if(isrobot(user))
 			return
 		user.drop_item()
-		if (W)
+		if(W)
 			W.loc = src.loc
-	else if ((istype(W, /obj/item/weapon/card/emag)||istype(W, /obj/item/weapon/melee/energy/blade)) && !src.broken)
+	else if((istype(W, /obj/item/weapon/card/emag)||istype(W, /obj/item/weapon/melee/energy/blade)) && !src.broken)
 		broken = 1
 		locked = 0
 		desc = "It appears to be broken."
 		icon_state = icon_off
 		flick(icon_broken, src)
-		if (istype(W, /obj/item/weapon/melee/energy/blade))
+		if(istype(W, /obj/item/weapon/melee/energy/blade))
 			var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 			spark_system.set_up(5, 0, src.loc)
 			spark_system.start()
@@ -92,14 +92,14 @@
 		else
 			for(var/mob/O in viewers(user, 3))
 				O.show_message("<span class='warning'>The locker has been broken by [user] with an electromagnetic card!</span>", 1, "You hear a faint electrical spark.", 2)
-	else if (istype(W,/obj/item/weapon/packageWrap) || istype(W,/obj/item/weapon/weldingtool))
+	else if(istype(W,/obj/item/weapon/packageWrap) || istype(W,/obj/item/weapon/weldingtool))
 		return ..(W,user)
 	else
 		togglelock(user)
 
 /obj/structure/closet/secure_closet/attack_hand(mob/user as mob)
 	src.add_fingerprint(user)
-	if (src.locked)
+	if(src.locked)
 		src.togglelock(user)
 	else
 		src.toggle(user)
@@ -112,10 +112,10 @@
 	set category = "Object"
 	set name = "Toggle Lock"
 
-	if (!usr.canmove || usr.stat || usr.restrained()) // Don't use it if you're not able to! Checks for stuns, ghost and restrain
+	if(!usr.canmove || usr.stat || usr.restrained()) // Don't use it if you're not able to! Checks for stuns, ghost and restrain
 		return
 
-	if (ishuman(usr))
+	if(ishuman(usr))
 		src.add_fingerprint(usr)
 		src.togglelock(usr)
 	else
@@ -123,12 +123,12 @@
 
 /obj/structure/closet/secure_closet/update_icon()//Putting the welded stuff in updateicon() so it's easy to overwrite for special cases (Fridges, cabinets, and whatnot)
 	overlays.Cut()
-	if (!opened)
-		if (locked)
+	if(!opened)
+		if(locked)
 			icon_state = icon_locked
 		else
 			icon_state = icon_closed
-		if (welded)
+		if(welded)
 			overlays += "welded"
 	else
 		icon_state = icon_opened

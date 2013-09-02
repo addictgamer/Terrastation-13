@@ -6,12 +6,12 @@
 			contents+=value
 
 		Pop()
-			if (!contents.len) return null
+			if(!contents.len) return null
 			. = contents[contents.len]
 			contents.len--
 
 		Top() //returns the item on the top of the stack without removing it
-			if (!contents.len) return null
+			if(!contents.len) return null
 			return contents[contents.len]
 
 		Copy()

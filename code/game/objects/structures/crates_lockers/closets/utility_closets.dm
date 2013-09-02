@@ -23,35 +23,35 @@
 	..()
 
 	switch (pickweight(list("small" = 55, "aid" = 25, "tank" = 10, "both" = 10, "nothing" = 0, "delete" = 0)))
-		if ("small")
+		if("small")
 			new /obj/item/weapon/tank/emergency_oxygen(src)
 			new /obj/item/weapon/tank/emergency_oxygen(src)
 			new /obj/item/clothing/mask/breath(src)
 			new /obj/item/clothing/mask/breath(src)
-		if ("aid")
+		if("aid")
 			new /obj/item/weapon/tank/emergency_oxygen(src)
 			new /obj/item/weapon/storage/toolbox/emergency(src)
 			new /obj/item/clothing/mask/breath(src)
 			new /obj/item/weapon/storage/firstaid/o2(src)
-		if ("tank")
+		if("tank")
 			new /obj/item/weapon/tank/emergency_oxygen/engi(src)
 			new /obj/item/clothing/mask/breath(src)
 			new /obj/item/weapon/tank/emergency_oxygen/engi(src)
 			new /obj/item/clothing/mask/breath(src)
-		if ("both")
+		if("both")
 			new /obj/item/weapon/storage/toolbox/emergency(src)
 			new /obj/item/weapon/tank/emergency_oxygen/engi(src)
 			new /obj/item/clothing/mask/breath(src)
 			new /obj/item/weapon/storage/firstaid/o2(src)
-		if ("nothing")
+		if("nothing")
 			// doot
 
 		// teehee - Ah, tg coders...
-		if ("delete")
+		if("delete")
 			del(src)
 
 		//If you want to re-add fire, just add "fire" = 15 to the pick list.
-		/*if ("fire")
+		/*if("fire")
 			new /obj/structure/closet/firecloset(src.loc)
 			del(src)*/
 
@@ -91,7 +91,7 @@
 	new /obj/item/clothing/head/hardhat/red(src)
 
 /obj/structure/closet/firecloset/update_icon()
-	if (!opened)
+	if(!opened)
 		icon_state = icon_closed
 	else
 		icon_state = icon_opened
@@ -108,35 +108,35 @@
 	icon_opened = "toolclosetopen"
 
 /obj/structure/closet/toolcloset/New()
-	if (prob(40))
+	if(prob(40))
 		new /obj/item/clothing/suit/storage/hazardvest(src)
-	if (prob(70))
+	if(prob(70))
 		new /obj/item/device/flashlight(src)
-	if (prob(70))
+	if(prob(70))
 		new /obj/item/weapon/screwdriver(src)
-	if (prob(70))
+	if(prob(70))
 		new /obj/item/weapon/wrench(src)
-	if (prob(70))
+	if(prob(70))
 		new /obj/item/weapon/weldingtool(src)
-	if (prob(70))
+	if(prob(70))
 		new /obj/item/weapon/crowbar(src)
-	if (prob(70))
+	if(prob(70))
 		new /obj/item/weapon/wirecutters(src)
-	if (prob(70))
+	if(prob(70))
 		new /obj/item/device/t_scanner(src)
-	if (prob(20))
+	if(prob(20))
 		new /obj/item/weapon/storage/belt/utility(src)
-	if (prob(30))
+	if(prob(30))
 		new /obj/item/weapon/cable_coil/random(src)
-	if (prob(30))
+	if(prob(30))
 		new /obj/item/weapon/cable_coil/random(src)
-	if (prob(30))
+	if(prob(30))
 		new /obj/item/weapon/cable_coil/random(src)
-	if (prob(20))
+	if(prob(20))
 		new /obj/item/device/multitool(src)
-	if (prob(5))
+	if(prob(5))
 		new /obj/item/clothing/gloves/yellow(src)
-	if (prob(40))
+	if(prob(40))
 		new /obj/item/clothing/head/hardhat(src)
 
 
@@ -216,7 +216,7 @@
 	wall_mounted = 1
 
 /obj/structure/closet/medical_wall/update_icon()
-	if (!opened)
+	if(!opened)
 		icon_state = icon_closed
 	else
 		icon_state = icon_opened

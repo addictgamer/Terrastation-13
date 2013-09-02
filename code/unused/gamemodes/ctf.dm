@@ -14,7 +14,7 @@
 	var/list/mobs = list()
 	var/total_mobs
 	for(var/mob/living/carbon/human/M in world)
-		if (M.client)
+		if(M.client)
 			mobs += M
 			total_mobs++
 
@@ -23,12 +23,12 @@
 
 	var/mob_check
 	for(var/mob/living/carbon/human/M in mobs)
-		if (!M)
+		if(!M)
 			continue
 		mob_check++
-		if (mob_check <= total_mobs/2) //add to red team else to green
+		if(mob_check <= total_mobs/2) //add to red team else to green
 			spawn()
-				if (M.client)
+				if(M.client)
 					M << "You are in the Red Team!"
 					del(M.wear_suit)
 					M.w_uniform = new /obj/item/clothing/under/color/red(M)
@@ -61,14 +61,14 @@
 					W.registered_name = M.real_name
 					M.wear_id = W
 					M.wear_id.layer = 20
-					if (R)
+					if(R)
 						M.loc = R.loc
 					else
 						world << "No red team spawn point detected"
 					M.client.team = "Red"
 		else
 			spawn()
-				if (M.client)
+				if(M.client)
 					M << "You are in the Green Team!"
 					del(M.wear_suit)
 					M.w_uniform = new /obj/item/clothing/under/color/green(M)
@@ -101,7 +101,7 @@
 					W.registered_name = M.real_name
 					M.wear_id = W
 					M.wear_id.layer = 20
-					if (G)
+					if(G)
 						M.loc = G.loc
 					else
 						world << "No green team spawn point detected"
@@ -114,25 +114,25 @@
 
 	spawn (50)
 		var/obj/L = locate("landmark*Red-Flag")
-		if (L)
+		if(L)
 			new /obj/item/weapon/ctf_flag/red(L.loc)
 		else
 			world << "No red flag spawn point detected"
 
 		L = locate("landmark*Green-Flag")
-		if (L)
+		if(L)
 			new /obj/item/weapon/ctf_flag/green(L.loc)
 		else
 			world << "No green flag spawn point detected"
 
 		L = locate("landmark*The-Red-Team")
-		if (L)
+		if(L)
 			new /obj/machinery/red_injector(L.loc)
 		else
 			world << "No red team spawn injector point detected"
 
 		L = locate("landmark*The-Green-Team")
-		if (L)
+		if(L)
 			new /obj/machinery/green_injector(L.loc)
 		else
 			world << "No green team injector spawn point detected"

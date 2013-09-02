@@ -1,10 +1,10 @@
 /mob/living/silicon/hivebot/death(gibbed)
-	if (src.mainframe)
+	if(src.mainframe)
 		src.mainframe.return_to(src)
 	src.stat = 2
 	src.canmove = 0
 
-	if (src.blind)
+	if(src.blind)
 		src.blind.layer = 0
 	src.sight |= SEE_TURFS
 	src.sight |= SEE_MOBS
@@ -17,8 +17,8 @@
 	var/tod = time2text(world.realtime,"hh:mm:ss") //weasellos time of death patch
 	store_memory("Time of death: [tod]", 0)
 
-	if (src.key)
+	if(src.key)
 		spawn(50)
-			if (src.key && src.stat == 2)
+			if(src.key && src.stat == 2)
 				src.verbs += /client/proc/ghost
 	return ..(gibbed)

@@ -12,18 +12,18 @@
 
 /obj/structure/displaycase/ex_act(severity)
 	switch(severity)
-		if (1)
+		if(1)
 			new /obj/item/weapon/shard( src.loc )
-			if (occupied)
+			if(occupied)
 				new /obj/item/weapon/gun/energy/laser/captain( src.loc )
 				occupied = 0
 			del(src)
-		if (2)
-			if (prob(50))
+		if(2)
+			if(prob(50))
 				src.health -= 15
 				src.healthcheck()
-		if (3)
-			if (prob(50))
+		if(3)
+			if(prob(50))
 				src.health -= 5
 				src.healthcheck()
 
@@ -36,9 +36,9 @@
 
 
 /obj/structure/displaycase/blob_act()
-	if (prob(75))
+	if(prob(75))
 		new /obj/item/weapon/shard( src.loc )
-		if (occupied)
+		if(occupied)
 			new /obj/item/weapon/gun/energy/laser/captain( src.loc )
 			occupied = 0
 		del(src)
@@ -51,8 +51,8 @@
 
 
 /obj/structure/displaycase/proc/healthcheck()
-	if (src.health <= 0)
-		if (!( src.destroyed ))
+	if(src.health <= 0)
+		if(!( src.destroyed ))
 			src.density = 0
 			src.destroyed = 1
 			new /obj/item/weapon/shard( src.loc )
@@ -63,7 +63,7 @@
 	return
 
 /obj/structure/displaycase/update_icon()
-	if (src.destroyed)
+	if(src.destroyed)
 		src.icon_state = "glassboxb[src.occupied]"
 	else
 		src.icon_state = "glassbox[src.occupied]"
@@ -80,7 +80,7 @@
 	return src.attack_hand(user)
 
 /obj/structure/displaycase/attack_hand(mob/user as mob)
-	if (src.destroyed && src.occupied)
+	if(src.destroyed && src.occupied)
 		new /obj/item/weapon/gun/energy/laser/captain( src.loc )
 		user << "\b You deactivate the hover field built into the case."
 		src.occupied = 0
@@ -90,7 +90,7 @@
 	else
 		usr << text("\blue You kick the display case.")
 		for(var/mob/O in oviewers())
-			if ((O.client && !( O.blinded )))
+			if((O.client && !( O.blinded )))
 				O << text("\red [] kicks the display case.", usr)
 		src.health -= 2
 		healthcheck()

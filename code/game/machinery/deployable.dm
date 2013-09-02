@@ -66,10 +66,10 @@ for reference:
 	var/maxhealth = 100.0
 
 	attackby(obj/item/W as obj, mob/user as mob)
-		if (istype(W, /obj/item/stack/sheet/wood))
-			if (src.health < src.maxhealth)
+		if(istype(W, /obj/item/stack/sheet/wood))
+			if(src.health < src.maxhealth)
 				visible_message("\red [user] begins to repair the [src]!")
-				if (do_after(user,20))
+				if(do_after(user,20))
 					src.health = src.maxhealth
 					W:use(1)
 					visible_message("\red [user] repairs the [src]!")
@@ -79,12 +79,12 @@ for reference:
 			return
 		else
 			switch(W.damtype)
-				if ("fire")
+				if("fire")
 					src.health -= W.force * 1
-				if ("brute")
+				if("brute")
 					src.health -= W.force * 0.75
 				else
-			if (src.health <= 0)
+			if(src.health <= 0)
 				visible_message("\red <B>The barricade is smashed apart!</B>")
 				new /obj/item/stack/sheet/wood(get_turf(src))
 				new /obj/item/stack/sheet/wood(get_turf(src))
@@ -94,13 +94,13 @@ for reference:
 
 	ex_act(severity)
 		switch(severity)
-			if (1.0)
+			if(1.0)
 				visible_message("\red <B>The barricade is blown apart!</B>")
 				del(src)
 				return
-			if (2.0)
+			if(2.0)
 				src.health -= 25
-				if (src.health <= 0)
+				if(src.health <= 0)
 					visible_message("\red <B>The barricade is blown apart!</B>")
 					new /obj/item/stack/sheet/wood(get_turf(src))
 					new /obj/item/stack/sheet/wood(get_turf(src))
@@ -118,15 +118,15 @@ for reference:
 
 	blob_act()
 		src.health -= 25
-		if (src.health <= 0)
+		if(src.health <= 0)
 			visible_message("\red <B>The blob eats through the barricade!</B>")
 			del(src)
 		return
 
 	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)//So bullets will fly over and stuff.
-		if (air_group || (height==0))
+		if(air_group || (height==0))
 			return 1
-		if (istype(mover) && mover.checkpass(PASSTABLE))
+		if(istype(mover) && mover.checkpass(PASSTABLE))
 			return 1
 		else
 			return 0
@@ -158,16 +158,16 @@ for reference:
 		src.icon_state = "barrier[src.locked]"
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if (istype(W, /obj/item/weapon/card/id/))
-			if (src.allowed(user))
+		if(istype(W, /obj/item/weapon/card/id/))
+			if(src.allowed(user))
 				if	(src.emagged < 2.0)
 					src.locked = !src.locked
 					src.anchored = !src.anchored
 					src.icon_state = "barrier[src.locked]"
-					if ((src.locked == 1.0) && (src.emagged < 2.0))
+					if((src.locked == 1.0) && (src.emagged < 2.0))
 						user << "Barrier lock toggled on."
 						return
-					else if ((src.locked == 0.0) && (src.emagged < 2.0))
+					else if((src.locked == 0.0) && (src.emagged < 2.0))
 						user << "Barrier lock toggled off."
 						return
 				else
@@ -177,8 +177,8 @@ for reference:
 					visible_message("\red BZZzZZzZZzZT")
 					return
 			return
-		else if (istype(W, /obj/item/weapon/card/emag))
-			if (src.emagged == 0)
+		else if(istype(W, /obj/item/weapon/card/emag))
+			if(src.emagged == 0)
 				src.emagged = 1
 				src.req_access = null
 				user << "You break the ID authentication lock on the [src]."
@@ -187,7 +187,7 @@ for reference:
 				s.start()
 				visible_message("\red BZZzZZzZZzZT")
 				return
-			else if (src.emagged == 1)
+			else if(src.emagged == 1)
 				src.emagged = 2
 				user << "You short out the anchoring mechanism on the [src]."
 				var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
@@ -195,14 +195,14 @@ for reference:
 				s.start()
 				visible_message("\red BZZzZZzZZzZT")
 				return
-		else if (istype(W, /obj/item/weapon/wrench))
-			if (src.health < src.maxhealth)
+		else if(istype(W, /obj/item/weapon/wrench))
+			if(src.health < src.maxhealth)
 				src.health = src.maxhealth
 				src.emagged = 0
 				src.req_access = list(access_security)
 				visible_message("\red [user] repairs the [src]!")
 				return
-			else if (src.emagged > 0)
+			else if(src.emagged > 0)
 				src.emagged = 0
 				src.req_access = list(access_security)
 				visible_message("\red [user] repairs the [src]!")
@@ -210,29 +210,29 @@ for reference:
 			return
 		else
 			switch(W.damtype)
-				if ("fire")
+				if("fire")
 					src.health -= W.force * 0.75
-				if ("brute")
+				if("brute")
 					src.health -= W.force * 0.5
 				else
-			if (src.health <= 0)
+			if(src.health <= 0)
 				src.explode()
 			..()
 
 	ex_act(severity)
 		switch(severity)
-			if (1.0)
+			if(1.0)
 				src.explode()
 				return
-			if (2.0)
+			if(2.0)
 				src.health -= 25
-				if (src.health <= 0)
+				if(src.health <= 0)
 					src.explode()
 				return
 	emp_act(severity)
-		if (stat & (BROKEN|NOPOWER))
+		if(stat & (BROKEN|NOPOWER))
 			return
-		if (prob(50/severity))
+		if(prob(50/severity))
 			locked = !locked
 			anchored = !anchored
 			icon_state = "barrier[src.locked]"
@@ -243,14 +243,14 @@ for reference:
 
 	blob_act()
 		src.health -= 25
-		if (src.health <= 0)
+		if(src.health <= 0)
 			src.explode()
 		return
 
 	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)//So bullets will fly over and stuff.
-		if (air_group || (height==0))
+		if(air_group || (height==0))
 			return 1
-		if (istype(mover) && mover.checkpass(PASSTABLE))
+		if(istype(mover) && mover.checkpass(PASSTABLE))
 			return 1
 		else
 			return 0
@@ -268,5 +268,5 @@ for reference:
 		s.start()
 
 		explosion(src.loc,-1,-1,0)
-		if (src)
+		if(src)
 			del(src)

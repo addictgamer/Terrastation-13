@@ -32,10 +32,10 @@ datum
 				var/datum/effect/effect/system/reagents_explosion/e = new()
 				e.set_up(round (created_volume/10, 1), holder.my_atom, 0, 0)
 				e.holder_damage(holder.my_atom)
-				if (isliving(holder.my_atom))
+				if(isliving(holder.my_atom))
 					e.amount *= 0.5
 					var/mob/living/L = holder.my_atom
-					if (L.stat!=DEAD)
+					if(L.stat!=DEAD)
 						e.amount *= 0.5
 				e.start()
 				holder.clear_reagents()
@@ -328,10 +328,10 @@ datum
 				var/datum/effect/effect/system/reagents_explosion/e = new()
 				e.set_up(round (created_volume/2, 1), holder.my_atom, 0, 0)
 				e.holder_damage(holder.my_atom)
-				if (isliving(holder.my_atom))
+				if(isliving(holder.my_atom))
 					e.amount *= 0.5
 					var/mob/living/L = holder.my_atom
-					if (L.stat!=DEAD)
+					if(L.stat!=DEAD)
 						e.amount *= 0.5
 				e.start()
 
@@ -358,17 +358,17 @@ datum
 				s.start()
 				for(var/mob/living/carbon/M in viewers(world.view, location))
 					switch(get_dist(M, location))
-						if (0 to 3)
-							if (hasvar(M, "glasses"))
-								if (istype(M:glasses, /obj/item/clothing/glasses/sunglasses))
+						if(0 to 3)
+							if(hasvar(M, "glasses"))
+								if(istype(M:glasses, /obj/item/clothing/glasses/sunglasses))
 									continue
 
 							flick("e_flash", M.flash)
 							M.Weaken(15)
 
-						if (4 to 5)
-							if (hasvar(M, "glasses"))
-								if (istype(M:glasses, /obj/item/clothing/glasses/sunglasses))
+						if(4 to 5)
+							if(hasvar(M, "glasses"))
+								if(istype(M:glasses, /obj/item/clothing/glasses/sunglasses))
 									continue
 
 							flick("e_flash", M.flash)
@@ -513,9 +513,9 @@ datum
 			on_reaction(var/datum/reagents/holder, var/created_volume)
 
 				var/datum/reagent/blood/B = locate(/datum/reagent/blood) in holder.reagent_list
-				if (B && B.data)
+				if(B && B.data)
 					var/datum/disease/advance/D = locate(/datum/disease/advance) in B.data["viruses"]
-					if (D)
+					if(D)
 						D.Evolve(level - rand(0, 1))
 
 
@@ -535,9 +535,9 @@ datum
 				on_reaction(var/datum/reagents/holder, var/created_volume)
 
 					var/datum/reagent/blood/B = locate(/datum/reagent/blood) in holder.reagent_list
-					if (B && B.data)
+					if(B && B.data)
 						var/datum/disease/advance/D = locate(/datum/disease/advance) in B.data["viruses"]
-						if (D)
+						if(D)
 							D.Devolve()
 */
 		condensedcapsaicin
@@ -788,10 +788,10 @@ datum
 				for(var/obj/item/device/radio/beacon/W in world)
 					possible += W
 
-				if (possible.len > 0)
+				if(possible.len > 0)
 					chosen = pick(possible)
 
-				if (chosen)
+				if(chosen)
 				// Calculate previous position for transition
 
 					var/turf/FROM = get_turf_loc(holder.my_atom) // the turf of origin we're travelling FROM
@@ -801,25 +801,25 @@ datum
 
 					var/list/flashers = list()
 					for(var/mob/living/carbon/human/M in viewers(TO, null))
-						if (M:eyecheck() <= 0)
+						if(M:eyecheck() <= 0)
 							flick("e_flash", M.flash) // flash dose faggots
 							flashers += M
 
 					var/y_distance = TO.y - FROM.y
 					var/x_distance = TO.x - FROM.x
 					for (var/atom/movable/A in range(2, FROM )) // iterate thru list of mobs in the area
-						if (istype(A, /obj/item/device/radio/beacon)) continue // don't teleport beacons because that's just insanely stupid
-						if ( A.anchored && !istype(A, /mob/dead/observer) ) continue // don't teleport anchored things (computers, tables, windows, grilles, etc) because this causes problems!
+						if(istype(A, /obj/item/device/radio/beacon)) continue // don't teleport beacons because that's just insanely stupid
+						if( A.anchored && !istype(A, /mob/dead/observer) ) continue // don't teleport anchored things (computers, tables, windows, grilles, etc) because this causes problems!
 						// do teleport ghosts however because hell why not
 
 						var/turf/newloc = locate(A.x + x_distance, A.y + y_distance, TO.z) // calculate the new place
-						if (!A.Move(newloc)) // if the atom, for some reason, can't move, FORCE them to move! :) We try Move() first to invoke any movement-related checks the atom needs to perform after moving
+						if(!A.Move(newloc)) // if the atom, for some reason, can't move, FORCE them to move! :) We try Move() first to invoke any movement-related checks the atom needs to perform after moving
 							A.loc = locate(A.x + x_distance, A.y + y_distance, TO.z)
 
 						spawn()
-							if (ismob(A) && !(A in flashers)) // don't flash if we're already doing an effect
+							if(ismob(A) && !(A in flashers)) // don't flash if we're already doing an effect
 								var/mob/M = A
-								if (M.client)
+								if(M.client)
 									var/obj/blueeffect = new /obj(src)
 									blueeffect.screen_loc = "WEST,SOUTH to EAST,NORTH"
 									blueeffect.icon = 'icons/effects/effects.dmi'
@@ -859,14 +859,14 @@ datum
 				playsound(get_turf_loc(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
 
 				for(var/mob/living/carbon/human/M in viewers(get_turf_loc(holder.my_atom), null))
-					if (M:eyecheck() <= 0)
+					if(M:eyecheck() <= 0)
 						flick("e_flash", M.flash)
 
 				for(var/i = 1, i <= created_volume, i++)
 					var/chosen = pick(critters)
 					var/mob/living/simple_animal/hostile/C = new chosen
 					C.loc = get_turf_loc(holder.my_atom)
-					if (prob(50))
+					if(prob(50))
 						for(var/j = 1, j <= rand(1, 3), j++)
 							step(C, pick(NORTH,SOUTH,EAST,WEST))
 		slimebork
@@ -885,15 +885,15 @@ datum
 				playsound(get_turf_loc(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
 
 				for(var/mob/living/carbon/human/M in viewers(get_turf_loc(holder.my_atom), null))
-					if (M:eyecheck() <= 0)
+					if(M:eyecheck() <= 0)
 						flick("e_flash", M.flash)
 
 				for(var/i = 1, i <= created_volume + rand(1,2), i++)
 					var/chosen = pick(borks)
 					var/obj/B = new chosen
-					if (B)
+					if(B)
 						B.loc = get_turf_loc(holder.my_atom)
-						if (prob(50))
+						if(prob(50))
 							for(var/j = 1, j <= rand(1, 3), j++)
 								step(B, pick(NORTH,SOUTH,EAST,WEST))
 
@@ -1041,7 +1041,7 @@ datum
 				playsound(get_turf_loc(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
 
 				for(var/mob/living/carbon/human/M in viewers(get_turf_loc(holder.my_atom), null))
-					if (M:eyecheck() <= 0)
+					if(M:eyecheck() <= 0)
 						flick("e_flash", M.flash)
 
 				for(var/i = 1, i <= 5, i++)
@@ -1049,7 +1049,7 @@ datum
 					var/mob/living/simple_animal/hostile/C = new chosen
 					C.faction = "slimesummon"
 					C.loc = get_turf_loc(holder.my_atom)
-					if (prob(50))
+					if(prob(50))
 						for(var/j = 1, j <= rand(1, 3), j++)
 							step(C, pick(NORTH,SOUTH,EAST,WEST))*/
 				for(var/mob/O in viewers(get_turf_loc(holder.my_atom), null))
@@ -1072,15 +1072,15 @@ datum
 				playsound(get_turf_loc(holder.my_atom), 'sound/effects/phasein.ogg', 100, 1)
 
 				for(var/mob/living/carbon/human/M in viewers(get_turf_loc(holder.my_atom), null))
-					if (M:eyecheck() <= 0)
+					if(M:eyecheck() <= 0)
 						flick("e_flash", M.flash)
 
 				for(var/i = 1, i <= 4 + rand(1,2), i++)
 					var/chosen = pick(borks)
 					var/obj/B = new chosen
-					if (B)
+					if(B)
 						B.loc = get_turf_loc(holder.my_atom)
-						if (prob(50))
+						if(prob(50))
 							for(var/j = 1, j <= rand(1, 3), j++)
 								step(B, pick(NORTH,SOUTH,EAST,WEST))
 

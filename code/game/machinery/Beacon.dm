@@ -21,7 +21,7 @@
 		hide(T.intact)
 
 	Del()
-		if (Beacon)
+		if(Beacon)
 			del(Beacon)
 		..()
 
@@ -34,20 +34,20 @@
 	proc/updateicon()
 		var/state="floor_beacon"
 
-		if (invisibility)
+		if(invisibility)
 			icon_state = "[state]f"
 
 		else
 			icon_state = "[state]"
 
 	process()
-		if (!Beacon)
+		if(!Beacon)
 			var/turf/T = loc
 			Beacon = new /obj/item/device/radio/beacon
 			Beacon.invisibility = INVISIBILITY_MAXIMUM
 			Beacon.loc = T
-		if (Beacon)
-			if (Beacon.loc != loc)
+		if(Beacon)
+			if(Beacon.loc != loc)
 				Beacon.loc = loc
 
 		updateicon()

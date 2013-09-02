@@ -369,7 +369,7 @@ mob/living/parasite/meme/verb/SubtleJump(mob/living/carbon/human/target as mob i
 		return
 
 	// Find out whether we can speak
-	if (host.silent || (host.disabilities & 64))
+	if(host.silent || (host.disabilities & 64))
 		src << "<b>Your host can't speak..</b>"
 		return
 
@@ -408,7 +408,7 @@ mob/living/parasite/meme/verb/ObviousJump(mob/living/carbon/human/target as mob 
 		return
 
 	// Find out whether we can speak
-	if (host.silent || (host.disabilities & 64))
+	if(host.silent || (host.disabilities & 64))
 		src << "<b>Your host can't speak..</b>"
 		return
 
@@ -577,10 +577,10 @@ mob/living/parasite/meme/verb/Show_Points()
 	..()
 
 	statpanel("Status")
-	if (client && client.holder)
+	if(client && client.holder)
 		stat(null, "([x], [y], [z])")
 
-	if (client && client.statpanel == "Status")
+	if(client && client.statpanel == "Status")
 		stat(null, "Meme Points: [src.meme_points]")
 
 // Game mode helpers, used for theft objectives

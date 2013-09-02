@@ -46,9 +46,9 @@
 	var/wound_update_accuracy = 1
 
 /datum/organ/external/New(var/datum/organ/external/P)
-	if (P)
+	if(P)
 		parent = P
-		if (!parent.children)
+		if(!parent.children)
 			parent.children = list()
 		parent.children.Add(src)
 	return ..()
@@ -58,65 +58,65 @@
 ****************************************************/
 
 /datum/organ/external/proc/emp_act(severity)
-	if (!(status & ORGAN_ROBOT))	//meatbags do not care about EMP
+	if(!(status & ORGAN_ROBOT))	//meatbags do not care about EMP
 		return
 	var/probability = 30
 	var/damage = 15
-	if (severity == 2)
+	if(severity == 2)
 		probability = 1
 		damage = 3
-	if (prob(probability))
+	if(prob(probability))
 		droplimb(1)
 	else
 		take_damage(damage, 0, 1, used_weapon = "EMP")
 
 /datum/organ/external/proc/take_damage(brute, burn, sharp, used_weapon = null, list/forbidden_limbs = list())
-	if ((brute <= 0) && (burn <= 0))
+	if((brute <= 0) && (burn <= 0))
 		return 0
 
-	if (status & ORGAN_DESTROYED)
+	if(status & ORGAN_DESTROYED)
 		return 0
-	if (status & ORGAN_ROBOT)
+	if(status & ORGAN_ROBOT)
 		brute *= 0.66 //~2/3 damage for ROBOLIMBS
 		burn *= 0.66 //~2/3 damage for ROBOLIMBS
 
 	//If limb took enough damage, try to cut or tear it off
-	if (body_part != UPPER_TORSO && body_part != LOWER_TORSO) //as hilarious as it is, getting hit on the chest too much shouldn't effectively gib you.
-		if (config.limbs_can_break && brute_dam >= max_damage * config.organ_health_multiplier)
-			if ( (sharp && prob(5 * brute)) || (brute > 20 && prob(2 * brute)) )
+	if(body_part != UPPER_TORSO && body_part != LOWER_TORSO) //as hilarious as it is, getting hit on the chest too much shouldn't effectively gib you.
+		if(config.limbs_can_break && brute_dam >= max_damage * config.organ_health_multiplier)
+			if( (sharp && prob(5 * brute)) || (brute > 20 && prob(2 * brute)) )
 				droplimb(1)
 				return
 
 	// High brute damage or sharp objects may damage internal organs
-	if (internal_organs != null) if ( (sharp && brute >= 5) || brute >= 10) if (prob(5))
+	if(internal_organs != null) if( (sharp && brute >= 5) || brute >= 10) if(prob(5))
 		// Damage an internal organ
 		var/datum/organ/internal/I = pick(internal_organs)
 		I.take_damage(brute / 2)
 		brute -= brute / 2
 
-	if (status & ORGAN_BROKEN && prob(40) && brute)
+	if(status & ORGAN_BROKEN && prob(40) && brute)
 		owner.emote("scream")	//getting hit on broken hand hurts
-	if (used_weapon)
+	if(used_weapon)
 		add_autopsy_data("[used_weapon]", brute + burn)
 
 	var/can_cut = (prob(brute*2) || sharp) && !(status & ORGAN_ROBOT)
 	// If the limbs can break, make sure we don't exceed the maximum damage a limb can take before breaking
-	if ((brute_dam + burn_dam + brute + burn) < max_damage || !config.limbs_can_break)
-		if (brute)
-			if (can_cut)
+	if((brute_dam + burn_dam + brute + burn) < max_damage || !config.limbs_can_break)
+		if(brute)
+			if(can_cut)
 				createwound( CUT, brute )
 			else
 				createwound( BRUISE, brute )
-		if (burn)
+		if(burn)
 			createwound( BURN, burn )
 	else
 		//If we can't inflict the full amount of damage, spread the damage in other ways
 		//How much damage can we actually cause?
 		var/can_inflict = max_damage * config.organ_health_multiplier - (brute_dam + burn_dam)
-		if (can_inflict)
-			if (brute > 0)
+		if(can_inflict)
+			if(brute > 0)
 				//Inflict all burte damage we can
-				if (can_cut)
+				if(can_cut)
 					createwound( CUT, min(brute,can_inflict) )
 				else
 					createwound( BRUISE, min(brute,can_inflict) )
@@ -126,25 +126,25 @@
 				//How much brute damage is left to inflict
 				brute = max(0, brute - temp)
 
-			if (burn > 0 && can_inflict)
+			if(burn > 0 && can_inflict)
 				//Inflict all burn damage we can
 				createwound(BURN, min(burn,can_inflict))
 				//How much burn damage is left to inflict
 				burn = max(0, burn - can_inflict)
 		//If there are still hurties to dispense
-		if (burn || brute)
-			if (status & ORGAN_ROBOT)
+		if(burn || brute)
+			if(status & ORGAN_ROBOT)
 				droplimb(1) //Robot limbs just kinda fail at full damage.
 			else
 				//List organs we can pass it to
 				var/list/datum/organ/external/possible_points = list()
-				if (parent)
+				if(parent)
 					possible_points += parent
-				if (children)
+				if(children)
 					possible_points += children
-				if (forbidden_limbs.len)
+				if(forbidden_limbs.len)
 					possible_points -= forbidden_limbs
-				if (possible_points.len)
+				if(possible_points.len)
 					//And pass the pain around
 					var/datum/organ/external/target = pick(possible_points)
 					target.take_damage(brute, burn, sharp, used_weapon, forbidden_limbs + src)
@@ -157,21 +157,21 @@
 	return result
 
 /datum/organ/external/proc/heal_damage(brute, burn, internal = 0, robo_repair = 0)
-	if (status & ORGAN_ROBOT && !robo_repair)
+	if(status & ORGAN_ROBOT && !robo_repair)
 		return
 
 	//Heal damage on the individual wounds
 	for(var/datum/wound/W in wounds)
-		if (brute == 0 && burn == 0)
+		if(brute == 0 && burn == 0)
 			break
 
 		// heal brute damage
-		if (W.damage_type == CUT || W.damage_type == BRUISE)
+		if(W.damage_type == CUT || W.damage_type == BRUISE)
 			brute = W.heal_damage(brute)
-		else if (W.damage_type == BURN)
+		else if(W.damage_type == BURN)
 			burn = W.heal_damage(burn)
 
-	if (internal)
+	if(internal)
 		status &= ~ORGAN_BROKEN
 		perma_injury = 0
 
@@ -184,15 +184,15 @@
 
 
 /datum/organ/external/proc/createwound(var/type = CUT, var/damage)
-	if (damage == 0) return
+	if(damage == 0) return
 
 	// first check whether we can widen an existing wound
-	if (wounds.len > 0 && prob(max(50+owner.number_wounds*10,100)))
-		if ((type == CUT || type == BRUISE) && damage >= 5)
+	if(wounds.len > 0 && prob(max(50+owner.number_wounds*10,100)))
+		if((type == CUT || type == BRUISE) && damage >= 5)
 			var/datum/wound/W = pick(wounds)
-			if (W.amount == 1 && W.started_healing())
+			if(W.amount == 1 && W.started_healing())
 				W.open_wound(damage)
-				if (prob(25))
+				if(prob(25))
 					owner.visible_message("\red The wound on [owner.name]'s [display_name] widens with a nasty ripping voice.",\
 					"\red The wound on your [display_name] widens with a nasty ripping voice.",\
 					"You hear a nasty ripping noise, as if flesh is being torn apart.")
@@ -204,11 +204,11 @@
 	//Possible types of wound
 	var/list/size_names = list()
 	switch(type)
-		if (CUT)
+		if(CUT)
 			size_names = typesof(/datum/wound/cut/) - /datum/wound/cut/
-		if (BRUISE)
+		if(BRUISE)
 			size_names = typesof(/datum/wound/bruise/) - /datum/wound/bruise/
-		if (BURN)
+		if(BURN)
 			size_names = typesof(/datum/wound/burn/) - /datum/wound/burn/
 
 	size = min(size,size_names.len)
@@ -217,20 +217,20 @@
 
 	//Possibly trigger an internal wound, too.
 	var/local_damage = brute_dam + burn_dam + damage
-	if (damage > 10 && type != BURN && local_damage > 20 && prob(damage) && !(status & ORGAN_ROBOT))
+	if(damage > 10 && type != BURN && local_damage > 20 && prob(damage) && !(status & ORGAN_ROBOT))
 		var/datum/wound/internal_bleeding/I = new (15)
 		wounds += I
 		owner.custom_pain("You feel something rip in your [display_name]!", 1)
 
 	//Check whether we can add the wound to an existing wound
 	for(var/datum/wound/other in wounds)
-		if (other.desc == W.desc)
+		if(other.desc == W.desc)
 			// okay, add it!
 			other.damage += W.damage
 			other.amount += 1
 			W = null // to signify that the wound was added
 			break
-	if (W)
+	if(W)
 		wounds += W
 
 /****************************************************
@@ -239,31 +239,31 @@
 
 /datum/organ/external/process()
 	// Process wounds, doing healing etc. Only do this every few ticks to save processing power
-	if (owner.life_tick % wound_update_accuracy == 0)
+	if(owner.life_tick % wound_update_accuracy == 0)
 		update_wounds()
 
 	//Chem traces slowly vanish
-	if (owner.life_tick % 10 == 0)
+	if(owner.life_tick % 10 == 0)
 		for(var/chemID in trace_chemicals)
 			trace_chemicals[chemID] = trace_chemicals[chemID] - 1
-			if (trace_chemicals[chemID] <= 0)
+			if(trace_chemicals[chemID] <= 0)
 				trace_chemicals.Remove(chemID)
 
 	//Dismemberment
-	if (status & ORGAN_DESTROYED)
-		if (!destspawn && config.limbs_can_break)
+	if(status & ORGAN_DESTROYED)
+		if(!destspawn && config.limbs_can_break)
 			droplimb()
 		return
-	if (parent)
-		if (parent.status & ORGAN_DESTROYED)
+	if(parent)
+		if(parent.status & ORGAN_DESTROYED)
 			status |= ORGAN_DESTROYED
 			owner.update_body(1)
 			return
 
 	//Bone fracurtes
-	if (config.bones_can_break && brute_dam > min_broken_damage * config.organ_health_multiplier && !(status & ORGAN_ROBOT))
+	if(config.bones_can_break && brute_dam > min_broken_damage * config.organ_health_multiplier && !(status & ORGAN_ROBOT))
 		src.fracture()
-	if (!(status & ORGAN_BROKEN))
+	if(!(status & ORGAN_BROKEN))
 		perma_injury = 0
 
 	update_germs()
@@ -276,63 +276,63 @@
 #define GANGREN_LEVEL_TERMINAL	2500
 #define GERM_TRANSFER_AMOUNT	germ_level/500
 /datum/organ/external/proc/update_germs()
-	if (germ_level > 0 && owner.bodytemperature >= 170)	//cryo stops germs from moving and doing their bad stuffs
+	if(germ_level > 0 && owner.bodytemperature >= 170)	//cryo stops germs from moving and doing their bad stuffs
 		//Syncing germ levels with external wounds
 		for(var/datum/wound/W in wounds)
-			if (!W.bandaged && !W.salved)
+			if(!W.bandaged && !W.salved)
 				W.germ_level = max(W.germ_level, germ_level)	//Wounds get all the germs
-				if (W.germ_level > germ_level)	//Badly infected wounds raise internal germ levels
+				if(W.germ_level > germ_level)	//Badly infected wounds raise internal germ levels
 					germ_level++
 
-		if (germ_level > GANGREN_LEVEL_ONE && prob(round(germ_level/100)))
+		if(germ_level > GANGREN_LEVEL_ONE && prob(round(germ_level/100)))
 			germ_level++
 			owner.adjustToxLoss(1)
 
-		if (germ_level > GANGREN_LEVEL_TWO)
+		if(germ_level > GANGREN_LEVEL_TWO)
 			germ_level++
 			owner.adjustToxLoss(1)
 /*
-		if (germ_level > GANGREN_LEVEL_TERMINAL)
-			if (!(status & ORGAN_DEAD))
+		if(germ_level > GANGREN_LEVEL_TERMINAL)
+			if(!(status & ORGAN_DEAD))
 				status |= ORGAN_DEAD
 				owner << "<span class='notice'>You can't feel your [display_name] anymore...</span>"
 				owner.update_body(1)
-			if (prob(10))	//Spreading the fun
-				if (children)	//To child organs
+			if(prob(10))	//Spreading the fun
+				if(children)	//To child organs
 					for (var/datum/organ/external/child in children)
-						if (!(child.status & (ORGAN_DEAD|ORGAN_DESTROYED|ORGAN_ROBOT)))
+						if(!(child.status & (ORGAN_DEAD|ORGAN_DESTROYED|ORGAN_ROBOT)))
 							child.germ_level += round(GERM_TRANSFER_AMOUNT)
-				if (parent)
-					if (!(parent.status & (ORGAN_DEAD|ORGAN_DESTROYED|ORGAN_ROBOT)))
+				if(parent)
+					if(!(parent.status & (ORGAN_DEAD|ORGAN_DESTROYED|ORGAN_ROBOT)))
 						parent.germ_level += round(GERM_TRANSFER_AMOUNT)
 */
 
 //Updating wounds. Handles wound natural I had some free spachealing, internal bleedings and infections
 /datum/organ/external/proc/update_wounds()
 
-	if ((status & ORGAN_ROBOT)) //Robotic limbs don't heal or get worse.
+	if((status & ORGAN_ROBOT)) //Robotic limbs don't heal or get worse.
 		return
 
 	for(var/datum/wound/W in wounds)
 		// wounds can disappear after 10 minutes at the earliest
-		if (W.damage == 0 && W.created + 10 * 10 * 60 <= world.time)
+		if(W.damage == 0 && W.created + 10 * 10 * 60 <= world.time)
 			wounds -= W
 			// let the GC handle the deletion of the wound
 
 		// Internal wounds get worse over time. Low temperatures (cryo) stop them.
-		if (W.internal && !W.is_treated() && owner.bodytemperature >= 170)
-			if (!owner.reagents.has_reagent("bicaridine"))	//bicard stops internal wounds from growing bigger with time
+		if(W.internal && !W.is_treated() && owner.bodytemperature >= 170)
+			if(!owner.reagents.has_reagent("bicaridine"))	//bicard stops internal wounds from growing bigger with time
 				W.open_wound(0.1 * wound_update_accuracy)
 			owner.vessel.remove_reagent("blood",0.07 * W.damage * wound_update_accuracy)
-			if (prob(1 * wound_update_accuracy))
+			if(prob(1 * wound_update_accuracy))
 				owner.custom_pain("You feel a stabbing pain in your [display_name]!",1)
 
 		// slow healing
 		var/heal_amt = 0
-		if (W.damage < 15) //this thing's edges are not in day's travel of each other, what healing?
+		if(W.damage < 15) //this thing's edges are not in day's travel of each other, what healing?
 			heal_amt += 0.2
 
-		if (W.is_treated() && W.damage < 50) //whoa, not even magical band aid can hold it together
+		if(W.is_treated() && W.damage < 50) //whoa, not even magical band aid can hold it together
 			heal_amt += 0.3
 
 		//we only update wounds once in [wound_update_accuracy] ticks so have to emulate realtime
@@ -346,7 +346,7 @@
 		W.heal_damage(heal_amt)
 
 		// Salving also helps against infection
-		if (W.germ_level > 0 && W.salved && prob(2))
+		if(W.germ_level > 0 && W.salved && prob(2))
 			W.germ_level = 0
 			W.disinfected = 1
 
@@ -361,12 +361,12 @@
 	status &= ~ORGAN_BLEEDING
 	var/clamped = 0
 	for(var/datum/wound/W in wounds)
-		if (W.damage_type == CUT || W.damage_type == BRUISE)
+		if(W.damage_type == CUT || W.damage_type == BRUISE)
 			brute_dam += W.damage
-		else if (W.damage_type == BURN)
+		else if(W.damage_type == BURN)
 			burn_dam += W.damage
 
-		if (!(status & ORGAN_ROBOT) && W.bleeding())
+		if(!(status & ORGAN_ROBOT) && W.bleeding())
 			W.bleed_timer--
 			status |= ORGAN_BLEEDING
 
@@ -374,7 +374,7 @@
 
 		number_wounds += W.amount
 
-	if (open && !clamped)	//things tend to bleed if they are CUT OPEN
+	if(open && !clamped)	//things tend to bleed if they are CUT OPEN
 		status |= ORGAN_BLEEDING
 
 
@@ -382,7 +382,7 @@
 // adjusted to set damage_state to brute/burn code only (without r_name0 as before)
 /datum/organ/external/proc/update_icon()
 	var/n_is = damage_state_text()
-	if (n_is != damage_state)
+	if(n_is != damage_state)
 		damage_state = n_is
 		owner.update_body(1)
 		return 1
@@ -391,26 +391,26 @@
 // new damage icon system
 // returns just the brute/burn damage code
 /datum/organ/external/proc/damage_state_text()
-	if (status & ORGAN_DESTROYED)
+	if(status & ORGAN_DESTROYED)
 		return "--"
 
 	var/tburn = 0
 	var/tbrute = 0
 
-	if (burn_dam ==0)
+	if(burn_dam ==0)
 		tburn =0
-	else if (burn_dam < (max_damage * 0.25 / 2))
+	else if(burn_dam < (max_damage * 0.25 / 2))
 		tburn = 1
-	else if (burn_dam < (max_damage * 0.75 / 2))
+	else if(burn_dam < (max_damage * 0.75 / 2))
 		tburn = 2
 	else
 		tburn = 3
 
-	if (brute_dam == 0)
+	if(brute_dam == 0)
 		tbrute = 0
-	else if (brute_dam < (max_damage * 0.25 / 2))
+	else if(brute_dam < (max_damage * 0.25 / 2))
 		tbrute = 1
-	else if (brute_dam < (max_damage * 0.75 / 2))
+	else if(brute_dam < (max_damage * 0.75 / 2))
 		tbrute = 2
 	else
 		tbrute = 3
@@ -428,11 +428,11 @@
 
 //Handles dismemberment
 /datum/organ/external/proc/droplimb(var/override = 0,var/no_explode = 0)
-	if (destspawn) return
-	if (override)
+	if(destspawn) return
+	if(override)
 		status |= ORGAN_DESTROYED
-	if (status & ORGAN_DESTROYED)
-		if (body_part == UPPER_TORSO)
+	if(status & ORGAN_DESTROYED)
+		if(body_part == UPPER_TORSO)
 			return
 
 		src.status &= ~ORGAN_BROKEN
@@ -443,59 +443,59 @@
 
 		// If any organs are attached to this, destroy them
 		for(var/datum/organ/external/O in owner.organs)
-			if (O.parent == src)
+			if(O.parent == src)
 				O.droplimb(1)
 
 		var/obj/organ	//Dropped limb object
 		switch(body_part)
-			if (LOWER_TORSO)
+			if(LOWER_TORSO)
 				owner << "\red You are now sterile."
-			if (HEAD)
+			if(HEAD)
 				organ= new /obj/item/weapon/organ/head(owner.loc, owner)
 				owner.u_equip(owner.glasses)
 				owner.u_equip(owner.head)
 				owner.u_equip(owner.ears)
 				owner.u_equip(owner.wear_mask)
-			if (ARM_RIGHT)
-				if (status & ORGAN_ROBOT)
+			if(ARM_RIGHT)
+				if(status & ORGAN_ROBOT)
 					organ = new /obj/item/robot_parts/r_arm(owner.loc)
 				else
 					organ= new /obj/item/weapon/organ/r_arm(owner.loc, owner)
-			if (ARM_LEFT)
-				if (status & ORGAN_ROBOT)
+			if(ARM_LEFT)
+				if(status & ORGAN_ROBOT)
 					organ= new /obj/item/robot_parts/l_arm(owner.loc)
 				else
 					organ= new /obj/item/weapon/organ/l_arm(owner.loc, owner)
-			if (LEG_RIGHT)
-				if (status & ORGAN_ROBOT)
+			if(LEG_RIGHT)
+				if(status & ORGAN_ROBOT)
 					organ = new /obj/item/robot_parts/r_leg(owner.loc)
 				else
 					organ= new /obj/item/weapon/organ/r_leg(owner.loc, owner)
-			if (LEG_LEFT)
-				if (status & ORGAN_ROBOT)
+			if(LEG_LEFT)
+				if(status & ORGAN_ROBOT)
 					organ = new /obj/item/robot_parts/l_leg(owner.loc)
 				else
 					organ= new /obj/item/weapon/organ/l_leg(owner.loc, owner)
-			if (HAND_RIGHT)
-				if (!(status & ORGAN_ROBOT))
+			if(HAND_RIGHT)
+				if(!(status & ORGAN_ROBOT))
 					organ= new /obj/item/weapon/organ/r_hand(owner.loc, owner)
 				owner.u_equip(owner.gloves)
-			if (HAND_LEFT)
-				if (!(status & ORGAN_ROBOT))
+			if(HAND_LEFT)
+				if(!(status & ORGAN_ROBOT))
 					organ= new /obj/item/weapon/organ/l_hand(owner.loc, owner)
 				owner.u_equip(owner.gloves)
-			if (FOOT_RIGHT)
-				if (!(status & ORGAN_ROBOT))
+			if(FOOT_RIGHT)
+				if(!(status & ORGAN_ROBOT))
 					organ= new /obj/item/weapon/organ/r_foot/(owner.loc, owner)
 				owner.u_equip(owner.shoes)
-			if (FOOT_LEFT)
-				if (!(status & ORGAN_ROBOT))
+			if(FOOT_LEFT)
+				if(!(status & ORGAN_ROBOT))
 					organ = new /obj/item/weapon/organ/l_foot(owner.loc, owner)
 				owner.u_equip(owner.shoes)
-		if (organ)
+		if(organ)
 			destspawn = 1
 			//Robotic limbs explode if sabotaged.
-			if (status & ORGAN_ROBOT && !no_explode && sabotaged)
+			if(status & ORGAN_ROBOT && !no_explode && sabotaged)
 				owner.visible_message("\red \The [owner]'s [display_name] explodes violently!",\
 				"\red <b>Your [display_name] explodes!</b>",\
 				"You hear an explosion followed by a scream!")
@@ -526,7 +526,7 @@
 	var/rval = 0
 	src.status &= ~ORGAN_BLEEDING
 	for(var/datum/wound/W in wounds)
-		if (W.internal) continue
+		if(W.internal) continue
 		rval |= !W.bandaged
 		W.bandaged = 1
 	return rval
@@ -535,7 +535,7 @@
 	var/rval = 0
 	src.status &= ~ORGAN_BLEEDING
 	for(var/datum/wound/W in wounds)
-		if (W.internal) continue
+		if(W.internal) continue
 		rval |= !W.clamped
 		W.clamped = 1
 	return rval
@@ -548,7 +548,7 @@
 	return rval
 
 /datum/organ/external/proc/fracture()
-	if (status & ORGAN_BROKEN)
+	if(status & ORGAN_BROKEN)
 		return
 	owner.visible_message("\red You hear a loud cracking sound coming from \the [owner].","\red <b>Something feels like it shattered in your [display_name]!</b>","You hear a sickening crack.")
 	owner.emote("scream")
@@ -564,7 +564,7 @@
 	src.status &= ~ORGAN_DESTROYED
 	src.status |= ORGAN_ROBOT
 	for (var/datum/organ/external/T in children)
-		if (T)
+		if(T)
 			T.robotize()
 
 /datum/organ/external/proc/mutate()
@@ -580,12 +580,12 @@
 
 /datum/organ/external/proc/is_infected()
 	for(var/datum/wound/W in wounds)
-		if (W.germ_level > 100)
+		if(W.germ_level > 100)
 			return 1
 	return 0
 
 /datum/organ/external/get_icon(gender="")
-	if (status & ORGAN_MUTATED)
+	if(status & ORGAN_MUTATED)
 		return new /icon(owner.deform_icon, "[icon_name][gender ? "_[gender]" : ""]")
 	else
 		return new /icon(owner.race_icon, "[icon_name][gender ? "_[gender]" : ""]")
@@ -693,28 +693,28 @@
 	var/disfigured = 0
 
 /datum/organ/external/head/get_icon()
-	if (!owner)
+	if(!owner)
 	 return ..()
 	var/g = "m"
-	if (owner.gender == FEMALE)	g = "f"
-	if (status & ORGAN_MUTATED)
+	if(owner.gender == FEMALE)	g = "f"
+	if(status & ORGAN_MUTATED)
 		. = new /icon(owner.deform_icon, "[icon_name]_[g]")
 	else
 		. = new /icon(owner.race_icon, "[icon_name]_[g]")
 
 /datum/organ/external/head/take_damage(brute, burn, sharp, used_weapon = null, list/forbidden_limbs = list())
 	..(brute, burn, sharp, used_weapon, forbidden_limbs)
-	if (!disfigured)
-		if (brute_dam > 40)
-			if (prob(50))
+	if(!disfigured)
+		if(brute_dam > 40)
+			if(prob(50))
 				disfigure("brute")
-		if (burn_dam > 40)
+		if(burn_dam > 40)
 			disfigure("burn")
 
 /datum/organ/external/head/proc/disfigure(var/type = "brute")
-	if (disfigured)
+	if(disfigured)
 		return
-	if (type == "brute")
+	if(type == "brute")
 		owner.visible_message("\red You hear a sickening cracking sound coming from \the [owner]'s face.",	\
 		"\red <b>Your face becomes unrecognizible mangled mess!</b>",	\
 		"\red You hear a sickening crack.")
@@ -733,10 +733,10 @@ obj/item/weapon/organ
 
 obj/item/weapon/organ/New(loc, mob/living/carbon/human/H)
 	..(loc)
-	if (!istype(H))
+	if(!istype(H))
 		return
-	if (H.dna)
-		if (!blood_DNA)
+	if(H.dna)
+		if(!blood_DNA)
 			blood_DNA = list()
 		blood_DNA[H.dna.unique_enzymes] = H.dna.b_type
 
@@ -744,38 +744,38 @@ obj/item/weapon/organ/New(loc, mob/living/carbon/human/H)
 
 	//Setting base icon for this mob's race
 	var/icon/base
-	if (H.species && H.species.icobase)
+	if(H.species && H.species.icobase)
 		base = icon(H.species.icobase)
 	else
 		base = icon('icons/mob/human_races/r_human.dmi')
 
-	if (base)
+	if(base)
 		base = base.MakeLying()
 
 		//Changing limb's skin tone to match owner
-		if (!H.species || H.species.flags & HAS_SKIN_TONE)
-			if (H.s_tone >= 0)
+		if(!H.species || H.species.flags & HAS_SKIN_TONE)
+			if(H.s_tone >= 0)
 				base.Blend(rgb(H.s_tone, H.s_tone, H.s_tone), ICON_ADD)
 			else
 				base.Blend(rgb(-H.s_tone,  -H.s_tone,  -H.s_tone), ICON_SUBTRACT)
 
 		//this is put here since I can't easially edit the same icon from head's constructor
-		if (istype(src, /obj/item/weapon/organ/head))
+		if(istype(src, /obj/item/weapon/organ/head))
 			//Add (facial) hair.
-			if (H.f_style)
+			if(H.f_style)
 				var/datum/sprite_accessory/facial_hair_style = facial_hair_styles_list[H.f_style]
-				if (facial_hair_style)
+				if(facial_hair_style)
 					var/icon/facial = new/icon("icon" = facial_hair_style.icon, "icon_state" = "[facial_hair_style.icon_state]_l")
-					if (facial_hair_style.do_colouration)
+					if(facial_hair_style.do_colouration)
 						facial.Blend(rgb(H.r_facial, H.g_facial, H.b_facial), ICON_ADD)
 
 					base.Blend(facial, ICON_OVERLAY)
 
-			if (H.h_style && !(H.head && (H.head.flags & BLOCKHEADHAIR)))
+			if(H.h_style && !(H.head && (H.head.flags & BLOCKHEADHAIR)))
 				var/datum/sprite_accessory/hair_style = hair_styles_list[H.h_style]
-				if (hair_style)
+				if(hair_style)
 					var/icon/hair = new/icon("icon" = hair_style.icon, "icon_state" = "[hair_style.icon_state]_l")
-					if (hair_style.do_colouration)
+					if(hair_style.do_colouration)
 						hair.Blend(rgb(H.r_hair, H.g_hair, H.b_hair), ICON_ADD)
 
 					base.Blend(hair, ICON_OVERLAY)
@@ -818,15 +818,15 @@ obj/item/weapon/organ/head
 	var/brain_op_stage = 0
 
 obj/item/weapon/organ/head/New(loc, mob/living/carbon/human/H)
-	if (istype(H))
+	if(istype(H))
 		src.icon_state = H.gender == MALE? "head_m" : "head_f"
 	..()
 	spawn(5)
-	if (brainmob && brainmob.client)
+	if(brainmob && brainmob.client)
 		brainmob.client.screen.len = null //clear the hud
 
-	//if (ishuman(H))
-	//	if (H.gender == FEMALE)
+	//if(ishuman(H))
+	//	if(H.gender == FEMALE)
 	//		H.icon_state = "head_f"
 	//	H.overlays += H.generate_head_icon()
 	transfer_identity(H)
@@ -843,14 +843,14 @@ obj/item/weapon/organ/head/proc/transfer_identity(var/mob/living/carbon/human/H)
 	brainmob.name = H.real_name
 	brainmob.real_name = H.real_name
 	brainmob.dna = H.dna
-	if (H.mind)
+	if(H.mind)
 		H.mind.transfer_to(brainmob)
 	brainmob.container = src
 
 obj/item/weapon/organ/head/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W,/obj/item/weapon/scalpel))
+	if(istype(W,/obj/item/weapon/scalpel))
 		switch(brain_op_stage)
-			if (0)
+			if(0)
 				for(var/mob/O in (oviewers(brainmob) - user))
 					O.show_message("\red [brainmob] is beginning to have \his head cut open with [src] by [user].", 1)
 				brainmob << "\red [user] begins to cut open your head with [src]!"
@@ -858,7 +858,7 @@ obj/item/weapon/organ/head/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
 				brain_op_stage = 1
 
-			if (2)
+			if(2)
 				for(var/mob/O in (oviewers(brainmob) - user))
 					O.show_message("\red [brainmob] is having \his connections to the brain delicately severed with [src] by [user].", 1)
 				brainmob << "\red [user] begins to cut open your head with [src]!"
@@ -867,16 +867,16 @@ obj/item/weapon/organ/head/attackby(obj/item/weapon/W as obj, mob/user as mob)
 				brain_op_stage = 3.0
 			else
 				..()
-	else if (istype(W,/obj/item/weapon/circular_saw))
+	else if(istype(W,/obj/item/weapon/circular_saw))
 		switch(brain_op_stage)
-			if (1)
+			if(1)
 				for(var/mob/O in (oviewers(brainmob) - user))
 					O.show_message("\red [brainmob] has \his skull sawed open with [src] by [user].", 1)
 				brainmob << "\red [user] begins to saw open your head with [src]!"
 				user << "\red You saw [brainmob]'s head open with [src]!"
 
 				brain_op_stage = 2
-			if (3)
+			if(3)
 				for(var/mob/O in (oviewers(brainmob) - user))
 					O.show_message("\red [brainmob] has \his spine's connection to the brain severed with [src] by [user].", 1)
 				brainmob << "\red [user] severs your brain's connection to the spine with [src]!"

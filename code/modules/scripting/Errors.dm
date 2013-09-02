@@ -13,15 +13,15 @@
 */
 		message
 	New(msg=null)
-		if (msg)message=msg
+		if(msg)message=msg
 
 	BadToken
 		message="Unexpected token: "
 		var/token/token
 		New(token/t)
 			token=t
-			if (t&&t.line) message="[t.line]: [message]"
-			if (istype(t))message+="[t.value]"
+			if(t&&t.line) message="[t.line]: [message]"
+			if(istype(t))message+="[t.value]"
 			else message+="[t]"
 
 	InvalidID
@@ -48,9 +48,9 @@
 	ExpectedToken
 		message="Expected: '"
 		New(id, token/T)
-			if (T && T.line) message="[T.line]: [message]"
+			if(T && T.line) message="[T.line]: [message]"
 			message+="[id]'. "
-			if (T)message+="Found '[T.value]'."
+			if(T)message+="Found '[T.value]'."
 
 
 	UnterminatedComment
@@ -81,7 +81,7 @@
 */
 		ToString()
 			. = "[name]: [message]"
-			if (!stack.Top()) return
+			if(!stack.Top()) return
 			.+="\nStack:"
 			while(stack.Top())
 				var/node/statement/FunctionCall/stmt=stack.Pop()

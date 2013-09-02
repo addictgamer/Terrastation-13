@@ -136,13 +136,13 @@
 		// their information, but it is the only way (at least that I know of).
 		var/datum/game_mode/M = new T()
 
-		if (M.config_tag)
-			if (!(M.config_tag in modes))		// ensure each mode is added only once
+		if(M.config_tag)
+			if(!(M.config_tag in modes))		// ensure each mode is added only once
 				diary << "Adding game mode [M.name] ([M.config_tag]) to configuration."
 				src.modes += M.config_tag
 				src.mode_names[M.config_tag] = M.name
 				src.probabilities[M.config_tag] = M.probability
-				if (M.votable)
+				if(M.votable)
 					src.votable_modes += M.config_tag
 		del(M)
 	src.votable_modes += "secret"
@@ -151,290 +151,290 @@
 	var/list/Lines = file2list(filename)
 
 	for(var/t in Lines)
-		if (!t)	continue
+		if(!t)	continue
 
 		t = trim(t)
-		if (length(t) == 0)
+		if(length(t) == 0)
 			continue
-		else if (copytext(t, 1, 2) == "#")
+		else if(copytext(t, 1, 2) == "#")
 			continue
 
 		var/pos = findtext(t, " ")
 		var/name = null
 		var/value = null
 
-		if (pos)
+		if(pos)
 			name = lowertext(copytext(t, 1, pos))
 			value = copytext(t, pos + 1)
 		else
 			name = lowertext(t)
 
-		if (!name)
+		if(!name)
 			continue
 
-		if (type == "config")
+		if(type == "config")
 			switch (name)
-				if ("resource_urls")
+				if("resource_urls")
 					config.resource_urls = stringsplit(value, " ")
 
-				if ("admin_legacy_system")
+				if("admin_legacy_system")
 					config.admin_legacy_system = 1
 
-				if ("ban_legacy_system")
+				if("ban_legacy_system")
 					config.ban_legacy_system = 1
 
-				if ("use_age_restriction_for_jobs")
+				if("use_age_restriction_for_jobs")
 					config.use_age_restriction_for_jobs = 1
 
-				if ("jobs_have_minimal_access")
+				if("jobs_have_minimal_access")
 					config.jobs_have_minimal_access = 1
 
-				if ("use_recursive_explosions")
+				if("use_recursive_explosions")
 					use_recursive_explosions = 1
 
-				if ("log_ooc")
+				if("log_ooc")
 					config.log_ooc = 1
 
-				if ("log_access")
+				if("log_access")
 					config.log_access = 1
 
-				if ("sql_enabled")
+				if("sql_enabled")
 					config.sql_enabled = text2num(value)
 
-				if ("log_say")
+				if("log_say")
 					config.log_say = 1
 
-				if ("log_admin")
+				if("log_admin")
 					config.log_admin = 1
 
-				if ("log_debug")
+				if("log_debug")
 					config.log_debug = text2num(value)
 
-				if ("log_game")
+				if("log_game")
 					config.log_game = 1
 
-				if ("log_vote")
+				if("log_vote")
 					config.log_vote = 1
 
-				if ("log_whisper")
+				if("log_whisper")
 					config.log_whisper = 1
 
-				if ("log_attack")
+				if("log_attack")
 					config.log_attack = 1
 
-				if ("log_emote")
+				if("log_emote")
 					config.log_emote = 1
 
-				if ("log_adminchat")
+				if("log_adminchat")
 					config.log_adminchat = 1
 
-				if ("log_adminwarn")
+				if("log_adminwarn")
 					config.log_adminwarn = 1
 
-				if ("log_pda")
+				if("log_pda")
 					config.log_pda = 1
 
-				if ("log_hrefs")
+				if("log_hrefs")
 					config.log_hrefs = 1
 
-				if ("allow_admin_ooccolor")
+				if("allow_admin_ooccolor")
 					config.allow_admin_ooccolor = 1
 
-				if ("allow_vote_restart")
+				if("allow_vote_restart")
 					config.allow_vote_restart = 1
 
-				if ("allow_vote_mode")
+				if("allow_vote_mode")
 					config.allow_vote_mode = 1
 
-				if ("allow_admin_jump")
+				if("allow_admin_jump")
 					config.allow_admin_jump = 1
 
-				if ("allow_admin_rev")
+				if("allow_admin_rev")
 					config.allow_admin_rev = 1
 
-				if ("allow_admin_spawning")
+				if("allow_admin_spawning")
 					config.allow_admin_spawning = 1
 
-				if ("no_dead_vote")
+				if("no_dead_vote")
 					config.vote_no_dead = 1
 
-				if ("default_no_vote")
+				if("default_no_vote")
 					config.vote_no_default = 1
 
-				if ("vote_delay")
+				if("vote_delay")
 					config.vote_delay = text2num(value)
 
-				if ("vote_period")
+				if("vote_period")
 					config.vote_period = text2num(value)
 
-				if ("allow_ai")
+				if("allow_ai")
 					config.allow_ai = 1
 
-//				if ("authentication")
+//				if("authentication")
 //					config.enable_authentication = 1
 
-				if ("norespawn")
+				if("norespawn")
 					config.respawn = 0
 
-				if ("servername")
+				if("servername")
 					config.server_name = value
 
-				if ("serversuffix")
+				if("serversuffix")
 					config.server_suffix = 1
 
-				if ("nudge_script_path")
+				if("nudge_script_path")
 					config.nudge_script_path = value
 
-				if ("hostedby")
+				if("hostedby")
 					config.hostedby = value
 
-				if ("server")
+				if("server")
 					config.server = value
 
-				if ("hub_name")
+				if("hub_name")
 					config.hub_name = value
 
-				if ("hub_password")
+				if("hub_password")
 					config.hub_password = value
 
-				if ("banappeals")
+				if("banappeals")
 					config.banappeals = value
 
-				if ("wikiurl")
+				if("wikiurl")
 					config.wikiurl = value
 
-				if ("forumurl")
+				if("forumurl")
 					config.forumurl = value
 
-				if ("guest_jobban")
+				if("guest_jobban")
 					config.guest_jobban = 1
 
-				if ("guest_ban")
+				if("guest_ban")
 					guests_allowed = 0
 
-				if ("usewhitelist")
+				if("usewhitelist")
 					config.usewhitelist = 1
 
-				if ("feature_object_spell_system")
+				if("feature_object_spell_system")
 					config.feature_object_spell_system = 1
 
-				if ("allow_metadata")
+				if("allow_metadata")
 					config.allow_Metadata = 1
 
-				if ("traitor_scaling")
+				if("traitor_scaling")
 					config.traitor_scaling = 1
 
-				if ("protect_roles_from_antagonist")
+				if("protect_roles_from_antagonist")
 					config.protect_roles_from_antagonist = 1
 
-				if ("probability")
+				if("probability")
 					var/prob_pos = findtext(value, " ")
 					var/prob_name = null
 					var/prob_value = null
 
-					if (prob_pos)
+					if(prob_pos)
 						prob_name = lowertext(copytext(value, 1, prob_pos))
 						prob_value = copytext(value, prob_pos + 1)
-						if (prob_name in config.modes)
+						if(prob_name in config.modes)
 							config.probabilities[prob_name] = text2num(prob_value)
 						else
 							diary << "Unknown game mode probability configuration definition: [prob_name]."
 					else
 						diary << "Incorrect probability configuration definition: [prob_name]  [prob_value]."
 
-				if ("allow_random_events")
+				if("allow_random_events")
 					config.allow_random_events = 1
 
-				if ("kick_inactive")
+				if("kick_inactive")
 					config.kick_inactive = 1
 
-				if ("load_jobs_from_txt")
+				if("load_jobs_from_txt")
 					load_jobs_from_txt = 1
 
-				if ("alert_red_upto")
+				if("alert_red_upto")
 					config.alert_desc_red_upto = value
 
-				if ("alert_red_downto")
+				if("alert_red_downto")
 					config.alert_desc_red_downto = value
 
-				if ("alert_blue_downto")
+				if("alert_blue_downto")
 					config.alert_desc_blue_downto = value
 
-				if ("alert_blue_upto")
+				if("alert_blue_upto")
 					config.alert_desc_blue_upto = value
 
-				if ("alert_green")
+				if("alert_green")
 					config.alert_desc_green = value
 
-				if ("alert_delta")
+				if("alert_delta")
 					config.alert_desc_delta = value
 
-				if ("forbid_singulo_possession")
+				if("forbid_singulo_possession")
 					forbid_singulo_possession = 1
 
-				if ("popup_admin_pm")
+				if("popup_admin_pm")
 					config.popup_admin_pm = 1
 
-				if ("allow_holidays")
+				if("allow_holidays")
 					Holiday = 1
 
-				if ("use_irc_bot")
+				if("use_irc_bot")
 					use_irc_bot = 1
 
-				if ("ticklag")
+				if("ticklag")
 					Ticklag = text2num(value)
 
-				if ("socket_talk")
+				if("socket_talk")
 					socket_talk = text2num(value)
 
-				if ("tickcomp")
+				if("tickcomp")
 					Tickcomp = 1
 
-				if ("humans_need_surnames")
+				if("humans_need_surnames")
 					humans_need_surnames = 1
 
-				if ("tor_ban")
+				if("tor_ban")
 					ToRban = 1
 
-				if ("automute_on")
+				if("automute_on")
 					automute_on = 1
 
-				if ("usealienwhitelist")
+				if("usealienwhitelist")
 					usealienwhitelist = 1
 
-				if ("alien_player_ratio")
+				if("alien_player_ratio")
 					limitalienplayers = 1
 					alien_to_human_ratio = text2num(value)
 
-				if ("assistant_maint")
+				if("assistant_maint")
 					config.assistant_maint = 1
 
-				if ("gateway_delay")
+				if("gateway_delay")
 					config.gateway_delay = text2num(value)
 
-				if ("continuous_rounds")
+				if("continuous_rounds")
 					config.continous_rounds = 1
 
-				if ("ghost_interaction")
+				if("ghost_interaction")
 					config.ghost_interaction = 1
 
-				if ("comms_password")
+				if("comms_password")
 					config.comms_password = value
 
-				if ("irc_bot_host")
+				if("irc_bot_host")
 					config.irc_bot_host = value
 
-				if ("main_irc")
+				if("main_irc")
 					config.main_irc = value
 
-				if ("admin_irc")
+				if("admin_irc")
 					config.admin_irc = value
 
-				if ("python_path")
-					if (value)
+				if("python_path")
+					if(value)
 						config.python_path = value
 					else
-						if (world.system_type == UNIX)
+						if(world.system_type == UNIX)
 							config.python_path = "/usr/bin/env python2"
 						else //probably windows, if not this should work anyway
 							config.python_path = "python"
@@ -443,45 +443,45 @@
 					diary << "Unknown setting in configuration: '[name]'"
 
 
-		else if (type == "game_options")
-			if (!value)
+		else if(type == "game_options")
+			if(!value)
 				diary << "Unknown value for setting [name] in [filename]."
 			value = text2num(value)
 
 			switch(name)
-				if ("health_threshold_crit")
+				if("health_threshold_crit")
 					config.health_threshold_crit = value
-				if ("health_threshold_dead")
+				if("health_threshold_dead")
 					config.health_threshold_dead = value
-				if ("revival_pod_plants")
+				if("revival_pod_plants")
 					config.revival_pod_plants = value
-				if ("revival_cloning")
+				if("revival_cloning")
 					config.revival_cloning = value
-				if ("revival_brain_life")
+				if("revival_brain_life")
 					config.revival_brain_life = value
-				if ("run_speed")
+				if("run_speed")
 					config.run_speed = value
-				if ("walk_speed")
+				if("walk_speed")
 					config.walk_speed = value
-				if ("human_delay")
+				if("human_delay")
 					config.human_delay = value
-				if ("robot_delay")
+				if("robot_delay")
 					config.robot_delay = value
-				if ("monkey_delay")
+				if("monkey_delay")
 					config.monkey_delay = value
-				if ("alien_delay")
+				if("alien_delay")
 					config.alien_delay = value
-				if ("slime_delay")
+				if("slime_delay")
 					config.slime_delay = value
-				if ("animal_delay")
+				if("animal_delay")
 					config.animal_delay = value
-				if ("organ_health_multiplier")
+				if("organ_health_multiplier")
 					config.organ_health_multiplier = value / 100
-				if ("organ_regeneration_multiplier")
+				if("organ_regeneration_multiplier")
 					config.organ_regeneration_multiplier = value / 100
-				if ("bones_can_break")
+				if("bones_can_break")
 					config.bones_can_break = value
-				if ("limbs_can_break")
+				if("limbs_can_break")
 					config.limbs_can_break = value
 				else
 					diary << "Unknown setting in configuration: '[name]'"
@@ -489,45 +489,45 @@
 /datum/configuration/proc/loadsql(filename)  // -- TLE
 	var/list/Lines = file2list(filename)
 	for(var/t in Lines)
-		if (!t)	continue
+		if(!t)	continue
 
 		t = trim(t)
-		if (length(t) == 0)
+		if(length(t) == 0)
 			continue
-		else if (copytext(t, 1, 2) == "#")
+		else if(copytext(t, 1, 2) == "#")
 			continue
 
 		var/pos = findtext(t, " ")
 		var/name = null
 		var/value = null
 
-		if (pos)
+		if(pos)
 			name = lowertext(copytext(t, 1, pos))
 			value = copytext(t, pos + 1)
 		else
 			name = lowertext(t)
 
-		if (!name)
+		if(!name)
 			continue
 
 		switch (name)
-			if ("address")
+			if("address")
 				sqladdress = value
-			if ("port")
+			if("port")
 				sqlport = value
-			if ("database")
+			if("database")
 				sqldb = value
-			if ("login")
+			if("login")
 				sqllogin = value
-			if ("password")
+			if("password")
 				sqlpass = value
-			if ("feedback_database")
+			if("feedback_database")
 				sqlfdbkdb = value
-			if ("feedback_login")
+			if("feedback_login")
 				sqlfdbklogin = value
-			if ("feedback_password")
+			if("feedback_password")
 				sqlfdbkpass = value
-			if ("enable_stat_tracking")
+			if("enable_stat_tracking")
 				sqllogging = 1
 			else
 				diary << "Unknown setting in configuration: '[name]'"
@@ -535,41 +535,41 @@
 /datum/configuration/proc/loadforumsql(filename)  // -- TLE
 	var/list/Lines = file2list(filename)
 	for(var/t in Lines)
-		if (!t)	continue
+		if(!t)	continue
 
 		t = trim(t)
-		if (length(t) == 0)
+		if(length(t) == 0)
 			continue
-		else if (copytext(t, 1, 2) == "#")
+		else if(copytext(t, 1, 2) == "#")
 			continue
 
 		var/pos = findtext(t, " ")
 		var/name = null
 		var/value = null
 
-		if (pos)
+		if(pos)
 			name = lowertext(copytext(t, 1, pos))
 			value = copytext(t, pos + 1)
 		else
 			name = lowertext(t)
 
-		if (!name)
+		if(!name)
 			continue
 
 		switch (name)
-			if ("address")
+			if("address")
 				forumsqladdress = value
-			if ("port")
+			if("port")
 				forumsqlport = value
-			if ("database")
+			if("database")
 				forumsqldb = value
-			if ("login")
+			if("login")
 				forumsqllogin = value
-			if ("password")
+			if("password")
 				forumsqlpass = value
-			if ("activatedgroup")
+			if("activatedgroup")
 				forum_activated_group = value
-			if ("authenticatedgroup")
+			if("authenticatedgroup")
 				forum_authenticated_group = value
 			else
 				diary << "Unknown setting in configuration: '[name]'"
@@ -579,7 +579,7 @@
 	// their information, but it is the only way (at least that I know of).
 	for (var/T in (typesof(/datum/game_mode) - /datum/game_mode))
 		var/datum/game_mode/M = new T()
-		if (M.config_tag && M.config_tag == mode_name)
+		if(M.config_tag && M.config_tag == mode_name)
 			return M
 		del(M)
 	return new /datum/game_mode/extended()
@@ -589,13 +589,13 @@
 	for (var/T in (typesof(/datum/game_mode) - /datum/game_mode))
 		var/datum/game_mode/M = new T()
 		//world << "DEBUG: [T], tag=[M.config_tag], prob=[probabilities[M.config_tag]]"
-		if (!(M.config_tag in modes))
+		if(!(M.config_tag in modes))
 			del(M)
 			continue
-		if (probabilities[M.config_tag]<=0)
+		if(probabilities[M.config_tag]<=0)
 			del(M)
 			continue
-		if (M.can_start())
+		if(M.can_start())
 			runnable_modes[M] = probabilities[M.config_tag]
 			//world << "DEBUG: runnable_mode\[[runnable_modes.len]\] = [M.config_tag]"
 	return runnable_modes

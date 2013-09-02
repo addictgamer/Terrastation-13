@@ -28,17 +28,17 @@
 
 /obj/item/device/core_sampler/examine()
 	set src in orange(1)
-	if (!( usr ))
+	if(!( usr ))
 		return
-	if (get_dist(src, usr) < 2)
+	if(get_dist(src, usr) < 2)
 		usr << "That's \a [src]."
 		usr << "\blue Used to extract geological core samples - this one is [sampled_turf ? "full" : "empty"], and has [num_stored_bags] bag[num_stored_bags != 1 ? "s" : ""] remaining."
 	else
 		return ..()
 
 /obj/item/device/core_sampler/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W,/obj/item/weapon/evidencebag))
-		if (num_stored_bags < 10)
+	if(istype(W,/obj/item/weapon/evidencebag))
+		if(num_stored_bags < 10)
 			del(W)
 			num_stored_bags += 1
 			user << "\blue You insert the [W] into the core sampler."
@@ -49,18 +49,18 @@
 
 /obj/item/device/core_sampler/proc/sample_item(var/item_to_sample, var/mob/user as mob)
 	var/datum/geosample/geo_data
-	if (istype(item_to_sample, /turf/simulated/mineral))
+	if(istype(item_to_sample, /turf/simulated/mineral))
 		var/turf/simulated/mineral/T = item_to_sample
 		T.geological_data.UpdateNearbyArtifactInfo(T)
 		geo_data = T.geological_data
-	else if (istype(item_to_sample, /obj/item/weapon/ore))
+	else if(istype(item_to_sample, /obj/item/weapon/ore))
 		var/obj/item/weapon/ore/O = item_to_sample
 		geo_data = O.geological_data
 
-	if (geo_data)
-		if (filled_bag)
+	if(geo_data)
+		if(filled_bag)
 			user << "\red The core sampler is full!"
-		else if (num_stored_bags < 1)
+		else if(num_stored_bags < 1)
 			user << "\red The core sampler is out of sample bags!"
 		else
 			//create a new sample bag which we'll fill with rock samples
@@ -87,13 +87,13 @@
 		user << "\red You are unable to take a sample of [item_to_sample]."
 
 /obj/item/device/core_sampler/attack_self()
-	if (filled_bag)
+	if(filled_bag)
 		usr << "\blue You eject the full sample bag."
 		var/success = 0
-		if (istype(src.loc, /mob))
+		if(istype(src.loc, /mob))
 			var/mob/M = src.loc
 			success = M.put_in_inactive_hand(filled_bag)
-		if (!success)
+		if(!success)
 			filled_bag.loc = get_turf(src)
 		filled_bag = null
 		icon_state = "sampler0"

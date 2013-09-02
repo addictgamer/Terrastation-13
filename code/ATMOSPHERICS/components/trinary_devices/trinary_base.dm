@@ -42,7 +42,7 @@ obj/machinery/atmospherics/trinary
 		else if(reference == node2)
 			network2 = new_network
 
-		else if (reference == node3)
+		else if(reference == node3)
 			network3 = new_network
 
 		if(new_network.normal_members.Find(src))

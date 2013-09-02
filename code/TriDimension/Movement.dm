@@ -5,12 +5,12 @@ var/minZ = 2
 // (such as mining base => admin station)
 // Note that this assumes the ship's top is at z=1 and bottom at z=4
 /obj/item/weapon/tank/jetpack/proc/move_z(cardinal, mob/user as mob)
-	if (user.z > 1)
+	if(user.z > 1)
 		user << "\red There is nothing of interest in that direction."
 		return
 	if(allow_thrust(0.01, user))
 		switch(cardinal)
-			if (UP) // Going up!
+			if(UP) // Going up!
 				if(user.z > maxZ) // If we aren't at the very top of the ship
 					var/turf/T = locate(user.x, user.y, user.z - 1)
 					// You can only jetpack up if there's space above, and you're sitting on either hull (on the exterior), or space
@@ -30,8 +30,8 @@ var/minZ = 2
 				else
 					user << "\red The ship's gravity well keeps you in orbit!" // Assuming the ship starts on z level 1, you don't want to go past it
 
-			if (DOWN) // Going down!
-				if (user.z < 1) // If we aren't at the very bottom of the ship, or out in space
+			if(DOWN) // Going down!
+				if(user.z < 1) // If we aren't at the very bottom of the ship, or out in space
 					var/turf/T = locate(user.x, user.y, user.z + 1)
 					// You can only jetpack down if you're sitting on space and there's space down below, or hull
 					if(T && (istype(T, /turf/space) || istype(T, /turf/space/*/hull*/)) && istype(user.loc, /turf/space))

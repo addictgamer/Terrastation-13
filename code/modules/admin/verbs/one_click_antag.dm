@@ -3,7 +3,7 @@ client/proc/one_click_antag()
 	set desc = "Auto-create an antagonist of your choice"
 	set category = "Admin"
 
-	if (holder)
+	if(holder)
 		holder.one_click_antag()
 	return
 
@@ -40,13 +40,13 @@ client/proc/one_click_antag()
 	var/datum/mind/themind = null
 
 	for(var/mob/living/silicon/ai/ai in player_list)
-		if (ai.client)
+		if(ai.client)
 			AIs += ai
 
-	if (AIs.len)
+	if(AIs.len)
 		malfAI = pick(AIs)
 
-	if (malfAI)
+	if(malfAI)
 		themind = malfAI.mind
 		themind.make_AI_Malf()
 		return 1
@@ -57,22 +57,22 @@ client/proc/one_click_antag()
 /datum/admins/proc/makeTraitors()
 	var/datum/game_mode/traitor/temp = new
 
-	if (config.protect_roles_from_antagonist)
+	if(config.protect_roles_from_antagonist)
 		temp.restricted_jobs += temp.protected_jobs
 
 	var/list/mob/living/carbon/human/candidates = list()
 	var/mob/living/carbon/human/H = null
 
 	for(var/mob/living/carbon/human/applicant in player_list)
-		if (applicant.client.prefs.be_special & BE_TRAITOR)
-			if (!applicant.stat)
-				if (applicant.mind)
-					if (!applicant.mind.special_role)
-						if (!jobban_isbanned(applicant, "traitor") && !jobban_isbanned(applicant, "Syndicate"))
-							if (!(applicant.job in temp.restricted_jobs))
+		if(applicant.client.prefs.be_special & BE_TRAITOR)
+			if(!applicant.stat)
+				if(applicant.mind)
+					if(!applicant.mind.special_role)
+						if(!jobban_isbanned(applicant, "traitor") && !jobban_isbanned(applicant, "Syndicate"))
+							if(!(applicant.job in temp.restricted_jobs))
 								candidates += applicant
 
-	if (candidates.len)
+	if(candidates.len)
 		var/numTratiors = min(candidates.len, 3)
 
 		for(var/i = 0, i<numTratiors, i++)
@@ -89,22 +89,22 @@ client/proc/one_click_antag()
 /datum/admins/proc/makeChanglings()
 
 	var/datum/game_mode/changeling/temp = new
-	if (config.protect_roles_from_antagonist)
+	if(config.protect_roles_from_antagonist)
 		temp.restricted_jobs += temp.protected_jobs
 
 	var/list/mob/living/carbon/human/candidates = list()
 	var/mob/living/carbon/human/H = null
 
 	for(var/mob/living/carbon/human/applicant in player_list)
-		if (applicant.client.prefs.be_special & BE_CHANGELING)
-			if (!applicant.stat)
-				if (applicant.mind)
-					if (!applicant.mind.special_role)
-						if (!jobban_isbanned(applicant, "changeling") && !jobban_isbanned(applicant, "Syndicate"))
-							if (!(applicant.job in temp.restricted_jobs))
+		if(applicant.client.prefs.be_special & BE_CHANGELING)
+			if(!applicant.stat)
+				if(applicant.mind)
+					if(!applicant.mind.special_role)
+						if(!jobban_isbanned(applicant, "changeling") && !jobban_isbanned(applicant, "Syndicate"))
+							if(!(applicant.job in temp.restricted_jobs))
 								candidates += applicant
 
-	if (candidates.len)
+	if(candidates.len)
 		var/numChanglings = min(candidates.len, 3)
 
 		for(var/i = 0, i<numChanglings, i++)
@@ -119,22 +119,22 @@ client/proc/one_click_antag()
 /datum/admins/proc/makeRevs()
 
 	var/datum/game_mode/revolution/temp = new
-	if (config.protect_roles_from_antagonist)
+	if(config.protect_roles_from_antagonist)
 		temp.restricted_jobs += temp.protected_jobs
 
 	var/list/mob/living/carbon/human/candidates = list()
 	var/mob/living/carbon/human/H = null
 
 	for(var/mob/living/carbon/human/applicant in player_list)
-		if (applicant.client.prefs.be_special & BE_REV)
-			if (applicant.stat == CONSCIOUS)
-				if (applicant.mind)
-					if (!applicant.mind.special_role)
-						if (!jobban_isbanned(applicant, "revolutionary") && !jobban_isbanned(applicant, "Syndicate"))
-							if (!(applicant.job in temp.restricted_jobs))
+		if(applicant.client.prefs.be_special & BE_REV)
+			if(applicant.stat == CONSCIOUS)
+				if(applicant.mind)
+					if(!applicant.mind.special_role)
+						if(!jobban_isbanned(applicant, "revolutionary") && !jobban_isbanned(applicant, "Syndicate"))
+							if(!(applicant.job in temp.restricted_jobs))
 								candidates += applicant
 
-	if (candidates.len)
+	if(candidates.len)
 		var/numRevs = min(candidates.len, 3)
 
 		for(var/i = 0, i<numRevs, i++)
@@ -151,29 +151,29 @@ client/proc/one_click_antag()
 	var/time_passed = world.time
 
 	for(var/mob/dead/observer/G in player_list)
-		if (!jobban_isbanned(G, "wizard") && !jobban_isbanned(G, "Syndicate"))
+		if(!jobban_isbanned(G, "wizard") && !jobban_isbanned(G, "Syndicate"))
 			spawn(0)
 				switch(alert(G, "Do you wish to be considered for the position of Space Wizard Foundation 'diplomat'?","Please answer in 30 seconds!","Yes","No"))
-					if ("Yes")
-						if ((world.time-time_passed)>300)//If more than 30 game seconds passed.
+					if("Yes")
+						if((world.time-time_passed)>300)//If more than 30 game seconds passed.
 							return
 						candidates += G
-					if ("No")
+					if("No")
 						return
 					else
 						return
 
 	sleep(300)
 
-	if (candidates.len)
+	if(candidates.len)
 		shuffle(candidates)
 		for(var/mob/i in candidates)
-			if (!i || !i.client) continue //Dont bother removing them from the list since we only grab one wizard
+			if(!i || !i.client) continue //Dont bother removing them from the list since we only grab one wizard
 
 			theghost = i
 			break
 
-	if (theghost)
+	if(theghost)
 		var/mob/living/carbon/human/new_character=makeBody(theghost)
 		new_character.mind.make_Wizard()
 		return 1
@@ -184,22 +184,22 @@ client/proc/one_click_antag()
 /datum/admins/proc/makeCult()
 
 	var/datum/game_mode/cult/temp = new
-	if (config.protect_roles_from_antagonist)
+	if(config.protect_roles_from_antagonist)
 		temp.restricted_jobs += temp.protected_jobs
 
 	var/list/mob/living/carbon/human/candidates = list()
 	var/mob/living/carbon/human/H = null
 
 	for(var/mob/living/carbon/human/applicant in player_list)
-		if (applicant.client.prefs.be_special & BE_CULTIST)
-			if (applicant.stat == CONSCIOUS)
-				if (applicant.mind)
-					if (!applicant.mind.special_role)
-						if (!jobban_isbanned(applicant, "cultist") && !jobban_isbanned(applicant, "Syndicate"))
-							if (!(applicant.job in temp.restricted_jobs))
+		if(applicant.client.prefs.be_special & BE_CULTIST)
+			if(applicant.stat == CONSCIOUS)
+				if(applicant.mind)
+					if(!applicant.mind.special_role)
+						if(!jobban_isbanned(applicant, "cultist") && !jobban_isbanned(applicant, "Syndicate"))
+							if(!(applicant.job in temp.restricted_jobs))
 								candidates += applicant
 
-	if (candidates.len)
+	if(candidates.len)
 		var/numCultists = min(candidates.len, 4)
 
 		for(var/i = 0, i<numCultists, i++)
@@ -221,28 +221,28 @@ client/proc/one_click_antag()
 	var/time_passed = world.time
 
 	for(var/mob/dead/observer/G in player_list)
-		if (!jobban_isbanned(G, "operative") && !jobban_isbanned(G, "Syndicate"))
+		if(!jobban_isbanned(G, "operative") && !jobban_isbanned(G, "Syndicate"))
 			spawn(0)
 				switch(alert(G,"Do you wish to be considered for a nuke team being sent in?","Please answer in 30 seconds!","Yes","No"))
-					if ("Yes")
-						if ((world.time-time_passed)>300)//If more than 30 game seconds passed.
+					if("Yes")
+						if((world.time-time_passed)>300)//If more than 30 game seconds passed.
 							return
 						candidates += G
-					if ("No")
+					if("No")
 						return
 					else
 						return
 
 	sleep(300)
 
-	if (candidates.len)
+	if(candidates.len)
 		var/numagents = 5
 		var/agentcount = 0
 
 		for(var/i = 0, i<numagents,i++)
 			shuffle(candidates) //More shuffles means more randoms
 			for(var/mob/j in candidates)
-				if (!j || !j.client)
+				if(!j || !j.client)
 					candidates.Remove(j)
 					continue
 
@@ -254,7 +254,7 @@ client/proc/one_click_antag()
 
 				agentcount++
 
-		if (agentcount < 1)
+		if(agentcount < 1)
 			return 0
 
 		var/obj/effect/landmark/nuke_spawn = locate("landmark*Nuclear-Bomb")
@@ -262,38 +262,38 @@ client/proc/one_click_antag()
 
 		var/nuke_code = "[rand(10000, 99999)]"
 
-		if (nuke_spawn)
+		if(nuke_spawn)
 			var/obj/item/weapon/paper/P = new
 			P.info = "Sadly, the Syndicate could not get you a nuclear bomb.  We have, however, acquired the arming code for the station's onboard nuke.  The nuclear authorization code is: <b>[nuke_code]</b>"
 			P.name = "nuclear bomb code and instructions"
 			P.loc = nuke_spawn.loc
 
-		if (closet_spawn)
+		if(closet_spawn)
 			new /obj/structure/closet/syndicate/nuclear(closet_spawn.loc)
 
 		for (var/obj/effect/landmark/A in /area/syndicate_station/start)//Because that's the only place it can BE -Sieve
-			if (A.name == "Syndicate-Gear-Closet")
+			if(A.name == "Syndicate-Gear-Closet")
 				new /obj/structure/closet/syndicate/personal(A.loc)
 				del(A)
 				continue
 
-			if (A.name == "Syndicate-Bomb")
+			if(A.name == "Syndicate-Bomb")
 				new /obj/effect/spawner/newbomb/timer/syndicate(A.loc)
 				del(A)
 				continue
 
 		for(var/datum/mind/synd_mind in ticker.mode.syndicates)
-			if (synd_mind.current)
-				if (synd_mind.current.client)
+			if(synd_mind.current)
+				if(synd_mind.current.client)
 					for(var/image/I in synd_mind.current.client.images)
-						if (I.icon_state == "synd")
+						if(I.icon_state == "synd")
 							del(I)
 
 		for(var/datum/mind/synd_mind in ticker.mode.syndicates)
-			if (synd_mind.current)
-				if (synd_mind.current.client)
+			if(synd_mind.current)
+				if(synd_mind.current.client)
 					for(var/datum/mind/synd_mind_1 in ticker.mode.syndicates)
-						if (synd_mind_1.current)
+						if(synd_mind_1.current)
 							var/I = image('icons/mob/mob.dmi', loc = synd_mind_1.current, icon_state = "synd")
 							synd_mind.current.client.images += I
 
@@ -319,7 +319,7 @@ client/proc/one_click_antag()
 	var/mob/dead/observer/theghost = null
 	var/time_passed = world.time
 	var/input = "Purify the station."
-	if (prob(10))
+	if(prob(10))
 		input = "Save Runtime and any other cute things on the station."
 
 	var/syndicate_leader_selected = 0 //when the leader is chosen. The last person spawned.
@@ -328,27 +328,27 @@ client/proc/one_click_antag()
 	for(var/mob/dead/observer/G in player_list)
 		spawn(0)
 			switch(alert(G,"Do you wish to be considered for an elite syndicate strike team being sent in?","Please answer in 30 seconds!","Yes","No"))
-				if ("Yes")
-					if ((world.time-time_passed)>300)//If more than 30 game seconds passed.
+				if("Yes")
+					if((world.time-time_passed)>300)//If more than 30 game seconds passed.
 						return
 					candidates += G
-				if ("No")
+				if("No")
 					return
 				else
 					return
 	sleep(300)
 
 	for(var/mob/dead/observer/G in candidates)
-		if (!G.key)
+		if(!G.key)
 			candidates.Remove(G)
 
-	if (candidates.len)
+	if(candidates.len)
 		var/numagents = 6
 		//Spawns commandos and equips them.
 		for (var/obj/effect/landmark/L in /area/syndicate_mothership/elite_squad)
-			if (numagents<=0)
+			if(numagents<=0)
 				break
-			if (L.name == "Syndicate-Commando")
+			if(L.name == "Syndicate-Commando")
 				syndicate_leader_selected = numagents == 1?1:0
 
 				var/mob/living/carbon/human/new_syndicate_commando = create_syndicate_death_commando(L, syndicate_leader_selected)
@@ -358,7 +358,7 @@ client/proc/one_click_antag()
 					theghost = pick(candidates)
 					candidates.Remove(theghost)
 
-				if (!theghost)
+				if(!theghost)
 					del(new_syndicate_commando)
 					break
 
@@ -372,18 +372,18 @@ client/proc/one_click_antag()
 				new_syndicate_commando << "\blue You are an Elite Syndicate. [!syndicate_leader_selected?"commando":"<B>LEADER</B>"] in the service of the Syndicate. \nYour current mission is: \red<B> [input]</B>"
 
 				numagents--
-		if (numagents >= 6)
+		if(numagents >= 6)
 			return 0
 
 		for (var/obj/effect/landmark/L in /area/shuttle/syndicate_elite)
-			if (L.name == "Syndicate-Commando-Bomb")
+			if(L.name == "Syndicate-Commando-Bomb")
 				new /obj/effect/spawner/newbomb/timer/syndicate(L.loc)
 
 	return 1
 
 
 /datum/admins/proc/makeBody(var/mob/dead/observer/G_found) // Uses stripped down and bastardized code from respawn character
-	if (!G_found || !G_found.key)	return
+	if(!G_found || !G_found.key)	return
 
 	//First we spawn a dude.
 	var/mob/living/carbon/human/new_character = new(pick(latejoin))//The mob being spawned.
@@ -392,7 +392,7 @@ client/proc/one_click_antag()
 
 	var/datum/preferences/A = new()
 	A.randomize_appearance_for(new_character)
-	if (new_character.gender == MALE)
+	if(new_character.gender == MALE)
 		new_character.real_name = "[pick(first_names_male)] [pick(last_names)]"
 	else
 		new_character.real_name = "[pick(first_names_female)] [pick(last_names)]"
@@ -445,11 +445,11 @@ client/proc/one_click_antag()
 	for(var/mob/dead/observer/G in player_list)
 		spawn(0)
 			switch(alert(G,"Do you wish to be considered for a vox raiding party arriving on the station?","Please answer in 30 seconds!","Yes","No"))
-				if ("Yes")
-					if ((world.time-time_passed)>300)//If more than 30 game seconds passed.
+				if("Yes")
+					if((world.time-time_passed)>300)//If more than 30 game seconds passed.
 						return
 					candidates += G
-				if ("No")
+				if("No")
 					return
 				else
 					return
@@ -457,16 +457,16 @@ client/proc/one_click_antag()
 	sleep(300) //Debug.
 
 	for(var/mob/dead/observer/G in candidates)
-		if (!G.key)
+		if(!G.key)
 			candidates.Remove(G)
 
-	if (candidates.len)
+	if(candidates.len)
 		var/max_raiders = 1
 		var/raiders = max_raiders
 		//Spawns vox raiders and equips them.
 		for (var/obj/effect/landmark/L in world)
-			if (L.name == "voxstart")
-				if (raiders<=0)
+			if(L.name == "voxstart")
+				if(raiders<=0)
 					break
 
 				var/mob/living/carbon/human/new_vox = create_vox_raider(L, leader_chosen)
@@ -475,7 +475,7 @@ client/proc/one_click_antag()
 					theghost = pick(candidates)
 					candidates.Remove(theghost)
 
-				if (!theghost)
+				if(!theghost)
 					del(new_vox)
 					break
 
@@ -484,7 +484,7 @@ client/proc/one_click_antag()
 				new_vox << "\red Don't forget to turn on your nitrogen internals!"
 
 				raiders--
-			if (raiders > max_raiders)
+			if(raiders > max_raiders)
 				return 0
 	else
 		return 0

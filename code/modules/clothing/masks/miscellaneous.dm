@@ -9,7 +9,7 @@
 
 //Monkeys can not take the muzzle off of themself! Call PETA!
 /obj/item/clothing/mask/muzzle/attack_paw(mob/user as mob)
-	if (src == user.wear_mask)
+	if(src == user.wear_mask)
 		return
 	else
 		..()

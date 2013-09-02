@@ -15,7 +15,7 @@
 	..()
 	spawn( 5 )
 		for(var/obj/machinery/mass_driver/M in world)
-			if (M.id == id)
+			if(M.id == id)
 				connected = M
 			else
 		return
@@ -23,48 +23,48 @@
 
 
 /obj/machinery/computer/pod/proc/alarm()
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		return
 
-	if (!( connected ))
+	if(!( connected ))
 		viewers(null, null) << "Cannot locate mass driver connector. Cancelling firing sequence!"
 		return
 
 	for(var/obj/machinery/door/poddoor/M in world)
-		if (M.id == id)
+		if(M.id == id)
 			M.open()
 			return
 	sleep(20)
 
 	for(var/obj/machinery/mass_driver/M in world)
-		if (M.id == id)
+		if(M.id == id)
 			M.power = connected.power
 			M.drive()
 
 	sleep(50)
 	for(var/obj/machinery/door/poddoor/M in world)
-		if (M.id == id)
+		if(M.id == id)
 			M.close()
 			return
 	return
 
 
 /obj/machinery/computer/pod/attackby(I as obj, user as mob)
-	if (istype(I, /obj/item/weapon/screwdriver))
+	if(istype(I, /obj/item/weapon/screwdriver))
 		playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
-		if (do_after(user, 20))
-			if (stat & BROKEN)
+		if(do_after(user, 20))
+			if(stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				var/obj/structure/computerframe/A = new /obj/structure/computerframe( loc )
 				new /obj/item/weapon/shard( loc )
 
 				//generate appropriate circuitboard. Accounts for /pod/old computer types
 				var/obj/item/weapon/circuitboard/pod/M = null
-				if (istype(src, /obj/machinery/computer/pod/old))
+				if(istype(src, /obj/machinery/computer/pod/old))
 					M = new /obj/item/weapon/circuitboard/olddoor( A )
-					if (istype(src, /obj/machinery/computer/pod/old/syndicate))
+					if(istype(src, /obj/machinery/computer/pod/old/syndicate))
 						M = new /obj/item/weapon/circuitboard/syndicatedoor( A )
-					if (istype(src, /obj/machinery/computer/pod/old/swf))
+					if(istype(src, /obj/machinery/computer/pod/old/swf))
 						M = new /obj/item/weapon/circuitboard/swfdoor( A )
 				else //it's not an old computer. Generate standard pod circuitboard.
 					M = new /obj/item/weapon/circuitboard/pod( A )
@@ -83,11 +83,11 @@
 
 				//generate appropriate circuitboard. Accounts for /pod/old computer types
 				var/obj/item/weapon/circuitboard/pod/M = null
-				if (istype(src, /obj/machinery/computer/pod/old))
+				if(istype(src, /obj/machinery/computer/pod/old))
 					M = new /obj/item/weapon/circuitboard/olddoor( A )
-					if (istype(src, /obj/machinery/computer/pod/old/syndicate))
+					if(istype(src, /obj/machinery/computer/pod/old/syndicate))
 						M = new /obj/item/weapon/circuitboard/syndicatedoor( A )
-					if (istype(src, /obj/machinery/computer/pod/old/swf))
+					if(istype(src, /obj/machinery/computer/pod/old/swf))
 						M = new /obj/item/weapon/circuitboard/swfdoor( A )
 				else //it's not an old computer. Generate standard pod circuitboard.
 					M = new /obj/item/weapon/circuitboard/pod( A )
@@ -114,14 +114,14 @@
 
 
 /obj/machinery/computer/pod/attack_hand(var/mob/user as mob)
-	if (..())
+	if(..())
 		return
 
 	var/dat = "<HTML><BODY><TT><B>[title]</B>"
 	user.set_machine(src)
-	if (connected)
+	if(connected)
 		var/d2
-		if (timing)	//door controls do not need timers.
+		if(timing)	//door controls do not need timers.
 			d2 = "<A href='?src=\ref[src];time=0'>Stop Time Launch</A>"
 		else
 			d2 = "<A href='?src=\ref[src];time=1'>Initiate Time Launch</A>"
@@ -131,7 +131,7 @@
 		var/temp = ""
 		var/list/L = list( 0.25, 0.5, 1, 2, 4, 8, 16 )
 		for(var/t in L)
-			if (t == connected.power)
+			if(t == connected.power)
 				temp += "[t] "
 			else
 				temp += "<A href = '?src=\ref[src];power=[t]'>[t]</A> "
@@ -146,10 +146,10 @@
 
 
 /obj/machinery/computer/pod/process()
-	if (!..())
+	if(!..())
 		return
-	if (timing)
-		if (time > 0)
+	if(timing)
+		if(time > 0)
 			time = round(time) - 1
 		else
 			alarm()
@@ -160,27 +160,27 @@
 
 
 /obj/machinery/computer/pod/Topic(href, href_list)
-	if (..())
+	if(..())
 		return
-	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(loc, /turf))) || (istype(usr, /mob/living/silicon)))
+	if((usr.contents.Find(src) || (in_range(src, usr) && istype(loc, /turf))) || (istype(usr, /mob/living/silicon)))
 		usr.set_machine(src)
-		if (href_list["power"])
+		if(href_list["power"])
 			var/t = text2num(href_list["power"])
 			t = min(max(0.25, t), 16)
-			if (connected)
+			if(connected)
 				connected.power = t
-		if (href_list["alarm"])
+		if(href_list["alarm"])
 			alarm()
-		if (href_list["time"])
+		if(href_list["time"])
 			timing = text2num(href_list["time"])
-		if (href_list["tp"])
+		if(href_list["tp"])
 			var/tp = text2num(href_list["tp"])
 			time += tp
 			time = min(max(round(time), 0), 120)
-		if (href_list["door"])
+		if(href_list["door"])
 			for(var/obj/machinery/door/poddoor/M in world)
-				if (M.id == id)
-					if (M.density)
+				if(M.id == id)
+					if(M.density)
 						M.open()
 					else
 						M.close()
@@ -203,7 +203,7 @@
 	req_access = list(access_syndicate)
 
 /obj/machinery/computer/pod/old/syndicate/attack_hand(var/mob/user as mob)
-	if (!allowed(user))
+	if(!allowed(user))
 		user << "\red Access Denied"
 		return
 	else

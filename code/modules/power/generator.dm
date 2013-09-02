@@ -29,35 +29,35 @@
 /obj/machinery/power/generator/proc/reconnect()
 	circ1 = null
 	circ2 = null
-	if (src.loc && anchored)
-		if (src.dir & (EAST|WEST))
+	if(src.loc && anchored)
+		if(src.dir & (EAST|WEST))
 			circ1 = locate(/obj/machinery/atmospherics/binary/circulator) in get_step(src,EAST)
 			circ2 = locate(/obj/machinery/atmospherics/binary/circulator) in get_step(src,WEST)
 
-			if (circ1 && circ2)
-				if (circ1.dir != SOUTH || circ2.dir != NORTH)
+			if(circ1 && circ2)
+				if(circ1.dir != SOUTH || circ2.dir != NORTH)
 					circ1 = null
 					circ2 = null
 
-		else if (src.dir & (NORTH|SOUTH))
+		else if(src.dir & (NORTH|SOUTH))
 			circ1 = locate(/obj/machinery/atmospherics/binary/circulator) in get_step(src,NORTH)
 			circ2 = locate(/obj/machinery/atmospherics/binary/circulator) in get_step(src,SOUTH)
 
-			if (circ1 && circ2 && (circ1.dir != EAST || circ2.dir != WEST))
+			if(circ1 && circ2 && (circ1.dir != EAST || circ2.dir != WEST))
 				circ1 = null
 				circ2 = null
 
 /obj/machinery/power/generator/proc/updateicon()
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		overlays.Cut()
 	else
 		overlays.Cut()
 
-		if (lastgenlev != 0)
+		if(lastgenlev != 0)
 			overlays += image('icons/obj/power.dmi', "teg-op[lastgenlev]")
 
 /obj/machinery/power/generator/process()
-	if (!circ1 || !circ2 || !anchored || stat & (BROKEN|NOPOWER))
+	if(!circ1 || !circ2 || !anchored || stat & (BROKEN|NOPOWER))
 		return
 
 	updateDialog()
@@ -66,18 +66,18 @@
 	var/datum/gas_mixture/air2 = circ2.return_transfer_air()
 	lastgen = 0
 
-	if (air1 && air2)
+	if(air1 && air2)
 		var/air1_heat_capacity = air1.heat_capacity()
 		var/air2_heat_capacity = air2.heat_capacity()
 		var/delta_temperature = abs(air2.temperature - air1.temperature)
 
-		if (delta_temperature > 0 && air1_heat_capacity > 0 && air2_heat_capacity > 0)
+		if(delta_temperature > 0 && air1_heat_capacity > 0 && air2_heat_capacity > 0)
 			var/efficiency = 0.65
 			var/energy_transfer = delta_temperature*air2_heat_capacity*air1_heat_capacity/(air2_heat_capacity+air1_heat_capacity)
 			var/heat = energy_transfer*(1-efficiency)
 			lastgen = energy_transfer*efficiency*0.05
 
-			if (air2.temperature > air1.temperature)
+			if(air2.temperature > air1.temperature)
 				air2.temperature = air2.temperature - energy_transfer/air2_heat_capacity
 				air1.temperature = air1.temperature + heat/air1_heat_capacity
 			else
@@ -89,31 +89,31 @@
 			circ2.air2.merge(air2)
 
 			//Update the gas networks
-			if (circ1.network2)
+			if(circ1.network2)
 				circ1.network2.update = 1
-			if (circ2.network2)
+			if(circ2.network2)
 				circ2.network2.update = 1
 
 	// update icon overlays and power usage only if displayed level has changed
-	if (lastgen > 250000 && prob(10))
+	if(lastgen > 250000 && prob(10))
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 		s.set_up(3, 1, src)
 		s.start()
 		lastgen *= 0.5
 	var/genlev = max(0, min( round(11*lastgen / 250000), 11))
-	if (lastgen > 100 && genlev == 0)
+	if(lastgen > 100 && genlev == 0)
 		genlev = 1
-	if (genlev != lastgenlev)
+	if(genlev != lastgenlev)
 		lastgenlev = genlev
 		updateicon()
 	add_avail(lastgen)
 
 /obj/machinery/power/generator/attack_ai(mob/user)
-	if (stat & (BROKEN|NOPOWER)) return
+	if(stat & (BROKEN|NOPOWER)) return
 	interact(user)
 
 /obj/machinery/power/generator/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/weapon/wrench))
+	if(istype(W, /obj/item/weapon/wrench))
 		anchored = !anchored
 		user << "\blue You [anchored ? "secure" : "unsecure"] the bolts holding [src] to the floor."
 		use_power = anchored
@@ -123,12 +123,12 @@
 
 /obj/machinery/power/generator/attack_hand(mob/user)
 	add_fingerprint(user)
-	if (stat & (BROKEN|NOPOWER) || !anchored) return
+	if(stat & (BROKEN|NOPOWER) || !anchored) return
 	interact(user)
 
 
 /obj/machinery/power/generator/interact(mob/user)
-	if ( (get_dist(src, user) > 1 ) && (!istype(user, /mob/living/silicon/ai)))
+	if( (get_dist(src, user) > 1 ) && (!istype(user, /mob/living/silicon/ai)))
 		user.unset_machine()
 		user << browse(null, "window=teg")
 		return
@@ -137,7 +137,7 @@
 
 	var/t = "<PRE><B>Thermo-Electric Generator</B><HR>"
 
-	if (circ1 && circ2)
+	if(circ1 && circ2)
 		t += "Output : [round(lastgen)] W<BR><BR>"
 
 		t += "<B>Primary Circulator (top or right)</B><BR>"
@@ -167,7 +167,7 @@
 
 /obj/machinery/power/generator/Topic(href, href_list)
 	..()
-	if ( href_list["close"] )
+	if( href_list["close"] )
 		usr << browse(null, "window=teg")
 		usr.unset_machine()
 		return 0
@@ -186,7 +186,7 @@
 	set name = "Rotate Generator (Clockwise)"
 	set src in view(1)
 
-	if (usr.stat || usr.restrained()  || anchored)
+	if(usr.stat || usr.restrained()  || anchored)
 		return
 
 	src.dir = turn(src.dir, 90)
@@ -196,7 +196,7 @@
 	set name = "Rotate Generator (Counterclockwise)"
 	set src in view(1)
 
-	if (usr.stat || usr.restrained()  || anchored)
+	if(usr.stat || usr.restrained()  || anchored)
 		return
 
 	src.dir = turn(src.dir, -90)

@@ -21,36 +21,36 @@
 
 /obj/effect/decal/cleanable/blood/New()
 	..()
-	if (istype(src, /obj/effect/decal/cleanable/blood/gibs))
+	if(istype(src, /obj/effect/decal/cleanable/blood/gibs))
 		return
-	if (src.type == /obj/effect/decal/cleanable/blood)
-		if (src.loc && isturf(src.loc))
+	if(src.type == /obj/effect/decal/cleanable/blood)
+		if(src.loc && isturf(src.loc))
 			for(var/obj/effect/decal/cleanable/blood/B in src.loc)
-				if (B != src)
-					if (B.blood_DNA)
+				if(B != src)
+					if(B.blood_DNA)
 						blood_DNA |= B.blood_DNA.Copy()
 					del(B)
 	spawn(DRYING_TIME * (amount+1))
 		dry()
 
 /obj/effect/decal/cleanable/blood/HasEntered(mob/living/carbon/human/perp)
-	if (!istype(perp))
+	if(!istype(perp))
 		return
-	if (amount < 1)
+	if(amount < 1)
 		return
 
-	if (perp.shoes)
+	if(perp.shoes)
 		perp.shoes:track_blood = max(amount,perp.shoes:track_blood)		//Adding blood to shoes
-		if (!perp.shoes.blood_overlay)
+		if(!perp.shoes.blood_overlay)
 			perp.shoes.generate_blood_overlay()
-		if (!perp.shoes.blood_DNA)
+		if(!perp.shoes.blood_DNA)
 			perp.shoes.blood_DNA = list()
 			perp.shoes.overlays += perp.shoes.blood_overlay
 			perp.update_inv_shoes(1)
 		perp.shoes.blood_DNA |= blood_DNA.Copy()
 	else
 		perp.track_blood = max(amount,perp.track_blood)				//Or feet
-		if (!perp.feet_blood_DNA)
+		if(!perp.feet_blood_DNA)
 			perp.feet_blood_DNA = list()
 		perp.feet_blood_DNA |= blood_DNA.Copy()
 
@@ -123,14 +123,14 @@
 		var/direction = pick(directions)
 		for (var/i = 0, i < pick(1, 200; 2, 150; 3, 50; 4), i++)
 			sleep(3)
-			if (i > 0)
+			if(i > 0)
 				var/obj/effect/decal/cleanable/blood/b = new /obj/effect/decal/cleanable/blood/splatter(src.loc)
 				for(var/datum/disease/D in src.viruses)
 					var/datum/disease/ND = D.Copy(1)
 					b.viruses += ND
 					ND.holder = b
 
-			if (step_to(src, get_step(src, direction), 0))
+			if(step_to(src, get_step(src, direction), 0))
 				break
 
 

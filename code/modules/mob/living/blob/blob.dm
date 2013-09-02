@@ -32,7 +32,7 @@
 
 		clamp_values()
 		UpdateDamage()
-		if (health < 0)
+		if(health < 0)
 			src.dust()
 
 
@@ -41,7 +41,7 @@
 		AdjustParalysis(0)
 		AdjustWeakened(0)
 		sleeping = 0
-		if (stat)
+		if(stat)
 			stat = CONSCIOUS
 		return
 
@@ -52,12 +52,12 @@
 
 
 	death(gibbed)
-		if (key)
+		if(key)
 			var/mob/dead/observer/ghost = new(src)
 			ghost.name = ghost_name
 			ghost.real_name = ghost_name
 			ghost.key = key
-			if (ghost.client)
+			if(ghost.client)
 				ghost.client.eye = ghost
 			return ..(gibbed)
 
@@ -69,7 +69,7 @@
 
 
 	Process_Spacemove()
-		if (locate(/obj/effect/blob) in oview(1,src))
+		if(locate(/obj/effect/blob) in oview(1,src))
 			return 1
 		return (..())
 
@@ -78,18 +78,18 @@
 	set category = "Blob"
 	set name = "Create Node"
 	set desc = "Create a Node."
-	if (creating_blob)	return
+	if(creating_blob)	return
 	var/turf/T = get_turf(src)
 	creating_blob = 1
-	if (!T)
+	if(!T)
 		creating_blob = 0
 		return
 	var/obj/effect/blob/B = (locate(/obj/effect/blob) in T)
-	if (!B)//We are on a blob
+	if(!B)//We are on a blob
 		usr << "There is no blob here!"
 		creating_blob = 0
 		return
-	if (istype(B,/obj/effect/blob/node)||istype(B,/obj/effect/blob/core)||istype(B,/obj/effect/blob/factory))
+	if(istype(B,/obj/effect/blob/node)||istype(B,/obj/effect/blob/core)||istype(B,/obj/effect/blob/factory))
 		usr << "Unable to use this blob, find a normal one."
 		creating_blob = 0
 		return
@@ -109,31 +109,31 @@
 	set category = "Blob"
 	set name = "Create Defense"
 	set desc = "Create a Spore producing blob."
-	if (creating_blob)	return
+	if(creating_blob)	return
 	var/turf/T = get_turf(src)
 	creating_blob = 1
-	if (!T)
+	if(!T)
 		creating_blob = 0
 		return
 	var/obj/effect/blob/B = (locate(/obj/effect/blob) in T)
-	if (!B)
+	if(!B)
 		usr << "You must be on a blob!"
 		creating_blob = 0
 		return
-	if (istype(B,/obj/effect/blob/node)||istype(B,/obj/effect/blob/core)||istype(B,/obj/effect/blob/factory))
+	if(istype(B,/obj/effect/blob/node)||istype(B,/obj/effect/blob/core)||istype(B,/obj/effect/blob/factory))
 		usr << "Unable to use this blob, find a normal one."
 		creating_blob = 0
 		return
 	for(var/obj/effect/blob/blob in orange(2))//Not right next to nodes/cores
-		if (istype(B,/obj/effect/blob/node))
+		if(istype(B,/obj/effect/blob/node))
 			usr << "There is a node nearby, move away from it!"
 			creating_blob = 0
 			return
-		if (istype(B,/obj/effect/blob/core))
+		if(istype(B,/obj/effect/blob/core))
 			usr << "There is a core nearby, move away from it!"
 			creating_blob = 0
 			return
-		if (istype(B,/obj/effect/blob/factory))
+		if(istype(B,/obj/effect/blob/factory))
 			usr << "There is another porous blob nearby, move away from it!"
 			creating_blob = 0
 			return
@@ -146,18 +146,18 @@
 	set category = "Blob"
 	set name = "Purge Defense"
 	set desc = "Removes a porous blob."
-	if (creating_blob)	return
+	if(creating_blob)	return
 	var/turf/T = get_turf(src)
 	creating_blob = 1
-	if (!T)
+	if(!T)
 		creating_blob = 0
 		return
 	var/obj/effect/blob/B = (locate(/obj/effect/blob) in T)
-	if (!B)
+	if(!B)
 		usr << "You must be on a blob!"
 		creating_blob = 0
 		return
-	if (!istype(B,/obj/effect/blob/factory))
+	if(!istype(B,/obj/effect/blob/factory))
 		usr << "Unable to use this blob, find another one."
 		creating_blob = 0
 		return
@@ -170,14 +170,14 @@
 	set category = "Blob"
 	set name = "Create new blob"
 	set desc = "Attempts to create a new blob in this tile."
-	if (creating_blob)	return
+	if(creating_blob)	return
 	var/turf/T = get_turf(src)
 	creating_blob = 1
-	if (!T)
+	if(!T)
 		creating_blob = 0
 		return
 	var/obj/effect/blob/B = (locate(/obj/effect/blob) in T)
-	if (B)
+	if(B)
 		usr << "There is a blob here!"
 		creating_blob = 0
 		return
@@ -193,10 +193,10 @@
 	set desc = "blob report."
 	set hidden = 1
 
-	if (!holder)
+	if(!holder)
 		src << "Only administrators may use this command."
 		return
-	if (ticker && ticker.mode)
+	if(ticker && ticker.mode)
 		src << "blobs: [blobs.len]"
 		src << "cores: [blob_cores.len]"
 		src << "nodes: [blob_nodes.len]"
@@ -209,38 +209,38 @@
 	set desc = "Ghost into blobthing."
 	set hidden = 1
 
-	if (!holder)
+	if(!holder)
 		src << "Only administrators may use this command."
 		return
 	var/input = input(src, "Please specify which key will be turned into a bloby.", "Key", "")
 
 	var/mob/dead/observer/G_found
-	if (!input)
+	if(!input)
 		var/list/ghosts = list()
 		for(var/mob/dead/observer/G in player_list)
 			ghosts += G
-		if (ghosts.len)
+		if(ghosts.len)
 			G_found = pick(ghosts)
 
 	else
 		for(var/mob/dead/observer/G in player_list)
-			if (G.client&&ckey(G.key)==ckey(input))
+			if(G.client&&ckey(G.key)==ckey(input))
 				G_found = G
 				break
 
-	if (!G_found)//If a ghost was not found.
+	if(!G_found)//If a ghost was not found.
 		alert("There is no active key like that in the game or the person is not currently a ghost. Aborting command.")
 		return
 
-	if (G_found.client)
+	if(G_found.client)
 		G_found.client.screen.len = null
 	var/mob/living/blob/B = new/mob/living/blob(locate(0,0,1))//temp area also just in case should do this better but tired
-	if (blob_cores.len > 0)
+	if(blob_cores.len > 0)
 		var/obj/effect/blob/core/core = pick(blob_cores)
-		if (core)
+		if(core)
 			B.loc = core.loc
 	B.ghost_name = G_found.real_name
-	if (G_found.client)
+	if(G_found.client)
 		G_found.client.mob = B
 	B.verbs += /mob/living/blob/verb/create_node
 	B.verbs += /mob/living/blob/verb/create_factory

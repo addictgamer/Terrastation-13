@@ -12,17 +12,17 @@
 
 
 /obj/item/weapon/cureimplanter/attack(mob/target as mob, mob/user as mob)
-	if (ismob(target))
+	if(ismob(target))
 		for(var/mob/O in viewers(world.view, user))
-			if (target != user)
+			if(target != user)
 				O.show_message(text("\red <B>[] is trying to inject [] with [src.name]!</B>", user, target), 1)
 			else
 				O.show_message("\red <B>[user] is trying to inject themselves with [src.name]!</B>", 1)
-		if (!do_mob(user, target,60)) return
+		if(!do_mob(user, target,60)) return
 
 
 		for(var/mob/O in viewers(world.view, user))
-			if (target != user)
+			if(target != user)
 				O.show_message(text("\red [] injects [] with [src.name]!", user, target), 1)
 			else
 				O.show_message("\red [user] injects themself with [src.name]!", 1)
@@ -30,13 +30,13 @@
 
 		var/mob/living/carbon/M = target
 
-		if (works == 0 && prob(25))
+		if(works == 0 && prob(25))
 			M.resistances2 += resistance
-			if (M.virus2)
+			if(M.virus2)
 				M.virus2.cure_added(resistance)
-		else if (works == 1)
+		else if(works == 1)
 			M.adjustToxLoss(rand(20,50))
-		else if (works == 2)
+		else if(works == 2)
 			M.adjustToxLoss(rand(50,100))
-		else if (works == 3)
+		else if(works == 3)
 			infect_virus2(M,virus2,1)

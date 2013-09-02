@@ -25,7 +25,7 @@
 		return
 
 	attack_hand(var/mob/user as mob)
-		if (..(user))
+		if(..(user))
 			return
 		src.add_fingerprint(usr)
 		var/dat = {"
@@ -87,18 +87,18 @@
 		status = ""
 
 	Topic(href, href_list)
-		if (..())
+		if(..())
 			return
 		usr.set_machine(src)
 		src.add_fingerprint(usr)
 
 
-		if (href_list["scan"])
+		if(href_list["scan"])
 			scanscrubbers()
-		else if (href_list["toggle"])
+		else if(href_list["toggle"])
 			var/obj/machinery/portable_atmospherics/scrubber/huge/scrubber = locate(href_list["scrub"])
 
-			if (!validscrubber(scrubber))
+			if(!validscrubber(scrubber))
 				spawn(20)
 					status = "ERROR: Couldn't connect to scrubber! (timeout)"
 					connectedscrubbers -= scrubber
@@ -109,7 +109,7 @@
 			scrubber.update_icon()
 
 	proc/validscrubber( var/obj/machinery/portable_atmospherics/scrubber/huge/scrubber as obj )
-		if (!isobj(scrubber) || get_dist(scrubber.loc, src.loc) > src.range || scrubber.loc.z != src.loc.z)
+		if(!isobj(scrubber) || get_dist(scrubber.loc, src.loc) > src.range || scrubber.loc.z != src.loc.z)
 			return 0
 
 		return 1
@@ -119,11 +119,11 @@
 
 		var/found = 0
 		for(var/obj/machinery/portable_atmospherics/scrubber/huge/scrubber in range(range, src.loc))
-			if (istype(scrubber))
+			if(istype(scrubber))
 				found = 1
 				connectedscrubbers += scrubber
 
-		if (!found)
+		if(!found)
 			status = "ERROR: No scrubber found!"
 
 		src.updateUsrDialog()
@@ -133,25 +133,25 @@
 	zone = "This computer is working in a wired network limited to this area."
 
 	validscrubber( var/obj/machinery/portable_atmospherics/scrubber/huge/scrubber as obj )
-		if (!isobj(scrubber))
+		if(!isobj(scrubber))
 			return 0
 
 		/*
 		wow this is stupid, someone help me
 		*/
 		var/turf/T_src = get_turf(src)
-		if (!T_src.loc) return 0
+		if(!T_src.loc) return 0
 		var/area/A_src = T_src.loc
-		if (A_src.master)
+		if(A_src.master)
 			A_src = A_src.master
 
 		var/turf/T_scrub = get_turf(scrubber)
-		if (!T_scrub.loc) return 0
+		if(!T_scrub.loc) return 0
 		var/area/A_scrub = T_scrub.loc
-		if (A_scrub.master)
+		if(A_scrub.master)
 			A_scrub = A_scrub.master
 
-		if (A_scrub != A_src)
+		if(A_scrub != A_src)
 			return 0
 
 		return 1
@@ -162,20 +162,20 @@
 		var/found = 0
 
 		var/turf/T = get_turf(src)
-		if (!T.loc) return
+		if(!T.loc) return
 		var/area/A = T.loc
-		if (A.master)
+		if(A.master)
 			A = A.master
 		for(var/obj/machinery/portable_atmospherics/scrubber/huge/scrubber in world )
 			var/turf/T2 = get_turf(scrubber)
-			if (T2 && T2.loc)
+			if(T2 && T2.loc)
 				var/area/A2 = T2.loc
-				if (istype(A2) && A2.master && A2.master == A )
+				if(istype(A2) && A2.master && A2.master == A )
 					connectedscrubbers += scrubber
 					found = 1
 
 
-		if (!found)
+		if(!found)
 			status = "ERROR: No scrubber found!"
 
 		src.updateUsrDialog()

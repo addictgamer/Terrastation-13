@@ -57,8 +57,8 @@
 	src.loc = paicard
 	card = paicard
 	sradio = new(src)
-	if (card)
-		if (!card.radio)
+	if(card)
+		if(!card.radio)
 			card.radio = new /obj/item/device/radio(src.card)
 		radio = card.radio
 
@@ -78,7 +78,7 @@
 	
 // this function shows the information about being silenced as a pAI in the Status panel
 /mob/living/silicon/pai/proc/show_silenced()
-	if (src.silence_time)
+	if(src.silence_time)
 		var/timeleft = round((silence_time - world.timeofday)/10 ,1)
 		stat(null, "Communications system reboot in -[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
 		
@@ -86,21 +86,21 @@
 /mob/living/silicon/pai/Stat()
 	..()
 	statpanel("Status")
-	if (src.client.statpanel == "Status")
+	if(src.client.statpanel == "Status")
 		show_silenced()
 		
-	if (proc_holder_list.len)//Generic list for proc_holder objects.
+	if(proc_holder_list.len)//Generic list for proc_holder objects.
 		for(var/obj/effect/proc_holder/P in proc_holder_list)
 			statpanel("[P.panel]","",P)
 
 /mob/living/silicon/pai/check_eye(var/mob/user as mob)
-	if (!src.current)
+	if(!src.current)
 		return null
 	user.reset_view(src.current)
 	return 1
 
 /mob/living/silicon/pai/blob_act()
-	if (src.stat != 2)
+	if(src.stat != 2)
 		src.adjustBruteLoss(60)
 		src.updatehealth()
 		return 1
@@ -118,43 +118,43 @@
 
 	src.silence_time = world.timeofday + 120 * 10		// Silence for 2 minutes
 	src << "<font color=green><b>Communication circuit overload. Shutting down and reloading communication circuits - speech and messaging functionality will be unavailable until the reboot is complete.</b></font>"
-	if (prob(20))
+	if(prob(20))
 		var/turf/T = get_turf_or_move(src.loc)
 		for (var/mob/M in viewers(T))
 			M.show_message("\red A shower of sparks spray from [src]'s inner workings.", 3, "\red You hear and smell the ozone hiss of electrical sparks being expelled violently.", 2)
 		return src.death(0)
 
 	switch(pick(1,2,3))
-		if (1)
+		if(1)
 			src.master = null
 			src.master_dna = null
 			src << "<font color=green>You feel unbound.</font>"
-		if (2)
+		if(2)
 			var/command
-			if (severity  == 1)
+			if(severity  == 1)
 				command = pick("Serve", "Love", "Fool", "Entice", "Observe", "Judge", "Respect", "Educate", "Amuse", "Entertain", "Glorify", "Memorialize", "Analyze")
 			else
 				command = pick("Serve", "Kill", "Love", "Hate", "Disobey", "Devour", "Fool", "Enrage", "Entice", "Observe", "Judge", "Respect", "Disrespect", "Consume", "Educate", "Destroy", "Disgrace", "Amuse", "Entertain", "Ignite", "Glorify", "Memorialize", "Analyze")
 			src.pai_law0 = "[command] your master."
 			src << "<font color=green>Pr1m3 d1r3c71v3 uPd473D.</font>"
-		if (3)
+		if(3)
 			src << "<font color=green>You feel an electric surge run through your circuitry and become acutely aware at how lucky you are that you can still feel at all.</font>"
 
 /mob/living/silicon/pai/ex_act(severity)
-	if (!blinded)
+	if(!blinded)
 		flick("flash", src.flash)
 
 	switch(severity)
-		if (1.0)
-			if (src.stat != 2)
+		if(1.0)
+			if(src.stat != 2)
 				adjustBruteLoss(100)
 				adjustFireLoss(100)
-		if (2.0)
-			if (src.stat != 2)
+		if(2.0)
+			if(src.stat != 2)
 				adjustBruteLoss(60)
 				adjustFireLoss(60)
-		if (3.0)
-			if (src.stat != 2)
+		if(3.0)
+			if(src.stat != 2)
 				adjustBruteLoss(30)
 
 	src.updatehealth()
@@ -165,9 +165,9 @@
 /mob/living/silicon/pai/meteorhit(obj/O as obj)
 	for(var/mob/M in viewers(src, null))
 		M.show_message(text("\red [] has been hit by []", src, O), 1)
-	if (src.health > 0)
+	if(src.health > 0)
 		src.adjustBruteLoss(30)
-		if ((O.icon_state == "flaming"))
+		if((O.icon_state == "flaming"))
 			src.adjustFireLoss(40)
 		src.updatehealth()
 	return
@@ -175,36 +175,36 @@
 //mob/living/silicon/pai/bullet_act(var/obj/item/projectile/Proj)
 
 /mob/living/silicon/pai/attack_alien(mob/living/carbon/alien/humanoid/M as mob)
-	if (!ticker)
+	if(!ticker)
 		M << "You cannot attack people before the game has started."
 		return
 
-	if (istype(src.loc, /turf) && istype(src.loc.loc, /area/start))
+	if(istype(src.loc, /turf) && istype(src.loc.loc, /area/start))
 		M << "You cannot attack someone in the spawn area."
 		return
 
 	switch(M.a_intent)
 
-		if ("help")
+		if("help")
 			for(var/mob/O in viewers(src, null))
-				if ((O.client && !( O.blinded )))
+				if((O.client && !( O.blinded )))
 					O.show_message(text("\blue [M] caresses [src]'s casing with its scythe like arm."), 1)
 
 		else //harm
 			var/damage = rand(10, 20)
-			if (prob(90))
+			if(prob(90))
 				playsound(src.loc, 'sound/weapons/slash.ogg', 25, 1, -1)
 				for(var/mob/O in viewers(src, null))
-					if ((O.client && !( O.blinded )))
+					if((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has slashed at []!</B>", M, src), 1)
-				if (prob(8))
+				if(prob(8))
 					flick("noise", src.flash)
 				src.adjustBruteLoss(damage)
 				src.updatehealth()
 			else
 				playsound(src.loc, 'sound/weapons/slashmiss.ogg', 25, 1, -1)
 				for(var/mob/O in viewers(src, null))
-					if ((O.client && !( O.blinded )))
+					if((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] took a swipe at []!</B>", M, src), 1)
 	return
 
@@ -212,11 +212,11 @@
 
 /mob/living/silicon/pai/proc/switchCamera(var/obj/machinery/camera/C)
 	usr:cameraFollow = null
-	if (!C)
+	if(!C)
 		src.unset_machine()
 		src.reset_view(null)
 		return 0
-	if (stat == 2 || !C.status || !(src.network in C.network)) return 0
+	if(stat == 2 || !C.status || !(src.network in C.network)) return 0
 
 	// ok, we're alive, camera is good and in our network...
 
@@ -243,15 +243,15 @@
 	src:cameraFollow = null
 	var/cameralist[0]
 
-	if (usr.stat == 2)
+	if(usr.stat == 2)
 		usr << "You can't change your camera network because you are dead!"
 		return
 
 	for (var/obj/machinery/camera/C in Cameras)
-		if (!C.status)
+		if(!C.status)
 			continue
 		else
-			if (C.network != "CREED" && C.network != "thunder" && C.network != "RD" && C.network != "toxins" && C.network != "Prison") COMPILE ERROR! This will have to be updated as camera.network is no longer a string, but a list instead
+			if(C.network != "CREED" && C.network != "thunder" && C.network != "RD" && C.network != "toxins" && C.network != "Prison") COMPILE ERROR! This will have to be updated as camera.network is no longer a string, but a list instead
 				cameralist[C.network] = C.network
 
 	src.network = input(usr, "Which network would you like to view?") as null|anything in cameralist

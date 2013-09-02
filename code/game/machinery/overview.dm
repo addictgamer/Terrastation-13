@@ -5,7 +5,7 @@
 	set category = "Object"
 	set src in view(1)
 	usr.set_machine(src)
-	if (!mapping)	return
+	if(!mapping)	return
 
 	log_game("[usr]([usr.key]) used station map L[z] in [src.loc.loc]")
 
@@ -44,36 +44,36 @@
 
 
 
-			if (!T)
+			if(!T)
 				colour = rgb(0,0,0)
 
 			else
 				var/sense = 1
 				switch("[T.type]")
-					if ("/turf/space")
+					if("/turf/space")
 						colour = rgb(10,10,10)
 						sense = 0
 
-					if ("/turf/simulated/floor")
+					if("/turf/simulated/floor")
 						colour = rgb(150,150,150)
 						var/turf/simulated/floor/TF = T
-						if (TF.burnt == 1)
+						if(TF.burnt == 1)
 							sense = 0
 							colour = rgb(130,130,130)
 
-					if ("/turf/simulated/floor/engine")
+					if("/turf/simulated/floor/engine")
 						colour = rgb(128,128,128)
 
-					if ("/turf/simulated/wall")
+					if("/turf/simulated/wall")
 						colour = rgb(96,96,96)
 
-					if ("/turf/simulated/wall/r_wall")
+					if("/turf/simulated/wall/r_wall")
 						colour = rgb(128,96,96)
 
-					if ("/turf/unsimulated/floor")
+					if("/turf/unsimulated/floor")
 						colour  = rgb(240,240,240)
 
-					if ("/turf/unsimulated/wall", "/turf/unsimulated/wall/other")
+					if("/turf/unsimulated/wall", "/turf/unsimulated/wall/other")
 						colour  = rgb(140,140,140)
 
 					else
@@ -82,26 +82,26 @@
 
 
 
-				if (sense)
+				if(sense)
 
 					for(var/atom/AM in T.contents)
 
-						if (istype(AM, /obj/machinery/door) && !istype(AM, /obj/machinery/door/window))
-							if (AM.density)
+						if(istype(AM, /obj/machinery/door) && !istype(AM, /obj/machinery/door/window))
+							if(AM.density)
 								colour = rgb(96,96,192)
 								colour2 = colour
 							else
 								colour = rgb(128,192,128)
 
-						if (istype(AM, /obj/machinery/alarm))
+						if(istype(AM, /obj/machinery/alarm))
 							colour = rgb(0,255,0)
 							colour2 = colour
-							if (AM.icon_state=="alarm:1")
+							if(AM.icon_state=="alarm:1")
 								colour = rgb(255,255,0)
 								colour2 = rgb(255,128,0)
 
-						if (istype(AM, /mob))
-							if (AM:client)
+						if(istype(AM, /mob))
+							if(AM:client)
 								colour = rgb(255,0,0)
 							else
 								colour = rgb(255,128,128)
@@ -110,7 +110,7 @@
 
 				var/area/A = T.loc
 
-				if (A.fire)
+				if(A.fire)
 
 					var/red = getr(colour)
 					var/green = getg(colour)
@@ -122,7 +122,7 @@
 
 					colour = rgb(red, green, blue)
 
-			if (!colour2 && !T.density)
+			if(!colour2 && !T.density)
 				var/datum/gas_mixture/environment = T.return_air()
 				var/turf_total = environment.total_moles()
 				//var/turf_total = T.co2 + T.oxygen + T.poison + T.sl_gas + T.n2
@@ -131,13 +131,13 @@
 				var/t1 = turf_total / MOLES_CELLSTANDARD * 150
 
 
-				if (t1<=100)
+				if(t1<=100)
 					colour2 = rgb(t1*2.55,0,0)
 				else
 					t1 = min(100, t1-100)
 					colour2 = rgb(255, t1*2.55, t1*2.55)
 
-			if (!colour2)
+			if(!colour2)
 				colour2 = colour
 
 			var/ix = round((wx*2+xoff)/32)
@@ -198,71 +198,71 @@
 
 			var/colour
 
-			if (!T)
+			if(!T)
 				colour = rgb(0,0,0)
 
 			else
 				var/sense = 1
 				switch("[T.type]")
-					if ("/turf/space")
+					if("/turf/space")
 						colour = rgb(10,10,10)
 						sense = 0
 
-					if ("/turf/simulated/floor", "/turf/simulated/floor/engine")
+					if("/turf/simulated/floor", "/turf/simulated/floor/engine")
 						var/datum/gas_mixture/environment = T.return_air()
 						var/turf_total = environment.total_moles()
 						var/t1 = turf_total / MOLES_CELLSTANDARD * 175
 
-						if (t1<=100)
+						if(t1<=100)
 							colour = rgb(0,0,t1*2.55)
 						else
 							t1 = min(100, t1-100)
 							colour = rgb( t1*2.55, t1*2.55, 255)
 
-					if ("/turf/simulated/wall")
+					if("/turf/simulated/wall")
 						colour = rgb(96,96,96)
 
-					if ("/turf/simulated/wall/r_wall")
+					if("/turf/simulated/wall/r_wall")
 						colour = rgb(128,96,96)
 
-					if ("/turf/unsimulated/floor")
+					if("/turf/unsimulated/floor")
 						colour  = rgb(240,240,240)
 
-					if ("/turf/unsimulated/wall", "/turf/unsimulated/wall/other")
+					if("/turf/unsimulated/wall", "/turf/unsimulated/wall/other")
 						colour  = rgb(140,140,140)
 
 					else
 						colour = rgb(0,40,0)
 
 
-				if (sense)
+				if(sense)
 
 					for(var/atom/AM in T.contents)
 
-						if (istype(AM, /obj/machinery/door) && !istype(AM, /obj/machinery/door/window))
-							if (AM.density)
+						if(istype(AM, /obj/machinery/door) && !istype(AM, /obj/machinery/door/window))
+							if(AM.density)
 								colour = rgb(0,96,192)
 							else
 								colour = rgb(96,192,128)
 
-						if (istype(AM, /obj/machinery/alarm))
+						if(istype(AM, /obj/machinery/alarm))
 							colour = rgb(0,255,0)
 
-							if (AM.icon_state=="alarm:1")
+							if(AM.icon_state=="alarm:1")
 								colour = rgb(255,255,0)
 
-						if (istype(AM, /mob))
-							if (AM:client)
+						if(istype(AM, /mob))
+							if(AM:client)
 								colour = rgb(255,0,0)
 							else
 								colour = rgb(255,128,128)
 
-						//if (istype(AM, /obj/effect/blob))
+						//if(istype(AM, /obj/effect/blob))
 						//	colour = rgb(255,0,255)
 
 				var/area/A = T.loc
 
-				if (A.fire)
+				if(A.fire)
 
 					var/red = getr(colour)
 					var/green = getg(colour)
@@ -316,7 +316,7 @@
 
 	src.close(user)
 
-/*			if (seccomp == src)
+/*			if(seccomp == src)
 				drawmap(user)
 			else
 				user.clearmap()*/
@@ -327,12 +327,12 @@
 /obj/machinery/computer/security/proc/close(mob/user)
 	spawn(20)
 		var/using = null
-		if (user.mapobjs)
+		if(user.mapobjs)
 			for(var/obj/machinery/computer/security/seccomp in oview(1,user))
-				if (seccomp == src)
+				if(seccomp == src)
 					using = 1
 					break
-			if (using)
+			if(using)
 				close(user)
 			else
 				user.clearmap()

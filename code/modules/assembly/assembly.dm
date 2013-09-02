@@ -52,32 +52,32 @@
 
 	process_cooldown()
 		cooldown--
-		if (cooldown <= 0)	return 0
+		if(cooldown <= 0)	return 0
 		spawn(10)
 			process_cooldown()
 		return 1
 
 
 	pulsed(var/radio = 0)
-		if (holder && (wires & WIRE_RECEIVE))
+		if(holder && (wires & WIRE_RECEIVE))
 			activate()
-		if (radio && (wires & WIRE_RADIO_RECEIVE))
+		if(radio && (wires & WIRE_RADIO_RECEIVE))
 			activate()
 		return 1
 
 
 	pulse(var/radio = 0)
-		if (holder && (wires & WIRE_PULSE))
+		if(holder && (wires & WIRE_PULSE))
 			holder.process_activation(src, 1, 0)
-		if (holder && (wires & WIRE_PULSE_SPECIAL))
+		if(holder && (wires & WIRE_PULSE_SPECIAL))
 			holder.process_activation(src, 0, 1)
-//		if (radio && (wires & WIRE_RADIO_PULSE))
+//		if(radio && (wires & WIRE_RADIO_PULSE))
 			//Not sure what goes here quite yet send signal?
 		return 1
 
 
 	activate()
-		if (!secured || (cooldown > 0))	return 0
+		if(!secured || (cooldown > 0))	return 0
 		cooldown = 2
 		spawn(10)
 			process_cooldown()
@@ -92,20 +92,20 @@
 
 	attach_assembly(var/obj/item/device/assembly/A, var/mob/user)
 		holder = new/obj/item/device/assembly_holder(get_turf(src))
-		if (holder.attach(A,src,user))
+		if(holder.attach(A,src,user))
 			user << "\blue You attach \the [A] to \the [src]!"
 			return 1
 		return 0
 
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if (isassembly(W))
+		if(isassembly(W))
 			var/obj/item/device/assembly/A = W
-			if ((!A.secured) && (!secured))
+			if((!A.secured) && (!secured))
 				attach_assembly(A,user)
 				return
-		if (isscrewdriver(W))
-			if (toggle_secure())
+		if(isscrewdriver(W))
+			if(toggle_secure())
 				user << "\blue \The [src] is ready!"
 			else
 				user << "\blue \The [src] can now be attached!"
@@ -122,8 +122,8 @@
 	examine()
 		set src in view()
 		..()
-		if ((in_range(src, usr) || loc == usr))
-			if (secured)
+		if((in_range(src, usr) || loc == usr))
+			if(secured)
 				usr << "\The [src] is ready!"
 			else
 				usr << "\The [src] can be attached!"
@@ -131,7 +131,7 @@
 
 
 	attack_self(mob/user as mob)
-		if (!user)	return 0
+		if(!user)	return 0
 		user.set_machine(src)
 		interact(user)
 		return 1
@@ -153,7 +153,7 @@
 
 
 	Activate()
-		if (cooldown > 0)
+		if(cooldown > 0)
 			return 0
 		cooldown = 2
 		spawn(10)
@@ -164,15 +164,15 @@
 
 	Process_cooldown()
 		cooldown--
-		if (cooldown <= 0)	return 0
+		if(cooldown <= 0)	return 0
 		spawn(10)
 			Process_cooldown()
 		return 1
 
 
 	Attach_Holder(var/obj/H, var/mob/user)
-		if (!H)	return 0
-		if (!H.IsAssemblyHolder())	return 0
+		if(!H)	return 0
+		if(!H.IsAssemblyHolder())	return 0
 		//Remember to have it set its loc somewhere in here
 
 

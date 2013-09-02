@@ -81,7 +81,7 @@
 		icon_state = "broke"
 	else
 		if( powered() )
-			if (src.enabled)
+			if(src.enabled)
 				icon_state = "turret1"
 			else
 				icon_state = "turret0"
@@ -172,7 +172,7 @@
 /obj/machinery/meteor_battery/proc/shootAt(var/atom/movable/target)
 	var/turf/T = get_turf(src)
 	var/turf/U = get_turf(target)
-	if (!T || !U)
+	if(!T || !U)
 		return
 	use_power(500)
 	var/obj/item/projectile/missile/A = new(T)
@@ -187,23 +187,23 @@
 	return (invisibility!=0)
 
 /obj/machinery/meteor_battery/proc/popUp()
-	if ((!isPopping()) || src.popping==-1)
+	if((!isPopping()) || src.popping==-1)
 		invisibility = 0
 		popping = 1
-		if (src.cover!=null)
+		if(src.cover!=null)
 			flick("popup", src.cover)
 			src.cover.icon_state = "openTurretCover"
 		spawn(10)
-			if (popping==1) popping = 0
+			if(popping==1) popping = 0
 
 /obj/machinery/meteor_battery/proc/popDown()
-	if ((!isPopping()) || src.popping==1)
+	if((!isPopping()) || src.popping==1)
 		popping = -1
-		if (src.cover!=null)
+		if(src.cover!=null)
 			flick("popdown", src.cover)
 			src.cover.icon_state = "turretCover"
 		spawn(10)
-			if (popping==-1)
+			if(popping==-1)
 				invisibility = 2
 				popping = 0
 
@@ -211,7 +211,7 @@
 	src.health -= Proj.damage
 	..()
 	if(prob(45) && Proj.damage > 0) src.spark_system.start()
-	if (src.health <= 0)
+	if(src.health <= 0)
 		src.die()
 	return
 
@@ -220,7 +220,7 @@
 	playsound(src.loc, 'smash.ogg', 60, 1)
 	src.spark_system.start()
 	src.health -= W.force * 0.5
-	if (src.health <= 0)
+	if(src.health <= 0)
 		src.die()
 	return
 
@@ -240,7 +240,7 @@
 	src.density = 0
 	src.stat |= BROKEN
 	src.icon_state = "broke"
-	if (cover!=null)
+	if(cover!=null)
 		del(cover)
 	sleep(3)
 	flick("explosion", src)
@@ -251,10 +251,10 @@
 	if(!(stat & BROKEN))
 		playsound(src.loc, 'slash.ogg', 25, 1, -1)
 		for(var/mob/O in viewers(src, null))
-			if ((O.client && !( O.blinded )))
+			if((O.client && !( O.blinded )))
 				O.show_message(text("\red <B>[] has slashed at []!</B>", M, src), 1)
 		src.health -= 15
-		if (src.health <= 0)
+		if(src.health <= 0)
 			src.die()
 	else
 		M << "\green That object is useless to you."

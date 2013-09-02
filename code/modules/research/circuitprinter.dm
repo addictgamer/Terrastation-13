@@ -39,7 +39,7 @@ using metal and glass, it uses glass and reagents (usually sulfuric acis).
 
 
 	blob_act()
-		if (prob(50))
+		if(prob(50))
 			del(src)
 
 	meteorhit()
@@ -50,12 +50,12 @@ using metal and glass, it uses glass and reagents (usually sulfuric acis).
 		return g_amount + gold_amount + diamond_amount + uranium_amount
 
 	attackby(var/obj/item/O as obj, var/mob/user as mob)
-		if (shocked)
+		if(shocked)
 			shock(user,50)
-		if (istype(O, /obj/item/weapon/screwdriver))
-			if (!opened)
+		if(istype(O, /obj/item/weapon/screwdriver))
+			if(!opened)
 				opened = 1
-				if (linked_console)
+				if(linked_console)
 					linked_console.linked_imprinter = null
 					linked_console = null
 				icon_state = "circuit_imprinter_t"
@@ -65,28 +65,28 @@ using metal and glass, it uses glass and reagents (usually sulfuric acis).
 				icon_state = "circuit_imprinter"
 				user << "You close the maintenance hatch of [src]."
 			return
-		if (opened)
-			if (istype(O, /obj/item/weapon/crowbar))
+		if(opened)
+			if(istype(O, /obj/item/weapon/crowbar))
 				playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
 				var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(src.loc)
 				M.state = 2
 				M.icon_state = "box_1"
 				for(var/obj/I in component_parts)
-					if (istype(I, /obj/item/weapon/reagent_containers/glass/beaker))
+					if(istype(I, /obj/item/weapon/reagent_containers/glass/beaker))
 						reagents.trans_to(I, reagents.total_volume)
-					if (I.reliability != 100 && crit_fail)
+					if(I.reliability != 100 && crit_fail)
 						I.crit_fail = 1
 					I.loc = src.loc
-				if (g_amount >= 3750)
+				if(g_amount >= 3750)
 					var/obj/item/stack/sheet/glass/G = new /obj/item/stack/sheet/glass(src.loc)
 					G.amount = round(g_amount / 3750)
-				if (gold_amount >= 2000)
+				if(gold_amount >= 2000)
 					var/obj/item/stack/sheet/mineral/gold/G = new /obj/item/stack/sheet/mineral/gold(src.loc)
 					G.amount = round(gold_amount / 2000)
-				if (diamond_amount >= 2000)
+				if(diamond_amount >= 2000)
 					var/obj/item/stack/sheet/mineral/diamond/G = new /obj/item/stack/sheet/mineral/diamond(src.loc)
 					G.amount = round(diamond_amount / 2000)
-				if (uranium_amount >= 2000)
+				if(uranium_amount >= 2000)
 					var/obj/item/stack/sheet/mineral/uranium/G = new /obj/item/stack/sheet/mineral/uranium(src.loc)
 					G.amount = round(uranium_amount / 2000)
 				del(src)
@@ -94,49 +94,49 @@ using metal and glass, it uses glass and reagents (usually sulfuric acis).
 			else
 				user << "\red You can't load the [src.name] while it's opened."
 				return 1
-		if (disabled)
+		if(disabled)
 			user << "\The [name] appears to not be working!"
 			return
-		if (!linked_console)
+		if(!linked_console)
 			user << "\The [name] must be linked to an R&D console first!"
 			return 1
-		if (O.is_open_container())
+		if(O.is_open_container())
 			return 1
-		if (!istype(O, /obj/item/stack/sheet/glass) && !istype(O, /obj/item/stack/sheet/mineral/gold) && !istype(O, /obj/item/stack/sheet/mineral/diamond) && !istype(O, /obj/item/stack/sheet/mineral/uranium))
+		if(!istype(O, /obj/item/stack/sheet/glass) && !istype(O, /obj/item/stack/sheet/mineral/gold) && !istype(O, /obj/item/stack/sheet/mineral/diamond) && !istype(O, /obj/item/stack/sheet/mineral/uranium))
 			user << "\red You cannot insert this item into the [name]!"
 			return 1
-		if (stat)
+		if(stat)
 			return 1
-		if (busy)
+		if(busy)
 			user << "\red The [name] is busy. Please wait for completion of previous operation."
 			return 1
 		var/obj/item/stack/sheet/stack = O
-		if ((TotalMaterials() + stack.perunit) > max_material_amount)
+		if((TotalMaterials() + stack.perunit) > max_material_amount)
 			user << "\red The [name] is full. Please remove glass from the protolathe in order to insert more."
 			return 1
 
 		var/amount = round(input("How many sheets do you want to add?") as num)
-		if (amount < 0)
+		if(amount < 0)
 			amount = 0
-		if (amount == 0)
+		if(amount == 0)
 			return
-		if (amount > stack.amount)
+		if(amount > stack.amount)
 			amount = min(stack.amount, round((max_material_amount-TotalMaterials())/stack.perunit))
 
 		busy = 1
 		use_power(max(1000, (3750*amount/10)))
 		var/stacktype = stack.type
 		stack.use(amount)
-		if (do_after(usr,16))
+		if(do_after(usr,16))
 			user << "\blue You add [amount] sheets to the [src.name]."
 			switch(stacktype)
-				if (/obj/item/stack/sheet/glass)
+				if(/obj/item/stack/sheet/glass)
 					g_amount += amount * 3750
-				if (/obj/item/stack/sheet/mineral/gold)
+				if(/obj/item/stack/sheet/mineral/gold)
 					gold_amount += amount * 2000
-				if (/obj/item/stack/sheet/mineral/diamond)
+				if(/obj/item/stack/sheet/mineral/diamond)
 					diamond_amount += amount * 2000
-				if (/obj/item/stack/sheet/mineral/uranium)
+				if(/obj/item/stack/sheet/mineral/uranium)
 					uranium_amount += amount * 2000
 		else
 			new stacktype(src.loc, amount)

@@ -76,7 +76,7 @@
 		//Remove gas from surrounding area
 		var/datum/gas_mixture/removed = env.remove(gasefficency * env.total_moles)
 
-		if (!removed)
+		if(!removed)
 			return 1
 
 		if(damage > warning_point) // while the core is still damaged and it's still worth noting its status

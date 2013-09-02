@@ -1,16 +1,16 @@
 //Blocks an attempt to connect before even creating our client datum thing.
 world/IsBanned(key,address,computer_id)
-	if (ckey(key) in admin_datums)
+	if(ckey(key) in admin_datums)
 		return ..()
 
 	//Guest Checking
-	if (!guests_allowed && IsGuestKey(key))
+	if(!guests_allowed && IsGuestKey(key))
 		log_access("Failed Login: [key] - Guests not allowed")
 		message_admins("\blue Failed Login: [key] - Guests not allowed")
 		return list("reason"="guest", "desc"="\nReason: Guests not allowed. Please sign in with a byond account.")
 
 	//check if the IP address is a known TOR node
-	if (config && config.ToRban && ToRban_isbanned(address))
+	if(config && config.ToRban && ToRban_isbanned(address))
 		log_access("Failed Login: [src] - Banned: ToR")
 		message_admins("\blue Failed Login: [src] - Banned: ToR")
 		//ban their computer_id and ckey for posterity
@@ -18,11 +18,11 @@ world/IsBanned(key,address,computer_id)
 		return list("reason"="Using ToR", "desc"="\nReason: The network you are using to connect has been banned.\nIf you believe this is a mistake, please request help at [config.banappeals]")
 
 
-	if (config.ban_legacy_system)
+	if(config.ban_legacy_system)
 
 		//Ban Checking
 		. = CheckBan( ckey(key), computer_id, address )
-		if (.)
+		if(.)
 			log_access("Failed Login: [key] [computer_id] [address] - Banned [.["reason"]]")
 			message_admins("\blue Failed Login: [key] id:[computer_id] ip:[address] - Banned [.["reason"]]")
 			return .
@@ -33,7 +33,7 @@ world/IsBanned(key,address,computer_id)
 
 		var/ckeytext = ckey(key)
 
-		if (!establish_db_connection())
+		if(!establish_db_connection())
 			world.log << "Ban database connection failure. Key [ckeytext] not checked"
 			diary << "Ban database connection failure. Key [ckeytext] not checked"
 			return
@@ -43,11 +43,11 @@ world/IsBanned(key,address,computer_id)
 
 		var/ipquery = ""
 		var/cidquery = ""
-		if (address)
+		if(address)
 			failedip = 0
 			ipquery = " OR ip = '[address]' "
 
-		if (computer_id)
+		if(computer_id)
 			failedcid = 0
 			cidquery = " OR computerid = '[computer_id]' "
 
@@ -67,15 +67,15 @@ world/IsBanned(key,address,computer_id)
 			var/bantype = query.item[9]
 
 			var/expires = ""
-			if (text2num(duration) > 0)
+			if(text2num(duration) > 0)
 				expires = " The ban is for [duration] minutes and expires on [expiration] (server time)."
 
 			var/desc = "\nReason: You, or another user of this computer or connection ([pckey]) is banned from playing here. The ban reason is:\n[reason]\nThis ban was applied by [ackey] on [bantime], [expires]"
 
 			return list("reason"="[bantype]", "desc"="[desc]")
 
-		if (failedcid)
+		if(failedcid)
 			message_admins("[key] has logged in with a blank computer id in the ban check.")
-		if (failedip)
+		if(failedip)
 			message_admins("[key] has logged in with a blank ip in the ban check.")
 		return ..()	//default pager ban stuff

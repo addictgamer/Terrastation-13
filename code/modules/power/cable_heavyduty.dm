@@ -12,13 +12,13 @@
 /obj/structure/cable/heavyduty/attackby(obj/item/W, mob/user)
 
 	var/turf/T = src.loc
-	if (T.intact)
+	if(T.intact)
 		return
 
-	if (istype(W, /obj/item/weapon/wirecutters))
+	if(istype(W, /obj/item/weapon/wirecutters))
 		usr << "\blue These cables are too tough to be cut with those [W.name]."
 		return
-	else if (istype(W, /obj/item/weapon/cable_coil))
+	else if(istype(W, /obj/item/weapon/cable_coil))
 		usr << "\blue You will need heavier cables to connect to these."
 		return
 	else

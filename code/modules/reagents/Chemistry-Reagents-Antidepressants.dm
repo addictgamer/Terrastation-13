@@ -12,12 +12,12 @@ Methylphenidate
 	data = 0
 
 	on_mob_life(var/mob/living/M as mob)
-		if (!M) M = holder.my_atom
-		if (src.volume <= 0.1) if (data != -1)
+		if(!M) M = holder.my_atom
+		if(src.volume <= 0.1) if(data != -1)
 			data = -1
 			M << "\red You lose focus.."
 		else
-			if (world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY)
+			if(world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY)
 				data = world.time
 				M << "\blue Your mind feels focused and undivided."
 		..()
@@ -40,12 +40,12 @@ Methylphenidate
 	data = 0
 
 	on_mob_life(var/mob/living/M as mob)
-		if (!M) M = holder.my_atom
-		if (src.volume <= 0.1) if (data != -1)
+		if(!M) M = holder.my_atom
+		if(src.volume <= 0.1) if(data != -1)
 			data = -1
 			M << "\red Your mind feels a little less stable.."
 		else
-			if (world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY)
+			if(world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY)
 				data = world.time
 				M << "\blue Your mind feels stable.. a little stable."
 		..()
@@ -69,14 +69,14 @@ Methylphenidate
 	data = 0
 
 	on_mob_life(var/mob/living/M as mob)
-		if (!M) M = holder.my_atom
-		if (src.volume <= 0.1) if (data != -1)
+		if(!M) M = holder.my_atom
+		if(src.volume <= 0.1) if(data != -1)
 			data = -1
 			M << "\red Your mind feels much less stable.."
 		else
-			if (world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY)
+			if(world.time > data + ANTIDEPRESSANT_MESSAGE_DELAY)
 				data = world.time
-				if (prob(90))
+				if(prob(90))
 					M << "\blue Your mind feels much more stable."
 				else
 					M << "\red Your mind breaks apart.."

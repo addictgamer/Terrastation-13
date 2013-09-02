@@ -8,20 +8,20 @@
 //	heat_capacity = 700000 No.
 
 /turf/space/New()
-	if (!istype(src, /turf/space/transit))
+	if(!istype(src, /turf/space/transit))
 		icon_state = "[((x + y) ^ ~(x * y) + z) % 25]"
 
 /turf/space/attack_paw(mob/user as mob)
 	return src.attack_hand(user)
 
 /turf/space/attack_hand(mob/user as mob)
-	if ((user.restrained() || !( user.pulling )))
+	if((user.restrained() || !( user.pulling )))
 		return
-	if (user.pulling.anchored || !isturf(user.pulling.loc))
+	if(user.pulling.anchored || !isturf(user.pulling.loc))
 		return
-	if ((user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1))
+	if((user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1))
 		return
-	if (ismob(user.pulling))
+	if(ismob(user.pulling))
 		var/mob/M = user.pulling
 		var/atom/movable/t = M.pulling
 		M.stop_pulling()
@@ -33,9 +33,9 @@
 
 /turf/space/attackby(obj/item/C as obj, mob/user as mob)
 
-	if (istype(C, /obj/item/stack/rods))
+	if(istype(C, /obj/item/stack/rods))
 		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
-		if (L)
+		if(L)
 			return
 		var/obj/item/stack/rods/R = C
 		user << "\blue Constructing support lattice ..."
@@ -44,9 +44,9 @@
 		R.use(1)
 		return
 
-	if (istype(C, /obj/item/stack/tile/plasteel))
+	if(istype(C, /obj/item/stack/tile/plasteel))
 		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
-		if (L)
+		if(L)
 			var/obj/item/stack/tile/plasteel/S = C
 			del(L)
 			playsound(src.loc, 'sound/weapons/Genhit.ogg', 50, 1)
@@ -61,41 +61,41 @@
 // Ported from unstable r355
 
 /turf/space/Entered(atom/movable/A as mob|obj)
-	if (movement_disabled)
+	if(movement_disabled)
 		usr << "\red Movement is admin-disabled." //This is to identify lag problems
 		return
 	..()
-	if ((!(A) || src != A.loc))	return
+	if((!(A) || src != A.loc))	return
 
 	inertial_drift(A)
 
-	if (ticker && ticker.mode)
+	if(ticker && ticker.mode)
 
 		// Okay, so let's make it so that people can travel z levels but not nuke disks!
-		// if (ticker.mode.name == "nuclear emergency")	return
-		if (A.z > 6) return
-		if (A.x <= TRANSITIONEDGE || A.x >= (world.maxx - TRANSITIONEDGE - 1) || A.y <= TRANSITIONEDGE || A.y >= (world.maxy - TRANSITIONEDGE - 1))
-			if (istype(A, /obj/effect/meteor)||istype(A, /obj/effect/space_dust))
+		// if(ticker.mode.name == "nuclear emergency")	return
+		if(A.z > 6) return
+		if(A.x <= TRANSITIONEDGE || A.x >= (world.maxx - TRANSITIONEDGE - 1) || A.y <= TRANSITIONEDGE || A.y >= (world.maxy - TRANSITIONEDGE - 1))
+			if(istype(A, /obj/effect/meteor)||istype(A, /obj/effect/space_dust))
 				del(A)
 				return
 
-			if (istype(A, /obj/item/weapon/disk/nuclear)) // Don't let nuke disks travel Z levels  ... And moving this shit down here so it only fires when they're actually trying to change z-level.
+			if(istype(A, /obj/item/weapon/disk/nuclear)) // Don't let nuke disks travel Z levels  ... And moving this shit down here so it only fires when they're actually trying to change z-level.
 				del(A) //The disk's Del() proc ensures a new one is created
 				return
 
 			var/list/disk_search = A.search_contents_for(/obj/item/weapon/disk/nuclear)
-			if (!isemptylist(disk_search))
-				if (istype(A, /mob/living))
+			if(!isemptylist(disk_search))
+				if(istype(A, /mob/living))
 					var/mob/living/MM = A
-					if (MM.client && !MM.stat)
+					if(MM.client && !MM.stat)
 						MM << "\red Something you are carrying is preventing you from leaving. Don't play stupid; you know exactly what it is."
-						if (MM.x <= TRANSITIONEDGE)
+						if(MM.x <= TRANSITIONEDGE)
 							MM.inertia_dir = 4
-						else if (MM.x >= world.maxx -TRANSITIONEDGE)
+						else if(MM.x >= world.maxx -TRANSITIONEDGE)
 							MM.inertia_dir = 8
-						else if (MM.y <= TRANSITIONEDGE)
+						else if(MM.y <= TRANSITIONEDGE)
 							MM.inertia_dir = 1
-						else if (MM.y >= world.maxy -TRANSITIONEDGE)
+						else if(MM.y >= world.maxy -TRANSITIONEDGE)
 							MM.inertia_dir = 2
 					else
 						for(var/obj/item/weapon/disk/nuclear/N in disk_search)
@@ -112,27 +112,27 @@
 				var/move_to_z_str = pickweight(accessable_z_levels)
 				move_to_z = text2num(move_to_z_str)
 				safety++
-				if (safety > 10)
+				if(safety > 10)
 					break
 
-			if (!move_to_z)
+			if(!move_to_z)
 				return
 
 			A.z = move_to_z
 
-			if (src.x <= TRANSITIONEDGE)
+			if(src.x <= TRANSITIONEDGE)
 				A.x = world.maxx - TRANSITIONEDGE - 2
 				A.y = rand(TRANSITIONEDGE + 2, world.maxy - TRANSITIONEDGE - 2)
 
-			else if (A.x >= (world.maxx - TRANSITIONEDGE - 1))
+			else if(A.x >= (world.maxx - TRANSITIONEDGE - 1))
 				A.x = TRANSITIONEDGE + 1
 				A.y = rand(TRANSITIONEDGE + 2, world.maxy - TRANSITIONEDGE - 2)
 
-			else if (src.y <= TRANSITIONEDGE)
+			else if(src.y <= TRANSITIONEDGE)
 				A.y = world.maxy - TRANSITIONEDGE -2
 				A.x = rand(TRANSITIONEDGE + 2, world.maxx - TRANSITIONEDGE - 2)
 
-			else if (A.y >= (world.maxy - TRANSITIONEDGE - 1))
+			else if(A.y >= (world.maxy - TRANSITIONEDGE - 1))
 				A.y = TRANSITIONEDGE + 1
 				A.x = rand(TRANSITIONEDGE + 2, world.maxx - TRANSITIONEDGE - 2)
 
@@ -140,7 +140,7 @@
 
 
 			spawn (0)
-				if ((A && A.loc))
+				if((A && A.loc))
 					A.loc.Entered(A)
 
 /turf/space/proc/Sandbox_Spacemove(atom/movable/A as mob|obj)
@@ -151,13 +151,13 @@
 	var/target_z
 	var/list/y_arr
 
-	if (src.x <= 1)
-		if (istype(A, /obj/effect/meteor)||istype(A, /obj/effect/space_dust))
+	if(src.x <= 1)
+		if(istype(A, /obj/effect/meteor)||istype(A, /obj/effect/space_dust))
 			del(A)
 			return
 
 		var/list/cur_pos = src.get_global_map_pos()
-		if (!cur_pos) return
+		if(!cur_pos) return
 		cur_x = cur_pos["x"]
 		cur_y = cur_pos["y"]
 		next_x = (--cur_x||global_map.len)
@@ -170,19 +170,19 @@
 		world << "Next X = [next_x]"
 		//debug
 */
-		if (target_z)
+		if(target_z)
 			A.z = target_z
 			A.x = world.maxx - 2
 			spawn (0)
-				if ((A && A.loc))
+				if((A && A.loc))
 					A.loc.Entered(A)
-	else if (src.x >= world.maxx)
-		if (istype(A, /obj/effect/meteor))
+	else if(src.x >= world.maxx)
+		if(istype(A, /obj/effect/meteor))
 			del(A)
 			return
 
 		var/list/cur_pos = src.get_global_map_pos()
-		if (!cur_pos) return
+		if(!cur_pos) return
 		cur_x = cur_pos["x"]
 		cur_y = cur_pos["y"]
 		next_x = (++cur_x > global_map.len ? 1 : cur_x)
@@ -195,18 +195,18 @@
 		world << "Next X = [next_x]"
 		//debug
 */
-		if (target_z)
+		if(target_z)
 			A.z = target_z
 			A.x = 3
 			spawn (0)
-				if ((A && A.loc))
+				if((A && A.loc))
 					A.loc.Entered(A)
-	else if (src.y <= 1)
-		if (istype(A, /obj/effect/meteor))
+	else if(src.y <= 1)
+		if(istype(A, /obj/effect/meteor))
 			del(A)
 			return
 		var/list/cur_pos = src.get_global_map_pos()
-		if (!cur_pos) return
+		if(!cur_pos) return
 		cur_x = cur_pos["x"]
 		cur_y = cur_pos["y"]
 		y_arr = global_map[cur_x]
@@ -219,19 +219,19 @@
 		world << "Target Z = [target_z]"
 		//debug
 */
-		if (target_z)
+		if(target_z)
 			A.z = target_z
 			A.y = world.maxy - 2
 			spawn (0)
-				if ((A && A.loc))
+				if((A && A.loc))
 					A.loc.Entered(A)
 
-	else if (src.y >= world.maxy)
-		if (istype(A, /obj/effect/meteor)||istype(A, /obj/effect/space_dust))
+	else if(src.y >= world.maxy)
+		if(istype(A, /obj/effect/meteor)||istype(A, /obj/effect/space_dust))
 			del(A)
 			return
 		var/list/cur_pos = src.get_global_map_pos()
-		if (!cur_pos) return
+		if(!cur_pos) return
 		cur_x = cur_pos["x"]
 		cur_y = cur_pos["y"]
 		y_arr = global_map[cur_x]
@@ -244,10 +244,10 @@
 		world << "Target Z = [target_z]"
 		//debug
 */
-		if (target_z)
+		if(target_z)
 			A.z = target_z
 			A.y = 3
 			spawn (0)
-				if ((A && A.loc))
+				if((A && A.loc))
 					A.loc.Entered(A)
 	return

@@ -59,7 +59,7 @@
 	return src.attack_hand(user)
 
 /obj/machinery/computer/arcade/attack_hand(mob/user as mob)
-	if (..())
+	if(..())
 		return
 	user.set_machine(src)
 	var/dat = "<a href='byond://?src=\ref[src];close=1'>Close</a>"
@@ -68,7 +68,7 @@
 	dat += "<br><center><h3>[src.temp]</h3></center>"
 	dat += "<br><center>Health: [src.player_hp] | Magic: [src.player_mp] | Enemy Health: [src.enemy_hp]</center>"
 
-	if (src.gameover)
+	if(src.gameover)
 		dat += "<center><b><a href='byond://?src=\ref[src];newgame=1'>New Game</a>"
 	else
 		dat += "<center><b><a href='byond://?src=\ref[src];attack=1'>Attack</a> | "
@@ -82,23 +82,23 @@
 	return
 
 /obj/machinery/computer/arcade/Topic(href, href_list)
-	if (..())
+	if(..())
 		return
 
-	if (!src.blocked && !src.gameover)
-		if (href_list["attack"])
+	if(!src.blocked && !src.gameover)
+		if(href_list["attack"])
 			src.blocked = 1
 			var/attackamt = rand(2,6)
 			src.temp = "You attack for [attackamt] damage!"
 			src.updateUsrDialog()
-			if (turtle > 0)
+			if(turtle > 0)
 				turtle--
 
 			sleep(10)
 			src.enemy_hp -= attackamt
 			src.arcade_action()
 
-		else if (href_list["heal"])
+		else if(href_list["heal"])
 			src.blocked = 1
 			var/pointamt = rand(1,3)
 			var/healamt = rand(6,8)
@@ -113,23 +113,23 @@
 			src.updateUsrDialog()
 			src.arcade_action()
 
-		else if (href_list["charge"])
+		else if(href_list["charge"])
 			src.blocked = 1
 			var/chargeamt = rand(4,7)
 			src.temp = "You regain [chargeamt] points"
 			src.player_mp += chargeamt
-			if (turtle > 0)
+			if(turtle > 0)
 				turtle--
 
 			src.updateUsrDialog()
 			sleep(10)
 			src.arcade_action()
 
-	if (href_list["close"])
+	if(href_list["close"])
 		usr.unset_machine()
 		usr << browse(null, "window=arcade")
 
-	else if (href_list["newgame"]) //Reset everything
+	else if(href_list["newgame"]) //Reset everything
 		temp = "New Round"
 		player_hp = 30
 		player_mp = 10
@@ -138,7 +138,7 @@
 		gameover = 0
 		turtle = 0
 
-		if (emagged)
+		if(emagged)
 			src.New()
 			emagged = 0
 
@@ -147,12 +147,12 @@
 	return
 
 /obj/machinery/computer/arcade/proc/arcade_action()
-	if ((src.enemy_mp <= 0) || (src.enemy_hp <= 0))
-		if (!gameover)
+	if((src.enemy_mp <= 0) || (src.enemy_hp <= 0))
+		if(!gameover)
 			src.gameover = 1
 			src.temp = "[src.enemy_name] has fallen! Rejoice!"
 
-			if (emagged)
+			if(emagged)
 				feedback_inc("arcade_win_emagged")
 				new /obj/effect/spawner/newbomb/timer/syndicate(src.loc)
 				new /obj/item/clothing/head/collectable/petehat(src.loc)
@@ -160,15 +160,15 @@
 				log_game("[key_name_admin(usr)] has outbombed Cuban Pete and been awarded a bomb.")
 				src.New()
 				emagged = 0
-			else if (!contents.len)
+			else if(!contents.len)
 				feedback_inc("arcade_win_normal")
 				var/prizeselect = pickweight(prizes)
 				new prizeselect(src.loc)
 
-				if (istype(prizeselect, /obj/item/toy/gun)) //Ammo comes with the gun
+				if(istype(prizeselect, /obj/item/toy/gun)) //Ammo comes with the gun
 					new /obj/item/toy/ammo/gun(src.loc)
 
-				else if (istype(prizeselect, /obj/item/clothing/suit/syndicatefake)) //Helmet is part of the suit
+				else if(istype(prizeselect, /obj/item/clothing/suit/syndicatefake)) //Helmet is part of the suit
 					new	/obj/item/clothing/head/syndicatefake(src.loc)
 
 			else
@@ -176,28 +176,28 @@
 				var/atom/movable/prize = pick(contents)
 				prize.loc = src.loc
 
-	else if (emagged && (turtle >= 4))
+	else if(emagged && (turtle >= 4))
 		var/boomamt = rand(5,10)
 		src.temp = "[src.enemy_name] throws a bomb, exploding you for [boomamt] damage!"
 		src.player_hp -= boomamt
 
-	else if ((src.enemy_mp <= 5) && (prob(70)))
+	else if((src.enemy_mp <= 5) && (prob(70)))
 		var/stealamt = rand(2,3)
 		src.temp = "[src.enemy_name] steals [stealamt] of your power!"
 		src.player_mp -= stealamt
 		src.updateUsrDialog()
 
-		if (src.player_mp <= 0)
+		if(src.player_mp <= 0)
 			src.gameover = 1
 			sleep(10)
 			src.temp = "You have been drained! GAME OVER"
-			if (emagged)
+			if(emagged)
 				feedback_inc("arcade_loss_mana_emagged")
 				usr.gib()
 			else
 				feedback_inc("arcade_loss_mana_normal")
 
-	else if ((src.enemy_hp <= 10) && (src.enemy_mp > 4))
+	else if((src.enemy_hp <= 10) && (src.enemy_mp > 4))
 		src.temp = "[src.enemy_name] heals for 4 health!"
 		src.enemy_hp += 4
 		src.enemy_mp -= 4
@@ -207,10 +207,10 @@
 		src.temp = "[src.enemy_name] attacks for [attackamt] damage!"
 		src.player_hp -= attackamt
 
-	if ((src.player_mp <= 0) || (src.player_hp <= 0))
+	if((src.player_mp <= 0) || (src.player_hp <= 0))
 		src.gameover = 1
 		src.temp = "You have been crushed! GAME OVER"
-		if (emagged)
+		if(emagged)
 			feedback_inc("arcade_loss_hp_emagged")
 			usr.gib()
 		else
@@ -221,7 +221,7 @@
 
 
 /obj/machinery/computer/arcade/attackby(I as obj, user as mob)
-	if (istype(I, /obj/item/weapon/card/emag) && !emagged)
+	if(istype(I, /obj/item/weapon/card/emag) && !emagged)
 		temp = "If you die in the game, you die for real!"
 		player_hp = 30
 		player_mp = 10
@@ -237,9 +237,9 @@
 
 
 		src.updateUsrDialog()
-	else if (istype(I, /obj/item/weapon/screwdriver))
+	else if(istype(I, /obj/item/weapon/screwdriver))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
-		if (do_after(user, 20))
+		if(do_after(user, 20))
 			var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 			var/obj/item/weapon/circuitboard/arcade/M = new /obj/item/weapon/circuitboard/arcade( A )
 			for (var/obj/C in src)
@@ -247,7 +247,7 @@
 			A.circuit = M
 			A.anchored = 1
 
-			if (src.stat & BROKEN)
+			if(src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				new /obj/item/weapon/shard( src.loc )
 				A.state = 3
@@ -259,15 +259,15 @@
 
 			del(src)
 /obj/machinery/computer/arcade/emp_act(severity)
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		..(severity)
 		return
 	var/empprize = null
 	var/num_of_prizes = 0
 	switch(severity)
-		if (1)
+		if(1)
 			num_of_prizes = rand(1,4)
-		if (2)
+		if(2)
 			num_of_prizes = rand(0,2)
 	for(num_of_prizes; num_of_prizes > 0; num_of_prizes--)
 		empprize = pickweight(prizes)

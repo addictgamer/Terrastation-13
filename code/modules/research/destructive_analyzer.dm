@@ -41,12 +41,12 @@ Note: Must be placed within 3 tiles of the R&D Console
 
 
 /obj/machinery/r_n_d/destructive_analyzer/attackby(var/obj/O as obj, var/mob/user as mob)
-	if (shocked)
+	if(shocked)
 		shock(user,50)
-	if (istype(O, /obj/item/weapon/screwdriver))
-		if (!opened)
+	if(istype(O, /obj/item/weapon/screwdriver))
+		if(!opened)
 			opened = 1
-			if (linked_console)
+			if(linked_console)
 				linked_console.linked_destroy = null
 				linked_console = null
 			icon_state = "d_analyzer_t"
@@ -56,8 +56,8 @@ Note: Must be placed within 3 tiles of the R&D Console
 			icon_state = "d_analyzer"
 			user << "You close the maintenance hatch of [src]."
 		return
-	if (opened)
-		if (istype(O, /obj/item/weapon/crowbar))
+	if(opened)
+		if(istype(O, /obj/item/weapon/crowbar))
 			playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
 			var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(src.loc)
 			M.state = 2
@@ -69,25 +69,25 @@ Note: Must be placed within 3 tiles of the R&D Console
 		else
 			user << "\red You can't load the [src.name] while it's opened."
 			return 1
-	if (disabled)
+	if(disabled)
 		return
-	if (!linked_console)
+	if(!linked_console)
 		user << "\red The protolathe must be linked to an R&D console first!"
 		return
-	if (busy)
+	if(busy)
 		user << "\red The protolathe is busy right now."
 		return
-	if (istype(O, /obj/item) && !loaded_item)
-		if (isrobot(user)) //Don't put your module items in there!
+	if(istype(O, /obj/item) && !loaded_item)
+		if(isrobot(user)) //Don't put your module items in there!
 			return
-		if (!O.origin_tech)
+		if(!O.origin_tech)
 			user << "\red This doesn't seem to have a tech origin!"
 			return
 		var/list/temp_tech = ConvertReqString2List(O.origin_tech)
-		if (temp_tech.len == 0)
+		if(temp_tech.len == 0)
 			user << "\red You cannot deconstruct this item!"
 			return
-		if (O.reliability < 90 && O.crit_fail == 0)
+		if(O.reliability < 90 && O.crit_fail == 0)
 			usr << "\red Item is neither reliable enough or broken enough to learn from."
 			return
 		busy = 1

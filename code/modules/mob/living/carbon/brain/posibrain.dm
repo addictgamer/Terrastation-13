@@ -17,7 +17,7 @@
 
 
 	attack_self(mob/user as mob)
-		if (brainmob && !brainmob.key && searching == 0)
+		if(brainmob && !brainmob.key && searching == 0)
 			//Start the process of searching for a new user.
 			user << "\blue You carefully locate the manual activation switch and start the positronic brain's boot process."
 			icon_state = "posibrain-searching"
@@ -27,20 +27,20 @@
 
 	proc/request_player()
 		for(var/mob/dead/observer/O in player_list)
-			if (jobban_isbanned(O, "pAI"))
+			if(jobban_isbanned(O, "pAI"))
 				continue
-			if (O.client)
-				if (O.client.prefs.be_special & BE_PAI)
+			if(O.client)
+				if(O.client.prefs.be_special & BE_PAI)
 					question(O.client)
 
 	proc/question(var/client/C)
 		spawn(0)
-			if (!C)	return
+			if(!C)	return
 			var/response = alert(C, "Someone is requesting a personality for a positronic brain. Would you like to play as one?", "Positronic brain request", "Yes", "No", "Never for this round")
-			if (!C || brainmob.key || 0 == searching)	return		//handle logouts that happen whilst the alert is waiting for a response, and responses issued after a brain has been located.
-			if (response == "Yes")
+			if(!C || brainmob.key || 0 == searching)	return		//handle logouts that happen whilst the alert is waiting for a response, and responses issued after a brain has been located.
+			if(response == "Yes")
 				transfer_personality(C.mob)
-			else if (response == "Never for this round")
+			else if(response == "Never for this round")
 				C.prefs.be_special ^= BE_PAI
 
 
@@ -66,7 +66,7 @@
 
 	proc/reset_search() //We give the players sixty seconds to decide, then reset the timer.
 
-		if (src.brainmob && src.brainmob.key) return
+		if(src.brainmob && src.brainmob.key) return
 
 		src.searching = 0
 		icon_state = "posibrain"
@@ -79,20 +79,20 @@
 
 	set src in oview()
 
-	if (!usr || !src)	return
-	if ( (usr.sdisabilities & BLIND || usr.blinded || usr.stat) && !istype(usr,/mob/dead/observer) )
+	if(!usr || !src)	return
+	if( (usr.sdisabilities & BLIND || usr.blinded || usr.stat) && !istype(usr,/mob/dead/observer) )
 		usr << "<span class='notice'>Something is there but you can't see it.</span>"
 		return
 
 	var/msg = "<span class='info'>*---------*\nThis is \icon[src] \a <EM>[src]</EM>!\n[desc]\n"
 	msg += "<span class='warning'>"
 
-	if (src.brainmob && src.brainmob.key)
+	if(src.brainmob && src.brainmob.key)
 		switch(src.brainmob.stat)
-			if (CONSCIOUS)
-				if (!src.brainmob.client)	msg += "It appears to be in stand-by mode.\n" //afk
-			if (UNCONSCIOUS)		msg += "<span class='warning'>It doesn't seem to be responsive.</span>\n"
-			if (DEAD)			msg += "<span class='deadsay'>It appears to be completely inactive.</span>\n"
+			if(CONSCIOUS)
+				if(!src.brainmob.client)	msg += "It appears to be in stand-by mode.\n" //afk
+			if(UNCONSCIOUS)		msg += "<span class='warning'>It doesn't seem to be responsive.</span>\n"
+			if(DEAD)			msg += "<span class='deadsay'>It appears to be completely inactive.</span>\n"
 	else
 		msg += "<span class='deadsay'>It appears to be completely inactive.</span>\n"
 	msg += "<span class='info'>*---------*</span>"
@@ -100,15 +100,15 @@
 	return
 
 /obj/item/device/mmi/posibrain/emp_act(severity)
-	if (!src.brainmob)
+	if(!src.brainmob)
 		return
 	else
 		switch(severity)
-			if (1)
+			if(1)
 				src.brainmob.emp_damage += rand(20,30)
-			if (2)
+			if(2)
 				src.brainmob.emp_damage += rand(10,20)
-			if (3)
+			if(3)
 				src.brainmob.emp_damage += rand(0,10)
 	..()
 

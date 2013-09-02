@@ -14,19 +14,19 @@
 
 
 /obj/machinery/computer/card/attackby(O as obj, user as mob)//TODO:SANITY
-	if (istype(O, /obj/item/weapon/card/id))
+	if(istype(O, /obj/item/weapon/card/id))
 		var/obj/item/weapon/card/id/idcard = O
-		if (access_change_ids in idcard.access)
-			if (!scan)
+		if(access_change_ids in idcard.access)
+			if(!scan)
 				usr.drop_item()
 				idcard.loc = src
 				scan = idcard
-			else if (!modify)
+			else if(!modify)
 				usr.drop_item()
 				idcard.loc = src
 				modify = idcard
 		else
-			if (!modify)
+			if(!modify)
 				usr.drop_item()
 				idcard.loc = src
 				modify = idcard
@@ -43,18 +43,18 @@
 
 
 /obj/machinery/computer/card/attack_hand(var/mob/user as mob)
-	if (..())
+	if(..())
 		return
 
 	user.set_machine(src)
 	var/dat
-	if (!( ticker ))
+	if(!( ticker ))
 		return
-	if (mode) // accessing crew manifest
+	if(mode) // accessing crew manifest
 
 		dat += "<h4>Crew Manifest</h4>"
 		dat += "Entries cannot be modified from this terminal.<br><br>"
-		if (data_core)
+		if(data_core)
 			dat += data_core.get_manifest(0) // make it monochrome
 		dat += "<br>"
 		dat += "<a href='?src=\ref[src];choice=print'>Print</a><br>"
@@ -75,26 +75,26 @@
 		var/target_name
 		var/target_owner
 		var/target_rank
-		if (modify)
+		if(modify)
 			target_name = modify.name
 		else
 			target_name = "--------"
-		if (modify && modify.registered_name)
+		if(modify && modify.registered_name)
 			target_owner = modify.registered_name
 		else
 			target_owner = "--------"
-		if (modify && modify.assignment)
+		if(modify && modify.assignment)
 			target_rank = modify.assignment
 		else
 			target_rank = "Unassigned"
 
 		var/scan_name
-		if (scan)
+		if(scan)
 			scan_name = scan.name
 		else
 			scan_name = "--------"
 
-		if (!authenticated)
+		if(!authenticated)
 			header += "<br><i>Please insert the cards into the slots</i><br>"
 			header += "Target: <a href='?src=\ref[src];choice=modify'>[target_name]</a><br>"
 			header += "Confirm Identity: <a href='?src=\ref[src];choice=scan'>[scan_name]</a><br>"
@@ -114,7 +114,7 @@
 
 
 		var/body
-		if (authenticated && modify)
+		if(authenticated && modify)
 			var/carddesc = {"<script type="text/javascript">
 								function markRed(){
 									var nameField = document.getElementById('namefield');
@@ -158,10 +158,10 @@
 			carddesc += "<b>Assignment:</b> "
 			var/jobs = "<span id='alljobsslot'><a href='#' onclick='showAll()'>[target_rank]</a></span>" //CHECK THIS
 			var/accesses = ""
-			if (istype(src,/obj/machinery/computer/card/centcom))
+			if(istype(src,/obj/machinery/computer/card/centcom))
 				accesses += "<h5>Central Command:</h5>"
 				for(var/A in get_all_centcom_access())
-					if (A in modify.access)
+					if(A in modify.access)
 						accesses += "<a href='?src=\ref[src];choice=access;access_target=[A];allowed=0'><font color=\"red\">[replacetext(get_centcom_access_desc(A), " ", "&nbsp")]</font></a> "
 					else
 						accesses += "<a href='?src=\ref[src];choice=access;access_target=[A];allowed=1'>[replacetext(get_centcom_access_desc(A), " ", "&nbsp")]</a> "
@@ -175,7 +175,7 @@
 				for(var/i = 1; i <= 7; i++)
 					accesses += "<td style='width:14%' valign='top'>"
 					for(var/A in get_region_accesses(i))
-						if (A in modify.access)
+						if(A in modify.access)
 							accesses += "<a href='?src=\ref[src];choice=access;access_target=[A];allowed=0'><font color=\"red\">[replacetext(get_access_desc(A), " ", "&nbsp")]</font></a> "
 						else
 							accesses += "<a href='?src=\ref[src];choice=access;access_target=[A];allowed=1'>[replacetext(get_access_desc(A), " ", "&nbsp")]</a> "
@@ -193,17 +193,17 @@
 
 
 /obj/machinery/computer/card/Topic(href, href_list)
-	if (..())
+	if(..())
 		return
 	usr.set_machine(src)
 	switch(href_list["choice"])
-		if ("modify")
-			if (modify)
+		if("modify")
+			if(modify)
 				data_core.manifest_modify(modify.registered_name, modify.assignment)
 				modify.name = text("[modify.registered_name]'s ID Card ([modify.assignment])")
-				if (ishuman(usr))
+				if(ishuman(usr))
 					modify.loc = usr.loc
-					if (!usr.get_active_hand())
+					if(!usr.get_active_hand())
 						usr.put_in_hands(modify)
 					modify = null
 				else
@@ -211,17 +211,17 @@
 					modify = null
 			else
 				var/obj/item/I = usr.get_active_hand()
-				if (istype(I, /obj/item/weapon/card/id))
+				if(istype(I, /obj/item/weapon/card/id))
 					usr.drop_item()
 					I.loc = src
 					modify = I
 			authenticated = 0
 
-		if ("scan")
-			if (scan)
-				if (ishuman(usr))
+		if("scan")
+			if(scan)
+				if(ishuman(usr))
 					scan.loc = usr.loc
-					if (!usr.get_active_hand())
+					if(!usr.get_active_hand())
 						usr.put_in_hands(scan)
 					scan = null
 				else
@@ -229,72 +229,72 @@
 					scan = null
 			else
 				var/obj/item/I = usr.get_active_hand()
-				if (istype(I, /obj/item/weapon/card/id))
+				if(istype(I, /obj/item/weapon/card/id))
 					usr.drop_item()
 					I.loc = src
 					scan = I
 			authenticated = 0
-		if ("auth")
-			if ((!( authenticated ) && (scan || (istype(usr, /mob/living/silicon))) && (modify || mode)))
-				if (check_access(scan))
+		if("auth")
+			if((!( authenticated ) && (scan || (istype(usr, /mob/living/silicon))) && (modify || mode)))
+				if(check_access(scan))
 					authenticated = 1
-			else if ((!( authenticated ) && (istype(usr, /mob/living/silicon))) && (!modify))
+			else if((!( authenticated ) && (istype(usr, /mob/living/silicon))) && (!modify))
 				usr << "You can't modify an ID without an ID inserted to modify. Once one is in the modify slot on the computer, you can log in."
-		if ("logout")
+		if("logout")
 			authenticated = 0
-		if ("access")
-			if (href_list["allowed"])
-				if (authenticated)
+		if("access")
+			if(href_list["allowed"])
+				if(authenticated)
 					var/access_type = text2num(href_list["access_target"])
 					var/access_allowed = text2num(href_list["allowed"])
-					if (access_type in (istype(src,/obj/machinery/computer/card/centcom)?get_all_centcom_access() : get_all_accesses()))
+					if(access_type in (istype(src,/obj/machinery/computer/card/centcom)?get_all_centcom_access() : get_all_accesses()))
 						modify.access -= access_type
-						if (access_allowed == 1)
+						if(access_allowed == 1)
 							modify.access += access_type
-		if ("assign")
-			if (authenticated)
+		if("assign")
+			if(authenticated)
 				var/t1 = href_list["assign_target"]
-				if (t1 == "Custom")
+				if(t1 == "Custom")
 					var/temp_t = copytext(sanitize(input("Enter a custom job assignment.","Assignment")),1,MAX_MESSAGE_LEN)
 					//let custom jobs function as an impromptu alt title, mainly for sechuds
-					if (temp_t && modify)
+					if(temp_t && modify)
 						modify.assignment = temp_t
 				else
 					var/datum/job/jobdatum
 					for(var/jobtype in typesof(/datum/job))
 						var/datum/job/J = new jobtype
-						if (ckey(J.title) == ckey(t1))
+						if(ckey(J.title) == ckey(t1))
 							jobdatum = J
 							break
-					if (!jobdatum)
+					if(!jobdatum)
 						usr << "\red No log exists for this job."
 						return
 
 					modify.access = ( istype(src,/obj/machinery/computer/card/centcom) ? get_centcom_access(t1) : jobdatum.get_access() )
-					if (modify)
+					if(modify)
 						modify.assignment = t1
 						modify.rank = t1
-		if ("reg")
-			if (authenticated)
+		if("reg")
+			if(authenticated)
 				var/t2 = modify
 				//var/t1 = input(usr, "What name?", "ID computer", null)  as text
-				if ((authenticated && modify == t2 && (in_range(src, usr) || (istype(usr, /mob/living/silicon))) && istype(loc, /turf)))
+				if((authenticated && modify == t2 && (in_range(src, usr) || (istype(usr, /mob/living/silicon))) && istype(loc, /turf)))
 					var/temp_name = reject_bad_name(href_list["reg"])
-					if (temp_name)
+					if(temp_name)
 						modify.registered_name = temp_name
 					else
 						src.visible_message("<span class='notice'>[src] buzzes rudely.</span>")
-		if ("account")
-			if (authenticated)
+		if("account")
+			if(authenticated)
 				var/t2 = modify
 				//var/t1 = input(usr, "What name?", "ID computer", null)  as text
-				if ((authenticated && modify == t2 && (in_range(src, usr) || (istype(usr, /mob/living/silicon))) && istype(loc, /turf)))
+				if((authenticated && modify == t2 && (in_range(src, usr) || (istype(usr, /mob/living/silicon))) && istype(loc, /turf)))
 					var/account_num = text2num(href_list["account"])
 					modify.associated_account_number = account_num
-		if ("mode")
+		if("mode")
 			mode = text2num(href_list["mode_target"])
-		if ("print")
-			if (!( printing ))
+		if("print")
+			if(!( printing ))
 				printing = 1
 				sleep(50)
 				var/obj/item/weapon/paper/P = new /obj/item/weapon/paper( loc )
@@ -308,13 +308,13 @@
 
 				var/t1 = "<h4>Crew Manifest</h4>"
 				t1 += "<br>"
-				if (data_core)
+				if(data_core)
 					t1 += data_core.get_manifest(0) // make it monochrome
 
 				P.info = t1
 				P.name = "paper- 'Crew Manifest'"
 				printing = null
-	if (modify)
+	if(modify)
 		modify.name = text("[modify.registered_name]'s ID Card ([modify.assignment])")
 	updateUsrDialog()
 	return

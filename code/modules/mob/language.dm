@@ -68,12 +68,12 @@
 /mob/proc/add_language(var/language)
 
 	for(var/datum/language/L in languages)
-		if (L && L.name == language)
+		if(L && L.name == language)
 			return 0
 
 	var/datum/language/new_language = all_languages[language]
 
-	if (!istype(new_language,/datum/language))
+	if(!istype(new_language,/datum/language))
 		return 0
 
 	languages += new_language
@@ -82,7 +82,7 @@
 /mob/proc/remove_language(var/rem_language)
 
 	for(var/datum/language/L in languages)
-		if (L && L.name == rem_language)
+		if(L && L.name == rem_language)
 			languages -= L
 			return 1
 

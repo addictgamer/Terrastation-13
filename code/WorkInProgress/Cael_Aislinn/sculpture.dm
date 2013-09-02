@@ -122,7 +122,7 @@
 				//mob is to the right of src and looking left
 				observed = 1
 				break
-		else if (xdif == 0 && ydif == 0)
+		else if(xdif == 0 && ydif == 0)
 			//mob is on the same tile as src
 			observed = 1
 			break

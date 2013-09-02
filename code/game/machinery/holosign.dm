@@ -10,19 +10,19 @@
 	var/on_icon = "sign_on"
 
 	proc/toggle()
-		if (stat & (BROKEN|NOPOWER))
+		if(stat & (BROKEN|NOPOWER))
 			return
 		lit = !lit
 		update_icon()
 
 	update_icon()
-		if (!lit)
+		if(!lit)
 			icon_state = "sign_off"
 		else
 			icon_state = on_icon
 
 	power_change()
-		if (stat & NOPOWER)
+		if(stat & NOPOWER)
 			lit = 0
 		update_icon()
 
@@ -51,26 +51,26 @@ obj/machinery/holosign_switch/attack_paw(mob/user as mob)
 	return src.attack_hand(user)
 
 /obj/machinery/holosign_switch/attackby(obj/item/weapon/W, mob/user as mob)
-	if (istype(W, /obj/item/device/detective_scanner))
+	if(istype(W, /obj/item/device/detective_scanner))
 		return
 	return src.attack_hand(user)
 
 /obj/machinery/holosign_switch/attack_hand(mob/user as mob)
 	src.add_fingerprint(usr)
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		return
 	add_fingerprint(user)
 
 	use_power(5)
 
 	active = !active
-	if (active)
+	if(active)
 		icon_state = "light1"
 	else
 		icon_state = "light0"
 
 	for(var/obj/machinery/holosign/M in world)
-		if (M.id == src.id)
+		if(M.id == src.id)
 			spawn( 0 )
 				M.toggle()
 				return

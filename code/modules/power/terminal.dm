@@ -18,12 +18,12 @@
 /obj/machinery/power/terminal/New()
 	..()
 	var/turf/T = src.loc
-	if (level==1) hide(T.intact)
+	if(level==1) hide(T.intact)
 	return
 
 
 /obj/machinery/power/terminal/hide(var/i)
-	if (i)
+	if(i)
 		invisibility = 101
 		icon_state = "term-f"
 	else

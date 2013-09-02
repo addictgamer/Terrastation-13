@@ -42,7 +42,7 @@
 	// Only do anything if the effect is currently strong enough
 	if(strength_percent >= 0.4)
 		for (var/datum/medical_effect/M in side_effects)
-			if (M.cure(src) || M.strength > 60)
+			if(M.cure(src) || M.strength > 60)
 				side_effects -= M
 				del(M)
 			else

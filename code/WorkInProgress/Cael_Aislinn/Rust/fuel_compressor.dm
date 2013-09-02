@@ -23,15 +23,15 @@ var/const/max_assembly_amount = 300
 	interact(user)
 
 /obj/machinery/rust_fuel_compressor/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/weapon/rcd_ammo))
+	if(istype(W, /obj/item/weapon/rcd_ammo))
 		compressed_matter += 10
 		del(W)
 		return
 	..()
 
 /obj/machinery/rust_fuel_compressor/interact(mob/user)
-	if ( (get_dist(src, user) > 1 ) || (stat & (BROKEN|NOPOWER)) )
-		if (!istype(user, /mob/living/silicon))
+	if( (get_dist(src, user) > 1 ) || (stat & (BROKEN|NOPOWER)) )
+		if(!istype(user, /mob/living/silicon))
 			user.unset_machine()
 			user << browse(null, "window=fuelcomp")
 			return

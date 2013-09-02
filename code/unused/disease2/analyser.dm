@@ -11,15 +11,15 @@
 	var/obj/item/weapon/virusdish/dish = null
 
 /obj/machinery/disease2/diseaseanalyser/attackby(var/obj/I as obj, var/mob/user as mob)
-	if (istype(I,/obj/item/weapon/virusdish))
+	if(istype(I,/obj/item/weapon/virusdish))
 		var/mob/living/carbon/c = user
-		if (!dish)
+		if(!dish)
 
 			dish = I
 			c.drop_item()
 			I.loc = src
 			for(var/mob/M in viewers(src))
-				if (M == user)	continue
+				if(M == user)	continue
 				M.show_message("\blue [user.name] inserts the [dish.name] in the [src.name]", 3)
 
 
@@ -31,15 +31,15 @@
 
 
 /obj/machinery/disease2/diseaseanalyser/process()
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		return
 	use_power(500)
 	src.updateDialog()
 
 
-	if (scanning)
+	if(scanning)
 		scanning -= 1
-		if (scanning == 0)
+		if(scanning == 0)
 			var/r = "GNAv2 based virus lifeform"
 			r += "<BR>Infection rate : [dish.virus2.infectionchance * 10]"
 			r += "<BR>Spread form : [dish.virus2.spreadtype]"
@@ -56,8 +56,8 @@
 
 			for(var/mob/O in hearers(src, null))
 				O.show_message("\icon[src] \blue The [src.name] prints a sheet of paper", 3)
-	else if (dish && !scanning && !pause)
-		if (dish.virus2 && dish.growth > 50)
+	else if(dish && !scanning && !pause)
+		if(dish.virus2 && dish.growth > 50)
 			dish.growth -= 10
 			scanning = 25
 			icon_state = "analyser_processing"

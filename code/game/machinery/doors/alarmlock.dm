@@ -22,21 +22,21 @@
 
 /obj/machinery/door/airlock/alarmlock/receive_signal(datum/signal/signal)
 	..()
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		return
 
 	var/alarm_area = signal.data["zone"]
 	var/alert = signal.data["alert"]
 
 	var/area/our_area = get_area(src)
-	if (our_area.master)
+	if(our_area.master)
 		our_area = our_area.master
 
-	if (alarm_area == our_area.name)
+	if(alarm_area == our_area.name)
 		switch(alert)
-			if ("severe")
+			if("severe")
 				autoclose = 1
 				close()
-			if ("minor", "clear")
+			if("minor", "clear")
 				autoclose = 0
 				open()

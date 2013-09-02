@@ -8,12 +8,12 @@
 	can_infect = 1
 	blood_level = 1
 	can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-		if (target_zone != "groin")
+		if(target_zone != "groin")
 			return 0
 		var/datum/organ/external/groin = target.get_organ("groin")
-		if (!groin)
+		if(!groin)
 			return 0
-		if (groin.open < 2)
+		if(groin.open < 2)
 			return 0
 		return 1
 
@@ -74,7 +74,7 @@
 			app = 1
 			appendicitis.cure()
 			target.resistances += appendicitis
-		if (app)
+		if(app)
 			new /obj/item/weapon/reagent_containers/food/snacks/appendix/inflamed(get_turf(target))
 		else
 			new /obj/item/weapon/reagent_containers/food/snacks/appendix(get_turf(target))

@@ -12,16 +12,16 @@
 
 	New()
 		..()
-		if (!icon_state)
+		if(!icon_state)
 			icon_state = "pill[rand(1,20)]"
 
 	attack_self(mob/user as mob)
 		return
 	attack(mob/M as mob, mob/user as mob, def_zone)
-		if (M == user)
+		if(M == user)
 			M << "\blue You swallow [src]."
 			M.drop_from_inventory(src) //icon update
-			if (reagents.total_volume)
+			if(reagents.total_volume)
 				reagents.reaction(M, INGEST)
 				spawn(5)
 					reagents.trans_to(M, reagents.total_volume)
@@ -30,12 +30,12 @@
 				del(src)
 			return 1
 
-		else if (istype(M, /mob/living/carbon/human) )
+		else if(istype(M, /mob/living/carbon/human) )
 
 			for(var/mob/O in viewers(world.view, user))
 				O.show_message("\red [user] attempts to force [M] to swallow [src].", 1)
 
-			if (!do_mob(user, M)) return
+			if(!do_mob(user, M)) return
 
 			user.drop_from_inventory(src) //icon update
 			for(var/mob/O in viewers(world.view, user))
@@ -46,7 +46,7 @@
 
 			log_attack("<font color='red'>[user.name] ([user.ckey]) fed [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>")
 
-			if (reagents.total_volume)
+			if(reagents.total_volume)
 				reagents.reaction(M, INGEST)
 				spawn(5)
 					reagents.trans_to(M, reagents.total_volume)
@@ -60,8 +60,8 @@
 
 	afterattack(obj/target, mob/user , flag)
 
-		if (target.is_open_container() != 0 && target.reagents)
-			if (!target.reagents.total_volume)
+		if(target.is_open_container() != 0 && target.reagents)
+			if(!target.reagents.total_volume)
 				user << "\red [target] is empty. Cant dissolve pill."
 				return
 			user << "\blue You dissolve the pill in [target]"

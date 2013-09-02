@@ -127,7 +127,7 @@ proc/ZMerge(zone/A,zone/B)
 	//Add space tiles.
 	if(A.unsimulated_tiles && B.unsimulated_tiles)
 		A.unsimulated_tiles |= B.unsimulated_tiles
-	else if (B.unsimulated_tiles)
+	else if(B.unsimulated_tiles)
 		A.unsimulated_tiles = B.unsimulated_tiles
 
 	//Add contents.

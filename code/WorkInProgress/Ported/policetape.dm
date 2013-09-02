@@ -57,7 +57,7 @@
 
 		var/turf/cur = start
 		var/dir
-		if (start.x == end.x)
+		if(start.x == end.x)
 			var/d = end.y-start.y
 			if(d) d = d/abs(d)
 			end = get_turf(locate(end.x,end.y+d,end.z))
@@ -72,7 +72,7 @@
 		while (cur!=end && can_place)
 			if(cur.density == 1)
 				can_place = 0
-			else if (istype(cur, /turf/space))
+			else if(istype(cur, /turf/space))
 				can_place = 0
 			else
 				for(var/obj/O in cur)
@@ -80,7 +80,7 @@
 						can_place = 0
 						break
 			cur = get_step_towards(cur,end)
-		if (!can_place)
+		if(!can_place)
 			usr << "\blue You can't run \the [src] through that!"
 			return
 
@@ -98,7 +98,7 @@
 		usr << "\blue You finish placing the [src]."	//Git Test
 
 /obj/item/taperoll/afterattack(var/atom/A, mob/user as mob)
-	if (istype(A, /obj/machinery/door/airlock))
+	if(istype(A, /obj/machinery/door/airlock))
 		var/turf/T = get_turf(A)
 		var/obj/item/tape/P = new tape_type(T.x,T.y,T.z)
 		P.loc = locate(T.x,T.y,T.z)
@@ -115,7 +115,7 @@
 	if(!density) return 1
 	if(air_group || (height==0)) return 1
 
-	if ((mover.flags & 2 || istype(mover, /obj/effect/meteor) || mover.throwing == 1) )
+	if((mover.flags & 2 || istype(mover, /obj/effect/meteor) || mover.throwing == 1) )
 		return 1
 	else
 		return 0
@@ -124,7 +124,7 @@
 	breaktape(W, user)
 
 /obj/item/tape/attack_hand(mob/user as mob)
-	if (user.a_intent == "help" && src.allowed(user))
+	if(user.a_intent == "help" && src.allowed(user))
 		user.show_viewers("\blue [user] lifts [src], allowing passage.")
 		src.density = 0
 		spawn(200)

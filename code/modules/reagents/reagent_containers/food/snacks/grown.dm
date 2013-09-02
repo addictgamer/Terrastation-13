@@ -21,7 +21,7 @@
 	var/plant_type = 0
 	icon = 'icons/obj/harvest.dmi'
 	New(newloc,newpotency)
-		if (!isnull(newpotency))
+		if(!isnull(newpotency))
 			potency = newpotency
 		..()
 		src.pixel_x = rand(-5.0, 5)
@@ -29,15 +29,15 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	..()
-	if (istype(O, /obj/item/device/analyzer/plant_analyzer))
+	if(istype(O, /obj/item/device/analyzer/plant_analyzer))
 		var/msg
 		msg = "<span class='info'>*---------*\n This is \a <span class='name'>[src]</span>\n"
 		switch(plant_type)
-			if (0)
+			if(0)
 				msg += "- Plant type: <i>Normal plant</i>\n"
-			if (1)
+			if(1)
 				msg += "- Plant type: <i>Weed</i>\n"
-			if (2)
+			if(2)
 				msg += "- Plant type: <i>Mushroom</i>\n"
 		msg += "- Potency: <i>[potency]</i>\n"
 		msg += "- Yield: <i>[yield]</i>\n"
@@ -49,38 +49,38 @@
 		usr << msg
 		return
 
-	/*if (istype(O, /obj/item/weapon/storage/bag/plants))
+	/*if(istype(O, /obj/item/weapon/storage/bag/plants))
 		var/obj/item/weapon/plantbag/S = O
-		if (S.mode == 1)
+		if(S.mode == 1)
 			for(var/obj/item/G in get_turf(src))
-				if (istype(G, /obj/item/seeds) || istype(G, /obj/item/weapon/reagent_containers/food/snacks/grown))
-					if (S.contents.len < S.capacity)
+				if(istype(G, /obj/item/seeds) || istype(G, /obj/item/weapon/reagent_containers/food/snacks/grown))
+					if(S.contents.len < S.capacity)
 						S.contents += G
 					else
 						user << "\blue The plant bag is full."
 						return
 			user << "\blue You pick up all the plants and seeds."
 		else
-			if (S.contents.len < S.capacity)
+			if(S.contents.len < S.capacity)
 				S.contents += src;
 			else
 				user << "\blue The plant bag is full."*/
 	return
 
 /*/obj/item/seeds/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	if (istype(O, /obj/item/weapon/storage/bag/plants))
+	if(istype(O, /obj/item/weapon/storage/bag/plants))
 		var/obj/item/weapon/plantbag/S = O
-		if (S.mode == 1)
+		if(S.mode == 1)
 			for(var/obj/item/G in get_turf(src))
-				if (istype(G, /obj/item/seeds) || istype(G, /obj/item/weapon/reagent_containers/food/snacks/grown))
-					if (S.contents.len < S.capacity)
+				if(istype(G, /obj/item/seeds) || istype(G, /obj/item/weapon/reagent_containers/food/snacks/grown))
+					if(S.contents.len < S.capacity)
 						S.contents += G
 					else
 						user << "\blue The plant bag is full."
 						return
 			user << "\blue You pick up all the plants and seeds."
 		else
-			if (S.contents.len < S.capacity)
+			if(S.contents.len < S.capacity)
 				S.contents += src;
 			else
 				user << "\blue The plant bag is full."
@@ -88,15 +88,15 @@
 
 /obj/item/weapon/grown/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	..()
-	if (istype(O, /obj/item/device/analyzer/plant_analyzer))
+	if(istype(O, /obj/item/device/analyzer/plant_analyzer))
 		var/msg
 		msg = "<span class='info'>*---------*\n This is \a <span class='name'>[src]</span>\n"
 		switch(plant_type)
-			if (0)
+			if(0)
 				msg += "- Plant type: <i>Normal plant</i>\n"
-			if (1)
+			if(1)
 				msg += "- Plant type: <i>Weed</i>\n"
-			if (2)
+			if(2)
 				msg += "- Plant type: <i>Mushroom</i>\n"
 		msg += "- Acid strength: <i>[potency]</i>\n"
 		msg += "- Yield: <i>[yield]</i>\n"
@@ -173,10 +173,10 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/potato/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
-	if (istype(W, /obj/item/weapon/cable_coil))
-		if (W:amount >= 5)
+	if(istype(W, /obj/item/weapon/cable_coil))
+		if(W:amount >= 5)
 			W:amount -= 5
-			if (!W:amount) del(W)
+			if(!W:amount) del(W)
 			user << "<span class='notice'>You add some cable to the potato and slide it inside the battery encasing.</span>"
 			var/obj/item/weapon/cell/potato/pocell = new /obj/item/weapon/cell/potato(user.loc)
 			pocell.maxcharge = src.potency * 10
@@ -258,7 +258,7 @@
 			bitesize = 1+round(reagents.total_volume / 2, 1)
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/glowberries/Del()
-	if (istype(loc,/mob))
+	if(istype(loc,/mob))
 		loc.SetLuminosity(round(loc.luminosity - potency/5,1))
 	..()
 
@@ -396,7 +396,7 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/libertycap/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	. = ..()
-	if (istype(O, /obj/item/device/analyzer/plant_analyzer))
+	if(istype(O, /obj/item/device/analyzer/plant_analyzer))
 		user << "<span class='info'>- Mineral Content: <i>[reagents.get_reagent_amount("gold")]%</i></span>"
 
 
@@ -429,7 +429,7 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/pumpkin/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
-	if (istype(W, /obj/item/weapon/circular_saw) || istype(W, /obj/item/weapon/hatchet) || istype(W, /obj/item/weapon/twohanded/fireaxe) || istype(W, /obj/item/weapon/kitchen/utensil/knife) || istype(W, /obj/item/weapon/kitchenknife) || istype(W, /obj/item/weapon/melee/energy))
+	if(istype(W, /obj/item/weapon/circular_saw) || istype(W, /obj/item/weapon/hatchet) || istype(W, /obj/item/weapon/twohanded/fireaxe) || istype(W, /obj/item/weapon/kitchen/utensil/knife) || istype(W, /obj/item/weapon/kitchenknife) || istype(W, /obj/item/weapon/melee/energy))
 		user.show_message("<span class='notice'>You carve a face into [src]!</span>", 1)
 		new /obj/item/clothing/head/pumpkinhead (user.loc)
 		del(src)
@@ -515,7 +515,7 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/chili/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	. = ..()
-	if (istype(O, /obj/item/device/analyzer/plant_analyzer))
+	if(istype(O, /obj/item/device/analyzer/plant_analyzer))
 		user << "<span class='info'>- Capsaicin: <i>[reagents.get_reagent_amount("capsaicin")]%</i></span>"
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/eggplant
@@ -571,7 +571,7 @@
 		spawn(5)	//So potency can be set in the proc that creates these crops
 			reagents.add_reagent("nutriment", 1+round((potency / 10), 1))
 			bitesize = 1+round(reagents.total_volume / 2, 1)
-		if (istype(src.loc,/mob))
+		if(istype(src.loc,/mob))
 			pickup(src.loc)
 	lifespan = 120
 	endurance = 30
@@ -582,7 +582,7 @@
 	plant_type = 2
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/killertomato/attack_self(mob/user as mob)
-	if (istype(user.loc,/turf/space))
+	if(istype(user.loc,/turf/space))
 		return
 	new /mob/living/simple_animal/tomato(user.loc)
 	del(src)
@@ -636,9 +636,9 @@
 		return
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/bluetomato/HasEntered(AM as mob|obj)
-	if (istype(AM, /mob/living/carbon))
+	if(istype(AM, /mob/living/carbon))
 		var/mob/M =	AM
-		if (istype(M, /mob/living/carbon/human) && (isobj(M:shoes) && M:shoes.flags&NOSLIP))
+		if(istype(M, /mob/living/carbon/human) && (isobj(M:shoes) && M:shoes.flags&NOSLIP))
 			return
 
 		M.stop_pulling()
@@ -698,7 +698,7 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/icepepper/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	. = ..()
-	if (istype(O, /obj/item/device/analyzer/plant_analyzer))
+	if(istype(O, /obj/item/device/analyzer/plant_analyzer))
 		user << "<span class='info'>- Frostoil: <i>[reagents.get_reagent_amount("frostoil")]%</i></span>"
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/carrot
@@ -730,7 +730,7 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/reishi/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	. = ..()
-	if (istype(O, /obj/item/device/analyzer/plant_analyzer))
+	if(istype(O, /obj/item/device/analyzer/plant_analyzer))
 		user << "<span class='info'>- Sleep Toxin: <i>[reagents.get_reagent_amount("stoxin")]%</i></span>"
 		user << "<span class='info'>- Space Drugs: <i>[reagents.get_reagent_amount("space_drugs")]%</i></span>"
 
@@ -750,7 +750,7 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/amanita/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	. = ..()
-	if (istype(O, /obj/item/device/analyzer/plant_analyzer))
+	if(istype(O, /obj/item/device/analyzer/plant_analyzer))
 		user << "<span class='info'>- Amatoxins: <i>[reagents.get_reagent_amount("amatoxin")]%</i></span>"
 		user << "<span class='info'>- Psilocybin: <i>[reagents.get_reagent_amount("psilocybin")]%</i></span>"
 
@@ -770,7 +770,7 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/angel/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	. = ..()
-	if (istype(O, /obj/item/device/analyzer/plant_analyzer))
+	if(istype(O, /obj/item/device/analyzer/plant_analyzer))
 		user << "<span class='info'>- Amatoxins: <i>[reagents.get_reagent_amount("amatoxin")]%</i></span>"
 		user << "<span class='info'>- Psilocybin: <i>[reagents.get_reagent_amount("psilocybin")]%</i></span>"
 
@@ -789,7 +789,7 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/libertycap/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	. = ..()
-	if (istype(O, /obj/item/device/analyzer/plant_analyzer))
+	if(istype(O, /obj/item/device/analyzer/plant_analyzer))
 		user << "<span class='info'>- Psilocybin: <i>[reagents.get_reagent_amount("psilocybin")]%</i></span>"
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/plumphelmet
@@ -813,7 +813,7 @@
 		spawn(5)	//So potency can be set in the proc that creates these crops
 			reagents.add_reagent("nutriment", 2+round((potency / 10), 1))
 			bitesize = 1+round(reagents.total_volume / 2, 1)
-		if (istype(src.loc,/mob))
+		if(istype(src.loc,/mob))
 			pickup(src.loc)
 	lifespan = 120
 	endurance = 30
@@ -824,7 +824,7 @@
 	plant_type = 2
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/walkingmushroom/attack_self(mob/user as mob)
-	if (istype(user.loc,/turf/space))
+	if(istype(user.loc,/turf/space))
 		return
 	new /mob/living/simple_animal/mushroom(user.loc)
 	del(src)
@@ -851,7 +851,7 @@
 		..()
 		spawn(5)	//So potency can be set in the proc that creates these crops
 			reagents.add_reagent("radium",1+round((potency / 20), 1))
-		if (istype(src.loc,/mob))
+		if(istype(src.loc,/mob))
 			pickup(src.loc)
 		else
 			src.SetLuminosity(round(potency/10,1))
@@ -864,7 +864,7 @@
 	plant_type = 2
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/glowshroom/attack_self(mob/user as mob)
-	if (istype(user.loc,/turf/space))
+	if(istype(user.loc,/turf/space))
 		return
 	var/obj/effect/glowshroom/planted = new /obj/effect/glowshroom(user.loc)
 
@@ -877,7 +877,7 @@
 	user << "<span class='notice'>You plant the glowshroom.</span>"
 
 /obj/item/weapon/reagent_containers/food/snacks/grown/mushroom/glowshroom/Del()
-	if (istype(loc,/mob))
+	if(istype(loc,/mob))
 		loc.SetLuminosity(round(loc.luminosity - potency/10,1))
 	..()
 
@@ -918,19 +918,19 @@
 	potency = 10
 	New()
 		switch(rand(1,100))//(potency) //It wants to use the default potency instead of the new, so it was always 10. Will try to come back to this later - Cheridan
-			if (0 to 10)
+			if(0 to 10)
 				new/obj/item/weapon/spacecash/(src.loc)
-			if (11 to 20)
+			if(11 to 20)
 				new/obj/item/weapon/spacecash/c10(src.loc)
-			if (21 to 30)
+			if(21 to 30)
 				new/obj/item/weapon/spacecash/c20(src.loc)
-			if (31 to 40)
+			if(31 to 40)
 				new/obj/item/weapon/spacecash/c50(src.loc)
-			if (41 to 50)
+			if(41 to 50)
 				new/obj/item/weapon/spacecash/c100(src.loc)
-			if (51 to 60)
+			if(51 to 60)
 				new/obj/item/weapon/spacecash/c200(src.loc)
-			if (61 to 80)
+			if(61 to 80)
 				new/obj/item/weapon/spacecash/c500(src.loc)
 			else
 				new/obj/item/weapon/spacecash/c1000(src.loc)
@@ -958,28 +958,28 @@
 		var/inner_teleport_radius = potency/15
 		var/list/turfs = new/list()
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
-		if (inner_teleport_radius < 1) //Wasn't potent enough, it just splats.
+		if(inner_teleport_radius < 1) //Wasn't potent enough, it just splats.
 			new/obj/effect/decal/cleanable/oil(src.loc)
 			src.visible_message("<span class='notice'>The [src.name] has been squashed.</span>","<span class='moderate'>You hear a smack.</span>")
 			del(src)
 			return
 		for(var/turf/T in orange(M,outer_teleport_radius))
-			if (T in orange(M,inner_teleport_radius)) continue
-			if (istype(T,/turf/space)) continue
-			if (T.density) continue
-			if (T.x>world.maxx-outer_teleport_radius || T.x<outer_teleport_radius)	continue
-			if (T.y>world.maxy-outer_teleport_radius || T.y<outer_teleport_radius)	continue
+			if(T in orange(M,inner_teleport_radius)) continue
+			if(istype(T,/turf/space)) continue
+			if(T.density) continue
+			if(T.x>world.maxx-outer_teleport_radius || T.x<outer_teleport_radius)	continue
+			if(T.y>world.maxy-outer_teleport_radius || T.y<outer_teleport_radius)	continue
 			turfs += T
-		if (!turfs.len)
+		if(!turfs.len)
 			var/list/turfs_to_pick_from = list()
 			for(var/turf/T in orange(M,outer_teleport_radius))
-				if (!(T in orange(M,inner_teleport_radius)))
+				if(!(T in orange(M,inner_teleport_radius)))
 					turfs_to_pick_from += T
 			turfs += pick(/turf in turfs_to_pick_from)
 		var/turf/picked = pick(turfs)
-		if (!isturf(picked)) return
+		if(!isturf(picked)) return
 		switch(rand(1,2))//Decides randomly to teleport the thrower or the throwee.
-			if (1) // Teleports the person who threw the tomato.
+			if(1) // Teleports the person who threw the tomato.
 				s.set_up(3, 1, M)
 				s.start()
 				new/obj/effect/decal/cleanable/molten_item(M.loc) //Leaves a pile of goo behind for dramatic effect.
@@ -987,7 +987,7 @@
 				sleep(1)
 				s.set_up(3, 1, M)
 				s.start() //Two set of sparks, one before the teleport and one after.
-			if (2) //Teleports mob the tomato hit instead.
+			if(2) //Teleports mob the tomato hit instead.
 				for(var/mob/A in get_turf(hit_atom))//For the mobs in the tile that was hit...
 					s.set_up(3, 1, A)
 					s.start()

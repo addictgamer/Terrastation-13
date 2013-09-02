@@ -118,24 +118,24 @@
 		for(, src.codepos<=lentext(code), src.codepos++)
 
 			var/char=copytext(code, codepos, codepos+1)
-			if (char=="\n")
+			if(char=="\n")
 				line++
 				linepos=codepos
 
-			if (ignore.Find(char))
+			if(ignore.Find(char))
 				continue
-			else if (char == "/")
+			else if(char == "/")
 				ReadComment()
-			else if (end_stmt.Find(char))
+			else if(end_stmt.Find(char))
 				tokens+=new /token/end(char, line, COL)
-			else if (string_delim.Find(char))
+			else if(string_delim.Find(char))
 				codepos++ //skip string delimiter
 				tokens+=ReadString(char)
-			else if (options.CanStartID(char))
+			else if(options.CanStartID(char))
 				tokens+=ReadWord()
-			else if (options.IsDigit(char))
+			else if(options.IsDigit(char))
 				tokens+=ReadNumber()
-			else if (options.symbols.Find(char))
+			else if(options.symbols.Find(char))
 				tokens+=ReadSymbol()
 
 
@@ -158,31 +158,31 @@
 			for(, codepos <= lentext(code), codepos++)//codepos to lentext(code))
 				var/char=copytext(code, codepos, codepos+1)
 				switch(char)
-					if ("\\")					//Backslash (\) encountered in string
+					if("\\")					//Backslash (\) encountered in string
 						codepos++       //Skip next character in string, since it was escaped by a backslash
 						char=copytext(code, codepos, codepos+1)
 						switch(char)
-							if ("\\")      //Double backslash
+							if("\\")      //Double backslash
 								buf+="\\"
-							if ("n")				//\n Newline
+							if("n")				//\n Newline
 								buf+="\n"
 							else
-								if (char==start) //\" Doublequote
+								if(char==start) //\" Doublequote
 									buf+=start
 								else				//Unknown escaped text
 									buf+=char
-					if ("\n")
+					if("\n")
 						. = new/token/string(buf, line, COL)
 						errors+=new/scriptError("Unterminated string. Newline reached.", .)
 						line++
 						linepos=codepos
 						break
 					else
-						if (char==start) //string delimiter found, end string
+						if(char==start) //string delimiter found, end string
 							break
 						else
 							buf+=char     //Just a normal character in a string
-			if (!.) return new/token/string(buf, line, COL)
+			if(!.) return new/token/string(buf, line, COL)
 
 /*
 	Proc: ReadWord
@@ -196,7 +196,7 @@
 				buf+=char
 				char=copytext(code, ++codepos, codepos+1)
 			codepos-- //allow main Scan() proc to read the delimiter
-			if (options.keywords.Find(buf))
+			if(options.keywords.Find(buf))
 				return new /token/keyword(buf, line, COL)
 			else
 				return new /token/word(buf, line, COL)
@@ -212,7 +212,7 @@
 
 			while(options.symbols.Find(buf+char))
 				buf+=char
-				if (++codepos>lentext(code)) break
+				if(++codepos>lentext(code)) break
 				char=copytext(code, codepos, codepos+1)
 
 			codepos-- //allow main Scan() proc to read the next character
@@ -229,12 +229,12 @@
 				dec=0
 
 			while(options.IsDigit(char) || (char=="." && !dec))
-				if (char==".") dec=1
+				if(char==".") dec=1
 				buf+=char
 				codepos++
 				char=copytext(code, codepos, codepos+1)
 			var/token/number/T=new(buf, line, COL)
-			if (isnull(text2num(buf)))
+			if(isnull(text2num(buf)))
 				errors+=new/scriptError("Bad number: ", T)
 				T.value=0
 			codepos-- //allow main Scan() proc to read the next character
@@ -255,33 +255,33 @@
 					// 2: multi-line comment
 				expectedend = 0
 
-			if (charstring == "//" || charstring == "/*")
-				if (charstring == "/*")
+			if(charstring == "//" || charstring == "/*")
+				if(charstring == "/*")
 					comm = 2 // starts a multi-line comment
 
 				while(comm)
-					if (++codepos>lentext(code)) break
+					if(++codepos>lentext(code)) break
 
-					if (expectedend) // ending statement expected...
+					if(expectedend) // ending statement expected...
 						char = copytext(code, codepos, codepos+1)
-						if (char == "/") // ending statement found - beak the comment
+						if(char == "/") // ending statement found - beak the comment
 							comm = 0
 							break
 
-					if (comm == 2)
+					if(comm == 2)
 						// multi-line comments are broken by ending statements
 						char = copytext(code, codepos, codepos+1)
-						if (char == "*")
+						if(char == "*")
 							expectedend = 1
 							continue
 					else
 						char = copytext(code, codepos, codepos+1)
-						if (char == "\n")
+						if(char == "\n")
 							comm = 0
 							break
 
-					if (expectedend) expectedend = 0
+					if(expectedend) expectedend = 0
 
-				if (comm == 2)
+				if(comm == 2)
 					errors+=new/scriptError/UnterminatedComment()
 

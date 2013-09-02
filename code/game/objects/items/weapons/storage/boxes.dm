@@ -432,7 +432,7 @@
 			new /obj/item/weapon/match(src)
 
 	attackby(obj/item/weapon/match/W as obj, mob/user as mob)
-		if (istype(W, /obj/item/weapon/match) && W.lit == 0)
+		if(istype(W, /obj/item/weapon/match) && W.lit == 0)
 			W.lit = 1
 			W.icon_state = "match_lit"
 			processing_objects.Add(W)

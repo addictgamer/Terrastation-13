@@ -64,9 +64,9 @@
 		onclose(user, "freezer")
 
 	Topic(href, href_list)
-		if ((usr.contents.Find(src) || ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon/ai)))
+		if((usr.contents.Find(src) || ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon/ai)))
 			usr.machine = src
-			if (href_list["start"])
+			if(href_list["start"])
 				src.on = !src.on
 				update_icon()
 			if(href_list["temp"])

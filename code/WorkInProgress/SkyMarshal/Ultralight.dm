@@ -60,14 +60,14 @@ atom/proc/ul_SetLuminosity(var/Red = 0, var/Green = Red, var/Blue = Red)
 	if(ul_Red == min(Red, ul_TopLuminosity) && ul_Green == min(Green, ul_TopLuminosity) && ul_Blue == min(Blue, ul_TopLuminosity))
 		return //No point doing all that work if it won't have any effect anyways...
 
-	if (ul_Extinguished == UL_I_EXTINGUISHED)
+	if(ul_Extinguished == UL_I_EXTINGUISHED)
 		ul_Red = min(Red,ul_TopLuminosity)
 		ul_Green = min(Green,ul_TopLuminosity)
 		ul_Blue = min(Blue,ul_TopLuminosity)
 
 		return
 
-	if (ul_IsLuminous(src))
+	if(ul_IsLuminous(src))
 		ul_Extinguish()
 
 	ul_Red = min(Red,ul_TopLuminosity)
@@ -76,13 +76,13 @@ atom/proc/ul_SetLuminosity(var/Red = 0, var/Green = Red, var/Blue = Red)
 
 	ul_Extinguished = UL_I_ONZERO
 
-	if (ul_IsLuminous(src))
+	if(ul_IsLuminous(src))
 		ul_Illuminate()
 
 	return
 
 atom/proc/ul_Illuminate()
-	if (ul_Extinguished == UL_I_LIT)
+	if(ul_Extinguished == UL_I_LIT)
 		return
 
 	ul_Extinguished = UL_I_CHANGING
@@ -116,7 +116,7 @@ atom/proc/ul_Illuminate()
 			Affected.ul_UpdateLight()
 
 			#ifdef ul_LightLevelChangedUpdates
-			if (ul_SuppressLightLevelChanges == 0)
+			if(ul_SuppressLightLevelChanges == 0)
 				Affected.ul_LightLevelChanged()
 
 				for(var/atom/AffectedAtom in Affected)
@@ -130,7 +130,7 @@ atom/proc/ul_Illuminate()
 
 atom/proc/ul_Extinguish()
 
-	if (ul_Extinguished != UL_I_LIT)
+	if(ul_Extinguished != UL_I_LIT)
 		return
 
 	ul_Extinguished = UL_I_CHANGING
@@ -172,7 +172,7 @@ atom/proc/ul_Extinguish()
 			Affected.ul_UpdateLight()
 
 			#ifdef ul_LightLevelChangedUpdates
-			if (ul_SuppressLightLevelChanges == 0)
+			if(ul_SuppressLightLevelChanges == 0)
 				Affected.ul_LightLevelChanged()
 
 				for(var/atom/AffectedAtom in Affected)
@@ -194,25 +194,25 @@ atom/proc/ul_Extinguish()
   to avoid the cost of the square root function.
 */
 atom/proc/ul_FalloffAmount(var/atom/ref)
-	if (ul_FalloffStyle == UL_I_FALLOFF_ROUND)
+	if(ul_FalloffStyle == UL_I_FALLOFF_ROUND)
 		var/delta_x = (ref.x - src.x)
 		var/delta_y = (ref.y - src.y)
 
 		#ifdef ul_LightingResolution
-		if (round((delta_x*delta_x + delta_y*delta_y)*ul_LightingResolutionSqrt,1) > ul_FastRoot.len)
+		if(round((delta_x*delta_x + delta_y*delta_y)*ul_LightingResolutionSqrt,1) > ul_FastRoot.len)
 			for(var/i = ul_FastRoot.len, i <= round(delta_x*delta_x+delta_y*delta_y*ul_LightingResolutionSqrt,1), i++)
 				ul_FastRoot += round(sqrt(i))
 		return ul_FastRoot[round((delta_x*delta_x + delta_y*delta_y)*ul_LightingResolutionSqrt, 1) + 1]/ul_LightingResolution
 
 		#else
-		if ((delta_x*delta_x + delta_y*delta_y) > ul_FastRoot.len)
+		if((delta_x*delta_x + delta_y*delta_y) > ul_FastRoot.len)
 			for(var/i = ul_FastRoot.len, i <= delta_x*delta_x+delta_y*delta_y, i++)
 				ul_FastRoot += round(sqrt(i))
 		return ul_FastRoot[delta_x*delta_x + delta_y*delta_y + 1]
 
 		#endif
 
-	else if (ul_FalloffStyle == UL_I_FALLOFF_SQUARE)
+	else if(ul_FalloffStyle == UL_I_FALLOFF_SQUARE)
 		return get_dist(src, ref)
 
 	return 0

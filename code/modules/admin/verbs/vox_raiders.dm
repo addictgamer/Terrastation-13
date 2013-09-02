@@ -11,7 +11,7 @@ var/global/vox_tick = 1
 	equip_to_slot_or_del(new /obj/item/clothing/gloves/yellow/vox(src), slot_gloves) // AS ABOVE.
 
 	switch(vox_tick)
-		if (1) // Vox raider!
+		if(1) // Vox raider!
 			equip_to_slot_or_del(new /obj/item/clothing/suit/space/vox/carapace(src), slot_wear_suit)
 			equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/vox/carapace(src), slot_head)
 			equip_to_slot_or_del(new /obj/item/weapon/melee/telebaton(src), slot_belt)
@@ -27,7 +27,7 @@ var/global/vox_tick = 1
 			A.amount = 20
 			equip_to_slot_or_del(A, slot_l_hand)
 
-		if (2) // Vox engineer!
+		if(2) // Vox engineer!
 			equip_to_slot_or_del(new /obj/item/clothing/suit/space/vox/pressure(src), slot_wear_suit)
 			equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/vox/pressure(src), slot_head)
 			equip_to_slot_or_del(new /obj/item/weapon/storage/belt/utility/full(src), slot_belt)
@@ -36,7 +36,7 @@ var/global/vox_tick = 1
 			equip_to_slot_or_del(new /obj/item/device/multitool(src), slot_l_hand)
 
 
-		if (3) // Vox saboteur!
+		if(3) // Vox saboteur!
 			equip_to_slot_or_del(new /obj/item/clothing/suit/space/vox/carapace(src), slot_wear_suit)
 			equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/vox/carapace(src), slot_head)
 			equip_to_slot_or_del(new /obj/item/weapon/storage/belt/utility/full(src), slot_belt)
@@ -45,7 +45,7 @@ var/global/vox_tick = 1
 			equip_to_slot_or_del(new /obj/item/weapon/gun/dartgun/vox/raider(src), slot_r_hand)
 			equip_to_slot_or_del(new /obj/item/device/multitool(src), slot_l_hand)
 
-		if (4) // Vox medic!
+		if(4) // Vox medic!
 			equip_to_slot_or_del(new /obj/item/clothing/suit/space/vox/pressure(src), slot_wear_suit)
 			equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/vox/pressure(src), slot_head)
 			equip_to_slot_or_del(new /obj/item/weapon/storage/belt/utility/full(src), slot_belt) // Who needs actual surgical tools?
@@ -72,11 +72,11 @@ var/global/vox_tick = 1
 	affected.implants += I
 	I.part = affected
 
-	if (ticker.mode && ( istype( ticker.mode,/datum/game_mode/heist ) ) )
+	if(ticker.mode && ( istype( ticker.mode,/datum/game_mode/heist ) ) )
 		var/datum/game_mode/heist/M = ticker.mode
 		M.cortical_stacks += I
 
 	vox_tick++
-	if (vox_tick > 4) vox_tick = 1
+	if(vox_tick > 4) vox_tick = 1
 
 	return 1

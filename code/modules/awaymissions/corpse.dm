@@ -33,47 +33,47 @@
 	M.dna.mutantrace = mutantrace
 	M.real_name = src.name
 	M.death(1) //Kills the new mob
-	if (src.corpseuniform)
+	if(src.corpseuniform)
 		M.equip_to_slot_or_del(new src.corpseuniform(M), slot_w_uniform)
-	if (src.corpsesuit)
+	if(src.corpsesuit)
 		M.equip_to_slot_or_del(new src.corpsesuit(M), slot_wear_suit)
-	if (src.corpseshoes)
+	if(src.corpseshoes)
 		M.equip_to_slot_or_del(new src.corpseshoes(M), slot_shoes)
-	if (src.corpsegloves)
+	if(src.corpsegloves)
 		M.equip_to_slot_or_del(new src.corpsegloves(M), slot_gloves)
-	if (src.corpseradio)
+	if(src.corpseradio)
 		M.equip_to_slot_or_del(new src.corpseradio(M), slot_ears)
-	if (src.corpseglasses)
+	if(src.corpseglasses)
 		M.equip_to_slot_or_del(new src.corpseglasses(M), slot_glasses)
-	if (src.corpsemask)
+	if(src.corpsemask)
 		M.equip_to_slot_or_del(new src.corpsemask(M), slot_wear_mask)
-	if (src.corpsehelmet)
+	if(src.corpsehelmet)
 		M.equip_to_slot_or_del(new src.corpsehelmet(M), slot_head)
-	if (src.corpsebelt)
+	if(src.corpsebelt)
 		M.equip_to_slot_or_del(new src.corpsebelt(M), slot_belt)
-	if (src.corpsepocket1)
+	if(src.corpsepocket1)
 		M.equip_to_slot_or_del(new src.corpsepocket1(M), slot_r_store)
-	if (src.corpsepocket2)
+	if(src.corpsepocket2)
 		M.equip_to_slot_or_del(new src.corpsepocket2(M), slot_l_store)
-	if (src.corpseback)
+	if(src.corpseback)
 		M.equip_to_slot_or_del(new src.corpseback(M), slot_back)
-	if (src.corpseid == 1)
+	if(src.corpseid == 1)
 		var/obj/item/weapon/card/id/W = new(M)
 		W.name = "[M.real_name]'s ID Card"
 		var/datum/job/jobdatum
 		for(var/jobtype in typesof(/datum/job))
 			var/datum/job/J = new jobtype
-			if (J.title == corpseidaccess)
+			if(J.title == corpseidaccess)
 				jobdatum = J
 				break
-		if (src.corpseidicon)
+		if(src.corpseidicon)
 			W.icon_state = corpseidicon
-		if (src.corpseidaccess)
-			if (jobdatum)
+		if(src.corpseidaccess)
+			if(jobdatum)
 				W.access = jobdatum.get_access()
 			else
 				W.access = list()
-		if (corpseidjob)
+		if(corpseidjob)
 			W.assignment = corpseidjob
 		W.registered_name = M.real_name
 		M.equip_to_slot_or_del(W, slot_wear_id)

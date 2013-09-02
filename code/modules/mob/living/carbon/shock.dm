@@ -11,33 +11,33 @@
 	2	* src.getCloneLoss() + 		\
 	1	* src.halloss
 
-	if (reagents.has_reagent("alkysine"))
+	if(reagents.has_reagent("alkysine"))
 		src.traumatic_shock -= 10
-	if (reagents.has_reagent("inaprovaline"))
+	if(reagents.has_reagent("inaprovaline"))
 		src.traumatic_shock -= 25
-	if (reagents.has_reagent("tramadol"))
+	if(reagents.has_reagent("tramadol"))
 		src.traumatic_shock -= 80 // make synaptizine function as good painkiller
-	if (reagents.has_reagent("oxycodone"))
+	if(reagents.has_reagent("oxycodone"))
 		src.traumatic_shock -= 200 // make synaptizine function as good painkiller
-	if (src.slurring)
+	if(src.slurring)
 		src.traumatic_shock -= 20
-	if (src.analgesic)
+	if(src.analgesic)
 		src.traumatic_shock = 0
 
 	// broken or ripped off organs will add quite a bit of pain
-	if (istype(src,/mob/living/carbon/human))
+	if(istype(src,/mob/living/carbon/human))
 		var/mob/living/carbon/human/M = src
 		for(var/datum/organ/external/organ in M.organs)
-			if (!organ)
+			if(!organ)
 				continue
-			if ((organ.status & ORGAN_DESTROYED) && !organ.amputated)
+			if((organ.status & ORGAN_DESTROYED) && !organ.amputated)
 				src.traumatic_shock += 60
-			else if (organ.status & ORGAN_BROKEN || organ.open)
+			else if(organ.status & ORGAN_BROKEN || organ.open)
 				src.traumatic_shock += 30
-				if (organ.status & ORGAN_SPLINTED)
+				if(organ.status & ORGAN_SPLINTED)
 					src.traumatic_shock -= 20
 
-	if (src.traumatic_shock < 0)
+	if(src.traumatic_shock < 0)
 		src.traumatic_shock = 0
 
 	return src.traumatic_shock

@@ -12,10 +12,10 @@
 	//pixel_y = -64
 
 /obj/effect/new_year_tree/attackby(obj/item/W, mob/user)
-	if (istype(W, /obj/item/weapon/grab))
+	if(istype(W, /obj/item/weapon/grab))
 		return
 	W.loc = src
-	if (user.client)
+	if(user.client)
 		user.client.screen -= W
 	user.u_equip(W)
 	var/const/bottom_right_x = 115.0
@@ -36,7 +36,7 @@
 	var/a = (top_left_y-bottom_right_y)/(top_left_x-bottom_med_x)
 	var/b = bottom_right_y-a*bottom_med_x
 
-	if (a*x+b < y) //if point is above diagonal top_left -> bottom_median
+	if(a*x+b < y) //if point is above diagonal top_left -> bottom_median
 		x = bottom_med_x + x - top_left_x
 		y = bottom_right_y - y + top_left_y
 	var/image/I = image(W.icon, W, icon_state = W.icon_state)
@@ -59,8 +59,8 @@
 	slot_flags = SLOT_BELT
 
 /obj/item/weapon/firbang/afterattack(atom/target as mob|obj|turf|area, mob/user as mob)
-	if (user.get_active_hand() == src)
-		if ((CLUMSY in usr.mutations) && prob(50))
+	if(user.get_active_hand() == src)
+		if((CLUMSY in usr.mutations) && prob(50))
 			user << "\red Huh? How does this thing work?!"
 			src.state = 1
 			src.icon_state = "flashbang1"
@@ -68,7 +68,7 @@
 			spawn( 5 )
 				prime()
 				return
-		else if (!( src.state ))
+		else if(!( src.state ))
 			user << "\red You prime the [src]! [det_time/10] seconds!"
 			src.state = 1
 			src.icon_state = "flashbang1"
@@ -94,7 +94,7 @@
 /obj/item/weapon/firbang/proc/prime()
 	playsound(src.loc, 'sound/effects/bang.ogg', 25, 1)
 	var/turf/T = get_turf(src)
-	if (T)
+	if(T)
 		var/datum/effect/effect/system/harmless_smoke_spread/smoke = new
 		smoke.set_up(3, 0, src.loc)
 		smoke.attach(src)
@@ -107,8 +107,8 @@
 	return
 
 /obj/item/weapon/firbang/attack_self(mob/user as mob)
-	if (!src.state)
-		if (CLUMSY in user.mutations)
+	if(!src.state)
+		if(CLUMSY in user.mutations)
 			user << "\red Huh? How does this thing work?!"
 			spawn( 5 )
 				prime()
