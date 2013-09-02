@@ -21,3 +21,6 @@ Unfinished business:
  * Trade shuttle.
  * NPCs.
  * My autofire modification to SMG guns and the like.
+ * Respawn times. Load a default respawn time from the configs, and then let admins set the respawn time ingame.
+ * Open the changelog and rules on startup.
+ * Make the man up button play a cinematic (like the station blowing up): Tom R. Toe (and his music). That'll teach those buggers to CHILL OUT.

@@ -142,7 +142,7 @@ var/global/datum/controller/gameticker/ticker
 
 	var/admins_number = 0
 	for(var/client/C)
-		C.music.status = SOUND_PAUSED | SOUND_UPDATE
+		//C.music.status = SOUND_PAUSED | SOUND_UPDATE
 		if(C.holder)
 			admins_number++
 	if(admins_number == 0)
