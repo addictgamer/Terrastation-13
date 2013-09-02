@@ -41,9 +41,9 @@
 	set src in oview()
 
 	var/msg = "<span cass='info'>*---------*\nThis is \icon[src] \a <EM>[src]</EM>!\n"
-	if(src.health < src.maxHealth)
+	if (src.health < src.maxHealth)
 		msg += "<span class='warning'>"
-		if(src.health >= src.maxHealth/2)
+		if (src.health >= src.maxHealth/2)
 			msg += "It looks slightly dented.\n"
 		else
 			msg += "<B>It looks severely dented!</B>\n"
@@ -55,7 +55,7 @@
 
 /mob/living/simple_animal/construct/Bump(atom/movable/AM as mob|obj, yes)
 	spawn( 0 )
-		if((!( yes ) || now_pushing))
+		if ((!( yes ) || now_pushing))
 			return
 		now_pushing = 1
 		if(ismob(AM))
@@ -72,13 +72,13 @@
 			tmob.LAssailant = src
 		now_pushing = 0
 		..()
-		if(!( istype(AM, /atom/movable) ))
+		if (!( istype(AM, /atom/movable) ))
 			return
-		if(!( now_pushing ))
+		if (!( now_pushing ))
 			now_pushing = 1
-			if(!( AM.anchored ))
+			if (!( AM.anchored ))
 				var/t = get_dir(src, AM)
-				if(istype(AM, /obj/structure/window))
+				if (istype(AM, /obj/structure/window))
 					if(AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
 						for(var/obj/structure/window/win in get_step(AM,t))
 							now_pushing = 0
@@ -109,16 +109,16 @@
 /mob/living/simple_animal/construct/attackby(var/obj/item/O as obj, var/mob/user as mob)
 	if(O.force)
 		var/damage = O.force
-		if(O.damtype == HALLOSS)
+		if (O.damtype == HALLOSS)
 			damage = 0
 		health -= damage
 		for(var/mob/M in viewers(src, null))
-			if((M.client && !( M.blinded )))
+			if ((M.client && !( M.blinded )))
 				M.show_message("\red \b [src] has been attacked with the [O] by [user]. ")
 	else
 		usr << "\red This weapon is ineffective, it does no damage."
 		for(var/mob/M in viewers(src, null))
-			if((M.client && !( M.blinded )))
+			if ((M.client && !( M.blinded )))
 				M.show_message("\red [user] gently taps [src] with the [O]. ")
 
 
@@ -150,20 +150,20 @@
 	if(O.force)
 		if(O.force >= 11)
 			var/damage = O.force
-			if(O.damtype == HALLOSS)
+			if (O.damtype == HALLOSS)
 				damage = 0
 			health -= damage
 			for(var/mob/M in viewers(src, null))
-				if((M.client && !( M.blinded )))
+				if ((M.client && !( M.blinded )))
 					M.show_message("\red \b [src] has been attacked with the [O] by [user]. ")
 		else
 			for(var/mob/M in viewers(src, null))
-				if((M.client && !( M.blinded )))
+				if ((M.client && !( M.blinded )))
 					M.show_message("\red \b The [O] bounces harmlessly off of [src]. ")
 	else
 		usr << "\red This weapon is ineffective, it does no damage."
 		for(var/mob/M in viewers(src, null))
-			if((M.client && !( M.blinded )))
+			if ((M.client && !( M.blinded )))
 				M.show_message("\red [user] gently taps [src] with the [O]. ")
 
 
@@ -244,20 +244,20 @@
 	if(O.force)
 		if(O.force >= 11)
 			var/damage = O.force
-			if(O.damtype == HALLOSS)
+			if (O.damtype == HALLOSS)
 				damage = 0
 			health -= damage
 			for(var/mob/M in viewers(src, null))
-				if((M.client && !( M.blinded )))
+				if ((M.client && !( M.blinded )))
 					M.show_message("\red \b [src] has been attacked with the [O] by [user]. ")
 		else
 			for(var/mob/M in viewers(src, null))
-				if((M.client && !( M.blinded )))
+				if ((M.client && !( M.blinded )))
 					M.show_message("\red \b The [O] bounces harmlessly off of [src]. ")
 	else
 		usr << "\red This weapon is ineffective, it does no damage."
 		for(var/mob/M in viewers(src, null))
-			if((M.client && !( M.blinded )))
+			if ((M.client && !( M.blinded )))
 				M.show_message("\red [user] gently taps [src] with the [O]. ")
 
 
@@ -270,7 +270,7 @@
 	set category = "Behemoth"
 	set name = "Summon Cultist (300)"
 	set desc = "Teleport a cultist to your location"
-	if(istype(usr,/mob/living/simple_animal/constructbehemoth))
+	if (istype(usr,/mob/living/simple_animal/constructbehemoth))
 
 		if(usr.energy<300)
 			usr << "\red You do not have enough power stored!"
@@ -282,12 +282,12 @@
 		usr.energy -= 300
 	var/list/mob/living/cultists = new
 	for(var/datum/mind/H in ticker.mode.cult)
-		if(istype(H.current,/mob/living))
+		if (istype(H.current,/mob/living))
 			cultists+=H.current
 			var/mob/cultist = input("Choose the one who you want to summon", "Followers of Geometer") as null|anything in (cultists - usr)
 			if(!cultist)
 				return
-			if(cultist == usr) //just to be sure.
+			if (cultist == usr) //just to be sure.
 				return
 			cultist.loc = usr.loc
 			usr.visible_message("\red [cultist] appears in a flash of red light as [usr] glows with power")*/

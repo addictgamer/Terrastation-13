@@ -12,21 +12,21 @@
 
 	proc/get_max_wclass(datum/organ/external/affected)
 		switch (affected.name)
-			if("head")
+			if ("head")
 				return 1
-			if("chest")
+			if ("chest")
 				return 3
-			if("groin")
+			if ("groin")
 				return 2
 		return 0
 
 	proc/get_cavity(datum/organ/external/affected)
 		switch (affected.name)
-			if("head")
+			if ("head")
 				return "cranial"
-			if("chest")
+			if ("chest")
 				return "thoracic"
-			if("groin")
+			if ("groin")
 				return "abdominal"
 		return ""
 
@@ -122,7 +122,7 @@
 
 		user.visible_message("\blue [user] puts \the [tool] inside [target]'s [get_cavity(affected)] cavity.", \
 		"\blue You put \the [tool] inside [target]'s [get_cavity(affected)] cavity." )
-		if(tool.w_class > get_max_wclass(affected)/2 && prob(50))
+		if (tool.w_class > get_max_wclass(affected)/2 && prob(50))
 			user << "\red You tear some vessels trying to fit such big object in this cavity."
 			var/datum/wound/internal_bleeding/I = new (15)
 			affected.wounds += I
@@ -164,20 +164,20 @@
 
 		var/find_prob = 0
 
-		if(affected.implants.len)
+		if (affected.implants.len)
 
 			var/obj/item/obj = affected.implants[1]
 
 			if(istype(obj,/obj/item/weapon/implant))
 				var/obj/item/weapon/implant/imp = obj
-				if(imp.islegal())
+				if (imp.islegal())
 					find_prob +=60
 				else
 					find_prob +=40
 			else
 				find_prob +=50
 
-			if(prob(find_prob))
+			if (prob(find_prob))
 				user.visible_message("\blue [user] takes something out of incision on [target]'s [affected.display_name] with \the [tool].", \
 				"\blue You take [obj] out of incision on [target]'s [affected.display_name]s with \the [tool]." )
 				affected.implants -= obj
@@ -197,7 +197,7 @@
 			else
 				user.visible_message("\blue [user] removes \the [tool] from [target]'s [affected.display_name].", \
 				"\blue There's something inside [target]'s [affected.display_name], but you just missed it this time." )
-		else if(affected.hidden)
+		else if (affected.hidden)
 			user.visible_message("\blue [user] takes something out of incision on [target]'s [affected.display_name] with \the [tool].", \
 			"\blue You take something out of incision on [target]'s [affected.display_name]s with \the [tool]." )
 			affected.hidden.loc = get_turf(target)
@@ -216,10 +216,10 @@
 		user.visible_message("\red [user]'s hand slips, scraping tissue inside [target]'s [affected.display_name] with \the [tool]!", \
 		"\red Your hand slips, scraping tissue inside [target]'s [affected.display_name] with \the [tool]!")
 		affected.createwound(CUT, 20)
-		if(affected.implants.len)
+		if (affected.implants.len)
 			var/fail_prob = 10
 			fail_prob += 100 - tool_quality(tool)
-			if(prob(fail_prob))
+			if (prob(fail_prob))
 				var/obj/item/weapon/implant/imp = affected.implants[1]
 				user.visible_message("\red Something beeps inside [target]'s [affected.display_name]!")
 				playsound(imp.loc, 'sound/items/countdown.ogg', 75, 1, -3)

@@ -1,6 +1,6 @@
 
 /datum/admins/proc/player_panel_new()//The new one
-	if(!usr.client.holder)
+	if (!usr.client.holder)
 		return
 	var/dat = "<html><head><title>Admin Player Panel</title></head>"
 
@@ -42,7 +42,7 @@
 								var search = lsearch\[0\];
 								//var inner_span = li.getElementsByTagName("span")\[1\] //Should only ever contain one element.
 								//document.write("<p>"+search.innerText+"<br>"+filter+"<br>"+search.innerText.indexOf(filter))
-								if( search.innerText.toLowerCase().indexOf(filter) == -1 )
+								if ( search.innerText.toLowerCase().indexOf(filter) == -1 )
 								{
 									//document.write("a");
 									//ltr.removeChild(tr);
@@ -320,7 +320,7 @@
 
 //The old one
 /datum/admins/proc/player_panel_old()
-	if(!usr.client.holder)
+	if (!usr.client.holder)
 		return
 	var/dat = "<html><head><title>Player Menu</title></head>"
 	dat += "<body><table border=1 cellspacing=5><B><tr><th>Name</th><th>Real Name</th><th>Assigned Job</th><th>Key</th><th>Options</th><th>PM</th><th>Traitor?</th></tr></B>"
@@ -379,12 +379,12 @@
 
 
 /datum/admins/proc/check_antagonists()
-	if(ticker && ticker.current_state >= GAME_STATE_PLAYING)
+	if (ticker && ticker.current_state >= GAME_STATE_PLAYING)
 		var/dat = "<html><head><title>Round Status</title></head><body><h1><B>Round Status</B></h1>"
 		dat += "Current Game Mode: <B>[ticker.mode.name]</B><BR>"
 		dat += "Round Duration: <B>[round(world.time / 36000)]:[add_zero(world.time / 600 % 60, 2)]:[world.time / 100 % 6][world.time / 100 % 10]</B><BR>"
 		dat += "<B>Emergency shuttle</B><BR>"
-		if(!emergency_shuttle.online)
+		if (!emergency_shuttle.online)
 			dat += "<a href='?src=\ref[src];call_shuttle=1'>Call Shuttle</a><br>"
 		else
 			var/timeleft = emergency_shuttle.timeleft()

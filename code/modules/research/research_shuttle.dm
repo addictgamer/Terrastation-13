@@ -13,7 +13,7 @@ proc/move_research_shuttle()
 	spawn(research_shuttle_tickstomove*10)
 		var/area/fromArea
 		var/area/toArea
-		if(research_shuttle_location == 1)
+		if (research_shuttle_location == 1)
 			fromArea = locate(/area/shuttle/research/outpost)
 			toArea = locate(/area/shuttle/research/station)
 		else
@@ -53,7 +53,7 @@ proc/move_research_shuttle()
 			pest.gib()
 
 		fromArea.move_contents_to(toArea)
-		if(research_shuttle_location)
+		if (research_shuttle_location)
 			research_shuttle_location = 0
 		else
 			research_shuttle_location = 1
@@ -86,7 +86,7 @@ proc/move_research_shuttle()
 		//		usr << "Under directive 7-10, [station_name()] is quarantined until further notice."
 		//		return
 
-		if(!research_shuttle_moving)
+		if (!research_shuttle_moving)
 			usr << "\blue Shuttle recieved message and will be sent shortly."
 			move_research_shuttle()
 		else
@@ -94,7 +94,7 @@ proc/move_research_shuttle()
 
 /obj/machinery/computer/research_shuttle/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
-	if(istype(W, /obj/item/weapon/card/emag))
+	if (istype(W, /obj/item/weapon/card/emag))
 		var/obj/item/weapon/card/emag/E = W
 		if(E.uses)
 			E.uses--
@@ -114,7 +114,7 @@ proc/move_research_shuttle()
 			A.circuit = M
 			A.anchored = 1
 
-			if(src.stat & BROKEN)
+			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				new /obj/item/weapon/shard( src.loc )
 				A.state = 3

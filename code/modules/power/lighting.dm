@@ -22,27 +22,27 @@
 	var/sheets_refunded = 2
 
 /obj/item/light_fixture_frame/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/wrench))
+	if (istype(W, /obj/item/weapon/wrench))
 		new /obj/item/stack/sheet/metal( get_turf(src.loc), sheets_refunded )
 		del(src)
 		return
 	..()
 
 /obj/item/light_fixture_frame/proc/try_build(turf/on_wall)
-	if(get_dist(on_wall,usr)>1)
+	if (get_dist(on_wall,usr)>1)
 		return
 	var/ndir = get_dir(usr,on_wall)
-	if(!(ndir in cardinal))
+	if (!(ndir in cardinal))
 		return
 	var/turf/loc = get_turf_loc(usr)
-	if(!istype(loc, /turf/simulated/floor))
+	if (!istype(loc, /turf/simulated/floor))
 		usr << "\red [src.name] cannot be placed on this spot."
 		return
 	usr << "Attaching [src] to the wall."
 	playsound(src.loc, 'sound/machines/click.ogg', 75, 1)
 	var/constrdir = usr.dir
 	var/constrloc = usr.loc
-	if(!do_after(usr, 30))
+	if (!do_after(usr, 30))
 		return
 	switch(fixture_type)
 		if("bulb")
@@ -81,13 +81,13 @@
 
 /obj/machinery/light_construct/New()
 	..()
-	if(fixture_type == "bulb")
+	if (fixture_type == "bulb")
 		icon_state = "bulb-construct-stage1"
 
 /obj/machinery/light_construct/examine()
 	set src in view()
 	..()
-	if(!(usr in view(2))) return
+	if (!(usr in view(2))) return
 	switch(src.stage)
 		if(1)
 			usr << "It's an empty frame."
@@ -101,30 +101,30 @@
 
 /obj/machinery/light_construct/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	src.add_fingerprint(user)
-	if(istype(W, /obj/item/weapon/wrench))
-		if(src.stage == 1)
+	if (istype(W, /obj/item/weapon/wrench))
+		if (src.stage == 1)
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 			usr << "You begin deconstructing [src]."
-			if(!do_after(usr, 30))
+			if (!do_after(usr, 30))
 				return
 			new /obj/item/stack/sheet/metal( get_turf(src.loc), sheets_refunded )
 			user.visible_message("[user.name] deconstructs [src].", \
 				"You deconstruct [src].", "You hear a noise.")
 			playsound(src.loc, 'sound/items/Deconstruct.ogg', 75, 1)
 			del(src)
-		if(src.stage == 2)
+		if (src.stage == 2)
 			usr << "You have to remove the wires first."
 			return
 
-		if(src.stage == 3)
+		if (src.stage == 3)
 			usr << "You have to unscrew the case first."
 			return
 
 	if(istype(W, /obj/item/weapon/wirecutters))
-		if(src.stage != 2) return
+		if (src.stage != 2) return
 		src.stage = 1
 		switch(fixture_type)
-			if("tube")
+			if ("tube")
 				src.icon_state = "tube-construct-stage1"
 			if("bulb")
 				src.icon_state = "bulb-construct-stage1"
@@ -135,11 +135,11 @@
 		return
 
 	if(istype(W, /obj/item/weapon/cable_coil))
-		if(src.stage != 1) return
+		if (src.stage != 1) return
 		var/obj/item/weapon/cable_coil/coil = W
 		coil.use(1)
 		switch(fixture_type)
-			if("tube")
+			if ("tube")
 				src.icon_state = "tube-construct-stage2"
 			if("bulb")
 				src.icon_state = "bulb-construct-stage2"
@@ -149,9 +149,9 @@
 		return
 
 	if(istype(W, /obj/item/weapon/screwdriver))
-		if(src.stage == 2)
+		if (src.stage == 2)
 			switch(fixture_type)
-				if("tube")
+				if ("tube")
 					src.icon_state = "tube-empty"
 				if("bulb")
 					src.icon_state = "bulb-empty"
@@ -164,7 +164,7 @@
 
 				if("tube")
 					newlight = new /obj/machinery/light/built(src.loc)
-				if("bulb")
+				if ("bulb")
 					newlight = new /obj/machinery/light/small/built(src.loc)
 
 			newlight.dir = src.dir
@@ -387,7 +387,7 @@
 				M.show_message("[user.name] smashed the light!", 3, "You hear a tinkle of breaking glass", 2)
 			if(on && (W.flags & CONDUCT))
 				//if(!user.mutations & COLD_RESISTANCE)
-				if(prob(12))
+				if (prob(12))
 					electrocute_mob(user, get_area(src), src, 0.3)
 			broken()
 
@@ -423,7 +423,7 @@
 			s.set_up(3, 1, src)
 			s.start()
 			//if(!user.mutations & COLD_RESISTANCE)
-			if(prob(75))
+			if (prob(75))
 				electrocute_mob(user, get_area(src), src, rand(0.7,1.0))
 
 
@@ -458,7 +458,7 @@
 	if(status == LIGHT_EMPTY||status == LIGHT_BROKEN)
 		user << "\green That object is useless to you."
 		return
-	else if(status == LIGHT_OK||status == LIGHT_BURNED)
+	else if (status == LIGHT_OK||status == LIGHT_BURNED)
 		for(var/mob/M in viewers(src))
 			M.show_message("\red [user.name] smashed the light!", 3, "You hear a tinkle of breaking glass", 2)
 		broken()
@@ -469,7 +469,7 @@
 	if(status == LIGHT_EMPTY||status == LIGHT_BROKEN)
 		M << "\red That object is useless to you."
 		return
-	else if(status == LIGHT_OK||status == LIGHT_BURNED)
+	else if (status == LIGHT_OK||status == LIGHT_BURNED)
 		for(var/mob/O in viewers(src))
 			O.show_message("\red [M.name] smashed the light!", 3, "You hear a tinkle of breaking glass", 2)
 		broken()
@@ -556,10 +556,10 @@
 			del(src)
 			return
 		if(2.0)
-			if(prob(75))
+			if (prob(75))
 				broken()
 		if(3.0)
-			if(prob(50))
+			if (prob(50))
 				broken()
 	return
 

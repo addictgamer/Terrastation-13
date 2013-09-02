@@ -26,7 +26,7 @@
 			var/obj/item/device/pda/P
 			var/list/viables = list()
 			for(var/obj/item/device/pda/check_pda in sortAtom(PDAs))
-				if(!check_pda.owner||check_pda.toff||check_pda == src||check_pda.hidden)
+				if (!check_pda.owner||check_pda.toff||check_pda == src||check_pda.hidden)
 					continue
 				viables.Add(check_pda)
 
@@ -88,7 +88,7 @@
 
 			useMS.send_pda_message("[P.owner]", sender, message)
 
-			if(prob(50)) //Give the AI an increased chance to intercept the message
+			if (prob(50)) //Give the AI an increased chance to intercept the message
 				for(var/mob/living/silicon/ai/ai in mob_list)
 					// Allows other AIs to intercept the message but the AI won't intercept their own message.
 					if(ai.aiPDA != P && ai.aiPDA != src)
@@ -96,7 +96,7 @@
 
 			P.tnote += "<i><b>&larr; From [sender] (Unknown / spam?):</b></i><br>[message]<br>"
 
-			if(!P.silent)
+			if (!P.silent)
 				playsound(P.loc, 'sound/machines/twobeep.ogg', 50, 1)
 			for (var/mob/O in hearers(3, P.loc))
 				if(!P.silent) O.show_message(text("\icon[P] *[P.ttone]*"))

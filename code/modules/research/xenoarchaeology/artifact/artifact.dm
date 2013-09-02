@@ -44,7 +44,7 @@
 	excavation_level = rand(5,50)
 
 /obj/structure/boulder/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/device/core_sampler))
+	if (istype(W, /obj/item/device/core_sampler))
 		src.geological_data.artifact_distance = rand(-100,100) / 100
 		src.geological_data.artifact_id = artifact_find.artifact_id
 
@@ -52,19 +52,19 @@
 		C.sample_item(src, user)
 		return
 
-	if(istype(W, /obj/item/device/depth_scanner))
+	if (istype(W, /obj/item/device/depth_scanner))
 		var/obj/item/device/depth_scanner/C = W
 		C.scan_atom(user, src)
 		return
 
-	if(istype(W, /obj/item/device/measuring_tape))
+	if (istype(W, /obj/item/device/measuring_tape))
 		var/obj/item/device/measuring_tape/P = W
 		user.visible_message("\blue[user] extends [P] towards [src].","\blue You extend [P] towards [src].")
 		if(do_after(user,40))
 			user << "\blue \icon[P] [src] has been excavated to a depth of [2*src.excavation_level]cm."
 		return
 
-	if(istype(W, /obj/item/weapon/pickaxe))
+	if (istype(W, /obj/item/weapon/pickaxe))
 		var/obj/item/weapon/pickaxe/P = W
 
 		user << "\red You start [P.drill_verb] [src]."

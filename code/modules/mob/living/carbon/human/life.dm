@@ -35,7 +35,7 @@
 	set invisibility = 0
 	set background = 1
 
-	if(monkeyizing)	return
+	if (monkeyizing)	return
 	if(!loc)			return	// Fixing a null error that occurs when the mob isn't found in the world -- TLE
 
 	..()
@@ -139,8 +139,8 @@
 /mob/living/carbon/human
 
 	proc/handle_disabilities()
-		if(disabilities & EPILEPSY)
-			if((prob(1) && paralysis < 1))
+		if (disabilities & EPILEPSY)
+			if ((prob(1) && paralysis < 1))
 				src << "\red You have a seizure!"
 				for(var/mob/O in viewers(src, null))
 					if(O == src)
@@ -148,14 +148,14 @@
 					O.show_message(text("\red <B>[src] starts having a seizure!"), 1)
 				Paralyse(10)
 				make_jittery(1000)
-		if(disabilities & COUGHING)
-			if((prob(5) && paralysis <= 1))
+		if (disabilities & COUGHING)
+			if ((prob(5) && paralysis <= 1))
 				drop_item()
 				spawn( 0 )
 					emote("cough")
 					return
-		if(disabilities & TOURETTES)
-			if((prob(10) && paralysis <= 1))
+		if (disabilities & TOURETTES)
+			if ((prob(10) && paralysis <= 1))
 				Stun(10)
 				spawn( 0 )
 					switch(rand(1, 3))
@@ -171,12 +171,12 @@
 					pixel_x = old_x
 					pixel_y = old_y
 					return
-		if(disabilities & NERVOUS)
-			if(prob(10))
+		if (disabilities & NERVOUS)
+			if (prob(10))
 				stuttering = max(10, stuttering)
 		// No. -- cib
-		/*if(getBrainLoss() >= 60 && stat != 2)
-			if(prob(3))
+		/*if (getBrainLoss() >= 60 && stat != 2)
+			if (prob(3))
 				switch(pick(1,2,3))
 					if(1)
 						say(pick("IM A PONY NEEEEEEIIIIIIIIIGH", "without oxigen blob don't evoluate?", "CAPTAINS A COMDOM", "[pick("", "that faggot traitor")] [pick("joerge", "george", "gorge", "gdoruge")] [pick("mellens", "melons", "mwrlins")] is grifing me HAL;P!!!", "can u give me [pick("telikesis","halk","eppilapse")]?", "THe saiyans screwed", "Bi is THE BEST OF BOTH WORLDS>", "I WANNA PET TEH monkeyS", "stop grifing me!!!!", "SOTP IT#"))
@@ -219,21 +219,21 @@
 			if((COLD_RESISTANCE in mutations) || (prob(1)))
 				heal_organ_damage(0,1)
 
-		if((HULK in mutations) && health <= 25)
+		if ((HULK in mutations) && health <= 25)
 			mutations.Remove(HULK)
 			update_mutations()		//update our mutation overlays
 			src << "\red You suddenly feel very weak."
 			Weaken(3)
 			emote("collapse")
 
-		if(radiation)
-			if(radiation > 100)
+		if (radiation)
+			if (radiation > 100)
 				radiation = 100
 				Weaken(10)
 				src << "\red You feel weak."
 				emote("collapse")
 
-			if(radiation < 0)
+			if (radiation < 0)
 				radiation = 0
 
 			else
@@ -286,7 +286,7 @@
 			losebreath++
 		if(losebreath>0) //Suffocating so do not take a breath
 			losebreath--
-			if(prob(10)) //Gasp per 10 ticks? Sounds about right.
+			if (prob(10)) //Gasp per 10 ticks? Sounds about right.
 				spawn emote("gasp")
 			if(istype(loc, /obj/))
 				var/obj/location_as_object = loc
@@ -353,9 +353,9 @@
 
 	proc/get_breath_from_internal(volume_needed)
 		if(internal)
-			if(!contents.Find(internal))
+			if (!contents.Find(internal))
 				internal = null
-			if(!wear_mask || !(wear_mask.flags & MASKINTERNALS) )
+			if (!wear_mask || !(wear_mask.flags & MASKINTERNALS) )
 				internal = null
 			if(internal)
 				return internal.remove_air_volume(volume_needed)
@@ -420,7 +420,7 @@
 				adjustOxyLoss(HUMAN_MAX_OXYLOSS)
 				failed_last_breath = 1
 			oxygen_alert = max(oxygen_alert, 1)
-		/*else if(O2_pp > safe_oxygen_max) 		// Too much oxygen (commented this out for now, I'll deal with pressure damage elsewhere I suppose)
+		/*else if (O2_pp > safe_oxygen_max) 		// Too much oxygen (commented this out for now, I'll deal with pressure damage elsewhere I suppose)
 			spawn(0) emote("cough")
 			var/ratio = O2_pp/safe_oxygen_max
 			oxyloss += 5*ratio
@@ -526,38 +526,37 @@
 	proc/handle_environment(datum/gas_mixture/environment)
 		if(!environment)
 			return
-		var/loc_temp = T0C
-		if(istype(loc, /obj/mecha))
-			var/obj/mecha/M = loc
-			loc_temp =  M.return_temperature()
-		else if(istype(get_turf(src), /turf/space))
-			var/turf/heat_turf = get_turf(src)
-			loc_temp = heat_turf.temperature
-		else if(istype(loc, /obj/machinery/atmospherics/unary/cryo_cell))
-			loc_temp = loc:air_contents.temperature
-		else
-			loc_temp = environment.temperature
+		if(!istype(get_turf(src), /turf/space)) //space is not meant to change your body temperature.
+			var/loc_temp = T0C
+			if(istype(loc, /obj/mecha))
+				var/obj/mecha/M = loc
+				loc_temp =  M.return_temperature()
+			else if(istype(get_turf(src), /turf/space))
+			else if(istype(loc, /obj/machinery/atmospherics/unary/cryo_cell))
+				loc_temp = loc:air_contents.temperature
+			else
+				loc_temp = environment.temperature
 
-		//world << "Loc temp: [loc_temp] - Body temp: [bodytemperature] - Fireloss: [getFireLoss()] - Thermal protection: [get_thermal_protection()] - Fire protection: [thermal_protection + add_fire_protection(loc_temp)] - Heat capacity: [environment_heat_capacity] - Location: [loc] - src: [src]"
+			//world << "Loc temp: [loc_temp] - Body temp: [bodytemperature] - Fireloss: [getFireLoss()] - Thermal protection: [get_thermal_protection()] - Fire protection: [thermal_protection + add_fire_protection(loc_temp)] - Heat capacity: [environment_heat_capacity] - Location: [loc] - src: [src]"
 
-		//Body temperature is adjusted in two steps. Firstly your body tries to stabilize itself a bit.
-		if(stat != 2)
-			stabilize_temperature_from_calories()
+			//Body temperature is adjusted in two steps. Firstly your body tries to stabilize itself a bit.
+			if(stat != 2)
+				stabilize_temperature_from_calories()
 
-//		log_debug("Adjusting to atmosphere.")
-		//After then, it reacts to the surrounding atmosphere based on your thermal protection
-		if(loc_temp < BODYTEMP_COLD_DAMAGE_LIMIT)			//Place is colder than we are
-			var/thermal_protection = get_cold_protection(loc_temp) //This returns a 0 - 1 value, which corresponds to the percentage of protection based on what you're wearing and what you're exposed to.
-			if(thermal_protection < 1)
-				var/amt = min((1-thermal_protection) * ((loc_temp - bodytemperature) / BODYTEMP_COLD_DIVISOR), BODYTEMP_COOLING_MAX)
-//				log_debug("[loc_temp] is Cold. Cooling by [amt]")
-				bodytemperature += amt
-		else if(loc_temp > BODYTEMP_HEAT_DAMAGE_LIMIT)			//Place is hotter than we are
-			var/thermal_protection = get_heat_protection(loc_temp) //This returns a 0 - 1 value, which corresponds to the percentage of protection based on what you're wearing and what you're exposed to.
-			if(thermal_protection < 1)
-				var/amt = min((1-thermal_protection) * ((loc_temp - bodytemperature) / BODYTEMP_HEAT_DIVISOR), BODYTEMP_HEATING_MAX)
-//				log_debug("[loc_temp] is Heat. Heating up by [amt]")
-				bodytemperature += amt
+	//		log_debug("Adjusting to atmosphere.")
+			//After then, it reacts to the surrounding atmosphere based on your thermal protection
+			if(loc_temp < BODYTEMP_COLD_DAMAGE_LIMIT)			//Place is colder than we are
+				var/thermal_protection = get_cold_protection(loc_temp) //This returns a 0 - 1 value, which corresponds to the percentage of protection based on what you're wearing and what you're exposed to.
+				if(thermal_protection < 1)
+					var/amt = min((1-thermal_protection) * ((loc_temp - bodytemperature) / BODYTEMP_COLD_DIVISOR), BODYTEMP_COOLING_MAX)
+	//				log_debug("[loc_temp] is Cold. Cooling by [amt]")
+					bodytemperature += amt
+			else if (loc_temp > BODYTEMP_HEAT_DAMAGE_LIMIT)			//Place is hotter than we are
+				var/thermal_protection = get_heat_protection(loc_temp) //This returns a 0 - 1 value, which corresponds to the percentage of protection based on what you're wearing and what you're exposed to.
+				if(thermal_protection < 1)
+					var/amt = min((1-thermal_protection) * ((loc_temp - bodytemperature) / BODYTEMP_HEAT_DIVISOR), BODYTEMP_HEATING_MAX)
+	//				log_debug("[loc_temp] is Heat. Heating up by [amt]")
+					bodytemperature += amt
 
 		// +/- 50 degrees from 310.15K is the 'safe' zone, where no damage is dealt.
 		if(bodytemperature > BODYTEMP_HEAT_DAMAGE_LIMIT)
@@ -638,7 +637,7 @@
 
 	proc/stabilize_temperature_from_calories()
 		var/body_temperature_difference = 310.15 - bodytemperature
-		if(abs(body_temperature_difference) < 0.01)
+		if (abs(body_temperature_difference) < 0.01)
 			return //fuck this precision
 		switch(bodytemperature)
 			if(-INFINITY to 260.15) //260.15 is 310.15 - 50, the temperature where you start to feel effects.
@@ -866,7 +865,7 @@
 					else						light_amount =  10
 			if(light_amount > 2) //if there's enough light, start dying
 				take_overall_damage(1,1)
-			else if(light_amount < 2) //heal in the dark
+			else if (light_amount < 2) //heal in the dark
 				heal_overall_damage(1,1)
 
 /*		//The fucking FAT mutation is the dumbest shit ever. It makes the code so difficult to work with
@@ -889,10 +888,10 @@
 */
 
 		// nutrition decrease
-		if(nutrition > 0 && stat != 2)
+		if (nutrition > 0 && stat != 2)
 			nutrition = max (0, nutrition - HUNGER_FACTOR)
 
-		if(nutrition > 450)
+		if (nutrition > 450)
 			if(overeatduration < 600) //capped so people don't take forever to unfat
 				overeatduration++
 		else
@@ -903,10 +902,10 @@
 			if(nutrition < 200)
 				take_overall_damage(2,0)
 
-		if(drowsyness)
+		if (drowsyness)
 			drowsyness--
 			eye_blurry = max(2, eye_blurry)
-			if(prob(5))
+			if (prob(5))
 				sleeping += 1
 				Paralyse(5)
 
@@ -991,7 +990,7 @@
 			else if(sleeping)
 				handle_dreams()
 				adjustHalLoss(-3)
-				if(mind)
+				if (mind)
 					if((mind.active && client != null) || immune_to_ssd) //This also checks whether a client is connected, if not, sleep is not reduced.
 						sleeping = max(sleeping-1, 0)
 				blinded = 1
@@ -1040,7 +1039,7 @@
 
 			if(stuttering)
 				stuttering = max(stuttering-1, 0)
-			if(src.slurring)
+			if (src.slurring)
 				slurring = max(slurring-1, 0)
 			if(silent)
 				silent = max(silent-1, 0)
@@ -1226,7 +1225,7 @@
 				see_invisible = SEE_INVISIBLE_LIVING
 
 			if(healths)
-				if(analgesic)
+				if (analgesic)
 					healths.icon_state = "health_health_numb"
 				else
 					switch(hal_screwyhud)
@@ -1329,7 +1328,7 @@
 	proc/handle_random_events()
 		// Puke if toxloss is too high
 		if(!stat)
-			if(getToxLoss() >= 45 && nutrition > 20)
+			if (getToxLoss() >= 45 && nutrition > 20)
 				vomit()
 
 		//0.1% chance of playing a scary sound to someone who's in complete darkness
@@ -1420,16 +1419,16 @@
 		if(shock_stage == 40)
 			src << "<font color='red'><b>"+pick("The pain is excrutiating!", "Please, just end the pain!", "Your whole body is going numb!")
 
-		if(shock_stage >= 60)
+		if (shock_stage >= 60)
 			if(shock_stage == 60) emote("me",1,"'s body becomes limp.")
-			if(prob(5))
+			if (prob(5))
 				Stun(20)
 				lying = 1
 
 		if(shock_stage == 80)
 			src << "<font color='red'><b>"+pick("You see a light at the end of the tunnel!", "You feel like you could die any moment now.", "You're about to lose consciousness.")
 
-		if(shock_stage > 80)
+		if (shock_stage > 80)
 			Paralyse(rand(15,28))
 
 	proc/handle_pulse()

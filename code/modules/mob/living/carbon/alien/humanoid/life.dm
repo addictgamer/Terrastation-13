@@ -12,14 +12,14 @@
 	set invisibility = 0
 	set background = 1
 
-	if(monkeyizing)
+	if (monkeyizing)
 		return
 
 	..()
 
 	var/datum/gas_mixture/environment = loc.return_air()
 
-	if(stat != DEAD) //still breathing
+	if (stat != DEAD) //still breathing
 
 		//First, resolve location and get a breath
 
@@ -68,24 +68,24 @@
 
 /mob/living/carbon/alien/humanoid
 	proc/handle_disabilities()
-		if(disabilities & EPILEPSY)
-			if((prob(1) && paralysis < 10))
+		if (disabilities & EPILEPSY)
+			if ((prob(1) && paralysis < 10))
 				src << "\red You have a seizure!"
 				Paralyse(10)
-		if(disabilities & COUGHING)
-			if((prob(5) && paralysis <= 1))
+		if (disabilities & COUGHING)
+			if ((prob(5) && paralysis <= 1))
 				drop_item()
 				spawn( 0 )
 					emote("cough")
 					return
-		if(disabilities & TOURETTES)
-			if((prob(10) && paralysis <= 1))
+		if (disabilities & TOURETTES)
+			if ((prob(10) && paralysis <= 1))
 				Stun(10)
 				spawn( 0 )
 					emote("twitch")
 					return
-		if(disabilities & NERVOUS)
-			if(prob(10))
+		if (disabilities & NERVOUS)
+			if (prob(10))
 				stuttering = max(10, stuttering)
 
 
@@ -102,7 +102,7 @@
 
 		if(losebreath>0) //Suffocating so do not take a breath
 			losebreath--
-			if(prob(75)) //High chance of gasping for air
+			if (prob(75)) //High chance of gasping for air
 				spawn emote("gasp")
 			if(istype(loc, /obj/))
 				var/obj/location_as_object = loc
@@ -150,16 +150,16 @@
 
 	proc/get_breath_from_internal(volume_needed)
 		if(internal)
-			if(!contents.Find(internal))
+			if (!contents.Find(internal))
 				internal = null
-			if(!wear_mask || !(wear_mask.flags & MASKINTERNALS) )
+			if (!wear_mask || !(wear_mask.flags & MASKINTERNALS) )
 				internal = null
 			if(internal)
-				if(internals)
+				if (internals)
 					internals.icon_state = "internal1"
 				return internal.remove_air_volume(volume_needed)
 			else
-				if(internals)
+				if (internals)
 					internals.icon_state = "internal0"
 		return null
 
@@ -273,13 +273,13 @@
 					src << "\red You suddenly feel blubbery!"
 					mutations.Add(FAT)
  FUCK YOU FATCODE -Hawk */
-		if(nutrition > 0)
+		if (nutrition > 0)
 			nutrition -= HUNGER_FACTOR
 
-		if(drowsyness)
+		if (drowsyness)
 			drowsyness--
 			eye_blurry = max(2, eye_blurry)
-			if(prob(5))
+			if (prob(5))
 				sleeping += 1
 				Paralyse(5)
 
@@ -378,21 +378,21 @@
 
 	proc/handle_regular_hud_updates()
 
-		if(stat == 2 || (XRAY in mutations))
+		if (stat == 2 || (XRAY in mutations))
 			sight |= SEE_TURFS
 			sight |= SEE_MOBS
 			sight |= SEE_OBJS
 			see_in_dark = 8
 			see_invisible = SEE_INVISIBLE_LEVEL_TWO
-		else if(stat != 2)
+		else if (stat != 2)
 			sight |= SEE_MOBS
 			sight &= ~SEE_TURFS
 			sight &= ~SEE_OBJS
 			see_in_dark = 4
 			see_invisible = SEE_INVISIBLE_LEVEL_TWO
 
-		if(healths)
-			if(stat != 2)
+		if (healths)
+			if (stat != 2)
 				switch(health)
 					if(100 to INFINITY)
 						healths.icon_state = "health0"
@@ -412,32 +412,32 @@
 		if(pullin)	pullin.icon_state = "pull[pulling ? 1 : 0]"
 
 
-		if(toxin)	toxin.icon_state = "tox[toxins_alert ? 1 : 0]"
-		if(oxygen) oxygen.icon_state = "oxy[oxygen_alert ? 1 : 0]"
-		if(fire) fire.icon_state = "fire[fire_alert ? 1 : 0]"
+		if (toxin)	toxin.icon_state = "tox[toxins_alert ? 1 : 0]"
+		if (oxygen) oxygen.icon_state = "oxy[oxygen_alert ? 1 : 0]"
+		if (fire) fire.icon_state = "fire[fire_alert ? 1 : 0]"
 		//NOTE: the alerts dont reset when youre out of danger. dont blame me,
 		//blame the person who coded them. Temporary fix added.
-		if(client)
+		if (client)
 			client.screen.Remove(global_hud.blurry,global_hud.druggy,global_hud.vimpaired)
 
-		if((blind && stat != 2))
-			if((blinded))
+		if ((blind && stat != 2))
+			if ((blinded))
 				blind.layer = 18
 			else
 				blind.layer = 0
 
-				if(disabilities & NEARSIGHTED)
+				if (disabilities & NEARSIGHTED)
 					client.screen += global_hud.vimpaired
 
-				if(eye_blurry)
+				if (eye_blurry)
 					client.screen += global_hud.blurry
 
-				if(druggy)
+				if (druggy)
 					client.screen += global_hud.druggy
 
-		if(stat != 2)
-			if(machine)
-				if(!( machine.check_eye(src) ))
+		if (stat != 2)
+			if (machine)
+				if (!( machine.check_eye(src) ))
 					reset_view(null)
 			else
 				if(client && !client.adminobs)

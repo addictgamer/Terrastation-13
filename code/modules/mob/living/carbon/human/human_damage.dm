@@ -18,9 +18,9 @@
 /mob/living/carbon/human/getBrainLoss()
 	var/res = brainloss
 	var/datum/organ/internal/brain/sponge = internal_organs["brain"]
-	if(sponge.is_bruised())
+	if (sponge.is_bruised())
 		res += 20
-	if(sponge.is_broken())
+	if (sponge.is_broken())
 		res += 50
 	res = min(res,maxHealth*2)
 	return res
@@ -67,28 +67,28 @@
 	..()
 	var/heal_prob = max(0, 80 - getCloneLoss())
 	var/mut_prob = min(80, getCloneLoss()+10)
-	if(amount > 0)
-		if(prob(mut_prob))
+	if (amount > 0)
+		if (prob(mut_prob))
 			var/list/datum/organ/external/candidates = list()
 			for (var/datum/organ/external/O in organs)
 				if(!(O.status & ORGAN_MUTATED))
 					candidates |= O
-			if(candidates.len)
+			if (candidates.len)
 				var/datum/organ/external/O = pick(candidates)
 				O.mutate()
 				src << "<span class = 'notice'>Something is not right with your [O.display_name]...</span>"
 				return
 	else
-		if(prob(heal_prob))
+		if (prob(heal_prob))
 			for (var/datum/organ/external/O in organs)
-				if(O.status & ORGAN_MUTATED)
+				if (O.status & ORGAN_MUTATED)
 					O.unmutate()
 					src << "<span class = 'notice'>Your [O.display_name] is shaped normally again.</span>"
 					return
 
-	if(getCloneLoss() < 1)
+	if (getCloneLoss() < 1)
 		for (var/datum/organ/external/O in organs)
-			if(O.status & ORGAN_MUTATED)
+			if (O.status & ORGAN_MUTATED)
 				O.unmutate()
 				src << "<span class = 'notice'>Your [O.display_name] is shaped normally again.</span>"
 ////////////////////////////////////////////
@@ -177,7 +177,7 @@
 /mob/living/carbon/human/proc/HealDamage(zone, brute, burn)
 	var/datum/organ/external/E = get_organ(zone)
 	if(istype(E, /datum/organ/external))
-		if(E.heal_damage(brute, burn))
+		if (E.heal_damage(brute, burn))
 			UpdateDamageIcon()
 	else
 		return 0
@@ -186,7 +186,7 @@
 
 /mob/living/carbon/human/proc/get_organ(var/zone)
 	if(!zone)	zone = "chest"
-	if(zone in list( "eyes", "mouth" ))
+	if (zone in list( "eyes", "mouth" ))
 		zone = "head"
 	return organs_by_name[zone]
 

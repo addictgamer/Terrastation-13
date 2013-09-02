@@ -130,7 +130,7 @@
 
 // setup the PDA and its name
 /mob/living/silicon/robot/proc/setup_PDA()
-	if(!rbPDA)
+	if (!rbPDA)
 		rbPDA = new/obj/item/device/pda/ai(src)
 	rbPDA.set_name_and_job(custom_name,braintype)
 
@@ -220,7 +220,7 @@
 			channels = list("Security" = 1)
 
 	//Custom_sprite check and entry
-	if(custom_sprite == 1)
+	if (custom_sprite == 1)
 		module_sprites["Custom"] = "[src.ckey]-[modtype]"
 
 	hands.icon_state = lowertext(modtype)
@@ -254,7 +254,7 @@
 	setup_PDA()
 
 	//We also need to update name of internal camera.
-	if(camera)
+	if (camera)
 		camera.c_tag = changed_name
 
 	if(!custom_sprite) //Check for custom sprite
@@ -281,7 +281,7 @@
 	spawn(0)
 		var/newname
 		newname = input(src,"You are a robot. Enter a name, or leave blank for the default name.", "Name change","") as text
-		if(newname != "")
+		if (newname != "")
 			custom_name = newname
 
 		updatename()
@@ -305,14 +305,14 @@
 	for (var/cat in alarms)
 		dat += text("<B>[cat]</B><BR>\n")
 		var/list/L = alarms[cat]
-		if(L.len)
+		if (L.len)
 			for (var/alarm in L)
 				var/list/alm = L[alarm]
 				var/area/A = alm[1]
 				var/list/sources = alm[3]
 				dat += "<NOBR>"
 				dat += text("-- [A.name]")
-				if(sources.len > 1)
+				if (sources.len > 1)
 					dat += text("- [sources.len] sources")
 				dat += "</NOBR><BR>\n"
 		else
@@ -370,7 +370,7 @@
 		src << "\red You enable [C.name]."
 
 /mob/living/silicon/robot/blob_act()
-	if(stat != 2)
+	if (stat != 2)
 		adjustBruteLoss(60)
 		updatehealth()
 		return 1
@@ -395,7 +395,7 @@
 /mob/living/silicon/robot/proc/show_jetpack_pressure()
 	// if you have a jetpack, show the internal tank pressure
 	var/obj/item/weapon/tank/jetpack/current_jetpack = installed_jetpack()
-	if(current_jetpack)
+	if (current_jetpack)
 		stat("Internal Atmosphere Info", current_jetpack.name)
 		stat("Tank Pressure", current_jetpack.air_contents.return_pressure())
 
@@ -419,7 +419,7 @@
 /mob/living/silicon/robot/Stat()
 	..()
 	statpanel("Status")
-	if(client.statpanel == "Status")
+	if (client.statpanel == "Status")
 		show_cell_power()
 		show_jetpack_pressure()
 
@@ -433,17 +433,17 @@
 
 	switch(severity)
 		if(1.0)
-			if(stat != 2)
+			if (stat != 2)
 				adjustBruteLoss(100)
 				adjustFireLoss(100)
 				gib()
 				return
 		if(2.0)
-			if(stat != 2)
+			if (stat != 2)
 				adjustBruteLoss(60)
 				adjustFireLoss(60)
 		if(3.0)
-			if(stat != 2)
+			if (stat != 2)
 				adjustBruteLoss(30)
 
 	updatehealth()
@@ -453,9 +453,9 @@
 	for(var/mob/M in viewers(src, null))
 		M.show_message(text("\red [src] has been hit by [O]"), 1)
 		//Foreach goto(19)
-	if(health > 0)
+	if (health > 0)
 		adjustBruteLoss(30)
-		if((O.icon_state == "flaming"))
+		if ((O.icon_state == "flaming"))
 			adjustFireLoss(40)
 		updatehealth()
 	return
@@ -470,7 +470,7 @@
 
 /mob/living/silicon/robot/Bump(atom/movable/AM as mob|obj, yes)
 	spawn( 0 )
-		if((!( yes ) || now_pushing))
+		if ((!( yes ) || now_pushing))
 			return
 		now_pushing = 1
 		if(ismob(AM))
@@ -485,16 +485,16 @@
 				return
 		now_pushing = 0
 		..()
-		if(istype(AM, /obj/machinery/recharge_station))
+		if (istype(AM, /obj/machinery/recharge_station))
 			var/obj/machinery/recharge_station/F = AM
 			F.move_inside()
-		if(!istype(AM, /atom/movable))
+		if (!istype(AM, /atom/movable))
 			return
-		if(!now_pushing)
+		if (!now_pushing)
 			now_pushing = 1
-			if(!AM.anchored)
+			if (!AM.anchored)
 				var/t = get_dir(src, AM)
-				if(istype(AM, /obj/structure/window))
+				if (istype(AM, /obj/structure/window))
 					if(AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
 						for(var/obj/structure/window/win in get_step(AM,t))
 							now_pushing = 0
@@ -506,27 +506,27 @@
 
 
 /mob/living/silicon/robot/triggerAlarm(var/class, area/A, var/O, var/alarmsource)
-	if(stat == 2)
+	if (stat == 2)
 		return 1
 	var/list/L = alarms[class]
 	for (var/I in L)
-		if(I == A.name)
+		if (I == A.name)
 			var/list/alarm = L[I]
 			var/list/sources = alarm[3]
-			if(!(alarmsource in sources))
+			if (!(alarmsource in sources))
 				sources += alarmsource
 			return 1
 	var/obj/machinery/camera/C = null
 	var/list/CL = null
-	if(O && istype(O, /list))
+	if (O && istype(O, /list))
 		CL = O
-		if(CL.len == 1)
+		if (CL.len == 1)
 			C = CL[1]
-	else if(O && istype(O, /obj/machinery/camera))
+	else if (O && istype(O, /obj/machinery/camera))
 		C = O
 	L[A.name] = list(A, (C) ? C : O, list(alarmsource))
 	queueAlarm(text("--- [class] alarm detected in [A.name]!"), class)
-//	if(viewalerts) robot_alerts()
+//	if (viewalerts) robot_alerts()
 	return 1
 
 
@@ -534,22 +534,22 @@
 	var/list/L = alarms[class]
 	var/cleared = 0
 	for (var/I in L)
-		if(I == A.name)
+		if (I == A.name)
 			var/list/alarm = L[I]
 			var/list/srcs  = alarm[3]
-			if(origin in srcs)
+			if (origin in srcs)
 				srcs -= origin
-			if(srcs.len == 0)
+			if (srcs.len == 0)
 				cleared = 1
 				L -= I
-	if(cleared)
+	if (cleared)
 		queueAlarm(text("--- [class] alarm in [A.name] has been cleared."), class, 0)
-//		if(viewalerts) robot_alerts()
+//		if (viewalerts) robot_alerts()
 	return !cleared
 
 
 /mob/living/silicon/robot/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/handcuffs)) // fuck i don't even know why isrobot() in handcuff code isn't working so this will have to do
+	if (istype(W, /obj/item/weapon/handcuffs)) // fuck i don't even know why isrobot() in handcuff code isn't working so this will have to do
 		return
 
 	if(opened) // Are they trying to insert something?
@@ -566,12 +566,12 @@
 
 				return
 
-	if(istype(W, /obj/item/weapon/weldingtool))
-		if(!getBruteLoss())
+	if (istype(W, /obj/item/weapon/weldingtool))
+		if (!getBruteLoss())
 			user << "Nothing to fix here!"
 			return
 		var/obj/item/weapon/weldingtool/WT = W
-		if(WT.remove_fuel(0))
+		if (WT.remove_fuel(0))
 			adjustBruteLoss(-30)
 			updatehealth()
 			add_fingerprint(user)
@@ -582,7 +582,7 @@
 			return
 
 	else if(istype(W, /obj/item/weapon/cable_coil) && wiresexposed)
-		if(!getFireLoss())
+		if (!getFireLoss())
 			user << "Nothing to fix here!"
 			return
 		var/obj/item/weapon/cable_coil/coil = W
@@ -592,7 +592,7 @@
 		for(var/mob/O in viewers(user, null))
 			O.show_message(text("\red [user] has fixed some of the burnt wires on [src]!"), 1)
 
-	else if(istype(W, /obj/item/weapon/crowbar))	// crowbar means open or close the cover
+	else if (istype(W, /obj/item/weapon/crowbar))	// crowbar means open or close the cover
 		if(opened)
 			if(cell)
 				user << "You close the cover."
@@ -640,7 +640,7 @@
 				opened = 1
 				updateicon()
 
-	else if(istype(W, /obj/item/weapon/cell) && opened)	// trying to put a cell inside
+	else if (istype(W, /obj/item/weapon/cell) && opened)	// trying to put a cell inside
 		var/datum/robot_component/C = components["power cell"]
 		if(wiresexposed)
 			user << "Close the panel first."
@@ -656,8 +656,8 @@
 			C.wrapped = W
 			C.install()
 
-	else if(istype(W, /obj/item/weapon/wirecutters) || istype(W, /obj/item/device/multitool))
-		if(wiresexposed)
+	else if (istype(W, /obj/item/weapon/wirecutters) || istype(W, /obj/item/device/multitool))
+		if (wiresexposed)
 			interact(user)
 		else
 			user << "You can't reach the wiring."
@@ -680,7 +680,7 @@
 		else
 			user << "Unable to locate a radio."
 
-	else if(istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))			// trying to unlock the interface with an ID card
+	else if (istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))			// trying to unlock the interface with an ID card
 		if(emagged)//still allow them to open the cover
 			user << "The interface seems slightly damaged"
 		if(opened)
@@ -777,23 +777,23 @@
 		return ..()
 
 /mob/living/silicon/robot/attack_alien(mob/living/carbon/alien/humanoid/M as mob)
-	if(!ticker)
+	if (!ticker)
 		M << "You cannot attack people before the game has started."
 		return
 
-	if(istype(loc, /turf) && istype(loc.loc, /area/start))
+	if (istype(loc, /turf) && istype(loc.loc, /area/start))
 		M << "No attacking people at spawn, you jackass."
 		return
 
 	switch(M.a_intent)
 
-		if("help")
+		if ("help")
 			for(var/mob/O in viewers(src, null))
-				if((O.client && !( O.blinded )))
+				if ((O.client && !( O.blinded )))
 					O.show_message(text("\blue [M] caresses [src]'s plating with its scythe like arm."), 1)
 
-		if("grab")
-			if(M == src)
+		if ("grab")
+			if (M == src)
 				return
 			var/obj/item/weapon/grab/G = new /obj/item/weapon/grab( M, M, src )
 
@@ -803,14 +803,14 @@
 			G.synch()
 			playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 			for(var/mob/O in viewers(src, null))
-				if((O.client && !( O.blinded )))
+				if ((O.client && !( O.blinded )))
 					O.show_message(text("\red [] has grabbed [] passively!", M, src), 1)
 
-		if("hurt")
+		if ("hurt")
 			var/damage = rand(10, 20)
-			if(prob(90))
+			if (prob(90))
 				/*
-				if(M.class == "combat")
+				if (M.class == "combat")
 					damage += 15
 					if(prob(20))
 						weakened = max(weakened,4)
@@ -827,39 +827,39 @@
 			else
 				playsound(loc, 'sound/weapons/slashmiss.ogg', 25, 1, -1)
 				for(var/mob/O in viewers(src, null))
-					if((O.client && !( O.blinded )))
+					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] took a swipe at []!</B>", M, src), 1)
 
-		if("disarm")
+		if ("disarm")
 			if(!(lying))
-				if(rand(1,100) <= 85)
+				if (rand(1,100) <= 85)
 					Stun(7)
 					step(src,get_dir(M,src))
 					spawn(5) step(src,get_dir(M,src))
 					playsound(loc, 'sound/weapons/pierce.ogg', 50, 1, -1)
 					for(var/mob/O in viewers(src, null))
-						if((O.client && !( O.blinded )))
+						if ((O.client && !( O.blinded )))
 							O.show_message(text("\red <B>[] has forced back []!</B>", M, src), 1)
 				else
 					playsound(loc, 'sound/weapons/slashmiss.ogg', 25, 1, -1)
 					for(var/mob/O in viewers(src, null))
-						if((O.client && !( O.blinded )))
+						if ((O.client && !( O.blinded )))
 							O.show_message(text("\red <B>[] attempted to force back []!</B>", M, src), 1)
 	return
 
 
 
 /mob/living/silicon/robot/attack_slime(mob/living/carbon/slime/M as mob)
-	if(!ticker)
+	if (!ticker)
 		M << "You cannot attack people before the game has started."
 		return
 
 	if(M.Victim) return // can't attack while eating!
 
-	if(health > -100)
+	if (health > -100)
 
 		for(var/mob/O in viewers(src, null))
-			if((O.client && !( O.blinded )))
+			if ((O.client && !( O.blinded )))
 				O.show_message(text("\red <B>The [M.name] glomps []!</B>", src), 1)
 
 		var/damage = rand(1, 3)
@@ -890,7 +890,7 @@
 					M.powerlevel = 0
 
 				for(var/mob/O in viewers(src, null))
-					if((O.client && !( O.blinded )))
+					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>The [M.name] has electrified []!</B>", src), 1)
 
 				flick("noise", flash)
@@ -899,7 +899,7 @@
 				s.set_up(5, 1, src)
 				s.start()
 
-				if(prob(stunprob) && M.powerlevel >= 8)
+				if (prob(stunprob) && M.powerlevel >= 8)
 					adjustBruteLoss(M.powerlevel * rand(6,10))
 
 
@@ -1019,7 +1019,7 @@
 	if(!targeted_by && target_locked)
 		del(target_locked)
 	updateicon()
-	if(targeted_by && target_locked)
+	if (targeted_by && target_locked)
 		overlays += target_locked
 
 /mob/living/silicon/robot/proc/installed_modules()
@@ -1044,13 +1044,13 @@
 
 
 	for (var/obj in module.modules)
-		if(!obj)
+		if (!obj)
 			dat += text("<B>Resource depleted</B><BR>")
 		else if(activated(obj))
 			dat += text("[obj]: <B>Activated</B><BR>")
 		else
 			dat += text("[obj]: <A HREF=?src=\ref[src];act=\ref[obj]>Activate</A><BR>")
-	if(emagged)
+	if (emagged)
 		if(activated(module.emag))
 			dat += text("[module.emag]: <B>Activated</B><BR>")
 		else
@@ -1066,22 +1066,22 @@
 
 /mob/living/silicon/robot/Topic(href, href_list)
 	..()
-	if(href_list["mach_close"])
+	if (href_list["mach_close"])
 		var/t1 = text("window=[href_list["mach_close"]]")
 		unset_machine()
 		src << browse(null, t1)
 		return
 
-	if(href_list["showalerts"])
+	if (href_list["showalerts"])
 		robot_alerts()
 		return
 
-	if(href_list["mod"])
+	if (href_list["mod"])
 		var/obj/item/O = locate(href_list["mod"])
-		if(O)
+		if (O)
 			O.attack_self(src)
 
-	if(href_list["act"])
+	if (href_list["act"])
 		var/obj/item/O = locate(href_list["act"])
 		if(activated(O))
 			src << "Already activated"
@@ -1108,7 +1108,7 @@
 			src << "You need to disable a module first!"
 		installed_modules()
 
-	if(href_list["deact"])
+	if (href_list["deact"])
 		var/obj/item/O = locate(href_list["deact"])
 		if(activated(O))
 			if(module_state_1 == O)
@@ -1171,7 +1171,7 @@
 	return
 
 /mob/living/silicon/robot/proc/UnlinkSelf()
-	if(src.connected_ai)
+	if (src.connected_ai)
 		src.connected_ai = null
 	lawupdate = 0
 	lockcharge = 0
@@ -1201,7 +1201,7 @@
 	set src = usr
 
 	var/obj/item/W = get_active_hand()
-	if(W)
+	if (W)
 		W.attack_self(src)
 
 	return
@@ -1229,7 +1229,7 @@
 
 	var/icontype
 
-	if(src.name == "Lucy" && src.ckey == "rowtree")
+	if (src.name == "Lucy" && src.ckey == "rowtree")
 		icontype = "Lucy"
 		triesleft = 0
 	else
@@ -1247,7 +1247,7 @@
 	base_icon = icon_state
 	updateicon()
 
-	if(triesleft >= 1)
+	if (triesleft >= 1)
 		var/choice = input("Look at your icon - is this what you want?") in list("Yes","No")
 		if(choice=="No")
 			choose_icon(triesleft, module_sprites)

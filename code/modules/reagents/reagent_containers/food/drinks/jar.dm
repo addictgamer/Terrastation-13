@@ -12,7 +12,7 @@
 		reagents.add_reagent("slime", 50)
 
 	on_reagent_change()
-		if(reagents.reagent_list.len > 0)
+		if (reagents.reagent_list.len > 0)
 			switch(reagents.get_master_reagent_id())
 				if("slime")
 					icon_state = "jar_slime"

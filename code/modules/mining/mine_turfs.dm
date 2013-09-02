@@ -38,7 +38,7 @@
 		if(3.0)
 			return
 		if(2.0)
-			if(prob(70))
+			if (prob(70))
 				src.mineralAmt -= 1 //some of the stuff gets blown up
 				src.gets_drilled()
 		if(1.0)
@@ -52,22 +52,22 @@
 		var/turf/T
 		if((istype(get_step(src, NORTH), /turf/simulated/floor)) || (istype(get_step(src, NORTH), /turf/space)) || (istype(get_step(src, NORTH), /turf/simulated/shuttle/floor)))
 			T = get_step(src, NORTH)
-			if(T)
+			if (T)
 				T.overlays += image('icons/turf/walls.dmi', "rock_side_s")
 		if((istype(get_step(src, SOUTH), /turf/simulated/floor)) || (istype(get_step(src, SOUTH), /turf/space)) || (istype(get_step(src, SOUTH), /turf/simulated/shuttle/floor)))
 			T = get_step(src, SOUTH)
-			if(T)
+			if (T)
 				T.overlays += image('icons/turf/walls.dmi', "rock_side_n", layer=6)
 		if((istype(get_step(src, EAST), /turf/simulated/floor)) || (istype(get_step(src, EAST), /turf/space)) || (istype(get_step(src, EAST), /turf/simulated/shuttle/floor)))
 			T = get_step(src, EAST)
-			if(T)
+			if (T)
 				T.overlays += image('icons/turf/walls.dmi', "rock_side_w", layer=6)
 		if((istype(get_step(src, WEST), /turf/simulated/floor)) || (istype(get_step(src, WEST), /turf/space)) || (istype(get_step(src, WEST), /turf/simulated/shuttle/floor)))
 			T = get_step(src, WEST)
-			if(T)
+			if (T)
 				T.overlays += image('icons/turf/walls.dmi', "rock_side_e", layer=6)
 
-	if(mineralName && mineralAmt && spread && spreadChance)
+	if (mineralName && mineralAmt && spread && spreadChance)
 		for(var/trydir in list(1,2,4,8))
 			if(prob(spreadChance))
 				if(istype(get_step(src, trydir), /turf/simulated/mineral/random))
@@ -155,10 +155,10 @@
 
 /turf/simulated/mineral/random/New()
 	..()
-	if(prob(mineralChance))
+	if (prob(mineralChance))
 		var/mName = pickweight(mineralSpawnChanceList) //temp mineral name
 
-		if(mName)
+		if (mName)
 			var/turf/simulated/mineral/M
 			switch(mName)
 				if("Uranium")
@@ -187,7 +187,7 @@
 				M.archaeo_overlay = src.archaeo_overlay
 				M.excav_overlay = src.excav_overlay
 
-	/*else if(prob(artifactChance))
+	/*else if (prob(artifactChance))
 		new/obj/machinery/artifact(src)*/
 	return
 
@@ -293,36 +293,36 @@ commented out in r5061, I left it because of the shroom thingies
 
 /turf/simulated/mineral/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
-	if(!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+	if (!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
 		usr << "\red You don't have the dexterity to do this!"
 		return
 
-	if(istype(W, /obj/item/device/core_sampler))
+	if (istype(W, /obj/item/device/core_sampler))
 		src.geological_data.UpdateNearbyArtifactInfo(src)
 		var/obj/item/device/core_sampler/C = W
 		C.sample_item(src, user)
 		return
 
-	if(istype(W, /obj/item/device/depth_scanner))
+	if (istype(W, /obj/item/device/depth_scanner))
 		var/obj/item/device/depth_scanner/C = W
 		C.scan_atom(user, src)
 		return
 
-	if(istype(W, /obj/item/device/measuring_tape))
+	if (istype(W, /obj/item/device/measuring_tape))
 		var/obj/item/device/measuring_tape/P = W
 		user.visible_message("\blue[user] extends [P] towards [src].","\blue You extend [P] towards [src].")
 		if(do_after(user,25))
 			user << "\blue \icon[P] [src] has been excavated to a depth of [2*src.excavation_level]cm."
 		return
 
-	if(istype(W, /obj/item/weapon/pickaxe))
+	if (istype(W, /obj/item/weapon/pickaxe))
 		var/turf/T = user.loc
-		if(!( istype(T, /turf) ))
+		if (!( istype(T, /turf) ))
 			return
 /*
-	if(istype(W, /obj/item/weapon/pickaxe/radius))
+	if (istype(W, /obj/item/weapon/pickaxe/radius))
 		var/turf/T = user.loc
-		if(!( istype(T, /turf) ))
+		if (!( istype(T, /turf) ))
 			return
 */
 //Watch your tabbing, microwave. --NEO
@@ -441,19 +441,19 @@ commented out in r5061, I left it because of the shroom thingies
 
 /turf/simulated/mineral/proc/drop_mineral()
 	var/obj/item/weapon/ore/O
-	if(src.mineralName == "Uranium")
+	if (src.mineralName == "Uranium")
 		O = new /obj/item/weapon/ore/uranium(src)
-	if(src.mineralName == "Iron")
+	if (src.mineralName == "Iron")
 		O = new /obj/item/weapon/ore/iron(src)
-	if(src.mineralName == "Gold")
+	if (src.mineralName == "Gold")
 		O = new /obj/item/weapon/ore/gold(src)
-	if(src.mineralName == "Silver")
+	if (src.mineralName == "Silver")
 		O = new /obj/item/weapon/ore/silver(src)
-	if(src.mineralName == "Plasma")
+	if (src.mineralName == "Plasma")
 		O = new /obj/item/weapon/ore/plasma(src)
-	if(src.mineralName == "Diamond")
+	if (src.mineralName == "Diamond")
 		O = new /obj/item/weapon/ore/diamond(src)
-	if(src.mineralName == "Clown")
+	if (src.mineralName == "Clown")
 		O = new /obj/item/weapon/ore/clown(src)
 	if(O)
 		src.geological_data.UpdateNearbyArtifactInfo(src)
@@ -462,7 +462,7 @@ commented out in r5061, I left it because of the shroom thingies
 
 /turf/simulated/mineral/proc/gets_drilled(var/artifact_fail = 0)
 	//var/destroyed = 0 //used for breaking strange rocks
-	if((src.mineralName != "") && (src.mineralAmt > 0) && (src.mineralAmt < 11))
+	if ((src.mineralName != "") && (src.mineralAmt > 0) && (src.mineralAmt < 11))
 
 		//if the turf has already been excavated, some of it's ore has been removed
 		for (var/i=0;i<mineralAmt;i++)
@@ -573,14 +573,14 @@ commented out in r5061, I left it because of the shroom thingies
 /*
 /turf/simulated/mineral/proc/setRandomMinerals()
 	var/s = pickweight(list("uranium" = 5, "iron" = 50, "gold" = 5, "silver" = 5, "plasma" = 50, "diamond" = 1))
-	if(s)
+	if (s)
 		mineralName = s
 
 	var/N = text2path("/turf/simulated/mineral/[s]")
-	if(N)
+	if (N)
 		var/turf/simulated/mineral/M = new N
 		src = M
-		if(src.mineralName)
+		if (src.mineralName)
 			mineralAmt = 5
 	return*/
 
@@ -621,7 +621,7 @@ commented out in r5061, I left it because of the shroom thingies
 	var/proper_name = name
 	..()
 	name = proper_name
-	//if(prob(50))
+	//if (prob(50))
 	//	seedName = pick(list("1","2","3","4"))
 	//	seedAmt = rand(1,4)
 	if(prob(20))
@@ -634,7 +634,7 @@ commented out in r5061, I left it because of the shroom thingies
 		if(3.0)
 			return
 		if(2.0)
-			if(prob(70))
+			if (prob(70))
 				src.gets_dug()
 		if(1.0)
 			src.gets_dug()
@@ -645,12 +645,12 @@ commented out in r5061, I left it because of the shroom thingies
 	if(!W || !user)
 		return 0
 
-	if((istype(W, /obj/item/weapon/shovel)))
+	if ((istype(W, /obj/item/weapon/shovel)))
 		var/turf/T = user.loc
-		if(!( istype(T, /turf) ))
+		if (!( istype(T, /turf) ))
 			return
 
-		if(dug)
+		if (dug)
 			user << "\red This area has already been dug"
 			return
 
@@ -658,16 +658,16 @@ commented out in r5061, I left it because of the shroom thingies
 		playsound(src.loc, 'sound/effects/rustle1.ogg', 50, 1) //russle sounds sounded better
 
 		sleep(40)
-		if((user.loc == T && user.get_active_hand() == W))
+		if ((user.loc == T && user.get_active_hand() == W))
 			user << "\blue You dug a hole."
 			gets_dug()
 
-	if((istype(W,/obj/item/weapon/pickaxe/drill)))
+	if ((istype(W,/obj/item/weapon/pickaxe/drill)))
 		var/turf/T = user.loc
-		if(!( istype(T, /turf) ))
+		if (!( istype(T, /turf) ))
 			return
 
-		if(dug)
+		if (dug)
 			user << "\red This area has already been dug"
 			return
 
@@ -675,16 +675,16 @@ commented out in r5061, I left it because of the shroom thingies
 		playsound(src.loc, 'sound/effects/rustle1.ogg', 50, 1) //russle sounds sounded better
 
 		sleep(30)
-		if((user.loc == T && user.get_active_hand() == W))
+		if ((user.loc == T && user.get_active_hand() == W))
 			user << "\blue You dug a hole."
 			gets_dug()
 
-	if((istype(W,/obj/item/weapon/pickaxe/diamonddrill)) || (istype(W,/obj/item/weapon/pickaxe/borgdrill)))
+	if ((istype(W,/obj/item/weapon/pickaxe/diamonddrill)) || (istype(W,/obj/item/weapon/pickaxe/borgdrill)))
 		var/turf/T = user.loc
-		if(!( istype(T, /turf) ))
+		if (!( istype(T, /turf) ))
 			return
 
-		if(dug)
+		if (dug)
 			user << "\red This area has already been dug"
 			return
 
@@ -692,7 +692,7 @@ commented out in r5061, I left it because of the shroom thingies
 		playsound(src.loc, 'sound/effects/rustle1.ogg', 50, 1) //russle sounds sounded better
 
 		sleep(0)
-		if((user.loc == T && user.get_active_hand() == W))
+		if ((user.loc == T && user.get_active_hand() == W))
 			user << "\blue You dug a hole."
 			gets_dug()
 

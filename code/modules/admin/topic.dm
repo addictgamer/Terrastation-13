@@ -210,7 +210,7 @@
 
 		switch(href_list["call_shuttle"])
 			if("1")
-				if((!( ticker ) || emergency_shuttle.location))
+				if ((!( ticker ) || emergency_shuttle.location))
 					return
 				emergency_shuttle.incall()
 				captain_announce("The emergency shuttle has been called. It will arrive in [round(emergency_shuttle.timeleft()/60)] minutes.")
@@ -218,7 +218,7 @@
 				message_admins("\blue [key_name_admin(usr)] called the Emergency Shuttle to the station", 1)
 
 			if("2")
-				if((!( ticker ) || emergency_shuttle.location || emergency_shuttle.direction == 0))
+				if ((!( ticker ) || emergency_shuttle.location || emergency_shuttle.direction == 0))
 					return
 				switch(emergency_shuttle.direction)
 					if(-1)
@@ -769,7 +769,7 @@
 
 	else if(href_list["boot2"])
 		var/mob/M = locate(href_list["boot2"])
-		if(ismob(M))
+		if (ismob(M))
 			if(!check_if_greater_rights_than(M.client))
 				return
 			M << "\red You have been kicked from the server"
@@ -878,7 +878,7 @@
 		Banlist.cd = "/base/[banfolder]"
 		var/key = Banlist["key"]
 		if(alert(usr, "Are you sure you want to unban [key]?", "Confirmation", "Yes", "No") == "Yes")
-			if(RemoveBanjob(banfolder))
+			if (RemoveBanjob(banfolder))
 				unjobbanpanel()
 			else
 				alert(usr,"This ban has already been lifted / does not exist.","Error","Ok")
@@ -927,7 +927,7 @@
 	else if(href_list["c_mode2"])
 		if(!check_rights(R_ADMIN|R_SERVER))	return
 
-		if(ticker && ticker.mode)
+		if (ticker && ticker.mode)
 			return alert(usr, "The game has already started.", null, null, null, null)
 		master_mode = href_list["c_mode2"]
 		log_admin("[key_name(usr)] set the mode as [master_mode].")
@@ -1215,11 +1215,11 @@
 
 /***************** BEFORE**************
 
-	if(href_list["l_players"])
+	if (href_list["l_players"])
 		var/dat = "<B>Name/Real Name/Key/IP:</B><HR>"
 		for(var/mob/M in world)
 			var/foo = ""
-			if(ismob(M) && M.client)
+			if (ismob(M) && M.client)
 				if(!M.client.authenticated && !M.client.authenticating)
 					foo += text("\[ <A HREF='?src=\ref[];adminauth=\ref[]'>Authorize</A> | ", src, M)
 				else
@@ -1313,9 +1313,9 @@
 			var/mob/living/L = M
 			var/status
 			switch (M.stat)
-				if(0) status = "Alive"
-				if(1) status = "<font color='orange'><b>Unconscious</b></font>"
-				if(2) status = "<font color='red'><b>Dead</b></font>"
+				if (0) status = "Alive"
+				if (1) status = "<font color='orange'><b>Unconscious</b></font>"
+				if (2) status = "<font color='red'><b>Dead</b></font>"
 			health_description = "Status = [status]"
 			health_description += "<BR>Oxy: [L.getOxyLoss()] - Tox: [L.getToxLoss()] - Fire: [L.getFireLoss()] - Brute: [L.getBruteLoss()] - Clone: [L.getCloneLoss()] - Brain: [L.getBrainLoss()]"
 		else
@@ -1503,9 +1503,9 @@
 		var/atom/loc = usr.loc
 
 		var/dirty_paths
-		if(istext(href_list["object_list"]))
+		if (istext(href_list["object_list"]))
 			dirty_paths = list(href_list["object_list"])
-		else if(istype(href_list["object_list"], /list))
+		else if (istype(href_list["object_list"], /list))
 			dirty_paths = href_list["object_list"]
 
 		var/paths = list()
@@ -1553,39 +1553,39 @@
 			obj_dir = 2
 		var/obj_name = sanitize(href_list["object_name"])
 		var/where = href_list["object_where"]
-		if(!( where in list("onfloor","inhand","inmarked") ))
+		if (!( where in list("onfloor","inhand","inmarked") ))
 			where = "onfloor"
 
 		if( where == "inhand" )
 			usr << "Support for inhand not available yet. Will spawn on floor."
 			where = "onfloor"
 
-		if( where == "inhand" )	//Can only give when human or monkey
-			if( !( ishuman(usr) || ismonkey(usr) ) )
+		if ( where == "inhand" )	//Can only give when human or monkey
+			if ( !( ishuman(usr) || ismonkey(usr) ) )
 				usr << "Can only spawn in hand when you're a human or a monkey."
 				where = "onfloor"
-			else if( usr.get_active_hand() )
+			else if ( usr.get_active_hand() )
 				usr << "Your active hand is full. Spawning on floor."
 				where = "onfloor"
 
-		if( where == "inmarked" )
-			if( !marked_datum )
+		if ( where == "inmarked" )
+			if ( !marked_datum )
 				usr << "You don't have any object marked. Abandoning spawn."
 				return
 			else
-				if( !istype(marked_datum,/atom) )
+				if ( !istype(marked_datum,/atom) )
 					usr << "The object you have marked cannot be used as a target. Target must be of type /atom. Abandoning spawn."
 					return
 
 		var/atom/target //Where the object will be spawned
 		switch ( where )
-			if( "onfloor" )
+			if ( "onfloor" )
 				switch (href_list["offset_type"])
-					if("absolute")
+					if ("absolute")
 						target = locate(0 + X,0 + Y,0 + Z)
-					if("relative")
+					if ("relative")
 						target = locate(loc.x + X,loc.y + Y,loc.z + Z)
-			if( "inmarked" )
+			if ( "inmarked" )
 				target = marked_datum
 
 		if(target)
@@ -1607,7 +1607,7 @@
 									var/mob/M = O
 									M.real_name = obj_name
 
-		if(number == 1)
+		if (number == 1)
 			log_admin("[key_name(usr)] created a [english_list(paths)]")
 			for(var/path in paths)
 				if(ispath(path, /mob))
@@ -1648,7 +1648,7 @@
 /*					for(var/obj/machinery/vehicle/pod/O in world)
 					for(var/mob/M in src)
 						M.loc = src.loc
-						if(M.client)
+						if (M.client)
 							M.client.perspective = MOB_PERSPECTIVE
 							M.client.eye = M
 					del(O)
@@ -1770,9 +1770,9 @@
 								continue
 								//don't strip organs
 							H.u_equip(W)
-							if(H.client)
+							if (H.client)
 								H.client.screen -= W
-							if(W)
+							if (W)
 								W.loc = H.loc
 								W.dropped(H)
 								W.layer = initial(W.layer)
@@ -2099,7 +2099,7 @@
 //				message_admins("[key_name_admin(usr)] has triggered a battle to the death (only one)")
 		if(usr)
 			log_admin("[key_name(usr)] used secret [href_list["secretsfun"]]")
-			if(ok)
+			if (ok)
 				world << text("<B>A secret has been activated by []!</B>", usr.key)
 
 	else if(href_list["secretsadmin"])
@@ -2139,7 +2139,7 @@
 			if("showgm")
 				if(!ticker)
 					alert("The game hasn't started yet!")
-				else if(ticker.mode)
+				else if (ticker.mode)
 					alert("The game mode is [ticker.mode.name]")
 				else alert("For some reason there's a ticker, but not a game mode")
 			if("manifest")
@@ -2174,9 +2174,9 @@
 				dat += "</table>"
 				usr << browse(dat, "window=fingerprints;size=440x410")
 			else
-		if(usr)
+		if (usr)
 			log_admin("[key_name(usr)] used secret [href_list["secretsadmin"]]")
-			if(ok)
+			if (ok)
 				world << text("<B>A secret has been activated by []!</B>", usr.key)
 
 	else if(href_list["secretscoder"])
@@ -2192,12 +2192,12 @@
 				usr << browse(dat, "window=admin_log")
 			if("maint_access_brig")
 				for(var/obj/machinery/door/airlock/maintenance/M in world)
-					if(access_maint_tunnels in M.req_access)
+					if (access_maint_tunnels in M.req_access)
 						M.req_access = list(access_brig)
 				message_admins("[key_name_admin(usr)] made all maint doors brig access-only.")
 			if("maint_access_engiebrig")
 				for(var/obj/machinery/door/airlock/maintenance/M in world)
-					if(access_maint_tunnels in M.req_access)
+					if (access_maint_tunnels in M.req_access)
 						M.req_access = list()
 						M.req_one_access = list(access_brig,access_engine)
 				message_admins("[key_name_admin(usr)] made all maint doors engineering and brig access-only.")
@@ -2396,7 +2396,7 @@
 
 	else if(href_list["ac_setScreen"]) //Brings us to the main menu and resets all fields~
 		src.admincaster_screen = text2num(href_list["ac_setScreen"])
-		if(src.admincaster_screen == 0)
+		if (src.admincaster_screen == 0)
 			if(src.admincaster_feed_channel)
 				src.admincaster_feed_channel = new /datum/feed_channel
 			if(src.admincaster_feed_message)

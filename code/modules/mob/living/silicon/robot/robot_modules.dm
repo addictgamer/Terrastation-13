@@ -120,7 +120,7 @@
 			/obj/item/weapon/cable_coil,
 		)
 		for (var/T in what)
-			if(!(locate(T) in src.modules))
+			if (!(locate(T) in src.modules))
 				src.modules -= null
 				var/O = new T(src)
 				src.modules += O

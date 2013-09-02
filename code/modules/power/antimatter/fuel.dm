@@ -45,13 +45,13 @@
 
 	var/strength = convert2energy(mass)
 
-	if(strength < 773.0)
+	if (strength < 773.0)
 		var/turf/T = get_turf(src)
 
-		if(strength > (450+T0C))
+		if (strength > (450+T0C))
 			explosion(T, 0, 1, 2, 4)
 		else
-			if(strength > (300+T0C))
+			if (strength > (300+T0C))
 				explosion(T, 0, 0, 2, 3)
 
 		del(src)
@@ -82,7 +82,7 @@
 	return
 
 /obj/item/weapon/fuel/attack(mob/M as mob, mob/user as mob)
-	if(user != M)
+	if (user != M)
 		var/obj/effect/equip_e/human/O = new /obj/effect/equip_e/human(  )
 		O.source = user
 		O.target = M

@@ -90,9 +90,9 @@
 			// close distance, actually RAISE the chance to hit.
 			var/distance = get_dist(starting,loc)
 			var/miss_modifier = -30
-			if(istype(shot_from,/obj/item/weapon/gun))	//If you aim at someone beforehead, it'll hit more often.
+			if (istype(shot_from,/obj/item/weapon/gun))	//If you aim at someone beforehead, it'll hit more often.
 				var/obj/item/weapon/gun/daddy = shot_from //Kinda balanced by fact you need like 2 seconds to aim
-				if(daddy.target && original in daddy.target) //As opposed to no-delay pew pew
+				if (daddy.target && original in daddy.target) //As opposed to no-delay pew pew
 					miss_modifier += -30
 			def_zone = get_zone_with_miss_chance(def_zone, M, -30 + 8*distance)
 
@@ -107,17 +107,15 @@
 				if(istype(firer, /mob))
 					M.attack_log += "\[[time_stamp()]\] <b>[firer]/[firer.ckey]</b> shot <b>[M]/[M.ckey]</b> with a <b>[src.type]</b>"
 					firer.attack_log += "\[[time_stamp()]\] <b>[firer]/[firer.ckey]</b> shot <b>[M]/[M.ckey]</b> with a <b>[src.type]</b>"
-					log_attack("<font color='red'>[firer] ([firer.ckey]) shot [M] ([M.ckey]) with a [src.type]</font>")
-					msg_admin_attack("ATTACK: [firer] ([firer.ckey]) shot [M] ([M.ckey]) with a [src]") //BS12 EDIT ALG
+					msg_admin_attack("[firer] ([firer.ckey]) shot [M] ([M.ckey]) with a [src] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[firer.x];Y=[firer.y];Z=[firer.z]'>JMP</a>)") //BS12 EDIT ALG
 				else
 					M.attack_log += "\[[time_stamp()]\] <b>UNKNOWN SUBJECT (No longer exists)</b> shot <b>[M]/[M.ckey]</b> with a <b>[src]</b>"
-					log_attack("<font color='red'>UNKNOWN shot [M] ([M.ckey]) with a [src.type]</font>")
-					msg_admin_attack("ATTACK: UNKNOWN shot [M] ([M.ckey]) with a [src]") //BS12 EDIT ALG
+					msg_admin_attack("UNKNOWN shot [M] ([M.ckey]) with a [src] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[firer.x];Y=[firer.y];Z=[firer.z]'>JMP</a>)") //BS12 EDIT ALG
 
 		spawn(0)
 
 			if(A)
-				if(!forcedodge)
+				if (!forcedodge)
 					forcedodge = A.bullet_act(src, def_zone) // searches for return value
 				if(forcedodge == -1) // the bullet passes through a dense object!
 					bumped = 0 // reset bumped variable!

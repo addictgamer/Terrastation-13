@@ -33,7 +33,7 @@
 	if(!beaker) return
 	var/datum/reagents/R = beaker:reagents
 
-	if(href_list["isolate"])
+	if (href_list["isolate"])
 		var/datum/reagent/blood/Blood
 		for(var/datum/reagent/blood/B in R.reagent_list)
 			if(B)
@@ -42,17 +42,17 @@
 		var/list/virus = virus_copylist(Blood.data["virus2"])
 		var/choice = text2num(href_list["isolate"]);
 		for (var/datum/disease2/disease/V in virus)
-			if(V.uniqueID == choice)
+			if (V.uniqueID == choice)
 				virus2 = virus
 				isolating = 40
 				icon_state = "isolator_processing"
 		src.updateUsrDialog()
 		return
 
-	else if(href_list["main"])
+	else if (href_list["main"])
 		attack_hand(usr)
 		return
-	else if(href_list["eject"])
+	else if (href_list["eject"])
 		beaker:loc = src.loc
 		beaker = null
 		icon_state = "isolator"

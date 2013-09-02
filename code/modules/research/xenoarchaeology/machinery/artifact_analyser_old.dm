@@ -69,7 +69,7 @@
 	if(!owned_pad)
 		dat += "<B><font color=red>Unable to locate analysis pad.</font><BR></b>"
 		dat += "<HR><BR>"
-	else if(!src.working)
+	else if (!src.working)
 		dat += "<B>Artifact ID:</B> [cur_id]<BR>"
 		dat += "<B>Artifact Origin:</B> [aorigin] ([accuO]%)<BR>"
 		dat += "<B>Activation Trigger:</B> [atrigger] ([accuT]%)<BR>"
@@ -102,16 +102,16 @@
 	switch(failtype)
 		if(1)
 			src.aorigin = "Failed to Identify"
-			if(prob(20)) src.aorigin = pick(src.allorigins)
+			if (prob(20)) src.aorigin = pick(src.allorigins)
 		if(2)
 			src.atrigger = "Failed to Identify"
-			if(prob(20)) src.atrigger = pick(src.alltriggers)
+			if (prob(20)) src.atrigger = pick(src.alltriggers)
 		if(3)
 			src.aeffect1 = "Failed to Identify"
-			if(prob(20)) src.aeffect1 = pick(src.alleffects)
+			if (prob(20)) src.aeffect1 = pick(src.alleffects)
 		if(4)
 			src.aeffect2 = "Failed to Identify"
-			if(prob(20)) src.aeffect2 = pick(src.allranges)
+			if (prob(20)) src.aeffect2 = pick(src.allranges)
 
 /obj/machinery/artifact_analyser/proc/AA_Analyse()
 	if(!cur_artifact)
@@ -141,12 +141,12 @@
 		if(src.aeffect2 == cur_artifact.my_effect.effectmode)
 			range_correct = 1
 
-	if(src.accuO > 100) src.accuO = 100
-	if(src.accuT > 100) src.accuT = 100
-	if(src.accuE1 > 100) src.accuE1 = 100
-	if(src.accuE2 > 100) src.accuE2 = 100
+	if (src.accuO > 100) src.accuO = 100
+	if (src.accuT > 100) src.accuT = 100
+	if (src.accuE1 > 100) src.accuE1 = 100
+	if (src.accuE2 > 100) src.accuE2 = 100
 	// Roll to generate report
-	if(prob(accuO) || origin_correct)
+	if (prob(accuO) || origin_correct)
 		switch(cur_artifact.origin)
 			if("ancient") src.aorigin = "Ancient Robots"
 			if("martian") src.aorigin = "Martian"
@@ -158,7 +158,7 @@
 	else
 		AA_FailedAnalysis(1)
 		origin_bonuses[cur_artifact.origin] += 5
-	if(prob(accuT) || trigger_correct)
+	if (prob(accuT) || trigger_correct)
 		switch(cur_artifact.my_effect.trigger)
 			if("touch") src.atrigger = "Contact with Living Organism"
 			if("force") src.atrigger = "Heavy Impact"
@@ -175,7 +175,7 @@
 	else
 		AA_FailedAnalysis(2)
 		trigger_bonuses[cur_artifact.origin] += 1
-	if(prob(accuE1) || function_correct)
+	if (prob(accuE1) || function_correct)
 		switch(cur_artifact.my_effect.effecttype)
 			if("healing")  src.aeffect1 = "Healing Device"
 			if("injure") src.aeffect1 = "Anti-biological Weapon"
@@ -192,7 +192,7 @@
 	else
 		AA_FailedAnalysis(3)
 		function_bonuses[cur_artifact.origin] += 1
-	if(prob(accuE2) || range_correct)
+	if (prob(accuE2) || range_correct)
 		switch(cur_artifact.my_effect.effectmode)
 			if("aura") src.aeffect2 = "Constant Short-Range Energy Field"
 			if("pulse")
@@ -220,7 +220,7 @@
 			for(var/obj/machinery/artifact/A in pad_turf.contents)
 				findarti++
 				cur_artifact = A
-			if(findarti == 1)
+			if (findarti == 1)
 				if(cur_artifact && cur_artifact.being_used)
 					var/message = "<b>[src]</b> states, \"Cannot analyse. Excess energy drain is disrupting signal.\""
 					src.visible_message(message, message)
@@ -232,7 +232,7 @@
 					var/time = rand(30,50) + max(0, 300 - scan_num * 10)
 					/*for(var/i = artifact_research.starting_tier, i <= artifact_research.max_tiers, i++)
 						for(var/datum/artiresearch/R in artifact_research.researched_items[i])
-							if(R.bonustype == "analyser") time -= R.bonusTime*/
+							if (R.bonustype == "analyser") time -= R.bonusTime*/
 					time *= 10
 					var/message = "<b>[src]</b> states, \"Commencing analysis.\""
 					src.visible_message(message, message)
@@ -248,7 +248,7 @@
 							message = "<b>[src]</b> states, \"Analysis complete.\""
 							src.visible_message(message, message)
 							use_power(500)
-			else if(findarti > 1)
+			else if (findarti > 1)
 				var/message = "<b>[src]</b> states, \"Cannot analyse. Error isolating energy signature.\""
 				src.visible_message(message, message)
 			else

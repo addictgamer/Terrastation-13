@@ -42,14 +42,14 @@
 
 		else if(istype(A, /obj/mecha)) // Our line of sight stuff was already done in ListTargets().
 			var/obj/mecha/M = A
-			if(M.occupant)
+			if (M.occupant)
 				stance = HOSTILE_STANCE_ATTACK
 				T = M
 				break
 
 		if(istype(A, /obj/machinery/bot))
 			var/obj/machinery/bot/B = A
-			if(B.health > 0)
+			if (B.health > 0)
 				stance = HOSTILE_STANCE_ATTACK
 				T = B
 				break
@@ -178,7 +178,7 @@
 	playsound(user, projectilesound, 100, 1)
 	if(!A)	return
 
-	if(!istype(target, /turf))
+	if (!istype(target, /turf))
 		del(A)
 		return
 	A.current = target

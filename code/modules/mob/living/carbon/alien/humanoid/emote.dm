@@ -1,7 +1,7 @@
 /mob/living/carbon/alien/humanoid/emote(var/act,var/m_type=1,var/message = null)
 
 	var/param = null
-	if(findtext(act, "-", 1, null))
+	if (findtext(act, "-", 1, null))
 		var/t1 = findtext(act, "-", 1, null)
 		param = copytext(act, t1 + 1, length(act) + 1)
 		act = copytext(act, 1, t1)
@@ -11,44 +11,44 @@
 	var/muzzled = istype(src.wear_mask, /obj/item/clothing/mask/muzzle)
 
 	switch(act)
-		if("me")
+		if ("me")
 			if(silent)
 				return
-			if(src.client)
-				if(client.prefs.muted & MUTE_IC)
+			if (src.client)
+				if (client.prefs.muted & MUTE_IC)
 					src << "\red You cannot send IC messages (muted)."
 					return
-				if(src.client.handle_spam_prevention(message,MUTE_IC))
+				if (src.client.handle_spam_prevention(message,MUTE_IC))
 					return
-			if(stat)
+			if (stat)
 				return
 			if(!(message))
 				return
 			return custom_emote(m_type, message)
 
-		if("custom")
+		if ("custom")
 			return custom_emote(m_type, message)
 		if("sign")
-			if(!src.restrained())
+			if (!src.restrained())
 				message = text("<B>The alien</B> signs[].", (text2num(param) ? text(" the number []", text2num(param)) : null))
 				m_type = 1
-		if("burp")
-			if(!muzzled)
+		if ("burp")
+			if (!muzzled)
 				message = "<B>[src]</B> burps."
 				m_type = 2
-		if("deathgasp")
+		if ("deathgasp")
 			message = "<B>[src]</B> lets out a waning guttural screech, green blood bubbling from its maw..."
 			m_type = 2
 		if("scratch")
-			if(!src.restrained())
+			if (!src.restrained())
 				message = "<B>The [src.name]</B> scratches."
 				m_type = 1
 		if("whimper")
-			if(!muzzled)
+			if (!muzzled)
 				message = "<B>The [src.name]</B> whimpers."
 				m_type = 2
 		if("roar")
-			if(!muzzled)
+			if (!muzzled)
 				message = "<B>The [src.name]</B> roars."
 				m_type = 2
 		if("hiss")
@@ -68,7 +68,7 @@
 			message = "<B>The [src.name]</B> drools."
 			m_type = 1
 		if("scretch")
-			if(!muzzled)
+			if (!muzzled)
 				message = "<B>The [src.name]</B> scretches."
 				m_type = 2
 		if("choke")
@@ -93,18 +93,18 @@
 			message = "<B>The [src.name]</B> twitches violently."
 			m_type = 1
 		if("dance")
-			if(!src.restrained())
+			if (!src.restrained())
 				message = "<B>The [src.name]</B> dances around happily."
 				m_type = 1
 		if("roll")
-			if(!src.restrained())
+			if (!src.restrained())
 				message = "<B>The [src.name]</B> rolls."
 				m_type = 1
 		if("shake")
 			message = "<B>The [src.name]</B> shakes its head."
 			m_type = 1
 		if("gnarl")
-			if(!muzzled)
+			if (!muzzled)
 				message = "<B>The [src.name]</B> gnarls and shows its teeth.."
 				m_type = 2
 		if("jump")
@@ -118,13 +118,13 @@
 			src << "burp, deathgasp, choke, collapse, dance, drool, gasp, shiver, gnarl, jump, moan, nod, roar, roll, scratch,\nscretch, shake, sign-#, sit, sulk, sway, tail, twitch, whimper"
 		else
 			src << text("Invalid Emote: []", act)
-	if((message && src.stat == 0))
+	if ((message && src.stat == 0))
 		log_emote("[name]/[key] : [message]")
-		if(act == "roar")
+		if (act == "roar")
 			playsound(src.loc, 'sound/voice/hiss5.ogg', 40, 1, 1)
-		if(act == "deathgasp")
+		if (act == "deathgasp")
 			playsound(src.loc, 'sound/voice/hiss6.ogg', 80, 1, 1)
-		if(m_type & 1)
+		if (m_type & 1)
 			for(var/mob/O in viewers(src, null))
 				O.show_message(message, m_type)
 				//Foreach goto(703)

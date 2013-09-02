@@ -114,7 +114,7 @@
 		//How much damage can we actually cause?
 		var/can_inflict = max_damage * config.organ_health_multiplier - (brute_dam + burn_dam)
 		if(can_inflict)
-			if(brute > 0)
+			if (brute > 0)
 				//Inflict all burte damage we can
 				if(can_cut)
 					createwound( CUT, min(brute,can_inflict) )
@@ -126,14 +126,14 @@
 				//How much brute damage is left to inflict
 				brute = max(0, brute - temp)
 
-			if(burn > 0 && can_inflict)
+			if (burn > 0 && can_inflict)
 				//Inflict all burn damage we can
 				createwound(BURN, min(burn,can_inflict))
 				//How much burn damage is left to inflict
 				burn = max(0, burn - can_inflict)
 		//If there are still hurties to dispense
-		if(burn || brute)
-			if(status & ORGAN_ROBOT)
+		if (burn || brute)
+			if (status & ORGAN_ROBOT)
 				droplimb(1) //Robot limbs just kinda fail at full damage.
 			else
 				//List organs we can pass it to
@@ -281,7 +281,7 @@
 		for(var/datum/wound/W in wounds)
 			if(!W.bandaged && !W.salved)
 				W.germ_level = max(W.germ_level, germ_level)	//Wounds get all the germs
-				if(W.germ_level > germ_level)	//Badly infected wounds raise internal germ levels
+				if (W.germ_level > germ_level)	//Badly infected wounds raise internal germ levels
 					germ_level++
 
 		if(germ_level > GANGREN_LEVEL_ONE && prob(round(germ_level/100)))
@@ -293,17 +293,17 @@
 			owner.adjustToxLoss(1)
 /*
 		if(germ_level > GANGREN_LEVEL_TERMINAL)
-			if(!(status & ORGAN_DEAD))
+			if (!(status & ORGAN_DEAD))
 				status |= ORGAN_DEAD
 				owner << "<span class='notice'>You can't feel your [display_name] anymore...</span>"
 				owner.update_body(1)
-			if(prob(10))	//Spreading the fun
-				if(children)	//To child organs
+			if (prob(10))	//Spreading the fun
+				if (children)	//To child organs
 					for (var/datum/organ/external/child in children)
-						if(!(child.status & (ORGAN_DEAD|ORGAN_DESTROYED|ORGAN_ROBOT)))
+						if (!(child.status & (ORGAN_DEAD|ORGAN_DESTROYED|ORGAN_ROBOT)))
 							child.germ_level += round(GERM_TRANSFER_AMOUNT)
-				if(parent)
-					if(!(parent.status & (ORGAN_DEAD|ORGAN_DESTROYED|ORGAN_ROBOT)))
+				if (parent)
+					if (!(parent.status & (ORGAN_DEAD|ORGAN_DESTROYED|ORGAN_ROBOT)))
 						parent.germ_level += round(GERM_TRANSFER_AMOUNT)
 */
 
@@ -329,7 +329,7 @@
 
 		// slow healing
 		var/heal_amt = 0
-		if(W.damage < 15) //this thing's edges are not in day's travel of each other, what healing?
+		if (W.damage < 15) //this thing's edges are not in day's travel of each other, what healing?
 			heal_amt += 0.2
 
 		if(W.is_treated() && W.damage < 50) //whoa, not even magical band aid can hold it together
@@ -374,7 +374,7 @@
 
 		number_wounds += W.amount
 
-	if(open && !clamped)	//things tend to bleed if they are CUT OPEN
+	if (open && !clamped)	//things tend to bleed if they are CUT OPEN
 		status |= ORGAN_BLEEDING
 
 
@@ -382,7 +382,7 @@
 // adjusted to set damage_state to brute/burn code only (without r_name0 as before)
 /datum/organ/external/proc/update_icon()
 	var/n_is = damage_state_text()
-	if(n_is != damage_state)
+	if (n_is != damage_state)
 		damage_state = n_is
 		owner.update_body(1)
 		return 1
@@ -399,18 +399,18 @@
 
 	if(burn_dam ==0)
 		tburn =0
-	else if(burn_dam < (max_damage * 0.25 / 2))
+	else if (burn_dam < (max_damage * 0.25 / 2))
 		tburn = 1
-	else if(burn_dam < (max_damage * 0.75 / 2))
+	else if (burn_dam < (max_damage * 0.75 / 2))
 		tburn = 2
 	else
 		tburn = 3
 
-	if(brute_dam == 0)
+	if (brute_dam == 0)
 		tbrute = 0
-	else if(brute_dam < (max_damage * 0.25 / 2))
+	else if (brute_dam < (max_damage * 0.25 / 2))
 		tbrute = 1
-	else if(brute_dam < (max_damage * 0.75 / 2))
+	else if (brute_dam < (max_damage * 0.75 / 2))
 		tbrute = 2
 	else
 		tbrute = 3
@@ -585,7 +585,7 @@
 	return 0
 
 /datum/organ/external/get_icon(gender="")
-	if(status & ORGAN_MUTATED)
+	if (status & ORGAN_MUTATED)
 		return new /icon(owner.deform_icon, "[icon_name][gender ? "_[gender]" : ""]")
 	else
 		return new /icon(owner.race_icon, "[icon_name][gender ? "_[gender]" : ""]")
@@ -693,26 +693,26 @@
 	var/disfigured = 0
 
 /datum/organ/external/head/get_icon()
-	if(!owner)
+	if (!owner)
 	 return ..()
 	var/g = "m"
 	if(owner.gender == FEMALE)	g = "f"
-	if(status & ORGAN_MUTATED)
+	if (status & ORGAN_MUTATED)
 		. = new /icon(owner.deform_icon, "[icon_name]_[g]")
 	else
 		. = new /icon(owner.race_icon, "[icon_name]_[g]")
 
 /datum/organ/external/head/take_damage(brute, burn, sharp, used_weapon = null, list/forbidden_limbs = list())
 	..(brute, burn, sharp, used_weapon, forbidden_limbs)
-	if(!disfigured)
-		if(brute_dam > 40)
-			if(prob(50))
+	if (!disfigured)
+		if (brute_dam > 40)
+			if (prob(50))
 				disfigure("brute")
-		if(burn_dam > 40)
+		if (burn_dam > 40)
 			disfigure("burn")
 
 /datum/organ/external/head/proc/disfigure(var/type = "brute")
-	if(disfigured)
+	if (disfigured)
 		return
 	if(type == "brute")
 		owner.visible_message("\red You hear a sickening cracking sound coming from \the [owner]'s face.",	\
@@ -754,7 +754,7 @@ obj/item/weapon/organ/New(loc, mob/living/carbon/human/H)
 
 		//Changing limb's skin tone to match owner
 		if(!H.species || H.species.flags & HAS_SKIN_TONE)
-			if(H.s_tone >= 0)
+			if (H.s_tone >= 0)
 				base.Blend(rgb(H.s_tone, H.s_tone, H.s_tone), ICON_ADD)
 			else
 				base.Blend(rgb(-H.s_tone,  -H.s_tone,  -H.s_tone), ICON_SUBTRACT)
@@ -884,8 +884,7 @@ obj/item/weapon/organ/head/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
 				user.attack_log += "\[[time_stamp()]\]<font color='red'> Debrained [brainmob.name] ([brainmob.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>"
 				brainmob.attack_log += "\[[time_stamp()]\]<font color='orange'> Debrained by [user.name] ([user.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>"
-				log_admin("ATTACK: [brainmob] ([brainmob.ckey]) debrained [user] ([user.ckey]).")
-				message_admins("ATTACK: [brainmob] ([brainmob.ckey]) debrained [user] ([user.ckey]).")
+				msg_admin_attack("[brainmob] ([brainmob.ckey]) debrained [user] ([user.ckey]) (INTENT: [uppertext(user.a_intent)]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 				var/obj/item/brain/B = new(loc)
 				B.transfer_identity(brainmob)

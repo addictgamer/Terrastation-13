@@ -80,9 +80,9 @@
 		src.update_icon()
 		return 1
 
-	if(istype(O, /obj/item/weapon/weldingtool))
+	if (istype(O, /obj/item/weapon/weldingtool))
 		var/obj/item/weapon/weldingtool/WT = O
-		if(WT.remove_fuel(0))
+		if (WT.remove_fuel(0))
 			if(health < maxHealth)
 				health += pick(1,1,1,2,2,3)
 				if(health > maxHealth)
@@ -96,7 +96,7 @@
 			user << "Need more welding fuel!"
 			return
 	else if(istype(O, /obj/item/weapon/card/id)||istype(O, /obj/item/device/pda))
-		if(!mmi)
+		if (!mmi)
 			user << "\red There's no reason to swipe your ID - the spiderbot has no brain to remove."
 			return 0
 
@@ -120,8 +120,8 @@
 		else
 			user << "\red You swipe your card, with no effect."
 			return 0
-	else if(istype(O, /obj/item/weapon/card/emag))
-		if(emagged)
+	else if (istype(O, /obj/item/weapon/card/emag))
+		if (emagged)
 			user << "\red [src] is already overloaded - better run."
 			return 0
 		else
@@ -134,16 +134,16 @@
 	else
 		if(O.force)
 			var/damage = O.force
-			if(O.damtype == HALLOSS)
+			if (O.damtype == HALLOSS)
 				damage = 0
 			adjustBruteLoss(damage)
 			for(var/mob/M in viewers(src, null))
-				if((M.client && !( M.blinded )))
+				if ((M.client && !( M.blinded )))
 					M.show_message("\red \b [src] has been attacked with the [O] by [user]. ")
 		else
 			usr << "\red This weapon is ineffective, it does no damage."
 			for(var/mob/M in viewers(src, null))
-				if((M.client && !( M.blinded )))
+				if ((M.client && !( M.blinded )))
 					M.show_message("\red [user] gently taps [src] with the [O]. ")
 
 /mob/living/simple_animal/spiderbot/proc/transfer_personality(var/obj/item/device/mmi/M as obj)
@@ -155,7 +155,7 @@
 
 /mob/living/simple_animal/spiderbot/proc/explode() //When emagged.
 	for(var/mob/M in viewers(src, null))
-		if((M.client && !( M.blinded )))
+		if ((M.client && !( M.blinded )))
 			M.show_message("\red [src] makes an odd warbling noise, fizzles, and explodes.")
 	explosion(get_turf(loc), -1, -1, 3, 5)
 	eject_brain()
@@ -264,7 +264,7 @@
 	set desc = "Allows to hide beneath tables or certain items. Toggled on or off."
 	set category = "Spiderbot"
 
-	if(layer != TURF_LAYER+0.2)
+	if (layer != TURF_LAYER+0.2)
 		layer = TURF_LAYER+0.2
 		src << text("\blue You are now hiding.")
 	else

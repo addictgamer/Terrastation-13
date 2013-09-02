@@ -142,25 +142,25 @@
 		time += -100
 		if(time > inserted_battery.capacity)
 			time = inserted_battery.capacity
-		else if(time < 0)
+		else if (time < 0)
 			time = 0
 	if(href_list["neg_changetime"])
 		time += -10
 		if(time > inserted_battery.capacity)
 			time = inserted_battery.capacity
-		else if(time < 0)
+		else if (time < 0)
 			time = 0
 	if(href_list["changetime"])
 		time += 10
 		if(time > inserted_battery.capacity)
 			time = inserted_battery.capacity
-		else if(time < 0)
+		else if (time < 0)
 			time = 0
 	if(href_list["changetime_max"])
 		time += 100
 		if(time > inserted_battery.capacity)
 			time = inserted_battery.capacity
-		else if(time < 0)
+		else if (time < 0)
 			time = 0
 	if(href_list["startup"])
 		activated = 1

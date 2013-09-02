@@ -1,25 +1,25 @@
 /mob/living/silicon/say(var/message)
-	if(!message)
+	if (!message)
 		return
 
-	if(src.client)
+	if (src.client)
 		if(client.prefs.muted & MUTE_IC)
 			src << "You cannot send IC messages (muted)."
 			return
-		if(src.client.handle_spam_prevention(message,MUTE_IC))
+		if (src.client.handle_spam_prevention(message,MUTE_IC))
 			return
 
-	if(stat == 2)
+	if (stat == 2)
 		message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
 		return say_dead(message)
 
 	//Must be concious to speak
-	if(stat)
+	if (stat)
 		return
 
-	if(length(message) >= 2)
+	if (length(message) >= 2)
 		var/prefix = copytext(message, 1, 3)
-		if(department_radio_keys[prefix] == "binary")
+		if (department_radio_keys[prefix] == "binary")
 			if(istype(src, /mob/living/silicon/pai))
 				return ..(message)
 			message = copytext(message, 3)
@@ -33,7 +33,7 @@
 					return
 
 			robot_talk(message)
-		else if(department_radio_keys[prefix] == "department")
+		else if (department_radio_keys[prefix] == "department")
 			if(isAI(src)&&client)//For patching directly into AI holopads.
 				var/mob/living/silicon/ai/U = src
 				message = copytext(message, 3)
@@ -54,7 +54,7 @@
 
 	message = trim(message)
 
-	if(!message)
+	if (!message)
 		return
 
 	var/obj/machinery/hologram/holopad/T = src.current
@@ -87,7 +87,7 @@
 
 	message = trim(message)
 
-	if(!message)
+	if (!message)
 		return
 
 	var/message_a = say_quote(message)
@@ -102,7 +102,7 @@
 				S.show_message(rendered, 2)
 
 
-		else if(S.binarycheck())
+		else if (S.binarycheck())
 			if(istype(S , /mob/living/silicon/ai))
 				var/renderedAI = "<i><span class='game say'>Robotic Talk, <a href='byond://?src=\ref[S];track2=\ref[S];track=\ref[src]'><span class='name'>[name]</span></a> <span class='message'>[message_a]</span></span></i>"
 				S.show_message(renderedAI, 2)
@@ -118,7 +118,7 @@
 		if(!istype(M, /mob/living/silicon) && !M.robot_talk_understand)
 			heard += M
 
-	if(length(heard))
+	if (length(heard))
 		var/message_b
 
 		message_b = "beep beep beep"

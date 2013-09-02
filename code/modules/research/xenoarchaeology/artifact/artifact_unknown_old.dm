@@ -38,7 +38,7 @@
 
 	// Power randomisation
 	my_effect.trigger = pick("force","energy","chemical","heat","touch","presence")
-	if(my_effect.trigger == "chemical")
+	if (my_effect.trigger == "chemical")
 		my_effect.triggerX = pick("hydrogen","corrosive","volatile","toxic")
 
 	my_effect.effecttype = pick("healing","injure","stun","roboheal","robohurt","cellcharge","celldrain","planthelper","forcefield","teleport","dnaswitch","emp","sleepy")
@@ -76,14 +76,14 @@
 			my_effect.effectmode = pick("pulse","contact")
 
 	// Recharge timer & range setup
-	if(my_effect.effectmode == "aura")
+	if (my_effect.effectmode == "aura")
 		my_effect.aurarange = rand(1,4)
-	if(my_effect.effectmode == "contact")
+	if (my_effect.effectmode == "contact")
 		src.recharge = rand(5,15)
-	if(my_effect.effectmode == "pulse")
+	if (my_effect.effectmode == "pulse")
 		my_effect.aurarange = rand(2,14)
 		src.recharge = rand(5,20)
-	if(canworldpulse == 1 && prob(1))
+	if (canworldpulse == 1 && prob(1))
 		my_effect.effectmode = "worldpulse"
 		src.recharge = rand(40,120)
 
@@ -98,9 +98,9 @@
 	my_effect.HaltEffect()
 
 /obj/machinery/artifact/attack_hand(var/mob/user as mob)
-	if(istype(user, /mob/living/silicon/ai) || istype(user, /mob/dead/)) return
-	if(istype(user, /mob/living/silicon/robot))
-		if(get_dist(user, src) > 1)
+	if (istype(user, /mob/living/silicon/ai) || istype(user, /mob/dead/)) return
+	if (istype(user, /mob/living/silicon/robot))
+		if (get_dist(user, src) > 1)
 			user << "\red You can't reach [src] from here."
 			return
 	if(ishuman(user) && istype(user:gloves,/obj/item/clothing/gloves))
@@ -111,76 +111,76 @@
 	src.Artifact_Contact(user)
 
 /obj/machinery/artifact/attackby(obj/item/weapon/W as obj, mob/living/user as mob)
-	/*if(istype(W, /obj/item/weapon/cargotele))
+	/*if (istype(W, /obj/item/weapon/cargotele))
 		W:cargoteleport(src, user)
 		return*/
-	if(my_effect.trigger == "chemical" && istype(W, /obj/item/weapon/reagent_containers/))
+	if (my_effect.trigger == "chemical" && istype(W, /obj/item/weapon/reagent_containers/))
 		switch(my_effect.triggerX)
 			if("hydrogen")
-				if(W.reagents.has_reagent("hydrogen", 1) || W.reagents.has_reagent("water", 1))
+				if (W.reagents.has_reagent("hydrogen", 1) || W.reagents.has_reagent("water", 1))
 					src.Artifact_Activate()
 					return
 			if("corrosive")
-				if(W.reagents.has_reagent("acid", 1) || W.reagents.has_reagent("pacid", 1) || W.reagents.has_reagent("diethylamine", 1))
+				if (W.reagents.has_reagent("acid", 1) || W.reagents.has_reagent("pacid", 1) || W.reagents.has_reagent("diethylamine", 1))
 					src.Artifact_Activate()
 					return
 			if("volatile")
-				if(W.reagents.has_reagent("plasma", 1) || W.reagents.has_reagent("thermite", 1))
+				if (W.reagents.has_reagent("plasma", 1) || W.reagents.has_reagent("thermite", 1))
 					src.Artifact_Activate()
 					return
 			if("toxic")
-				if(W.reagents.has_reagent("toxin", 1) || W.reagents.has_reagent("cyanide", 1) || W.reagents.has_reagent("amanitin", 1) || W.reagents.has_reagent("neurotoxin", 1))
+				if (W.reagents.has_reagent("toxin", 1) || W.reagents.has_reagent("cyanide", 1) || W.reagents.has_reagent("amanitin", 1) || W.reagents.has_reagent("neurotoxin", 1))
 					src.Artifact_Activate()
 					return
 	..()
-	if(my_effect.trigger == "force" && W.force >= 10 && !src.activated) src.Artifact_Activate()
-	if(my_effect.trigger == "energy")
-		if(istype(W,/obj/item/weapon/melee/baton) && W:status) src.Artifact_Activate()
-		if(istype(W,/obj/item/weapon/melee/energy)) src.Artifact_Activate()
-		if(istype(W,/obj/item/weapon/melee/cultblade)) src.Artifact_Activate()
-		if(istype(W,/obj/item/weapon/gun/energy/)) src.Artifact_Activate()
-		if(istype(W,/obj/item/device/multitool)) src.Artifact_Activate()
-		if(istype(W,/obj/item/weapon/card/emag)) src.Artifact_Activate()
-	if(my_effect.trigger == "heat")
-		if(istype(W,/obj/item/weapon/match) && W:lit) src.Artifact_Activate()
-		if(istype(W, /obj/item/weapon/weldingtool) && W:welding) src.Artifact_Activate()
-		if(istype(W, /obj/item/weapon/lighter) && W:lit) src.Artifact_Activate()
+	if (my_effect.trigger == "force" && W.force >= 10 && !src.activated) src.Artifact_Activate()
+	if (my_effect.trigger == "energy")
+		if (istype(W,/obj/item/weapon/melee/baton) && W:status) src.Artifact_Activate()
+		if (istype(W,/obj/item/weapon/melee/energy)) src.Artifact_Activate()
+		if (istype(W,/obj/item/weapon/melee/cultblade)) src.Artifact_Activate()
+		if (istype(W,/obj/item/weapon/gun/energy/)) src.Artifact_Activate()
+		if (istype(W,/obj/item/device/multitool)) src.Artifact_Activate()
+		if (istype(W,/obj/item/weapon/card/emag)) src.Artifact_Activate()
+	if (my_effect.trigger == "heat")
+		if (istype(W,/obj/item/weapon/match) && W:lit) src.Artifact_Activate()
+		if (istype(W, /obj/item/weapon/weldingtool) && W:welding) src.Artifact_Activate()
+		if (istype(W, /obj/item/weapon/lighter) && W:lit) src.Artifact_Activate()
 
 	//Bump(atom/A)
 
 /obj/machinery/artifact/Bumped(M as mob|obj)
-	if(istype(M,/obj/item/weapon/) && my_effect.trigger == "force" && M:throwforce >= 10) src.Artifact_Activate()
+	if (istype(M,/obj/item/weapon/) && my_effect.trigger == "force" && M:throwforce >= 10) src.Artifact_Activate()
 
 /obj/machinery/artifact/bullet_act(var/obj/item/projectile/P)
-	if(my_effect.trigger == "force")
+	if (my_effect.trigger == "force")
 		if(istype(P,/obj/item/projectile/bullet)) src.Artifact_Activate()
 		else if(istype(P,/obj/item/projectile/hivebotbullet)) src.Artifact_Activate()
-	if(my_effect.trigger == "energy")
+	if (my_effect.trigger == "energy")
 		if(istype(P,/obj/item/projectile/beam)) src.Artifact_Activate()
 		else if(istype(P,/obj/item/projectile/ion)) src.Artifact_Activate()
 		else if(istype(P,/obj/item/projectile/energy)) src.Artifact_Activate()
-	if(my_effect.trigger == "heat")
+	if (my_effect.trigger == "heat")
 		if(istype(P,/obj/item/projectile/temp)) src.Artifact_Activate()
 
 /obj/machinery/artifact/ex_act(severity)
 	switch(severity)
 		if(1.0) del src
 		if(2.0)
-			if(prob(50)) del src
-			if(my_effect.trigger == "force") src.Artifact_Activate()
-			if(my_effect.trigger == "heat") src.Artifact_Activate()
+			if (prob(50)) del src
+			if (my_effect.trigger == "force") src.Artifact_Activate()
+			if (my_effect.trigger == "heat") src.Artifact_Activate()
 		if(3.0)
-			if(my_effect.trigger == "force") src.Artifact_Activate()
-			if(my_effect.trigger == "heat") src.Artifact_Activate()
+			if (my_effect.trigger == "force") src.Artifact_Activate()
+			if (my_effect.trigger == "heat") src.Artifact_Activate()
 	return
 
 /obj/machinery/artifact/temperature_expose(null, temp, volume)
-	if(my_effect.trigger == "heat") src.Artifact_Activate()
+	if (my_effect.trigger == "heat") src.Artifact_Activate()
 
 /obj/machinery/artifact/process()
-	if(!src.activated)
+	if (!src.activated)
 		return
-	if(chargetime > 0)
+	if (chargetime > 0)
 		chargetime -= 1
 	else
 		src.charged = 1
@@ -226,10 +226,10 @@
 
 /obj/machinery/artifact/proc/Artifact_Contact(var/mob/user as mob)
 	// Trigger Code
-	if(istype (user,/mob/living/carbon/) && my_effect.trigger == "touch" && !src.activated) src.Artifact_Activate()
-	else if(my_effect.trigger != "touch" && !src.activated) user << "Nothing happens."
+	if (istype (user,/mob/living/carbon/) && my_effect.trigger == "touch" && !src.activated) src.Artifact_Activate()
+	else if (my_effect.trigger != "touch" && !src.activated) user << "Nothing happens."
 
-	if(my_effect.effectmode == "contact" && src.activated && src.charged)
+	if (my_effect.effectmode == "contact" && src.activated && src.charged)
 		my_effect.DoEffect(user)
 		src.charged = 0
 		src.chargetime = src.recharge

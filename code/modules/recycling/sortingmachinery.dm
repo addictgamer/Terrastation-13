@@ -49,7 +49,7 @@
 
 
 	attack_self(mob/user as mob)
-		if(src.wrapped) //sometimes items can disappear. For example, bombs. --rastaf0
+		if (src.wrapped) //sometimes items can disappear. For example, bombs. --rastaf0
 			wrapped.loc = user.loc
 			if(ishuman(user))
 				user.put_in_hands(wrapped)
@@ -103,9 +103,9 @@
 		user.attack_log += text("\[[time_stamp()]\] <font color='blue'>Has used [src.name] on \ref[target]</font>")
 
 
-		if(istype(target, /obj/item) && !(istype(target, /obj/item/weapon/storage) && !istype(target,/obj/item/weapon/storage/box)))
+		if (istype(target, /obj/item) && !(istype(target, /obj/item/weapon/storage) && !istype(target,/obj/item/weapon/storage/box)))
 			var/obj/item/O = target
-			if(src.amount > 1)
+			if (src.amount > 1)
 				var/obj/item/smallDelivery/P = new /obj/item/smallDelivery(get_turf(O.loc))	//Aaannd wrap it up!
 				if(!istype(O.loc, /turf))
 					if(user.client)
@@ -119,9 +119,9 @@
 				O.add_fingerprint(usr)
 				src.add_fingerprint(usr)
 				src.amount -= 1
-		else if(istype(target, /obj/structure/closet/crate))
+		else if (istype(target, /obj/structure/closet/crate))
 			var/obj/structure/closet/crate/O = target
-			if(src.amount > 3 && !O.opened)
+			if (src.amount > 3 && !O.opened)
 				var/obj/structure/bigDelivery/P = new /obj/structure/bigDelivery(get_turf(O.loc))
 				P.icon_state = "deliverycrate"
 				P.wrapped = O
@@ -129,9 +129,9 @@
 				src.amount -= 3
 			else if(src.amount < 3)
 				user << "\blue You need more paper."
-		else if(istype (target, /obj/structure/closet))
+		else if (istype (target, /obj/structure/closet))
 			var/obj/structure/closet/O = target
-			if(src.amount > 3 && !O.opened)
+			if (src.amount > 3 && !O.opened)
 				var/obj/structure/bigDelivery/P = new /obj/structure/bigDelivery(get_turf(O.loc))
 				P.wrapped = O
 				O.welded = 1
@@ -141,7 +141,7 @@
 				user << "\blue You need more paper."
 		else
 			user << "\blue The object you are trying to wrap is unsuitable for the sorting machinery!"
-		if(src.amount <= 0)
+		if (src.amount <= 0)
 			new /obj/item/weapon/c_tube( src.loc )
 			del(src)
 			return
@@ -177,7 +177,7 @@
 		for (var/i = 1, i <= TAGGERLOCATIONS.len, i++)
 			dat += "<td><a href='?src=\ref[src];nextTag=[i]'>[TAGGERLOCATIONS[i]]</a></td>"
 
-			if(i%4==0)
+			if (i%4==0)
 				dat += "</tr><tr>"
 
 		dat += "</tr></table><br>Current Selection: [currTag ? TAGGERLOCATIONS[currTag] : "None"]</tt>"
@@ -249,7 +249,7 @@
 				O.sortTag = 1
 		for(var/obj/item/smallDelivery/O in src)
 			deliveryCheck = 1
-			if(O.sortTag == 0)
+			if (O.sortTag == 0)
 				O.sortTag = 1
 		if(deliveryCheck == 0)
 			H.destinationTag = 1

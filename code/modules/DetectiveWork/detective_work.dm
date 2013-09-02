@@ -133,7 +133,7 @@ obj/machinery/computer/forensic_scanning
 					authenticated = 1
 					updateDialog()
 					return
-				if(allowed(M))
+				if (allowed(M))
 					authenticated = 1
 			if("logout")
 				authenticated = 0
@@ -398,7 +398,7 @@ obj/machinery/computer/forensic_scanning
 						scan_process = 0
 						scan_name = scanning.name
 						scan_data = "<u>[scanning]</u><br><br>"
-						if(scanning.blood_DNA)
+						if (scanning.blood_DNA)
 							scan_data += "Blood Found:<br>"
 							for(var/blood in scanning.blood_DNA)
 								scan_data += "Blood type: [scanning.blood_DNA[blood]]\nDNA: [blood]<br><br>"

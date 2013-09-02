@@ -14,12 +14,12 @@
 
 	attackby(obj/item/weapon/f_card/W as obj, mob/user as mob)
 		..()
-		if(istype(W, /obj/item/weapon/f_card))
-			if(W.fingerprints)
+		if (istype(W, /obj/item/weapon/f_card))
+			if (W.fingerprints)
 				return
-			if(src.amount == 20)
+			if (src.amount == 20)
 				return
-			if(W.amount + src.amount > 20)
+			if (W.amount + src.amount > 20)
 				src.amount = 20
 				W.amount = W.amount + src.amount - 20
 			else
@@ -27,21 +27,21 @@
 				//W = null
 				del(W)
 			add_fingerprint(user)
-			if(W)
+			if (W)
 				W.add_fingerprint(user)
 		return
 
 	attack(mob/living/carbon/human/M as mob, mob/user as mob)
-		if(!ishuman(M))
+		if (!ishuman(M))
 			user << "\red [M] is not human and cannot have the fingerprints."
 			flick("forensic0",src)
 			return 0
-		if(( !( istype(M.dna, /datum/dna) ) || M.gloves) )
+		if (( !( istype(M.dna, /datum/dna) ) || M.gloves) )
 			user << "\blue No fingerprints found on [M]"
 			flick("forensic0",src)
 			return 0
 		else
-			if(src.amount < 1)
+			if (src.amount < 1)
 				user << text("\blue Fingerprints scanned on [M]. Need more cards to print.")
 			else
 				src.amount--
@@ -53,7 +53,7 @@
 
 				user << "\blue Done printing."
 			user << "\blue [M]'s Fingerprints: [md5(M.dna.uni_identity)]"
-		if( !M.blood_DNA || !M.blood_DNA.len )
+		if ( !M.blood_DNA || !M.blood_DNA.len )
 			user << "\blue No blood found on [M]"
 			if(M.blood_DNA)
 				del(M.blood_DNA)
@@ -80,7 +80,7 @@
 
 
 		//Special case for blood splaters.
-		if(istype(A, /obj/effect/decal/cleanable/blood) || istype(A, /obj/effect/rune))
+		if (istype(A, /obj/effect/decal/cleanable/blood) || istype(A, /obj/effect/rune))
 			if(!isnull(A.blood_DNA))
 				for(var/blood in A.blood_DNA)
 					user << "\blue Blood type: [A.blood_DNA[blood]]\nDNA: [blood]"
@@ -88,7 +88,7 @@
 			return
 
 		//General
-		if((!A.fingerprints || !A.fingerprints.len) && !A.suit_fibers && !A.blood_DNA)
+		if ((!A.fingerprints || !A.fingerprints.len) && !A.suit_fibers && !A.blood_DNA)
 			user.visible_message("\The [user] scans \the [A] with \a [src], the air around [user.gender == MALE ? "him" : "her"] humming[prob(70) ? " gently." : "."]" ,\
 			"\blue Unable to locate any fingerprints, materials, fibers, or blood on [A]!",\
 			"You hear a faint hum of electrical equipment.")
@@ -125,7 +125,7 @@
 			flick("forensic2",src)
 
 		//Blood
-		if(A.blood_DNA)
+		if (A.blood_DNA)
 			user << "\blue Blood found on [A]. Analysing..."
 			spawn(15)
 				for(var/blood in A.blood_DNA)

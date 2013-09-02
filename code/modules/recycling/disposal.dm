@@ -107,14 +107,16 @@
 				for (var/mob/V in viewers(usr))
 					V.show_message("[usr] starts putting [GM.name] into the disposal.", 3)
 				if(do_after(usr, 20))
-					if(GM.client)
+					if (GM.client)
 						GM.client.perspective = EYE_PERSPECTIVE
 						GM.client.eye = src
 					GM.loc = src
 					for (var/mob/C in viewers(src))
 						C.show_message("\red [GM.name] has been placed in the [src] by [user].", 3)
 					del(G)
-					log_attack("<font color='red'>[usr] ([usr.ckey]) placed [GM] ([GM.ckey]) in a disposals unit.</font>")
+					usr.attack_log += text("\[[time_stamp()]\] <font color='red'>Has placed [GM.name] ([GM.ckey]) in disposals.</font>")
+					GM.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been placed in disposals by [usr.name] ([usr.ckey])</font>")
+					msg_admin_attack("[usr] ([usr.ckey]) placed [GM] ([GM.ckey]) in a disposals unit. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[usr.x];Y=[usr.y];Z=[usr.z]'>JMP</a>)")
 			return
 
 		if(!I)	return
@@ -134,7 +136,7 @@
 	// mouse drop another mob or self
 	//
 	MouseDrop_T(mob/target, mob/user)
-		if(!istype(target) || target.buckled || get_dist(user, src) > 1 || get_dist(user, target) > 1 || user.stat || istype(user, /mob/living/silicon/ai))
+		if (!istype(target) || target.buckled || get_dist(user, src) > 1 || get_dist(user, target) > 1 || user.stat || istype(user, /mob/living/silicon/ai))
 			return
 		if(isanimal(user) && target != user) return //animals cannot put mobs other than themselves into disposal
 		src.add_fingerprint(user)
@@ -157,10 +159,13 @@
 		else if(target != user && !user.restrained() && !user.stat && !user.weakened && !user.stunned && !user.paralysis)
 			msg = "[user.name] stuffs [target.name] into the [src]!"
 			user << "You stuff [target.name] into the [src]!"
-			log_attack("<font color='red'>[user] ([user.ckey]) placed [target] ([target.ckey]) in a disposals unit.</font>")
+
+			user.attack_log += text("\[[time_stamp()]\] <font color='red'>Has placed [target.name] ([target.ckey]) in disposals.</font>")
+			target.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been placed in disposals by [user.name] ([user.ckey])</font>")
+			msg_admin_attack("[user] ([user.ckey]) placed [target] ([target.ckey]) in a disposals unit. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 		else
 			return
-		if(target.client)
+		if (target.client)
 			target.client.perspective = EYE_PERSPECTIVE
 			target.client.eye = src
 		target.loc = src
@@ -187,7 +192,7 @@
 	// leave the disposal
 	proc/go_out(mob/user)
 
-		if(user.client)
+		if (user.client)
 			user.client.eye = user.client.mob
 			user.client.perspective = MOB_PERSPECTIVE
 		user.loc = src.loc
@@ -271,7 +276,7 @@
 		if(usr.stat || usr.restrained() || src.flushing)
 			return
 
-		if(in_range(src, usr) && istype(src.loc, /turf))
+		if (in_range(src, usr) && istype(src.loc, /turf))
 			usr.set_machine(src)
 
 			if(href_list["close"])
@@ -449,7 +454,7 @@
 			del(H)
 
 	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-		if(istype(mover,/obj/item) && mover.throwing)
+		if (istype(mover,/obj/item) && mover.throwing)
 			var/obj/item/I = mover
 			if(istype(I, /obj/item/weapon/dummy) || istype(I, /obj/item/projectile))
 				return
@@ -592,9 +597,9 @@
 
 	// called when player tries to move while in a pipe
 	relaymove(mob/user as mob)
-		if(user.stat)
+		if (user.stat)
 			return
-		if(src.loc)
+		if (src.loc)
 			for (var/mob/M in hearers(src.loc.loc))
 				M << "<FONT size=[max(0, 5 - get_dist(src, M))]>CLONG, clong!</FONT>"
 
@@ -1112,7 +1117,7 @@
 	var/obj/machinery/disposal/D = locate() in src.loc
 	if(D)
 		linked = D
-		if(!D.trunk)
+		if (!D.trunk)
 			D.trunk = src
 
 	var/obj/structure/disposaloutlet/O = locate() in src.loc
@@ -1305,7 +1310,7 @@
 
 // check if mob has client, if so restore client view on eject
 /mob/pipe_eject(var/direction)
-	if(src.client)
+	if (src.client)
 		src.client.perspective = MOB_PERSPECTIVE
 		src.client.eye = src
 

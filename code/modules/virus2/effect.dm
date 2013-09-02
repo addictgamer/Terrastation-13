@@ -17,7 +17,7 @@
 	var/list/datum/disease2/effect/list = list()
 	for(var/e in (typesof(/datum/disease2/effect) - /datum/disease2/effect))
 		var/datum/disease2/effect/f = new e
-		if(f.badness > badness)	//we don't want such strong effects
+		if (f.badness > badness)	//we don't want such strong effects
 			continue
 		if(f.stage == src.stage)
 			list += f
@@ -135,7 +135,7 @@
 		if(istype(mob, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = mob
 			var/datum/organ/external/E = pick(H.organs)
-			if(!(E.status & ORGAN_DEAD))
+			if (!(E.status & ORGAN_DEAD))
 				E.status |= ORGAN_DEAD
 				H << "<span class='notice'>You can't feel your [E.display_name] anymore...</span>"
 		mob.adjustToxLoss(15*multiplier)
@@ -153,7 +153,7 @@
 		if(istype(mob, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = mob
 			for (var/datum/organ/external/E in H.organs)
-				if(E.status & ORGAN_BROKEN && prob(30))
+				if (E.status & ORGAN_BROKEN && prob(30))
 					E.status ^= ORGAN_BROKEN
 		var/heal_amt = -5*multiplier
 		mob.apply_damages(heal_amt,heal_amt,heal_amt,heal_amt)
@@ -320,9 +320,9 @@
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob << "<span class='notice'>You feel a rush of energy inside you!</span>"
-		if(mob.reagents.get_reagent_amount("hyperzine") < 30)
+		if (mob.reagents.get_reagent_amount("hyperzine") < 30)
 			mob.reagents.add_reagent("hyperzine", 10)
-		if(prob(30))
+		if (prob(30))
 			mob.jitteriness += 10
 
 ////////////////////////STAGE 1/////////////////////////////////
@@ -332,7 +332,7 @@
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*sneeze")
-		if(prob(50))
+		if (prob(50))
 			var/obj/effect/decal/cleanable/mucus/M = new(get_turf(mob))
 			M.virus2 = virus_copylist(mob.virus2)
 

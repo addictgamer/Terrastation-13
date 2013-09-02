@@ -119,11 +119,11 @@
 			adjustFireLoss(-1)
 
 	// Aliens love radiation nom nom nom
-	if(radiation)
-		if(radiation > 100)
+	if (radiation)
+		if (radiation > 100)
 			radiation = 100
 
-		if(radiation < 0)
+		if (radiation < 0)
 			radiation = 0
 
 		switch(radiation)
@@ -156,13 +156,13 @@
 
 	..()
 
-	if(client.statpanel == "Status")
+	if (client.statpanel == "Status")
 		stat(null, "Plasma Stored: [getPlasma()]/[max_plasma]")
 
 	if(emergency_shuttle)
 		if(emergency_shuttle.online && emergency_shuttle.location < 2)
 			var/timeleft = emergency_shuttle.timeleft()
-			if(timeleft)
+			if (timeleft)
 				stat(null, "ETA-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
 
 /mob/living/carbon/alien/Stun(amount)
@@ -184,7 +184,7 @@ Proc: AddInfectionImages()
 Des: Gives the client of the alien an image on each infected mob.
 ----------------------------------------*/
 /mob/living/carbon/alien/proc/AddInfectionImages()
-	if(client)
+	if (client)
 		for (var/mob/living/C in mob_list)
 			if(C.status_flags & XENO_HOST)
 				var/obj/item/alien_embryo/A = locate() in C
@@ -198,7 +198,7 @@ Proc: RemoveInfectionImages()
 Des: Removes all infected images from the alien.
 ----------------------------------------*/
 /mob/living/carbon/alien/proc/RemoveInfectionImages()
-	if(client)
+	if (client)
 		for(var/image/I in client.images)
 			if(dd_hasprefix_case(I.icon_state, "infected"))
 				del(I)

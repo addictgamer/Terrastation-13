@@ -22,7 +22,7 @@
 	if(!holder)
 		src << "Only administrators may use this command."
 		return
-	if(ismob(M))
+	if (ismob(M))
 		if(istype(M, /mob/living/silicon/ai))
 			alert("The AI can't be sent to prison you jerk!", null, null, null, null, null)
 			return
@@ -48,16 +48,16 @@
 	set name = "Subtle Message"
 
 	if(!ismob(M))	return
-	if(!holder)
+	if (!holder)
 		src << "Only administrators may use this command."
 		return
 
 	var/msg = input("Message:", text("Subtle PM to [M.key]")) as text
 
-	if(!msg)
+	if (!msg)
 		return
 	if(usr)
-		if(usr.client)
+		if (usr.client)
 			if(usr.client.holder)
 				M << "\bold You hear a voice in your head... \italic [msg]"
 
@@ -69,13 +69,13 @@
 	set category = "Special Verbs"
 	set name = "Global Narrate"
 
-	if(!holder)
+	if (!holder)
 		src << "Only administrators may use this command."
 		return
 
 	var/msg = input("Message:", text("Enter the text you wish to appear to everyone:")) as text
 
-	if(!msg)
+	if (!msg)
 		return
 	world << "[msg]"
 	log_admin("GlobalNarrate: [key_name(usr)] : [msg]")
@@ -370,7 +370,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 				if(ninjastart.len == 0 && latejoin.len > 0)
 					new_character << "<B>\red Still no spawneable locations could be found. Defaulting to latejoin.</B>"
 					new_character.loc = pick(latejoin)
-				else if(ninjastart.len == 0)
+				else if (ninjastart.len == 0)
 					new_character << "<B>\red Still no spawneable locations could be found. Aborting.</B>"
 
 		if("Death Commando")//Leaves them at late-join spawn.
@@ -418,9 +418,9 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	if(!input)
 		return
 	for(var/mob/living/silicon/ai/M in mob_list)
-		if(M.stat == 2)
+		if (M.stat == 2)
 			usr << "Upload failed. No signal is being detected from the AI."
-		else if(M.see_in_dark == 0)
+		else if (M.see_in_dark == 0)
 			usr << "Upload failed. Only a faint signal is being detected from the AI, and it is not responding to our requests. It may be low on power."
 		else
 			M.add_ion_law(input)
@@ -492,11 +492,11 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	set category = "Admin"
 	set name = "Delete"
 
-	if(!holder)
+	if (!holder)
 		src << "Only administrators may use this command."
 		return
 
-	if(alert(src, "Are you sure you want to delete:\n[O]\nat ([O.x], [O.y], [O.z])?", "Confirmation", "Yes", "No") == "Yes")
+	if (alert(src, "Are you sure you want to delete:\n[O]\nat ([O.x], [O.y], [O.z])?", "Confirmation", "Yes", "No") == "Yes")
 		log_admin("[key_name(usr)] deleted [O] at ([O.x],[O.y],[O.z])")
 		message_admins("[key_name_admin(usr)] deleted [O] at ([O.x],[O.y],[O.z])", 1)
 		feedback_add_details("admin_verb","DEL") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
@@ -506,7 +506,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	set category = "Admin"
 	set name = "List free slots"
 
-	if(!holder)
+	if (!holder)
 		src << "Only administrators may use this command."
 		return
 	if(job_master)
@@ -529,9 +529,9 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	var/flash = input("Range of flash. -1 to none", text("Input"))  as num|null
 	if(flash == null) return
 
-	if((devastation != -1) || (heavy != -1) || (light != -1) || (flash != -1))
-		if((devastation > 20) || (heavy > 20) || (light > 20))
-			if(alert(src, "Are you sure you want to do this? It will laaag.", "Confirmation", "Yes", "No") == "No")
+	if ((devastation != -1) || (heavy != -1) || (light != -1) || (flash != -1))
+		if ((devastation > 20) || (heavy > 20) || (light > 20))
+			if (alert(src, "Are you sure you want to do this? It will laaag.", "Confirmation", "Yes", "No") == "No")
 				return
 
 		explosion(O, devastation, heavy, light, flash)
@@ -553,7 +553,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	var/light = input("Range of light pulse.", text("Input"))  as num|null
 	if(light == null) return
 
-	if(heavy || light)
+	if (heavy || light)
 
 		empulse(O, heavy, light)
 		log_admin("[key_name(usr)] created an EM Pulse ([heavy],[light]) at ([O.x],[O.y],[O.z])")
@@ -591,7 +591,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 	var/confirm = alert(src, "You sure?", "Confirm", "Yes", "No")
 	if(confirm == "Yes")
-		if(istype(mob, /mob/dead/observer)) // so they don't spam gibs everywhere
+		if (istype(mob, /mob/dead/observer)) // so they don't spam gibs everywhere
 			return
 		else
 			mob.gib()
@@ -616,7 +616,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 			if(!selection)
 				return
 			M = selection:mob
-			if((M.client && M.client.holder && (M.client.holder.level >= holder.level)))
+			if ((M.client && M.client.holder && (M.client.holder.level >= holder.level)))
 				alert("You cannot perform this action. You must be of a higher administrative rank!")
 				return
 
@@ -721,7 +721,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	set category = "Admin"
 	set name = "Call Shuttle"
 
-	if((!( ticker ) || emergency_shuttle.location))
+	if ((!( ticker ) || emergency_shuttle.location))
 		return
 
 	if(!check_rights(R_ADMIN))	return
@@ -766,7 +766,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	set category = "Admin"
 	set name = "Toggle Deny Shuttle"
 
-	if(!ticker)
+	if (!ticker)
 		return
 
 	if(!check_rights(R_ADMIN))	return
@@ -793,7 +793,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 	if(!check_rights(R_FUN))	return
 
-	if(ticker && ticker.mode)
+	if (ticker && ticker.mode)
 		usr << "Nope you can't do this, the game's already started. This only works before rounds!"
 		return
 

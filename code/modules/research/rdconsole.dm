@@ -66,7 +66,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 /obj/machinery/computer/rdconsole/proc/CallMaterialName(var/ID)
 	var/datum/reagent/temp_reagent
 	var/return_name = null
-	if(copytext(ID, 1, 2) == "$")
+	if (copytext(ID, 1, 2) == "$")
 		return_name = copytext(ID, 2)
 		switch(return_name)
 			if("metal")
@@ -145,7 +145,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 	if(istype(D, /obj/item/weapon/screwdriver))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20))
-			if(src.stat & BROKEN)
+			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 				new /obj/item/weapon/shard( src.loc )
@@ -175,7 +175,7 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 			return
 
 		if(istype(D, /obj/item/weapon/disk/tech_disk)) t_disk = D
-		else if(istype(D, /obj/item/weapon/disk/design_disk)) d_disk = D
+		else if (istype(D, /obj/item/weapon/disk/design_disk)) d_disk = D
 		else
 			user << "\red Machine cannot accept disks in that format."
 			return
@@ -752,9 +752,9 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 								if(D.materials[M] > linked_lathe.diamond_amount) check_materials = 0
 							if("$clown")
 								if(D.materials[M] > linked_lathe.clown_amount) check_materials = 0
-					else if(!linked_lathe.reagents.has_reagent(M, D.materials[M]))
+					else if (!linked_lathe.reagents.has_reagent(M, D.materials[M]))
 						check_materials = 0
-				if(check_materials)
+				if (check_materials)
 					dat += "* <A href='?src=\ref[src];build=[D.id]'>[temp_dat]</A><BR>"
 				else
 					dat += "* [temp_dat]<BR>"
@@ -858,9 +858,9 @@ won't update every console in existence) but it's more of a hassle to do. Also, 
 								if(D.materials[M] > linked_imprinter.diamond_amount) check_materials = 0
 							if("$uranium")
 								if(D.materials[M] > linked_imprinter.uranium_amount) check_materials = 0
-					else if(!linked_imprinter.reagents.has_reagent(M, D.materials[M]))
+					else if (!linked_imprinter.reagents.has_reagent(M, D.materials[M]))
 						check_materials = 0
-				if(check_materials)
+				if (check_materials)
 					dat += "* <A href='?src=\ref[src];imprint=[D.id]'>[temp_dat]</A><BR>"
 				else
 					dat += "* [temp_dat]<BR>"

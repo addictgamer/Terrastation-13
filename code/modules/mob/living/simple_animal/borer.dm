@@ -4,11 +4,11 @@
 
 /mob/living/captive_brain/say(var/message)
 
-	if(src.client)
+	if (src.client)
 		if(client.prefs.muted & MUTE_IC)
 			src << "\red You cannot speak in IC (muted)."
 			return
-		if(src.client.handle_spam_prevention(message,MUTE_IC))
+		if (src.client.handle_spam_prevention(message,MUTE_IC))
 			return
 
 	if(istype(src.loc,/mob/living/simple_animal/borer))
@@ -78,23 +78,23 @@
 	if(!message)
 		return
 
-	if(stat == 2)
+	if (stat == 2)
 		return say_dead(message)
 
-	if(stat)
+	if (stat)
 		return
 
-	if(src.client)
+	if (src.client)
 		if(client.prefs.muted & MUTE_IC)
 			src << "\red You cannot speak in IC (muted)."
 			return
-		if(src.client.handle_spam_prevention(message,MUTE_IC))
+		if (src.client.handle_spam_prevention(message,MUTE_IC))
 			return
 
-	if(copytext(message, 1, 2) == "*")
+	if (copytext(message, 1, 2) == "*")
 		return emote(copytext(message, 2))
 
-	if(copytext(message, 1, 2) == ";") //Brain borer hivemind.
+	if (copytext(message, 1, 2) == ";") //Brain borer hivemind.
 		return borer_speak(message)
 
 	if(!host)
@@ -111,10 +111,10 @@
 	if(emergency_shuttle)
 		if(emergency_shuttle.online && emergency_shuttle.location < 2)
 			var/timeleft = emergency_shuttle.timeleft()
-			if(timeleft)
+			if (timeleft)
 				stat(null, "ETA-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
 
-	if(client.statpanel == "Status")
+	if (client.statpanel == "Status")
 		stat("Chemicals", chemicals)
 
 // VERBS!
@@ -356,7 +356,7 @@ mob/living/simple_animal/borer/proc/detatch()
 	set desc = "Allows to hide beneath tables or certain items. Toggled on or off."
 	set category = "Alien"
 
-	if(layer != TURF_LAYER+0.2)
+	if (layer != TURF_LAYER+0.2)
 		layer = TURF_LAYER+0.2
 		src << text("\blue You are now hiding.")
 	else
@@ -380,7 +380,7 @@ mob/living/simple_animal/borer/proc/question(var/client/C)
 			return
 		if(response == "Yes")
 			transfer_personality(C)
-		else if(response == "Never for this round")
+		else if (response == "Never for this round")
 			C.prefs.be_special ^= BE_ALIEN
 
 mob/living/simple_animal/borer/proc/transfer_personality(var/client/candidate)

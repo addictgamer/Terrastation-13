@@ -173,7 +173,7 @@ emp_act
 		return
 
 	var/datum/organ/external/affecting = get_organ(target_zone)
-	if(!affecting)
+	if (!affecting)
 		return
 	if(affecting.status & ORGAN_DESTROYED)
 		user << "What [affecting.display_name]?"
@@ -249,7 +249,7 @@ emp_act
 					bloody_body(src)
 
 /mob/living/carbon/human/proc/bloody_hands(var/mob/living/source, var/amount = 2)
-	if(gloves)
+	if (gloves)
 		gloves.add_blood(source)
 		gloves:transfer_blood = amount
 		gloves:bloody_hands_mob = source

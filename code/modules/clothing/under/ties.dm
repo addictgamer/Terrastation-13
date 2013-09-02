@@ -258,8 +258,8 @@
 
 /obj/item/clothing/tie/holobadge/attackby(var/obj/item/O as obj, var/mob/user as mob)
 
-	if(istype(O, /obj/item/weapon/card/emag))
-		if(emagged)
+	if (istype(O, /obj/item/weapon/card/emag))
+		if (emagged)
 			user << "\red [src] is already cracked."
 			return
 		else

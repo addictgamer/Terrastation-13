@@ -85,7 +85,7 @@
 //			user << "\red This piece of cable is tied to a power switch. Flip the switch to remove it."
 //			return
 
-		if(shock(user, 50))
+		if (shock(user, 50))
 			return
 
 		if(src.d1)	// 0-X cables are 1 unit, X-X cables are 2 units long
@@ -118,7 +118,7 @@
 		shock(user, 5, 0.2)
 
 	else
-		if(W.flags & CONDUCT)
+		if (W.flags & CONDUCT)
 			shock(user, 50, 0.7)
 
 	src.add_fingerprint(user)
@@ -128,7 +128,7 @@
 /obj/structure/cable/proc/shock(mob/user, prb, var/siemens_coeff = 1.0)
 	if(!prob(prb))
 		return 0
-	if(electrocute_mob(user, powernet, src, siemens_coeff))
+	if (electrocute_mob(user, powernet, src, siemens_coeff))
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 		s.set_up(5, 1, src)
 		s.start()
@@ -141,12 +141,12 @@
 		if(1.0)
 			del(src)
 		if(2.0)
-			if(prob(50))
+			if (prob(50))
 				new/obj/item/weapon/cable_coil(src.loc, src.d1 ? 2 : 1, color)
 				del(src)
 
 		if(3.0)
-			if(prob(25))
+			if (prob(25))
 				new/obj/item/weapon/cable_coil(src.loc, src.d1 ? 2 : 1, color)
 				del(src)
 	return
@@ -180,14 +180,14 @@
 /obj/item/weapon/cable_coil/New(loc, length = MAXCOIL, var/param_color = null)
 	..()
 	src.amount = length
-	if(param_color)
+	if (param_color)
 		color = param_color
 	pixel_x = rand(-2,2)
 	pixel_y = rand(-2,2)
 	updateicon()
 
 /obj/item/weapon/cable_coil/proc/updateicon()
-	if(!color)
+	if (!color)
 		color = pick("red", "yellow", "blue", "green")
 	if(amount == 1)
 		icon_state = "coil_[color]1"
@@ -260,7 +260,7 @@
 /obj/item/weapon/cable_coil/proc/use(var/used)
 	if(src.amount < used)
 		return 0
-	else if(src.amount == used)
+	else if (src.amount == used)
 		del(src)
 	else
 		amount -= used
@@ -313,8 +313,8 @@
 
 
 		use(1)
-		if(C.shock(user, 50))
-			if(prob(50)) //fail
+		if (C.shock(user, 50))
+			if (prob(50)) //fail
 				new/obj/item/weapon/cable_coil(C.loc, 1, C.color)
 				del(C)
 		//src.laying = 1
@@ -373,8 +373,8 @@
 				NC.mergeConnectedNetworks(NC.d2)
 				NC.mergeConnectedNetworksOnTurf()
 			use(1)
-			if(NC.shock(user, 50))
-				if(prob(50)) //fail
+			if (NC.shock(user, 50))
+				if (prob(50)) //fail
 					new/obj/item/weapon/cable_coil(NC.loc, 1, NC.color)
 					del(NC)
 
@@ -412,8 +412,8 @@
 		C.mergeConnectedNetworksOnTurf()
 
 		use(1)
-		if(C.shock(user, 50))
-			if(prob(50)) //fail
+		if (C.shock(user, 50))
+			if (prob(50)) //fail
 				new/obj/item/weapon/cable_coil(C.loc, 2, C.color)
 				del(C)
 

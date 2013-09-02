@@ -1,10 +1,10 @@
 /mob/living/carbon/human/attack_hand(mob/living/carbon/human/M as mob)
-	if(istype(loc, /turf) && istype(loc.loc, /area/start))
+	if (istype(loc, /turf) && istype(loc.loc, /area/start))
 		M << "No attacking people at spawn, you jackass."
 		return
 
 	var/datum/organ/external/temp = M:organs_by_name["r_hand"]
-	if(M.hand)
+	if (M.hand)
 		temp = M:organs_by_name["l_hand"]
 	if(temp && !temp.is_usable())
 		M << "\red You can't use your [temp.display_name]."
@@ -27,7 +27,7 @@
 					M.attack_log += text("\[[time_stamp()]\] <font color='red'>Stungloved [src.name] ([src.ckey])</font>")
 					src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been stungloved by [M.name] ([M.ckey])</font>")
 
-					log_attack("<font color='red'>[M.name] ([M.ckey]) stungloved [src.name] ([src.ckey])</font>")
+					msg_admin_attack("[M.name] ([M.ckey]) stungloved [src.name] ([src.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[M.x];Y=[M.y];Z=[M.z]'>JMP</a>)")
 
 					var/armorblock = run_armor_check(M.zone_sel.selecting, "energy")
 					apply_effects(5,5,0,0,5,0,0,armorblock)
@@ -106,7 +106,7 @@
 			M.attack_log += text("\[[time_stamp()]\] <font color='red'>[M.species.attack_verb]ed [src.name] ([src.ckey])</font>")
 			src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been [M.species.attack_verb]ed by [M.name] ([M.ckey])</font>")
 
-			log_attack("<font color='red'>[M.name] ([M.ckey]) [M.species.attack_verb]ed [src.name] ([src.ckey])</font>")
+			log_attack("[M.name] ([M.ckey]) [M.species.attack_verb]ed [src.name] ([src.ckey])")
 
 			var/damage = rand(0, 5)//BS12 EDIT
 			if(!damage)
@@ -144,27 +144,25 @@
 			M.attack_log += text("\[[time_stamp()]\] <font color='red'>Disarmed [src.name] ([src.ckey])</font>")
 			src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been disarmed by [M.name] ([M.ckey])</font>")
 
-			log_admin("ATTACK: [M.name] ([M.ckey]) disarmed [src.name] ([src.ckey])")
-			log_attack("<font color='red'>[M.name] ([M.ckey]) disarmed [src.name] ([src.ckey])</font>")
-
+			log_attack("[M.name] ([M.ckey]) disarmed [src.name] ([src.ckey])")
 
 			if(w_uniform)
 				w_uniform.add_fingerprint(M)
 			var/datum/organ/external/affecting = get_organ(ran_zone(M.zone_sel.selecting))
 
-			if(istype(r_hand,/obj/item/weapon/gun) || istype(l_hand,/obj/item/weapon/gun))
+			if (istype(r_hand,/obj/item/weapon/gun) || istype(l_hand,/obj/item/weapon/gun))
 				var/obj/item/weapon/gun/W = null
 				var/chance = 0
 
-				if(istype(l_hand,/obj/item/weapon/gun))
+				if (istype(l_hand,/obj/item/weapon/gun))
 					W = l_hand
 					chance = hand ? 40 : 20
 
-				if(istype(r_hand,/obj/item/weapon/gun))
+				if (istype(r_hand,/obj/item/weapon/gun))
 					W = r_hand
 					chance = !hand ? 40 : 20
 
-				if(prob(chance))
+				if (prob(chance))
 					visible_message("<spawn class=danger>[src]'s [W] goes off during struggle!")
 					var/list/turfs = list()
 					for(var/turf/T in view())
@@ -173,7 +171,7 @@
 					return W.afterattack(target,src)
 
 			var/randn = rand(1, 100)
-			if(randn <= 25)
+			if (randn <= 25)
 				apply_effect(4, WEAKEN, run_armor_check(affecting, "melee"))
 				playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 				visible_message("\red <B>[M] has pushed [src]!</B>")

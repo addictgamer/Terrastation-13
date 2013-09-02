@@ -23,7 +23,7 @@
 	master = null
 
 /obj/screen/close/DblClick()
-	if(src.master)
+	if (src.master)
 		src.master:close(usr)
 	return
 
@@ -109,139 +109,139 @@
 	var/icon_x = text2num(PL["icon-x"])
 	var/icon_y = text2num(PL["icon-y"])
 
-	if(icon_y < 2)
+	if (icon_y < 2)
 		return
-	else if(icon_y < 5)
-		if((icon_x > 9 && icon_x < 23))
-			if(icon_x < 16)
+	else if (icon_y < 5)
+		if ((icon_x > 9 && icon_x < 23))
+			if (icon_x < 16)
 				selecting = "r_foot"
 			else
 				selecting = "l_foot"
-	else if(icon_y < 11)
-		if((icon_x > 11 && icon_x < 21))
-			if(icon_x < 16)
+	else if (icon_y < 11)
+		if ((icon_x > 11 && icon_x < 21))
+			if (icon_x < 16)
 				selecting = "r_leg"
 			else
 				selecting = "l_leg"
-	else if(icon_y < 12)
-		if((icon_x > 11 && icon_x < 21))
-			if(icon_x < 14)
+	else if (icon_y < 12)
+		if ((icon_x > 11 && icon_x < 21))
+			if (icon_x < 14)
 				selecting = "r_leg"
-			else if(icon_x < 19)
+			else if (icon_x < 19)
 				selecting = "groin"
 			else
 				selecting = "l_leg"
 		else
 			return
-	else if(icon_y < 13)
-		if((icon_x > 7 && icon_x < 25))
-			if(icon_x < 12)
+	else if (icon_y < 13)
+		if ((icon_x > 7 && icon_x < 25))
+			if (icon_x < 12)
 				selecting = "r_hand"
-			else if(icon_x < 13)
+			else if (icon_x < 13)
 				selecting = "r_leg"
-			else if(icon_x < 20)
+			else if (icon_x < 20)
 				selecting = "groin"
-			else if(icon_x < 21)
+			else if (icon_x < 21)
 				selecting = "l_leg"
 			else
 				selecting = "l_hand"
 		else
 			return
-	else if(icon_y < 14)
-		if((icon_x > 7 && icon_x < 25))
-			if(icon_x < 12)
+	else if (icon_y < 14)
+		if ((icon_x > 7 && icon_x < 25))
+			if (icon_x < 12)
 				selecting = "r_hand"
-			else if(icon_x < 21)
+			else if (icon_x < 21)
 				selecting = "groin"
 			else
 				selecting = "l_hand"
 		else
 			return
-	else if(icon_y < 16)
-		if((icon_x > 7 && icon_x < 25))
-			if(icon_x < 13)
+	else if (icon_y < 16)
+		if ((icon_x > 7 && icon_x < 25))
+			if (icon_x < 13)
 				selecting = "r_hand"
-			else if(icon_x < 20)
+			else if (icon_x < 20)
 				selecting = "chest"
 			else
 				selecting = "l_hand"
 		else
 			return
-	else if(icon_y < 23)
-		if((icon_x > 7 && icon_x < 25))
-			if(icon_x < 12)
+	else if (icon_y < 23)
+		if ((icon_x > 7 && icon_x < 25))
+			if (icon_x < 12)
 				selecting = "r_arm"
-			else if(icon_x < 21)
+			else if (icon_x < 21)
 				selecting = "chest"
 			else
 				selecting = "l_arm"
 		else
 			return
-	else if(icon_y < 24)
-		if((icon_x > 11 && icon_x < 21))
+	else if (icon_y < 24)
+		if ((icon_x > 11 && icon_x < 21))
 			selecting = "chest"
 		else
 			return
-	else if(icon_y < 25)
-		if((icon_x > 11 && icon_x < 21))
-			if(icon_x < 16)
+	else if (icon_y < 25)
+		if ((icon_x > 11 && icon_x < 21))
+			if (icon_x < 16)
 				selecting = "head"
-			else if(icon_x < 17)
+			else if (icon_x < 17)
 				selecting = "mouth"
 			else
 				selecting = "head"
 		else
 			return
-	else if(icon_y < 26)
-		if((icon_x > 11 && icon_x < 21))
-			if(icon_x < 15)
+	else if (icon_y < 26)
+		if ((icon_x > 11 && icon_x < 21))
+			if (icon_x < 15)
 				selecting = "head"
-			else if(icon_x < 18)
+			else if (icon_x < 18)
 				selecting = "mouth"
 			else
 				selecting = "head"
 		else
 			return
-	else if(icon_y < 27)
-		if((icon_x > 11 && icon_x < 21))
-			if(icon_x < 15)
+	else if (icon_y < 27)
+		if ((icon_x > 11 && icon_x < 21))
+			if (icon_x < 15)
 				selecting = "head"
-			else if(icon_x < 16)
+			else if (icon_x < 16)
 				selecting = "eyes"
-			else if(icon_x < 17)
+			else if (icon_x < 17)
 				selecting = "mouth"
-			else if(icon_x < 18)
+			else if (icon_x < 18)
 				selecting = "eyes"
 			else
 				selecting = "head"
 		else
 			return
-	else if(icon_y < 28)
-		if((icon_x > 11 && icon_x < 21))
-			if(icon_x < 14)
+	else if (icon_y < 28)
+		if ((icon_x > 11 && icon_x < 21))
+			if (icon_x < 14)
 				selecting = "head"
-			else if(icon_x < 19)
+			else if (icon_x < 19)
 				selecting = "eyes"
 			else
 				selecting = "head"
 		else
 			return
-	else if(icon_y < 29)
-		if((icon_x > 11 && icon_x < 21))
-			if(icon_x < 15)
+	else if (icon_y < 29)
+		if ((icon_x > 11 && icon_x < 21))
+			if (icon_x < 15)
 				selecting = "head"
-			else if(icon_x < 16)
+			else if (icon_x < 16)
 				selecting = "eyes"
-			else if(icon_x < 17)
+			else if (icon_x < 17)
 				selecting = "head"
-			else if(icon_x < 18)
+			else if (icon_x < 18)
 				selecting = "eyes"
 			else
 				selecting = "head"
 		else
 			return
-	else if(icon_y < 31)
-		if((icon_x > 11 && icon_x < 21))
+	else if (icon_y < 31)
+		if ((icon_x > 11 && icon_x < 21))
 			selecting = "head"
 		else
 			return
@@ -295,7 +295,7 @@
 			usr.clearmap()
 
 		if("other")
-			if(usr.hud_used.inventory_shown)
+			if (usr.hud_used.inventory_shown)
 				usr.hud_used.inventory_shown = 0
 				usr.client.screen -= usr.hud_used.other
 			else
@@ -337,7 +337,7 @@
 						usr.hud_used.move_intent.icon_state = "running"
 				if(istype(usr,/mob/living/carbon/alien/humanoid))	usr.update_icons()
 		if("m_intent")
-			if(!( usr.m_int ))
+			if (!( usr.m_int ))
 				switch(usr.m_intent)
 					if("run")
 						usr.m_int = "13,14"
@@ -359,43 +359,43 @@
 		if("Reset Machine")
 			usr.unset_machine()
 		if("internal")
-			if(( !usr.stat && !usr.stunned && !usr.paralysis && !usr.restrained() ))
-				if(usr.internal)
+			if (( !usr.stat && !usr.stunned && !usr.paralysis && !usr.restrained() ))
+				if (usr.internal)
 					usr.internal = null
 					usr << "\blue No longer running on internals."
-					if(usr.internals)
+					if (usr.internals)
 						usr.internals.icon_state = "internal0"
 				else
 					if(ishuman(usr))
-						if(!( istype(usr.wear_mask, /obj/item/clothing/mask) ))
+						if (!( istype(usr.wear_mask, /obj/item/clothing/mask) ))
 							usr << "\red You are not wearing a mask"
 							return
 						else
-							if(ishuman(usr) && istype(usr:s_store, /obj/item/weapon/tank))
+							if (ishuman(usr) && istype(usr:s_store, /obj/item/weapon/tank))
 								usr << "\blue You are now running on internals from the [usr:s_store] on your [usr:wear_suit]."
 								usr.internal = usr:s_store
-							else if(ishuman(usr) && istype(usr:belt, /obj/item/weapon/tank))
+							else if (ishuman(usr) && istype(usr:belt, /obj/item/weapon/tank))
 								usr << "\blue You are now running on internals from the [usr:belt] on your belt."
 								usr.internal = usr:belt
-							else if(istype(usr:l_store, /obj/item/weapon/tank))
+							else if (istype(usr:l_store, /obj/item/weapon/tank))
 								usr << "\blue You are now running on internals from the [usr:l_store] in your left pocket."
 								usr.internal = usr:l_store
-							else if(istype(usr:r_store, /obj/item/weapon/tank))
+							else if (istype(usr:r_store, /obj/item/weapon/tank))
 								usr << "\blue You are now running on internals from the [usr:r_store] in your right pocket."
 								usr.internal = usr:r_store
-							else if(istype(usr.back, /obj/item/weapon/tank))
+							else if (istype(usr.back, /obj/item/weapon/tank))
 								usr << "\blue You are now running on internals from the [usr.back] on your back."
 								usr.internal = usr.back
-							else if(istype(usr.l_hand, /obj/item/weapon/tank))
+							else if (istype(usr.l_hand, /obj/item/weapon/tank))
 								usr << "\blue You are now running on internals from the [usr.l_hand] on your left hand."
 								usr.internal = usr.l_hand
-							else if(istype(usr.r_hand, /obj/item/weapon/tank))
+							else if (istype(usr.r_hand, /obj/item/weapon/tank))
 								usr << "\blue You are now running on internals from the [usr.r_hand] on your right hand."
 								usr.internal = usr.r_hand
-							if(usr.internal)
+							if (usr.internal)
 								//for(var/mob/M in viewers(usr, 1))
 								//	M.show_message(text("[] is now running on internals.", usr), 1)
-								if(usr.internals)
+								if (usr.internals)
 									usr.internals.icon_state = "internal1"
 							else
 								usr << "\blue You don't have an oxygen tank."
@@ -424,7 +424,7 @@
 		if("pull")
 			usr.stop_pulling()
 		if("throw")
-			if(!usr.stat && isturf(usr.loc) && !usr.restrained())
+			if (!usr.stat && isturf(usr.loc) && !usr.restrained())
 				usr:toggle_throw_mode()
 		if("drop")
 			usr.drop_item_v()
@@ -638,7 +638,7 @@
 			return
 
 	//resisting grabs (as if it helps anyone...)
-	if((!( L.stat ) && L.canmove && !( L.restrained() )))
+	if ((!( L.stat ) && L.canmove && !( L.restrained() )))
 		var/resisting = 0
 		for(var/obj/O in L.requests)
 			L.requests.Remove(O)
@@ -646,17 +646,17 @@
 			resisting++
 		for(var/obj/item/weapon/grab/G in usr.grabbed_by)
 			resisting++
-			if(G.state == 1)
+			if (G.state == 1)
 				del(G)
 			else
-				if(G.state == 2)
-					if(prob(25))
+				if (G.state == 2)
+					if (prob(25))
 						for(var/mob/O in viewers(L, null))
 							O.show_message(text("\red [] has broken free of []'s grip!", L, G.assailant), 1)
 						del(G)
 				else
-					if(G.state == 3)
-						if(prob(5))
+					if (G.state == 3)
+						if (prob(5))
 							for(var/mob/O in viewers(usr, null))
 								O.show_message(text("\red [] has broken free of []'s headlock!", L, G.assailant), 1)
 							del(G)

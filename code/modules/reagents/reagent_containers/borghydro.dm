@@ -67,9 +67,9 @@
 	if(!R.total_volume)
 		user << "\red The injector is empty."
 		return
-	if(!( istype(M, /mob) ))
+	if (!( istype(M, /mob) ))
 		return
-	if(R.total_volume)
+	if (R.total_volume)
 		user << "\blue You inject [M] with the injector."
 		M << "\red You feel a tiny prick!"
 
@@ -93,7 +93,7 @@
 /obj/item/weapon/reagent_containers/borghypo/examine()
 	set src in view()
 	..()
-	if(!(usr in view(2)) && usr!=src.loc) return
+	if (!(usr in view(2)) && usr!=src.loc) return
 
 	var/empty = 1
 

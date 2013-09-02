@@ -59,7 +59,7 @@ BLIND     // can't see anything
 /obj/item/clothing/gloves/emp_act(severity)
 	if(cell)
 		cell.charge -= 1000 / severity
-		if(cell.charge < 0)
+		if (cell.charge < 0)
 			cell.charge = 0
 		if(cell.reliability != 100 && prob(50/severity))
 			cell.reliability -= 10 / severity
@@ -168,10 +168,10 @@ BLIND     // can't see anything
 		I.loc = src
 		user << "<span class='notice'>You attach [I] to [src].</span>"
 
-		if(istype(hastie,/obj/item/clothing/tie/holster))
+		if (istype(hastie,/obj/item/clothing/tie/holster))
 			verbs += /obj/item/clothing/under/proc/holster
 
-		if(istype(hastie,/obj/item/clothing/tie/storage))
+		if (istype(hastie,/obj/item/clothing/tie/storage))
 			verbs += /obj/item/clothing/under/proc/storage
 
 		if(istype(loc, /mob/living/carbon/human))
@@ -202,8 +202,8 @@ BLIND     // can't see anything
 	set category = "Object"
 	set src in usr
 	var/mob/M = usr
-	if(istype(M, /mob/dead/)) return
-	if(usr.stat) return
+	if (istype(M, /mob/dead/)) return
+	if (usr.stat) return
 	if(src.has_sensor >= 2)
 		usr << "The controls are locked."
 		return 0
@@ -235,13 +235,13 @@ BLIND     // can't see anything
 		usr.put_in_hands(hastie)
 		hastie = null
 
-		if(istype(hastie,/obj/item/clothing/tie/holster))
+		if (istype(hastie,/obj/item/clothing/tie/holster))
 			verbs -= /obj/item/clothing/under/proc/holster
 
-		if(istype(hastie,/obj/item/clothing/tie/storage))
+		if (istype(hastie,/obj/item/clothing/tie/storage))
 			verbs -= /obj/item/clothing/under/proc/storage
 			var/obj/item/clothing/tie/storage/W = hastie
-			if(W.hold)
+			if (W.hold)
 				W.hold.loc = hastie
 
 		if(istype(loc, /mob/living/carbon/human))
@@ -259,7 +259,7 @@ BLIND     // can't see anything
 	if(!istype(usr, /mob/living)) return
 	if(usr.stat) return
 
-	if(!hastie || !istype(hastie,/obj/item/clothing/tie/holster))
+	if (!hastie || !istype(hastie,/obj/item/clothing/tie/holster))
 		usr << "\red You need a holster for that!"
 		return
 	var/obj/item/clothing/tie/holster/H = hastie
@@ -269,7 +269,7 @@ BLIND     // can't see anything
 			usr << "\blue You need your gun equiped to holster it."
 			return
 		var/obj/item/weapon/gun/W = usr.get_active_hand()
-		if(!W.isHandgun())
+		if (!W.isHandgun())
 			usr << "\red This gun won't fit in \the [H]!"
 			return
 		H.holstered = usr.get_active_hand()
@@ -296,12 +296,12 @@ BLIND     // can't see anything
 	if(!istype(usr, /mob/living)) return
 	if(usr.stat) return
 
-	if(!hastie || !istype(hastie,/obj/item/clothing/tie/storage))
+	if (!hastie || !istype(hastie,/obj/item/clothing/tie/storage))
 		usr << "\red You need something to store items in for that!"
 		return
 	var/obj/item/clothing/tie/storage/W = hastie
 
-	if(!istype(W.hold))
+	if (!istype(W.hold))
 		return
 
 	W.hold.loc = usr

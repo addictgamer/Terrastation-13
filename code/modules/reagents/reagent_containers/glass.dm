@@ -44,18 +44,18 @@
 	examine()
 		set src in view()
 		..()
-		if(!(usr in view(2)) && usr!=src.loc) return
+		if (!(usr in view(2)) && usr!=src.loc) return
 		usr << "\blue It contains:"
 		if(reagents && reagents.reagent_list.len)
 			usr << "\blue [src.reagents.total_volume] units of liquid."
 		else
 			usr << "\blue Nothing."
-		if(!is_open_container())
+		if (!is_open_container())
 			usr << "\blue Airtight lid seals it completely."
 
 	attack_self()
 		..()
-		if(is_open_container())
+		if (is_open_container())
 			usr << "<span class = 'notice'>You put the lid on \the [src]."
 			flags ^= OPENCONTAINER
 		else
@@ -64,7 +64,7 @@
 		update_icon()
 
 	afterattack(obj/target, mob/user , flag)
-		if(!is_open_container())
+		if (!is_open_container())
 			return
 
 		for(var/type in src.can_be_placed_into)
@@ -72,16 +72,17 @@
 				return
 
 		if(ismob(target) && target.reagents && reagents.total_volume)
-			var/mob/M = target
 			user << "\blue You splash the solution onto [target]."
-			var/R
-			if(src.reagents)
-				for(var/datum/reagent/A in src.reagents.reagent_list)
-					R += A.id + " ("
-					R += num2text(A.volume) + "),"
-			user.attack_log += "\[[time_stamp()]\] <b>[user]/[user.ckey]</b> splashed <b>[M]/[M.ckey]</b> with ([R])"
-			M.attack_log += "\[[time_stamp()]\] <b>[user]/[user.ckey]</b> splashed <b>[M]/[M.ckey]</b> with ([R])"
-			log_attack("\[[time_stamp()]\] <b>[user]/[user.ckey]</b> splashed <b>[M]/[M.ckey]</b> with ([R])")
+
+			var/mob/living/M = target
+			var/list/injected = list()
+			for(var/datum/reagent/R in src.reagents.reagent_list)
+				injected += R.name
+			var/contained = english_list(injected)
+			M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been splashed with [src.name] by [user.name] ([user.ckey]). Reagents: [contained]</font>")
+			user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to splash [M.name] ([M.key]). Reagents: [contained]</font>")
+			msg_admin_attack("[user.name] ([user.ckey]) splashed [M.name] ([M.key]) with [src.name]. Reagents: [contained] (INTENT: [uppertext(user.a_intent)]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
+
 			for(var/mob/O in viewers(world.view, user))
 				O.show_message(text("\red [] has been splashed with something by []!", target, user), 1)
 			src.reagents.reaction(target, TOUCH)
@@ -187,7 +188,7 @@
 			filling.icon += mix_color_from_reagents(reagents.reagent_list)
 			overlays += filling
 
-		if(!is_open_container())
+		if (!is_open_container())
 			var/image/lid = image(icon, src, "lid_[initial(icon_state)]")
 			overlays += lid
 

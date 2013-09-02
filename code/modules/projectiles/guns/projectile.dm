@@ -77,15 +77,15 @@
 	return
 
 /obj/item/weapon/gun/projectile/attack_self(mob/user as mob)
-	if(target)
+	if (target)
 		return ..()
-	if(loaded.len)
-		if(load_method == SPEEDLOADER)
+	if (loaded.len)
+		if (load_method == SPEEDLOADER)
 			var/obj/item/ammo_casing/AC = loaded[1]
 			loaded -= AC
 			AC.loc = get_turf(src) //Eject casing onto ground.
 			user << "\blue You unload shell from \the [src]!"
-		if(load_method == MAGAZINE)
+		if (load_method == MAGAZINE)
 			var/obj/item/ammo_magazine/AM = empty_mag
 			for (var/obj/item/ammo_casing/AC in loaded)
 				AM.stored_ammo += AC

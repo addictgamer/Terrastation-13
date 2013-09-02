@@ -58,7 +58,7 @@
 	for(dir in list(NORTH,EAST,SOUTH,WEST))
 		//world << "SEARCHING IN [dir]"
 		foundgenerator = locate(/obj/machinery/gravity_generator/, get_step(src, dir))
-		if(!isnull(foundgenerator))
+		if (!isnull(foundgenerator))
 			//world << "FOUND"
 			break
 	return foundgenerator
@@ -93,7 +93,7 @@
 			if(A.has_gravity && gravity_generator:on)
 				dat += "<tt><font color=green>[A]</tt></font><br>"
 
-			else if(A.has_gravity)
+			else if (A.has_gravity)
 				dat += "<tt><font color=yellow>[A]</tt></font><br>"
 
 			else
@@ -116,8 +116,8 @@
 	set background = 1
 	..()
 
-	if( (get_dist(src, usr) > 1 ))
-		if(!istype(usr, /mob/living/silicon))
+	if ( (get_dist(src, usr) > 1 ))
+		if (!istype(usr, /mob/living/silicon))
 			usr.unset_machine()
 			usr << browse(null, "window=air_alarm")
 			return

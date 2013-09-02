@@ -52,12 +52,12 @@ Note: Must be placed west/left of and R&D console to function.
 	max_material_storage = T * 75000
 
 /obj/machinery/r_n_d/protolathe/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	if(shocked)
+	if (shocked)
 		shock(user,50)
-	if(O.is_open_container())
+	if (O.is_open_container())
 		return 1
-	if(istype(O, /obj/item/weapon/screwdriver))
-		if(!opened)
+	if (istype(O, /obj/item/weapon/screwdriver))
+		if (!opened)
 			opened = 1
 			if(linked_console)
 				linked_console.linked_lathe = null
@@ -69,7 +69,7 @@ Note: Must be placed west/left of and R&D console to function.
 			icon_state = "protolathe"
 			user << "You close the maintenance hatch of [src]."
 		return
-	if(opened)
+	if (opened)
 		if(istype(O, /obj/item/weapon/crowbar))
 			playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
 			var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(src.loc)
@@ -113,22 +113,22 @@ Note: Must be placed west/left of and R&D console to function.
 		else
 			user << "\red You can't load the [src.name] while it's opened."
 			return 1
-	if(disabled)
+	if (disabled)
 		return
-	if(!linked_console)
+	if (!linked_console)
 		user << "\The protolathe must be linked to an R&D console first!"
 		return 1
-	if(busy)
+	if (busy)
 		user << "\red The protolathe is busy. Please wait for completion of previous operation."
 		return 1
-	if(!istype(O, /obj/item/stack/sheet))
+	if (!istype(O, /obj/item/stack/sheet))
 		user << "\red You cannot insert this item into the protolathe!"
 		return 1
-	if(stat)
+	if (stat)
 		return 1
 	if(istype(O,/obj/item/stack/sheet))
 		var/obj/item/stack/sheet/S = O
-		if(TotalMaterials() + S.perunit > max_material_storage)
+		if (TotalMaterials() + S.perunit > max_material_storage)
 			user << "\red The protolathe's material bin is full. Please remove material before adding more."
 			return 1
 
@@ -154,7 +154,7 @@ Note: Must be placed west/left of and R&D console to function.
 	use_power(max(1000, (3750*amount/10)))
 	var/stacktype = stack.type
 	stack.use(amount)
-	if(do_after(user, 16))
+	if (do_after(user, 16))
 		user << "\blue You add [amount] sheets to the [src.name]."
 		icon_state = "protolathe"
 		switch(stacktype)

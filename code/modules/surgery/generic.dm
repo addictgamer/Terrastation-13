@@ -6,16 +6,16 @@
 /datum/surgery_step/generic/
 	can_infect = 1
 	can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-		if(target_zone == "eyes")	//there are specific steps for eye surgery
+		if (target_zone == "eyes")	//there are specific steps for eye surgery
 			return 0
-		if(!hasorgans(target))
+		if (!hasorgans(target))
 			return 0
 		var/datum/organ/external/affected = target.get_organ(target_zone)
-		if(affected == null)
+		if (affected == null)
 			return 0
-		if(affected.status & ORGAN_DESTROYED)
+		if (affected.status & ORGAN_DESTROYED)
 			return 0
-		if(affected.status & ORGAN_ROBOT)
+		if (affected.status & ORGAN_ROBOT)
 			return 0
 		return 1
 
@@ -47,7 +47,7 @@
 		affected.open = 1
 		affected.status |= ORGAN_BLEEDING
 		affected.createwound(CUT, 1)
-		if(target_zone == "head")
+		if (target_zone == "head")
 			target.brain_op_stage = 1
 
 	fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -108,10 +108,10 @@
 		var/datum/organ/external/affected = target.get_organ(target_zone)
 		var/msg = "[user] starts to pry open the incision on [target]'s [affected.display_name] with \the [tool]."
 		var/self_msg = "You start to pry open the incision on [target]'s [affected.display_name] with \the [tool]."
-		if(target_zone == "chest")
+		if (target_zone == "chest")
 			msg = "[user] starts to separate the ribcage and rearrange the organs in [target]'s torso with \the [tool]."
 			self_msg = "You start to separate the ribcage and rearrange the organs in [target]'s torso with \the [tool]."
-		if(target_zone == "groin")
+		if (target_zone == "groin")
 			msg = "[user] starts to pry open the incision and rearrange the organs in [target]'s lower abdomen with \the [tool]."
 			self_msg = "You start to pry open the incision and rearrange the organs in [target]'s lower abdomen with \the [tool]."
 		user.visible_message(msg, self_msg)
@@ -122,10 +122,10 @@
 		var/datum/organ/external/affected = target.get_organ(target_zone)
 		var/msg = "\blue [user] keeps the incision open on [target]'s [affected.display_name] with \the [tool]."
 		var/self_msg = "\blue You keep the incision open on [target]'s [affected.display_name] with \the [tool]."
-		if(target_zone == "chest")
+		if (target_zone == "chest")
 			msg = "\blue [user] keeps the ribcage open on [target]'s torso with \the [tool]."
 			self_msg = "\blue You keep the ribcage open on [target]'s torso with \the [tool]."
-		if(target_zone == "groin")
+		if (target_zone == "groin")
 			msg = "\blue [user] keeps the incision open on [target]'s lower abdomen with \the [tool]."
 			self_msg = "\blue You keep the incision open on [target]'s lower abdomen with \the [tool]."
 		user.visible_message(msg, self_msg)
@@ -135,10 +135,10 @@
 		var/datum/organ/external/affected = target.get_organ(target_zone)
 		var/msg = "\red [user]'s hand slips, tearing the edges of incision on [target]'s [affected.display_name] with \the [tool]!"
 		var/self_msg = "\red Your hand slips, tearing the edges of incision on [target]'s [affected.display_name] with \the [tool]!"
-		if(target_zone == "chest")
+		if (target_zone == "chest")
 			msg = "\red [user]'s hand slips, damaging several organs [target]'s torso with \the [tool]!"
 			self_msg = "\red Your hand slips, damaging several organs [target]'s torso with \the [tool]!"
-		if(target_zone == "groin")
+		if (target_zone == "groin")
 			msg = "\red [user]'s hand slips, damaging several organs [target]'s lower abdomen with \the [tool]"
 			self_msg = "\red Your hand slips, damaging several organs [target]'s lower abdomen with \the [tool]!"
 		user.visible_message(msg, self_msg)
@@ -190,14 +190,14 @@
 	max_duration = 160
 
 	can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-		if(target_zone == "eyes")	//there are specific steps for eye surgery
+		if (target_zone == "eyes")	//there are specific steps for eye surgery
 			return 0
-		if(!hasorgans(target))
+		if (!hasorgans(target))
 			return 0
 		var/datum/organ/external/affected = target.get_organ(target_zone)
-		if(affected == null)
+		if (affected == null)
 			return 0
-		if(affected.status & ORGAN_DESTROYED)
+		if (affected.status & ORGAN_DESTROYED)
 			return 0
 		return target_zone != "chest" && target_zone != "groin" && target_zone != "head"
 

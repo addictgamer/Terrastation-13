@@ -247,7 +247,7 @@ proc/get_damage_icon_part(damage_state, body_part)
 	for(var/datum/organ/external/part in organs)
 		if(!istype(part, /datum/organ/external/chest) && !(part.status & ORGAN_DESTROYED))
 			var/icon/temp
-			if(istype(part, /datum/organ/external/groin) || istype(part, /datum/organ/external/head))
+			if (istype(part, /datum/organ/external/groin) || istype(part, /datum/organ/external/head))
 				temp = part.get_icon(g)
 			else
 				temp = part.get_icon()
@@ -420,7 +420,7 @@ proc/get_damage_icon_part(damage_state, body_part)
 	if( FAT in mutations )
 		fat = "fat"
 //	var/g = "m"
-//	if(gender == FEMALE)	g = "f"
+//	if (gender == FEMALE)	g = "f"
 //BS12 EDIT
 	var/skeleton = (SKELETON in src.mutations)
 	if(skeleton)
@@ -447,12 +447,12 @@ proc/get_damage_icon_part(damage_state, body_part)
 
 //Call when target overlay should be added/removed
 /mob/living/carbon/human/update_targeted(var/update_icons=1)
-	if(targeted_by && target_locked)
+	if (targeted_by && target_locked)
 		overlays_lying[TARGETED_LAYER]		= target_locked
 		overlays_standing[TARGETED_LAYER]	= target_locked
-	else if(!targeted_by && target_locked)
+	else if (!targeted_by && target_locked)
 		del(target_locked)
-	if(!targeted_by)
+	if (!targeted_by)
 		overlays_lying[TARGETED_LAYER]		= null
 		overlays_standing[TARGETED_LAYER]	= null
 	if(update_icons)		update_icons()
@@ -521,10 +521,10 @@ proc/get_damage_icon_part(damage_state, body_part)
 		for( var/obj/item/thing in list(r_store, l_store, wear_id, belt) )						//
 			if(thing)																			//
 				u_equip(thing)																	//
-				if(client)																		//
+				if (client)																		//
 					client.screen -= thing														//
 																								//
-				if(thing)																		//
+				if (thing)																		//
 					thing.loc = loc																//
 					thing.dropped(src)															//
 					thing.layer = initial(thing.layer)
@@ -758,7 +758,7 @@ proc/get_damage_icon_part(damage_state, body_part)
 		var/t_state = r_hand.item_state
 		if(!t_state)	t_state = r_hand.icon_state
 		overlays_standing[R_HAND_LAYER] = image("icon" = 'icons/mob/items_righthand.dmi', "icon_state" = "[t_state]")
-		if(handcuffed) drop_r_hand()
+		if (handcuffed) drop_r_hand()
 	else
 		overlays_standing[R_HAND_LAYER] = null
 	if(update_icons)   update_icons()
@@ -770,7 +770,7 @@ proc/get_damage_icon_part(damage_state, body_part)
 		var/t_state = l_hand.item_state
 		if(!t_state)	t_state = l_hand.icon_state
 		overlays_standing[L_HAND_LAYER] = image("icon" = 'icons/mob/items_lefthand.dmi', "icon_state" = "[t_state]")
-		if(handcuffed) drop_l_hand()
+		if (handcuffed) drop_l_hand()
 	else
 		overlays_standing[L_HAND_LAYER] = null
 	if(update_icons)   update_icons()
@@ -791,7 +791,7 @@ proc/get_damage_icon_part(damage_state, body_part)
 /mob/living/carbon/human/proc/generate_head_icon()
 //gender no longer matters for the mouth, although there should probably be seperate base head icons.
 //	var/g = "m"
-//	if(gender == FEMALE)	g = "f"
+//	if (gender == FEMALE)	g = "f"
 
 	//base icons
 	var/icon/face_lying		= new /icon('icons/mob/human_face.dmi',"bald_l")

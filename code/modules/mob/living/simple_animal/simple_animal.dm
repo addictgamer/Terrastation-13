@@ -253,15 +253,15 @@
 	switch(M.a_intent)
 
 		if("help")
-			if(health > 0)
+			if (health > 0)
 				for(var/mob/O in viewers(src, null))
-					if((O.client && !( O.blinded )))
+					if ((O.client && !( O.blinded )))
 						O.show_message("\blue [M] [response_help] [src]")
 
 		if("grab")
-			if(M == src)
+			if (M == src)
 				return
-			if(!(status_flags & CANPUSH))
+			if (!(status_flags & CANPUSH))
 				return
 
 			var/obj/item/weapon/grab/G = new /obj/item/weapon/grab( M, M, src )
@@ -274,13 +274,13 @@
 			LAssailant = M
 
 			for(var/mob/O in viewers(src, null))
-				if((O.client && !( O.blinded )))
+				if ((O.client && !( O.blinded )))
 					O.show_message(text("\red [] has grabbed [] passively!", M, src), 1)
 
 		if("hurt", "disarm")
 			adjustBruteLoss(harm_intent_damage)
 			for(var/mob/O in viewers(src, null))
-				if((O.client && !( O.blinded )))
+				if ((O.client && !( O.blinded )))
 					O.show_message("\red [M] [response_harm] [src]")
 
 	return
@@ -289,12 +289,12 @@
 
 	switch(M.a_intent)
 
-		if("help")
+		if ("help")
 
 			for(var/mob/O in viewers(src, null))
-				if((O.client && !( O.blinded )))
+				if ((O.client && !( O.blinded )))
 					O.show_message(text("\blue [M] caresses [src] with its scythe like arm."), 1)
-		if("grab")
+		if ("grab")
 			if(M == src)
 				return
 			if(!(status_flags & CANPUSH))
@@ -310,7 +310,7 @@
 
 			playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 			for(var/mob/O in viewers(src, null))
-				if((O.client && !( O.blinded )))
+				if ((O.client && !( O.blinded )))
 					O.show_message(text("\red [] has grabbed [] passively!", M, src), 1)
 
 		if("hurt", "disarm")
@@ -338,7 +338,7 @@
 
 
 /mob/living/simple_animal/attack_slime(mob/living/carbon/slime/M as mob)
-	if(!ticker)
+	if (!ticker)
 		M << "You cannot attack people before the game has started."
 		return
 
@@ -371,7 +371,7 @@
 					if(MED.amount <= 0)
 						del(MED)
 					for(var/mob/M in viewers(src, null))
-						if((M.client && !( M.blinded )))
+						if ((M.client && !( M.blinded )))
 							M.show_message("\blue [user] applies the [MED] on [src]")
 		else
 			user << "\blue this [src] is dead, medical items won't bring it back to life."
@@ -385,16 +385,16 @@
 	else
 		if(O.force)
 			var/damage = O.force
-			if(O.damtype == HALLOSS)
+			if (O.damtype == HALLOSS)
 				damage = 0
 			adjustBruteLoss(damage)
 			for(var/mob/M in viewers(src, null))
-				if((M.client && !( M.blinded )))
+				if ((M.client && !( M.blinded )))
 					M.show_message("\red \b [src] has been attacked with the [O] by [user]. ")
 		else
 			usr << "\red This weapon is ineffective, it does no damage."
 			for(var/mob/M in viewers(src, null))
-				if((M.client && !( M.blinded )))
+				if ((M.client && !( M.blinded )))
 					M.show_message("\red [user] gently taps [src] with the [O]. ")
 
 
@@ -424,12 +424,12 @@
 	if(!blinded)
 		flick("flash", flash)
 	switch (severity)
-		if(1.0)
+		if (1.0)
 			adjustBruteLoss(500)
 			gib()
 			return
 
-		if(2.0)
+		if (2.0)
 			adjustBruteLoss(60)
 
 
@@ -440,15 +440,15 @@
 	health = Clamp(health - damage, 0, maxHealth)
 
 /mob/living/simple_animal/proc/SA_attackable(target_mob)
-	if(isliving(target_mob))
+	if (isliving(target_mob))
 		var/mob/living/L = target_mob
 		if(!L.stat && L.health >= 0)
 			return (0)
-	if(istype(target_mob,/obj/mecha))
+	if (istype(target_mob,/obj/mecha))
 		var/obj/mecha/M = target_mob
-		if(M.occupant)
+		if (M.occupant)
 			return (0)
-	if(istype(target_mob,/obj/machinery/bot))
+	if (istype(target_mob,/obj/machinery/bot))
 		var/obj/machinery/bot/B = target_mob
 		if(B.health > 0)
 			return (0)
@@ -459,5 +459,5 @@
 	if(!targeted_by && target_locked)
 		del(target_locked)
 	overlays = null
-	if(targeted_by && target_locked)
+	if (targeted_by && target_locked)
 		overlays += target_locked

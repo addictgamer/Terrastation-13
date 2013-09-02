@@ -115,7 +115,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 /mob/dead/observer/Stat()
 	..()
 	statpanel("Status")
-	if(client.statpanel == "Status")
+	if (client.statpanel == "Status")
 		stat(null, "Station Time: [worldtime2text()]")
 		if(ticker)
 			if(ticker.mode)
@@ -127,7 +127,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		if(emergency_shuttle)
 			if(emergency_shuttle.online && emergency_shuttle.location < 2)
 				var/timeleft = emergency_shuttle.timeleft()
-				if(timeleft)
+				if (timeleft)
 					stat(null, "ETA-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
 
 /mob/dead/observer/verb/reenter_corpse()
@@ -215,7 +215,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 		dest += getmobs() //Fill list, prompt user with list
 		target = input("Please, select a player!", "Jump to Mob", null, null) as null|anything in dest
 
-		if(!target)//Make sure we actually have a target
+		if (!target)//Make sure we actually have a target
 			return
 		else
 			var/mob/M = dest[target] //Destination mob
@@ -254,7 +254,7 @@ This is the proc mobs get to turn into a ghost. Forked from ghostize due to comp
 	set name = "Toggle Darkness"
 	set category = "Ghost"
 
-	if(see_invisible == SEE_INVISIBLE_OBSERVER_NOLIGHTING)
+	if (see_invisible == SEE_INVISIBLE_OBSERVER_NOLIGHTING)
 		see_invisible = SEE_INVISIBLE_OBSERVER
 	else
 		see_invisible = SEE_INVISIBLE_OBSERVER_NOLIGHTING

@@ -1,23 +1,23 @@
 /mob/living/carbon/alien/say_understands(var/other)
-	if(istype(other, /mob/living/carbon/alien))
+	if (istype(other, /mob/living/carbon/alien))
 		return 1
 	return ..()
 
 /mob/living/carbon/alien/say(var/message)
 
-	if(silent)
+	if (silent)
 		return
 
-	if(length(message) >= 2)
-		if(department_radio_keys[copytext(message, 1, 3)] == "alientalk")
+	if (length(message) >= 2)
+		if (department_radio_keys[copytext(message, 1, 3)] == "alientalk")
 			message = copytext(message, 3)
 			message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
-			if(stat == 2)
+			if (stat == 2)
 				return say_dead(message)
 			else
 				alien_talk(message)
 		else
-			if(copytext(message, 1, 2) != "*" && !stat)
+			if (copytext(message, 1, 2) != "*" && !stat)
 				playsound(loc, "hiss", 25, 1, 1)//So aliens can hiss while they hiss yo/N
 			return ..(message)
 	else
@@ -33,7 +33,7 @@
 	log_say("[key_name(src)] : [message]")
 	message = trim(message)
 
-	if(!message)
+	if (!message)
 		return
 
 	var/message_a = say_quote(message)
@@ -43,7 +43,7 @@
 			if(S.alien_talk_understand)
 				if(S.alien_talk_understand == alien_talk_understand)
 					S.show_message(rendered, 2)
-			else if(S.hivecheck())
+			else if (S.hivecheck())
 				S.show_message(rendered, 2)
 
 	var/list/listening = hearers(1, src)
@@ -56,7 +56,7 @@
 			heard += M
 
 
-	if(length(heard))
+	if (length(heard))
 		var/message_b
 
 		message_b = "hsssss"
@@ -73,7 +73,7 @@
 	rendered = "<i><span class='game say'>Hivemind, <span class='name'>[name]</span> <span class='message'>[message_a]</span></span></i>"
 
 	for (var/mob/M in player_list)
-		if(istype(M, /mob/new_player))
+		if (istype(M, /mob/new_player))
 			continue
-		if(M.stat > 1)
+		if (M.stat > 1)
 			M.show_message(rendered, 2)

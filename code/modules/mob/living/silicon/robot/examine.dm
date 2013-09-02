@@ -8,13 +8,13 @@
 
 	var/msg = "<span class='info'>*---------*\nThis is \icon[src] \a <EM>[src]</EM>[custom_name ? ", [modtype] [braintype]" : ""]!\n"
 	msg += "<span class='warning'>"
-	if(src.getBruteLoss())
-		if(src.getBruteLoss() < 75)
+	if (src.getBruteLoss())
+		if (src.getBruteLoss() < 75)
 			msg += "It looks slightly dented.\n"
 		else
 			msg += "<B>It looks severely dented!</B>\n"
-	if(src.getFireLoss())
-		if(src.getFireLoss() < 75)
+	if (src.getFireLoss())
+		if (src.getFireLoss() < 75)
 			msg += "It looks slightly charred.\n"
 		else
 			msg += "<B>It looks severely burnt and heat-warped!</B>\n"
@@ -34,7 +34,7 @@
 
 	if(print_flavor_text()) msg += "[print_flavor_text()]\n"
 
-	if(pose)
+	if (pose)
 		if( findtext(pose,".",lentext(pose)) == 0 && findtext(pose,"!",lentext(pose)) == 0 && findtext(pose,"?",lentext(pose)) == 0 )
 			pose = addtext(pose,".") //Makes sure all emotes end with a period.
 		msg += "\nIt is [pose]"

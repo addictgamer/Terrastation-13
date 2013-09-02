@@ -15,7 +15,7 @@
 				return ..(message)
 
 		if(length(message) >= 1) //In case people forget the '*help' command, this will slow them the message and prevent people from saying one letter at a time
-			if(copytext(message, 1, 2) != "*")
+			if (copytext(message, 1, 2) != "*")
 				return
 
 	/*if(dna)
@@ -96,11 +96,11 @@
 				if(!(copytext(message, 1, 2) == "*" || (mind && mind.changeling && department_radio_keys[copytext(message, 1, 3)] != "changeling")))
 					message = pick("NEEIIGGGHHHH!", "NEEEIIIIGHH!", "NEIIIGGHH!", "HAAWWWWW!", "HAAAWWW!")
 
-	if((HULK in mutations) && health >= 25 && length(message))
+	if ((HULK in mutations) && health >= 25 && length(message))
 		if(copytext(message, 1, 2) != "*")
 			message = "[uppertext(message)]!!" //because I don't know how to code properly in getting vars from other files -Bro
 
-	if(src.slurring)
+	if (src.slurring)
 		if(copytext(message, 1, 2) != "*")
 			message = slur(message)
 	..(message)
@@ -109,17 +109,17 @@
 
 	if(has_brain_worms()) //Brain worms translate everything. Even mice and alien speak.
 		return 1
-	if(istype(other, /mob/living/silicon/ai))
+	if (istype(other, /mob/living/silicon/ai))
 		return 1
-	if(istype(other, /mob/living/silicon/decoy))
+	if (istype(other, /mob/living/silicon/decoy))
 		return 1
-	if(istype(other, /mob/living/silicon/pai))
+	if (istype(other, /mob/living/silicon/pai))
 		return 1
-	if(istype(other, /mob/living/silicon/robot))
+	if (istype(other, /mob/living/silicon/robot))
 		return 1
-	if(istype(other, /mob/living/carbon/brain))
+	if (istype(other, /mob/living/carbon/brain))
 		return 1
-	if(istype(other, /mob/living/carbon/slime))
+	if (istype(other, /mob/living/carbon/slime))
 		return 1
 	return ..()
 

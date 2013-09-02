@@ -84,7 +84,7 @@
 	uniqueID = rand(0,10000)
 	var/datum/disease2/effectholder/holder = pick(effects)
 	holder.majormutate()
-	if(prob(5))
+	if (prob(5))
 		antigen = text2num(pick(ANTIGENS))
 		antigen |= text2num(pick(ANTIGENS))
 
@@ -120,7 +120,7 @@
 		if(!(type in types2))
 			equal = 0
 
-	if(antigen != disease.antigen)
+	if (antigen != disease.antigen)
 		equal = 0
 	return equal
 
@@ -136,7 +136,7 @@ var/global/list/virusDB = list()
 
 /datum/disease2/disease/proc/name()
 	.= "stamm #[add_zero("[uniqueID]", 4)]"
-	if("[uniqueID]" in virusDB)
+	if ("[uniqueID]" in virusDB)
 		var/datum/data/record/V = virusDB["[uniqueID]"]
 		.= V.fields["name"]
 
@@ -152,7 +152,7 @@ var/global/list/virusDB = list()
 	return r
 
 /datum/disease2/disease/proc/addToDB()
-	if("[uniqueID]" in virusDB)
+	if ("[uniqueID]" in virusDB)
 		return 0
 	var/datum/data/record/v = new()
 	v.fields["id"] = uniqueID

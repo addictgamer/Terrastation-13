@@ -31,7 +31,7 @@
 	src.damage += amount
 
 	var/datum/organ/external/parent = owner.get_organ(parent_organ)
-	if(!silent)
+	if (!silent)
 		owner.custom_pain("Something inside your [parent.display_name] hurts a lot.", 1)
 
 /****************************************************
@@ -69,7 +69,7 @@
 			//High toxins levels are dangerous
 			if(owner.getToxLoss() >= 60 && !owner.reagents.has_reagent("anti_toxin"))
 				//Healthy liver suffers on its own
-				if(src.damage < min_broken_damage)
+				if (src.damage < min_broken_damage)
 					src.damage += 0.2 * process_accuracy
 				//Damaged one shares the fun
 				else
@@ -78,7 +78,7 @@
 					O.damage += 0.2  * process_accuracy
 
 			//Detox can heal small amounts of damage
-			if(src.damage && src.damage < src.min_bruised_damage && owner.reagents.has_reagent("anti_toxin"))
+			if (src.damage && src.damage < src.min_bruised_damage && owner.reagents.has_reagent("anti_toxin"))
 				src.damage -= 0.2 * process_accuracy
 
 			// Damaged liver means some chemicals are very dangerous

@@ -12,7 +12,7 @@
 	volume = 50
 
 	on_reagent_change()
-		if(gulp_size < 5) gulp_size = 5
+		if (gulp_size < 5) gulp_size = 5
 		else gulp_size = max(round(reagents.total_volume / 5), 5)
 
 	attack_self(mob/user as mob)
@@ -45,8 +45,7 @@
 
 			M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been fed [src.name] by [user.name] ([user.ckey]) Reagents: [reagentlist(src)]</font>")
 			user.attack_log += text("\[[time_stamp()]\] <font color='red'>Fed [M.name] by [M.name] ([M.ckey]) Reagents: [reagentlist(src)]</font>")
-
-			log_attack("<font color='red'>[user.name] ([user.ckey]) fed [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>")
+			log_attack("[user.name] ([user.ckey]) fed [M.name] ([M.ckey]) with [src.name] Reagents: [reagentlist(src)] (INTENT: [uppertext(user.a_intent)]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 			if(reagents.total_volume)
 				reagents.reaction(M, INGEST)
@@ -117,14 +116,14 @@
 	examine()
 		set src in view()
 		..()
-		if(!(usr in range(0)) && usr!=src.loc) return
+		if (!(usr in range(0)) && usr!=src.loc) return
 		if(!reagents || reagents.total_volume==0)
 			usr << "\blue \The [src] is empty!"
-		else if(reagents.total_volume<=src.volume/4)
+		else if (reagents.total_volume<=src.volume/4)
 			usr << "\blue \The [src] is almost empty!"
-		else if(reagents.total_volume<=src.volume*0.66)
+		else if (reagents.total_volume<=src.volume*0.66)
 			usr << "\blue \The [src] is half full!"
-		else if(reagents.total_volume<=src.volume*0.90)
+		else if (reagents.total_volume<=src.volume*0.90)
 			usr << "\blue \The [src] is almost full!"
 		else
 			usr << "\blue \The [src] is full!"

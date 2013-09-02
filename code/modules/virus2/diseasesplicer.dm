@@ -120,7 +120,7 @@
 
 	if(usr) usr.set_machine(src)
 
-	if(href_list["grab"])
+	if (href_list["grab"])
 		memorybank = locate(href_list["grab"])
 		analysed = dish.analysed
 		del(dish)

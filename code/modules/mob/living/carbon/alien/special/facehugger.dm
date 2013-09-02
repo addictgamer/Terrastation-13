@@ -60,7 +60,7 @@ var/const/MAX_ACTIVE_TIME = 400
 			usr << "\red \b [src] is not moving."
 		if(CONSCIOUS)
 			usr << "\red \b [src] seems to be active."
-	if(sterile)
+	if (sterile)
 		usr << "\red \b It looks like the proboscis has been removed."
 	return
 
@@ -147,7 +147,7 @@ var/const/MAX_ACTIVE_TIME = 400
 		target.equip_to_slot(src, slot_wear_mask)
 
 		if(!sterile) L.Paralyse(MAX_IMPREGNATION_TIME/6) //something like 25 ticks = 20 seconds with the default settings
-	else if(iscorgi(M))
+	else if (iscorgi(M))
 		var/mob/living/simple_animal/corgi/C = M
 		src.loc = C
 		C.facehugger = src

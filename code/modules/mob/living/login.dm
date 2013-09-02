@@ -28,30 +28,30 @@
 			if(src.occupant.mind in ticker.mode:head_revolutionaries)
 				ticker.mode:update_all_rev_icons()
 		if("nuclear emergency")
-			if(src.occupant.mind in ticker.mode:syndicates)
+			if (src.occupant.mind in ticker.mode:syndicates)
 				ticker.mode:update_all_synd_icons()
 		if("cult")
-			if(src.occupant.mind in ticker.mode:cult)
+			if (src.occupant.mind in ticker.mode:cult)
 				ticker.mode:add_cultist(src.occupant.mind)
 				ticker.mode:update_all_cult_icons() //So the icon actually appears
 	*/
 
 	/*	Plantpeople
 	switch(ticker.mode.name)
-		if("revolution")
-			if(podman.mind in ticker.mode:revolutionaries)
+		if ("revolution")
+			if (podman.mind in ticker.mode:revolutionaries)
 				ticker.mode:add_revolutionary(podman.mind)
 				ticker.mode:update_all_rev_icons() //So the icon actually appears
-			if(podman.mind in ticker.mode:head_revolutionaries)
+			if (podman.mind in ticker.mode:head_revolutionaries)
 				ticker.mode:update_all_rev_icons()
-		if("nuclear emergency")
-			if(podman.mind in ticker.mode:syndicates)
+		if ("nuclear emergency")
+			if (podman.mind in ticker.mode:syndicates)
 				ticker.mode:update_all_synd_icons()
-		if("cult")
-			if(podman.mind in ticker.mode:cult)
+		if ("cult")
+			if (podman.mind in ticker.mode:cult)
 				ticker.mode:add_cultist(podman.mind)
 				ticker.mode:update_all_cult_icons() //So the icon actually appears
-		if("changeling")
-			if(podman.mind in ticker.mode:changelings)
+		if ("changeling")
+			if (podman.mind in ticker.mode:changelings)
 				podman.make_changeling()
 	*/

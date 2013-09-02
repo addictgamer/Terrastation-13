@@ -66,8 +66,8 @@
 		..()
 
 		statpanel("Status")
-		if(client.statpanel == "Status" && ticker)
-			if(ticker.current_state != GAME_STATE_PREGAME)
+		if (client.statpanel == "Status" && ticker)
+			if (ticker.current_state != GAME_STATE_PREGAME)
 				stat(null, "Station Time: [worldtime2text()]")
 		statpanel("Lobby")
 		if(client.statpanel=="Lobby" && ticker)
@@ -265,7 +265,7 @@
 
 
 	proc/AttemptLateSpawn(rank)
-		if(src != usr)
+		if (src != usr)
 			return 0
 		if(!ticker || ticker.current_state != GAME_STATE_PLAYING)
 			usr << "\red The round is either not ready, or has already finished..."
@@ -299,7 +299,7 @@
 		del(src)
 
 	proc/AnnounceArrival(var/mob/living/carbon/human/character, var/rank)
-		if(ticker.current_state == GAME_STATE_PLAYING)
+		if (ticker.current_state == GAME_STATE_PLAYING)
 			var/obj/item/device/radio/intercom/a = new /obj/item/device/radio/intercom(null)// BS12 EDIT Arrivals Announcement Computer, rather than the AI.
 			if(character.mind.role_alt_title)
 				rank = character.mind.role_alt_title

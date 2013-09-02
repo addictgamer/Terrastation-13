@@ -28,7 +28,7 @@
 
 /obj/item/device/core_sampler/examine()
 	set src in orange(1)
-	if(!( usr ))
+	if (!( usr ))
 		return
 	if(get_dist(src, usr) < 2)
 		usr << "That's \a [src]."

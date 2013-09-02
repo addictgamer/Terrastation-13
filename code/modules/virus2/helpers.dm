@@ -1,7 +1,7 @@
 //Returns 1 if mob can be infected, 0 otherwise. Checks his clothing.
 proc/get_infection_chance(var/mob/living/carbon/M)
 	var/score = 0
-	if(!istype(M))
+	if (!istype(M))
 		return 0
 	if(istype(M, /mob/living/carbon/human))
 		if(M:gloves)
@@ -49,7 +49,7 @@ proc/airborne_can_reach(turf/source, turf/target)
 		return
 	if(!istype(M))
 		return
-	if("[disease.uniqueID]" in M.virus2)
+	if ("[disease.uniqueID]" in M.virus2)
 		return
 	// if one of the antibodies in the mob's body matches one of the disease's antigens, don't infect
 	if(M.antibodies & disease.antigen != 0)

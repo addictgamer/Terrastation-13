@@ -44,7 +44,7 @@
 			var/datum/reagent/blood/B = locate(/datum/reagent/blood) in sample.reagents.reagent_list
 			if(B)
 				dat += "Sample inserted."
-				if(B.data["antibodies"])
+				if (B.data["antibodies"])
 					dat += "</td></tr><tr><td>"
 					dat += "Antibodies: [antigens2string(B.data["antibodies"])]"
 					dat += "</td><td><A href='?src=\ref[src];action=antibody'>Isolate</a>"
@@ -100,7 +100,7 @@
 		if("antibody")
 			var/delay = 20
 			var/datum/reagent/blood/B = locate(/datum/reagent/blood) in sample.reagents.reagent_list
-			if(!B)
+			if (!B)
 				state("\The [src.name] buzzes, \"No antibody carrier detected.\"", "blue")
 
 			else if(sample.reagents.has_reagent("toxins"))
@@ -114,10 +114,10 @@
 
 		if("isolate")
 			var/datum/reagent/blood/B = locate(/datum/reagent/blood) in sample.reagents.reagent_list
-			if(B)
+			if (B)
 				var/list/virus = virus_copylist(B.data["virus2"])
 				var/choice = href_list["isolate"]
-				if(choice in virus)
+				if (choice in virus)
 					virus2 = virus[choice]
 					isolating = 40
 					update_icon()
@@ -137,7 +137,7 @@
 
 /obj/machinery/computer/centrifuge/proc/cure()
 	var/datum/reagent/blood/B = locate(/datum/reagent/blood) in sample.reagents.reagent_list
-	if(!B)
+	if (!B)
 		return
 
 	var/list/data = list("antibodies" = B.data["antibodies"])

@@ -19,7 +19,7 @@
 	max_duration = 70
 
 	can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-		if(!istype(target))
+		if (!istype(target))
 			return
 		var/datum/organ/external/affected = target.get_organ(target_zone)
 		return ..() && target.op_stage.ribcage == 0 && affected.open >= 2
@@ -117,7 +117,7 @@
 		var/datum/organ/external/chest/affected = target.get_organ("chest")
 		affected.createwound(BRUISE, 20)
 		affected.fracture()
-		if(prob(40))
+		if (prob(40))
 			user.visible_message("\red Rib pierces the lung!")
 			target.rupture_lung()
 

@@ -49,14 +49,14 @@
 
 /datum/artifact_effect/proc/DoEffect(var/atom/originator)
 	archived_loc = originator.loc
-	if(src.effectmode == "contact")
+	if (src.effectmode == "contact")
 		var/mob/living/user = originator
 		if(!user)
 			return
 		switch(src.effecttype)
 			if("healing")
 				//caeltodo
-				if(istype(user, /mob/living/carbon/human/))
+				if (istype(user, /mob/living/carbon/human/))
 					user << "\blue You feel a soothing energy invigorate you."
 
 					var/mob/living/carbon/human/H = user
@@ -81,7 +81,7 @@
 						H.regenerate_icons()
 					return 1
 					//
-				if(istype(user, /mob/living/carbon/monkey/))
+				if (istype(user, /mob/living/carbon/monkey/))
 					user << "\blue You feel a soothing energy invigorate you."
 					user.adjustOxyLoss(-25)
 					user.adjustToxLoss(-25)
@@ -91,7 +91,7 @@
 					return 1
 				else user << "Nothing happens."
 			if("injure")
-				if(istype(user, /mob/living/carbon/))
+				if (istype(user, /mob/living/carbon/))
 					user << "\red A painful discharge of energy strikes you!"
 					user.adjustOxyLoss(rand(5,25))
 					user.adjustToxLoss(rand(5,25))
@@ -105,7 +105,7 @@
 					return 1
 				else user << "Nothing happens."
 			if("stun")
-				if(istype(user, /mob/living/carbon/))
+				if (istype(user, /mob/living/carbon/))
 					user << "\red A powerful force overwhelms your consciousness."
 					user.weakened += 45
 					user.stuttering += 45
@@ -114,14 +114,14 @@
 					return 1
 				else user << "Nothing happens."
 			if("roboheal")
-				if(istype(user, /mob/living/silicon/robot))
+				if (istype(user, /mob/living/silicon/robot))
 					user << "\blue Your systems report damaged components mending by themselves!"
 					user.adjustBruteLoss(rand(-10,-30))
 					user.adjustFireLoss(rand(-10,-30))
 					return 1
 				else user << "Nothing happens."
 			if("robohurt")
-				if(istype(user, /mob/living/silicon/robot))
+				if (istype(user, /mob/living/silicon/robot))
 					user << "\red Your systems report severe damage has been inflicted!"
 					user.adjustBruteLoss(rand(10,50))
 					user.adjustFireLoss(rand(10,50))
@@ -144,7 +144,7 @@
 					randomturfs.Add(T)
 				if(randomturfs.len > 0)
 					user << "\red You are suddenly zapped away elsewhere!"
-					if(user.buckled)
+					if (user.buckled)
 						user.buckled.unbuckle()
 					user.loc = pick(randomturfs)
 					var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()
@@ -156,7 +156,7 @@
 				user.drowsyness = min(user.drowsyness + rand(5,25), 50)
 				user.eye_blurry = min(user.eye_blurry + rand(1,3), 50)
 				return 1
-	else if(src.effectmode == "aura")
+	else if (src.effectmode == "aura")
 		switch(src.effecttype)
 			//caeltodo
 			if("healing")
@@ -251,7 +251,7 @@
 					M.drowsyness = min(M.drowsyness + 1, 25)
 					M.eye_blurry = min(M.eye_blurry + 1, 25)
 				return 1
-	else if(src.effectmode == "pulse")
+	else if (src.effectmode == "pulse")
 		for(var/mob/O in viewers(originator, null))
 			O.show_message(text("<b>[]</b> emits a pulse of energy!", originator), 1)
 		switch(src.effecttype)
@@ -365,7 +365,7 @@
 					if(prob(30))
 						H << pick("\green You feel a little different.","\green You feel strange.","\green You feel different.")
 					//todo
-					if(H.gender == FEMALE)
+					if (H.gender == FEMALE)
 						H.gender = MALE
 					else
 						H.gender = FEMALE
@@ -385,7 +385,7 @@
 					if(prob(50))
 						M.eye_blurry = min(M.eye_blurry + rand(1,5), 25)
 				return 1
-	else if(src.effectmode == "worldpulse")
+	else if (src.effectmode == "worldpulse")
 		for(var/mob/O in viewers(originator, null))
 			O.show_message(text("<b>[]</b> emits a powerful burst of energy!", originator), 1)
 		switch(src.effecttype)
@@ -481,7 +481,7 @@
 					if(prob(30))
 						H << pick("\green You feel a little different.","\green You feel strange.","\green You feel different.")
 					//todo
-					if(H.gender == FEMALE)
+					if (H.gender == FEMALE)
 						H.gender = MALE
 					else
 						H.gender = FEMALE

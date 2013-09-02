@@ -86,21 +86,21 @@
 /mob/living/silicon/pai/Stat()
 	..()
 	statpanel("Status")
-	if(src.client.statpanel == "Status")
+	if (src.client.statpanel == "Status")
 		show_silenced()
 		
-	if(proc_holder_list.len)//Generic list for proc_holder objects.
+	if (proc_holder_list.len)//Generic list for proc_holder objects.
 		for(var/obj/effect/proc_holder/P in proc_holder_list)
 			statpanel("[P.panel]","",P)
 
 /mob/living/silicon/pai/check_eye(var/mob/user as mob)
-	if(!src.current)
+	if (!src.current)
 		return null
 	user.reset_view(src.current)
 	return 1
 
 /mob/living/silicon/pai/blob_act()
-	if(src.stat != 2)
+	if (src.stat != 2)
 		src.adjustBruteLoss(60)
 		src.updatehealth()
 		return 1
@@ -146,15 +146,15 @@
 
 	switch(severity)
 		if(1.0)
-			if(src.stat != 2)
+			if (src.stat != 2)
 				adjustBruteLoss(100)
 				adjustFireLoss(100)
 		if(2.0)
-			if(src.stat != 2)
+			if (src.stat != 2)
 				adjustBruteLoss(60)
 				adjustFireLoss(60)
 		if(3.0)
-			if(src.stat != 2)
+			if (src.stat != 2)
 				adjustBruteLoss(30)
 
 	src.updatehealth()
@@ -165,9 +165,9 @@
 /mob/living/silicon/pai/meteorhit(obj/O as obj)
 	for(var/mob/M in viewers(src, null))
 		M.show_message(text("\red [] has been hit by []", src, O), 1)
-	if(src.health > 0)
+	if (src.health > 0)
 		src.adjustBruteLoss(30)
-		if((O.icon_state == "flaming"))
+		if ((O.icon_state == "flaming"))
 			src.adjustFireLoss(40)
 		src.updatehealth()
 	return
@@ -175,27 +175,27 @@
 //mob/living/silicon/pai/bullet_act(var/obj/item/projectile/Proj)
 
 /mob/living/silicon/pai/attack_alien(mob/living/carbon/alien/humanoid/M as mob)
-	if(!ticker)
+	if (!ticker)
 		M << "You cannot attack people before the game has started."
 		return
 
-	if(istype(src.loc, /turf) && istype(src.loc.loc, /area/start))
+	if (istype(src.loc, /turf) && istype(src.loc.loc, /area/start))
 		M << "You cannot attack someone in the spawn area."
 		return
 
 	switch(M.a_intent)
 
-		if("help")
+		if ("help")
 			for(var/mob/O in viewers(src, null))
-				if((O.client && !( O.blinded )))
+				if ((O.client && !( O.blinded )))
 					O.show_message(text("\blue [M] caresses [src]'s casing with its scythe like arm."), 1)
 
 		else //harm
 			var/damage = rand(10, 20)
-			if(prob(90))
+			if (prob(90))
 				playsound(src.loc, 'sound/weapons/slash.ogg', 25, 1, -1)
 				for(var/mob/O in viewers(src, null))
-					if((O.client && !( O.blinded )))
+					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has slashed at []!</B>", M, src), 1)
 				if(prob(8))
 					flick("noise", src.flash)
@@ -204,7 +204,7 @@
 			else
 				playsound(src.loc, 'sound/weapons/slashmiss.ogg', 25, 1, -1)
 				for(var/mob/O in viewers(src, null))
-					if((O.client && !( O.blinded )))
+					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] took a swipe at []!</B>", M, src), 1)
 	return
 
@@ -212,11 +212,11 @@
 
 /mob/living/silicon/pai/proc/switchCamera(var/obj/machinery/camera/C)
 	usr:cameraFollow = null
-	if(!C)
+	if (!C)
 		src.unset_machine()
 		src.reset_view(null)
 		return 0
-	if(stat == 2 || !C.status || !(src.network in C.network)) return 0
+	if (stat == 2 || !C.status || !(src.network in C.network)) return 0
 
 	// ok, we're alive, camera is good and in our network...
 

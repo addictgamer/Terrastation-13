@@ -138,13 +138,13 @@
 
 
 	for(var/mob/M in viewers(1, src))
-		if((M.client && M.machine == src))
+		if ((M.client && M.machine == src))
 			src.interact(M)
 	AutoUpdateAI(src)
 
 /obj/machinery/power/turbine/interact(mob/user)
 
-	if( (get_dist(src, user) > 1 ) || (stat & (NOPOWER|BROKEN)) && (!istype(user, /mob/living/silicon/ai)) )
+	if ( (get_dist(src, user) > 1 ) || (stat & (NOPOWER|BROKEN)) && (!istype(user, /mob/living/silicon/ai)) )
 		user.machine = null
 		user << browse(null, "window=turbine")
 		return
@@ -171,14 +171,14 @@
 	..()
 	if(stat & BROKEN)
 		return
-	if(usr.stat || usr.restrained() )
+	if (usr.stat || usr.restrained() )
 		return
-	if(!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+	if (!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
 		if(!istype(usr, /mob/living/silicon/ai))
 			usr << "\red You don't have the dexterity to do this!"
 			return
 
-	if(( usr.machine==src && ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon/ai)))
+	if (( usr.machine==src && ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon/ai)))
 
 
 		if( href_list["close"] )
@@ -191,7 +191,7 @@
 
 		spawn(0)
 			for(var/mob/M in viewers(1, src))
-				if((M.client && M.machine == src))
+				if ((M.client && M.machine == src))
 					src.interact(M)
 
 	else
@@ -224,7 +224,7 @@
 	if(istype(I, /obj/item/weapon/screwdriver))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20))
-			if(src.stat & BROKEN)
+			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 				new /obj/item/weapon/shard( src.loc )
@@ -280,16 +280,16 @@
 /obj/machinery/computer/turbine_computer/Topic(href, href_list)
 	if(..())
 		return
-	if((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
+	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
 		usr.machine = src
 
 		if( href_list["view"] )
 			usr.client.eye = src.compressor
 		else if( href_list["str"] )
 			src.compressor.starter = !src.compressor.starter
-		else if(href_list["doors"])
+		else if (href_list["doors"])
 			for(var/obj/machinery/door/poddoor/D in src.doors)
-				if(door_status == 0)
+				if (door_status == 0)
 					spawn( 0 )
 						D.open()
 						door_status = 1

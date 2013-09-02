@@ -61,9 +61,9 @@
 	set src in view()
 	update_icon()
 	..()
-	if(!(usr in view(2)) && usr!=src.loc)
+	if (!(usr in view(2)) && usr!=src.loc)
 		return
-	if(beakers.len)
+	if (beakers.len)
 		usr << "\blue [src] contains:"
 		for(var/obj/item/weapon/reagent_containers/glass/beaker/B in beakers)
 			if(B.reagents && B.reagents.reagent_list.len)
@@ -125,7 +125,7 @@
 		src.update_icon()
 
 /obj/item/weapon/gun/dartgun/proc/get_mixed_syringe()
-	if(!cartridge)
+	if (!cartridge)
 		return 0
 	if(!cartridge.darts)
 		return 0
@@ -140,7 +140,7 @@
 	return dart
 
 /obj/item/weapon/gun/dartgun/proc/fire_dart(atom/target, mob/user)
-	if(locate (/obj/structure/table, src.loc))
+	if (locate (/obj/structure/table, src.loc))
 		return
 	else
 		var/turf/trg = get_turf(target)
@@ -176,14 +176,14 @@
 						for(var/datum/reagent/A in D.reagents.reagent_list)
 							R += A.id + " ("
 							R += num2text(A.volume) + "),"
-					if(istype(M, /mob))
-						M.attack_log += "\[[time_stamp()]\] <b>[user]/[user.ckey]</b> shot <b>[M]/[M.ckey]</b> with a <b>syringegun</b> ([R])"
-						user.attack_log += "\[[time_stamp()]\] <b>[user]/[user.ckey]</b> shot <b>[M]/[M.ckey]</b> with a <b>syringegun</b> ([R])"
-						log_attack("<font color='red'>[user] ([user.ckey]) shot [M] ([M.ckey]) with a syringegun ([R])</font>")
+					if (istype(M, /mob))
+						M.attack_log += "\[[time_stamp()]\] <b>[user]/[user.ckey]</b> shot <b>[M]/[M.ckey]</b> with a <b>dartgun</b> ([R])"
+						user.attack_log += "\[[time_stamp()]\] <b>[user]/[user.ckey]</b> shot <b>[M]/[M.ckey]</b> with a <b>dartgun</b> ([R])"
+						msg_admin_attack("[user] ([user.ckey]) shot [M] ([M.ckey]) with a dartgun ([R]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 					else
-						M.attack_log += "\[[time_stamp()]\] <b>UNKNOWN SUBJECT (No longer exists)</b> shot <b>[M]/[M.ckey]</b> with a <b>syringegun</b> ([R])"
-						log_attack("<font color='red'>UNKNOWN shot [M] ([M.ckey]) with a <b>syringegun</b> ([R])</font>")
+						M.attack_log += "\[[time_stamp()]\] <b>UNKNOWN SUBJECT (No longer exists)</b> shot <b>[M]/[M.ckey]</b> with a <b>dartgun</b> ([R])"
+						msg_admin_attack("UNKNOWN shot [M] ([M.ckey]) with a <b>dartgun</b> ([R]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 					if(D.reagents)
 						D.reagents.trans_to(M, 15)
@@ -198,7 +198,7 @@
 
 			sleep(1)
 
-		if(D) spawn(10) del(D)
+		if (D) spawn(10) del(D)
 
 		return
 
@@ -214,14 +214,14 @@
 	user.set_machine(src)
 	var/dat = "<b>[src] mixing control:</b><br><br>"
 
-	if(beakers.len)
+	if (beakers.len)
 		var/i = 1
 		for(var/obj/item/weapon/reagent_containers/glass/beaker/B in beakers)
 			dat += "Beaker [i] contains: "
 			if(B.reagents && B.reagents.reagent_list.len)
 				for(var/datum/reagent/R in B.reagents.reagent_list)
 					dat += "<br>    [R.volume] units of [R.name], "
-				if(check_beaker_mixing(B))
+				if (check_beaker_mixing(B))
 					dat += text("<A href='?src=\ref[src];stop_mix=[i]'><font color='green'>Mixing</font></A> ")
 				else
 					dat += text("<A href='?src=\ref[src];mix=[i]'><font color='red'>Not mixing</font></A> ")
@@ -259,11 +259,11 @@
 				if(M == beakers[index])
 					mixing -= M
 					break
-	else if(href_list["mix"])
+	else if (href_list["mix"])
 		var/index = text2num(href_list["mix"])
 		if(index <= beakers.len)
 			mixing += beakers[index]
-	else if(href_list["eject"])
+	else if (href_list["eject"])
 		var/index = text2num(href_list["eject"])
 		if(index <= beakers.len)
 			if(beakers[index])
@@ -272,7 +272,7 @@
 				mixing -= B
 				beakers -= B
 				B.loc = get_turf(src)
-	else if(href_list["eject_cart"])
+	else if (href_list["eject_cart"])
 		remove_cartridge()
 	src.updateUsrDialog()
 	return

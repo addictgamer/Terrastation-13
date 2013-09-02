@@ -121,12 +121,12 @@
 				env.merge(removed)
 
 /obj/machinery/r_n_d/server/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	if(disabled)
+	if (disabled)
 		return
-	if(shocked)
+	if (shocked)
 		shock(user,50)
-	if(istype(O, /obj/item/weapon/screwdriver))
-		if(!opened)
+	if (istype(O, /obj/item/weapon/screwdriver))
+		if (!opened)
 			opened = 1
 			icon_state = "server_o"
 			user << "You open the maintenance hatch of [src]."
@@ -135,7 +135,7 @@
 			icon_state = "server"
 			user << "You close the maintenance hatch of [src]."
 		return
-	if(opened)
+	if (opened)
 		if(istype(O, /obj/item/weapon/crowbar))
 			griefProtection()
 			playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
@@ -150,9 +150,9 @@
 			return 1
 
 /obj/machinery/r_n_d/server/attack_hand(mob/user as mob)
-	if(disabled)
+	if (disabled)
 		return
-	if(shocked)
+	if (shocked)
 		shock(user,50)
 	if(ishuman(user))
 		if(istype(user:gloves, /obj/item/clothing/gloves/space_ninja)&&user:gloves:candrain&&!user:gloves:draining)
@@ -338,7 +338,7 @@
 	if(istype(D, /obj/item/weapon/screwdriver))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20))
-			if(src.stat & BROKEN)
+			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 				new /obj/item/weapon/shard( src.loc )

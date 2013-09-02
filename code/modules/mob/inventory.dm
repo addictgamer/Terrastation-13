@@ -163,16 +163,16 @@
 
 
 /mob/proc/u_equip(W as obj)
-	if(W == r_hand)
+	if (W == r_hand)
 		r_hand = null
 		update_inv_r_hand(0)
-	else if(W == l_hand)
+	else if (W == l_hand)
 		l_hand = null
 		update_inv_l_hand(0)
-	else if(W == back)
+	else if (W == back)
 		back = null
 		update_inv_back(0)
-	else if(W == wear_mask)
+	else if (W == wear_mask)
 		wear_mask = null
 		update_inv_wear_mask(0)
 	return
@@ -181,7 +181,7 @@
 //Attemps to remove an object on a mob.  Will not move it to another area or such, just removes from the mob.
 /mob/proc/remove_from_mob(var/obj/O)
 	src.u_equip(O)
-	if(src.client)
+	if (src.client)
 		src.client.screen -= O
 	O.layer = initial(O.layer)
 	O.screen_loc = null
@@ -217,7 +217,7 @@
 			if(src:module_active)
 				return src:module_active
 	else
-		if(hand)
+		if (hand)
 			return l_hand
 		else
 			return r_hand
@@ -296,7 +296,7 @@
 				src.s_store = W
 				equipped = 1
 		if(slot_in_backpack)
-			if(src.back && istype(src.back, /obj/item/weapon/storage/backpack))
+			if (src.back && istype(src.back, /obj/item/weapon/storage/backpack))
 				var/obj/item/weapon/storage/backpack/B = src.back
 				if(B.contents.len < B.storage_slots && W.w_class <= B.max_w_class)
 					W.loc = B
@@ -307,7 +307,7 @@
 		if(src.back && W.loc != src.back)
 			W.loc = src
 	else
-		if(del_on_fail)
+		if (del_on_fail)
 			del(W)
 	return equipped
 

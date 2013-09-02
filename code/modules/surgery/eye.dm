@@ -7,10 +7,10 @@
 	priority = 2
 	can_infect = 1
 	can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-		if(!hasorgans(target))
+		if (!hasorgans(target))
 			return 0
 		var/datum/organ/external/affected = target.get_organ(target_zone)
-		if(!affected)
+		if (!affected)
 			return 0
 		return target_zone == "eyes"
 
@@ -121,7 +121,7 @@
 	end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		user.visible_message("\blue [user] cauterizes the incision around [target]'s eyes with \the [tool].", \
 		"\blue You cauterize the incision around [target]'s eyes with \the [tool].")
-		if(target.op_stage.eyes == 3)
+		if (target.op_stage.eyes == 3)
 			target.sdisabilities &= ~BLIND
 			target.eye_stat = 0
 		target.op_stage.eyes = 0

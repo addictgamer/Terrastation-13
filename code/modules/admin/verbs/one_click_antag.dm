@@ -67,7 +67,7 @@ client/proc/one_click_antag()
 		if(applicant.client.prefs.be_special & BE_TRAITOR)
 			if(!applicant.stat)
 				if(applicant.mind)
-					if(!applicant.mind.special_role)
+					if (!applicant.mind.special_role)
 						if(!jobban_isbanned(applicant, "traitor") && !jobban_isbanned(applicant, "Syndicate"))
 							if(!(applicant.job in temp.restricted_jobs))
 								candidates += applicant
@@ -99,7 +99,7 @@ client/proc/one_click_antag()
 		if(applicant.client.prefs.be_special & BE_CHANGELING)
 			if(!applicant.stat)
 				if(applicant.mind)
-					if(!applicant.mind.special_role)
+					if (!applicant.mind.special_role)
 						if(!jobban_isbanned(applicant, "changeling") && !jobban_isbanned(applicant, "Syndicate"))
 							if(!(applicant.job in temp.restricted_jobs))
 								candidates += applicant
@@ -272,12 +272,12 @@ client/proc/one_click_antag()
 			new /obj/structure/closet/syndicate/nuclear(closet_spawn.loc)
 
 		for (var/obj/effect/landmark/A in /area/syndicate_station/start)//Because that's the only place it can BE -Sieve
-			if(A.name == "Syndicate-Gear-Closet")
+			if (A.name == "Syndicate-Gear-Closet")
 				new /obj/structure/closet/syndicate/personal(A.loc)
 				del(A)
 				continue
 
-			if(A.name == "Syndicate-Bomb")
+			if (A.name == "Syndicate-Bomb")
 				new /obj/effect/spawner/newbomb/timer/syndicate(A.loc)
 				del(A)
 				continue
@@ -348,7 +348,7 @@ client/proc/one_click_antag()
 		for (var/obj/effect/landmark/L in /area/syndicate_mothership/elite_squad)
 			if(numagents<=0)
 				break
-			if(L.name == "Syndicate-Commando")
+			if (L.name == "Syndicate-Commando")
 				syndicate_leader_selected = numagents == 1?1:0
 
 				var/mob/living/carbon/human/new_syndicate_commando = create_syndicate_death_commando(L, syndicate_leader_selected)
@@ -376,7 +376,7 @@ client/proc/one_click_antag()
 			return 0
 
 		for (var/obj/effect/landmark/L in /area/shuttle/syndicate_elite)
-			if(L.name == "Syndicate-Commando-Bomb")
+			if (L.name == "Syndicate-Commando-Bomb")
 				new /obj/effect/spawner/newbomb/timer/syndicate(L.loc)
 
 	return 1

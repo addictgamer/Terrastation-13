@@ -212,16 +212,16 @@
 /obj/machinery/power/smes/Topic(href, href_list)
 	..()
 
-	if(usr.stat || usr.restrained() )
+	if (usr.stat || usr.restrained() )
 		return
-	if(!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+	if (!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
 		if(!istype(usr, /mob/living/silicon/ai))
 			usr << "\red You don't have the dexterity to do this!"
 			return
 
 //world << "[href] ; [href_list[href]]"
 
-	if(( usr.machine==src && ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon/ai)))
+	if (( usr.machine==src && ((get_dist(src, usr) <= 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon/ai)))
 
 
 		if( href_list["close"] )
@@ -337,7 +337,7 @@
 	charging = 0
 	output = 0
 	charge -= 1e6/severity
-	if(charge < 0)
+	if (charge < 0)
 		charge = 0
 	spawn(100)
 		output = initial(output)

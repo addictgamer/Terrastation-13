@@ -1,8 +1,8 @@
 /mob/living/carbon/human/proc/monkeyize()
-	if(monkeyizing)
+	if (monkeyizing)
 		return
 	for(var/obj/item/W in src)
-		if(W==w_uniform) // will be torn
+		if (W==w_uniform) // will be torn
 			continue
 		drop_from_inventory(W)
 	regenerate_icons()
@@ -38,7 +38,7 @@
 	for(var/datum/disease/D in O.viruses)
 		D.affected_mob = O
 
-	if(client)
+	if (client)
 		client.mob = O
 	if(mind)
 		mind.transfer_to(O)
@@ -56,7 +56,7 @@
 	return ..()
 
 /mob/living/carbon/human/AIize()
-	if(monkeyizing)
+	if (monkeyizing)
 		return
 	for(var/t in organs)
 		del(t)
@@ -64,7 +64,7 @@
 	return ..()
 
 /mob/living/carbon/AIize()
-	if(monkeyizing)
+	if (monkeyizing)
 		return
 	for(var/obj/item/W in src)
 		drop_from_inventory(W)
@@ -89,21 +89,21 @@
 
 	var/obj/loc_landmark
 	for(var/obj/effect/landmark/start/sloc in landmarks_list)
-		if(sloc.name != "AI")
+		if (sloc.name != "AI")
 			continue
-		if(locate(/mob/living) in sloc.loc)
+		if (locate(/mob/living) in sloc.loc)
 			continue
 		loc_landmark = sloc
-	if(!loc_landmark)
+	if (!loc_landmark)
 		for(var/obj/effect/landmark/tripai in landmarks_list)
-			if(tripai.name == "tripai")
+			if (tripai.name == "tripai")
 				if(locate(/mob/living) in tripai.loc)
 					continue
 				loc_landmark = tripai
-	if(!loc_landmark)
+	if (!loc_landmark)
 		O << "Oh god sorry we can't find an unoccupied AI spawn location, so we're spawning you on top of someone."
 		for(var/obj/effect/landmark/start/sloc in landmarks_list)
-			if(sloc.name == "AI")
+			if (sloc.name == "AI")
 				loc_landmark = sloc
 
 	O.loc = loc_landmark.loc
@@ -115,7 +115,7 @@
 	O << "<B>While observing through a camera, you can use most (networked) devices which you can see, such as computers, APCs, intercoms, doors, etc.</B>"
 	O << "To use something, simply click on it."
 	O << {"Use say ":b to speak to your cyborgs through binary."}
-	if(!(ticker && ticker.mode && (O.mind in ticker.mode.malf_ai)))
+	if (!(ticker && ticker.mode && (O.mind in ticker.mode.malf_ai)))
 		O.show_laws()
 		O << "<b>These laws may be changed by other players, or by you being the traitor.</b>"
 
@@ -136,7 +136,7 @@
 
 //human -> robot
 /mob/living/carbon/human/proc/Robotize()
-	if(monkeyizing)
+	if (monkeyizing)
 		return
 	for(var/obj/item/W in src)
 		drop_from_inventory(W)
@@ -183,7 +183,7 @@
 
 //human -> alien
 /mob/living/carbon/human/proc/Alienize()
-	if(monkeyizing)
+	if (monkeyizing)
 		return
 	for(var/obj/item/W in src)
 		drop_from_inventory(W)
@@ -214,7 +214,7 @@
 	return
 
 /mob/living/carbon/human/proc/slimeize(adult as num, reproduce as num)
-	if(monkeyizing)
+	if (monkeyizing)
 		return
 	for(var/obj/item/W in src)
 		drop_from_inventory(W)
@@ -250,7 +250,7 @@
 	return
 
 /mob/living/carbon/human/proc/corgize()
-	if(monkeyizing)
+	if (monkeyizing)
 		return
 	for(var/obj/item/W in src)
 		drop_from_inventory(W)

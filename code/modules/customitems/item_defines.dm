@@ -377,21 +377,21 @@
 	user << "\blue You click \the [src] but get no reaction. Must be dead."
 
 /obj/item/weapon/reagent_containers/hypospray/fluff/asher_spock_1/attack(mob/M as mob, mob/user as mob)
-	if(user.ckey != "nerezza") //Because this can end up in the wrong hands, let's make it useless for them!
+	if (user.ckey != "nerezza") //Because this can end up in the wrong hands, let's make it useless for them!
 		user << "\blue You click \the [src] but get no reaction. Must be dead."
 		return
 	if(!reagents.total_volume)
 		user << "\red \The [src] is empty."
 		return
-	if(!( istype(M, /mob) ))
+	if (!( istype(M, /mob) ))
 		return
-	if(reagents.total_volume)
-		if(M == user && user.ckey == "nerezza") //Make sure this is being used by the right person, for the right reason (self injection)
+	if (reagents.total_volume)
+		if (M == user && user.ckey == "nerezza") //Make sure this is being used by the right person, for the right reason (self injection)
 			visible_message("\blue [user] presses their \
 				penlight against their skin, quickly clicking the button once.", \
 				"\blue You press the disguised autoinjector against your skin and click the button. There's a sharp pain at the injection site that rapidly fades.", \
 				"You hear a rustle as someone moves nearby, then a sharp click.")
-		if(M != user && user.ckey == "nerezza") //Woah now, you better be careful partner
+		if (M != user && user.ckey == "nerezza") //Woah now, you better be careful partner
 			user << "\blue You don't want to contaminate the autoinjector."
 			return
 		src.reagents.reaction(M, INGEST)

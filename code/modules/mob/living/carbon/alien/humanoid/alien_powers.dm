@@ -64,10 +64,10 @@ Doesn't work on other aliens/AI.*/
 
 	if(isalien(M))
 		var/amount = input("Amount:", "Transfer Plasma to [M]") as num
-		if(amount)
+		if (amount)
 			amount = abs(round(amount))
 			if(powerc(amount))
-				if(get_dist(src,M) <= 1)
+				if (get_dist(src,M) <= 1)
 					M.adjustToxLoss(amount)
 					adjustToxLoss(-amount)
 					M << "\green [src] has transfered [amount] plasma to you."
@@ -124,7 +124,7 @@ Doesn't work on other aliens/AI.*/
 		adjustToxLoss(-50)
 		src << "\green You spit neurotoxin at [target]."
 		for(var/mob/O in oviewers())
-			if((O.client && !( O.blinded )))
+			if ((O.client && !( O.blinded )))
 				O << "\red [src] spits neurotoxin at [target]!"
 		//I'm not motivated enough to revise this. Prjectile code in general needs update.
 		var/turf/T = loc
@@ -136,7 +136,7 @@ Doesn't work on other aliens/AI.*/
 			U = U.loc
 		if(!istype(T, /turf))
 			return
-		if(U == T)
+		if (U == T)
 			usr.bullet_act(new /obj/item/projectile/energy/neurotoxin(usr.loc), get_organ_target())
 			return
 		if(!istype(U, /turf))

@@ -83,7 +83,7 @@ var/global/list/rad_collectors = list()
 		else
 			disconnect_from_network()
 	else if(istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))
-		if(src.allowed(user))
+		if (src.allowed(user))
 			if(active)
 				src.locked = !src.locked
 				user << "The controls are now [src.locked ? "locked." : "unlocked."]"
@@ -108,7 +108,7 @@ var/global/list/rad_collectors = list()
 /obj/machinery/power/rad_collector/proc/eject()
 	locked = 0
 	var/obj/item/weapon/tank/plasma/Z = src.P
-	if(!Z)
+	if (!Z)
 		return
 	Z.loc = get_turf(src)
 	Z.layer = initial(Z.layer)

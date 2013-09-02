@@ -18,7 +18,7 @@
 /obj/item/weapon/gun/syringe/examine()
 	set src in view()
 	..()
-	if(!(usr in view(2)) && usr!=src.loc) return
+	if (!(usr in view(2)) && usr!=src.loc) return
 	usr << "\blue [syringes.len] / [max_syringes] syringes."
 
 /obj/item/weapon/gun/syringe/attackby(obj/item/I as obj, mob/user as mob)
@@ -54,7 +54,7 @@
 		usr << "\red [src] is empty."
 
 /obj/item/weapon/gun/syringe/proc/fire_syringe(atom/target, mob/user)
-	if(locate (/obj/structure/table, src.loc))
+	if (locate (/obj/structure/table, src.loc))
 		return
 	else
 		var/turf/trg = get_turf(target)
@@ -84,14 +84,14 @@
 						for(var/datum/reagent/A in D.reagents.reagent_list)
 							R += A.id + " ("
 							R += num2text(A.volume) + "),"
-					if(istype(M, /mob))
+					if (istype(M, /mob))
 						M.attack_log += "\[[time_stamp()]\] <b>[user]/[user.ckey]</b> shot <b>[M]/[M.ckey]</b> with a <b>syringegun</b> ([R])"
 						user.attack_log += "\[[time_stamp()]\] <b>[user]/[user.ckey]</b> shot <b>[M]/[M.ckey]</b> with a <b>syringegun</b> ([R])"
-						log_attack("<font color='red'>[user] ([user.ckey]) shot [M] ([M.ckey]) with a syringegun ([R])</font>")
+						msg_admin_attack("[user] ([user.ckey]) shot [M] ([M.ckey]) with a syringegun ([R]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 					else
 						M.attack_log += "\[[time_stamp()]\] <b>UNKNOWN SUBJECT (No longer exists)</b> shot <b>[M]/[M.ckey]</b> with a <b>syringegun</b> ([R])"
-						log_attack("<font color='red'>UNKNOWN shot [M] ([M.ckey]) with a <b>syringegun</b> ([R])</font>")
+						msg_admin_attack("UNKNOWN shot [M] ([M.ckey]) with a <b>syringegun</b> ([R]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 					if(D.reagents)
 						D.reagents.trans_to(M, 15)
@@ -106,7 +106,7 @@
 
 			sleep(1)
 
-		if(D) spawn(10) del(D)
+		if (D) spawn(10) del(D)
 
 		return
 

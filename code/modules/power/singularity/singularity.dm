@@ -236,7 +236,7 @@ var/global/list/uneatable = list(
 	var/gain = 0
 	if(is_type_in_list(A, uneatable))
 		return 0
-	if(istype(A,/mob/living))//Mobs get gibbed
+	if (istype(A,/mob/living))//Mobs get gibbed
 		gain = 20
 		if(istype(A,/mob/living/carbon/human))
 			var/mob/living/carbon/human/H = A
@@ -253,7 +253,7 @@ var/global/list/uneatable = list(
 		sleep(1)
 	else if(istype(A,/obj/))
 
-		if(istype(A,/obj/item/weapon/storage/backpack/holding))
+		if (istype(A,/obj/item/weapon/storage/backpack/holding))
 			var/dist = max((current_size - 2),1)
 			explosion(src.loc,(dist),(dist*2),(dist*4))
 			return
@@ -405,7 +405,7 @@ var/global/list/uneatable = list(
 	var/toxdamage = 4
 	var/radiation = 15
 	var/radiationmin = 3
-	if(src.energy>200)
+	if (src.energy>200)
 		toxdamage = round(((src.energy-150)/50)*4,1)
 		radiation = round(((src.energy-150)/50)*5,1)
 		radiationmin = round((radiation/5),1)//
@@ -422,7 +422,7 @@ var/global/list/uneatable = list(
 			continue
 
 		if(M.stat == CONSCIOUS)
-			if(istype(M,/mob/living/carbon/human))
+			if (istype(M,/mob/living/carbon/human))
 				var/mob/living/carbon/human/H = M
 				if(istype(H.glasses,/obj/item/clothing/glasses/meson))
 					H << "\blue You look directly into The [src.name], good thing you had your protective eyewear on!"
@@ -488,7 +488,7 @@ var/global/list/uneatable = list(
 /obj/machinery/singularity/narsie/consume(var/atom/A) //Has its own consume proc because it doesn't need energy and I don't want BoHs to explode it. --NEO
 	if(is_type_in_list(A, uneatable))
 		return 0
-	if(istype(A,/mob/living))//Mobs get gibbed
+	if (istype(A,/mob/living))//Mobs get gibbed
 		A:gib()
 	else if(istype(A,/obj/))
 		A:ex_act(1.0)

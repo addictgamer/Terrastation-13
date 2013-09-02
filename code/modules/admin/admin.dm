@@ -12,8 +12,8 @@ var/global/floorIsLava = 0
 			C << msg
 
 /proc/msg_admin_attack(var/text) //Toggleable Attack Messages
-	var/rendered = "<span class=\"admin\"><span class=\"prefix\">ADMIN LOG:</span> <span class=\"message\">[text]</span></span>"
-	log_adminwarn(rendered)
+	log_attack(text)
+	var/rendered = "<span class=\"admin\"><span class=\"prefix\">ATTACK:</span> <span class=\"message\">[text]</span></span>"
 	for(var/client/C in admins)
 		if(R_ADMIN & C.holder.rights)
 			if(C.prefs.toggles & CHAT_ATTACKLOGS)
@@ -31,9 +31,9 @@ var/global/floorIsLava = 0
 	if(!M)
 		usr << "You seem to be selecting a mob that doesn't exist anymore."
 		return
-	if(!istype(src,/datum/admins))
+	if (!istype(src,/datum/admins))
 		src = usr.client.holder
-	if(!istype(src,/datum/admins))
+	if (!istype(src,/datum/admins))
 		usr << "Error: you are not an admin!"
 		return
 
@@ -85,7 +85,7 @@ var/global/floorIsLava = 0
 		<A href='?src=\ref[src];subtlemessage=\ref[M]'>Subtle message</A>
 	"}
 
-	if(M.client)
+	if (M.client)
 		if(!istype(M, /mob/new_player))
 			body += "<br><br>"
 			body += "<b>Transformation:</b>"
@@ -145,7 +145,7 @@ var/global/floorIsLava = 0
 				<br>
 			"}
 
-	if(M.client)
+	if (M.client)
 		body += {"<br><br>
 			<b>Other actions:</b>
 			<br>
@@ -173,9 +173,9 @@ var/global/floorIsLava = 0
 /datum/admins/proc/PlayerNotes()
 	set category = "Admin"
 	set name = "Player Notes"
-	if(!istype(src,/datum/admins))
+	if (!istype(src,/datum/admins))
 		src = usr.client.holder
-	if(!istype(src,/datum/admins))
+	if (!istype(src,/datum/admins))
 		usr << "Error: you are not an admin!"
 		return
 	PlayerNotesPage(1)
@@ -231,9 +231,9 @@ var/global/floorIsLava = 0
 /datum/admins/proc/show_player_info(var/key as text)
 	set category = "Admin"
 	set name = "Show Player Info"
-	if(!istype(src,/datum/admins))
+	if (!istype(src,/datum/admins))
 		src = usr.client.holder
-	if(!istype(src,/datum/admins))
+	if (!istype(src,/datum/admins))
 		usr << "Error: you are not an admin!"
 		return
 	var/dat = "<html><head><title>Info on [key]</title></head>"
@@ -274,9 +274,9 @@ var/global/floorIsLava = 0
 	set name = "Access Newscaster Network"
 	set desc = "Allows you to view, add and edit news feeds."
 
-	if(!istype(src,/datum/admins))
+	if (!istype(src,/datum/admins))
 		src = usr.client.holder
-	if(!istype(src,/datum/admins))
+	if (!istype(src,/datum/admins))
 		usr << "Error: you are not an admin!"
 		return
 	var/dat
@@ -661,7 +661,7 @@ var/global/floorIsLava = 0
 	set category = "Server"
 	set name = "Restart"
 	set desc="Restarts the world"
-	if(!usr.client.holder)
+	if (!usr.client.holder)
 		return
 	var/confirm = alert("Restart the game world?", "Restart", "Yes", "Cancel")
 	if(confirm == "Cancel")
@@ -699,7 +699,7 @@ var/global/floorIsLava = 0
 	set desc="Toggle dis bitch"
 	set name="Toggle OOC"
 	ooc_allowed = !( ooc_allowed )
-	if(ooc_allowed)
+	if (ooc_allowed)
 		world << "<B>The OOC channel has been globally enabled!</B>"
 	else
 		world << "<B>The OOC channel has been globally disabled!</B>"
@@ -748,7 +748,7 @@ var/global/floorIsLava = 0
 	set desc="People can't enter"
 	set name="Toggle Entering"
 	enter_allowed = !( enter_allowed )
-	if(!( enter_allowed ))
+	if (!( enter_allowed ))
 		world << "<B>New players may no longer enter the game.</B>"
 	else
 		world << "<B>New players may now enter the game.</B>"
@@ -762,7 +762,7 @@ var/global/floorIsLava = 0
 	set desc="People can't be AI"
 	set name="Toggle AI"
 	config.allow_ai = !( config.allow_ai )
-	if(!( config.allow_ai ))
+	if (!( config.allow_ai ))
 		world << "<B>The AI job is no longer chooseable.</B>"
 	else
 		world << "<B>The AI job is chooseable now.</B>"
@@ -775,7 +775,7 @@ var/global/floorIsLava = 0
 	set desc="Respawn basically"
 	set name="Toggle Respawn"
 	abandon_allowed = !( abandon_allowed )
-	if(abandon_allowed)
+	if (abandon_allowed)
 		world << "<B>You may now respawn.</B>"
 	else
 		world << "<B>You may no longer respawn :(</B>"
@@ -808,13 +808,13 @@ var/global/floorIsLava = 0
 	set name="Delay"
 
 	if(!check_rights(R_ADMIN))	return
-	if(!ticker || ticker.current_state != GAME_STATE_PREGAME)
+	if (!ticker || ticker.current_state != GAME_STATE_PREGAME)
 		ticker.delay_end = !ticker.delay_end
 		log_admin("[key_name(usr)] [ticker.delay_end ? "delayed the round end" : "has made the round end normally"].")
 		message_admins("\blue [key_name(usr)] [ticker.delay_end ? "delayed the round end" : "has made the round end normally"].", 1)
 		return //alert("Round end delayed", null, null, null, null, null)
 	going = !( going )
-	if(!( going ))
+	if (!( going ))
 		world << "<b>The game start has been delayed.</b>"
 		log_admin("[key_name(usr)] delayed the game.")
 	else
@@ -867,8 +867,8 @@ var/global/floorIsLava = 0
 /datum/admins/proc/unprison(var/mob/M in mob_list)
 	set category = "Admin"
 	set name = "Unprison"
-	if(M.z == 2)
-		if(config.allow_admin_jump)
+	if (M.z == 2)
+		if (config.allow_admin_jump)
 			M.loc = pick(latejoin)
 			message_admins("[key_name_admin(usr)] has unprisoned [key_name_admin(M)]", 1)
 			log_admin("[key_name(usr)] has unprisoned [key_name(M)]")
@@ -883,36 +883,36 @@ var/global/floorIsLava = 0
 /proc/is_special_character(mob/M as mob) // returns 1 for specail characters and 2 for heroes of gamemode
 	if(!ticker || !ticker.mode)
 		return 0
-	if(!istype(M))
+	if (!istype(M))
 		return 0
 	if((M.mind in ticker.mode.head_revolutionaries) || (M.mind in ticker.mode.revolutionaries))
-		if(ticker.mode.config_tag == "revolution")
+		if (ticker.mode.config_tag == "revolution")
 			return 2
 		return 1
 	if(M.mind in ticker.mode.cult)
-		if(ticker.mode.config_tag == "cult")
+		if (ticker.mode.config_tag == "cult")
 			return 2
 		return 1
 	if(M.mind in ticker.mode.malf_ai)
-		if(ticker.mode.config_tag == "malfunction")
+		if (ticker.mode.config_tag == "malfunction")
 			return 2
 		return 1
 	if(M.mind in ticker.mode.syndicates)
-		if(ticker.mode.config_tag == "nuclear")
+		if (ticker.mode.config_tag == "nuclear")
 			return 2
 		return 1
 	if(M.mind in ticker.mode.wizards)
-		if(ticker.mode.config_tag == "wizard")
+		if (ticker.mode.config_tag == "wizard")
 			return 2
 		return 1
 	if(M.mind in ticker.mode.changelings)
-		if(ticker.mode.config_tag == "changeling")
+		if (ticker.mode.config_tag == "changeling")
 			return 2
 		return 1
 
 	for(var/datum/disease/D in M.viruses)
 		if(istype(D, /datum/disease/jungle_fever))
-			if(ticker.mode.config_tag == "monkey")
+			if (ticker.mode.config_tag == "monkey")
 				return 2
 			return 1
 	if(isrobot(M))
@@ -994,7 +994,7 @@ var/global/floorIsLava = 0
 	set desc="Reduces view range when wearing welding helmets"
 	set name="Toggle tinted welding helmes"
 	tinted_weldhelh = !( tinted_weldhelh )
-	if(tinted_weldhelh)
+	if (tinted_weldhelh)
 		world << "<B>The tinted_weldhelh has been enabled!</B>"
 	else
 		world << "<B>The tinted_weldhelh has been disabled!</B>"
@@ -1007,7 +1007,7 @@ var/global/floorIsLava = 0
 	set desc="Guests can't enter"
 	set name="Toggle guests"
 	guests_allowed = !( guests_allowed )
-	if(!( guests_allowed ))
+	if (!( guests_allowed ))
 		world << "<B>Guests may no longer enter the game.</B>"
 	else
 		world << "<B>Guests may now enter the game.</B>"
@@ -1018,7 +1018,7 @@ var/global/floorIsLava = 0
 /client/proc/unjobban_panel()
 	set name = "Unjobban Panel"
 	set category = "Admin"
-	if(src.holder)
+	if (src.holder)
 		src.holder.unjobbanpanel()
 	feedback_add_details("admin_verb","UJBP") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	return
@@ -1032,12 +1032,12 @@ var/global/floorIsLava = 0
 		else if(isrobot(S))
 			var/mob/living/silicon/robot/R = S
 			usr << "<b>CYBORG [key_name(S, usr)] [R.connected_ai?"(Slaved to: [R.connected_ai])":"(Independant)"]: laws:</b>"
-		else if(ispAI(S))
+		else if (ispAI(S))
 			usr << "<b>pAI [key_name(S, usr)]'s laws:</b>"
 		else
 			usr << "<b>SOMETHING SILICON [key_name(S, usr)]'s laws:</b>"
 
-		if(S.laws == null)
+		if (S.laws == null)
 			usr << "[key_name(S, usr)]'s laws are null?? Contact a coder."
 		else
 			S.laws.show_laws(usr)
@@ -1048,9 +1048,9 @@ var/global/floorIsLava = 0
 	set category = "Admin"
 	set name = "Show Skills"
 
-	if(!istype(src,/datum/admins))
+	if (!istype(src,/datum/admins))
 		src = usr.client.holder
-	if(!istype(src,/datum/admins))
+	if (!istype(src,/datum/admins))
 		usr << "Error: you are not an admin!"
 		return
 
@@ -1063,7 +1063,7 @@ var/global/floorIsLava = 0
 	set name = "Update Mob Sprite"
 	set desc = "Should fix any mob sprite update errors."
 
-	if(!holder)
+	if (!holder)
 		src << "Only administrators may use this command."
 		return
 
@@ -1086,14 +1086,14 @@ var/admin_shuttle_location = 0 // 0 = centcom 13, 1 = station
 proc/move_admin_shuttle()
 	var/area/fromArea
 	var/area/toArea
-	if(admin_shuttle_location == 1)
+	if (admin_shuttle_location == 1)
 		fromArea = locate(/area/shuttle/administration/station)
 		toArea = locate(/area/shuttle/administration/centcom)
 	else
 		fromArea = locate(/area/shuttle/administration/centcom)
 		toArea = locate(/area/shuttle/administration/station)
 	fromArea.move_contents_to(toArea)
-	if(admin_shuttle_location)
+	if (admin_shuttle_location)
 		admin_shuttle_location = 0
 	else
 		admin_shuttle_location = 1
@@ -1106,14 +1106,14 @@ var/ferry_location = 0 // 0 = centcom , 1 = station
 proc/move_ferry()
 	var/area/fromArea
 	var/area/toArea
-	if(ferry_location == 1)
+	if (ferry_location == 1)
 		fromArea = locate(/area/shuttle/transport1/station)
 		toArea = locate(/area/shuttle/transport1/centcom)
 	else
 		fromArea = locate(/area/shuttle/transport1/centcom)
 		toArea = locate(/area/shuttle/transport1/station)
 	fromArea.move_contents_to(toArea)
-	if(ferry_location)
+	if (ferry_location)
 		ferry_location = 0
 	else
 		ferry_location = 1
@@ -1126,14 +1126,14 @@ var/alien_ship_location = 1 // 0 = base , 1 = mine
 proc/move_alien_ship()
 	var/area/fromArea
 	var/area/toArea
-	if(alien_ship_location == 1)
+	if (alien_ship_location == 1)
 		fromArea = locate(/area/shuttle/alien/mine)
 		toArea = locate(/area/shuttle/alien/base)
 	else
 		fromArea = locate(/area/shuttle/alien/base)
 		toArea = locate(/area/shuttle/alien/mine)
 	fromArea.move_contents_to(toArea)
-	if(alien_ship_location)
+	if (alien_ship_location)
 		alien_ship_location = 0
 	else
 		alien_ship_location = 1

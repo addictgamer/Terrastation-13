@@ -66,19 +66,19 @@
 	if(clumsy_check)
 		if(istype(user, /mob/living))
 			var/mob/living/M = user
-			if((CLUMSY in M.mutations) && prob(50))
+			if ((CLUMSY in M.mutations) && prob(50))
 				M << "<span class='danger'>[src] blows up in your face.</span>"
 				M.take_organ_damage(0,20)
 				M.drop_item()
 				del(src)
 				return
 
-	if(!user.IsAdvancedToolUser())
+	if (!user.IsAdvancedToolUser())
 		user << "\red You don't have the dexterity to do this!"
 		return
 	if(istype(user, /mob/living))
 		var/mob/living/M = user
-		if(HULK in M.mutations)
+		if (HULK in M.mutations)
 			M << "\red Your meaty finger is much too large for the trigger guard!"
 			return
 	if(ishuman(user))
@@ -90,14 +90,14 @@
 
 	var/turf/curloc = get_turf(user)
 	var/turf/targloc = get_turf(target)
-	if(!istype(targloc) || !istype(curloc))
+	if (!istype(targloc) || !istype(curloc))
 		return
 
 	if(!special_check(user))
 		return
 
-	if(!ready_to_fire())
-		if(world.time % 3) //to prevent spam
+	if (!ready_to_fire())
+		if (world.time % 3) //to prevent spam
 			user << "<span class='warning'>[src] is not ready to fire again!"
 		return
 
@@ -164,7 +164,7 @@
 	return in_chamber.check_fire(target,user)
 
 /obj/item/weapon/gun/proc/click_empty(mob/user = null)
-	if(user)
+	if (user)
 		user.visible_message("*click click*", "\red <b>*click*</b>")
 		playsound(user, 'sound/weapons/empty.ogg', 100, 1)
 	else
@@ -173,21 +173,21 @@
 
 /obj/item/weapon/gun/attack(mob/living/M as mob, mob/living/user as mob, def_zone)
 	//Suicide handling.
-	if(M == user && user.zone_sel.selecting == "mouth" && !mouthshoot)
+	if (M == user && user.zone_sel.selecting == "mouth" && !mouthshoot)
 		mouthshoot = 1
 		M.visible_message("\red [user] sticks their gun in their mouth, ready to pull the trigger...")
 		if(!do_after(user, 40))
 			M.visible_message("\blue [user] decided life was worth living")
 			mouthshoot = 0
 			return
-		if(load_into_chamber())
+		if (load_into_chamber())
 			user.visible_message("<span class = 'warning'>[user] pulls the trigger.</span>")
 			if(silenced)
 				playsound(user, fire_sound, 10, 1)
 			else
 				playsound(user, fire_sound, 50, 1)
 			in_chamber.on_hit(M)
-			if(!in_chamber.nodamage)
+			if (!in_chamber.nodamage)
 				user.apply_damage(in_chamber.damage*2.5, in_chamber.damage_type, "head", used_weapon = "Point blank shot in the mouth with \a [in_chamber]")
 				user.death()
 			else
@@ -201,7 +201,7 @@
 			mouthshoot = 0
 			return
 
-	if(load_into_chamber())
+	if (load_into_chamber())
 		//Point blank shooting if on harm intent or target we were targeting.
 		if(user.a_intent == "hurt")
 			user.visible_message("\red <b> \The [user] fires \the [src] point blank at [M]!</b>")

@@ -44,7 +44,7 @@
 	return
 
 /obj/item/weapon/reagent_containers/glass/rag/examine()
-	if(!usr)
+	if (!usr)
 		return
 	usr << "That's \a [src]."
 	usr << desc

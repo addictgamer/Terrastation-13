@@ -66,10 +66,10 @@
 	proc
 		failcheck()
 			lightfail = 0
-			if(prob(src.reliability)) return 1 //No failure
-			if(prob(src.reliability))
+			if (prob(src.reliability)) return 1 //No failure
+			if (prob(src.reliability))
 				for (var/mob/living/M in range(0,src)) //Only a minor failure, enjoy your radiation if you're in the same tile or carrying it
-					if(src in M.contents)
+					if (src in M.contents)
 						M << "\red Your gun feels pleasantly warm for a moment."
 					else
 						M << "\red You feel a warm sensation."
@@ -77,7 +77,7 @@
 				lightfail = 1
 			else
 				for (var/mob/living/M in range(rand(1,4),src)) //Big failure, TIME FOR RADIATION BITCHES
-					if(src in M.contents)
+					if (src in M.contents)
 						M << "\red Your gun's reactor overloads!"
 					M << "\red You feel a wave of heat wash over you."
 					M.apply_effect(300, IRRADIATE)
@@ -88,7 +88,7 @@
 
 
 		update_charge()
-			if(crit_fail)
+			if (crit_fail)
 				overlays += "nucgun-whee"
 				return
 			var/ratio = power_supply.charge / power_supply.maxcharge
@@ -102,16 +102,16 @@
 				return
 			if(lightfail)
 				overlays += "nucgun-medium"
-			else if((power_supply.charge/power_supply.maxcharge) <= 0.5)
+			else if ((power_supply.charge/power_supply.maxcharge) <= 0.5)
 				overlays += "nucgun-light"
 			else
 				overlays += "nucgun-clean"
 
 
 		update_mode()
-			if(mode == 0)
+			if (mode == 0)
 				overlays += "nucgun-stun"
-			else if(mode == 1)
+			else if (mode == 1)
 				overlays += "nucgun-kill"
 
 

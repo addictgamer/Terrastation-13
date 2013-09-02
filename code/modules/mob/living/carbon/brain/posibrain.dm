@@ -40,7 +40,7 @@
 			if(!C || brainmob.key || 0 == searching)	return		//handle logouts that happen whilst the alert is waiting for a response, and responses issued after a brain has been located.
 			if(response == "Yes")
 				transfer_personality(C.mob)
-			else if(response == "Never for this round")
+			else if (response == "Never for this round")
 				C.prefs.be_special ^= BE_PAI
 
 

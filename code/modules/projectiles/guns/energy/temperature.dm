@@ -41,7 +41,7 @@
 
 
 	Topic(href, href_list)
-		if(..())
+		if (..())
 			return
 		usr.set_machine(src)
 		src.add_fingerprint(usr)
@@ -54,7 +54,7 @@
 				src.current_temperature = min(500, src.current_temperature+amount)
 			else
 				src.current_temperature = max(0, src.current_temperature+amount)
-		if(istype(src.loc, /mob))
+		if (istype(src.loc, /mob))
 			attack_self(src.loc)
 		src.add_fingerprint(usr)
 		return

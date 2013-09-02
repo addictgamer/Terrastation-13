@@ -296,13 +296,13 @@
 				step_to(src,movement_target,1)
 
 				if(movement_target)		//Not redundant due to sleeps, Item can be gone in 6 decisecomds
-					if(movement_target.loc.x < src.x)
+					if (movement_target.loc.x < src.x)
 						dir = WEST
-					else if(movement_target.loc.x > src.x)
+					else if (movement_target.loc.x > src.x)
 						dir = EAST
-					else if(movement_target.loc.y < src.y)
+					else if (movement_target.loc.y < src.y)
 						dir = SOUTH
-					else if(movement_target.loc.y > src.y)
+					else if (movement_target.loc.y > src.y)
 						dir = NORTH
 					else
 						dir = SOUTH
@@ -327,7 +327,7 @@
 /mob/living/simple_animal/corgi/Ian/Bump(atom/movable/AM as mob|obj, yes)
 
 	spawn( 0 )
-		if((!( yes ) || now_pushing))
+		if ((!( yes ) || now_pushing))
 			return
 		now_pushing = 1
 		if(ismob(AM))
@@ -344,13 +344,13 @@
 			tmob.LAssailant = src
 		now_pushing = 0
 		..()
-		if(!( istype(AM, /atom/movable) ))
+		if (!( istype(AM, /atom/movable) ))
 			return
-		if(!( now_pushing ))
+		if (!( now_pushing ))
 			now_pushing = 1
-			if(!( AM.anchored ))
+			if (!( AM.anchored ))
 				var/t = get_dir(src, AM)
-				if(istype(AM, /obj/structure/window))
+				if (istype(AM, /obj/structure/window))
 					if(AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
 						for(var/obj/structure/window/win in get_step(AM,t))
 							now_pushing = 0
@@ -365,7 +365,7 @@
 	if(istype(O, /obj/item/weapon/newspaper))
 		if(!stat)
 			for(var/mob/M in viewers(user, null))
-				if((M.client && !( M.blinded )))
+				if ((M.client && !( M.blinded )))
 					M.show_message("\blue [user] baps [name] on the nose with the rolled up [O]")
 			spawn(0)
 				for(var/i in list(1,2,4,8,4,2,1,2))

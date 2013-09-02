@@ -12,7 +12,7 @@ var/const/BLOOD_VOLUME_SURVIVE = 122
 
 //Initializes blood vessels
 /mob/living/carbon/human/proc/make_blood()
-	if(vessel)
+	if (vessel)
 		return
 	vessel = new/datum/reagents(600)
 	vessel.my_atom = src
@@ -44,10 +44,10 @@ var/const/BLOOD_VOLUME_SURVIVE = 122
 							break
 
 				B.volume += 0.1 // regenerate blood VERY slowly
-				if(reagents.has_reagent("nutriment"))	//Getting food speeds it up
+				if (reagents.has_reagent("nutriment"))	//Getting food speeds it up
 					B.volume += 0.4
 					reagents.remove_reagent("nutriment", 0.1)
-				if(reagents.has_reagent("iron"))	//Hematogen candy anyone?
+				if (reagents.has_reagent("iron"))	//Hematogen candy anyone?
 					B.volume += 0.8
 					reagents.remove_reagent("iron", 0.1)
 
@@ -120,7 +120,7 @@ var/const/BLOOD_VOLUME_SURVIVE = 122
 				blood_max += W.damage / 4
 			if(temp.status & ORGAN_DESTROYED && !(temp.status & ORGAN_GAUZED) && !temp.amputated)
 				blood_max += 20 //Yer missing a fucking limb.
-			if(temp.open)
+			if (temp.open)
 				blood_max += 2  //Yer stomach is cut open
 		drip(blood_max)
 
@@ -140,7 +140,7 @@ var/const/BLOOD_VOLUME_SURVIVE = 122
 		nums += G
 		iconL.Remove(G.icon_state)
 
-	if(nums.len < 5)
+	if (nums.len < 5)
 		var/obj/effect/decal/cleanable/blood/drip/this = new(T)
 		this.icon_state = pick(iconL)
 		this.blood_DNA = list()
@@ -163,7 +163,7 @@ var/const/BLOOD_VOLUME_SURVIVE = 122
 
 	//set reagent data
 	B.data["donor"] = src
-	if(!B.data["virus2"])
+	if (!B.data["virus2"])
 		B.data["virus2"] = list()
 	B.data["virus2"] |= virus_copylist(src.virus2)
 	B.data["antibodies"] = src.antibodies
@@ -192,10 +192,10 @@ var/const/BLOOD_VOLUME_SURVIVE = 122
 //Transfers blood from container ot vessels
 /mob/living/carbon/proc/inject_blood(obj/item/weapon/reagent_containers/container, var/amount)
 	var/datum/reagent/blood/injected = get_blood(container.reagents)
-	if(!injected)
+	if (!injected)
 		return
 	src.virus2 |= virus_copylist(injected.data["virus2"])
-	if(injected.data["antibodies"] && prob(5))
+	if (injected.data["antibodies"] && prob(5))
 		antibodies |= injected.data["antibodies"]
 	var/list/chems = list()
 	chems = params2list(injected.data["trace_chem"])
@@ -209,7 +209,7 @@ var/const/BLOOD_VOLUME_SURVIVE = 122
 /mob/living/carbon/human/inject_blood(obj/item/weapon/reagent_containers/container, var/amount)
 	var/datum/reagent/blood/our = get_blood(vessel)
 	var/datum/reagent/blood/injected = get_blood(container.reagents)
-	if(!injected || !our)
+	if (!injected || !our)
 		return
 	if(blood_incompatible(injected.data["blood_type"],our.data["blood_type"]) )
 		reagents.add_reagent("toxin",amount * 0.5)

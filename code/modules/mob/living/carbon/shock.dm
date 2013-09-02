@@ -28,7 +28,7 @@
 	if(istype(src,/mob/living/carbon/human))
 		var/mob/living/carbon/human/M = src
 		for(var/datum/organ/external/organ in M.organs)
-			if(!organ)
+			if (!organ)
 				continue
 			if((organ.status & ORGAN_DESTROYED) && !organ.amputated)
 				src.traumatic_shock += 60

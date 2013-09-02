@@ -64,9 +64,9 @@
 /mob/proc/say_understands(var/mob/other,var/datum/language/speaking = null)
 	if(!other)
 		return 1
-	else if(src.stat == 2)
+	else if (src.stat == 2)
 		return 1
-	else if(speaking) //Language check.
+	else if (speaking) //Language check.
 
 		var/understood
 		for(var/datum/language/L in src.languages)
@@ -83,7 +83,7 @@
 		return 1
 	else if(isAI(src) && ispAI(other))
 		return 1
-	else if(istype(other, src.type) || istype(src, other.type))
+	else if (istype(other, src.type) || istype(src, other.type))
 		return 1
 	return 0
 
@@ -95,19 +95,19 @@
 
 	var/speechverb = "<span class='say_quote'>"
 
-	if(speaking)
+	if (speaking)
 		speechverb = "[speaking.speech_verb]</span>, \"<span class='[speaking.colour]'>"
-	else if(src.stuttering)
+	else if (src.stuttering)
 		speechverb = "stammers, \""
-	else if(src.slurring)
+	else if (src.slurring)
 		speechverb = "slurrs, \""
-	else if(ending == "?")
+	else if (ending == "?")
 		speechverb = "asks, \""
-	else if(ending == "!")
+	else if (ending == "!")
 		speechverb = "exclaims, \""
 	else if(isliving(src))
 		var/mob/living/L = src
-		if(L.getBrainLoss() >= 60)
+		if (L.getBrainLoss() >= 60)
 			speechverb = "gibbers, \""
 		else
 			speechverb = "says, \""
@@ -130,8 +130,8 @@
 
 /mob/proc/say_test(var/text)
 	var/ending = copytext(text, length(text))
-	if(ending == "?")
+	if (ending == "?")
 		return "1"
-	else if(ending == "!")
+	else if (ending == "!")
 		return "2"
 	return "0"

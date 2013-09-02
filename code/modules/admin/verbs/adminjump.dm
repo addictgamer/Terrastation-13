@@ -56,11 +56,11 @@
 	set category = "Admin"
 	set name = "Jump to Coordinate"
 
-	if(!holder)
+	if (!holder)
 		src << "Only administrators may use this command."
 		return
 
-	if(config.allow_admin_jump)
+	if (config.allow_admin_jump)
 		if(src.mob)
 			var/mob/A = src.mob
 			A.x = tx

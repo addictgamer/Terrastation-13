@@ -74,7 +74,7 @@ var/list/solars_list = list()
 			user.visible_message("<span class='notice'>[user] takes the glass off the solar panel.</span>")
 			del(src)
 		return
-	else if(W)
+	else if (W)
 		src.add_fingerprint(user)
 		src.health -= W.force
 		src.healthcheck()
@@ -88,7 +88,7 @@ var/list/solars_list = list()
 
 
 /obj/machinery/power/solar/proc/healthcheck()
-	if(src.health <= 0)
+	if (src.health <= 0)
 		if(!(stat & BROKEN))
 			broken()
 		else
@@ -162,14 +162,14 @@ var/list/solars_list = list()
 				new /obj/item/weapon/shard( src.loc )
 			return
 		if(2.0)
-			if(prob(25))
+			if (prob(25))
 				new /obj/item/weapon/shard( src.loc )
 				del(src)
 				return
-			if(prob(50))
+			if (prob(50))
 				broken()
 		if(3.0)
-			if(prob(25))
+			if (prob(25))
 				broken()
 	return
 
@@ -335,7 +335,7 @@ var/list/solars_list = list()
 	if(istype(I, /obj/item/weapon/screwdriver))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20))
-			if(src.stat & BROKEN)
+			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 				new /obj/item/weapon/shard( src.loc )
@@ -394,8 +394,8 @@ var/list/solars_list = list()
 
 /obj/machinery/power/solar_control/interact(mob/user)
 	if(stat & (BROKEN | NOPOWER)) return
-	if( (get_dist(src, user) > 1 ))
-		if(!istype(user, /mob/living/silicon))
+	if ( (get_dist(src, user) > 1 ))
+		if (!istype(user, /mob/living/silicon))
 			user.unset_machine()
 			user << browse(null, "window=solcon")
 			return
@@ -514,16 +514,16 @@ var/list/solars_list = list()
 			del(src)
 			return
 		if(2.0)
-			if(prob(50))
+			if (prob(50))
 				broken()
 		if(3.0)
-			if(prob(25))
+			if (prob(25))
 				broken()
 	return
 
 
 /obj/machinery/power/solar_control/blob_act()
-	if(prob(75))
+	if (prob(75))
 		broken()
 		src.density = 0
 

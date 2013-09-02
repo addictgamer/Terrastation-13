@@ -258,10 +258,10 @@ proc/n_inrange(var/num, var/min=-1, var/max=1)
 		while (i < lenh)
 			var/found = findtext(haystack, a, i, 0)
 			//diary << "findtext([haystack], [a], [i], 0)=[found]"
-			if(found == 0) // Not found
+			if (found == 0) // Not found
 				break
 			else
-				if(count < SCRIPT_MAX_REPLACEMENTS_ALLOWED)
+				if (count < SCRIPT_MAX_REPLACEMENTS_ALLOWED)
 					dat+=found
 					count+=1
 				else
@@ -269,7 +269,7 @@ proc/n_inrange(var/num, var/min=-1, var/max=1)
 					break
 			//diary << "Found [a] at [found]! Moving up..."
 			i = found + lena
-		if(count == 0)
+		if (count == 0)
 			return haystack
 		//var/nlen = lenh + ((lenb - lena) * count)
 		var/buf = copytext(haystack,1,dat[1]) // Prefill

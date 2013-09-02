@@ -421,7 +421,7 @@ var/list/admin_verbs_mod = list(
 /client/proc/secrets()
 	set name = "Secrets"
 	set category = "Admin"
-	if(holder)
+	if (holder)
 		holder.Secrets()
 	feedback_add_details("admin_verb","S") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	return
@@ -672,7 +672,7 @@ var/list/admin_verbs_mod = list(
 
 	var/new_tone = input("Please select skin tone level: 1-220 (1=albino, 35=caucasian, 150=black, 220='very' black)", "Character Generation")  as text
 
-	if(new_tone)
+	if (new_tone)
 		M.s_tone = max(min(round(text2num(new_tone)), 220), 1)
 		M.s_tone =  -M.s_tone + 35
 
@@ -687,7 +687,7 @@ var/list/admin_verbs_mod = list(
 		M.f_style = new_fstyle
 
 	var/new_gender = alert(usr, "Please select gender.", "Character Generation", "Male", "Female")
-	if(new_gender)
+	if (new_gender)
 		if(new_gender == "Male")
 			M.gender = MALE
 		else
@@ -709,13 +709,13 @@ var/list/admin_verbs_mod = list(
 	if(holder)
 		var/list/jobs = list()
 		for (var/datum/job/J in job_master.occupations)
-			if(J.current_positions >= J.total_positions && J.total_positions != -1)
+			if (J.current_positions >= J.total_positions && J.total_positions != -1)
 				jobs += J.title
-		if(!jobs.len)
+		if (!jobs.len)
 			usr << "There are no fully staffed jobs."
 			return
 		var/job = input("Please select job slot to free", "Free job slot")  as null|anything in jobs
-		if(job)
+		if (job)
 			job_master.FreeRole(job)
 	return
 
@@ -724,7 +724,7 @@ var/list/admin_verbs_mod = list(
 	set category = "Preferences"
 
 	prefs.toggles ^= CHAT_ATTACKLOGS
-	if(prefs.toggles & CHAT_ATTACKLOGS)
+	if (prefs.toggles & CHAT_ATTACKLOGS)
 		usr << "You now will get attack log messages"
 	else
 		usr << "You now won't get attack log messages"
@@ -735,7 +735,7 @@ var/list/admin_verbs_mod = list(
 	set category = "Preferences"
 
 	prefs.toggles ^= CHAT_DEBUGLOGS
-	if(prefs.toggles & CHAT_DEBUGLOGS)
+	if (prefs.toggles & CHAT_DEBUGLOGS)
 		usr << "You now will get debug log messages"
 	else
 		usr << "You now won't get debug log messages"

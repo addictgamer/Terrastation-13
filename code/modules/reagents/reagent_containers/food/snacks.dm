@@ -40,21 +40,21 @@
 	if(istype(M, /mob/living/carbon))
 		if(M == user)								//If you're eating it yourself.
 			var/fullness = M.nutrition + (M.reagents.get_reagent_amount("nutriment") * 25)
-			if(fullness <= 50)
+			if (fullness <= 50)
 				M << "\red You hungrily chew out a piece of [src] and gobble it!"
-			if(fullness > 50 && fullness <= 150)
+			if (fullness > 50 && fullness <= 150)
 				M << "\blue You hungrily begin to eat [src]."
-			if(fullness > 150 && fullness <= 350)
+			if (fullness > 150 && fullness <= 350)
 				M << "\blue You take a bite of [src]."
-			if(fullness > 350 && fullness <= 550)
+			if (fullness > 350 && fullness <= 550)
 				M << "\blue You unwillingly chew a bit of [src]."
-			if(fullness > (550 * (1 + M.overeatduration / 2000)))	// The more you eat - the more you can eat
+			if (fullness > (550 * (1 + M.overeatduration / 2000)))	// The more you eat - the more you can eat
 				M << "\red You cannot force any more of [src] to go down your throat."
 				return 0
 		else
 			if(!istype(M, /mob/living/carbon/slime))		//If you're feeding it to someone else.
 				var/fullness = M.nutrition + (M.reagents.get_reagent_amount("nutriment") * 25)
-				if(fullness <= (550 * (1 + M.overeatduration / 1000)))
+				if (fullness <= (550 * (1 + M.overeatduration / 1000)))
 					for(var/mob/O in viewers(world.view, user))
 						O.show_message("\red [user] attempts to feed [M] [src].", 1)
 				else
@@ -66,8 +66,7 @@
 
 				M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been fed [src.name] by [user.name] ([user.ckey]) Reagents: [reagentlist(src)]</font>")
 				user.attack_log += text("\[[time_stamp()]\] <font color='red'>Fed [src.name] by [M.name] ([M.ckey]) Reagents: [reagentlist(src)]</font>")
-
-				log_attack("<font color='red'>[user.name] ([user.ckey]) fed [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])</font>")
+				log_attack("[user.name] ([user.ckey]) fed [M.name] ([M.ckey]) with [src.name] Reagents: [reagentlist(src)] (INTENT: [uppertext(user.a_intent)])")
 
 				for(var/mob/O in viewers(world.view, user))
 					O.show_message("\red [user] feeds [M] [src].", 1)
@@ -109,12 +108,12 @@
 /obj/item/weapon/reagent_containers/food/snacks/examine()
 	set src in view()
 	..()
-	if(!(usr in range(0)) && usr!=src.loc) return
-	if(bitecount==0)
+	if (!(usr in range(0)) && usr!=src.loc) return
+	if (bitecount==0)
 		return
-	else if(bitecount==1)
+	else if (bitecount==1)
 		usr << "\blue \The [src] was bitten by someone!"
-	else if(bitecount<=3)
+	else if (bitecount<=3)
 		usr << "\blue \The [src] was bitten [bitecount] times!"
 	else
 		usr << "\blue \The [src] was bitten multiple times!"
@@ -146,7 +145,7 @@
 			return 1
 		user << "\red You slip [W] inside [src]."
 		user.u_equip(W)
-		if((user.client && user.s_active != src))
+		if ((user.client && user.s_active != src))
 			user.client.screen -= W
 		W.dropped(user)
 		add_fingerprint(user)
@@ -154,7 +153,7 @@
 		return
 	else
 		return 1
-	if( \
+	if ( \
 			!isturf(src.loc) || \
 			!(locate(/obj/structure/table) in src.loc) && \
 			!(locate(/obj/machinery/optable) in src.loc) && \
@@ -163,7 +162,7 @@
 		user << "\red You cannot slice [src] here! You need a table or at least a tray to do it."
 		return 1
 	var/slices_lost = 0
-	if(!inaccurate)
+	if (!inaccurate)
 		user.visible_message( \
 			"\blue [user] slices \the [src]!", \
 			"\blue You slice \the [src]!" \
@@ -635,7 +634,7 @@
 
 	var/warm = 0
 	proc/cooltime() //Not working, derp?
-		if(src.warm)
+		if (src.warm)
 			spawn( 4200 )
 				src.warm = 0
 				src.reagents.del_reagent("tricordrazine")
@@ -766,12 +765,12 @@
 		bitesize = 1
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
 		if(istype(W,/obj/item/weapon/kitchen/utensil/fork))
-			if(W.icon_state == "forkloaded")
+			if (W.icon_state == "forkloaded")
 				user << "\red You already have omelette on your fork."
 				return
 			//W.icon = 'icons/obj/kitchen.dmi'
 			W.icon_state = "forkloaded"
-			/*if(herp)
+			/*if (herp)
 				world << "[user] takes a piece of omelette with his fork!"*/
 				//Why this unecessary check? Oh I know, because I'm bad >:C
 				// Yes, you are. You griefing my badmin toys. --rastaf0
@@ -780,7 +779,7 @@
 				"\blue You take a piece of omelette with your fork!" \
 			)
 			reagents.remove_reagent("nutriment", 1)
-			if(reagents.total_volume <= 0)
+			if (reagents.total_volume <= 0)
 				del(src)
 /*
  * Unsused.

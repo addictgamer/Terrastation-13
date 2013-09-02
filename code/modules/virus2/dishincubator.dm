@@ -53,38 +53,38 @@
 
 	if(usr) usr.set_machine(src)
 
-	if(href_list["ejectchem"])
+	if (href_list["ejectchem"])
 		if(beaker)
 			beaker.loc = src.loc
 			beaker = null
 	if(!dish)
 		return
-	if(href_list["power"])
+	if (href_list["power"])
 		on = !on
 		if(on)
 			icon_state = "incubator_on"
 		else
 			icon_state = "incubator"
-	if(href_list["ejectdish"])
+	if (href_list["ejectdish"])
 		if(dish)
 			dish.loc = src.loc
 			dish = null
-	if(href_list["rad"])
+	if (href_list["rad"])
 		radiation += 10
-	if(href_list["flush"])
+	if (href_list["flush"])
 		radiation = 0
 		toxins = 0
 		foodsupply = 0
 
 	if(href_list["virus"])
-		if(!dish)
+		if (!dish)
 			state("\The [src.name] buzzes, \"No viral culture sample detected.\"", "blue")
 		else
 			var/datum/reagent/blood/B = locate(/datum/reagent/blood) in beaker.reagents.reagent_list
-			if(!B)
+			if (!B)
 				state("\The [src.name] buzzes, \"No suitable breeding enviroment detected.\"", "blue")
 			else
-				if(!B.data["virus2"])
+				if (!B.data["virus2"])
 					B.data["virus2"] = list()
 				var/list/virus = list("[dish.virus2.uniqueID]" = dish.virus2.getcopy())
 				B.data["virus2"] = virus

@@ -3,7 +3,7 @@
 
 	if(ismob(mover))
 		var/mob/moving_mob = mover
-		if((other_mobs && moving_mob.other_mobs))
+		if ((other_mobs && moving_mob.other_mobs))
 			return 1
 		return (!mover.density || !density || lying)
 	else
@@ -152,7 +152,7 @@
 	set hidden = 1
 	if(!istype(mob, /mob/living/carbon))
 		return
-	if(!mob.stat && isturf(mob.loc) && !mob.restrained())
+	if (!mob.stat && isturf(mob.loc) && !mob.restrained())
 		mob:toggle_throw_mode()
 	else
 		return
@@ -167,44 +167,44 @@
 
 /client/Center()
 	/* No 3D movement in 2D spessman game. dir 16 is Z Up
-	if(isobj(mob.loc))
+	if (isobj(mob.loc))
 		var/obj/O = mob.loc
-		if(mob.canmove)
+		if (mob.canmove)
 			return O.relaymove(mob, 16)
 	*/
 	return
 
 
 /atom/movable/Move(NewLoc, direct)
-	if(direct & direct - 1)
-		if(direct & 1)
-			if(direct & 4)
-				if(step(src, NORTH))
+	if (direct & direct - 1)
+		if (direct & 1)
+			if (direct & 4)
+				if (step(src, NORTH))
 					step(src, EAST)
 				else
-					if(step(src, EAST))
+					if (step(src, EAST))
 						step(src, NORTH)
 			else
-				if(direct & 8)
-					if(step(src, NORTH))
+				if (direct & 8)
+					if (step(src, NORTH))
 						step(src, WEST)
 					else
-						if(step(src, WEST))
+						if (step(src, WEST))
 							step(src, NORTH)
 		else
-			if(direct & 2)
-				if(direct & 4)
-					if(step(src, SOUTH))
+			if (direct & 2)
+				if (direct & 4)
+					if (step(src, SOUTH))
 						step(src, EAST)
 					else
-						if(step(src, EAST))
+						if (step(src, EAST))
 							step(src, SOUTH)
 				else
-					if(direct & 8)
-						if(step(src, SOUTH))
+					if (direct & 8)
+						if (step(src, SOUTH))
 							step(src, WEST)
 						else
-							if(step(src, WEST))
+							if (step(src, WEST))
 								step(src, SOUTH)
 	else
 		. = ..()
@@ -314,15 +314,15 @@
 					L -= mob
 					var/mob/M = L[1]
 					if(M)
-						if((get_dist(mob, M) <= 1 || M.loc == mob.loc))
+						if ((get_dist(mob, M) <= 1 || M.loc == mob.loc))
 							var/turf/T = mob.loc
 							. = ..()
-							if(isturf(M.loc))
+							if (isturf(M.loc))
 								var/diag = get_dir(mob, M)
-								if((diag - 1) & diag)
+								if ((diag - 1) & diag)
 								else
 									diag = null
-								if((get_dist(mob, M) > 1 || diag))
+								if ((get_dist(mob, M) > 1 || diag))
 									step(M, get_dir(M.loc, T))
 				else
 					for(var/mob/M in L)

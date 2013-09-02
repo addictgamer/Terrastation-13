@@ -142,7 +142,7 @@
 /proc/islinked(var/mob/living/silicon/robot/bot, var/mob/living/silicon/ai/ai)
 	if(!istype(bot) || !istype(ai))
 		return 0
-	if(bot.connected_ai == ai)
+	if (bot.connected_ai == ai)
 		return 1
 	return 0
 
@@ -169,7 +169,7 @@
 /mob/living/silicon/proc/show_emergency_shuttle_eta()
 	if(emergency_shuttle.online && emergency_shuttle.location < 2)
 		var/timeleft = emergency_shuttle.timeleft()
-		if(timeleft)
+		if (timeleft)
 			stat(null, "ETA-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
 
 
@@ -177,7 +177,7 @@
 /mob/living/silicon/Stat()
 	..()
 	statpanel("Status")
-	if(src.client.statpanel == "Status")
+	if (src.client.statpanel == "Status")
 		show_station_time()
 		show_emergency_shuttle_eta()
 		show_system_integrity()

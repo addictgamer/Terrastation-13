@@ -16,7 +16,7 @@
 	examine()
 		set src in view()
 		..()
-		if(!(usr in view(2)) && usr!=src.loc) return
+		if (!(usr in view(2)) && usr!=src.loc) return
 		usr << "\icon [src] Grenade launcher:"
 		usr << "\blue [grenades] / [max_grenades] Grenades."
 
@@ -34,10 +34,10 @@
 
 	afterattack(obj/target, mob/user , flag)
 
-		if(istype(target, /obj/item/weapon/storage/backpack ))
+		if (istype(target, /obj/item/weapon/storage/backpack ))
 			return
 
-		else if(locate (/obj/structure/table, src.loc))
+		else if (locate (/obj/structure/table, src.loc))
 			return
 
 		else if(target == user)

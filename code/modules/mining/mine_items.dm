@@ -50,7 +50,7 @@ proc/move_mining_shuttle()
 	spawn(mining_shuttle_tickstomove*10)
 		var/area/fromArea
 		var/area/toArea
-		if(mining_shuttle_location == 1)
+		if (mining_shuttle_location == 1)
 			fromArea = locate(/area/shuttle/mining/outpost)
 			toArea = locate(/area/shuttle/mining/station)
 
@@ -90,7 +90,7 @@ proc/move_mining_shuttle()
 			pest.gib()
 
 		fromArea.move_contents_to(toArea)
-		if(mining_shuttle_location)
+		if (mining_shuttle_location)
 			mining_shuttle_location = 0
 		else
 			mining_shuttle_location = 1
@@ -137,7 +137,7 @@ proc/move_mining_shuttle()
 		//		usr << "Under directive 7-10, [station_name()] is quarantined until further notice."
 		//		return
 
-		if(!mining_shuttle_moving)
+		if (!mining_shuttle_moving)
 			usr << "\blue Shuttle recieved message and will be sent shortly."
 			move_mining_shuttle()
 		else
@@ -145,7 +145,7 @@ proc/move_mining_shuttle()
 
 /obj/machinery/computer/mining_shuttle/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
-	if(istype(W, /obj/item/weapon/card/emag))
+	if (istype(W, /obj/item/weapon/card/emag))
 		src.req_access = list()
 		hacked = 1
 		usr << "You fried the consoles ID checking system. It's now available to everyone!"
@@ -160,7 +160,7 @@ proc/move_mining_shuttle()
 			A.circuit = M
 			A.anchored = 1
 
-			if(src.stat & BROKEN)
+			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				new /obj/item/weapon/shard( src.loc )
 				A.state = 3

@@ -2,7 +2,7 @@
 	set name = "Toggle Firerate"
 	set category = "Object"
 	firerate = !firerate
-	if(firerate == 0)
+	if (firerate == 0)
 		loc << "You will now continue firing when your target moves."
 	else
 		loc << "You will now only fire once, then lower your aim, when your target moves."
@@ -21,14 +21,14 @@
 //Removing the lock and the buttons.
 /obj/item/weapon/gun/dropped(mob/user as mob)
 	stop_aim()
-	if(user.client)
+	if (user.client)
 		user.client.remove_gun_icons()
 	return ..()
 
 /obj/item/weapon/gun/equipped(var/mob/user, var/slot)
-	if(slot != slot_l_hand && slot != slot_r_hand)
+	if (slot != slot_l_hand && slot != slot_r_hand)
 		stop_aim()
-		if(user.client)
+		if (user.client)
 			user.client.remove_gun_icons()
 	return ..()
 
@@ -93,7 +93,7 @@
 
 	usr.dir = get_cardinal_dir(src, T)
 
-	if(!firerate) // If firerate is set to lower aim after one shot, untarget the target
+	if (!firerate) // If firerate is set to lower aim after one shot, untarget the target
 		T.NotTargeted(src)
 
 //Yay, math!
@@ -248,30 +248,30 @@ client/var
 
 //These are called by the on-screen buttons, adjusting what the victim can and cannot do.
 client/proc/add_gun_icons()
-	if(!usr.item_use_icon)
+	if (!usr.item_use_icon)
 		usr.item_use_icon = new /obj/screen/gun/item(null)
 		usr.item_use_icon.icon_state = "no_item[target_can_click]"
 		usr.item_use_icon.name = "[target_can_click ? "Disallow" : "Allow"] Item Use"
 
-	if(!usr.gun_move_icon)
+	if (!usr.gun_move_icon)
 		usr.gun_move_icon = new /obj/screen/gun/move(null)
 		usr.gun_move_icon.icon_state = "no_walk[target_can_move]"
 		usr.gun_move_icon.name = "[target_can_move ? "Disallow" : "Allow"] Walking"
 
-	if(target_can_move && !usr.gun_run_icon)
+	if (target_can_move && !usr.gun_run_icon)
 		usr.gun_run_icon = new /obj/screen/gun/run(null)
 		usr.gun_run_icon.icon_state = "no_run[target_can_run]"
 		usr.gun_run_icon.name = "[target_can_run ? "Disallow" : "Allow"] Running"
 
 	screen += usr.item_use_icon
 	screen += usr.gun_move_icon
-	if(target_can_move)
+	if (target_can_move)
 		screen += usr.gun_run_icon
 
 client/proc/remove_gun_icons()
 	screen -= usr.item_use_icon
 	screen -= usr.gun_move_icon
-	if(target_can_move)
+	if (target_can_move)
 		screen -= usr.gun_run_icon
 	del usr.gun_move_icon
 	del usr.item_use_icon
@@ -325,11 +325,11 @@ client/verb/AllowTargetMove()
 					M << "\red <b>Your character will now be shot if they move.</b>"
 
 mob/living/proc/set_m_intent(var/intent)
-	if(intent != "walk" && intent != "run")
+	if (intent != "walk" && intent != "run")
 		return 0
 	m_intent = intent
 	if(hud_used)
-		if(hud_used.move_intent)
+		if (hud_used.move_intent)
 			hud_used.move_intent.icon_state = intent == "walk" ? "walking" : "running"
 
 client/verb/AllowTargetRun()

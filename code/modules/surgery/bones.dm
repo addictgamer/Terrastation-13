@@ -20,7 +20,7 @@
 
 	begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/datum/organ/external/affected = target.get_organ(target_zone)
-		if(affected.stage == 0)
+		if (affected.stage == 0)
 			user.visible_message("[user] starts applying medication to the damaged bones in [target]'s [affected.display_name] with \the [tool]." , \
 			"You start applying medication to the damaged bones in [target]'s [affected.display_name] with \the [tool].")
 		target.custom_pain("Something in your [affected.display_name] is causing you a lot of pain!",1)
@@ -59,7 +59,7 @@
 
 	end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/datum/organ/external/affected = target.get_organ(target_zone)
-		if(affected.status & ORGAN_BROKEN)
+		if (affected.status & ORGAN_BROKEN)
 			user.visible_message("\blue [user] sets the bone in [target]'s [affected.display_name] in place with \the [tool].", \
 				"\blue You set the bone in [target]'s [affected.display_name] in place with \the [tool].")
 			affected.stage = 2

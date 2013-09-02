@@ -106,7 +106,7 @@
 				if(target_vent)
 					/*
 					for(var/mob/O in oviewers(src, null))
-						if((O.client && !( O.blinded )))
+						if ((O.client && !( O.blinded )))
 							O.show_message(text("<B>[src] scrambles into the ventillation ducts!</B>"), 1)
 					*/
 					loc = target_vent.loc
@@ -126,12 +126,12 @@
 	set desc = "Allows to hide beneath tables or certain items. Toggled on or off."
 	set category = "Mouse"
 
-	if(layer != TURF_LAYER+0.2)
+	if (layer != TURF_LAYER+0.2)
 		layer = TURF_LAYER+0.2
 		src << text("\blue You are now hiding.")
 		/*
 		for(var/mob/O in oviewers(src, null))
-			if((O.client && !( O.blinded )))
+			if ((O.client && !( O.blinded )))
 				O << text("<B>[] scurries to the ground!</B>", src)
 		*/
 	else
@@ -139,7 +139,7 @@
 		src << text("\blue You have stopped hiding.")
 		/*
 		for(var/mob/O in oviewers(src, null))
-			if((O.client && !( O.blinded )))
+			if ((O.client && !( O.blinded )))
 				O << text("[] slowly peaks up from the ground...", src)
 		*/
 

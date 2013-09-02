@@ -7,10 +7,10 @@
 	priority = 2
 	can_infect = 0
 	can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-		if(!hasorgans(target))
+		if (!hasorgans(target))
 			return 0
 		var/datum/organ/external/affected = target.get_organ(target_zone)
-		if(!affected)
+		if (!affected)
 			return 0
 		return target_zone == "mouth"
 
@@ -125,7 +125,7 @@
 		"\blue You cauterize the incision on [target]'s face and neck with \the [tool].")
 		affected.open = 0
 		affected.status &= ~ORGAN_BLEEDING
-		if(target.op_stage.face == 3)
+		if (target.op_stage.face == 3)
 			var/datum/organ/external/head/h = affected
 			h.disfigured = 0
 		target.op_stage.face = 0

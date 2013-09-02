@@ -11,7 +11,7 @@
 			randomturfs.Add(T)
 		if(randomturfs.len > 0)
 			user << "\red You are suddenly zapped away elsewhere!"
-			if(user.buckled)
+			if (user.buckled)
 				user.buckled.unbuckle()
 
 			var/datum/effect/effect/system/spark_spread/sparks = new /datum/effect/effect/system/spark_spread()

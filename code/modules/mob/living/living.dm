@@ -1,7 +1,7 @@
 
 /mob/living/verb/succumb()
 	set hidden = 1
-	if((src.health < 0 && src.health > -95.0))
+	if ((src.health < 0 && src.health > -95.0))
 		src.adjustOxyLoss(src.health + 200)
 		src.health = 100 - src.getOxyLoss() - src.getToxLoss() - src.getFireLoss() - src.getBruteLoss()
 		src << "\blue You have given up life and succumbed to death."
@@ -27,7 +27,7 @@
 		//world << "DEBUG: burn_skin(), mutations=[mutations]"
 		if(mShock in src.mutations) //shockproof
 			return 0
-		if(COLD_RESISTANCE in src.mutations) //fireproof
+		if (COLD_RESISTANCE in src.mutations) //fireproof
 			return 0
 		var/mob/living/carbon/human/H = src	//make this damage method divide the damage to be done among all the body parts, then burn each body part for that much damage. will have better effect then just randomly picking a body part
 		var/divided_damage = (burn_amount)/(H.organs.len)
@@ -39,7 +39,7 @@
 		H.updatehealth()
 		return 1
 	else if(istype(src, /mob/living/carbon/monkey))
-		if(COLD_RESISTANCE in src.mutations) //fireproof
+		if (COLD_RESISTANCE in src.mutations) //fireproof
 			return 0
 		var/mob/living/carbon/monkey/M = src
 		M.adjustFireLoss(burn_amount)
@@ -214,7 +214,7 @@
 /mob/living/proc/get_organ_target()
 	var/mob/shooter = src
 	var/t = shooter:zone_sel.selecting
-	if((t in list( "eyes", "mouth" )))
+	if ((t in list( "eyes", "mouth" )))
 		t = "head"
 	var/datum/organ/external/def_zone = ran_zone(t)
 	return def_zone
@@ -299,23 +299,23 @@
 	return
 
 /mob/living/Move(a, b, flag)
-	if(buckled)
+	if (buckled)
 		return
 
-	if(restrained())
+	if (restrained())
 		stop_pulling()
 
 
 	var/t7 = 1
-	if(restrained())
+	if (restrained())
 		for(var/mob/living/M in range(src, 1))
-			if((M.pulling == src && M.stat == 0 && !( M.restrained() )))
+			if ((M.pulling == src && M.stat == 0 && !( M.restrained() )))
 				t7 = null
-	if((t7 && (pulling && ((get_dist(src, pulling) <= 1 || pulling.loc == loc) && (client && client.moving)))))
+	if ((t7 && (pulling && ((get_dist(src, pulling) <= 1 || pulling.loc == loc) && (client && client.moving)))))
 		var/turf/T = loc
 		. = ..()
 
-		if(pulling && pulling.loc)
+		if (pulling && pulling.loc)
 			if(!( isturf(pulling.loc) ))
 				stop_pulling()
 				return
@@ -329,52 +329,52 @@
 			stop_pulling()
 			return
 
-		if(!restrained())
+		if (!restrained())
 			var/diag = get_dir(src, pulling)
-			if((diag - 1) & diag)
+			if ((diag - 1) & diag)
 			else
 				diag = null
-			if((get_dist(src, pulling) > 1 || diag))
-				if(isliving(pulling))
+			if ((get_dist(src, pulling) > 1 || diag))
+				if (isliving(pulling))
 					var/mob/living/M = pulling
 					var/ok = 1
-					if(locate(/obj/item/weapon/grab, M.grabbed_by))
-						if(prob(75))
+					if (locate(/obj/item/weapon/grab, M.grabbed_by))
+						if (prob(75))
 							var/obj/item/weapon/grab/G = pick(M.grabbed_by)
-							if(istype(G, /obj/item/weapon/grab))
+							if (istype(G, /obj/item/weapon/grab))
 								for(var/mob/O in viewers(M, null))
 									O.show_message(text("\red [] has been pulled from []'s grip by []", G.affecting, G.assailant, src), 1)
 								//G = null
 								del(G)
 						else
 							ok = 0
-						if(locate(/obj/item/weapon/grab, M.grabbed_by.len))
+						if (locate(/obj/item/weapon/grab, M.grabbed_by.len))
 							ok = 0
-					if(ok)
+					if (ok)
 						var/atom/movable/t = M.pulling
 						M.stop_pulling()
 
 						//this is the gay blood on floor shit -- Added back -- Skie
-						if(M.lying && (prob(M.getBruteLoss() / 6)))
+						if (M.lying && (prob(M.getBruteLoss() / 6)))
 							var/turf/location = M.loc
-							if(istype(location, /turf/simulated))
+							if (istype(location, /turf/simulated))
 								location.add_blood(M)
 
 
 						step(pulling, get_dir(pulling.loc, T))
 						M.start_pulling(t)
 				else
-					if(pulling)
-						if(istype(pulling, /obj/structure/window))
+					if (pulling)
+						if (istype(pulling, /obj/structure/window))
 							if(pulling:ini_dir == NORTHWEST || pulling:ini_dir == NORTHEAST || pulling:ini_dir == SOUTHWEST || pulling:ini_dir == SOUTHEAST)
 								for(var/obj/structure/window/win in get_step(pulling,get_dir(pulling.loc, T)))
 									stop_pulling()
-					if(pulling)
+					if (pulling)
 						step(pulling, get_dir(pulling.loc, T))
 	else
 		stop_pulling()
 		. = ..()
-	if((s_active && !( s_active in contents ) ))
+	if ((s_active && !( s_active in contents ) ))
 		s_active.close(src)
 
 	if(update_slimes)

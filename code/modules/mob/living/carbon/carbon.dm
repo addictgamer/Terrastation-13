@@ -20,7 +20,7 @@
 				if(istype(src, /mob/living/carbon/human))
 					var/mob/living/carbon/human/H = src
 					var/organ = H.get_organ("chest")
-					if(istype(organ, /datum/organ/external))
+					if (istype(organ, /datum/organ/external))
 						var/datum/organ/external/temp = organ
 						if(temp.take_damage(d, 0))
 							H.UpdateDamageIcon()
@@ -50,9 +50,9 @@
 
 /mob/living/carbon/attack_hand(mob/M as mob)
 	if(!istype(M, /mob/living/carbon)) return
-	if(hasorgans(M))
+	if (hasorgans(M))
 		var/datum/organ/external/temp = M:organs_by_name["r_hand"]
-		if(M.hand)
+		if (M.hand)
 			temp = M:organs_by_name["l_hand"]
 		if(temp && !temp.is_usable())
 			M << "\red You can't use your [temp.display_name]"
@@ -91,7 +91,7 @@
 /mob/living/carbon/electrocute_act(var/shock_damage, var/obj/source, var/siemens_coeff = 1.0)
 	if(status_flags & GODMODE)	return 0	//godmode
 	shock_damage *= siemens_coeff
-	if(shock_damage<1)
+	if (shock_damage<1)
 		return 0
 	src.take_overall_damage(0,shock_damage,used_weapon="Electrocution")
 	//src.burn_skin(shock_damage)
@@ -124,7 +124,7 @@
 		else
 			hud_used.l_hand_hud_object.icon_state = "hand_inactive"
 			hud_used.r_hand_hud_object.icon_state = "hand_active"
-	/*if(!( src.hand ))
+	/*if (!( src.hand ))
 		src.hands.dir = NORTH
 	else
 		src.hands.dir = SOUTH*/
@@ -144,7 +144,7 @@
 		swap_hand()
 
 /mob/living/carbon/proc/help_shake_act(mob/living/carbon/M)
-	if(src.health >= config.health_threshold_crit)
+	if (src.health >= config.health_threshold_crit)
 		if(src == M && istype(src, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = src
 			src.visible_message( \
@@ -188,11 +188,11 @@
 				H.play_xylophone()
 		else
 			var/t_him = "it"
-			if(src.gender == MALE)
+			if (src.gender == MALE)
 				t_him = "him"
-			else if(src.gender == FEMALE)
+			else if (src.gender == FEMALE)
 				t_him = "her"
-			if(istype(src,/mob/living/carbon/human) && src:w_uniform)
+			if (istype(src,/mob/living/carbon/human) && src:w_uniform)
 				var/mob/living/carbon/human/H = src
 				H.w_uniform.add_fingerprint(M)
 			src.sleeping = max(0,src.sleeping-5)
@@ -335,7 +335,7 @@
 		else		del(r_hand)
 		return
 
-	if(src.in_throw_mode)
+	if (src.in_throw_mode)
 		throw_mode_off()
 	else
 		throw_mode_on()
@@ -358,7 +358,7 @@
 
 	if(!item) return
 
-	if(istype(item, /obj/item/weapon/grab))
+	if (istype(item, /obj/item/weapon/grab))
 		var/obj/item/weapon/grab/G = item
 		item = G.throw() //throw the person instead of the grab
 		if(ismob(item))
@@ -371,8 +371,7 @@
 
 				M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been thrown by [usr.name] ([usr.ckey]) from [start_T_descriptor] with the target [end_T_descriptor]</font>")
 				usr.attack_log += text("\[[time_stamp()]\] <font color='red'>Has thrown [M.name] ([M.ckey]) from [start_T_descriptor] with the target [end_T_descriptor]</font>")
-
-				log_attack("<font color='red'>[usr.name] ([usr.ckey]) Has thrown [M.name] ([M.ckey]) from [start_T_descriptor] with the target [end_T_descriptor]</font>")
+				msg_admin_attack("[usr.name] ([usr.ckey]) has thrown [M.name] ([M.ckey]) from [start_T_descriptor] with the target [end_T_descriptor] (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[usr.x];Y=[usr.y];Z=[usr.z]'>JMP</a>)")
 
 	if(!item) return //Grab processing has a chance of returning null
 
@@ -380,7 +379,7 @@
 	u_equip(item)
 	update_icons()
 
-	if(istype(usr, /mob/living/carbon)) //Check if a carbon mob is throwing. Modify/remove this line as required.
+	if (istype(usr, /mob/living/carbon)) //Check if a carbon mob is throwing. Modify/remove this line as required.
 		item.loc = src.loc
 		if(src.client)
 			src.client.screen -= item
@@ -388,7 +387,7 @@
 			item:dropped(src) // let it know it's been dropped
 
 	//actually throw it!
-	if(item)
+	if (item)
 		src.visible_message("\red [src] has thrown [item].")
 
 		if(!src.lastarea)
@@ -419,18 +418,18 @@
 	return 1
 
 /mob/living/carbon/restrained()
-	if(handcuffed)
+	if (handcuffed)
 		return 1
 	return
 
 /mob/living/carbon/u_equip(obj/item/W as obj)
 	if(!W)	return 0
 
-	else if(W == handcuffed)
+	else if (W == handcuffed)
 		handcuffed = null
 		update_inv_handcuffed()
 
-	else if(W == legcuffed)
+	else if (W == legcuffed)
 		legcuffed = null
 		update_inv_legcuffed()
 	else

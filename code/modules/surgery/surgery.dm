@@ -21,7 +21,7 @@
 	//returns how well tool is suited for this step
 	proc/tool_quality(obj/item/tool)
 		for (var/T in allowed_tools)
-			if(istype(tool,T))
+			if (istype(tool,T))
 				return allowed_tools[T]
 		return 0
 
@@ -35,7 +35,7 @@
 
 		if(disallowed_species)
 			for(var/species in disallowed_species)
-				if(target.dna.mutantrace == species)
+				if (target.dna.mutantrace == species)
 					return 0
 
 		return 1
@@ -47,13 +47,13 @@
 	// does stuff to begin the step, usually just printing messages. Moved germs transfering and bloodying here too
 	proc/begin_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/datum/organ/external/affected = target.get_organ(target_zone)
-		if(can_infect && affected)
+		if (can_infect && affected)
 			spread_germs_to_organ(affected, user)
-		if(ishuman(user) && prob(60))
+		if (ishuman(user) && prob(60))
 			var/mob/living/carbon/human/H = user
-			if(blood_level)
+			if (blood_level)
 				H.bloody_hands(target,0)
-			if(blood_level > 1)
+			if (blood_level > 1)
 				H.bloody_body(target,0)
 		return
 
@@ -77,7 +77,7 @@ proc/spread_germs_to_organ(datum/organ/external/E, mob/living/carbon/human/user)
 proc/do_surgery(mob/living/M, mob/living/user, obj/item/tool)
 	if(!istype(M,/mob/living/carbon))
 		return 0
-	if(user.a_intent == "harm")	//check for Hippocratic Oath
+	if (user.a_intent == "harm")	//check for Hippocratic Oath
 		return 0
 	for(var/datum/surgery_step/S in surgery_steps)
 		//check if tool is right or close enough and if this step is possible

@@ -20,7 +20,7 @@
 	update_icon()
 		overlays.Cut()
 
-		if(!is_open_container())
+		if (!is_open_container())
 			var/image/lid = image(icon, src, "lid_bottle")
 			overlays += lid
 

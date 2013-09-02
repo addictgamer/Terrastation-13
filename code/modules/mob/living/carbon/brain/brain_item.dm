@@ -37,7 +37,7 @@
 
 /obj/item/brain/examine() // -- TLE
 	set src in oview(12)
-	if(!( usr ))
+	if (!( usr ))
 		return
 	usr << "This is \icon[src] \an [name]."
 

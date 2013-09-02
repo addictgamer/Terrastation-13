@@ -7,20 +7,20 @@ proc/createRandomZlevel()
 	var/list/Lines = file2list("maps/RandomZLevels/fileList.txt")
 	if(!Lines.len)	return
 	for (var/t in Lines)
-		if(!t)
+		if (!t)
 			continue
 
 		t = trim(t)
-		if(length(t) == 0)
+		if (length(t) == 0)
 			continue
-		else if(copytext(t, 1, 2) == "#")
+		else if (copytext(t, 1, 2) == "#")
 			continue
 
 		var/pos = findtext(t, " ")
 		var/name = null
 	//	var/value = null
 
-		if(pos)
+		if (pos)
             // No, don't do lowertext here, that breaks paths on linux
 			name = copytext(t, 1, pos)
 		//	value = copytext(t, pos + 1)
@@ -28,7 +28,7 @@ proc/createRandomZlevel()
             // No, don't do lowertext here, that breaks paths on linux
 			name = t
 
-		if(!name)
+		if (!name)
 			continue
 
 		potentialRandomZlevels.Add(name)
@@ -43,7 +43,7 @@ proc/createRandomZlevel()
 			maploader.load_map(file, load_speed = 100)
 
 		for(var/obj/effect/landmark/L in landmarks_list)
-			if(L.name != "awaystart")
+			if (L.name != "awaystart")
 				continue
 			awaydestinations.Add(L)
 
