@@ -132,7 +132,7 @@ var/global/normal_ooc_colour = "#002eb8"
 		if(!M.client)
 			continue
 		var/client/C = M.client
-		if(C in admins)
+		if (C in admins)
 			continue //they are handled after that
 
 		if(C.prefs.toggles & CHAT_LOOC)
@@ -147,6 +147,6 @@ var/global/normal_ooc_colour = "#002eb8"
 	for(var/client/C in admins)
 		if(C.prefs.toggles & CHAT_LOOC)
 			var/prefix = "(R)LOOC"
-			if(C.mob in heard)
+			if (C.mob in heard)
 				prefix = "LOOC"
 			C << "<font color='#6699CC'><span class='ooc'><span class='prefix'>[prefix]:</span> <EM>[src.key]:</EM> <span class='message'>[msg]</span></span></font>"

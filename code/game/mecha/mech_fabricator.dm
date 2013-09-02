@@ -538,7 +538,7 @@
 
 /obj/machinery/mecha_part_fabricator/attack_hand(mob/user as mob)
 	var/dat, left_part
-	if(..())
+	if (..())
 		return
 	if(!operation_allowed(user))
 		return
@@ -700,7 +700,7 @@
 
 /obj/machinery/mecha_part_fabricator/attackby(obj/W as obj, mob/user as mob)
 	if(istype(W,/obj/item/weapon/screwdriver))
-		if(!opened)
+		if (!opened)
 			opened = 1
 			icon_state = "fab-o"
 			user << "You open the maintenance hatch of [src]."
@@ -709,7 +709,7 @@
 			icon_state = "fab-idle"
 			user << "You close the maintenance hatch of [src]."
 		return
-	if(opened)
+	if (opened)
 		if(istype(W, /obj/item/weapon/crowbar))
 			playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
 			var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(src.loc)

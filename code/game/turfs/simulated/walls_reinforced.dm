@@ -10,8 +10,8 @@
 	var/d_state = 0
 
 /turf/simulated/wall/r_wall/attack_hand(mob/user as mob)
-	if(HULK in user.mutations)
-		if(prob(10) || rotting)
+	if (HULK in user.mutations)
+		if (prob(10) || rotting)
 			usr << text("\blue You smash through the wall.")
 			usr.say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" ))
 			dismantle_wall(1)
@@ -32,7 +32,7 @@
 
 /turf/simulated/wall/r_wall/attackby(obj/item/W as obj, mob/user as mob)
 
-	if(!(istype(user, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+	if (!(istype(user, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
 		user << "<span class='warning'>You don't have the dexterity to do this!</span>"
 		return
 
@@ -86,7 +86,7 @@
 	//DECONSTRUCTION
 	switch(d_state)
 		if(0)
-			if(istype(W, /obj/item/weapon/wirecutters))
+			if (istype(W, /obj/item/weapon/wirecutters))
 				playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
 				src.d_state = 1
 				src.icon_state = "r_wall-1"
@@ -95,7 +95,7 @@
 				return
 
 		if(1)
-			if(istype(W, /obj/item/weapon/screwdriver))
+			if (istype(W, /obj/item/weapon/screwdriver))
 				user << "<span class='notice'>You begin removing the support lines.</span>"
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 
@@ -115,7 +115,7 @@
 				src.icon_state = "r_wall"
 				relativewall_neighbours()	//call smoothwall stuff
 				user << "<span class='notice'>You replace the outer grille.</span>"
-				if(O.amount > 1)
+				if (O.amount > 1)
 					O.amount--
 				else
 					del(O)
@@ -155,7 +155,7 @@
 				return
 
 		if(3)
-			if(istype(W, /obj/item/weapon/crowbar))
+			if (istype(W, /obj/item/weapon/crowbar))
 
 				user << "<span class='notice'>You struggle to pry off the cover.</span>"
 				playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
@@ -170,7 +170,7 @@
 				return
 
 		if(4)
-			if(istype(W, /obj/item/weapon/wrench))
+			if (istype(W, /obj/item/weapon/wrench))
 
 				user << "<span class='notice'>You start loosening the anchoring bolts which secure the support rods to their frame.</span>"
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
@@ -236,7 +236,7 @@
 //vv OK, we weren't performing a valid deconstruction step or igniting thermite,let's check the other possibilities vv
 
 	//DRILLING
-	if(istype(W, /obj/item/weapon/pickaxe/diamonddrill))
+	if (istype(W, /obj/item/weapon/pickaxe/diamonddrill))
 
 		user << "<span class='notice'>You begin to drill though the wall.</span>"
 
@@ -261,7 +261,7 @@
 			src.icon_state = "r_wall"
 			relativewall_neighbours()	//call smoothwall stuff
 			user << "<span class='notice'>You repair the last of the damage.</span>"
-			if(MS.amount > 1)
+			if (MS.amount > 1)
 				MS.amount--
 			else
 				del(MS)

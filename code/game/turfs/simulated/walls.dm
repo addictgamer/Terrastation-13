@@ -36,7 +36,7 @@
 		if(!devastated)
 			playsound(src.loc, 'sound/items/Welder.ogg', 100, 1)
 			new /obj/structure/girder(src)
-			if(mineral == "metal")
+			if (mineral == "metal")
 				new /obj/item/stack/sheet/metal( src )
 				new /obj/item/stack/sheet/metal( src )
 			else
@@ -44,7 +44,7 @@
 				new M( src )
 				new M( src )
 		else
-			if(mineral == "metal")
+			if (mineral == "metal")
 				new /obj/item/stack/sheet/metal( src )
 				new /obj/item/stack/sheet/metal( src )
 				new /obj/item/stack/sheet/metal( src )
@@ -71,17 +71,17 @@
 			src.ChangeTurf(/turf/space)
 			return
 		if(2.0)
-			if(prob(50))
+			if (prob(50))
 				dismantle_wall(0,1)
 			else
 				dismantle_wall(1,1)
 		if(3.0)
 			var/proba
-			if(istype(src, /turf/simulated/wall/r_wall))
+			if (istype(src, /turf/simulated/wall/r_wall))
 				proba = 15
 			else
 				proba = 40
-			if(prob(proba))
+			if (prob(proba))
 				dismantle_wall(0,1)
 		else
 	return
@@ -91,8 +91,8 @@
 		dismantle_wall()
 
 /turf/simulated/wall/attack_paw(mob/user as mob)
-	if((HULK in user.mutations))
-		if(prob(40))
+	if ((HULK in user.mutations))
+		if (prob(40))
 			usr << text("\blue You smash through the wall.")
 			usr.say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" ))
 			dismantle_wall(1)
@@ -106,11 +106,11 @@
 
 /turf/simulated/wall/attack_animal(mob/living/simple_animal/M as mob)
 	if(M.wall_smash)
-		if(istype(src, /turf/simulated/wall/r_wall) && !rotting)
+		if (istype(src, /turf/simulated/wall/r_wall) && !rotting)
 			M << text("\blue This wall is far too strong for you to destroy.")
 			return
 		else
-			if(prob(40) || rotting)
+			if (prob(40) || rotting)
 				M << text("\blue You smash through the wall.")
 				dismantle_wall(1)
 				return
@@ -122,8 +122,8 @@
 	return
 
 /turf/simulated/wall/attack_hand(mob/user as mob)
-	if(HULK in user.mutations)
-		if(prob(40) || rotting)
+	if (HULK in user.mutations)
+		if (prob(40) || rotting)
 			usr << text("\blue You smash through the wall.")
 			usr.say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" ))
 			dismantle_wall(1)
@@ -144,7 +144,7 @@
 
 /turf/simulated/wall/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
-	if(!(istype(user, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+	if (!(istype(user, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
 		user << "<span class='warning'>You don't have the dexterity to do this!</span>"
 		return
 
@@ -226,7 +226,7 @@
 		return
 
 	//DRILLING
-	else if(istype(W, /obj/item/weapon/pickaxe/diamonddrill))
+	else if (istype(W, /obj/item/weapon/pickaxe/diamonddrill))
 
 		user << "<span class='notice'>You begin to drill though the wall.</span>"
 
@@ -337,10 +337,12 @@
 	O.density = 1
 	O.layer = 5
 
-	var/turf/simulated/floor/F = ChangeTurf(/turf/simulated/floor/plating)
+	src.ChangeTurf(/turf/simulated/floor/plating)
+
+	var/turf/simulated/floor/F = src
 	F.burn_tile()
 	F.icon_state = "wall_thermite"
-	user << "<span class='warning'>The thermite melts through the wall.</span>"
+	user << "<span class='warning'>The thermite starts melting through the wall.</span>"
 
 	spawn(100)
 		if(O)	del(O)
@@ -348,7 +350,7 @@
 	return
 
 /turf/simulated/wall/meteorhit(obj/M as obj)
-	if(prob(15) && !rotting)
+	if (prob(15) && !rotting)
 		dismantle_wall()
 	else if(prob(70) && !rotting)
 		ChangeTurf(/turf/simulated/floor/plating)

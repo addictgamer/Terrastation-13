@@ -45,8 +45,8 @@ var/list/wood_icons = list("wood","wood-broken")
 		icon_regular_floor = icon_state
 
 //turf/simulated/floor/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-//	if((istype(mover, /obj/machinery/vehicle) && !(src.burnt)))
-//		if(!( locate(/obj/machinery/mass_driver, src) ))
+//	if ((istype(mover, /obj/machinery/vehicle) && !(src.burnt)))
+//		if (!( locate(/obj/machinery/mass_driver, src) ))
 //			return 0
 //	return ..()
 
@@ -57,7 +57,7 @@ var/list/wood_icons = list("wood","wood-broken")
 			src.ChangeTurf(/turf/space)
 		if(2.0)
 			switch(pick(1,2;75,3))
-				if(1)
+				if (1)
 					src.ReplaceWithLattice()
 					if(prob(33)) new /obj/item/stack/sheet/metal(src)
 				if(2)
@@ -70,7 +70,7 @@ var/list/wood_icons = list("wood","wood-broken")
 					src.hotspot_expose(1000,CELL_VOLUME)
 					if(prob(33)) new /obj/item/stack/sheet/metal(src)
 		if(3.0)
-			if(prob(50))
+			if (prob(50))
 				src.break_tile()
 				src.hotspot_expose(1000,CELL_VOLUME)
 	return
@@ -182,17 +182,17 @@ turf/simulated/floor/proc/update_icon()
 	return src.attack_hand(user)
 
 /turf/simulated/floor/attack_hand(mob/user as mob)
-	if(is_light_floor())
+	if (is_light_floor())
 		var/obj/item/stack/tile/light/T = floor_tile
 		T.on = !T.on
 		update_icon()
-	if((!( user.canmove ) || user.restrained() || !( user.pulling )))
+	if ((!( user.canmove ) || user.restrained() || !( user.pulling )))
 		return
-	if(user.pulling.anchored || !isturf(user.pulling.loc))
+	if (user.pulling.anchored || !isturf(user.pulling.loc))
 		return
-	if((user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1))
+	if ((user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1))
 		return
-	if(ismob(user.pulling))
+	if (ismob(user.pulling))
 		var/mob/M = user.pulling
 
 //		if(M==user)					//temporary hack to stop runtimes. ~Carn
@@ -338,7 +338,7 @@ turf/simulated/floor/proc/update_icon()
 	if(T)
 		if(istype(T,/obj/item/stack/tile/plasteel))
 			floor_tile = T
-			if(icon_regular_floor)
+			if (icon_regular_floor)
 				icon_state = icon_regular_floor
 			else
 				icon_state = "floor"
@@ -474,8 +474,8 @@ turf/simulated/floor/proc/update_icon()
 
 	if(istype(C, /obj/item/stack/rods))
 		var/obj/item/stack/rods/R = C
-		if(is_plating())
-			if(R.amount >= 2)
+		if (is_plating())
+			if (R.amount >= 2)
 				user << "\blue Reinforcing the floor..."
 				if(do_after(user, 30) && R && R.amount >= 2 && is_plating())
 					ChangeTurf(/turf/simulated/floor/engine)

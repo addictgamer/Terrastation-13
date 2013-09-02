@@ -21,7 +21,7 @@
 		return
 
 	var/tile = get_turf(this)
-	if(!tile)
+	if (!tile)
 		return
 
 	var/P = new /obj/effect/decal/point(tile)

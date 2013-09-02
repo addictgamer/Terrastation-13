@@ -61,7 +61,7 @@
 	if(movement_disabled && usr.ckey != movement_disabled_exception)
 		usr << "\red Movement is admin-disabled." //This is to identify lag problems
 		return
-	if(!mover || !isturf(mover.loc))
+	if (!mover || !isturf(mover.loc))
 		return 1
 
 
@@ -87,7 +87,7 @@
 				return 0
 
 	//Then, check the turf itself
-	if(!src.CanPass(mover, src))
+	if (!src.CanPass(mover, src))
 		mover.Bump(src, 1)
 		return 0
 
@@ -107,10 +107,10 @@
 	..()
 //vvvvv Infared beam stuff vvvvv
 
-	if((atom && atom.density && !( istype(atom, /obj/effect/beam) )))
+	if ((atom && atom.density && !( istype(atom, /obj/effect/beam) )))
 		for(var/obj/effect/beam/i_beam/I in src)
 			spawn( 0 )
-				if(I)
+				if (I)
 					I.hit()
 				break
 
@@ -143,7 +143,7 @@
 		if(objects > loopsanity)	break
 		objects++
 		spawn( 0 )
-			if((A && M))
+			if ((A && M))
 				A.HasEntered(M, 1)
 			return
 	objects = 0
@@ -151,7 +151,7 @@
 		if(objects > loopsanity)	break
 		objects++
 		spawn( 0 )
-			if((A && M))
+			if ((A && M))
 				A.HasProximity(M, 1)
 			return
 	return
@@ -208,7 +208,7 @@
 
 //Creates a new turf
 /turf/proc/ChangeTurf(var/turf/N)
-	if(!N)
+	if (!N)
 		return
 
 	var/old_lumcount = lighting_lumcount - initial(lighting_lumcount)
@@ -222,7 +222,7 @@
 			W.lighting_changed = 1
 			lighting_controller.changed_turfs += W
 
-		if(istype(W,/turf/simulated/floor))
+		if (istype(W,/turf/simulated/floor))
 			W.RemoveLattice()
 
 		//if the old turf had a zone, connect the new turf to it as well - Cael

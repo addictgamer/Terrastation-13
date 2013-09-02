@@ -18,7 +18,7 @@
 		usr << "\red Movement is admin-disabled." //This is to identify lag problems
 		return
 
-	if(istype(A,/mob/living/carbon))
+	if (istype(A,/mob/living/carbon))
 		var/mob/living/carbon/M = A
 		if(M.lying)	return
 		if(istype(M, /mob/living/carbon/human))
@@ -45,7 +45,7 @@
 					bloodDNA = H.feet_blood_DNA
 					H.track_blood--
 
-			if(bloodDNA)
+			if (bloodDNA)
 				var/obj/effect/decal/cleanable/blood/footprints/here = new(src)
 				here.icon_state = "blood1"
 				here.dir = H.dir
@@ -62,7 +62,7 @@
 		switch (src.wet)
 			if(1)
 				if(istype(M, /mob/living/carbon/human)) // Added check since monkeys don't have shoes
-					if((M.m_intent == "run") && !(istype(M:shoes, /obj/item/clothing/shoes) && M:shoes.flags&NOSLIP))
+					if ((M.m_intent == "run") && !(istype(M:shoes, /obj/item/clothing/shoes) && M:shoes.flags&NOSLIP))
 						M.stop_pulling()
 						step(M, M.dir)
 						M << "\blue You slipped on the wet floor!"
@@ -73,7 +73,7 @@
 						M.inertia_dir = 0
 						return
 				else if(!istype(M, /mob/living/carbon/slime))
-					if(M.m_intent == "run")
+					if (M.m_intent == "run")
 						M.stop_pulling()
 						step(M, M.dir)
 						M << "\blue You slipped on the wet floor!"
@@ -101,20 +101,20 @@
 
 //returns 1 if made bloody, returns 0 otherwise
 /turf/simulated/add_blood(mob/living/carbon/human/M as mob)
-	if(!..())
+	if (!..())
 		return 0
 
 	for(var/obj/effect/decal/cleanable/blood/B in contents)
 		if(!B.blood_DNA[M.dna.unique_enzymes])
 			B.blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
-		if(M.virus2.len)
+		if (M.virus2.len)
 			B.virus2 |= virus_copylist(M.virus2)
 		return 1 //we bloodied the floor
 
 	//if there isn't a blood decal already, make one.
 	var/obj/effect/decal/cleanable/blood/newblood = new /obj/effect/decal/cleanable/blood(src)
 	newblood.blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
-	if(M.virus2.len)
+	if (M.virus2.len)
 		newblood.virus2 |= virus_copylist(M.virus2)
 	return 1 //we bloodied the floor
 
@@ -124,7 +124,7 @@
 	if( istype(M, /mob/living/carbon/monkey) || istype(M, /mob/living/carbon/human))
 		var/obj/effect/decal/cleanable/blood/this = new /obj/effect/decal/cleanable/blood(src)
 		this.blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
-		if(M.virus2.len)
+		if (M.virus2.len)
 			this.virus2 = virus_copylist(M.virus2)
 
 	else if( istype(M, /mob/living/carbon/alien ))

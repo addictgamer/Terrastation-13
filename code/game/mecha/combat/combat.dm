@@ -39,7 +39,7 @@
 			*/
 			if(istype(target, /mob/living/carbon/human))
 				var/mob/living/carbon/human/H = target
-	//			if(M.health <= 0) return
+	//			if (M.health <= 0) return
 
 				var/datum/organ/external/temp = H.get_organ(pick("chest", "chest", "chest", "head"))
 				if(temp)
@@ -204,7 +204,7 @@
 							function addSubmitEvent(form, input) {
 							    input.onkeydown = function(e) {
 							        e = e || window.event;
-							        if(e.keyCode == 13) {
+							        if (e.keyCode == 13) {
 							            form.submit();
 							            return false;
 							        }

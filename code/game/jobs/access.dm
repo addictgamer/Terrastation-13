@@ -427,7 +427,7 @@
 //gets the actual job rank (ignoring alt titles)
 //this is used solely for sechuds
 /obj/proc/GetJobRealName()
-	if(!istype(src, /obj/item/device/pda) && !istype(src,/obj/item/weapon/card/id))
+	if (!istype(src, /obj/item/device/pda) && !istype(src,/obj/item/weapon/card/id))
 		return
 
 	var/rank
@@ -451,7 +451,7 @@
 //gets the alt title, failing that the actual job rank
 //this is unused
 /obj/proc/sdsdsd()	//GetJobDisplayName
-	if(!istype(src, /obj/item/device/pda) && !istype(src,/obj/item/weapon/card/id))
+	if (!istype(src, /obj/item/device/pda) && !istype(src,/obj/item/weapon/card/id))
 		return
 
 	var/assignment
@@ -499,7 +499,7 @@ proc/get_all_job_icons() //For all existing HUD icons
 	return get_all_jobs() + list("Prisoner")
 
 /obj/proc/GetJobName() //Used in secHUD icon generation
-	if(!istype(src, /obj/item/device/pda) && !istype(src,/obj/item/weapon/card/id))
+	if (!istype(src, /obj/item/device/pda) && !istype(src,/obj/item/weapon/card/id))
 		return
 
 	var/jobName

@@ -20,9 +20,9 @@
 		if(!action_checks(target)) return
 		var/turf/curloc = chassis.loc
 		var/atom/targloc = get_turf(target)
-		if(!targloc || !istype(targloc, /turf) || !curloc)
+		if (!targloc || !istype(targloc, /turf) || !curloc)
 			return
-		if(targloc == curloc)
+		if (targloc == curloc)
 			return
 		set_ready_state(0)
 		playsound(chassis, fire_sound, 50, 1)
@@ -177,7 +177,7 @@
 
 	Topic(href, href_list)
 		..()
-		if(href_list["rearm"])
+		if (href_list["rearm"])
 			src.rearm()
 		return
 
@@ -243,9 +243,9 @@
 			if(!chassis) break
 			var/turf/curloc = get_turf(chassis)
 			targloc = locate(target_x+GaussRandRound(deviation,1),target_y+GaussRandRound(deviation,1),target_z)
-			if(!targloc || !curloc)
+			if (!targloc || !curloc)
 				continue
-			if(targloc == curloc)
+			if (targloc == curloc)
 				continue
 
 			playsound(chassis, fire_sound, 50, 1)
