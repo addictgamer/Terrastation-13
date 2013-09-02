@@ -195,7 +195,7 @@ datum/radio_frequency
 				if(!start_point)
 					del(signal)
 					return 0
-			if(filter) //here goes some copypasta. It is for optimisation. -rastaf0
+			if (filter) //here goes some copypasta. It is for optimisation. -rastaf0
 				for(var/obj/device in devices[filter])
 					if(device == source)
 						continue
@@ -242,11 +242,11 @@ datum/radio_frequency
 //			del(signal)
 
 		add_listener(obj/device as obj, var/filter as text|null)
-			if(!filter)
+			if (!filter)
 				filter = "_default"
 			//log_admin("add_listener(device=[device],filter=[filter]) frequency=[frequency]")
 			var/list/obj/devices_line = devices[filter]
-			if(!devices_line)
+			if (!devices_line)
 				devices_line = new
 				devices[filter] = devices_line
 			devices_line+=device
@@ -261,7 +261,7 @@ datum/radio_frequency
 				devices_line-=device
 				while (null in devices_line)
 					devices_line -= null
-				if(devices_line.len==0)
+				if (devices_line.len==0)
 					devices -= devices_filter
 					del(devices_line)
 
@@ -291,7 +291,7 @@ datum/signal
 		frequency = model.frequency
 
 	proc/debug_print()
-		if(source)
+		if (source)
 			. = "signal = {source = '[source]' ([source:x],[source:y],[source:z])\n"
 		else
 			. = "signal = {source = '[source]' ()\n"

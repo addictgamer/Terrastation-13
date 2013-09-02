@@ -18,7 +18,7 @@
 	src.move_speed = world.timeofday - src.l_move_time
 	src.l_move_time = world.timeofday
 	src.m_flag = 1
-	if((A != src.loc && A && A.z == src.z))
+	if ((A != src.loc && A && A.z == src.z))
 		src.last_move = get_dir(A, src.loc)
 	return
 
@@ -28,7 +28,7 @@
 		src.throwing = 0
 
 	spawn( 0 )
-		if((A && yes))
+		if ((A && yes))
 			A.last_bumped = world.time
 			A.Bumped(src)
 		return
@@ -72,13 +72,13 @@
 	var/dist_y = abs(target.y - src.y)
 
 	var/dx
-	if(target.x > src.x)
+	if (target.x > src.x)
 		dx = EAST
 	else
 		dx = WEST
 
 	var/dy
-	if(target.y > src.y)
+	if (target.y > src.y)
 		dy = NORTH
 	else
 		dy = SOUTH
@@ -164,16 +164,16 @@
 	return
 
 /atom/movable/overlay/attackby(a, b)
-	if(src.master)
+	if (src.master)
 		return src.master.attackby(a, b)
 	return
 
 /atom/movable/overlay/attack_paw(a, b, c)
-	if(src.master)
+	if (src.master)
 		return src.master.attack_paw(a, b, c)
 	return
 
 /atom/movable/overlay/attack_hand(a, b, c)
-	if(src.master)
+	if (src.master)
 		return src.master.attack_hand(a, b, c)
 	return

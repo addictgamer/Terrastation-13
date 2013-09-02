@@ -56,7 +56,7 @@ client/verb/JoinResponseTeam()
 		if(response_team_members.len > 5) usr << "The emergency response team is already full!"
 
 
-		for (var/obj/effect/landmark/L in landmarks_list) if(L.name == "Commando")
+		for (var/obj/effect/landmark/L in landmarks_list) if (L.name == "Commando")
 			L.name = null//Reserving the place.
 			var/new_name = input(usr, "Pick a name","Name") as null|text
 			if(!new_name)//Somebody changed his mind, place is available again.
@@ -153,7 +153,7 @@ proc/trigger_armed_response_team(var/force = 0)
 	P.info = "Your orders, Commander, are to use all means necessary to return the station to a survivable condition.<br>To this end, you have been provided with the best tools we can give in the three areas of Medicine, Engineering, and Security. The nuclear authorization code is: <b>[ nuke ? nuke.r_code : "AHH, THE NUKE IS GONE!"]</b>. Be warned, if you detonate this without good reason, we will hold you to account for damages. Memorise this code, and then burn this message."
 	P.name = "Emergency Nuclear Code, and ERT Orders"
 	for (var/obj/effect/landmark/A in world)
-		if(A.name == "nukecode")
+		if (A.name == "nukecode")
 			P.loc = A.loc
 			del(A)
 			continue
@@ -189,7 +189,7 @@ proc/trigger_armed_response_team(var/force = 0)
 
 	var/new_tone = input("Please select skin tone level: 1-220 (1=albino, 35=caucasian, 150=black, 220='very' black)", "Character Generation")  as text
 
-	if(!new_tone)
+	if (!new_tone)
 		new_tone = 35
 	M.s_tone = max(min(round(text2num(new_tone)), 220), 1)
 	M.s_tone =  -M.s_tone + 35
@@ -216,7 +216,7 @@ proc/trigger_armed_response_team(var/force = 0)
 		M.f_style = new_fstyle
 
 	// if new style selected (not cancel)
-/*	if(new_style)
+/*	if (new_style)
 		M.h_style = new_style
 
 		for(var/x in all_hairs) // loop through all_hairs again. Might be slightly CPU expensive, but not significantly.
@@ -249,7 +249,7 @@ proc/trigger_armed_response_team(var/force = 0)
 				del(H)
 */
 	var/new_gender = alert(usr, "Please select gender.", "Character Generation", "Male", "Female")
-	if(new_gender)
+	if (new_gender)
 		if(new_gender == "Male")
 			M.gender = MALE
 		else

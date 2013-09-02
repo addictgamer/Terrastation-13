@@ -38,9 +38,9 @@
 	if(istype(src,/turf/simulated/wall))
 		var/turf/simulated/wall/wall = src
 		wall.icon_state = "[wall.walltype][junction]"
-	else if(istype(src,/obj/structure/falserwall))
+	else if (istype(src,/obj/structure/falserwall))
 		src.icon_state = "rwall[junction]"
-	else if(istype(src,/obj/structure/falsewall))
+	else if (istype(src,/obj/structure/falsewall))
 		var/obj/structure/falsewall/fwall = src
 		fwall.icon_state = "[fwall.mineral][junction]"
 /*	else if(istype(src,/turf/simulated/shuttle/wall))

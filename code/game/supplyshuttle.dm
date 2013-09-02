@@ -51,7 +51,7 @@ var/list/mechtoys = list(
 		return prob(60)
 
 	var/obj/structure/stool/bed/B = A
-	if(istype(A, /obj/structure/stool/bed) && B.buckled_mob)//if it's a bed/chair and someone is buckled, it will not pass
+	if (istype(A, /obj/structure/stool/bed) && B.buckled_mob)//if it's a bed/chair and someone is buckled, it will not pass
 		return 0
 
 	else if(istype(A, /mob/living)) // You Shall Not Pass!
@@ -62,13 +62,13 @@ var/list/mechtoys = list(
 
 /obj/structure/plasticflaps/ex_act(severity)
 	switch(severity)
-		if(1)
+		if (1)
 			del(src)
-		if(2)
-			if(prob(50))
+		if (2)
+			if (prob(50))
 				del(src)
-		if(3)
-			if(prob(5))
+		if (3)
+			if (prob(5))
 				del(src)
 
 /obj/structure/plasticflaps/mining //A specific type for mining that doesn't allow airflow because of them damn crates
@@ -325,7 +325,7 @@ var/list/mechtoys = list(
 			//manifest finalisation
 			slip.info += "</ul><br>"
 			slip.info += "CHECK CONTENTS AND STAMP BELOW THE LINE TO CONFIRM RECEIPT OF GOODS<hr>"
-			if(SP.contraband) slip.loc = null	//we are out of blanks for Form #44-D Ordering Illicit Drugs.
+			if (SP.contraband) slip.loc = null	//we are out of blanks for Form #44-D Ordering Illicit Drugs.
 
 		supply_shuttle.shoppinglist.Cut()
 		return
@@ -393,7 +393,7 @@ var/list/mechtoys = list(
 				if(N.hidden || N.contraband || N.group != last_viewed_group) continue								//Have to send the type instead of a reference to
 				temp += "<A href='?src=\ref[src];doorder=[supply_name]'>[supply_name]</A> Cost: [N.cost]<BR>"		//the obj because it would get caught by the garbage
 
-	else if(href_list["doorder"])
+	else if (href_list["doorder"])
 		if(world.time < reqtime)
 			for(var/mob/V in hearers(src))
 				V.show_message("<b>[src]</b>'s monitor flashes, \"[world.time - reqtime] seconds remaining until another requisition form may be printed.\"")
@@ -445,21 +445,21 @@ var/list/mechtoys = list(
 		temp = "Thanks for your request. The cargo team will process it as soon as possible.<BR>"
 		temp += "<BR><A href='?src=\ref[src];order=[last_viewed_group]'>Back</A> <A href='?src=\ref[src];mainmenu=1'>Main Menu</A>"
 
-	else if(href_list["vieworders"])
+	else if (href_list["vieworders"])
 		temp = "Current approved orders: <BR><BR>"
 		for(var/S in supply_shuttle.shoppinglist)
 			var/datum/supply_order/SO = S
 			temp += "[SO.object.name] approved by [SO.orderedby] [SO.comment ? "([SO.comment])":""]<BR>"
 		temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 
-	else if(href_list["viewrequests"])
+	else if (href_list["viewrequests"])
 		temp = "Current requests: <BR><BR>"
 		for(var/S in supply_shuttle.requestlist)
 			var/datum/supply_order/SO = S
 			temp += "#[SO.ordernum] - [SO.object.name] requested by [SO.orderedby]<BR>"
 		temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 
-	else if(href_list["mainmenu"])
+	else if (href_list["mainmenu"])
 		temp = null
 
 	add_fingerprint(usr)
@@ -476,7 +476,7 @@ var/list/mechtoys = list(
 	user.set_machine(src)
 	post_signal("supply")
 	var/dat
-	if(temp)
+	if (temp)
 		dat = temp
 	else
 		dat += {"<BR><B>Supply shuttle</B><HR>
@@ -500,7 +500,7 @@ var/list/mechtoys = list(
 	if(istype(I, /obj/item/weapon/screwdriver))
 		playsound(loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20))
-			if(stat & BROKEN)
+			if (stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				var/obj/structure/computerframe/A = new /obj/structure/computerframe( loc )
 				new /obj/item/weapon/shard( loc )
@@ -556,7 +556,7 @@ var/list/mechtoys = list(
 			temp = "The supply shuttle has been called and will arrive in [round(supply_shuttle.movetime/600,1)] minutes.<BR><BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 			post_signal("supply")
 
-	else if(href_list["order"])
+	else if (href_list["order"])
 		if(supply_shuttle.moving) return
 		if(href_list["order"] == "categories")
 			//all_supply_groups
@@ -586,7 +586,7 @@ var/list/mechtoys = list(
 			temp += "<A href='?src=\ref[src];doorder=[supply_name]'>[supply_name]</A> Cost: [N.cost]<BR>"    //the obj because it would get caught by the garbage
 		temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"*/
 
-	else if(href_list["doorder"])
+	else if (href_list["doorder"])
 		if(world.time < reqtime)
 			for(var/mob/V in hearers(src))
 				V.show_message("<b>[src]</b>'s monitor flashes, \"[world.time - reqtime] seconds remaining until another requisition form may be printed.\"")
@@ -660,14 +660,14 @@ var/list/mechtoys = list(
 					temp += "<BR><A href='?src=\ref[src];viewrequests=1'>Back</A> <A href='?src=\ref[src];mainmenu=1'>Main Menu</A>"
 				break
 
-	else if(href_list["vieworders"])
+	else if (href_list["vieworders"])
 		temp = "Current approved orders: <BR><BR>"
 		for(var/S in supply_shuttle.shoppinglist)
 			var/datum/supply_order/SO = S
 			temp += "#[SO.ordernum] - [SO.object.name] approved by [SO.orderedby][SO.comment ? " ([SO.comment])":""]<BR>"// <A href='?src=\ref[src];cancelorder=[S]'>(Cancel)</A><BR>"
 		temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 /*
-	else if(href_list["cancelorder"])
+	else if (href_list["cancelorder"])
 		var/datum/supply_order/remove_supply = href_list["cancelorder"]
 		supply_shuttle_shoppinglist -= remove_supply
 		supply_shuttle_points += remove_supply.object.cost
@@ -678,7 +678,7 @@ var/list/mechtoys = list(
 			temp += "[SO.object.name] approved by [SO.orderedby][SO.comment ? " ([SO.comment])":""] <A href='?src=\ref[src];cancelorder=[S]'>(Cancel)</A><BR>"
 		temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 */
-	else if(href_list["viewrequests"])
+	else if (href_list["viewrequests"])
 		temp = "Current requests: <BR><BR>"
 		for(var/S in supply_shuttle.requestlist)
 			var/datum/supply_order/SO = S
@@ -687,7 +687,7 @@ var/list/mechtoys = list(
 		temp += "<BR><A href='?src=\ref[src];clearreq=1'>Clear list</A>"
 		temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 
-	else if(href_list["rreq"])
+	else if (href_list["rreq"])
 		var/ordernum = text2num(href_list["rreq"])
 		temp = "Invalid Request.<BR>"
 		for(var/i=1, i<=supply_shuttle.requestlist.len, i++)
@@ -698,12 +698,12 @@ var/list/mechtoys = list(
 				break
 		temp += "<BR><A href='?src=\ref[src];viewrequests=1'>Back</A> <A href='?src=\ref[src];mainmenu=1'>Main Menu</A>"
 
-	else if(href_list["clearreq"])
+	else if (href_list["clearreq"])
 		supply_shuttle.requestlist.Cut()
 		temp = "List cleared.<BR>"
 		temp += "<BR><A href='?src=\ref[src];mainmenu=1'>OK</A>"
 
-	else if(href_list["mainmenu"])
+	else if (href_list["mainmenu"])
 		temp = null
 
 	add_fingerprint(usr)
