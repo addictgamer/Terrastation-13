@@ -38,9 +38,9 @@
 /obj/item/weapon/soap/afterattack(atom/target, mob/user as mob)
 	//I couldn't feasibly  fix the overlay bugs caused by cleaning items we are wearing.
 	//So this is a workaround. This also makes more sense from an IC standpoint. ~Carn
-	if (user.client && (target in user.client.screen))
+	if(user.client && (target in user.client.screen))
 		user << "<span class='notice'>You need to take that [target.name] off before cleaning it.</span>"
-	else if (istype(target,/obj/effect/decal/cleanable))
+	else if(istype(target,/obj/effect/decal/cleanable))
 		user << "<span class='notice'>You scrub \the [target.name] out.</span>"
 		del(target)
 	else
@@ -49,7 +49,7 @@
 	return
 
 /obj/item/weapon/soap/attack(mob/target as mob, mob/user as mob)
-	if (target && user && ishuman(target) && ishuman(user) && !target.stat && !user.stat && user.zone_sel &&user.zone_sel.selecting == "mouth" )
+	if(target && user && ishuman(target) && ishuman(user) && !target.stat && !user.stat && user.zone_sel &&user.zone_sel.selecting == "mouth" )
 		user.visible_message("\red \the [user] washes \the [target]'s mouth out with soap!")
 		return
 	..()

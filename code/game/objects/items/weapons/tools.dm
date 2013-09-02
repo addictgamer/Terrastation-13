@@ -82,10 +82,10 @@
 	return
 
 /obj/item/weapon/screwdriver/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if (!istype(M))	return ..()
-	if (user.zone_sel.selecting != "eyes" && user.zone_sel.selecting != "head")
+	if(!istype(M))	return ..()
+	if(user.zone_sel.selecting != "eyes" && user.zone_sel.selecting != "head")
 		return ..()
-	if ((CLUMSY in user.mutations) && prob(50))
+	if((CLUMSY in user.mutations) && prob(50))
 		M = user
 	return eyestab(M,user)
 
@@ -108,12 +108,12 @@
 	attack_verb = list("pinched", "nipped")
 
 /obj/item/weapon/wirecutters/New()
-	if (prob(50))
+	if(prob(50))
 		icon_state = "cutters-y"
 		item_state = "cutters_yellow"
 
 /obj/item/weapon/wirecutters/attack(mob/living/carbon/C as mob, mob/user as mob)
-	if ((C.handcuffed) && (istype(C.handcuffed, /obj/item/weapon/handcuffs/cable)))
+	if((C.handcuffed) && (istype(C.handcuffed, /obj/item/weapon/handcuffs/cable)))
 		usr.visible_message("\The [usr] cuts \the [C]'s restraints with \the [src]!",\
 		"You cut \the [C]'s restraints with \the [src]!",\
 		"You hear cable being cut.")
@@ -168,19 +168,19 @@
 
 
 /obj/item/weapon/weldingtool/attackby(obj/item/W as obj, mob/user as mob)
-	if (istype(W,/obj/item/weapon/screwdriver))
-		if (welding)
+	if(istype(W,/obj/item/weapon/screwdriver))
+		if(welding)
 			user << "\red Stop welding first!"
 			return
 		status = !status
-		if (status)
+		if(status)
 			user << "\blue You resecure the welder."
 		else
 			user << "\blue The welder can now be attached and modified."
 		src.add_fingerprint(user)
 		return
 
-	if ((!status) && (istype(W,/obj/item/stack/rods)))
+	if((!status) && (istype(W,/obj/item/stack/rods)))
 		var/obj/item/stack/rods/R = W
 		R.use(1)
 		var/obj/item/weapon/flamethrower/F = new/obj/item/weapon/flamethrower(user.loc)
@@ -208,8 +208,8 @@
 /obj/item/weapon/weldingtool/process()
 	switch(welding)
 		//If off
-		if (0)
-			if (src.icon_state != "welder") //Check that the sprite is correct, if it isnt, it means toggle() was not called
+		if(0)
+			if(src.icon_state != "welder") //Check that the sprite is correct, if it isnt, it means toggle() was not called
 				src.force = 3
 				src.damtype = "brute"
 				src.icon_state = "welder"
@@ -217,27 +217,27 @@
 			processing_objects.Remove(src)
 			return
 		//Welders left on now use up fuel, but lets not have them run out quite that fast
-		if (1)
-			if (src.icon_state != "welder1") //Check that the sprite is correct, if it isnt, it means toggle() was not called
+		if(1)
+			if(src.icon_state != "welder1") //Check that the sprite is correct, if it isnt, it means toggle() was not called
 				src.force = 15
 				src.damtype = "fire"
 				src.icon_state = "welder1"
-			if (prob(5))
+			if(prob(5))
 				remove_fuel(1)
 
 		//If you're actually actively welding, use fuel faster.
 		//Is this actually used or set anywhere? - Nodrak
-		if (2)
-			if (prob(75))
+		if(2)
+			if(prob(75))
 				remove_fuel(1)
 
 
 	//I'm not sure what this does. I assume it has to do with starting fires...
 	//...but it doesnt check to see if the welder is on or not.
 	var/turf/location = src.loc
-	if (istype(location, /mob/))
+	if(istype(location, /mob/))
 		var/mob/M = location
-		if (M.l_hand == src || M.r_hand == src)
+		if(M.l_hand == src || M.r_hand == src)
 			location = get_turf(M)
 	if (istype(location, /turf))
 		location.hotspot_expose(700, 5)
@@ -275,16 +275,16 @@
 
 //Removes fuel from the welding tool. If a mob is passed, it will perform an eyecheck on the mob. This should probably be renamed to use()
 /obj/item/weapon/weldingtool/proc/remove_fuel(var/amount = 1, var/mob/M = null)
-	if (!welding || !check_fuel())
+	if(!welding || !check_fuel())
 		return 0
-	if (get_fuel() >= amount)
+	if(get_fuel() >= amount)
 		reagents.remove_reagent("fuel", amount)
 		check_fuel()
-		if (M)
+		if(M)
 			eyecheck(M)
 		return 1
 	else
-		if (M)
+		if(M)
 			M << "\blue You need more welding fuel to complete this task."
 		return 0
 
@@ -296,7 +296,7 @@
 //so that the welding tool updates accordingly
 /obj/item/weapon/weldingtool/proc/setWelding(var/temp_welding)
 	//If we're turning it on
-	if (temp_welding > 0)
+	if(temp_welding > 0)
 		if (remove_fuel(1))
 			usr << "\blue The [src] switches on."
 			src.force = 15
@@ -317,7 +317,7 @@
 
 //Turns off the welder if there is no more fuel (does this really need to be its own proc?)
 /obj/item/weapon/weldingtool/proc/check_fuel()
-	if ((get_fuel() <= 0) && welding)
+	if((get_fuel() <= 0) && welding)
 		toggle(1)
 		return 0
 	return 1
@@ -325,7 +325,7 @@
 
 //Toggles the welder off and on
 /obj/item/weapon/weldingtool/proc/toggle(var/message = 0)
-	if (!status)	return
+	if(!status)	return
 	src.welding = !( src.welding )
 	if (src.welding)
 		if (remove_fuel(1))
@@ -339,7 +339,7 @@
 			src.welding = 0
 			return
 	else
-		if (!message)
+		if(!message)
 			usr << "\blue You switch the [src] off."
 		else
 			usr << "\blue The [src] shuts off!"
@@ -351,24 +351,24 @@
 //Decides whether or not to damage a player's eyes based on what they're wearing as protection
 //Note: This should probably be moved to mob
 /obj/item/weapon/weldingtool/proc/eyecheck(mob/user as mob)
-	if (!iscarbon(user))	return 1
+	if(!iscarbon(user))	return 1
 	var/safety = user:eyecheck()
 	switch(safety)
-		if (1)
+		if(1)
 			usr << "\red Your eyes sting a little."
 			user.eye_stat += rand(1, 2)
-			if (user.eye_stat > 12)
+			if(user.eye_stat > 12)
 				user.eye_blurry += rand(3,6)
-		if (0)
+		if(0)
 			usr << "\red Your eyes burn."
 			user.eye_stat += rand(2, 4)
-			if (user.eye_stat > 10)
+			if(user.eye_stat > 10)
 				user.eye_blurry += rand(4,10)
-		if (-1)
+		if(-1)
 			usr << "\red Your thermals intensify the welder's glow. Your eyes itch and burn severely."
 			user.eye_blurry += rand(12,20)
 			user.eye_stat += rand(12, 16)
-	if (user.eye_stat > 10 && safety < 2)
+	if(user.eye_stat > 10 && safety < 2)
 		user << "\red Your eyes are really starting to hurt. This can't be good for you!"
 	if (prob(user.eye_stat - 25 + 1))
 		user << "\red You go blind!"
@@ -413,7 +413,7 @@
 /obj/item/weapon/weldingtool/experimental/proc/fuel_gen()//Proc to make the experimental welder generate fuel, optimized as fuck -Sieve
 	var/gen_amount = ((world.time-last_gen)/25)
 	reagents += (gen_amount)
-	if (reagents > max_fuel)
+	if(reagents > max_fuel)
 		reagents = max_fuel
 
 /*
@@ -441,14 +441,14 @@
 	item_state = "crowbar_red"
 
 /obj/item/weapon/weldingtool/attack(mob/M as mob, mob/user as mob)
-	if (hasorgans(M))
+	if(hasorgans(M))
 		var/datum/organ/external/S = M:organs_by_name[user.zone_sel.selecting]
 		if (!S) return
-		if (!(S.status & ORGAN_ROBOT) || user.a_intent != "help")
+		if(!(S.status & ORGAN_ROBOT) || user.a_intent != "help")
 			return ..()
-		if (S.brute_dam)
+		if(S.brute_dam)
 			S.heal_damage(15,0,0,1)
-			if (user != M)
+			if(user != M)
 				user.visible_message("\red \The [user] patches some dents on \the [M]'s [S.display_name] with \the [src]",\
 				"\red You patch some dents on \the [M]'s [S.display_name]",\
 				"You hear a welder.")

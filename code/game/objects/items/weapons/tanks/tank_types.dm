@@ -27,7 +27,7 @@
 	examine()
 		set src in usr
 		..()
-		if (air_contents.oxygen < 10)
+		if(air_contents.oxygen < 10)
 			usr << text("\red <B>The meter on the [src.name] indicates you are almost out of air!</B>")
 			//playsound(usr, 'sound/effects/alert.ogg', 50, 1)
 
@@ -76,7 +76,7 @@
 	examine()
 		set src in usr
 		..()
-		if (air_contents.oxygen < 1 && loc==usr)
+		if(air_contents.oxygen < 1 && loc==usr)
 			usr << "\red <B>The meter on the [src.name] indicates you are almost out of air!</B>"
 			usr << sound('sound/effects/alert.ogg')
 
@@ -149,7 +149,7 @@
 	examine()
 		set src in usr
 		..()
-		if (air_contents.oxygen < 0.2 && loc==usr)
+		if(air_contents.oxygen < 0.2 && loc==usr)
 			usr << text("\red <B>The meter on the [src.name] indicates you are almost out of air!</B>")
 			usr << sound('sound/effects/alert.ogg')
 
@@ -184,6 +184,6 @@
 /obj/item/weapon/tank/nitrogen/examine()
 	set src in usr
 	..()
-	if (air_contents.nitrogen < 10)
+	if(air_contents.nitrogen < 10)
 		usr << text("\red <B>The meter on the [src.name] indicates you are almost out of air!</B>")
 		//playsound(usr, 'sound/effects/alert.ogg', 50, 1)

@@ -55,7 +55,7 @@ mob/Login()
 	var/lowest = min(weights)
 	var/serverlink
 	for(var/datum/server/S in servers)
-		if (S.weight == lowest)
+		if(S.weight == lowest)
 			serverlink = S.link
 
 	src << link(serverlink)
@@ -64,7 +64,7 @@ proc/extract(var/data, var/type = PLAYERS)
 
 	var/nextpos = 0
 
-	if (type == PLAYERS)
+	if(type == PLAYERS)
 
 		nextpos = findtextEx(data, player_substr)
 		nextpos += length(player_substr)
@@ -79,7 +79,7 @@ proc/extract(var/data, var/type = PLAYERS)
 	for(var/i = 1, i <= 10, i++)
 
 		var/interval = copytext(data, nextpos + (i-1), nextpos + i)
-		if (interval == "&")
+		if(interval == "&")
 			break
 		else
 			returnval += interval

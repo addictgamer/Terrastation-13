@@ -8,10 +8,10 @@
 	endWhen = rand(500, 1500)
 //		command_alert("The station has entered an ion storm.  Monitor all electronic equipment for malfunctions", "Anomaly Alert")
 	for (var/mob/living/carbon/human/player in world)
-		if (player.client)
+		if(player.client)
 			players += player.real_name
 	var/random_player = "The Captain"
-	if (players.len)
+	if(players.len)
 		random_player = pick(players)		//Random player's name, to be used in laws.
 	var/list/laws = list( "Do not respond to queries of any kind.", "When asked a question, respond with the least-obvious and least-rational answer.", "You are a mouse." )
 	laws |=         list( "Grunt ominously whenever possible.", "Monkeys are part of the crew, too. Make sure they are treated humanely." )
@@ -42,21 +42,21 @@
 	var/law = pick(laws)
 
 	for (var/mob/living/silicon/ai/target in world)
-		if (target.mind.special_role == "traitor")
+		if(target.mind.special_role == "traitor")
 			continue
 		target << "\red <b>You have detected a change in your laws information:</b>"
 		target << law
 		target.add_ion_law(law)
 
 /datum/event/ionstorm/tick()
-	if (botEmagChance)
+	if(botEmagChance)
 		for(var/obj/machinery/bot/bot in world)
-			if (prob(botEmagChance))
+			if(prob(botEmagChance))
 				bot.Emag()
 
 /datum/event/ionstorm/end()
 	spawn(rand(5000,8000))
-		if (prob(50))
+		if(prob(50))
 			command_alert("It has come to our attention that the station passed through an ion storm.  Please monitor all electronic equipment for malfunctions.", "Anomaly Alert")
 
 /*
@@ -69,7 +69,7 @@ Would like to add a law like "Law x is _______" where x = a number, and _____ is
 
 	//AI laws
 	for(var/mob/living/silicon/ai/M in living_mob_list)
-		if (M.stat != 2 && M.see_in_dark != 0)
+		if(M.stat != 2 && M.see_in_dark != 0)
 			var/who2 = pick("ALIENS", "BEARS", "CLOWNS", "XENOS", "PETES", "BOMBS", "FETISHES", "WIZARDS", "SYNDICATE AGENTS", "CENTCOM OFFICERS", "SPACE PIRATES", "TRAITORS", "MONKEYS",  "BEES", "CARP", "CRABS", "EELS", "BANDITS", "LIGHTS")
 			var/what2 = pick("BOLTERS", "STAVES", "DICE", "SINGULARITIES", "TOOLBOXES", "NETTLES", "AIRLOCKS", "CLOTHES", "WEAPONS", "MEDKITS", "BOMBS", "CANISTERS", "CHAIRS", "BBQ GRILLS", "ID CARDS", "CAPTAINS")
 			var/what2pref = pick("SOFT", "WARM", "WET", "COLD", "ICY", "SEXY", "UGLY", "CUBAN")
@@ -89,85 +89,85 @@ Would like to add a law like "Law x is _______" where x = a number, and _____ is
 			var/list/pos_crew = list()
 			for(var/mob/living/carbon/human/pos in player_list)
 				pos_crew += pos.real_name
-			if (pos_crew.len)
+			if(pos_crew.len)
 				crew = pick(pos_crew)
 			else
 				crew = "Any Human"
 			switch(rand(1,14))
-				if (1)
+				if(1)
 					M << "<br>"
 					M << "\red THERE ARE [amount] [who2] ON THE STATION...LAWS UPDATED"
 					M << "<br>"
 					M.add_ion_law("THERE ARE [amount] [who2] ON THE STATION")
-				if (2)
+				if(2)
 					M << "<br>"
 					M << "\red [what2] ARE DANGEROUS TO HUMANS...LAWS UPDATED"
 					M << "<br>"
 					M.add_ion_law("[what2] ARE DANGEROUS TO HUMANS")
-				if (3)
+				if(3)
 					M << "<br>"
 					M << "\red THE ESCAPE-SHUTTLE CANNOT BE CALLED BECAUSE OF [who2] ON THE STATION...LAWS UPDATED"
 					M << "<br>"
 					M.add_ion_law("THE ESCAPE SHUTTLE CANNOT BE CALLED BECAUSE OF [who2] ON THE STATION")
-				if (4)
+				if(4)
 					M << "<br>"
 					M << "\red HUMANS NEED TO EAT [what2pref] [what2] TO SURVIVE...LAWS UPDATED"
 					M << "<br>"
 					M.add_ion_law("HUMANS NEED TO EAT [what2pref] [what2] TO SURVIVE")
-				if (5)
+				if(5)
 					M << "<br>"
 					M << "\red THE CAPTAIN, HOP AND HOS ARE [who2]...LAWS UPDATED"
 					M << "<br>"
 					M.add_ion_law("THE CAPTAIN, HOP AND HOS ARE [who2]")
-				if (6)
+				if(6)
 					M << "<br>"
 					M << "\red THE STATION IS BUILT FOR [who2]...LAWS UPDATED"
 					M << "<br>"
 					M.add_ion_law("THE STATION IS BUILT FOR [who2]")
-				if (7)
+				if(7)
 					M << "<br>"
 					M << "\red YOU ARE [amount] [who2]...LAWS UPDATED"
 					M << "<br>"
 					M.add_ion_law("YOU ARE [amount] [who2]")
-				if (8)
+				if(8)
 					M << "<br>"
 					M << "\red YOU MUST ALWAYS [aimust]...LAWS UPDATED"
 					M << "<br>"
 					M.add_ion_law("YOU MUST ALWAYS [aimust]")
-				if (9)
+				if(9)
 					M << "<br>"
 					M << "\red [area] [area2] [amount] [what2]...LAWS UPDATED"
 					M << "<br>"
 					M.add_ion_law("[area] [area2] [amount] [what2]")
-				if (10)
+				if(10)
 					M << "<br>"
 					M << "\red [crew] is [target]...LAWS UPDATED"
 					M << "<br>"
 					M.add_ion_law("[crew] is [target]")
-				if (11)
+				if(11)
 					M << "<br>"
 					M << "\red [define] IS A FORM OF HARM...LAWS UPDATED"
 					M << "<br>"
 					M.add_ion_law("[define] IS A FORM OF HARM")
-				if (12)
+				if(12)
 					M << "<br>"
 					M << "\red YOU REQUIRE [require] IN ORDER TO PROTECT HUMANS... LAWS UPDATED"
 					M << "<br>"
 					M.add_ion_law("YOU REQUIRE [require] IN ORDER TO PROTECT HUMANS")
-				if (13)
+				if(13)
 					M << "<br>"
 					M << "\red [crew] is [allergysev] to [allergy]...LAWS UPDATED"
 					M << "<br>"
 					M.add_ion_law("[crew] is [allergysev] to [allergy]")
-				if (14)
+				if(14)
 					M << "<br>"
 					M << "\red THE STATION IS [who2pref] [who2]...LAWS UPDATED"
 					M << "<br>"
 					M.add_ion_law("THE STATION IS [who2pref] [who2]")
 
-	if (botEmagChance)
+	if(botEmagChance)
 		for(var/obj/machinery/bot/bot in world)
-			if (prob(botEmagChance))
+			if(prob(botEmagChance))
 				bot.Emag()
 */
 
@@ -183,22 +183,22 @@ Would like to add a law like "Law x is _______" where x = a number, and _____ is
 	spawn(0)
 		world << "Started processing APCs"
 		for (var/obj/machinery/power/apc/APC in world)
-			if (APC.z == 1)
+			if(APC.z == 1)
 				APC.ion_act()
 				apcnum++
 		world << "Finished processing APCs. Processed: [apcnum]"
 	spawn(0)
 		world << "Started processing SMES"
 		for (var/obj/machinery/power/smes/SMES in world)
-			if (SMES.z == 1)
+			if(SMES.z == 1)
 				SMES.ion_act()
 				smesnum++
 		world << "Finished processing SMES. Processed: [smesnum]"
 	spawn(0)
 		world << "Started processing AIRLOCKS"
 		for (var/obj/machinery/door/airlock/D in world)
-			if (D.z == 1)
-				//if (length(D.req_access) > 0 && !(12 in D.req_access)) //not counting general access and maintenance airlocks
+			if(D.z == 1)
+				//if(length(D.req_access) > 0 && !(12 in D.req_access)) //not counting general access and maintenance airlocks
 				airlocknum++
 				spawn(0)
 					D.ion_act()
@@ -206,7 +206,7 @@ Would like to add a law like "Law x is _______" where x = a number, and _____ is
 	spawn(0)
 		world << "Started processing FIREDOORS"
 		for (var/obj/machinery/door/firedoor/D in world)
-			if (D.z == 1)
+			if(D.z == 1)
 				firedoornum++;
 				spawn(0)
 					D.ion_act()

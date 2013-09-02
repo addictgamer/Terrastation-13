@@ -11,7 +11,7 @@
 
 /obj/machinery/computer/New()
 	..()
-	if (ticker)
+	if(ticker)
 		initialize()
 
 
@@ -19,7 +19,7 @@
 	power_change()
 
 /obj/machinery/computer/process()
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		return 0
 	return 1
 
@@ -34,16 +34,16 @@
 
 
 /obj/machinery/computer/emp_act(severity)
-	if (prob(20/severity)) set_broken()
+	if(prob(20/severity)) set_broken()
 	..()
 
 
 /obj/machinery/computer/ex_act(severity)
 	switch(severity)
-		if (1.0)
+		if(1.0)
 			del(src)
 			return
-		if (2.0)
+		if(2.0)
 			if (prob(25))
 				del(src)
 				return
@@ -51,7 +51,7 @@
 				for(var/x in verbs)
 					verbs -= x
 				set_broken()
-		if (3.0)
+		if(3.0)
 			if (prob(25))
 				for(var/x in verbs)
 					verbs -= x
@@ -60,7 +60,7 @@
 	return
 
 /obj/machinery/computer/bullet_act(var/obj/item/projectile/Proj)
-	if (prob(Proj.damage))
+	if(prob(Proj.damage))
 		set_broken()
 	..()
 
@@ -76,11 +76,11 @@
 	..()
 	icon_state = initial(icon_state)
 	// Broken
-	if (stat & BROKEN)
+	if(stat & BROKEN)
 		icon_state += "b"
 
 	// Powered
-	else if (stat & NOPOWER)
+	else if(stat & NOPOWER)
 		icon_state = initial(icon_state)
 		icon_state += "0"
 
@@ -97,9 +97,9 @@
 
 
 /obj/machinery/computer/attackby(I as obj, user as mob)
-	if (istype(I, /obj/item/weapon/screwdriver) && circuit)
+	if(istype(I, /obj/item/weapon/screwdriver) && circuit)
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
-		if (do_after(user, 20))
+		if(do_after(user, 20))
 			var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 			var/obj/item/weapon/circuitboard/M = new circuit( A )
 			A.circuit = M

@@ -54,27 +54,27 @@
 
 	var/req_metal = 0
 	switch(shuttle)
-		if ("hopper")
+		if("hopper")
 			shuttleat = "/area/shipbuilder/ship1"
 			currentShuttleName = "Planet hopper"
 			req_metal = 25000
-		if ("bus")
+		if("bus")
 			shuttleat = "/area/shipbuilder/ship2"
 			currentShuttleName = "Blnder Bus"
 			req_metal = 60000
-		if ("dinghy")
+		if("dinghy")
 			shuttleat = "/area/shipbuilder/ship3"
 			currentShuttleName = "Space dinghy"
 			req_metal = 100000
-		if ("van")
+		if("van")
 			shuttleat = "/area/shipbuilder/ship4"
 			currentShuttleName = "Boxvan MMDLVI"
 			req_metal = 120000
-		if ("secvan")
+		if("secvan")
 			shuttleat = "/area/shipbuilder/ship5"
 			currentShuttleName = "Boxvan MMDLVI - Security edition"
 			req_metal = 125000
-		if ("station4")
+		if("station4")
 			shuttleat = "/area/shipbuilder/ship6"
 			currentShuttleName = "Space station 4"
 			req_metal = 250000
@@ -88,7 +88,7 @@
 	var/area/from = locate(shuttleat)
 	var/area/dest = locate(shuttleto)
 
-	if (!from || !dest)
+	if(!from || !dest)
 		return
 
 	currentShuttleArea = shuttleat
@@ -106,7 +106,7 @@
 	var/area/from = locate(shuttleat)
 	var/area/dest = locate(shuttleto)
 
-	if (!from || !dest)
+	if(!from || !dest)
 		return
 
 	currentShuttleArea = null
@@ -116,7 +116,7 @@
 
 /obj/machinery/spaceship_builder/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
-	if (operating == 1)
+	if(operating == 1)
 		user << "The machine is processing"
 		return
 
@@ -136,7 +136,7 @@
 	return
 
 /obj/machinery/spaceship_builder/attack_hand(user as mob)
-	if (operating == 1)
+	if(operating == 1)
 		user << "The machine is processing"
 		return
 
@@ -161,13 +161,13 @@
 
 
 /obj/machinery/spaceship_builder/Topic(href, href_list)
-	if (..())
+	if(..())
 		return
 	usr.machine = src
 	src.add_fingerprint(usr)
-	if (href_list["ship"])
+	if(href_list["ship"])
 		buildShuttle(href_list["ship"])
-	if (href_list["scrap"])
+	if(href_list["scrap"])
 		scrapShuttle(href_list["ship"])
 	src.updateUsrDialog()
 	return

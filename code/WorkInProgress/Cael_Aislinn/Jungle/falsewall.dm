@@ -17,13 +17,13 @@
 /obj/structure/temple_falsewall/New()
 	..()
 	spawn(10)
-		if (prob(95))
+		if(prob(95))
 			desc = pick("Something seems slightly off about it.","")
 
 		var/junction = 0 //will be used to determine from which side the wall is connected to other walls
 
 		for(var/turf/unsimulated/wall/W in orange(src,1))
-			if (abs(src.x-W.x)-abs(src.y-W.y)) //doesn't count diagonal walls
+			if(abs(src.x-W.x)-abs(src.y-W.y)) //doesn't count diagonal walls
 				junction |= get_dir(src,W)
 
 		closed_wall_dir = junction
@@ -31,12 +31,12 @@
 		icon_state = "[mineral][closed_wall_dir]"
 
 /obj/structure/temple_falsewall/attack_hand(mob/user as mob)
-	if (opening)
+	if(opening)
 		return
 
-	if (density)
+	if(density)
 		opening = 1
-		if (is_metal)
+		if(is_metal)
 			icon_state = "metalfwall_open"
 			flick("metalfwall_opening", src)
 		else
@@ -49,7 +49,7 @@
 	else
 		opening = 1
 		icon_state = "[mineral][closed_wall_dir]"
-		if (is_metal)
+		if(is_metal)
 			flick("metalfwall_closing", src)
 		else
 			flick("[mineral]fwall_closing", src)

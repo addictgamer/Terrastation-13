@@ -4,27 +4,27 @@ var/const/commandos_possible = 6 //if more Commandos are needed in the future
 var/global/sent_strike_team = 0
 
 /client/proc/strike_team()
-	if (!ticker)
+	if(!ticker)
 		usr << "<font color='red'>The game hasn't started yet!</font>"
 		return
-	if (world.time < 6000)
+	if(world.time < 6000)
 		usr << "<font color='red'>There are [(6000-world.time)/10] seconds remaining before it may be called.</font>"
 		return
-	if (sent_strike_team == 1)
+	if(sent_strike_team == 1)
 		usr << "<font color='red'>CentCom is already sending a team.</font>"
 		return
-	if (alert("Do you want to send in the CentCom death squad? Once enabled, this is irreversible.",,"Yes","No")!="Yes")
+	if(alert("Do you want to send in the CentCom death squad? Once enabled, this is irreversible.",,"Yes","No")!="Yes")
 		return
 	alert("This 'mode' will go on until everyone is dead or the station is destroyed. You may also admin-call the evac shuttle when appropriate. Spawned commandos have internals cameras which are viewable through a monitor inside the Spec. Ops. Office. Assigning the team's detailed task is recommended from there. While you will be able to manually pick the candidates from active ghosts, their assignment in the squad will be random.")
 
 	var/input = null
 	while(!input)
 		input = copytext(sanitize(input(src, "Please specify which mission the death commando squad shall undertake.", "Specify Mission", "")),1,MAX_MESSAGE_LEN)
-		if (!input)
-			if (alert("Error, no mission set. Do you want to exit the setup process?",,"Yes","No")=="Yes")
+		if(!input)
+			if(alert("Error, no mission set. Do you want to exit the setup process?",,"Yes","No")=="Yes")
 				return
 
-	if (sent_strike_team)
+	if(sent_strike_team)
 		usr << "Looks like someone beat you to it."
 		return
 
@@ -41,7 +41,7 @@ var/global/sent_strike_team = 0
 	var/temp_code
 	for(var/obj/machinery/nuclearbomb/N in world)
 		temp_code = text2num(N.r_code)
-		if (temp_code)//if it's actually a number. It won't convert any non-numericals.
+		if(temp_code)//if it's actually a number. It won't convert any non-numericals.
 			nuke_code = N.r_code
 			break
 
@@ -49,8 +49,8 @@ var/global/sent_strike_team = 0
 	var/list/candidates = list()	//candidates for being a commando out of all the active ghosts in world.
 	var/list/commandos = list()			//actual commando ghosts as picked by the user.
 	for(var/mob/dead/observer/G	 in player_list)
-		if (!G.client.holder && !G.client.is_afk())	//Whoever called/has the proc won't be added to the list.
-			if (!(G.mind && G.mind.current && G.mind.current.stat != DEAD))
+		if(!G.client.holder && !G.client.is_afk())	//Whoever called/has the proc won't be added to the list.
+			if(!(G.mind && G.mind.current && G.mind.current.stat != DEAD))
 				candidates += G.key
 	for(var/i=commandos_possible,(i>0&&candidates.len),i--)//Decrease with every commando selected.
 		var/candidate = input("Pick characters to spawn as the commandos. This will go on until there either no more ghosts to pick from or the slots are full.", "Active Players") as null|anything in candidates	//It will auto-pick a person when there is only one candidate.
@@ -59,20 +59,20 @@ var/global/sent_strike_team = 0
 
 //Spawns commandos and equips them.
 	for(var/obj/effect/landmark/L in landmarks_list)
-		if (commando_number<=0)	break
+		if(commando_number<=0)	break
 		if (L.name == "Commando")
 			leader_selected = commando_number == 1?1:0
 
 			var/mob/living/carbon/human/new_commando = create_death_commando(L, leader_selected)
 
-			if (commandos.len)
+			if(commandos.len)
 				new_commando.key = pick(commandos)
 				commandos -= new_commando.key
 				new_commando.internal = new_commando.s_store
 				new_commando.internals.icon_state = "internal1"
 
 			//So they don't forget their code or mission.
-			if (nuke_code)
+			if(nuke_code)
 				new_commando.mind.store_memory("<B>Nuke Code:</B> \red [nuke_code].")
 			new_commando.mind.store_memory("<B>Mission:</B> \red [input].")
 

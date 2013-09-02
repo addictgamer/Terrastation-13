@@ -1,6 +1,6 @@
 //Updates the mob's health from organs and mob damage variables
 /mob/living/carbon/human/updatehealth()
-	if (status_flags & GODMODE)
+	if(status_flags & GODMODE)
 		health = 100
 		stat = CONSCIOUS
 		return
@@ -11,7 +11,7 @@
 		total_burn	+= O.burn_dam
 	health = 100 - getOxyLoss() - getToxLoss() - getCloneLoss() - total_burn - total_brute
 	//TODO: fix husking
-	if ( ((100 - total_burn) < config.health_threshold_dead) && stat == DEAD) //100 only being used as the magic human max health number, feel free to change it if you add a var for it -- Urist
+	if( ((100 - total_burn) < config.health_threshold_dead) && stat == DEAD) //100 only being used as the magic human max health number, feel free to change it if you add a var for it -- Urist
 		ChangeToHusk()
 	return
 
@@ -40,27 +40,27 @@
 
 
 /mob/living/carbon/human/adjustBruteLoss(var/amount)
-	if (amount > 0)
+	if(amount > 0)
 		take_overall_damage(amount, 0)
 	else
 		heal_overall_damage(-amount, 0)
 
 /mob/living/carbon/human/adjustFireLoss(var/amount)
-	if (amount > 0)
+	if(amount > 0)
 		take_overall_damage(0, amount)
 	else
 		heal_overall_damage(0, -amount)
 
 /mob/living/carbon/human/Stun(amount)
-	if (HULK in mutations)	return
+	if(HULK in mutations)	return
 	..()
 
 /mob/living/carbon/human/Weaken(amount)
-	if (HULK in mutations)	return
+	if(HULK in mutations)	return
 	..()
 
 /mob/living/carbon/human/Paralyse(amount)
-	if (HULK in mutations)	return
+	if(HULK in mutations)	return
 	..()
 
 /mob/living/carbon/human/adjustCloneLoss(var/amount)
@@ -71,7 +71,7 @@
 		if (prob(mut_prob))
 			var/list/datum/organ/external/candidates = list()
 			for (var/datum/organ/external/O in organs)
-				if (!(O.status & ORGAN_MUTATED))
+				if(!(O.status & ORGAN_MUTATED))
 					candidates |= O
 			if (candidates.len)
 				var/datum/organ/external/O = pick(candidates)
@@ -97,7 +97,7 @@
 /mob/living/carbon/human/proc/get_damaged_organs(var/brute, var/burn)
 	var/list/datum/organ/external/parts = list()
 	for(var/datum/organ/external/O in organs)
-		if ((brute && O.brute_dam) || (burn && O.burn_dam))
+		if((brute && O.brute_dam) || (burn && O.burn_dam))
 			parts += O
 	return parts
 
@@ -105,7 +105,7 @@
 /mob/living/carbon/human/proc/get_damageable_organs()
 	var/list/datum/organ/external/parts = list()
 	for(var/datum/organ/external/O in organs)
-		if (O.brute_dam + O.burn_dam < O.max_damage)
+		if(O.brute_dam + O.burn_dam < O.max_damage)
 			parts += O
 	return parts
 
@@ -114,9 +114,9 @@
 //It automatically updates health status
 /mob/living/carbon/human/heal_organ_damage(var/brute, var/burn)
 	var/list/datum/organ/external/parts = get_damaged_organs(brute,burn)
-	if (!parts.len)	return
+	if(!parts.len)	return
 	var/datum/organ/external/picked = pick(parts)
-	if (picked.heal_damage(brute,burn))
+	if(picked.heal_damage(brute,burn))
 		UpdateDamageIcon()
 	updatehealth()
 
@@ -125,9 +125,9 @@
 //It automatically updates health status
 /mob/living/carbon/human/take_organ_damage(var/brute, var/burn, var/sharp = 0)
 	var/list/datum/organ/external/parts = get_damageable_organs()
-	if (!parts.len)	return
+	if(!parts.len)	return
 	var/datum/organ/external/picked = pick(parts)
-	if (picked.take_damage(brute,burn,sharp))
+	if(picked.take_damage(brute,burn,sharp))
 		UpdateDamageIcon()
 	updatehealth()
 
@@ -150,11 +150,11 @@
 
 		parts -= picked
 	updatehealth()
-	if (update)	UpdateDamageIcon()
+	if(update)	UpdateDamageIcon()
 
 // damage MANY external organs, in random order
 /mob/living/carbon/human/take_overall_damage(var/brute, var/burn, var/sharp = 0, var/used_weapon = null)
-	if (status_flags & GODMODE)	return	//godmode
+	if(status_flags & GODMODE)	return	//godmode
 	var/list/datum/organ/external/parts = get_damageable_organs()
 	var/update = 0
 	while(parts.len && (brute>0 || burn>0) )
@@ -169,14 +169,14 @@
 
 		parts -= picked
 	updatehealth()
-	if (update)	UpdateDamageIcon()
+	if(update)	UpdateDamageIcon()
 
 
 ////////////////////////////////////////////
 
 /mob/living/carbon/human/proc/HealDamage(zone, brute, burn)
 	var/datum/organ/external/E = get_organ(zone)
-	if (istype(E, /datum/organ/external))
+	if(istype(E, /datum/organ/external))
 		if (E.heal_damage(brute, burn))
 			UpdateDamageIcon()
 	else
@@ -185,7 +185,7 @@
 
 
 /mob/living/carbon/human/proc/get_organ(var/zone)
-	if (!zone)	zone = "chest"
+	if(!zone)	zone = "chest"
 	if (zone in list( "eyes", "mouth" ))
 		zone = "head"
 	return organs_by_name[zone]
@@ -193,51 +193,51 @@
 /mob/living/carbon/human/apply_damage(var/damage = 0,var/damagetype = BRUTE, var/def_zone = null, var/blocked = 0, var/sharp = 0, var/obj/used_weapon = null)
 
 	//visible_message("Hit debug. [damage] | [damagetype] | [def_zone] | [blocked] | [sharp] | [used_weapon]")
-	if ((damagetype != BRUTE) && (damagetype != BURN))
+	if((damagetype != BRUTE) && (damagetype != BURN))
 		..(damage, damagetype, def_zone, blocked)
 		return 1
 
-	if (blocked >= 2)	return 0
+	if(blocked >= 2)	return 0
 
 	var/datum/organ/external/organ = null
-	if (isorgan(def_zone))
+	if(isorgan(def_zone))
 		organ = def_zone
 	else
-		if (!def_zone)	def_zone = ran_zone(def_zone)
+		if(!def_zone)	def_zone = ran_zone(def_zone)
 		organ = get_organ(check_zone(def_zone))
-	if (!organ)	return 0
+	if(!organ)	return 0
 
-	if (blocked)
+	if(blocked)
 		damage = (damage/(blocked+1))
 
 	switch(damagetype)
-		if (BRUTE)
+		if(BRUTE)
 			damageoverlaytemp = 20
-			if (organ.take_damage(damage, 0, sharp, used_weapon))
+			if(organ.take_damage(damage, 0, sharp, used_weapon))
 				UpdateDamageIcon()
-		if (BURN)
+		if(BURN)
 			damageoverlaytemp = 20
-			if (organ.take_damage(0, damage, sharp, used_weapon))
+			if(organ.take_damage(0, damage, sharp, used_weapon))
 				UpdateDamageIcon()
 
 	// Will set our damageoverlay icon to the next level, which will then be set back to the normal level the next mob.Life().
 	updatehealth()
 
 	//Embedded projectile code.
-	if (!organ) return
-	if (istype(used_weapon,/obj/item/weapon))
+	if(!organ) return
+	if(istype(used_weapon,/obj/item/weapon))
 		var/obj/item/weapon/W = used_weapon  //Sharp objects will always embed if they do enough damage.
-		if ( (damage > (10*W.w_class)) && ( (sharp && !ismob(W.loc)) || prob(damage/W.w_class) ) )
+		if( (damage > (10*W.w_class)) && ( (sharp && !ismob(W.loc)) || prob(damage/W.w_class) ) )
 			organ.implants += W
 			visible_message("<span class='danger'>\The [W] sticks in the wound!</span>")
 			W.add_blood(src)
-			if (ismob(W.loc))
+			if(ismob(W.loc))
 				var/mob/living/H = W.loc
 				H.drop_item()
 			W.loc = src
 
-	else if (istype(used_weapon,/obj/item/projectile)) //We don't want to use the actual projectile item, so we spawn some shrapnel.
-		if (prob(75) && damagetype == BRUTE)
+	else if(istype(used_weapon,/obj/item/projectile)) //We don't want to use the actual projectile item, so we spawn some shrapnel.
+		if(prob(75) && damagetype == BRUTE)
 			var/obj/item/projectile/P = used_weapon
 			var/obj/item/weapon/shard/shrapnel/S = new()
 			S.name = "[P.name] shrapnel"

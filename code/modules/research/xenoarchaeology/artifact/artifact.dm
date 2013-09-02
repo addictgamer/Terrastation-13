@@ -60,7 +60,7 @@
 	if (istype(W, /obj/item/device/measuring_tape))
 		var/obj/item/device/measuring_tape/P = W
 		user.visible_message("\blue[user] extends [P] towards [src].","\blue You extend [P] towards [src].")
-		if (do_after(user,40))
+		if(do_after(user,40))
 			user << "\blue \icon[P] [src] has been excavated to a depth of [2*src.excavation_level]cm."
 		return
 
@@ -69,30 +69,30 @@
 
 		user << "\red You start [P.drill_verb] [src]."
 
-		if (!do_after(user,P.digspeed))
+		if(!do_after(user,P.digspeed))
 			return
 
 		user << "\blue You finish [P.drill_verb] [src]."
 		excavation_level += P.excavation_amount
 
 		var/reveal_prob = 1
-		if (excavation_level >= 95)
+		if(excavation_level >= 95)
 			reveal_prob = 50 + (excavation_level - 90) * (excavation_level - 90)
-		else if (excavation_level >= 90)
+		else if(excavation_level >= 90)
 			reveal_prob = 5
-		if (excavation_level >= 100)
+		if(excavation_level >= 100)
 			//failure
 			user.visible_message("<font color='red'><b>[src] suddenly crumbles away.</b></font>",\
 			"\red [src] has disintegrated under your onslaught, any secrets it was holding long gone.")
 			del(src)
-		else if (prob(reveal_prob))
+		else if(prob(reveal_prob))
 			//success
-			if (artifact_find)
+			if(artifact_find)
 				var/spawn_type = artifact_find.artifact_find_type
 				var/obj/O = new spawn_type(get_turf(src))
-				if (istype(O,/obj/machinery/artifact))
+				if(istype(O,/obj/machinery/artifact))
 					var/obj/machinery/artifact/X = O
-					if (X.my_effect)
+					if(X.my_effect)
 						X.my_effect.artifact_id = artifact_find.artifact_id
 				src.visible_message("<font color='red'><b>[src] suddenly crumbles away.</b></font>")
 			else

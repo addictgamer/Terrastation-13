@@ -20,9 +20,9 @@
 	icon_state = "flood[open ? "o" : ""][open && cell ? "b" : ""]0[on]"
 
 /obj/machinery/floodlight/process()
-	if (on)
+	if(on)
 		cell.charge -= use
-		if (cell.charge <= 0)
+		if(cell.charge <= 0)
 			on = 0
 			updateicon()
 			SetLuminosity(0)
@@ -30,9 +30,9 @@
 			return
 
 /obj/machinery/floodlight/attack_hand(mob/user as mob)
-	if (open && cell)
-		if (ishuman(user))
-			if (!user.get_active_hand())
+	if(open && cell)
+		if(ishuman(user))
+			if(!user.get_active_hand())
 				user.put_in_hands(cell)
 				cell.loc = user.loc
 		else
@@ -46,14 +46,14 @@
 		updateicon()
 		return
 
-	if (on)
+	if(on)
 		on = 0
 		user << "\blue You turn off the light"
 		SetLuminosity(0)
 	else
-		if (!cell)
+		if(!cell)
 			return
-		if (cell.charge <= 0)
+		if(cell.charge <= 0)
 			return
 		on = 1
 		user << "\blue You turn on the light"
@@ -65,7 +65,7 @@
 /obj/machinery/floodlight/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if (istype(W, /obj/item/weapon/screwdriver))
 		if (!open)
-			if (unlocked)
+			if(unlocked)
 				unlocked = 0
 				user << "You screw the battery panel in place."
 			else
@@ -73,19 +73,19 @@
 				user << "You unscrew the battery panel."
 
 	if (istype(W, /obj/item/weapon/crowbar))
-		if (unlocked)
-			if (open)
+		if(unlocked)
+			if(open)
 				open = 0
 				overlays = null
 				user << "You crowbar the battery panel in place."
 			else
-				if (unlocked)
+				if(unlocked)
 					open = 1
 					user << "You remove the battery panel."
 
 	if (istype(W, /obj/item/weapon/cell))
-		if (open)
-			if (cell)
+		if(open)
+			if(cell)
 				user << "There is a power cell already installed."
 			else
 				user.drop_item()

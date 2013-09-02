@@ -27,7 +27,7 @@
 			animation.icon_state = "liquify"
 			animation.layer = 5
 			animation.master = holder
-			if (phaseshift == 1)
+			if(phaseshift == 1)
 				animation.dir = target.dir
 				flick("phase_shift",animation)
 				target.loc = holder
@@ -40,11 +40,11 @@
 				animation.dir = target.dir
 				flick("phase_shift2",animation)
 				sleep(5)
-				if (!target.Move(mobloc))
+				if(!target.Move(mobloc))
 					for(var/direction in list(1,2,4,8,5,6,9,10))
 						var/turf/T = get_step(mobloc, direction)
-						if (T)
-							if (target.Move(T))
+						if(T)
+							if(target.Move(T))
 								break
 				target.canmove = 1
 				target.client.eye = target
@@ -66,11 +66,11 @@
 				sleep(20)
 				flick("reappear",animation)
 				sleep(5)
-				if (!target.Move(mobloc))
+				if(!target.Move(mobloc))
 					for(var/direction in list(1,2,4,8,5,6,9,10))
 						var/turf/T = get_step(mobloc, direction)
-						if (T)
-							if (target.Move(T))
+						if(T)
+							if(target.Move(T))
 								break
 				target.canmove = 1
 				target.client.eye = target
@@ -88,7 +88,7 @@
 /obj/effect/dummy/spell_jaunt/relaymove(var/mob/user, direction)
 	if (!src.canmove) return
 	var/turf/newLoc = get_step(src,direction)
-	if (!(newLoc.flags & NOJAUNT))
+	if(!(newLoc.flags & NOJAUNT))
 		loc = newLoc
 	else
 		user << "<span class='warning'>Some strange aura is blocking the way!</span>"

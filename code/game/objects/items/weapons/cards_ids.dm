@@ -83,7 +83,7 @@
 /obj/item/weapon/card/id/New()
 	..()
 	spawn(30)
-	if (istype(loc, /mob/living/carbon/human))
+	if(istype(loc, /mob/living/carbon/human))
 		blood_type = loc:dna:b_type
 		dna_hash = loc:dna:unique_enzymes
 		fingerprint_hash = md5(loc:dna:uni_identity)
@@ -103,7 +103,7 @@
 
 /obj/item/weapon/card/id/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
-	if (istype(W,/obj/item/weapon/id_wallet))
+	if(istype(W,/obj/item/weapon/id_wallet))
 		user << "You slip [src] into [W]."
 		src.name = "[src.registered_name]'s [W.name] ([src.assignment])"
 		src.desc = W.desc
@@ -142,25 +142,25 @@
 	origin_tech = "syndicate=3"
 
 /obj/item/weapon/card/id/syndicate/afterattack(var/obj/item/weapon/O as obj, mob/user as mob)
-	if (istype(O, /obj/item/weapon/card/id))
+	if(istype(O, /obj/item/weapon/card/id))
 		var/obj/item/weapon/card/id/I = O
 		src.access |= I.access
-		if (istype(user, /mob/living) && user.mind)
-			if (user.mind.special_role)
+		if(istype(user, /mob/living) && user.mind)
+			if(user.mind.special_role)
 				usr << "\blue The card's microscanners activate as you pass it over the ID, copying its access."
 
 
 /obj/item/weapon/card/id/syndicate/attack_self(mob/user as mob)
-	if (!src.registered_name)
+	if(!src.registered_name)
 		//Stop giving the players unsanitized unputs! You are giving ways for players to intentionally crash clients! -Nodrak
 		var t = reject_bad_name(input(user, "What name would you like to put on this card?", "Agent card name", ishuman(user) ? user.real_name : user.name))
-		if (!t) //Same as mob/new_player/prefrences.dm
+		if(!t) //Same as mob/new_player/prefrences.dm
 			alert("Invalid name.")
 			return
 		src.registered_name = t
 
 		var u = copytext(sanitize(input(user, "What occupation would you like to put on this card?\nNote: This will not grant any access levels other than Maintenance.", "Agent card job assignment", "Assistant")),1,MAX_MESSAGE_LEN)
-		if (!u)
+		if(!u)
 			alert("Invalid assignment.")
 			src.registered_name = ""
 			return

@@ -26,9 +26,9 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 	var/list/NotInHand = list(/obj/machinery/singularity_beacon/syndicate)
 
 	New()
-		if (!welcome)
+		if(!welcome)
 			welcome = ticker.mode.uplink_welcome
-		if (!uplink_data)
+		if(!uplink_data)
 			uplink_data = ticker.mode.uplink_items
 
 		items = replacetext(uplink_data, "\n", "")	// Getting the text string of items
@@ -52,12 +52,12 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 
 		for(var/D in ItemList)
 			var/list/O = stringsplit(D, ":")
-			if (O.len != 3)	//If it is not an actual item, make a break in the menu.
-				if (O.len == 1)	//If there is one item, it's probably a title
+			if(O.len != 3)	//If it is not an actual item, make a break in the menu.
+				if(O.len == 1)	//If there is one item, it's probably a title
 					src.menu_message += "<b>[O[1]]</b><br>"
 					category_items = 0
 				else	//Else, it's a white space.
-					if (category_items < 1)	//If there were no itens in the last category...
+					if(category_items < 1)	//If there were no itens in the last category...
 						src.menu_message += "<i>We apologize, as you could not afford anything from this category.</i><br>"
 					src.menu_message += "<br>"
 				continue
@@ -65,7 +65,7 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 			path_text = O[1]
 			cost = text2num(O[2])
 
-			if (cost>uses)
+			if(cost>uses)
 				continue
 
 			path_obj = text2path(path_text)
@@ -82,39 +82,39 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 
 	Topic(href, href_list)
 		if (href_list["buy_item"])
-/*			if (href_list["buy_item"] == "random")
+/*			if(href_list["buy_item"] == "random")
 				var/list/randomItems = list()
 
 				//Sorry for all the ifs, but it makes it 1000 times easier for other people/servers to add or remove items from this list
 				//Add only items the player can afford:
-				if (uses > 19)
+				if(uses > 19)
 					randomItems.Add("/obj/item/weapon/circuitboard/teleporter") //Teleporter Circuit Board (costs 20, for nuke ops)
 
-				if (uses > 9)
+				if(uses > 9)
 					randomItems.Add("/obj/item/toy/syndicateballoon")//Syndicate Balloon
 					randomItems.Add("/obj/item/weapon/storage/syndie_kit/imp_uplink") //Uplink Implanter
 					randomItems.Add("/obj/item/weapon/storage/box/syndicate") //Syndicate bundle
 
-				//if (uses > 8)	//Nothing... yet.
-				//if (uses > 7)	//Nothing... yet.
+				//if(uses > 8)	//Nothing... yet.
+				//if(uses > 7)	//Nothing... yet.
 
-				if (uses > 6)
+				if(uses > 6)
 					randomItems.Add("/obj/item/weapon/aiModule/syndicate") //Hacked AI Upload Module
 					randomItems.Add("/obj/item/device/radio/beacon/syndicate") //Singularity Beacon
 
-				if (uses > 5)
+				if(uses > 5)
 					randomItems.Add("/obj/item/weapon/gun/projectile") //Revolver
 
-				if (uses > 4)
+				if(uses > 4)
 					randomItems.Add("/obj/item/weapon/gun/energy/crossbow") //Energy Crossbow
 					randomItems.Add("/obj/item/device/powersink") //Powersink
 
-				if (uses > 3)
+				if(uses > 3)
 					randomItems.Add("/obj/item/weapon/melee/energy/sword") //Energy Sword
 					randomItems.Add("/obj/item/clothing/mask/gas/voice") //Voice Changer
 					randomItems.Add("/obj/item/device/chameleon") //Chameleon Projector
 
-				if (uses > 2)
+				if(uses > 2)
 					randomItems.Add("/obj/item/weapon/storage/emp_kit") //EMP Grenades
 					randomItems.Add("/obj/item/weapon/pen/paralysis") //Paralysis Pen
 					randomItems.Add("/obj/item/weapon/cartridge/syndicate") //Detomatix Cartridge
@@ -126,50 +126,50 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 					randomItems.Add("/obj/item/weapon/storage/syndie_kit/imp_freedom") //Freedom Implant
 					randomItems.Add("/obj/item/clothing/glasses/thermal") //Thermal Imaging Goggles
 
-				if (uses > 1)
+				if(uses > 1)
 /*
 					var/list/usrItems = usr.get_contents() //Checks to see if the user has a revolver before giving ammo
 					var/hasRevolver = 0
 					for(var/obj/I in usrItems) //Only add revolver ammo if the user has a gun that can shoot it
-						if (istype(I,/obj/item/weapon/gun/projectile))
+						if(istype(I,/obj/item/weapon/gun/projectile))
 							hasRevolver = 1
 
-					if (hasRevolver) randomItems.Add("/obj/item/ammo_magazine/a357") //Revolver ammo
+					if(hasRevolver) randomItems.Add("/obj/item/ammo_magazine/a357") //Revolver ammo
 */
 					randomItems.Add("/obj/item/ammo_magazine/a357") //Revolver ammo
 					randomItems.Add("/obj/item/clothing/shoes/syndigaloshes") //No-Slip Syndicate Shoes
 					randomItems.Add("/obj/item/weapon/plastique") //C4
 
-				if (uses > 0)
+				if(uses > 0)
 					randomItems.Add("/obj/item/weapon/soap/syndie") //Syndicate Soap
 					randomItems.Add("/obj/item/weapon/storage/toolbox/syndicate") //Syndicate Toolbox
 
-				if (!randomItems)
+				if(!randomItems)
 					del(randomItems)
 					return 0
 				else
 					href_list["buy_item"] = pick(randomItems)
 
 					switch(href_list["buy_item"]) //Ok, this gets a little messy, sorry.
-						if ("/obj/item/weapon/circuitboard/teleporter")
+						if("/obj/item/weapon/circuitboard/teleporter")
 							uses -= 20
-						if ("/obj/item/toy/syndicateballoon" , "/obj/item/weapon/storage/syndie_kit/imp_uplink" , "/obj/item/weapon/storage/box/syndicate")
+						if("/obj/item/toy/syndicateballoon" , "/obj/item/weapon/storage/syndie_kit/imp_uplink" , "/obj/item/weapon/storage/box/syndicate")
 							uses -= 10
-						if ("/obj/item/weapon/aiModule/syndicate" , "/obj/item/device/radio/beacon/syndicate")
+						if("/obj/item/weapon/aiModule/syndicate" , "/obj/item/device/radio/beacon/syndicate")
 							uses -= 7
-						if ("/obj/item/weapon/gun/projectile")
+						if("/obj/item/weapon/gun/projectile")
 							uses -= 6
-						if ("/obj/item/weapon/gun/energy/crossbow" , "/obj/item/device/powersink")
+						if("/obj/item/weapon/gun/energy/crossbow" , "/obj/item/device/powersink")
 							uses -= 5
-						if ("/obj/item/weapon/melee/energy/sword" , "/obj/item/clothing/mask/gas/voice" , "/obj/item/device/chameleon")
+						if("/obj/item/weapon/melee/energy/sword" , "/obj/item/clothing/mask/gas/voice" , "/obj/item/device/chameleon")
 							uses -= 4
-						if ("/obj/item/weapon/storage/emp_kit" , "/obj/item/weapon/pen/paralysis" , "/obj/item/weapon/cartridge/syndicate" , "/obj/item/clothing/under/chameleon" , \
+						if("/obj/item/weapon/storage/emp_kit" , "/obj/item/weapon/pen/paralysis" , "/obj/item/weapon/cartridge/syndicate" , "/obj/item/clothing/under/chameleon" , \
 						"/obj/item/weapon/card/id/syndicate" , "/obj/item/weapon/card/emag" , "/obj/item/weapon/storage/syndie_kit/space" , "/obj/item/device/encryptionkey/binary" , \
 						"/obj/item/weapon/storage/syndie_kit/imp_freedom" , "/obj/item/clothing/glasses/thermal")
 							uses -= 3
-						if ("/obj/item/ammo_magazine/a357" , "/obj/item/clothing/shoes/syndigaloshes" , "/obj/item/weapon/plastique")
+						if("/obj/item/ammo_magazine/a357" , "/obj/item/clothing/shoes/syndigaloshes" , "/obj/item/weapon/plastique")
 							uses -= 2
-						if ("/obj/item/weapon/soap/syndie" , "/obj/item/weapon/storage/toolbox/syndicate")
+						if("/obj/item/weapon/soap/syndie" , "/obj/item/weapon/storage/toolbox/syndicate")
 							uses -= 1
 
 					del(randomItems)
@@ -177,10 +177,10 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 */
 
 
-			if (text2num(href_list["cost"]) > uses) // Not enough crystals for the item
+			if(text2num(href_list["cost"]) > uses) // Not enough crystals for the item
 				return 0
 
-			if (usr:mind && ticker.mode.traitors[usr:mind])
+			if(usr:mind && ticker.mode.traitors[usr:mind])
 				var/datum/traitorinfo/info = ticker.mode.traitors[usr:mind]
 				info.spawnlist += href_list["buy_item"]
 
@@ -257,16 +257,16 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 		if (usr.stat || usr.restrained() || !in_range(src.hostpda, usr))
 			return
 
-		if (..() == 1) // We can afford the item
+		if(..() == 1) // We can afford the item
 			var/path_obj = text2path(href_list["buy_item"])
 			var/mob/A = src.hostpda.loc
 			var/item = new path_obj(get_turf(src.hostpda))
-			if (ismob(A) && !(locate(item) in NotInHand)) //&& !istype(item, /obj/spawner))
-				if (!A.r_hand)
+			if(ismob(A) && !(locate(item) in NotInHand)) //&& !istype(item, /obj/spawner))
+				if(!A.r_hand)
 					item:loc = A
 					A.r_hand = item
 					item:layer = 20
-				else if (!A.l_hand)
+				else if(!A.l_hand)
 					item:loc = A
 					A.l_hand = item
 					item:layer = 20
@@ -274,7 +274,7 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 				item:loc = get_turf(A)
 			usr.update_clothing()
 			usr.client.onBought("[item:name]")
-	/*		if (istype(item, /obj/spawner)) // Spawners need to have del called on them to avoid leaving a marker behind
+	/*		if(istype(item, /obj/spawner)) // Spawners need to have del called on them to avoid leaving a marker behind
 				del item*/
 	//HEADFINDBACK
 		src.attack_self(usr)
@@ -295,7 +295,7 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 
 	explode()
 		var/turf/location = get_turf(src.loc)
-		if (location)
+		if(location)
 			location.hotspot_expose(700,125)
 			explosion(location, 0, 0, 2, 4, 1)
 
@@ -356,26 +356,26 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 		if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf)) || istype(src.loc,/obj/item/weapon/implant/uplink)))
 			usr.machine = src
 
-			if (href_list["buy_item"])
-				if (..() == 1) // We can afford the item
+			if(href_list["buy_item"])
+				if(..() == 1) // We can afford the item
 					var/path_obj = text2path(href_list["buy_item"])
 					var/item = new path_obj(get_turf(src.loc))
 					var/mob/A = src.loc
-					if (istype(src.loc,/obj/item/weapon/implant/uplink))
+					if(istype(src.loc,/obj/item/weapon/implant/uplink))
 						var/obj/item/weapon/implant/uplink/U = src.loc
 						A = U.imp_in
-					if (ismob(A) && !(locate(item) in NotInHand)) //&& !istype(item, /obj/spawner))
-						if (!A.r_hand)
+					if(ismob(A) && !(locate(item) in NotInHand)) //&& !istype(item, /obj/spawner))
+						if(!A.r_hand)
 							item:loc = A
 							A.r_hand = item
 							item:layer = 20
-						else if (!A.l_hand)
+						else if(!A.l_hand)
 							item:loc = A
 							A.l_hand = item
 							item:layer = 20
 					else
 						item:loc = get_turf(A)
-	/*				if (istype(item, /obj/spawner)) // Spawners need to have del called on them to avoid leaving a marker behind
+	/*				if(istype(item, /obj/spawner)) // Spawners need to have del called on them to avoid leaving a marker behind
 						del item*/
 					usr.client.onBought("[item:name]")
 				src.attack_self(usr)
@@ -429,7 +429,7 @@ A list of items and costs is stored under the datum of every game mode, alongsid
 
 	proc/explode()
 		var/turf/location = get_turf(src.loc)
-		if (location)
+		if(location)
 			location.hotspot_expose(700,125)
 			explosion(location, 0, 0, 2, 4, 1)
 

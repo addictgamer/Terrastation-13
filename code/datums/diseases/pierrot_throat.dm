@@ -15,11 +15,11 @@
 /datum/disease/pierrot_throat/stage_act()
 	..()
 	switch(stage)
-		if (1)
-			if (prob(10)) affected_mob << "\red You feel a little silly."
-		if (2)
-			if (prob(10)) affected_mob << "\red You start seeing rainbows."
-		if (3)
-			if (prob(10)) affected_mob << "\red Your thoughts are interrupted by a loud <b>HONK!</b>"
-		if (4)
-			if (prob(5)) affected_mob.say( pick( list("HONK!", "Honk!", "Honk.", "Honk?", "Honk!!", "Honk?!", "Honk...") ) )
+		if(1)
+			if(prob(10)) affected_mob << "\red You feel a little silly."
+		if(2)
+			if(prob(10)) affected_mob << "\red You start seeing rainbows."
+		if(3)
+			if(prob(10)) affected_mob << "\red Your thoughts are interrupted by a loud <b>HONK!</b>"
+		if(4)
+			if(prob(5)) affected_mob.say( pick( list("HONK!", "Honk!", "Honk.", "Honk?", "Honk!!", "Honk?!", "Honk...") ) )

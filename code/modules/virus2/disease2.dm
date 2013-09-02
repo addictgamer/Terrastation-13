@@ -19,7 +19,7 @@
 	for(var/i=1 ; i <= max_stage ; i++ )
 		var/datum/disease2/effectholder/holder = new /datum/disease2/effectholder
 		holder.stage = i
-		if (greater)
+		if(greater)
 			holder.getrandomeffect(2)
 		else
 			holder.getrandomeffect()
@@ -31,32 +31,32 @@
 	spreadtype = "Airborne"
 
 /datum/disease2/disease/proc/activate(var/mob/living/carbon/mob)
-	if (dead)
+	if(dead)
 		cure(mob)
 		return
 
-	if (mob.stat == 2)
+	if(mob.stat == 2)
 		return
-	if (stage <= 1 && clicks == 0) 	// with a certain chance, the mob may become immune to the disease before it starts properly
-		if (prob(20))
+	if(stage <= 1 && clicks == 0) 	// with a certain chance, the mob may become immune to the disease before it starts properly
+		if(prob(20))
 			mob.antibodies |= antigen // 20% immunity is a good chance IMO, because it allows finding an immune person easily
 		else
-	if (mob.radiation > 50)
-		if (prob(1))
+	if(mob.radiation > 50)
+		if(prob(1))
 			majormutate()
 
 	//Space antibiotics stop disease completely (temporary)
-	if (mob.reagents.has_reagent("spaceacillin"))
+	if(mob.reagents.has_reagent("spaceacillin"))
 		return
 
 	//Virus food speeds up disease progress
-	if (mob.reagents.has_reagent("virusfood"))
+	if(mob.reagents.has_reagent("virusfood"))
 		mob.reagents.remove_reagent("virusfood",0.1)
 		clicks += 10
 
 	//Moving to the next stage
-	if (clicks > stage*100 && prob(10))
-		if (stage == max_stage)
+	if(clicks > stage*100 && prob(10))
+		if(stage == max_stage)
 			src.cure(mob)
 			mob.antibodies |= src.antigen
 		stage++
@@ -117,7 +117,7 @@
 		types2 += d.effect.type
 
 	for(var/type in types)
-		if (!(type in types2))
+		if(!(type in types2))
 			equal = 0
 
 	if (antigen != disease.antigen)
@@ -167,9 +167,9 @@ proc/virus2_lesser_infection()
 	var/list/candidates = list()	//list of candidate keys
 
 	for(var/mob/living/carbon/human/G in player_list)
-		if (G.client && G.stat != DEAD)
+		if(G.client && G.stat != DEAD)
 			candidates += G
-	if (!candidates.len)	return
+	if(!candidates.len)	return
 
 	candidates = shuffle(candidates)
 
@@ -179,9 +179,9 @@ proc/virus2_greater_infection()
 	var/list/candidates = list()	//list of candidate keys
 
 	for(var/mob/living/carbon/human/G in player_list)
-		if (G.client && G.stat != DEAD)
+		if(G.client && G.stat != DEAD)
 			candidates += G
-	if (!candidates.len)	return
+	if(!candidates.len)	return
 
 	candidates = shuffle(candidates)
 

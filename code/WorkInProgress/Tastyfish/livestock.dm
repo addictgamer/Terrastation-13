@@ -14,7 +14,7 @@
 	var/obj/movement_target // eating-ing target
 
 	New()
-		if (!nutrition)
+		if(!nutrition)
 			nutrition = max_nutrition * 0.33 // at 1/3 nutrition
 
 		reagents = new()
@@ -23,13 +23,13 @@
 	Life()
 		..()
 
-		if (stat != DEAD)
+		if(stat != DEAD)
 			meat_amount = round(nutrition / 50)
 
 			nutrition_step--
-			if (nutrition_step <= 0)
+			if(nutrition_step <= 0)
 				// handle animal digesting
-				if (nutrition > 0)
+				if(nutrition > 0)
 					nutrition--
 				else
 					health--
@@ -38,22 +38,22 @@
 				// handle animal eating (borrowed from Ian code)
 
 				// not hungry if full
-				if (nutrition >= max_nutrition)
+				if(nutrition >= max_nutrition)
 					return
 
-				if ((movement_target) && !(isturf(movement_target.loc)))
+				if((movement_target) && !(isturf(movement_target.loc)))
 					movement_target = null
 					a_intent = "help"
 					turns_per_move = initial(turns_per_move)
-				if ( !movement_target || !(movement_target.loc in oview(src, 3)) )
+				if( !movement_target || !(movement_target.loc in oview(src, 3)) )
 					movement_target = null
 					a_intent = "help"
 					turns_per_move = initial(turns_per_move)
 					for(var/obj/item/weapon/reagent_containers/food/snacks/S in oview(src,3))
-						if (isturf(S.loc) || ishuman(S.loc))
+						if(isturf(S.loc) || ishuman(S.loc))
 							movement_target = S
 							break
-				if (movement_target)
+				if(movement_target)
 					stop_automated_movement = 1
 					step_to(src,movement_target,1)
 					sleep(3)
@@ -61,7 +61,7 @@
 					sleep(3)
 					step_to(src,movement_target,1)
 
-					if (movement_target)		//Not redundant due to sleeps, Item can be gone in 6 decisecomds
+					if(movement_target)		//Not redundant due to sleeps, Item can be gone in 6 decisecomds
 						if (movement_target.loc.x < src.x)
 							dir = WEST
 						else if (movement_target.loc.x > src.x)
@@ -73,20 +73,20 @@
 						else
 							dir = SOUTH
 
-					if (isturf(movement_target.loc))
+					if(isturf(movement_target.loc))
 						movement_target.attack_animal(src)
-						if (istype(movement_target, /obj/item/weapon/reagent_containers/food/snacks))
+						if(istype(movement_target, /obj/item/weapon/reagent_containers/food/snacks))
 							var/obj/item/I = movement_target
 							I.attack(src, src, "mouth")	// eat it, if it's food
 
-						if (a_intent == "hurt")		// to make raging critter harm, then disarm, then stop
+						if(a_intent == "hurt")		// to make raging critter harm, then disarm, then stop
 							a_intent = "disarm"
-						else if (a_intent == "disarm")
+						else if(a_intent == "disarm")
 							a_intent = "help"
 							movement_target = null
 							turns_per_move = initial(turns_per_move)
-					else if (ishuman(movement_target.loc))
-						if (prob(20))
+					else if(ishuman(movement_target.loc))
+						if(prob(20))
 							emote("stares at the [movement_target] that [movement_target.loc] has with a longing expression.")
 
 	proc/rage_at(mob/living/M)
@@ -96,7 +96,7 @@
 		a_intent = "hurt"
 
 	attackby(var/obj/item/O as obj, var/mob/user as mob)
-		if (nutrition < max_nutrition && istype(O,/obj/item/weapon/reagent_containers/food/snacks))
+		if(nutrition < max_nutrition && istype(O,/obj/item/weapon/reagent_containers/food/snacks))
 			O.attack_animal(src)
 		else
 			..(O, user)
@@ -115,20 +115,20 @@
 	emote_hear = list("moos", "snorts")
 
 	attackby(var/obj/item/O as obj, var/mob/user as mob)
-		if (istype(O,/obj/item/weapon/reagent_containers/glass))
+		if(istype(O,/obj/item/weapon/reagent_containers/glass))
 			var/datum/reagents/R = O:reagents
 
 			R.add_reagent("milk", 50)
 			nutrition -= 50
 			usr << "\blue You milk the cow."
-		else if (O.force > 0 && O.w_class >= 2)
+		else if(O.force > 0 && O.w_class >= 2)
 			rage_at(user)
 		else
 			..(O, user)
 
 	attack_hand(var/mob/user as mob)
 		..()
-		if (user.a_intent == "hurt")
+		if(user.a_intent == "hurt")
 			rage_at(user)
 
 /obj/item/weapon/reagent_containers/food/snacks/sliceable/meat/cow
@@ -152,9 +152,9 @@
 	..()
 
 	// go right before cycle elapses, and if animal isn't starving
-	if (stat != DEAD && nutrition_step == 1 && nutrition > max_nutrition / 2)
+	if(stat != DEAD && nutrition_step == 1 && nutrition > max_nutrition / 2)
 		// lay an egg with probability of 5% in 5 second time period
-		if (prob(33))
+		if(prob(33))
 			new/obj/item/weapon/reagent_containers/food/snacks/egg(src.loc) // lay an egg
 			nutrition -= 25
 

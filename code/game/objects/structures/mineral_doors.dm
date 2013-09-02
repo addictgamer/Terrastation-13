@@ -28,15 +28,15 @@
 
 	Bumped(atom/user)
 		..()
-		if (!state)
+		if(!state)
 			return TryToSwitchState(user)
 		return
 
 	attack_ai(mob/user as mob) //those aren't machinery, they're just big fucking slabs of a mineral
-		if (isAI(user)) //so the AI can't open it
+		if(isAI(user)) //so the AI can't open it
 			return
-		else if (isrobot(user)) //but cyborgs can
-			if (get_dist(user,src) <= 1) //not remotely though
+		else if(isrobot(user)) //but cyborgs can
+			if(get_dist(user,src) <= 1) //not remotely though
 				return TryToSwitchState(user)
 
 	attack_paw(mob/user as mob)
@@ -46,28 +46,28 @@
 		return TryToSwitchState(user)
 
 	CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-		if (air_group) return 0
-		if (istype(mover, /obj/effect/beam))
+		if(air_group) return 0
+		if(istype(mover, /obj/effect/beam))
 			return !opacity
 		return !density
 
 	proc/TryToSwitchState(atom/user)
-		if (isSwitchingStates) return
-		if (ismob(user))
+		if(isSwitchingStates) return
+		if(ismob(user))
 			var/mob/M = user
-			if (world.time - user.last_bumped <= 60) return //NOTE do we really need that?
-			if (M.client)
-				if (iscarbon(M))
+			if(world.time - user.last_bumped <= 60) return //NOTE do we really need that?
+			if(M.client)
+				if(iscarbon(M))
 					var/mob/living/carbon/C = M
-					if (!C.handcuffed)
+					if(!C.handcuffed)
 						SwitchState()
 				else
 					SwitchState()
-		else if (istype(user, /obj/mecha))
+		else if(istype(user, /obj/mecha))
 			SwitchState()
 
 	proc/SwitchState()
-		if (state)
+		if(state)
 			Close()
 		else
 			Open()
@@ -95,19 +95,19 @@
 		isSwitchingStates = 0
 
 	update_icon()
-		if (state)
+		if(state)
 			icon_state = "[mineralType]open"
 		else
 			icon_state = mineralType
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if (istype(W,/obj/item/weapon/pickaxe))
+		if(istype(W,/obj/item/weapon/pickaxe))
 			var/obj/item/weapon/pickaxe/digTool = W
 			user << "You start digging the [name]."
-			if (do_after(user,digTool.digspeed*hardness) && src)
+			if(do_after(user,digTool.digspeed*hardness) && src)
 				user << "You finished digging."
 				Dismantle()
-		else if (istype(W,/obj/item/weapon)) //not sure, can't not just weapons get passed to this proc?
+		else if(istype(W,/obj/item/weapon)) //not sure, can't not just weapons get passed to this proc?
 			hardness -= W.force/100
 			user << "You hit the [name] with your [W.name]!"
 			CheckHardness()
@@ -116,11 +116,11 @@
 		return
 
 	proc/CheckHardness()
-		if (hardness <= 0)
+		if(hardness <= 0)
 			Dismantle(1)
 
 	proc/Dismantle(devastated = 0)
-		if (!devastated)
+		if(!devastated)
 			if (mineralType == "metal")
 				var/ore = /obj/item/stack/sheet/metal
 				for(var/i = 1, i <= oreAmount, i++)
@@ -142,21 +142,21 @@
 
 	ex_act(severity = 1)
 		switch(severity)
-			if (1)
+			if(1)
 				Dismantle(1)
-			if (2)
-				if (prob(20))
+			if(2)
+				if(prob(20))
 					Dismantle(1)
 				else
 					hardness--
 					CheckHardness()
-			if (3)
+			if(3)
 				hardness -= 0.1
 				CheckHardness()
 		return
 
 	proc/update_nearby_tiles(need_rebuild) //Copypasta from airlock code
-		if (!air_master) return 0
+		if(!air_master) return 0
 
 		var/turf/simulated/source = loc
 		var/turf/simulated/north = get_step(source,NORTH)
@@ -164,11 +164,11 @@
 		var/turf/simulated/east = get_step(source,EAST)
 		var/turf/simulated/west = get_step(source,WEST)
 
-		if (istype(source)) air_master.tiles_to_update += source
-		if (istype(north)) air_master.tiles_to_update += north
-		if (istype(south)) air_master.tiles_to_update += south
-		if (istype(east)) air_master.tiles_to_update += east
-		if (istype(west)) air_master.tiles_to_update += west
+		if(istype(source)) air_master.tiles_to_update += source
+		if(istype(north)) air_master.tiles_to_update += north
+		if(istype(south)) air_master.tiles_to_update += south
+		if(istype(east)) air_master.tiles_to_update += east
+		if(istype(west)) air_master.tiles_to_update += west
 
 		return 1
 
@@ -203,14 +203,14 @@
 	mineralType = "plasma"
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if (istype(W,/obj/item/weapon/weldingtool))
+		if(istype(W,/obj/item/weapon/weldingtool))
 			var/obj/item/weapon/weldingtool/WT = W
-			if (WT.remove_fuel(0, user))
+			if(WT.remove_fuel(0, user))
 				TemperatureAct(100)
 		..()
 
 	temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
-		if (exposed_temperature > 300)
+		if(exposed_temperature > 300)
 			TemperatureAct(exposed_temperature)
 
 	proc/TemperatureAct(temperature)
@@ -260,7 +260,7 @@
 		isSwitchingStates = 0
 
 	Dismantle(devastated = 0)
-		if (!devastated)
+		if(!devastated)
 			for(var/i = 1, i <= oreAmount, i++)
 				new/obj/item/stack/sheet/wood(get_turf(src))
 		del(src)
@@ -271,7 +271,7 @@
 	var/close_delay = 100
 
 	TryToSwitchState(atom/user)
-		if (isalien(user))
+		if(isalien(user))
 			return ..()
 
 	Open()
@@ -286,7 +286,7 @@
 		isSwitchingStates = 0
 
 		spawn(close_delay)
-			if (!isSwitchingStates && state == 1)
+			if(!isSwitchingStates && state == 1)
 				Close()
 
 	Close()

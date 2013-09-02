@@ -14,20 +14,20 @@
 //////////////////////////////Capturing////////////////////////////////////////////////////////
 
 	attack(mob/living/carbon/human/M as mob, mob/user as mob)
-		if (!istype(M, /mob/living/carbon/human))//If target is not a human.
+		if(!istype(M, /mob/living/carbon/human))//If target is not a human.
 			return ..()
-		if (istype(M, /mob/living/carbon/human/dummy))
+		if(istype(M, /mob/living/carbon/human/dummy))
 			return..()
+
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has had their soul captured with [src.name] by [user.name] ([user.ckey])</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to capture the soul of [M.name] ([M.ckey])</font>")
-
-		log_attack("<font color='red'>[user.name] ([user.ckey]) used the [src.name] to capture the soul of [M.name] ([M.ckey])</font>")
+		msg_admin_attack("[user.name] ([user.ckey]) used the [src.name] to capture the soul of [M.name] ([M.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 		transfer_soul("VICTIM", M, user)
 		return
 
 	/*attack(mob/living/simple_animal/shade/M as mob, mob/user as mob)//APPARENTLY THEY NEED THEIR OWN SPECIAL SNOWFLAKE CODE IN THE LIVING ANIMAL DEFINES
-		if (!istype(M, /mob/living/simple_animal/shade))//If target is not a shade
+		if(!istype(M, /mob/living/simple_animal/shade))//If target is not a shade
 			return ..()
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to capture the soul of [M.name] ([M.ckey])</font>")
 
@@ -87,7 +87,7 @@
 	flags = FPRINT | TABLEPASS
 
 /obj/structure/constructshell/attackby(obj/item/O as obj, mob/user as mob)
-	if (istype(O, /obj/item/device/soulstone))
+	if(istype(O, /obj/item/device/soulstone))
 		O.transfer_soul("CONSTRUCT",src,user)
 
 
@@ -96,19 +96,19 @@
 
 /obj/item/proc/transfer_soul(var/choice as text, var/target, var/mob/U as mob).
 	switch(choice)
-		if ("VICTIM")
+		if("VICTIM")
 			var/mob/living/carbon/human/T = target
 			var/obj/item/device/soulstone/C = src
-			if (C.imprinted != "empty")
+			if(C.imprinted != "empty")
 				U << "\red <b>Capture failed!</b>: \black The soul stone has already been imprinted with [C.imprinted]'s mind!"
 			else
 				if (T.stat == 0)
 					U << "\red <b>Capture failed!</b>: \black Kill or maim the victim first!"
 				else
-					if (T.client == null)
+					if(T.client == null)
 						U << "\red <b>Capture failed!</b>: \black The soul has already fled it's mortal frame."
 					else
-						if (C.contents.len)
+						if(C.contents.len)
 							U << "\red <b>Capture failed!</b>: \black The soul stone is full! Use or free an existing soul to make room."
 						else
 							for(var/obj/item/W in T)
@@ -137,16 +137,16 @@
 							U << "The soulstone has been imprinted with [S.real_name]'s mind, it will no longer react to other souls."
 							C.imprinted = "[S.name]"
 							del T
-		if ("SHADE")
+		if("SHADE")
 			var/mob/living/simple_animal/shade/T = target
 			var/obj/item/device/soulstone/C = src
 			if (T.stat == DEAD)
 				U << "\red <b>Capture failed!</b>: \black The shade has already been banished!"
 			else
-				if (C.contents.len)
+				if(C.contents.len)
 					U << "\red <b>Capture failed!</b>: \black The soul stone is full! Use or free an existing soul to make room."
 				else
-					if (T.name != C.imprinted)
+					if(T.name != C.imprinted)
 						U << "\red <b>Capture failed!</b>: \black The soul stone has already been imprinted with [C.imprinted]'s mind!"
 					else
 						T.loc = C //put shade in stone
@@ -156,18 +156,18 @@
 						C.icon_state = "soulstone2"
 						T << "Your soul has been recaptured by the soul stone, its arcane energies are reknitting your ethereal form"
 						U << "\blue <b>Capture successful!</b>: \black [T.name]'s has been recaptured and stored within the soul stone."
-		if ("CONSTRUCT")
+		if("CONSTRUCT")
 			var/obj/structure/constructshell/T = target
 			var/obj/item/device/soulstone/C = src
 			var/mob/living/simple_animal/shade/A = locate() in C
-			if (A)
+			if(A)
 				var/construct_class = alert(U, "Please choose which type of construct you wish to create.",,"Juggernaut","Wraith","Artificer")
 				switch(construct_class)
-					if ("Juggernaut")
+					if("Juggernaut")
 						var/mob/living/simple_animal/construct/armoured/Z = new /mob/living/simple_animal/construct/armoured (get_turf(T.loc))
 						Z.key = A.key
-						if (iscultist(U))
-							if (ticker.mode.name == "cult")
+						if(iscultist(U))
+							if(ticker.mode.name == "cult")
 								ticker.mode:add_cultist(Z.mind)
 							else
 								ticker.mode.cult+=Z.mind
@@ -179,11 +179,11 @@
 						Z.cancel_camera()
 						del(C)
 
-					if ("Wraith")
+					if("Wraith")
 						var/mob/living/simple_animal/construct/wraith/Z = new /mob/living/simple_animal/construct/wraith (get_turf(T.loc))
 						Z.key = A.key
-						if (iscultist(U))
-							if (ticker.mode.name == "cult")
+						if(iscultist(U))
+							if(ticker.mode.name == "cult")
 								ticker.mode:add_cultist(Z.mind)
 							else
 								ticker.mode.cult+=Z.mind
@@ -195,11 +195,11 @@
 						Z.cancel_camera()
 						del(C)
 
-					if ("Artificer")
+					if("Artificer")
 						var/mob/living/simple_animal/construct/builder/Z = new /mob/living/simple_animal/construct/builder (get_turf(T.loc))
 						Z.key = A.key
-						if (iscultist(U))
-							if (ticker.mode.name == "cult")
+						if(iscultist(U))
+							if(ticker.mode.name == "cult")
 								ticker.mode:add_cultist(Z.mind)
 							else
 								ticker.mode.cult+=Z.mind

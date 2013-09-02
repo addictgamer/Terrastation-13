@@ -220,10 +220,10 @@
 
 
 /obj/item/weapon/circuitboard/supplycomp/attackby(obj/item/I as obj, mob/user as mob)
-	if (istype(I,/obj/item/device/multitool))
+	if(istype(I,/obj/item/device/multitool))
 		var/catastasis = src.contraband_enabled
 		var/opposite_catastasis
-		if (catastasis)
+		if(catastasis)
 			opposite_catastasis = "STANDARD"
 			catastasis = "BROAD"
 		else
@@ -232,52 +232,52 @@
 
 		switch( alert("Current receiver spectrum is set to: [catastasis]","Multitool-Circuitboard interface","Switch to [opposite_catastasis]","Cancel") )
 		//switch( alert("Current receiver spectrum is set to: " {(src.contraband_enabled) ? ("BROAD") : ("STANDARD")} , "Multitool-Circuitboard interface" , "Switch to " {(src.contraband_enabled) ? ("STANDARD") : ("BROAD")}, "Cancel") )
-			if ("Switch to STANDARD","Switch to BROAD")
+			if("Switch to STANDARD","Switch to BROAD")
 				src.contraband_enabled = !src.contraband_enabled
 
-			if ("Cancel")
+			if("Cancel")
 				return
 			else
 				user << "DERP! BUG! Report this (And what you were doing to cause it) to Agouri"
 	return
 
 /obj/item/weapon/circuitboard/security/attackby(obj/item/I as obj, mob/user as mob)
-	if (istype(I,/obj/item/weapon/card/emag))
-		if (emagged)
+	if(istype(I,/obj/item/weapon/card/emag))
+		if(emagged)
 			user << "Circuit lock is already removed."
 			return
 		user << "\blue You override the circuit lock and open controls."
 		emagged = 1
 		locked = 0
-	else if (istype(I,/obj/item/weapon/card/id))
-		if (emagged)
+	else if(istype(I,/obj/item/weapon/card/id))
+		if(emagged)
 			user << "\red Circuit lock does not respond."
 			return
-		if (check_access(I))
+		if(check_access(I))
 			locked = !locked
 			user << "\blue You [locked ? "" : "un"]lock the circuit controls."
 		else
 			user << "\red Access denied."
-	else if (istype(I,/obj/item/device/multitool))
-		if (locked)
+	else if(istype(I,/obj/item/device/multitool))
+		if(locked)
 			user << "\red Circuit controls are locked."
 			return
 		var/existing_networks = dd_list2text(network,",")
 		var/input = strip_html(input(usr, "Which networks would you like to connect this camera console circuit to? Seperate networks with a comma. No Spaces!\nFor example: SS13,Security,Secret ", "Multitool-Circuitboard interface", existing_networks))
-		if (!input)
+		if(!input)
 			usr << "No input found please hang up and try your call again."
 			return
 		var/list/tempnetwork = text2list(input, ",")
 		tempnetwork = difflist(tempnetwork,RESTRICTED_CAMERA_NETWORKS,1)
-		if (tempnetwork.len < 1)
+		if(tempnetwork.len < 1)
 			usr << "No network found please hang up and try your call again."
 			return
 		network = tempnetwork
 	return
 
 /obj/item/weapon/circuitboard/rdconsole/attackby(obj/item/I as obj, mob/user as mob)
-	if (istype(I,/obj/item/weapon/screwdriver))
-		if (src.build_path == "/obj/machinery/computer/rdconsole/core")
+	if(istype(I,/obj/item/weapon/screwdriver))
+		if(src.build_path == "/obj/machinery/computer/rdconsole/core")
 			src.name = "Circuit Board (RD Console - Robotics)"
 			src.build_path = "/obj/machinery/computer/rdconsole/robotics"
 			user << "\blue Access protocols succesfully updated."
@@ -289,34 +289,34 @@
 
 /obj/structure/computerframe/attackby(obj/item/P as obj, mob/user as mob)
 	switch(state)
-		if (0)
-			if (istype(P, /obj/item/weapon/wrench))
+		if(0)
+			if(istype(P, /obj/item/weapon/wrench))
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
-				if (do_after(user, 20))
+				if(do_after(user, 20))
 					user << "\blue You wrench the frame into place."
 					src.anchored = 1
 					src.state = 1
-			if (istype(P, /obj/item/weapon/weldingtool))
+			if(istype(P, /obj/item/weapon/weldingtool))
 				var/obj/item/weapon/weldingtool/WT = P
-				if (!WT.remove_fuel(0, user))
+				if(!WT.remove_fuel(0, user))
 					user << "The welding tool must be on to complete this task."
 					return
 				playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
-				if (do_after(user, 20))
-					if (!src || !WT.isOn()) return
+				if(do_after(user, 20))
+					if(!src || !WT.isOn()) return
 					user << "\blue You deconstruct the frame."
 					new /obj/item/stack/sheet/metal( src.loc, 5 )
 					del(src)
-		if (1)
-			if (istype(P, /obj/item/weapon/wrench))
+		if(1)
+			if(istype(P, /obj/item/weapon/wrench))
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
-				if (do_after(user, 20))
+				if(do_after(user, 20))
 					user << "\blue You unfasten the frame."
 					src.anchored = 0
 					src.state = 0
-			if (istype(P, /obj/item/weapon/circuitboard) && !circuit)
+			if(istype(P, /obj/item/weapon/circuitboard) && !circuit)
 				var/obj/item/weapon/circuitboard/B = P
-				if (B.board_type == "computer")
+				if(B.board_type == "computer")
 					playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 					user << "\blue You place the circuit board inside the frame."
 					src.icon_state = "1"
@@ -325,36 +325,36 @@
 					P.loc = src
 				else
 					user << "\red This frame does not accept circuit boards of this type!"
-			if (istype(P, /obj/item/weapon/screwdriver) && circuit)
+			if(istype(P, /obj/item/weapon/screwdriver) && circuit)
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				user << "\blue You screw the circuit board into place."
 				src.state = 2
 				src.icon_state = "2"
-			if (istype(P, /obj/item/weapon/crowbar) && circuit)
+			if(istype(P, /obj/item/weapon/crowbar) && circuit)
 				playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
 				user << "\blue You remove the circuit board."
 				src.state = 1
 				src.icon_state = "0"
 				circuit.loc = src.loc
 				src.circuit = null
-		if (2)
-			if (istype(P, /obj/item/weapon/screwdriver) && circuit)
+		if(2)
+			if(istype(P, /obj/item/weapon/screwdriver) && circuit)
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				user << "\blue You unfasten the circuit board."
 				src.state = 1
 				src.icon_state = "1"
-			if (istype(P, /obj/item/weapon/cable_coil))
-				if (P:amount >= 5)
+			if(istype(P, /obj/item/weapon/cable_coil))
+				if(P:amount >= 5)
 					playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
-					if (do_after(user, 20))
-						if (P)
+					if(do_after(user, 20))
+						if(P)
 							P:amount -= 5
-							if (!P:amount) del(P)
+							if(!P:amount) del(P)
 							user << "\blue You add cables to the frame."
 							src.state = 3
 							src.icon_state = "3"
-		if (3)
-			if (istype(P, /obj/item/weapon/wirecutters))
+		if(3)
+			if(istype(P, /obj/item/weapon/wirecutters))
 				playsound(src.loc, 'sound/items/Wirecutter.ogg', 50, 1)
 				user << "\blue You remove the cables."
 				src.state = 2
@@ -362,35 +362,35 @@
 				var/obj/item/weapon/cable_coil/A = new /obj/item/weapon/cable_coil( src.loc )
 				A.amount = 5
 
-			if (istype(P, /obj/item/stack/sheet/glass))
-				if (P:amount >= 2)
+			if(istype(P, /obj/item/stack/sheet/glass))
+				if(P:amount >= 2)
 					playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
-					if (do_after(user, 20))
-						if (P)
+					if(do_after(user, 20))
+						if(P)
 							P:use(2)
 							user << "\blue You put in the glass panel."
 							src.state = 4
 							src.icon_state = "4"
-		if (4)
-			if (istype(P, /obj/item/weapon/crowbar))
+		if(4)
+			if(istype(P, /obj/item/weapon/crowbar))
 				playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
 				user << "\blue You remove the glass panel."
 				src.state = 3
 				src.icon_state = "3"
 				new /obj/item/stack/sheet/glass( src.loc, 2 )
-			if (istype(P, /obj/item/weapon/screwdriver))
+			if(istype(P, /obj/item/weapon/screwdriver))
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				user << "\blue You connect the monitor."
 				var/B = new src.circuit.build_path ( src.loc )
-				if (circuit.powernet) B:powernet = circuit.powernet
-				if (circuit.id) B:id = circuit.id
-				if (circuit.records) B:records = circuit.records
-				if (circuit.frequency) B:frequency = circuit.frequency
-				if (istype(circuit,/obj/item/weapon/circuitboard/supplycomp))
+				if(circuit.powernet) B:powernet = circuit.powernet
+				if(circuit.id) B:id = circuit.id
+				if(circuit.records) B:records = circuit.records
+				if(circuit.frequency) B:frequency = circuit.frequency
+				if(istype(circuit,/obj/item/weapon/circuitboard/supplycomp))
 					var/obj/machinery/computer/supplycomp/SC = B
 					var/obj/item/weapon/circuitboard/supplycomp/C = circuit
 					SC.can_order_contraband = C.contraband_enabled
-				if (istype(circuit,/obj/item/weapon/circuitboard/security))
+				if(istype(circuit,/obj/item/weapon/circuitboard/security))
 					var/obj/machinery/computer/security/C = B
 					var/obj/item/weapon/circuitboard/security/CB = circuit
 					C.network = CB.network

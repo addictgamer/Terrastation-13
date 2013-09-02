@@ -20,7 +20,7 @@ obj/machinery/atmospherics/tvalve
 	var/datum/pipe_network/network_node3
 
 	update_icon(animation)
-		if (animation)
+		if(animation)
 			flick("tvalve[src.state][!src.state]",src)
 		else
 			icon_state = "tvalve[state]"
@@ -31,49 +31,49 @@ obj/machinery/atmospherics/tvalve
 
 	proc/initialize_directions()
 		switch(dir)
-			if (NORTH)
+			if(NORTH)
 				initialize_directions = SOUTH|NORTH|EAST
-			if (SOUTH)
+			if(SOUTH)
 				initialize_directions = NORTH|SOUTH|WEST
-			if (EAST)
+			if(EAST)
 				initialize_directions = WEST|EAST|SOUTH
-			if (WEST)
+			if(WEST)
 				initialize_directions = EAST|WEST|NORTH
 
 	network_expand(datum/pipe_network/new_network, obj/machinery/atmospherics/pipe/reference)
-		if (reference == node1)
+		if(reference == node1)
 			network_node1 = new_network
-			if (state)
+			if(state)
 				network_node2 = new_network
 			else
 				network_node3 = new_network
-		else if (reference == node2)
+		else if(reference == node2)
 			network_node2 = new_network
-			if (state)
+			if(state)
 				network_node1 = new_network
-		else if (reference == node3)
+		else if(reference == node3)
 			network_node3 = new_network
-			if (!state)
+			if(!state)
 				network_node1 = new_network
 
-		if (new_network.normal_members.Find(src))
+		if(new_network.normal_members.Find(src))
 			return 0
 
 		new_network.normal_members += src
 
-		if (state)
-			if (reference == node1)
-				if (node2)
+		if(state)
+			if(reference == node1)
+				if(node2)
 					return node2.network_expand(new_network, src)
-			else if (reference == node2)
-				if (node1)
+			else if(reference == node2)
+				if(node1)
 					return node1.network_expand(new_network, src)
 		else
-			if (reference == node1)
-				if (node3)
+			if(reference == node1)
+				if(node3)
 					return node3.network_expand(new_network, src)
-			else if (reference == node3)
-				if (node1)
+			else if(reference == node3)
+				if(node1)
 					return node1.network_expand(new_network, src)
 
 		return null
@@ -81,13 +81,13 @@ obj/machinery/atmospherics/tvalve
 	Del()
 		loc = null
 
-		if (node1)
+		if(node1)
 			node1.disconnect(src)
 			del(network_node1)
-		if (node2)
+		if(node2)
 			node2.disconnect(src)
 			del(network_node2)
-		if (node3)
+		if(node3)
 			node3.disconnect(src)
 			del(network_node3)
 
@@ -99,49 +99,49 @@ obj/machinery/atmospherics/tvalve
 
 	proc/go_to_side()
 
-		if (state) return 0
+		if(state) return 0
 
 		state = 1
 		update_icon()
 
-		if (network_node1)
+		if(network_node1)
 			del(network_node1)
-		if (network_node3)
+		if(network_node3)
 			del(network_node3)
 		build_network()
 
-		if (network_node1&&network_node2)
+		if(network_node1&&network_node2)
 			network_node1.merge(network_node2)
 			network_node2 = network_node1
 
-		if (network_node1)
+		if(network_node1)
 			network_node1.update = 1
-		else if (network_node2)
+		else if(network_node2)
 			network_node2.update = 1
 
 		return 1
 
 	proc/go_straight()
 
-		if (!state)
+		if(!state)
 			return 0
 
 		state = 0
 		update_icon()
 
-		if (network_node1)
+		if(network_node1)
 			del(network_node1)
-		if (network_node2)
+		if(network_node2)
 			del(network_node2)
 		build_network()
 
-		if (network_node1&&network_node3)
+		if(network_node1&&network_node3)
 			network_node1.merge(network_node3)
 			network_node3 = network_node1
 
-		if (network_node1)
+		if(network_node1)
 			network_node1.update = 1
-		else if (network_node3)
+		else if(network_node3)
 			network_node3.update = 1
 
 		return 1
@@ -165,14 +165,14 @@ obj/machinery/atmospherics/tvalve
 		..()
 		machines.Remove(src)
 
-/*		if (open && (!node1 || !node2))
+/*		if(open && (!node1 || !node2))
 			close()
-		if (!node1)
-			if (!nodealert)
+		if(!node1)
+			if(!nodealert)
 				//world << "Missing node from [src] at [src.x],[src.y],[src.z]"
 				nodealert = 1
 		else if (!node2)
-			if (!nodealert)
+			if(!nodealert)
 				//world << "Missing node from [src] at [src.x],[src.y],[src.z]"
 				nodealert = 1
 		else if (nodealert)
@@ -191,30 +191,30 @@ obj/machinery/atmospherics/tvalve
 		node3_dir = dir
 
 		for(var/obj/machinery/atmospherics/target in get_step(src,node1_dir))
-			if (target.initialize_directions & get_dir(target,src))
+			if(target.initialize_directions & get_dir(target,src))
 				node1 = target
 				break
 		for(var/obj/machinery/atmospherics/target in get_step(src,node2_dir))
-			if (target.initialize_directions & get_dir(target,src))
+			if(target.initialize_directions & get_dir(target,src))
 				node2 = target
 				break
 		for(var/obj/machinery/atmospherics/target in get_step(src,node3_dir))
-			if (target.initialize_directions & get_dir(target,src))
+			if(target.initialize_directions & get_dir(target,src))
 				node3 = target
 				break
 
 	build_network()
-		if (!network_node1 && node1)
+		if(!network_node1 && node1)
 			network_node1 = new /datum/pipe_network()
 			network_node1.normal_members += src
 			network_node1.build_network(node1, src)
 
-		if (!network_node2 && node2)
+		if(!network_node2 && node2)
 			network_node2 = new /datum/pipe_network()
 			network_node2.normal_members += src
 			network_node2.build_network(node2, src)
 
-		if (!network_node3 && node3)
+		if(!network_node3 && node3)
 			network_node3 = new /datum/pipe_network()
 			network_node3.normal_members += src
 			network_node3.build_network(node3, src)
@@ -223,23 +223,23 @@ obj/machinery/atmospherics/tvalve
 	return_network(obj/machinery/atmospherics/reference)
 		build_network()
 
-		if (reference==node1)
+		if(reference==node1)
 			return network_node1
 
-		if (reference==node2)
+		if(reference==node2)
 			return network_node2
 
-		if (reference==node3)
+		if(reference==node3)
 			return network_node3
 
 		return null
 
 	reassign_network(datum/pipe_network/old_network, datum/pipe_network/new_network)
-		if (network_node1 == old_network)
+		if(network_node1 == old_network)
 			network_node1 = new_network
-		if (network_node2 == old_network)
+		if(network_node2 == old_network)
 			network_node2 = new_network
-		if (network_node3 == old_network)
+		if(network_node3 == old_network)
 			network_node3 = new_network
 
 		return 1
@@ -248,15 +248,15 @@ obj/machinery/atmospherics/tvalve
 		return null
 
 	disconnect(obj/machinery/atmospherics/reference)
-		if (reference==node1)
+		if(reference==node1)
 			del(network_node1)
 			node1 = null
 
-		else if (reference==node2)
+		else if(reference==node2)
 			del(network_node2)
 			node2 = null
 
-		else if (reference==node3)
+		else if(reference==node3)
 			del(network_node3)
 			node2 = null
 
@@ -271,7 +271,7 @@ obj/machinery/atmospherics/tvalve
 			return src.attack_hand(user)
 
 		attack_hand(mob/user as mob)
-			if (!src.allowed(user))
+			if(!src.allowed(user))
 				user << "\red Access denied."
 				return
 			..()
@@ -282,7 +282,7 @@ obj/machinery/atmospherics/tvalve
 			set_frequency(new_frequency)
 				radio_controller.remove_object(src, frequency)
 				frequency = new_frequency
-				if (frequency)
+				if(frequency)
 					radio_connection = radio_controller.add_object(src, frequency, RADIO_ATMOSIA)
 
 		var/frequency = 0
@@ -291,24 +291,24 @@ obj/machinery/atmospherics/tvalve
 
 		initialize()
 			..()
-			if (frequency)
+			if(frequency)
 				set_frequency(frequency)
 
 		receive_signal(datum/signal/signal)
-			if (!signal.data["tag"] || (signal.data["tag"] != id))
+			if(!signal.data["tag"] || (signal.data["tag"] != id))
 				return 0
 
 			switch(signal.data["command"])
-				if ("valve_open")
-					if (!state)
+				if("valve_open")
+					if(!state)
 						go_to_side()
 
-				if ("valve_close")
-					if (state)
+				if("valve_close")
+					if(state)
 						go_straight()
 
-				if ("valve_toggle")
-					if (state)
+				if("valve_toggle")
+					if(state)
 						go_straight()
 					else
 						go_to_side()
@@ -344,13 +344,13 @@ obj/machinery/atmospherics/tvalve/mirrored
 
 	initialize_directions()
 		switch(dir)
-			if (NORTH)
+			if(NORTH)
 				initialize_directions = SOUTH|NORTH|WEST
-			if (SOUTH)
+			if(SOUTH)
 				initialize_directions = NORTH|SOUTH|EAST
-			if (EAST)
+			if(EAST)
 				initialize_directions = WEST|EAST|NORTH
-			if (WEST)
+			if(WEST)
 				initialize_directions = EAST|WEST|SOUTH
 
 	initialize()
@@ -363,20 +363,20 @@ obj/machinery/atmospherics/tvalve/mirrored
 		node3_dir = dir
 
 		for(var/obj/machinery/atmospherics/target in get_step(src,node1_dir))
-			if (target.initialize_directions & get_dir(target,src))
+			if(target.initialize_directions & get_dir(target,src))
 				node1 = target
 				break
 		for(var/obj/machinery/atmospherics/target in get_step(src,node2_dir))
-			if (target.initialize_directions & get_dir(target,src))
+			if(target.initialize_directions & get_dir(target,src))
 				node2 = target
 				break
 		for(var/obj/machinery/atmospherics/target in get_step(src,node3_dir))
-			if (target.initialize_directions & get_dir(target,src))
+			if(target.initialize_directions & get_dir(target,src))
 				node3 = target
 				break
 
 	update_icon(animation)
-		if (animation)
+		if(animation)
 			flick("tvalvem[src.state][!src.state]",src)
 		else
 			icon_state = "tvalvem[state]"
@@ -390,7 +390,7 @@ obj/machinery/atmospherics/tvalve/mirrored
 			return src.attack_hand(user)
 
 		attack_hand(mob/user as mob)
-			if (!src.allowed(user))
+			if(!src.allowed(user))
 				user << "\red Access denied."
 				return
 			..()
@@ -401,7 +401,7 @@ obj/machinery/atmospherics/tvalve/mirrored
 			set_frequency(new_frequency)
 				radio_controller.remove_object(src, frequency)
 				frequency = new_frequency
-				if (frequency)
+				if(frequency)
 					radio_connection = radio_controller.add_object(src, frequency, RADIO_ATMOSIA)
 
 		var/frequency = 0
@@ -410,24 +410,24 @@ obj/machinery/atmospherics/tvalve/mirrored
 
 		initialize()
 			..()
-			if (frequency)
+			if(frequency)
 				set_frequency(frequency)
 
 		receive_signal(datum/signal/signal)
-			if (!signal.data["tag"] || (signal.data["tag"] != id))
+			if(!signal.data["tag"] || (signal.data["tag"] != id))
 				return 0
 
 			switch(signal.data["command"])
-				if ("valve_open")
-					if (!state)
+				if("valve_open")
+					if(!state)
 						go_to_side()
 
-				if ("valve_close")
-					if (state)
+				if("valve_close")
+					if(state)
 						go_straight()
 
-				if ("valve_toggle")
-					if (state)
+				if("valve_toggle")
+					if(state)
 						go_straight()
 					else
 						go_to_side()

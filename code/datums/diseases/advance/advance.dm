@@ -50,18 +50,18 @@ var/list/advance_cures = 	list(
 /datum/disease/advance/New(var/process = 1, var/datum/disease/advance/D)
 
 	// Setup our dictionary if it hasn't already.
-	if (!dictionary_symptoms.len)
+	if(!dictionary_symptoms.len)
 		for(var/symp in list_symptoms)
 			var/datum/symptom/S = new symp
 			dictionary_symptoms[S.id] = symp
 
-	if (!istype(D))
+	if(!istype(D))
 		D = null
 	// Generate symptoms if we weren't given any.
 
-	if (!symptoms || !symptoms.len)
+	if(!symptoms || !symptoms.len)
 
-		if (!D || !D.symptoms || !D.symptoms.len)
+		if(!D || !D.symptoms || !D.symptoms.len)
 			symptoms = GenerateSymptoms()
 		else
 			for(var/datum/symptom/S in D.symptoms)
@@ -72,7 +72,7 @@ var/list/advance_cures = 	list(
 	return
 
 /datum/disease/advance/Del()
-	if (processing)
+	if(processing)
 		for(var/datum/symptom/S in symptoms)
 			S.End(src)
 	..()
@@ -80,9 +80,9 @@ var/list/advance_cures = 	list(
 // Randomly pick a symptom to activate.
 /datum/disease/advance/stage_act()
 	..()
-	if (symptoms && symptoms.len)
+	if(symptoms && symptoms.len)
 
-		if (!processing)
+		if(!processing)
 			processing = 1
 			for(var/datum/symptom/S in symptoms)
 				S.Start(src)
@@ -95,18 +95,18 @@ var/list/advance_cures = 	list(
 // Compares type then ID.
 /datum/disease/advance/IsSame(var/datum/disease/advance/D)
 
-	if (!(istype(D, /datum/disease/advance)))
+	if(!(istype(D, /datum/disease/advance)))
 		return 0
 
-	if (src.GetDiseaseID() != D.GetDiseaseID())
+	if(src.GetDiseaseID() != D.GetDiseaseID())
 		return 0
 	return 1
 
 // To add special resistances.
 /datum/disease/advance/cure(var/resistance=1)
-	if (affected_mob)
+	if(affected_mob)
 		var/id = "[GetDiseaseID()]"
-		if (resistance && !(id in affected_mob.resistances))
+		if(resistance && !(id in affected_mob.resistances))
 			affected_mob.resistances[id] = id
 		affected_mob.viruses -= src		//remove the datum from the list
 	del(src)	//delete the datum to stop it processing
@@ -124,14 +124,14 @@ var/list/advance_cures = 	list(
 
 // Mix the symptoms of two diseases (the src and the argument)
 /datum/disease/advance/proc/Mix(var/datum/disease/advance/D)
-	if (!(src.IsSame(D)))
+	if(!(src.IsSame(D)))
 		var/list/possible_symptoms = shuffle(D.symptoms)
 		for(var/datum/symptom/S in possible_symptoms)
 			AddSymptom(new S.type)
 
 /datum/disease/advance/proc/HasSymptom(var/datum/symptom/S)
 	for(var/datum/symptom/symp in symptoms)
-		if (symp.id == S.id)
+		if(symp.id == S.id)
 			return 1
 	return 0
 
@@ -144,17 +144,17 @@ var/list/advance_cures = 	list(
 	var/list/possible_symptoms = list()
 	for(var/symp in list_symptoms)
 		var/datum/symptom/S = new symp
-		if (S.level <= type_level_limit)
-			if (!HasSymptom(S))
+		if(S.level <= type_level_limit)
+			if(!HasSymptom(S))
 				possible_symptoms += S
 
-	if (!possible_symptoms.len)
+	if(!possible_symptoms.len)
 		return
 		//error("Advance Disease - We weren't able to get any possible symptoms in GenerateSymptoms([type_level_limit], [amount_get])")
 
 	// Random chance to get more than one symptom
 	var/number_of = amount_get
-	if (!amount_get)
+	if(!amount_get)
 		number_of = 1
 		while(prob(20))
 			number_of += 1
@@ -171,8 +171,8 @@ var/list/advance_cures = 	list(
 	var/list/properties = GenerateProperties()
 	AssignProperties(properties)
 
-	if (!archive_diseases[GetDiseaseID()])
-		if (new_name)
+	if(!archive_diseases[GetDiseaseID()])
+		if(new_name)
 			AssignName()
 		archive_diseases[GetDiseaseID()] = src // So we don't infinite loop
 		archive_diseases[GetDiseaseID()] = new /datum/disease/advance(0, src, 1)
@@ -183,7 +183,7 @@ var/list/advance_cures = 	list(
 //Generate disease properties based on the effects. Returns an associated list.
 /datum/disease/advance/proc/GenerateProperties()
 
-	if (!symptoms || !symptoms.len)
+	if(!symptoms || !symptoms.len)
 		CRASH("We did not have any symptoms before generating properties.")
 		return
 
@@ -202,7 +202,7 @@ var/list/advance_cures = 	list(
 // Assign the properties that are in the list.
 /datum/disease/advance/proc/AssignProperties(var/list/properties = list())
 
-	if (properties && properties.len)
+	if(properties && properties.len)
 
 		hidden = list( (properties["stealth"] > 2), (properties["stealth"] > 3) )
 		// The more symptoms we have, the less transmittable it is but some symptoms can make up for it.
@@ -220,15 +220,15 @@ var/list/advance_cures = 	list(
 /datum/disease/advance/proc/SetSpread(var/spread_id)
 	switch(spread_id)
 
-		if (NON_CONTAGIOUS)
+		if(NON_CONTAGIOUS)
 			spread = "None"
-		if (SPECIAL)
+		if(SPECIAL)
 			spread = "None"
-		if (CONTACT_GENERAL, CONTACT_HANDS, CONTACT_FEET)
+		if(CONTACT_GENERAL, CONTACT_HANDS, CONTACT_FEET)
 			spread = "On contact"
-		if (AIRBORNE)
+		if(AIRBORNE)
 			spread = "Airborne"
-		if (BLOOD)
+		if(BLOOD)
 			spread = "Blood"
 
 	spread_type = spread_id
@@ -238,17 +238,17 @@ var/list/advance_cures = 	list(
 
 	switch(level_sev)
 
-		if (-INFINITY to 0)
+		if(-INFINITY to 0)
 			severity = "Non-Threat"
-		if (1)
+		if(1)
 			severity = "Minor"
-		if (2)
+		if(2)
 			severity = "Medium"
-		if (3)
+		if(3)
 			severity = "Harmful"
-		if (4)
+		if(4)
 			severity = "Dangerous!"
-		if (5 to INFINITY)
+		if(5 to INFINITY)
 			severity = "BIOHAZARD THREAT!"
 		else
 			severity = "Unknown"
@@ -256,7 +256,7 @@ var/list/advance_cures = 	list(
 
 // Will generate a random cure, the less resistance the symptoms have, the harder the cure.
 /datum/disease/advance/proc/GenerateCure(var/list/properties = list())
-	if (properties && properties.len)
+	if(properties && properties.len)
 		var/res = Clamp(properties["resistance"] - (symptoms.len / 2), 1, advance_cures.len)
 		//world << "Res = [res]"
 		cure_id = advance_cures[res]
@@ -271,16 +271,16 @@ var/list/advance_cures = 	list(
 // Randomly generate a symptom, has a chance to lose or gain a symptom.
 /datum/disease/advance/proc/Evolve(var/level = 2)
 	var/s = safepick(GenerateSymptoms(level, 1))
-	if (s)
+	if(s)
 		AddSymptom(s)
 		Refresh(1)
 	return
 
 // Randomly remove a symptom.
 /datum/disease/advance/proc/Devolve()
-	if (symptoms.len > 1)
+	if(symptoms.len > 1)
 		var/s = safepick(symptoms)
-		if (s)
+		if(s)
 			RemoveSymptom(s)
 			Refresh(1)
 	return
@@ -306,10 +306,10 @@ var/list/advance_cures = 	list(
 // we take a random symptom away and add the new one.
 /datum/disease/advance/proc/AddSymptom(var/datum/symptom/S)
 
-	if (HasSymptom(S))
+	if(HasSymptom(S))
 		return
 
-	if (symptoms.len < 5 + rand(-1, 1))
+	if(symptoms.len < 5 + rand(-1, 1))
 		symptoms += S
 	else
 		RemoveSymptom(pick(symptoms))
@@ -337,9 +337,9 @@ var/list/advance_cures = 	list(
 	for(var/datum/disease/advance/A in D_list)
 		diseases += A.Copy()
 
-	if (!diseases.len)
+	if(!diseases.len)
 		return null
-	if (diseases.len <= 1)
+	if(diseases.len <= 1)
 		return pick(diseases) // Just return the only entry.
 
 	var/i = 0
@@ -361,15 +361,15 @@ var/list/advance_cures = 	list(
 	return to_return
 
 /proc/SetViruses(var/datum/reagent/R, var/list/data)
-	if (data)
+	if(data)
 		var/list/preserve = list()
-		if (istype(data) && data["viruses"])
+		if(istype(data) && data["viruses"])
 			for(var/datum/disease/A in data["viruses"])
 				preserve += A.Copy()
 			R.data = data.Copy()
 		else
 			R.data = data
-		if (preserve.len)
+		if(preserve.len)
 			R.data["viruses"] = preserve
 
 /proc/AdminCreateVirus(var/mob/user)
@@ -383,16 +383,16 @@ var/list/advance_cures = 	list(
 	symptoms += list_symptoms.Copy()
 	do
 		var/symptom = input(user, "Choose a symptom to add ([i] remaining)", "Choose a Symptom") in symptoms
-		if (istext(symptom))
+		if(istext(symptom))
 			i = 0
-		else if (ispath(symptom))
+		else if(ispath(symptom))
 			var/datum/symptom/S = new symptom
-			if (!D.HasSymptom(S))
+			if(!D.HasSymptom(S))
 				D.symptoms += S
 				i -= 1
 	while(i > 0)
 
-	if (D.symptoms.len > 0)
+	if(D.symptoms.len > 0)
 
 		var/new_name = input(user, "Name your new disease.", "New Name")
 		D.AssignName(new_name)
@@ -402,9 +402,9 @@ var/list/advance_cures = 	list(
 			AD.Refresh()
 
 		for(var/mob/living/carbon/human/H in shuffle(living_mob_list))
-			if (H.z != 1)
+			if(H.z != 1)
 				continue
-			if (!H.has_disease(D))
+			if(!H.has_disease(D))
 				H.contract_disease(D, 1)
 				break
 

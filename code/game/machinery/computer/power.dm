@@ -17,30 +17,30 @@
 	..()
 	var/obj/structure/cable/attached = null
 	var/turf/T = loc
-	if (isturf(T))
+	if(isturf(T))
 		attached = locate() in T
-	if (attached)
+	if(attached)
 		powernet = attached.get_powernet()
 
 
 /obj/machinery/power/monitor/attack_ai(mob/user)
 	add_fingerprint(user)
 
-	if (stat & (BROKEN|NOPOWER))
+	if(stat & (BROKEN|NOPOWER))
 		return
 	interact(user)
 
 /obj/machinery/power/monitor/attack_hand(mob/user)
 	add_fingerprint(user)
 
-	if (stat & (BROKEN|NOPOWER))
+	if(stat & (BROKEN|NOPOWER))
 		return
 	interact(user)
 
 /obj/machinery/power/monitor/attackby(I as obj, user as mob)
-	if (istype(I, /obj/item/weapon/screwdriver))
+	if(istype(I, /obj/item/weapon/screwdriver))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
-		if (do_after(user, 20))
+		if(do_after(user, 20))
 			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
@@ -83,13 +83,13 @@
 	t += "<BR><HR><A href='?src=\ref[src];update=1'>Refresh</A>"
 	t += "<BR><HR><A href='?src=\ref[src];close=1'>Close</A>"
 
-	if (!powernet)
+	if(!powernet)
 		t += "\red No connection"
 	else
 
 		var/list/L = list()
 		for(var/obj/machinery/power/terminal/term in powernet.nodes)
-			if (istype(term.master, /obj/machinery/power/apc))
+			if(istype(term.master, /obj/machinery/power/apc))
 				var/obj/machinery/power/apc/A = term.master
 				L += A
 
@@ -97,7 +97,7 @@
 
 		t += "<FONT SIZE=-1>"
 
-		if (L.len > 0)
+		if(L.len > 0)
 
 			t += "Area                           Eqp./Lgt./Env.  Load   Cell<HR>"
 
@@ -117,21 +117,21 @@
 
 /obj/machinery/power/monitor/Topic(href, href_list)
 	..()
-	if ( href_list["close"] )
+	if( href_list["close"] )
 		usr << browse(null, "window=powcomp")
 		usr.unset_machine()
 		return
-	if ( href_list["update"] )
+	if( href_list["update"] )
 		src.updateDialog()
 		return
 
 
 /obj/machinery/power/monitor/power_change()
 
-	if (stat & BROKEN)
+	if(stat & BROKEN)
 		icon_state = "broken"
 	else
-		if ( powered() )
+		if( powered() )
 			icon_state = initial(icon_state)
 			stat &= ~NOPOWER
 		else

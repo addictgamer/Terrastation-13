@@ -1,11 +1,11 @@
 proc/createRandomZlevel()
-	if (awaydestinations.len)	//crude, but it saves another var!
+	if(awaydestinations.len)	//crude, but it saves another var!
 		return
 
 	var/list/potentialRandomZlevels = list()
 	world << "\red \b Searching for away missions..."
 	var/list/Lines = file2list("maps/RandomZLevels/fileList.txt")
-	if (!Lines.len)	return
+	if(!Lines.len)	return
 	for (var/t in Lines)
 		if (!t)
 			continue
@@ -34,12 +34,12 @@ proc/createRandomZlevel()
 		potentialRandomZlevels.Add(name)
 
 
-	if (potentialRandomZlevels.len)
+	if(potentialRandomZlevels.len)
 		world << "\red \b Loading away mission..."
 
 		var/map = pick(potentialRandomZlevels)
 		var/file = file(map)
-		if (isfile(file))
+		if(isfile(file))
 			maploader.load_map(file, load_speed = 100)
 
 		for(var/obj/effect/landmark/L in landmarks_list)

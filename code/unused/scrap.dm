@@ -56,9 +56,9 @@
 
 
 	// determine size of pile
-	if (total<=400)
+	if(total<=400)
 		size = 1
-	else if (total<=1600)
+	else if(total<=1600)
 		size = 2
 	else
 		size = 3
@@ -68,21 +68,21 @@
 	var/sizetext = ""
 
 	switch(size)
-		if (1)
+		if(1)
 			sizetext = "A piece of"
-		if (2)
+		if(2)
 			sizetext = "A few pieces of"
-		if (3)
+		if(3)
 			sizetext = "A pile of"
 
 	// determine bloodiness
 	var/bloodtext = ""
 	switch(blood)
-		if (0)
+		if(0)
 			bloodtext = ""
-		if (1)
+		if(1)
 			bloodtext = "blood-stained "
-		if (2)
+		if(2)
 			bloodtext = "bloody "
 
 
@@ -92,31 +92,31 @@
 
 	var/max = 0
 
-	if (m_amt > max)
+	if(m_amt > max)
 		max = m_amt
-	else if (g_amt > max)
+	else if(g_amt > max)
 		max = g_amt
-	else if (w_amt > max)
+	else if(w_amt > max)
 		max = w_amt
 
-	if (max == total)
+	if(max == total)
 		class = 2		// pure
-	else if (max/total > 0.6)
+	else if(max/total > 0.6)
 		class = 1		// mostly
 	else
 		class = 0		// mixed
 
-	if (class>0)
+	if(class>0)
 		var/remain = total - max
-		if (m_amt > remain)
+		if(m_amt > remain)
 			major = "metal"
-		else if (g_amt > remain)
+		else if(g_amt > remain)
 			major = "glass"
 		else
 			major = "waste"
 
 
-		if (class == 1)
+		if(class == 1)
 			desc = "[sizetext] mostly [major] [bloodtext]scrap."
 			classtext = "mostly [major] [bloodtext]"
 		else
@@ -128,7 +128,7 @@
 		classtext = "[bloodtext]mixed"
 		icon_state = "[size]mixed[blood]"
 
-	if (size==0)
+	if(size==0)
 		pixel_x = rand(-5,5)
 		pixel_y = rand(-5,5)
 	else
@@ -136,7 +136,7 @@
 		pixel_y = 0
 
 	// clear or set conduction flag depending on whether scrap is mostly metal
-	if (major=="metal")
+	if(major=="metal")
 		flags |= CONDUCT
 	else
 		flags &= ~CONDUCT
@@ -151,7 +151,7 @@
 	var/total = total()
 	var/other_total = other.total()
 
-	if ( (total + other_total) <= limit )
+	if( (total + other_total) <= limit )
 		m_amt += other.m_amt
 		g_amt += other.g_amt
 		w_amt += other.w_amt
@@ -188,7 +188,7 @@
 
 /obj/item/scrap/proc/remainder(var/limit = MAX_SCRAP)
 	var/total = total()
-	if (total > limit)
+	if(total > limit)
 		var/m = round( m_amt/total * limit, 1)
 		var/g = round( g_amt/total * limit, 1)
 		var/w = round( w_amt/total * limit, 1)
@@ -204,10 +204,10 @@
 
 /obj/item/scrap/CanPass(var/obj/item/scrap/O)
 
-	if (istype(O))
+	if(istype(O))
 
 		src.add_scrap(O)
-		if (O)
+		if(O)
 			return 0		// O still exists if not all could be transfered, so block it
 	return 1
 
@@ -218,7 +218,7 @@
 // attack with hand removes a single piece from a pile
 /obj/item/scrap/attack_hand(mob/user)
 	add_fingerprint(user)
-	if (src.is_single_piece())
+	if(src.is_single_piece())
 		return ..(user)
 	var/obj/item/scrap/S = src.get_single_piece()
 	S.attack_hand(user)
@@ -227,12 +227,12 @@
 
 /obj/item/scrap/attackby(obj/item/I, mob/user)
 	..()
-	if (istype(I, /obj/item/scrap))
+	if(istype(I, /obj/item/scrap))
 		var/obj/item/scrap/S = I
-		if ( (S.total()+src.total() ) > MAX_SCRAP )
+		if( (S.total()+src.total() ) > MAX_SCRAP )
 			user << "The pile is full."
 			return
-		if (ismob(src.loc))		// can't combine scrap in hand
+		if(ismob(src.loc))		// can't combine scrap in hand
 			return
 
 		src.add_scrap(S)
@@ -247,7 +247,7 @@
 // return true if this is a single piece of scrap
 // must be total<=400 and of single composition
 /obj/item/scrap/proc/is_single_piece()
-	if (total() > 400)
+	if(total() > 400)
 		return 0
 
 	var/empty = (m_amt == 0) + (g_amt == 0) + (w_amt == 0)
@@ -264,21 +264,21 @@
 
 	var/amount = 400
 	switch(cmp)
-		if (1)
-			if (m_amt < amount)
+		if(1)
+			if(m_amt < amount)
 				amount = m_amt
 
 			S.set_components(amount, 0, 0)
 			src.set_components(m_amt - amount, g_amt, w_amt)
 
-		if (2)
-			if (g_amt < amount)
+		if(2)
+			if(g_amt < amount)
 				amount = g_amt
 			S.set_components(0, amount, 0)
 			src.set_components(m_amt, g_amt - amount, w_amt)
 
-		if (3)
-			if (w_amt < amount)
+		if(3)
+			if(w_amt < amount)
 				amount = w_amt
 			S.set_components(0, 0, amount)
 			src.set_components(m_amt, g_amt, w_amt - amount)

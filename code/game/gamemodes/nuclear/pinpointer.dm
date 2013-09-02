@@ -14,7 +14,7 @@
 
 
 	attack_self()
-		if (!active)
+		if(!active)
 			active = 1
 			workdisk()
 			usr << "\blue You activate the pinpointer"
@@ -24,28 +24,28 @@
 			usr << "\blue You deactivate the pinpointer"
 
 	proc/workdisk()
-		if (!active) return
-		if (!the_disk)
+		if(!active) return
+		if(!the_disk)
 			the_disk = locate()
-			if (!the_disk)
+			if(!the_disk)
 				icon_state = "pinonnull"
 				return
 		dir = get_dir(src,the_disk)
 		switch(get_dist(src,the_disk))
-			if (0)
+			if(0)
 				icon_state = "pinondirect"
-			if (1 to 8)
+			if(1 to 8)
 				icon_state = "pinonclose"
-			if (9 to 16)
+			if(9 to 16)
 				icon_state = "pinonmedium"
-			if (16 to INFINITY)
+			if(16 to INFINITY)
 				icon_state = "pinonfar"
 		spawn(5) .()
 
 	examine()
 		..()
 		for(var/obj/machinery/nuclearbomb/bomb in world)
-			if (bomb.timing)
+			if(bomb.timing)
 				usr << "Extreme danger.  Arming signal detected.   Time remaining: [bomb.timeleft]"
 
 
@@ -58,13 +58,13 @@
 	var/obj/target = null
 
 	attack_self()
-		if (!active)
+		if(!active)
 			active = 1
-			if (mode == 0)
+			if(mode == 0)
 				workdisk()
-			if (mode == 1)
+			if(mode == 1)
 				worklocation()
-			if (mode == 2)
+			if(mode == 2)
 				workobj()
 			usr << "\blue You activate the pinpointer"
 		else
@@ -74,39 +74,39 @@
 
 
 	proc/worklocation()
-		if (!active)
+		if(!active)
 			return
-		if (!location)
+		if(!location)
 			icon_state = "pinonnull"
 			return
 		dir = get_dir(src,location)
 		switch(get_dist(src,location))
-			if (0)
+			if(0)
 				icon_state = "pinondirect"
-			if (1 to 8)
+			if(1 to 8)
 				icon_state = "pinonclose"
-			if (9 to 16)
+			if(9 to 16)
 				icon_state = "pinonmedium"
-			if (16 to INFINITY)
+			if(16 to INFINITY)
 				icon_state = "pinonfar"
 		spawn(5) .()
 
 
 	proc/workobj()
-		if (!active)
+		if(!active)
 			return
-		if (!target)
+		if(!target)
 			icon_state = "pinonnull"
 			return
 		dir = get_dir(src,target)
 		switch(get_dist(src,target))
-			if (0)
+			if(0)
 				icon_state = "pinondirect"
-			if (1 to 8)
+			if(1 to 8)
 				icon_state = "pinonclose"
-			if (9 to 16)
+			if(9 to 16)
 				icon_state = "pinonmedium"
-			if (16 to INFINITY)
+			if(16 to INFINITY)
 				icon_state = "pinonfar"
 		spawn(5) .()
 
@@ -121,14 +121,14 @@
 	location = null
 
 	switch(alert("Please select the mode you want to put the pinpointer in.", "Pinpointer Mode Select", "Location", "Disk Recovery", "Other Signature"))
-		if ("Location")
+		if("Location")
 			mode = 1
 
 			var/locationx = input(usr, "Please input the x coordinate to search for.", "Location?" , "") as num
-			if (!locationx || !(usr in view(1,src)))
+			if(!locationx || !(usr in view(1,src)))
 				return
 			var/locationy = input(usr, "Please input the y coordinate to search for.", "Location?" , "") as num
-			if (!locationy || !(usr in view(1,src)))
+			if(!locationy || !(usr in view(1,src)))
 				return
 
 			var/turf/Z = get_turf(src)
@@ -140,32 +140,32 @@
 
 			return attack_self()
 
-		if ("Disk Recovery")
+		if("Disk Recovery")
 			mode = 0
 			return attack_self()
 
-		if ("Other Signature")
+		if("Other Signature")
 			mode = 2
 			switch(alert("Search for item signature or DNA fragment?" , "Signature Mode Select" , "" , "Item" , "DNA"))
-				if ("Item")
+				if("Item")
 					var/datum/objective/steal/itemlist
 					itemlist = itemlist // To supress a 'variable defined but not used' error.
 					var/targetitem = input("Select item to search for.", "Item Mode Select","") as null|anything in itemlist.possible_items
-					if (!targetitem)
+					if(!targetitem)
 						return
 					target=locate(itemlist.possible_items[targetitem])
-					if (!target)
+					if(!target)
 						usr << "Failed to locate [targetitem]!"
 						return
 					usr << "You set the pinpointer to locate [targetitem]"
-				if ("DNA")
+				if("DNA")
 					var/DNAstring = input("Input DNA string to search for." , "Please Enter String." , "")
-					if (!DNAstring)
+					if(!DNAstring)
 						return
 					for(var/mob/living/carbon/M in mob_list)
-						if (!M.dna)
+						if(!M.dna)
 							continue
-						if (M.dna.unique_enzymes == DNAstring)
+						if(M.dna.unique_enzymes == DNAstring)
 							target = M
 							break
 
@@ -183,9 +183,9 @@
 
 
 /obj/item/weapon/pinpointer/nukeop/attack_self(mob/user as mob)
-	if (!active)
+	if(!active)
 		active = 1
-		if (!mode)
+		if(!mode)
 			workdisk()
 			user << "<span class='notice'>Authentication Disk Locator active.</span>"
 		else
@@ -198,66 +198,66 @@
 
 
 /obj/item/weapon/pinpointer/nukeop/workdisk()
-	if (!active) return
-	if (mode)		//Check in case the mode changes while operating
+	if(!active) return
+	if(mode)		//Check in case the mode changes while operating
 		worklocation()
 		return
-	if (bomb_set)	//If the bomb is set, lead to the shuttle
+	if(bomb_set)	//If the bomb is set, lead to the shuttle
 		mode = 1	//Ensures worklocation() continues to work
 		worklocation()
 		playsound(loc, 'sound/machines/twobeep.ogg', 50, 1)	//Plays a beep
 		visible_message("Shuttle Locator active.")			//Lets the mob holding it know that the mode has changed
 		return		//Get outta here
-	if (!the_disk)
+	if(!the_disk)
 		the_disk = locate()
-		if (!the_disk)
+		if(!the_disk)
 			icon_state = "pinonnull"
 			return
-//	if (loc.z != the_disk.z)	//If you are on a different z-level from the disk
+//	if(loc.z != the_disk.z)	//If you are on a different z-level from the disk
 //		icon_state = "pinonnull"
 //	else
 	dir = get_dir(src, the_disk)
 	switch(get_dist(src, the_disk))
-		if (0)
+		if(0)
 			icon_state = "pinondirect"
-		if (1 to 8)
+		if(1 to 8)
 			icon_state = "pinonclose"
-		if (9 to 16)
+		if(9 to 16)
 			icon_state = "pinonmedium"
-		if (16 to INFINITY)
+		if(16 to INFINITY)
 			icon_state = "pinonfar"
 
 	spawn(5) .()
 
 
 /obj/item/weapon/pinpointer/nukeop/proc/worklocation()
-	if (!active)	return
-	if (!mode)
+	if(!active)	return
+	if(!mode)
 		workdisk()
 		return
-	if (!bomb_set)
+	if(!bomb_set)
 		mode = 0
 		workdisk()
 		playsound(loc, 'sound/machines/twobeep.ogg', 50, 1)
 		visible_message("<span class='notice'>Authentication Disk Locator active.</span>")
 		return
-	if (!home)
+	if(!home)
 		home = locate()
-		if (!home)
+		if(!home)
 			icon_state = "pinonnull"
 			return
-	if (loc.z != home.z)	//If you are on a different z-level from the shuttle
+	if(loc.z != home.z)	//If you are on a different z-level from the shuttle
 		icon_state = "pinonnull"
 	else
 		dir = get_dir(src, home)
 		switch(get_dist(src, home))
-			if (0)
+			if(0)
 				icon_state = "pinondirect"
-			if (1 to 8)
+			if(1 to 8)
 				icon_state = "pinonclose"
-			if (9 to 16)
+			if(9 to 16)
 				icon_state = "pinonmedium"
-			if (16 to INFINITY)
+			if(16 to INFINITY)
 				icon_state = "pinonfar"
 
 	spawn(5) .()

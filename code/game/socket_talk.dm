@@ -7,15 +7,15 @@
 		..()
 		src.enabled = config.socket_talk
 
-		if (enabled)
+		if(enabled)
 			call("DLLSocket.so","establish_connection")("127.0.0.1","8019")
 
 	proc
 		send_raw(message)
-			if (enabled)
+			if(enabled)
 				return call("DLLSocket.so","send_message")(message)
 		receive_raw()
-			if (enabled)
+			if(enabled)
 				return call("DLLSocket.so","recv_message")()
 		send_log(var/log, var/message)
 			return send_raw("type=log&log=[log]&message=[message]")

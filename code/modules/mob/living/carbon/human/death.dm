@@ -12,10 +12,10 @@
 	animation.master = src
 
 	for(var/datum/organ/external/E in src.organs)
-		if (istype(E, /datum/organ/external/chest))
+		if(istype(E, /datum/organ/external/chest))
 			continue
 		// Only make the limb drop if it's not too damaged
-		if (prob(100 - E.get_damage()))
+		if(prob(100 - E.get_damage()))
 			// Override the current limb status and don't cause an explosion
 			E.droplimb(1,1)
 
@@ -23,8 +23,8 @@
 	hgibs(loc, viruses, dna)
 
 	spawn(15)
-		if (animation)	del(animation)
-		if (src)			del(src)
+		if(animation)	del(animation)
+		if(src)			del(src)
 
 /mob/living/carbon/human/dust()
 	death(1)
@@ -43,13 +43,13 @@
 	new /obj/effect/decal/remains/human(loc)
 
 	spawn(15)
-		if (animation)	del(animation)
-		if (src)			del(src)
+		if(animation)	del(animation)
+		if(src)			del(src)
 
 
 /mob/living/carbon/human/death(gibbed)
-	if (stat == DEAD)	return
-	if (healths)		healths.icon_state = "health5"
+	if(stat == DEAD)	return
+	if(healths)		healths.icon_state = "health5"
 	stat = DEAD
 	dizziness = 0
 	jitteriness = 0
@@ -59,13 +59,13 @@
 	var/mob/living/simple_animal/borer/B
 
 	for(var/I in head.implants)
-		if (istype(I,/mob/living/simple_animal/borer))
+		if(istype(I,/mob/living/simple_animal/borer))
 			B = I
-	if (B)
-		if (!B.ckey && ckey && B.controlling)
+	if(B)
+		if(!B.ckey && ckey && B.controlling)
 			B.ckey = ckey
 			B.controlling = 0
-		if (B.host_brain.ckey)
+		if(B.host_brain.ckey)
 			ckey = B.host_brain.ckey
 			B.host_brain.ckey = null
 			B.host_brain.name = "host brain"
@@ -74,40 +74,40 @@
 		verbs -= /mob/living/carbon/human/proc/release_control
 
 	//Check for heist mode kill count.
-	if (ticker.mode && ( istype( ticker.mode,/datum/game_mode/heist) ) )
+	if(ticker.mode && ( istype( ticker.mode,/datum/game_mode/heist) ) )
 		//Check for last assailant's mutantrace.
-		/*if ( LAssailant && ( istype( LAssailant,/mob/living/carbon/human ) ) )
+		/*if( LAssailant && ( istype( LAssailant,/mob/living/carbon/human ) ) )
 			var/mob/living/carbon/human/V = LAssailant
 			if (V.dna && (V.dna.mutantrace == "vox"))*/ //Not currently feasible due to terrible LAssailant tracking.
 		//world << "Vox kills: [vox_kills]"
 		vox_kills++ //Bad vox. Shouldn't be killing humans.
 
-	if (!gibbed)
+	if(!gibbed)
 		emote("deathgasp") //let the world KNOW WE ARE DEAD
 
 		//For ninjas exploding when they die.
-		if ( istype(wear_suit, /obj/item/clothing/suit/space/space_ninja) && wear_suit:s_initialized )
+		if( istype(wear_suit, /obj/item/clothing/suit/space/space_ninja) && wear_suit:s_initialized )
 			src << browse(null, "window=spideros")//Just in case.
 			var/location = loc
 			explosion(location, 0, 0, 3, 4)
 
 		update_canmove()
-		if (client)	blind.layer = 0
+		if(client)	blind.layer = 0
 
 	tod = worldtime2text()		//weasellos time of death patch
-	if (mind)	mind.store_memory("Time of death: [tod]", 0)
-	if (ticker && ticker.mode)
+	if(mind)	mind.store_memory("Time of death: [tod]", 0)
+	if(ticker && ticker.mode)
 //		world.log << "k"
 		sql_report_death(src)
 		ticker.mode.check_win()		//Calls the rounds wincheck, mainly for wizard, malf, and changeling now
 	return ..(gibbed)
 
 /mob/living/carbon/human/proc/makeSkeleton()
-	if (SKELETON in src.mutations)	return
+	if(SKELETON in src.mutations)	return
 
-	if (f_style)
+	if(f_style)
 		f_style = "Shaved"
-	if (h_style)
+	if(h_style)
 		h_style = "Bald"
 	update_hair(0)
 
@@ -118,11 +118,11 @@
 	return
 
 /mob/living/carbon/human/proc/ChangeToHusk()
-	if (HUSK in mutations)	return
+	if(HUSK in mutations)	return
 
-	if (f_style)
+	if(f_style)
 		f_style = "Shaved"		//we only change the icon_state of the hair datum, so it doesn't mess up their UI/UE
-	if (h_style)
+	if(h_style)
 		h_style = "Bald"
 	update_hair(0)
 

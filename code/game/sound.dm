@@ -22,31 +22,31 @@
 
 	for (var/A in range(world.view+extrarange, source))       // Plays for people in range.
 
-		if (ismob(A))
+		if(ismob(A))
 			var/mob/M = A
 			var/mob/M2 = locate(/mob/, M)
 			if (M2 && M2.client)
-				if (M2.ear_deaf <= 0 || !M.ear_deaf)
-					if (isturf(source))
+				if(M2.ear_deaf <= 0 || !M.ear_deaf)
+					if(isturf(source))
 						var/dx = source.x - M2.x
 						S.pan = max(-100, min(100, dx/8.0 * 100))
 
 					M2 << S
 
 			if (M.client)
-				if (M.ear_deaf <= 0 || !M.ear_deaf)
-					if (isturf(source))
+				if(M.ear_deaf <= 0 || !M.ear_deaf)
+					if(isturf(source))
 						var/dx = source.x - M.x
 						S.pan = max(-100, min(100, dx/8.0 * 100))
 
 					M << S
 
-		if (istype(A, /obj/structure/closet))
+		if(istype(A, /obj/structure/closet))
 			var/obj/O = A
 			for(var/mob/M in O)
 				if (M.client)
-					if (M.ear_deaf <= 0 || !M.ear_deaf)
-						if (isturf(source))
+					if(M.ear_deaf <= 0 || !M.ear_deaf)
+						if(isturf(source))
 							var/dx = source.x - M.x
 							S.pan = max(-100, min(100, dx/8.0 * 100))
 
@@ -55,8 +55,8 @@
 	for(var/obj/mecha/mech in range(world.view+extrarange, source))
 		var/mob/M = mech.occupant
 		if (M && M.client)
-			if (M.ear_deaf <= 0 || !M.ear_deaf)
-				if (isturf(source))
+			if(M.ear_deaf <= 0 || !M.ear_deaf)
+				if(isturf(source))
 					var/dx = source.x - M.x
 					S.pan = max(-100, min(100, dx/8.0 * 100))
 
@@ -64,7 +64,7 @@
 																		// Now plays for people in lockers!  -- Polymorph
 
 /mob/proc/playsound_local(var/atom/source, soundin, vol as num, vary, extrarange as num)
-	if (!src.client || ear_deaf > 0)	return
+	if(!src.client || ear_deaf > 0)	return
 	switch(soundin)
 		if ("shatter") soundin = pick('sound/effects/Glassbr1.ogg','sound/effects/Glassbr2.ogg','sound/effects/Glassbr3.ogg')
 		if ("explosion") soundin = pick('sound/effects/Explosion1.ogg','sound/effects/Explosion2.ogg')
@@ -82,13 +82,13 @@
 
 	if (vary)
 		S.frequency = rand(32000, 55000)
-	if (isturf(source))
+	if(isturf(source))
 		var/dx = source.x - src.x
 		S.pan = max(-100, min(100, dx/8.0 * 100))
 
 	src << S
 
 /client/proc/playtitlemusic()
-	if (!ticker || !ticker.login_music)	return
-	if (prefs.toggles & SOUND_LOBBY)
+	if(!ticker || !ticker.login_music)	return
+	if(prefs.toggles & SOUND_LOBBY)
 		src << sound(ticker.login_music, repeat = 0, wait = 0, volume = 85, channel = 1) // MAD JAMS

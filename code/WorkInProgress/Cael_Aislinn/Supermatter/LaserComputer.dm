@@ -11,7 +11,7 @@
 	New()
 		spawn(1)
 			for(var/obj/machinery/zero_point_emitter/las in world)
-				if (las.id == src.id)
+				if(las.id == src.id)
 					lasers += las
 
 	process()
@@ -50,13 +50,13 @@
 
 	var/obj/machinery/engine/laser/laser = src.laser[1]
 
-	if (!laser)
+	if(!laser)
 		t += "\red No laser found"
 	else
 
 
 		t += "Power level:  <A href = '?src=\ref[src];input=-4'>-</A> <A href = '?src=\ref[src];input=-3'>-</A> <A href = '?src=\ref[src];input=-2'>-</A> <A href = '?src=\ref[src];input=-1'>-</A> [add_lspace(laser.power,5)] <A href = '?src=\ref[src];input=1'>+</A> <A href = '?src=\ref[src];input=2'>+</A> <A href = '?src=\ref[src];input=3'>+</A> <A href = '?src=\ref[src];input=4'>+</A><BR>"
-		if (advanced)
+		if(advanced)
 			t += "Frequency:  <A href = '?src=\ref[src];freq=-10000'>-</A> <A href = '?src=\ref[src];freq=-1000'>-</A> [add_lspace(laser.freq,5)] <A href = '?src=\ref[src];freq=1000'>+</A> <A href = '?src=\ref[src];freq=10000'>+</A><BR>"
 
 		t += "Output: [laser.on ? "<B>Online</B> <A href = '?src=\ref[src];online=1'>Offline</A>" : "<A href = '?src=\ref[src];online=1'>Online</A> <B>Offline</B> "]<BR>"
@@ -69,12 +69,12 @@
 
 /obj/machinery/computer/lasercon/Topic(href, href_list)
 	..()
-	if ( href_list["close"] )
+	if( href_list["close"] )
 		usr << browse(null, "window=laser_control")
 		usr.machine = null
 		return
 
-	else if ( href_list["input"] )
+	else if( href_list["input"] )
 		var/i = text2num(href_list["input"])
 		var/d = i
 		for(var/obj/machinery/zero_point_emitter/laser in lasers)
@@ -84,11 +84,11 @@
 			laser.energy = new_power
 			//
 			src.updateDialog()
-	else if ( href_list["online"] )
+	else if( href_list["online"] )
 		var/obj/machinery/zero_point_emitter/laser = href_list["online"]
 		laser.active = !laser.active
 		src.updateDialog()
-	else if ( href_list["freq"] )
+	else if( href_list["freq"] )
 		var/amt = text2num(href_list["freq"])
 		for(var/obj/machinery/zero_point_emitter/laser in lasers)
 			var/new_freq = laser.frequency + amt
@@ -100,7 +100,7 @@
 
 /*
 /obj/machinery/computer/lasercon/process()
-	if (!(stat & (NOPOWER|BROKEN)) )
+	if(!(stat & (NOPOWER|BROKEN)) )
 		use_power(250)
 
 	//src.updateDialog()
@@ -109,10 +109,10 @@
 /*
 /obj/machinery/computer/lasercon/power_change()
 
-	if (stat & BROKEN)
+	if(stat & BROKEN)
 		icon_state = "broken"
 	else
-		if ( powered() )
+		if( powered() )
 			icon_state = initial(icon_state)
 			stat &= ~NOPOWER
 		else

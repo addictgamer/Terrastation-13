@@ -200,7 +200,7 @@
 			user.show_message("\blue The analyzer is now unsecured!", 1)
 		src.part2.secured = src.status
 		src.add_fingerprint(user)
-	if (( istype(W, /obj/item/clothing/suit/armor/vest) ) && src.status)
+	if(( istype(W, /obj/item/clothing/suit/armor/vest) ) && src.status)
 		var/obj/item/assembly/a_i_a/R = new
 		R.part1 = part1
 		R.part1.master = R
@@ -630,7 +630,7 @@
 /obj/item/assembly/m_i_ptank/Bump(atom/O)
 	spawn(0)
 		//world << "miptank bumped into [O]"
-		if (src.part1.secured)
+		if(src.part1.secured)
 			//world << "sending signal"
 			receive_signal()
 		else
@@ -638,10 +638,10 @@
 	..()
 
 /obj/item/assembly/m_i_ptank/proc/prox_check()
-	if (!part1 || !part1.secured)
+	if(!part1 || !part1.secured)
 		return
 	for(var/atom/A in view(1, src.loc))
-		if (A!=src && !istype(A, /turf/space) && !isarea(A))
+		if(A!=src && !istype(A, /turf/space) && !isarea(A))
 			//world << "[A]:[A.type] was sensed"
 			src.part1.sense()
 			break
@@ -729,7 +729,7 @@
 		//world << "sent ignite() to [src.part3]"
 		src.part3.ignite()
 	else
-		if (!src.status)
+		if(!src.status)
 			src.part3.release()
 			src.part1.secured = 0.0
 
@@ -737,7 +737,7 @@
 
 /obj/item/assembly/m_i_ptank/emp_act(severity)
 
-	if (istype(part3,/obj/item/weapon/tank/plasma) && prob(100/severity))
+	if(istype(part3,/obj/item/weapon/tank/plasma) && prob(100/severity))
 		part3.ignite()
 	..()
 
@@ -794,7 +794,7 @@
 		message_admins("[key_name_admin(user)] welded a time bomb. Temp: [src.part3.air_contents.temperature-T0C]")
 		user.show_message("\blue A pressure hole has been bored to the plasma tank valve. The plasma tank can now be ignited.", 1)
 	else
-		if (src)
+		if(src)
 			src.status = 0
 			bombers += "[key_name(user)] unwelded a time bomb. Temp: [src.part3.air_contents.temperature-T0C]"
 			user << "\blue The hole has been closed."
@@ -818,12 +818,12 @@
 		//world << "sent ignite() to [src.part3]"
 		src.part3.ignite()
 	else
-		if (!src.status)
+		if(!src.status)
 			src.part3.release()
 	return
 
 /obj/item/assembly/t_i_ptank/emp_act(severity)
-	if (istype(part3,/obj/item/weapon/tank/plasma) && prob(100/severity))
+	if(istype(part3,/obj/item/weapon/tank/plasma) && prob(100/severity))
 		part3.ignite()
 	..()
 
@@ -882,7 +882,7 @@
 	return
 
 /obj/item/assembly/r_i_ptank/emp_act(severity)
-	if (istype(part3,/obj/item/weapon/tank/plasma) && prob(100/severity))
+	if(istype(part3,/obj/item/weapon/tank/plasma) && prob(100/severity))
 		part3.ignite()
 	..()
 
@@ -943,7 +943,7 @@
 		//world << "sent ignite() to [src.part3]"
 		src.part3.ignite()
 	else
-		if (!src.status)
+		if(!src.status)
 			src.part3.release()
 	return
 

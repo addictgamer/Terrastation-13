@@ -10,9 +10,9 @@
 		set name = "Toggle Magboots"
 		set category = "Object"
 		set src in usr
-		if (usr.stat)
+		if(usr.stat)
 			return
-		if (src.magpulse)
+		if(src.magpulse)
 			src.flags &= ~NOSLIP
 			src.slowdown = SHOES_SLOWDOWN
 			src.magpulse = 0
@@ -31,6 +31,6 @@
 		set src in view()
 		..()
 		var/state = "disabled"
-		if (src.flags&NOSLIP)
+		if(src.flags&NOSLIP)
 			state = "enabled"
 		usr << "Its mag-pulse traction system appears to be [state]."

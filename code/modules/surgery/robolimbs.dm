@@ -149,7 +149,7 @@
 		user.visible_message("\blue [user] has attached [tool] where [target]'s [affected.display_name] used to be.",	\
 		"\blue You have attached [tool] where [target]'s [affected.display_name] used to be.")
 		affected.robotize()
-		if (L.sabotaged)
+		if(L.sabotaged)
 			affected.sabotaged = 1
 		else
 			affected.sabotaged = 0

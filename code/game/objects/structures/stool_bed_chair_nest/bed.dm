@@ -40,13 +40,13 @@
 	return
 
 /obj/structure/stool/bed/MouseDrop_T(mob/M as mob, mob/user as mob)
-	if (!istype(M)) return
+	if(!istype(M)) return
 	buckle_mob(M, user)
 	return
 
 /obj/structure/stool/bed/proc/unbuckle()
-	if (buckled_mob)
-		if (buckled_mob.buckled == src)	//this is probably unneccesary, but it doesn't hurt
+	if(buckled_mob)
+		if(buckled_mob.buckled == src)	//this is probably unneccesary, but it doesn't hurt
 			buckled_mob.buckled = null
 			buckled_mob.anchored = initial(buckled_mob.anchored)
 			buckled_mob.update_canmove()
@@ -54,9 +54,9 @@
 	return
 
 /obj/structure/stool/bed/proc/manual_unbuckle(mob/user as mob)
-	if (buckled_mob)
-		if (buckled_mob.buckled == src)
-			if (buckled_mob != user)
+	if(buckled_mob)
+		if(buckled_mob.buckled == src)
+			if(buckled_mob != user)
 				buckled_mob.visible_message(\
 					"\blue [buckled_mob.name] was unbuckled by [user.name]!",\
 					"You were unbuckled from [src] by [user.name].",\
@@ -123,8 +123,8 @@
 
 /obj/structure/stool/bed/roller/Move()
 	..()
-	if (buckled_mob)
-		if (buckled_mob.buckled == src)
+	if(buckled_mob)
+		if(buckled_mob.buckled == src)
 			buckled_mob.loc = src.loc
 		else
 			buckled_mob = null
@@ -139,8 +139,8 @@
 	return
 
 /obj/structure/stool/bed/roller/manual_unbuckle(mob/user as mob)
-	if (buckled_mob)
-		if (buckled_mob.buckled == src)	//this is probably unneccesary, but it doesn't hurt
+	if(buckled_mob)
+		if(buckled_mob.buckled == src)	//this is probably unneccesary, but it doesn't hurt
 			buckled_mob.pixel_y = 0
 			buckled_mob.anchored = initial(buckled_mob.anchored)
 			buckled_mob.buckled = null
@@ -153,9 +153,9 @@
 
 /obj/structure/stool/bed/roller/MouseDrop(over_object, src_location, over_location)
 	..()
-	if ((over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
-		if (!ishuman(usr))	return
-		if (buckled_mob)	return 0
+	if((over_object == usr && (in_range(src, usr) || usr.contents.Find(src))))
+		if(!ishuman(usr))	return
+		if(buckled_mob)	return 0
 		visible_message("[usr] collapses \the [src.name]")
 		new/obj/item/roller(get_turf(src))
 		spawn(0)

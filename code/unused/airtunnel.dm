@@ -99,16 +99,16 @@
 
 /obj/machinery/at_indicator/ex_act(severity)
 	switch(severity)
-		if (1.0)
+		if(1.0)
 			del(src)
 			return
-		if (2.0)
+		if(2.0)
 			if (prob(50))
 				for(var/x in src.verbs)
 					src.verbs -= x
 				src.icon_state = "reader_broken"
 				stat |= BROKEN
-		if (3.0)
+		if(3.0)
 			if (prob(25))
 				for(var/x in src.verbs)
 					src.verbs -= x
@@ -125,7 +125,7 @@
 		stat |= BROKEN
 
 /obj/machinery/at_indicator/proc/update_icon()
-	if (stat & (BROKEN|NOPOWER))
+	if(stat & (BROKEN|NOPOWER))
 		icon_state = "reader_broken"
 		return
 
@@ -136,7 +136,7 @@
 		if (SS13_airtunnel.operating == 2)
 			status = "e"
 		else
-			if (!SS13_airtunnel.connectors)
+			if(!SS13_airtunnel.connectors)
 				return
 			var/obj/move/airtunnel/connector/C = pick(SS13_airtunnel.connectors)
 			if (C.current == C)
@@ -150,7 +150,7 @@
 	return
 
 /obj/machinery/at_indicator/process()
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		src.update_icon()
 		return
 	use_power(5, ENVIRON)
@@ -164,7 +164,7 @@ obj/machinery/computer/airtunnel/attack_ai(user as mob)
 	return src.attack_hand(user)
 
 /obj/machinery/computer/airtunnel/attack_hand(var/mob/user as mob)
-	if (..())
+	if(..())
 		return
 
 	var/dat = "<HTML><BODY><TT><B>Air Tunnel Controls</B><BR>"
@@ -187,13 +187,13 @@ obj/machinery/computer/airtunnel/attack_ai(user as mob)
 	dat += text("<BR><B>Air Level:</B> []<BR>", (SS13_airtunnel.air_stat ? "Acceptable" : "DANGEROUS"))
 	dat += "<B>Air System Status:</B> "
 	switch(SS13_airtunnel.siphon_status)
-		if (0.0)
+		if(0.0)
 			dat += "Stopped "
-		if (1.0)
+		if(1.0)
 			dat += "Siphoning (Siphons only) "
-		if (2.0)
+		if(2.0)
 			dat += "Regulating (BOTH) "
-		if (3.0)
+		if(3.0)
 			dat += "RELEASING MAX (Siphons only) "
 		else
 	dat += text("<A href='?src=\ref[];refresh=1'>(Refresh)</A><BR>", src)
@@ -204,11 +204,11 @@ obj/machinery/computer/airtunnel/attack_ai(user as mob)
 	return
 
 /obj/machinery/computer/airtunnel/proc/update_icon()
-	if (stat & BROKEN)
+	if(stat & BROKEN)
 		icon_state = "broken"
 		return
 
-	if (stat & NOPOWER)
+	if(stat & NOPOWER)
 		icon_state = "c_unpowered"
 		return
 
@@ -232,14 +232,14 @@ obj/machinery/computer/airtunnel/attack_ai(user as mob)
 
 /obj/machinery/computer/airtunnel/process()
 	src.update_icon()
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		return
 	use_power(250)
 	src.updateUsrDialog()
 	return
 
 /obj/machinery/computer/airtunnel/Topic(href, href_list)
-	if (..())
+	if(..())
 		return
 
 	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf)) || (istype(usr, /mob/living/silicon))))
@@ -277,7 +277,7 @@ obj/machinery/computer/airtunnel/attack_ai(user as mob)
 	return src.attack_hand(user)
 
 /obj/machinery/sec_lock/attack_hand(var/mob/user as mob)
-	if (..())
+	if(..())
 		return
 	use_power(10)
 
@@ -307,7 +307,7 @@ obj/machinery/computer/airtunnel/attack_ai(user as mob)
 	return
 
 /obj/machinery/sec_lock/Topic(href, href_list)
-	if (..())
+	if(..())
 		return
 	if ((!( src.d1 ) || !( src.d2 )))
 		usr << "\red Error: Cannot interface with door security!"
@@ -384,19 +384,19 @@ obj/machinery/computer/airtunnel/attack_ai(user as mob)
 
 /datum/air_tunnel/proc/siphons()
 	switch(src.siphon_status)
-		if (0.0)
+		if(0.0)
 			for(var/obj/machinery/atmoalter/siphs/S in locate(/area/airtunnel1))
 				S.t_status = 3
-		if (1.0)
+		if(1.0)
 			for(var/obj/machinery/atmoalter/siphs/fullairsiphon/S in locate(/area/airtunnel1))
 				S.t_status = 2
 				S.t_per = 1000000.0
 			for(var/obj/machinery/atmoalter/siphs/scrubbers/S in locate(/area/airtunnel1))
 				S.t_status = 3
-		if (2.0)
+		if(2.0)
 			for(var/obj/machinery/atmoalter/siphs/S in locate(/area/airtunnel1))
 				S.t_status = 4
-		if (3.0)
+		if(3.0)
 			for(var/obj/machinery/atmoalter/siphs/fullairsiphon/S in locate(/area/airtunnel1))
 				S.t_status = 1
 				S.t_per = 1000000.0

@@ -4,7 +4,7 @@
 	var/intercepttext = ""
 	var/interceptname = "Error"
 	switch(report)
-		if (1)
+		if(1)
 			interceptname = "Biohazard Alert"
 			intercepttext += "<FONT size = 3><B>NanoTrasen Update</B>: Biohazard Alert.</FONT><HR>"
 			intercepttext += "Reports indicate the probable transfer of a biohazardous agent onto [station_name()] during the last crew deployment cycle.<BR>"
@@ -17,11 +17,11 @@
 			intercepttext += " 4. Avoid damage to the capital infrastructure of the station.<BR>"
 			intercepttext += "<BR>Note in the event of a quarantine breach or uncontrolled spread of the biohazard, the directive 7-10 may be upgraded to a directive 7-12.<BR>"
 			intercepttext += "Message ends."
-		if (2)
+		if(2)
 			var/nukecode = "ERROR"
 			for(var/obj/machinery/nuclearbomb/bomb in machines)
-				if (bomb && bomb.r_code)
-					if (bomb.z == 1)
+				if(bomb && bomb.r_code)
+					if(bomb.z == 1)
 						nukecode = bomb.r_code
 			interceptname = "Directive 7-12"
 			intercepttext += "<FONT size = 3><B>NanoTrasen Update</B>: Biohazard Alert.</FONT><HR>"
@@ -42,7 +42,7 @@
 	for(var/obj/machinery/computer/communications/comm in machines)
 		comm.messagetitle.Add(interceptname)
 		comm.messagetext.Add(intercepttext)
-		if (!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
+		if(!(comm.stat & (BROKEN | NOPOWER)) && comm.prints_intercept)
 			var/obj/item/weapon/paper/intercept = new /obj/item/weapon/paper( comm.loc )
 			intercept.name = "paper- [interceptname]"
 			intercept.info = intercepttext
@@ -62,44 +62,44 @@
 
 	proc/count()
 		for(var/turf/T in world)
-			if (T.z != 1)
+			if(T.z != 1)
 				continue
 
-			if (istype(T,/turf/simulated/floor))
-				if (!(T:burnt))
+			if(istype(T,/turf/simulated/floor))
+				if(!(T:burnt))
 					src.floor += 12
 				else
 					src.floor += 1
 
-			if (istype(T, /turf/simulated/wall))
-				if (T:intact)
+			if(istype(T, /turf/simulated/wall))
+				if(T:intact)
 					src.wall += 2
 				else
 					src.wall += 1
 
-			if (istype(T, /turf/simulated/wall/r_wall))
-				if (T:intact)
+			if(istype(T, /turf/simulated/wall/r_wall))
+				if(T:intact)
 					src.r_wall += 2
 				else
 					src.r_wall += 1
 
 		for(var/obj/O in world)
-			if (O.z != 1)
+			if(O.z != 1)
 				continue
 
-			if (istype(O, /obj/structure/window))
+			if(istype(O, /obj/structure/window))
 				src.window += 1
-			else if (istype(O, /obj/structure/grille) && (!O:destroyed))
+			else if(istype(O, /obj/structure/grille) && (!O:destroyed))
 				src.grille += 1
-			else if (istype(O, /obj/machinery/door))
+			else if(istype(O, /obj/machinery/door))
 				src.door += 1
-			else if (istype(O, /obj/machinery))
+			else if(istype(O, /obj/machinery))
 				src.mach += 1
 		return
 
 
 	proc/score(var/datum/station_state/result)
-		if (!result)	return 0
+		if(!result)	return 0
 		var/output = 0
 		output += (result.floor / max(floor,1))
 		output += (result.r_wall/ max(r_wall,1))

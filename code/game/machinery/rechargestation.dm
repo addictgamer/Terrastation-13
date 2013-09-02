@@ -16,10 +16,10 @@
 		build_icon()
 
 	process()
-		if (!(NOPOWER|BROKEN))
+		if(!(NOPOWER|BROKEN))
 			return
 
-		if (src.occupant)
+		if(src.occupant)
 			process_occupant()
 		return 1
 
@@ -29,24 +29,24 @@
 
 
 	relaymove(mob/user as mob)
-		if (user.stat)
+		if(user.stat)
 			return
 		src.go_out()
 		return
 
 	emp_act(severity)
-		if (stat & (BROKEN|NOPOWER))
+		if(stat & (BROKEN|NOPOWER))
 			..(severity)
 			return
-		if (occupant)
+		if(occupant)
 			occupant.emp_act(severity)
 			go_out()
 		..(severity)
 
 	proc
 		build_icon()
-			if (NOPOWER|BROKEN)
-				if (src.occupant)
+			if(NOPOWER|BROKEN)
+				if(src.occupant)
 					icon_state = "borgcharger1"
 				else
 					icon_state = "borgcharger0"
@@ -54,13 +54,13 @@
 				icon_state = "borgcharger0"
 
 		process_occupant()
-			if (src.occupant)
+			if(src.occupant)
 				if (istype(occupant, /mob/living/silicon/robot))
 					var/mob/living/silicon/robot/R = occupant
 					restock_modules()
-					if (!R.cell)
+					if(!R.cell)
 						return
-					else if (R.cell.charge >= R.cell.maxcharge)
+					else if(R.cell.charge >= R.cell.maxcharge)
 						R.cell.charge = R.cell.maxcharge
 						return
 					else
@@ -68,7 +68,7 @@
 						return
 
 		go_out()
-			if (!( src.occupant ))
+			if(!( src.occupant ))
 				return
 			//for(var/obj/O in src)
 			//	O.loc = src.loc
@@ -82,57 +82,57 @@
 			return
 
 		restock_modules()
-			if (src.occupant)
-				if (istype(occupant, /mob/living/silicon/robot))
+			if(src.occupant)
+				if(istype(occupant, /mob/living/silicon/robot))
 					var/mob/living/silicon/robot/R = occupant
-					if (R.module && R.module.modules)
+					if(R.module && R.module.modules)
 						var/list/um = R.contents|R.module.modules
 						// ^ makes sinle list of active (R.contents) and inactive modules (R.module.modules)
 						for(var/obj/O in um)
 							// Engineering
-							if (istype(O,/obj/item/stack/sheet/metal) || istype(O,/obj/item/stack/sheet/rglass) || istype(O,/obj/item/weapon/cable_coil))
-								if (O:amount < 50)
+							if(istype(O,/obj/item/stack/sheet/metal) || istype(O,/obj/item/stack/sheet/rglass) || istype(O,/obj/item/weapon/cable_coil))
+								if(O:amount < 50)
 									O:amount += 1
 							// Security
-							if (istype(O,/obj/item/device/flash))
-								if (O:broken)
+							if(istype(O,/obj/item/device/flash))
+								if(O:broken)
 									O:broken = 0
 									O:times_used = 0
 									O:icon_state = "flash"
-							if (istype(O,/obj/item/weapon/gun/energy/taser/cyborg))
-								if (O:power_supply.charge < O:power_supply.maxcharge)
+							if(istype(O,/obj/item/weapon/gun/energy/taser/cyborg))
+								if(O:power_supply.charge < O:power_supply.maxcharge)
 									O:power_supply.give(O:charge_cost)
 									O:update_icon()
 								else
 									O:charge_tick = 0
-							if (istype(O,/obj/item/weapon/melee/baton))
-								if (O:charges < 10)
+							if(istype(O,/obj/item/weapon/melee/baton))
+								if(O:charges < 10)
 									O:charges += 1
 							//Service
-							if (istype(O,/obj/item/weapon/reagent_containers/food/condiment/enzyme))
-								if (O.reagents.get_reagent_amount("enzyme") < 50)
+							if(istype(O,/obj/item/weapon/reagent_containers/food/condiment/enzyme))
+								if(O.reagents.get_reagent_amount("enzyme") < 50)
 									O.reagents.add_reagent("enzyme", 2)
 							//Medical
-							if (istype(O,/obj/item/weapon/reagent_containers/glass/bottle/robot))
+							if(istype(O,/obj/item/weapon/reagent_containers/glass/bottle/robot))
 								var/obj/item/weapon/reagent_containers/glass/bottle/robot/B = O
-								if (B.reagent && (B.reagents.get_reagent_amount(B.reagent) < B.volume))
+								if(B.reagent && (B.reagents.get_reagent_amount(B.reagent) < B.volume))
 									B.reagents.add_reagent(B.reagent, 2)
 							//Janitor
-							if (istype(O, /obj/item/device/lightreplacer))
+							if(istype(O, /obj/item/device/lightreplacer))
 								var/obj/item/device/lightreplacer/LR = O
 								LR.Charge(R)
 
-						if (R)
-							if (R.module)
+						if(R)
+							if(R.module)
 								R.module.respawn_consumable(R)
 
 						//Emagged items for janitor and medical borg
-						if (R.module.emag)
-							if (istype(R.module.emag, /obj/item/weapon/reagent_containers/spray))
+						if(R.module.emag)
+							if(istype(R.module.emag, /obj/item/weapon/reagent_containers/spray))
 								var/obj/item/weapon/reagent_containers/spray/S = R.module.emag
-								if (S.name == "Polyacid spray")
+								if(S.name == "Polyacid spray")
 									S.reagents.add_reagent("pacid", 2)
-								else if (S.name == "Lube spray")
+								else if(S.name == "Lube spray")
 									S.reagents.add_reagent("lube", 2)
 
 
@@ -163,7 +163,7 @@
 				//Make sure they actually HAVE a cell, now that they can get in while powerless. --NEO
 				return
 			usr.stop_pulling()
-			if (usr && usr.client)
+			if(usr && usr.client)
 				usr.client.perspective = EYE_PERSPECTIVE
 				usr.client.eye = src
 			usr.loc = src

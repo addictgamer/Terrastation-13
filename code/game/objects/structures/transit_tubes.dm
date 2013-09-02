@@ -58,22 +58,22 @@
 // When destroyed by explosions, properly handle contents.
 obj/structure/ex_act(severity)
 	switch(severity)
-		if (1.0)
+		if(1.0)
 			for(var/atom/movable/AM in contents)
 				AM.loc = loc
 				AM.ex_act(severity++)
 
 			del(src)
 			return
-		if (2.0)
-			if (prob(50))
+		if(2.0)
+			if(prob(50))
 				for(var/atom/movable/AM in contents)
 					AM.loc = loc
 					AM.ex_act(severity++)
 
 				del(src)
 				return
-		if (3.0)
+		if(3.0)
 			return
 
 
@@ -94,7 +94,7 @@ obj/structure/ex_act(severity)
 /obj/structure/transit_tube/New(loc)
 	..(loc)
 
-	if (tube_dirs == null)
+	if(tube_dirs == null)
 		init_dirs()
 
 
@@ -105,47 +105,47 @@ obj/structure/ex_act(severity)
 
 
 /obj/structure/transit_tube/station/Bumped(mob/AM as mob|obj)
-	if (!pod_moving && icon_state == "open" && istype(AM, /mob))
+	if(!pod_moving && icon_state == "open" && istype(AM, /mob))
 		for(var/obj/structure/transit_tube_pod/pod in loc)
-			if (!pod.moving && pod.dir in directions())
+			if(!pod.moving && pod.dir in directions())
 				AM.loc = pod
 				return
 
 
 
 /obj/structure/transit_tube/station/attack_hand(mob/user as mob)
-	if (!pod_moving)
+	if(!pod_moving)
 		for(var/obj/structure/transit_tube_pod/pod in loc)
-			if (!pod.moving && pod.dir in directions())
-				if (icon_state == "closed")
+			if(!pod.moving && pod.dir in directions())
+				if(icon_state == "closed")
 					open_animation()
 
-				else if (icon_state == "open")
+				else if(icon_state == "open")
 					close_animation()
 
 
 
 /obj/structure/transit_tube/station/proc/open_animation()
-	if (icon_state == "closed")
+	if(icon_state == "closed")
 		icon_state = "opening"
 		spawn(OPEN_DURATION)
-			if (icon_state == "opening")
+			if(icon_state == "opening")
 				icon_state = "open"
 
 
 
 /obj/structure/transit_tube/station/proc/close_animation()
-	if (icon_state == "open")
+	if(icon_state == "open")
 		icon_state = "closing"
 		spawn(CLOSE_DURATION)
-			if (icon_state == "closing")
+			if(icon_state == "closing")
 				icon_state = "closed"
 
 
 
 /obj/structure/transit_tube/station/proc/launch_pod()
 	for(var/obj/structure/transit_tube_pod/pod in loc)
-		if (!pod.moving && pod.dir in directions())
+		if(!pod.moving && pod.dir in directions())
 			spawn(5)
 				pod_moving = 1
 				close_animation()
@@ -155,13 +155,13 @@ obj/structure/ex_act(severity)
 				var/turf/next_loc = get_step(loc, pod.dir)
 				var/obj/structure/transit_tube/nexttube
 				for(var/obj/structure/transit_tube/tube in next_loc)
-					if (tube.has_entrance(pod.dir))
+					if(tube.has_entrance(pod.dir))
 						nexttube = tube
 						break
-				if (!nexttube)
+				if(!nexttube)
 					pod.dir = turn(pod.dir, 180)
 
-				if (icon_state == "closed" && pod)
+				if(icon_state == "closed" && pod)
 					pod.follow_tube()
 
 				pod_moving = 0
@@ -195,14 +195,14 @@ obj/structure/ex_act(severity)
 		pod_moving = 0
 		pod.mix_air()
 
-		if (automatic_launch_time)
+		if(automatic_launch_time)
 			var/const/wait_step = 5
 			var/i = 0
 			while(i < automatic_launch_time)
 				sleep(wait_step)
 				i += wait_step
 
-				if (pod_moving || icon_state != "open")
+				if(pod_moving || icon_state != "open")
 					return
 
 			launch_pod()
@@ -221,7 +221,7 @@ obj/structure/ex_act(severity)
 	from_dir = turn(from_dir, 180)
 
 	for(var/direction in directions())
-		if (direction == from_dir)
+		if(direction == from_dir)
 			return 1
 
 	return 0
@@ -230,7 +230,7 @@ obj/structure/ex_act(severity)
 
 /obj/structure/transit_tube/proc/has_exit(in_dir)
 	for(var/direction in directions())
-		if (direction == in_dir)
+		if(direction == in_dir)
 			return 1
 
 	return 0
@@ -245,13 +245,13 @@ obj/structure/ex_act(severity)
 	var/in_dir_ccw = turn(in_dir, 45)
 
 	for(var/direction in directions())
-		if (direction == in_dir)
+		if(direction == in_dir)
 			return direction
 
-		else if (direction == in_dir_cw)
+		else if(direction == in_dir_cw)
 			near_dir = direction
 
-		else if (direction == in_dir_ccw)
+		else if(direction == in_dir_ccw)
 			near_dir = direction
 
 	return near_dir
@@ -272,7 +272,7 @@ obj/structure/ex_act(severity)
 
 
 /obj/structure/transit_tube_pod/proc/follow_tube()
-	if (moving)
+	if(moving)
 		return
 
 	moving = 1
@@ -285,14 +285,14 @@ obj/structure/ex_act(severity)
 		var/exit_delay
 
 		for(var/obj/structure/transit_tube/tube in loc)
-			if (tube.has_exit(dir))
+			if(tube.has_exit(dir))
 				current_tube = tube
 				break
 
 		while(current_tube)
 			next_dir = current_tube.get_exit(dir)
 
-			if (!next_dir)
+			if(!next_dir)
 				break
 
 			exit_delay = current_tube.exit_delay(src, dir)
@@ -304,11 +304,11 @@ obj/structure/ex_act(severity)
 
 			current_tube = null
 			for(var/obj/structure/transit_tube/tube in next_loc)
-				if (tube.has_entrance(next_dir))
+				if(tube.has_entrance(next_dir))
 					current_tube = tube
 					break
 
-			if (current_tube == null)
+			if(current_tube == null)
 				dir = next_dir
 				Move(get_step(loc, dir)) // Allow collisions when leaving the tubes.
 				break
@@ -319,7 +319,7 @@ obj/structure/ex_act(severity)
 			loc = next_loc // When moving from one tube to another, skip collision and such.
 			density = current_tube.density
 
-			if (current_tube && current_tube.should_stop_pod(src, next_dir))
+			if(current_tube && current_tube.should_stop_pod(src, next_dir))
 				current_tube.pod_stopped(src, dir)
 				break
 
@@ -328,14 +328,14 @@ obj/structure/ex_act(severity)
 		// If the pod is no longer in a tube, move in a line until stopped or slowed to a halt.
 		//  /turf/inertial_drift appears to only work on mobs, and re-implementing some of the
 		//  logic allows a gradual slowdown and eventual stop when passing over non-space turfs.
-		if (!current_tube && last_delay <= 10)
+		if(!current_tube && last_delay <= 10)
 			do
 				sleep(last_delay)
 
-				if (!istype(loc, /turf/space))
+				if(!istype(loc, /turf/space))
 					last_delay++
 
-				if (last_delay > 10)
+				if(last_delay > 10)
 					break
 
 			while(isturf(loc) && Move(get_step(loc, dir)))
@@ -374,7 +374,7 @@ obj/structure/ex_act(severity)
 	var/int_pressure = air_contents.return_pressure()
 	var/total_pressure = env_pressure + int_pressure
 
-	if (total_pressure == 0)
+	if(total_pressure == 0)
 		return
 
 	// Math here: Completely made up, not based on realistic equasions.
@@ -399,36 +399,36 @@ obj/structure/ex_act(severity)
 //  the station, try to exit. If the direction matches one of the station's
 //  tube directions, launch the pod in that direction.
 /obj/structure/transit_tube_pod/relaymove(mob/mob, direction)
-	if (istype(mob, /mob) && mob.client)
+	if(istype(mob, /mob) && mob.client)
 		// If the pod is not in a tube at all, you can get out at any time.
-		if (!(locate(/obj/structure/transit_tube) in loc))
+		if(!(locate(/obj/structure/transit_tube) in loc))
 			mob.loc = loc
 			mob.client.Move(get_step(loc, direction), direction)
 
-			//if (moving && istype(loc, /turf/space))
+			//if(moving && istype(loc, /turf/space))
 				// Todo: If you get out of a moving pod in space, you should move as well.
 				//  Same direction as pod? Direcion you moved? Halfway between?
 
-		if (!moving)
+		if(!moving)
 			for(var/obj/structure/transit_tube/station/station in loc)
-				if (dir in station.directions())
-					if (!station.pod_moving)
-						if (direction == station.dir)
-							if (station.icon_state == "open")
+				if(dir in station.directions())
+					if(!station.pod_moving)
+						if(direction == station.dir)
+							if(station.icon_state == "open")
 								mob.loc = loc
 								mob.client.Move(get_step(loc, direction), direction)
 
 							else
 								station.open_animation()
 
-						else if (direction in station.directions())
+						else if(direction in station.directions())
 							dir = direction
 							station.launch_pod()
 					return
 
 			for(var/obj/structure/transit_tube/tube in loc)
-				if (dir in tube.directions())
-					if (tube.has_exit(direction))
+				if(dir in tube.directions())
+					if(tube.has_exit(direction))
 						dir = direction
 						return
 
@@ -440,7 +440,7 @@ obj/structure/ex_act(severity)
 //  variations. Additionally, as a separate proc, sub-types
 //  can handle it more intelligently.
 /obj/structure/transit_tube/proc/init_dirs()
-	if (icon_state == "auto")
+	if(icon_state == "auto")
 		// Additional delay, for map loading.
 		spawn(1)
 			init_dirs_automatic()
@@ -448,7 +448,7 @@ obj/structure/ex_act(severity)
 	else
 		tube_dirs = parse_dirs(icon_state)
 
-		if (copytext(icon_state, 1, 3) == "D-" || findtextEx(icon_state, "Pass"))
+		if(copytext(icon_state, 1, 3) == "D-" || findtextEx(icon_state, "Pass"))
 			density = 0
 
 
@@ -471,11 +471,11 @@ obj/structure/ex_act(severity)
 	for(var/direction in tube_dir_list)
 		var/location = get_step(loc, direction)
 		for(var/obj/structure/transit_tube/tube in location)
-			if (tube.directions() == null && tube.icon_state == "auto")
+			if(tube.directions() == null && tube.icon_state == "auto")
 				connected_auto += direction
 				break
 
-			else if (turn(direction, 180) in tube.directions())
+			else if(turn(direction, 180) in tube.directions())
 				connected += direction
 				break
 
@@ -483,7 +483,7 @@ obj/structure/ex_act(severity)
 
 	tube_dirs = select_automatic_dirs(connected)
 
-	if (length(tube_dirs) == 2 && tube_dir_list.Find(tube_dirs[1]) > tube_dir_list.Find(tube_dirs[2]))
+	if(length(tube_dirs) == 2 && tube_dir_list.Find(tube_dirs[1]) > tube_dir_list.Find(tube_dirs[2]))
 		tube_dirs.Swap(1, 2)
 
 	generate_automatic_corners(tube_dirs)
@@ -495,7 +495,7 @@ obj/structure/ex_act(severity)
 //  135 degree angle, and return a list containing the pair.
 //  If none exist, return list(connected[1], turn(connected[1], 180)
 /obj/structure/transit_tube/proc/select_automatic_dirs(connected)
-	if (length(connected) < 1)
+	if(length(connected) < 1)
 		return list()
 
 	for(var/i = 1, i <= length(connected), i++)
@@ -503,7 +503,7 @@ obj/structure/ex_act(severity)
 			var/d1 = connected[i]
 			var/d2 = connected[j]
 
-			if (d1 == turn(d2, 135) || d1 == turn(d2, 180) || d1 == turn(d2, 225))
+			if(d1 == turn(d2, 135) || d1 == turn(d2, 180) || d1 == turn(d2, 225))
 				return list(d1, d2)
 
 	return list(connected[1], turn(connected[1], 180))
@@ -511,7 +511,7 @@ obj/structure/ex_act(severity)
 
 
 /obj/structure/transit_tube/proc/select_automatic_icon_state(directions)
-	if (length(directions) == 2)
+	if(length(directions) == 2)
 		icon_state = "[dir2text_short(directions[1])]-[dir2text_short(directions[2])]"
 
 
@@ -519,14 +519,14 @@ obj/structure/ex_act(severity)
 // Look for diagonal directions, generate the decorative corners in each.
 /obj/structure/transit_tube/proc/generate_automatic_corners(directions)
 	for(var/direction in directions)
-		if (direction == 5 || direction == 6 || direction == 9 || direction == 10)
-			if (direction & NORTH)
+		if(direction == 5 || direction == 6 || direction == 9 || direction == 10)
+			if(direction & NORTH)
 				create_automatic_decorative_corner(get_step(loc, NORTH), direction ^ 3)
 
 			else
 				create_automatic_decorative_corner(get_step(loc, SOUTH), direction ^ 3)
 
-			if (direction & EAST)
+			if(direction & EAST)
 				create_automatic_decorative_corner(get_step(loc, EAST), direction ^ 12)
 
 			else
@@ -539,7 +539,7 @@ obj/structure/ex_act(severity)
 	var/state = "D-[dir2text_short(direction)]"
 
 	for(var/obj/structure/transit_tube/tube in location)
-		if (tube.icon_state == state)
+		if(tube.icon_state == state)
 			return
 
 	var/obj/structure/transit_tube/tube = new(location)
@@ -558,7 +558,7 @@ obj/structure/ex_act(severity)
 /obj/structure/transit_tube/proc/parse_dirs(text)
 	var/global/list/direction_table = list()
 
-	if (text in direction_table)
+	if(text in direction_table)
 		return direction_table[text]
 
 	var/list/split_text = stringsplit(text, "-")
@@ -566,7 +566,7 @@ obj/structure/ex_act(severity)
 	// If the first token is D, the icon_state represents
 	//  a purely decorative tube, and doesn't actually
 	//  connect to anything.
-	if (split_text[1] == "D")
+	if(split_text[1] == "D")
 		direction_table[text] = list()
 		return null
 
@@ -575,7 +575,7 @@ obj/structure/ex_act(severity)
 	for(var/text_part in split_text)
 		var/direction = text2dir_extended(text_part)
 
-		if (direction > 0)
+		if(direction > 0)
 			directions += direction
 
 	direction_table[text] = directions
@@ -587,21 +587,21 @@ obj/structure/ex_act(severity)
 //  directions, and to clearly return 0 otherwise.
 /obj/structure/transit_tube/proc/text2dir_extended(direction)
 	switch(uppertext(direction))
-		if ("NORTH", "N")
+		if("NORTH", "N")
 			return 1
-		if ("SOUTH", "S")
+		if("SOUTH", "S")
 			return 2
-		if ("EAST", "E")
+		if("EAST", "E")
 			return 4
-		if ("WEST", "W")
+		if("WEST", "W")
 			return 8
-		if ("NORTHEAST", "NE")
+		if("NORTHEAST", "NE")
 			return 5
-		if ("NORTHWEST", "NW")
+		if("NORTHWEST", "NW")
 			return 9
-		if ("SOUTHEAST", "SE")
+		if("SOUTHEAST", "SE")
 			return 6
-		if ("SOUTHWEST", "SW")
+		if("SOUTHWEST", "SW")
 			return 10
 		else
 	return 0
@@ -612,21 +612,21 @@ obj/structure/ex_act(severity)
 //  directions used in tube icon states.
 /obj/structure/transit_tube/proc/dir2text_short(direction)
 	switch(direction)
-		if (1)
+		if(1)
 			return "N"
-		if (2)
+		if(2)
 			return "S"
-		if (4)
+		if(4)
 			return "E"
-		if (8)
+		if(8)
 			return "W"
-		if (5)
+		if(5)
 			return "NE"
-		if (6)
+		if(6)
 			return "SE"
-		if (9)
+		if(9)
 			return "NW"
-		if (10)
+		if(10)
 			return "SW"
 		else
 	return

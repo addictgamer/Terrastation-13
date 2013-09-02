@@ -23,23 +23,23 @@
 		spawn(5)
 			for(var/i in cardinal)
 				var/obj/machinery/mineral/input/input_obj = locate( /obj/machinery/mineral/input, get_step(src.loc, i) )
-				if (input_obj)
-					if (isturf(input_obj.loc))
+				if(input_obj)
+					if(isturf(input_obj.loc))
 						input_plate = input_obj.loc
 						del(input_obj)
 						break
 
-			if (!input_plate)
+			if(!input_plate)
 				diary << "a [src] didn't find an input plate."
 				return
 
 	Bumped(var/atom/A)
-		if (!input_plate) return
+		if(!input_plate) return
 
-		if (ismob(A))
+		if(ismob(A))
 			var/mob/M = A
 
-			if (M.loc == input_plate
+			if(M.loc == input_plate
 			)
 				M.loc = src
 				M.gib()
@@ -53,7 +53,7 @@
 	overlays.Cut()
 	if (dirty)
 		src.overlays += image('icons/obj/kitchen.dmi', "grbloody")
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		return
 	if (!occupant)
 		src.overlays += image('icons/obj/kitchen.dmi', "grjam")
@@ -70,31 +70,31 @@
 	return
 
 /obj/machinery/gibber/attack_hand(mob/user as mob)
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		return
-	if (operating)
+	if(operating)
 		user << "\red It's locked and running"
 		return
 	else
 		src.startgibbing(user)
 
 /obj/machinery/gibber/attackby(obj/item/weapon/grab/G as obj, mob/user as mob)
-	if (src.occupant)
+	if(src.occupant)
 		user << "\red The gibber is full, empty it first!"
 		return
 	if (!( istype(G, /obj/item/weapon/grab)) || !(istype(G.affecting, /mob/living/carbon/human)))
 		user << "\red This item is not suitable for the gibber!"
 		return
-	if (G.affecting.abiotic(1))
+	if(G.affecting.abiotic(1))
 		user << "\red Subject may not have abiotic items on."
 		return
 
 	user.visible_message("\red [user] starts to put [G.affecting] into the gibber!")
 	src.add_fingerprint(user)
-	if (do_after(user, 30) && G && G.affecting && !occupant)
+	if(do_after(user, 30) && G && G.affecting && !occupant)
 		user.visible_message("\red [user] stuffs [G.affecting] into the gibber!")
 		var/mob/M = G.affecting
-		if (M.client)
+		if(M.client)
 			M.client.perspective = EYE_PERSPECTIVE
 			M.client.eye = src
 		M.loc = src
@@ -128,9 +128,9 @@
 
 
 /obj/machinery/gibber/proc/startgibbing(mob/user as mob)
-	if (src.operating)
+	if(src.operating)
 		return
-	if (!src.occupant)
+	if(!src.occupant)
 		visible_message("\red You hear a loud metallic grinding sound.")
 		return
 	use_power(1000)
@@ -155,7 +155,7 @@
 
 	src.occupant.attack_log += "\[[time_stamp()]\] Was gibbed by <b>[user]/[user.ckey]</b>" //One shall not simply gib a mob unnoticed!
 	user.attack_log += "\[[time_stamp()]\] Gibbed <b>[src.occupant]/[src.occupant.ckey]</b>"
-	log_attack("\[[time_stamp()]\] <b>[user]/[user.ckey]</b> gibbed <b>[src.occupant]/[src.occupant.ckey]</b>")
+	msg_admin_attack("[user.name] ([user.ckey]) gibbed [src.occupant] ([src.occupant.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 	src.occupant.death(1)
 	src.occupant.ghostize()

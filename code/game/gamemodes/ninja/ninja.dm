@@ -15,10 +15,10 @@
 	world << "<B>The current game mode is Ninja!</B>"
 
 /datum/game_mode/ninja/can_start()
-	if (!..())
+	if(!..())
 		return 0
 	var/list/datum/mind/possible_ninjas = get_players_for_role(BE_NINJA)
-	if (possible_ninjas.len==0)
+	if(possible_ninjas.len==0)
 		return 0
 	var/datum/mind/ninja = pick(possible_ninjas)
 	ninjas += ninja
@@ -26,13 +26,13 @@
 	ninja.assigned_role = "MODE" //So they aren't chosen for other jobs.
 	ninja.special_role = "Ninja"
 	ninja.original = ninja.current
-	if (ninjastart.len == 0)
+	if(ninjastart.len == 0)
 		ninja.current << "<B>\red A proper starting location for you could not be found, please report this bug!</B>"
 		ninja.current << "<B>\red Attempting to place at a carpspawn.</B>"
 		for(var/obj/effect/landmark/L in landmarks_list)
-			if (L.name == "carpspawn")
+			if(L.name == "carpspawn")
 				ninjastart.Add(L)
-		if (ninjastart.len == 0 && latejoin.len > 0)
+		if(ninjastart.len == 0 && latejoin.len > 0)
 			ninja.current << "<B>\red Still no spawneable locations could be found. Defaulting to latejoin.</B>"
 			return 1
 		else if (ninjastart.len == 0)
@@ -49,12 +49,12 @@
 
 /datum/game_mode/ninja/post_setup()
 	for(var/datum/mind/ninja in ninjas)
-		if (ninja.current && !(istype(ninja.current,/mob/living/carbon/human))) return 0
+		if(ninja.current && !(istype(ninja.current,/mob/living/carbon/human))) return 0
 		//forge_ninja_objectives(ninja)
 		var/mob/living/carbon/human/N = ninja.current
 		N.internal = N.s_store
 		N.internals.icon_state = "internal1"
-		if (N.wear_suit && istype(N.wear_suit,/obj/item/clothing/suit/space/space_ninja))
+		if(N.wear_suit && istype(N.wear_suit,/obj/item/clothing/suit/space/space_ninja))
 			var/obj/item/clothing/suit/space/space_ninja/S = N.wear_suit
 			S:randomize_param()
 	spawn (rand(waittime_l, waittime_h))
@@ -62,13 +62,13 @@
 	return ..()
 
 /datum/game_mode/ninja/check_finished()
-	if (config.continous_rounds)
+	if(config.continous_rounds)
 		return ..()
 	var/ninjas_alive = 0
 	for(var/datum/mind/ninja in ninjas)
-		if (!istype(ninja.current,/mob/living/carbon/human))
+		if(!istype(ninja.current,/mob/living/carbon/human))
 			continue
-		if (ninja.current.stat==2)
+		if(ninja.current.stat==2)
 			continue
 		ninjas_alive++
 	if (ninjas_alive)
@@ -81,40 +81,40 @@
 	var/objective_list[] = list(1,2,3,4,5)
 	for(var/i=rand(2,4),i>0,i--)
 		switch(pick(objective_list))
-			if (1)//Kill
+			if(1)//Kill
 				var/datum/objective/assassinate/ninja_objective = new
 				ninja_objective.owner = ninja
 				ninja_objective.target = ninja_objective.find_target()
-				if (ninja_objective.target != "Free Objective")
+				if(ninja_objective.target != "Free Objective")
 					ninja.objectives += ninja_objective
 				else
 					i++
 				objective_list -= 1 // No more than one kill objective
-			if (2)//Steal
+			if(2)//Steal
 				var/datum/objective/steal/ninja_objective = new
 				ninja_objective.owner = ninja
 				ninja_objective.target = ninja_objective.find_target()
 				ninja.objectives += ninja_objective
-			if (3)//Protect
+			if(3)//Protect
 				var/datum/objective/protect/ninja_objective = new
 				ninja_objective.owner = ninja
 				ninja_objective.target = ninja_objective.find_target()
-				if (ninja_objective.target != "Free Objective")
+				if(ninja_objective.target != "Free Objective")
 					ninja.objectives += ninja_objective
 				else
 					i++
 					objective_list -= 3
-			if (4)//Download
+			if(4)//Download
 				var/datum/objective/download/ninja_objective = new
 				ninja_objective.owner = ninja
 				ninja_objective.gen_amount_goal()
 				ninja.objectives += ninja_objective
 				objective_list -= 4
-			if (5)//Harm
+			if(5)//Harm
 				var/datum/objective/harm/ninja_objective = new
 				ninja_objective.owner = ninja
 				ninja_objective.target = ninja_objective.find_target()
-				if (ninja_objective.target != "Free Objective")
+				if(ninja_objective.target != "Free Objective")
 					ninja.objectives += ninja_objective
 				else
 					i++
@@ -135,27 +135,27 @@
 		obj_count++
 
 /datum/game_mode/proc/auto_declare_completion_ninja()
-	if (ninjas.len)
+	if(ninjas.len)
 		var/text = "<FONT size = 2><B>The ninjas were:</B></FONT>"
 		for(var/datum/mind/ninja in ninjas)
 			var/ninjawin = 1
 
 			text += "<br>[ninja.key] was [ninja.name] ("
-			if (ninja.current)
-				if (ninja.current.stat == DEAD)
+			if(ninja.current)
+				if(ninja.current.stat == DEAD)
 					text += "died"
 				else
 					text += "survived"
-				if (ninja.current.real_name != ninja.name)
+				if(ninja.current.real_name != ninja.name)
 					text += " as [ninja.current.real_name]"
 			else
 				text += "body destroyed"
 			text += ")"
 
-			if (ninja.objectives.len)//If the ninja had no objectives, don't need to process this.
+			if(ninja.objectives.len)//If the ninja had no objectives, don't need to process this.
 				var/count = 1
 				for(var/datum/objective/objective in ninja.objectives)
-					if (objective.check_completion())
+					if(objective.check_completion())
 						text += "<br><B>Objective #[count]</B>: [objective.explanation_text] <font color='green'><B>Success!</B></font>"
 						feedback_add_details("traitor_objective","[objective.type]|SUCCESS")
 					else
@@ -165,12 +165,12 @@
 					count++
 
 			var/special_role_text
-			if (ninja.special_role)
+			if(ninja.special_role)
 				special_role_text = lowertext(ninja.special_role)
 			else
 				special_role_text = "antagonist"
 
-			if (ninjawin)
+			if(ninjawin)
 				text += "<br><font color='green'><B>The [special_role_text] was successful!</B></font>"
 				feedback_add_details("traitor_success","SUCCESS")
 			else

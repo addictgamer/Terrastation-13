@@ -12,37 +12,37 @@
 	var/filled = 0
 
 	afterattack(obj/target, mob/user , flag)
-		if (!target.reagents) return
+		if(!target.reagents) return
 
-		if (filled)
+		if(filled)
 
-			if (target.reagents.total_volume >= target.reagents.maximum_volume)
+			if(target.reagents.total_volume >= target.reagents.maximum_volume)
 				user << "\red [target] is full."
 				return
 
-			if (!target.is_open_container() && !ismob(target) && !istype(target,/obj/item/weapon/reagent_containers/food) && !istype(target, /obj/item/clothing/mask/cigarette)) //You can inject humans and food but you cant remove the shit.
+			if(!target.is_open_container() && !ismob(target) && !istype(target,/obj/item/weapon/reagent_containers/food) && !istype(target, /obj/item/clothing/mask/cigarette)) //You can inject humans and food but you cant remove the shit.
 				user << "\red You cannot directly fill this object."
 				return
 
 			var/trans = 0
 
-			if (ismob(target))
-				if (istype(target , /mob/living/carbon/human))
+			if(ismob(target))
+				if(istype(target , /mob/living/carbon/human))
 					var/mob/living/carbon/human/victim = target
 
 					var/obj/item/safe_thing = null
-					if ( victim.wear_mask )
+					if( victim.wear_mask )
 						if ( victim.wear_mask.flags & MASKCOVERSEYES )
 							safe_thing = victim.wear_mask
-					if ( victim.head )
+					if( victim.head )
 						if ( victim.head.flags & MASKCOVERSEYES )
 							safe_thing = victim.head
-					if (victim.glasses)
+					if(victim.glasses)
 						if ( !safe_thing )
 							safe_thing = victim.glasses
 
-					if (safe_thing)
-						if (!safe_thing.reagents)
+					if(safe_thing)
+						if(!safe_thing.reagents)
 							safe_thing.create_reagents(100)
 						trans = src.reagents.trans_to(safe_thing, amount_per_transfer_from_this)
 
@@ -63,15 +63,16 @@
 				for(var/mob/O in viewers(world.view, user))
 					O.show_message(text("\red <B>[] squirts something into []'s eyes!</B>", user, target), 1)
 				src.reagents.reaction(target, TOUCH)
-				var/mob/M = target
-				var/R
-				if (src.reagents)
-					for(var/datum/reagent/A in src.reagents.reagent_list)
-						R += A.id + " ("
-						R += num2text(A.volume) + "),"
-				user.attack_log += "\[[time_stamp()]\] <b>[user]/[user.ckey]</b> squirted <b>[M]/[M.ckey]</b> with ([R])"
-				M.attack_log += "\[[time_stamp()]\] <b>[user]/[user.ckey]</b> squirted <b>[M]/[M.ckey]</b> with ([R])"
-				log_attack("\[[time_stamp()]\] <b>[user]/[user.ckey]</b> squirted <b>[M]/[M.ckey]</b> with ([R])")
+
+				var/mob/living/M = target
+
+				var/list/injected = list()
+				for(var/datum/reagent/R in src.reagents.reagent_list)
+					injected += R.name
+				var/contained = english_list(injected)
+				M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been squirted with [src.name] by [user.name] ([user.ckey]). Reagents: [contained]</font>")
+				user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to squirt [M.name] ([M.key]). Reagents: [contained]</font>")
+				msg_admin_attack("[user.name] ([user.ckey]) squirted [M.name] ([M.key]) with [src.name]. Reagents: [contained] (INTENT: [uppertext(user.a_intent)]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 			trans = src.reagents.trans_to(target, amount_per_transfer_from_this)
 			user << "\blue You transfer [trans] units of the solution."
@@ -81,11 +82,11 @@
 
 		else
 
-			if (!target.is_open_container() && !istype(target,/obj/structure/reagent_dispensers))
+			if(!target.is_open_container() && !istype(target,/obj/structure/reagent_dispensers))
 				user << "\red You cannot directly remove reagents from [target]."
 				return
 
-			if (!target.reagents.total_volume)
+			if(!target.reagents.total_volume)
 				user << "\red [target] is empty."
 				return
 

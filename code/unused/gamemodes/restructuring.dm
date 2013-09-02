@@ -48,7 +48,7 @@
 		world << "\red <B>HEAD OFFICE: Cost cutting measures have achieved 100% efficiency. Thank you for understanding our position during this volatile economic downturn."
 		return 1
 	else
-		if (ticker.target.stat != 2)
+		if(ticker.target.stat != 2)
 			return 0
 		world << "\red <B>HEAD OFFICE: It seems we have made a mistake in our paperwork. The previous target for termination was chosen based on race, sex, and/or religious beliefs, which is against company policy. Please cancel previous termination request."
 		pick_target()
@@ -71,7 +71,7 @@
 	for(var/datum/data/record/R in data_core.general)
 		if (R.fields["name"] == target.real_name)
 			targetrank = R.fields["rank"]
-	if (!targetrank)
+	if(!targetrank)
 		return "[target.name]"
 	return "[target.name] the [targetrank]"
 */

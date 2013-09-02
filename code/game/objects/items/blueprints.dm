@@ -102,12 +102,12 @@ move an amendment</a> to the drawing.</p>
 /obj/item/blueprints/proc/create_area()
 	//world << "DEBUG: create_area"
 	var/res = detect_room(get_turf_loc(usr))
-	if (!istype(res,/list))
+	if(!istype(res,/list))
 		switch(res)
-			if (ROOM_ERR_SPACE)
+			if(ROOM_ERR_SPACE)
 				usr << "\red New area must be complete airtight!"
 				return
-			if (ROOM_ERR_TOOLARGE)
+			if(ROOM_ERR_TOOLARGE)
 				usr << "\red New area too large!"
 				return
 			else
@@ -115,9 +115,9 @@ move an amendment</a> to the drawing.</p>
 				return
 	var/list/turf/turfs = res
 	var/str = trim(stripped_input(usr,"New area title","Blueprints editing", "", MAX_NAME_LEN))
-	if (!str || !length(str)) //cancel
+	if(!str || !length(str)) //cancel
 		return
-	if (length(str) > 50)
+	if(length(str) > 50)
 		usr << "\red Text too long."
 		return
 	var/area/A = new
@@ -155,9 +155,9 @@ move an amendment</a> to the drawing.</p>
 	//world << "DEBUG: edit_area"
 	var/prevname = A.name
 	var/str = trim(stripped_input(usr,"New area title","Blueprints editing", prevname, MAX_NAME_LEN))
-	if (!str || !length(str) || str==prevname) //cancel
+	if(!str || !length(str) || str==prevname) //cancel
 		return
-	if (length(str) > 50)
+	if(length(str) > 50)
 		usr << "\red Text too long."
 		return
 	set_area_machinery_title(A,str,prevname)
@@ -198,12 +198,12 @@ move an amendment</a> to the drawing.</p>
 		return BORDER_BETWEEN
 
 	for (var/obj/structure/window/W in T2)
-		if (turn(dir,180) == W.dir)
+		if(turn(dir,180) == W.dir)
 			return BORDER_BETWEEN
 		if (W.dir in list(NORTHEAST,SOUTHEAST,NORTHWEST,SOUTHWEST))
 			return BORDER_2NDTILE
 	for(var/obj/machinery/door/window/D in T2)
-		if (turn(dir,180) == D.dir)
+		if(turn(dir,180) == D.dir)
 			return BORDER_BETWEEN
 	if (locate(/obj/machinery/door) in T2)
 		return BORDER_2NDTILE
@@ -225,11 +225,11 @@ move an amendment</a> to the drawing.</p>
 		for (var/dir in cardinal)
 			var/skip = 0
 			for (var/obj/structure/window/W in T)
-				if (dir == W.dir || (W.dir in list(NORTHEAST,SOUTHEAST,NORTHWEST,SOUTHWEST)))
+				if(dir == W.dir || (W.dir in list(NORTHEAST,SOUTHEAST,NORTHWEST,SOUTHWEST)))
 					skip = 1; break
 			if (skip) continue
 			for(var/obj/machinery/door/window/D in T)
-				if (dir == D.dir)
+				if(dir == D.dir)
 					skip = 1; break
 			if (skip) continue
 
@@ -238,13 +238,13 @@ move an amendment</a> to the drawing.</p>
 				continue
 
 			switch(check_tile_is_border(NT,dir))
-				if (BORDER_NONE)
+				if(BORDER_NONE)
 					pending+=NT
-				if (BORDER_BETWEEN)
+				if(BORDER_BETWEEN)
 					//do nothing, may be later i'll add 'rejected' list as optimization
-				if (BORDER_2NDTILE)
+				if(BORDER_2NDTILE)
 					found+=NT //tile included to new area, but we dont seek more
-				if (BORDER_SPACE)
+				if(BORDER_SPACE)
 					return ROOM_ERR_SPACE
 		found+=T
 	return found

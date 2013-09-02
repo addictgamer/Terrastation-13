@@ -14,15 +14,15 @@
 /obj/machinery/wish_granter/attack_hand(var/mob/user as mob)
 	usr.set_machine(src)
 
-	if (charges <= 0)
+	if(charges <= 0)
 		user << "The Wish Granter lies silent."
 		return
 
-	else if (!istype(user, /mob/living/carbon/human))
+	else if(!istype(user, /mob/living/carbon/human))
 		user << "You feel a dark stirring inside of the Wish Granter, something you want nothing of. Your instincts are better than any man's."
 		return
 
-	else if (is_special_character(user))
+	else if(is_special_character(user))
 		user << "Even to a heart as dark as yours, you know nothing good will come of this.  Something instinctual makes you pull away."
 
 	else if (!insisting)
@@ -54,7 +54,7 @@
 		if (!(TK in user.mutations))
 			user.mutations.Add(TK)
 
-		if (!(HEAL in user.mutations))
+		if(!(HEAL in user.mutations))
 			user.mutations.Add(HEAL)
 
 		user.update_mutations()

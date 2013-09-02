@@ -22,21 +22,21 @@
 
 /obj/item/weapon/fuel/attackby(obj/item/weapon/fuel/F, mob/user)
 	..()
-	if (istype(src, /obj/item/weapon/fuel/antiH))
-		if (istype(F, /obj/item/weapon/fuel/antiH))
+	if(istype(src, /obj/item/weapon/fuel/antiH))
+		if(istype(F, /obj/item/weapon/fuel/antiH))
 			src.fuel += F.fuel
 			F.fuel = 0
 			user << "You have added the anti-Hydrogen to the storage ring, it now contains [src.fuel]kg"
-		if (istype(F, /obj/item/weapon/fuel/H))
+		if(istype(F, /obj/item/weapon/fuel/H))
 			src.fuel += F.fuel
 			del(F)
 			src:annihilation(src.fuel)
-	if (istype(src, /obj/item/weapon/fuel/H))
-		if (istype(F, /obj/item/weapon/fuel/H))
+	if(istype(src, /obj/item/weapon/fuel/H))
+		if(istype(F, /obj/item/weapon/fuel/H))
 			src.fuel += F.fuel
 			F.fuel = 0
 			user << "You have added the Hydrogen to the storage ring, it now contains [src.fuel]kg"
-		if (istype(F, /obj/item/weapon/fuel/antiH))
+		if(istype(F, /obj/item/weapon/fuel/antiH))
 			src.fuel += F.fuel
 			del(src)
 			F:annihilation(F.fuel)
@@ -69,14 +69,14 @@
 
 /obj/item/weapon/fuel/examine()
 	set src in view(1)
-	if (usr && !usr.stat)
+	if(usr && !usr.stat)
 		usr << "A magnetic storage ring, it contains [fuel]kg of [content ? content : "nothing"]."
 
 /obj/item/weapon/fuel/proc/injest(mob/M as mob)
 	switch(content)
-		if ("Anti-Hydrogen")
+		if("Anti-Hydrogen")
 			M.gib()
-		if ("Hydrogen")
+		if("Hydrogen")
 			M << "\blue You feel very light, as if you might just float away..."
 	del(src)
 	return

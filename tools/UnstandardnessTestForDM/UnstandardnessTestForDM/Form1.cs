@@ -250,13 +250,13 @@ namespace UnstandardnessTestForDM
                         }
                     }
 
-                    if ( line.ToLower().IndexOf("#define") >= 0 )
+                    if( line.ToLower().IndexOf("#define") >= 0 )
                     {
                         line = line.Trim();
                         line = line.Replace('\t', ' ');
                         //Console.WriteLine("LINE = "+line);
                         String[] slist = line.Split(' ');
-                        if (slist.Length >= 3){
+                        if(slist.Length >= 3){
                             //slist[0] has the value of "#define"
                             String name = slist[1];
                             String value = slist[2];

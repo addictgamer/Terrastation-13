@@ -27,17 +27,17 @@
 
 
 /obj/item/weapon/gun/projectile/load_into_chamber()
-	if (in_chamber)
+	if(in_chamber)
 		return 1 //{R}
 
-	if (!loaded.len)
+	if(!loaded.len)
 		return 0
 	var/obj/item/ammo_casing/AC = loaded[1] //load next casing.
 	loaded -= AC //Remove casing from loaded list.
-	if (isnull(AC) || !istype(AC))
+	if(isnull(AC) || !istype(AC))
 		return 0
 	AC.loc = get_turf(src) //Eject casing onto ground.
-	if (AC.BB)
+	if(AC.BB)
 		AC.desc += " This one is spent."	//descriptions are magic - only when there's a projectile in the casing
 		in_chamber = AC.BB //Load projectile into chamber.
 		AC.BB.loc = src //Set projectile loc to gun.
@@ -48,29 +48,29 @@
 /obj/item/weapon/gun/projectile/attackby(var/obj/item/A as obj, mob/user as mob)
 
 	var/num_loaded = 0
-	if (istype(A, /obj/item/ammo_magazine))
-		if ((load_method == MAGAZINE) && loaded.len)	return
+	if(istype(A, /obj/item/ammo_magazine))
+		if((load_method == MAGAZINE) && loaded.len)	return
 		var/obj/item/ammo_magazine/AM = A
 		for(var/obj/item/ammo_casing/AC in AM.stored_ammo)
-			if (loaded.len >= max_shells)
+			if(loaded.len >= max_shells)
 				break
-			if (AC.caliber == caliber && loaded.len < max_shells)
+			if(AC.caliber == caliber && loaded.len < max_shells)
 				AC.loc = src
 				AM.stored_ammo -= AC
 				loaded += AC
 				num_loaded++
-		if (load_method == MAGAZINE)
+		if(load_method == MAGAZINE)
 			user.remove_from_mob(AM)
 			empty_mag = AM
 			empty_mag.loc = src
-	if (istype(A, /obj/item/ammo_casing) && load_method == SPEEDLOADER)
+	if(istype(A, /obj/item/ammo_casing) && load_method == SPEEDLOADER)
 		var/obj/item/ammo_casing/AC = A
-		if (AC.caliber == caliber && loaded.len < max_shells)
+		if(AC.caliber == caliber && loaded.len < max_shells)
 			user.drop_item()
 			AC.loc = src
 			loaded += AC
 			num_loaded++
-	if (num_loaded)
+	if(num_loaded)
 		user << "\blue You load [num_loaded] shell\s into the gun!"
 	A.update_icon()
 	update_icon()
@@ -102,16 +102,16 @@
 /obj/item/weapon/gun/projectile/examine()
 	..()
 	usr << "Has [getAmmo()] round\s remaining."
-//		if (in_chamber && !loaded.len)
+//		if(in_chamber && !loaded.len)
 //			usr << "However, it has a chambered round."
-//		if (in_chamber && loaded.len)
+//		if(in_chamber && loaded.len)
 //			usr << "It also has a chambered round." {R}
 	return
 
 /obj/item/weapon/gun/projectile/proc/getAmmo()
 	var/bullets = 0
 	for(var/obj/item/ammo_casing/AC in loaded)
-		if (istype(AC))
+		if(istype(AC))
 			bullets += 1
 	return bullets
 

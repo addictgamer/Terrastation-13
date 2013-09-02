@@ -14,14 +14,14 @@
 
 
 	equip(var/mob/living/carbon/human/H)
-		if (!H)	return 0
+		if(!H)	return 0
 
 		var/obj/item/weapon/storage/bible/B = new /obj/item/weapon/storage/bible(H) //BS12 EDIT
 		H.equip_to_slot_or_del(B, slot_l_hand)
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/chaplain(H), slot_w_uniform)
 		H.equip_to_slot_or_del(new /obj/item/device/pda/chaplain(H), slot_belt)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(H), slot_shoes)
-		if (H.backbag == 1)
+		if(H.backbag == 1)
 			H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
 		else
 			H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
@@ -33,28 +33,28 @@
 				new_religion = religion_name
 
 			switch(lowertext(new_religion))
-				if ("christianity")
+				if("christianity")
 					B.name = pick("The Holy Bible","The Dead Sea Scrolls")
-				if ("satanism")
+				if("satanism")
 					B.name = "The Unholy Bible"
-				if ("cthulu")
+				if("cthulu")
 					B.name = "The Necronomicon"
-				if ("islam")
+				if("islam")
 					B.name = "Quran"
-				if ("scientology")
+				if("scientology")
 					B.name = pick("The Biography of L. Ron Hubbard","Dianetics")
-				if ("chaos")
+				if("chaos")
 					B.name = "The Book of Lorgar"
-				if ("imperium")
+				if("imperium")
 					B.name = "Uplifting Primer"
-				if ("toolboxia")
+				if("toolboxia")
 					B.name = "Toolbox Manifesto"
-				if ("homosexuality")
+				if("homosexuality")
 					B.name = "Guys Gone Wild"
-				if ("lol", "wtf", "gay", "penis", "ass", "poo", "badmin", "shitmin", "deadmin", "cock", "cocks")
+				if("lol", "wtf", "gay", "penis", "ass", "poo", "badmin", "shitmin", "deadmin", "cock", "cocks")
 					B.name = pick("Woodys Got Wood: The Aftermath", "War of the Cocks", "Sweet Bro and Hella Jef: Expanded Edition")
 					H.setBrainLoss(100) // starts off retarded as fuck
-				if ("science")
+				if("science")
 					B.name = pick("Principle of Relativity", "Quantum Enigma: Physics Encounters Consciousness", "Programming the Universe", "Quantum Physics and Theology", "String Theory for Dummies", "How To: Build Your Own Warp Drive", "The Mysteries of Bluespace", "Playing God: Collector's Edition")
 				else
 					B.name = "The Holy Book of [new_religion]"
@@ -75,55 +75,55 @@
 			var/new_book_style = "Bible"
 
 			while(!accepted)
-				if (!B) break // prevents possible runtime errors
+				if(!B) break // prevents possible runtime errors
 				new_book_style = input(H,"Which bible style would you like?") in list("Bible", "Koran", "Scrapbook", "Creeper", "White Bible", "Holy Light", "Athiest", "Tome", "The King in Yellow", "Ithaqua", "Scientology", "the bible melts", "Necronomicon")
 				switch(new_book_style)
-					if ("Koran")
+					if("Koran")
 						B.icon_state = "koran"
 						B.item_state = "koran"
 						for(var/area/chapel/main/A in world)
 							for(var/turf/T in A.contents)
-								if (T.icon_state == "carpetsymbol")
+								if(T.icon_state == "carpetsymbol")
 									T.dir = 4
-					if ("Scrapbook")
+					if("Scrapbook")
 						B.icon_state = "scrapbook"
 						B.item_state = "scrapbook"
-					if ("Creeper")
+					if("Creeper")
 						B.icon_state = "creeper"
 						B.item_state = "syringe_kit"
-					if ("White Bible")
+					if("White Bible")
 						B.icon_state = "white"
 						B.item_state = "syringe_kit"
-					if ("Holy Light")
+					if("Holy Light")
 						B.icon_state = "holylight"
 						B.item_state = "syringe_kit"
-					if ("Athiest")
+					if("Athiest")
 						B.icon_state = "athiest"
 						B.item_state = "syringe_kit"
 						for(var/area/chapel/main/A in world)
 							for(var/turf/T in A.contents)
-								if (T.icon_state == "carpetsymbol")
+								if(T.icon_state == "carpetsymbol")
 									T.dir = 10
-					if ("Tome")
+					if("Tome")
 						B.icon_state = "tome"
 						B.item_state = "syringe_kit"
-					if ("The King in Yellow")
+					if("The King in Yellow")
 						B.icon_state = "kingyellow"
 						B.item_state = "kingyellow"
-					if ("Ithaqua")
+					if("Ithaqua")
 						B.icon_state = "ithaqua"
 						B.item_state = "ithaqua"
-					if ("Scientology")
+					if("Scientology")
 						B.icon_state = "scientology"
 						B.item_state = "scientology"
 						for(var/area/chapel/main/A in world)
 							for(var/turf/T in A.contents)
-								if (T.icon_state == "carpetsymbol")
+								if(T.icon_state == "carpetsymbol")
 									T.dir = 8
-					if ("the bible melts")
+					if("the bible melts")
 						B.icon_state = "melted"
 						B.item_state = "melted"
-					if ("Necronomicon")
+					if("Necronomicon")
 						B.icon_state = "necronomicon"
 						B.item_state = "necronomicon"
 					else
@@ -132,20 +132,20 @@
 						B.item_state = "bible"
 						for(var/area/chapel/main/A in world)
 							for(var/turf/T in A.contents)
-								if (T.icon_state == "carpetsymbol")
+								if(T.icon_state == "carpetsymbol")
 									T.dir = 2
 
 				H.update_inv_l_hand() // so that it updates the bible's item_state in his hand
 
 				switch(input(H,"Look at your bible - is this what you want?") in list("Yes","No"))
-					if ("Yes")
+					if("Yes")
 						accepted = 1
-					if ("No")
-						if (outoftime)
+					if("No")
+						if(outoftime)
 							H << "Welp, out of time, buddy. You're stuck. Next time choose faster."
 							accepted = 1
 
-			if (ticker)
+			if(ticker)
 				ticker.Bible_icon_state = B.icon_state
 				ticker.Bible_item_state = B.item_state
 				ticker.Bible_name = B.name

@@ -24,7 +24,7 @@
 	return src.attack_hand(user)
 
 /obj/machinery/computer/dna/attack_hand(mob/user as mob)
-	if (..())
+	if(..())
 		return
 	user.machine = src
 	if (istype(user, /mob/living/carbon/human) || istype(user, /mob/living/silicon/ai))
@@ -42,7 +42,7 @@
 	return
 
 /obj/machinery/computer/dna/Topic(href, href_list)
-	if (..())
+	if(..())
 		return
 	if ((usr.contents.Find(src) || ((get_dist(src, usr) <= 1 || usr.telekinesis == 1) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon/ai)))
 		usr.machine = src
@@ -87,7 +87,7 @@
 		if (href_list["execute"])
 			if ((src.scan && src.scan.function))
 				switch(src.scan.function)
-					if ("data_mutate")
+					if("data_mutate")
 						if (src.modify)
 							if (!( findtext(src.scan.data, "-", 1, null) ))
 								if ((src.modify.data && src.scan.data && length(src.modify.data) >= length(src.scan.data)))
@@ -104,11 +104,11 @@
 									src.temp = "Disk Failure: Cannot examine data! (Null or wrong format)"
 						else
 							src.temp = "Disk Failure: Cannot read target disk!"
-					if ("dna_seq")
+					if("dna_seq")
 						src.temp = "<TT>DNA Systems Help:\nHuman DNA sequences: (Compressed in *.dna format version 10.76)\n\tSpecies Identification Marker: (28 chromosomes)\n\t\t5BDFE293BA5500F9FFFD500AAFFE\n\tStructural Enzymes:\n\t\tCDE375C9A6C25A7DBDA50EC05AC6CEB63\n\t\tNote: The first id set is used for DNA clean up operations.\n\tUsed Enzymes:\n\t\t493DB249EB6D13236100A37000800AB71\n\tSpecies/Genus Classification: <I>Homo Sapien</I>\n\nMonkey DNA sequences: (Compressed in *.dna format version 10.76)\n\tSpecies Identification Marker: (16 chromosomes)\n\t\t2B6696D2B127E5A4\n\tStructural Enzymes:\n\t\tCDEAF5B90AADBC6BA8033DB0A7FD613FA\n\t\tNote: The first id set is used for DNA clean up operations.\n\tUsed Enzymes:\n\t\tC8FFFE7EC09D80AEDEDB9A5A0B4085B61\n\tSpecies/Genus Classification: Generic Monkey\n</TT>>"
-					if ("dna_help")
+					if("dna_help")
 						src.temp = "<TT>DNA Systems Help:\nThe DNA systems consists 3 systems.\nI. DNA Scanner/Implanter - This system is slightly advanced to use. It accepts\n\t1 disk. Before you wish to run a function/program you must implant the\n\tdisk data into the temporary memory. Note that once this is done the disk can\n\tbe removed to place a data disk in.\nII. DNA computer - This is a simple yet fast computer that basically operates on data.\nIII. Restructurer - This device reorganizes the anatomical structure of the subject\n\taccording to the DNA sequences. Please note that it is illegal to perform a\n\ttransfer from one species to or from the <I>Homo sapiens</I> species but\n\thuman to human is acceptable under UNSD guidlines.\n\tNote: This machine is programmed to operate on specific preprogrammed species with\n\tspecialized anatomical blueprints hard coded into its databanks. It cannot operate\n\ton other species. (Current: Human, Monkey)\n\nData Disks:\n\tThese run on 2 (or 3) types: DNA scanner program disks and data modification\nfunctions (and disk modification functions)\n\nDisk-Copy\n\tThis erases the target disk and completely copies the data from the aux. disk.\nDisk-Erase\n\tThis erases everything on the target disk.\nData-Clear\n\tThis erases (clears) only the data.\n\nData-Trunicate\n\tThis removes data from the target disk (parameters gathered from data slot on target\n\tdisk). This fuction has 4 modes (a,b,c,default) defined by this way. (mode id)(#)\n\ta - This cuts # data from the end. (ex a1 on ABCD = ABC)\n\tb - This cuts # data from the beginning. (ex b1 on ABCD = BCD)\n\tc - This limits the data from the end. (ex c1 on ABCD = A)\n\tdefault - This limits the data from the end. (ex 1 on ABCD = D)\nData-Add\n\tThis adds thedata on the aux. disk to the data on the target disk.\nData-Sramble\n\tThis scrambles the data on the target disk. The length is equal to\n\tthe length of the original data.\nData-Input\n\tThis lets you input data into the data slot of any data disk.\n\tNote: This doesn't work only on storage.\nData-Mutate\n\tThis basically inserts text. You follow this format:\n\tpos-text (or just text for automatic pos 1)\n\tie 2-IVE on FOUR yields FIVE\n</TT>"
-					if ("data_add")
+					if("data_add")
 						if (src.modify)
 							if (src.modify2)
 								if ((src.modify.data && src.modify2.data))
@@ -120,7 +120,7 @@
 								src.temp = "Disk Failure: Cannot read aux. data disk!"
 						else
 							src.temp = "Disk Failure: Cannot read target disk!"
-					if ("data_scramble")
+					if("data_scramble")
 						if (src.modify)
 							if (length(text("[]", src.modify.data)) >= 1)
 								src.modify.data = scram(length(text("[]", src.modify.data)))
@@ -129,7 +129,7 @@
 								src.temp = "No data to scramble"
 						else
 							src.temp = "Disk Failure: Cannot read target disk!"
-					if ("data_input")
+					if("data_input")
 						if (src.modify)
 							var/dat = input(usr, ">", text("[]", src.name), null)  as text
 							var/s = src.scan
@@ -140,7 +140,7 @@
 								src.modify.data = dat
 						else
 							src.temp = "Disk Failure: Cannot read target disk!"
-					if ("disk_copy")
+					if("disk_copy")
 						if (src.modify)
 							if (src.modify2)
 								src.modify.function = src.modify2.function
@@ -151,12 +151,12 @@
 								src.temp = "Disk Failure: Cannot read aux. data disk!"
 						else
 							src.temp = "Disk Failure: Cannot read target disk!"
-					if ("disk_dis")
+					if("disk_dis")
 						if (src.modify)
 							src.temp = text("Function: [][]<BR>Data: []", src.modify.function, (src.modify.special ? text("-[]", src.modify.special) : null), src.modify.data)
 						else
 							src.temp = "Disk Failure: Cannot read target disk!"
-					if ("disk_erase")
+					if("disk_erase")
 						if (src.modify)
 							src.modify.data = null
 							src.modify.function = "storage"
@@ -164,31 +164,31 @@
 							src.temp = "All Disk contents deleted."
 						else
 							src.temp = "Disk Failure: Cannot read target disk!"
-					if ("data_clear")
+					if("data_clear")
 						if (src.modify)
 							src.modify.data = null
 							src.temp = "Disk data cleared."
 						else
 							src.temp = "Disk Failure: Cannot read target disk!"
-					if ("data_trun")
+					if("data_trun")
 						if (src.modify)
 							if ((src.modify.data && src.scan.data))
 								var/l1 = length(src.modify.data)
 								var/l2 = max(round(text2num(src.scan.data)), 1)
 								switch(copytext(src.modify.data, 1, 2))
-									if ("a")
+									if("a")
 										if (l1 > l2)
 											src.modify.data = copytext(src.modify.data, 1, (l1 - l2) + 1)
 										else
 											src.modify.data = ""
 										src.temp = text("Done!<BR>New Data:<BR>[]", src.modify.data)
-									if ("b")
+									if("b")
 										if (l1 > l2)
 											src.modify.data = copytext(src.modify.data, l2, l1 + 1)
 										else
 											src.modify.data = ""
 										src.temp = text("Done!<BR>New Data:<BR>[]", src.modify.data)
-									if ("c")
+									if("c")
 										if (l1 >= l2)
 											src.modify.data = copytext(src.modify.data, l1 - l2, l1 + 1)
 										src.temp = text("Done!<BR>New Data:<BR>[]", src.modify.data)
@@ -209,11 +209,11 @@
 
 /obj/machinery/computer/dna/ex_act(severity)
 	switch(severity)
-		if (1.0)
+		if(1.0)
 			//SN src = null
 			del(src)
 			return
-		if (2.0)
+		if(2.0)
 			if (prob(50))
 				//SN src = null
 				del(src)
@@ -303,7 +303,7 @@
 
 /obj/machinery/dna_scanner/ex_act(severity)
 	switch(severity)
-		if (1.0)
+		if(1.0)
 			for(var/atom/movable/A as mob|obj in src)
 				A.loc = src.loc
 				ex_act(severity)
@@ -311,7 +311,7 @@
 			//SN src = null
 			del(src)
 			return
-		if (2.0)
+		if(2.0)
 			if (prob(50))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
@@ -320,7 +320,7 @@
 				//SN src = null
 				del(src)
 				return
-		if (3.0)
+		if(3.0)
 			if (prob(25))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
@@ -334,7 +334,7 @@
 
 
 /obj/machinery/dna_scanner/blob_act()
-	if (prob(75))
+	if(prob(75))
 		for(var/atom/movable/A as mob|obj in src)
 			A.loc = src.loc
 		del(src)
@@ -342,11 +342,11 @@
 /obj/machinery/scan_console/ex_act(severity)
 
 	switch(severity)
-		if (1.0)
+		if(1.0)
 			//SN src = null
 			del(src)
 			return
-		if (2.0)
+		if(2.0)
 			if (prob(50))
 				//SN src = null
 				del(src)
@@ -356,13 +356,13 @@
 
 /obj/machinery/scan_console/blob_act()
 
-	if (prob(75))
+	if(prob(75))
 		del(src)
 
 /obj/machinery/scan_console/power_change()
-	if (stat & BROKEN)
+	if(stat & BROKEN)
 		icon_state = "broken"
-	else if (powered())
+	else if(powered())
 		icon_state = initial(icon_state)
 		stat &= ~NOPOWER
 	else
@@ -378,7 +378,7 @@
 	return
 
 /obj/machinery/scan_console/process()
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		return
 	use_power(250)
 
@@ -396,7 +396,7 @@
 		src.prog_p3 = null
 		src.prog_p4 = null
 		switch(src.func)
-			if ("dna_trun")
+			if("dna_trun")
 				if (src.data)
 					src.prog_p1 = copytext(src.data, 1, 2)
 					src.prog_p2 = text2num(src.data)
@@ -406,21 +406,21 @@
 				else
 					src.temp = "No data implanted in core memory."
 					src.status = null
-			if ("dna_scan")
+			if("dna_scan")
 				if (src.special)
 					if (src.scan)
 						if (istype(M, /mob))
 							switch(src.special)
-								if ("UI")
+								if("UI")
 									src.temp = text("Scan Complete:<BR>Data downloaded to disk!<BR>Unique Identifier: []", M.primary.uni_identity)
 									src.scan.data = M.primary.uni_identity
-								if ("SE")
+								if("SE")
 									src.temp = text("Scan Complete:<BR>Data downloaded to disk!<BR>Structural Enzymes: []", M.primary.struc_enzyme)
 									src.scan.data = M.primary.struc_enzyme
-								if ("UE")
+								if("UE")
 									src.temp = text("Scan Complete:<BR>Data downloaded to disk!<BR>Used Enzynmes: []", M.primary.use_enzyme)
 									src.scan.data = M.primary.use_enzyme
-								if ("SI")
+								if("SI")
 									src.temp = text("Scan Complete:<BR>Data downloaded to disk!<BR>Species Identifier: []", M.primary.spec_identity)
 									src.scan.data = M.primary.spec_identity
 								else
@@ -431,7 +431,7 @@
 				else
 					src.temp = "Error: Function program errors."
 				src.status = null
-			if ("dna_replace")
+			if("dna_replace")
 				if ((src.data && src.special))
 					src.prog_p1 = src.special
 					src.prog_p2 = src.data
@@ -440,7 +440,7 @@
 				else
 					src.temp = "Error: No DNA data loaded into core or function program errors."
 					src.status = null
-			if ("dna_add")
+			if("dna_add")
 				if ((src.data && src.special))
 					src.prog_p1 = src.special
 					src.prog_p2 = src.data
@@ -457,20 +457,20 @@
 			if (istype(M, /mob))
 				var/t = null
 				switch(src.prog_p3)
-					if ("UI")
+					if("UI")
 						t = M.primary.uni_identity
-					if ("SE")
+					if("SE")
 						t = M.primary.struc_enzyme
-					if ("UE")
+					if("UE")
 						t = M.primary.use_enzyme
-					if ("SI")
+					if("SI")
 						t = M.primary.spec_identity
 					else
 				if (!( src.prog_p4 ))
 					switch(src.prog_p1)
-						if ("a")
+						if("a")
 							src.prog_p4 = length(t)
-						if ("b")
+						if("b")
 							src.prog_p4 = 1
 						else
 				else
@@ -480,21 +480,21 @@
 						if (src.prog_p1 == "b")
 							src.prog_p4--
 				switch(src.prog_p1)
-					if ("a")
+					if("a")
 						if (src.prog_p4 <= 0)
 							src.temp = "Trunication complete"
 							src.status = null
 						else
 							t = copytext(t, 1, length(t))
 							src.temp = text("Trunicating []'s DNA sequence...<BR>[]<BR>Status: [] units left.<BR><BR><A href='?src=\ref[];abort=1'>Emergency Abort</A>", M.name, t, src.prog_p4, src)
-					if ("b")
+					if("b")
 						if (src.prog_p4 <= 0)
 							src.temp = "Trunication complete"
 							src.status = null
 						else
 							t = copytext(t, 2, length(t) + 1)
 							src.temp = text("Trunicating []'s DNA sequence...<BR>[]<BR>Status: [] units left.<BR><BR><A href='?src=\ref[];abort=1'>Emergency Abort</A>", M.name, t, src.prog_p4, src)
-					if ("c")
+					if("c")
 						if (length(t) <= src.prog_p2)
 							src.temp = "Limitation complete"
 							src.status = null
@@ -509,13 +509,13 @@
 							t = copytext(t, 2, length(t) + 1)
 							src.temp = text("Limiting []'s DNA sequence...<BR>[]<BR>Status: [] units converting to [] units.<BR><BR><A href='?src=\ref[];abort=1'>Emergency Abort</A>", M.name, t, length(t), src.prog_p2, src)
 				switch(src.prog_p3)
-					if ("UI")
+					if("UI")
 						M.primary.uni_identity = t
-					if ("SE")
+					if("SE")
 						M.primary.struc_enzyme = t
-					if ("UE")
+					if("UE")
 						M.primary.use_enzyme = t
-					if ("SI")
+					if("SI")
 						M.primary.spec_identity = t
 					else
 			else
@@ -526,13 +526,13 @@
 				if (istype(M, /mob))
 					var/t = null
 					switch(src.prog_p1)
-						if ("UI")
+						if("UI")
 							t = M.primary.uni_identity
-						if ("SE")
+						if("SE")
 							t = M.primary.struc_enzyme
-						if ("UE")
+						if("UE")
 							t = M.primary.use_enzyme
-						if ("SI")
+						if("SI")
 							t = M.primary.spec_identity
 						else
 					if (!( src.prog_p4 ))
@@ -546,13 +546,13 @@
 						t = text("[][][]", copytext(t, 1, src.prog_p4), copytext(src.prog_p2, src.prog_p4, src.prog_p4 + 1), (src.prog_p4 < length(t) ? copytext(t, src.prog_p4 + 1, length(t) + 1) : null))
 						src.temp = text("Replacing []'s DNA sequence...<BR>[]<BR>Target: []<BR>Status: At position []<BR><BR><A href='?src=\ref[];abort=1'>Emergency Abort</A>", M.name, t, src.prog_p2, src.prog_p4, src)
 					switch(src.prog_p1)
-						if ("UI")
+						if("UI")
 							M.primary.uni_identity = t
-						if ("SE")
+						if("SE")
 							M.primary.struc_enzyme = t
-						if ("UE")
+						if("UE")
 							M.primary.use_enzyme = t
-						if ("SI")
+						if("SI")
 							M.primary.spec_identity = t
 						else
 				else
@@ -563,13 +563,13 @@
 					if (istype(M, /mob))
 						var/t = null
 						switch(src.prog_p1)
-							if ("UI")
+							if("UI")
 								t = M.primary.uni_identity
-							if ("SE")
+							if("SE")
 								t = M.primary.struc_enzyme
-							if ("UE")
+							if("UE")
 								t = M.primary.use_enzyme
-							if ("SI")
+							if("SI")
 								t = M.primary.spec_identity
 							else
 						if (!( src.prog_p4 ))
@@ -583,13 +583,13 @@
 							t = text("[][]", t, copytext(src.prog_p2, src.prog_p4, src.prog_p4 + 1))
 							src.temp = text("Adding to []'s DNA sequence...<BR>[]<BR>Adding: []<BR>Position: []<BR><BR><A href='?src=\ref[];abort=1'>Emergency Abort</A>", M.name, t, src.prog_p2, src.prog_p4, src)
 						switch(src.prog_p1)
-							if ("UI")
+							if("UI")
 								M.primary.uni_identity = t
-							if ("SE")
+							if("SE")
 								M.primary.struc_enzyme = t
-							if ("UE")
+							if("UE")
 								M.primary.use_enzyme = t
-							if ("SI")
+							if("SI")
 								M.primary.spec_identity = t
 							else
 					else
@@ -608,7 +608,7 @@
 	return src.attack_hand(user)
 
 /obj/machinery/scan_console/attack_hand(user as mob)
-	if (..())
+	if(..())
 		return
 	var/dat
 	if (src.temp)
@@ -620,9 +620,9 @@
 			if (occupant)
 				var/t1
 				switch(occupant.stat)
-					if (0)
+					if(0)
 						t1 = "Conscious"
-					if (1)
+					if(1)
 						t1 = "Unconscious"
 					else
 						t1 = "*dead*"
@@ -643,7 +643,7 @@
 	return
 
 /obj/machinery/scan_console/Topic(href, href_list)
-	if (..())
+	if(..())
 		return
 	if ((usr.contents.Find(src) || (get_dist(src, usr) <= 1 || usr.telekinesis == 1) && istype(src.loc, /turf)) || (istype(usr, /mob/living/silicon/ai)))
 		usr.machine = src
@@ -706,13 +706,13 @@
 	src.add_fingerprint(usr)
 	if ((src.occupant && src.occupant.primary))
 		switch(src.occupant.primary.spec_identity)
-			if ("5BDFE293BA5500F9FFFD500AAFFE")
+			if("5BDFE293BA5500F9FFFD500AAFFE")
 				if (!istype(src.occupant, /mob/living/carbon/human))
 					for(var/obj/O in src.occupant)
 						del(O)
 
 					var/mob/living/carbon/human/O = new /mob/living/carbon/human( src )
-					if (ticker.killer == src.occupant)
+					if(ticker.killer == src.occupant)
 						O.memory = src.occupant.memory
 						ticker.killer = O
 					var/mob/M = src.occupant
@@ -735,12 +735,12 @@
 					del(M)
 					src.occupant = O
 					src.occupant << "Done!"
-			if ("2B6696D2B127E5A4")
+			if("2B6696D2B127E5A4")
 				if (!istype(src.occupant, /mob/living/carbon/monkey))
 					for(var/obj/O in src.occupant)
 						del(O)
 					var/mob/living/carbon/monkey/O = new /mob/living/carbon/monkey(src)
-					if (ticker.killer == src.occupant)
+					if(ticker.killer == src.occupant)
 						O.memory = src.occupant.memory
 						ticker.killer = O
 					var/mob/M = src.occupant
@@ -891,7 +891,7 @@
 	return
 
 /obj/machinery/restruct/attackby(obj/item/weapon/grab/G as obj, user as mob)
-	if (..())
+	if(..())
 		return
 	if ((!( istype(G, /obj/item/weapon/grab) ) || !( ismob(G.affecting) )))
 		return
@@ -932,20 +932,20 @@
 
 /obj/machinery/restruct/ex_act(severity)
 	switch(severity)
-		if (1.0)
+		if(1.0)
 			for(var/atom/movable/A as mob|obj in src)
 				A.loc = src.loc
 				ex_act(severity)
 			del(src)
 			return
-		if (2.0)
+		if(2.0)
 			if (prob(50))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
 					ex_act(severity)
 				del(src)
 				return
-		if (3.0)
+		if(3.0)
 			if (prob(25))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
@@ -956,7 +956,7 @@
 	return
 
 /obj/machinery/restruct/blob_act()
-	if (prob(75))
+	if(prob(75))
 		for(var/atom/movable/A as mob|obj in src)
 			A.loc = src.loc
 		del(src)

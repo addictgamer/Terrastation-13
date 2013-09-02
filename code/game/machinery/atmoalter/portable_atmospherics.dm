@@ -23,12 +23,12 @@
 		. = ..()
 		spawn()
 			var/obj/machinery/atmospherics/portables_connector/port = locate() in loc
-			if (port)
+			if(port)
 				connect(port)
 				update_icon()
 	
 	process()
-		if (!connected_port) //only react when pipe_network will ont it do it for you
+		if(!connected_port) //only react when pipe_network will ont it do it for you
 			//Allow for reactions
 			air_contents.react()
 		else
@@ -46,11 +46,11 @@
 
 		connect(obj/machinery/atmospherics/portables_connector/new_port)
 			//Make sure not already connected to something else
-			if (connected_port || !new_port || new_port.connected_device)
+			if(connected_port || !new_port || new_port.connected_device)
 				return 0
 
 			//Make sure are close enough for a valid connection
-			if (new_port.loc != loc)
+			if(new_port.loc != loc)
 				return 0
 
 			//Perform the connection
@@ -61,18 +61,18 @@
 
 			//Actually enforce the air sharing
 			var/datum/pipe_network/network = connected_port.return_network(src)
-			if (network && !network.gases.Find(air_contents))
+			if(network && !network.gases.Find(air_contents))
 				network.gases += air_contents
 				network.update = 1
 
 			return 1
 
 		disconnect()
-			if (!connected_port)
+			if(!connected_port)
 				return 0
 
 			var/datum/pipe_network/network = connected_port.return_network(src)
-			if (network)
+			if(network)
 				network.gases -= air_contents
 
 			anchored = 0
@@ -95,15 +95,15 @@
 		return
 
 	else if (istype(W, /obj/item/weapon/wrench))
-		if (connected_port)
+		if(connected_port)
 			disconnect()
 			user << "\blue You disconnect [name] from the port."
 			update_icon()
 			return
 		else
 			var/obj/machinery/atmospherics/portables_connector/possible_port = locate(/obj/machinery/atmospherics/portables_connector/) in loc
-			if (possible_port)
-				if (connect(possible_port))
+			if(possible_port)
+				if(connect(possible_port))
 					user << "\blue You connect [name] to the port."
 					update_icon()
 					return
@@ -116,7 +116,7 @@
 
 	else if ((istype(W, /obj/item/device/analyzer)) && get_dist(user, src) <= 1)
 		visible_message("\red [user] has used [W] on \icon[icon]")
-		if (air_contents)
+		if(air_contents)
 			var/pressure = air_contents.return_pressure()
 			var/total_moles = air_contents.total_moles()
 
@@ -134,7 +134,7 @@
 				user << "\blue Oxygen: [round(o2_concentration*100)]%"
 				user << "\blue CO2: [round(co2_concentration*100)]%"
 				user << "\blue Plasma: [round(plasma_concentration*100)]%"
-				if (unknown_concentration>0.01)
+				if(unknown_concentration>0.01)
 					user << "\red Unknown: [round(unknown_concentration*100)]%"
 				user << "\blue Temperature: [round(air_contents.temperature-T0C)]&deg;C"
 			else

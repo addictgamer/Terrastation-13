@@ -24,7 +24,7 @@
 //Adds autopsy data for used_weapon.
 /datum/organ/proc/add_autopsy_data(var/used_weapon, var/damage)
 	var/datum/autopsy_data/W = autopsy_data[used_weapon]
-	if (!W)
+	if(!W)
 		W = new()
 		W.weapon = used_weapon
 		autopsy_data[used_weapon] = W
@@ -68,7 +68,7 @@
 	number_wounds = 0
 	var/leg_tally = 2
 	for(var/datum/organ/external/E in organs)
-		if (!E)
+		if(!E)
 			continue
 		E.process()
 		number_wounds += E.number_wounds
@@ -80,7 +80,7 @@
 
 		//Broken limbs hurt too
 		var/broken = 0
-		if (E.status & ORGAN_BROKEN && !(E.status & ORGAN_SPLINTED) )
+		if(E.status & ORGAN_BROKEN && !(E.status & ORGAN_SPLINTED) )
 			broken = 1
 
 		//Moving around with fractured ribs won't do you any good
@@ -91,20 +91,20 @@
 				I.take_damage(rand(3,5))
 
 		//Special effects for limbs.
-		if (E.name in list("l_hand","l_arm","r_hand","r_arm"))
+		if(E.name in list("l_hand","l_arm","r_hand","r_arm"))
 			var/obj/item/c_hand		//Getting what's in this hand
-			if (E.name == "l_hand" || E.name == "l_arm")
+			if(E.name == "l_hand" || E.name == "l_arm")
 				c_hand = l_hand
-			if (E.name == "r_hand" || E.name == "r_arm")
+			if(E.name == "r_hand" || E.name == "r_arm")
 				c_hand = r_hand
 
 			if (c_hand)
 				if (broken||malfunction)
 					u_equip(c_hand)
 
-				if (broken)
+				if(broken)
 					emote("me", 1, "screams in pain and drops what they were holding in their [E.display_name?"[E.display_name]":"[E]"]!")
-				if (malfunction)
+				if(malfunction)
 					emote("me", 1, "drops what they were holding, their [E.display_name?"[E.display_name]":"[E]"] malfunctioning!")
 					var/datum/effect/effect/system/spark_spread/spark_system = new /datum/effect/effect/system/spark_spread()
 					spark_system.set_up(5, 0, src)
@@ -113,12 +113,12 @@
 					spawn(10)
 						del(spark_system)
 
-		else if (E.name in list("l_leg","l_foot","r_leg","r_foot") && !lying)
+		else if(E.name in list("l_leg","l_foot","r_leg","r_foot") && !lying)
 			if (!E.is_usable() || malfunction || (broken && !(E.status & ORGAN_SPLINTED)))
 				leg_tally--			// let it fail even if just foot&leg
 
 	// standing is poor
-	if (leg_tally <= 0 && !paralysis && !(lying || resting) && prob(5))
+	if(leg_tally <= 0 && !paralysis && !(lying || resting) && prob(5))
 		emote("scream")
 		emote("collapse")
 		paralysis = 10
@@ -132,24 +132,24 @@
 	var/hasarm_r = 1  //Have right arm
 	var/datum/organ/external/E
 	E = get_organ("l_leg")
-	if (E.status & ORGAN_DESTROYED && !(E.status & ORGAN_SPLINTED))
+	if(E.status & ORGAN_DESTROYED && !(E.status & ORGAN_SPLINTED))
 		canstand_l = 0
 		hasleg_l = 0
 	E = get_organ("r_leg")
-	if (E.status & ORGAN_DESTROYED && !(E.status & ORGAN_SPLINTED))
+	if(E.status & ORGAN_DESTROYED && !(E.status & ORGAN_SPLINTED))
 		canstand_r = 0
 		hasleg_r = 0
 	E = get_organ("l_foot")
-	if (E.status & ORGAN_DESTROYED && !(E.status & ORGAN_SPLINTED))
+	if(E.status & ORGAN_DESTROYED && !(E.status & ORGAN_SPLINTED))
 		canstand_l = 0
 	E = get_organ("r_foot")
-	if (E.status & ORGAN_DESTROYED && !(E.status & ORGAN_SPLINTED))
+	if(E.status & ORGAN_DESTROYED && !(E.status & ORGAN_SPLINTED))
 		canstand_r = 0
 	E = get_organ("l_arm")
-	if (E.status & ORGAN_DESTROYED && !(E.status & ORGAN_SPLINTED))
+	if(E.status & ORGAN_DESTROYED && !(E.status & ORGAN_SPLINTED))
 		hasarm_l = 0
 	E = get_organ("r_arm")
-	if (E.status & ORGAN_DESTROYED && !(E.status & ORGAN_SPLINTED))
+	if(E.status & ORGAN_DESTROYED && !(E.status & ORGAN_SPLINTED))
 		hasarm_r = 0
 
 	// Can stand if have at least one full leg (with leg and foot parts present)

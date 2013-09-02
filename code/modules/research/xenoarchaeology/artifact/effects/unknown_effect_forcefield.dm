@@ -10,11 +10,11 @@
 
 /datum/artifact_effect/forcefield/ToggleActivate()
 	..()
-	if (created_field.len)
+	if(created_field.len)
 		for(var/obj/effect/energy_field/F in created_field)
 			created_field.Remove(F)
 			del F
-	else if (holder)
+	else if(holder)
 		var/turf/T = get_turf(holder)
 		while(created_field.len < 16)
 			var/obj/effect/energy_field/E = new (locate(T.x,T.y,T.z))
@@ -30,13 +30,13 @@
 /datum/artifact_effect/forcefield/process()
 	..()
 	for(var/obj/effect/energy_field/E in created_field)
-		if (E.strength < 1)
+		if(E.strength < 1)
 			E.Strengthen(0.15)
-		else if (E.strength < 5)
+		else if(E.strength < 5)
 			E.Strengthen(0.25)
 
 /datum/artifact_effect/forcefield/UpdateMove()
-	if (created_field.len && holder)
+	if(created_field.len && holder)
 		var/turf/T = get_turf(holder)
 		while(created_field.len < 16)
 			//for now, just instantly respawn the fields when they get destroyed

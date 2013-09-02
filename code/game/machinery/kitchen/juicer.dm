@@ -103,7 +103,7 @@
 
 
 /obj/machinery/juicer/Topic(href, href_list)
-	if (..())
+	if(..())
 		return
 	usr.set_machine(src)
 	switch(href_list["action"])
@@ -143,7 +143,7 @@
 
 /obj/machinery/juicer/proc/juice()
 	power_change() //it is a portable machine
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		return
 	if (!beaker || beaker.reagents.total_volume >= beaker.reagents.maximum_volume)
 		return

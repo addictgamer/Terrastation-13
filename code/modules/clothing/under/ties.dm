@@ -32,29 +32,29 @@
 	color = "stethoscope"
 
 /obj/item/clothing/tie/stethoscope/attack(mob/living/carbon/human/M, mob/living/user)
-	if (ishuman(M) && isliving(user))
-		if (user.a_intent == "help")
+	if(ishuman(M) && isliving(user))
+		if(user.a_intent == "help")
 			var/body_part = parse_zone(user.zone_sel.selecting)
-			if (body_part)
+			if(body_part)
 				var/their = "their"
 				switch(M.gender)
-					if (MALE)	their = "his"
-					if (FEMALE)	their = "her"
+					if(MALE)	their = "his"
+					if(FEMALE)	their = "her"
 
 				var/sound = "pulse"
 				var/sound_strength
 
-				if (M.stat == DEAD || (M.status_flags&FAKEDEATH))
+				if(M.stat == DEAD || (M.status_flags&FAKEDEATH))
 					sound_strength = "cannot hear"
 					sound = "anything"
 				else
 					sound_strength = "hear a weak"
 					switch(body_part)
-						if ("chest")
-							if (M.oxyloss < 50)
+						if("chest")
+							if(M.oxyloss < 50)
 								sound_strength = "hear a healthy"
 							sound = "pulse and respiration"
-						if ("eyes","mouth")
+						if("eyes","mouth")
 							sound_strength = "cannot hear"
 							sound = "anything"
 						else
@@ -250,10 +250,10 @@
 	slot_flags = SLOT_MASK
 
 /obj/item/clothing/tie/holobadge/attack_self(mob/user as mob)
-	if (!stored_name)
+	if(!stored_name)
 		user << "Waving around a badge before swiping an ID would be pretty pointless."
 		return
-	if (isliving(user))
+	if(isliving(user))
 		user.visible_message("\red [user] displays their NanoTrasen Internal Security Legal Authorization Badge.\nIt reads: [stored_name], NT Security.","\red You display your NanoTrasen Internal Security Legal Authorization Badge.\nIt reads: [stored_name], NT Security.")
 
 /obj/item/clothing/tie/holobadge/attackby(var/obj/item/O as obj, var/mob/user as mob)
@@ -267,17 +267,17 @@
 			user << "\red You swipe [O] and crack the holobadge security checks."
 			return
 
-	else if (istype(O, /obj/item/weapon/card/id) || istype(O, /obj/item/device/pda))
+	else if(istype(O, /obj/item/weapon/card/id) || istype(O, /obj/item/device/pda))
 
 		var/obj/item/weapon/card/id/id_card = null
 
-		if (istype(O, /obj/item/weapon/card/id))
+		if(istype(O, /obj/item/weapon/card/id))
 			id_card = O
 		else
 			var/obj/item/device/pda/pda = O
 			id_card = pda.id
 
-		if (access_security in id_card.access || emagged)
+		if(access_security in id_card.access || emagged)
 			user << "You imprint your ID details onto the badge."
 			stored_name = id_card.registered_name
 			name = "holobadge ([stored_name])"
@@ -288,7 +288,7 @@
 	..()
 
 /obj/item/clothing/tie/holobadge/attack(mob/living/carbon/human/M, mob/living/user)
-	if (isliving(user))
+	if(isliving(user))
 		user.visible_message("\red [user] invades [M]'s personal space, thrusting [src] into their face insistently.","\red You invade [M]'s personal space, thrusting [src] into their face insistently. You are the law.")
 
 /obj/item/weapon/storage/box/holobadge
@@ -318,16 +318,16 @@
 /obj/item/clothing/tie/storage/knifeharness/proc/update()
 	var/count = 0
 	for(var/obj/item/I in hold)
-		if (istype(I,/obj/item/weapon/hatchet/unathiknife))
+		if(istype(I,/obj/item/weapon/hatchet/unathiknife))
 			count++
-	if (count>2) count = 2
+	if(count>2) count = 2
 	item_state = "unathiharness[count]"
 	icon_state = item_state
 	color = item_state
 
-	if (istype(loc, /obj/item/clothing))
+	if(istype(loc, /obj/item/clothing))
 		var/obj/item/clothing/U = loc
-		if (istype(U.loc, /mob/living/carbon/human))
+		if(istype(U.loc, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = U.loc
 			H.update_inv_w_uniform()
 

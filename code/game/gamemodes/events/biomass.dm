@@ -15,7 +15,7 @@
 		return
 
 	Del()
-		if (master)
+		if(master)
 			master.vines -= src
 			master.growth_queue -= src
 		..()
@@ -23,24 +23,24 @@
 /obj/effect/biomass/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	if (!W || !user || !W.type) return
 	switch(W.type)
-		if (/obj/item/weapon/circular_saw) del src
-		if (/obj/item/weapon/kitchen/utensil/knife) del src
-		if (/obj/item/weapon/scalpel) del src
-		if (/obj/item/weapon/twohanded/fireaxe) del src
-		if (/obj/item/weapon/hatchet) del src
-		if (/obj/item/weapon/melee/energy) del src
+		if(/obj/item/weapon/circular_saw) del src
+		if(/obj/item/weapon/kitchen/utensil/knife) del src
+		if(/obj/item/weapon/scalpel) del src
+		if(/obj/item/weapon/twohanded/fireaxe) del src
+		if(/obj/item/weapon/hatchet) del src
+		if(/obj/item/weapon/melee/energy) del src
 
 		//less effective weapons
-		if (/obj/item/weapon/wirecutters)
-			if (prob(25)) del src
-		if (/obj/item/weapon/shard)
-			if (prob(25)) del src
+		if(/obj/item/weapon/wirecutters)
+			if(prob(25)) del src
+		if(/obj/item/weapon/shard)
+			if(prob(25)) del src
 
 		else //weapons with subtypes
-			if (istype(W, /obj/item/weapon/melee/energy/sword)) del src
-			else if (istype(W, /obj/item/weapon/weldingtool))
+			if(istype(W, /obj/item/weapon/melee/energy/sword)) del src
+			else if(istype(W, /obj/item/weapon/weldingtool))
 				var/obj/item/weapon/weldingtool/WT = W
-				if (WT.remove_fuel(0, user)) del src
+				if(WT.remove_fuel(0, user)) del src
 			else
 				return
 	..()
@@ -54,7 +54,7 @@
 	//meaning if you get the biomasssss..s' size to something less than 20 plots, it won't grow anymore.
 
 	New()
-		if (!istype(src.loc,/turf/simulated/floor))
+		if(!istype(src.loc,/turf/simulated/floor))
 			del(src)
 
 		spawn_biomass_piece(src.loc)
@@ -71,22 +71,22 @@
 		BM.master = src
 
 	process()
-		if (!vines)
+		if(!vines)
 			del(src) //space  vines exterminated. Remove the controller
 			return
-		if (!growth_queue)
+		if(!growth_queue)
 			del(src) //Sanity check
 			return
-		if (vines.len >= 250 && !reached_collapse_size)
+		if(vines.len >= 250 && !reached_collapse_size)
 			reached_collapse_size = 1
-		if (vines.len >= 30 && !reached_slowdown_size )
+		if(vines.len >= 30 && !reached_slowdown_size )
 			reached_slowdown_size = 1
 
 		var/maxgrowth = 0
-		if (reached_collapse_size)
+		if(reached_collapse_size)
 			maxgrowth = 0
-		else if (reached_slowdown_size)
-			if (prob(25))
+		else if(reached_slowdown_size)
+			if(prob(25))
 				maxgrowth = 1
 			else
 				maxgrowth = 0
@@ -101,21 +101,21 @@
 			i++
 			queue_end += BM
 			growth_queue -= BM
-			if (BM.energy < 2) //If tile isn't fully grown
-				if (prob(20))
+			if(BM.energy < 2) //If tile isn't fully grown
+				if(prob(20))
 					BM.grow()
 
-			if (BM.spread())
+			if(BM.spread())
 				growth++
-				if (growth >= maxgrowth)
+				if(growth >= maxgrowth)
 					break
-			if (i >= length)
+			if(i >= length)
 				break
 
 		growth_queue = growth_queue + queue_end
 
 /obj/effect/biomass/proc/grow()
-	if (!energy)
+	if(!energy)
 		src.icon_state = "stage2"
 		energy = 1
 		src.opacity = 0
@@ -130,25 +130,25 @@
 /obj/effect/biomass/proc/spread()
 	var/direction = pick(cardinal)
 	var/step = get_step(src,direction)
-	if (istype(step,/turf/simulated/floor))
+	if(istype(step,/turf/simulated/floor))
 		var/turf/simulated/floor/F = step
-		if (!locate(/obj/effect/biomass,F))
-			if (F.Enter(src))
-				if (master)
+		if(!locate(/obj/effect/biomass,F))
+			if(F.Enter(src))
+				if(master)
 					master.spawn_biomass_piece( F )
 					return 1
 	return 0
 
 /obj/effect/biomass/ex_act(severity)
 	switch(severity)
-		if (1.0)
+		if(1.0)
 			del(src)
 			return
-		if (2.0)
+		if(2.0)
 			if (prob(90))
 				del(src)
 				return
-		if (3.0)
+		if(3.0)
 			if (prob(50))
 				del(src)
 				return
@@ -166,10 +166,10 @@
 			var/area/A = locate(areapath)
 			for(var/area/B in A.related)
 				for(var/turf/simulated/floor/F in B.contents)
-					if (!F.contents.len)
+					if(!F.contents.len)
 						turfs += F
 
-		if (turfs.len) //Pick a turf to spawn at if we can
+		if(turfs.len) //Pick a turf to spawn at if we can
 			var/turf/simulated/floor/T = pick(turfs)
 			new/obj/effect/biomass_controller(T) //spawn a controller at turf
 			message_admins("\blue Event: Biomass spawned at [T.loc.loc] ([T.x],[T.y],[T.z])")

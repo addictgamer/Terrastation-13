@@ -21,7 +21,7 @@
 	number
 		New()
 			.=..()
-			if (!isnum(value))
+			if(!isnum(value))
 				value=text2num(value)
 				ASSERT(!isnull(value))
 	accessor

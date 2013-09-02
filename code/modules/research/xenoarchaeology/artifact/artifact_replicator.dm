@@ -74,9 +74,9 @@
 		construction[button_desc] = type
 
 /obj/machinery/replicator/process()
-	if (spawning_types.len && powered())
+	if(spawning_types.len && powered())
 		spawn_progress++
-		if (spawn_progress > max_spawn_ticks)
+		if(spawn_progress > max_spawn_ticks)
 			src.visible_message("\blue \icon[src] [src] pings!")
 			var/spawn_type = spawning_types[1]
 			new spawn_type(src.loc)
@@ -85,11 +85,11 @@
 			spawn_progress = 0
 			max_spawn_ticks = rand(5,30)
 
-			if (!spawning_types.len)
+			if(!spawning_types.len)
 				use_power = 1
 				icon_state = "borgcharger0(old)"
 
-		else if (prob(5))
+		else if(prob(5))
 			src.visible_message("\blue \icon[src] [src] [pick("clicks","whizzes","whirrs","whooshes","clanks","clongs","clonks","bangs")].")
 
 /obj/machinery/replicator/attack_hand(mob/user as mob)
@@ -105,10 +105,10 @@
 
 /obj/machinery/replicator/Topic(href, href_list)
 
-	if (href_list["activate"])
+	if(href_list["activate"])
 		var/index = text2num(href_list["activate"])
-		if (index > 0 && index <= construction.len)
-			if (spawning_types.len)
+		if(index > 0 && index <= construction.len)
+			if(spawning_types.len)
 				src.visible_message("\blue \icon[src] a [pick("light","dial","display","meter","pad")] on [src]'s front [pick("blinks","flashes")] [pick("red","yellow","blue","orange","purple","green","white")].")
 			else
 				src.visible_message("\blue \icon[src] [src]'s front compartment slides shut.")

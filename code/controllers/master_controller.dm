@@ -32,21 +32,21 @@ datum/controller/game_controller
 
 datum/controller/game_controller/New()
 	//There can be only one master_controller. Out with the old and in with the new.
-	if (master_controller != src)
-		if (istype(master_controller))
+	if(master_controller != src)
+		if(istype(master_controller))
 			Recover()
 			del(master_controller)
 		master_controller = src
 
-	if (!job_master)
+	if(!job_master)
 		job_master = new /datum/controller/occupations()
 		job_master.SetupOccupations()
 		job_master.LoadJobs("config/jobs.txt")
 		world << "\red \b Job setup complete"
 
-	if (!syndicate_code_phrase)		syndicate_code_phrase	= generate_code_phrase()
-	if (!syndicate_code_response)	syndicate_code_response	= generate_code_phrase()
-	if (!emergency_shuttle)			emergency_shuttle = new /datum/shuttle_controller/emergency_shuttle()
+	if(!syndicate_code_phrase)		syndicate_code_phrase	= generate_code_phrase()
+	if(!syndicate_code_response)	syndicate_code_response	= generate_code_phrase()
+	if(!emergency_shuttle)			emergency_shuttle = new /datum/shuttle_controller/emergency_shuttle()
 
 datum/controller/game_controller/proc/setup()
 	world.tick_lag = config.Ticklag
@@ -54,11 +54,11 @@ datum/controller/game_controller/proc/setup()
 	spawn(20)
 		createRandomZlevel()
 
-	if (!air_master)
+	if(!air_master)
 		air_master = new /datum/controller/air_system()
 		air_master.setup()
 
-	if (!ticker)
+	if(!ticker)
 		ticker = new /datum/controller/gameticker()
 
 	setup_objects()
@@ -70,7 +70,7 @@ datum/controller/game_controller/proc/setup()
 		make_mining_asteroid_secret()
 
 	spawn(0)
-		if (ticker)
+		if(ticker)
 			ticker.pregame()
 
 	lighting_controller.Initialize()
@@ -90,10 +90,10 @@ datum/controller/game_controller/proc/setup_objects()
 	world << "\red \b Initializing atmos machinery."
 	sleep(-1)
 	for(var/obj/machinery/atmospherics/unary/U in machines)
-		if (istype(U, /obj/machinery/atmospherics/unary/vent_pump))
+		if(istype(U, /obj/machinery/atmospherics/unary/vent_pump))
 			var/obj/machinery/atmospherics/unary/vent_pump/T = U
 			T.broadcast_status()
-		else if (istype(U, /obj/machinery/atmospherics/unary/vent_scrubber))
+		else if(istype(U, /obj/machinery/atmospherics/unary/vent_scrubber))
 			var/obj/machinery/atmospherics/unary/vent_scrubber/T = U
 			T.broadcast_status()
 
@@ -106,13 +106,13 @@ datum/controller/game_controller/proc/process()
 	spawn(0)
 		set background = 1
 		while(1)	//far more efficient than recursively calling ourself
-			if (!Failsafe)	new /datum/controller/failsafe()
+			if(!Failsafe)	new /datum/controller/failsafe()
 
 			var/currenttime = world.timeofday
 			last_tick_duration = (currenttime - last_tick_timeofday) / 10
 			last_tick_timeofday = currenttime
 
-			if (processing)
+			if(processing)
 				var/timer
 				var/start_time = world.timeofday
 				controller_iteration++
@@ -122,19 +122,19 @@ datum/controller/game_controller/proc/process()
 
 				//AIR
 
-				if (!air_processing_killed)
+				if(!air_processing_killed)
 					timer = world.timeofday
 					last_thing_processed = air_master.type
 					air_master.tick()
 					air_cost = (world.timeofday - timer) / 10				// this might make atmos slower
 				//  1. atmos won't process if the game is generally lagged out(no deadlocks)
-				//  2. if the server frequently crashes during atmos processing we will knowif (!kill_air)
+				//  2. if the server frequently crashes during atmos processing we will knowif(!kill_air)
 					//src.set_debug_state("Air Master")
 
 					air_master.current_cycle++
-					if (!air_master.tick()) //Runtimed.
+					if(!air_master.tick()) //Runtimed.
 						air_master.failed_ticks++
-						if (air_master.failed_ticks > 5)
+						if(air_master.failed_ticks > 5)
 							world << "<font color='red'><b>RUNTIMES IN ATMOS TICKER.  Killing air simulation!</font></b>"
 							world.log << "### ZAS SHUTDOWN"
 							message_admins("ZASALERT: unable to run [air_master.tick_progress], shutting down!")
@@ -182,7 +182,7 @@ datum/controller/game_controller/proc/process()
 				sleep(breather_ticks)
 
 				//PIPENETS
-				if (!pipe_processing_killed)
+				if(!pipe_processing_killed)
 					timer = world.timeofday
 					process_pipenets()
 					networks_cost = (world.timeofday - timer) / 10
@@ -211,7 +211,7 @@ datum/controller/game_controller/proc/process()
 				total_cost = air_cost + sun_cost + mobs_cost + diseases_cost + machines_cost + objects_cost + networks_cost + powernets_cost + events_cost + ticker_cost
 
 				var/end_time = world.timeofday
-				if (end_time < start_time)
+				if(end_time < start_time)
 					start_time -= 864000    //deciseconds in a day
 				sleep( round(minimum_ticks - (end_time - start_time),1) )
 			else
@@ -221,7 +221,7 @@ datum/controller/game_controller/proc/process_mobs()
 	var/i = 1
 	while(i<=mob_list.len)
 		var/mob/M = mob_list[i]
-		if (M)
+		if(M)
 			last_thing_processed = M.type
 			M.Life()
 			i++
@@ -232,7 +232,7 @@ datum/controller/game_controller/proc/process_diseases()
 	var/i = 1
 	while(i<=active_diseases.len)
 		var/datum/disease/Disease = active_diseases[i]
-		if (Disease)
+		if(Disease)
 			last_thing_processed = Disease.type
 			Disease.process()
 			i++
@@ -243,11 +243,11 @@ datum/controller/game_controller/proc/process_machines()
 	var/i = 1
 	while(i<=machines.len)
 		var/obj/machinery/Machine = machines[i]
-		if (Machine)
+		if(Machine)
 			last_thing_processed = Machine.type
-			if (Machine.process() != PROCESS_KILL)
-				if (Machine)
-					if (Machine.use_power)
+			if(Machine.process() != PROCESS_KILL)
+				if(Machine)
+					if(Machine.use_power)
 						Machine.auto_use_power()
 					i++
 					continue
@@ -257,7 +257,7 @@ datum/controller/game_controller/proc/process_objects()
 	var/i = 1
 	while(i<=processing_objects.len)
 		var/obj/Object = processing_objects[i]
-		if (Object)
+		if(Object)
 			last_thing_processed = Object.type
 			Object.process()
 			i++
@@ -269,7 +269,7 @@ datum/controller/game_controller/proc/process_pipenets()
 	var/i = 1
 	while(i<=pipe_networks.len)
 		var/datum/pipe_network/Network = pipe_networks[i]
-		if (Network)
+		if(Network)
 			Network.process()
 			i++
 			continue
@@ -280,7 +280,7 @@ datum/controller/game_controller/proc/process_powernets()
 	var/i = 1
 	while(i<=powernets.len)
 		var/datum/powernet/Powernet = powernets[i]
-		if (Powernet)
+		if(Powernet)
 			Powernet.reset()
 			i++
 			continue
@@ -291,7 +291,7 @@ datum/controller/game_controller/proc/process_events()
 	var/i = 1
 	while(i<=events.len)
 		var/datum/event/Event = events[i]
-		if (Event)
+		if(Event)
 			Event.process()
 			i++
 			continue
@@ -302,10 +302,10 @@ datum/controller/game_controller/proc/Recover()		//Mostly a placeholder for now.
 	var/msg = "## DEBUG: [time2text(world.timeofday)] MC restarted. Reports:\n"
 	for(var/varname in master_controller.vars)
 		switch(varname)
-			if ("tag","bestF","type","parent_type","vars")	continue
+			if("tag","bestF","type","parent_type","vars")	continue
 			else
 				var/varval = master_controller.vars[varname]
-				if (istype(varval,/datum))
+				if(istype(varval,/datum))
 					var/datum/D = varval
 					msg += "\t [varname] = [D.type]\n"
 				else

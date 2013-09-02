@@ -28,22 +28,22 @@
 	world << "A nuclear explosive was being transported by Nanotrasen to a military base. The transport ship mysteriously lost contact with Space Traffic Control (STC). About that time a strange disk was discovered around [station_name()]. It was identified by Nanotrasen as a nuclear auth. disk and now Syndicate Operatives have arrived to retake the disk and detonate SS13! Also, most likely Syndicate star ships are in the vicinity so take care not to lose the disk!\n<B>Syndicate</B>: Reclaim the disk and detonate the nuclear bomb anywhere on SS13.\n<B>Personnel</B>: Hold the disk and <B>escape with the disk</B> on the shuttle!"
 
 /datum/game_mode/nuclear/can_start()//This could be better, will likely have to recode it later
-	if (!..())
+	if(!..())
 		return 0
 
 	var/list/possible_syndicates = get_players_for_role(BE_OPERATIVE)
 	var/agent_number = 0
 
-	if (possible_syndicates.len < 1)
+	if(possible_syndicates.len < 1)
 		return 0
 
-	if (possible_syndicates.len > agents_possible)
+	if(possible_syndicates.len > agents_possible)
 		agent_number = agents_possible
 	else
 		agent_number = possible_syndicates.len
 
 	var/n_players = num_players()
-	if (agent_number > n_players)
+	if(agent_number > n_players)
 		agent_number = n_players/2
 
 	while(agent_number > 0)
@@ -67,40 +67,40 @@
 /datum/game_mode/proc/update_all_synd_icons()
 	spawn(0)
 		for(var/datum/mind/synd_mind in syndicates)
-			if (synd_mind.current)
-				if (synd_mind.current.client)
+			if(synd_mind.current)
+				if(synd_mind.current.client)
 					for(var/image/I in synd_mind.current.client.images)
-						if (I.icon_state == "synd")
+						if(I.icon_state == "synd")
 							del(I)
 
 		for(var/datum/mind/synd_mind in syndicates)
-			if (synd_mind.current)
-				if (synd_mind.current.client)
+			if(synd_mind.current)
+				if(synd_mind.current.client)
 					for(var/datum/mind/synd_mind_1 in syndicates)
-						if (synd_mind_1.current)
+						if(synd_mind_1.current)
 							var/I = image('icons/mob/mob.dmi', loc = synd_mind_1.current, icon_state = "synd")
 							synd_mind.current.client.images += I
 
 /datum/game_mode/proc/update_synd_icons_added(datum/mind/synd_mind)
 	spawn(0)
-		if (synd_mind.current)
-			if (synd_mind.current.client)
+		if(synd_mind.current)
+			if(synd_mind.current.client)
 				var/I = image('icons/mob/mob.dmi', loc = synd_mind.current, icon_state = "synd")
 				synd_mind.current.client.images += I
 
 /datum/game_mode/proc/update_synd_icons_removed(datum/mind/synd_mind)
 	spawn(0)
 		for(var/datum/mind/synd in syndicates)
-			if (synd.current)
-				if (synd.current.client)
+			if(synd.current)
+				if(synd.current.client)
 					for(var/image/I in synd.current.client.images)
-						if (I.icon_state == "synd" && I.loc == synd_mind.current)
+						if(I.icon_state == "synd" && I.loc == synd_mind.current)
 							del(I)
 
-		if (synd_mind.current)
-			if (synd_mind.current.client)
+		if(synd_mind.current)
+			if(synd_mind.current.client)
 				for(var/image/I in synd_mind.current.client.images)
-					if (I.icon_state == "synd")
+					if(I.icon_state == "synd")
 						del(I)
 
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -111,7 +111,7 @@
 	var/list/turf/synd_spawn = list()
 
 	for(var/obj/effect/landmark/A in landmarks_list)
-		if (A.name == "Syndicate-Spawn")
+		if(A.name == "Syndicate-Spawn")
 			synd_spawn += get_turf(A)
 			del(A)
 			continue
@@ -125,7 +125,7 @@
 	var/spawnpos = 1
 
 	for(var/datum/mind/synd_mind in syndicates)
-		if (spawnpos > synd_spawn.len)
+		if(spawnpos > synd_spawn.len)
 			spawnpos = 1
 		synd_mind.current.loc = synd_spawn[spawnpos]
 
@@ -133,7 +133,7 @@
 		greet_syndicate(synd_mind)
 		equip_syndicate(synd_mind.current)
 
-		if (!leader_selected)
+		if(!leader_selected)
 			prepare_syndicate_leader(synd_mind, nuke_code)
 			leader_selected = 1
 		else
@@ -144,9 +144,9 @@
 
 	update_all_synd_icons()
 
-	if (uplinklocker)
+	if(uplinklocker)
 		new /obj/structure/closet/syndicate/nuclear(uplinklocker.loc)
-	if (nuke_spawn && synd_spawn.len > 0)
+	if(nuke_spawn && synd_spawn.len > 0)
 		var/obj/machinery/nuclearbomb/the_bomb = new /obj/machinery/nuclearbomb(nuke_spawn.loc)
 		the_bomb.r_code = nuke_code
 
@@ -213,9 +213,9 @@
 	synd_mob.equip_to_slot_or_del(new /obj/item/clothing/gloves/swat(synd_mob), slot_gloves)
 	synd_mob.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/swat(synd_mob), slot_head)
 	synd_mob.equip_to_slot_or_del(new /obj/item/weapon/card/id/syndicate(synd_mob), slot_wear_id)
-	if (synd_mob.backbag == 2) synd_mob.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack(synd_mob), slot_back)
-	if (synd_mob.backbag == 3) synd_mob.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel_norm(synd_mob), slot_back)
-	if (synd_mob.backbag == 4) synd_mob.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel(synd_mob), slot_back)
+	if(synd_mob.backbag == 2) synd_mob.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack(synd_mob), slot_back)
+	if(synd_mob.backbag == 3) synd_mob.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel_norm(synd_mob), slot_back)
+	if(synd_mob.backbag == 4) synd_mob.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel(synd_mob), slot_back)
 	synd_mob.equip_to_slot_or_del(new /obj/item/ammo_magazine/a12mm(synd_mob), slot_in_backpack)
 	synd_mob.equip_to_slot_or_del(new /obj/item/ammo_magazine/a12mm(synd_mob), slot_in_backpack)
 	synd_mob.equip_to_slot_or_del(new /obj/item/weapon/reagent_containers/pill/cyanide(synd_mob), slot_in_backpack)
@@ -237,8 +237,8 @@
 /datum/game_mode/proc/is_operatives_are_dead()
 	for(var/datum/mind/operative_mind in syndicates)
 		if (!istype(operative_mind.current,/mob/living/carbon/human))
-			if (operative_mind.current)
-				if (operative_mind.current.stat!=2)
+			if(operative_mind.current)
+				if(operative_mind.current.stat!=2)
 					return 0
 	return 1
 
@@ -247,7 +247,7 @@
 	var/disk_rescued = 1
 	for(var/obj/item/weapon/disk/nuclear/D in world)
 		var/disk_area = get_area(D)
-		if (!is_type_in_list(disk_area, centcom_areas))
+		if(!is_type_in_list(disk_area, centcom_areas))
 			disk_rescued = 0
 			break
 	var/crew_evacuated = (emergency_shuttle.location==2)
@@ -309,18 +309,18 @@
 
 
 /datum/game_mode/proc/auto_declare_completion_nuclear()
-	if ( syndicates.len || (ticker && istype(ticker.mode,/datum/game_mode/nuclear)) )
+	if( syndicates.len || (ticker && istype(ticker.mode,/datum/game_mode/nuclear)) )
 		var/text = "<FONT size = 2><B>The syndicate operatives were:</B></FONT>"
 
 		for(var/datum/mind/syndicate in syndicates)
 
 			text += "<br>[syndicate.key] was [syndicate.name] ("
-			if (syndicate.current)
-				if (syndicate.current.stat == DEAD)
+			if(syndicate.current)
+				if(syndicate.current.stat == DEAD)
 					text += "died"
 				else
 					text += "survived"
-				if (syndicate.current.real_name != syndicate.name)
+				if(syndicate.current.real_name != syndicate.name)
 					text += " as [syndicate.current.real_name]"
 			else
 				text += "body destroyed"
@@ -347,9 +347,9 @@
 /proc/NukeNameAssign(var/lastname,var/list/syndicates)
 	for(var/datum/mind/synd_mind in syndicates)
 		switch(synd_mind.current.gender)
-			if (MALE)
+			if(MALE)
 				synd_mind.name = "[pick(first_names_male)] [pick(last_names)]"
-			if (FEMALE)
+			if(FEMALE)
 				synd_mind.name = "[pick(first_names_female)] [pick(last_names)]"
 		synd_mind.current.real_name = synd_mind.name
 	return

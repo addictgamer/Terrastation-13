@@ -11,7 +11,7 @@
 	projectile_type = "/obj/item/projectile/ion"
 
 /obj/item/weapon/gun/energy/ionrifle/emp_act(severity)
-	if (severity <= 2)
+	if(severity <= 2)
 		power_supply.use(round(power_supply.maxcharge / severity))
 		update_icon()
 	else
@@ -55,9 +55,9 @@ obj/item/weapon/gun/energy/staff
 
 	process()
 		charge_tick++
-		if (charge_tick < 4) return 0
+		if(charge_tick < 4) return 0
 		charge_tick = 0
-		if (!power_supply) return 0
+		if(!power_supply) return 0
 		power_supply.give(200)
 		return 1
 
@@ -94,22 +94,22 @@ obj/item/weapon/gun/energy/staff
 
 	process()
 		charge_tick++
-		if (charge_tick < 4) return 0
+		if(charge_tick < 4) return 0
 		charge_tick = 0
-		if (!power_supply) return 0
+		if(!power_supply) return 0
 		power_supply.give(100)
 		update_icon()
 		return 1
 
 	attack_self(mob/living/user as mob)
 		switch(mode)
-			if (0)
+			if(0)
 				mode = 1
 				charge_cost = 100
 				user << "\red The [src.name] is now set to increase yield."
 				projectile_type = "/obj/item/projectile/energy/florayield"
 				modifystate = "florayield"
-			if (1)
+			if(1)
 				mode = 0
 				charge_cost = 100
 				user << "\red The [src.name] is now set to induce mutations."
@@ -142,9 +142,9 @@ obj/item/weapon/gun/energy/staff
 
 	process()
 		charge_tick++
-		if (charge_tick < recharge_time) return 0
+		if(charge_tick < recharge_time) return 0
 		charge_tick = 0
-		if (!power_supply) return 0
+		if(!power_supply) return 0
 		power_supply.give(100)
 
 	update_icon()
@@ -176,7 +176,7 @@ obj/item/weapon/gun/energy/staff/focus
 	projectile_type = "/obj/item/projectile/forcebolt"
 	/*
 	attack_self(mob/living/user as mob)
-		if (projectile_type == "/obj/item/projectile/forcebolt")
+		if(projectile_type == "/obj/item/projectile/forcebolt")
 			charge_cost = 200
 			user << "\red The [src.name] will now strike a small area."
 			projectile_type = "/obj/item/projectile/forcebolt/strong"

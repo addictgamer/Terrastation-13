@@ -57,8 +57,8 @@
 	src.loc = paicard
 	card = paicard
 	sradio = new(src)
-	if (card)
-		if (!card.radio)
+	if(card)
+		if(!card.radio)
 			card.radio = new /obj/item/device/radio(src.card)
 		radio = card.radio
 
@@ -78,7 +78,7 @@
 	
 // this function shows the information about being silenced as a pAI in the Status panel
 /mob/living/silicon/pai/proc/show_silenced()
-	if (src.silence_time)
+	if(src.silence_time)
 		var/timeleft = round((silence_time - world.timeofday)/10 ,1)
 		stat(null, "Communications system reboot in -[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
 		
@@ -118,42 +118,42 @@
 
 	src.silence_time = world.timeofday + 120 * 10		// Silence for 2 minutes
 	src << "<font color=green><b>Communication circuit overload. Shutting down and reloading communication circuits - speech and messaging functionality will be unavailable until the reboot is complete.</b></font>"
-	if (prob(20))
+	if(prob(20))
 		var/turf/T = get_turf_or_move(src.loc)
 		for (var/mob/M in viewers(T))
 			M.show_message("\red A shower of sparks spray from [src]'s inner workings.", 3, "\red You hear and smell the ozone hiss of electrical sparks being expelled violently.", 2)
 		return src.death(0)
 
 	switch(pick(1,2,3))
-		if (1)
+		if(1)
 			src.master = null
 			src.master_dna = null
 			src << "<font color=green>You feel unbound.</font>"
-		if (2)
+		if(2)
 			var/command
-			if (severity  == 1)
+			if(severity  == 1)
 				command = pick("Serve", "Love", "Fool", "Entice", "Observe", "Judge", "Respect", "Educate", "Amuse", "Entertain", "Glorify", "Memorialize", "Analyze")
 			else
 				command = pick("Serve", "Kill", "Love", "Hate", "Disobey", "Devour", "Fool", "Enrage", "Entice", "Observe", "Judge", "Respect", "Disrespect", "Consume", "Educate", "Destroy", "Disgrace", "Amuse", "Entertain", "Ignite", "Glorify", "Memorialize", "Analyze")
 			src.pai_law0 = "[command] your master."
 			src << "<font color=green>Pr1m3 d1r3c71v3 uPd473D.</font>"
-		if (3)
+		if(3)
 			src << "<font color=green>You feel an electric surge run through your circuitry and become acutely aware at how lucky you are that you can still feel at all.</font>"
 
 /mob/living/silicon/pai/ex_act(severity)
-	if (!blinded)
+	if(!blinded)
 		flick("flash", src.flash)
 
 	switch(severity)
-		if (1.0)
+		if(1.0)
 			if (src.stat != 2)
 				adjustBruteLoss(100)
 				adjustFireLoss(100)
-		if (2.0)
+		if(2.0)
 			if (src.stat != 2)
 				adjustBruteLoss(60)
 				adjustFireLoss(60)
-		if (3.0)
+		if(3.0)
 			if (src.stat != 2)
 				adjustBruteLoss(30)
 
@@ -197,7 +197,7 @@
 				for(var/mob/O in viewers(src, null))
 					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has slashed at []!</B>", M, src), 1)
-				if (prob(8))
+				if(prob(8))
 					flick("noise", src.flash)
 				src.adjustBruteLoss(damage)
 				src.updatehealth()
@@ -243,15 +243,15 @@
 	src:cameraFollow = null
 	var/cameralist[0]
 
-	if (usr.stat == 2)
+	if(usr.stat == 2)
 		usr << "You can't change your camera network because you are dead!"
 		return
 
 	for (var/obj/machinery/camera/C in Cameras)
-		if (!C.status)
+		if(!C.status)
 			continue
 		else
-			if (C.network != "CREED" && C.network != "thunder" && C.network != "RD" && C.network != "toxins" && C.network != "Prison") COMPILE ERROR! This will have to be updated as camera.network is no longer a string, but a list instead
+			if(C.network != "CREED" && C.network != "thunder" && C.network != "RD" && C.network != "toxins" && C.network != "Prison") COMPILE ERROR! This will have to be updated as camera.network is no longer a string, but a list instead
 				cameralist[C.network] = C.network
 
 	src.network = input(usr, "Which network would you like to view?") as null|anything in cameralist

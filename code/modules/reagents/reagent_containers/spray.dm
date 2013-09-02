@@ -16,19 +16,19 @@
 
 
 /obj/item/weapon/reagent_containers/spray/afterattack(atom/A as mob|obj, mob/user as mob)
-	if (istype(A, /obj/item/weapon/storage) || istype(A, /obj/structure/table) || istype(A, /obj/structure/rack) || istype(A, /obj/structure/closet) \
+	if(istype(A, /obj/item/weapon/storage) || istype(A, /obj/structure/table) || istype(A, /obj/structure/rack) || istype(A, /obj/structure/closet) \
 	|| istype(A, /obj/item/weapon/reagent_containers) || istype(A, /obj/structure/sink))
 		return
 
-	if (istype(A, /obj/effect/proc_holder/spell))
+	if(istype(A, /obj/effect/proc_holder/spell))
 		return
 
-	if (istype(A, /obj/structure/reagent_dispensers) && get_dist(src,A) <= 1) //this block copypasted from reagent_containers/glass, for lack of a better solution
-		if (!A.reagents.total_volume && A.reagents)
+	if(istype(A, /obj/structure/reagent_dispensers) && get_dist(src,A) <= 1) //this block copypasted from reagent_containers/glass, for lack of a better solution
+		if(!A.reagents.total_volume && A.reagents)
 			user << "<span class='notice'>\The [A] is empty.</span>"
 			return
 
-		if (reagents.total_volume >= reagents.maximum_volume)
+		if(reagents.total_volume >= reagents.maximum_volume)
 			user << "<span class='notice'>\The [src] is full.</span>"
 			return
 
@@ -36,7 +36,7 @@
 		user << "<span class='notice'>You fill \the [src] with [trans] units of the contents of \the [A].</span>"
 		return
 
-	if (reagents.total_volume < amount_per_transfer_from_this)
+	if(reagents.total_volume < amount_per_transfer_from_this)
 		user << "<span class='notice'>\The [src] is empty!</span>"
 		return
 
@@ -60,7 +60,7 @@
 
 				// When spraying against the wall, also react with the wall, but
 				// not its contents.
-				if (get_dist(D, A_turf) == 1 && A_turf.density)
+				if(get_dist(D, A_turf) == 1 && A_turf.density)
 					D.reagents.reaction(A_turf)
 				sleep(2)
 			sleep(3)
@@ -68,13 +68,13 @@
 
 	playsound(src.loc, 'sound/effects/spray2.ogg', 50, 1, -6)
 
-	if (reagents.has_reagent("sacid"))
+	if(reagents.has_reagent("sacid"))
 		message_admins("[key_name_admin(user)] fired sulphuric acid from a spray bottle.")
 		log_game("[key_name(user)] fired sulphuric acid from a spray bottle.")
-	if (reagents.has_reagent("pacid"))
+	if(reagents.has_reagent("pacid"))
 		message_admins("[key_name_admin(user)] fired Polyacid from a spray bottle.")
 		log_game("[key_name(user)] fired Polyacid from a spray bottle.")
-	if (reagents.has_reagent("lube"))
+	if(reagents.has_reagent("lube"))
 		message_admins("[key_name_admin(user)] fired Space lube from a spray bottle.")
 		log_game("[key_name(user)] fired Space lube from a spray bottle.")
 	return
@@ -97,7 +97,7 @@
 	set category = "Object"
 	set src in usr
 
-	if (isturf(usr.loc))
+	if(isturf(usr.loc))
 		usr << "<span class='notice'>You empty the [src] onto the floor.</span>"
 		reagents.reaction(usr.loc)
 		spawn(5) src.reagents.clear_reagents()
@@ -143,19 +143,19 @@
 
 //this is a big copypasta clusterfuck, but it's still better than it used to be!
 /obj/item/weapon/reagent_containers/spray/chemsprayer/afterattack(atom/A as mob|obj, mob/user as mob)
-	if (istype(A, /obj/item/weapon/storage) || istype(A, /obj/structure/table) || istype(A, /obj/structure/rack) || istype(A, /obj/structure/closet) \
+	if(istype(A, /obj/item/weapon/storage) || istype(A, /obj/structure/table) || istype(A, /obj/structure/rack) || istype(A, /obj/structure/closet) \
 	|| istype(A, /obj/item/weapon/reagent_containers) || istype(A, /obj/structure/sink))
 		return
 
-	if (istype(A, /obj/effect/proc_holder/spell))
+	if(istype(A, /obj/effect/proc_holder/spell))
 		return
 
-	if (istype(A, /obj/structure/reagent_dispensers) && get_dist(src,A) <= 1) //this block copypasted from reagent_containers/glass, for lack of a better solution
-		if (!A.reagents.total_volume && A.reagents)
+	if(istype(A, /obj/structure/reagent_dispensers) && get_dist(src,A) <= 1) //this block copypasted from reagent_containers/glass, for lack of a better solution
+		if(!A.reagents.total_volume && A.reagents)
 			user << "<span class='notice'>\The [A] is empty.</span>"
 			return
 
-		if (reagents.total_volume >= reagents.maximum_volume)
+		if(reagents.total_volume >= reagents.maximum_volume)
 			user << "<span class='notice'>\The [src] is full.</span>"
 			return
 
@@ -163,13 +163,13 @@
 		user << "<span class='notice'>You fill \the [src] with [trans] units of the contents of \the [A].</span>"
 		return
 
-	if (reagents.total_volume < amount_per_transfer_from_this)
+	if(reagents.total_volume < amount_per_transfer_from_this)
 		user << "<span class='notice'>\The [src] is empty!</span>"
 		return
 
 	var/Sprays[3]
 	for(var/i=1, i<=3, i++) // intialize sprays
-		if (src.reagents.total_volume < 1) break
+		if(src.reagents.total_volume < 1) break
 		var/obj/effect/decal/D = new/obj/effect/decal(get_turf(src))
 		D.name = "chemicals"
 		D.icon = 'icons/obj/chempuff.dmi'
@@ -189,7 +189,7 @@
 	for(var/i=1, i<=Sprays.len, i++)
 		spawn()
 			var/obj/effect/decal/D = Sprays[i]
-			if (!D) continue
+			if(!D) continue
 
 			// Spreads the sprays a little bit
 			var/turf/my_target = pick(the_targets)
@@ -205,13 +205,13 @@
 
 	playsound(src.loc, 'sound/effects/spray2.ogg', 50, 1, -6)
 
-	if (reagents.has_reagent("sacid"))
+	if(reagents.has_reagent("sacid"))
 		message_admins("[key_name_admin(user)] fired sulphuric acid from a chem sprayer.")
 		log_game("[key_name(user)] fired sulphuric acid from a chem sprayer.")
-	if (reagents.has_reagent("pacid"))
+	if(reagents.has_reagent("pacid"))
 		message_admins("[key_name_admin(user)] fired Polyacid from a chem sprayer.")
 		log_game("[key_name(user)] fired Polyacid from a chem sprayer.")
-	if (reagents.has_reagent("lube"))
+	if(reagents.has_reagent("lube"))
 		message_admins("[key_name_admin(user)] fired Space lube from a chem sprayer.")
 		log_game("[key_name(user)] fired Space lube from a chem sprayer.")
 	return

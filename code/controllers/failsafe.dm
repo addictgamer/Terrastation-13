@@ -12,8 +12,8 @@ var/datum/controller/failsafe/Failsafe
 
 /datum/controller/failsafe/New()
 	//There can be only one failsafe. Out with the old in with the new (that way we can restart the Failsafe by spawning a new one)
-	if (Failsafe != src)
-		if (istype(Failsafe))
+	if(Failsafe != src)
+		if(istype(Failsafe))
 			del(Failsafe)
 	Failsafe = src
 	Failsafe.process()
@@ -24,19 +24,19 @@ var/datum/controller/failsafe/Failsafe
 	spawn(0)
 		set background = 1
 		while(1)	//more efficient than recursivly calling ourself over and over. background = 1 ensures we do not trigger an infinite loop
-			if (!master_controller)		new /datum/controller/game_controller()	//replace the missing master_controller! This should never happen.
-			if (!lighting_controller)	new /datum/controller/lighting()		//replace the missing lighting_controller
+			if(!master_controller)		new /datum/controller/game_controller()	//replace the missing master_controller! This should never happen.
+			if(!lighting_controller)	new /datum/controller/lighting()		//replace the missing lighting_controller
 
-			if (processing)
-				if (master_controller.processing)	//only poke if these overrides aren't in effect
-					if (MC_iteration == controller_iteration)	//master_controller hasn't finished processing in the defined interval
+			if(processing)
+				if(master_controller.processing)	//only poke if these overrides aren't in effect
+					if(MC_iteration == controller_iteration)	//master_controller hasn't finished processing in the defined interval
 						switch(MC_defcon)
-							if (0 to 3)
+							if(0 to 3)
 								MC_defcon++
-							if (4)
+							if(4)
 								admins << "<font color='red' size='2'><b>Warning. The Master Controller has not fired in the last [MC_defcon*processing_interval] ticks. Automatic restart in [processing_interval] ticks.</b></font>"
 								MC_defcon = 5
-							if (5)
+							if(5)
 								admins << "<font color='red' size='2'><b>Warning. The Master Controller has still not fired within the last [MC_defcon*processing_interval] ticks. Killing and restarting...</b></font>"
 								new /datum/controller/game_controller()	//replace the old master_controller (hence killing the old one's process)
 								master_controller.process()				//Start it rolling again
@@ -45,15 +45,15 @@ var/datum/controller/failsafe/Failsafe
 						MC_defcon = 0
 						MC_iteration = controller_iteration
 
-				if (lighting_controller.processing)
-					if (lighting_iteration == lighting_controller.iteration)	//master_controller hasn't finished processing in the defined interval
+				if(lighting_controller.processing)
+					if(lighting_iteration == lighting_controller.iteration)	//master_controller hasn't finished processing in the defined interval
 						switch(lighting_defcon)
-							if (0 to 3)
+							if(0 to 3)
 								lighting_defcon++
-							if (4)
+							if(4)
 								admins << "<font color='red' size='2'><b>Warning. The Lighting Controller has not fired in the last [lighting_defcon*processing_interval] ticks. Automatic restart in [processing_interval] ticks.</b></font>"
 								lighting_defcon = 5
-							if (5)
+							if(5)
 								admins << "<font color='red' size='2'><b>Warning. The Lighting Controller has still not fired within the last [lighting_defcon*processing_interval] ticks. Killing and restarting...</b></font>"
 								new /datum/controller/lighting()	//replace the old lighting_controller (hence killing the old one's process)
 								lighting_controller.process()		//Start it rolling again

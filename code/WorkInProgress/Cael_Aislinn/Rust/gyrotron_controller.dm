@@ -10,18 +10,18 @@
 
 	Topic(href, href_list)
 		..()
-		if ( href_list["close"] )
+		if( href_list["close"] )
 			usr << browse(null, "window=gyrotron_controller")
 			usr.machine = null
 			return
-		if ( href_list["target"] )
+		if( href_list["target"] )
 			var/obj/machinery/rust/gyrotron/gyro = locate(href_list["target"])
 			gyro.Topic(href, href_list)
 			return
 
 	process()
 		..()
-		if (updating)
+		if(updating)
 			src.updateDialog()
 
 	interact(mob/user)
@@ -33,10 +33,10 @@
 		var/t = "<B>Gyrotron Remote Control Console</B><BR>"
 		t += "<hr>"
 		for(var/obj/machinery/rust/gyrotron/gyro in world)
-			if (gyro.remoteenabled && gyro.on)
+			if(gyro.remoteenabled && gyro.on)
 				t += "<font color=green>Gyrotron operational</font><br>"
 				t += "Operational mode: <font color=blue>"
-				if (gyro.emitting)
+				if(gyro.emitting)
 					t += "Emitting</font> <a href='?src=\ref[gyro];deactivate=1'>\[Deactivate\]</a><br>"
 				else
 					t += "Not emitting</font> <a href='?src=\ref[gyro];activate=1'>\[Activate\]</a><br>"
@@ -49,7 +49,7 @@
 		/*
 		var/t = "<B>Reactor Core Fuel Control</B><BR>"
 		t += "Current fuel injection stage: [active_stage]<br>"
-		if (active_stage == "Cooling")
+		if(active_stage == "Cooling")
 			//t += "<a href='?src=\ref[src];restart=1;'>Restart injection cycle</a><br>"
 			t += "----<br>"
 		else

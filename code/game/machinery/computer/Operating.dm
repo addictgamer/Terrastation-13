@@ -19,14 +19,14 @@
 
 /obj/machinery/computer/operating/attack_ai(mob/user)
 	add_fingerprint(user)
-	if (stat & (BROKEN|NOPOWER))
+	if(stat & (BROKEN|NOPOWER))
 		return
 	interact(user)
 
 
 /obj/machinery/computer/operating/attack_hand(mob/user)
 	add_fingerprint(user)
-	if (stat & (BROKEN|NOPOWER))
+	if(stat & (BROKEN|NOPOWER))
 		return
 	interact(user)
 
@@ -41,7 +41,7 @@
 	user.set_machine(src)
 	var/dat = "<HEAD><TITLE>Operating Computer</TITLE><META HTTP-EQUIV='Refresh' CONTENT='10'></HEAD><BODY>\n"
 	dat += "<A HREF='?src=\ref[user];mach_close=op'>Close</A><br><br>" //| <A HREF='?src=\ref[user];update=1'>Update</A>"
-	if (src.table && (src.table.check_victim()))
+	if(src.table && (src.table.check_victim()))
 		src.victim = src.table.victim
 		dat += {"
 <B>Patient Information:</B><BR>
@@ -70,7 +70,7 @@
 
 
 /obj/machinery/computer/operating/Topic(href, href_list)
-	if (..())
+	if(..())
 		return
 	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
 		usr.set_machine(src)
@@ -78,5 +78,5 @@
 
 
 /obj/machinery/computer/operating/process()
-	if (..())
+	if(..())
 		src.updateDialog()

@@ -82,12 +82,12 @@ TOILET
 			M.anchored = 0
 			M.buckled = null
 			src.add_fingerprint(user)
-	if ((src.clogged < 1) || (src.contents.len < 7) || (user.loc != src.loc))
+	if((src.clogged < 1) || (src.contents.len < 7) || (user.loc != src.loc))
 		for(var/mob/O in viewers(user, null))
 			O << text("\blue [] flushes the toilet.", user)
 			src.clogged = 0
 			src.contents.len = 0
-	else if ((src.clogged >= 1) || (src.contents.len >= 7) || (user.buckled != src.loc))
+	else if((src.clogged >= 1) || (src.contents.len >= 7) || (user.buckled != src.loc))
 		for(var/mob/O in viewers(user, null))
 			O << text("\blue The toilet is clogged!")
 	return

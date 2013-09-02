@@ -251,17 +251,17 @@
 
 /obj/item/weapon/legcuffs/beartrap/attack_self(mob/user as mob)
 	..()
-	if (ishuman(user) && !user.stat && !user.restrained())
+	if(ishuman(user) && !user.stat && !user.restrained())
 		armed = !armed
 		icon_state = "beartrap[armed]"
 		user << "<span class='notice'>[src] is now [armed ? "armed" : "disarmed"]</span>"
 
 /obj/item/weapon/legcuffs/beartrap/HasEntered(AM as mob|obj)
-	if (armed)
-		if (ishuman(AM))
-			if (isturf(src.loc))
+	if(armed)
+		if(ishuman(AM))
+			if(isturf(src.loc))
 				var/mob/living/carbon/H = AM
-				if (H.m_intent == "run")
+				if(H.m_intent == "run")
 					armed = 0
 					H.legcuffed = src
 					src.loc = H
@@ -269,10 +269,10 @@
 					H << "\red <B>You step on \the [src]!</B>"
 					feedback_add_details("handcuffs","B") //Yes, I know they're legcuffs. Don't change this, no need for an extra variable. The "B" is used to tell them apart.
 					for(var/mob/O in viewers(H, null))
-						if (O == H)
+						if(O == H)
 							continue
 						O.show_message("\red <B>[H] steps on \the [src].</B>", 1)
-		if (isanimal(AM) && !istype(AM, /mob/living/simple_animal/parrot) && !istype(AM, /mob/living/simple_animal/construct) && !istype(AM, /mob/living/simple_animal/shade) && !istype(AM, /mob/living/simple_animal/hostile/viscerator))
+		if(isanimal(AM) && !istype(AM, /mob/living/simple_animal/parrot) && !istype(AM, /mob/living/simple_animal/construct) && !istype(AM, /mob/living/simple_animal/shade) && !istype(AM, /mob/living/simple_animal/hostile/viscerator))
 			armed = 0
 			var/mob/living/simple_animal/SA = AM
 			SA.health -= 20
@@ -357,13 +357,13 @@
 
 	src.icon_state = pick("shrapnellarge", "shrapnelmedium", "shrapnelsmall")
 	switch(src.icon_state)
-		if ("shrapnelsmall")
+		if("shrapnelsmall")
 			src.pixel_x = rand(-12, 12)
 			src.pixel_y = rand(-12, 12)
-		if ("shrapnelmedium")
+		if("shrapnelmedium")
 			src.pixel_x = rand(-8, 8)
 			src.pixel_y = rand(-8, 8)
-		if ("shrapnellarge")
+		if("shrapnellarge")
 			src.pixel_x = rand(-5, 5)
 			src.pixel_y = rand(-5, 5)
 		else
@@ -579,9 +579,9 @@
 	attack_verb = list("chopped", "sliced", "cut", "reaped")
 
 /obj/item/weapon/scythe/afterattack(atom/A, mob/user as mob)
-	if (istype(A, /obj/effect/spacevine))
+	if(istype(A, /obj/effect/spacevine))
 		for(var/obj/effect/spacevine/B in orange(A,1))
-			if (prob(80))
+			if(prob(80))
 				del B
 		del A
 

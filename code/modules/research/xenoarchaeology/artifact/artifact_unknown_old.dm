@@ -46,33 +46,33 @@
 	// Select range based on the power
 	var/canworldpulse = 1
 	switch(my_effect.effecttype)
-		if ("healing")
+		if("healing")
 			my_effect.effectmode = pick("aura","pulse","contact")
-		if ("injure")
+		if("injure")
 			my_effect.effectmode = pick("aura","pulse","contact")
-		if ("stun")
+		if("stun")
 			my_effect.effectmode = pick("aura","pulse","contact")
-		if ("roboheal")
+		if("roboheal")
 			my_effect.effectmode = pick("aura","pulse","contact")
-		if ("robohurt")
+		if("robohurt")
 			my_effect.effectmode = pick("aura","pulse","contact")
-		if ("sleepy")
+		if("sleepy")
 			my_effect.effectmode = pick("aura","pulse","contact")
-		if ("cellcharge")
+		if("cellcharge")
 			my_effect.effectmode = pick("aura","pulse")
-		if ("celldrain")
+		if("celldrain")
 			my_effect.effectmode = pick("aura","pulse")
-		if ("planthelper")
+		if("planthelper")
 			my_effect.effectmode = pick("aura","pulse")
 			canworldpulse = 0
-		if ("forcefield")
+		if("forcefield")
 			my_effect.effectmode = "contact"
 			canworldpulse = 0
-		if ("teleport")
+		if("teleport")
 			my_effect.effectmode = pick("pulse","contact")
-		if ("genderswitch")
+		if("genderswitch")
 			my_effect.effectmode = pick("pulse","contact")
-		if ("emp")
+		if("emp")
 			my_effect.effectmode = pick("pulse","contact")
 
 	// Recharge timer & range setup
@@ -103,7 +103,7 @@
 		if (get_dist(user, src) > 1)
 			user << "\red You can't reach [src] from here."
 			return
-	if (ishuman(user) && istype(user:gloves,/obj/item/clothing/gloves))
+	if(ishuman(user) && istype(user:gloves,/obj/item/clothing/gloves))
 		return ..()
 	for(var/mob/O in viewers(src, null))
 		O.show_message(text("<b>[]</b> touches [].", user, src), 1)
@@ -116,19 +116,19 @@
 		return*/
 	if (my_effect.trigger == "chemical" && istype(W, /obj/item/weapon/reagent_containers/))
 		switch(my_effect.triggerX)
-			if ("hydrogen")
+			if("hydrogen")
 				if (W.reagents.has_reagent("hydrogen", 1) || W.reagents.has_reagent("water", 1))
 					src.Artifact_Activate()
 					return
-			if ("corrosive")
+			if("corrosive")
 				if (W.reagents.has_reagent("acid", 1) || W.reagents.has_reagent("pacid", 1) || W.reagents.has_reagent("diethylamine", 1))
 					src.Artifact_Activate()
 					return
-			if ("volatile")
+			if("volatile")
 				if (W.reagents.has_reagent("plasma", 1) || W.reagents.has_reagent("thermite", 1))
 					src.Artifact_Activate()
 					return
-			if ("toxic")
+			if("toxic")
 				if (W.reagents.has_reagent("toxin", 1) || W.reagents.has_reagent("cyanide", 1) || W.reagents.has_reagent("amanitin", 1) || W.reagents.has_reagent("neurotoxin", 1))
 					src.Artifact_Activate()
 					return
@@ -153,23 +153,23 @@
 
 /obj/machinery/artifact/bullet_act(var/obj/item/projectile/P)
 	if (my_effect.trigger == "force")
-		if (istype(P,/obj/item/projectile/bullet)) src.Artifact_Activate()
-		else if (istype(P,/obj/item/projectile/hivebotbullet)) src.Artifact_Activate()
+		if(istype(P,/obj/item/projectile/bullet)) src.Artifact_Activate()
+		else if(istype(P,/obj/item/projectile/hivebotbullet)) src.Artifact_Activate()
 	if (my_effect.trigger == "energy")
-		if (istype(P,/obj/item/projectile/beam)) src.Artifact_Activate()
-		else if (istype(P,/obj/item/projectile/ion)) src.Artifact_Activate()
-		else if (istype(P,/obj/item/projectile/energy)) src.Artifact_Activate()
+		if(istype(P,/obj/item/projectile/beam)) src.Artifact_Activate()
+		else if(istype(P,/obj/item/projectile/ion)) src.Artifact_Activate()
+		else if(istype(P,/obj/item/projectile/energy)) src.Artifact_Activate()
 	if (my_effect.trigger == "heat")
-		if (istype(P,/obj/item/projectile/temp)) src.Artifact_Activate()
+		if(istype(P,/obj/item/projectile/temp)) src.Artifact_Activate()
 
 /obj/machinery/artifact/ex_act(severity)
 	switch(severity)
-		if (1.0) del src
-		if (2.0)
+		if(1.0) del src
+		if(2.0)
 			if (prob(50)) del src
 			if (my_effect.trigger == "force") src.Artifact_Activate()
 			if (my_effect.trigger == "heat") src.Artifact_Activate()
-		if (3.0)
+		if(3.0)
 			if (my_effect.trigger == "force") src.Artifact_Activate()
 			if (my_effect.trigger == "heat") src.Artifact_Activate()
 	return
@@ -188,36 +188,36 @@
 	my_effect.UpdateEffect(src.loc)
 
 	//activate
-	if ( (my_effect.effectmode == "pulse" || my_effect.effecttype == "worldpulse") && activated)
-		if (src.charged && my_effect.DoEffect(src))
+	if( (my_effect.effectmode == "pulse" || my_effect.effecttype == "worldpulse") && activated)
+		if(src.charged && my_effect.DoEffect(src))
 			src.charged = 0
 			src.chargetime = src.recharge
 
 /obj/machinery/artifact/proc/Artifact_Activate()
 	src.activated = !src.activated
 	var/display_msg = ""
-	if (activated)
-		if (prob(30))
+	if(activated)
+		if(prob(30))
 			switch(rand(4))
-				if (0)
+				if(0)
 					display_msg = "momentarily glows brightly!"
-				if (1)
+				if(1)
 					display_msg = "distorts slightly for a moment!"
-				if (2)
+				if(2)
 					display_msg = "makes a slightly clicking noise!"
-				if (3)
+				if(3)
 					display_msg = "flickers slightly!"
-				if (4)
+				if(4)
 					display_msg = "vibrates!"
 	else
 		my_effect.HaltEffect()
-		if (prob(30))
+		if(prob(30))
 			switch(rand(2))
-				if (0)
+				if(0)
 					display_msg = "grows dull!"
-				if (1)
+				if(1)
 					display_msg = "fades in intensity!"
-				if (2)
+				if(2)
 					display_msg = "suddenly becomes very quiet!"
 
 	icon_state = "ano[icon_num][activated]"

@@ -14,10 +14,10 @@
 
 /datum/event/brand_intelligence/start()
 	for(var/obj/machinery/vending/V in machines)
-		if (V.z != 1)	continue
+		if(V.z != 1)	continue
 		vendingMachines.Add(V)
 
-	if (!vendingMachines.len)
+	if(!vendingMachines.len)
 		kill()
 		return
 
@@ -28,20 +28,20 @@
 
 
 /datum/event/brand_intelligence/tick()
-	if (!vendingMachines.len || !originMachine || originMachine.shut_up)	//if every machine is infected, or if the original vending machine is missing or has it's voice switch flipped
+	if(!vendingMachines.len || !originMachine || originMachine.shut_up)	//if every machine is infected, or if the original vending machine is missing or has it's voice switch flipped
 		end()
 		kill()
 		return
 
-	if (IsMultiple(activeFor, 5))
-		if (prob(25))
+	if(IsMultiple(activeFor, 5))
+		if(prob(25))
 			var/obj/machinery/vending/infectedMachine = pick(vendingMachines)
 			vendingMachines.Remove(infectedMachine)
 			infectedVendingMachines.Add(infectedMachine)
 			infectedMachine.shut_up = 0
 			infectedMachine.shoot_inventory = 1
 
-			if (IsMultiple(activeFor, 12))
+			if(IsMultiple(activeFor, 12))
 				originMachine.speak(pick("Try our aggressive new marketing strategies!", \
 										 "You should buy products to feed your lifestyle obession!", \
 										 "Consume!", \
@@ -52,6 +52,6 @@
 
 /datum/event/brand_intelligence/end()
 	for(var/obj/machinery/vending/infectedMachine in infectedVendingMachines)
-		if (prob(90))
+		if(prob(90))
 			infectedMachine.shut_up = 1
 			infectedMachine.shoot_inventory = 0

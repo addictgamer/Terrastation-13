@@ -32,14 +32,14 @@
 
 /obj/item/weapon/reagent_containers/borghypo/process() //Every [recharge_time] seconds, recharge some reagents for the cyborg
 	charge_tick++
-	if (charge_tick < recharge_time) return 0
+	if(charge_tick < recharge_time) return 0
 	charge_tick = 0
 
-	if (isrobot(src.loc))
+	if(isrobot(src.loc))
 		var/mob/living/silicon/robot/R = src.loc
-		if (R && R.cell)
+		if(R && R.cell)
 			var/datum/reagents/RG = reagent_list[mode]
-			if (RG.total_volume < RG.maximum_volume) 	//Don't recharge reagents and drain power if the storage is full.
+			if(RG.total_volume < RG.maximum_volume) 	//Don't recharge reagents and drain power if the storage is full.
 				R.cell.use(charge_cost) 					//Take power from borg...
 				RG.add_reagent(reagent_ids[mode], 5)		//And fill hypo with reagent.
 	//update_icon()
@@ -64,7 +64,7 @@
 
 /obj/item/weapon/reagent_containers/borghypo/attack(mob/M as mob, mob/user as mob)
 	var/datum/reagents/R = reagent_list[mode]
-	if (!R.total_volume)
+	if(!R.total_volume)
 		user << "\red The injector is empty."
 		return
 	if (!( istype(M, /mob) ))
@@ -74,7 +74,7 @@
 		M << "\red You feel a tiny prick!"
 
 		R.reaction(M, INGEST)
-		if (M.reagents)
+		if(M.reagents)
 			var/trans = R.trans_to(M, amount_per_transfer_from_this)
 			user << "\blue [trans] units injected.  [R.total_volume] units remaining."
 	return
@@ -82,7 +82,7 @@
 /obj/item/weapon/reagent_containers/borghypo/attack_self(mob/user as mob)
 	playsound(src.loc, 'sound/effects/pop.ogg', 50, 0)		//Change the mode
 	mode++
-	if (mode > reagent_list.len)
+	if(mode > reagent_list.len)
 		mode = 1
 
 	charge_tick = 0 //Prevents wasted chems/cell charge if you're cycling through modes.
@@ -99,9 +99,9 @@
 
 	for(var/datum/reagents/RS in reagent_list)
 		var/datum/reagent/R = locate() in RS.reagent_list
-		if (R)
+		if(R)
 			usr << "\blue It currently has [R.volume] units of [R.name] stored."
 			empty = 0
 
-	if (empty)
+	if(empty)
 		usr << "\blue It is currently empty. Allow some time for the internal syntheszier to produce more."

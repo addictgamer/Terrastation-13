@@ -37,7 +37,7 @@
 	set category = "Object"
 	set src in range(0)
 
-	if (tank)
+	if(tank)
 		usr << "You twist the valve and pop the tank out of [src]."
 		tank.loc = usr.loc
 		tank = null
@@ -48,7 +48,7 @@
 		usr << "There's no tank in [src]."
 
 /obj/item/weapon/storage/pneumatic/attackby(obj/item/W as obj, mob/user as mob)
-	if (!tank && istype(W,/obj/item/weapon/tank))
+	if(!tank && istype(W,/obj/item/weapon/tank))
 		user.drop_item()
 		tank = W
 		tank.loc = src.tank_container
@@ -64,7 +64,7 @@
 	..()
 	if (!(usr in view(2)) && usr!=src.loc) return
 	usr << "The valve is dialed to [pressure_setting]%."
-	if (tank)
+	if(tank)
 		usr << "The tank dial reads [tank.air_contents.return_pressure()] kPa."
 	else
 		usr << "Nothing is attached to the tank valve!"
@@ -79,7 +79,7 @@
 	else if (locate (/obj/structure/table, src.loc))
 		return
 
-	else if (target == user)
+	else if(target == user)
 		return
 
 	if (length(contents) == 0)
@@ -90,7 +90,7 @@
 
 /obj/item/weapon/storage/pneumatic/attack(mob/living/M as mob, mob/living/user as mob, def_zone)
 	if (length(contents) > 0)
-		if (user.a_intent == "hurt")
+		if(user.a_intent == "hurt")
 			user.visible_message("\red <b> \The [user] fires \the [src] point blank at [M]!</b>")
 			Fire(M,user)
 			return
@@ -123,7 +123,7 @@
 
 	var/obj/item/object = contents[1]
 	var/speed = ((fire_pressure*tank.volume)/object.w_class)/force_divisor //projectile speed.
-	if (speed>80) speed = 80 //damage cap.
+	if(speed>80) speed = 80 //damage cap.
 
 	user.visible_message("<span class='danger'>[user] fires [src] and launches [object] at [target]!</span>","<span class='danger'>You fire [src] and launch [object] at [target]!</span>")
 

@@ -30,11 +30,11 @@ LOOK FOR SURGERY.DM*/
 
 /*
 /obj/item/weapon/retractor/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if (!istype(M))
+	if(!istype(M))
 		return
 
 		var/mob/living/carbon/human/H = M
-		if (istype(H) && ( \
+		if(istype(H) && ( \
 				(H.head && H.head.flags & HEADCOVERSEYES) || \
 				(H.wear_mask && H.wear_mask.flags & MASKCOVERSEYES) || \
 				(H.glasses && H.glasses.flags & GLASSESCOVERSEYES) \
@@ -43,19 +43,19 @@ LOOK FOR SURGERY.DM*/
 			return
 
 		var/mob/living/carbon/monkey/Mo = M
-		if (istype(Mo) && ( \
+		if(istype(Mo) && ( \
 				(Mo.wear_mask && Mo.wear_mask.flags & MASKCOVERSEYES) \
 			))
 			user << "\red You're going to need to remove that mask/helmet/glasses first."
 			return
 
-		if (istype(M, /mob/living/carbon/alien) || istype(M, /mob/living/carbon/slime))//Aliens don't have eyes./N
+		if(istype(M, /mob/living/carbon/alien) || istype(M, /mob/living/carbon/slime))//Aliens don't have eyes./N
 			user << "\red You cannot locate any eyes on this creature!"
 			return
 
 		switch(M.eye_op_stage)
-			if (1.0)
-				if (M != user)
+			if(1.0)
+				if(M != user)
 					for(var/mob/O in (viewers(M) - user - M))
 						O.show_message("\red [M] is having his eyes retracted by [user].", 1)
 					M << "\red [user] begins to seperate your eyes with [src]!"
@@ -65,11 +65,11 @@ LOOK FOR SURGERY.DM*/
 						"\red [user] begins to have his eyes retracted.", \
 						"\red You begin to pry open your eyes with [src]!" \
 					)
-				if (M == user && prob(25))
+				if(M == user && prob(25))
 					user << "\red You mess up!"
-					if (istype(M, /mob/living/carbon/human))
+					if(istype(M, /mob/living/carbon/human))
 						var/datum/organ/external/affecting = M:get_organ("head")
-						if (affecting.take_damage(15))
+						if(affecting.take_damage(15))
 							M:UpdateDamageIcon()
 						M.updatehealth()
 					else
@@ -77,46 +77,46 @@ LOOK FOR SURGERY.DM*/
 
 				M:eye_op_stage = 2.0
 
-	else if (user.zone_sel.selecting == "chest")
+	else if(user.zone_sel.selecting == "chest")
 		switch(M:alien_op_stage)
-			if (3.0)
+			if(3.0)
 				var/mob/living/carbon/human/H = M
-				if (!istype(H))
+				if(!istype(H))
 					return ..()
 
-				if (H.wear_suit || H.w_uniform)
+				if(H.wear_suit || H.w_uniform)
 					user << "\red You're going to need to remove that suit/jumpsuit first."
 					return
 
 				var/obj/item/alien_embryo/A = locate() in M.contents
-				if (!A)
+				if(!A)
 					return ..()
 				user.visible_message("\red [user] begins to pull something out of [M]'s chest.", "\red You begin to pull the alien organism out of [M]'s chest.")
 
 				spawn(20 + rand(0,50))
-					if (!A || A.loc != M)
+					if(!A || A.loc != M)
 						return
 
-					if (M == user && prob(25))
+					if(M == user && prob(25))
 						user << "\red You mess up!"
-						if (istype(M, /mob/living/carbon/human))
+						if(istype(M, /mob/living/carbon/human))
 							var/datum/organ/external/affecting = M:get_organ("chest")
-							if (affecting.take_damage(30))
+							if(affecting.take_damage(30))
 								M:UpdateDamageIcon()
 						else
 							M.take_organ_damage(30)
 
-					if (A.stage > 3)
+					if(A.stage > 3)
 						var/chance = 15 + max(0, A.stage - 3) * 10
-						if (prob(chance))
+						if(prob(chance))
 							A.AttemptGrow(0)
 						M:alien_op_stage = 4.0
 
-					if (M)
+					if(M)
 						user.visible_message("\red [user] pulls an alien organism out of [M]'s chest.", "\red You pull the alien organism out of [M]'s chest.")
 						A.loc = M.loc	//alien embryo handles cleanup
 
-	else if ((!(user.zone_sel.selecting == "head")) || (!(user.zone_sel.selecting == "groin")) || (!(istype(M, /mob/living/carbon/human))))
+	else if((!(user.zone_sel.selecting == "head")) || (!(user.zone_sel.selecting == "groin")) || (!(istype(M, /mob/living/carbon/human))))
 		return ..()
 
 	return
@@ -139,30 +139,30 @@ LOOK FOR SURGERY.DM*/
 
 /*
 /obj/item/weapon/hemostat/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if (!istype(M))
+	if(!istype(M))
 		return
 
-	if (!((locate(/obj/machinery/optable, M.loc) && M.resting) || (locate(/obj/structure/table/, M.loc) && M.lying && prob(50))))
+	if(!((locate(/obj/machinery/optable, M.loc) && M.resting) || (locate(/obj/structure/table/, M.loc) && M.lying && prob(50))))
 		return ..()
 
-	if (user.zone_sel.selecting == "groin")
-		if (istype(M, /mob/living/carbon/human))
+	if(user.zone_sel.selecting == "groin")
+		if(istype(M, /mob/living/carbon/human))
 			switch(M:appendix_op_stage)
-				if (1.0)
-					if (M != user)
+				if(1.0)
+					if(M != user)
 						for(var/mob/O in (viewers(M) - user - M))
 							O.show_message("\red [user] is beginning to clamp bleeders in [M]'s abdomen cut open with [src].", 1)
 						M << "\red [user] begins to clamp bleeders in your abdomen with [src]!"
 						user << "\red You clamp bleeders in [M]'s abdomen with [src]!"
 						M:appendix_op_stage = 2.0
-				if (4.0)
-					if (M != user)
+				if(4.0)
+					if(M != user)
 						for(var/mob/O in (viewers(M) - user - M))
 							O.show_message("\red [user] is removing [M]'s appendix with [src].", 1)
 						M << "\red [user] begins to remove your appendix with [src]!"
 						user << "\red You remove [M]'s appendix with [src]!"
 						for(var/datum/disease/D in M.viruses)
-							if (istype(D, /datum/disease/appendicitis))
+							if(istype(D, /datum/disease/appendicitis))
 								new /obj/item/weapon/reagent_containers/food/snacks/appendix/inflamed(get_turf(M))
 								M:appendix_op_stage = 5.0
 								return
@@ -173,7 +173,7 @@ LOOK FOR SURGERY.DM*/
 	if (user.zone_sel.selecting == "eyes")
 
 		var/mob/living/carbon/human/H = M
-		if (istype(H) && ( \
+		if(istype(H) && ( \
 				(H.head && H.head.flags & HEADCOVERSEYES) || \
 				(H.wear_mask && H.wear_mask.flags & MASKCOVERSEYES) || \
 				(H.glasses && H.glasses.flags & GLASSESCOVERSEYES) \
@@ -182,19 +182,19 @@ LOOK FOR SURGERY.DM*/
 			return
 
 		var/mob/living/carbon/monkey/Mo = M
-		if (istype(Mo) && ( \
+		if(istype(Mo) && ( \
 				(Mo.wear_mask && Mo.wear_mask.flags & MASKCOVERSEYES) \
 			))
 			user << "\red You're going to need to remove that mask/helmet/glasses first."
 			return
 
-		if (istype(M, /mob/living/carbon/alien))//Aliens don't have eyes./N
+		if(istype(M, /mob/living/carbon/alien))//Aliens don't have eyes./N
 			user << "\red You cannot locate any eyes on this creature!"
 			return
 
 		switch(M.eye_op_stage)
-			if (2.0)
-				if (M != user)
+			if(2.0)
+				if(M != user)
 					for(var/mob/O in (viewers(M) - user - M))
 						O.show_message("\red [M] is having his eyes mended by [user].", 1)
 					M << "\red [user] begins to mend your eyes with [src]!"
@@ -204,54 +204,54 @@ LOOK FOR SURGERY.DM*/
 						"\red [user] begins to have his eyes mended.", \
 						"\red You begin to mend your eyes with [src]!" \
 					)
-				if (M == user && prob(25))
+				if(M == user && prob(25))
 					user << "\red You mess up!"
-					if (istype(M, /mob/living/carbon/human))
+					if(istype(M, /mob/living/carbon/human))
 						var/datum/organ/external/affecting = M:get_organ("head")
-						if (affecting.take_damage(15))
+						if(affecting.take_damage(15))
 							M:UpdateDamageIcon()
 						M.updatehealth()
 					else
 						M.take_organ_damage(15)
 				M:eye_op_stage = 3.0
 
-	else if (user.zone_sel.selecting == "chest")
-		if (M:alien_op_stage == 2.0 || M:alien_op_stage == 3.0)
+	else if(user.zone_sel.selecting == "chest")
+		if(M:alien_op_stage == 2.0 || M:alien_op_stage == 3.0)
 			var/mob/living/carbon/human/H = M
-			if (!istype(H))
+			if(!istype(H))
 				return ..()
 
-			if (H.wear_suit || H.w_uniform)
+			if(H.wear_suit || H.w_uniform)
 				user << "\red You're going to need to remove that suit/jumpsuit first."
 				return
 
 			user.visible_message("\red [user] begins to dig around in [M]'s chest.", "\red You begin to dig around in [M]'s chest.")
 
 			spawn(20 + (M:alien_op_stage == 3 ? 0 : rand(0,50)))
-				if (M == user && prob(25))
+				if(M == user && prob(25))
 					user << "\red You mess up!"
-					if (istype(M, /mob/living/carbon/human))
+					if(istype(M, /mob/living/carbon/human))
 						var/datum/organ/external/affecting = M:get_organ("chest")
-						if (affecting.take_damage(30))
+						if(affecting.take_damage(30))
 							M:UpdateDamageIcon()
 					else
 						M.take_organ_damage(30)
 
 				var/obj/item/alien_embryo/A = locate() in M.contents
-				if (A)
+				if(A)
 					var/dat = "\blue You found an unknown alien organism in [M]'s chest!"
-					if (A.stage < 4)
+					if(A.stage < 4)
 						dat += " It's small and weak, barely the size of a foetus."
-					if (A.stage > 3)
+					if(A.stage > 3)
 						dat += " It's grown quite large, and writhes slightly as you look at it."
-						if (prob(10))
+						if(prob(10))
 							A.AttemptGrow()
 					user << dat
 					M:alien_op_stage = 3.0
 				else
 					user << "\blue You find nothing of interest."
 
-	else if ((!(user.zone_sel.selecting == "head")) || (!(user.zone_sel.selecting == "groin")) || (!(istype(M, /mob/living/carbon/human))))
+	else if((!(user.zone_sel.selecting == "head")) || (!(user.zone_sel.selecting == "groin")) || (!(istype(M, /mob/living/carbon/human))))
 		return ..()
 
 	return
@@ -274,17 +274,17 @@ LOOK FOR SURGERY.DM*/
 
 /*
 /obj/item/weapon/cautery/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if (!istype(M))
+	if(!istype(M))
 		return
 
-	if (!((locate(/obj/machinery/optable, M.loc) && M.resting) || (locate(/obj/structure/table/, M.loc) && M.lying && prob(50))))
+	if(!((locate(/obj/machinery/optable, M.loc) && M.resting) || (locate(/obj/structure/table/, M.loc) && M.lying && prob(50))))
 		return ..()
 
-	if (user.zone_sel.selecting == "groin")
-		if (istype(M, /mob/living/carbon/human))
+	if(user.zone_sel.selecting == "groin")
+		if(istype(M, /mob/living/carbon/human))
 			switch(M:appendix_op_stage)
-				if (5.0)
-					if (M != user)
+				if(5.0)
+					if(M != user)
 						for(var/mob/O in (viewers(M) - user - M))
 							O.show_message("\red [user] is beginning to cauterize the incision in [M]'s abdomen with [src].", 1)
 						M << "\red [user] begins to cauterize the incision in your abdomen with [src]!"
@@ -297,7 +297,7 @@ LOOK FOR SURGERY.DM*/
 	if (user.zone_sel.selecting == "eyes")
 
 		var/mob/living/carbon/human/H = M
-		if (istype(H) && ( \
+		if(istype(H) && ( \
 				(H.head && H.head.flags & HEADCOVERSEYES) || \
 				(H.wear_mask && H.wear_mask.flags & MASKCOVERSEYES) || \
 				(H.glasses && H.glasses.flags & GLASSESCOVERSEYES) \
@@ -306,19 +306,19 @@ LOOK FOR SURGERY.DM*/
 			return
 
 		var/mob/living/carbon/monkey/Mo = M
-		if (istype(Mo) && ( \
+		if(istype(Mo) && ( \
 				(Mo.wear_mask && Mo.wear_mask.flags & MASKCOVERSEYES) \
 			))
 			user << "\red You're going to need to remove that mask/helmet/glasses first."
 			return
 
-		if (istype(M, /mob/living/carbon/alien))//Aliens don't have eyes./N
+		if(istype(M, /mob/living/carbon/alien))//Aliens don't have eyes./N
 			user << "\red You cannot locate any eyes on this creature!"
 			return
 
 		switch(M.eye_op_stage)
-			if (3.0)
-				if (M != user)
+			if(3.0)
+				if(M != user)
 					for(var/mob/O in (viewers(M) - user - M))
 						O.show_message("\red [M] is having his eyes cauterized by [user].", 1)
 					M << "\red [user] begins to cauterize your eyes!"
@@ -328,11 +328,11 @@ LOOK FOR SURGERY.DM*/
 						"\red [user] begins to have his eyes cauterized.", \
 						"\red You begin to cauterize your eyes!" \
 					)
-				if (M == user && prob(25))
+				if(M == user && prob(25))
 					user << "\red You mess up!"
-					if (istype(M, /mob/living/carbon/human))
+					if(istype(M, /mob/living/carbon/human))
 						var/datum/organ/external/affecting = M:get_organ("head")
-						if (affecting.take_damage(15))
+						if(affecting.take_damage(15))
 							M:UpdateDamageIcon()
 						M.updatehealth()
 					else
@@ -341,7 +341,7 @@ LOOK FOR SURGERY.DM*/
 				M.eye_stat = 0
 				M:eye_op_stage = 0.0
 
-	else if ((!(user.zone_sel.selecting == "head")) || (!(user.zone_sel.selecting == "groin")) || (!(istype(M, /mob/living/carbon/human))))
+	else if((!(user.zone_sel.selecting == "head")) || (!(user.zone_sel.selecting == "groin")) || (!(istype(M, /mob/living/carbon/human))))
 		return ..()
 
 	return
@@ -396,32 +396,32 @@ LOOK FOR SURGERY.DM*/
 
 /*
 /obj/item/weapon/scalpel/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if (!istype(M))
+	if(!istype(M))
 		return ..()
 
-	//if (M.mutations & HUSK)	return ..()
+	//if(M.mutations & HUSK)	return ..()
 
-	if ((CLUMSY in user.mutations) && prob(50))
+	if((CLUMSY in user.mutations) && prob(50))
 		M = user
 		return eyestab(M,user)
 
-	if (!((locate(/obj/machinery/optable, M.loc) && M.resting) || (locate(/obj/structure/table/, M.loc) && M.lying && prob(50))))
+	if(!((locate(/obj/machinery/optable, M.loc) && M.resting) || (locate(/obj/structure/table/, M.loc) && M.lying && prob(50))))
 		return ..()
 
 	src.add_fingerprint(user)
 
-	if (user.zone_sel.selecting == "groin")
-		if (istype(M, /mob/living/carbon/human))
+	if(user.zone_sel.selecting == "groin")
+		if(istype(M, /mob/living/carbon/human))
 			switch(M:appendix_op_stage)
-				if (0.0)
-					if (M != user)
+				if(0.0)
+					if(M != user)
 						for(var/mob/O in (viewers(M) - user - M))
 							O.show_message("\red [M] is beginning to have his abdomen cut open with [src] by [user].", 1)
 						M << "\red [user] begins to cut open your abdomen with [src]!"
 						user << "\red You cut [M]'s abdomen open with [src]!"
 						M:appendix_op_stage = 1.0
-				if (3.0)
-					if (M != user)
+				if(3.0)
+					if(M != user)
 						for(var/mob/O in (viewers(M) - user - M))
 							O.show_message("\red [M] is beginning to have his appendix seperated with [src] by [user].", 1)
 						M << "\red [user] begins to seperate your appendix with [src]!"
@@ -429,10 +429,10 @@ LOOK FOR SURGERY.DM*/
 						M:appendix_op_stage = 4.0
 		return
 
-	if (user.zone_sel.selecting == "head" || istype(M, /mob/living/carbon/slime))
+	if(user.zone_sel.selecting == "head" || istype(M, /mob/living/carbon/slime))
 
 		var/mob/living/carbon/human/H = M
-		if (istype(H) && ( \
+		if(istype(H) && ( \
 				(H.head && H.head.flags & HEADCOVERSEYES) || \
 				(H.wear_mask && H.wear_mask.flags & MASKCOVERSEYES) || \
 				(H.glasses && H.glasses.flags & GLASSESCOVERSEYES) \
@@ -441,16 +441,16 @@ LOOK FOR SURGERY.DM*/
 			return
 
 		var/mob/living/carbon/monkey/Mo = M
-		if (istype(Mo) && ( \
+		if(istype(Mo) && ( \
 				(Mo.wear_mask && Mo.wear_mask.flags & MASKCOVERSEYES) \
 			))
 			user << "\red You're going to need to remove that mask/helmet/glasses first."
 			return
 
 		switch(M:brain_op_stage)
-			if (0.0)
-				if (istype(M, /mob/living/carbon/slime))
-					if (M.stat == 2)
+			if(0.0)
+				if(istype(M, /mob/living/carbon/slime))
+					if(M.stat == 2)
 						for(var/mob/O in (viewers(M) - user - M))
 							O.show_message("\red [M.name] is beginning to have its flesh cut open with [src] by [user].", 1)
 						M << "\red [user] begins to cut open your flesh with [src]!"
@@ -459,7 +459,7 @@ LOOK FOR SURGERY.DM*/
 
 					return
 
-				if (M != user)
+				if(M != user)
 					for(var/mob/O in (viewers(M) - user - M))
 						O.show_message("\red [M] is beginning to have his head cut open with [src] by [user].", 1)
 					M << "\red [user] begins to cut open your head with [src]!"
@@ -470,16 +470,16 @@ LOOK FOR SURGERY.DM*/
 						"\red You begin to cut open your head with [src]!" \
 					)
 
-				if (M == user && prob(25))
+				if(M == user && prob(25))
 					user << "\red You mess up!"
-					if (istype(M, /mob/living/carbon/human))
+					if(istype(M, /mob/living/carbon/human))
 						var/datum/organ/external/affecting = M:get_organ("head")
-						if (affecting.take_damage(15))
+						if(affecting.take_damage(15))
 							M:UpdateDamageIcon()
 					else
 						M.take_organ_damage(15)
 
-				if (istype(M, /mob/living/carbon/human))
+				if(istype(M, /mob/living/carbon/human))
 					var/datum/organ/external/affecting = M:get_organ("head")
 					affecting.take_damage(7)
 				else
@@ -488,25 +488,25 @@ LOOK FOR SURGERY.DM*/
 				M.updatehealth()
 				M:brain_op_stage = 1.0
 
-			if (1)
-				if (istype(M, /mob/living/carbon/slime))
-					if (M.stat == 2)
+			if(1)
+				if(istype(M, /mob/living/carbon/slime))
+					if(M.stat == 2)
 						for(var/mob/O in (viewers(M) - user - M))
 							O.show_message("\red [M.name] is having its silky innards cut apart with [src] by [user].", 1)
 						M << "\red [user] begins to cut apart your innards with [src]!"
 						user << "\red You cut [M]'s silky innards apart with [src]!"
 						M:brain_op_stage = 2.0
 					return
-			if (2.0)
-				if (istype(M, /mob/living/carbon/slime))
-					if (M.stat == 2)
+			if(2.0)
+				if(istype(M, /mob/living/carbon/slime))
+					if(M.stat == 2)
 						var/mob/living/carbon/slime/slime = M
-						if (slime.cores > 0)
-							if (istype(M, /mob/living/carbon/slime))
+						if(slime.cores > 0)
+							if(istype(M, /mob/living/carbon/slime))
 								user << "\red You attempt to remove [M]'s core, but [src] is ineffective!"
 					return
 
-				if (M != user)
+				if(M != user)
 					for(var/mob/O in (viewers(M) - user - M))
 						O.show_message("\red [M] is having his connections to the brain delicately severed with [src] by [user].", 1)
 					M << "\red [user] begins to cut open your head with [src]!"
@@ -516,16 +516,16 @@ LOOK FOR SURGERY.DM*/
 						"\red [user] begin to delicately remove the connections to his brain with [src]!", \
 						"\red You begin to cut open your head with [src]!" \
 					)
-				if (M == user && prob(25))
+				if(M == user && prob(25))
 					user << "\red You nick an artery!"
-					if (istype(M, /mob/living/carbon/human))
+					if(istype(M, /mob/living/carbon/human))
 						var/datum/organ/external/affecting = M:get_organ("head")
-						if (affecting.take_damage(75))
+						if(affecting.take_damage(75))
 							M:UpdateDamageIcon()
 					else
 						M.take_organ_damage(75)
 
-				if (istype(M, /mob/living/carbon/human))
+				if(istype(M, /mob/living/carbon/human))
 					var/datum/organ/external/affecting = M:get_organ("head")
 					affecting.take_damage(7)
 				else
@@ -537,11 +537,11 @@ LOOK FOR SURGERY.DM*/
 				..()
 		return
 
-	else if (user.zone_sel.selecting == "eyes")
+	else if(user.zone_sel.selecting == "eyes")
 		user << "\blue So far so good."
 
 		var/mob/living/carbon/human/H = M
-		if (istype(H) && ( \
+		if(istype(H) && ( \
 				(H.head && H.head.flags & HEADCOVERSEYES) || \
 				(H.wear_mask && H.wear_mask.flags & MASKCOVERSEYES) || \
 				(H.glasses && H.glasses.flags & GLASSESCOVERSEYES) \
@@ -550,19 +550,19 @@ LOOK FOR SURGERY.DM*/
 			return
 
 		var/mob/living/carbon/monkey/Mo = M
-		if (istype(Mo) && ( \
+		if(istype(Mo) && ( \
 				(Mo.wear_mask && Mo.wear_mask.flags & MASKCOVERSEYES) \
 			))
 			user << "\red You're going to need to remove that mask/helmet/glasses first."
 			return
 
-		if (istype(M, /mob/living/carbon/alien) || istype(M, /mob/living/carbon/slime))//Aliens don't have eyes./N
+		if(istype(M, /mob/living/carbon/alien) || istype(M, /mob/living/carbon/slime))//Aliens don't have eyes./N
 			user << "\red You cannot locate any eyes on this creature!"
 			return
 
 		switch(M:eye_op_stage)
-			if (0.0)
-				if (M != user)
+			if(0.0)
+				if(M != user)
 					for(var/mob/O in (viewers(M) - user - M))
 						O.show_message("\red [M] is beginning to have his eyes incised with [src] by [user].", 1)
 					M << "\red [user] begins to cut open your eyes with [src]!"
@@ -572,11 +572,11 @@ LOOK FOR SURGERY.DM*/
 						"\red [user] begins to cut around his eyes with [src]!", \
 						"\red You begin to cut open your eyes with [src]!" \
 					)
-				if (M == user && prob(25))
+				if(M == user && prob(25))
 					user << "\red You mess up!"
-					if (istype(M, /mob/living/carbon/human))
+					if(istype(M, /mob/living/carbon/human))
 						var/datum/organ/external/affecting = M:get_organ("head")
-						if (affecting.take_damage(15))
+						if(affecting.take_damage(15))
 							M:UpdateDamageIcon()
 					else
 						M.take_organ_damage(15)
@@ -586,25 +586,25 @@ LOOK FOR SURGERY.DM*/
 				M:eye_op_stage = 1.0
 				user << "\blue So far so good after."
 
-	else if (user.zone_sel.selecting == "chest")
+	else if(user.zone_sel.selecting == "chest")
 		switch(M:alien_op_stage)
-			if (0.0)
+			if(0.0)
 				var/mob/living/carbon/human/H = M
-				if (!istype(H))
+				if(!istype(H))
 					return ..()
 
-				if (H.wear_suit || H.w_uniform)
+				if(H.wear_suit || H.w_uniform)
 					user << "\red You're going to need to remove that suit/jumpsuit first."
 					return
 
 				user.visible_message("\red [user] begins to slice open [M]'s chest.", "\red You begin to slice open [M]'s chest.")
 
 				spawn(rand(20,50))
-					if (M == user && prob(25))
+					if(M == user && prob(25))
 						user << "\red You mess up!"
-						if (istype(M, /mob/living/carbon/human))
+						if(istype(M, /mob/living/carbon/human))
 							var/datum/organ/external/affecting = M:get_organ("chest")
-							if (affecting.take_damage(15))
+							if(affecting.take_damage(15))
 								M:UpdateDamageIcon()
 						else
 							M.take_organ_damage(15)
@@ -615,7 +615,7 @@ LOOK FOR SURGERY.DM*/
 	else
 		return ..()
 /* wat
-	else if ((!(user.zone_sel.selecting == "head")) || (!(user.zone_sel.selecting == "groin")) || (!(istype(M, /mob/living/carbon/human))))
+	else if((!(user.zone_sel.selecting == "head")) || (!(user.zone_sel.selecting == "groin")) || (!(istype(M, /mob/living/carbon/human))))
 		return ..()*/
 	return
 */
@@ -642,22 +642,22 @@ LOOK FOR SURGERY.DM*/
 
 /*
 /obj/item/weapon/circular_saw/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
-	if (!istype(M))
+	if(!istype(M))
 		return ..()
 
-	if ((CLUMSY in user.mutations) && prob(50))
+	if((CLUMSY in user.mutations) && prob(50))
 		M = user
 		return eyestab(M,user)
 
-	if (!((locate(/obj/machinery/optable, M.loc) && M.resting) || (locate(/obj/structure/table/, M.loc) && M.lying && prob(50))))
+	if(!((locate(/obj/machinery/optable, M.loc) && M.resting) || (locate(/obj/structure/table/, M.loc) && M.lying && prob(50))))
 		return ..()
 
 	src.add_fingerprint(user)
 
-	if (user.zone_sel.selecting == "head" || istype(M, /mob/living/carbon/slime))
+	if(user.zone_sel.selecting == "head" || istype(M, /mob/living/carbon/slime))
 
 		var/mob/living/carbon/human/H = M
-		if (istype(H) && ( \
+		if(istype(H) && ( \
 				(H.head && H.head.flags & HEADCOVERSEYES) || \
 				(H.wear_mask && H.wear_mask.flags & MASKCOVERSEYES) || \
 				(H.glasses && H.glasses.flags & GLASSESCOVERSEYES) \
@@ -666,17 +666,17 @@ LOOK FOR SURGERY.DM*/
 			return
 
 		var/mob/living/carbon/monkey/Mo = M
-		if (istype(Mo) && ( \
+		if(istype(Mo) && ( \
 				(Mo.wear_mask && Mo.wear_mask.flags & MASKCOVERSEYES) \
 			))
 			user << "\red You're going to need to remove that mask/helmet/glasses first."
 			return
 
 		switch(M:brain_op_stage)
-			if (1.0)
-				if (istype(M, /mob/living/carbon/slime))
+			if(1.0)
+				if(istype(M, /mob/living/carbon/slime))
 					return
-				if (M != user)
+				if(M != user)
 					for(var/mob/O in (viewers(M) - user - M))
 						O.show_message("\red [M] has his skull sawed open with [src] by [user].", 1)
 					M << "\red [user] begins to saw open your head with [src]!"
@@ -686,17 +686,17 @@ LOOK FOR SURGERY.DM*/
 						"\red [user] saws open his skull with [src]!", \
 						"\red You begin to saw open your head with [src]!" \
 					)
-				if (M == user && prob(25))
+				if(M == user && prob(25))
 					user << "\red You mess up!"
-					if (istype(M, /mob/living/carbon/human))
+					if(istype(M, /mob/living/carbon/human))
 						var/datum/organ/external/affecting = M:get_organ("head")
-						if (affecting.take_damage(40))
+						if(affecting.take_damage(40))
 							M:UpdateDamageIcon()
 						M.updatehealth()
 					else
 						M.take_organ_damage(40)
 
-				if (istype(M, /mob/living/carbon/human))
+				if(istype(M, /mob/living/carbon/human))
 					var/datum/organ/external/affecting = M:get_organ("head")
 					affecting.take_damage(7)
 				else
@@ -705,11 +705,11 @@ LOOK FOR SURGERY.DM*/
 				M.updatehealth()
 				M:brain_op_stage = 2.0
 
-			if (2.0)
-				if (istype(M, /mob/living/carbon/slime))
-					if (M.stat == 2)
+			if(2.0)
+				if(istype(M, /mob/living/carbon/slime))
+					if(M.stat == 2)
 						var/mob/living/carbon/slime/slime = M
-						if (slime.cores > 0)
+						if(slime.cores > 0)
 							for(var/mob/O in (viewers(M) - user - M))
 								O.show_message("\red [M.name] is having one of its cores sawed out with [src] by [user].", 1)
 
@@ -719,17 +719,17 @@ LOOK FOR SURGERY.DM*/
 
 							new slime.coretype(M.loc)
 
-							if (slime.cores <= 0)
+							if(slime.cores <= 0)
 								M.icon_state = "[slime.colour] baby slime dead-nocore"
 
 					return
 
-			if (3.0)
-				/*if (M.mind && M.mind.changeling)
+			if(3.0)
+				/*if(M.mind && M.mind.changeling)
 					user << "\red The neural tissue regrows before your eyes as you cut it."
 					return*/
 
-				if (M != user)
+				if(M != user)
 					for(var/mob/O in (viewers(M) - user - M))
 						O.show_message("\red [M] has his spine's connection to the brain severed with [src] by [user].", 1)
 					M << "\red [user] severs your brain's connection to the spine with [src]!"
@@ -756,25 +756,25 @@ LOOK FOR SURGERY.DM*/
 				..()
 		return
 
-	else if (user.zone_sel.selecting == "chest")
+	else if(user.zone_sel.selecting == "chest")
 		switch(M:alien_op_stage)
-			if (1.0)
+			if(1.0)
 				var/mob/living/carbon/human/H = M
-				if (!istype(H))
+				if(!istype(H))
 					return ..()
 
-				if (H.wear_suit || H.w_uniform)
+				if(H.wear_suit || H.w_uniform)
 					user << "\red You're going to need to remove that suit/jumpsuit first."
 					return
 
 				user.visible_message("\red [user] begins to slice through the bone of [M]'s chest.", "\red You begin to slice through the bone of [M]'s chest.")
 
 				spawn(20 + rand(0,50))
-					if (M == user && prob(25))
+					if(M == user && prob(25))
 						user << "\red You mess up!"
-						if (istype(M, /mob/living/carbon/human))
+						if(istype(M, /mob/living/carbon/human))
 							var/datum/organ/external/affecting = M:get_organ("chest")
-							if (affecting.take_damage(15))
+							if(affecting.take_damage(15))
 								M:UpdateDamageIcon()
 						else
 							M.take_organ_damage(15)
@@ -785,7 +785,7 @@ LOOK FOR SURGERY.DM*/
 	else
 		return ..()
 /*
-	else if ((!(user.zone_sel.selecting == "head")) || (!(user.zone_sel.selecting == "groin")) || (!(istype(M, /mob/living/carbon/human))))
+	else if((!(user.zone_sel.selecting == "head")) || (!(user.zone_sel.selecting == "groin")) || (!(istype(M, /mob/living/carbon/human))))
 		return ..()
 */
 	return

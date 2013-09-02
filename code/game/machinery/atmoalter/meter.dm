@@ -22,40 +22,40 @@
 		src.target = locate(/obj/machinery/atmospherics/pipe) in loc
 
 /obj/machinery/meter/process()
-	if (!target)
+	if(!target)
 		icon_state = "meterX"
 		return 0
 
-	if (stat & (BROKEN|NOPOWER))
+	if(stat & (BROKEN|NOPOWER))
 		icon_state = "meter0"
 		return 0
 
 	use_power(5)
 
 	var/datum/gas_mixture/environment = target.return_air()
-	if (!environment)
+	if(!environment)
 		icon_state = "meterX"
 		return 0
 
 	var/env_pressure = environment.return_pressure()
-	if (env_pressure <= 0.15*ONE_ATMOSPHERE)
+	if(env_pressure <= 0.15*ONE_ATMOSPHERE)
 		icon_state = "meter0"
-	else if (env_pressure <= 1.8*ONE_ATMOSPHERE)
+	else if(env_pressure <= 1.8*ONE_ATMOSPHERE)
 		var/val = round(env_pressure/(ONE_ATMOSPHERE*0.3) + 0.5)
 		icon_state = "meter1_[val]"
-	else if (env_pressure <= 30*ONE_ATMOSPHERE)
+	else if(env_pressure <= 30*ONE_ATMOSPHERE)
 		var/val = round(env_pressure/(ONE_ATMOSPHERE*5)-0.35) + 1
 		icon_state = "meter2_[val]"
-	else if (env_pressure <= 59*ONE_ATMOSPHERE)
+	else if(env_pressure <= 59*ONE_ATMOSPHERE)
 		var/val = round(env_pressure/(ONE_ATMOSPHERE*5) - 6) + 1
 		icon_state = "meter3_[val]"
 	else
 		icon_state = "meter4"
 
-	if (frequency)
+	if(frequency)
 		var/datum/radio_frequency/radio_connection = radio_controller.return_frequency(frequency)
 
-		if (!radio_connection) return
+		if(!radio_connection) return
 
 		var/datum/signal/signal = new
 		signal.source = src
@@ -72,7 +72,7 @@
 	var/t = ""
 	if (src.target)
 		var/datum/gas_mixture/environment = target.return_air()
-		if (environment)
+		if(environment)
 			t += "The pressure gauge reads [round(environment.return_pressure(), 0.01)] kPa; [round(environment.temperature,0.01)]&deg;K ([round(environment.temperature-T0C,0.01)]&deg;C)"
 		else
 			t += "The sensor error light is blinking."
@@ -91,7 +91,7 @@
 
 /obj/machinery/meter/Click()
 
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		return 1
 
 	var/t = null

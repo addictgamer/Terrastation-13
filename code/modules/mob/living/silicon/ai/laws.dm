@@ -36,7 +36,7 @@
 	src.laws_sanity_check()
 	src.laws.add_ion_law(law)
 	for(var/mob/living/silicon/robot/R in mob_list)
-		if (R.lawupdate && (R.connected_ai == src))
+		if(R.lawupdate && (R.connected_ai == src))
 			R << "\red " + law + "\red...LAWS UPDATED"
 
 /mob/living/silicon/ai/proc/clear_ion_laws()
@@ -93,7 +93,7 @@
 		var/law = src.laws.supplied[index]
 
 		if (length(law) > 0)
-			if (src.lawcheck.len >= number+1)
+			if(src.lawcheck.len >= number+1)
 				if (src.lawcheck[number+1] == "Yes")
 					src.say("[number]. [law]")
 					sleep(10)

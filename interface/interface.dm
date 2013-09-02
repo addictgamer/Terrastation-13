@@ -3,8 +3,8 @@
 	set name = "wiki"
 	set desc = "Visit the wiki."
 	set hidden = 1
-	if ( config.wikiurl )
-		if (alert("This will open the wiki in your browser. Are you sure?",,"Yes","No")=="No")
+	if( config.wikiurl )
+		if(alert("This will open the wiki in your browser. Are you sure?",,"Yes","No")=="No")
 			return
 		src << link(config.wikiurl)
 	else
@@ -15,8 +15,8 @@
 	set name = "forum"
 	set desc = "Visit the forum."
 	set hidden = 1
-	if ( config.forumurl )
-		if (alert("This will open the forum in your browser. Are you sure?",,"Yes","No")=="No")
+	if( config.forumurl )
+		if(alert("This will open the forum in your browser. Are you sure?",,"Yes","No")=="No")
 			return
 		src << link(config.forumurl)
 	else
@@ -91,5 +91,5 @@ Admin:
 
 	src << hotkey_mode
 	src << other
-	if (holder)
+	if(holder)
 		src << admin

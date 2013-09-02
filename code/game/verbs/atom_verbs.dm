@@ -13,11 +13,11 @@
 	var/atom/this = src//detach proc from src
 	src = null
 
-	if (!usr || !isturf(usr.loc))
+	if(!usr || !isturf(usr.loc))
 		return
-	if (usr.stat || usr.restrained())
+	if(usr.stat || usr.restrained())
 		return
-	if (usr.status_flags & FAKEDEATH)
+	if(usr.status_flags & FAKEDEATH)
 		return
 
 	var/tile = get_turf(this)
@@ -26,6 +26,6 @@
 
 	var/P = new /obj/effect/decal/point(tile)
 	spawn (20)
-		if (P)	del(P)
+		if(P)	del(P)
 
 	usr.visible_message("<b>[usr]</b> points to [this]")

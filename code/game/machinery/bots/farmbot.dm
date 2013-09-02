@@ -112,7 +112,7 @@
 	dat += "<br>Fertilizer Storage: <A href='?src=\ref[src];eject=1'>\[[get_total_ferts()]/[Max_Fertilizers]\]</a>"
 
 	dat += "<br>Behaviour controls are [src.locked ? "locked" : "unlocked"]<hr>"
-	if (!src.locked)
+	if(!src.locked)
 		dat += "<TT>Watering Controls:<br>"
 		dat += " Water Plants : <A href='?src=\ref[src];water=1'>[src.setting_water ? "Yes" : "No"]</A><BR>"
 		dat += " Refill Watertank : <A href='?src=\ref[src];refill=1'>[src.setting_refill ? "Yes" : "No"]</A><BR>"
@@ -129,7 +129,7 @@
 	return
 
 /obj/machinery/bot/farmbot/Topic(href, href_list)
-	if (..())
+	if(..())
 		return
 	usr.machine = src
 	src.add_fingerprint(usr)
@@ -139,17 +139,17 @@
 		else
 			turn_on()
 
-	else if ((href_list["water"]) && (!src.locked))
+	else if((href_list["water"]) && (!src.locked))
 		setting_water = !setting_water
-	else if ((href_list["refill"]) && (!src.locked))
+	else if((href_list["refill"]) && (!src.locked))
 		setting_refill = !setting_refill
-	else if ((href_list["fertilize"]) && (!src.locked))
+	else if((href_list["fertilize"]) && (!src.locked))
 		setting_fertilize = !setting_fertilize
-	else if ((href_list["weed"]) && (!src.locked))
+	else if((href_list["weed"]) && (!src.locked))
 		setting_weed = !setting_weed
-	else if ((href_list["ignoreWeed"]) && (!src.locked))
+	else if((href_list["ignoreWeed"]) && (!src.locked))
 		setting_ignoreWeeds = !setting_ignoreWeeds
-	else if ((href_list["ignoreMush"]) && (!src.locked))
+	else if((href_list["ignoreMush"]) && (!src.locked))
 		setting_ignoreMushrooms = !setting_ignoreMushrooms
 	else if (href_list["eject"] )
 		flick("farmbot_hatch",src)
@@ -184,7 +184,7 @@
 
 /obj/machinery/bot/farmbot/Emag(mob/user as mob)
 	..()
-	if (user) user << "\red You short out [src]'s plant identifier circuits."
+	if(user) user << "\red You short out [src]'s plant identifier circuits."
 	spawn(0)
 		for(var/mob/O in hearers(src, null))
 			O.show_message("\red <B>[src] buzzes oddly!</B>", 1)
@@ -226,7 +226,7 @@
 /obj/machinery/bot/farmbot/process()
 	set background = 1
 
-	if (!src.on)
+	if(!src.on)
 		return
 
 	if ( emagged && prob(1) )
@@ -345,19 +345,19 @@
 /obj/machinery/bot/farmbot/proc/move_to_target()
 	//Mostly copied from medibot code.
 
-	if (src.frustration > 8)
+	if(src.frustration > 8)
 		target = null
 		mode = 0
 		frustration = 0
 		src.path = new()
-	if (src.target && (src.path.len) && (get_dist(src.target,src.path[src.path.len]) > 2))
+	if(src.target && (src.path.len) && (get_dist(src.target,src.path[src.path.len]) > 2))
 		src.path = new()
-	if (src.target && src.path.len == 0 && (get_dist(src,src.target) > 1))
+	if(src.target && src.path.len == 0 && (get_dist(src,src.target) > 1))
 		spawn(0)
 			var/turf/dest = get_step_towards(target,src)  //Can't pathfind to a tray, as it is dense, so pathfind to the spot next to the tray
 
 			src.path = AStar(src.loc, dest, /turf/proc/CardinalTurfsWithAccess, /turf/proc/Distance, 0, 30,id=botcard)
-			if (src.path.len == 0)
+			if(src.path.len == 0)
 				for ( var/turf/spot in orange(1,target) ) //The closest one is unpathable, try  the other spots
 					if ( spot == dest ) //We already tried this spot
 						continue
@@ -373,15 +373,15 @@
 					mode = 0
 		return
 
-	if (src.path.len > 0 && src.target)
+	if(src.path.len > 0 && src.target)
 		step_to(src, src.path[1])
 		src.path -= src.path[1]
 		spawn(3)
-			if (src.path.len)
+			if(src.path.len)
 				step_to(src, src.path[1])
 				src.path -= src.path[1]
 
-	if (src.path.len > 8 && src.target)
+	if(src.path.len > 8 && src.target)
 		src.frustration++
 
 
@@ -479,8 +479,8 @@
 	else
 		var /obj/machinery/hydroponics/tray = target
 		var/b_amount = tank.reagents.get_reagent_amount("water")
-		if (b_amount > 0 && tray.waterlevel < 100)
-			if (b_amount + tray.waterlevel > 100)
+		if(b_amount > 0 && tray.waterlevel < 100)
+			if(b_amount + tray.waterlevel > 100)
 				b_amount = 100 - tray.waterlevel
 			tank.reagents.remove_reagent("water", b_amount)
 			tray.waterlevel += b_amount
@@ -525,7 +525,7 @@
 		..()
 		spawn(4) // If an admin spawned it, it won't have a watertank it, so lets make one for em!
 			var tank = locate(/obj/structure/reagent_dispensers/watertank) in contents
-			if ( !tank )
+			if( !tank )
 				new /obj/structure/reagent_dispensers/watertank(src)
 
 
@@ -548,25 +548,25 @@
 
 /obj/item/weapon/farmbot_arm_assembly/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
-	if ((istype(W, /obj/item/device/analyzer/plant_analyzer)) && (!src.build_step))
+	if((istype(W, /obj/item/device/analyzer/plant_analyzer)) && (!src.build_step))
 		src.build_step++
 		user << "You add the plant analyzer to [src]!"
 		src.name = "farmbot assembly"
 		del(W)
 
-	else if (( istype(W, /obj/item/weapon/reagent_containers/glass/bucket)) && (src.build_step == 1))
+	else if(( istype(W, /obj/item/weapon/reagent_containers/glass/bucket)) && (src.build_step == 1))
 		src.build_step++
 		user << "You add a bucket to [src]!"
 		src.name = "farmbot assembly with bucket"
 		del(W)
 
-	else if (( istype(W, /obj/item/weapon/minihoe)) && (src.build_step == 2))
+	else if(( istype(W, /obj/item/weapon/minihoe)) && (src.build_step == 2))
 		src.build_step++
 		user << "You add a minihoe to [src]!"
 		src.name = "farmbot assembly with bucket and minihoe"
 		del(W)
 
-	else if ((isprox(W)) && (src.build_step == 3))
+	else if((isprox(W)) && (src.build_step == 3))
 		src.build_step++
 		user << "You complete the Farmbot! Beep boop."
 		var/obj/machinery/bot/farmbot/S = new /obj/machinery/bot/farmbot
@@ -578,7 +578,7 @@
 		del(W)
 		del(src)
 
-	else if (istype(W, /obj/item/weapon/pen))
+	else if(istype(W, /obj/item/weapon/pen))
 		var/t = input(user, "Enter new robot name", src.name, src.created_name) as text
 		t = copytext(sanitize(t), 1, MAX_NAME_LEN)
 		if (!t)

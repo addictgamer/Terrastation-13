@@ -3,7 +3,7 @@
 		return
 
 	if (src.client)
-		if (client.prefs.muted & MUTE_IC)
+		if(client.prefs.muted & MUTE_IC)
 			src << "You cannot send IC messages (muted)."
 			return
 		if (src.client.handle_spam_prevention(message,MUTE_IC))
@@ -20,21 +20,21 @@
 	if (length(message) >= 2)
 		var/prefix = copytext(message, 1, 3)
 		if (department_radio_keys[prefix] == "binary")
-			if (istype(src, /mob/living/silicon/pai))
+			if(istype(src, /mob/living/silicon/pai))
 				return ..(message)
 			message = copytext(message, 3)
 			message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
 
 			// TODO: move the component system up to silicon so we don't have to use this ugly hack..
-			if (istype(src, /mob/living/silicon/robot))
+			if(istype(src, /mob/living/silicon/robot))
 				var/mob/living/silicon/robot/R = src
-				if (!R.is_component_functioning("comms"))
+				if(!R.is_component_functioning("comms"))
 					src << "\red Your binary communications component isn't functional."
 					return
 
 			robot_talk(message)
 		else if (department_radio_keys[prefix] == "department")
-			if (isAI(src)&&client)//For patching directly into AI holopads.
+			if(isAI(src)&&client)//For patching directly into AI holopads.
 				var/mob/living/silicon/ai/U = src
 				message = copytext(message, 3)
 				message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
@@ -58,7 +58,7 @@
 		return
 
 	var/obj/machinery/hologram/holopad/T = src.current
-	if (istype(T) && T.hologram && T.master == src)//If there is a hologram and its master is the user.
+	if(istype(T) && T.hologram && T.master == src)//If there is a hologram and its master is the user.
 		var/message_a = say_quote(message)
 
 		//Human-like, sorta, heard by those who understand humans.
@@ -71,7 +71,7 @@
 
 		src << "<i><span class='game say'>Holopad transmitted, <span class='name'>[real_name]</span> <span class='message'>[message_a]</span></span></i>"//The AI can "hear" its own message.
 		for(var/mob/M in hearers(T.loc))//The location is the object, default distance.
-			if (M.say_understands(src))//If they understand AI speak. Humans and the like will be able to.
+			if(M.say_understands(src))//If they understand AI speak. Humans and the like will be able to.
 				M.show_message(rendered_a, 2)
 			else//If they do not.
 				M.show_message(rendered_b, 2)
@@ -94,8 +94,8 @@
 	var/rendered = "<i><span class='game say'>Robotic Talk, <span class='name'>[name]</span> <span class='message'>[message_a]</span></span></i>"
 
 	for (var/mob/living/S in living_mob_list)
-		if (S.robot_talk_understand && (S.robot_talk_understand == robot_talk_understand)) // This SHOULD catch everything caught by the one below, but I'm not going to change it.
-			if (istype(S , /mob/living/silicon/ai))
+		if(S.robot_talk_understand && (S.robot_talk_understand == robot_talk_understand)) // This SHOULD catch everything caught by the one below, but I'm not going to change it.
+			if(istype(S , /mob/living/silicon/ai))
 				var/renderedAI = "<i><span class='game say'>Robotic Talk, <a href='byond://?src=\ref[S];track2=\ref[S];track=\ref[src]'><span class='name'>[name]</span></a> <span class='message'>[message_a]</span></span></i>"
 				S.show_message(renderedAI, 2)
 			else
@@ -103,7 +103,7 @@
 
 
 		else if (S.binarycheck())
-			if (istype(S , /mob/living/silicon/ai))
+			if(istype(S , /mob/living/silicon/ai))
 				var/renderedAI = "<i><span class='game say'>Robotic Talk, <a href='byond://?src=\ref[S];track2=\ref[S];track=\ref[src]'><span class='name'>[name]</span></a> <span class='message'>[message_a]</span></span></i>"
 				S.show_message(renderedAI, 2)
 			else
@@ -115,7 +115,7 @@
 
 	var/list/heard = list()
 	for (var/mob/M in listening)
-		if (!istype(M, /mob/living/silicon) && !M.robot_talk_understand)
+		if(!istype(M, /mob/living/silicon) && !M.robot_talk_understand)
 			heard += M
 
 	if (length(heard))
@@ -135,5 +135,5 @@
 	rendered = "<i><span class='game say'>Robotic Talk, <span class='name'>[name]</span> <span class='message'>[message_a]</span></span></i>"
 
 	for (var/mob/M in dead_mob_list)
-		if (!istype(M,/mob/new_player) && !istype(M,/mob/living/carbon/brain)) //No meta-evesdropping
+		if(!istype(M,/mob/new_player) && !istype(M,/mob/living/carbon/brain)) //No meta-evesdropping
 			M.show_message(rendered, 2)

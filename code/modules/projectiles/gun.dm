@@ -34,7 +34,7 @@
 	var/last_fired = 0
 
 	proc/ready_to_fire()
-		if (world.time >= last_fired + fire_delay)
+		if(world.time >= last_fired + fire_delay)
 			last_fired = world.time
 			return 1
 		else
@@ -51,9 +51,9 @@
 			O.emp_act(severity)
 
 /obj/item/weapon/gun/afterattack(atom/A as mob|obj|turf|area, mob/living/user as mob|obj, flag, params)
-	if (flag)	return //we're placing gun on a table or in backpack
-	if (istype(target, /obj/machinery/recharger) && istype(src, /obj/item/weapon/gun/energy))	return//Shouldnt flag take care of this?
-	if (user && user.client && user.client.gun_mode && !(A in target))
+	if(flag)	return //we're placing gun on a table or in backpack
+	if(istype(target, /obj/machinery/recharger) && istype(src, /obj/item/weapon/gun/energy))	return//Shouldnt flag take care of this?
+	if(user && user.client && user.client.gun_mode && !(A in target))
 		PreFire(A,user,params) //They're using the new gun system, locate what they're aiming at.
 	else
 		Fire(A,user,params) //Otherwise, fire normally.
@@ -63,8 +63,8 @@
 
 /obj/item/weapon/gun/proc/Fire(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, params, reflex = 0)//TODO: go over this
 	//Exclude lasertag guns from the CLUMSY check.
-	if (clumsy_check)
-		if (istype(user, /mob/living))
+	if(clumsy_check)
+		if(istype(user, /mob/living))
 			var/mob/living/M = user
 			if ((CLUMSY in M.mutations) && prob(50))
 				M << "<span class='danger'>[src] blows up in your face.</span>"
@@ -76,13 +76,13 @@
 	if (!user.IsAdvancedToolUser())
 		user << "\red You don't have the dexterity to do this!"
 		return
-	if (istype(user, /mob/living))
+	if(istype(user, /mob/living))
 		var/mob/living/M = user
 		if (HULK in M.mutations)
 			M << "\red Your meaty finger is much too large for the trigger guard!"
 			return
-	if (ishuman(user))
-		if (user.dna && user.dna.mutantrace == "adamantine")
+	if(ishuman(user))
+		if(user.dna && user.dna.mutantrace == "adamantine")
 			user << "\red Your metal fingers don't fit in the trigger guard!"
 			return
 
@@ -93,7 +93,7 @@
 	if (!istype(targloc) || !istype(curloc))
 		return
 
-	if (!special_check(user))
+	if(!special_check(user))
 		return
 
 	if (!ready_to_fire())
@@ -101,25 +101,25 @@
 			user << "<span class='warning'>[src] is not ready to fire again!"
 		return
 
-	if (!load_into_chamber()) //CHECK
+	if(!load_into_chamber()) //CHECK
 		return click_empty(user)
 
-	if (!in_chamber)
+	if(!in_chamber)
 		return
 
 	in_chamber.firer = user
 	in_chamber.def_zone = user.zone_sel.selecting
-	if (targloc == curloc)
+	if(targloc == curloc)
 		user.bullet_act(in_chamber)
 		del(in_chamber)
 		update_icon()
 		return
 
-	if (recoil)
+	if(recoil)
 		spawn()
 			shake_camera(user, recoil + 1, recoil)
 
-	if (silenced)
+	if(silenced)
 		playsound(user, fire_sound, 10, 1)
 	else
 		playsound(user, fire_sound, 50, 1)
@@ -137,22 +137,22 @@
 	in_chamber.yo = targloc.y - curloc.y
 	in_chamber.xo = targloc.x - curloc.x
 
-	if (params)
+	if(params)
 		var/list/mouse_control = params2list(params)
-		if (mouse_control["icon-x"])
+		if(mouse_control["icon-x"])
 			in_chamber.p_x = text2num(mouse_control["icon-x"])
-		if (mouse_control["icon-y"])
+		if(mouse_control["icon-y"])
 			in_chamber.p_y = text2num(mouse_control["icon-y"])
 
 	spawn()
-		if (in_chamber)
+		if(in_chamber)
 			in_chamber.process()
 	sleep(1)
 	in_chamber = null
 
 	update_icon()
 
-	if (user.hand)
+	if(user.hand)
 		user.update_inv_l_hand()
 	else
 		user.update_inv_r_hand()
@@ -176,13 +176,13 @@
 	if (M == user && user.zone_sel.selecting == "mouth" && !mouthshoot)
 		mouthshoot = 1
 		M.visible_message("\red [user] sticks their gun in their mouth, ready to pull the trigger...")
-		if (!do_after(user, 40))
+		if(!do_after(user, 40))
 			M.visible_message("\blue [user] decided life was worth living")
 			mouthshoot = 0
 			return
 		if (load_into_chamber())
 			user.visible_message("<span class = 'warning'>[user] pulls the trigger.</span>")
-			if (silenced)
+			if(silenced)
 				playsound(user, fire_sound, 10, 1)
 			else
 				playsound(user, fire_sound, 50, 1)
@@ -203,12 +203,12 @@
 
 	if (load_into_chamber())
 		//Point blank shooting if on harm intent or target we were targeting.
-		if (user.a_intent == "hurt")
+		if(user.a_intent == "hurt")
 			user.visible_message("\red <b> \The [user] fires \the [src] point blank at [M]!</b>")
 			in_chamber.damage *= 1.3
 			Fire(M,user)
 			return
-		else if (target && M in target)
+		else if(target && M in target)
 			Fire(M,user) ///Otherwise, shoot!
 			return
 	else

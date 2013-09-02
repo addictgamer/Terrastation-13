@@ -52,8 +52,8 @@
 	mineral = "uranium"
 
 /turf/simulated/wall/mineral/uranium/proc/radiate()
-	if (!active)
-		if (world.time > last_event+15)
+	if(!active)
+		if(world.time > last_event+15)
 			active = 1
 			for(var/mob/living/L in range(3,src))
 				L.apply_effect(12,IRRADIATE,0)
@@ -84,7 +84,7 @@
 	mineral = "plasma"
 
 /turf/simulated/wall/mineral/plasma/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (is_hot(W) > 300)//If the temperature of the object is over 300, then ignite
+	if(is_hot(W) > 300)//If the temperature of the object is over 300, then ignite
 		ignite(is_hot(W))
 		return
 	..()
@@ -94,7 +94,7 @@
 	new /obj/structure/girder(src)
 	src.ChangeTurf(/turf/simulated/floor)
 	for(var/turf/simulated/floor/target_tile in range(0,src))
-		/*if (target_tile.parent && target_tile.parent.group_processing)
+		/*if(target_tile.parent && target_tile.parent.group_processing)
 			target_tile.parent.suspend_group_processing()*/
 		var/datum/gas_mixture/napalm = new
 		var/toxinsToDeduce = 20
@@ -112,17 +112,17 @@
 		D.ignite(temperature/4)
 
 /turf/simulated/wall/mineral/plasma/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)//Doesn't fucking work because walls don't interact with air :(
-	if (exposed_temperature > 300)
+	if(exposed_temperature > 300)
 		PlasmaBurn(exposed_temperature)
 
 /turf/simulated/wall/mineral/plasma/proc/ignite(exposed_temperature)
-	if (exposed_temperature > 300)
+	if(exposed_temperature > 300)
 		PlasmaBurn(exposed_temperature)
 
 /turf/simulated/wall/mineral/plasma/bullet_act(var/obj/item/projectile/Proj)
-	if (istype(Proj,/obj/item/projectile/beam))
+	if(istype(Proj,/obj/item/projectile/beam))
 		PlasmaBurn(2500)
-	else if (istype(Proj,/obj/item/projectile/ion))
+	else if(istype(Proj,/obj/item/projectile/ion))
 		PlasmaBurn(500)
 	..()
 
@@ -137,7 +137,7 @@
 		return 0
 
 /turf/simulated/wall/mineral/proc/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if ((mineral == "gold") || (mineral == "silver"))
-		if (shocked)
+	if((mineral == "gold") || (mineral == "silver"))
+		if(shocked)
 			shock()
 */

@@ -17,9 +17,9 @@
 
 /obj/effect/mine/Bumped(mob/M as mob|obj)
 
-	if (triggered) return
+	if(triggered) return
 
-	if (istype(M, /mob/living/carbon/human) || istype(M, /mob/living/carbon/monkey))
+	if(istype(M, /mob/living/carbon/human) || istype(M, /mob/living/carbon/monkey))
 		for(var/mob/O in viewers(world.view, src.loc))
 			O << "<font color='red'>[M] triggered the \icon[src] [src]</font>"
 		triggered = 1
@@ -36,7 +36,7 @@
 		del(src)
 
 /obj/effect/mine/proc/triggerstun(obj)
-	if (ismob(obj))
+	if(ismob(obj))
 		var/mob/M = obj
 		M.Stun(30)
 	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
@@ -50,7 +50,7 @@
 	//note: im lazy
 
 	for (var/turf/simulated/floor/target in range(1,src))
-		if (!target.blocks_air)
+		if(!target.blocks_air)
 
 			var/datum/gas_mixture/payload = new
 			var/datum/gas/sleeping_agent/trace_gas = new
@@ -65,7 +65,7 @@
 
 /obj/effect/mine/proc/triggerplasma(obj)
 	for (var/turf/simulated/floor/target in range(1,src))
-		if (!target.blocks_air)
+		if(!target.blocks_air)
 
 			var/datum/gas_mixture/payload = new
 

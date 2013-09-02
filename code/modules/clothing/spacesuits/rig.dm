@@ -14,24 +14,24 @@
 	max_heat_protection_temperature = SPACE_SUIT_MAX_HEAT_PROTECITON_TEMPERATURE
 
 	attack_self(mob/user)
-		if (!isturf(user.loc))
+		if(!isturf(user.loc))
 			user << "You cannot turn the light on while in this [user.loc]" //To prevent some lighting anomalities.
 			return
 		on = !on
 		icon_state = "rig[on]-[color]"
 //		item_state = "rig[on]-[color]"
 
-		if (on)	user.SetLuminosity(user.luminosity + brightness_on)
+		if(on)	user.SetLuminosity(user.luminosity + brightness_on)
 		else	user.SetLuminosity(user.luminosity - brightness_on)
 
 	pickup(mob/user)
-		if (on)
+		if(on)
 			user.SetLuminosity(user.luminosity + brightness_on)
 //			user.UpdateLuminosity()
 			SetLuminosity(0)
 
 	dropped(mob/user)
-		if (on)
+		if(on)
 			user.SetLuminosity(user.luminosity - brightness_on)
 //			user.UpdateLuminosity()
 			SetLuminosity(brightness_on)
@@ -90,7 +90,7 @@
 	var/obj/machinery/camera/camera
 
 /obj/item/clothing/head/helmet/space/rig/syndi/attack_self(mob/user)
-	if (camera)
+	if(camera)
 		..(user)
 	else
 		camera = new /obj/machinery/camera(src)
@@ -101,7 +101,7 @@
 
 /obj/item/clothing/head/helmet/space/rig/syndi/examine()
 	..()
-	if (get_dist(usr,src) <= 1)
+	if(get_dist(usr,src) <= 1)
 		usr << "This helmet has a built-in camera. It's [camera ? "" : "in"]active."
 
 /obj/item/clothing/suit/space/rig/syndi

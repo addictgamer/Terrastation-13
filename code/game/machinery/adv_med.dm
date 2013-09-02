@@ -96,7 +96,7 @@
 
 /obj/machinery/bodyscanner/ex_act(severity)
 	switch(severity)
-		if (1.0)
+		if(1.0)
 			for(var/atom/movable/A as mob|obj in src)
 				A.loc = src.loc
 				ex_act(severity)
@@ -104,7 +104,7 @@
 			//SN src = null
 			del(src)
 			return
-		if (2.0)
+		if(2.0)
 			if (prob(50))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
@@ -113,7 +113,7 @@
 				//SN src = null
 				del(src)
 				return
-		if (3.0)
+		if(3.0)
 			if (prob(25))
 				for(var/atom/movable/A as mob|obj in src)
 					A.loc = src.loc
@@ -126,7 +126,7 @@
 	return
 
 /obj/machinery/bodyscanner/blob_act()
-	if (prob(50))
+	if(prob(50))
 		for(var/atom/movable/A as mob|obj in src)
 			A.loc = src.loc
 		del(src)
@@ -134,11 +134,11 @@
 /obj/machinery/body_scanconsole/ex_act(severity)
 
 	switch(severity)
-		if (1.0)
+		if(1.0)
 			//SN src = null
 			del(src)
 			return
-		if (2.0)
+		if(2.0)
 			if (prob(50))
 				//SN src = null
 				del(src)
@@ -148,13 +148,13 @@
 
 /obj/machinery/body_scanconsole/blob_act()
 
-	if (prob(50))
+	if(prob(50))
 		del(src)
 
 /obj/machinery/body_scanconsole/power_change()
-	if (stat & BROKEN)
+	if(stat & BROKEN)
 		icon_state = "body_scannerconsole-p"
-	else if (powered())
+	else if(powered())
 		icon_state = initial(icon_state)
 		stat &= ~NOPOWER
 	else
@@ -181,7 +181,7 @@
 	return
 
 /obj/machinery/body_scanconsole/process() //not really used right now
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		return
 	use_power(250) // power stuff
 
@@ -207,9 +207,9 @@
 	return src.attack_hand(user)
 
 /obj/machinery/body_scanconsole/attack_hand(user as mob)
-	if (..())
+	if(..())
 		return
-	if (!ishuman(connected.occupant))
+	if(!ishuman(connected.occupant))
 		user << "\red This device can only scan compatible lifeforms."
 		return
 	var/dat
@@ -224,9 +224,9 @@
 			if (istype(occupant)) //is there REALLY someone in there?
 				var/t1
 				switch(occupant.stat) // obvious, see what their status is
-					if (0)
+					if(0)
 						t1 = "Conscious"
-					if (1)
+					if(1)
 						t1 = "Unconscious"
 					else
 						t1 = "*dead*"
@@ -235,7 +235,7 @@
 				else
 					dat += text("[]\tHealth %: [] ([])</FONT><BR>", (occupant.health > 50 ? "<font color='blue'>" : "<font color='red'>"), occupant.health, t1)
 
-					if (occupant.virus2.len)
+					if(occupant.virus2.len)
 						dat += text("<font color='red'>Viral pathogen detected in blood stream.</font><BR>")
 
 					dat += text("[]\t-Brute Damage %: []</FONT><BR>", (occupant.getBruteLoss() < 60 ? "<font color='blue'>" : "<font color='red'>"), occupant.getBruteLoss())
@@ -249,12 +249,12 @@
 					dat += text("Paralysis Summary %: [] ([] seconds left!)<BR>", occupant.paralysis, round(occupant.paralysis / 4))
 					dat += text("Body Temperature: [occupant.bodytemperature-T0C]&deg;C ([occupant.bodytemperature*1.8-459.67]&deg;F)<BR><HR>")
 
-					if (occupant.vessel)
+					if(occupant.vessel)
 						var/blood_volume = round(occupant.vessel.get_reagent_amount("blood"))
 						var/blood_percent =  blood_volume / 560
 						blood_percent *= 100
 						dat += text("[]\tBlood Level %: [] ([] units)</FONT><BR>", (blood_volume > 448 ?"<font color='blue'>" : "<font color='red'>"), blood_percent, blood_volume)
-					if (occupant.reagents)
+					if(occupant.reagents)
 						dat += text("Inaprovaline units: [] units<BR>", occupant.reagents.get_reagent_amount("inaprovaline"))
 						dat += text("Soporific (Sleep Toxin): [] units<BR>", occupant.reagents.get_reagent_amount("stoxin"))
 						dat += text("[]\tDermaline: [] units</FONT><BR>", (occupant.reagents.get_reagent_amount("dermaline") < 30 ? "<font color='black'>" : "<font color='red'>"), occupant.reagents.get_reagent_amount("dermaline"))
@@ -262,7 +262,7 @@
 						dat += text("[]\tDexalin: [] units<BR>", (occupant.reagents.get_reagent_amount("dexalin") < 30 ? "<font color='black'>" : "<font color='red'>"), occupant.reagents.get_reagent_amount("dexalin"))
 
 					for(var/datum/disease/D in occupant.viruses)
-						if (!D.hidden[SCANNER])
+						if(!D.hidden[SCANNER])
 							dat += text("<font color='red'><B>Warning: [D.form] Detected</B>\nName: [D.name].\nType: [D.spread].\nStage: [D.stage]/[D.max_stages].\nPossible Cure: [D.cure]</FONT><BR>")
 
 					dat += "<HR><table border='1'>"
@@ -283,24 +283,24 @@
 						var/splint = ""
 						var/internal_bleeding = ""
 						var/lung_ruptured = ""
-						for(var/datum/wound/W in e.wounds) if (W.internal)
+						for(var/datum/wound/W in e.wounds) if(W.internal)
 							internal_bleeding = "<br>Internal bleeding"
 							break
-						if (istype(e, /datum/organ/external/chest) && occupant.is_lung_ruptured())
+						if(istype(e, /datum/organ/external/chest) && occupant.is_lung_ruptured())
 							lung_ruptured = "Lung ruptured:"
-						if (e.status & ORGAN_SPLINTED)
+						if(e.status & ORGAN_SPLINTED)
 							splint = "Splinted:"
-						if (e.status & ORGAN_BLEEDING)
+						if(e.status & ORGAN_BLEEDING)
 							bled = "Bleeding:"
-						if (e.status & ORGAN_BROKEN)
+						if(e.status & ORGAN_BROKEN)
 							AN = "[e.broken_description]:"
-						if (e.open)
+						if(e.open)
 							open = "Open:"
-						if (e.implants.len)
+						if(e.implants.len)
 							imp = "Unknown body present:"
-						if (!AN && !open && !infected & !imp)
+						if(!AN && !open && !infected & !imp)
 							AN = "None:"
-						if (!(e.status & ORGAN_DESTROYED))
+						if(!(e.status & ORGAN_DESTROYED))
 							dat += "<td>[e.display_name]</td><td>[e.burn_dam]</td><td>[e.brute_dam]</td><td>[bled][AN][splint][open][infected][imp][internal_bleeding][lung_ruptured]</td>"
 						else
 							dat += "<td>[e.display_name]</td><td>-</td><td>-</td><td>Not Found</td>"

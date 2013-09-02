@@ -39,21 +39,21 @@
 	New()
 		..()
 		spawn(5)	// must wait for map loading to finish
-			if (radio_controller)
+			if(radio_controller)
 				radio_controller.add_object(src, frequency)
 
 
 	// timed process
 
 	process()
-		if (stat & NOPOWER)
+		if(stat & NOPOWER)
 			overlays.Cut()
 			return
 
 		update()
 
 	emp_act(severity)
-		if (stat & (BROKEN|NOPOWER))
+		if(stat & (BROKEN|NOPOWER))
 			..(severity)
 			return
 		set_picture("ai_bsod")
@@ -63,27 +63,27 @@
 
 	proc/update()
 
-		if (friendc && mode!=4) //Makes all status displays except supply shuttle timer display the eye -- Urist
+		if(friendc && mode!=4) //Makes all status displays except supply shuttle timer display the eye -- Urist
 			set_picture("ai_friend")
 			return
 
-		if (mode==0)
+		if(mode==0)
 			overlays.Cut()
 			return
 
-		if (mode==3)	// alert picture, no change
+		if(mode==3)	// alert picture, no change
 			return
 
-		if (mode==1)	// shuttle timer
-			if (emergency_shuttle.online)
+		if(mode==1)	// shuttle timer
+			if(emergency_shuttle.online)
 				var/displayloc
-				if (emergency_shuttle.location == 1)
+				if(emergency_shuttle.location == 1)
 					displayloc = "ETD "
 				else
 					displayloc = "ETA "
 
 				var/displaytime = get_shuttle_timer()
-				if (lentext(displaytime) > 5)
+				if(lentext(displaytime) > 5)
 					displaytime = "**~**"
 
 				update_display(displayloc, displaytime)
@@ -92,17 +92,17 @@
 				overlays.Cut()
 				return
 
-		if (mode==4)		// supply shuttle timer
+		if(mode==4)		// supply shuttle timer
 			var/disp1
 			var/disp2
-			if (supply_shuttle.moving)
+			if(supply_shuttle.moving)
 				disp1 = "SPPLY"
 				disp2 = get_supply_shuttle_timer()
-				if (lentext(disp1) > 5)
+				if(lentext(disp1) > 5)
 					disp1 = "**~**"
 
 			else
-				if (supply_shuttle.at_station)
+				if(supply_shuttle.at_station)
 					disp1 = "SPPLY"
 					disp2 = "STATN"
 				else
@@ -113,28 +113,28 @@
 
 
 
-		if (mode==2)
+		if(mode==2)
 			var/line1
 			var/line2
 
-			if (!index1)
+			if(!index1)
 				line1 = message1
 			else
 				line1 = copytext(message1+message1, index1, index1+5)
-				if (index1++ > (lentext(message1)))
+				if(index1++ > (lentext(message1)))
 					index1 = 1
 
-			if (!index2)
+			if(!index2)
 				line2 = message2
 			else
 				line2 = copytext(message2+message2, index2, index2+5)
-				if (index2++ > (lentext(message2)))
+				if(index2++ > (lentext(message2)))
 					index2 = 1
 
 			update_display(line1, line2)
 
 			// the following allows 2 updates per process, giving faster scrolling
-			if ((index1 || index2) && repeat_update)	// if either line is scrolling
+			if((index1 || index2) && repeat_update)	// if either line is scrolling
 													// and we haven't forced an update yet
 
 				spawn(5)
@@ -143,14 +143,14 @@
 					repeat_update = 1
 
 	proc/set_message(var/m1, var/m2)
-		if (m1)
+		if(m1)
 			index1 = (lentext(m1) > 5)
 			message1 = uppertext(m1)
 		else
 			message1 = ""
 			index1 = 0
 
-		if (m2)
+		if(m2)
 			index2 = (lentext(m2) > 5)
 			message2 = uppertext(m2)
 		else
@@ -165,13 +165,13 @@
 
 	proc/update_display(var/line1, var/line2)
 
-		if (line1 == lastdisplayline1 && line2 == lastdisplayline2)
+		if(line1 == lastdisplayline1 && line2 == lastdisplayline2)
 			return			// no change, no need to update
 
 		lastdisplayline1 = line1
 		lastdisplayline2 = line2
 
-		if (line2 == null)		// single line display
+		if(line2 == null)		// single line display
 			overlays.Cut()
 			overlays += texticon(line1, 23, -13)
 		else					// dual line display
@@ -185,13 +185,13 @@
 
 	proc/get_shuttle_timer()
 		var/timeleft = emergency_shuttle.timeleft()
-		if (timeleft)
+		if(timeleft)
 			return "[add_zero(num2text((timeleft / 60) % 60),2)]~[add_zero(num2text(timeleft % 60), 2)]"
 			// note ~ translates into a blinking :
 		return ""
 
 	proc/get_supply_shuttle_timer()
-		if (supply_shuttle.moving)
+		if(supply_shuttle.moving)
 			var/timeleft = round((supply_shuttle.eta_timeofday - world.timeofday) / 10,1)
 			return "[add_zero(num2text((timeleft / 60) % 60),2)]~[add_zero(num2text(timeleft % 60), 2)]"
 			// note ~ translates into a blinking :
@@ -214,7 +214,7 @@
 
 			var/char = copytext(tn, len-d+1, len-d+2)
 
-			if (char == " ")
+			if(char == " ")
 				continue
 
 			var/image/ID = image('icons/obj/status_display.dmi', icon_state=char)
@@ -234,22 +234,22 @@
 	receive_signal(datum/signal/signal)
 
 		switch(signal.data["command"])
-			if ("blank")
+			if("blank")
 				mode = 0
 
-			if ("shuttle")
+			if("shuttle")
 				mode = 1
 
-			if ("message")
+			if("message")
 				mode = 2
 				set_message(signal.data["msg1"], signal.data["msg2"])
 
-			if ("alert")
+			if("alert")
 				mode = 3
 				set_picture(signal.data["picture_state"])
 
-			if ("supply")
-				if (supply_display)
+			if("supply")
+				if(supply_display)
 					mode = 4
 
 
@@ -271,14 +271,14 @@
 
 
 	process()
-		if (stat & NOPOWER)
+		if(stat & NOPOWER)
 			overlays.Cut()
 			return
 
 		update()
 
 	emp_act(severity)
-		if (stat & (BROKEN|NOPOWER))
+		if(stat & (BROKEN|NOPOWER))
 			..(severity)
 			return
 		set_picture("ai_bsod")
@@ -286,52 +286,52 @@
 
 	proc/update()
 
-		if (mode==0) //Blank
+		if(mode==0) //Blank
 			overlays.Cut()
 			return
 
-		if (mode==1)	// AI emoticon
+		if(mode==1)	// AI emoticon
 			switch(emotion)
-				if ("Very Happy")
+				if("Very Happy")
 					set_picture("ai_veryhappy")
-				if ("Happy")
+				if("Happy")
 					set_picture("ai_happy")
-				if ("Neutral")
+				if("Neutral")
 					set_picture("ai_neutral")
-				if ("Unsure")
+				if("Unsure")
 					set_picture("ai_unsure")
-				if ("Confused")
+				if("Confused")
 					set_picture("ai_confused")
-				if ("Sad")
+				if("Sad")
 					set_picture("ai_sad")
-				if ("BSOD")
+				if("BSOD")
 					set_picture("ai_bsod")
-				if ("Blank")
+				if("Blank")
 					set_picture("ai_off")
-				if ("Problems?")
+				if("Problems?")
 					set_picture("ai_trollface")
-				if ("Awesome")
+				if("Awesome")
 					set_picture("ai_awesome")
-				if ("Dorfy")
+				if("Dorfy")
 					set_picture("ai_urist")
-				if ("Facepalm")
+				if("Facepalm")
 					set_picture("ai_facepalm")
-				if ("Friend Computer")
+				if("Friend Computer")
 					set_picture("ai_friend")
-				if ("Tribunal")
+				if("Tribunal")
 					set_picture("tribunal")
-				if ("Beer mug")
+				if("Beer mug")
 					set_picture("ai_beer")
-				if ("Dwarf")
+				if("Dwarf")
 					set_picture("ai_dwarf")
-				if ("Fishtank")
+				if("Fishtank")
 					set_picture("ai_fishtank")
-				if ("Plump Helmet")
+				if("Plump Helmet")
 					set_picture("ai_plump")
 
 			return
 
-		if (mode==2)	// BSOD
+		if(mode==2)	// BSOD
 			set_picture("ai_bsod")
 			return
 

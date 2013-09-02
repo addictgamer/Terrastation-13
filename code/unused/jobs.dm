@@ -73,9 +73,9 @@
 	//This proc tests to see if the given alias (job title/alternative job title) corresponds to this job.
 	//Returns 1 if it is, else returns 0
 	proc/is_job_alias(var/alias)
-		if (alias == title)
+		if(alias == title)
 			return 1
-		if (alias in alternative_titles)
+		if(alias in alternative_titles)
 			return 1
 		return 0
 
@@ -89,7 +89,7 @@
 	proc/get_normal_jobs()
 		var/list/datum/job/normal_jobs = list()
 		for(var/datum/job/J in all_jobs)
-			if (!J.admin_only)
+			if(!J.admin_only)
 				normal_jobs += J
 		return normal_jobs
 
@@ -97,21 +97,21 @@
 	proc/get_admin_jobs()
 		var/list/datum/job/admin_jobs = list()
 		for(var/datum/job/J in all_jobs)
-			if (J.admin_only)
+			if(J.admin_only)
 				admin_jobs += J
 		return admin_jobs
 
 	//This proc returns the job datum of the job with the alias or job title given as the argument. Returns an empty string otherwise.
 	proc/get_job(var/alias)
 		for(var/datum/job/J in all_jobs)
-			if (J.is_job_alias(alias))
+			if(J.is_job_alias(alias))
 				return J
 		return ""
 
 	//This proc returns a string with the default job title for the job with the given alias. Returns an empty string otherwise.
 	proc/get_job_title(var/alias)
 		for(var/datum/job/J in all_jobs)
-			if (J.is_job_alias(alias))
+			if(J.is_job_alias(alias))
 				return J.title
 		return ""
 
@@ -120,7 +120,7 @@
 		var/boss_title = get_job_title(boss_alias)
 		var/list/datum/job/employees = list()
 		for(var/datum/job/J in all_jobs)
-			if (boss_title in J.bosses)
+			if(boss_title in J.bosses)
 				employees += J
 		return employees
 
@@ -130,7 +130,7 @@
 	proc/get_prefered_high_priority_jobs()
 		var/list/datum/job/hp_jobs = list()
 		for(var/datum/job/J in all_jobs)
-			if (J.assignment_priority == HIGH_PRIORITY_JOB || J.assignment_priority == VITAL_PRIORITY_JOB)
+			if(J.assignment_priority == HIGH_PRIORITY_JOB || J.assignment_priority == VITAL_PRIORITY_JOB)
 				hp_jobs += J
 			else
 				break
@@ -139,15 +139,15 @@
 	//If only priority is given, it will return the jobs of only that priority, if end_priority is set it will return the jobs with their priority higher or equal to var/priority and lower or equal to end_priority. end_priority must be higher than 0.
 	proc/get_jobs_by_priority(var/priority, var/end_priority = 0)
 		var/list/datum/job/priority_jobs = list()
-		if (end_priority)
-			if (end_priority < priority)
+		if(end_priority)
+			if(end_priority < priority)
 				return
 			for(var/datum/job/J in all_jobs)
-				if (J.assignment_priority >= priority && J.assignment_priority <= end_priority)
+				if(J.assignment_priority >= priority && J.assignment_priority <= end_priority)
 					priority_jobs += J
 		else
 			for(var/datum/job/J in all_jobs)
-				if (J.assignment_priority == priority)
+				if(J.assignment_priority == priority)
 					priority_jobs += J
 		return priority_jobs
 
@@ -186,12 +186,12 @@ proc/setup_jobs()
 
 //This proc will dress the mob (employee) in the default way for the specified job title/job alias
 proc/dress_for_job_default(var/mob/living/carbon/human/employee as mob, var/job_alias)
-	if (!ishuman(employee))
+	if(!ishuman(employee))
 		return
 
 	//TODO ERRORAGE - UNFINISHED
 	var/datum/job/JOB = jobs.get_job(job_alias)
-	if (JOB)
+	if(JOB)
 		var/item = JOB.equipment_ears[1]
 		employee.equip_to_slot_or_del(new item(employee), employee.slot_ears)
 		item = JOB.equipment_under[1]
@@ -222,10 +222,10 @@ proc/dress_for_job_default(var/mob/living/carbon/human/employee as mob, var/job_
 //5: Assignment of traitor / changeling to assigned roles (if appropriate game mode)
 proc/assignment_algorithm(var/list/mob/new_player/players)
 	for(var/mob/new_player/PLAYER in players)
-		if (!PLAYER.client)
+		if(!PLAYER.client)
 			players -= PLAYER
 			continue
-		if (!PLAYER.ready)
+		if(!PLAYER.ready)
 			players -= PLAYER
 			continue
 
@@ -238,17 +238,17 @@ proc/assignment_algorithm(var/list/mob/new_player/players)
 
 	for(var/datum/job/J in jobs)
 		switch(J.assignment_priority)
-			if (5)
+			if(5)
 				vital_jobs += J
-			if (4)
+			if(4)
 				high_priority_jobs += J
-			if (3)
+			if(3)
 				priority_jobs += J
-			if (2)
+			if(2)
 				low_priority_jobs += J
-			if (1)
+			if(1)
 				assistant_jobs += J
-			if (0)
+			if(0)
 				not_assigned_jobs += J
 
 	var/list/datum/player_jobs/player_jobs = list() //This datum only holds a mob/new_player and a datum/jobs. The first is the player, the 2nd is the player's selected jobs, from the preferences datum.
@@ -266,16 +266,16 @@ proc/assignment_algorithm(var/list/mob/new_player/players)
 	for(var/datum/job/J in hp_jobs)
 		var/list/mob/new_player/candidates = list()
 		for(var/datum/player_jobs/PJ in player_jobs)
-			if (J in PJ.selected_jobs)
+			if(J in PJ.selected_jobs)
 				candidates += PJ.player
 		var/mob/new_player/chosen_player
-		if (candidates)
+		if(candidates)
 			chosen_player = pick(candidates)
 		else
-			if (J.assignment_priority == VITAL_PRIORITY_JOB)
-				if (players) 			//Just in case there are more vital jobs than there are players.
+			if(J.assignment_priority == VITAL_PRIORITY_JOB)
+				if(players) 			//Just in case there are more vital jobs than there are players.
 					chosen_player = pick(players)
-		if (chosen_player)
+		if(chosen_player)
 			chosen_player.mind.assigned_job = J
 			players -= chosen_player
 		//TODO ERRORAGE - add capability for hp jobs with more than one slots.

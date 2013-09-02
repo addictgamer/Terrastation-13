@@ -7,7 +7,7 @@
 	anchored = 1
 
 obj/machinery/seed_extractor/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	if (istype(O, /obj/item/weapon/reagent_containers/food/snacks/grown/))
+	if(istype(O, /obj/item/weapon/reagent_containers/food/snacks/grown/))
 		var/obj/item/weapon/reagent_containers/food/snacks/grown/F = O
 		user.drop_item()
 		user << "<span class='notice'>You extract some seeds from the [F.name].</span>"
@@ -26,7 +26,7 @@ obj/machinery/seed_extractor/attackby(var/obj/item/O as obj, var/mob/user as mob
 			t_amount++
 		del(O)
 
-	else if (istype(O, /obj/item/weapon/grown/))
+	else if(istype(O, /obj/item/weapon/grown/))
 		var/obj/item/weapon/grown/F = O
 		user.drop_item()
 		user << "<span class='notice'>You extract some seeds from the [F.name].</span>"
@@ -45,7 +45,7 @@ obj/machinery/seed_extractor/attackby(var/obj/item/O as obj, var/mob/user as mob
 			t_amount++
 		del(O)
 
-	else if (istype(O, /obj/item/stack/tile/grass))
+	else if(istype(O, /obj/item/stack/tile/grass))
 		var/obj/item/stack/tile/grass/S = O
 		user << "<span class='notice'>You extract some seeds from the [S.name].</span>"
 		S.use(1)

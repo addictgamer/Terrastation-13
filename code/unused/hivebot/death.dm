@@ -1,10 +1,10 @@
 /mob/living/silicon/hivebot/death(gibbed)
-	if (src.mainframe)
+	if(src.mainframe)
 		src.mainframe.return_to(src)
 	src.stat = 2
 	src.canmove = 0
 
-	if (src.blind)
+	if(src.blind)
 		src.blind.layer = 0
 	src.sight |= SEE_TURFS
 	src.sight |= SEE_MOBS
@@ -19,6 +19,6 @@
 
 	if (src.key)
 		spawn(50)
-			if (src.key && src.stat == 2)
+			if(src.key && src.stat == 2)
 				src.verbs += /client/proc/ghost
 	return ..(gibbed)

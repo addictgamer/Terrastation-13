@@ -52,7 +52,7 @@
 
 	afterattack(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, flag)
 		..()
-		if (!loaded.len && empty_mag)
+		if(!loaded.len && empty_mag)
 			empty_mag.loc = get_turf(src.loc)
 			empty_mag = null
 			playsound(user, 'sound/weapons/smg_empty_alarm.ogg', 40, 1)
@@ -62,7 +62,7 @@
 
 	update_icon()
 		..()
-		if (empty_mag)
+		if(empty_mag)
 			icon_state = "c20r-[round(loaded.len,4)]"
 		else
 			icon_state = "c20r"
@@ -96,7 +96,7 @@
 
 
 /obj/item/weapon/gun/projectile/automatic/l6_saw/afterattack(atom/target as mob|obj|turf, mob/living/user as mob|obj, flag, params) //what I tried to do here is just add a check to see if the cover is open or not and add an icon_state change because I can't figure out how c-20rs do it with overlays
-	if (cover_open)
+	if(cover_open)
 		user << "<span class='notice'>[src]'s cover is open! Close it before firing!</span>"
 	else
 		..()
@@ -104,12 +104,12 @@
 
 
 /obj/item/weapon/gun/projectile/automatic/l6_saw/attack_hand(mob/user as mob)
-	if (loc != user)
+	if(loc != user)
 		..()
 		return	//let them pick it up
-	if (!cover_open || (cover_open && !mag_inserted))
+	if(!cover_open || (cover_open && !mag_inserted))
 		..()
-	else if (cover_open && mag_inserted)
+	else if(cover_open && mag_inserted)
 		//drop the mag
 		empty_mag = new /obj/item/ammo_magazine/a762(src)
 		empty_mag.stored_ammo = loaded
@@ -125,13 +125,13 @@
 
 
 /obj/item/weapon/gun/projectile/automatic/l6_saw/attackby(var/obj/item/A as obj, mob/user as mob)
-	if (!cover_open)
+	if(!cover_open)
 		user << "<span class='notice'>[src]'s cover is closed! You can't insert a new mag!</span>"
 		return
-	else if (cover_open && mag_inserted)
+	else if(cover_open && mag_inserted)
 		user << "<span class='notice'>[src] already has a magazine inserted!</span>"
 		return
-	else if (cover_open && !mag_inserted)
+	else if(cover_open && !mag_inserted)
 		mag_inserted = 1
 		user << "<span class='notice'>You insert the magazine!</span>"
 		update_icon()

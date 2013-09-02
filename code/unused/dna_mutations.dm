@@ -25,12 +25,12 @@ This system could be expanded to migrate all of our current mutations to. Maybe.
 
 	proc/check_mutation(var/mob/living/carbon/M) // Called in dna.dm, when a target's SE is modified
 
-		if (! ("all" in races)) // "all" means it affects everyone!
-			if (istype(M, /mob/living/carbon/human))
-				if (! ("Human" in races))
+		if(! ("all" in races)) // "all" means it affects everyone!
+			if(istype(M, /mob/living/carbon/human))
+				if(! ("Human" in races))
 					return
-			if (istype(M, /mob/living/carbon/monkey))
-				if (! ("monkey" in races))
+			if(istype(M, /mob/living/carbon/monkey))
+				if(! ("monkey" in races))
 					return
 			// TODO: add more races maybe??
 
@@ -39,13 +39,13 @@ This system could be expanded to migrate all of our current mutations to. Maybe.
 		for(var/datum/mutationreq/require in requirements)
 
 			var/se_block[] = getblockbuffer(M.dna.struc_enzymes, require.block, 3) // focus onto the block
-			if (se_block.len == 3) // we want to make sure there are exactly 3 entries
+			if(se_block.len == 3) // we want to make sure there are exactly 3 entries
 
-				if (se_block[require.subblock] == require.reqID)
+				if(se_block[require.subblock] == require.reqID)
 
 					passes++
 
-		if (passes == required) // all requirements met
+		if(passes == required) // all requirements met
 			get_mutation(M)
 
 

@@ -14,12 +14,12 @@
 		updateicon()
 			icon_state = "ccharger[charging ? 1 : 0]"
 
-			if (charging && !(stat & (BROKEN|NOPOWER)) )
+			if(charging && !(stat & (BROKEN|NOPOWER)) )
 
 				var/newlevel = 	round(charging.percent() * 4.0 / 99)
 				//world << "nl: [newlevel]"
 
-				if (chargelevel != newlevel)
+				if(chargelevel != newlevel)
 
 					overlays.Cut()
 					overlays += "ccharger-o[newlevel]"
@@ -31,22 +31,22 @@
 		set src in oview(5)
 		..()
 		usr << "There's [charging ? "a" : "no"] cell in the charger."
-		if (charging)
+		if(charging)
 			usr << "Current charge: [charging.charge]"
 
 	attackby(obj/item/weapon/W, mob/user)
-		if (stat & BROKEN)
+		if(stat & BROKEN)
 			return
 
-		if (istype(W, /obj/item/weapon/cell) && anchored)
-			if (charging)
+		if(istype(W, /obj/item/weapon/cell) && anchored)
+			if(charging)
 				user << "\red There is already a cell in the charger."
 				return
 			else
 				var/area/a = loc.loc // Gets our locations location, like a dream within a dream
-				if (!isarea(a))
+				if(!isarea(a))
 					return
-				if (a.power_equip == 0) // There's no APC in this area, don't try to cheat power!
+				if(a.power_equip == 0) // There's no APC in this area, don't try to cheat power!
 					user << "\red The [name] blinks red as you try to insert the cell!"
 					return
 
@@ -56,8 +56,8 @@
 				user.visible_message("[user] inserts a cell into the charger.", "You insert a cell into the charger.")
 				chargelevel = -1
 			updateicon()
-		else if (istype(W, /obj/item/weapon/wrench))
-			if (charging)
+		else if(istype(W, /obj/item/weapon/wrench))
+			if(charging)
 				user << "\red Remove the cell first!"
 				return
 
@@ -66,7 +66,7 @@
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 
 	attack_hand(mob/user)
-		if (charging)
+		if(charging)
 			usr.put_in_hands(charging)
 			charging.add_fingerprint(user)
 			charging.updateicon()
@@ -80,16 +80,16 @@
 		return
 
 	emp_act(severity)
-		if (stat & (BROKEN|NOPOWER))
+		if(stat & (BROKEN|NOPOWER))
 			return
-		if (charging)
+		if(charging)
 			charging.emp_act(severity)
 		..(severity)
 
 
 	process()
 		//world << "ccpt [charging] [stat]"
-		if (!charging || (stat & (BROKEN|NOPOWER)) || !anchored)
+		if(!charging || (stat & (BROKEN|NOPOWER)) || !anchored)
 			return
 
 		use_power(200)		//this used to use CELLRATE, but CELLRATE is fucking awful. feel free to fix this properly!

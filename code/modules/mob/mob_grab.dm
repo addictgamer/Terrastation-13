@@ -22,8 +22,8 @@
 
 /obj/item/weapon/grab/proc/throw()
 
-	if (affecting)
-		if (state >= 2)
+	if(affecting)
+		if(state >= 2)
 			var/grabee = affecting
 			spawn(1)
 				del(src)
@@ -33,7 +33,7 @@
 				del(src)
 			return null
 
-	else if (structure)
+	else if(structure)
 		var/grabee = structure
 		spawn(1)
 			del(src)
@@ -43,8 +43,8 @@
 
 
 /obj/item/weapon/grab/proc/synch()
-	if (affecting)
-		if (affecting.anchored)//This will prevent from grabbing people that are anchored.
+	if(affecting)
+		if(affecting.anchored)//This will prevent from grabbing people that are anchored.
 			del(src)
 		if (assailant.r_hand == src)
 			hud1.screen_loc = ui_rhand
@@ -54,16 +54,16 @@
 
 
 /obj/item/weapon/grab/process()
-	if (!assailant || (!affecting && !structure))
+	if(!assailant || (!affecting && !structure))
 		del(src)
 		return
 
-	if (affecting && !structure)
+	if(affecting && !structure)
 		if ((!( isturf(assailant.loc) ) || (!( isturf(affecting.loc) ) || (assailant.loc != affecting.loc && get_dist(assailant, affecting) > 1))))
 			//SN src = null
 			del(src)
 			return
-	else if (!affecting && structure)
+	else if(!affecting && structure)
 		if (!isturf(structure.loc) || !isturf(structure.loc) || (assailant.loc != structure.loc && get_dist(assailant, structure) > 1))
 			del(src)
 			return
@@ -106,13 +106,13 @@
 		if (!( affecting.buckled ))
 			affecting.loc = assailant.loc
 	if ((killing == 2 && state == 3))
-		if (assailant.loc != kill_loc)
+		if(assailant.loc != kill_loc)
 			assailant.visible_message("\red [assailant] lost \his tightened grip on [affecting]'s neck!")
 			killing = 0
 			hud1.icon_state = "disarm/kill"
 			return
 
-		if (ishuman(affecting))
+		if(ishuman(affecting))
 			var/mob/living/carbon/human/H = affecting
 			var/datum/organ/external/head = H.get_organ("head")
 			head.add_autopsy_data("Strangulation", 0)
@@ -126,7 +126,7 @@
 /obj/item/weapon/grab/proc/s_click(obj/screen/S as obj)
 	if (!affecting)
 		return
-	if (killing)
+	if(killing)
 		return
 	if (assailant.next_move > world.time)
 		return
@@ -135,7 +135,7 @@
 		del(src)
 		return
 	switch(S.id)
-		if (1.0)
+		if(1.0)
 			if (state >= 3)
 				if (!( killing ))
 					assailant.visible_message("\red [assailant] has temporarily tightened \his grip on [affecting]!")
@@ -159,11 +159,11 @@
 	if ((!( assailant.canmove ) || assailant.lying))
 		del(src)
 		return
-	if (killing)
+	if(killing)
 		return
 
 	switch(S.id)
-		if (1.0)
+		if(1.0)
 			if (state < 2)
 				if (!( allow_upgrade ))
 					return
@@ -182,25 +182,25 @@
 					return*/
 			else
 				if (state < 3)
-					if (istype(affecting, /mob/living/carbon/human))
+					if(istype(affecting, /mob/living/carbon/human))
 						var/mob/living/carbon/human/H = affecting
-						if (FAT in H.mutations)
+						if(FAT in H.mutations)
 							assailant << "\blue You can't strangle [affecting] through all that fat!"
 							return
 
 						/*Hrm might want to add this back in
 						//we should be able to strangle the Captain if he is wearing a hat
 						for(var/obj/item/clothing/C in list(H.head, H.wear_suit, H.wear_mask, H.w_uniform))
-							if (C.body_parts_covered & HEAD)
+							if(C.body_parts_covered & HEAD)
 								assailant << "\blue You have to take off [affecting]'s [C.name] first!"
 								return
 
-						if (istype(H.wear_suit, /obj/item/clothing/suit/space) || istype(H.wear_suit, /obj/item/clothing/suit/armor) || istype(H.wear_suit, /obj/item/clothing/suit/bio_suit) || istype(H.wear_suit, /obj/item/clothing/suit/swat_suit))
+						if(istype(H.wear_suit, /obj/item/clothing/suit/space) || istype(H.wear_suit, /obj/item/clothing/suit/armor) || istype(H.wear_suit, /obj/item/clothing/suit/bio_suit) || istype(H.wear_suit, /obj/item/clothing/suit/swat_suit))
 							assailant << "\blue You can't strangle [affecting] through their suit collar!"
 							return
 						*/
 
-					if (istype(affecting, /mob/living/carbon/slime))
+					if(istype(affecting, /mob/living/carbon/slime))
 						assailant << "\blue You squeeze [affecting], but nothing interesting happens."
 						return
 
@@ -211,7 +211,7 @@
 						affecting.loc = assailant.loc
 					affecting.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has had their neck grabbed by [assailant.name] ([assailant.ckey])</font>")
 					assailant.attack_log += text("\[[time_stamp()]\] <font color='red'>Grabbed the neck of [affecting.name] ([affecting.ckey])</font>")
-					log_attack("<font color='red'>[assailant.name] ([assailant.ckey]) grabbed the neck of [affecting.name] ([affecting.ckey])</font>")
+					msg_admin_attack("[assailant.name] ([assailant.ckey]) grabbed the neck of [affecting.name] ([affecting.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[assailant.x];Y=[assailant.y];Z=[assailant.z]'>JMP</a>)")
 					hud1.icon_state = "disarm/kill"
 					hud1.name = "disarm/kill"
 				else
@@ -219,10 +219,10 @@
 						assailant.visible_message("\red [assailant] starts to tighten \his grip on [affecting]'s neck!")
 						hud1.icon_state = "disarm/kill1"
 						killing = 1
-						if (do_after(assailant, 40))
-							if (killing == 2)
+						if(do_after(assailant, 40))
+							if(killing == 2)
 								return
-							if (!affecting)
+							if(!affecting)
 								del(src)
 								return
 							if ((!( assailant.canmove ) || assailant.lying))
@@ -233,7 +233,7 @@
 							assailant.visible_message("\red [assailant] has tightened \his grip on [affecting]'s neck!")
 							affecting.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been strangled (kill intent) by [assailant.name] ([assailant.ckey])</font>")
 							assailant.attack_log += text("\[[time_stamp()]\] <font color='red'>Strangled (kill intent) [affecting.name] ([affecting.ckey])</font>")
-							log_attack("<font color='red'>[assailant.name] ([assailant.ckey]) Strangled (kill intent) [affecting.name] ([affecting.ckey])</font>")
+							msg_admin_attack("[assailant.name] ([assailant.ckey]) Strangled (kill intent) [affecting.name] ([affecting.ckey]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[assailant.x];Y=[assailant.y];Z=[assailant.z]'>JMP</a>)")
 
 							assailant.next_move = world.time + 10
 							affecting.losebreath += 1
@@ -259,21 +259,21 @@
 
 
 /obj/item/weapon/grab/attack(mob/M as mob, mob/user as mob)
-	if (!affecting) return
+	if(!affecting) return
 	if (M == affecting)
 		if (state < 3)
 			s_dbclick(hud1)
 		else
 			s_click(hud1)
 		return
-	if (M == assailant && state >= 2)
-		if ( ( ishuman(user) && (FAT in user.mutations) && ismonkey(affecting) ) || ( isalien(user) && iscarbon(affecting) ) )
+	if(M == assailant && state >= 2)
+		if( ( ishuman(user) && (FAT in user.mutations) && ismonkey(affecting) ) || ( isalien(user) && iscarbon(affecting) ) )
 			var/mob/living/carbon/attacker = user
 			user.visible_message("\red <B>[user] is attempting to devour [affecting]!</B>")
-			if (istype(user, /mob/living/carbon/alien/humanoid/hunter))
-				if (!do_mob(user, affecting)||!do_after(user, 30)) return
+			if(istype(user, /mob/living/carbon/alien/humanoid/hunter))
+				if(!do_mob(user, affecting)||!do_after(user, 30)) return
 			else
-				if (!do_mob(user, affecting)||!do_after(user, 100)) return
+				if(!do_mob(user, affecting)||!do_after(user, 100)) return
 			user.visible_message("\red <B>[user] devours [affecting]!</B>")
 			affecting.loc = user
 			attacker.stomach_contents.Add(affecting)

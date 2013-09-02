@@ -1,33 +1,33 @@
 /datum/game_mode/blob/check_finished()
-	if (!declared)//No blobs have been spawned yet
+	if(!declared)//No blobs have been spawned yet
 		return 0
-	if (stage >= 3)//Blob took over
+	if(stage >= 3)//Blob took over
 		return 1
-	if (station_was_nuked)//Nuke went off
+	if(station_was_nuked)//Nuke went off
 		return 1
 
 	for(var/obj/effect/blob/B in blob_cores)
-		if (B && B.z != 1)	continue
+		if(B && B.z != 1)	continue
 		return 0
 
 	var/nodes = 0
 	for(var/obj/effect/blob/B in blob_nodes)
-		if (B && B.z != 1)	continue
+		if(B && B.z != 1)	continue
 		nodes++
-		if (nodes > 4)//Perhapse make a new core with a low prob
+		if(nodes > 4)//Perhapse make a new core with a low prob
 			return 0
 
 	return 1
 
 
 /datum/game_mode/blob/declare_completion()
-	if (stage >= 3)
+	if(stage >= 3)
 		feedback_set_details("round_end_result","loss - blob took over")
 		world << "<FONT size = 3><B>The blob has taken over the station!</B></FONT>"
 		world << "<B>The entire station was eaten by the Blob</B>"
 		check_quarantine()
 
-	else if (station_was_nuked)
+	else if(station_was_nuked)
 		feedback_set_details("round_end_result","halfwin - nuke")
 		world << "<FONT size = 3><B>Partial Win: The station has been destroyed!</B></FONT>"
 		world << "<B>Directive 7-12 has been successfully carried out preventing the Blob from spreading.</B>"
@@ -61,7 +61,7 @@
 					var/T = M.loc
 					if (istype(T, /turf/space))
 						numSpace += 1
-					else if (istype(T, /turf))
+					else if(istype(T, /turf))
 						if (M.z!=1)
 							numOffStation += 1
 						else

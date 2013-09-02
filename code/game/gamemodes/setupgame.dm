@@ -70,7 +70,7 @@
 	// Populate the factions list:
 	for(var/x in typesof(/datum/faction))
 		var/datum/faction/F = new x
-		if (!F.name)
+		if(!F.name)
 			del(F)
 			continue
 		else

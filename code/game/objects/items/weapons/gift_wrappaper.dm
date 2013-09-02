@@ -18,7 +18,7 @@
 	..()
 	pixel_x = rand(-10,10)
 	pixel_y = rand(-10,10)
-	if (w_class > 0 && w_class < 4)
+	if(w_class > 0 && w_class < 4)
 		icon_state = "gift[w_class]"
 	else
 		icon_state = "gift[pick(1, 2, 3)]"
@@ -26,7 +26,7 @@
 
 /obj/item/weapon/gift/attack_self(mob/user as mob)
 	user.drop_item()
-	if (src.gift)
+	if(src.gift)
 		user.put_in_active_hand(gift)
 		src.gift.add_fingerprint(user)
 	else
@@ -106,7 +106,7 @@
 		/obj/item/weapon/storage/belt/utility/full,
 		/obj/item/clothing/tie/horrible)
 
-	if (!ispath(gift_type,/obj/item))	return
+	if(!ispath(gift_type,/obj/item))	return
 
 	var/obj/item/I = new gift_type(M)
 	M.u_equip(src)
@@ -136,7 +136,7 @@
 				user << "\blue You need more paper!"
 				return
 			else
-				if (istype(W, /obj/item/smallDelivery) || istype(W, /obj/item/weapon/gift)) //No gift wrapping gifts!
+				if(istype(W, /obj/item/smallDelivery) || istype(W, /obj/item/weapon/gift)) //No gift wrapping gifts!
 					return
 
 				src.amount -= a_used
@@ -182,10 +182,10 @@
 				H.client.eye = present
 
 			H.loc = present
+
 			H.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been wrapped with [src.name]  by [user.name] ([user.ckey])</font>")
 			user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to wrap [H.name] ([H.ckey])</font>")
-
-			log_attack("<font color='red'>[user.name] ([user.ckey]) used the [src.name] to wrap [H.name] ([H.ckey])</font>")
+			log_attack("[user.name] ([user.ckey]) used the [src.name] to wrap [H.name] ([H.ckey])")
 
 		else
 			user << "\blue You need more paper."

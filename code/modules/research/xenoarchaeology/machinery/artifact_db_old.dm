@@ -17,7 +17,7 @@
 
 /obj/machinery/computer/artifact_database/Topic(href, href_list)
 	..()
-	if ( href_list["close"] )
+	if( href_list["close"] )
 		usr << browse(null, "window=artifact_db")
 		usr.machine = null
 	updateDialog()

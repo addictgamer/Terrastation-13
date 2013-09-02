@@ -167,7 +167,7 @@
 
 /client/proc/log_client_to_db()
 
-	if ( IsGuestKey(src.key) )
+	if( IsGuestKey(src.key) )
 		return
 
 	establish_db_connection()

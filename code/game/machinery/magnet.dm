@@ -36,7 +36,7 @@
 		center = T
 
 		spawn(10)	// must wait for map loading to finish
-			if (radio_controller)
+			if(radio_controller)
 				radio_controller.add_object(src, freq, RADIO_MAGNETS)
 
 		spawn()
@@ -51,10 +51,10 @@
 	proc/updateicon()
 		var/state="floor_magnet"
 		var/onstate=""
-		if (!on)
+		if(!on)
 			onstate="0"
 
-		if (invisibility)
+		if(invisibility)
 			icon_state = "[state][onstate]-f"	// if invisible, set icon to faded version
 												// in case of being revealed by T-scanner
 		else
@@ -65,7 +65,7 @@
 		var/command = signal.data["command"]
 		var/modifier = signal.data["modifier"]
 		var/signal_code = signal.data["code"]
-		if (command && (signal_code == code))
+		if(command && (signal_code == code))
 
 			Cmd(command, modifier)
 
@@ -73,84 +73,84 @@
 
 	proc/Cmd(var/command, var/modifier)
 
-		if (command)
+		if(command)
 			switch(command)
-				if ("set-electriclevel")
-					if (modifier)	electricity_level = modifier
-				if ("set-magneticfield")
-					if (modifier)	magnetic_field = modifier
+				if("set-electriclevel")
+					if(modifier)	electricity_level = modifier
+				if("set-magneticfield")
+					if(modifier)	magnetic_field = modifier
 
-				if ("add-elec")
+				if("add-elec")
 					electricity_level++
-					if (electricity_level > 12)
+					if(electricity_level > 12)
 						electricity_level = 12
-				if ("sub-elec")
+				if("sub-elec")
 					electricity_level--
-					if (electricity_level <= 0)
+					if(electricity_level <= 0)
 						electricity_level = 1
-				if ("add-mag")
+				if("add-mag")
 					magnetic_field++
-					if (magnetic_field > 4)
+					if(magnetic_field > 4)
 						magnetic_field = 4
-				if ("sub-mag")
+				if("sub-mag")
 					magnetic_field--
-					if (magnetic_field <= 0)
+					if(magnetic_field <= 0)
 						magnetic_field = 1
 
-				if ("set-x")
-					if (modifier)	center_x = modifier
-				if ("set-y")
-					if (modifier)	center_y = modifier
+				if("set-x")
+					if(modifier)	center_x = modifier
+				if("set-y")
+					if(modifier)	center_y = modifier
 
-				if ("N") // NORTH
+				if("N") // NORTH
 					center_y++
-				if ("S")	// SOUTH
+				if("S")	// SOUTH
 					center_y--
-				if ("E") // EAST
+				if("E") // EAST
 					center_x++
-				if ("W") // WEST
+				if("W") // WEST
 					center_x--
-				if ("C") // CENTER
+				if("C") // CENTER
 					center_x = 0
 					center_y = 0
-				if ("R") // RANDOM
+				if("R") // RANDOM
 					center_x = rand(-max_dist, max_dist)
 					center_y = rand(-max_dist, max_dist)
 
-				if ("set-code")
-					if (modifier)	code = modifier
-				if ("toggle-power")
+				if("set-code")
+					if(modifier)	code = modifier
+				if("toggle-power")
 					on = !on
 
-					if (on)
+					if(on)
 						spawn()
 							magnetic_process()
 
 
 
 	process()
-		if (stat & NOPOWER)
+		if(stat & NOPOWER)
 			on = 0
 
 		// Sanity checks:
-		if (electricity_level <= 0)
+		if(electricity_level <= 0)
 			electricity_level = 1
-		if (magnetic_field <= 0)
+		if(magnetic_field <= 0)
 			magnetic_field = 1
 
 
 		// Limitations:
-		if (abs(center_x) > max_dist)
+		if(abs(center_x) > max_dist)
 			center_x = max_dist
-		if (abs(center_y) > max_dist)
+		if(abs(center_y) > max_dist)
 			center_y = max_dist
-		if (magnetic_field > 4)
+		if(magnetic_field > 4)
 			magnetic_field = 4
-		if (electricity_level > 12)
+		if(electricity_level > 12)
 			electricity_level = 12
 
 		// Update power usage:
-		if (on)
+		if(on)
 			use_power = 2
 			active_power_usage = electricity_level*15
 		else
@@ -159,9 +159,9 @@
 
 		// Overload conditions:
 		/* // Eeeehhh kinda stupid
-		if (on)
-			if (electricity_level > 11)
-				if (prob(electricity_level))
+		if(on)
+			if(electricity_level > 11)
+				if(prob(electricity_level))
 					explosion(loc, 0, 1, 2, 3) // ooo dat shit EXPLODES son
 					spawn(2)
 						del(src)
@@ -171,18 +171,18 @@
 
 
 	proc/magnetic_process() // proc that actually does the pulling
-		if (pulling) return
+		if(pulling) return
 		while(on)
 
 			pulling = 1
 			center = locate(x+center_x, y+center_y, z)
-			if (center)
+			if(center)
 				for(var/obj/M in orange(magnetic_field, center))
-					if (!M.anchored && (M.flags & CONDUCT))
+					if(!M.anchored && (M.flags & CONDUCT))
 						step_towards(M, center)
 
 				for(var/mob/living/silicon/S in orange(magnetic_field, center))
-					if (istype(S, /mob/living/silicon/ai)) continue
+					if(istype(S, /mob/living/silicon/ai)) continue
 					step_towards(S, center)
 
 			use_power(electricity_level * 5)
@@ -221,25 +221,25 @@
 	New()
 		..()
 
-		if (autolink)
+		if(autolink)
 			for(var/obj/machinery/magnetic_module/M in world)
-				if (M.freq == frequency && M.code == code)
+				if(M.freq == frequency && M.code == code)
 					magnets.Add(M)
 
 
 		spawn(45)	// must wait for map loading to finish
-			if (radio_controller)
+			if(radio_controller)
 				radio_connection = radio_controller.add_object(src, frequency, RADIO_MAGNETS)
 
 
-		if (path) // check for default path
+		if(path) // check for default path
 			filter_path() // renders rpath
 
 
 	process()
-		if (magnets.len == 0 && autolink)
+		if(magnets.len == 0 && autolink)
 			for(var/obj/machinery/magnetic_module/M in world)
-				if (M.freq == frequency && M.code == code)
+				if(M.freq == frequency && M.code == code)
 					magnets.Add(M)
 
 
@@ -247,18 +247,18 @@
 		return src.attack_hand(user)
 
 	attack_hand(mob/user as mob)
-		if (stat & (BROKEN|NOPOWER))
+		if(stat & (BROKEN|NOPOWER))
 			return
 		user.set_machine(src)
 		var/dat = "<B>Magnetic Control Console</B><BR><BR>"
-		if (!autolink)
+		if(!autolink)
 			dat += {"
 			Frequency: <a href='?src=\ref[src];operation=setfreq'>[frequency]</a><br>
 			Code: <a href='?src=\ref[src];operation=setfreq'>[code]</a><br>
 			<a href='?src=\ref[src];operation=probe'>Probe Generators</a><br>
 			"}
 
-		if (magnets.len >= 1)
+		if(magnets.len >= 1)
 
 			dat += "Magnets confirmed: <br>"
 			var/i = 0
@@ -275,12 +275,12 @@
 		onclose(user, "magnet")
 
 	Topic(href, href_list)
-		if (stat & (BROKEN|NOPOWER))
+		if(stat & (BROKEN|NOPOWER))
 			return
 		usr.set_machine(src)
 		src.add_fingerprint(usr)
 
-		if (href_list["radio-op"])
+		if(href_list["radio-op"])
 
 			// Prepare signal beforehand, because this is a radio operation
 			var/datum/signal/signal = new
@@ -291,17 +291,17 @@
 
 			// Apply any necessary commands
 			switch(href_list["radio-op"])
-				if ("togglepower")
+				if("togglepower")
 					signal.data["command"] = "toggle-power"
 
-				if ("minuselec")
+				if("minuselec")
 					signal.data["command"] = "sub-elec"
-				if ("pluselec")
+				if("pluselec")
 					signal.data["command"] = "add-elec"
 
-				if ("minusmag")
+				if("minusmag")
 					signal.data["command"] = "sub-mag"
-				if ("plusmag")
+				if("plusmag")
 					signal.data["command"] = "add-mag"
 
 
@@ -312,38 +312,38 @@
 			spawn(1)
 				updateUsrDialog() // pretty sure this increases responsiveness
 
-		if (href_list["operation"])
+		if(href_list["operation"])
 			switch(href_list["operation"])
-				if ("plusspeed")
+				if("plusspeed")
 					speed ++
-					if (speed > 10)
+					if(speed > 10)
 						speed = 10
-				if ("minusspeed")
+				if("minusspeed")
 					speed --
-					if (speed <= 0)
+					if(speed <= 0)
 						speed = 1
-				if ("setpath")
+				if("setpath")
 					var/newpath = copytext(sanitize(input(usr, "Please define a new path!",,path) as text|null),1,MAX_MESSAGE_LEN)
-					if (newpath && newpath != "")
+					if(newpath && newpath != "")
 						moving = 0 // stop moving
 						path = newpath
 						pathpos = 1 // reset position
 						filter_path() // renders rpath
 
-				if ("togglemoving")
+				if("togglemoving")
 					moving = !moving
-					if (moving)
+					if(moving)
 						spawn() MagnetMove()
 
 
 		updateUsrDialog()
 
 	proc/MagnetMove()
-		if (looping) return
+		if(looping) return
 
 		while(moving && rpath.len >= 1)
 
-			if (stat & (BROKEN|NOPOWER))
+			if(stat & (BROKEN|NOPOWER))
 				break
 
 			looping = 1
@@ -355,12 +355,12 @@
 			signal.frequency = frequency
 			signal.data["code"] = code
 
-			if (pathpos > rpath.len) // if the position is greater than the length, we just loop through the list!
+			if(pathpos > rpath.len) // if the position is greater than the length, we just loop through the list!
 				pathpos = 1
 
 			var/nextmove = uppertext(rpath[pathpos]) // makes it un-case-sensitive
 
-			if (!(nextmove in list("N","S","E","W","C","R")))
+			if(!(nextmove in list("N","S","E","W","C","R")))
 				// N, S, E, W are directional
 				// C is center
 				// R is random (in magnetic field's bounds)
@@ -376,7 +376,7 @@
 			spawn()
 				radio_connection.post_signal(src, signal, filter = RADIO_MAGNETS)
 
-			if (speed == 10)
+			if(speed == 10)
 				sleep(1)
 			else
 				sleep(12-speed)
@@ -394,7 +394,7 @@
 
 			var/nextchar = copytext(path, i, i+1) // find next character
 
-			if (!(nextchar in list(";", "&", "*", " "))) // if char is a separator, ignore
+			if(!(nextchar in list(";", "&", "*", " "))) // if char is a separator, ignore
 				rpath += copytext(path, i, i+1) // else, add to list
 
 			// there doesn't HAVE to be separators but it makes paths syntatically visible

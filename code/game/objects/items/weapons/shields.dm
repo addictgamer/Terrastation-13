@@ -23,8 +23,8 @@
 		return 1
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
-		if (istype(W, /obj/item/weapon/melee/baton))
-			if (cooldown < world.time - 25)
+		if(istype(W, /obj/item/weapon/melee/baton))
+			if(cooldown < world.time - 25)
 				user.visible_message("<span class='warning'>[user] bashes [src] with [W]!</span>")
 				playsound(user.loc, 'sound/effects/shieldbash.ogg', 50, 1)
 				cooldown = world.time
@@ -75,6 +75,6 @@
 /obj/item/weapon/cloaking_device/emp_act(severity)
 	active = 0
 	icon_state = "shield0"
-	if (ismob(loc))
+	if(ismob(loc))
 		loc:update_icons()
 	..()

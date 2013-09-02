@@ -14,19 +14,19 @@
 	levelupdate()
 
 /turf/simulated/Entered(atom/A, atom/OL)
-	if (movement_disabled && usr.ckey != movement_disabled_exception)
+	if(movement_disabled && usr.ckey != movement_disabled_exception)
 		usr << "\red Movement is admin-disabled." //This is to identify lag problems
 		return
 
 	if (istype(A,/mob/living/carbon))
 		var/mob/living/carbon/M = A
-		if (M.lying)	return
-		if (istype(M, /mob/living/carbon/human))
+		if(M.lying)	return
+		if(istype(M, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = M
-			if (istype(H.shoes, /obj/item/clothing/shoes/clown_shoes))
+			if(istype(H.shoes, /obj/item/clothing/shoes/clown_shoes))
 				var/obj/item/clothing/shoes/clown_shoes/O = H.shoes
-				if (H.m_intent == "run")
-					if (O.footstep >= 2)
+				if(H.m_intent == "run")
+					if(O.footstep >= 2)
 						O.footstep = 0
 						playsound(src, "clownstep", 50, 1) // this will get annoying very fast.
 					else
@@ -35,13 +35,13 @@
 					playsound(src, "clownstep", 20, 1)
 
 			var/list/bloodDNA = null
-			if (H.shoes)
+			if(H.shoes)
 				var/obj/item/clothing/shoes/S = H.shoes
-				if (S.track_blood && S.blood_DNA)
+				if(S.track_blood && S.blood_DNA)
 					bloodDNA = S.blood_DNA
 					S.track_blood--
 			else
-				if (H.track_blood && H.feet_blood_DNA)
+				if(H.track_blood && H.feet_blood_DNA)
 					bloodDNA = H.feet_blood_DNA
 					H.track_blood--
 
@@ -51,7 +51,7 @@
 				here.dir = H.dir
 				here.blood_DNA |= bloodDNA.Copy()
 				var/turf/simulated/from = get_step(H,reverse_direction(H.dir))
-				if (from)
+				if(from)
 					var/obj/effect/decal/cleanable/blood/footprints/there = new(from)
 					there.icon_state = "blood2"
 					there.dir = H.dir
@@ -60,8 +60,8 @@
 			bloodDNA = null
 
 		switch (src.wet)
-			if (1)
-				if (istype(M, /mob/living/carbon/human)) // Added check since monkeys don't have shoes
+			if(1)
+				if(istype(M, /mob/living/carbon/human)) // Added check since monkeys don't have shoes
 					if ((M.m_intent == "run") && !(istype(M:shoes, /obj/item/clothing/shoes) && M:shoes.flags&NOSLIP))
 						M.stop_pulling()
 						step(M, M.dir)
@@ -72,7 +72,7 @@
 					else
 						M.inertia_dir = 0
 						return
-				else if (!istype(M, /mob/living/carbon/slime))
+				else if(!istype(M, /mob/living/carbon/slime))
 					if (M.m_intent == "run")
 						M.stop_pulling()
 						step(M, M.dir)
@@ -84,8 +84,8 @@
 						M.inertia_dir = 0
 						return
 
-			if (2) //lube		//can cause infinite loops - needs work
-				if (!istype(M, /mob/living/carbon/slime))
+			if(2) //lube		//can cause infinite loops - needs work
+				if(!istype(M, /mob/living/carbon/slime))
 					M.stop_pulling()
 					step(M, M.dir)
 					spawn(1) step(M, M.dir)
@@ -105,7 +105,7 @@
 		return 0
 
 	for(var/obj/effect/decal/cleanable/blood/B in contents)
-		if (!B.blood_DNA[M.dna.unique_enzymes])
+		if(!B.blood_DNA[M.dna.unique_enzymes])
 			B.blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
 		if (M.virus2.len)
 			B.virus2 |= virus_copylist(M.virus2)
@@ -121,15 +121,15 @@
 
 // Only adds blood on the floor -- Skie
 /turf/simulated/proc/add_blood_floor(mob/living/carbon/M as mob)
-	if ( istype(M, /mob/living/carbon/monkey) || istype(M, /mob/living/carbon/human))
+	if( istype(M, /mob/living/carbon/monkey) || istype(M, /mob/living/carbon/human))
 		var/obj/effect/decal/cleanable/blood/this = new /obj/effect/decal/cleanable/blood(src)
 		this.blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
 		if (M.virus2.len)
 			this.virus2 = virus_copylist(M.virus2)
 
-	else if ( istype(M, /mob/living/carbon/alien ))
+	else if( istype(M, /mob/living/carbon/alien ))
 		var/obj/effect/decal/cleanable/xenoblood/this = new /obj/effect/decal/cleanable/xenoblood(src)
 		this.blood_DNA["UNKNOWN BLOOD"] = "X*"
 
-	else if ( istype(M, /mob/living/silicon/robot ))
+	else if( istype(M, /mob/living/silicon/robot ))
 		new /obj/effect/decal/cleanable/oil(src)

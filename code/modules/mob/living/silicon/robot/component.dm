@@ -23,7 +23,7 @@
 /datum/robot_component/proc/uninstall()
 
 /datum/robot_component/proc/destroy()
-	if (wrapped)
+	if(wrapped)
 		del wrapped
 
 
@@ -34,15 +34,15 @@
 	uninstall()
 
 /datum/robot_component/proc/take_damage(brute, electronics, sharp)
-	if (installed != 1) return
+	if(installed != 1) return
 
 	brute_damage += brute
 	electronics_damage += electronics
 
-	if (brute_damage + electronics_damage >= max_damage) destroy()
+	if(brute_damage + electronics_damage >= max_damage) destroy()
 
 /datum/robot_component/proc/heal_damage(brute, electronics)
-	if (installed != 1)
+	if(installed != 1)
 		// If it's not installed, can't repair it.
 		return 0
 
@@ -54,10 +54,10 @@
 
 
 /datum/robot_component/proc/consume_power()
-	if (toggled == 0)
+	if(toggled == 0)
 		powered = 0
 		return
-	if (owner.cell.charge >= energy_consumption)
+	if(owner.cell.charge >= energy_consumption)
 		owner.cell.use(energy_consumption)
 		powered = 1
 	else

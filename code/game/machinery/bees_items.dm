@@ -18,7 +18,7 @@
 /obj/item/weapon/bee_net/attack_self(mob/user as mob)
 	var/turf/T = get_step(get_turf(user), user.dir)
 	for(var/mob/living/simple_animal/bee/B in T)
-		if (B.feral < 0)
+		if(B.feral < 0)
 			caught_bees += B.strength
 			del(B)
 			user.visible_message("\blue [user] nets some bees.","\blue You net up some of the becalmed bees.")
@@ -32,7 +32,7 @@
 	set name = "Empty bee net"
 	set category = "Object"
 	var/mob/living/carbon/M
-	if (iscarbon(usr))
+	if(iscarbon(usr))
 		M = usr
 
 	while(caught_bees > 0)

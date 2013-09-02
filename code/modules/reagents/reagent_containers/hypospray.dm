@@ -24,7 +24,7 @@
 	return
 
 /obj/item/weapon/reagent_containers/hypospray/attack(mob/M as mob, mob/user as mob)
-	if (!reagents.total_volume)
+	if(!reagents.total_volume)
 		user << "\red [src] is empty."
 		return
 	if (!( istype(M, /mob) ))
@@ -34,20 +34,18 @@
 		M << "\red You feel a tiny prick!"
 
 		src.reagents.reaction(M, INGEST)
-		if (M.reagents)
+		if(M.reagents)
 
 			var/list/injected = list()
 			for(var/datum/reagent/R in src.reagents.reagent_list)
 				injected += R.name
+			var/contained = english_list(injected)
+			M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been injected with [src.name] by [user.name] ([user.ckey]). Reagents: [contained]</font>")
+			user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to inject [M.name] ([M.key]). Reagents: [contained]</font>")
+			msg_admin_attack("[user.name] ([user.ckey]) injected [M.name] ([M.key]) with [src.name]. Reagents: [contained] (INTENT: [uppertext(user.a_intent)]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 			var/trans = reagents.trans_to(M, amount_per_transfer_from_this)
-			user << "\blue [trans] units injected.  [reagents.total_volume] units remaining in [src]."
-
-			var/contained = english_list(injected)
-
-			log_attack("<font color='red'>[user.name] ([user.ckey]) injected [M.name] ([M.ckey]) with [src.name], which had [contained] (INTENT: [uppertext(user.a_intent)])</font>")
-			M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been injected ([contained]) with [src.name] by [user.name] ([user.ckey])</font>")
-			user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to inject [M.name] ([M.ckey]) with [contained]</font>")
+			user << "\blue [trans] units injected. [reagents.total_volume] units remaining in [src]."
 
 	return
 
@@ -68,20 +66,20 @@
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/attack(mob/M as mob, mob/user as mob)
 	..()
-	if (reagents.total_volume <= 0) //Prevents autoinjectors to be refilled.
+	if(reagents.total_volume <= 0) //Prevents autoinjectors to be refilled.
 		flags &= ~OPENCONTAINER
 	update_icon()
 	return
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/update_icon()
-	if (reagents.total_volume > 0)
+	if(reagents.total_volume > 0)
 		icon_state = "[initial(icon_state)]1"
 	else
 		icon_state = "[initial(icon_state)]0"
 
 /obj/item/weapon/reagent_containers/hypospray/autoinjector/examine()
 	..()
-	if (reagents && reagents.reagent_list.len)
+	if(reagents && reagents.reagent_list.len)
 		usr << "\blue It is currently loaded."
 	else
 		usr << "\blue It is spent."

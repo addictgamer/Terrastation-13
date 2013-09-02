@@ -11,18 +11,18 @@ obj/machinery/recharger
 	var/obj/item/weapon/charging = null
 
 obj/machinery/recharger/attackby(obj/item/weapon/G as obj, mob/user as mob)
-	if (istype(user,/mob/living/silicon))
+	if(istype(user,/mob/living/silicon))
 		return
-	if (istype(G, /obj/item/weapon/gun/energy) || istype(G, /obj/item/weapon/melee/baton))
-		if (charging)
+	if(istype(G, /obj/item/weapon/gun/energy) || istype(G, /obj/item/weapon/melee/baton))
+		if(charging)
 			return
 
 		// Checks to make sure he's not in space doing it, and that the area got proper power.
 		var/area/a = get_area(src)
-		if (!isarea(a))
+		if(!isarea(a))
 			user << "\red The [name] blinks red as you try to insert the item!"
 			return
-		if (a.power_equip == 0)
+		if(a.power_equip == 0)
 			user << "\red The [name] blinks red as you try to insert the item!"
 			return
 
@@ -36,8 +36,8 @@ obj/machinery/recharger/attackby(obj/item/weapon/G as obj, mob/user as mob)
 		charging = G
 		use_power = 2
 		update_icon()
-	else if (istype(G, /obj/item/weapon/wrench))
-		if (charging)
+	else if(istype(G, /obj/item/weapon/wrench))
+		if(charging)
 			user << "\red Remove the weapon first!"
 			return
 		anchored = !anchored
@@ -47,7 +47,7 @@ obj/machinery/recharger/attackby(obj/item/weapon/G as obj, mob/user as mob)
 obj/machinery/recharger/attack_hand(mob/user as mob)
 	add_fingerprint(user)
 
-	if (charging)
+	if(charging)
 		charging.update_icon()
 		charging.loc = loc
 		charging = null
@@ -58,22 +58,22 @@ obj/machinery/recharger/attack_paw(mob/user as mob)
 	return attack_hand(user)
 
 obj/machinery/recharger/process()
-	if (stat & (NOPOWER|BROKEN) || !anchored)
+	if(stat & (NOPOWER|BROKEN) || !anchored)
 		return
 
-	if (charging)
-		if (istype(charging, /obj/item/weapon/gun/energy))
+	if(charging)
+		if(istype(charging, /obj/item/weapon/gun/energy))
 			var/obj/item/weapon/gun/energy/E = charging
-			if (E.power_supply.charge < E.power_supply.maxcharge)
+			if(E.power_supply.charge < E.power_supply.maxcharge)
 				E.power_supply.give(100)
 				icon_state = "recharger1"
 				use_power(250)
 			else
 				icon_state = "recharger2"
 			return
-		if (istype(charging, /obj/item/weapon/melee/baton))
+		if(istype(charging, /obj/item/weapon/melee/baton))
 			var/obj/item/weapon/melee/baton/B = charging
-			if (B.charges < initial(B.charges))
+			if(B.charges < initial(B.charges))
 				B.charges++
 				icon_state = "recharger1"
 				use_power(150)
@@ -81,22 +81,22 @@ obj/machinery/recharger/process()
 				icon_state = "recharger2"
 
 obj/machinery/recharger/emp_act(severity)
-	if (stat & (NOPOWER|BROKEN) || !anchored)
+	if(stat & (NOPOWER|BROKEN) || !anchored)
 		..(severity)
 		return
 
-	if (istype(charging,  /obj/item/weapon/gun/energy))
+	if(istype(charging,  /obj/item/weapon/gun/energy))
 		var/obj/item/weapon/gun/energy/E = charging
-		if (E.power_supply)
+		if(E.power_supply)
 			E.power_supply.emp_act(severity)
 
-	else if (istype(charging, /obj/item/weapon/melee/baton))
+	else if(istype(charging, /obj/item/weapon/melee/baton))
 		var/obj/item/weapon/melee/baton/B = charging
 		B.charges = 0
 	..(severity)
 
 obj/machinery/recharger/update_icon()	//we have an update_icon() in addition to the stuff in process to make it feel a tiny bit snappier.
-	if (charging)
+	if(charging)
 		icon_state = "recharger1"
 	else
 		icon_state = "recharger0"
@@ -107,22 +107,22 @@ obj/machinery/recharger/wallcharger
 	icon_state = "wrecharger0"
 
 obj/machinery/recharger/wallcharger/process()
-	if (stat & (NOPOWER|BROKEN) || !anchored)
+	if(stat & (NOPOWER|BROKEN) || !anchored)
 		return
 
-	if (charging)
-		if (istype(charging, /obj/item/weapon/gun/energy))
+	if(charging)
+		if(istype(charging, /obj/item/weapon/gun/energy))
 			var/obj/item/weapon/gun/energy/E = charging
-			if (E.power_supply.charge < E.power_supply.maxcharge)
+			if(E.power_supply.charge < E.power_supply.maxcharge)
 				E.power_supply.give(100)
 				icon_state = "wrecharger1"
 				use_power(250)
 			else
 				icon_state = "wrecharger2"
 			return
-		if (istype(charging, /obj/item/weapon/melee/baton))
+		if(istype(charging, /obj/item/weapon/melee/baton))
 			var/obj/item/weapon/melee/baton/B = charging
-			if (B.charges < initial(B.charges))
+			if(B.charges < initial(B.charges))
 				B.charges++
 				icon_state = "wrecharger1"
 				use_power(150)
@@ -130,7 +130,7 @@ obj/machinery/recharger/wallcharger/process()
 				icon_state = "wrecharger2"
 
 obj/machinery/recharger/wallcharger/update_icon()
-	if (charging)
+	if(charging)
 		icon_state = "wrecharger1"
 	else
 		icon_state = "wrecharger0"

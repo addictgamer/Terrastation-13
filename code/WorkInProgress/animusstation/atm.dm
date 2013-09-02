@@ -24,38 +24,38 @@ log transactions
 	var/pincode = 0
 
 	attackby(var/obj/A, var/mob/user)
-		if (istype(A,/obj/item/weapon/spacecash))
+		if(istype(A,/obj/item/weapon/spacecash))
 			cashes += A
 			user.drop_item()
 			A.loc = src
 			inserted += A:worth
 			return
-		if (istype(A,/obj/item/weapon/coin))
-			if (istype(A,/obj/item/weapon/coin/iron))
+		if(istype(A,/obj/item/weapon/coin))
+			if(istype(A,/obj/item/weapon/coin/iron))
 				cashes += A
 				user.drop_item()
 				A.loc = src
 				inserted += 1
 				return
-			if (istype(A,/obj/item/weapon/coin/silver))
+			if(istype(A,/obj/item/weapon/coin/silver))
 				cashes += A
 				user.drop_item()
 				A.loc = src
 				inserted += 10
 				return
-			if (istype(A,/obj/item/weapon/coin/gold))
+			if(istype(A,/obj/item/weapon/coin/gold))
 				cashes += A
 				user.drop_item()
 				A.loc = src
 				inserted += 50
 				return
-			if (istype(A,/obj/item/weapon/coin/plasma))
+			if(istype(A,/obj/item/weapon/coin/plasma))
 				cashes += A
 				user.drop_item()
 				A.loc = src
 				inserted += 2
 				return
-			if (istype(A,/obj/item/weapon/coin/diamond))
+			if(istype(A,/obj/item/weapon/coin/diamond))
 				cashes += A
 				user.drop_item()
 				A.loc = src
@@ -65,17 +65,17 @@ log transactions
 		..()
 
 	attack_hand(var/mob/user)
-		if (istype(user, /mob/living/silicon))
+		if(istype(user, /mob/living/silicon))
 			user << "\red Artificial unit recognized. Artificial units do not currently receive monetary compensation, as per NanoTrasen regulation #1005."
 			return
 
-		if (!(stat && NOPOWER) && ishuman(user))
+		if(!(stat && NOPOWER) && ishuman(user))
 			var/dat
 			user.machine = src
-			if (!accepted)
-				if (scan(user))
+			if(!accepted)
+				if(scan(user))
 					pincode = input(usr,"Enter a pin-code") as num
-					if (card.checkaccess(pincode,usr))
+					if(card.checkaccess(pincode,usr))
 						accepted = 1
 //						usr << sound('nya.mp3')
 			else
@@ -93,71 +93,71 @@ log transactions
 			onclose(user,"close")
 	proc
 		withdraw(var/mob/user)
-			if (accepted)
+			if(accepted)
 				var/amount = input("How much would you like to withdraw?", "Amount", 0) in list(1,10,20,50,100,200,500,1000, 0)
-				if (amount == 0)
+				if(amount == 0)
 					return
-				if (card.money >= amount)
+				if(card.money >= amount)
 					card.money -= amount
 					switch(amount)
-						if (1)
+						if(1)
 							new /obj/item/weapon/spacecash(loc)
-						if (10)
+						if(10)
 							new /obj/item/weapon/spacecash/c10(loc)
-						if (20)
+						if(20)
 							new /obj/item/weapon/spacecash/c20(loc)
-						if (50)
+						if(50)
 							new /obj/item/weapon/spacecash/c50(loc)
-						if (100)
+						if(100)
 							new /obj/item/weapon/spacecash/c100(loc)
-						if (200)
+						if(200)
 							new /obj/item/weapon/spacecash/c200(loc)
-						if (500)
+						if(500)
 							new /obj/item/weapon/spacecash/c500(loc)
-						if (1000)
+						if(1000)
 							new /obj/item/weapon/spacecash/c1000(loc)
 				else
 					user << "\red Error: Insufficient funds."
 					return
 
 		scan(var/mob/user)
-			if (istype(user,/mob/living/carbon/human))
+			if(istype(user,/mob/living/carbon/human))
 				var/mob/living/carbon/human/H = user
-				if (H.wear_id)
-					if (istype(H.wear_id, /obj/item/weapon/card/id))
+				if(H.wear_id)
+					if(istype(H.wear_id, /obj/item/weapon/card/id))
 						card = H.wear_id
 						return 1
-					if (istype(H.wear_id,/obj/item/device/pda))
+					if(istype(H.wear_id,/obj/item/device/pda))
 						var/obj/item/device/pda/P = H.wear_id
-						if (istype(P.id,/obj/item/weapon/card/id))
+						if(istype(P.id,/obj/item/weapon/card/id))
 							card = P.id
 							return 1
 					return 0
 				return 0
 
 		insert()
-			if (accepted)
+			if(accepted)
 				card.money += inserted
 				inserted = 0
 
 	Topic(href,href_list)
 		if (usr.machine==src && get_dist(src, usr) <= 1 || istype(usr, /mob/living/silicon/ai))
-			if (href_list["eca"])
-				if (accepted)
+			if(href_list["eca"])
+				if(accepted)
 					for(var/obj/item/weapon/spacecash/M in cashes)
 						M.loc = loc
 					inserted = 0
-					if (!cashes)
+					if(!cashes)
 						cashes = null
-			if (href_list["with"] && card)
+			if(href_list["with"] && card)
 				withdraw(usr)
-			if (href_list["ins"] && card)
-				if (accepted)
+			if(href_list["ins"] && card)
+				if(accepted)
 					card.money += inserted
 					inserted = 0
-					if (cashes)
+					if(cashes)
 						cashes = null
-			if (href_list["lock"])
+			if(href_list["lock"])
 				card = null
 				accepted = 0
 				usr.machine = null
@@ -169,7 +169,7 @@ log transactions
 
 
 /obj/item/weapon/card/id/proc/checkaccess(p,var/mob/user)
-	if (p == pin)
+	if(p == pin)
 		user << "\green Access granted"
 		return 1
 	user << "\red Access denied"

@@ -14,17 +14,17 @@
 
 
 /datum/game_mode/traitor/changeling/pre_setup()
-	if (config.protect_roles_from_antagonist)
+	if(config.protect_roles_from_antagonist)
 		restricted_jobs += protected_jobs
 
 	var/list/datum/mind/possible_changelings = get_players_for_role(BE_CHANGELING)
 
 	for(var/datum/mind/player in possible_changelings)
 		for(var/job in restricted_jobs)//Removing robots from the list
-			if (player.assigned_role == job)
+			if(player.assigned_role == job)
 				possible_changelings -= player
 
-	if (possible_changelings.len>0)
+	if(possible_changelings.len>0)
 		var/datum/mind/changeling = pick(possible_changelings)
 		//possible_changelings-=changeling
 		changelings += changeling

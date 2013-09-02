@@ -10,7 +10,7 @@
 	var/datum/reagents/R = new/datum/reagents(100)
 	reagents = R
 	R.my_atom = src
-	if (src.name == "alien drone")
+	if(src.name == "alien drone")
 		src.name = text("alien drone ([rand(1, 1000)])")
 	src.real_name = src.name
 	verbs.Add(/mob/living/carbon/alien/humanoid/proc/resin,/mob/living/carbon/alien/humanoid/proc/corrosive_acid)
@@ -23,15 +23,15 @@
 	set desc = "Produce an interal egg sac capable of spawning children. Only one queen can exist at a time."
 	set category = "Alien"
 
-	if (powerc(500))
+	if(powerc(500))
 		// Queen check
 		var/no_queen = 1
 		for(var/mob/living/carbon/alien/humanoid/queen/Q in living_mob_list)
-			if (!Q.key && Q.brain_op_stage != 4)
+			if(!Q.key && Q.brain_op_stage != 4)
 				continue
 			no_queen = 0
 
-		if (no_queen)
+		if(no_queen)
 			adjustToxLoss(-500)
 			src << "\green You begin to evolve!"
 			for(var/mob/O in viewers(src, null))

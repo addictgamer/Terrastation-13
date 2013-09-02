@@ -26,7 +26,7 @@
 
 
 	activate()
-		if (cooldown > 0)	return 0
+		if(cooldown > 0)	return 0
 		cooldown = 2
 		spawn(10)
 			process_cooldown()
@@ -35,7 +35,7 @@
 		return 1
 
 	update_icon()
-		if (holder)
+		if(holder)
 			holder.update_icon()
 		return
 
@@ -73,35 +73,35 @@
 	Topic(href, href_list)
 		..()
 
-		if (!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
+		if(!usr.canmove || usr.stat || usr.restrained() || !in_range(loc, usr))
 			usr << browse(null, "window=radio")
 			onclose(usr, "radio")
 			return
 
 		if (href_list["freq"])
 			var/new_frequency = (frequency + text2num(href_list["freq"]))
-			if (new_frequency < 1200 || new_frequency > 1600)
+			if(new_frequency < 1200 || new_frequency > 1600)
 				new_frequency = sanitize_frequency(new_frequency)
 			set_frequency(new_frequency)
 
-		if (href_list["code"])
+		if(href_list["code"])
 			src.code += text2num(href_list["code"])
 			src.code = round(src.code)
 			src.code = min(100, src.code)
 			src.code = max(1, src.code)
 
-		if (href_list["send"])
+		if(href_list["send"])
 			spawn( 0 )
 				signal()
 
-		if (usr)
+		if(usr)
 			attack_self(usr)
 
 		return
 
 
 	proc/signal()
-		if (!radio_connection) return
+		if(!radio_connection) return
 
 		var/datum/signal/signal = new
 		signal.source = src
@@ -111,19 +111,19 @@
 		return
 /*
 		for(var/obj/item/device/assembly/signaler/S in world)
-			if (!S)	continue
-			if (S == src)	continue
-			if ((S.frequency == src.frequency) && (S.code == src.code))
+			if(!S)	continue
+			if(S == src)	continue
+			if((S.frequency == src.frequency) && (S.code == src.code))
 				spawn(0)
-					if (S)	S.pulse(0)
+					if(S)	S.pulse(0)
 		return 0*/
 
 
 	pulse(var/radio = 0)
-		if (istype(src.loc, /obj/machinery/door/airlock) && src.airlock_wire && src.wires)
+		if(istype(src.loc, /obj/machinery/door/airlock) && src.airlock_wire && src.wires)
 			var/obj/machinery/door/airlock/A = src.loc
 			A.pulse(src.airlock_wire)
-		else if (holder)
+		else if(holder)
 			holder.process_activation(src, 1, 0)
 		else
 			..(radio)
@@ -131,21 +131,21 @@
 
 
 	receive_signal(datum/signal/signal)
-		if (!signal)	return 0
-		if (signal.encryption != code)	return 0
-		if (!(src.wires & WIRE_RADIO_RECEIVE))	return 0
+		if(!signal)	return 0
+		if(signal.encryption != code)	return 0
+		if(!(src.wires & WIRE_RADIO_RECEIVE))	return 0
 		pulse(1)
 
-		if (!holder)
+		if(!holder)
 			for(var/mob/O in hearers(1, src.loc))
 				O.show_message(text("\icon[] *beep* *beep*", src), 3, "*beep* *beep*", 2)
 		return
 
 
 	proc/set_frequency(new_frequency)
-		if (!radio_controller)
+		if(!radio_controller)
 			sleep(20)
-		if (!radio_controller)
+		if(!radio_controller)
 			return
 		radio_controller.remove_object(src, frequency)
 		frequency = new_frequency
@@ -153,15 +153,15 @@
 		return
 
 	process()
-		if (!deadman)
+		if(!deadman)
 			processing_objects.Remove(src)
 		var/mob/M = src.loc
-		if (!M || !ismob(M))
-			if (prob(5))
+		if(!M || !ismob(M))
+			if(prob(5))
 				signal()
 			deadman = 0
 			processing_objects.Remove(src)
-		else if (prob(5))
+		else if(prob(5))
 			M.visible_message("[M]'s finger twitches a bit over [src]'s signal button!")
 		return
 

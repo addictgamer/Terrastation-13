@@ -5,7 +5,7 @@ var/const/Sqrt2	= 1.41421356
 
 
 /proc/Atan2(x, y)
-	if (!x && !y) return 0
+	if(!x && !y) return 0
 	var/a = arccos(x / sqrt(x*x + y*y))
 	return y >= 0 ? a : -a
 
@@ -89,10 +89,10 @@ var/const/Sqrt2	= 1.41421356
 	. = list()
 	var/d		= b*b - 4 * a * c
 	var/bottom  = 2 * a
-	if (d < 0) return
+	if(d < 0) return
 	var/root = sqrt(d)
 	. += (-b + root) / bottom
-	if (!d) return
+	if(!d) return
 	. += (-b - root) / bottom
 
 // tangent

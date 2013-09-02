@@ -5,7 +5,7 @@ datum/computer/file/embedded_program
 
 	proc
 		post_signal(datum/signal/signal, comm_line)
-			if (master)
+			if(master)
 				master.post_signal(signal, comm_line)
 			else
 				del(signal)
@@ -39,17 +39,17 @@ obj/machinery/embedded_controller
 		return 0
 
 	receive_signal(datum/signal/signal, receive_method, receive_param)
-		if (!signal || signal.encryption) return
+		if(!signal || signal.encryption) return
 
-		if (program)
+		if(program)
 			program.receive_signal(signal, receive_method, receive_param)
 			//spawn(5) program.process() //no, program.process sends some signals and machines respond and we here again and we lag -rastaf0
 
 	Topic(href, href_list)
-		if (..())
+		if(..())
 			return 0
 
-		if (program)
+		if(program)
 			program.receive_user_command(href_list["command"])
 			spawn(5) program.process()
 
@@ -57,7 +57,7 @@ obj/machinery/embedded_controller
 		spawn(5) src.updateDialog()
 
 	process()
-		if (program)
+		if(program)
 			program.process()
 
 		update_icon()
@@ -72,7 +72,7 @@ obj/machinery/embedded_controller
 
 		post_signal(datum/signal/signal)
 			signal.transmission_method = TRANSMISSION_RADIO
-			if (radio_connection)
+			if(radio_connection)
 				return radio_connection.post_signal(src, signal)
 			else
 				del(signal)

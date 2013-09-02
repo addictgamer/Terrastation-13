@@ -27,17 +27,17 @@
 			var/t = input(user, "What would you like the label to be?", text("[]", src.name), null)  as text
 			if (user.get_active_hand() != I)
 				return
-			if ((!in_range(src, usr) && src.loc != user))
+			if((!in_range(src, usr) && src.loc != user))
 				return
 			t = copytext(sanitize(t),1,MAX_MESSAGE_LEN)
-			if (t)
+			if(t)
 				src.name = text("Glass Case- '[]'", t)
 			else
 				src.name = "Glass Case"
-		else if (istype(I, /obj/item/weapon/reagent_containers/syringe))
-			if (!src.imp)	return
-			if (!src.imp.allow_reagents)	return
-			if (src.imp.reagents.total_volume >= src.imp.reagents.maximum_volume)
+		else if(istype(I, /obj/item/weapon/reagent_containers/syringe))
+			if(!src.imp)	return
+			if(!src.imp.allow_reagents)	return
+			if(src.imp.reagents.total_volume >= src.imp.reagents.maximum_volume)
 				user << "\red [src] is full."
 			else
 				spawn(5)

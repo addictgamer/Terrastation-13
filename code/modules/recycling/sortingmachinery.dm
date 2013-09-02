@@ -10,27 +10,27 @@
 	mouse_drag_pointer = MOUSE_ACTIVE_POINTER
 
 	attack_hand(mob/user as mob)
-		if (wrapped) //sometimes items can disappear. For example, bombs. --rastaf0
+		if(wrapped) //sometimes items can disappear. For example, bombs. --rastaf0
 			wrapped.loc = (get_turf(src.loc))
-			if (istype(wrapped, /obj/structure/closet))
+			if(istype(wrapped, /obj/structure/closet))
 				var/obj/structure/closet/O = wrapped
 				O.welded = 0
 		del(src)
 		return
 
 	attackby(obj/item/W as obj, mob/user as mob)
-		if (istype(W, /obj/item/device/destTagger))
+		if(istype(W, /obj/item/device/destTagger))
 			var/obj/item/device/destTagger/O = W
 
-			if (src.sortTag != O.currTag)
+			if(src.sortTag != O.currTag)
 				var/tag = uppertext(TAGGERLOCATIONS[O.currTag])
 				user << "\blue *[tag]*"
 				src.sortTag = O.currTag
 				playsound(src.loc, 'sound/machines/twobeep.ogg', 100, 1)
 
-		else if (istype(W, /obj/item/weapon/pen))
+		else if(istype(W, /obj/item/weapon/pen))
 			var/str = copytext(sanitize(input(usr,"Label text?","Set label","")),1,MAX_NAME_LEN)
-			if (!str || !length(str))
+			if(!str || !length(str))
 				usr << "\red Invalid text."
 				return
 			for(var/mob/M in viewers())
@@ -51,7 +51,7 @@
 	attack_self(mob/user as mob)
 		if (src.wrapped) //sometimes items can disappear. For example, bombs. --rastaf0
 			wrapped.loc = user.loc
-			if (ishuman(user))
+			if(ishuman(user))
 				user.put_in_hands(wrapped)
 			else
 				wrapped.loc = get_turf_loc(src)
@@ -60,18 +60,18 @@
 		return
 
 	attackby(obj/item/W as obj, mob/user as mob)
-		if (istype(W, /obj/item/device/destTagger))
+		if(istype(W, /obj/item/device/destTagger))
 			var/obj/item/device/destTagger/O = W
 
-			if (src.sortTag != O.currTag)
+			if(src.sortTag != O.currTag)
 				var/tag = uppertext(TAGGERLOCATIONS[O.currTag])
 				user << "\blue *[tag]*"
 				src.sortTag = O.currTag
 				playsound(src.loc, 'sound/machines/twobeep.ogg', 100, 1)
 
-		else if (istype(W, /obj/item/weapon/pen))
+		else if(istype(W, /obj/item/weapon/pen))
 			var/str = copytext(sanitize(input(usr,"Label text?","Set label","")),1,MAX_NAME_LEN)
-			if (!str || !length(str))
+			if(!str || !length(str))
 				usr << "\red Invalid text."
 				return
 			for(var/mob/M in viewers())
@@ -89,15 +89,15 @@
 
 
 	afterattack(var/obj/target as obj, mob/user as mob)
-		if (!istype(target))	//this really shouldn't be necessary (but it is).	-Pete
+		if(!istype(target))	//this really shouldn't be necessary (but it is).	-Pete
 			return
-		if (istype(target, /obj/structure/table) || istype(target, /obj/structure/rack) \
+		if(istype(target, /obj/structure/table) || istype(target, /obj/structure/rack) \
 		|| istype(target, /obj/item/smallDelivery) || istype(target,/obj/structure/bigDelivery) \
 		|| istype(target, /obj/item/weapon/gift) || istype(target, /obj/item/weapon/evidencebag))
 			return
-		if (target.anchored)
+		if(target.anchored)
 			return
-		if (target in user)
+		if(target in user)
 			return
 
 		user.attack_log += text("\[[time_stamp()]\] <font color='blue'>Has used [src.name] on \ref[target]</font>")
@@ -107,13 +107,13 @@
 			var/obj/item/O = target
 			if (src.amount > 1)
 				var/obj/item/smallDelivery/P = new /obj/item/smallDelivery(get_turf(O.loc))	//Aaannd wrap it up!
-				if (!istype(O.loc, /turf))
-					if (user.client)
+				if(!istype(O.loc, /turf))
+					if(user.client)
 						user.client.screen -= O
 				P.wrapped = O
 				O.loc = P
 				var/i = round(O.w_class)
-				if (i in list(1,2,3,4,5))
+				if(i in list(1,2,3,4,5))
 					P.icon_state = "deliverycrate[i]"
 				P.add_fingerprint(usr)
 				O.add_fingerprint(usr)
@@ -127,7 +127,7 @@
 				P.wrapped = O
 				O.loc = P
 				src.amount -= 3
-			else if (src.amount < 3)
+			else if(src.amount < 3)
 				user << "\blue You need more paper."
 		else if (istype (target, /obj/structure/closet))
 			var/obj/structure/closet/O = target
@@ -137,7 +137,7 @@
 				O.welded = 1
 				O.loc = P
 				src.amount -= 3
-			else if (src.amount < 3)
+			else if(src.amount < 3)
 				user << "\blue You need more paper."
 		else
 			user << "\blue The object you are trying to wrap is unsuitable for the sorting machinery!"
@@ -148,7 +148,7 @@
 		return
 
 	examine()
-		if (src in usr)
+		if(src in usr)
 			usr << "\blue There are [amount] units of package wrap left!"
 		..()
 		return
@@ -191,7 +191,7 @@
 
 	Topic(href, href_list)
 		src.add_fingerprint(usr)
-		if (href_list["nextTag"])
+		if(href_list["nextTag"])
 			var/n = text2num(href_list["nextTag"])
 			src.currTag = n
 		openwindow(usr)
@@ -208,7 +208,7 @@
 		..()
 		spawn(5)
 			trunk = locate() in src.loc
-			if (trunk)
+			if(trunk)
 				trunk.linked = src	// link the pipe trunk to self
 
 	interact()
@@ -218,21 +218,21 @@
 		return
 
 	Bumped(var/atom/movable/AM) //Go straight into the chute
-		if (istype(AM, /obj/item/projectile) || istype(AM, /obj/item/weapon/dummy))	return
+		if(istype(AM, /obj/item/projectile) || istype(AM, /obj/item/weapon/dummy))	return
 		switch(dir)
-			if (NORTH)
-				if (AM.loc.y != src.loc.y+1) return
-			if (EAST)
-				if (AM.loc.x != src.loc.x+1) return
-			if (SOUTH)
-				if (AM.loc.y != src.loc.y-1) return
-			if (WEST)
-				if (AM.loc.x != src.loc.x-1) return
+			if(NORTH)
+				if(AM.loc.y != src.loc.y+1) return
+			if(EAST)
+				if(AM.loc.x != src.loc.x+1) return
+			if(SOUTH)
+				if(AM.loc.y != src.loc.y-1) return
+			if(WEST)
+				if(AM.loc.x != src.loc.x-1) return
 
-		if (istype(AM, /obj))
+		if(istype(AM, /obj))
 			var/obj/O = AM
 			O.loc = src
-		else if (istype(AM, /mob))
+		else if(istype(AM, /mob))
 			var/mob/M = AM
 			M.loc = src
 		src.flush()
@@ -245,13 +245,13 @@
 													// travels through the pipes.
 		for(var/obj/structure/bigDelivery/O in src)
 			deliveryCheck = 1
-			if (O.sortTag == 0)
+			if(O.sortTag == 0)
 				O.sortTag = 1
 		for(var/obj/item/smallDelivery/O in src)
 			deliveryCheck = 1
 			if (O.sortTag == 0)
 				O.sortTag = 1
-		if (deliveryCheck == 0)
+		if(deliveryCheck == 0)
 			H.destinationTag = 1
 
 		air_contents = new()		// new empty gas resv.
@@ -266,33 +266,33 @@
 		flushing = 0
 		// now reset disposal state
 		flush = 0
-		if (mode == 2)	// if was ready,
+		if(mode == 2)	// if was ready,
 			mode = 1	// switch to charging
 		update()
 		return
 
 	attackby(var/obj/item/I, var/mob/user)
-		if (!I || !user)
+		if(!I || !user)
 			return
 
-		if (istype(I, /obj/item/weapon/screwdriver))
-			if (c_mode==0)
+		if(istype(I, /obj/item/weapon/screwdriver))
+			if(c_mode==0)
 				c_mode=1
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				user << "You remove the screws around the power connection."
 				return
-			else if (c_mode==1)
+			else if(c_mode==1)
 				c_mode=0
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				user << "You attach the screws around the power connection."
 				return
-		else if (istype(I,/obj/item/weapon/weldingtool) && c_mode==1)
+		else if(istype(I,/obj/item/weapon/weldingtool) && c_mode==1)
 			var/obj/item/weapon/weldingtool/W = I
-			if (W.remove_fuel(0,user))
+			if(W.remove_fuel(0,user))
 				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
 				user << "You start slicing the floorweld off the delivery chute."
-				if (do_after(user,20))
-					if (!src || !W.isOn()) return
+				if(do_after(user,20))
+					if(!src || !W.isOn()) return
 					user << "You sliced the floorweld off the delivery chute."
 					var/obj/structure/disposalconstruct/C = new (src.loc)
 					C.ptype = 8 // 8 =  Delivery chute

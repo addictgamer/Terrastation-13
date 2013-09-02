@@ -37,7 +37,7 @@
 		var/list/waypoints = list()
 		for(var/obj/effect/landmark/temple/destination/T in landmarks_list)
 			waypoints.Add(T)
-			if (!T)
+			if(!T)
 				return
 			else continue
 		var/obj/effect/landmark/temple/destination/dest_temple = pick(waypoints)
@@ -72,13 +72,13 @@
 		for(var/obj/effect/landmark/falsewall_spawner/F in T.contents)
 			var/obj/structure/temple_falsewall/fwall = new(F.loc)
 			fwall.mineral = mineral
-			if (mineral == "iron")
+			if(mineral == "iron")
 				fwall.is_metal = 1
 			del(F)
 
 		for(var/obj/effect/landmark/door_spawner/D in T.contents)
 			var/spawn_type
-			if (mineral == "iron")
+			if(mineral == "iron")
 				spawn_type = text2path("/obj/machinery/door/airlock/vault")
 			else
 				spawn_type = text2path("/obj/machinery/door/airlock/[mineral]")
@@ -86,7 +86,7 @@
 			del(D)
 
 	for(var/turf/unsimulated/wall/T in temple_turfs)
-		if (mineral != "plasma")
+		if(mineral != "plasma")
 			T.icon_state = replacetext(T.icon_state, "plasma", mineral)
 
 		/*for(var/obj/effect/landmark/falsewall_spawner/F in T.contents)
@@ -155,9 +155,9 @@
 	var/num_spawned = 0
 	while(num_spawned < max)
 		var/turf/unsimulated/jungle/J = locate(rand(RANDOM_LOWER_X, RANDOM_UPPER_X), rand(RANDOM_LOWER_Y, RANDOM_UPPER_Y), src.z)
-		if (!istype(J))
+		if(!istype(J))
 			continue
-		if (!J.bushes_spawn)
+		if(!J.bushes_spawn)
 			continue
 		river_nodes.Add(new /obj/effect/landmark/river_waypoint(J))
 		num_spawned++
@@ -176,13 +176,13 @@
 		//
 		while(cur_turf != target_turf)
 			//randomly snake around a bit
-			if (detouring)
-				if (prob(20))
+			if(detouring)
+				if(prob(20))
 					detouring = 0
 					cur_dir = get_dir(cur_turf, target_turf)
-			else if (prob(20))
+			else if(prob(20))
 				detouring = 1
-				if (prob(50))
+				if(prob(50))
 					cur_dir = turn(cur_dir, 45)
 				else
 					cur_dir = turn(cur_dir, -45)
@@ -192,13 +192,13 @@
 			cur_turf = get_step(cur_turf, cur_dir)
 
 			var/skip = 0
-			if (!istype(cur_turf, /turf/unsimulated/jungle) || istype(cur_turf, /turf/unsimulated/jungle/rock))
+			if(!istype(cur_turf, /turf/unsimulated/jungle) || istype(cur_turf, /turf/unsimulated/jungle/rock))
 				detouring = 0
 				cur_dir = get_dir(cur_turf, target_turf)
 				cur_turf = get_step(cur_turf, cur_dir)
 				continue
 
-			if (!skip)
+			if(!skip)
 				var/turf/unsimulated/jungle/water/water_turf = new(cur_turf)
 				water_turf.Spread(75, rand(65, 25))
 
@@ -209,7 +209,7 @@
 	num_spawned = 0
 	while(num_spawned < max)
 		var/turf/unsimulated/jungle/J = locate(rand(RANDOM_LOWER_X, RANDOM_UPPER_X), rand(RANDOM_LOWER_Y, RANDOM_UPPER_Y), src.z)
-		if (!J || !J.bushes_spawn)
+		if(!J || !J.bushes_spawn)
 			continue
 		new /obj/effect/landmark/temple(J)
 		path_nodes.Add(new /obj/effect/landmark/path_waypoint(J))
@@ -219,7 +219,7 @@
 	num_spawned = 0
 	while(num_spawned < 1)
 		var/turf/unsimulated/jungle/J = locate(rand(RANDOM_LOWER_X, RANDOM_UPPER_X), rand(RANDOM_LOWER_Y, RANDOM_UPPER_Y), src.z)
-		if (!J || !J.bushes_spawn)
+		if(!J || !J.bushes_spawn)
 			continue
 		new /obj/effect/jungle_tribe_spawn(J)
 		path_nodes.Add(new /obj/effect/landmark/path_waypoint(J))
@@ -230,7 +230,7 @@
 	num_spawned = 0
 	while(num_spawned < max)
 		var/turf/unsimulated/jungle/J = locate(rand(RANDOM_LOWER_X, RANDOM_UPPER_X), rand(RANDOM_LOWER_Y, RANDOM_UPPER_Y), src.z)
-		if (!J || !J.bushes_spawn)
+		if(!J || !J.bushes_spawn)
 			continue
 		path_nodes.Add(new /obj/effect/landmark/path_waypoint(J))
 		num_spawned++
@@ -258,13 +258,13 @@
 		//
 		while(cur_turf != target_turf)
 			//randomly snake around a bit
-			if (detouring)
-				if (prob(20) || get_dist(cur_turf, target_turf) < 5)
+			if(detouring)
+				if(prob(20) || get_dist(cur_turf, target_turf) < 5)
 					detouring = 0
 					cur_dir = get_dir(cur_turf, target_turf)
-			else if (prob(20) && get_dist(cur_turf, target_turf) > 5)
+			else if(prob(20) && get_dist(cur_turf, target_turf) > 5)
 				detouring = 1
-				if (prob(50))
+				if(prob(50))
 					cur_dir = turn(cur_dir, 45)
 				else
 					cur_dir = turn(cur_dir, -45)
@@ -275,18 +275,18 @@
 			cur_turf = get_step(cur_turf, cur_dir)
 
 			//if we're not a jungle turf, get back to what we were doing
-			if (!istype(cur_turf, /turf/unsimulated/jungle/))
+			if(!istype(cur_turf, /turf/unsimulated/jungle/))
 				cur_dir = get_dir(cur_turf, target_turf)
 				cur_turf = get_step(cur_turf, cur_dir)
 				continue
 
 			var/turf/unsimulated/jungle/J = cur_turf
-			if (istype(J, /turf/unsimulated/jungle/impenetrable) || istype(J, /turf/unsimulated/jungle/water/deep))
+			if(istype(J, /turf/unsimulated/jungle/impenetrable) || istype(J, /turf/unsimulated/jungle/water/deep))
 				cur_dir = get_dir(cur_turf, target_turf)
 				cur_turf = get_step(cur_turf, cur_dir)
 				continue
 
-			if (!istype(J, /turf/unsimulated/jungle/water))
+			if(!istype(J, /turf/unsimulated/jungle/water))
 				J = new /turf/unsimulated/jungle/path(cur_turf)
 				J.Spread(PATH_SPREAD_CHANCE_START, rand(PATH_SPREAD_CHANCE_LOSS_UPPER, PATH_SPREAD_CHANCE_LOSS_LOWER))
 
@@ -295,7 +295,7 @@
 	max = rand(3,6)
 	while(num_spawned < max)
 		var/turf/unsimulated/jungle/J = locate(rand(RANDOM_LOWER_X, RANDOM_UPPER_X), rand(RANDOM_LOWER_Y, RANDOM_UPPER_Y), src.z)
-		if (!J || !J.bushes_spawn)
+		if(!J || !J.bushes_spawn)
 			continue
 		animal_spawners.Add(new /obj/effect/landmark/animal_spawner/monkey(J))
 		num_spawned++
@@ -305,7 +305,7 @@
 	max = rand(6,12)
 	while(num_spawned < max)
 		var/turf/unsimulated/jungle/J = locate(rand(RANDOM_LOWER_X, RANDOM_UPPER_X), rand(RANDOM_LOWER_Y, RANDOM_UPPER_Y), src.z)
-		if (!J || !istype(J) ||  !J.bushes_spawn)
+		if(!J || !istype(J) ||  !J.bushes_spawn)
 			continue
 		animal_spawners.Add(new /obj/effect/landmark/animal_spawner/panther(J))
 		num_spawned++
@@ -315,7 +315,7 @@
 	max = rand(6,12)
 	while(num_spawned < max)
 		var/turf/unsimulated/jungle/J = locate(rand(RANDOM_LOWER_X, RANDOM_UPPER_X), rand(RANDOM_LOWER_Y, RANDOM_UPPER_Y), src.z)
-		if (!J || !istype(J) || !J.bushes_spawn)
+		if(!J || !istype(J) || !J.bushes_spawn)
 			continue
 		animal_spawners.Add(new /obj/effect/landmark/animal_spawner/snake(J))
 		num_spawned++
@@ -325,7 +325,7 @@
 	max = rand(3,6)
 	while(num_spawned < max)
 		var/turf/unsimulated/jungle/J = locate(rand(RANDOM_LOWER_X, RANDOM_UPPER_X), rand(RANDOM_LOWER_Y, RANDOM_UPPER_Y), src.z)
-		if (!J || !istype(J) ||  !J.bushes_spawn)
+		if(!J || !istype(J) ||  !J.bushes_spawn)
 			continue
 		animal_spawners.Add(new /obj/effect/landmark/animal_spawner/parrot(J))
 		num_spawned++

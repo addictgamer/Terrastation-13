@@ -21,18 +21,18 @@
 	return interact(user)
 
 /obj/machinery/computer/atmoscontrol/attack_hand(mob/user)
-	if (..())
+	if(..())
 		return
 	return interact(user)
 
 /obj/machinery/computer/atmoscontrol/interact(mob/user)
 	user.set_machine(src)
-	if (allowed(user))
+	if(allowed(user))
 		overridden = 1
-	else if (!emagged)
+	else if(!emagged)
 		overridden = 0
 	var/dat = "<a href='?src=\ref[src]&reset=1'>Main Menu</a><hr>"
-	if (current)
+	if(current)
 		dat += specific()
 	else
 		for(var/obj/machinery/alarm/alarm in machines)
@@ -48,7 +48,7 @@
 	user << browse(dat, "window=atmoscontrol")
 
 /obj/machinery/computer/atmoscontrol/attackby(var/obj/item/I as obj, var/mob/user as mob)
-	if (istype(I, /obj/item/weapon/card/emag) && !emagged)
+	if(istype(I, /obj/item/weapon/card/emag) && !emagged)
 		user.visible_message("\red \The [user] swipes \a [I] through \the [src], causing the screen to flash!",\
 			"\red You swipe your [I] through \the [src], the screen flashing as you gain full control.",\
 			"You hear the swipe of a card through a reader, and an electronic warble.")
@@ -58,26 +58,26 @@
 	return ..()
 
 /obj/machinery/computer/atmoscontrol/proc/specific()
-	if (!current)
+	if(!current)
 		return ""
 	var/dat = "<h3>[current.name]</h3><hr>"
 	dat += current.return_status()
-	if (current.remote_control || overridden)
+	if(current.remote_control || overridden)
 		dat += "<hr>[return_controls()]"
 	return dat
 
 //a bunch of this is copied from atmos alarms
 /obj/machinery/computer/atmoscontrol/Topic(href, href_list)
-	if (..())
+	if(..())
 		return
-	if (href_list["reset"])
+	if(href_list["reset"])
 		current = null
-	if (href_list["alarm"])
+	if(href_list["alarm"])
 		current = locate(href_list["alarm"])
-		if (href_list["command"])
+		if(href_list["command"])
 			var/device_id = href_list["id_tag"]
 			switch(href_list["command"])
-				if (
+				if(
 					"power",
 					"adjust_external_pressure",
 					"checks",
@@ -90,8 +90,8 @@
 					current.send_signal(device_id, list (href_list["command"] = text2num(href_list["val"])))
 					spawn(3)
 						src.updateUsrDialog()
-				//if ("adjust_threshold") //was a good idea but required very wide window
-				if ("set_threshold")
+				//if("adjust_threshold") //was a good idea but required very wide window
+				if("set_threshold")
 					var/env = href_list["env"]
 					var/threshold = text2num(href_list["var"])
 					var/list/selected = current.TLV[env]
@@ -110,67 +110,67 @@
 					else
 						newval = round(newval,0.01)
 						selected[threshold] = newval
-					if (threshold == 1)
-						if (selected[1] > selected[2])
+					if(threshold == 1)
+						if(selected[1] > selected[2])
 							selected[2] = selected[1]
-						if (selected[1] > selected[3])
+						if(selected[1] > selected[3])
 							selected[3] = selected[1]
-						if (selected[1] > selected[4])
+						if(selected[1] > selected[4])
 							selected[4] = selected[1]
-					if (threshold == 2)
-						if (selected[1] > selected[2])
+					if(threshold == 2)
+						if(selected[1] > selected[2])
 							selected[1] = selected[2]
-						if (selected[2] > selected[3])
+						if(selected[2] > selected[3])
 							selected[3] = selected[2]
-						if (selected[2] > selected[4])
+						if(selected[2] > selected[4])
 							selected[4] = selected[2]
-					if (threshold == 3)
-						if (selected[1] > selected[3])
+					if(threshold == 3)
+						if(selected[1] > selected[3])
 							selected[1] = selected[3]
-						if (selected[2] > selected[3])
+						if(selected[2] > selected[3])
 							selected[2] = selected[3]
-						if (selected[3] > selected[4])
+						if(selected[3] > selected[4])
 							selected[4] = selected[3]
-					if (threshold == 4)
-						if (selected[1] > selected[4])
+					if(threshold == 4)
+						if(selected[1] > selected[4])
 							selected[1] = selected[4]
-						if (selected[2] > selected[4])
+						if(selected[2] > selected[4])
 							selected[2] = selected[4]
-						if (selected[3] > selected[4])
+						if(selected[3] > selected[4])
 							selected[3] = selected[4]
 
 					//Sets the temperature the built-in heater/cooler tries to maintain.
-					if (env == "temperature")
-						if (current.target_temperature < selected[2])
+					if(env == "temperature")
+						if(current.target_temperature < selected[2])
 							current.target_temperature = selected[2]
-						if (current.target_temperature > selected[3])
+						if(current.target_temperature > selected[3])
 							current.target_temperature = selected[3]
 
 					spawn(1)
 						updateUsrDialog()
 			return
 
-		if (href_list["screen"])
+		if(href_list["screen"])
 			current.screen = text2num(href_list["screen"])
 			spawn(1)
 				src.updateUsrDialog()
 			return
 
-		if (href_list["atmos_unlock"])
+		if(href_list["atmos_unlock"])
 			switch(href_list["atmos_unlock"])
-				if ("0")
+				if("0")
 					current.air_doors_close(1)
-				if ("1")
+				if("1")
 					current.air_doors_open(1)
 
-		if (href_list["atmos_alarm"])
+		if(href_list["atmos_alarm"])
 			if (current.alarm_area.atmosalert(2))
 				current.apply_danger_level(2)
 			spawn(1)
 				src.updateUsrDialog()
 			current.update_icon()
 			return
-		if (href_list["atmos_reset"])
+		if(href_list["atmos_reset"])
 			if (current.alarm_area.atmosalert(0))
 				current.apply_danger_level(0)
 			spawn(1)
@@ -178,7 +178,7 @@
 			current.update_icon()
 			return
 
-		if (href_list["mode"])
+		if(href_list["mode"])
 			current.mode = text2num(href_list["mode"])
 			current.apply_mode()
 			spawn(5)
@@ -194,7 +194,7 @@
 
 	switch(current.screen)
 		if (AALARM_SCREEN_MAIN)
-			if (current.alarm_area.atmosalm)
+			if(current.alarm_area.atmosalm)
 				output += {"<a href='?src=\ref[src];alarm=\ref[current];atmos_reset=1'>Reset - Atmospheric Alarm</a><hr>"}
 			else
 				output += {"<a href='?src=\ref[src];alarm=\ref[current];atmos_alarm=1'>Activate - Atmospheric Alarm</a><hr>"}
@@ -214,12 +214,12 @@
 			output += "<br><br>Atmospheric Lockdown: <a href='?src=\ref[src];alarm=\ref[current];atmos_unlock=[current.alarm_area.air_doors_activated]'>[current.alarm_area.air_doors_activated ? "<b>ENABLED</b>" : "Disabled"]</a>"
 		if (AALARM_SCREEN_VENT)
 			var/sensor_data = ""
-			if (current.alarm_area.air_vent_names.len)
+			if(current.alarm_area.air_vent_names.len)
 				for(var/id_tag in current.alarm_area.air_vent_names)
 					var/long_name = current.alarm_area.air_vent_names[id_tag]
 					var/list/data = current.alarm_area.air_vent_info[id_tag]
 					var/state = ""
-					if (!data)
+					if(!data)
 						state = "<font color='red'> can not be found!</font>"
 						data = list("external" = 0) //for "0" instead of empty string
 					else if (data["timestamp"]+AALARM_REPORT_TIMEOUT < world.time)
@@ -257,12 +257,12 @@ siphoning
 			output = {"<a href='?src=\ref[src];alarm=\ref[current];screen=[AALARM_SCREEN_MAIN]'>Main menu</a><br>[sensor_data]"}
 		if (AALARM_SCREEN_SCRUB)
 			var/sensor_data = ""
-			if (current.alarm_area.air_scrub_names.len)
+			if(current.alarm_area.air_scrub_names.len)
 				for(var/id_tag in current.alarm_area.air_scrub_names)
 					var/long_name = current.alarm_area.air_scrub_names[id_tag]
 					var/list/data = current.alarm_area.air_scrub_info[id_tag]
 					var/state = ""
-					if (!data)
+					if(!data)
 						state = "<font color='red'> can not be found!</font>"
 						data = list("external" = 0) //for "0" instead of empty string
 					else if (data["timestamp"]+AALARM_REPORT_TIMEOUT < world.time)
@@ -276,7 +276,7 @@ siphoning
 <A href='?src=\ref[src];alarm=\ref[current];id_tag=[id_tag];command=scrubbing;val=[!data["scrubbing"]]'>[data["scrubbing"]?"scrubbing":"syphoning"]</A><BR>
 "}
 
-					if (data["scrubbing"])
+					if(data["scrubbing"])
 						sensor_data += {"
 <B>Filtering:</B>
 Carbon Dioxide

@@ -23,11 +23,11 @@
 
 	attackby(obj/item/clothing/under/U as obj, mob/user as mob)
 		..()
-		if (istype(U, /obj/item/clothing/under/chameleon))
+		if(istype(U, /obj/item/clothing/under/chameleon))
 			user << "\red Nothing happens."
 			return
-		if (istype(U, /obj/item/clothing/under))
-			if (src.clothing_choices.Find(U))
+		if(istype(U, /obj/item/clothing/under))
+			if(src.clothing_choices.Find(U))
 				user << "\red Pattern is already recognised by the suit."
 				return
 			src.clothing_choices += U
@@ -52,13 +52,13 @@
 		set category = "Object"
 		set src in usr
 
-		if (icon_state == "psyche")
+		if(icon_state == "psyche")
 			usr << "\red Your suit is malfunctioning"
 			return
 
 		var/obj/item/clothing/under/A
 		A = input("Select Colour to change it to", "BOOYEA", A) in clothing_choices
-		if (!A)
+		if(!A)
 			return
 
 		desc = null

@@ -28,7 +28,7 @@
 				src.reset_view(null)
 
 		// Handle power damage (oxy)
-		if (src:aiRestorePowerRoutine != 0)
+		if(src:aiRestorePowerRoutine != 0)
 			// Lost power
 			adjustOxyLoss(1)
 		else
@@ -49,7 +49,7 @@
 					//stage = 5
 					blind = 1
 
-		if (!blind)	//lol? if (!blind)	#if (src.blind.layer)    <--something here is clearly wrong :P
+		if (!blind)	//lol? if(!blind)	#if(src.blind.layer)    <--something here is clearly wrong :P
 					//I'll get back to this when I find out  how this is -supposed- to work ~Carn //removed this shit since it was confusing as all hell --39kk9t
 			//stage = 4.5
 			src.sight |= SEE_TURFS
@@ -59,8 +59,8 @@
 			src.see_invisible = SEE_INVISIBLE_LEVEL_TWO
 
 			var/area/home = get_area(src)
-			if (!home)	return//something to do with malf fucking things up I guess. <-- aisat is gone. is this still necessary? ~Carn
-			if (home.powered(EQUIP))
+			if(!home)	return//something to do with malf fucking things up I guess. <-- aisat is gone. is this still necessary? ~Carn
+			if(home.powered(EQUIP))
 				home.use_power(1000, EQUIP)
 
 			if (src:aiRestorePowerRoutine==2)
@@ -161,11 +161,11 @@
 							theAPC = null
 
 /mob/living/silicon/ai/updatehealth()
-	if (status_flags & GODMODE)
+	if(status_flags & GODMODE)
 		health = 100
 		stat = CONSCIOUS
 	else
-		if (fire_res_on_core)
+		if(fire_res_on_core)
 			health = 100 - getOxyLoss() - getToxLoss() - getBruteLoss()
 		else
 			health = 100 - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss()

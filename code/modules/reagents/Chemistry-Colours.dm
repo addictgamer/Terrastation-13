@@ -11,12 +11,12 @@
 		((hi3 >= 65 ? hi3-55 : hi3-48)<<4) | (lo3 >= 65 ? lo3-55 : lo3-48))
 
 /proc/mix_color_from_reagents(var/list/reagent_list)
-	if (!reagent_list || !reagent_list.len) return 0
+	if(!reagent_list || !reagent_list.len) return 0
 
 	var/list/rgbcolor = list(0,0,0)
 	var/finalcolor = 0
 	for(var/datum/reagent/re in reagent_list) // natural color mixing bullshit/algorithm
-		if (!finalcolor)
+		if(!finalcolor)
 			rgbcolor = GetColors(re.color)
 			finalcolor = re.color
 		else

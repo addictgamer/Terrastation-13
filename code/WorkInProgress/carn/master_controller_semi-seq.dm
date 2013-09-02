@@ -30,26 +30,26 @@ datum/controller/game_controller
 
 datum/controller/game_controller/New()
 	//There can be only one master_controller. Out with the old and in with the new.
-	if (master_controller)
-		if (master_controller != src)
+	if(master_controller)
+		if(master_controller != src)
 			del(master_controller)
 	master_controller = src
 
-	if (!air_master)
+	if(!air_master)
 		air_master = new /datum/controller/air_system()
 		air_master.setup()
 
-	if (!job_master)
+	if(!job_master)
 		job_master = new /datum/controller/occupations()
-		if (job_master.SetupOccupations())
+		if(job_master.SetupOccupations())
 			world << "\red \b Job setup complete"
 			job_master.LoadJobs("config/jobs.txt")
 
-	if (!tension_master)				tension_master = new /datum/tension()
-	if (!syndicate_code_phrase)		syndicate_code_phrase	= generate_code_phrase()
-	if (!syndicate_code_response)	syndicate_code_response	= generate_code_phrase()
-	if (!ticker)						ticker = new /datum/controller/gameticker()
-	if (!emergency_shuttle)			emergency_shuttle = new /datum/shuttle_controller/emergency_shuttle()
+	if(!tension_master)				tension_master = new /datum/tension()
+	if(!syndicate_code_phrase)		syndicate_code_phrase	= generate_code_phrase()
+	if(!syndicate_code_response)	syndicate_code_response	= generate_code_phrase()
+	if(!ticker)						ticker = new /datum/controller/gameticker()
+	if(!emergency_shuttle)			emergency_shuttle = new /datum/shuttle_controller/emergency_shuttle()
 
 
 datum/controller/game_controller/proc/setup()
@@ -64,7 +64,7 @@ datum/controller/game_controller/proc/setup()
 		make_mining_asteroid_secret()
 
 	spawn(0)
-		if (ticker)
+		if(ticker)
 			ticker.pregame()
 
 datum/controller/game_controller/proc/setup_objects()
@@ -93,13 +93,13 @@ datum/controller/game_controller/proc/process()
 	set background = 1
 	processing = 1
 	while(1)	//far more efficient than recursively calling ourself
-		if (!Failsafe)	new /datum/failsafe()
+		if(!Failsafe)	new /datum/failsafe()
 
 		var/currenttime = world.timeofday
 		last_tick_duration = (currenttime - last_tick_timeofday) / 10
 		last_tick_timeofday = currenttime
 
-		if (processing)
+		if(processing)
 			var/start_time = world.timeofday
 			controller_iteration++
 
@@ -144,10 +144,10 @@ datum/controller/game_controller/proc/process()
 
 			spawn(0)
 				for(var/obj/machinery/machine in machines)
-					if (machine)
+					if(machine)
 						last_machine_processed = machine
 						machine.process()
-						if (machine && machine.use_power)
+						if(machine && machine.use_power)
 							machine.auto_use_power()
 				machines_ready = 1
 			sleep(breather_ticks)
@@ -180,21 +180,21 @@ datum/controller/game_controller/proc/process()
 			var/IL_check = 0 //Infinite loop check (To report when the master controller breaks.)
 			while(!air_master_ready || !tension_master_ready || !sun_ready || !mobs_ready || !diseases_ready || !machines_ready || !objects_ready || !networks_ready || !powernets_ready || !ticker_ready)
 				IL_check++
-				if (IL_check > 200)
+				if(IL_check > 200)
 					var/MC_report = "air_master_ready = [air_master_ready]; tension_master_ready = [tension_master_ready]; sun_ready = [sun_ready]; mobs_ready = [mobs_ready]; diseases_ready = [diseases_ready]; machines_ready = [machines_ready]; objects_ready = [objects_ready]; networks_ready = [networks_ready]; powernets_ready = [powernets_ready]; ticker_ready = [ticker_ready];"
 					var/MC_admin_report = "<b><font color='red'>PROC BREAKAGE WARNING:</font> The game's master contorller appears to be stuck in one of it's cycles. It has looped through it's delaying loop [IL_check] times.<br>The master controller reports: [MC_report]</b><br>"
-					if (!diseases_ready)
-						if (last_disease_processed)
+					if(!diseases_ready)
+						if(last_disease_processed)
 							MC_admin_report += "<b>DISEASE PROCESSING stuck on </b><A HREF='?src=%holder_ref%;adminplayervars=\ref[last_disease_processed]'>[last_disease_processed]</A><br>"
 						else
 							MC_admin_report += "<b>DISEASE PROCESSING stuck on </b>unknown<br>"
-					if (!machines_ready)
-						if (last_machine_processed)
+					if(!machines_ready)
+						if(last_machine_processed)
 							MC_admin_report += "<b>MACHINE PROCESSING stuck on </b><A HREF='?src=%holder_ref%;adminplayervars=\ref[last_machine_processed]'>[last_machine_processed]</A><br>"
 						else
 							MC_admin_report += "<b>MACHINE PROCESSING stuck on </b>unknown<br>"
-					if (!objects_ready)
-						if (last_obj_processed)
+					if(!objects_ready)
+						if(last_obj_processed)
 							MC_admin_report += "<b>OBJ PROCESSING stuck on </b><A HREF='?src=ADMINHOLDERREF;adminplayervars=\ref[last_obj_processed]'>[last_obj_processed]</A><br>"
 						else
 							MC_admin_report += "<b>OBJ PROCESSING stuck on </b>unknown<br>"
@@ -216,7 +216,7 @@ datum/controller/game_controller/proc/process()
 
 /datum/failsafe/New()
 	//There can be only one failsafe. Out with the old in with the new (that way we can restart the Failsafe by spawning a new one)
-	if (Failsafe && (Failsafe != src))
+	if(Failsafe && (Failsafe != src))
 		del(Failsafe)
 	Failsafe = src
 
@@ -228,20 +228,20 @@ datum/controller/game_controller/proc/process()
 /datum/failsafe/proc/spin()
 	set background = 1
 	while(1)	//more efficient than recursivly calling ourself over and over. background = 1 ensures we do not trigger an infinite loop
-		if (master_controller)
-			if (spinning && master_controller.processing)	//only poke if these overrides aren't in effect
-				if (current_iteration == controller_iteration)	//master_controller hasn't finished processing in the defined interval
+		if(master_controller)
+			if(spinning && master_controller.processing)	//only poke if these overrides aren't in effect
+				if(current_iteration == controller_iteration)	//master_controller hasn't finished processing in the defined interval
 					switch(defcon)
-						if (0 to 3)
+						if(0 to 3)
 							defcon++
-						if (4)
+						if(4)
 							defcon = 5
 							for(var/client/C)
-								if (C.holder)
+								if(C.holder)
 									C << "<font color='red' size='2'><b>Warning. The Master Controller has not fired in the last [4*ticks_per_spin] ticks. Automatic restart in [ticks_per_spin] ticks.</b></font>"
-						if (5)
+						if(5)
 							for(var/client/C)
-								if (C.holder)
+								if(C.holder)
 									C << "<font color='red' size='2'><b>Warning. The Master Controller has still not fired within the last [5*ticks_per_spin] ticks. Killing and restarting...</b></font>"
 							spawn(0)
 								new /datum/controller/game_controller()	//replace the old master_controller (hence killing the old one's process)

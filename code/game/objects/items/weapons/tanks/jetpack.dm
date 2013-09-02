@@ -23,7 +23,7 @@
 	examine()
 		set src in usr
 		..()
-		if (air_contents.oxygen < 10)
+		if(air_contents.oxygen < 10)
 			usr << text("\red <B>The meter on the [src.name] indicates you are almost out of air!</B>")
 			playsound(usr, 'sound/effects/alert.ogg', 50, 1)
 		return
@@ -41,7 +41,7 @@
 		set name = "Toggle Jetpack"
 		set category = "Object"
 		on = !on
-		if (on)
+		if(on)
 			icon_state = "[icon_state]-on"
 //			item_state = "[item_state]-on"
 			ion_trail.start()
@@ -53,16 +53,16 @@
 
 
 	proc/allow_thrust(num, mob/living/user as mob)
-		if (!(src.on))
+		if(!(src.on))
 			return 0
-		if ((num < 0.005 || src.air_contents.total_moles() < num))
+		if((num < 0.005 || src.air_contents.total_moles() < num))
 			src.ion_trail.stop()
 			return 0
 
 		var/datum/gas_mixture/G = src.air_contents.remove(num)
 
 		var/allgases = G.carbon_dioxide + G.nitrogen + G.oxygen + G.toxins	//fuck trace gases	-Pete
-		if (allgases >= 0.005)
+		if(allgases >= 0.005)
 			return 1
 
 		del(G)
@@ -114,7 +114,7 @@
 	examine()
 		set src in usr
 		..()
-		if (air_contents.carbon_dioxide < 10)
+		if(air_contents.carbon_dioxide < 10)
 			usr << text("\red <B>The meter on the [src.name] indicates you are almost out of air!</B>")
 			playsound(usr, 'sound/effects/alert.ogg', 50, 1)
 		return

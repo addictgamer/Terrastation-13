@@ -72,7 +72,7 @@
 
 		if (istype(O, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = O
-			if (!H.eyecheck() <= 0)
+			if(!H.eyecheck() <= 0)
 				continue
 
 		if (istype(O, /mob/living/carbon/alien))//So aliens don't get flashed (they have no external eyes)/N
@@ -83,16 +83,16 @@
 			flick("e_flash", O:flash)
 			O.eye_stat += rand(1, 2)
 		else
-			if (!O.blinded)
+			if(!O.blinded)
 				flick("flash", O:flash)
 				O.eye_stat += rand(0, 2)
 
 
 /obj/machinery/flasher/emp_act(severity)
-	if (stat & (BROKEN|NOPOWER))
+	if(stat & (BROKEN|NOPOWER))
 		..(severity)
 		return
-	if (prob(75/severity))
+	if(prob(75/severity))
 		flash()
 	..(severity)
 
@@ -100,7 +100,7 @@
 	if ((src.disable) || (src.last_flash && world.time < src.last_flash + 150))
 		return
 
-	if (istype(AM, /mob/living/carbon))
+	if(istype(AM, /mob/living/carbon))
 		var/mob/living/carbon/M = AM
 		if ((M.m_intent != "walk") && (src.anchored))
 			src.flash()
@@ -129,9 +129,9 @@
 
 /obj/machinery/flasher_button/attack_hand(mob/user as mob)
 
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		return
-	if (active)
+	if(active)
 		return
 
 	use_power(5)
@@ -140,7 +140,7 @@
 	icon_state = "launcheract"
 
 	for(var/obj/machinery/flasher/M in world)
-		if (M.id == src.id)
+		if(M.id == src.id)
 			spawn()
 				M.flash()
 

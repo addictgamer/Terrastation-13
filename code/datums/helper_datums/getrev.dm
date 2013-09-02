@@ -20,9 +20,9 @@ var/global/datum/getrev/revdata = new("config/svndir.txt")
 	New(filename)
 		..()
 		var/list/Lines = file2list(filename)
-		if (!Lines.len)	return abort()
+		if(!Lines.len)	return abort()
 		for(var/t in Lines)
-			if (!t)	continue
+			if(!t)	continue
 			t = trim(t)
 			if (length(t) == 0)
 				continue
@@ -36,32 +36,32 @@ var/global/datum/getrev/revdata = new("config/svndir.txt")
 				value = copytext(t, pos + 1)
 			else
 				name = lowertext(t)
-			if (!name)
+			if(!name)
 				continue
 			switch(name)
-				if ("svndir")
+				if("svndir")
 					svndirpath = value
-				if ("revhref")
+				if("revhref")
 					revhref = value
 
-		if (svndirpath && fexists(svndirpath) && fexists("[svndirpath]/entries") && isfile(file("[svndirpath]/entries")))
+		if(svndirpath && fexists(svndirpath) && fexists("[svndirpath]/entries") && isfile(file("[svndirpath]/entries")))
 			var/list/filelist = file2list("[svndirpath]/entries")
 			var/s_archive = "" //Stores the previous line so the revision owner can be assigned.
 
 			//This thing doesn't count blank lines, so doing filelist[4] isn't working.
 			for(var/s in filelist)
-				if (!commiter)
-					if (s == "has-props")//The line before this is the committer.
+				if(!commiter)
+					if(s == "has-props")//The line before this is the committer.
 						commiter = s_archive
-				if (!revision)
+				if(!revision)
 					var/n = text2num(s)
-					if (isnum(n))
-						if (n > 5000 && n < 99999) //Do you think we'll still be up and running at r100000? :) ~Errorage
+					if(isnum(n))
+						if(n > 5000 && n < 99999) //Do you think we'll still be up and running at r100000? :) ~Errorage
 							revision = s
-				if (revision && commiter)
+				if(revision && commiter)
 					break
 				s_archive = s
-			if (!revision)
+			if(!revision)
 				abort()
 			diary << "Revision info loaded succesfully"
 			return
@@ -69,7 +69,7 @@ var/global/datum/getrev/revdata = new("config/svndir.txt")
 
 	proc/getRevisionText()
 		var/output
-		if (revhref)
+		if(revhref)
 			output = {"<a href="[revhref][revision]">[revision]</a>"}
 		else
 			output = revision

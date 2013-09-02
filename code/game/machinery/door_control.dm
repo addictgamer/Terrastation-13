@@ -32,7 +32,7 @@
 	active_power_usage = 4
 
 /obj/machinery/door_control/attack_ai(mob/user as mob)
-	if (wires & 2)
+	if(wires & 2)
 		return src.attack_hand(user)
 	else
 		user << "Error, no route to host."
@@ -44,7 +44,7 @@
 	/* For later implementation
 	if (istype(W, /obj/item/weapon/screwdriver))
 	{
-		if (wiresexposed)
+		if(wiresexposed)
 			icon_state = "doorctrl0"
 			wiresexposed = 0
 
@@ -55,9 +55,9 @@
 		return
 	}
 	*/
-	if (istype(W, /obj/item/device/detective_scanner))
+	if(istype(W, /obj/item/device/detective_scanner))
 		return
-	if (istype(W, /obj/item/weapon/card/emag))
+	if(istype(W, /obj/item/weapon/card/emag))
 		req_access = list()
 		req_one_access = list()
 		playsound(src.loc, "sparks", 100, 1)
@@ -65,10 +65,10 @@
 
 /obj/machinery/door_control/attack_hand(mob/user as mob)
 	src.add_fingerprint(usr)
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		return
 
-	if (!allowed(user) && (wires & 1))
+	if(!allowed(user) && (wires & 1))
 		user << "\red Access Denied"
 		flick("doorctrl-denied",src)
 		return
@@ -77,40 +77,38 @@
 	icon_state = "doorctrl1"
 	add_fingerprint(user)
 
-	if (normaldoorcontrol)
+	if(normaldoorcontrol)
 		for(var/obj/machinery/door/airlock/D in range(range))
-			if (D.id_tag == src.id)
-				if (desiredstate == 1)
-					if (specialfunctions & OPEN)
-						if (D.density)
-							spawn( 0 )
-								D.open()
-								return
-					if (specialfunctions & IDSCAN)
+			if(D.id_tag == src.id)
+				if(specialfunctions & OPEN)
+					if (D.density)
+						spawn(0)
+							D.open()
+							return
+					else
+						spawn(0)
+							D.close()
+							return
+				if(desiredstate == 1)
+					if(specialfunctions & IDSCAN)
 						D.aiDisabledIdScanner = 1
-					if (specialfunctions & BOLTS)
+					if(specialfunctions & BOLTS)
 						D.locked = 1
 						D.update_icon()
-					if (specialfunctions & SHOCK)
+					if(specialfunctions & SHOCK)
 						D.secondsElectrified = -1
-					if (specialfunctions & SAFE)
+					if(specialfunctions & SAFE)
 						D.safe = 0
-
 				else
-					if (specialfunctions & OPEN)
-						if (!D.density)
-							spawn( 0 )
-								D.close()
-								return
-					if (specialfunctions & IDSCAN)
+					if(specialfunctions & IDSCAN)
 						D.aiDisabledIdScanner = 0
-					if (specialfunctions & BOLTS)
-						if (!D.isWireCut(4) && D.arePowerSystemsOn())
+					if(specialfunctions & BOLTS)
+						if(!D.isWireCut(4) && D.arePowerSystemsOn())
 							D.locked = 0
 							D.update_icon()
-					if (specialfunctions & SHOCK)
+					if(specialfunctions & SHOCK)
 						D.secondsElectrified = 0
-					if (specialfunctions & SAFE)
+					if(specialfunctions & SAFE)
 						D.safe = 1
 
 	else
@@ -127,12 +125,12 @@
 
 	desiredstate = !desiredstate
 	spawn(15)
-		if (!(stat & NOPOWER))
+		if(!(stat & NOPOWER))
 			icon_state = "doorctrl0"
 
 /obj/machinery/door_control/power_change()
 	..()
-	if (stat & NOPOWER)
+	if(stat & NOPOWER)
 		icon_state = "doorctrl-p"
 	else
 		icon_state = "doorctrl0"
@@ -145,16 +143,16 @@
 
 /obj/machinery/driver_button/attackby(obj/item/weapon/W, mob/user as mob)
 
-	if (istype(W, /obj/item/device/detective_scanner))
+	if(istype(W, /obj/item/device/detective_scanner))
 		return
 	return src.attack_hand(user)
 
 /obj/machinery/driver_button/attack_hand(mob/user as mob)
 
 	src.add_fingerprint(usr)
-	if (stat & (NOPOWER|BROKEN))
+	if(stat & (NOPOWER|BROKEN))
 		return
-	if (active)
+	if(active)
 		return
 	add_fingerprint(user)
 
@@ -172,7 +170,7 @@
 	sleep(20)
 
 	for(var/obj/machinery/mass_driver/M in world)
-		if (M.id == src.id)
+		if(M.id == src.id)
 			M.drive()
 
 	sleep(50)

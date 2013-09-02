@@ -7,7 +7,7 @@
 /var/const/meteors_in_small_wave = 10
 
 /proc/meteor_wave(var/number = meteors_in_wave)
-	if (!ticker || wavesecret)
+	if(!ticker || wavesecret)
 		return
 
 	var/startx
@@ -17,22 +17,22 @@
 	var/turf/pickedstart
 	var/turf/pickedgoal
 	switch(pick(1,2,3,4))
-		if (1) //NORTH
+		if(1) //NORTH
 			starty = world.maxy-3
 			startx = rand(1, world.maxx-1)
 			endy = 1
 			endx = rand(1, world.maxx-1)
-		if (2) //EAST
+		if(2) //EAST
 			starty = rand(1,world.maxy-1)
 			startx = world.maxx-3
 			endy = rand(1, world.maxy-1)
 			endx = 1
-		if (3) //SOUTH
+		if(3) //SOUTH
 			starty = 3
 			startx = rand(1, world.maxx-1)
 			endy = world.maxy-1
 			endx = rand(1, world.maxx-1)
-		if (4) //WEST
+		if(4) //WEST
 			starty = rand(1, world.maxy-1)
 			startx = 3
 			endy = rand(1,world.maxy-1)
@@ -60,11 +60,11 @@
 
 	var/obj/effect/meteor/M
 	switch(rand(1, 100))
-		if (1 to 15)
+		if(1 to 15)
 			M = new /obj/effect/meteor/big(pickedstart)
-		if (16 to 75)
+		if(16 to 75)
 			M = new /obj/effect/meteor( pickedstart )
-		if (76 to 100)
+		if(76 to 100)
 			M = new /obj/effect/meteor/small( pickedstart )
 
 	M.dest = tempgoal
@@ -101,13 +101,13 @@
 /obj/effect/meteor/Bump(atom/A)
 	spawn(0)
 		for(var/mob/M in range(10, src))
-			if (!M.stat && !istype(M, /mob/living/silicon/ai)) //bad idea to shake an ai's view
+			if(!M.stat && !istype(M, /mob/living/silicon/ai)) //bad idea to shake an ai's view
 				shake_camera(M, 3, 1)
 		if (A)
 			A.meteorhit(src)
 			playsound(get_turf(src), 'meteorimpact.ogg', 40, 1)
 		if (--src.hits <= 0)
-			if (prob(15))// && !istype(A, /obj/structure/grille))
+			if(prob(15))// && !istype(A, /obj/structure/grille))
 				explosion(get_turf(src), 4, 5, 6, 7, 0)
 				playsound(get_turf(src), "explosion", 50, 1)
 			del(src)
@@ -129,10 +129,10 @@
 	Bump(atom/A)
 		spawn(0)
 			for(var/mob/M in range(10, src))
-				if (!M.stat && !istype(M, /mob/living/silicon/ai)) //bad idea to shake an ai's view
+				if(!M.stat && !istype(M, /mob/living/silicon/ai)) //bad idea to shake an ai's view
 					shake_camera(M, 3, 1)
 			if (A)
-				if (isobj(A))
+				if(isobj(A))
 					del(A)
 				else
 					A.meteorhit(src)
@@ -140,14 +140,14 @@
 				return
 				playsound(get_turf(src), 'meteorimpact.ogg', 40, 1)
 			if (--src.hits <= 0)
-				if (prob(15) && !istype(A, /obj/structure/grille))
+				if(prob(15) && !istype(A, /obj/structure/grille))
 					explosion(get_turf(src), 1, 2, 3, 4, 0)
 					playsound(get_turf(src), "explosion", 50, 1)
 				del(src)
 		return
 
 /obj/effect/meteor/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/weapon/pickaxe))
+	if(istype(W, /obj/item/weapon/pickaxe))
 		del(src)
 		return
 	..()

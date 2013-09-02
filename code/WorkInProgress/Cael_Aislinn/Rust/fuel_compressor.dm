@@ -18,7 +18,7 @@ var/const/max_assembly_amount = 300
 
 /obj/machinery/rust_fuel_compressor/attack_hand(mob/user)
 	add_fingerprint(user)
-	/*if (stat & (BROKEN|NOPOWER))
+	/*if(stat & (BROKEN|NOPOWER))
 		return*/
 	interact(user)
 
@@ -38,7 +38,7 @@ var/const/max_assembly_amount = 300
 
 	var/t = "<B>Reactor Fuel Rod Compressor / Assembler</B><BR>"
 	t += "<A href='?src=\ref[src];close=1'>Close</A><BR>"
-	if (locked)
+	if(locked)
 		t += "Swipe your ID to unlock this console."
 	else
 		t += "Compressed matter in storage: [compressed_matter] <A href='?src=\ref[src];eject_matter=1'>\[Eject all\]</a><br>"
@@ -58,22 +58,22 @@ var/const/max_assembly_amount = 300
 
 /obj/machinery/rust_fuel_compressor/Topic(href, href_list)
 	..()
-	if ( href_list["close"] )
+	if( href_list["close"] )
 		usr << browse(null, "window=fuelcomp")
 		usr.machine = null
 
-	if ( href_list["eject_matter"] )
+	if( href_list["eject_matter"] )
 		var/ejected = 0
 		while(compressed_matter > 10)
 			new /obj/item/weapon/rcd_ammo(get_step(get_turf(src), src.dir))
 			compressed_matter -= 10
 			ejected = 1
-		if (ejected)
+		if(ejected)
 			usr << "\blue \icon[src] [src] ejects some compressed matter units."
 		else
 			usr << "\red \icon[src] there are no more compressed matter units in [src]."
 
-	if ( href_list["activate"] )
+	if( href_list["activate"] )
 		//world << "\blue New fuel rod assembly"
 		var/obj/item/weapon/fuel_assembly/F = new(src)
 		var/fail = 0
@@ -81,10 +81,10 @@ var/const/max_assembly_amount = 300
 		for(var/reagent in new_assembly_quantities)
 			var/req_matter = round(new_assembly_quantities[reagent] / 30)
 			//world << "[reagent] matter: [req_matter]/[compressed_matter]"
-			if (req_matter <= compressed_matter)
+			if(req_matter <= compressed_matter)
 				F.rod_quantities[reagent] = new_assembly_quantities[reagent]
 				compressed_matter -= req_matter
-				if (compressed_matter < 1)
+				if(compressed_matter < 1)
 					compressed_matter = 0
 			else
 				/*world << "bad reagent: [reagent], [req_matter > compressed_matter ? "req_matter > compressed_matter"\
@@ -92,17 +92,17 @@ var/const/max_assembly_amount = 300
 				fail = 1
 				break
 			//world << "\blue	[reagent]: new_assembly_quantities[reagent]<br>"
-		if (fail)
+		if(fail)
 			del(F)
 			compressed_matter = old_matter
 			usr << "\red \icon[src] [src] flashes red: \'Out of matter.\'"
 		else
 			F.loc = src.loc//get_step(get_turf(src), src.dir)
 			F.percent_depleted = 0
-			if (compressed_matter < 0.034)
+			if(compressed_matter < 0.034)
 				compressed_matter = 0
 
-	if ( href_list["change_reagent"] )
+	if( href_list["change_reagent"] )
 		var/cur_reagent = href_list["change_reagent"]
 		var/avail_rods = 300
 		for(var/rod in new_assembly_quantities)

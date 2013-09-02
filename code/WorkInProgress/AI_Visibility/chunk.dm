@@ -41,11 +41,11 @@
 
 /datum/camerachunk/proc/rebuild_chunk()
 	for(var/mob/aiEye/eye in seenby)
-		if (!eye.ai)
+		if(!eye.ai)
 			seenby -= eye
 			continue
 
-		if (eye.ai.client)
+		if(eye.ai.client)
 			eye.ai.client.images -= obscured
 			eye.ai.client.images -= dim
 
@@ -60,7 +60,7 @@
 	cameras = list()
 
 	for(var/obj/machinery/camera/c in range(16, locate(x + 8, y + 8, z)))
-		if (c.status)
+		if(c.status)
 			cameras += c
 
 	for(var/obj/machinery/camera/c in cameras)
@@ -76,13 +76,13 @@
 	dimTurfs -= visibleTurfs
 
 	for(var/turf/t in obscuredTurfs)
-		if (!t.obscured)
+		if(!t.obscured)
 			t.obscured = image('cameravis.dmi', t, "black", 15)
 
 		obscured += t.obscured
 
 	for(var/turf/t in dimTurfs)
-		if (!t.dim)
+		if(!t.dim)
 			t.dim = image('cameravis.dmi', t, "dim", TURF_LAYER)
 			t.dim.mouse_opacity = 0
 
@@ -91,7 +91,7 @@
 	cameranet.minimap |= minimap_obj
 
 	for(var/mob/aiEye/eye in seenby)
-		if (eye.ai.client)
+		if(eye.ai.client)
 			eye.ai.client.images |= obscured
 			eye.ai.client.images |= dim
 
@@ -100,13 +100,13 @@
 /datum/camerachunk/proc/add(mob/aiEye/eye)
 	eye.visibleCameraChunks |= src
 
-	if (eye.ai.client)
+	if(eye.ai.client)
 		eye.ai.client.images |= obscured
 		eye.ai.client.images |= dim
 
 	seenby |= eye
 
-	if (changed && !updating)
+	if(changed && !updating)
 		update()
 		changed = 0
 
@@ -115,21 +115,21 @@
 /datum/camerachunk/proc/remove(mob/aiEye/eye)
 	eye.visibleCameraChunks -= src
 
-	if (eye.ai.client)
+	if(eye.ai.client)
 		eye.ai.client.images -= obscured
 		eye.ai.client.images -= dim
 
 	seenby -= eye
 
 /datum/camerachunk/proc/visibilityChanged(turf/loc)
-	if (!(loc in visibleTurfs))
+	if(!(loc in visibleTurfs))
 		return
 
 	hasChanged()
 
 /datum/camerachunk/proc/hasChanged()
-	if (length(seenby) > 0)
-		if (!updating)
+	if(length(seenby) > 0)
+		if(!updating)
 			updating = 1
 
 			spawn(10)//Batch large changes, such as many doors opening or closing at once
@@ -139,11 +139,11 @@
 	else
 		changed = 1
 
-	if (!minimap_updating)
+	if(!minimap_updating)
 		minimap_updating = 1
 
 		spawn(MINIMAP_UPDATE_DELAY)
-			if (changed && !updating)
+			if(changed && !updating)
 				update()
 				changed = 0
 
@@ -178,46 +178,46 @@
 	var/list/images_removed = list()
 
 	for(var/turf/t in dimRemoved)
-		if (t.dim)
+		if(t.dim)
 			dim -= t.dim
 			images_removed += t.dim
 
-		if (!(t in visibleTurfs))
-			if (!t.obscured)
+		if(!(t in visibleTurfs))
+			if(!t.obscured)
 				t.obscured = image('cameravis.dmi', t, "black", 15)
 
 			obscured += t.obscured
 			images_added += t.obscured
 
 	for(var/turf/t in dimAdded)
-		if (!(t in visibleTurfs))
-			if (!t.dim)
+		if(!(t in visibleTurfs))
+			if(!t.dim)
 				t.dim = image('cameravis.dmi', t, "dim", 15)
 				t.dim.mouse_opacity = 0
 
 			dim += t.dim
 			images_added += t.dim
 
-			if (t.obscured)
+			if(t.obscured)
 				obscured -= t.obscured
 				images_removed += t.obscured
 
 	for(var/turf/t in visAdded)
-		if (t.obscured)
+		if(t.obscured)
 			obscured -= t.obscured
 			images_removed += t.obscured
 
 	for(var/turf/t in visRemoved)
-		if (t in obscuredTurfs)
-			if (!t.obscured)
+		if(t in obscuredTurfs)
+			if(!t.obscured)
 				t.obscured = image('cameravis.dmi', t, "black", 15)
 
 			obscured += t.obscured
 			images_added += t.obscured
 
 	for(var/mob/aiEye/eye in seenby)
-		if (eye.ai)
-			if (eye.ai.client)
+		if(eye.ai)
+			if(eye.ai.client)
 				eye.ai.client.images -= images_removed
 				eye.ai.client.images |= images_added
 		else

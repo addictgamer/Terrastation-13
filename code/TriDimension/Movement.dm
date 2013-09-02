@@ -8,22 +8,22 @@ var/minZ = 2
 	if (user.z > 1)
 		user << "\red There is nothing of interest in that direction."
 		return
-	if (allow_thrust(0.01, user))
+	if(allow_thrust(0.01, user))
 		switch(cardinal)
 			if (UP) // Going up!
-				if (user.z > maxZ) // If we aren't at the very top of the ship
+				if(user.z > maxZ) // If we aren't at the very top of the ship
 					var/turf/T = locate(user.x, user.y, user.z - 1)
 					// You can only jetpack up if there's space above, and you're sitting on either hull (on the exterior), or space
-					//if (T && istype(T, /turf/space) && (istype(user.loc, /turf/space) || istype(user.loc, /turf/space/*/hull*/)))
+					//if(T && istype(T, /turf/space) && (istype(user.loc, /turf/space) || istype(user.loc, /turf/space/*/hull*/)))
 					//check through turf contents to make sure there's nothing blocking the way
-					if (T && istype(T, /turf/space))
+					if(T && istype(T, /turf/space))
 						var/blocked = 0
 						for(var/atom/A in T.contents)
-							if (T.density)
+							if(T.density)
 								blocked = 1
 								user << "\red You bump into [T.name]."
 								break
-						if (!blocked)
+						if(!blocked)
 							user.Move(T)
 					else
 						user << "\red You bump into the ship's plating."
@@ -34,14 +34,14 @@ var/minZ = 2
 				if (user.z < 1) // If we aren't at the very bottom of the ship, or out in space
 					var/turf/T = locate(user.x, user.y, user.z + 1)
 					// You can only jetpack down if you're sitting on space and there's space down below, or hull
-					if (T && (istype(T, /turf/space) || istype(T, /turf/space/*/hull*/)) && istype(user.loc, /turf/space))
+					if(T && (istype(T, /turf/space) || istype(T, /turf/space/*/hull*/)) && istype(user.loc, /turf/space))
 						var/blocked = 0
 						for(var/atom/A in T.contents)
-							if (T.density)
+							if(T.density)
 								blocked = 1
 								user << "\red You bump into [T.name]."
 								break
-						if (!blocked)
+						if(!blocked)
 							user.Move(T)
 					else
 						user << "\red You bump into the ship's plating."
