@@ -120,7 +120,7 @@ obj/machinery/atmospherics/pipe
 				if(!nodealert)
 					//world << "Missing node from [src] at [src.x],[src.y],[src.z]"
 					nodealert = 1
-			else if(nodealert)
+			else if (nodealert)
 				nodealert = 0
 
 
@@ -187,12 +187,12 @@ obj/machinery/atmospherics/pipe
 			if(node1&&node2)
 				var/C = ""
 				switch(color)
-					if("red") C = "-r"
-					if("blue") C = "-b"
-					if("cyan") C = "-c"
-					if("green") C = "-g"
-					if("yellow") C = "-y"
-					if("purple") C = "-p"
+					if ("red") C = "-r"
+					if ("blue") C = "-b"
+					if ("cyan") C = "-c"
+					if ("green") C = "-g"
+					if ("yellow") C = "-y"
+					if ("purple") C = "-p"
 				icon_state = "intact[C][invisibility ? "-f" : "" ]"
 
 				//var/node1_direction = get_dir(src, node1)
@@ -215,9 +215,9 @@ obj/machinery/atmospherics/pipe
 
 			for(var/direction in cardinal)
 				if(direction&initialize_directions)
-					if(!node1_dir)
+					if (!node1_dir)
 						node1_dir = direction
-					else if(!node2_dir)
+					else if (!node2_dir)
 						node2_dir = direction
 
 			for(var/obj/machinery/atmospherics/target in get_step(src,node1_dir))
@@ -359,7 +359,7 @@ obj/machinery/atmospherics/pipe
 				if(!nodealert)
 					//world << "Missing node from [src] at [src.x],[src.y],[src.z]"
 					nodealert = 1
-			else if(nodealert)
+			else if (nodealert)
 				nodealert = 0
 */
 		carbon_dioxide
@@ -483,7 +483,7 @@ obj/machinery/atmospherics/pipe
 			return null
 
 		attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
-			if(istype(W, /obj/item/device/analyzer) && get_dist(user, src) <= 1)
+			if (istype(W, /obj/item/device/analyzer) && get_dist(user, src) <= 1)
 				for (var/mob/O in viewers(user, null))
 					O << "\red [user] has used the analyzer on \icon[icon]"
 
@@ -491,7 +491,7 @@ obj/machinery/atmospherics/pipe
 				var/total_moles = parent.air.total_moles()
 
 				user << "\blue Results of analysis of \icon[icon]"
-				if(total_moles>0)
+				if (total_moles>0)
 					var/o2_concentration = parent.air.oxygen/total_moles
 					var/n2_concentration = parent.air.nitrogen/total_moles
 					var/co2_concentration = parent.air.carbon_dioxide/total_moles
@@ -550,7 +550,7 @@ obj/machinery/atmospherics/pipe
 				if(!nodealert)
 					//world << "Missing node from [src] at [src.x],[src.y],[src.z]"
 					nodealert = 1
-			else if(nodealert)
+			else if (nodealert)
 				nodealert = 0
 */
 		Del()
@@ -661,7 +661,7 @@ obj/machinery/atmospherics/pipe
 				if(!nodealert)
 					//world << "Missing node from [src] at [src.x],[src.y],[src.z]"
 					nodealert = 1
-			else if(nodealert)
+			else if (nodealert)
 				nodealert = 0
 */
 		Del()
@@ -698,12 +698,12 @@ obj/machinery/atmospherics/pipe
 			if(node1&&node2&&node3)
 				var/C = ""
 				switch(color)
-					if("red") C = "-r"
-					if("blue") C = "-b"
-					if("cyan") C = "-c"
-					if("green") C = "-g"
-					if("yellow") C = "-y"
-					if("purple") C = "-p"
+					if ("red") C = "-r"
+					if ("blue") C = "-b"
+					if ("cyan") C = "-c"
+					if ("green") C = "-g"
+					if ("yellow") C = "-y"
+					if ("purple") C = "-p"
 				icon_state = "manifold[C][invisibility ? "-f" : ""]"
 
 			else
@@ -737,7 +737,7 @@ obj/machinery/atmospherics/pipe
 							node1 = target
 							connect_directions &= ~direction
 							break
-					if(node1)
+					if (node1)
 						break
 
 
@@ -748,7 +748,7 @@ obj/machinery/atmospherics/pipe
 							node2 = target
 							connect_directions &= ~direction
 							break
-					if(node2)
+					if (node2)
 						break
 
 
@@ -759,7 +759,7 @@ obj/machinery/atmospherics/pipe
 							node3 = target
 							connect_directions &= ~direction
 							break
-					if(node3)
+					if (node3)
 						break
 
 			var/turf/T = src.loc			// hide if turf is not intact
@@ -881,7 +881,7 @@ obj/machinery/atmospherics/pipe
 				if(!nodealert)
 					//world << "Missing node from [src] at [src.x],[src.y],[src.z]"
 					nodealert = 1
-			else if(nodealert)
+			else if (nodealert)
 				nodealert = 0
 */
 		Del()
@@ -926,12 +926,12 @@ obj/machinery/atmospherics/pipe
 			if(node1&&node2&&node3&&node4)
 				var/C = ""
 				switch(color)
-					if("red") C = "-r"
-					if("blue") C = "-b"
-					if("cyan") C = "-c"
-					if("green") C = "-g"
-					if("yellow") C = "-y"
-					if("purple") C = "-p"
+					if ("red") C = "-r"
+					if ("blue") C = "-b"
+					if ("cyan") C = "-c"
+					if ("green") C = "-g"
+					if ("yellow") C = "-y"
+					if ("purple") C = "-p"
 				icon_state = "manifold4w[C][invisibility ? "-f" : ""]"
 
 			else
@@ -1113,36 +1113,36 @@ obj/machinery/atmospherics/pipe
 
 
 obj/machinery/atmospherics/pipe/attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
-	if(istype(src, /obj/machinery/atmospherics/pipe/tank))
+	if (istype(src, /obj/machinery/atmospherics/pipe/tank))
 		return ..()
-	if(istype(src, /obj/machinery/atmospherics/pipe/vent))
+	if (istype(src, /obj/machinery/atmospherics/pipe/vent))
 		return ..()
 
 	if(istype(W,/obj/item/device/pipe_painter))
 		return 1
 
-	if(!istype(W, /obj/item/weapon/wrench))
+	if (!istype(W, /obj/item/weapon/wrench))
 		return ..()
 	var/turf/T = src.loc
-	if(level==1 && isturf(T) && T.intact)
+	if (level==1 && isturf(T) && T.intact)
 		user << "\red You must remove the plating first."
 		return 1
 	var/datum/gas_mixture/int_air = return_air()
 	var/datum/gas_mixture/env_air = loc.return_air()
-	if((int_air.return_pressure()-env_air.return_pressure()) > 2*ONE_ATMOSPHERE)
+	if ((int_air.return_pressure()-env_air.return_pressure()) > 2*ONE_ATMOSPHERE)
 		user << "\red You cannot unwrench this [src], it too exerted due to internal pressure."
 		add_fingerprint(user)
 		return 1
 	playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 	user << "\blue You begin to unfasten \the [src]..."
-	if(do_after(user, 40))
+	if (do_after(user, 40))
 		user.visible_message( \
 			"[user] unfastens \the [src].", \
 			"\blue You have unfastened \the [src].", \
 			"You hear ratchet.")
 		new /obj/item/pipe(loc, make_from=src)
 		for (var/obj/machinery/meter/meter in T)
-			if(meter.target == src)
+			if (meter.target == src)
 				new /obj/item/pipe_meter(T)
 				del(meter)
 		del(src)

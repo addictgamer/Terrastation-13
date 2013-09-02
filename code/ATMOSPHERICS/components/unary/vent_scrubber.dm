@@ -27,10 +27,10 @@
 	var/radio_filter_in
 	New()
 		initial_loc = get_area(loc)
-		if(initial_loc.master)
+		if (initial_loc.master)
 			initial_loc = initial_loc.master
 		area_uid = initial_loc.uid
-		if(!id_tag)
+		if (!id_tag)
 			assign_uid()
 			id_tag = num2text(uid)
 		if(ticker && ticker.current_state == 3)//if the game is running
@@ -87,14 +87,14 @@
 		..()
 		radio_filter_in = frequency==initial(frequency)?(RADIO_FROM_AIRALARM):null
 		radio_filter_out = frequency==initial(frequency)?(RADIO_TO_AIRALARM):null
-		if(frequency)
+		if (frequency)
 			set_frequency(frequency)
 
 	process()
 		..()
 		if(stat & (NOPOWER|BROKEN))
 			return
-		if(!node)
+		if (!node)
 			on = 0
 		//broadcast_status()
 		if(!on)
@@ -109,7 +109,7 @@
 
 				//Take a gas sample
 				var/datum/gas_mixture/removed = loc.remove_air(transfer_moles)
-				if(isnull(removed)) //in space
+				if (isnull(removed)) //in space
 					return
 
 				//Filter it
@@ -141,7 +141,7 @@
 					network.update = 1
 
 		else //Just siphoning all air
-			if(air_contents.return_pressure()>=50*ONE_ATMOSPHERE)
+			if (air_contents.return_pressure()>=50*ONE_ATMOSPHERE)
 				return
 
 			var/transfer_moles = environment.total_moles()*(volume_rate/environment.volume)
@@ -240,24 +240,24 @@
 		update_icon()
 
 	attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
-		if(!istype(W, /obj/item/weapon/wrench))
+		if (!istype(W, /obj/item/weapon/wrench))
 			return ..()
-		if(!(stat & NOPOWER) && on)
+		if (!(stat & NOPOWER) && on)
 			user << "\red You cannot unwrench this [src], turn it off first."
 			return 1
 		var/turf/T = src.loc
-		if(level==1 && isturf(T) && T.intact)
+		if (level==1 && isturf(T) && T.intact)
 			user << "\red You must remove the plating first."
 			return 1
 		var/datum/gas_mixture/int_air = return_air()
 		var/datum/gas_mixture/env_air = loc.return_air()
-		if((int_air.return_pressure()-env_air.return_pressure()) > 2*ONE_ATMOSPHERE)
+		if ((int_air.return_pressure()-env_air.return_pressure()) > 2*ONE_ATMOSPHERE)
 			user << "\red You cannot unwrench this [src], it too exerted due to internal pressure."
 			add_fingerprint(user)
 			return 1
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		user << "\blue You begin to unfasten \the [src]..."
-		if(do_after(user, 40))
+		if (do_after(user, 40))
 			user.visible_message( \
 				"[user] unfastens \the [src].", \
 				"\blue You have unfastened \the [src].", \
