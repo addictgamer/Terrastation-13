@@ -114,9 +114,9 @@
 					spawn(0)
 						var/t = input(usr, "Please enter new name", F.name, null) as text
 						t = copytext(sanitize(t), 1, 16)
-						if(!t)
+						if (!t)
 							return
-						if(!in_range(src.master, usr) || !(F.holder in src.master))
+						if (!in_range(src.master, usr) || !(F.holder in src.master))
 							return
 						if(F.holder.read_only)
 							return

@@ -189,7 +189,7 @@
 /obj/effect/trap/single/rockfalls/activate(mob/living/victim)
 	var/rock_type = pick(rocks_type)
 	var/obj/item/weapon/ore/rock = new rock_type(victim:loc)
-	if(istype(victim) && prob(rock_hit_chance))
+	if (istype(victim) && prob(rock_hit_chance))
 		var/dmg = rand(rock_min_dmg,rock_max_dmg)
 		if(istype(victim, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = victim

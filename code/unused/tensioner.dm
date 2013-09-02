@@ -201,17 +201,17 @@ var/global/datum/tension/tension_master
 	proc/get_num_players()
 		var/peeps = 0
 		for (var/mob/M in player_list)
-			if(!M.client)
+			if (!M.client)
 				continue
 			peeps += 1
 
 		return peeps
 
 	proc/death(var/mob/M)
-		if(!M) return
+		if (!M) return
 		deaths++
 
-		if(istype(M,/mob/living/carbon/human))
+		if (istype(M,/mob/living/carbon/human))
 			score += HUMAN_DEATH
 			human_deaths++
 		else
@@ -246,46 +246,46 @@ var/global/datum/tension/tension_master
 		if(href_list["addScore"])
 			score += 50000
 
-		if(href_list["makeTratior"])
+		if (href_list["makeTratior"])
 			makeTratiors()
 
-		else if(href_list["makeChanglings"])
+		else if (href_list["makeChanglings"])
 			makeChanglings()
 
-		else if(href_list["makeRevs"])
+		else if (href_list["makeRevs"])
 			makeRevs()
 
-		else if(href_list["makeWizard"])
+		else if (href_list["makeWizard"])
 			makeWizard()
 
-		else if(href_list["makeCult"])
+		else if (href_list["makeCult"])
 			makeCult()
 
-		else if(href_list["makeMalf"])
+		else if (href_list["makeMalf"])
 			makeMalfAImode()
 
-		else if(href_list["makeNukeTeam"])
+		else if (href_list["makeNukeTeam"])
 			makeNukeTeam()
 
-		else if(href_list["makeAliens"])
+		else if (href_list["makeAliens"])
 			makeAliens()
 
-		else if(href_list["makeSpaceNinja"])
+		else if (href_list["makeSpaceNinja"])
 			makeSpaceNinja()
 
-		else if(href_list["makeDeathsquad"])
+		else if (href_list["makeDeathsquad"])
 			makeDeathsquad()
 
-		else if(href_list["makeBorgDeathsquad"])
+		else if (href_list["makeBorgDeathsquad"])
 			makeBorgDeathsquad()
 
-		else if(href_list["Supress"])
+		else if (href_list["Supress"])
 			supress = 1
 			eversupressed++
 			spawn(6000)
 				supress = 0
 
-		else if(href_list["ToggleStatus"])
+		else if (href_list["ToggleStatus"])
 			config.Tensioner_Active = !config.Tensioner_Active
 
 
@@ -341,7 +341,7 @@ var/global/datum/tension/tension_master
 
 			if(applicant.stat < 2)
 				if(applicant.mind)
-					if(!applicant.mind.special_role)
+					if (!applicant.mind.special_role)
 						if(!jobban_isbanned(applicant, "traitor") && !jobban_isbanned(applicant, "Syndicate"))
 							if(!(applicant.job in temp.restricted_jobs))
 								if(applicant.client)
@@ -378,7 +378,7 @@ var/global/datum/tension/tension_master
 
 			if(applicant.stat < 2)
 				if(applicant.mind)
-					if(!applicant.mind.special_role)
+					if (!applicant.mind.special_role)
 						if(!jobban_isbanned(applicant, "changeling") && !jobban_isbanned(applicant, "Syndicate"))
 							if(!(applicant.job in temp.restricted_jobs))
 								if(applicant.client)
@@ -414,7 +414,7 @@ var/global/datum/tension/tension_master
 
 			if(applicant.stat < 2)
 				if(applicant.mind)
-					if(!applicant.mind.special_role)
+					if (!applicant.mind.special_role)
 						if(!jobban_isbanned(applicant, "revolutionary") && !jobban_isbanned(applicant, "Syndicate"))
 							if(!(applicant.job in temp.restricted_jobs))
 								if(applicant.client)
@@ -484,7 +484,7 @@ var/global/datum/tension/tension_master
 
 			if(applicant.stat < 2)
 				if(applicant.mind)
-					if(!applicant.mind.special_role)
+					if (!applicant.mind.special_role)
 						if(!jobban_isbanned(applicant, "cultist") && !jobban_isbanned(applicant, "Syndicate"))
 							if(!(applicant.job in temp.restricted_jobs))
 								if(applicant.client)
@@ -566,12 +566,12 @@ var/global/datum/tension/tension_master
 					new /obj/structure/closet/syndicate/nuclear(closet_spawn.loc)
 
 				for (var/obj/effect/landmark/A in /area/syndicate_station/start)//Because that's the only place it can BE -Sieve
-					if(A.name == "Syndicate-Gear-Closet")
+					if (A.name == "Syndicate-Gear-Closet")
 						new /obj/structure/closet/syndicate/personal(A.loc)
 						del(A)
 						continue
 
-					if(A.name == "Syndicate-Bomb")
+					if (A.name == "Syndicate-Bomb")
 						new /obj/effect/spawner/newbomb/timer/syndicate(A.loc)
 						del(A)
 						continue
@@ -618,7 +618,7 @@ var/global/datum/tension/tension_master
 		if(prob(10))
 			input = "Save Runtime and any other cute things on the station."
 	/*
-		if(emergency_shuttle.direction == 1 && emergency_shuttle.online == 1)
+		if (emergency_shuttle.direction == 1 && emergency_shuttle.online == 1)
 			emergency_shuttle.recall()
 			world << "\blue <B>Alert: The shuttle is going back!</B>"
 
@@ -651,7 +651,7 @@ var/global/datum/tension/tension_master
 			for (var/obj/effect/landmark/L in /area/syndicate_mothership/elite_squad)
 				if(numagents<=0)
 					break
-				if(L.name == "Syndicate-Commando")
+				if (L.name == "Syndicate-Commando")
 					syndicate_leader_selected = numagents == 1?1:0
 
 					var/mob/living/carbon/human/new_syndicate_commando = create_syndicate_death_commando(L, syndicate_leader_selected)
@@ -678,14 +678,14 @@ var/global/datum/tension/tension_master
 
 		//Spawns the rest of the commando gear.
 		//	for (var/obj/effect/landmark/L)
-			//	if(L.name == "Commando_Manual")
+			//	if (L.name == "Commando_Manual")
 					//new /obj/item/weapon/gun/energy/pulse_rifle(L.loc)
 				//	var/obj/item/weapon/paper/P = new(L.loc)
 				//	P.info = "<p><b>Good morning soldier!</b>. This compact guide will familiarize you with standard operating procedure. There are three basic rules to follow:<br>#1 Work as a team.<br>#2 Accomplish your objective at all costs.<br>#3 Leave no witnesses.<br>You are fully equipped and stocked for your mission--before departing on the Spec. Ops. Shuttle due South, make sure that all operatives are ready. Actual mission objective will be relayed to you by Central Command through your headsets.<br>If deemed appropriate, Central Command will also allow members of your team to equip assault power-armor for the mission. You will find the armor storage due West of your position. Once you are ready to leave, utilize the Special Operations shuttle console and toggle the hull doors via the other console.</p><p>In the event that the team does not accomplish their assigned objective in a timely manner, or finds no other way to do so, attached below are instructions on how to operate a Nanotrasen Nuclear Device. Your operations <b>LEADER</b> is provided with a nuclear authentication disk and a pin-pointer for this reason. You may easily recognize them by their rank: Lieutenant, Captain, or Major. The nuclear device itself will be present somewhere on your destination.</p><p>Hello and thank you for choosing Nanotrasen for your nuclear information needs. Today's crash course will deal with the operation of a Fission Class Nanotrasen made Nuclear Device.<br>First and foremost, <b>DO NOT TOUCH ANYTHING UNTIL THE BOMB IS IN PLACE.</b> Pressing any button on the compacted bomb will cause it to extend and bolt itself into place. If this is done to unbolt it one must completely log in which at this time may not be possible.<br>To make the device functional:<br>#1 Place bomb in designated detonation zone<br> #2 Extend and anchor bomb (attack with hand).<br>#3 Insert Nuclear Auth. Disk into slot.<br>#4 Type numeric code into keypad ([nuke_code]).<br>Note: If you make a mistake press R to reset the device.<br>#5 Press the E button to log onto the device.<br>You now have activated the device. To deactivate the buttons at anytime, for example when you have already prepped the bomb for detonation, remove the authentication disk OR press the R on the keypad. Now the bomb CAN ONLY be detonated using the timer. A manual detonation is not an option.<br>Note: Toggle off the <b>SAFETY</b>.<br>Use the - - and + + to set a detonation time between 5 seconds and 10 minutes. Then press the timer toggle button to start the countdown. Now remove the authentication disk so that the buttons deactivate.<br>Note: <b>THE BOMB IS STILL SET AND WILL DETONATE</b><br>Now before you remove the disk if you need to move the bomb you can: Toggle off the anchor, move it, and re-anchor.</p><p>The nuclear authorization code is: <b>[nuke_code ? nuke_code : "None provided"]</b></p><p><b>Good luck, soldier!</b></p>"
 				//	P.name = "Spec. Ops. Manual"
 
 			for (var/obj/effect/landmark/L in /area/shuttle/syndicate_elite)
-				if(L.name == "Syndicate-Commando-Bomb")
+				if (L.name == "Syndicate-Commando-Bomb")
 					new /obj/effect/spawner/newbomb/timer/syndicate(L.loc)
 				//	del(L)
 
@@ -722,7 +722,7 @@ var/global/datum/tension/tension_master
 			for (var/obj/effect/landmark/L in /area/borg_deathsquad)
 				if(numagents<=0)
 					break
-				if(L.name == "Borg-Deathsquad")
+				if (L.name == "Borg-Deathsquad")
 
 					var/name = pick(namelist)
 					namelist.Remove(name)
@@ -749,7 +749,7 @@ var/global/datum/tension/tension_master
 
 		//Spawns the rest of the commando gear.
 		//	for (var/obj/effect/landmark/L)
-			//	if(L.name == "Commando_Manual")
+			//	if (L.name == "Commando_Manual")
 					//new /obj/item/weapon/gun/energy/pulse_rifle(L.loc)
 				//	var/obj/item/weapon/paper/P = new(L.loc)
 				//	P.info = "<p><b>Good morning soldier!</b>. This compact guide will familiarize you with standard operating procedure. There are three basic rules to follow:<br>#1 Work as a team.<br>#2 Accomplish your objective at all costs.<br>#3 Leave no witnesses.<br>You are fully equipped and stocked for your mission--before departing on the Spec. Ops. Shuttle due South, make sure that all operatives are ready. Actual mission objective will be relayed to you by Central Command through your headsets.<br>If deemed appropriate, Central Command will also allow members of your team to equip assault power-armor for the mission. You will find the armor storage due West of your position. Once you are ready to leave, utilize the Special Operations shuttle console and toggle the hull doors via the other console.</p><p>In the event that the team does not accomplish their assigned objective in a timely manner, or finds no other way to do so, attached below are instructions on how to operate a Nanotrasen Nuclear Device. Your operations <b>LEADER</b> is provided with a nuclear authentication disk and a pin-pointer for this reason. You may easily recognize them by their rank: Lieutenant, Captain, or Major. The nuclear device itself will be present somewhere on your destination.</p><p>Hello and thank you for choosing Nanotrasen for your nuclear information needs. Today's crash course will deal with the operation of a Fission Class Nanotrasen made Nuclear Device.<br>First and foremost, <b>DO NOT TOUCH ANYTHING UNTIL THE BOMB IS IN PLACE.</b> Pressing any button on the compacted bomb will cause it to extend and bolt itself into place. If this is done to unbolt it one must completely log in which at this time may not be possible.<br>To make the device functional:<br>#1 Place bomb in designated detonation zone<br> #2 Extend and anchor bomb (attack with hand).<br>#3 Insert Nuclear Auth. Disk into slot.<br>#4 Type numeric code into keypad ([nuke_code]).<br>Note: If you make a mistake press R to reset the device.<br>#5 Press the E button to log onto the device.<br>You now have activated the device. To deactivate the buttons at anytime, for example when you have already prepped the bomb for detonation, remove the authentication disk OR press the R on the keypad. Now the bomb CAN ONLY be detonated using the timer. A manual detonation is not an option.<br>Note: Toggle off the <b>SAFETY</b>.<br>Use the - - and + + to set a detonation time between 5 seconds and 10 minutes. Then press the timer toggle button to start the countdown. Now remove the authentication disk so that the buttons deactivate.<br>Note: <b>THE BOMB IS STILL SET AND WILL DETONATE</b><br>Now before you remove the disk if you need to move the bomb you can: Toggle off the anchor, move it, and re-anchor.</p><p>The nuclear authorization code is: <b>[nuke_code ? nuke_code : "None provided"]</b></p><p><b>Good luck, soldier!</b></p>"

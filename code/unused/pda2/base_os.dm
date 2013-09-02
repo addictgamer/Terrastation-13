@@ -98,7 +98,7 @@
 					src.master.overlays.Cut() //Remove existing alerts
 					dat += "<h4>SpaceMessenger V4.0.5</h4>"
 
-					if(!src.message_mode)
+					if (!src.message_mode)
 
 						dat += "<a href='byond://?src=\ref[src];message_func=ringer'>Ringer: [src.message_silent == 1 ? "Off" : "On"]</a> | "
 						dat += "<a href='byond://?src=\ref[src];message_func=on'>Send / Receive: [src.message_on == 1 ? "On" : "Off"]</a> | "
@@ -112,12 +112,12 @@
 
 						var/count = 0
 
-						if(src.message_on)
+						if (src.message_on)
 							for (var/obj/item/device/pda2/P in src.detected_pdas)
-								if(!P.owner)
+								if (!P.owner)
 									src.detected_pdas -= P
 									continue
-								else if(P == src) //I guess this can happen if somebody copies the system file.
+								else if (P == src) //I guess this can happen if somebody copies the system file.
 									src.detected_pdas -= P
 									continue
 
@@ -128,7 +128,7 @@
 
 						dat += "</ul>"
 
-						if(count == 0)
+						if (count == 0)
 							dat += "None detected.<br>"
 
 					else
@@ -178,7 +178,7 @@
 					dat += "<h4>Atmospheric Readings</h4>"
 
 					var/turf/T = get_turf_or_move(get_turf(src.master))
-					if(isnull(T))
+					if (isnull(T))
 						dat += "Unable to obtain a reading.<br>"
 					else
 						var/datum/gas_mixture/environment = T.return_air()
@@ -188,7 +188,7 @@
 
 						dat += "Air Pressure: [round(pressure,0.1)] kPa<br>"
 
-						if(total_moles())
+						if (total_moles())
 							var/o2_level = environment.oxygen/total_moles()
 							var/n2_level = environment.nitrogen/total_moles()
 							var/co2_level = environment.carbon_dioxide/total_moles()
@@ -231,10 +231,10 @@
 				switch(href_list["input"])
 					if("tone")
 						var/t = input(usr, "Please enter new ringtone", src.name, src.message_tone) as text
-						if(!t)
+						if (!t)
 							return
 
-						if(!src.master || !in_range(src.master, usr) && src.master.loc != usr)
+						if (!src.master || !in_range(src.master, usr) && src.master.loc != usr)
 							return
 
 						if(!(src.holder in src.master))
@@ -245,10 +245,10 @@
 
 					if("note")
 						var/t = input(usr, "Please enter note", src.name, src.note) as message
-						if(!t)
+						if (!t)
 							return
 
-						if(!src.master || !in_range(src.master, usr) && src.master.loc != usr)
+						if (!src.master || !in_range(src.master, usr) && src.master.loc != usr)
 							return
 
 						if(!(src.holder in src.master))
@@ -264,10 +264,10 @@
 							return
 
 						var/t = input(usr, "Please enter message", P.name, null) as text
-						if(!t)
+						if (!t)
 							return
 
-						if(!src.master || !in_range(src.master, usr) && src.master.loc != usr)
+						if (!src.master || !in_range(src.master, usr) && src.master.loc != usr)
 							return
 
 						if(!(src.holder in src.master))
@@ -290,9 +290,9 @@
 
 						var/t = input(usr, "Please enter new name", src.name, F.name) as text
 						t = copytext(sanitize(t), 1, 16)
-						if(!t)
+						if (!t)
 							return
-						if(!in_range(src.master, usr) || !(F.holder in src.master))
+						if (!in_range(src.master, usr) || !(F.holder in src.master))
 							return
 						if(F.holder.read_only)
 							return
@@ -438,7 +438,7 @@
 			if(src.mode)
 				dat += " | <a href='byond://?src=\ref[src];mode=0'>Main Menu</a>"
 
-			else if(!isnull(src.master.cartridge))
+			else if (!isnull(src.master.cartridge))
 				dat += " | <a href='byond://?src=\ref[src.master];eject_cart=1'>Eject [src.master.cartridge]</a>"
 
 			dat += " | <a href='byond://?src=\ref[src.master];refresh=1'>Refresh</a>"

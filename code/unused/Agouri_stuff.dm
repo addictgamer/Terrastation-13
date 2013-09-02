@@ -424,7 +424,7 @@
 	return 0
 
 /turf/Enter(atom/movable/mover as mob|obj, atom/forget as mob|obj|turf|area)
-	if(!mover || !isturf(mover.loc))
+	if (!mover || !isturf(mover.loc))
 		return 1
 
 
@@ -450,7 +450,7 @@
 				return 0
 
 	//Then, check the turf itself
-	if(!src.CanPass(mover, src))
+	if (!src.CanPass(mover, src))
 		mover.Bump(src, 1)
 		return 0
 
@@ -486,7 +486,7 @@
 		if(objects > loopsanity)	break
 		objects++
 		spawn( 0 )
-			if((A && M))
+			if ((A && M))
 				A.HasEntered(M, 1)
 			return
 	objects = 0
@@ -494,7 +494,7 @@
 		if(objects > loopsanity)	break
 		objects++
 		spawn( 0 )
-			if((A && M))
+			if ((A && M))
 				A.HasProximity(M, 1)
 			return
 	return
@@ -543,7 +543,7 @@
 	if(prior_icon) W.icon_state = prior_icon
 	else W.icon_state = "floor"
 
-	if(!explode)
+	if (!explode)
 		W.opacity = 1
 		W.sd_SetOpacity(0)
 		//This is probably gonna make lighting go a bit wonky in bombed areas, but sd_SetOpacity was the primary reason bombs have been so laggy. --NEO
@@ -574,7 +574,7 @@
 	E.icon_state = "engine"
 
 /turf/simulated/Entered(atom/A, atom/OL)
-	if(istype(A,/mob/living/carbon))
+	if (istype(A,/mob/living/carbon))
 		var/mob/living/carbon/M = A
 		if(M.lying)	return
 		if(istype(M, /mob/living/carbon/human))
@@ -593,7 +593,7 @@
 		switch (src.wet)
 			if(1)
 				if(istype(M, /mob/living/carbon/human)) // Added check since monkeys don't have shoes
-					if((M.m_intent == "run") && !(istype(M:shoes, /obj/item/clothing/shoes) && M:shoes.flags&NOSLIP))
+					if ((M.m_intent == "run") && !(istype(M:shoes, /obj/item/clothing/shoes) && M:shoes.flags&NOSLIP))
 						M.stop_pulling()
 						step(M, M.dir)
 						M << "\blue You slipped on the wet floor!"
@@ -604,7 +604,7 @@
 						M.inertia_dir = 0
 						return
 				else if(!istype(M, /mob/living/carbon/slime))
-					if(M.m_intent == "run")
+					if (M.m_intent == "run")
 						M.stop_pulling()
 						step(M, M.dir)
 						M << "\blue You slipped on the wet floor!"
@@ -706,17 +706,17 @@
 			del(src)
 			return
 		if(2.0)
-			if(prob(50))
+			if (prob(50))
 				dismantle_wall(0,1)
 			else
 				dismantle_wall(1,1)
 		if(3.0)
 			var/proba
-			if(istype(src, /turf/simulated/wall/r_wall))
+			if (istype(src, /turf/simulated/wall/r_wall))
 				proba = 15
 			else
 				proba = 40
-			if(prob(proba))
+			if (prob(proba))
 				dismantle_wall(0,1)
 		else
 	return
@@ -726,8 +726,8 @@
 		dismantle_wall()
 
 /turf/simulated/wall/attack_paw(mob/user as mob)
-	if((user.mutations & HULK))
-		if(prob(40))
+	if ((user.mutations & HULK))
+		if (prob(40))
 			usr << text("\blue You smash through the wall.")
 			dismantle_wall(1)
 			return
@@ -740,11 +740,11 @@
 
 /turf/simulated/wall/attack_animal(mob/living/simple_animal/M as mob)
 	if(M.wall_smash)
-		if(istype(src, /turf/simulated/wall/r_wall))
+		if (istype(src, /turf/simulated/wall/r_wall))
 			M << text("\blue This wall is far too strong for you to destroy.")
 			return
 		else
-			if(prob(40))
+			if (prob(40))
 				M << text("\blue You smash through the wall.")
 				dismantle_wall(1)
 				return
@@ -756,8 +756,8 @@
 	return
 
 /turf/simulated/wall/attack_hand(mob/user as mob)
-	if((user.mutations & HULK))
-		if(prob(40))
+	if ((user.mutations & HULK))
+		if (prob(40))
 			usr << text("\blue You smash through the wall.")
 			dismantle_wall(1)
 			return
@@ -772,16 +772,16 @@
 
 /turf/simulated/wall/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
-	if(!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+	if (!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
 		usr << "\red You don't have the dexterity to do this!"
 		return
 
-	if(istype(W, /obj/item/weapon/weldingtool) && W:welding)
+	if (istype(W, /obj/item/weapon/weldingtool) && W:welding)
 		var/turf/T = get_turf(user)
-		if(!( istype(T, /turf) ))
+		if (!( istype(T, /turf) ))
 			return
 
-		if(thermite)
+		if (thermite)
 			var/obj/effect/overlay/O = new/obj/effect/overlay( src )
 			O.name = "Thermite"
 			O.desc = "Looks hot."
@@ -798,13 +798,13 @@
 			F.sd_LumReset()
 			return
 
-		if(W:remove_fuel(0,user))
+		if (W:remove_fuel(0,user))
 			W:welding = 2
 			user << "\blue Now disassembling the outer wall plating."
 			playsound(src.loc, 'sound/items/Welder.ogg', 100, 1)
 			sleep(100)
-			if(W && istype(src, /turf/simulated/wall))
-				if((get_turf(user) == T && user.equipped() == W))
+			if (W && istype(src, /turf/simulated/wall))
+				if ((get_turf(user) == T && user.equipped() == W))
 					user << "\blue You disassembled the outer wall plating."
 					dismantle_wall()
 				W:welding = 1
@@ -812,12 +812,12 @@
 			user << "\blue You need more welding fuel to complete this task."
 			return
 
-	else if(istype(W, /obj/item/weapon/pickaxe/plasmacutter))
+	else if (istype(W, /obj/item/weapon/pickaxe/plasmacutter))
 		var/turf/T = user.loc
-		if(!( istype(T, /turf) ))
+		if (!( istype(T, /turf) ))
 			return
 
-		if(thermite)
+		if (thermite)
 			var/obj/effect/overlay/O = new/obj/effect/overlay( src )
 			O.name = "Thermite"
 			O.desc = "Looks hot."
@@ -838,8 +838,8 @@
 			user << "\blue Now disassembling the outer wall plating."
 			playsound(src.loc, 'sound/items/Welder.ogg', 100, 1)
 			sleep(60)
-			if(W && istype(src, /turf/simulated/wall))
-				if((get_turf(user) == T && user.equipped() == W))
+			if (W && istype(src, /turf/simulated/wall))
+				if ((get_turf(user) == T && user.equipped() == W))
 					user << "\blue You disassembled the outer wall plating."
 					dismantle_wall()
 					for(var/mob/O in viewers(user, 5))
@@ -850,8 +850,8 @@
 		var/turf/T = user.loc
 		user << "\blue Now drilling through wall."
 		sleep(60)
-		if(W && istype(src, /turf/simulated/wall))
-			if((user.loc == T && user.equipped() == W))
+		if (W && istype(src, /turf/simulated/wall))
+			if ((user.loc == T && user.equipped() == W))
 				dismantle_wall(1)
 				for(var/mob/O in viewers(user, 5))
 					O.show_message(text("\blue The wall was drilled apart by []!", user), 1, text("\red You hear metal being drilled appart."), 2)
@@ -863,8 +863,8 @@
 		W:spark_system.start()
 		playsound(src.loc, "sparks", 50, 1)
 		sleep(70)
-		if(W && istype(src, /turf/simulated/wall))
-			if((user.loc == T && user.equipped() == W))
+		if (W && istype(src, /turf/simulated/wall))
+			if ((user.loc == T && user.equipped() == W))
 				W:spark_system.start()
 				playsound(src.loc, "sparks", 50, 1)
 				playsound(src.loc, 'sound/weapons/blade1.ogg', 50, 1)
@@ -919,7 +919,7 @@
 
 /turf/simulated/wall/r_wall/attackby(obj/item/W as obj, mob/user as mob)
 
-	if(!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+	if (!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
 		usr << "\red You don't have the dexterity to do this!"
 		return
 
@@ -927,13 +927,13 @@
 		return // this may seem stupid and redundant but apparently floors can call this attackby() proc, it was spamming shit up. -- Doohl
 
 
-	if(istype(W, /obj/item/weapon/weldingtool) && W:welding)
+	if (istype(W, /obj/item/weapon/weldingtool) && W:welding)
 		W:eyecheck(user)
 		var/turf/T = user.loc
-		if(!( istype(T, /turf) ))
+		if (!( istype(T, /turf) ))
 			return
 
-		if(thermite)
+		if (thermite)
 			var/obj/effect/overlay/O = new/obj/effect/overlay( src )
 			O.name = "Thermite"
 			O.desc = "Looks hot."
@@ -950,22 +950,22 @@
 			F.sd_LumReset()
 			return
 
-		if(src.d_state == 2)
+		if (src.d_state == 2)
 			W:welding = 2
 			user << "\blue Slicing metal cover."
 			playsound(src.loc, 'sound/items/Welder.ogg', 100, 1)
 			sleep(60)
-			if((user.loc == T && user.equipped() == W))
+			if ((user.loc == T && user.equipped() == W))
 				src.d_state = 3
 				user << "\blue You removed the metal cover."
 			W:welding = 1
 
-		else if(src.d_state == 5)
+		else if (src.d_state == 5)
 			W:welding = 2
 			user << "\blue Removing support rods."
 			playsound(src.loc, 'sound/items/Welder.ogg', 100, 1)
 			sleep(100)
-			if((user.loc == T && user.equipped() == W))
+			if ((user.loc == T && user.equipped() == W))
 				src.d_state = 6
 				new /obj/item/stack/rods( src )
 				user << "\blue You removed the support rods."
@@ -973,10 +973,10 @@
 
 	else if(istype(W, /obj/item/weapon/pickaxe/plasmacutter))
 		var/turf/T = user.loc
-		if(!( istype(T, /turf) ))
+		if (!( istype(T, /turf) ))
 			return
 
-		if(thermite)
+		if (thermite)
 			var/obj/effect/overlay/O = new/obj/effect/overlay( src )
 			O.name = "Thermite"
 			O.desc = "Looks hot."
@@ -993,19 +993,19 @@
 			F.sd_LumReset()
 			return
 
-		if(src.d_state == 2)
+		if (src.d_state == 2)
 			user << "\blue Slicing metal cover."
 			playsound(src.loc, 'sound/items/Welder.ogg', 100, 1)
 			sleep(40)
-			if((user.loc == T && user.equipped() == W))
+			if ((user.loc == T && user.equipped() == W))
 				src.d_state = 3
 				user << "\blue You removed the metal cover."
 
-		else if(src.d_state == 5)
+		else if (src.d_state == 5)
 			user << "\blue Removing support rods."
 			playsound(src.loc, 'sound/items/Welder.ogg', 100, 1)
 			sleep(70)
-			if((user.loc == T && user.equipped() == W))
+			if ((user.loc == T && user.equipped() == W))
 				src.d_state = 6
 				new /obj/item/stack/rods( src )
 				user << "\blue You removed the support rods."
@@ -1014,73 +1014,73 @@
 		user << "\blue This wall is too thick to slice through. You will need to find a different path."
 		return
 
-	else if(istype(W, /obj/item/weapon/wrench))
-		if(src.d_state == 4)
+	else if (istype(W, /obj/item/weapon/wrench))
+		if (src.d_state == 4)
 			var/turf/T = user.loc
 			user << "\blue Detaching support rods."
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
 			sleep(40)
-			if((user.loc == T && user.equipped() == W))
+			if ((user.loc == T && user.equipped() == W))
 				src.d_state = 5
 				user << "\blue You detach the support rods."
 
-	else if(istype(W, /obj/item/weapon/wirecutters))
-		if(src.d_state == 0)
+	else if (istype(W, /obj/item/weapon/wirecutters))
+		if (src.d_state == 0)
 			playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
 			src.d_state = 1
 			new /obj/item/stack/rods( src )
 
-	else if(istype(W, /obj/item/weapon/screwdriver))
-		if(src.d_state == 1)
+	else if (istype(W, /obj/item/weapon/screwdriver))
+		if (src.d_state == 1)
 			var/turf/T = user.loc
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
 			user << "\blue Removing support lines."
 			sleep(40)
-			if((user.loc == T && user.equipped() == W))
+			if ((user.loc == T && user.equipped() == W))
 				src.d_state = 2
 				user << "\blue You removed the support lines."
 
-	else if(istype(W, /obj/item/weapon/crowbar))
+	else if (istype(W, /obj/item/weapon/crowbar))
 
-		if(src.d_state == 3)
+		if (src.d_state == 3)
 			var/turf/T = user.loc
 			user << "\blue Prying cover off."
 			playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
 			sleep(100)
-			if((user.loc == T && user.equipped() == W))
+			if ((user.loc == T && user.equipped() == W))
 				src.d_state = 4
 				user << "\blue You removed the cover."
 
-		else if(src.d_state == 6)
+		else if (src.d_state == 6)
 			var/turf/T = user.loc
 			user << "\blue Prying outer sheath off."
 			playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
 			sleep(100)
 			if(src)
-				if((user.loc == T && user.equipped() == W))
+				if ((user.loc == T && user.equipped() == W))
 					user << "\blue You removed the outer sheath."
 					dismantle_wall()
 					return
 
-	else if(istype(W, /obj/item/weapon/pickaxe/diamonddrill))
+	else if (istype(W, /obj/item/weapon/pickaxe/diamonddrill))
 		var/turf/T = user.loc
 		user << "\blue You begin to drill though, this will take some time."
 		sleep(200)
 		if(src)
-			if((user.loc == T && user.equipped() == W))
+			if ((user.loc == T && user.equipped() == W))
 				user << "\blue Your drill tears though the reinforced plating."
 				dismantle_wall()
 				return
 
-	else if((istype(W, /obj/item/stack/sheet/metal)) && (src.d_state))
+	else if ((istype(W, /obj/item/stack/sheet/metal)) && (src.d_state))
 		var/turf/T = user.loc
 		user << "\blue Repairing wall."
 		sleep(100)
-		if((user.loc == T && user.equipped() == W))
+		if ((user.loc == T && user.equipped() == W))
 			src.d_state = 0
 			src.icon_state = initial(src.icon_state)
 			user << "\blue You repaired the wall."
-			if(W:amount > 1)
+			if (W:amount > 1)
 				W:amount--
 			else
 				del(W)
@@ -1136,7 +1136,7 @@
 	return
 
 /turf/simulated/wall/meteorhit(obj/M as obj)
-	if(prob(15))
+	if (prob(15))
 		dismantle_wall()
 	else if(prob(70))
 		ReplaceWithPlating()
@@ -1287,8 +1287,8 @@ var/list/plating_icons = list("plating","platingdmg1","platingdmg2","platingdmg3
 		icon_regular_floor = icon_state
 
 //turf/simulated/floor/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-//	if((istype(mover, /obj/machinery/vehicle) && !(src.burnt)))
-//		if(!( locate(/obj/machinery/mass_driver, src) ))
+//	if ((istype(mover, /obj/machinery/vehicle) && !(src.burnt)))
+//		if (!( locate(/obj/machinery/mass_driver, src) ))
 //			return 0
 //	return ..()
 
@@ -1299,7 +1299,7 @@ var/list/plating_icons = list("plating","platingdmg1","platingdmg2","platingdmg3
 			src.ReplaceWithSpace()
 		if(2.0)
 			switch(pick(1,2;75,3))
-				if(1)
+				if (1)
 					src.ReplaceWithLattice()
 					if(prob(33)) new /obj/item/stack/sheet/metal(src)
 				if(2)
@@ -1312,7 +1312,7 @@ var/list/plating_icons = list("plating","platingdmg1","platingdmg2","platingdmg3
 					src.hotspot_expose(1000,CELL_VOLUME)
 					if(prob(33)) new /obj/item/stack/sheet/metal(src)
 		if(3.0)
-			if(prob(50))
+			if (prob(50))
 				src.break_tile()
 				src.hotspot_expose(1000,CELL_VOLUME)
 	return
@@ -1374,17 +1374,17 @@ turf/simulated/floor/return_siding_icon_state()
 	return src.attack_hand(user)
 
 /turf/simulated/floor/attack_hand(mob/user as mob)
-	if(is_light_floor())
+	if (is_light_floor())
 		var/obj/item/stack/tile/light/T = floor_tile
 		T.on = !T.on
 	update_icon()
-	if((!( user.canmove ) || user.restrained() || !( user.pulling )))
+	if ((!( user.canmove ) || user.restrained() || !( user.pulling )))
 		return
-	if(user.pulling.anchored)
+	if (user.pulling.anchored)
 		return
-	if((user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1))
+	if ((user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1))
 		return
-	if(ismob(user.pulling))
+	if (ismob(user.pulling))
 		var/mob/M = user.pulling
 		var/mob/t = M.pulling
 		M.stop_pulling()
@@ -1508,7 +1508,7 @@ turf/simulated/floor/return_siding_icon_state()
 	if(T)
 		if(istype(T,/obj/item/stack/tile/plasteel))
 			floor_tile = T
-			if(icon_regular_floor)
+			if (icon_regular_floor)
 				icon_state = icon_regular_floor
 			else
 				icon_state = "floor"
@@ -1592,8 +1592,8 @@ turf/simulated/floor/return_siding_icon_state()
 
 	if(istype(C, /obj/item/stack/rods))
 		var/obj/item/stack/rods/R = C
-		if(is_plating())
-			if(R.amount >= 2)
+		if (is_plating())
+			if (R.amount >= 2)
 				user << "\blue Reinforcing the floor..."
 				if(do_after(user, 30) && R && R.amount >= 2 && is_plating())
 					ReplaceWithEngineFloor()
@@ -1663,13 +1663,13 @@ turf/simulated/floor/return_siding_icon_state()
 	return src.attack_hand(user)
 
 /turf/unsimulated/floor/attack_hand(var/mob/user as mob)
-	if((!( user.canmove ) || user.restrained() || !( user.pulling )))
+	if ((!( user.canmove ) || user.restrained() || !( user.pulling )))
 		return
-	if(user.pulling.anchored)
+	if (user.pulling.anchored)
 		return
-	if((user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1))
+	if ((user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1))
 		return
-	if(ismob(user.pulling))
+	if (ismob(user.pulling))
 		var/mob/M = user.pulling
 		var/mob/t = M.pulling
 		M.stop_pulling()
@@ -1685,13 +1685,13 @@ turf/simulated/floor/return_siding_icon_state()
 	return src.attack_hand(user)
 
 /turf/space/attack_hand(mob/user as mob)
-	if((user.restrained() || !( user.pulling )))
+	if ((user.restrained() || !( user.pulling )))
 		return
-	if(user.pulling.anchored)
+	if (user.pulling.anchored)
 		return
-	if((user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1))
+	if ((user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1))
 		return
-	if(ismob(user.pulling))
+	if (ismob(user.pulling))
 		var/mob/M = user.pulling
 		var/atom/movable/t = M.pulling
 		M.stop_pulling()
@@ -1703,7 +1703,7 @@ turf/simulated/floor/return_siding_icon_state()
 
 /turf/space/attackby(obj/item/C as obj, mob/user as mob)
 
-	if(istype(C, /obj/item/stack/rods))
+	if (istype(C, /obj/item/stack/rods))
 		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
 		if(L)
 			return
@@ -1714,7 +1714,7 @@ turf/simulated/floor/return_siding_icon_state()
 		R.use(1)
 		return
 
-	if(istype(C, /obj/item/stack/tile/plasteel))
+	if (istype(C, /obj/item/stack/tile/plasteel))
 		var/obj/structure/lattice/L = locate(/obj/structure/lattice, src)
 		if(L)
 			var/obj/item/stack/tile/plasteel/S = C
@@ -1732,7 +1732,7 @@ turf/simulated/floor/return_siding_icon_state()
 
 /turf/space/Entered(atom/movable/A as mob|obj)
 	..()
-	if((!(A) || src != A.loc || istype(null, /obj/effect/beam)))	return
+	if ((!(A) || src != A.loc || istype(null, /obj/effect/beam)))	return
 
 	inertial_drift(A)
 
@@ -1745,7 +1745,7 @@ turf/simulated/floor/return_siding_icon_state()
 			Sandbox_Spacemove(A)
 
 		else
-			if(src.x <= 2 || A.x >= (world.maxx - 1) || src.y <= 2 || A.y >= (world.maxy - 1))
+			if (src.x <= 2 || A.x >= (world.maxx - 1) || src.y <= 2 || A.y >= (world.maxy - 1))
 				if(istype(A, /obj/effect/meteor)||istype(A, /obj/effect/space_dust))
 					del(A)
 					return
@@ -1777,17 +1777,17 @@ turf/simulated/floor/return_siding_icon_state()
 				if(src.x <= 2)
 					A.x = world.maxx - 2
 
-				else if(A.x >= (world.maxx - 1))
+				else if (A.x >= (world.maxx - 1))
 					A.x = 3
 
-				else if(src.y <= 2)
+				else if (src.y <= 2)
 					A.y = world.maxy - 2
 
-				else if(A.y >= (world.maxy - 1))
+				else if (A.y >= (world.maxy - 1))
 					A.y = 3
 
 				spawn (0)
-					if((A && A.loc))
+					if ((A && A.loc))
 						A.loc.Entered(A)
 
 //				if(istype(A, /obj/structure/closet/coffin))
@@ -1824,9 +1824,9 @@ turf/simulated/floor/return_siding_icon_state()
 			A.z = target_z
 			A.x = world.maxx - 2
 			spawn (0)
-				if((A && A.loc))
+				if ((A && A.loc))
 					A.loc.Entered(A)
-	else if(src.x >= world.maxx)
+	else if (src.x >= world.maxx)
 		if(istype(A, /obj/effect/meteor))
 			del(A)
 			return
@@ -1849,9 +1849,9 @@ turf/simulated/floor/return_siding_icon_state()
 			A.z = target_z
 			A.x = 3
 			spawn (0)
-				if((A && A.loc))
+				if ((A && A.loc))
 					A.loc.Entered(A)
-	else if(src.y <= 1)
+	else if (src.y <= 1)
 		if(istype(A, /obj/effect/meteor))
 			del(A)
 			return
@@ -1873,10 +1873,10 @@ turf/simulated/floor/return_siding_icon_state()
 			A.z = target_z
 			A.y = world.maxy - 2
 			spawn (0)
-				if((A && A.loc))
+				if ((A && A.loc))
 					A.loc.Entered(A)
 
-	else if(src.y >= world.maxy)
+	else if (src.y >= world.maxy)
 		if(istype(A, /obj/effect/meteor)||istype(A, /obj/effect/space_dust))
 			del(A)
 			return
@@ -1898,7 +1898,7 @@ turf/simulated/floor/return_siding_icon_state()
 			A.z = target_z
 			A.y = 3
 			spawn (0)
-				if((A && A.loc))
+				if ((A && A.loc))
 					A.loc.Entered(A)
 	return
 

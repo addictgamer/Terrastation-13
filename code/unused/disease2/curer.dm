@@ -15,7 +15,7 @@
 	/*if(istype(I, /obj/item/weapon/screwdriver))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20))
-			if(src.stat & BROKEN)
+			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 				new /obj/item/weapon/shard( src.loc )
@@ -112,14 +112,14 @@
 /obj/machinery/computer/curer/Topic(href, href_list)
 	if(..())
 		return
-	if((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
+	if ((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))
 		usr.machine = src
 
-		if(href_list["antibody"])
+		if (href_list["antibody"])
 			curing = 30
 			dish.growth -= 50
 			src.icon_state = "dna"
-		if(href_list["virus"])
+		if (href_list["virus"])
 			virusing = 30
 			dish.growth -= 100
 			src.icon_state = "dna"

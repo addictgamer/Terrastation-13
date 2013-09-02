@@ -41,11 +41,11 @@
 					affected_mob << "\blue You feel better."
 					cure()
 					return
-			if(prob(8))
+			if (prob(8))
 				affected_mob << "\red Your head hurts."
-			if(prob(9))
+			if (prob(9))
 				affected_mob << "You feel a tingling sensation in your chest."
-			if(prob(9))
+			if (prob(9))
 				affected_mob << "\red You feel angry."
 		if(2)
 			if(restcure)
@@ -59,14 +59,14 @@
 					affected_mob << "\blue You feel better."
 					cure()
 					return
-			if(prob(8))
+			if (prob(8))
 				affected_mob << "\red Your skin feels loose."
-			if(prob(10))
+			if (prob(10))
 				affected_mob << "You feel very strange."
-			if(prob(4))
+			if (prob(4))
 				affected_mob << "\red You feel a stabbing pain in your head!"
 				affected_mob.Paralyse(2)
-			if(prob(4))
+			if (prob(4))
 				affected_mob << "\red Your stomach churns."
 		if(3)
 			if(restcure)
@@ -80,10 +80,10 @@
 					affected_mob << "\blue You feel better."
 					cure()
 					return
-			if(prob(10))
+			if (prob(10))
 				affected_mob << "\red Your entire body vibrates."
 
-			if(prob(35))
+			if (prob(35))
 				if(prob(50))
 					scramble(1, affected_mob, rand(15,45))
 				else
@@ -101,7 +101,7 @@
 					affected_mob << "\blue You feel better."
 					cure()
 					return
-			if(prob(60))
+			if (prob(60))
 				if(prob(50))
 					scramble(1, affected_mob, rand(50,75))
 				else

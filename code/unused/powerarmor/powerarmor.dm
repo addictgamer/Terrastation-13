@@ -173,7 +173,7 @@
 						user << "\blue You feed some refined plasma into the armor's generator."
 						power:fuel += 25
 						W:amount--
-						if(W:amount <= 0)
+						if (W:amount <= 0)
 							del(W)
 						return
 					else

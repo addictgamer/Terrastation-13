@@ -20,13 +20,13 @@
 	..()
 	/* Special Hud for xenos */
 	spawn(0)
-		if(affected_mob)
+		if (affected_mob)
 			AddInfectionImages(affected_mob)
 
 /datum/disease/alien_embryo/cure(var/resistance=1)
 	..()
 	spawn(0)
-		if(affected_mob)
+		if (affected_mob)
 			RemoveInfectionImages(affected_mob)
 
 /datum/disease/alien_embryo
@@ -110,16 +110,16 @@ Des: Removes all infection images from aliens and places an infection image on a
 /datum/disease/alien_embryo/proc/RefreshInfectionImage()
 	spawn(0)
 		for (var/mob/living/carbon/alien/alien in player_list)
-			if(alien.client)
+			if (alien.client)
 				for(var/image/I in alien.client.images)
 					if(dd_hasprefix_case(I.icon_state, "infected"))
 						del(I)
 
 		for (var/mob/living/carbon/alien/alien in player_list)
-			if(alien.client)
+			if (alien.client)
 				for (var/mob/living/carbon/C in mob_list)
 					if(C)
-						if(C.status_flags & XENO_HOST)
+						if (C.status_flags & XENO_HOST)
 							var/I = image('icons/mob/alien.dmi', loc = C, icon_state = "infected[stage]")
 							alien.client.images += I
 		return
@@ -129,10 +129,10 @@ Proc: AddInfectionImages(C)
 Des: Checks if the passed mob (C) is infected with the alien egg, then gives each alien client an infected image at C.
 ----------------------------------------*/
 /datum/disease/alien_embryo/proc/AddInfectionImages(var/mob/living/carbon/C)
-	if(C)
+	if (C)
 		for (var/mob/living/carbon/alien/alien in player_list)
-			if(alien.client)
-				if(C.status_flags & XENO_HOST)
+			if (alien.client)
+				if (C.status_flags & XENO_HOST)
 					var/I = image('icons/mob/alien.dmi', loc = C, icon_state = "infected[stage]")
 					alien.client.images += I
 	return
@@ -143,9 +143,9 @@ Des: Removes the alien infection image from all aliens in the world located in p
 ----------------------------------------*/
 
 /datum/disease/alien_embryo/proc/RemoveInfectionImages(var/mob/living/carbon/C)
-	if(C)
+	if (C)
 		for (var/mob/living/carbon/alien/alien in player_list)
-			if(alien.client)
+			if (alien.client)
 				for(var/image/I in alien.client.images)
 					if(I.loc == C)
 						if(dd_hasprefix_case(I.icon_state, "infected"))

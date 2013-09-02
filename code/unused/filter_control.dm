@@ -54,7 +54,7 @@
 		return
 	if(user.stat || user.lying)
 		return
-	if((get_dist(src, user) > 1 || !istype(src.loc, /turf)) && !istype(user, /mob/living/silicon/ai))
+	if ((get_dist(src, user) > 1 || !istype(src.loc, /turf)) && !istype(user, /mob/living/silicon/ai))
 		return 0
 
 	var/list/gases = list("O2", "N2", "Plasma", "CO2", "N2O")
@@ -86,16 +86,16 @@
 	user << browse(dat, "window=filter_control;size=300x225")
 	onclose(user, "filter_control")
 /obj/machinery/filter_control/Topic(href, href_list)
-	if(href_list["close"])
+	if (href_list["close"])
 		usr << browse(null, "window=filter_control;")
 		usr.machine = null
 		return	//Who cares if we're dead or whatever let us close the fucking window
 	if(..())
 		return
-	if((((get_dist(src, usr) <= 1 || usr.telekinesis == 1) || istype(usr, /mob/living/silicon/ai)) && istype(src.loc, /turf)))
+	if ((((get_dist(src, usr) <= 1 || usr.telekinesis == 1) || istype(usr, /mob/living/silicon/ai)) && istype(src.loc, /turf)))
 		usr.machine = src
-		if(src.allowed(usr) || src.emagged && !(stat & BROKEN))
-			if(href_list["tg"])	//someone modified the html so I added a check here
+		if (src.allowed(usr) || src.emagged && !(stat & BROKEN))
+			if (href_list["tg"])	//someone modified the html so I added a check here
 				// toggle gas
 				src.f_mask ^= text2num(href_list["tg"])
 				for(var/obj/machinery/inlet/filter/FI in machines)
@@ -142,13 +142,13 @@
 	else
 		overlays += image('icons/obj/stationobjs.dmi', "filter_control00")
 
-	if(src.f_mask & (GAS_N2O|GAS_PL))
+	if (src.f_mask & (GAS_N2O|GAS_PL))
 		src.overlays += image('icons/obj/stationobjs.dmi', "filter_control-tox")
-	if(src.f_mask & GAS_O2)
+	if (src.f_mask & GAS_O2)
 		src.overlays += image('icons/obj/stationobjs.dmi', "filter_control-o2")
-	if(src.f_mask & GAS_N2)
+	if (src.f_mask & GAS_N2)
 		src.overlays += image('icons/obj/stationobjs.dmi', "filter_control-n2")
-	if(src.f_mask & GAS_CO2)
+	if (src.f_mask & GAS_CO2)
 		src.overlays += image('icons/obj/stationobjs.dmi', "filter_control-co2")
 	return
 

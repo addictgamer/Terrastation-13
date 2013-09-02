@@ -78,7 +78,7 @@
 			if(ticker.mode.name == "ctf")
 				ticker.red_score++
 				var/obj/L = locate("landmark*Green-Flag")
-				if(L)
+				if (L)
 					del(C)
 					new /obj/item/weapon/ctf_flag/green(L.loc)
 				else
@@ -120,7 +120,7 @@
 			if(ticker.mode.name == "ctf")
 				ticker.green_score++
 				var/obj/L = locate("landmark*Red-Flag")
-				if(L)
+				if (L)
 					del(C)
 					new /obj/item/weapon/ctf_flag/red(L.loc)
 				else

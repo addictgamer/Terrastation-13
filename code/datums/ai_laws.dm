@@ -88,7 +88,7 @@ var/global/const/base_law_type = /datum/ai_laws/nanotrasen
 		src.zeroth_borg = law_borg
 
 /datum/ai_laws/proc/add_inherent_law(var/law)
-	if(!(law in src.inherent))
+	if (!(law in src.inherent))
 		src.inherent += law
 
 /datum/ai_laws/proc/add_ion_law(var/law)
@@ -112,7 +112,7 @@ var/global/const/base_law_type = /datum/ai_laws/nanotrasen
 
 /datum/ai_laws/proc/show_laws(var/who)
 
-	if(src.zeroth)
+	if (src.zeroth)
 		who << "0. [src.zeroth]"
 
 	for (var/index = 1, index <= src.ion.len, index++)
@@ -124,12 +124,12 @@ var/global/const/base_law_type = /datum/ai_laws/nanotrasen
 	for (var/index = 1, index <= src.inherent.len, index++)
 		var/law = src.inherent[index]
 
-		if(length(law) > 0)
+		if (length(law) > 0)
 			who << "[number]. [law]"
 			number++
 
 	for (var/index = 1, index <= src.supplied.len, index++)
 		var/law = src.supplied[index]
-		if(length(law) > 0)
+		if (length(law) > 0)
 			who << "[number]. [law]"
 			number++

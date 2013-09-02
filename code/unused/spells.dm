@@ -63,7 +63,7 @@
 			A.layer = 4
 			var/i
 			for(i=0, i<20, i++)
-				if(!istype(M)) //it happens sometimes --rastaf0
+				if (!istype(M)) //it happens sometimes --rastaf0
 					break
 				var/obj/effect/overlay/B = new /obj/effect/overlay( A.loc )
 				B.icon_state = "magicmd"
@@ -75,7 +75,7 @@
 				spawn(5)
 					del(B)
 				step_to(A,M,0)
-				if(get_dist(A,M) == 0)
+				if (get_dist(A,M) == 0)
 					M.Weaken(5)
 					M.take_overall_damage(0,10)
 					del(A)
@@ -346,7 +346,7 @@
 		if(istype(AR, /area/shuttle) || istype(AR, /area/syndicate_station)) continue
 		if(theareas.Find(AR.name)) continue
 		var/turf/picked = pick(get_area_turfs(AR.type))
-		if(picked.z == src.z)
+		if (picked.z == src.z)
 			theareas += AR.name
 			theareas[AR.name] = AR
 */
@@ -453,7 +453,7 @@
 	anchored = 1
 
 /obj/effect/dummy/spell_jaunt/relaymove(var/mob/user, direction)
-	if(!src.canmove) return
+	if (!src.canmove) return
 	switch(direction)
 		if(NORTH)
 			src.y++
@@ -500,13 +500,13 @@
 	usr.say("BIRUZ BENNAR")
 
 	usr << text("\blue You feel strong! You feel pressure building behind your eyes!")
-	if(!(HULK in usr.mutations))
+	if (!(HULK in usr.mutations))
 		usr.mutations.Add(HULK)
-	if(!(LASER in usr.mutations))
+	if (!(LASER in usr.mutations))
 		usr.mutations.Add(LASER)
 	spawn (300)
-		if(LASER in usr.mutations) usr.mutations.Remove(LASER)
-		if(HULK in usr.mutations)  usr.mutations.Remove(HULK)
+		if (LASER in usr.mutations) usr.mutations.Remove(LASER)
+		if (HULK in usr.mutations)  usr.mutations.Remove(HULK)
 	return
 
 //BODY SWAP /N

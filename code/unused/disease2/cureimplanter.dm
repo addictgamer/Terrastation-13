@@ -14,7 +14,7 @@
 /obj/item/weapon/cureimplanter/attack(mob/target as mob, mob/user as mob)
 	if(ismob(target))
 		for(var/mob/O in viewers(world.view, user))
-			if(target != user)
+			if (target != user)
 				O.show_message(text("\red <B>[] is trying to inject [] with [src.name]!</B>", user, target), 1)
 			else
 				O.show_message("\red <B>[user] is trying to inject themselves with [src.name]!</B>", 1)
@@ -22,7 +22,7 @@
 
 
 		for(var/mob/O in viewers(world.view, user))
-			if(target != user)
+			if (target != user)
 				O.show_message(text("\red [] injects [] with [src.name]!", user, target), 1)
 			else
 				O.show_message("\red [user] injects themself with [src.name]!", 1)

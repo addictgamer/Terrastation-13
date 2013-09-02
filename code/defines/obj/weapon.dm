@@ -506,9 +506,9 @@
 /obj/item/weapon/camera_bug/attack_self(mob/usr as mob)
 	var/list/cameras = new/list()
 	for (var/obj/machinery/camera/C in cameranet.cameras)
-		if(C.bugged && C.status)
+		if (C.bugged && C.status)
 			cameras.Add(C)
-	if(length(cameras) == 0)
+	if (length(cameras) == 0)
 		usr << "\red No bugged functioning cameras found."
 		return
 
@@ -518,13 +518,13 @@
 		friendly_cameras.Add(C.c_tag)
 
 	var/target = input("Select the camera to observe", null) as null|anything in friendly_cameras
-	if(!target)
+	if (!target)
 		return
 	for (var/obj/machinery/camera/C in cameras)
-		if(C.c_tag == target)
+		if (C.c_tag == target)
 			target = C
 			break
-	if(usr.stat == 2) return
+	if (usr.stat == 2) return
 
 	usr.client.eye = target
 

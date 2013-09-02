@@ -49,14 +49,14 @@ atom
 			if(LuminosityRed == Red && LuminosityGreen == Green && LuminosityBlue == Blue)
 				return //No point doing all that work if it won't have any effect anyways...
 
-			if(ul_Extinguished == UL_I_EXTINGUISHED)
+			if (ul_Extinguished == UL_I_EXTINGUISHED)
 				LuminosityRed = Red
 				LuminosityGreen = Green
 				LuminosityBlue = Blue
 
 				return
 
-			if(ul_IsLuminous())
+			if (ul_IsLuminous())
 				ul_Extinguish()
 
 			LuminosityRed = Red
@@ -65,13 +65,13 @@ atom
 
 			ul_Extinguished = UL_I_ONZERO
 
-			if(ul_IsLuminous())
+			if (ul_IsLuminous())
 				ul_Illuminate()
 
 			return
 
 		ul_Illuminate()
-			if(ul_Extinguished == UL_I_LIT)
+			if (ul_Extinguished == UL_I_LIT)
 				return
 
 			ul_Extinguished = UL_I_LIT
@@ -98,7 +98,7 @@ atom
 
 					Affected.ul_UpdateLight()
 
-					if(ul_SuppressLightLevelChanges == 0)
+					if (ul_SuppressLightLevelChanges == 0)
 						Affected.ul_LightLevelChanged()
 
 						for(var/atom/AffectedAtom in Affected)
@@ -107,7 +107,7 @@ atom
 
 		ul_Extinguish()
 
-			if(ul_Extinguished != UL_I_LIT)
+			if (ul_Extinguished != UL_I_LIT)
 				return
 
 			ul_Extinguished = UL_I_EXTINGUISHED
@@ -132,7 +132,7 @@ atom
 
 					Affected.ul_UpdateLight()
 
-					if(ul_SuppressLightLevelChanges == 0)
+					if (ul_SuppressLightLevelChanges == 0)
 						Affected.ul_LightLevelChanged()
 
 						for(var/atom/AffectedAtom in Affected)
@@ -143,15 +143,15 @@ atom
 			return
 
 		ul_FalloffAmount(var/atom/ref)
-			if(ul_FalloffStyle == UL_I_FALLOFF_ROUND)
+			if (ul_FalloffStyle == UL_I_FALLOFF_ROUND)
 				var/x = (ref.x - src.x)
 				var/y = (ref.y - src.y)
-				if((x*x + y*y) > ul_FastRoot.len)
+				if ((x*x + y*y) > ul_FastRoot.len)
 					for(var/i = ul_FastRoot.len, i <= x*x+y*y, i++)
 						ul_FastRoot += round(sqrt(x*x+y*y))
 				return round(ul_LightingResolution * ul_FastRoot[x*x + y*y + 1], 1)
 
-			else if(ul_FalloffStyle == UL_I_FALLOFF_SQUARE)
+			else if (ul_FalloffStyle == UL_I_FALLOFF_SQUARE)
 				return get_dist(src, ref)
 
 			return 0
@@ -195,13 +195,13 @@ atom
 
 		ul_UpdateTopLuminosity()
 
-			if(ul_TopLuminosity < LuminosityRed)
+			if (ul_TopLuminosity < LuminosityRed)
 				ul_TopLuminosity = LuminosityRed
 
-			if(ul_TopLuminosity < LuminosityGreen)
+			if (ul_TopLuminosity < LuminosityGreen)
 				ul_TopLuminosity = LuminosityGreen
 
-			if(ul_TopLuminosity < LuminosityBlue)
+			if (ul_TopLuminosity < LuminosityBlue)
 				ul_TopLuminosity = LuminosityBlue
 
 			return

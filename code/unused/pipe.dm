@@ -141,7 +141,7 @@ var/linenums = 0
 	switch(port)
 		if(1)
 			P = nodes[1]		// 1st node in list
-			if(P==null)
+			if (P==null)
 				T = src.loc
 			else
 				ndirs = P.get_node_dirs()
@@ -151,13 +151,13 @@ var/linenums = 0
 
 		if(2)
 			P = nodes[nodes.len]	// last node in list
-			if(P==null)
+			if (P==null)
 				T = src.loc
 			else
 
 				ndirs = P.get_node_dirs()
 				T = get_step(P, ndirs[2])
-	if(T==null)
+	if (T==null)
 		return
 	if(T.density)
 		return
@@ -279,10 +279,10 @@ var/linenums = 0
 	return parent
 
 /obj/machinery/pipes/orient_pipe(P as obj)
-	if(!( src.node1 ))
+	if (!( src.node1 ))
 		src.node1 = P
 	else
-		if(!( src.node2 ))
+		if (!( src.node2 ))
 			src.node2 = P
 		else
 			return 0
@@ -338,7 +338,7 @@ var/linenums = 0
 	if(stat & BROKEN)
 		is += "-b"
 
-	if((src.level == 1 && isturf(src.loc) && T.intact))
+	if ((src.level == 1 && isturf(src.loc) && T.intact))
 		src.invisibility = 101
 		is += "-f"
 
@@ -387,10 +387,10 @@ var/linenums = 0
 
 /obj/machinery/pipes/attackby(obj/item/weapon/W as obj, mob/user as mob)
 
-	if(istype(W, /obj/item/weapon/weldingtool) && W:welding)
+	if (istype(W, /obj/item/weapon/weldingtool) && W:welding)
 		if(!(stat & BROKEN))
 			return
-		if(W:weldfuel < 2)
+		if (W:weldfuel < 2)
 			user << "\blue You need more welding fuel to complete this task."
 			return
 		W:weldfuel -= 2
@@ -408,14 +408,14 @@ var/linenums = 0
 		if(2.0)
 			stat |= BROKEN
 			update()
-			if(prob(50))
+			if (prob(50))
 				del(src)
 				return
 		if(3.0)
 			if(prob(75))
 				stat |= BROKEN
 				update()
-				if(prob(25))
+				if (prob(25))
 					del(src)
 					return
 		else
@@ -425,24 +425,24 @@ var/linenums = 0
 	message_admins("CODER: Pipe explosion strength: [strength], Temperature: [temp], Plasma: [plasma], Oxygen: [oxygen]")
 	//lets say hypothetically it uses up 9/10 of its energy in bursting the pipe
 
-	if(strength < 773.0)
+	if (strength < 773.0)
 		var/turf/T = get_turf(src.loc)
 		T.poison += plasma
 		T.firelevel = T.poison
 		T.res_vars()
 
-		//if((src.gas.temperature > (450+T0C) && src.gas.plasma == 1600000.0))
+		//if ((src.gas.temperature > (450+T0C) && src.gas.plasma == 1600000.0))
 
-		if(strength > (450+T0C))
+		if (strength > (450+T0C))
 			var/turf/sw = locate(max(T.x - 4, 1), max(T.y - 4, 1), T.z)
 			var/turf/ne = locate(min(T.x + 4, world.maxx), min(T.y + 4, world.maxy), T.z)
 			defer_powernet_rebuild = 1
 
 			for(var/turf/U in block(sw, ne))
 				var/zone = 4
-				if((U.y <= (T.y + 1) && U.y >= (T.y - 1) && U.x <= (T.x + 2) && U.x >= (T.x - 2)) )
+				if ((U.y <= (T.y + 1) && U.y >= (T.y - 1) && U.x <= (T.x + 2) && U.x >= (T.x - 2)) )
 					zone = 3
-				if((U.y <= (T.y + 1) && U.y >= (T.y - 1) && U.x <= (T.x + 1) && U.x >= (T.x - 1) ))
+				if ((U.y <= (T.y + 1) && U.y >= (T.y - 1) && U.x <= (T.x + 1) && U.x >= (T.x - 1) ))
 					zone = 2
 				for(var/atom/A in U)
 					A.ex_act(zone)
@@ -454,15 +454,15 @@ var/linenums = 0
 			makepowernets()
 
 		else
-			//if((src.gas.temperature > (300+T0C) && src.gas.plasma == 1600000.0))
-			if(strength > (300+T0C))
+			//if ((src.gas.temperature > (300+T0C) && src.gas.plasma == 1600000.0))
+			if (strength > (300+T0C))
 				var/turf/sw = locate(max(T.x - 4, 1), max(T.y - 4, 1), T.z)
 				var/turf/ne = locate(min(T.x + 4, world.maxx), min(T.y + 4, world.maxy), T.z)
 				defer_powernet_rebuild = 1
 
 				for(var/turf/U in block(sw, ne))
 					var/zone = 4
-					if((U.y <= (T.y + 2) && U.y >= (T.y - 2) && U.x <= (T.x + 2) && U.x >= (T.x - 2)) )
+					if ((U.y <= (T.y + 2) && U.y >= (T.y - 2) && U.x <= (T.x + 2) && U.x >= (T.x - 2)) )
 						zone = 3
 					for(var/atom/A in U)
 						A.ex_act(zone)
@@ -489,8 +489,8 @@ var/linenums = 0
 
 	var/m_range = round(strength / 387)
 	for(var/obj/machinery/atmoalter/canister/C in range(2, T))
-		if(!( C.destroyed ))
-			if(C.gas.plasma >= 35000)
+		if (!( C.destroyed ))
+			if (C.gas.plasma >= 35000)
 				C.destroyed = 1
 				m_range++
 
@@ -508,11 +508,11 @@ var/linenums = 0
 	for(var/turf/U in block(sw, ne))
 
 		var/zone = 4
-		if((U.y <= (T.y + max) && U.y >= (T.y - max) && U.x <= (T.x + max) && U.x >= (T.x - max) ))
+		if ((U.y <= (T.y + max) && U.y >= (T.y - max) && U.x <= (T.x + max) && U.x >= (T.x - max) ))
 			zone = 3
-		if((U.y <= (T.y + med) && U.y >= (T.y - med) && U.x <= (T.x + med) && U.x >= (T.x - med) ))
+		if ((U.y <= (T.y + med) && U.y >= (T.y - med) && U.x <= (T.x + med) && U.x >= (T.x - med) ))
 			zone = 2
-		if((U.y <= (T.y + min) && U.y >= (T.y - min) && U.x <= (T.x + min) && U.x >= (T.x - min) ))
+		if ((U.y <= (T.y + min) && U.y >= (T.y - min) && U.x <= (T.x + min) && U.x >= (T.x - min) ))
 			zone = 1
 		for(var/atom/A in U)
 			A.ex_act(zone)

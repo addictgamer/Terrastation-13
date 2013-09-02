@@ -76,7 +76,7 @@
 			F.amount = amount
 			if(!metal)
 				F.create_reagents(10)
-				if(reagents)
+				if (reagents)
 					for(var/datum/reagent/R in reagents.reagent_list)
 						F.reagents.add_reagent(R.id,1)
 		sleep(15)

@@ -27,12 +27,12 @@
 		var/fuel = 0
 
 		process()
-			if(fuel > 0 && parent.active)
+			if (fuel > 0 && parent.active)
 				fuel--
 				spawn(50)
 					process()
 				return
-			else if(parent.active)
+			else if (parent.active)
 				parent.powerdown(1)
 				return
 
@@ -46,12 +46,12 @@
 		slowdown = 0.5
 
 		process()
-			if(cell && cell.charge > 0 && parent.active)
+			if (cell && cell.charge > 0 && parent.active)
 				cell.use(50)
 				spawn(50)
 					process()
 				return
-			else if(parent.active)
+			else if (parent.active)
 				parent.powerdown(1)
 				return
 
@@ -65,17 +65,17 @@
 
 		process()
 			if(!crit_fail)
-				if(prob(src.reliability)) return 1 //No failure
-				if(prob(src.reliability))
+				if (prob(src.reliability)) return 1 //No failure
+				if (prob(src.reliability))
 					for (var/mob/M in range(0,src.parent)) //Only a minor failure, enjoy your radiation.
-						if(src.parent in M.contents)
+						if (src.parent in M.contents)
 							M << "\red Your armor feels pleasantly warm for a moment."
 						else
 							M << "\red You feel a warm sensation."
 						M.radiation += rand(1,40)
 				else
 					for (var/mob/M in range(rand(1,4),src.parent)) //Big failure, TIME FOR RADIATION BITCHES
-						if(src.parent in M.contents)
+						if (src.parent in M.contents)
 							M << "\red Your armor's reactor overloads!"
 						M << "\red You feel a wave of heat wash over you."
 						M.radiation += 100

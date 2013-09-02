@@ -58,18 +58,18 @@
 
 			if(istype(A,/mob/living/carbon/human))
 				var/mob/living/carbon/human/H = A
-				if(!istype(H.dna, /datum/dna) || !isnull(H.gloves))
+				if (!istype(H.dna, /datum/dna) || !isnull(H.gloves))
 					dat += "\blue Unable to scan [A]'s fingerprints.\n"
 				else
 					dat += "\blue [H]'s Fingerprints: [md5(H.dna.uni_identity)]\n"
-				if( !(H.blood_DNA.len) )
+				if ( !(H.blood_DNA.len) )
 					dat += "\blue No blood found on [H]\n"
 				else
 					for(var/i = 1, i < H.blood_DNA.len, i++)
 						var/list/templist = H.blood_DNA[i]
 						user << "\blue Blood type: [templist[2]]\nDNA: [templist[1]]"
 
-			if(!A.fingerprints)
+			if (!A.fingerprints)
 				dat += "\blue Unable to locate any fingerprints on [A]!\n"
 			else
 				var/list/L = params2list(A:fingerprints)

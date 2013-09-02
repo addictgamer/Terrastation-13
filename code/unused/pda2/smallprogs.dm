@@ -67,7 +67,7 @@
 
 				if("setmsg1")
 					message1 = input("Line 1", "Enter Message Text", message1) as text|null
-					if(!src.master || !in_range(src.master, usr) && src.master.loc != usr)
+					if (!src.master || !in_range(src.master, usr) && src.master.loc != usr)
 						return
 
 					if(!(src.holder in src.master))
@@ -76,7 +76,7 @@
 
 				if("setmsg2")
 					message2 = input("Line 2", "Enter Message Text", message2) as text|null
-					if(!src.master || !in_range(src.master, usr) && src.master.loc != usr)
+					if (!src.master || !in_range(src.master, usr) && src.master.loc != usr)
 						return
 
 					if(!(src.holder in src.master))
@@ -146,7 +146,7 @@ Code:
 		if(..())
 			return
 
-		if(href_list["send"])
+		if (href_list["send"])
 			if(last_transmission && world.time < (last_transmission + 5))
 				return
 			last_transmission = world.time
@@ -162,10 +162,10 @@ Code:
 				src.post_signal(signal,"[send_freq]")
 				return
 
-		else if(href_list["adj_freq"])
+		else if (href_list["adj_freq"])
 			src.send_freq = sanitize_frequency(src.send_freq + text2num(href_list["adj_freq"]))
 
-		else if(href_list["adj_code"])
+		else if (href_list["adj_code"])
 			src.send_code += text2num(href_list["adj_code"])
 			src.send_code = round(src.send_code)
 			src.send_code = min(100, src.send_code)

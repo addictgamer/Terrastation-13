@@ -83,8 +83,8 @@
 	else if(east_votes)
 		group_joined = east.parent
 
-	if(istype(group_joined))
-		if(group_joined.group_processing)
+	if (istype(group_joined))
+		if (group_joined.group_processing)
 			group_joined.suspend_group_processing()
 		group_joined.members += src
 		parent=group_joined

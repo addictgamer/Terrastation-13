@@ -14,12 +14,12 @@
 				del(src)
 				return
 			if(2.0)
-				if(prob(50))
+				if (prob(50))
 					del(src)
 					return
 
 	blob_act()
-		if(prob(25))
+		if (prob(25))
 			del(src)
 
 	meteorhit()
@@ -51,7 +51,7 @@
 		if(!beaker) return
 		var/datum/reagents/R = beaker:reagents
 
-		if(href_list["isolate"])
+		if (href_list["isolate"])
 			var/datum/reagent/blood/Blood
 			for(var/datum/reagent/blood/B in R.reagent_list)
 				if(B)
@@ -65,10 +65,10 @@
 			src.updateUsrDialog()
 			return
 
-		else if(href_list["main"])
+		else if (href_list["main"])
 			attack_hand(usr)
 			return
-		else if(href_list["eject"])
+		else if (href_list["eject"])
 			beaker:loc = src.loc
 			beaker = null
 			icon_state = "isolator"

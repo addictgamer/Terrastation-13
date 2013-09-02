@@ -192,7 +192,7 @@
 		if(ismob(M) && M:client)
 			M:client.moving = 1
 		M.Move(target.loc)
-		if(ismob(M) && M:client)
+		if (ismob(M) && M:client)
 			M:client.moving = 0
 
 	Click()

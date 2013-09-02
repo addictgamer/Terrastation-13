@@ -138,7 +138,7 @@ obj/machinery/shipcore/attack_hand(user as mob)
 	var/dat
 	if(..())
 		return
-	if(1 == 1)	// Haha why did I even do this what the fuck. Whatever. It's too entertaining to remove now. -- TLE
+	if (1 == 1)	// Haha why did I even do this what the fuck. Whatever. It's too entertaining to remove now. -- TLE
 /*
 		dat += "Autolathe Wires:<BR>"
 		var/wire
@@ -172,7 +172,7 @@ obj/machinery/shipcore/Topic(href, href_list)
 	src.add_fingerprint(usr)
 	if(href_list["groupself"])
 		src.group_self()
-	if(href_list["move"])
+	if (href_list["move"])
 		var/list/beacons = list()
 		for(var/obj/effect/ship_landing_beacon/b in world)
 			if(istype(b, /obj/effect/ship_landing_beacon))
@@ -185,7 +185,7 @@ obj/machinery/shipcore/Topic(href, href_list)
 			src.MoveShip(choice.loc)
 
 	for(var/mob/M in viewers(1, src))
-		if((M.client && M.machine == src))
+		if ((M.client && M.machine == src))
 			src.attack_hand(M)
 	src.updateUsrDialog()
 	return

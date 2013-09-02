@@ -17,7 +17,7 @@
 		// TODO: DEFERRED Make this massively cleaner. It should hook before spawning, not after.
 		var/list/mobs = list()
 		for(var/mob/living/carbon/human/M in world)
-			if(M.client)
+			if (M.client)
 				mobs += M
 		for(var/mob/living/carbon/human/M in mobs)
 			spawn()

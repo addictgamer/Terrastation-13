@@ -56,7 +56,7 @@
 		return density || opacity
 /*
 /turf/Enter(atom/movable/mover as mob|obj)
-	if(!mover || !isturf(mover.loc))
+	if (!mover || !isturf(mover.loc))
 		return 1
 
 
@@ -82,7 +82,7 @@
 				return 0
 
 	//Then, check the turf itself
-	if(!src.CanPass(mover, src))
+	if (!src.CanPass(mover, src))
 		mover.Bump(src, 1)
 		return 0
 

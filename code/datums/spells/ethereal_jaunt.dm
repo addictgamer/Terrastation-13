@@ -86,7 +86,7 @@
 	anchored = 1
 
 /obj/effect/dummy/spell_jaunt/relaymove(var/mob/user, direction)
-	if(!src.canmove) return
+	if (!src.canmove) return
 	var/turf/newLoc = get_step(src,direction)
 	if(!(newLoc.flags & NOJAUNT))
 		loc = newLoc

@@ -39,7 +39,7 @@
 	dat += "<br><center><h3>[src.temp]</h3></center>"
 	dat += "<br><center>Health: [src.player_hp] | Magic: [src.player_mp] | Enemy Health: [src.enemy_hp]</center>"
 
-	if(src.gameover)
+	if (src.gameover)
 		dat += "<center><b><a href='byond://?src=\ref[src];newgame=1'>New Game</a>"
 	else
 		dat += "<center><b><a href='byond://?src=\ref[src];attack=1'>Attack</a> | "
@@ -54,8 +54,8 @@
 	if(..())
 		return
 
-	if(!src.blocked)
-		if(href_list["attack"])
+	if (!src.blocked)
+		if (href_list["attack"])
 			src.blocked = 1
 			var/attackamt = rand(2,6)
 			src.temp = "You attack for [attackamt] damage!"
@@ -65,7 +65,7 @@
 			src.enemy_hp -= attackamt
 			src.arcade_action()
 
-		else if(href_list["heal"])
+		else if (href_list["heal"])
 			src.blocked = 1
 			var/pointamt = rand(1,3)
 			var/healamt = rand(6,8)
@@ -79,7 +79,7 @@
 			src.master.updateUsrDialog()
 			src.arcade_action()
 
-		else if(href_list["charge"])
+		else if (href_list["charge"])
 			src.blocked = 1
 			var/chargeamt = rand(4,7)
 			src.temp = "You regain [chargeamt] points"
@@ -89,7 +89,7 @@
 			sleep(10)
 			src.arcade_action()
 
-	if(href_list["newgame"]) //Reset everything
+	if (href_list["newgame"]) //Reset everything
 		temp = "New Round"
 		player_hp = 30
 		player_mp = 10
@@ -102,23 +102,23 @@
 	return
 
 /datum/computer/file/computer_program/arcade/proc/arcade_action()
-	if((src.enemy_mp <= 0) || (src.enemy_hp <= 0))
+	if ((src.enemy_mp <= 0) || (src.enemy_hp <= 0))
 		src.gameover = 1
 		src.temp = "[src.enemy_name] has fallen! Rejoice!"
 		src.peripheral_command("vend prize")
 
-	else if((src.enemy_mp <= 5) && (prob(70)))
+	else if ((src.enemy_mp <= 5) && (prob(70)))
 		var/stealamt = rand(2,3)
 		src.temp = "[src.enemy_name] steals [stealamt] of your power!"
 		src.player_mp -= stealamt
 		src.master.updateUsrDialog()
 
-		if(src.player_mp <= 0)
+		if (src.player_mp <= 0)
 			src.gameover = 1
 			sleep(10)
 			src.temp = "You have been drained! GAME OVER"
 
-	else if((src.enemy_hp <= 10) && (src.enemy_mp > 4))
+	else if ((src.enemy_hp <= 10) && (src.enemy_mp > 4))
 		src.temp = "[src.enemy_name] heals for 4 health!"
 		src.enemy_hp += 4
 		src.enemy_mp -= 4
@@ -128,7 +128,7 @@
 		src.temp = "[src.enemy_name] attacks for [attackamt] damage!"
 		src.player_hp -= attackamt
 
-	if((src.player_mp <= 0) || (src.player_hp <= 0))
+	if ((src.player_mp <= 0) || (src.player_hp <= 0))
 		src.gameover = 1
 		src.temp = "You have been crushed! GAME OVER"
 

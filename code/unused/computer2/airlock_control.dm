@@ -38,9 +38,9 @@
 		if(href_list["set_tag"])
 			var/t = input(usr, "Please enter new tag", src.id_tag, null) as text
 			t = copytext(sanitize(t), 1, MAX_MESSAGE_LEN)
-			if(!t)
+			if (!t)
 				return
-			if(!in_range(src.master, usr))
+			if (!in_range(src.master, usr))
 				return
 
 			src.id_tag = t

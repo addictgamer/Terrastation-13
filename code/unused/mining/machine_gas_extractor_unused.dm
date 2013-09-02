@@ -33,12 +33,12 @@
 
 	var/dat
 	dat = text("input connection status: ")
-	if(input)
+	if (input)
 		dat += text("<b><font color='green'>CONNECTED</font></b>")
 	else
 		dat += text("<b><font color='red'>NOT CONNECTED</font></b>")
 	dat += text("<br>output connection status: ")
-	if(output)
+	if (output)
 		dat += text("<b><font color='green'>CONNECTED</font></b>")
 	else
 		dat += text("<b><font color='red'>NOT CONNECTED</font></b>")
@@ -56,14 +56,14 @@
 	usr.machine = src
 	src.add_fingerprint(usr)
 	if(href_list["extract"])
-		if(src.output)
-			if(locate(/obj/machinery/portable_atmospherics/canister,output.loc))
+		if (src.output)
+			if (locate(/obj/machinery/portable_atmospherics/canister,output.loc))
 				newtoxins = 0
 				processing = 1
 				var/obj/item/weapon/ore/O
 				while(locate(/obj/item/weapon/ore/plasma, input.loc) && locate(/obj/machinery/portable_atmospherics/canister,output.loc))
 					O = locate(/obj/item/weapon/ore/plasma, input.loc)
-					if(istype(O,/obj/item/weapon/ore/plasma))
+					if (istype(O,/obj/item/weapon/ore/plasma))
 						var/obj/machinery/portable_atmospherics/canister/C
 						C = locate(/obj/machinery/portable_atmospherics/canister,output.loc)
 						C.air_contents.toxins += 100

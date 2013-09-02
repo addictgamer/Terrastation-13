@@ -36,9 +36,9 @@
 		if(href_list["send_msg"])
 			var/t = input(usr, "Please enter messenger", src.id_tag, null) as text
 			t = copytext(sanitize(t), 1, MAX_MESSAGE_LEN)
-			if(!t)
+			if (!t)
 				return
-			if(!in_range(src.master, usr))
+			if (!in_range(src.master, usr))
 				return
 
 			var/datum/signal/signal = new
@@ -67,9 +67,9 @@
 		if(href_list["set_name"])
 			var/t = input(usr, "Please enter screen name", src.id_tag, null) as text
 			t = copytext(sanitize(t), 1, 20)
-			if(!t)
+			if (!t)
 				return
-			if(!in_range(src.master, usr))
+			if (!in_range(src.master, usr))
 				return
 
 			src.screen_name = t

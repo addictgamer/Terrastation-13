@@ -91,15 +91,15 @@
 /obj/machinery/pipefilter/proc/get_extract()
 	/*
 	var/datum/gas_mixture/ndelta = new()
-	if(src.f_mask & GAS_O2)
+	if (src.f_mask & GAS_O2)
 		ndelta.oxygen = min(src.f_per, src.ngas.oxygen)
-	if(src.f_mask & GAS_N2)
+	if (src.f_mask & GAS_N2)
 		ndelta.n2 = min(src.f_per, src.ngas.n2)
-	if(src.f_mask & GAS_PL)
+	if (src.f_mask & GAS_PL)
 		ndelta.plasma = min(src.f_per, src.ngas.plasma)
-	if(src.f_mask & GAS_CO2)
+	if (src.f_mask & GAS_CO2)
 		ndelta.co2 = min(src.f_per, src.ngas.co2)
-	if(src.f_mask & GAS_N2O)
+	if (src.f_mask & GAS_N2O)
 		ndelta.sl_gas = min(src.f_per, src.ngas.sl_gas)
 	return ndelta
 	*/ //TODO: FIX
@@ -190,16 +190,16 @@
 	..()
 	if(usr.restrained() || usr.lying)
 		return
-	if((((get_dist(src, usr) <= 1 || usr.telekinesis == 1) || istype(usr, /mob/living/silicon/ai)) && istype(src.loc, /turf)))
+	if ((((get_dist(src, usr) <= 1 || usr.telekinesis == 1) || istype(usr, /mob/living/silicon/ai)) && istype(src.loc, /turf)))
 		usr.machine = src
-		if(href_list["close"])
+		if (href_list["close"])
 			usr << browse(null, "window=pipefilter;")
 			usr.machine = null
 			return
-		if(src.allowed(usr) || src.emagged || src.bypassed)
-			if(href_list["fp"])
+		if (src.allowed(usr) || src.emagged || src.bypassed)
+			if (href_list["fp"])
 				src.f_per = min(max(round(src.f_per + text2num(href_list["fp"])), 0), src.maxrate)
-			else if(href_list["tg"])
+			else if (href_list["tg"])
 				// toggle gas
 				src.f_mask ^= text2num(href_list["tg"])
 				src.updateicon()
@@ -229,13 +229,13 @@
 		icon_state = "filter"
 		if(emagged)	//only show if powered because presumeably its the interface that has been fried
 			src.overlays += image('icons/obj/pipes2.dmi', "filter-emag")
-		if(src.f_mask & (GAS_N2O|GAS_PL))
+		if (src.f_mask & (GAS_N2O|GAS_PL))
 			src.overlays += image('icons/obj/pipes2.dmi', "filter-tox")
-		if(src.f_mask & GAS_O2)
+		if (src.f_mask & GAS_O2)
 			src.overlays += image('icons/obj/pipes2.dmi', "filter-o2")
-		if(src.f_mask & GAS_N2)
+		if (src.f_mask & GAS_N2)
 			src.overlays += image('icons/obj/pipes2.dmi', "filter-n2")
-		if(src.f_mask & GAS_CO2)
+		if (src.f_mask & GAS_CO2)
 			src.overlays += image('icons/obj/pipes2.dmi', "filter-co2")
 	if(!locked)
 		src.overlays += image('icons/obj/pipes2.dmi', "filter-open")

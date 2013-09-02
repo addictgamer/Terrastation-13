@@ -100,7 +100,7 @@
 	else if(istype(I, /obj/item/weapon/cable_coil))	// if cable, see if a mob is present
 		var/mob/M = locate() in src.loc
 		if(M)
-			if(M == user)
+			if (M == user)
 				src.visible_message("\blue [M] ties \himself to the conveyor.")
 				// note don't check for lying if self-tying
 			else
@@ -122,7 +122,7 @@
 		if(M && M.buckled == src)
 			M.buckled = null
 			src.add_fingerprint(user)
-			if(M == user)
+			if (M == user)
 				src.visible_message("\blue [M] cuts \himself free from the conveyor.")
 			else
 				src.visible_message("\blue [M] had been cut free from the conveyor by [user].")
@@ -139,13 +139,13 @@
 // attack with hand, move pulled object onto conveyor
 
 /obj/machinery/conveyor/attack_hand(mob/user as mob)
-	if((!( user.canmove ) || user.restrained() || !( user.pulling )))
+	if ((!( user.canmove ) || user.restrained() || !( user.pulling )))
 		return
-	if(user.pulling.anchored)
+	if (user.pulling.anchored)
 		return
-	if((user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1))
+	if ((user.pulling.loc != user.loc && get_dist(user, user.pulling) > 1))
 		return
-	if(ismob(user.pulling))
+	if (ismob(user.pulling))
 		var/mob/M = user.pulling
 		M.stop_pulling()
 		step(user.pulling, get_dir(user.pulling.loc, src))

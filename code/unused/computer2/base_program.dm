@@ -51,7 +51,7 @@
 					var/datum/computer/file/newfile = new src.type
 
 					for(var/V in src.vars)
-						if(issaved(src.vars[V]) && V != "holder")
+						if (issaved(src.vars[V]) && V != "holder")
 							newfile.vars[V] = src.vars[V]
 
 					if(!newfolder.add_file(newfile))
@@ -234,7 +234,7 @@
 		if(src.master.active_program != src)
 			return 1
 
-		if((!usr.contents.Find(src.master) && (!in_range(src.master, usr) || !istype(src.master.loc, /turf))) && (!istype(usr, /mob/living/silicon)))
+		if ((!usr.contents.Find(src.master) && (!in_range(src.master, usr) || !istype(src.master.loc, /turf))) && (!istype(usr, /mob/living/silicon)))
 			return 1
 
 		if(!(holder in src.master.contents))
@@ -244,12 +244,12 @@
 
 		usr.machine = src.master
 
-		if(href_list["close"])
+		if (href_list["close"])
 			usr.machine = null
 			usr << browse(null, "window=comp2")
 			return 0
 
-		if(href_list["quit"])
+		if (href_list["quit"])
 //			src.master.processing_programs.Remove(src)
 			if(src.master.host_program && src.master.host_program.holder && (src.master.host_program.holder in src.master.contents))
 				src.master.run_program(src.master.host_program)

@@ -33,7 +33,7 @@
 
 
 /mob/living/silicon/hivebot/blob_act()
-	if(src.stat != 2)
+	if (src.stat != 2)
 		src.adjustBruteLoss(60)
 		src.updatehealth()
 		return 1
@@ -42,10 +42,10 @@
 /mob/living/silicon/hivebot/Stat()
 	..()
 	statpanel("Status")
-	if(src.client.statpanel == "Status")
+	if (src.client.statpanel == "Status")
 		if(emergency_shuttle.online && emergency_shuttle.location < 2)
 			var/timeleft = emergency_shuttle.timeleft()
-			if(timeleft)
+			if (timeleft)
 				stat(null, "ETA-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
 /*
 		if(ticker.mode.name == "AI malfunction")
@@ -61,27 +61,27 @@
 	if(!blinded)
 		flick("flash", src.flash)
 
-	if(src.stat == 2 && src.client)
+	if (src.stat == 2 && src.client)
 		src.gib(1)
 		return
 
-	else if(src.stat == 2 && !src.client)
+	else if (src.stat == 2 && !src.client)
 		del(src)
 		return
 
 	switch(severity)
 		if(1.0)
-			if(src.stat != 2)
+			if (src.stat != 2)
 				adjustBruteLoss(100)
 				adjustFireLoss(100)
 				src.gib(1)
 				return
 		if(2.0)
-			if(src.stat != 2)
+			if (src.stat != 2)
 				adjustBruteLoss(60)
 				adjustFireLoss(60)
 		if(3.0)
-			if(src.stat != 2)
+			if (src.stat != 2)
 				adjustBruteLoss(30)
 
 	src.updatehealth()
@@ -90,61 +90,61 @@
 	for(var/mob/M in viewers(src, null))
 		M.show_message(text("\red [src] has been hit by [O]"), 1)
 		//Foreach goto(19)
-	if(src.health > 0)
+	if (src.health > 0)
 		src.adjustBruteLoss(30)
-		if((O.icon_state == "flaming"))
+		if ((O.icon_state == "flaming"))
 			src.adjustFireLoss(40)
 		src.updatehealth()
 	return
 
 /mob/living/silicon/hivebot/bullet_act(flag)
 /*
-	if(flag == PROJECTILE_BULLET)
-		if(src.stat != 2)
+	if (flag == PROJECTILE_BULLET)
+		if (src.stat != 2)
 			src.bruteloss += 60
 			src.updatehealth()
 
-	else if(flag == PROJECTILE_MEDBULLET)
-		if(src.stat != 2)
+	else if (flag == PROJECTILE_MEDBULLET)
+		if (src.stat != 2)
 			src.bruteloss += 30
 			src.updatehealth()
 
-	else if(flag == PROJECTILE_WEAKBULLET)
-		if(src.stat != 2)
+	else if (flag == PROJECTILE_WEAKBULLET)
+		if (src.stat != 2)
 			src.bruteloss += 15
 			src.updatehealth()
 
-	else if(flag == PROJECTILE_MPBULLET)
-		if(src.stat != 2)
+	else if (flag == PROJECTILE_MPBULLET)
+		if (src.stat != 2)
 			src.bruteloss += 20
 			src.updatehealth()
 
-	else if(flag == PROJECTILE_SLUG)
-		if(src.stat != 2)
+	else if (flag == PROJECTILE_SLUG)
+		if (src.stat != 2)
 			src.bruteloss += 40
 			src.updatehealth()
 
-	else if(flag == PROJECTILE_BAG)
-		if(src.stat != 2)
+	else if (flag == PROJECTILE_BAG)
+		if (src.stat != 2)
 			src.bruteloss += 2
 			src.updatehealth()
 
 
-	else if(flag == PROJECTILE_TASER)
+	else if (flag == PROJECTILE_TASER)
 		return
 
-	else if(flag == PROJECTILE_WAVE)
-		if(src.stat != 2)
+	else if (flag == PROJECTILE_WAVE)
+		if (src.stat != 2)
 			src.bruteloss += 25
 			src.updatehealth()
 		return
 
 	else if(flag == PROJECTILE_LASER)
-		if(src.stat != 2)
+		if (src.stat != 2)
 			src.bruteloss += 20
 			src.updatehealth()
 	else if(flag == PROJECTILE_PULSE)
-		if(src.stat != 2)
+		if (src.stat != 2)
 			src.bruteloss += 40
 			src.updatehealth()
 */
@@ -154,7 +154,7 @@
 
 /mob/living/silicon/hivebot/Bump(atom/movable/AM as mob|obj, yes)
 	spawn( 0 )
-		if((!( yes ) || src.now_pushing))
+		if ((!( yes ) || src.now_pushing))
 			return
 		src.now_pushing = 1
 		if(ismob(AM))
@@ -169,11 +169,11 @@
 					return*/
 		src.now_pushing = 0
 		..()
-		if(!istype(AM, /atom/movable))
+		if (!istype(AM, /atom/movable))
 			return
-		if(!src.now_pushing)
+		if (!src.now_pushing)
 			src.now_pushing = 1
-			if(!AM.anchored)
+			if (!AM.anchored)
 				var/t = get_dir(src, AM)
 				step(AM, t)
 			src.now_pushing = null
@@ -182,8 +182,8 @@
 
 
 /mob/living/silicon/hivebot/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/weldingtool) && W:welding)
-		if(W:remove_fuel(0))
+	if (istype(W, /obj/item/weapon/weldingtool) && W:welding)
+		if (W:remove_fuel(0))
 			src.adjustBruteLoss(-30)
 			src.updatehealth()
 			src.add_fingerprint(user)
@@ -195,12 +195,12 @@
 
 /mob/living/silicon/hivebot/attack_alien(mob/living/carbon/alien/humanoid/M as mob)
 
-	if(M.a_intent == "grab")
-		if(M == src)
+	if (M.a_intent == "grab")
+		if (M == src)
 			return
 		var/obj/item/weapon/grab/G = new /obj/item/weapon/grab( M )
 		G.assailant = M
-		if(M.hand)
+		if (M.hand)
 			M.l_hand = G
 		else
 			M.r_hand = G
@@ -212,11 +212,11 @@
 		for(var/mob/O in viewers(src, null))
 			O.show_message(text("\red [] has grabbed [] passively!", M, src), 1)
 
-	else if(M.a_intent == "hurt")
+	else if (M.a_intent == "hurt")
 		var/damage = rand(5, 10)
-		if(prob(90))
+		if (prob(90))
 		/*
-			if(M.class == "combat")
+			if (M.class == "combat")
 				damage += 15
 				if(prob(20))
 					src.weakened = max(src.weakened,4)
@@ -235,10 +235,10 @@
 				O.show_message(text("\red <B>[] took a swipe at []!</B>", M, src), 1)
 			return
 
-	else if(M.a_intent == "disarm")
+	else if (M.a_intent == "disarm")
 		if(!(src.lying))
 			var/randn = rand(1, 100)
-			if(randn <= 40)
+			if (randn <= 40)
 				src.stunned = 5
 				step(src,get_dir(M,src))
 				spawn(5) step(src,get_dir(M,src))
@@ -319,17 +319,17 @@
 
 /mob/living/silicon/hivebot/Topic(href, href_list)
 	..()
-	if(href_list["mach_close"])
+	if (href_list["mach_close"])
 		var/t1 = text("window=[href_list["mach_close"]]")
 		src.machine = null
 		src << browse(null, t1)
 		return
 
-	if(href_list["mod"])
+	if (href_list["mod"])
 		var/obj/item/O = locate(href_list["mod"])
 		O.attack_self(src)
 
-	if(href_list["act"])
+	if (href_list["act"])
 		var/obj/item/O = locate(href_list["act"])
 		if(activated(O))
 			src << "Already activated"
@@ -350,7 +350,7 @@
 			src << "You need to disable a module first!"
 		src.installed_modules()
 
-	if(href_list["deact"])
+	if (href_list["deact"])
 		var/obj/item/O = locate(href_list["deact"])
 		if(activated(O))
 			if(src.module_state_1 == O)
@@ -373,21 +373,21 @@
 	if(isnull(src.module_active))
 		return
 	if(src.module_state_1 == src.module_active)
-		if(src.client)
+		if (src.client)
 			src.client.screen -= module_state_1
 		src.contents -= module_state_1
 		src.module_active = null
 		src.module_state_1 = null
 		src.inv1.icon_state = "inv1"
 	else if(src.module_state_2 == src.module_active)
-		if(src.client)
+		if (src.client)
 			src.client.screen -= module_state_2
 		src.contents -= module_state_2
 		src.module_active = null
 		src.module_state_2 = null
 		src.inv2.icon_state = "inv2"
 	else if(src.module_state_3 == src.module_active)
-		if(src.client)
+		if (src.client)
 			src.client.screen -= module_state_3
 		src.contents -= module_state_3
 		src.module_active = null
@@ -425,22 +425,22 @@ Frequency:
 
 /mob/living/silicon/hivebot/Move(a, b, flag)
 
-	if(src.buckled)
+	if (src.buckled)
 		return
 
-	if(src.restrained())
+	if (src.restrained())
 		src.stop_pulling()
 
 	var/t7 = 1
-	if(src.restrained())
+	if (src.restrained())
 		for(var/mob/M in range(src, 1))
-			if((M.pulling == src && M.stat == 0 && !( M.restrained() )))
+			if ((M.pulling == src && M.stat == 0 && !( M.restrained() )))
 				t7 = null
-	if((t7 && (src.pulling && ((get_dist(src, src.pulling) <= 1 || src.pulling.loc == src.loc) && (src.client && src.client.moving)))))
+	if ((t7 && (src.pulling && ((get_dist(src, src.pulling) <= 1 || src.pulling.loc == src.loc) && (src.client && src.client.moving)))))
 		var/turf/T = src.loc
 		. = ..()
 
-		if(src.pulling && src.pulling.loc)
+		if (src.pulling && src.pulling.loc)
 			if(!( isturf(src.pulling.loc) ))
 				src.stop_pulling()
 				return
@@ -454,38 +454,38 @@ Frequency:
 			src.stop_pulling()
 			return
 
-		if(!src.restrained())
+		if (!src.restrained())
 			var/diag = get_dir(src, src.pulling)
-			if((diag - 1) & diag)
+			if ((diag - 1) & diag)
 			else
 				diag = null
-			if((get_dist(src, src.pulling) > 1 || diag))
-				if(ismob(src.pulling))
+			if ((get_dist(src, src.pulling) > 1 || diag))
+				if (ismob(src.pulling))
 					var/mob/M = src.pulling
 					var/ok = 1
-					if(locate(/obj/item/weapon/grab, M.grabbed_by))
-						if(prob(75))
+					if (locate(/obj/item/weapon/grab, M.grabbed_by))
+						if (prob(75))
 							var/obj/item/weapon/grab/G = pick(M.grabbed_by)
-							if(istype(G, /obj/item/weapon/grab))
+							if (istype(G, /obj/item/weapon/grab))
 								for(var/mob/O in viewers(M, null))
 									O.show_message(text("\red [G.affecting] has been pulled from [G.assailant]'s grip by [src]"), 1)
 								del(G)
 						else
 							ok = 0
-						if(locate(/obj/item/weapon/grab, M.grabbed_by.len))
+						if (locate(/obj/item/weapon/grab, M.grabbed_by.len))
 							ok = 0
-					if(ok)
+					if (ok)
 						var/atom/movable/t = M.pulling
 						M.stop_pulling()
 						step(src.pulling, get_dir(src.pulling.loc, T))
 						M.start_pulling(t)
 				else
-					if(src.pulling)
+					if (src.pulling)
 						step(src.pulling, get_dir(src.pulling.loc, T))
 	else
 		src.stop_pulling()
 		. = ..()
-	if((src.s_active && !( s_active in src.contents ) ))
+	if ((src.s_active && !( s_active in src.contents ) ))
 		src.s_active.close(src)
 	return
 

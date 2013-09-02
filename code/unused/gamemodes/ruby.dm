@@ -35,7 +35,7 @@
 			wizard.current.loc = starting_loc
 
 	for (var/obj/effect/landmark/A in world)
-		if(A.name == "Teleport-Scroll")
+		if (A.name == "Teleport-Scroll")
 			new /obj/item/weapon/teleportation_scroll(A.loc)
 			del(A)
 			continue
@@ -205,7 +205,7 @@
 	var/tilesizey=32
 	//If the temp. file exists, delete it
 	src << browse("<h2>Sensing prey...</h2>", "window=hunt")
-	if(fexists(filename)) fdel(filename)
+	if (fexists(filename)) fdel(filename)
 
 	//Display everything in the world
 	for (var/y=H.y-3,y<=H.y+3,y++)
@@ -217,7 +217,7 @@
 		for(var/x=H.x-3, x<=H.x+3, x++)
 			//Turfs
 			var/turf/T=locate(x,y,H.z)
-			if(!T) continue
+			if (!T) continue
 			var/icon/I=icon(T.icon,T.icon_state)
 			var/imgstring=replacetext("[T.type]-[T.icon_state]","/","_")
 
@@ -226,12 +226,12 @@
 				//Make sure it's allowed to be displayed
 				var/allowed=1
 				for (var/X in denytypes)
-					if(istype(A,X))
+					if (istype(A,X))
 						allowed=0
 						break
-				if(!allowed) continue
+				if (!allowed) continue
 
-				if(A.icon) I.Blend(icon(A.icon,A.icon_state,A.dir),ICON_OVERLAY)
+				if (A.icon) I.Blend(icon(A.icon,A.icon_state,A.dir),ICON_OVERLAY)
 				imgstring+=replacetext("__[A.type]_[A.icon_state]","/","_")
 
 			//Output it

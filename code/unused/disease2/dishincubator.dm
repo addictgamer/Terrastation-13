@@ -20,12 +20,12 @@
 				del(src)
 				return
 			if(2.0)
-				if(prob(50))
+				if (prob(50))
 					del(src)
 					return
 
 	blob_act()
-		if(prob(25))
+		if (prob(25))
 			del(src)
 
 	meteorhit()
@@ -72,23 +72,23 @@
 		usr.machine = src
 		if(!dish) return
 
-		if(href_list["power"])
+		if (href_list["power"])
 			on = !on
 			if(on)
 				icon_state = "incubator_on"
 			else
 				icon_state = "incubator"
-		if(href_list["ejectchem"])
+		if (href_list["ejectchem"])
 			if(beaker)
 				beaker.loc = src.loc
 				beaker = null
-		if(href_list["ejectdish"])
+		if (href_list["ejectdish"])
 			if(dish)
 				dish.loc = src.loc
 				dish = null
-		if(href_list["rad"])
+		if (href_list["rad"])
 			radiation += 10
-		if(href_list["flush"])
+		if (href_list["flush"])
 			radiation = 0
 			toxins = 0
 			foodsupply = 0

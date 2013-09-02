@@ -47,7 +47,7 @@ datum/air_group
 	proc/update_tiles_from_group()
 		for(var/member in members)
 			member:air.copy_from(air)
-			if(istype(member,/turf/simulated))
+			if (istype(member,/turf/simulated))
 				var/turf/simulated/turfmem=member
 				turfmem.reset_delay()
 
@@ -90,7 +90,7 @@ datum/air_group
 			return
 
 			//check if we're skipping this tick
-		if(next_check > 0)
+		if (next_check > 0)
 			next_check--
 			return 1
 		var/player_count = max(player_list.len, 3) / 3

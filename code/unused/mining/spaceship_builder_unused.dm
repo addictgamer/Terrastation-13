@@ -79,10 +79,10 @@
 			currentShuttleName = "Space station 4"
 			req_metal = 250000
 
-	if(metal_amount - req_metal < 0)
+	if (metal_amount - req_metal < 0)
 		return
 
-	if(!shuttleat)
+	if (!shuttleat)
 		return
 
 	var/area/from = locate(shuttleat)
@@ -100,7 +100,7 @@
 	var/shuttleat = "/area/shipbuilder/station"
 	var/shuttleto = currentShuttleArea
 
-	if(!shuttleto)
+	if (!shuttleto)
 		return
 
 	var/area/from = locate(shuttleat)
@@ -120,11 +120,11 @@
 		user << "The machine is processing"
 		return
 
-	if(!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
+	if (!(istype(usr, /mob/living/carbon/human) || ticker) && ticker.mode.name != "monkey")
 		usr << "\red You don't have the dexterity to do this!"
 		return
 
-	if(istype(W, /obj/item/stack/sheet/metal))
+	if (istype(W, /obj/item/stack/sheet/metal))
 
 		var/obj/item/stack/sheet/metal/M = W
 		user << "\blue You insert all the metal into the machine."
@@ -144,7 +144,7 @@
 	dat = text("<b>Ship fabricator</b><br><br>")
 	dat += text("Current ammount of <font color='gray'>Metal: <b>[metal_amount]</b></font><br><hr>")
 
-	if(currentShuttleArea)
+	if (currentShuttleArea)
 		dat += text("<b>Currently building</b><br><br>[currentShuttleName]<br><br>")
 		dat += text("<b>Build the shuttle to your liking.</b><br>This shuttle will be sent to the station in the event of an emergency along with a centcom emergency shuttle.")
 		dat += text("<br><br><br><A href='?src=\ref[src];scrap=1'>Scrap current shuttle</A>")

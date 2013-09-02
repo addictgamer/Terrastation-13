@@ -34,7 +34,7 @@
 	var/plant_type = 0 // 0 = 'normal plant'; 1 = weed; 2 = shroom
 
 /obj/item/seeds/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	if(istype(O, /obj/item/device/analyzer/plant_analyzer))
+	if (istype(O, /obj/item/device/analyzer/plant_analyzer))
 		user << "*** <B>[plantname]</B> ***"
 		user << "-Plant Endurance: \blue [endurance]"
 		user << "-Plant Lifespan: \blue [lifespan]"

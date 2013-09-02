@@ -534,7 +534,7 @@ Doing this because FindTurfs() isn't even used
 				pt.gas.temperature = 400+T0C
 				pt.ignite()
 				for(var/turf/P in view(3, T))
-					if(P.poison)
+					if (P.poison)
 						P.poison = 0
 						P.oldpoison = 0
 						P.tmppoison = 0

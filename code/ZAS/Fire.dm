@@ -150,7 +150,7 @@ turf/simulated/hotspot_expose(exposed_temperature, exposed_volume, soh)
 
 
 /obj/fire/Del()
-	if(istype(loc, /turf/simulated))
+	if (istype(loc, /turf/simulated))
 		SetLuminosity(0)
 
 		loc = null

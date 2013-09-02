@@ -17,7 +17,7 @@
 	var/tod = time2text(world.realtime,"hh:mm:ss") //weasellos time of death patch
 	store_memory("Time of death: [tod]", 0)
 
-	if(src.key)
+	if (src.key)
 		spawn(50)
 			if(src.key && src.stat == 2)
 				src.verbs += /client/proc/ghost

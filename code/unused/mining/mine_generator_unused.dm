@@ -93,15 +93,15 @@
 			randXParam = -1
 			randYParam = 3
 	target_loc = last_loc
-	if(randXParam > 0)
+	if (randXParam > 0)
 		target_loc = locate(target_loc.x+rand(randXParam),target_loc.y,src.z)
-	if(randYParam > 0)
+	if (randYParam > 0)
 		target_loc = locate(target_loc.x,target_loc.y+rand(randYParam),src.z)
-	if(randXParam < 0)
+	if (randXParam < 0)
 		target_loc = locate(target_loc.x-rand(-randXParam),target_loc.y,src.z)
-	if(randYParam < 0)
+	if (randYParam < 0)
 		target_loc = locate(target_loc.x,target_loc.y-rand(-randXParam),src.z)
-	if(mineDirection == 1 || mineDirection == 5 || mineDirection == 9 || mineDirection == 13) //if N,S,E,W, turn quickly
+	if (mineDirection == 1 || mineDirection == 5 || mineDirection == 9 || mineDirection == 13) //if N,S,E,W, turn quickly
 		if(prob(50))
 			mineDirection += 2
 		else

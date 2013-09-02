@@ -59,12 +59,12 @@
 
 
 /obj/item/device/pda2/pickup(mob/user)
-	if(src.fon)
+	if (src.fon)
 		src.sd_SetLuminosity(0)
 		user.sd_SetLuminosity(user.luminosity + src.f_lum)
 
 /obj/item/device/pda2/dropped(mob/user)
-	if(src.fon)
+	if (src.fon)
 		user.sd_SetLuminosity(user.luminosity - src.f_lum)
 		src.sd_SetLuminosity(src.f_lum)
 
@@ -87,7 +87,7 @@
 			radio_controller.add_object(src, frequency)
 
 
-	if(src.default_cartridge)
+	if (src.default_cartridge)
 		src.cartridge = new src.setup_default_cartridge(src)
 //	if(src.owner)
 //		processing_items.Add(src)
@@ -99,7 +99,7 @@
 
 	dat += "<a href='byond://?src=\ref[src];close=1'>Close</a>"
 
-	if(!src.owner)
+	if (!src.owner)
 		if(src.cartridge)
 			dat += " | <a href='byond://?src=\ref[src];eject_cart=1'>Eject [src.cartridge]</a>"
 		dat += "<br>Warning: No owner information entered.  Please swipe card.<br><br>"
@@ -126,8 +126,8 @@
 /obj/item/device/pda2/Topic(href, href_list)
 	..()
 
-	if(usr.contents.Find(src) || usr.contents.Find(src.master) || (istype(src.loc, /turf) && get_dist(src, usr) <= 1))
-		if(usr.stat || usr.restrained())
+	if (usr.contents.Find(src) || usr.contents.Find(src.master) || (istype(src.loc, /turf) && get_dist(src, usr) <= 1))
+		if (usr.stat || usr.restrained())
 			return
 
 		src.add_fingerprint(usr)
@@ -139,13 +139,13 @@
 				src.active_program = src.host_program
 				src.host_program = null
 
-		else if(href_list["eject_cart"])
+		else if (href_list["eject_cart"])
 			src.eject_cartridge()
 
-		else if(href_list["refresh"])
+		else if (href_list["refresh"])
 			src.updateSelfDialog()
 
-		else if(href_list["close"])
+		else if (href_list["close"])
 			usr << browse(null, "window=pda2")
 			usr.machine = null
 
@@ -153,14 +153,14 @@
 		return
 
 /obj/item/device/pda2/attackby(obj/item/weapon/C as obj, mob/user as mob)
-	if(istype(C, /obj/item/weapon/disk/data/cartridge) && isnull(src.cartridge))
+	if (istype(C, /obj/item/weapon/disk/data/cartridge) && isnull(src.cartridge))
 		user.drop_item()
 		C.loc = src
 		user << "\blue You insert [C] into [src]."
 		src.cartridge = C
 		src.updateSelfDialog()
 
-	else if(istype(C, /obj/item/weapon/card/id) && !src.owner && C:registered_name)
+	else if (istype(C, /obj/item/weapon/card/id) && !src.owner && C:registered_name)
 		src.owner = C:registered_name
 		src.name = "PDA-[src.owner]"
 		user << "\blue Card scanned."
@@ -238,8 +238,8 @@
 	toggle_light()
 		src.fon = (!src.fon)
 
-		if(ismob(src.loc))
-			if(src.fon)
+		if (ismob(src.loc))
+			if (src.fon)
 				src.loc.sd_SetLuminosity(src.loc.luminosity + src.f_lum)
 			else
 				src.loc.sd_SetLuminosity(src.loc.luminosity - src.f_lum)
@@ -249,7 +249,7 @@
 		src.updateSelfDialog()
 
 	display_alert(var/alert_message) //Add alert overlay and beep
-		if(alert_message)
+		if (alert_message)
 			playsound(src.loc, 'sound/machines/twobeep.ogg', 50, 1)
 			for (var/mob/O in hearers(3, src.loc))
 				O.show_message(text("\icon[src] *[alert_message]*"))

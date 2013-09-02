@@ -173,7 +173,7 @@ turf/simulated
 					parent.suspend_group_processing()
 					air.merge(giver)
 			else
-				if(giver.total_moles() > MINIMUM_AIR_TO_SUSPEND)
+				if (giver.total_moles() > MINIMUM_AIR_TO_SUSPEND)
 					reset_delay()
 
 				air.merge(giver)
@@ -285,7 +285,7 @@ turf/simulated
 		//Comment by errorage: In other words, this is the proc that lags the game.
 
 		//check if we're skipping this tick
-		if(next_check > 0)
+		if (next_check > 0)
 			next_check--
 			return 1
 		var/player_count = max(player_list.len, 3) / 3
@@ -307,9 +307,9 @@ turf/simulated
 						if(enemy_tile.archived_cycle < archived_cycle) //archive bordering tile information if not already done
 							enemy_tile.archive()
 
-						if(air && enemy_tile.air)
+						if (air && enemy_tile.air)
 							var/delay_trigger = air.compare(enemy_tile.air)
-							if(!delay_trigger) //if compare() didn't return 1, air is different enough to trigger processing
+							if (!delay_trigger) //if compare() didn't return 1, air is different enough to trigger processing
 								reset_delay()
 								enemy_tile.reset_delay()
 
@@ -366,7 +366,7 @@ turf/simulated
 		air.react()
 
 		if(active_hotspot)
-			if(!active_hotspot.process(possible_fire_spreads))
+			if (!active_hotspot.process(possible_fire_spreads))
 				return 0
 
 		if(air.temperature > MINIMUM_TEMPERATURE_START_SUPERCONDUCTION)
@@ -556,5 +556,5 @@ turf/simulated
 		check_delay= -5 //negative numbers mean a mandatory quick-update period
 
 		//if this turf has a parent air group, suspend its processing
-		if(parent && parent.group_processing)
+		if (parent && parent.group_processing)
 			parent.suspend_group_processing()

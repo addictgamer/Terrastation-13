@@ -14,7 +14,7 @@
 	var/list/mobs = list()
 	var/total_mobs
 	for(var/mob/living/carbon/human/M in world)
-		if(M.client)
+		if (M.client)
 			mobs += M
 			total_mobs++
 
@@ -114,25 +114,25 @@
 
 	spawn (50)
 		var/obj/L = locate("landmark*Red-Flag")
-		if(L)
+		if (L)
 			new /obj/item/weapon/ctf_flag/red(L.loc)
 		else
 			world << "No red flag spawn point detected"
 
 		L = locate("landmark*Green-Flag")
-		if(L)
+		if (L)
 			new /obj/item/weapon/ctf_flag/green(L.loc)
 		else
 			world << "No green flag spawn point detected"
 
 		L = locate("landmark*The-Red-Team")
-		if(L)
+		if (L)
 			new /obj/machinery/red_injector(L.loc)
 		else
 			world << "No red team spawn injector point detected"
 
 		L = locate("landmark*The-Green-Team")
-		if(L)
+		if (L)
 			new /obj/machinery/green_injector(L.loc)
 		else
 			world << "No green team injector spawn point detected"

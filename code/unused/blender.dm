@@ -66,7 +66,7 @@ the blender or the processor: Processor items are solid objects and Blender resu
 			user.drop_item()
 			O.loc = src
 			user << "You drop the [O] into the blender."
-		else if(istype(O, /obj/item/weapon/plantbag)) //Allows plant bags to empty into the blender.
+		else if (istype(O, /obj/item/weapon/plantbag)) //Allows plant bags to empty into the blender.
 			for (var/obj/item/weapon/reagent_containers/food/snacks/grown/G in O.contents)
 				O.contents -= G
 				G.loc = src
@@ -84,9 +84,9 @@ the blender or the processor: Processor items are solid objects and Blender resu
 	set category = "Object"
 	set name = "Turn Blender On"
 	set src in oview(1)					// Otherwise, it'll try to blend it too.
-	if(usr.stat != 0)
+	if (usr.stat != 0)
 		return
-	if(src.stat != 0) //NOPOWER etc
+	if (src.stat != 0) //NOPOWER etc
 		return
 	if(src.processing)
 		usr << "\red The blender is in the process of blending."
@@ -119,7 +119,7 @@ the blender or the processor: Processor items are solid objects and Blender resu
 	set category = "Object"
 	set name = "Detach Blender Jug"
 	set src in oview(1)
-	if(usr.stat != 0)
+	if (usr.stat != 0)
 		return
 	if(src.processing)
 		usr << "The blender is in the process of blending."
@@ -141,7 +141,7 @@ the blender or the processor: Processor items are solid objects and Blender resu
 	set category = "Object"
 	set name = "Empty Blender Jug"
 	set src in oview(1)
-	if(usr.stat != 0)
+	if (usr.stat != 0)
 		return
 	if(src.processing)
 		usr << "The blender is in the process of blending."

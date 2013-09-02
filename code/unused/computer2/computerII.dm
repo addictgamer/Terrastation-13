@@ -212,7 +212,7 @@
 						src.delete_file(newfile)
 
 	//If there is already one loaded eject, or if not and they have one insert it.
-	if(href_list["id"])
+	if (href_list["id"])
 		switch(href_list["id"])
 			if("auth")
 				if(!isnull(src.authid))
@@ -220,7 +220,7 @@
 					src.authid = null
 				else
 					var/obj/item/I = usr.equipped()
-					if(istype(I, /obj/item/weapon/card/id))
+					if (istype(I, /obj/item/weapon/card/id))
 						usr.drop_item()
 						I.loc = src
 						src.authid = I
@@ -230,19 +230,19 @@
 					src.auxid = null
 				else
 					var/obj/item/I = usr.equipped()
-					if(istype(I, /obj/item/weapon/card/id))
+					if (istype(I, /obj/item/weapon/card/id))
 						usr.drop_item()
 						I.loc = src
 						src.auxid = I
 
 	//Same but for a data disk
-	else if(href_list["disk"])
+	else if (href_list["disk"])
 		if(!isnull(src.diskette))
 			src.diskette.loc = get_turf(src)
 			src.diskette = null
 /*		else
 			var/obj/item/I = usr.equipped()
-			if(istype(I, /obj/item/weapon/disk/data))
+			if (istype(I, /obj/item/weapon/disk/data))
 				usr.drop_item()
 				I.loc = src
 				src.diskette = I
@@ -277,8 +277,8 @@
 
 
 /obj/machinery/computer2/attackby(obj/item/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/disk/data)) //INSERT SOME DISKETTES
-		if((!src.diskette) && W:portable)
+	if (istype(W, /obj/item/weapon/disk/data)) //INSERT SOME DISKETTES
+		if ((!src.diskette) && W:portable)
 			user.machine = src
 			user.drop_item()
 			W.loc = src
@@ -287,12 +287,12 @@
 			src.updateUsrDialog()
 			return
 
-	else if(istype(W, /obj/item/weapon/screwdriver))
+	else if (istype(W, /obj/item/weapon/screwdriver))
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		if(do_after(user, 20))
 			var/obj/computer2frame/A = new /obj/computer2frame( src.loc )
 			A.created_icon_state = src.base_icon_state
-			if(src.stat & BROKEN)
+			if (src.stat & BROKEN)
 				user << "\blue The broken glass falls out."
 				new /obj/item/weapon/shard( src.loc )
 				A.state = 3

@@ -2,12 +2,12 @@
 	Namepick()
 
 /mob/living/silicon/hive_mainframe/Life()
-	if(src.stat == 2)
+	if (src.stat == 2)
 		return
 	else
 		src.updatehealth()
 
-		if(src.health <= 0)
+		if (src.health <= 0)
 			death()
 			return
 
@@ -22,10 +22,10 @@
 /mob/living/silicon/hive_mainframe/Stat()
 	..()
 	statpanel("Status")
-	if(src.client.statpanel == "Status")
+	if (src.client.statpanel == "Status")
 		if(emergency_shuttle.online && emergency_shuttle.location < 2)
 			var/timeleft = emergency_shuttle.timeleft()
-			if(timeleft)
+			if (timeleft)
 				stat(null, "ETA-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
 /*
 		if(ticker.mode.name == "AI malfunction")
@@ -33,7 +33,7 @@
 */
 
 /mob/living/silicon/hive_mainframe/updatehealth()
-	if(src.nodamage == 0)
+	if (src.nodamage == 0)
 		src.health = 100 - src.getFireLoss() - src.getBruteLoss()
 	else
 		src.health = 100
@@ -55,7 +55,7 @@
 	var/tod = time2text(world.realtime,"hh:mm:ss") //weasellos time of death patch
 	mind.store_memory("Time of death: [tod]", 0)
 
-	if(src.key)
+	if (src.key)
 		spawn(50)
 			if(src.key && src.stat == 2)
 				src.verbs += /client/proc/ghost
@@ -63,24 +63,24 @@
 
 
 /mob/living/silicon/hive_mainframe/say_understands(var/other)
-	if(istype(other, /mob/living/carbon/human))
+	if (istype(other, /mob/living/carbon/human))
 		return 1
-	if(istype(other, /mob/living/silicon/robot))
+	if (istype(other, /mob/living/silicon/robot))
 		return 1
-	if(istype(other, /mob/living/silicon/hivebot))
+	if (istype(other, /mob/living/silicon/hivebot))
 		return 1
-	if(istype(other, /mob/living/silicon/ai))
+	if (istype(other, /mob/living/silicon/ai))
 		return 1
-	if(istype(other, /mob/living/carbon/human/tajaran))
+	if (istype(other, /mob/living/carbon/human/tajaran))
 		return 1
 	return ..()
 
 /mob/living/silicon/hive_mainframe/say_quote(var/text)
 	var/ending = copytext(text, length(text))
 
-	if(ending == "?")
+	if (ending == "?")
 		return "queries, \"[text]\"";
-	else if(ending == "!")
+	else if (ending == "!")
 		return "declares, \"[copytext(text, 1, length(text))]\"";
 
 	return "states, \"[text]\"";
@@ -118,7 +118,7 @@
 
 	var/target_shell = input(usr, "Which body to control?") as null|anything in bodies
 
-	if(!target_shell)
+	if (!target_shell)
 		return
 
 	else if(src.mind)
@@ -159,7 +159,7 @@
 	if(!isturf(src.loc))
 		src.client.eye = src.loc
 		src.client.perspective = EYE_PERSPECTIVE
-	if(src.stat == 2)
+	if (src.stat == 2)
 		src.verbs += /client/proc/ghost
 	return
 
@@ -169,11 +169,11 @@
 	var/randomname = pick(ai_names)
 	var/newname = input(src,"You are the a Mainframe Unit. Would you like to change your name to something else?", "Name change",randomname)
 
-	if(length(newname) == 0)
+	if (length(newname) == 0)
 		newname = randomname
 
-	if(newname)
-		if(length(newname) >= 26)
+	if (newname)
+		if (length(newname) >= 26)
 			newname = copytext(newname, 1, 26)
 		newname = replacetext(newname, ">", "'")
 		src.real_name = newname
