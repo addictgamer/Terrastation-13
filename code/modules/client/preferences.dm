@@ -389,7 +389,7 @@ datum/preferences
 
 		//The job before the current job. I only use this to get the previous jobs color when I'm filling in blank rows.
 		var/datum/job/lastJob
-		if(!job_master)		return
+		if (!job_master)		return
 		for(var/datum/job/job in job_master.occupations)
 
 			index += 1
@@ -669,9 +669,9 @@ datum/preferences
 					else
 						return 0
 					SetChoices(user)
-				if("alt_title")
+				if ("alt_title")
 					var/datum/job/job = locate(href_list["job"])
-					if(job)
+					if (job)
 						var/choices = list(job.title) + job.alt_titles
 						var/choice = input("Pick a title for [job.title].", "Character Generation", GetPlayerAltTitle(job)) as anything in choices | null
 						if(choice)
@@ -822,7 +822,9 @@ datum/preferences
 							var/list/valid_hairstyles = list()
 							for(var/hairstyle in hair_styles_list)
 								var/datum/sprite_accessory/S = hair_styles_list[hairstyle]
-								if(gender != S.gender)
+								if(gender == MALE && S.gender == FEMALE)
+									continue
+								if(gender == FEMALE && S.gender == MALE)
 									continue
 								if( !(species in S.species_allowed))
 									continue
@@ -838,7 +840,9 @@ datum/preferences
 							var/list/valid_facialhairstyles = list()
 							for(var/facialhairstyle in facial_hair_styles_list)
 								var/datum/sprite_accessory/S = facial_hair_styles_list[facialhairstyle]
-								if(gender != S.gender)
+								if(gender == MALE && S.gender == FEMALE)
+									continue
+								if(gender == FEMALE && S.gender == MALE)
 									continue
 								if( !(species in S.species_allowed))
 									continue
@@ -921,7 +925,9 @@ datum/preferences
 						var/list/valid_facialhairstyles = list()
 						for(var/facialhairstyle in facial_hair_styles_list)
 							var/datum/sprite_accessory/S = facial_hair_styles_list[facialhairstyle]
-							if(gender != S.gender)
+							if(gender == MALE && S.gender == FEMALE)
+								continue
+							if(gender == FEMALE && S.gender == MALE)
 								continue
 							if( !(species in S.species_allowed))
 								continue
