@@ -12,7 +12,7 @@
 	set invisibility = 0
 	set background = 1
 
-	if(src.monkeyizing)
+	if (src.monkeyizing)
 		return
 
 	..()
@@ -21,7 +21,7 @@
 	if(src.loc)
 		environment = loc.return_air()
 
-	if(src.stat != 2) //still breathing
+	if (src.stat != 2) //still breathing
 
 		//First, resolve location and get a breath
 
@@ -85,20 +85,20 @@
 			AdjustWeakened(0)
 
 		handle_disabilities()
-			if(src.disabilities & 4)
-				if((prob(5) && src.paralysis <= 1 && src.r_ch_cou < 1))
+			if (src.disabilities & 4)
+				if ((prob(5) && src.paralysis <= 1 && src.r_ch_cou < 1))
 					src.drop_item()
 					spawn( 0 )
 						emote("cough")
 						return
-			if(src.disabilities & 8)
-				if((prob(10) && src.paralysis <= 1 && src.r_Tourette < 1))
+			if (src.disabilities & 8)
+				if ((prob(10) && src.paralysis <= 1 && src.r_Tourette < 1))
 					Stun(10)
 					spawn( 0 )
 						emote("twitch")
 						return
-			if(src.disabilities & 16)
-				if(prob(10))
+			if (src.disabilities & 16)
+				if (prob(10))
 					src.stuttering = max(10, src.stuttering)
 
 		update_mind()
@@ -122,7 +122,7 @@
 
 			if(losebreath>0) //Suffocating so do not take a breath
 				src.losebreath--
-				if(prob(75)) //High chance of gasping for air
+				if (prob(75)) //High chance of gasping for air
 					spawn emote("gasp")
 				if(istype(loc, /obj/))
 					var/obj/location_as_object = loc
@@ -170,16 +170,16 @@
 
 		get_breath_from_internal(volume_needed)
 			if(internal)
-				if(!contents.Find(src.internal))
+				if (!contents.Find(src.internal))
 					internal = null
-				if(!wear_mask || !(wear_mask.flags|MASKINTERNALS) )
+				if (!wear_mask || !(wear_mask.flags|MASKINTERNALS) )
 					internal = null
 				if(internal)
-					if(src.internals)
+					if (src.internals)
 						src.internals.icon_state = "internal1"
 					return internal.remove_air_volume(volume_needed)
 				else
-					if(src.internals)
+					if (src.internals)
 						src.internals.icon_state = "internal0"
 			return null
 
@@ -211,7 +211,7 @@
 			if(O2_pp < safe_oxygen_min) 			// Too little oxygen
 				if(prob(20))
 					spawn(0) emote("gasp")
-				if(O2_pp == 0)
+				if (O2_pp == 0)
 					O2_pp = 0.01
 				var/ratio = safe_oxygen_min/O2_pp
 				adjustOxyLoss(min(5*ratio, 7)) // Don't fuck them up too fast (space only does 7 after all!)
@@ -292,10 +292,10 @@
 			// most chemicals will have no effect on amorphs
 			//if(reagents) reagents.metabolize(src)
 
-			if(src.drowsyness)
+			if (src.drowsyness)
 				src.drowsyness--
 				src.eye_blurry = max(2, src.eye_blurry)
-				if(prob(5))
+				if (prob(5))
 					src.sleeping += 1
 					Paralyse(5)
 
@@ -318,7 +318,7 @@
 
 			if(src.sleeping)
 				Paralyse(5)
-				if(prob(1) && health) spawn(0) emote("snore")
+				if (prob(1) && health) spawn(0) emote("snore")
 
 			if(src.resting)
 				Weaken(5)
@@ -334,17 +334,17 @@
 				if(src.stat != 2)	src.stat = 1
 				Paralyse(5)
 
-			if(src.stat != 2) //Alive.
+			if (src.stat != 2) //Alive.
 
-				if(src.paralysis || src.stunned || src.weakened) //Stunned etc.
-					if(src.stunned > 0)
+				if (src.paralysis || src.stunned || src.weakened) //Stunned etc.
+					if (src.stunned > 0)
 						AdjustStunned(-1)
 						src.stat = 0
-					if(src.weakened > 0)
+					if (src.weakened > 0)
 						AdjustWeakened(-1)
 						src.lying = 1
 						src.stat = 0
-					if(src.paralysis > 0)
+					if (src.paralysis > 0)
 						AdjustParalysis(-1)
 						src.blinded = 1
 						src.lying = 1
@@ -365,30 +365,30 @@
 				src.blinded = 1
 				src.stat = 2
 
-			if(src.stuttering) src.stuttering--
-			if(src.slurring) src.slurring--
+			if (src.stuttering) src.stuttering--
+			if (src.slurring) src.slurring--
 
-			if(src.eye_blind)
+			if (src.eye_blind)
 				src.eye_blind--
 				src.blinded = 1
 
-			if(src.ear_deaf > 0) src.ear_deaf--
-			if(src.ear_damage < 25)
+			if (src.ear_deaf > 0) src.ear_deaf--
+			if (src.ear_damage < 25)
 				src.ear_damage -= 0.05
 				src.ear_damage = max(src.ear_damage, 0)
 
 			src.density = !( src.lying )
 
-			if(src.disabilities & 128)
+			if (src.disabilities & 128)
 				src.blinded = 1
-			if(src.disabilities & 32)
+			if (src.disabilities & 32)
 				src.ear_deaf = 1
 
-			if(src.eye_blurry > 0)
+			if (src.eye_blurry > 0)
 				src.eye_blurry--
 				src.eye_blurry = max(0, src.eye_blurry)
 
-			if(src.druggy > 0)
+			if (src.druggy > 0)
 				src.druggy--
 				src.druggy = max(0, src.druggy)
 
@@ -396,28 +396,28 @@
 
 		handle_regular_hud_updates()
 
-			if(src.stat == 2 || (XRAY in mutations))
+			if (src.stat == 2 || (XRAY in mutations))
 				src.sight |= SEE_TURFS
 				src.sight |= SEE_MOBS
 				src.sight |= SEE_OBJS
 				src.see_in_dark = 8
 				src.see_invisible = 2
-			else if(src.stat != 2)
+			else if (src.stat != 2)
 				src.sight &= ~SEE_TURFS
 				src.sight &= ~SEE_MOBS
 				src.sight &= ~SEE_OBJS
 				src.see_in_dark = 2
 				src.see_invisible = 0
 
-			if(src.sleep)
+			if (src.sleep)
 				src.sleep.icon_state = text("sleep[]", src.sleeping > 0 ? 1 : 0)
 				src.sleep.overlays = null
 				if(src.sleeping_willingly)
 					src.sleep.overlays += icon(src.sleep.icon, "sleep_willing")
-			if(src.rest) src.rest.icon_state = text("rest[]", src.resting)
+			if (src.rest) src.rest.icon_state = text("rest[]", src.resting)
 
-			if(src.healths)
-				if(src.stat != 2)
+			if (src.healths)
+				if (src.stat != 2)
 					switch(health)
 						if(100 to INFINITY)
 							src.healths.icon_state = "health0"
@@ -436,7 +436,7 @@
 				else
 					src.healths.icon_state = "health7"
 
-			if(pressure)
+			if (pressure)
 				var/datum/gas_mixture/environment = loc.return_air()
 				if(environment)
 					switch(environment.return_pressure())
@@ -455,9 +455,9 @@
 			if(src.pullin)	src.pullin.icon_state = "pull[src.pulling ? 1 : 0]"
 
 
-			if(src.toxin)	src.toxin.icon_state = "tox[src.toxins_alert ? 1 : 0]"
-			if(src.oxygen) src.oxygen.icon_state = "oxy[src.oxygen_alert ? 1 : 0]"
-			if(src.fire) src.fire.icon_state = "fire[src.fire_alert ? 1 : 0]"
+			if (src.toxin)	src.toxin.icon_state = "tox[src.toxins_alert ? 1 : 0]"
+			if (src.oxygen) src.oxygen.icon_state = "oxy[src.oxygen_alert ? 1 : 0]"
+			if (src.fire) src.fire.icon_state = "fire[src.fire_alert ? 1 : 0]"
 			//NOTE: the alerts dont reset when youre out of danger. dont blame me,
 			//blame the person who coded them. Temporary fix added.
 
@@ -486,24 +486,24 @@
 			src.client.screen -= src.hud_used.druggy
 			src.client.screen -= src.hud_used.vimpaired
 
-			if((src.blind && src.stat != 2))
-				if((src.blinded))
+			if ((src.blind && src.stat != 2))
+				if ((src.blinded))
 					src.blind.layer = 18
 				else
 					src.blind.layer = 0
 
-					if(src.disabilities & 1)
+					if (src.disabilities & 1)
 						src.client.screen += src.hud_used.vimpaired
 
-					if(src.eye_blurry)
+					if (src.eye_blurry)
 						src.client.screen += src.hud_used.blurry
 
-					if(src.druggy)
+					if (src.druggy)
 						src.client.screen += src.hud_used.druggy
 
-			if(src.stat != 2)
-				if(src.machine)
-					if(!( src.machine.check_eye(src) ))
+			if (src.stat != 2)
+				if (src.machine)
+					if (!( src.machine.check_eye(src) ))
 						src.reset_view(null)
 				else
 					if(!client.adminobs)

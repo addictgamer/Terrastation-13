@@ -35,7 +35,7 @@
 
 /obj/machinery/coatrack/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	var/obj/item/I = user.equipped()
-	if( istype(I,/obj/item/clothing/head/det_hat) && !hat)
+	if ( istype(I,/obj/item/clothing/head/det_hat) && !hat)
 		user.drop_item()
 		I.loc = src
 		hat = I
@@ -47,7 +47,7 @@
 			if(M.client)
 				M.show_message(text("\blue [user] puts his hat onto the rack."), 2)
 		return
-	if( istype(I,/obj/item/clothing/suit/storage/det_suit) && !coat)
+	if ( istype(I,/obj/item/clothing/suit/storage/det_suit) && !coat)
 		user.drop_item()
 		I.loc = src
 		coat = I
@@ -59,10 +59,10 @@
 			if(M.client)
 				M.show_message(text("\blue [user] puts his coat onto the rack."), 2)
 		return
-	if( istype(I,/obj/item/clothing/head/det_hat) && hat)
+	if ( istype(I,/obj/item/clothing/head/det_hat) && hat)
 		user << "There's already a hat on the rack!"
 		return ..()
-	if( istype(I,/obj/item/clothing/suit/storage/det_suit) && coat)
+	if ( istype(I,/obj/item/clothing/suit/storage/det_suit) && coat)
 		user << "There's already a coat on the rack!"
 		return ..()
 	user << "The coat rack wants none of what you offer."
@@ -70,7 +70,7 @@
 
 
 /obj/machinery/coatrack/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if( istype(mover,/obj/item/clothing/head/det_hat) && !hat)
+	if ( istype(mover,/obj/item/clothing/head/det_hat) && !hat)
 		mover.loc = src
 		hat = mover
 		if(!coat)
@@ -81,7 +81,7 @@
 			if(M.client)
 				M.show_message(text("\blue The hat lands perfectly atop its hanger!"), 2)
 		return 0
-	if( istype(mover,/obj/item/clothing/suit/storage/det_suit) && !coat)
+	if ( istype(mover,/obj/item/clothing/suit/storage/det_suit) && !coat)
 		mover.loc = src
 		coat = mover
 		if(!hat)

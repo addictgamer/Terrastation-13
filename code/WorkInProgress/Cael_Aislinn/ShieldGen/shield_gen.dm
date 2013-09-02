@@ -89,8 +89,8 @@
 	interact(user)
 
 /obj/machinery/shield_gen/interact(mob/user)
-	if( (get_dist(src, user) > 1 ) || (stat & (BROKEN|NOPOWER)) )
-		if(!istype(user, /mob/living/silicon))
+	if ( (get_dist(src, user) > 1 ) || (stat & (BROKEN|NOPOWER)) )
+		if (!istype(user, /mob/living/silicon))
 			user.unset_machine()
 			user << browse(null, "window=shield_generator")
 			return
@@ -201,7 +201,7 @@
 		icon_state = "broke"
 	else
 		if( powered() )
-			if(src.active)
+			if (src.active)
 				icon_state = "generator1"
 			else
 				icon_state = "generator0"
@@ -210,7 +210,7 @@
 			spawn(rand(0, 15))
 				src.icon_state = "generator0"
 				stat |= NOPOWER
-			if(src.active)
+			if (src.active)
 				toggle()
 
 /obj/machinery/shield_gen/ex_act(var/severity)
@@ -228,7 +228,7 @@
 	var/turf/T = src.loc
 	var/obj/structure/cable/C = T.get_cable_node()
 	var/net
-	if(C)
+	if (C)
 		net = C.netnum		// find the powernet of the connected cable
 
 	if(!net)

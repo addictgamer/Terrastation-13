@@ -81,8 +81,8 @@
 	interact(user)
 
 /obj/machinery/shield_capacitor/interact(mob/user)
-	if( (get_dist(src, user) > 1 ) || (stat & (BROKEN|NOPOWER)) )
-		if(!istype(user, /mob/living/silicon))
+	if ( (get_dist(src, user) > 1 ) || (stat & (BROKEN|NOPOWER)) )
+		if (!istype(user, /mob/living/silicon))
 			user.unset_machine()
 			user << browse(null, "window=shield_capacitor")
 			return
@@ -149,7 +149,7 @@
 		icon_state = "broke"
 	else
 		if( powered() )
-			if(src.active)
+			if (src.active)
 				icon_state = "capacitor"
 			else
 				icon_state = "capacitor"
@@ -164,7 +164,7 @@
 	set category = "Object"
 	set src in oview(1)
 
-	if(src.anchored)
+	if (src.anchored)
 		usr << "It is fastened to the floor!"
 		return
 	src.dir = turn(src.dir, 270)

@@ -1,7 +1,7 @@
 
 
 /mob/living/carbon/amorph/attack_paw(mob/living/carbon/monkey/M as mob)
-	if(!ticker)
+	if (!ticker)
 		M << "You cannot attack people before the game has started."
 		return
 
@@ -9,16 +9,16 @@
 
 	switch(M.a_intent)
 
-		if("help")
+		if ("help")
 			help_shake_act(M)
 		else
-			if(istype(wear_mask, /obj/item/clothing/mask/muzzle))
+			if (istype(wear_mask, /obj/item/clothing/mask/muzzle))
 				return
-			if(health > 0)
+			if (health > 0)
 				attacked += 10
 				playsound(loc, 'bite.ogg', 50, 1, -1)
 				for(var/mob/O in viewers(src, null))
-					if((O.client && !( O.blinded )))
+					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[M.name] has bit [src]!</B>"), 1)
 				adjustBruteLoss(rand(0, 1))
 				updatehealth()
@@ -33,22 +33,22 @@
 				if(G.cell.charge >= 2500)
 					G.cell.charge -= 2500
 					Weaken(5)
-					if(stuttering < 5)
+					if (stuttering < 5)
 						stuttering = 5
 					Stun(5)
 
 					for(var/mob/O in viewers(src, null))
-						if(O.client)
+						if (O.client)
 							O.show_message("\red <B>[src] has been touched with the stun gloves by [M]!</B>", 1, "\red You hear someone fall", 2)
 					return
 				else
 					M << "\red Not enough charge! "
 					return
 
-	if(M.a_intent == "help")
+	if (M.a_intent == "help")
 		help_shake_act(M)
 	else
-		if(M.a_intent == "hurt")
+		if (M.a_intent == "hurt")
 			var/attack_verb
 			switch(M.mutantrace)
 				if("lizard")
@@ -61,9 +61,9 @@
 			if(M.type == /mob/living/carbon/human/tajaran)
 				attack_verb = "slash"
 
-			if((prob(75) && health > 0))
+			if ((prob(75) && health > 0))
 				for(var/mob/O in viewers(src, null))
-					if((O.client && !( O.blinded )))
+					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has [attack_verb]ed [name]!</B>", M), 1)
 
 				var/damage = rand(5, 10)
@@ -80,16 +80,16 @@
 				else if(M.type == /mob/living/carbon/human/tajaran)
 					playsound(loc, 'slashmiss.ogg', 25, 1, -1)
 				for(var/mob/O in viewers(src, null))
-					if((O.client && !( O.blinded )))
+					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has attempted to [attack_verb] [name]!</B>", M), 1)
 		else
-			if(M.a_intent == "grab")
-				if(M == src)
+			if (M.a_intent == "grab")
+				if (M == src)
 					return
 
 				var/obj/item/weapon/grab/G = new /obj/item/weapon/grab( M )
 				G.assailant = M
-				if(M.hand)
+				if (M.hand)
 					M.l_hand = G
 				else
 					M.r_hand = G
@@ -105,11 +105,11 @@
 					O.show_message(text("\red [] has grabbed [name] passively!", M), 1)
 
 			else
-				if(!( paralysis ))
+				if (!( paralysis ))
 					drop_item()
 					playsound(loc, 'thudswoosh.ogg', 50, 1, -1)
 					for(var/mob/O in viewers(src, null))
-						if((O.client && !( O.blinded )))
+						if ((O.client && !( O.blinded )))
 							O.show_message(text("\red <B>[] has disarmed [name]!</B>", M), 1)
 	return
 
@@ -118,17 +118,17 @@
 /mob/living/carbon/amorph/attack_alien(mob/living/carbon/alien/humanoid/M as mob)
 
 	switch(M.a_intent)
-		if("help")
+		if ("help")
 			for(var/mob/O in viewers(src, null))
-				if((O.client && !( O.blinded )))
+				if ((O.client && !( O.blinded )))
 					O.show_message(text("\blue [M] caresses [src] with its scythe like arm."), 1)
 
-		if("hurt")
-			if((prob(95) && health > 0))
+		if ("hurt")
+			if ((prob(95) && health > 0))
 				playsound(loc, 'slice.ogg', 25, 1, -1)
 				var/damage = rand(15, 30)
 				for(var/mob/O in viewers(src, null))
-					if((O.client && !( O.blinded )))
+					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has slashed [name]!</B>", M), 1)
 				adjustBruteLoss(damage/10)
 				updatehealth()
@@ -136,15 +136,15 @@
 			else
 				playsound(loc, 'slashmiss.ogg', 25, 1, -1)
 				for(var/mob/O in viewers(src, null))
-					if((O.client && !( O.blinded )))
+					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has attempted to lunge at [name]!</B>", M), 1)
 
-		if("grab")
-			if(M == src)
+		if ("grab")
+			if (M == src)
 				return
 			var/obj/item/weapon/grab/G = new /obj/item/weapon/grab( M )
 			G.assailant = M
-			if(M.hand)
+			if (M.hand)
 				M.l_hand = G
 			else
 				M.r_hand = G
@@ -159,18 +159,18 @@
 			for(var/mob/O in viewers(src, null))
 				O.show_message(text("\red [] has grabbed [name] passively!", M), 1)
 
-		if("disarm")
+		if ("disarm")
 			playsound(loc, 'pierce.ogg', 25, 1, -1)
 			var/damage = 5
 			if(prob(95))
 				Weaken(rand(10,15))
 				for(var/mob/O in viewers(src, null))
-					if((O.client && !( O.blinded )))
+					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has tackled down [name]!</B>", M), 1)
 			else
 				drop_item()
 				for(var/mob/O in viewers(src, null))
-					if((O.client && !( O.blinded )))
+					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>[] has disarmed [name]!</B>", M), 1)
 			adjustBruteLoss(damage)
 			react_to_attack(M)
@@ -191,10 +191,10 @@
 /mob/living/carbon/amorph/attack_metroid(mob/living/carbon/metroid/M as mob)
 	if(M.Victim) return // can't attack while eating!
 
-	if(health > -100)
+	if (health > -100)
 
 		for(var/mob/O in viewers(src, null))
-			if((O.client && !( O.blinded )))
+			if ((O.client && !( O.blinded )))
 				O.show_message(text("\red <B>The [M.name] has [pick("bit","slashed")] []!</B>", src), 1)
 
 		var/damage = rand(1, 3)
@@ -227,11 +227,11 @@
 					M.powerlevel = 0
 
 				for(var/mob/O in viewers(src, null))
-					if((O.client && !( O.blinded )))
+					if ((O.client && !( O.blinded )))
 						O.show_message(text("\red <B>The [M.name] has shocked []!</B>", src), 1)
 
 				Weaken(power)
-				if(stuttering < power)
+				if (stuttering < power)
 					stuttering = power
 				Stun(power)
 
@@ -239,7 +239,7 @@
 				s.set_up(5, 1, src)
 				s.start()
 
-				if(prob(stunprob) && M.powerlevel >= 8)
+				if (prob(stunprob) && M.powerlevel >= 8)
 					adjustFireLoss(M.powerlevel * rand(6,10))
 
 

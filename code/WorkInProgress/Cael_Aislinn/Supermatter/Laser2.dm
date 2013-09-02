@@ -91,7 +91,7 @@
 /mob/living/carbon/laser_act(var/obj/beam/e_beam/b)
 	for(var/t in organs)
 		var/datum/organ/external/affecting = organs["[t]"]
-		if(affecting.take_damage(0, b.power/400,0,0))
+		if (affecting.take_damage(0, b.power/400,0,0))
 			UpdateDamageIcon()
 		else
 			UpdateDamage()
@@ -112,7 +112,7 @@
 	return
 
 /obj/beam/e_beam/HasEntered(atom/movable/AM as mob|obj)
-	if(istype(AM, /obj/beam))
+	if (istype(AM, /obj/beam))
 		return
 	spawn( 0 )
 		AM.laser_act(src)

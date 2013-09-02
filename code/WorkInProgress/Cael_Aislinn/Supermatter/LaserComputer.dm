@@ -19,8 +19,8 @@
 		updateDialog()
 
 	interact(mob/user)
-		if( (get_dist(src, user) > 1 ) || (stat & (BROKEN|NOPOWER)) )
-			if(!istype(user, /mob/living/silicon))
+		if ( (get_dist(src, user) > 1 ) || (stat & (BROKEN|NOPOWER)) )
+			if (!istype(user, /mob/living/silicon))
 				user.machine = null
 				user << browse(null, "window=laser_control")
 				return
@@ -38,8 +38,8 @@
 /*
 /obj/machinery/computer/lasercon/proc/interact(mob/user)
 
-	if( (get_dist(src, user) > 1 ) || (stat & (BROKEN|NOPOWER)) )
-		if(!istype(user, /mob/living/silicon))
+	if ( (get_dist(src, user) > 1 ) || (stat & (BROKEN|NOPOWER)) )
+		if (!istype(user, /mob/living/silicon))
 			user.machine = null
 			user << browse(null, "window=powcomp")
 			return

@@ -47,7 +47,7 @@
 			return
 		var/could_fill = 1
 		for (var/obj/O in locate(A.x,A.y,A.z))
-			if(contents.len < 20)
+			if (contents.len < 20)
 				if(istype(O,/obj/item/wardrobe))
 					continue
 				if(O.anchored || O.density || istype(O,/obj/structure))

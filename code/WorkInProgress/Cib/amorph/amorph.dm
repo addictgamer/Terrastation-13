@@ -36,10 +36,10 @@
 	..()
 
 /mob/living/carbon/amorph/Bump(atom/movable/AM as mob|obj, yes)
-	if((!( yes ) || now_pushing))
+	if ((!( yes ) || now_pushing))
 		return
 	now_pushing = 1
-	if(ismob(AM))
+	if (ismob(AM))
 		var/mob/tmob = AM
 
 //BubbleWrap - Should stop you pushing a restrained person out of the way
@@ -48,12 +48,12 @@
 
 			for(var/mob/M in range(tmob, 1))
 				if( ((M.pulling == tmob && ( tmob.restrained() && !( M.restrained() ) && M.stat == 0)) || locate(/obj/item/weapon/grab, tmob.grabbed_by.len)) )
-					if( !(world.time % 5) )
+					if ( !(world.time % 5) )
 						src << "\red [tmob] is restrained, you cannot push past"
 					now_pushing = 0
 					return
 				if( tmob.pulling == M && ( M.restrained() && !( tmob.restrained() ) && tmob.stat == 0) )
-					if( !(world.time % 5) )
+					if ( !(world.time % 5) )
 						src << "\red [tmob] is restraining [M], you cannot push past"
 					now_pushing = 0
 					return
@@ -86,14 +86,14 @@
 	now_pushing = 0
 	spawn(0)
 		..()
-		if(!istype(AM, /atom/movable))
+		if (!istype(AM, /atom/movable))
 			return
-		if(!now_pushing)
+		if (!now_pushing)
 			now_pushing = 1
 
-			if(!AM.anchored)
+			if (!AM.anchored)
 				var/t = get_dir(src, AM)
-				if(istype(AM, /obj/structure/window))
+				if (istype(AM, /obj/structure/window))
 					if(AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
 						for(var/obj/structure/window/win in get_step(AM,t))
 							now_pushing = 0
@@ -113,17 +113,17 @@
 
 	if(analgesic) return -1
 
-	if(istype(loc, /turf/space)) return -1 // It's hard to be slowed down in space by... anything
+	if (istype(loc, /turf/space)) return -1 // It's hard to be slowed down in space by... anything
 
 	var/health_deficiency = traumatic_shock
 	if(health_deficiency >= 40) tally += (health_deficiency / 25)
 
 	var/hungry = (500 - nutrition)/5 // So overeat would be 100 and default level would be 80
-	if(hungry >= 70) tally += hungry/300
+	if (hungry >= 70) tally += hungry/300
 
-	if(bodytemperature < 283.222)
+	if (bodytemperature < 283.222)
 		tally += (283.222 - bodytemperature) / 10 * 1.75
-		if(stuttering < 10)
+		if (stuttering < 10)
 			stuttering = 10
 
 	if(shock_stage >= 10) tally += 3
@@ -151,19 +151,19 @@
 	if(emergency_shuttle)
 		if(emergency_shuttle.online && emergency_shuttle.location < 2)
 			var/timeleft = emergency_shuttle.timeleft()
-			if(timeleft)
+			if (timeleft)
 				stat(null, "ETA-[(timeleft / 60) % 60]:[add_zero(num2text(timeleft % 60), 2)]")
 
-	if(client.statpanel == "Status")
-		if(internal)
-			if(!internal.air_contents)
+	if (client.statpanel == "Status")
+		if (internal)
+			if (!internal.air_contents)
 				del(internal)
 			else
 				stat("Internal Atmosphere Info", internal.name)
 				stat("Tank Pressure", internal.air_contents.return_pressure())
 				stat("Distribution Pressure", internal.distribute_pressure)
-		if(mind)
-			if(mind.special_role == "Changeling" && changeling)
+		if (mind)
+			if (mind.special_role == "Changeling" && changeling)
 				stat("Chemical Storage", changeling.chem_charges)
 				stat("Genetic Damage Time", changeling.geneticdamage)
 
@@ -174,30 +174,30 @@
 	var/b_loss = null
 	var/f_loss = null
 	switch (severity)
-		if(1.0)
+		if (1.0)
 			b_loss += 500
-			if(!prob(getarmor(null, "bomb")))
+			if (!prob(getarmor(null, "bomb")))
 				gib()
 				return
 			else
 				var/atom/target = get_edge_target_turf(src, get_dir(src, get_step_away(src, src)))
 				throw_at(target, 200, 4)
 
-		if(2.0)
-			if(!shielded)
+		if (2.0)
+			if (!shielded)
 				b_loss += 60
 
 			f_loss += 60
 
-			if(!prob(getarmor(null, "bomb")))
+			if (!prob(getarmor(null, "bomb")))
 				b_loss = b_loss/1.5
 				f_loss = f_loss/1.5
 
 		if(3.0)
 			b_loss += 30
-			if(!prob(getarmor(null, "bomb")))
+			if (!prob(getarmor(null, "bomb")))
 				b_loss = b_loss/2
-			if(prob(50) && !shielded)
+			if (prob(50) && !shielded)
 				Paralyse(10)
 
 	src.bruteloss += b_loss
@@ -215,9 +215,9 @@
 
 /mob/living/carbon/amorph/u_equip(obj/item/W as obj)
 	// These are the only slots an amorph has
-	if(W == l_ear)
+	if (W == l_ear)
 		l_ear = null
-	else if(W == r_hand)
+	else if (W == r_hand)
 		r_hand = null
 
 	update_clothing()
@@ -225,20 +225,20 @@
 /mob/living/carbon/amorph/db_click(text, t1)
 	var/obj/item/W = equipped()
 	var/emptyHand = (W == null)
-	if((!emptyHand) && (!istype(W, /obj/item)))
+	if ((!emptyHand) && (!istype(W, /obj/item)))
 		return
-	if(emptyHand)
+	if (emptyHand)
 		usr.next_move = usr.prev_move
 		usr:lastDblClick -= 3	//permit the double-click redirection to proceed.
 	switch(text)
 		if("l_ear")
-			if(l_ear)
-				if(emptyHand)
+			if (l_ear)
+				if (emptyHand)
 					l_ear.DblClick()
 				return
 			else if(emptyHand)
 				return
-			if(!( istype(W, /obj/item/clothing/ears) ) && !( istype(W, /obj/item/device/radio/headset) ) && W.w_class != 1)
+			if (!( istype(W, /obj/item/clothing/ears) ) && !( istype(W, /obj/item/device/radio/headset) ) && W.w_class != 1)
 				return
 			u_equip(W)
 			l_ear = W
@@ -250,10 +250,10 @@
 
 /mob/living/carbon/amorph/meteorhit(O as obj)
 	for(var/mob/M in viewers(src, null))
-		if((M.client && !( M.blinded )))
+		if ((M.client && !( M.blinded )))
 			M.show_message(text("\red [] has been hit by []", src, O), 1)
-	if(health > 0)
-		if(istype(O, /obj/effect/immovablerod))
+	if (health > 0)
+		if (istype(O, /obj/effect/immovablerod))
 			src.bruteloss += 101
 		else
 			src.bruteloss += 25
@@ -263,23 +263,23 @@
 
 /mob/living/carbon/amorph/Move(a, b, flag)
 
-	if(buckled)
+	if (buckled)
 		return
 
-	if(restrained())
+	if (restrained())
 		pulling = null
 
 
 	var/t7 = 1
-	if(restrained())
+	if (restrained())
 		for(var/mob/M in range(src, 1))
-			if((M.pulling == src && M.stat == 0 && !( M.restrained() )))
+			if ((M.pulling == src && M.stat == 0 && !( M.restrained() )))
 				t7 = null
-	if((t7 && (pulling && ((get_dist(src, pulling) <= 1 || pulling.loc == loc) && (client && client.moving)))))
+	if ((t7 && (pulling && ((get_dist(src, pulling) <= 1 || pulling.loc == loc) && (client && client.moving)))))
 		var/turf/T = loc
 		. = ..()
 
-		if(pulling && pulling.loc)
+		if (pulling && pulling.loc)
 			if(!( isturf(pulling.loc) ))
 				pulling = null
 				return
@@ -293,35 +293,35 @@
 			pulling = null
 			return
 
-		if(!restrained())
+		if (!restrained())
 			var/diag = get_dir(src, pulling)
-			if((diag - 1) & diag)
+			if ((diag - 1) & diag)
 			else
 				diag = null
-			if((get_dist(src, pulling) > 1 || diag))
-				if(ismob(pulling))
+			if ((get_dist(src, pulling) > 1 || diag))
+				if (ismob(pulling))
 					var/mob/M = pulling
 					var/ok = 1
-					if(locate(/obj/item/weapon/grab, M.grabbed_by))
-						if(prob(75))
+					if (locate(/obj/item/weapon/grab, M.grabbed_by))
+						if (prob(75))
 							var/obj/item/weapon/grab/G = pick(M.grabbed_by)
-							if(istype(G, /obj/item/weapon/grab))
+							if (istype(G, /obj/item/weapon/grab))
 								for(var/mob/O in viewers(M, null))
 									O.show_message(text("\red [] has been pulled from []'s grip by []", G.affecting, G.assailant, src), 1)
 								//G = null
 								del(G)
 						else
 							ok = 0
-						if(locate(/obj/item/weapon/grab, M.grabbed_by.len))
+						if (locate(/obj/item/weapon/grab, M.grabbed_by.len))
 							ok = 0
-					if(ok)
+					if (ok)
 						var/t = M.pulling
 						M.pulling = null
 
 						//this is the gay blood on floor shit -- Added back -- Skie
-						if(M.lying && (prob(M.getBruteLoss() / 6)))
+						if (M.lying && (prob(M.getBruteLoss() / 6)))
 							var/turf/location = M.loc
-							if(istype(location, /turf/simulated))
+							if (istype(location, /turf/simulated))
 								location.add_blood(M)
 								if(ishuman(M))
 									var/mob/living/carbon/H = M
@@ -336,7 +336,7 @@
 								M.adjustBruteLoss(2)
 								visible_message("\red \The [M]'s wounds worsen terribly from being dragged!")
 								var/turf/location = M.loc
-								if(istype(location, /turf/simulated))
+								if (istype(location, /turf/simulated))
 									location.add_blood(M)
 									if(ishuman(M))
 										var/mob/living/carbon/H = M
@@ -347,17 +347,17 @@
 						step(pulling, get_dir(pulling.loc, T))
 						M.pulling = t
 				else
-					if(pulling)
-						if(istype(pulling, /obj/structure/window))
+					if (pulling)
+						if (istype(pulling, /obj/structure/window))
 							if(pulling:ini_dir == NORTHWEST || pulling:ini_dir == NORTHEAST || pulling:ini_dir == SOUTHWEST || pulling:ini_dir == SOUTHEAST)
 								for(var/obj/structure/window/win in get_step(pulling,get_dir(pulling.loc, T)))
 									pulling = null
-					if(pulling)
+					if (pulling)
 						step(pulling, get_dir(pulling.loc, T))
 	else
 		pulling = null
 		. = ..()
-	if((s_active && !( s_active in contents ) ))
+	if ((s_active && !( s_active in contents ) ))
 		s_active.close(src)
 
 	for(var/mob/living/carbon/metroid/M in view(1,src))
@@ -368,9 +368,9 @@
 	// Temporary proc to shove stuff in that was put into update_clothing()
 	// for questionable reasons
 
-	if(client)
-		if(i_select)
-			if(intent)
+	if (client)
+		if (i_select)
+			if (intent)
 				client.screen += hud_used.intents
 
 				var/list/L = dd_text2list(intent, ",")
@@ -378,8 +378,8 @@
 				i_select.screen_loc = dd_list2text(L,",") //ICONS4
 			else
 				i_select.screen_loc = null
-		if(m_select)
-			if(m_int)
+		if (m_select)
+			if (m_int)
 				client.screen += hud_used.mov_int
 
 				var/list/L = dd_text2list(m_int, ",")
@@ -389,7 +389,7 @@
 				m_select.screen_loc = null
 
 	// Probably a lazy way to make sure all items are on the screen exactly once
-	if(client)
+	if (client)
 		client.screen -= contents
 		client.screen += contents
 
@@ -423,7 +423,7 @@
 	return
 
 /mob/living/carbon/amorph/restrained()
-	if(handcuffed)
+	if (handcuffed)
 		return 0 // handcuffs don't work on amorphs
 	return 0
 
@@ -487,16 +487,16 @@
 	UpdateDamageIcon()
 
 /mob/living/carbon/amorph/Topic(href, href_list)
-	if(href_list["refresh"])
+	if (href_list["refresh"])
 		if((machine)&&(in_range(src, usr)))
 			show_inv(machine)
 
-	if(href_list["mach_close"])
+	if (href_list["mach_close"])
 		var/t1 = text("window=[]", href_list["mach_close"])
 		machine = null
 		src << browse(null, t1)
 
-	if((href_list["item"] && !( usr.stat ) && usr.canmove && !( usr.restrained() ) && in_range(src, usr) && ticker)) //if game hasn't started, can't make an equip_e
+	if ((href_list["item"] && !( usr.stat ) && usr.canmove && !( usr.restrained() ) && in_range(src, usr) && ticker)) //if game hasn't started, can't make an equip_e
 		var/obj/effect/equip_e/human/O = new /obj/effect/equip_e/human(  )
 		O.source = usr
 		O.target = src
@@ -511,7 +511,7 @@
 			O.process()
 			return
 
-	if(href_list["criminal"])
+	if (href_list["criminal"])
 		if(istype(usr, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = usr
 			if(istype(H.glasses, /obj/item/clothing/glasses/hud/security) || istype(H.glasses, /obj/item/clothing/glasses/sunglasses/sechud))
@@ -528,9 +528,9 @@
 				perpname = src.name
 
 				for (var/datum/data/record/E in data_core.general)
-					if(E.fields["name"] == perpname)
+					if (E.fields["name"] == perpname)
 						for (var/datum/data/record/R in data_core.security)
-							if(R.fields["id"] == E.fields["id"])
+							if (R.fields["id"] == E.fields["id"])
 
 								var/setcriminal = input(usr, "Specify a new criminal status for this person.", "Security HUD", R.fields["criminal"]) in list("None", "*Arrest*", "Incarcerated", "Parolled", "Released", "Cancel")
 

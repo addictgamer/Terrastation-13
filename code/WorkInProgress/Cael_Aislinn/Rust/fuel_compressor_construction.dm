@@ -9,24 +9,24 @@
 	flags = FPRINT | TABLEPASS| CONDUCT
 
 /obj/item/rust_fuel_compressor_frame/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W, /obj/item/weapon/wrench))
+	if (istype(W, /obj/item/weapon/wrench))
 		new /obj/item/stack/sheet/plasteel( get_turf(src.loc), 12 )
 		del(src)
 		return
 	..()
 
 /obj/item/rust_fuel_compressor_frame/proc/try_build(turf/on_wall)
-	if(get_dist(on_wall,usr)>1)
+	if (get_dist(on_wall,usr)>1)
 		return
 	var/ndir = get_dir(usr,on_wall)
-	if(!(ndir in cardinal))
+	if (!(ndir in cardinal))
 		return
 	var/turf/loc = get_turf(usr)
 	var/area/A = loc.loc
-	if(!istype(loc, /turf/simulated/floor))
+	if (!istype(loc, /turf/simulated/floor))
 		usr << "\red Compressor cannot be placed on this spot."
 		return
-	if(A.requires_power == 0 || A.name == "Space")
+	if (A.requires_power == 0 || A.name == "Space")
 		usr << "\red Compressor cannot be placed in this area."
 		return
 	new /obj/machinery/rust_fuel_assembly_port(loc, ndir, 1)
@@ -38,7 +38,7 @@
 
 	// offset 24 pixels in direction of dir
 	// this allows the APC to be embedded in a wall, yet still inside an area
-	if(building)
+	if (building)
 		dir = ndir
 	else
 		has_electronics = 3
@@ -52,9 +52,9 @@
 
 /obj/machinery/rust_fuel_compressor/attackby(obj/item/W, mob/user)
 
-	if(istype(user, /mob/living/silicon) && get_dist(src,user)>1)
+	if (istype(user, /mob/living/silicon) && get_dist(src,user)>1)
 		return src.attack_hand(user)
-	if(istype(W, /obj/item/weapon/crowbar))
+	if (istype(W, /obj/item/weapon/crowbar))
 		if(opened)
 			if(has_electronics & 1)
 				playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
@@ -79,7 +79,7 @@
 				icon_state = "fuel_compressor1"
 		return
 
-	else if(istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))			// trying to unlock the interface with an ID card
+	else if (istype(W, /obj/item/weapon/card/id)||istype(W, /obj/item/device/pda))			// trying to unlock the interface with an ID card
 		if(opened)
 			user << "You must close the cover to swipe an ID card."
 		else
@@ -91,12 +91,12 @@
 				user << "\red Access denied."
 		return
 
-	else if(istype(W, /obj/item/weapon/card/emag) && !emagged)		// trying to unlock with an emag card
+	else if (istype(W, /obj/item/weapon/card/emag) && !emagged)		// trying to unlock with an emag card
 		if(opened)
 			user << "You must close the cover to swipe an ID card."
 		else
 			flick("apc-spark", src)
-			if(do_after(user,6))
+			if (do_after(user,6))
 				if(prob(50))
 					emagged = 1
 					locked = 0
@@ -105,7 +105,7 @@
 					user << "You fail to [ locked ? "unlock" : "lock"] the compressor interface."
 		return
 
-	else if(istype(W, /obj/item/weapon/cable_coil) && opened && !(has_electronics & 2))
+	else if (istype(W, /obj/item/weapon/cable_coil) && opened && !(has_electronics & 2))
 		var/obj/item/weapon/cable_coil/C = W
 		if(C.amount < 10)
 			user << "\red You need more wires."
@@ -120,7 +120,7 @@
 			has_electronics &= 2
 		return
 
-	else if(istype(W, /obj/item/weapon/wirecutters) && opened && (has_electronics & 2))
+	else if (istype(W, /obj/item/weapon/wirecutters) && opened && (has_electronics & 2))
 		user << "You begin to cut the cables..."
 		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 		if(do_after(user, 50))
@@ -131,7 +131,7 @@
 			has_electronics &= ~2
 		return
 
-	else if(istype(W, /obj/item/weapon/module/rust_fuel_compressor) && opened && !(has_electronics & 1))
+	else if (istype(W, /obj/item/weapon/module/rust_fuel_compressor) && opened && !(has_electronics & 1))
 		user << "You trying to insert the circuitboard into the frame..."
 		playsound(src.loc, 'sound/items/Deconstruct.ogg', 50, 1)
 		if(do_after(user, 10))
@@ -140,9 +140,9 @@
 			del(W)
 		return
 
-	else if(istype(W, /obj/item/weapon/weldingtool) && opened && !has_electronics)
+	else if (istype(W, /obj/item/weapon/weldingtool) && opened && !has_electronics)
 		var/obj/item/weapon/weldingtool/WT = W
-		if(WT.get_fuel() < 3)
+		if (WT.get_fuel() < 3)
 			user << "\blue You need more welding fuel to complete this task."
 			return
 		user << "You start welding the compressor frame..."

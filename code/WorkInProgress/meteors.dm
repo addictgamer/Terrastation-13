@@ -93,7 +93,7 @@
 
 /obj/effect/meteor/Move()
 	var/turf/T = src.loc
-	if(istype(T, /turf))
+	if (istype(T, /turf))
 		T.hotspot_expose(METEOR_TEMPERATURE, 1000)
 	..()
 	return
@@ -103,10 +103,10 @@
 		for(var/mob/M in range(10, src))
 			if(!M.stat && !istype(M, /mob/living/silicon/ai)) //bad idea to shake an ai's view
 				shake_camera(M, 3, 1)
-		if(A)
+		if (A)
 			A.meteorhit(src)
 			playsound(get_turf(src), 'meteorimpact.ogg', 40, 1)
-		if(--src.hits <= 0)
+		if (--src.hits <= 0)
 			if(prob(15))// && !istype(A, /obj/structure/grille))
 				explosion(get_turf(src), 4, 5, 6, 7, 0)
 				playsound(get_turf(src), "explosion", 50, 1)
@@ -131,7 +131,7 @@
 			for(var/mob/M in range(10, src))
 				if(!M.stat && !istype(M, /mob/living/silicon/ai)) //bad idea to shake an ai's view
 					shake_camera(M, 3, 1)
-			if(A)
+			if (A)
 				if(isobj(A))
 					del(A)
 				else
@@ -139,7 +139,7 @@
 				src.hits--
 				return
 				playsound(get_turf(src), 'meteorimpact.ogg', 40, 1)
-			if(--src.hits <= 0)
+			if (--src.hits <= 0)
 				if(prob(15) && !istype(A, /obj/structure/grille))
 					explosion(get_turf(src), 1, 2, 3, 4, 0)
 					playsound(get_turf(src), "explosion", 50, 1)
