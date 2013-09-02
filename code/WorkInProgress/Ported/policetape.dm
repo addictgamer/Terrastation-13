@@ -44,14 +44,14 @@
 	icon_base = "engineering"
 
 /obj/item/taperoll/attack_self(mob/user as mob)
-	if (icon_state == "[icon_base]_start")
+	if(icon_state == "[icon_base]_start")
 		start = get_turf(src)
 		usr << "\blue You place the first end of the [src]."
 		icon_state = "[icon_base]_stop"
 	else
 		icon_state = "[icon_base]_start"
 		end = get_turf(src)
-		if (start.y != end.y && start.x != end.x || start.z != end.z)
+		if(start.y != end.y && start.x != end.x || start.z != end.z)
 			usr << "\blue [src] can only be laid horizontally or vertically."
 			return
 
@@ -59,24 +59,24 @@
 		var/dir
 		if (start.x == end.x)
 			var/d = end.y-start.y
-			if (d) d = d/abs(d)
+			if(d) d = d/abs(d)
 			end = get_turf(locate(end.x,end.y+d,end.z))
 			dir = "v"
 		else
 			var/d = end.x-start.x
-			if (d) d = d/abs(d)
+			if(d) d = d/abs(d)
 			end = get_turf(locate(end.x+d,end.y,end.z))
 			dir = "h"
 
 		var/can_place = 1
 		while (cur!=end && can_place)
-			if (cur.density == 1)
+			if(cur.density == 1)
 				can_place = 0
 			else if (istype(cur, /turf/space))
 				can_place = 0
 			else
 				for(var/obj/O in cur)
-					if (!istype(O, /obj/item/tape) && O.density)
+					if(!istype(O, /obj/item/tape) && O.density)
 						can_place = 0
 						break
 			cur = get_step_towards(cur,end)
@@ -88,9 +88,9 @@
 		var/tapetest = 0
 		while (cur!=end)
 			for(var/obj/item/tape/Ptest in cur)
-				if (Ptest.icon_state == "[Ptest.icon_base]_[dir]")
+				if(Ptest.icon_state == "[Ptest.icon_base]_[dir]")
 					tapetest = 1
-			if (tapetest != 1)
+			if(tapetest != 1)
 				var/obj/item/tape/P = new tape_type(cur)
 				P.icon_state = "[P.icon_base]_[dir]"
 			cur = get_step_towards(cur,end)
@@ -107,13 +107,13 @@
 		user << "\blue You finish placing the [src]."
 
 /obj/item/tape/Bumped(M as mob)
-	if (src.allowed(M))
+	if(src.allowed(M))
 		var/turf/T = get_turf(src)
 		M:loc = T
 
 /obj/item/tape/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if (!density) return 1
-	if (air_group || (height==0)) return 1
+	if(!density) return 1
+	if(air_group || (height==0)) return 1
 
 	if ((mover.flags & 2 || istype(mover, /obj/effect/meteor) || mover.throwing == 1) )
 		return 1
@@ -136,17 +136,17 @@
 	breaktape(/obj/item/weapon/wirecutters,user)
 
 /obj/item/tape/proc/breaktape(obj/item/weapon/W as obj, mob/user as mob)
-	if (user.a_intent == "help" && ((!is_sharp(W) && src.allowed(user))))
+	if(user.a_intent == "help" && ((!is_sharp(W) && src.allowed(user))))
 		user << "You can't break the [src] with that!"
 		return
 	user.show_viewers("\blue [user] breaks the [src]!")
 
 	var/dir[2]
 	var/icon_dir = src.icon_state
-	if (icon_dir == "[src.icon_base]_h")
+	if(icon_dir == "[src.icon_base]_h")
 		dir[1] = EAST
 		dir[2] = WEST
-	if (icon_dir == "[src.icon_base]_v")
+	if(icon_dir == "[src.icon_base]_v")
 		dir[1] = NORTH
 		dir[2] = SOUTH
 
@@ -156,7 +156,7 @@
 		while(N != 1)
 			N = 1
 			for (var/obj/item/tape/P in cur)
-				if (P.icon_state == icon_dir)
+				if(P.icon_state == icon_dir)
 					N = 0
 					del(P)
 			cur = get_step(cur,dir[i])

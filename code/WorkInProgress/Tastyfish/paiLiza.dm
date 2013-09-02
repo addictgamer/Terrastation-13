@@ -15,14 +15,14 @@
 		P.new_session()
 
 	proc/hear_talk(mob/M, text)
-		if (stat)
+		if(stat)
 			return
 
 		var/prefix = P.callsign + ","
 
-		if (lentext(text) <= lentext(prefix))
+		if(lentext(text) <= lentext(prefix))
 			return
 		var/i = lentext(prefix) + 1
-		if (cmptext(copytext(text, 1, i), prefix))
+		if(cmptext(copytext(text, 1, i), prefix))
 			P.input_line = html_decode(copytext(text, i))
 			P.process_line()

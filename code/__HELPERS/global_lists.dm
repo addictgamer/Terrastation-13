@@ -50,8 +50,8 @@ var/global/list/backbaglist = list("Nothing", "Backpack", "Satchel", "Satchel Al
 		var/datum/sprite_accessory/hair/H = new path()
 		hair_styles_list[H.name] = H
 		switch(H.gender)
-			if (MALE)	hair_styles_male_list += H.name
-			if (FEMALE)	hair_styles_female_list += H.name
+			if(MALE)	hair_styles_male_list += H.name
+			if(FEMALE)	hair_styles_female_list += H.name
 			else
 				hair_styles_male_list += H.name
 				hair_styles_female_list += H.name
@@ -62,8 +62,8 @@ var/global/list/backbaglist = list("Nothing", "Backpack", "Satchel", "Satchel Al
 		var/datum/sprite_accessory/facial_hair/H = new path()
 		facial_hair_styles_list[H.name] = H
 		switch(H.gender)
-			if (MALE)	facial_hair_styles_male_list += H.name
-			if (FEMALE)	facial_hair_styles_female_list += H.name
+			if(MALE)	facial_hair_styles_male_list += H.name
+			if(FEMALE)	facial_hair_styles_female_list += H.name
 			else
 				facial_hair_styles_male_list += H.name
 				facial_hair_styles_female_list += H.name
@@ -86,7 +86,7 @@ var/global/list/backbaglist = list("Nothing", "Backpack", "Satchel", "Satchel Al
 		var/datum/species/S = new T
 		all_species[S.name] = S
 
-		if (S.flags & WHITELISTED)
+		if(S.flags & WHITELISTED)
 			whitelisted_species += S.name
 
 /* // Uncomment to debug chemical reaction list.
@@ -94,7 +94,7 @@ var/global/list/backbaglist = list("Nothing", "Backpack", "Satchel", "Satchel Al
 
 	for (var/reaction in chemical_reactions_list)
 		. += "chemical_reactions_list\[\"[reaction]\"\] = \"[chemical_reactions_list[reaction]]\"\n"
-		if (islist(chemical_reactions_list[reaction]))
+		if(islist(chemical_reactions_list[reaction]))
 			var/list/L = chemical_reactions_list[reaction]
 			for(var/t in L)
 				. += "    has: [t]\n"

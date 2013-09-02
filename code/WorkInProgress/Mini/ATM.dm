@@ -43,27 +43,27 @@ log transactions
 	reconnect_database()
 
 /obj/machinery/atm/process()
-	if (stat & NOPOWER)
+	if(stat & NOPOWER)
 		return
 
-	if (linked_db && ( (linked_db.stat & NOPOWER) || !linked_db.activated ) )
+	if(linked_db && ( (linked_db.stat & NOPOWER) || !linked_db.activated ) )
 		linked_db = null
 		authenticated_account = null
 		src.visible_message("\red \icon[src] [src] buzzes rudely, \"Connection to remote database lost.\"")
 		updateDialog()
 
-	if (ticks_left_timeout > 0)
+	if(ticks_left_timeout > 0)
 		ticks_left_timeout--
-		if (ticks_left_timeout <= 0)
+		if(ticks_left_timeout <= 0)
 			authenticated_account = null
-	if (ticks_left_locked_down > 0)
+	if(ticks_left_locked_down > 0)
 		ticks_left_locked_down--
-		if (ticks_left_locked_down <= 0)
+		if(ticks_left_locked_down <= 0)
 			number_incorrect_tries = 0
 
 	for(var/obj/item/weapon/spacecash/S in src)
 		S.loc = src.loc
-		if (prob(50))
+		if(prob(50))
 			playsound(loc, 'sound/items/polaroid1.ogg', 50, 1)
 		else
 			playsound(loc, 'sound/items/polaroid2.ogg', 50, 1)
@@ -71,24 +71,24 @@ log transactions
 
 /obj/machinery/atm/proc/reconnect_database()
 	for(var/obj/machinery/account_database/DB in world) //Hotfix until someone finds out why it isn't in 'machines'
-		if ( DB.z == src.z && !(DB.stat & NOPOWER) && DB.activated )
+		if( DB.z == src.z && !(DB.stat & NOPOWER) && DB.activated )
 			linked_db = DB
 			break
 
 /obj/machinery/atm/attackby(obj/item/I as obj, mob/user as mob)
-	if (istype(I, /obj/item/weapon/card))
+	if(istype(I, /obj/item/weapon/card))
 		var/obj/item/weapon/card/id/idcard = I
-		if (!held_card)
+		if(!held_card)
 			usr.drop_item()
 			idcard.loc = src
 			held_card = idcard
-			if (authenticated_account && held_card.associated_account_number != authenticated_account.account_number)
+			if(authenticated_account && held_card.associated_account_number != authenticated_account.account_number)
 				authenticated_account = null
-	else if (authenticated_account)
-		if (istype(I,/obj/item/weapon/spacecash))
+	else if(authenticated_account)
+		if(istype(I,/obj/item/weapon/spacecash))
 			//consume the money
 			authenticated_account.money += I:worth
-			if (prob(50))
+			if(prob(50))
 				playsound(loc, 'sound/items/polaroid1.ogg', 50, 1)
 			else
 				playsound(loc, 'sound/items/polaroid2.ogg', 50, 1)
@@ -110,10 +110,10 @@ log transactions
 		..()
 
 /obj/machinery/atm/attack_hand(mob/user as mob)
-	if (istype(user, /mob/living/silicon))
+	if(istype(user, /mob/living/silicon))
 		user << "\red Artificial unit recognized. Artificial units do not currently receive monetary compensation, as per NanoTrasen regulation #1005."
 		return
-	if (get_dist(src,user) <= 1)
+	if(get_dist(src,user) <= 1)
 		//check to see if the user has low security enabled
 		scan_user(user)
 
@@ -123,26 +123,26 @@ log transactions
 		dat += "<i>This terminal is</i> [machine_id]. <i>Report this code when contacting NanoTrasen IT Support</i><br/>"
 		dat += "Card: <a href='?src=\ref[src];choice=insert_card'>[held_card ? held_card.name : "------"]</a><br><br>"
 
-		if (ticks_left_locked_down > 0)
+		if(ticks_left_locked_down > 0)
 			dat += "<span class='alert'>Maximum number of pin attempts exceeded! Access to this ATM has been temporarily disabled.</span>"
-		else if (authenticated_account)
+		else if(authenticated_account)
 			switch(view_screen)
-				if (CHANGE_SECURITY_LEVEL)
+				if(CHANGE_SECURITY_LEVEL)
 					dat += "Select a new security level for this account:<br><hr>"
 					var/text = "Zero - Either the account number or card is required to access this account. EFTPOS transactions will require a card and ask for a pin, but not verify the pin is correct."
-					if (authenticated_account.security_level != 0)
+					if(authenticated_account.security_level != 0)
 						text = "<A href='?src=\ref[src];choice=change_security_level;new_security_level=0'>[text]</a>"
 					dat += "[text]<hr>"
 					text = "One - An account number and pin must be manually entered to access this account and process transactions."
-					if (authenticated_account.security_level != 1)
+					if(authenticated_account.security_level != 1)
 						text = "<A href='?src=\ref[src];choice=change_security_level;new_security_level=1'>[text]</a>"
 					dat += "[text]<hr>"
 					text = "Two - In addition to account number and pin, a card is required to access this account and process transactions."
-					if (authenticated_account.security_level != 2)
+					if(authenticated_account.security_level != 2)
 						text = "<A href='?src=\ref[src];choice=change_security_level;new_security_level=2'>[text]</a>"
 					dat += "[text]<hr><br>"
 					dat += "<A href='?src=\ref[src];choice=view_screen;view_screen=0'>Back</a>"
-				if (VIEW_TRANSACTION_LOGS)
+				if(VIEW_TRANSACTION_LOGS)
 					dat += "<b>Transaction logs</b><br>"
 					dat += "<A href='?src=\ref[src];choice=view_screen;view_screen=0'>Back</a>"
 					dat += "<table border=1 style='width:100%'>"
@@ -164,7 +164,7 @@ log transactions
 						dat += "<td>[T.source_terminal]</td>"
 						dat += "</tr>"
 					dat += "</table>"
-				if (TRANSFER_FUNDS)
+				if(TRANSFER_FUNDS)
 					dat += "<b>Account balance:</b> $[authenticated_account.money]<br>"
 					dat += "<A href='?src=\ref[src];choice=view_screen;view_screen=0'>Back</a><br><br>"
 					dat += "<form name='transfer' action='?src=\ref[src]' method='get'>"
@@ -188,7 +188,7 @@ log transactions
 					dat += "<A href='?src=\ref[src];choice=view_screen;view_screen=3'>View transaction log</a><br>"
 					dat += "<A href='?src=\ref[src];choice=balance_statement'>Print balance statement</a><br>"
 					dat += "<A href='?src=\ref[src];choice=logout'>Logout</a><br>"
-		else if (linked_db)
+		else if(linked_db)
 			dat += "<form name='atm_auth' action='?src=\ref[src]' method='get'>"
 			dat += "<input type='hidden' name='src' value='\ref[src]'>"
 			dat += "<input type='hidden' name='choice' value='attempt_auth'>"
@@ -205,17 +205,17 @@ log transactions
 		user << browse(null,"window=atm")
 
 /obj/machinery/atm/Topic(var/href, var/href_list)
-	if (href_list["choice"])
+	if(href_list["choice"])
 		switch(href_list["choice"])
-			if ("transfer")
-				if (authenticated_account && linked_db)
+			if("transfer")
+				if(authenticated_account && linked_db)
 					var/transfer_amount = text2num(href_list["funds_amount"])
-					if (transfer_amount <= 0)
+					if(transfer_amount <= 0)
 						alert("That is not a valid amount.")
-					else if (transfer_amount <= authenticated_account.money)
+					else if(transfer_amount <= authenticated_account.money)
 						var/target_account_number = text2num(href_list["target_acc_number"])
 						var/transfer_purpose = href_list["purpose"]
-						if (linked_db.charge_to_account(target_account_number, authenticated_account.owner_name, transfer_purpose, machine_id, transfer_amount))
+						if(linked_db.charge_to_account(target_account_number, authenticated_account.owner_name, transfer_purpose, machine_id, transfer_amount))
 							usr << "\icon[src]<span class='info'>Funds transfer successful.</span>"
 							authenticated_account.money -= transfer_amount
 
@@ -233,31 +233,31 @@ log transactions
 
 					else
 						usr << "\icon[src]<span class='warning'>You don't have enough funds to do that!</span>"
-			if ("view_screen")
+			if("view_screen")
 				view_screen = text2num(href_list["view_screen"])
-			if ("change_security_level")
-				if (authenticated_account)
+			if("change_security_level")
+				if(authenticated_account)
 					var/new_sec_level = max( min(text2num(href_list["new_security_level"]), 2), 0)
 					authenticated_account.security_level = new_sec_level
-			if ("attempt_auth")
-				if (linked_db && !ticks_left_locked_down)
+			if("attempt_auth")
+				if(linked_db && !ticks_left_locked_down)
 					var/tried_account_num = text2num(href_list["account_num"])
-					if (!tried_account_num)
+					if(!tried_account_num)
 						tried_account_num = held_card.associated_account_number
 					var/tried_pin = text2num(href_list["account_pin"])
 
 					authenticated_account = linked_db.attempt_account_access(tried_account_num, tried_pin, held_card && held_card.associated_account_number == tried_account_num ? 2 : 1)
-					if (!authenticated_account)
+					if(!authenticated_account)
 						number_incorrect_tries++
-						if (previous_account_number == tried_account_num)
-							if (number_incorrect_tries > max_pin_attempts)
+						if(previous_account_number == tried_account_num)
+							if(number_incorrect_tries > max_pin_attempts)
 								//lock down the atm
 								ticks_left_locked_down = 30
 								playsound(src, 'buzz-two.ogg', 50, 1)
 
 								//create an entry in the account transaction log
 								var/datum/money_account/failed_account = linked_db.get_account(tried_account_num)
-								if (failed_account)
+								if(failed_account)
 									var/datum/transaction/T = new()
 									T.target_name = failed_account.owner_name
 									T.purpose = "Unauthorised login attempt"
@@ -289,12 +289,12 @@ log transactions
 						usr << "\blue \icon[src] Access granted. Welcome user '[authenticated_account.owner_name].'"
 
 					previous_account_number = tried_account_num
-			if ("withdrawal")
+			if("withdrawal")
 				var/amount = max(text2num(href_list["funds_amount"]),0)
-				if (amount <= 0)
+				if(amount <= 0)
 					alert("That is not a valid amount.")
-				else if (authenticated_account && amount > 0)
-					if (amount <= authenticated_account.money)
+				else if(authenticated_account && amount > 0)
+					if(amount <= authenticated_account.money)
 						playsound(src, 'chime.ogg', 50, 1)
 
 						//remove the money
@@ -312,8 +312,8 @@ log transactions
 						authenticated_account.transaction_log.Add(T)
 					else
 						usr << "\icon[src]<span class='warning'>You don't have enough funds to do that!</span>"
-			if ("balance_statement")
-				if (authenticated_account)
+			if("balance_statement")
+				if(authenticated_account)
 					var/obj/item/weapon/paper/R = new(src.loc)
 					R.name = "Account balance: [authenticated_account.owner_name]"
 					R.info = "<b>NT Automated Teller Account Statement</b><br><br>"
@@ -326,22 +326,22 @@ log transactions
 					//stamp the paper
 					var/image/stampoverlay = image('icons/obj/bureaucracy.dmi')
 					stampoverlay.icon_state = "paper_stamp-cent"
-					if (!R.stamped)
+					if(!R.stamped)
 						R.stamped = new
 					R.stamped += /obj/item/weapon/stamp
 					R.overlays += stampoverlay
 					R.stamps += "<HR><i>This paper has been stamped by the Automatic Teller Machine.</i>"
 
-				if (prob(50))
+				if(prob(50))
 					playsound(loc, 'sound/items/polaroid1.ogg', 50, 1)
 				else
 					playsound(loc, 'sound/items/polaroid2.ogg', 50, 1)
-			if ("insert_card")
-				if (held_card)
+			if("insert_card")
+				if(held_card)
 					held_card.loc = src.loc
 					authenticated_account = null
 
-					if (ishuman(usr) && !usr.get_active_hand())
+					if(ishuman(usr) && !usr.get_active_hand())
 						usr.put_in_hands(held_card)
 					held_card = null
 
@@ -351,7 +351,7 @@ log transactions
 						usr.drop_item()
 						I.loc = src
 						held_card = I
-			if ("logout")
+			if("logout")
 				authenticated_account = null
 				//usr << browse(null,"window=atm")
 
@@ -386,17 +386,17 @@ log transactions
 
 //stolen wholesale and then edited a bit from newscasters, which are awesome and by Agouri
 /obj/machinery/atm/proc/scan_user(mob/living/carbon/human/human_user as mob)
-	if (!authenticated_account && linked_db)
-		if (human_user.wear_id)
+	if(!authenticated_account && linked_db)
+		if(human_user.wear_id)
 			var/obj/item/weapon/card/id/I
-			if (istype(human_user.wear_id, /obj/item/weapon/card/id) )
+			if(istype(human_user.wear_id, /obj/item/weapon/card/id) )
 				I = human_user.wear_id
-			else if (istype(human_user.wear_id, /obj/item/device/pda) )
+			else if(istype(human_user.wear_id, /obj/item/device/pda) )
 				var/obj/item/device/pda/P = human_user.wear_id
 				I = P.id
-			if (I)
+			if(I)
 				authenticated_account = linked_db.attempt_account_access(I.associated_account_number)
-				if (authenticated_account)
+				if(authenticated_account)
 					human_user << "\blue \icon[src] Access granted. Welcome user '[authenticated_account.owner_name].'"
 
 					//create a transaction log entry

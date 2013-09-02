@@ -8,7 +8,7 @@ var/global/datum/money_account/vendor_account
 var/global/list/all_money_accounts = list()
 
 /proc/create_station_account()
-	if (!station_account)
+	if(!station_account)
 		next_account_number = rand(111111, 999999)
 
 		station_account = new()
@@ -70,7 +70,7 @@ var/global/list/all_money_accounts = list()
 	T.target_name = new_owner_name
 	T.purpose = "Account creation"
 	T.amount = starting_funds
-	if (!source_db)
+	if(!source_db)
 		//set a random date, time and location some time over the past few decades
 		T.date = "[num2text(rand(1,31))] [pick("January","February","March","April","May","June","July","August","September","October","November","December")], 25[rand(10,56)]"
 		T.time = "[rand(0,24)]:[rand(11,59)]"
@@ -103,7 +103,7 @@ var/global/list/all_money_accounts = list()
 		//stamp the paper
 		var/image/stampoverlay = image('icons/obj/bureaucracy.dmi')
 		stampoverlay.icon_state = "paper_stamp-cent"
-		if (!R.stamped)
+		if(!R.stamped)
 			R.stamped = new
 		R.stamped += /obj/item/weapon/stamp
 		R.overlays += stampoverlay
@@ -150,31 +150,31 @@ var/global/list/all_money_accounts = list()
 
 /obj/machinery/account_database/New()
 	..()
-	if (!station_account)
+	if(!station_account)
 		create_station_account()
 
-	if (department_accounts.len == 0)
+	if(department_accounts.len == 0)
 		for(var/department in station_departments)
 			create_department_account(department)
-	if (!vendor_account)
+	if(!vendor_account)
 		create_department_account("Vendor")
 		vendor_account = department_accounts["Vendor"]
 
-	if (!current_date_string)
+	if(!current_date_string)
 		current_date_string = "[num2text(rand(1,31))] [pick("January","February","March","April","May","June","July","August","September","October","November","December")], 2557"
 
 	machine_id = "[station_name()] Acc. DB #[num_financial_terminals++]"
 
 /obj/machinery/account_database/attack_hand(mob/user as mob)
-	if (get_dist(src,user) <= 1)
+	if(get_dist(src,user) <= 1)
 		var/dat = "<b>Accounts Database</b><br>"
 		dat += "<i>[machine_id]</i><br>"
 		dat += "Confirm identity: <a href='?src=\ref[src];choice=insert_card'>[held_card ? held_card : "-----"]</a><br>"
 
-		if (access_level > 0)
+		if(access_level > 0)
 			dat += "<a href='?src=\ref[src];toggle_activated=1'>[activated ? "Disable" : "Enable"] remote access</a><br>"
 			dat += "You may not edit accounts at this terminal, only create and view them.<br>"
-			if (creating_new_account)
+			if(creating_new_account)
 				dat += "<br>"
 				dat += "<a href='?src=\ref[src];choice=view_accounts_list;'>Return to accounts list</a>"
 				dat += "<form name='create_account' action='?src=\ref[src]' method='get'>"
@@ -186,7 +186,7 @@ var/global/list/all_money_accounts = list()
 				dat += "<input type='submit' value='Create'><br>"
 				dat += "</form>"
 			else
-				if (detailed_account_view)
+				if(detailed_account_view)
 					dat += "<br>"
 					dat += "<a href='?src=\ref[src];choice=view_accounts_list;'>Return to accounts list</a><hr>"
 					dat += "<b>Account number:</b> #[detailed_account_view.account_number]<br>"
@@ -228,34 +228,34 @@ var/global/list/all_money_accounts = list()
 		user << browse(null,"window=account_db")
 
 /obj/machinery/account_database/attackby(O as obj, user as mob)//TODO:SANITY
-	if (istype(O, /obj/item/weapon/card))
+	if(istype(O, /obj/item/weapon/card))
 		var/obj/item/weapon/card/id/idcard = O
-		if (!held_card)
+		if(!held_card)
 			usr.drop_item()
 			idcard.loc = src
 			held_card = idcard
 
-			if (access_cent_captain in idcard.access)
+			if(access_cent_captain in idcard.access)
 				access_level = 2
-			else if (access_hop in idcard.access || access_captain in idcard.access)
+			else if(access_hop in idcard.access || access_captain in idcard.access)
 				access_level = 1
 	else
 		..()
 
 /obj/machinery/account_database/Topic(var/href, var/href_list)
 
-	if (href_list["toggle_activated"])
+	if(href_list["toggle_activated"])
 		activated = !activated
 
-	if (href_list["choice"])
+	if(href_list["choice"])
 		switch(href_list["choice"])
-			if ("create_account")
+			if("create_account")
 				creating_new_account = 1
-			if ("finalise_create_account")
+			if("finalise_create_account")
 				var/account_name = href_list["holder_name"]
 				var/starting_funds = max(text2num(href_list["starting_funds"]), 0)
 				create_account(account_name, starting_funds, src)
-				if (starting_funds > 0)
+				if(starting_funds > 0)
 					//subtract the money
 					station_account.money -= starting_funds
 
@@ -270,11 +270,11 @@ var/global/list/all_money_accounts = list()
 					station_account.transaction_log.Add(T)
 
 				creating_new_account = 0
-			if ("insert_card")
-				if (held_card)
+			if("insert_card")
+				if(held_card)
 					held_card.loc = src.loc
 
-					if (ishuman(usr) && !usr.get_active_hand())
+					if(ishuman(usr) && !usr.get_active_hand())
 						usr.put_in_hands(held_card)
 					held_card = null
 					access_level = 0
@@ -287,32 +287,32 @@ var/global/list/all_money_accounts = list()
 						C.loc = src
 						held_card = C
 
-						if (access_cent_captain in C.access)
+						if(access_cent_captain in C.access)
 							access_level = 2
-						else if (access_hop in C.access || access_captain in C.access)
+						else if(access_hop in C.access || access_captain in C.access)
 							access_level = 1
-			if ("view_account_detail")
+			if("view_account_detail")
 				var/index = text2num(href_list["account_index"])
-				if (index && index <= all_money_accounts.len)
+				if(index && index <= all_money_accounts.len)
 					detailed_account_view = all_money_accounts[index]
-			if ("view_accounts_list")
+			if("view_accounts_list")
 				detailed_account_view = null
 				creating_new_account = 0
 
 	src.attack_hand(usr)
 
 /obj/machinery/account_database/proc/charge_to_account(var/attempt_account_number, var/source_name, var/purpose, var/terminal_id, var/amount)
-	if (!activated)
+	if(!activated)
 		return 0
 	for(var/datum/money_account/D in all_money_accounts)
-		if (D.account_number == attempt_account_number)
+		if(D.account_number == attempt_account_number)
 			D.money += amount
 
 			//create a transaction log entry
 			var/datum/transaction/T = new()
 			T.target_name = source_name
 			T.purpose = purpose
-			if (amount < 0)
+			if(amount < 0)
 				T.amount = "([amount])"
 			else
 				T.amount = "[amount]"
@@ -327,14 +327,14 @@ var/global/list/all_money_accounts = list()
 
 //this returns the first account datum that matches the supplied accnum/pin combination, it returns null if the combination did not match any account
 /obj/machinery/account_database/proc/attempt_account_access(var/attempt_account_number, var/attempt_pin_number, var/security_level_passed = 0)
-	if (!activated)
+	if(!activated)
 		return 0
 	for(var/datum/money_account/D in all_money_accounts)
-		if (D.account_number == attempt_account_number)
-			if ( D.security_level <= security_level_passed && (!D.security_level || D.remote_access_pin == attempt_pin_number) )
+		if(D.account_number == attempt_account_number)
+			if( D.security_level <= security_level_passed && (!D.security_level || D.remote_access_pin == attempt_pin_number) )
 				return D
 
 /obj/machinery/account_database/proc/get_account(var/account_number)
 	for(var/datum/money_account/D in all_money_accounts)
-		if (D.account_number == account_number)
+		if(D.account_number == account_number)
 			return D

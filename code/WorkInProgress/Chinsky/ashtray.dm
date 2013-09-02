@@ -18,7 +18,7 @@
 	if (health < 1)
 		return
 	if (istype(W,/obj/item/clothing/mask/cigarette) || istype(W, /obj/item/weapon/match))
-		if (user)
+		if(user)
 			if (contents.len >= max_butts)
 				user << "This ashtray is full."
 				return
@@ -31,7 +31,7 @@
 				src.visible_message("[user] crushes [cig] in [src], putting it out.")
 				cig.smoketime = 0
 			else if (cig.lit == 0)
-				if (istype(cig, /obj/item/weapon/match))
+				if(istype(cig, /obj/item/weapon/match))
 					user << "You place [cig] in [src] without even lighting it. Why would you do that?"
 				else
 					user << "You place [cig] in [src] without even smoking it. Why would you do that?"

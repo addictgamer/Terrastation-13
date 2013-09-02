@@ -12,7 +12,7 @@
 
 
 	equip(var/mob/living/carbon/human/H)
-		if (!H)	return 0
+		if(!H)	return 0
 		H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel_sec(H), slot_back)
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/heads/hos(H), slot_ears)
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/administrator(H), slot_w_uniform)
@@ -42,7 +42,7 @@
 
 
 	equip(var/mob/living/carbon/human/H)
-		if (!H)	return 0
+		if(!H)	return 0
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/headset_sec(H), slot_ears)
 		H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel_sec(H), slot_back)
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/advisor(H), slot_w_uniform)
@@ -71,7 +71,7 @@
 
 
 	equip(var/mob/living/carbon/human/H)
-		if (!H)	return 0
+		if(!H)	return 0
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/headset_sec(H), slot_ears)
 		H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel_norm(H), slot_back)
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/det(H), slot_w_uniform)
@@ -108,7 +108,7 @@
 
 
 	equip(var/mob/living/carbon/human/H)
-		if (!H)	return 0
+		if(!H)	return 0
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/headset_sec(H), slot_ears)
 		H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel_sec(H), slot_back)
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/supervisor(H), slot_w_uniform)
@@ -137,15 +137,15 @@
 
 
 	equip(var/mob/living/carbon/human/H)
-		if (!H)	return 0
+		if(!H)	return 0
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/heads/hop(H), slot_ears)
-		if (H.backbag == 2) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack(H), slot_back)
-		if (H.backbag == 3) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel_norm(H), slot_back)
+		if(H.backbag == 2) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack(H), slot_back)
+		if(H.backbag == 3) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel_norm(H), slot_back)
 		H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/rank/head_of_personnel(H), slot_w_uniform)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/brown(H), slot_shoes)
 		H.equip_to_slot_or_del(new /obj/item/device/pda/heads/hop(H), slot_belt)
-		if (H.backbag == 1)
+		if(H.backbag == 1)
 			H.equip_to_slot_or_del(new /obj/item/weapon/storage/id_kit(H), slot_r_hand)
 		else
 			H.equip_to_slot_or_del(new /obj/item/weapon/storage/id_kit(H.back), slot_in_backpack)

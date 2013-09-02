@@ -15,12 +15,12 @@
 		initialize_directions = dir
 
 	initialize()
-		if (node) return
+		if(node) return
 
 		var/node_connect = dir
 
 		for(var/obj/machinery/atmospherics/target in get_step(src,node_connect))
-			if (target.initialize_directions & get_dir(target,src))
+			if(target.initialize_directions & get_dir(target,src))
 				node = target
 				break
 
@@ -28,8 +28,8 @@
 
 
 	update_icon()
-		if (src.node)
-			if (src.on)
+		if(src.node)
+			if(src.on)
 				icon_state = "freezer_1"
 			else
 				icon_state = "freezer"
@@ -46,9 +46,9 @@
 	attack_hand(mob/user as mob)
 		user.machine = src
 		var/temp_text = ""
-		if (air_contents.temperature > (T0C - 20))
+		if(air_contents.temperature > (T0C - 20))
 			temp_text = "<FONT color=red>[air_contents.temperature]</FONT>"
-		else if (air_contents.temperature < (T0C - 20) && air_contents.temperature > (T0C - 100))
+		else if(air_contents.temperature < (T0C - 20) && air_contents.temperature > (T0C - 100))
 			temp_text = "<FONT color=black>[air_contents.temperature]</FONT>"
 		else
 			temp_text = "<FONT color=blue>[air_contents.temperature]</FONT>"
@@ -69,9 +69,9 @@
 			if (href_list["start"])
 				src.on = !src.on
 				update_icon()
-			if (href_list["temp"])
+			if(href_list["temp"])
 				var/amount = text2num(href_list["temp"])
-				if (amount > 0)
+				if(amount > 0)
 					src.current_temperature = min(350, src.current_temperature+amount)
 				else
 					src.current_temperature = max(150, src.current_temperature+amount)

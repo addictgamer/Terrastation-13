@@ -30,18 +30,18 @@ Filter types:
 		set_frequency(new_frequency)
 			radio_controller.remove_object(src, frequency)
 			frequency = new_frequency
-			if (frequency)
+			if(frequency)
 				radio_connection = radio_controller.add_object(src, frequency, RADIO_ATMOSIA)
 
 	New()
-		if (radio_controller)
+		if(radio_controller)
 			initialize()
 		..()
 
 	update_icon()
-		if (stat & NOPOWER)
+		if(stat & NOPOWER)
 			icon_state = "intact_off"
-		else if (node2 && node3 && node1)
+		else if(node2 && node3 && node1)
 			icon_state = "intact_[on?("on"):("off")]"
 		else
 			icon_state = "intact_off"
@@ -52,17 +52,17 @@ Filter types:
 	power_change()
 		var/old_stat = stat
 		..()
-		if (old_stat != stat)
+		if(old_stat != stat)
 			update_icon()
 
 	process()
 		..()
-		if (!on)
+		if(!on)
 			return 0
 
 		var/output_starting_pressure = air3.return_pressure()
 
-		if (output_starting_pressure >= target_pressure || air2.return_pressure() >= target_pressure )
+		if(output_starting_pressure >= target_pressure || air2.return_pressure() >= target_pressure )
 			//No need to mix if target is already full!
 			return 1
 
@@ -71,46 +71,46 @@ Filter types:
 		var/pressure_delta = target_pressure - output_starting_pressure
 		var/transfer_moles
 
-		if (air1.temperature > 0)
+		if(air1.temperature > 0)
 			transfer_moles = pressure_delta*air3.volume/(air1.temperature * R_IDEAL_GAS_EQUATION)
 
 		//Actually transfer the gas
 
-		if (transfer_moles > 0)
+		if(transfer_moles > 0)
 			var/datum/gas_mixture/removed = air1.remove(transfer_moles)
 
-			if (!removed)
+			if(!removed)
 				return
 			var/datum/gas_mixture/filtered_out = new
 			filtered_out.temperature = removed.temperature
 
 			switch(filter_type)
-				if (0) //removing hydrocarbons
+				if(0) //removing hydrocarbons
 					filtered_out.toxins = removed.toxins
 					removed.toxins = 0
 
-					if (removed.trace_gases.len>0)
+					if(removed.trace_gases.len>0)
 						for(var/datum/gas/trace_gas in removed.trace_gases)
-							if (istype(trace_gas, /datum/gas/oxygen_agent_b))
+							if(istype(trace_gas, /datum/gas/oxygen_agent_b))
 								removed.trace_gases -= trace_gas
 								filtered_out.trace_gases += trace_gas
 
-				if (1) //removing O2
+				if(1) //removing O2
 					filtered_out.oxygen = removed.oxygen
 					removed.oxygen = 0
 
-				if (2) //removing N2
+				if(2) //removing N2
 					filtered_out.nitrogen = removed.nitrogen
 					removed.nitrogen = 0
 
-				if (3) //removing CO2
+				if(3) //removing CO2
 					filtered_out.carbon_dioxide = removed.carbon_dioxide
 					removed.carbon_dioxide = 0
 
-				if (4)//removing N2O
-					if (removed.trace_gases.len>0)
+				if(4)//removing N2O
+					if(removed.trace_gases.len>0)
 						for(var/datum/gas/trace_gas in removed.trace_gases)
-							if (istype(trace_gas, /datum/gas/sleeping_agent))
+							if(istype(trace_gas, /datum/gas/sleeping_agent))
 								removed.trace_gases -= trace_gas
 								filtered_out.trace_gases += trace_gas
 
@@ -121,13 +121,13 @@ Filter types:
 			air2.merge(filtered_out)
 			air3.merge(removed)
 
-		if (network2)
+		if(network2)
 			network2.update = 1
 
-		if (network3)
+		if(network3)
 			network3.update = 1
 
-		if (network1)
+		if(network1)
 			network1.update = 1
 
 		return 1
@@ -161,27 +161,27 @@ Filter types:
 
 
 obj/machinery/atmospherics/trinary/filter/attack_hand(user as mob) // -- TLE
-	if (..())
+	if(..())
 		return
 
-	if (!src.allowed(user))
+	if(!src.allowed(user))
 		user << "\red Access denied."
 		return
 
 	var/dat
 	var/current_filter_type
 	switch(filter_type)
-		if (0)
+		if(0)
 			current_filter_type = "Carbon Molecules"
-		if (1)
+		if(1)
 			current_filter_type = "Oxygen"
-		if (2)
+		if(2)
 			current_filter_type = "Nitrogen"
-		if (3)
+		if(3)
 			current_filter_type = "Carbon Dioxide"
-		if (4)
+		if(4)
 			current_filter_type = "Nitrous Oxide"
-		if (-1)
+		if(-1)
 			current_filter_type = "Nothing"
 		else
 			current_filter_type = "ERROR - Report this bug to the admin, please!"
@@ -214,18 +214,18 @@ obj/machinery/atmospherics/trinary/filter/attack_hand(user as mob) // -- TLE
 	return
 
 obj/machinery/atmospherics/trinary/filter/Topic(href, href_list) // -- TLE
-	if (..())
+	if(..())
 		return
 	usr.set_machine(src)
 	src.add_fingerprint(usr)
-	if (href_list["filterset"])
+	if(href_list["filterset"])
 		src.filter_type = text2num(href_list["filterset"])
 	if (href_list["temp"])
 		src.temp = null
-	if (href_list["set_press"])
+	if(href_list["set_press"])
 		var/new_pressure = input(usr,"Enter new output pressure (0-4500kPa)","Pressure control",src.target_pressure) as num
 		src.target_pressure = max(0, min(4500, new_pressure))
-	if (href_list["power"])
+	if(href_list["power"])
 		on=!on
 	src.update_icon()
 	src.updateUsrDialog()

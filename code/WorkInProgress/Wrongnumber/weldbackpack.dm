@@ -14,18 +14,18 @@
 	R.add_reagent("fuel", max_fuel)
 
 /obj/item/weapon/weldpack/attackby(obj/item/W as obj, mob/user as mob)
-	if (istype(W, /obj/item/weapon/weldingtool))
+	if(istype(W, /obj/item/weapon/weldingtool))
 		var/obj/item/weapon/weldingtool/T = W
-		if (T.welding & prob(50))
+		if(T.welding & prob(50))
 			message_admins("[key_name_admin(user)] triggered a fueltank explosion.")
 			log_game("[key_name(user)] triggered a fueltank explosion.")
 			user << "\red That was stupid of you."
 			explosion(get_turf(src),-1,0,2)
-			if (src)
+			if(src)
 				del(src)
 			return
 		else
-			if (T.welding)
+			if(T.welding)
 				user << "\red That was close!"
 			src.reagents.trans_to(W, T.max_fuel)
 			user << "\blue Welder refilled!"

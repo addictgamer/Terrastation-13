@@ -24,15 +24,15 @@
 
 /obj/machinery/camera/attackby(var/obj/item/weapon/W as obj, var/mob/user as mob)
 	. = ..(W, user)
-	if (istype(W, /obj/item/weapon/wirecutters))
-		if (status)
+	if(istype(W, /obj/item/weapon/wirecutters))
+		if(status)
 			cameranet.addCamera(src)
 		else
 			cameranet.removeCamera(src)
 
 /proc/checkcameravis(atom/A)
 	for(var/obj/machinery/camera/C in view(A,7))
-		if (!C.status || C.stat == 2)
+		if(!C.status || C.stat == 2)
 			continue
 		return 1
 	return 0

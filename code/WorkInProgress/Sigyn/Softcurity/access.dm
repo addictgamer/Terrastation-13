@@ -91,22 +91,22 @@
 /obj/New()
 	..()
 	//NOTE: If a room requires more than one access (IE: Morgue + medbay) set the req_acesss_txt to "5;6" if it requires 5 and 6
-	if (src.req_access_txt)
+	if(src.req_access_txt)
 		var/list/req_access_str = text2list(req_access_txt,";")
-		if (!req_access)
+		if(!req_access)
 			req_access = list()
 		for(var/x in req_access_str)
 			var/n = text2num(x)
-			if (n)
+			if(n)
 				req_access += n
 
-	if (src.req_one_access_txt)
+	if(src.req_one_access_txt)
 		var/list/req_one_access_str = text2list(req_one_access_txt,";")
-		if (!req_one_access)
+		if(!req_one_access)
 			req_one_access = list()
 		for(var/x in req_one_access_str)
 			var/n = text2num(x)
-			if (n)
+			if(n)
 				req_one_access += n
 
 
@@ -114,20 +114,20 @@
 //returns 1 if this mob has sufficient access to use this object
 /obj/proc/allowed(mob/M)
 	//check if it doesn't require any access at all
-	if (src.check_access(null))
+	if(src.check_access(null))
 		return 1
-	if (istype(M, /mob/living/silicon))
+	if(istype(M, /mob/living/silicon))
 		//AI can do whatever he wants
 		return 1
-	else if (istype(M, /mob/living/carbon/human))
+	else if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		//if they are holding or wearing a card that has access, that works
-		if (src.check_access(H.get_active_hand()) || src.check_access(H.wear_id))
+		if(src.check_access(H.get_active_hand()) || src.check_access(H.wear_id))
 			return 1
-	else if (istype(M, /mob/living/carbon/monkey) || istype(M, /mob/living/carbon/alien/humanoid))
+	else if(istype(M, /mob/living/carbon/monkey) || istype(M, /mob/living/carbon/alien/humanoid))
 		var/mob/living/carbon/george = M
 		//they can only hold things :(
-		if (george.get_active_hand() && (istype(george.get_active_hand(), /obj/item/weapon/card/id) || istype(george.get_active_hand(), /obj/item/device/pda)) && src.check_access(george.get_active_hand()))
+		if(george.get_active_hand() && (istype(george.get_active_hand(), /obj/item/weapon/card/id) || istype(george.get_active_hand(), /obj/item/device/pda)) && src.check_access(george.get_active_hand()))
 			return 1
 	return 0
 
@@ -143,39 +143,39 @@
 		var/obj/item/device/pda/pda = I
 		I = pda.id
 
-	if (!src.req_access && !src.req_one_access) //no requirements
+	if(!src.req_access && !src.req_one_access) //no requirements
 		return 1
-	if (!istype(src.req_access, /list)) //something's very wrong
+	if(!istype(src.req_access, /list)) //something's very wrong
 		return 1
 
 	var/list/L = src.req_access
-	if (!L.len && (!src.req_one_access || !src.req_one_access.len)) //no requirements
+	if(!L.len && (!src.req_one_access || !src.req_one_access.len)) //no requirements
 		return 1
-	if (!I || !istype(I, /obj/item/weapon/card/id) || !I.access) //not ID or no access
+	if(!I || !istype(I, /obj/item/weapon/card/id) || !I.access) //not ID or no access
 		return 0
 	for(var/req in src.req_access)
-		if (!(req in I.access)) //doesn't have this access
+		if(!(req in I.access)) //doesn't have this access
 			return 0
-	if (src.req_one_access && src.req_one_access.len)
+	if(src.req_one_access && src.req_one_access.len)
 		for(var/req in src.req_one_access)
-			if (req in I.access) //has an access from the single access list
+			if(req in I.access) //has an access from the single access list
 				return 1
 		return 0
 	return 1
 
 
 /obj/proc/check_access_list(var/list/L)
-	if (!src.req_access  && !src.req_one_access)	return 1
-	if (!istype(src.req_access, /list))	return 1
-	if (!src.req_access.len && (!src.req_one_access || !src.req_one_access.len))	return 1
-	if (!L)	return 0
-	if (!istype(L, /list))	return 0
+	if(!src.req_access  && !src.req_one_access)	return 1
+	if(!istype(src.req_access, /list))	return 1
+	if(!src.req_access.len && (!src.req_one_access || !src.req_one_access.len))	return 1
+	if(!L)	return 0
+	if(!istype(L, /list))	return 0
 	for(var/req in src.req_access)
-		if (!(req in L)) //doesn't have this access
+		if(!(req in L)) //doesn't have this access
 			return 0
-	if (src.req_one_access && src.req_one_access.len)
+	if(src.req_one_access && src.req_one_access.len)
 		for(var/req in src.req_one_access)
-			if (req in L) //has an access from the single access list
+			if(req in L) //has an access from the single access list
 				return 1
 		return 0
 	return 1
@@ -183,41 +183,41 @@
 
 /proc/get_access(job)
 	switch(job)
-		if ("Geneticist")
+		if("Geneticist")
 			return list(access_medical, access_morgue, access_genetics)
-		if ("Station Engineer")
+		if("Station Engineer")
 			return list(access_engine, access_engine_equip, access_tech_storage, access_maint_tunnels, access_external_airlocks, access_construction)
-		if ("Assistant")
-			if (config.assistant_maint)
+		if("Assistant")
+			if(config.assistant_maint)
 				return list(access_maint_tunnels)
 			else
 				return list()
-		if ("Chaplain")
+		if("Chaplain")
 			return list(access_morgue, access_chapel_office, access_crematorium)
-		if ("Detective")
+		if("Detective")
 			return list(access_sec_doors, access_forensics_lockers, access_morgue, access_maint_tunnels, access_court)
-		if ("Medical Doctor")
+		if("Medical Doctor")
 			return list(access_medical, access_morgue, access_surgery)
-		if ("Botanist")	// -- TLE
+		if("Botanist")	// -- TLE
 			return list(access_hydroponics, access_morgue) // Removed tox and chem access because STOP PISSING OFF THE CHEMIST GUYS // //Removed medical access because WHAT THE FUCK YOU AREN'T A DOCTOR YOU GROW WHEAT //Given Morgue access because they have a viable means of cloning.
-		if ("Librarian") // -- TLE
+		if("Librarian") // -- TLE
 			return list(access_library)
-		if ("Lawyer") //Muskets 160910
+		if("Lawyer") //Muskets 160910
 			return list(access_lawyer, access_court, access_sec_doors)
-		if ("Captain")
+		if("Captain")
 			return get_all_accesses()
-		if ("Crew Supervisor")
+		if("Crew Supervisor")
 			return list(access_security, access_sec_doors, access_brig, access_court)
-		if ("Correctional Advisor")
+		if("Correctional Advisor")
 			return list(access_security, access_sec_doors, access_brig, access_armory, access_court)
-		if ("Scientist")
+		if("Scientist")
 			return list(access_tox, access_tox_storage, access_research, access_xenobiology)
-		if ("Safety Administrator")
+		if("Safety Administrator")
 			return list(access_medical, access_morgue, access_tox, access_tox_storage, access_chemistry, access_genetics, access_court,
 			            access_teleporter, access_heads, access_tech_storage, access_security, access_sec_doors, access_brig, access_atmospherics,
 			            access_maint_tunnels, access_bar, access_janitor, access_kitchen, access_robotics, access_armory, access_hydroponics,
 			            access_theatre, access_research, access_hos, access_RC_announce, access_forensics_lockers, access_keycard_auth, access_gateway)
-		if ("Head of Personnel")
+		if("Head of Personnel")
 			return list(access_security, access_sec_doors, access_brig, access_court, access_forensics_lockers,
 			            access_tox, access_tox_storage, access_chemistry, access_medical, access_genetics, access_engine,
 			            access_emergency_storage, access_change_ids, access_ai_upload, access_eva, access_heads,
@@ -225,41 +225,41 @@
 			            access_crematorium, access_kitchen, access_robotics, access_cargo, access_cargo_bot, access_mailsorting, access_qm, access_hydroponics, access_lawyer,
 			            access_theatre, access_chapel_office, access_library, access_research, access_mining, access_heads_vault, access_mining_station,
 			            access_clown, access_mime, access_hop, access_RC_announce, access_keycard_auth, access_gateway)
-		if ("Atmospheric Technician")
+		if("Atmospheric Technician")
 			return list(access_atmospherics, access_maint_tunnels, access_emergency_storage, access_construction)
-		if ("Bartender")
+		if("Bartender")
 			return list(access_bar)
-		if ("Chemist")
+		if("Chemist")
 			return list(access_medical, access_chemistry)
-		if ("Janitor")
+		if("Janitor")
 			return list(access_janitor, access_maint_tunnels)
-		if ("Clown")
+		if("Clown")
 			return list(access_clown, access_theatre)
-		if ("Mime")
+		if("Mime")
 			return list(access_mime, access_theatre)
-		if ("Chef")
+		if("Chef")
 			return list(access_kitchen, access_morgue)
-		if ("Roboticist")
+		if("Roboticist")
 			return list(access_robotics, access_tech_storage, access_morgue) //As a job that handles so many corpses, it makes sense for them to have morgue access.
-		if ("Cargo Technician")
+		if("Cargo Technician")
 			return list(access_maint_tunnels, access_cargo, access_cargo_bot, access_mailsorting)
-		if ("Shaft Miner")
+		if("Shaft Miner")
 			return list(access_mining, access_mint, access_mining_station)
-		if ("Quartermaster")
+		if("Quartermaster")
 			return list(access_maint_tunnels, access_mailsorting, access_cargo, access_cargo_bot, access_qm, access_mint, access_mining, access_mining_station)
-		if ("Chief Engineer")
+		if("Chief Engineer")
 			return list(access_engine, access_engine_equip, access_tech_storage, access_maint_tunnels,
 			            access_teleporter, access_external_airlocks, access_atmospherics, access_emergency_storage, access_eva,
 			            access_heads, access_ai_upload, access_construction, access_robotics,
 			            access_mint, access_ce, access_RC_announce, access_keycard_auth, access_tcomsat, access_sec_doors)
-		if ("Research Director")
+		if("Research Director")
 			return list(access_rd, access_heads, access_tox, access_genetics,
 			            access_tox_storage, access_teleporter,
 			            access_research, access_robotics, access_xenobiology,
 			            access_RC_announce, access_keycard_auth, access_tcomsat, access_gateway, access_sec_doors)
-		if ("Virologist")
+		if("Virologist")
 			return list(access_medical, access_virology)
-		if ("Chief Medical Officer")
+		if("Chief Medical Officer")
 			return list(access_medical, access_morgue, access_genetics, access_heads,
 			access_chemistry, access_virology, access_cmo, access_surgery, access_RC_announce,
 			access_keycard_auth, access_sec_doors)
@@ -268,23 +268,23 @@
 
 /proc/get_centcom_access(job)
 	switch(job)
-		if ("VIP Guest")
+		if("VIP Guest")
 			return list(access_cent_general)
-		if ("Custodian")
+		if("Custodian")
 			return list(access_cent_general, access_cent_living, access_cent_storage)
-		if ("Thunderdome Overseer")
+		if("Thunderdome Overseer")
 			return list(access_cent_general, access_cent_thunder)
-		if ("Intel Officer")
+		if("Intel Officer")
 			return list(access_cent_general, access_cent_living)
-		if ("Medical Officer")
+		if("Medical Officer")
 			return list(access_cent_general, access_cent_living, access_cent_medical)
-		if ("Death Commando")
+		if("Death Commando")
 			return list(access_cent_general, access_cent_specops, access_cent_living, access_cent_storage)
-		if ("Research Officer")
+		if("Research Officer")
 			return list(access_cent_general, access_cent_specops, access_cent_medical, access_cent_teleporter, access_cent_storage)
-		if ("BlackOps Commander")
+		if("BlackOps Commander")
 			return list(access_cent_general, access_cent_thunder, access_cent_specops, access_cent_living, access_cent_storage, access_cent_creed)
-		if ("Supreme Commander")
+		if("Supreme Commander")
 			return get_all_centcom_access()
 
 /proc/get_all_accesses()
@@ -308,191 +308,191 @@
 
 /proc/get_region_accesses(var/code)
 	switch(code)
-		if (0)
+		if(0)
 			return get_all_accesses()
-		if (1) //security
+		if(1) //security
 			return list(access_sec_doors, access_security, access_brig, access_armory, access_forensics_lockers, access_court, access_hos)
-		if (2) //medbay
+		if(2) //medbay
 			return list(access_medical, access_genetics, access_morgue, access_chemistry, access_virology, access_surgery, access_cmo)
-		if (3) //research
+		if(3) //research
 			return list(access_research, access_tox, access_tox_storage, access_xenobiology, access_rd)
-		if (4) //engineering and maintenance
+		if(4) //engineering and maintenance
 			return list(access_maint_tunnels, access_engine, access_engine_equip, access_external_airlocks, access_tech_storage, access_atmospherics, access_construction, access_robotics, access_ce)
-		if (5) //command
+		if(5) //command
 			return list(access_heads, access_change_ids, access_ai_upload, access_teleporter, access_eva, access_all_personal_lockers, access_heads_vault, access_RC_announce, access_keycard_auth, access_tcomsat, access_gateway, access_hop, access_captain)
-		if (6) //station general
+		if(6) //station general
 			return list(access_kitchen,access_bar, access_hydroponics, access_janitor, access_chapel_office, access_crematorium, access_library, access_theatre, access_lawyer, access_clown, access_mime)
-		if (7) //supply
+		if(7) //supply
 			return list(access_cargo, access_cargo_bot, access_mailsorting, access_qm, access_mining, access_mining_station)
 
 /proc/get_region_accesses_name(var/code)
 	switch(code)
-		if (0)
+		if(0)
 			return "All"
-		if (1) //security
+		if(1) //security
 			return "Security"
-		if (2) //medbay
+		if(2) //medbay
 			return "Medbay"
-		if (3) //research
+		if(3) //research
 			return "Research"
-		if (4) //engineering and maintenance
+		if(4) //engineering and maintenance
 			return "Engineering"
-		if (5) //command
+		if(5) //command
 			return "Command"
-		if (6) //station general
+		if(6) //station general
 			return "Station General"
-		if (7) //supply
+		if(7) //supply
 			return "Supply"
 
 
 /proc/get_access_desc(A)
 	switch(A)
-		if (access_cargo)
+		if(access_cargo)
 			return "Cargo Bay"
-		if (access_cargo_bot)
+		if(access_cargo_bot)
 			return "Cargo Bot Delivery"
-		if (access_security)
+		if(access_security)
 			return "Security"
-		if (access_brig)
+		if(access_brig)
 			return "Holding Cells"
-		if (access_court)
+		if(access_court)
 			return "Courtroom"
-		if (access_forensics_lockers)
+		if(access_forensics_lockers)
 			return "Detective's Office"
-		if (access_medical)
+		if(access_medical)
 			return "Medical"
-		if (access_genetics)
+		if(access_genetics)
 			return "Genetics Lab"
-		if (access_morgue)
+		if(access_morgue)
 			return "Morgue"
-		if (access_tox)
+		if(access_tox)
 			return "Research Lab"
-		if (access_tox_storage)
+		if(access_tox_storage)
 			return "Toxins Storage"
-		if (access_chemistry)
+		if(access_chemistry)
 			return "Chemistry Lab"
-		if (access_rd)
+		if(access_rd)
 			return "RD Private"
-		if (access_bar)
+		if(access_bar)
 			return "Bar"
-		if (access_janitor)
+		if(access_janitor)
 			return "Custodial Closet"
-		if (access_engine)
+		if(access_engine)
 			return "Engineering"
-		if (access_engine_equip)
+		if(access_engine_equip)
 			return "APCs"
-		if (access_maint_tunnels)
+		if(access_maint_tunnels)
 			return "Maintenance"
-		if (access_external_airlocks)
+		if(access_external_airlocks)
 			return "External Airlocks"
-		if (access_emergency_storage)
+		if(access_emergency_storage)
 			return "Emergency Storage"
-		if (access_change_ids)
+		if(access_change_ids)
 			return "ID Computer"
-		if (access_ai_upload)
+		if(access_ai_upload)
 			return "AI Upload"
-		if (access_teleporter)
+		if(access_teleporter)
 			return "Teleporter"
-		if (access_eva)
+		if(access_eva)
 			return "EVA"
-		if (access_heads)
+		if(access_heads)
 			return "Bridge"
-		if (access_captain)
+		if(access_captain)
 			return "Captain Private"
-		if (access_all_personal_lockers)
+		if(access_all_personal_lockers)
 			return "Personal Lockers"
-		if (access_chapel_office)
+		if(access_chapel_office)
 			return "Chapel Office"
-		if (access_tech_storage)
+		if(access_tech_storage)
 			return "Technical Storage"
-		if (access_atmospherics)
+		if(access_atmospherics)
 			return "Atmospherics"
-		if (access_crematorium)
+		if(access_crematorium)
 			return "Crematorium"
-		if (access_armory)
+		if(access_armory)
 			return "Armory"
-		if (access_construction)
+		if(access_construction)
 			return "Construction Areas"
-		if (access_kitchen)
+		if(access_kitchen)
 			return "Kitchen"
-		if (access_hydroponics)
+		if(access_hydroponics)
 			return "Hydroponics"
-		if (access_library)
+		if(access_library)
 			return "Library"
-		if (access_lawyer)
+		if(access_lawyer)
 			return "Law Office"
-		if (access_robotics)
+		if(access_robotics)
 			return "Robotics"
-		if (access_virology)
+		if(access_virology)
 			return "Virology"
-		if (access_cmo)
+		if(access_cmo)
 			return "CMO Private"
-		if (access_qm)
+		if(access_qm)
 			return "Quartermaster's Office"
-		if (access_clown)
+		if(access_clown)
 			return "HONK! Access"
-		if (access_mime)
+		if(access_mime)
 			return "Silent Access"
-		if (access_surgery)
+		if(access_surgery)
 			return "Surgery"
-		if (access_theatre)
+		if(access_theatre)
 			return "Theatre"
-		if (access_manufacturing)
+		if(access_manufacturing)
 			return "Manufacturing"
-		if (access_research)
+		if(access_research)
 			return "Science"
-		if (access_mining)
+		if(access_mining)
 			return "Mining"
-		if (access_mining_office)
+		if(access_mining_office)
 			return "Mining Office"
-		if (access_mailsorting)
+		if(access_mailsorting)
 			return "Delivery Office"
-		if (access_mint)
+		if(access_mint)
 			return "Mint"
-		if (access_mint_vault)
+		if(access_mint_vault)
 			return "Mint Vault"
-		if (access_heads_vault)
+		if(access_heads_vault)
 			return "Main Vault"
-		if (access_mining_station)
+		if(access_mining_station)
 			return "Mining Station EVA"
-		if (access_xenobiology)
+		if(access_xenobiology)
 			return "Xenobiology Lab"
-		if (access_hop)
+		if(access_hop)
 			return "HoP Private"
-		if (access_hos)
+		if(access_hos)
 			return "HoS Private"
-		if (access_ce)
+		if(access_ce)
 			return "CE Private"
-		if (access_RC_announce)
+		if(access_RC_announce)
 			return "RC Announcements"
-		if (access_keycard_auth)
+		if(access_keycard_auth)
 			return "Keycode Auth. Device"
-		if (access_tcomsat)
+		if(access_tcomsat)
 			return "Telecommunications"
-		if (access_gateway)
+		if(access_gateway)
 			return "Gateway"
-		if (access_sec_doors)
+		if(access_sec_doors)
 			return "Brig"
 
 /proc/get_centcom_access_desc(A)
 	switch(A)
-		if (access_cent_general)
+		if(access_cent_general)
 			return "Code Grey"
-		if (access_cent_thunder)
+		if(access_cent_thunder)
 			return "Code Yellow"
-		if (access_cent_storage)
+		if(access_cent_storage)
 			return "Code Orange"
-		if (access_cent_living)
+		if(access_cent_living)
 			return "Code Green"
-		if (access_cent_medical)
+		if(access_cent_medical)
 			return "Code White"
-		if (access_cent_teleporter)
+		if(access_cent_teleporter)
 			return "Code Blue"
-		if (access_cent_specops)
+		if(access_cent_specops)
 			return "Code Black"
-		if (access_cent_creed)
+		if(access_cent_creed)
 			return "Code Silver"
-		if (access_cent_captain)
+		if(access_cent_captain)
 			return "Code Gold"
 
 /proc/get_all_jobs()
@@ -510,13 +510,13 @@
 
 	var/jobName
 
-	if (istype(src, /obj/item/device/pda))
-		if (src:id)
+	if(istype(src, /obj/item/device/pda))
+		if(src:id)
 			jobName = src:id:assignment
-	if (istype(src, /obj/item/weapon/card/id))
+	if(istype(src, /obj/item/weapon/card/id))
 		jobName = src:assignment
 
-	if (jobName in get_all_jobs())
+	if(jobName in get_all_jobs())
 		return jobName
 	else
 		return "Unknown"

@@ -14,7 +14,7 @@
 		var/list/speciesPresent = list()
 
 		for(var/obj/effect/organ/organ in src) //only external organs count, since it's judging by the appearance
-			if (speciesPresent[organ.species])
+			if(speciesPresent[organ.species])
 				speciesPresent[organ.species]++
 			else
 				speciesPresent[organ.species] = 1 //not sure, but I think it's not initialised before that, so can't ++
@@ -22,15 +22,15 @@
 		var/list/dominantSpecies = list()
 
 		for(var/speciesName in speciesPresent)
-			if (!dominantSpecies.len)
+			if(!dominantSpecies.len)
 				dominantSpecies += speciesName
 			else
-				if (speciesPresent[dominantSpecies[1]] == speciesPresent[speciesName])
+				if(speciesPresent[dominantSpecies[1]] == speciesPresent[speciesName])
 					dominantSpecies += speciesName
-				else if (speciesPresent[dominantSpecies[1]] < speciesPresent[speciesName])
+				else if(speciesPresent[dominantSpecies[1]] < speciesPresent[speciesName])
 					dominantSpecies = list(speciesName)
 
-		if (!dominantSpecies.len)
+		if(!dominantSpecies.len)
 			species = "mob"
 		else
 			species = pick(dominantSpecies)
@@ -90,10 +90,10 @@
 		rootOrganStructure = FindRootStructure()
 
 	proc/FindRootStructure()
-		if (istype(loc,/obj/effect/organ))
+		if(istype(loc,/obj/effect/organ))
 			var/obj/effect/organ/parent = loc
 			return parent.FindRootStructure()
-		else if (istype(loc,/obj/effect/organstructure))
+		else if(istype(loc,/obj/effect/organstructure))
 			return loc
 		return null
 
@@ -363,7 +363,7 @@
 		var/list/speciesPresent = list()
 
 		for(var/obj/effect/organ/organ in src) //only external organs count, since it's judging by the appearance
-			if (speciesPresent[organ.species])
+			if(speciesPresent[organ.species])
 				speciesPresent[organ.species]++
 			else
 				speciesPresent[organ.species] = 1 //not sure, but I think it's not initialised before that, so can't ++
@@ -371,15 +371,15 @@
 		var/list/dominantSpecies = list()
 
 		for(var/speciesName in speciesPresent)
-			if (!dominantSpecies.len)
+			if(!dominantSpecies.len)
 				dominantSpecies += speciesName
 			else
-				if (speciesPresent[dominantSpecies[1]] == speciesPresent[speciesName])
+				if(speciesPresent[dominantSpecies[1]] == speciesPresent[speciesName])
 					dominantSpecies += speciesName
-				else if (speciesPresent[dominantSpecies[1]] < speciesPresent[speciesName])
+				else if(speciesPresent[dominantSpecies[1]] < speciesPresent[speciesName])
 					dominantSpecies = list(speciesName)
 
-		if (!dominantSpecies.len)
+		if(!dominantSpecies.len)
 			species = "mob"
 		else
 			species = pick(dominantSpecies)
@@ -439,10 +439,10 @@
 		rootOrganStructure = FindRootStructure()
 
 	proc/FindRootStructure()
-		if (istype(loc,/obj/effect/organ))
+		if(istype(loc,/obj/effect/organ))
 			var/obj/effect/organ/parent = loc
 			return parent.FindRootStructure()
-		else if (istype(loc,/obj/effect/organstructure))
+		else if(istype(loc,/obj/effect/organstructure))
 			return loc
 		return null
 

@@ -2,3 +2,5 @@
 terrastation.int
 *.lk
 data/logs/
+/config/*
+!/config/*/*

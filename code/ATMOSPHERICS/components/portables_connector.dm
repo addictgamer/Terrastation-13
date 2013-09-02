@@ -24,7 +24,7 @@
 		..()
 
 	update_icon()
-		if (node)
+		if(node)
 			icon_state = "[level == 1 && istype(loc, /turf/simulated) ? "h" : "" ]intact"
 			dir = get_dir(src, node)
 		else
@@ -33,7 +33,7 @@
 		return
 
 	hide(var/i) //to make the little pipe section invisible, the icon changes.
-		if (node)
+		if(node)
 			icon_state = "[i == 1 && istype(loc, /turf/simulated) ? "h" : "" ]intact"
 			dir = get_dir(src, node)
 		else
@@ -41,21 +41,21 @@
 
 	process()
 		..()
-		if (!on)
+		if(!on)
 			return
-		if (!connected_device)
+		if(!connected_device)
 			on = 0
 			return
-		if (network)
+		if(network)
 			network.update = 1
 		return 1
 
 // Housekeeping and pipe network stuff below
 	network_expand(datum/pipe_network/new_network, obj/machinery/atmospherics/pipe/reference)
-		if (reference == node)
+		if(reference == node)
 			network = new_network
 
-		if (new_network.normal_members.Find(src))
+		if(new_network.normal_members.Find(src))
 			return 0
 
 		new_network.normal_members += src
@@ -65,10 +65,10 @@
 	Del()
 		loc = null
 
-		if (connected_device)
+		if(connected_device)
 			connected_device.disconnect()
 
-		if (node)
+		if(node)
 			node.disconnect(src)
 			del(network)
 
@@ -77,19 +77,19 @@
 		..()
 
 	initialize()
-		if (node) return
+		if(node) return
 
 		var/node_connect = dir
 
 		for(var/obj/machinery/atmospherics/target in get_step(src,node_connect))
-			if (target.initialize_directions & get_dir(target,src))
+			if(target.initialize_directions & get_dir(target,src))
 				node = target
 				break
 
 		update_icon()
 
 	build_network()
-		if (!network && node)
+		if(!network && node)
 			network = new /datum/pipe_network()
 			network.normal_members += src
 			network.build_network(node, src)
@@ -98,16 +98,16 @@
 	return_network(obj/machinery/atmospherics/reference)
 		build_network()
 
-		if (reference==node)
+		if(reference==node)
 			return network
 
-		if (reference==connected_device)
+		if(reference==connected_device)
 			return network
 
 		return null
 
 	reassign_network(datum/pipe_network/old_network, datum/pipe_network/new_network)
-		if (network == old_network)
+		if(network == old_network)
 			network = new_network
 
 		return 1
@@ -115,13 +115,13 @@
 	return_network_air(datum/pipe_network/reference)
 		var/list/results = list()
 
-		if (connected_device)
+		if(connected_device)
 			results += connected_device.air_contents
 
 		return results
 
 	disconnect(obj/machinery/atmospherics/reference)
-		if (reference==node)
+		if(reference==node)
 			del(network)
 			node = null
 
