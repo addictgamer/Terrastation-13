@@ -38,7 +38,8 @@
 
 		output += "<p><a href='byond://?src=\ref[src];observe=1'>Observe</A></p>"
 
-		if(!IsGuestKey(src.key))
+		//TODO: Bring the poll stuff up to snuff with our code.
+		/* if(!IsGuestKey(src.key))
 			establish_db_connection()
 
 			if(dbcon.IsConnected())
@@ -56,6 +57,7 @@
 					output += "<p><b><a href='byond://?src=\ref[src];showpoll=1'>Show Player Polls</A> (NEW!)</b></p>"
 				else
 					output += "<p><a href='byond://?src=\ref[src];showpoll=1'>Show Player Polls</A></p>"
+		*/
 
 		output += "</div>"
 

@@ -209,6 +209,7 @@
 	config.loadforumsql("config/forumdbconfig.txt")
 	// apply some settings from config..
 	abandon_allowed = config.respawn
+	respawn_time = config.respawn_time
 
 /world/proc/load_mods()
 	if(config.admin_legacy_system)

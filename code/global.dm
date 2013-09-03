@@ -94,6 +94,7 @@ var/traitor_scaling = 1
 //var/goonsay_allowed = 0
 var/dna_ident = 1
 var/abandon_allowed = 1
+var/respawn_time = 0
 var/enter_allowed = 1
 var/guests_allowed = 1
 var/shuttle_frozen = 0
@@ -109,7 +110,7 @@ var/list/shuttles = list(  )
 var/list/reg_dna = list(  )
 //	list/traitobj = list(  )
 
-var/mouse_respawn_time = 1 //Amount of time that must pass between a player dying as a mouse and repawning as a mouse. In minutes.
+var/mouse_respawn_time = 0 //Amount of time that must pass between a player dying as a mouse and repawning as a mouse. In minutes.
 
 var/CELLRATE = 0.002  // multiplier for watts per tick <> cell storage (eg: .002 means if there is a load of 1000 watts, 20 units will be taken from a cell per second)
 var/CHARGELEVEL = 0.001 // Cap for how fast cells charge, as a percentage-per-tick (.001 means cellcharge is capped to 1% per second)
