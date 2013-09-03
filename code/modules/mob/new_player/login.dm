@@ -29,6 +29,6 @@
 		loc = pick(watch_locations)
 */
 	new_player_panel()
-	/*spawn(40)
+	spawn(40)
 		if(client)
-			handle_privacy_poll()*/
+			handle_privacy_poll()

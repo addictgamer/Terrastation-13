@@ -73,6 +73,8 @@
 	else
 		src << "You will no longer hear music in the game lobby."
 		if(istype(mob, /mob/new_player))
+			src.music.status = SOUND_PAUSED | SOUND_UPDATE
+			src << music
 			src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // stop the jamsz
 	feedback_add_details("admin_verb","TLobby") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 

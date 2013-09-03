@@ -1090,6 +1090,8 @@ datum/preferences
 							//user << sound(ticker.login_music, repeat = 0, wait = 0, volume = 85, channel = 1)
 							user.client.playtitlemusic()
 						else
+							user.client.music.status = SOUND_PAUSED | SOUND_UPDATE
+							user.client << user.client.music
 							user << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1)
 
 					if("ghost_ears")

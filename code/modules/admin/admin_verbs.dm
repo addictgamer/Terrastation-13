@@ -96,7 +96,9 @@ var/list/admin_verbs_fun = list(
 	/client/proc/make_sound,
 	/client/proc/toggle_random_events,
 	/client/proc/set_ooc,
-	/client/proc/editappear
+	/client/proc/editappear,
+	/client/proc/heyaheyamusic,
+	/client/proc/clownmusic
 	)
 var/list/admin_verbs_spawn = list(
 	/datum/admins/proc/spawn_atom,		/*allows us to spawn instances*/
@@ -771,4 +773,23 @@ var/list/admin_verbs_mod = list(
 	//TODO: Tom R Toe cinematic & Music.
 	if(!ticker)	return
 	//ticker.station_explosion_cinematic(parameter,override)
+
+	log_admin("[key_name(usr)] told everyone to man up and deal with it.")
+	message_admins("\blue [key_name_admin(usr)] told everyone to man up and deal with it.", 1)
 	return
+
+/client/proc/clownmusic()
+	set category = "Admin"
+	set name = "Clownmusic"
+
+	//for(var/mob/m in world)
+	//	if (m.client) //If has client.
+	//		m.music <<
+	world << sound('sound/music/clown_station_redux.ogg')
+
+
+/client/proc/heyaheyamusic()
+	set category = "Admin"
+	set name = "Heyaheyaheya"
+
+	world << sound('heman-heya-full.ogg')
