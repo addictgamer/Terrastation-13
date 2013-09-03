@@ -108,14 +108,14 @@
 
 		if(href_list["observe"])
 
-			if(alert(src,"Are you sure you wish to observe? You will have to wait 30 minutes before being able to respawn!","Player Setup","Yes","No") == "Yes")
+			if(alert(src,"Are you sure you wish to observe? You will have to wait ~[round(respawn_time / 600)] minutes before being able to respawn!","Player Setup","Yes","No") == "Yes")
 				if(!client)	return 1
 				var/mob/dead/observer/observer = new()
 
 				spawning = 1
-				//client.music.status = SOUND_PAUSED | SOUND_UPDATE
-				//client << client.music
-				//src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // MAD JAMS cant last forever yo
+				client.music.status = SOUND_PAUSED | SOUND_UPDATE
+				client << client.music
+				src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // MAD JAMS cant last forever yo
 
 				observer.started_as_observer = 1
 				close_spawn_windows()
@@ -342,6 +342,10 @@
 
 	proc/create_character()
 		spawning = 1
+		//src << "MAD JAMS can't last forever yo"
+		if (src.client && src.client.music) src.client.music.status = SOUND_PAUSED | SOUND_UPDATE
+		if (src.client && src.client.music) src.client << src.client.music
+		src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // MAD JAMS cant last forever yo
 		close_spawn_windows()
 
 		var/mob/living/carbon/human/new_character = new(loc)
@@ -369,11 +373,6 @@
 			client.prefs.randomize_appearance_for(new_character)
 		else
 			client.prefs.copy_to(new_character)
-
-		//src << "MAD JAMS can't last forever yo"
-		//src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // MAD JAMS cant last forever yo
-		src.client.music.status = SOUND_PAUSED | SOUND_UPDATE
-		src.client << src.client.music
 
 		if(mind)
 			mind.active = 0					//we wish to transfer the key manually
@@ -410,5 +409,5 @@
 		src << browse(null, "window=latechoices") //closes late choices window
 		src << browse(null, "window=playersetup") //closes the player setup window
 		//Hack to stop lobby music.
-		client.music.status = SOUND_PAUSED | SOUND_UPDATE
-		client << client.music
+		//if (client && client.music) src.client.music.status = SOUND_PAUSED | SOUND_UPDATE
+		//if (client && client.music) src.client << src.client.music
