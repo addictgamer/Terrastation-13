@@ -763,3 +763,12 @@ var/list/admin_verbs_mod = list(
 
 	log_admin("[key_name(usr)] told everyone to man up and deal with it.")
 	message_admins("\blue [key_name_admin(usr)] told everyone to man up and deal with it.", 1)
+
+/client/proc/manup_cinematic()
+	set name = "Man Up W/ Cinemeatic"
+	set category = "Fun"
+	set desc = "Shows a cinematic to make everybody chill out."
+	//TODO: Tom R Toe cinematic & Music.
+	if(!ticker)	return
+	//ticker.station_explosion_cinematic(parameter,override)
+	return

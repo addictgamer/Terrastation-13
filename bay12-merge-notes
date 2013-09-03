@@ -2,8 +2,8 @@ Unfinished business:
 
  * Add pooping.
  * Add starvation.
- * Add firealarm sound.
- * Make lobby music stop at game start and make it go to a different song after the current one's finished.
+--DONE-- * Add firealarm sound.
+__ERROR: LOOKS LIKE IT'S IMPOSSIBLE WITH BYOND__ * Make lobby music stop at game start and make it go to a different song after the current one's finished.
  * Hivebot invasion event.
  * Admin ghost mode (I don't know how to do this in bay12, the command's not the same if it's still here).
  * Add the warthog.
