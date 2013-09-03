@@ -122,6 +122,9 @@ ALLOW_AI
 ## disable abandon mob
 # NORESPAWN
 
+## Set the respawn time.
+RESPAWNTIME 0
+
 ## disables calling del(src) on newmobs if they logout before spawnin in
 # DONT_DEL_NEWMOB
 
