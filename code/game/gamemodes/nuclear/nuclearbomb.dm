@@ -209,7 +209,7 @@ var/bomb_set
 					if (src.safety)
 						usr << "\red The safety is still on."
 						return
-					world << sound('sound/music/nuclearbomb-timer-initiated-music.mid')
+					world << sound('sound/music/nuclearbomb-timer-initiated-music.mid') //TODO: Make this able to stop playing the music when timer turned off.
 					src.timing = !( src.timing )
 					if (src.timing)
 						src.icon_state = "nuclearbomb2"

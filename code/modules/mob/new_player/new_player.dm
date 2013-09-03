@@ -368,7 +368,10 @@
 		else
 			client.prefs.copy_to(new_character)
 
-		src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // MAD JAMS cant last forever yo
+		//src << "MAD JAMS can't last forever yo"
+		//src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // MAD JAMS cant last forever yo
+		src.client.music.status = SOUND_PAUSED | SOUND_UPDATE
+		src.client << src.client.music
 
 		if(mind)
 			mind.active = 0					//we wish to transfer the key manually
