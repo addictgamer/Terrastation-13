@@ -627,6 +627,7 @@
 						/obj/item/weapon/wirecutters = 1, /obj/item/weapon/cartridge/signal = 4)
 	contraband = list(/obj/item/device/flashlight = 5,/obj/item/device/assembly/timer = 2)
 	product_ads = "Only the finest!;Have some tools.;The most robust equipment.;The finest gear in space!"
+	product_slogans = "lari pls;All hail our melter overlord!;Get that random shit that you need here!;feel my weenie;Situationally useful supplies!;hug me;Cippie has a strong stonk of wiener lol;BLACK PEOPLE NO JUTSU;Tauka has the penis of a whale;Get yer signalers here!"
 
 /obj/machinery/vending/coffee
 	name = "Hot Drinks machine"
