@@ -31,7 +31,7 @@ Admin Observer
 Moderator		+MOD
 Admin Candidate	+ADMIN
 Trial Admin		+@ +SPAWN +REJUV +VAREDIT +BAN
-Badmin			+@ +POSSESS +BUILDMODE +SERVER +FUN
+Badmin			+@ +POSSESS +BUILDMODE +SERVER +FUN +VAREDIT
 Game Admin		+@ +STEALTH +SOUNDS +DEBUG +PERMISSIONS
 Game Master		+EVERYTHING
 Head Admin		+EVERYTHING
