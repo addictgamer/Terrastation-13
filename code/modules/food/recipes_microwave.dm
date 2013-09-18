@@ -1146,3 +1146,26 @@ I said no!
 /datum/recipe/cracker
 	reagents = list("flour" = 5, "sodiumchloride" = 1)
 	result = /obj/item/weapon/reagent_containers/food/snacks/cracker
+
+
+/datum/recipe/lasagna
+	reagents = list( "blackpepper" = 5, "water" = 5, "flour" = 5)
+	items = list(
+		///obj/item/weapon/reagent_containers/food/snacks/flour,	// because some fag made flour into a reagent
+		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,
+		/obj/item/weapon/reagent_containers/food/snacks/cheesewedge,
+		/obj/item/weapon/reagent_containers/food/snacks/faggot,
+		/obj/item/weapon/reagent_containers/food/snacks/faggot,
+		/obj/item/weapon/reagent_containers/food/snacks/grown/tomato,
+	)
+	result = /obj/item/weapon/reagent_containers/food/snacks/lasagna
+
+/datum/recipe/tomatomeatspagetti
+	reagents = list("water" = 5)
+	items = list(
+		/obj/item/weapon/reagent_containers/food/snacks/spagetti,
+		/obj/item/weapon/reagent_containers/food/snacks/faggot,
+		/obj/item/weapon/reagent_containers/food/snacks/faggot,
+		/obj/item/weapon/reagent_containers/food/snacks/grown/tomato,
+	)
+	result = /obj/item/weapon/reagent_containers/food/snacks/tomatomeatspagetti
