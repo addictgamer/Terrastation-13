@@ -1,5 +1,6 @@
+
 /client/proc/play_sound(S as sound)
-	set category = "Fun"
+	set category = "Sound Board"
 	set name = "Play Global Sound"
 	if(!check_rights(R_SOUNDS))	return
 
@@ -16,7 +17,7 @@
 
 
 /client/proc/play_local_sound(S as sound)
-	set category = "Fun"
+	set category = "Sound Board"
 	set name = "Play Local Sound"
 	if(!check_rights(R_SOUNDS))	return
 
@@ -25,6 +26,41 @@
 	playsound(get_turf_loc(src.mob), S, 50, 0, 0)
 	feedback_add_details("admin_verb","PLS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
+
+/client/proc/clownmusic()
+	set category = "Sound Board"
+	set name = "Clownmusic"
+
+	//for(var/mob/m in world)
+	//	if (m.client) //If has client.
+	//		m.music <<
+	world << sound('sound/music/clown_station_redux.ogg')
+
+
+/client/proc/heyaheyamusic()
+	set category = "Sound Board"
+	set name = "Heyaheyaheya"
+
+	world << sound('heman-heya-full.ogg')
+
+/client/proc/fag()
+	set category = "Sound Board"
+	set name = "FAG!"
+
+	world << sound('FAG.ogg')
+
+/client/proc/ic_in_ooc()
+	set category = "Sound Board"
+	set name = "IC in OOC"
+
+	world << sound('IC in OOC.ogg')
+/*
+/client/proc/ooc_in_ic()
+	set category = "Sound Board"
+	set name = "OOC IN IC"
+
+	world << sound('heman-heya-full.ogg')
+*/
 
 /*
 /client/proc/cuban_pete()
