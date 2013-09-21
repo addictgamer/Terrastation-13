@@ -1016,6 +1016,7 @@ datum
 				P.loc = get_turf_loc(holder.my_atom)
 
 //Gold
+	// code works, but lets leave this commented out for safety reasons...
 		slimecrit
 			name = "Slime Crit"
 			id = "m_tele"
@@ -1025,8 +1026,8 @@ datum
 			required_container = /obj/item/slime_extract/gold
 			required_other = 1
 			on_reaction(var/datum/reagents/holder)
-
-				/*var/blocked = list(/mob/living/simple_animal/hostile,
+/*
+				var/blocked = list(/mob/living/simple_animal/hostile,
 					/mob/living/simple_animal/hostile/pirate,
 					/mob/living/simple_animal/hostile/pirate/ranged,
 					/mob/living/simple_animal/hostile/russian,
@@ -1058,9 +1059,10 @@ datum
 					C.loc = get_turf_loc(holder.my_atom)
 					if(prob(50))
 						for(var/j = 1, j <= rand(1, 3), j++)
-							step(C, pick(NORTH,SOUTH,EAST,WEST))*/
+							step(C, pick(NORTH,SOUTH,EAST,WEST))
+*/
 				for(var/mob/O in viewers(get_turf_loc(holder.my_atom), null))
-					O.show_message(text("\red The slime core fizzles disappointingly,"), 1)
+					O.show_message(text("\red The slime core fizzles disappointingly."), 1)
 
 //Silver
 		slimebork
@@ -1091,24 +1093,24 @@ datum
 							for(var/j = 1, j <= rand(1, 3), j++)
 								step(B, pick(NORTH,SOUTH,EAST,WEST))
 
-
-//Blue
+// Light Blue
 		slimefrost
 			name = "Slime Frost Oil"
 			id = "m_frostoil"
 			result = "frostoil"
-			required_reagents = list("plasma" = 5)
+			required_reagents = list("water" = 5)
 			result_amount = 10
-			required_container = /obj/item/slime_extract/blue
+			required_container = /obj/item/slime_extract/lightblue
 			required_other = 1
-//Dark Blue
+
+// Blue
 		slimefreeze
 			name = "Slime Freeze"
 			id = "m_freeze"
 			result = null
 			required_reagents = list("plasma" = 5)
 			result_amount = 1
-			required_container = /obj/item/slime_extract/darkblue
+			required_container = /obj/item/slime_extract/blue
 			required_other = 1
 			on_reaction(var/datum/reagents/holder)
 				for(var/mob/O in viewers(get_turf_loc(holder.my_atom), null))
@@ -1164,7 +1166,6 @@ datum
 			on_reaction(var/datum/reagents/holder, var/created_volume)
 				empulse(get_turf_loc(holder.my_atom), 3, 7)
 
-
 		slimecell
 			name = "Slime Powercell"
 			id = "m_cell"
@@ -1190,8 +1191,8 @@ datum
 					O.show_message(text("\red The slime begins to emit a soft light."), 1)
 				var/obj/item/slime_extract/yellow/Y = holder
 				Y.luminosity = 6
-//Purple
 
+//Purple
 		slimepsteroid
 			name = "Slime Steroid"
 			id = "m_steroid"
@@ -1204,8 +1205,6 @@ datum
 				var/obj/item/weapon/slimesteroid/P = new /obj/item/weapon/slimesteroid
 				P.loc = get_turf_loc(holder.my_atom)
 
-
-
 		slimejam
 			name = "Slime Jam"
 			id = "m_jam"
@@ -1214,7 +1213,6 @@ datum
 			result_amount = 10
 			required_container = /obj/item/slime_extract/purple
 			required_other = 1
-
 
 //Dark Purple
 		slimeplasma
@@ -1239,7 +1237,6 @@ datum
 			result_amount = 8
 			required_container = /obj/item/slime_extract/red
 			required_other = 1
-
 
 		slimebloodlust
 			name = "Bloodlust"
@@ -1269,7 +1266,6 @@ datum
 				var/obj/item/weapon/slimepotion/P = new /obj/item/weapon/slimepotion
 				P.loc = get_turf_loc(holder.my_atom)
 
-
 //Black
 		slimemutate2
 			name = "Advanced Mutation Toxin"
@@ -1294,6 +1290,7 @@ datum
 					O.show_message(text("\red The slime extract begins to vibrate violently !"), 1)
 				sleep(50)
 				explosion(get_turf_loc(holder.my_atom), 1 ,3, 6)
+
 //Light Pink
 		slimepotion2
 			name = "Slime Potion 2"
@@ -1306,6 +1303,7 @@ datum
 			on_reaction(var/datum/reagents/holder)
 				var/obj/item/weapon/slimepotion2/P = new /obj/item/weapon/slimepotion2
 				P.loc = get_turf_loc(holder.my_atom)
+
 //Adamantine
 		slimegolem
 			name = "Slime Golem"
@@ -1319,6 +1317,92 @@ datum
 				var/obj/effect/golemrune/Z = new /obj/effect/golemrune
 				Z.loc = get_turf_loc(holder.my_atom)
 				Z.announce_to_ghosts()
+
+/*
+		slimearmor
+			name = "Slime Armor"
+			id = "m_armor"
+			result = null
+			required_reagents = list("blood" = 5)
+			result_amount = 1
+			required_container =  /obj/item/slime_extract/adamantine
+			required_other = 1
+			on_reaction(var/datum/reagents/holder)
+				// TODO: Spawn adamantine armor here. Make similar to golem armor or turn user into said golem
+*/
+
+// Bluespace
+	// from old code BUT IT WORKS
+		slimeteleport
+			name = "Slime Teleport"
+			id = "m_tele"
+			result = null
+			required_reagents = list("plasma" = 5)
+			result_amount = 1
+			required_container = /obj/item/slime_extract/bluespace
+			required_other = 1
+			on_reaction(var/datum/reagents/holder, var/created_volume)
+			// Calculate new position (searches through beacons in world)
+				var/obj/item/device/radio/beacon/chosen
+				var/list/possible = list()
+				for(var/obj/item/device/radio/beacon/W in world)
+					possible += W
+
+				if(possible.len > 0)
+					chosen = pick(possible)
+
+				if(chosen)
+				// Calculate previous position for transition
+					var/turf/FROM = get_turf_loc(holder.my_atom) // the turf of origin we're travelling FROM
+					var/turf/TO = get_turf_loc(chosen)			 // the turf of origin we're travelling TO
+
+					playsound(TO, 'sound/effects/phasein.ogg', 100, 1)
+
+					var/list/flashers = list()
+					for(var/mob/living/carbon/human/M in viewers(TO, null))
+						if(M:eyecheck() <= 0)
+							flick("e_flash", M.flash) // flash dose faggots
+							flashers += M
+
+					var/y_distance = TO.y - FROM.y
+					var/x_distance = TO.x - FROM.x
+					for (var/atom/movable/A in range(2, FROM )) // iterate thru list of mobs in the area
+						if(istype(A, /obj/item/device/radio/beacon)) continue // don't teleport beacons because that's just insanely stupid
+						if( A.anchored && !istype(A, /mob/dead/observer) ) continue // don't teleport anchored things (computers, tables, windows, grilles, etc) because this causes problems!
+					// do teleport ghosts however because hell why not
+						var/turf/newloc = locate(A.x + x_distance, A.y + y_distance, TO.z) // calculate the new place
+						if(!A.Move(newloc)) // if the atom, for some reason, can't move, FORCE them to move! :) We try Move() first to invoke any movement-related checks the atom needs to perform after moving
+							A.loc = locate(A.x + x_distance, A.y + y_distance, TO.z)
+
+						spawn()
+							if(ismob(A) && !(A in flashers)) // don't flash if we're already doing an effect
+								var/mob/M = A
+								if(M.client)
+									var/obj/blueeffect = new /obj(src)
+									blueeffect.screen_loc = "WEST,SOUTH to EAST,NORTH"
+									blueeffect.icon = 'icons/effects/effects.dmi'
+									blueeffect.icon_state = "shieldsparkles"
+									blueeffect.layer = 17
+									blueeffect.mouse_opacity = 0
+									M.client.screen += blueeffect
+									sleep(20)
+									M.client.screen -= blueeffect
+									del(blueeffect)
+
+// Blue
+/*	// TODO: placeholder for blue slime
+		slime
+			name = "Slime "
+			id = "m_"
+			result = null
+			required_reagents = list("plasma" = 5)
+			result_amount = 1
+			required_container = /obj/item/slime_extract/blue
+			required_other = 1
+			on_reaction(var/datum/reagents/holder)
+				// code goes here
+*/
+
 //////////////////////////////////////////FOOD MIXTURES////////////////////////////////////
 
 		tofu
