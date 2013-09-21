@@ -1,10 +1,10 @@
 
-/datum/admins/proc/player_panel_new()//The new one
+/datum/admins/proc/player_panel_new()	// The new one
 	if (!usr.client.holder)
 		return
 	var/dat = "<html><head><title>Admin Player Panel</title></head>"
 
-	//javascript, the part that does most of the work~
+// javascript, the part that does most of the work~
 	dat += {"
 
 		<head>
@@ -184,10 +184,10 @@
 
 	"}
 
-	//body tag start + onload and onkeypress (onkeyup) javascript event calls
+// body tag start + onload and onkeypress (onkeyup) javascript event calls
 	dat += "<body onload='selectTextField(); updateSearch();' onkeyup='updateSearch();'>"
 
-	//title + search bar
+// title + search bar
 	dat += {"
 
 		<table width='560' align='center' cellspacing='0' cellpadding='5' id='maintable'>
@@ -207,7 +207,7 @@
 
 	"}
 
-	//player table header
+// player table header
 	dat += {"
 		<span id='maintable_data_archive'>
 		<table width='560' align='center' cellspacing='0' cellpadding='5' id='maintable_data'>"}
@@ -284,7 +284,7 @@
 			M_key = replacetext(M_key, "\"", "")
 			M_key = replacetext(M_key, "\\", "")
 
-			//output for each mob
+		// output for each mob
 			dat += {"
 
 				<tr id='data[i]' name='[i]' onClick="addToLocked('item[i]','data[i]','notice_span[i]')">
@@ -304,7 +304,7 @@
 			i++
 
 
-	//player table ending
+// player table ending
 	dat += {"
 		</table>
 		</span>
@@ -318,14 +318,14 @@
 
 	usr << browse(dat, "window=players;size=600x480")
 
-//The old one
+// The old one
 /datum/admins/proc/player_panel_old()
 	if (!usr.client.holder)
 		return
 	var/dat = "<html><head><title>Player Menu</title></head>"
 	dat += "<body><table border=1 cellspacing=5><B><tr><th>Name</th><th>Real Name</th><th>Assigned Job</th><th>Key</th><th>Options</th><th>PM</th><th>Traitor?</th></tr></B>"
-	//add <th>IP:</th> to this if wanting to add back in IP checking
-	//add <td>(IP: [M.lastKnownIP])</td> if you want to know their ip to the lists below
+	//add <th>IP:</th>	// to this if wanting to add back in IP checking
+	//add <td>(IP: [M.lastKnownIP])</td>	// if you want to know their ip to the lists below
 	var/list/mobs = sortmobs()
 
 	for(var/mob/M in mobs)
@@ -478,8 +478,7 @@
 					dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td>"
 					dat += "<td><A HREF='?src=\ref[src];traitor=\ref[M]'>Show Objective</A></td></tr>"
 			dat += "</table>"
-
-		/*
+/*
 		if(ticker.mode.ninjas.len > 0)
 			dat += "<br><table cellspacing=5><tr><td><B>Ninjas</B></td><td></td><td></td></tr>"
 			for(var/datum/mind/ninja in ticker.mode.ninjas)
@@ -491,8 +490,7 @@
 				else
 					dat += "<tr><td><i>Ninja not found!</i></td></tr>"
 			dat += "</table>"
-		*/
-
+*/
 		if(ticker.mode.cult.len)
 			dat += "<br><table cellspacing=5><tr><td><B>Cultists</B></td><td></td></tr>"
 			for(var/datum/mind/N in ticker.mode.cult)
@@ -502,7 +500,8 @@
 					dat += "<td><A href='?src=\ref[usr];priv_msg=\ref[M]'>PM</A></td></tr>"
 			dat += "</table>"
 
-		/*if(istype(ticker.mode, /datum/game_mode/anti_revolution) && ticker.mode:heads.len)	//comment out anti-revolution
+/*
+		if(istype(ticker.mode, /datum/game_mode/anti_revolution) && ticker.mode:heads.len)	//comment out anti-revolution
 			dat += "<br><table cellspacing=5><tr><td><B>Corrupt Heads</B></td><td></td></tr>"
 			for(var/datum/mind/N in ticker.mode:heads)
 				var/mob/M = N.current

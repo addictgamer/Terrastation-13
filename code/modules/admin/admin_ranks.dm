@@ -1,15 +1,16 @@
-var/list/admin_ranks = list()								//list of all ranks with associated rights
 
-//load our rank - > rights associations
+var/list/admin_ranks = list()	// list of all ranks with associated rights
+
+// load our rank - > rights associations
 /proc/load_admin_ranks()
 	admin_ranks.Cut()
 
 	var/previous_rights = 0
 
-	//load text from file
+// load text from file
 	var/list/Lines = file2list("config/admin_ranks.txt")
 
-	//process each line seperately
+// process each line seperately
 	for(var/line in Lines)
 		if(!length(line))				continue
 		if(copytext(line,1,2) == "#")	continue
@@ -20,11 +21,11 @@ var/list/admin_ranks = list()								//list of all ranks with associated rights
 		var/rank = ckeyEx(List[1])
 		switch(rank)
 			if(null,"")		continue
-			if("Removed")	continue				//Reserved
+			if("Removed")	continue				// Reserved
 
 		var/rights = 0
 		for(var/i=2, i<=List.len, i++)
-			switch(ckey(List[i]))
+			switch(ckey(List[i]))			// rights link to useage in admin_verbs.dm proc add_admin_verbs()
 				if("@","prev")					rights |= previous_rights
 				if("buildmode","build")			rights |= R_BUILDMODE
 				if("admin")						rights |= R_ADMIN
@@ -54,7 +55,7 @@ var/list/admin_ranks = list()								//list of all ranks with associated rights
 
 
 /proc/load_admins()
-	//clear the datums references
+// clear the datums references
 	admin_datums.Cut()
 	for(var/client/C in admins)
 		C.remove_admin_verbs()
@@ -63,40 +64,30 @@ var/list/admin_ranks = list()								//list of all ranks with associated rights
 
 	if(config.admin_legacy_system)
 		load_admin_ranks()
-
-		//load text from file
+	// load text from file
 		var/list/Lines = file2list("config/admins.txt")
-
-		//process each line seperately
+	// process each line seperately
 		for(var/line in Lines)
 			if(!length(line))				continue
 			if(copytext(line,1,2) == "#")	continue
-
-			//Split the line at every "-"
+		// Split the line at every "-"
 			var/list/List = text2list(line, "-")
 			if(!List.len)					continue
-
-			//ckey is before the first "-"
+		// ckey is before the first "-"
 			var/ckey = ckey(List[1])
 			if(!ckey)						continue
-
-			//rank follows the first "-"
+		// rank follows the first "-"
 			var/rank = ""
 			if(List.len >= 2)
 				rank = ckeyEx(List[2])
-
-			//load permissions associated with this rank
+		// load permissions associated with this rank
 			var/rights = admin_ranks[rank]
-
-			//create the admin datum and store it for later use
+		// create the admin datum and store it for later use
 			var/datum/admins/D = new /datum/admins(rank, rights, ckey)
-
-			//find the client for a ckey if they are connected and associate them with the new admin datum
+		// find the client for a ckey if they are connected and associate them with the new admin datum
 			D.associate(directory[ckey])
-
 	else
-		//The current admin system uses SQL
-
+	// The current admin system uses SQL
 		establish_db_connection()
 		if(!dbcon.IsConnected())
 			world.log << "Failed to connect to database in load_admins(). Reverting to legacy system."
@@ -116,7 +107,7 @@ var/list/admin_ranks = list()								//list of all ranks with associated rights
 			if(istext(rights))	rights = text2num(rights)
 			var/datum/admins/D = new /datum/admins(rank, rights, ckey)
 
-			//find the client for a ckey if they are connected and associate them with the new admin datum
+		// find the client for a ckey if they are connected and associate them with the new admin datum
 			D.associate(directory[ckey])
 		if(!admin_datums)
 			world.log << "The database query in load_admins() resulted in no admins being added to the list. Reverting to legacy system."

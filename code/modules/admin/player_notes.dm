@@ -1,6 +1,10 @@
-//This stuff was originally intended to be integrated into the ban-system I was working on
-//but it's safe to say that'll never be finished. So I've merged it into the current player panel.
-//enjoy				~Carn
+
+/*
+ This stuff was originally intended to be integrated into the ban-system I was working on
+ but it's safe to say that'll never be finished. So I've merged it into the current player panel.
+ enjoy	~Carn
+*/
+
 /*
 #define NOTESFILE "data/player_notes.sav"	//where the player notes are saved
 
@@ -83,19 +87,19 @@ datum/admins/proc/notes_gethtml(var/ckey)
 #undef NOTESFILE
 */
 
-//Hijacking this file for BS12 playernotes functions. I like this ^ one systemm alright, but converting sounds too bothersome~ Chinsky.
+// Hijacking this file for BS12 playernotes functions. I like this ^ one systemm alright, but converting sounds too bothersome	~Chinsky.
 
 /proc/notes_add(var/key, var/note, var/mob/usr)
 	if (!key || !note)
 		return
 
-	//Loading list of notes for this key
+// Loading list of notes for this key
 	var/savefile/info = new("data/player_saves/[copytext(key, 1, 2)]/[key]/info.sav")
 	var/list/infos
 	info >> infos
 	if(!infos) infos = list()
 
-	//Overly complex timestamp creation
+// Overly complex timestamp creation
 	var/modifyer = "th"
 	switch(time2text(world.timeofday, "DD"))
 		if("01","21","31")
@@ -128,7 +132,7 @@ datum/admins/proc/notes_gethtml(var/ckey)
 
 	del info
 
-	//Updating list of keys with notes on them
+// Updating list of keys with notes on them
 	var/savefile/note_list = new("data/player_notes.sav")
 	var/list/note_keys
 	note_list >> note_keys

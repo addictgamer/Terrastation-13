@@ -1,8 +1,10 @@
-//By Carnwennan
-//fetches an external list and processes it into a list of ip addresses.
-//It then stores the processed list into a savefile for later use
+
+// By Carnwennan
+// fetches an external list and processes it into a list of ip addresses.
+// It then stores the processed list into a savefile for later use
+
 #define TORFILE "data/ToR_ban.bdb"
-#define TOR_UPDATE_INTERVAL 216000	//~6 hours
+#define TOR_UPDATE_INTERVAL 216000	// ~6 hours
 
 /proc/ToRban_isbanned(var/ip_address)
 	var/savefile/F = new(TORFILE)
@@ -16,7 +18,7 @@
 	if(F)
 		var/last_update
 		F["last_update"] >> last_update
-		if((last_update + TOR_UPDATE_INTERVAL) < world.realtime)	//we haven't updated for a while
+		if((last_update + TOR_UPDATE_INTERVAL) < world.realtime)	// we haven't updated for a while
 			ToRban_update()
 	return
 

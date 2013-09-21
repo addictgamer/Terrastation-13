@@ -3,9 +3,9 @@
 
 // Take control of a mob
 client/proc/Possession()
-	set name	 = "Take Absolute Control"
+	set name = "Take Absolute Control"
 	set category = "Admin"
-	set desc     = "Take complete control of another mob."
+	set desc = "Take complete control of another mob."
 
 	if(!host) return
 

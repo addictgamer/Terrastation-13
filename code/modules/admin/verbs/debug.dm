@@ -1,6 +1,8 @@
+
 /client/proc/Debug2()
-	set category = "Debug"
 	set name = "Debug-Game"
+	set desc = "Toggle debugging"
+	set category = "Debug"
 	if(!check_rights(R_DEBUG))	return
 
 	if(Debug2)
@@ -14,8 +16,6 @@
 
 	feedback_add_details("admin_verb","DG2") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
-
-
 /* 21st Sept 2010
 Updated by Skie -- Still not perfect but better!
 Stuff you can't do:
@@ -26,16 +26,16 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 */
 
 /client/proc/callproc()
-	set category = "Debug"
 	set name = "Advanced ProcCall"
+	set category = "Debug"
 
 	if(!check_rights(R_DEBUG)) return
 
 	spawn(0)
 		var/target = null
 		var/targetselected = 0
-		var/lst[] // List reference
-		lst = new/list() // Make the list
+		var/lst[]	// List reference
+		lst = new/list()	// Make the list
 		var/returnval = null
 		var/class = null
 
@@ -67,15 +67,15 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 		var/argnum = input("Number of arguments","Number:",0) as num|null
 		if(!argnum && (argnum!=0))	return
 
-		lst.len = argnum // Expand to right length
-		//TODO: make a list to store whether each argument was initialised as null.
-		//Reason: So we can abort the proccall if say, one of our arguments was a mob which no longer exists
-		//this will protect us from a fair few errors ~Carn
+		lst.len = argnum	// Expand to right length
+	// TODO: make a list to store whether each argument was initialised as null.
+	// Reason: So we can abort the proccall if say, one of our arguments was a mob which no longer exists
+	// this will protect us from a fair few errors ~Carn
 
 		var/i
-		for(i=1, i<argnum+1, i++) // Lists indexed from 1 forwards in byond
+		for(i=1, i<argnum+1, i++)	// Lists indexed from 1 forwards in byond
 
-			// Make a list with each index containing one variable, to be given to the proc
+		// Make a list with each index containing one variable, to be given to the proc
 			class = input("What kind of variable?","Variable Type") in list("text","num","type","reference","mob reference","icon","file","client","mob's area","CANCEL")
 			switch(class)
 				if("CANCEL")
@@ -120,18 +120,18 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 				usr << "<font color='red'>Error: callproc(): target has no such call [procname].</font>"
 				return
 			log_admin("[key_name(src)] called [target]'s [procname]() with [lst.len ? "the arguments [list2params(lst)]":"no arguments"].")
-			returnval = call(target,procname)(arglist(lst)) // Pass the lst as an argument list to the proc
+			returnval = call(target,procname)(arglist(lst))	// Pass the lst as an argument list to the proc
 		else
-			//this currently has no hascall protection. wasn't able to get it working.
+		// this currently has no hascall protection. wasn't able to get it working.
 			log_admin("[key_name(src)] called [procname]() with [lst.len ? "the arguments [list2params(lst)]":"no arguments"].")
-			returnval = call(procname)(arglist(lst)) // Pass the lst as an argument list to the proc
+			returnval = call(procname)(arglist(lst))	// Pass the lst as an argument list to the proc
 
 		usr << "<font color='blue'>[procname] returned: [returnval ? returnval : "null"]</font>"
-		feedback_add_details("admin_verb","APC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+		feedback_add_details("admin_verb","APC")	// If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/Cell()
-	set category = "Debug"
 	set name = "Air Status in Location"
+	set category = "Debug"
 	if(!mob)
 		return
 	var/turf/T = mob.loc
@@ -148,11 +148,11 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 	t+= "CO2: [env.carbon_dioxide]\n"
 
 	usr.show_message(t, 1)
-	feedback_add_details("admin_verb","ASL") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	feedback_add_details("admin_verb","ASL")	// If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_robotize(var/mob/M in mob_list)
-	set category = "Fun"
 	set name = "Make Robot"
+	set category = "Fun"
 
 	if(!ticker)
 		alert("Wait until the game starts")
@@ -166,8 +166,8 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 		alert("Invalid mob")
 
 /client/proc/cmd_admin_animalize(var/mob/M in mob_list)
-	set category = "Fun"
 	set name = "Make Simple Animal"
+	set category = "Fun"
 
 	if(!ticker)
 		alert("Wait until the game starts")
@@ -187,9 +187,9 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 
 
 /client/proc/makepAI(var/turf/T in mob_list)
-	set category = "Fun"
 	set name = "Make pAI"
 	set desc = "Specify a location to spawn a pAI device, then specify a key to play that pAI"
+	set category = "Fun"
 
 	var/list/available = list()
 	for(var/mob/C in mob_list)
@@ -211,11 +211,11 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 	for(var/datum/paiCandidate/candidate in paiController.pai_candidates)
 		if(candidate.key == choice.key)
 			paiController.pai_candidates.Remove(candidate)
-	feedback_add_details("admin_verb","MPAI") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	feedback_add_details("admin_verb","MPAI")	// If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_alienize(var/mob/M in mob_list)
-	set category = "Fun"
 	set name = "Make Alien"
+	set category = "Fun"
 
 	if(!ticker)
 		alert("Wait until the game starts")
@@ -224,15 +224,15 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 		log_admin("[key_name(src)] has alienized [M.key].")
 		spawn(10)
 			M:Alienize()
-			feedback_add_details("admin_verb","MKAL") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+			feedback_add_details("admin_verb","MKAL")	// If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 		log_admin("[key_name(usr)] made [key_name(M)] into an alien.")
 		message_admins("\blue [key_name_admin(usr)] made [key_name(M)] into an alien.", 1)
 	else
 		alert("Invalid mob")
 
 /client/proc/cmd_admin_slimeize(var/mob/M in mob_list)
-	set category = "Fun"
 	set name = "Make slime"
+	set category = "Fun"
 
 	if(!ticker)
 		alert("Wait until the game starts")
@@ -241,7 +241,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 		log_admin("[key_name(src)] has slimeized [M.key].")
 		spawn(10)
 			M:slimeize()
-			feedback_add_details("admin_verb","MKMET") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+			feedback_add_details("admin_verb","MKMET")	// If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 		log_admin("[key_name(usr)] made [key_name(M)] into a slime.")
 		message_admins("\blue [key_name_admin(usr)] made [key_name(M)] into a slime.", 1)
 	else
@@ -264,8 +264,8 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 		alert("Invalid mob")
 
 /client/proc/cmd_admin_changelinginize(var/mob/M in world)
-	set category = "Fun"
 	set name = "Make Changeling"
+	set category = "Fun"
 
 	if(!ticker)
 		alert("Wait until the game starts")
@@ -282,8 +282,8 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 */
 /*
 /client/proc/cmd_admin_abominize(var/mob/M in world)
-	set category = null
 	set name = "Make Abomination"
+	set category = null
 
 	usr << "Ruby Mode disabled. Command aborted."
 	return
@@ -299,9 +299,10 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 */
 /*
 /client/proc/make_cultist(var/mob/M in world) // -- TLE, modified by Urist
-	set category = "Fun"
 	set name = "Make Cultist"
 	set desc = "Makes target a cultist"
+	set category = "Fun"
+
 	if(!cultwords["travel"])
 		runerandom()
 	if(M)
@@ -338,12 +339,12 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 			src << "Made [M] a cultist."
 */
 
-//TODO: merge the vievars version into this or something maybe mayhaps
+// TODO: merge the vievars version into this or something maybe mayhaps
 /client/proc/cmd_debug_del_all()
-	set category = "Debug"
 	set name = "Del-All"
+	set category = "Debug"
 
-	// to prevent REALLY stupid deletions
+// to prevent REALLY stupid deletions
 	var/blocked = list(/obj, /mob, /mob/living, /mob/living/carbon, /mob/living/carbon/human, /mob/dead, /mob/dead/observer, /mob/living/silicon, /mob/living/silicon/robot, /mob/living/silicon/ai)
 	var/hsbitem = input(usr, "Choose an object to delete.", "Delete:") as null|anything in typesof(/obj) + typesof(/mob) - blocked
 	if(hsbitem)
@@ -352,28 +353,29 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 				del(O)
 		log_admin("[key_name(src)] has deleted all instances of [hsbitem].")
 		message_admins("[key_name_admin(src)] has deleted all instances of [hsbitem].", 0)
-	feedback_add_details("admin_verb","DELA") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	feedback_add_details("admin_verb","DELA")	// If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_debug_make_powernets()
-	set category = "Debug"
 	set name = "Make Powernets"
+	set category = "Debug"
+
 	makepowernets()
 	log_admin("[key_name(src)] has remade the powernet. makepowernets() called.")
 	message_admins("[key_name_admin(src)] has remade the powernets. makepowernets() called.", 0)
-	feedback_add_details("admin_verb","MPWN") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	feedback_add_details("admin_verb","MPWN")	// If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_debug_tog_aliens()
-	set category = "Server"
 	set name = "Toggle Aliens"
+	set category = "Server"
 
 	aliens_allowed = !aliens_allowed
 	log_admin("[key_name(src)] has turned aliens [aliens_allowed ? "on" : "off"].")
 	message_admins("[key_name_admin(src)] has turned aliens [aliens_allowed ? "on" : "off"].", 0)
-	feedback_add_details("admin_verb","TAL") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	feedback_add_details("admin_verb","TAL")	// If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_grantfullaccess(var/mob/M in mob_list)
-	set category = "Admin"
 	set name = "Grant Full Access"
+	set category = "Admin"
 
 	if (!ticker)
 		alert("Wait until the game starts")
@@ -398,14 +400,14 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 			H.update_inv_wear_id()
 	else
 		alert("Invalid mob")
-	feedback_add_details("admin_verb","GFA") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	feedback_add_details("admin_verb","GFA")	// If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	log_admin("[key_name(src)] has granted [M.key] full access.")
 	message_admins("\blue [key_name_admin(usr)] has granted [M.key] full access.", 1)
 
 /client/proc/cmd_assume_direct_control(var/mob/M in mob_list)
-	set category = "Admin"
 	set name = "Assume direct control"
 	set desc = "Direct intervention"
+	set category = "Admin"
 
 	if(!check_rights(R_DEBUG|R_ADMIN))	return
 	if(M.ckey)
@@ -423,22 +425,19 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 	feedback_add_details("admin_verb","ADC") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 
-
-
-
 /client/proc/cmd_switch_radio()
-	set category = "Debug"
 	set name = "Switch Radio Mode"
 	set desc = "Toggle between normal radios and experimental radios. Have a coder present if you do this."
+	set category = "Debug"
 
-	GLOBAL_RADIO_TYPE = !GLOBAL_RADIO_TYPE // toggle
+	GLOBAL_RADIO_TYPE = !GLOBAL_RADIO_TYPE	// toggle
 	log_admin("[key_name(src)] has turned the experimental radio system [GLOBAL_RADIO_TYPE ? "on" : "off"].")
 	message_admins("[key_name_admin(src)] has turned the experimental radio system [GLOBAL_RADIO_TYPE ? "on" : "off"].", 0)
-	feedback_add_details("admin_verb","SRM") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	feedback_add_details("admin_verb","SRM")	// If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_admin_areatest()
-	set category = "Mapping"
 	set name = "Test areas"
+	set category = "Debug"
 
 	var/list/areas_all = list()
 	var/list/areas_with_APC = list()
@@ -566,7 +565,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 		del(I)
 	switch(dresscode)
 		if ("strip")
-			//do nothing
+			// do nothing
 		if ("standard space gear")
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(M), slot_shoes)
 
@@ -578,7 +577,8 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 			J.toggle()
 			M.equip_to_slot_or_del(new /obj/item/clothing/mask/breath(M), slot_wear_mask)
 			J.Topic(null, list("stat" = 1))
-		if ("tournament standard red","tournament standard green") //we think stunning weapon is too overpowered to use it on tournaments. --rastaf0
+
+		if ("tournament standard red","tournament standard green")	// We think stunning weapon is too overpowered to use it on tournaments. --rastaf0
 			if (dresscode=="tournament standard red")
 				M.equip_to_slot_or_del(new /obj/item/clothing/under/color/red(M), slot_w_uniform)
 			else
@@ -592,8 +592,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 			M.equip_to_slot_or_del(new /obj/item/weapon/kitchenknife(M), slot_l_hand)
 			M.equip_to_slot_or_del(new /obj/item/weapon/grenade/smokebomb(M), slot_r_store)
 
-
-		if ("tournament gangster") //gangster are supposed to fight each other. --rastaf0
+		if ("tournament gangster")	// gangster are supposed to fight each other. --rastaf0
 			M.equip_to_slot_or_del(new /obj/item/clothing/under/det(M), slot_w_uniform)
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(M), slot_shoes)
 
@@ -606,7 +605,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 			M.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile(M), slot_r_hand)
 			M.equip_to_slot_or_del(new /obj/item/ammo_magazine/a357(M), slot_l_store)
 
-		if ("tournament chef") //Steven Seagal FTW
+		if ("tournament chef")	// Steven Seagal FTW
 			M.equip_to_slot_or_del(new /obj/item/clothing/under/rank/chef(M), slot_w_uniform)
 			M.equip_to_slot_or_del(new /obj/item/clothing/suit/chef(M), slot_wear_suit)
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(M), slot_shoes)
@@ -699,8 +698,8 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 			M.equip_to_slot_or_del(fire_axe, slot_r_hand)
 
 			for(var/obj/item/carried_item in M.contents)
-				if(!istype(carried_item, /obj/item/weapon/implant))//If it's not an implant.
-					carried_item.add_blood(M)//Oh yes, there will be blood...
+				if(!istype(carried_item, /obj/item/weapon/implant))	// If it's not an implant.
+					carried_item.add_blood(M)	// Oh yes, there will be blood...
 
 		if("assassin")
 			M.equip_to_slot_or_del(new /obj/item/clothing/under/suit_jacket(M), slot_w_uniform)
@@ -737,7 +736,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 			W.registered_name = M.real_name
 			M.equip_to_slot_or_del(W, slot_wear_id)
 
-		if("death commando")//Was looking to add this for a while.
+		if("death commando")	// Was looking to add this for a while.
 			M.equip_death_commando()
 
 		if("syndicate commando")

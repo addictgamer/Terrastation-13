@@ -1,7 +1,8 @@
+
 /client/proc/cinematic(var/cinematic as anything in list("explosion",null))
 	set name = "cinematic"
-	set category = "Fun"
 	set desc = "Shows a cinematic."	// Intended for testing but I thought it might be nice for events on the rare occasion Feel free to comment it out if it's not wanted.
+	set category = "Fun"
 	set hidden = 1
 	if(alert("Are you sure you want to run [cinematic]?","Confirmation","Yes","No")=="No") return
 	if(!ticker)	return
