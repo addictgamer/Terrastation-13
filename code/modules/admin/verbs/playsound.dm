@@ -32,8 +32,8 @@
 	set name = "Clownmusic"
 
 	//for(var/mob/m in world)
-	//	if (m.client) //If has client.
-	//		m.music <<
+		//if (m.client) //If has client.
+			//m.music <<
 	world << sound('sound/music/clown_station_redux.ogg')
 
 

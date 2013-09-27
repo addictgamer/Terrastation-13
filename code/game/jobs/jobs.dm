@@ -78,12 +78,12 @@ var/list/medical_positions = list(
 var/list/science_positions = list(
 	"Research Director",
 	"Scientist",
-	"Geneticist",	//Part of both medical and science
+	"Geneticist",	// Part of both medical and science
 	"Roboticist",
 	"Xenobiologist"
 )
 
-//BS12 EDIT
+// BS12 EDIT
 var/list/civilian_positions = list(
 	"Head of Personnel",
 	"Bartender",
@@ -96,6 +96,8 @@ var/list/civilian_positions = list(
 	"Shaft Miner",
 	"Lawyer",
 	"Chaplain",
+	"Clown",
+	"Mime",
 	"Assistant"
 )
 
