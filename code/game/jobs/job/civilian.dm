@@ -195,8 +195,9 @@
 
 
 
-//Griff //BS12 EDIT
-/*
+// Griff // BS12 EDIT
+// Fuck you Griff ~Tauka Usanake
+
 /datum/job/clown
 	title = "Clown"
 	flag = CLOWN
@@ -226,8 +227,6 @@
 		H.equip_to_slot_or_del(new /obj/item/toy/waterflower(H), slot_in_backpack)
 		H.mutations.Add(CLUMSY)
 		return 1
-
-
 
 /datum/job/mime
 	title = "Mime"
@@ -267,7 +266,6 @@
 		H.mind.special_verbs += /client/proc/mimewall
 		H.miming = 1
 		return 1
-*/
 
 
 /datum/job/janitor
@@ -326,7 +324,7 @@
 
 
 
-//var/global/lawyer = 0//Checks for another lawyer //This changed clothes on 2nd lawyer, both IA get the same dreds.
+//var/global/lawyer = 0	// Checks for another lawyer // This changed clothes on 2nd lawyer, both IA get the same dreds.
 /datum/job/lawyer
 	title = "Internal Affairs Agent"
 	flag = LAWYER
