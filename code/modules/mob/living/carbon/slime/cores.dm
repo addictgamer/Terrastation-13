@@ -115,7 +115,7 @@
 	name = "sepia slime extract"
 	icon_state = "sepia slime extract"
 
-
+// TODO: Need uses in Chemistry-Recipes.dm
 /obj/item/slime_extract/rainbow
 	name = "rainbow slime extract"
 	icon_state = "rainbow slime extract"
@@ -123,6 +123,10 @@
 /obj/item/slime_extract/darkblue
 	name = "dark blue slime extract"
 	icon_state = "dark blue slime extract"
+
+/obj/item/slime_extract/cueball
+	name = "cueball slime extract"
+	icon_state = "cueball slime extract"
 
 
 // Pet Slime Creation

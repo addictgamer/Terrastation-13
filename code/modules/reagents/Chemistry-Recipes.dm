@@ -1650,6 +1650,29 @@ datum
 			on_reaction(var/datum/reagents/holder)
 				// code goes here
 */
+/*
+// cueball
+		slimegenetics
+			name = "Slime Genetics"
+			id = "m_genetics"
+			result = null
+			required_reagents = list("plasma" = 5)
+			result_amount = 1
+			required_container = /obj/item/slime_extract/blue
+			required_other = 1
+			on_reaction(var/datum/reagents/holder)
+		// TODO: give random genetics to user. This is a rip from wizard spell genetics.dm so it won't work as is
+				for(var/mob/living/target)
+					for(var/x in mutations)
+						target.mutations.Add(x)
+					target.disabilities |= disabilities
+					target.update_mutations()	//update target's mutation overlays
+					spawn(duration)
+						for(var/x in mutations)
+							target.mutations.Remove(x)
+						target.disabilities &= ~disabilities
+						target.update_mutations()
+*/
 
 // FOOD MIXTURES
 

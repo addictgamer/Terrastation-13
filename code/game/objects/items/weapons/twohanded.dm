@@ -30,13 +30,13 @@
 	update_icon()
 
 /obj/item/weapon/twohanded/proc/wield()
+	name = "[initial(name)] (Wielded)"
 	wielded = 1
 	force = force_wielded
-	name = "[initial(name)] (Wielded)"
 	update_icon()
 
 /obj/item/weapon/twohanded/mob_can_equip(M as mob, slot)
-	//Cannot equip wielded items.
+// Cannot equip wielded items.
 	if(wielded)
 		M << "<span class='warning'>Unwield the [initial(name)] first!</span>"
 		return 0
@@ -44,7 +44,7 @@
 	return ..()
 
 /obj/item/weapon/twohanded/dropped(mob/user as mob)
-	//handles unwielding a twohanded weapon when dropped as well as clearing up the offhand
+// handles unwielding a twohanded weapon when dropped as well as clearing up the offhand
 	if(user)
 		var/obj/item/weapon/twohanded/O = user.get_inactive_hand()
 		if(istype(O))
@@ -63,7 +63,7 @@
 		return
 
 	..()
-	if(wielded) //Trying to unwield it
+	if(wielded)	// Trying to unwield it
 		unwield()
 		user << "<span class='notice'>You are now carrying the [name] with one hand.</span>"
 		if (src.unwieldsound)
@@ -74,7 +74,7 @@
 			O.unwield()
 		return
 
-	else //Trying to wield it
+	else	// Trying to wield it
 		if(user.get_inactive_hand())
 			user << "<span class='warning'>You need your other hand to be empty</span>"
 			return
@@ -89,11 +89,12 @@
 		user.put_in_inactive_hand(O)
 		return
 
-///////////OFFHAND///////////////
+// OFFHAND
+
 /obj/item/weapon/twohanded/offhand
-	w_class = 5.0
-	icon_state = "offhand"
 	name = "offhand"
+	icon_state = "offhand"
+	w_class = 5.0
 
 	unwield()
 		del(src)
@@ -101,13 +102,13 @@
 	wield()
 		del(src)
 
-/*
- * Fireaxe
- */
+
+// Fireaxe
+
 /obj/item/weapon/twohanded/fireaxe  // DEM AXES MAN, marker -Agouri
-	icon_state = "fireaxe0"
 	name = "fire axe"
 	desc = "Truly, the weapon of a madman. Who would think to fight fire with an axe?"
+	icon_state = "fireaxe0"
 	force = 5
 	w_class = 4.0
 	slot_flags = SLOT_BACK
@@ -115,14 +116,14 @@
 	force_wielded = 40
 	attack_verb = list("attacked", "chopped", "cleaved", "torn", "cut")
 
-/obj/item/weapon/twohanded/fireaxe/update_icon()  //Currently only here to fuck with the on-mob icons.
+/obj/item/weapon/twohanded/fireaxe/update_icon()	// Currently only here to fuck with the on-mob icons.
 	icon_state = "fireaxe[wielded]"
 	return
 
 /obj/item/weapon/twohanded/fireaxe/afterattack(atom/A as mob|obj|turf|area, mob/user as mob)
 	..()
 	if(A && wielded && (istype(A,/obj/structure/window) || istype(A,/obj/structure/grille))) //destroys windows and grilles in one hit
-		if(istype(A,/obj/structure/window)) //should just make a window.Break() proc but couldn't bother with it
+		if(istype(A,/obj/structure/window))	// should just make a window.Break() proc but couldn't bother with it
 			var/obj/structure/window/W = A
 
 			new /obj/item/weapon/shard( W.loc )
@@ -134,13 +135,13 @@
 		del(A)
 
 
-/*
- * Double-Bladed Energy Swords - Cheridan
- */
+
+// Double-Bladed Energy Swords - Cheridan
+
 /obj/item/weapon/twohanded/dualsaber
-	icon_state = "dualsaber0"
 	name = "double-bladed energy sword"
 	desc = "Handle with care."
+	icon_state = "dualsaber0"
 	force = 3
 	throwforce = 5.0
 	throw_speed = 1

@@ -478,3 +478,24 @@
 		slime_mutation[2] = /mob/living/carbon/slime/darkblue
 		slime_mutation[3] = /mob/living/carbon/slime/darkblue
 		slime_mutation[4] = /mob/living/carbon/slime/darkblue
+
+/mob/living/carbon/slime/cueball
+	icon_state = "cueball baby slime"
+	colour = "cueball"
+	primarytype = /mob/living/carbon/slime/cueball
+	adulttype = /mob/living/carbon/slime/adult/cueball
+	coretype = /obj/item/slime_extract/cueball
+
+/mob/living/carbon/slime/adult/cueball
+	icon_state = "cueball adult slime"
+	colour = "cueball"
+	primarytype = /mob/living/carbon/slime/cueball
+	adulttype = /mob/living/carbon/slime/adult/cueball
+	coretype = /obj/item/slime_extract/cueball
+
+	New()
+		..()
+		slime_mutation[1] = /mob/living/carbon/slime/cueball
+		slime_mutation[2] = /mob/living/carbon/slime/cueball
+		slime_mutation[3] = /mob/living/carbon/slime/cueball
+		slime_mutation[4] = /mob/living/carbon/slime/cueball
