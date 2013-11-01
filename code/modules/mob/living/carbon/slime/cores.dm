@@ -4,7 +4,7 @@
 	desc = "Goo extracted from a slime. Legends claim these to have \"magical powers\"."
 	icon = 'icons/mob/slimes.dmi'
 	icon_state = "grey slime extract"
-	flags = TABLEPASS
+	flags = TABLEPASS | FPRINT
 	force = 1.0
 	w_class = 1.0
 	throwforce = 1.0
@@ -12,12 +12,24 @@
 	throw_range = 6
 	origin_tech = "biotech=4"
 	var/Uses = 1 // uses before it goes inert
+	var/enhanced = 0 //has it been enhanced before?
+
+	attackby(obj/item/O as obj, mob/user as mob)
+		if(istype(O, /obj/item/weapon/slimesteroid2))
+			if(enhanced == 1)
+				user << "\red This extract has already been enhanced!"
+				return ..()
+			if(Uses == 0)
+				user << "\red You can't enhance a used extract!"
+				return ..()
+			user <<"You apply the enhancer. It now has triple the amount of uses."
+			Uses = 3
+			enhanced = 1
+			del (O)
 
 /obj/item/slime_extract/New()
 		..()
-		var/datum/reagents/R = new/datum/reagents(100)
-		reagents = R
-		R.my_atom = src
+		create_reagents(100)
 
 /obj/item/slime_extract/grey
 	name = "grey slime extract"
@@ -87,13 +99,26 @@
 	name = "adamantine slime extract"
 	icon_state = "adamantine slime extract"
 
-/obj/item/slime_extract/rainbow
-	name = "rainbow slime extract"
-	icon_state = "rainbow slime extract"
-
 /obj/item/slime_extract/bluespace
 	name = "bluespace slime extract"
 	icon_state = "bluespace slime extract"
+
+/obj/item/slime_extract/pyrite
+	name = "pyrite slime extract"
+	icon_state = "pyrite slime extract"
+
+/obj/item/slime_extract/cerulean
+	name = "cerulean slime extract"
+	icon_state = "cerulean slime extract"
+
+/obj/item/slime_extract/sepia
+	name = "sepia slime extract"
+	icon_state = "sepia slime extract"
+
+
+/obj/item/slime_extract/rainbow
+	name = "rainbow slime extract"
+	icon_state = "rainbow slime extract"
 
 /obj/item/slime_extract/darkblue
 	name = "dark blue slime extract"
