@@ -115,11 +115,7 @@
 	name = "sepia slime extract"
 	icon_state = "sepia slime extract"
 
-<<<<<<< HEAD
-
-=======
 // TODO: Need uses in Chemistry-Recipes.dm
->>>>>>> local-branch
 /obj/item/slime_extract/rainbow
 	name = "rainbow slime extract"
 	icon_state = "rainbow slime extract"

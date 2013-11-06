@@ -1,6 +1,5 @@
 
-
-////////////////Tier 2
+// Tier 2
 
 /mob/living/carbon/slime/purple
 	colour = "purple"
@@ -88,7 +87,7 @@
 		slime_mutation[4] = /mob/living/carbon/slime/silver
 
 
-//Tier 3
+// Tier 3
 
 /mob/living/carbon/slime/blue
 	colour = "blue"
@@ -176,9 +175,7 @@
 		slime_mutation[3] = /mob/living/carbon/slime/lightblue
 		slime_mutation[4] = /mob/living/carbon/slime/pyrite
 
-
-/////////////Tier 4
-
+// Tier 4
 
 /mob/living/carbon/slime/pink
 	colour = "pink"
@@ -351,7 +348,7 @@
 		slime_mutation[4] = /mob/living/carbon/slime/adamantine
 
 
-// Even in death I still code Tier
+// Tier 6
 
 /mob/living/carbon/slime/bluespace
 	icon_state = "bluespace baby slime"
@@ -437,6 +434,8 @@
 		slime_mutation[3] = /mob/living/carbon/slime/sepia
 		slime_mutation[4] = /mob/living/carbon/slime/sepia
 
+// No tiers
+
 /mob/living/carbon/slime/rainbow
 	icon_state = "rainbow baby slime"
 	colour = "rainbow"
@@ -478,8 +477,6 @@
 		slime_mutation[2] = /mob/living/carbon/slime/darkblue
 		slime_mutation[3] = /mob/living/carbon/slime/darkblue
 		slime_mutation[4] = /mob/living/carbon/slime/darkblue
-<<<<<<< HEAD
-=======
 
 /mob/living/carbon/slime/cueball
 	icon_state = "cueball baby slime"
@@ -501,4 +498,3 @@
 		slime_mutation[2] = /mob/living/carbon/slime/cueball
 		slime_mutation[3] = /mob/living/carbon/slime/cueball
 		slime_mutation[4] = /mob/living/carbon/slime/cueball
->>>>>>> local-branch

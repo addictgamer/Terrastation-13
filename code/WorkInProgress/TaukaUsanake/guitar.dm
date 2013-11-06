@@ -407,4 +407,4 @@
 
 	log_admin("[key_name(src)] started playing a HARD RIFF")
 	message_admins("[key_name_admin(src)] started playing a HARD RIFF", 1)
-	playsound(get_turf_loc(src), 'sound/music/dragonforce.oog', 50, 0, 0)
+	//playsound(get_turf_loc(src), 'sound/music/dragonforce.oog', 50, 0, 0)
