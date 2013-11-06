@@ -115,11 +115,15 @@
 	name = "sepia slime extract"
 	icon_state = "sepia slime extract"
 
-<<<<<<< HEAD
+// <<<<<<< HEAD
+// why is this here / what is it supposed to do - LZ
 
-=======
+//=======
+//Why were there these = signs in the middle of the code - LZ
 // TODO: Need uses in Chemistry-Recipes.dm
->>>>>>> local-branch
+//>>>>>>> local-branch
+//again, why and what - LZ
+
 /obj/item/slime_extract/rainbow
 	name = "rainbow slime extract"
 	icon_state = "rainbow slime extract"

@@ -478,9 +478,10 @@
 		slime_mutation[2] = /mob/living/carbon/slime/darkblue
 		slime_mutation[3] = /mob/living/carbon/slime/darkblue
 		slime_mutation[4] = /mob/living/carbon/slime/darkblue
-<<<<<<< HEAD
+/*<<<<<<< HEAD
 =======
-
+HNNNNNG AGAIN - LZ
+*/
 /mob/living/carbon/slime/cueball
 	icon_state = "cueball baby slime"
 	colour = "cueball"
@@ -501,4 +502,5 @@
 		slime_mutation[2] = /mob/living/carbon/slime/cueball
 		slime_mutation[3] = /mob/living/carbon/slime/cueball
 		slime_mutation[4] = /mob/living/carbon/slime/cueball
->>>>>>> local-branch
+//>>>>>>> local-branch
+//starey face - LZ
