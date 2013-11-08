@@ -1357,22 +1357,22 @@
 			for(var/datum/disease/D in viruses)
 				D.cure()
 			for (var/ID in virus2)
-				var/datum/disease2/disease/V = virus2[ID]
+				var/datum/disease/disease/V = virus2[ID]
 				V.cure(src)
 
 		for(var/obj/effect/decal/cleanable/blood/B in view(1,src))
 			if(B.virus2.len && get_infection_chance(src))
 				for (var/ID in B.virus2)
-					var/datum/disease2/disease/V = virus2[ID]
+					var/datum/disease/disease/V = virus2[ID]
 					infect_virus2(src,V)
 		for(var/obj/effect/decal/cleanable/mucus/M in view(1,src))
 			if(M.virus2.len && get_infection_chance(src))
 				for (var/ID in M.virus2)
-					var/datum/disease2/disease/V = virus2[ID]
+					var/datum/disease/disease/V = virus2[ID]
 					infect_virus2(src,V)
 
 		for (var/ID in virus2)
-			var/datum/disease2/disease/V = virus2[ID]
+			var/datum/disease/disease/V = virus2[ID]
 			if(isnull(V)) // Trying to figure out a runtime error that keeps repeating
 				CRASH("virus2 nulled before calling activate()")
 			else
@@ -1475,4 +1475,5 @@
 
 
 #undef HUMAN_MAX_OXYLOSS
+#undef HUMAN_CRIT_MAX_OXYLOSS
 #undef HUMAN_CRIT_MAX_OXYLOSS

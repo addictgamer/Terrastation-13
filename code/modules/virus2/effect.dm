@@ -1,22 +1,20 @@
-/datum/disease2/effectholder
-	var/name = "Holder"
-	var/datum/disease2/effect/effect
+
+/datum/disease/effectholder
+	var/datum/disease/effect/effect
 	var/chance = 0 //Chance in percentage each tick
-	var/cure = "" //Type of cure it requires
 	var/happensonce = 0
 	var/multiplier = 1 //The chance the effects are WORSE
-	var/stage = 0
 
-/datum/disease2/effectholder/proc/runeffect(var/mob/living/carbon/human/mob,var/stage)
+/datum/disease/effectholder/proc/runeffect(var/mob/living/carbon/human/mob,var/stage)
 	if(happensonce > -1 && effect.stage <= stage && prob(chance))
 		effect.activate(mob)
 		if(happensonce == 1)
 			happensonce = -1
 
-/datum/disease2/effectholder/proc/getrandomeffect(var/badness = 1)
-	var/list/datum/disease2/effect/list = list()
-	for(var/e in (typesof(/datum/disease2/effect) - /datum/disease2/effect))
-		var/datum/disease2/effect/f = new e
+/datum/disease/effectholder/proc/getrandomeffect(var/badness = 1)
+	var/list/datum/disease/effect/list = list()
+	for(var/e in (typesof(/datum/disease/effect) - /datum/disease/effect))
+		var/datum/disease/effect/f = new e
 		if (f.badness > badness)	//we don't want such strong effects
 			continue
 		if(f.stage == src.stage)
@@ -24,31 +22,27 @@
 	effect = pick(list)
 	chance = rand(1,6)
 
-/datum/disease2/effectholder/proc/minormutate()
+/datum/disease/effectholder/proc/minormutate()
 	switch(pick(1,2,3,4,5))
 		if(1)
 			chance = rand(0,effect.chance_maxm)
 		if(2)
 			multiplier = rand(1,effect.maxm)
 
-/datum/disease2/effectholder/proc/majormutate()
+/datum/disease/effectholder/proc/majormutate()
 	getrandomeffect(2)
 
-////////////////////////////////////////////////////////////////
-////////////////////////EFFECTS/////////////////////////////////
-////////////////////////////////////////////////////////////////
-
-/datum/disease2/effect
+// EFFECTS
+/datum/disease/effect
 	var/chance_maxm = 50
-	var/name = "Blanking effect"
-	var/stage = 4
 	var/maxm = 1
 	var/badness = 1
 	proc/activate(var/mob/living/carbon/mob,var/multiplier)
 	proc/deactivate(var/mob/living/carbon/mob)
 
-////////////////////////SPECIAL/////////////////////////////////
-/*/datum/disease2/effect/alien
+// SPECIAL
+/*
+/datum/disease/effect/alien
 	name = "Unidentified Foreign Body"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
@@ -60,39 +54,39 @@
 				mob.client.mob = new/mob/living/carbon/alien/larva(mob.loc)
 			else
 				new/mob/living/carbon/alien/larva(mob.loc)
-			var/datum/disease2/disease/D = mob:virus2
+			var/datum/disease/disease/D = mob:virus2
 			mob:gib()
-			del D*/
+			del D
+*/
 
-/datum/disease2/effect/invisible
+/datum/disease/effect/invisible
 	name = "Waiting Syndrome"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		return
 
-////////////////////////STAGE 4/////////////////////////////////
-
-/datum/disease2/effect/gibbingtons
+// STAGE 4
+/datum/disease/effect/gibbingtons
 	name = "Gibbingtons Syndrome"
 	stage = 4
 	badness = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.gib()
 
-/datum/disease2/effect/radian
+/datum/disease/effect/radian
 	name = "Radian's Syndrome"
 	stage = 4
 	maxm = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.radiation += (2*multiplier)
 
-/datum/disease2/effect/deaf
+/datum/disease/effect/deaf
 	name = "Dead Ear Syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.ear_deaf += 20
 
-/datum/disease2/effect/monkey
+/datum/disease/effect/monkey
 	name = "Monkism Syndrome"
 	stage = 4
 	badness = 2
@@ -101,26 +95,26 @@
 			var/mob/living/carbon/human/h = mob
 			h.monkeyize()
 
-/datum/disease2/effect/suicide
+/datum/disease/effect/suicide
 	name = "Suicidal Syndrome"
 	stage = 4
 	badness = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.suiciding = 1
-		//instead of killing them instantly, just put them at -175 health and let 'em gasp for a while
+	// instead of killing them instantly, just put them at -175 health and let 'em gasp for a while
 		viewers(mob) << "\red <b>[mob.name] is holding \his breath. It looks like \he's trying to commit suicide.</b>"
 		mob.adjustOxyLoss(175 - mob.getToxLoss() - mob.getFireLoss() - mob.getBruteLoss() - mob.getOxyLoss())
 		mob.updatehealth()
-		spawn(200) //in case they get revived by cryo chamber or something stupid like that, let them suicide again in 20 seconds
+		spawn(200)	// in case they get revived by cryo chamber or something stupid like that, let them suicide again in 20 seconds
 			mob.suiciding = 0
 
-/datum/disease2/effect/killertoxins
+/datum/disease/effect/killertoxins
 	name = "Toxification Syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.adjustToxLoss(15*multiplier)
 
-/datum/disease2/effect/dna
+/datum/disease/effect/dna
 	name = "Reverse Pattern Syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
@@ -128,7 +122,7 @@
 		scramble(0,mob,10)
 		mob.apply_damage(10, CLONE)
 
-/datum/disease2/effect/organs
+/datum/disease/effect/organs
 	name = "Shutdown Syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
@@ -146,7 +140,7 @@
 			for (var/datum/organ/external/E in H.organs)
 				E.status &= ~ORGAN_DEAD
 
-/datum/disease2/effect/immortal
+/datum/disease/effect/immortal
 	name = "Longevity Syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
@@ -166,9 +160,8 @@
 		var/backlash_amt = 5*multiplier
 		mob.apply_damages(backlash_amt,backlash_amt,backlash_amt,backlash_amt)
 
-////////////////////////STAGE 3/////////////////////////////////
-
-/datum/disease2/effect/bones
+// STAGE 3
+/datum/disease/effect/bones
 	name = "Fragile Bones Syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
@@ -183,21 +176,21 @@
 			for (var/datum/organ/external/E in H.organs)
 				E.min_broken_damage = initial(E.min_broken_damage)
 
-/datum/disease2/effect/toxins
+/datum/disease/effect/toxins
 	name = "Hyperacidity"
 	stage = 3
 	maxm = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.adjustToxLoss((2*multiplier))
 
-/datum/disease2/effect/shakey
+/datum/disease/effect/shakey
 	name = "World Shaking Syndrome"
 	stage = 3
 	maxm = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		shake_camera(mob,5*multiplier)
 
-/datum/disease2/effect/telepathic
+/datum/disease/effect/telepathic
 	name = "Telepathy Syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
@@ -206,7 +199,7 @@
 		mob.dna.struc_enzymes = newdna
 		domutcheck(mob, null)
 
-/datum/disease2/effect/mind
+/datum/disease/effect/mind
 	name = "Lazy Mind Syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
@@ -217,93 +210,93 @@
 		else
 			mob.setBrainLoss(50)
 
-/datum/disease2/effect/hallucinations
+/datum/disease/effect/hallucinations
 	name = "Hallucinational Syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.hallucination += 25
 
-/datum/disease2/effect/deaf
+/datum/disease/effect/deaf
 	name = "Hard of Hearing Syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.ear_deaf = 5
 
-/datum/disease2/effect/giggle
+/datum/disease/effect/giggle
 	name = "Uncontrolled Laughter Effect"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*giggle")
 
-/datum/disease2/effect/confusion
+/datum/disease/effect/confusion
 	name = "Topographical Cretinism"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob << "<span class='notice'>You have trouble telling right and left apart all of a sudden.</span>"
 		mob.confused += 10
 
-/datum/disease2/effect/mutation
+/datum/disease/effect/mutation
 	name = "DNA Degradation"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.apply_damage(2, CLONE)
 
 
-/datum/disease2/effect/groan
+/datum/disease/effect/groan
 	name = "Groaning Syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*groan")
-////////////////////////STAGE 2/////////////////////////////////
 
-/datum/disease2/effect/scream
+// STAGE 2
+/datum/disease/effect/scream
 	name = "Loudness Syndrome"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*scream")
 
-/datum/disease2/effect/drowsness
+/datum/disease/effect/drowsness
 	name = "Automated Sleeping Syndrome"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.drowsyness += 10
 
-/datum/disease2/effect/sleepy
+/datum/disease/effect/sleepy
 	name = "Resting Syndrome"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*collapse")
 
-/datum/disease2/effect/blind
+/datum/disease/effect/blind
 	name = "Blackout Syndrome"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.eye_blind = max(mob.eye_blind, 4)
 
-/datum/disease2/effect/cough
+/datum/disease/effect/cough
 	name = "Anima Syndrome"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*cough")
 		for(var/mob/living/carbon/M in view(1,mob))
 			if(airborne_can_reach(get_turf(mob), get_turf(M)))
-				for (var/datum/disease2/disease/V in mob.virus2)
+				for (var/datum/disease/disease/V in mob.virus2)
 					if(V.spreadtype == "Airborne")
 						infect_virus2(M,V)
 
-/datum/disease2/effect/hungry
+/datum/disease/effect/hungry
 	name = "Appetiser Effect"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.nutrition = max(0, mob.nutrition - 200)
 
-/datum/disease2/effect/fridge
+/datum/disease/effect/fridge
 	name = "Refridgerator Syndrome"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*shiver")
 
-/datum/disease2/effect/hair
+/datum/disease/effect/hair
 	name = "Hair Loss"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
@@ -315,7 +308,7 @@
 					H.h_style = "Balding Hair"
 					H.update_hair()
 
-/datum/disease2/effect/stimulant
+/datum/disease/effect/stimulant
 	name = "Adrenaline Extra"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
@@ -325,9 +318,8 @@
 		if (prob(30))
 			mob.jitteriness += 10
 
-////////////////////////STAGE 1/////////////////////////////////
-
-/datum/disease2/effect/sneeze
+// STAGE 1
+/datum/disease/effect/sneeze
 	name = "Coldingtons Effect"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
@@ -336,26 +328,27 @@
 			var/obj/effect/decal/cleanable/mucus/M = new(get_turf(mob))
 			M.virus2 = virus_copylist(mob.virus2)
 
-/datum/disease2/effect/gunck
+/datum/disease/effect/gunck
 	name = "Flemmingtons"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob << "\red Mucous runs down the back of your throat."
 
-/datum/disease2/effect/drool
+/datum/disease/effect/drool
 	name = "Saliva Effect"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*drool")
 
-/datum/disease2/effect/twitch
+/datum/disease/effect/twitch
 	name = "Twitcher"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*twitch")
 
-/datum/disease2/effect/headache
+/datum/disease/effect/headache
 	name = "Headache"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
+		mob << "<span class = 'notice'> Your head hurts a bit</span>"
 		mob << "<span class = 'notice'> Your head hurts a bit</span>"

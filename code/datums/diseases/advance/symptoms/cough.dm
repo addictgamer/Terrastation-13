@@ -1,6 +1,4 @@
 /*
-//////////////////////////////////////
-
 Coughing
 
 	Noticable.
@@ -11,12 +9,9 @@ Coughing
 
 BONUS
 	Will force the affected mob to drop small items!
-
-//////////////////////////////////////
 */
 
 /datum/symptom/cough
-
 	name = "Cough"
 	stealth = -1
 	resistance = 3

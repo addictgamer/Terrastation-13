@@ -112,7 +112,7 @@
 		sleep(50)
 		world.Reboot()
 
-	var/datum/disease2/disease/lethal = new
+	var/datum/disease/disease/lethal = new
 	lethal.makerandom(1)
 	lethal.infectionchance = 5
 
@@ -131,7 +131,7 @@
 		infectees += H
 
 	var/mob/living/carbon/human/patient_zero = pick(infectees)
-	var/datum/disease2/disease/V = patient_zero.virus2["[lethal.uniqueID]"]
+	var/datum/disease/disease/V = patient_zero.virus2["[lethal.uniqueID]"]
 	V.stage = 3
 
 	cruiser_arrival = world.time + (10 * 90 * 60)

@@ -44,7 +44,7 @@ proc/airborne_can_reach(turf/source, turf/target)
 	return rval
 
 //Attemptes to infect mob M with virus. Set forced to 1 to ignore protective clothnig
-/proc/infect_virus2(var/mob/living/carbon/M,var/datum/disease2/disease/disease,var/forced = 0)
+/proc/infect_virus2(var/mob/living/carbon/M,var/datum/disease/disease/disease,var/forced = 0)
 	if(!istype(disease))
 		return
 	if(!istype(M))
@@ -60,23 +60,24 @@ proc/airborne_can_reach(turf/source, turf/target)
 		if(!forced && !get_infection_chance(M))
 			return
 
-		var/datum/disease2/disease/D = disease.getcopy()
+		var/datum/disease/disease/D = disease.getcopy()
 		D.minormutate()
 		M.virus2["[D.uniqueID]"] = D
 
 //Infects mob M with random lesser disease, if he doesn't have one
 /proc/infect_mob_random_lesser(var/mob/living/carbon/M)
-	var/datum/disease2/disease/D = new /datum/disease2/disease
+	var/datum/disease/disease/D = new /datum/disease/disease
 	D.makerandom()
 	D.infectionchance = 1
 	M.virus2["[D.uniqueID]"] = D
 
 //Infects mob M with random greated disease, if he doesn't have one
 /proc/infect_mob_random_greater(var/mob/living/carbon/M)
-	var/datum/disease2/disease/D = new /datum/disease2/disease
+	var/datum/disease/disease/D = new /datum/disease/disease
 	D.makerandom(1)
 	M.virus2["[D.uniqueID]"] = D
 
 //Fancy prob() function.
 /proc/dprob(var/p)
+	return(prob(sqrt(p)) && prob(sqrt(p)))
 	return(prob(sqrt(p)) && prob(sqrt(p)))

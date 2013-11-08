@@ -1,10 +1,8 @@
 /*
-
-	Advance Disease is a system for Virologist to Engineer their own disease with symptoms that have effects and properties
+	Advance Disease is a system for Virologist to engineer their own disease with symptoms that have effects and properties
 	which add onto the overall disease.
 
 	If you need help with creating new symptoms or expanding the advance disease, ask for Giacom on #coderbus.
-
 */
 
 #define RANDOM_STARTING_LEVEL 2
@@ -12,44 +10,34 @@
 var/list/archive_diseases = list()
 
 // The order goes from easy to cure to hard to cure.
-var/list/advance_cures = 	list(
-									"nutriment", "sugar", "orangejuice",
-									"spaceacillin", "kelotane", "ethanol",
-									"leporazine", "synaptizine", "lipozine",
-									"silver", "gold", "plasma"
-								)
+var/list/advance_cures = list(
+							"nutriment", "sugar", "orangejuice",
+							"spaceacillin", "kelotane", "ethanol",
+							"leporazine", "synaptizine", "lipozine",
+							"silver", "gold", "plasma"
+							)
 
-/*
-
-	PROPERTIES
-
- */
+// PROPERTIES
 
 /datum/disease/advance
-
-	name = "Unknown" // We will always let our Virologist name our disease.
+	name = "Unknown"	// We will always let our Virologist name our disease
 	desc = "An engineered disease which can contain a multitude of symptoms."
-	form = "Advance Disease" // Will let med-scanners know that this disease was engineered.
+	form = "Advance Disease"	// Will let med-scanners know that this disease was engineered
 	agent = "advance microbes"
 	max_stages = 5
 	spread = "Unknown"
 	affected_species = list("Human","Monkey")
 
-	// NEW VARS
-
-	var/list/symptoms = list() // The symptoms of the disease.
+// NEW VARS
+	var/list/symptoms = list()	// The symptoms of the disease.
 	var/id = ""
 	var/processing = 0
 
-/*
 
-	OLD PROCS
-
- */
-
+// OLD PROCS
 /datum/disease/advance/New(var/process = 1, var/datum/disease/advance/D)
 
-	// Setup our dictionary if it hasn't already.
+// Setup our dictionary if it hasn't already.
 	if(!dictionary_symptoms.len)
 		for(var/symp in list_symptoms)
 			var/datum/symptom/S = new symp
@@ -57,8 +45,7 @@ var/list/advance_cures = 	list(
 
 	if(!istype(D))
 		D = null
-	// Generate symptoms if we weren't given any.
-
+// Generate symptoms if we weren't given any.
 	if(!symptoms || !symptoms.len)
 
 		if(!D || !D.symptoms || !D.symptoms.len)
@@ -116,11 +103,9 @@ var/list/advance_cures = 	list(
 /datum/disease/advance/Copy(var/process = 0)
 	return new /datum/disease/advance(process, src, 1)
 
-/*
 
-	NEW PROCS
 
- */
+// NEW PROCS
 
 // Mix the symptoms of two diseases (the src and the argument)
 /datum/disease/advance/proc/Mix(var/datum/disease/advance/D)
@@ -138,9 +123,9 @@ var/list/advance_cures = 	list(
 // Will generate new unique symptoms, use this if there are none. Returns a list of symptoms that were generated.
 /datum/disease/advance/proc/GenerateSymptoms(var/type_level_limit = RANDOM_STARTING_LEVEL, var/amount_get = 0)
 
-	var/list/generated = list() // Symptoms we generated.
+	var/list/generated = list()	// Symptoms we generated.
 
-	// Generate symptoms. By default, we only choose non-deadly symptoms.
+// Generate symptoms. By default, we only choose non-deadly symptoms.
 	var/list/possible_symptoms = list()
 	for(var/symp in list_symptoms)
 		var/datum/symptom/S = new symp
@@ -152,7 +137,7 @@ var/list/advance_cures = 	list(
 		return
 		//error("Advance Disease - We weren't able to get any possible symptoms in GenerateSymptoms([type_level_limit], [amount_get])")
 
-	// Random chance to get more than one symptom
+// Random chance to get more than one symptom
 	var/number_of = amount_get
 	if(!amount_get)
 		number_of = 1
@@ -180,7 +165,7 @@ var/list/advance_cures = 	list(
 	var/datum/disease/advance/A = archive_diseases[GetDiseaseID()]
 	AssignName(A.name)
 
-//Generate disease properties based on the effects. Returns an associated list.
+// Generate disease properties based on the effects. Returns an associated list.
 /datum/disease/advance/proc/GenerateProperties()
 
 	if(!symptoms || !symptoms.len)
@@ -195,7 +180,7 @@ var/list/advance_cures = 	list(
 		properties["stealth"] += S.stealth
 		properties["stage_rate"] += S.stage_speed
 		properties["transmittable"] += S.transmittable
-		properties["severity"] = max(properties["severity"], S.level) // severity is based on the highest level symptom
+		properties["severity"] = max(properties["severity"], S.level)	// severity is based on the highest level symptom
 
 	return properties
 
@@ -205,10 +190,10 @@ var/list/advance_cures = 	list(
 	if(properties && properties.len)
 
 		hidden = list( (properties["stealth"] > 2), (properties["stealth"] > 3) )
-		// The more symptoms we have, the less transmittable it is but some symptoms can make up for it.
+	// The more symptoms we have, the less transmittable it is but some symptoms can make up for it.
 		SetSpread(Clamp(properties["transmittable"] - symptoms.len, BLOOD, AIRBORNE))
 		permeability_mod = max(Ceiling(0.4 * properties["transmittable"]), 1)
-		cure_chance = 15 - Clamp(properties["resistance"], -5, 5) // can be between 10 and 20
+		cure_chance = 15 - Clamp(properties["resistance"], -5, 5)	// can be between 10 and 20
 		stage_prob = max(properties["stage_rate"], 2)
 		SetSeverity(properties["severity"])
 		GenerateCure(properties)
@@ -261,7 +246,7 @@ var/list/advance_cures = 	list(
 		//world << "Res = [res]"
 		cure_id = advance_cures[res]
 
-		// Get the cure name from the cure_id
+	// Get the cure name from the cure_id
 		var/datum/reagent/D = chemical_reagents_list[cure_id]
 		cure = D.name
 
@@ -296,11 +281,10 @@ var/list/advance_cures = 	list(
 	var/list/L = list()
 	for(var/datum/symptom/S in symptoms)
 		L += S.id
-	L = sortList(L) // Sort the list so it doesn't matter which order the symptoms are in.
+	L = sortList(L)	// Sort the list so it doesn't matter which order the symptoms are in.
 	var/result = dd_list2text(L, ":")
 	id = result
 	return result
-
 
 // Add a symptom, if it is over the limit (with a small chance to be able to go over)
 // we take a random symptom away and add the new one.
@@ -321,11 +305,8 @@ var/list/advance_cures = 	list(
 	symptoms -= S
 	return
 
-/*
 
-	Static Procs
-
-*/
+// Static Procs
 
 // Mix a list of advance diseases and return the mixed result.
 /proc/Advance_Mix(var/list/D_list)
@@ -340,10 +321,10 @@ var/list/advance_cures = 	list(
 	if(!diseases.len)
 		return null
 	if(diseases.len <= 1)
-		return pick(diseases) // Just return the only entry.
+		return pick(diseases)	// Just return the only entry.
 
 	var/i = 0
-	// Mix our diseases until we are left with only one result.
+// Mix our diseases until we are left with only one result.
 	while(i < 20 && diseases.len > 1)
 
 		i++
@@ -354,7 +335,7 @@ var/list/advance_cures = 	list(
 		var/datum/disease/advance/D2 = pick(diseases)
 		D2.Mix(D1)
 
-	 // Should be only 1 entry left, but if not let's only return a single entry
+// Should be only 1 entry left, but if not let's only return a single entry
 	//world << "END MIXING!!!!!"
 	var/datum/disease/advance/to_return = pick(diseases)
 	to_return.Refresh(1)

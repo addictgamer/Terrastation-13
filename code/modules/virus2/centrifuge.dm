@@ -7,7 +7,7 @@
 	var/isolating
 
 	var/obj/item/weapon/reagent_containers/glass/beaker/vial/sample = null
-	var/datum/disease2/disease/virus2 = null
+	var/datum/disease/disease/virus2 = null
 
 /obj/machinery/computer/centrifuge/attackby(var/obj/I as obj, var/mob/user as mob)
 	if(istype(I, /obj/item/weapon/screwdriver))
@@ -51,7 +51,7 @@
 
 				var/list/virus = B.data["virus2"]
 				for (var/ID in virus)
-					var/datum/disease2/disease/V = virus[ID]
+					var/datum/disease/disease/V = virus[ID]
 					dat += " </td></tr><tr><td> pathogen [V.name()]"
 					dat += "</td><td><A href='?src=\ref[src];action=isolate;isolate=[V.uniqueID]'>Isolate</a>"
 			else

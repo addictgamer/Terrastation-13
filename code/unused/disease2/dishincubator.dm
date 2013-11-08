@@ -1,4 +1,4 @@
-/obj/machinery/disease2/incubator/
+/obj/machinery/disease/incubator/
 	name = "Pathogenic incubator"
 	density = 1
 	anchored = 1
@@ -173,4 +173,5 @@
 
 	proc/state(var/msg)
 		for(var/mob/O in hearers(src, null))
+			O.show_message("\icon[src] \blue [msg]", 2)
 			O.show_message("\icon[src] \blue [msg]", 2)

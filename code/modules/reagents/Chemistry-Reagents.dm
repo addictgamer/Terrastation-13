@@ -932,7 +932,7 @@ datum
 					var/mob/living/carbon/C = M
 					if(C.virus2.len)
 						for (var/ID in C.virus2)
-							var/datum/disease2/disease/V = C.virus2[ID]
+							var/datum/disease/disease/V = C.virus2[ID]
 							if(prob(5))
 								if(prob(50))
 									M.radiation += 50 // curing it that way may kill you instead
@@ -1428,15 +1428,15 @@ datum
 				..()
 				return
 
-		adminordrazine //An OP chemical for admins
+		adminordrazine	// An OP chemical for admins
 			name = "Adminordrazine"
 			id = "adminordrazine"
 			description = "It's magic. We don't have to explain it."
 			reagent_state = LIQUID
-			color = "#C8A5DC" // rgb: 200, 165, 220
+			color = "#C8A5DC"	// rgb: 200, 165, 220
 
 			on_mob_life(var/mob/living/carbon/M as mob)
-				if(!M) M = holder.my_atom ///This can even heal dead people.
+				if(!M) M = holder.my_atom	// This can even heal dead people.
 				M.setCloneLoss(0)
 				M.setOxyLoss(0)
 				M.radiation = 0
@@ -1472,8 +1472,8 @@ datum
 				M.sdisabilities = 0
 				M.eye_blurry = 0
 				M.eye_blind = 0
-//				M.disabilities &= ~NEARSIGHTED		//doesn't even do anythig cos of the disabilities = 0 bit
-//				M.sdisabilities &= ~BLIND			//doesn't even do anythig cos of the sdisabilities = 0 bit
+				//M.disabilities &= ~NEARSIGHTED		//doesn't even do anythig cos of the disabilities = 0 bit
+				//M.sdisabilities &= ~BLIND			//doesn't even do anythig cos of the sdisabilities = 0 bit
 				M.SetWeakened(0)
 				M.SetStunned(0)
 				M.SetParalysis(0)
@@ -1590,7 +1590,7 @@ datum
 				M.eye_blind = max(M.eye_blind-5 , 0)
 				M.disabilities &= ~NEARSIGHTED
 				M.eye_stat = max(M.eye_stat-5, 0)
-//				M.sdisabilities &= ~1		Replaced by eye surgery
+				//M.sdisabilities &= ~1		Replaced by eye surgery
 				..()
 				return
 
@@ -1745,9 +1745,6 @@ datum
 				M.hallucination += 10
 				..()
 				return
-
-
-///////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 		holywater
 			name = "Holy Water"
@@ -3500,4 +3497,5 @@ datum
 					else if(data >= 115 && prob(33))
 						M.confused = max(M.confused+15,15)
 					..()
+					return
 					return
