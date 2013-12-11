@@ -1,3 +1,4 @@
+
 /obj/machinery/disease/isolator/
 	name = "Pathogenic Isolator"
 	density = 1

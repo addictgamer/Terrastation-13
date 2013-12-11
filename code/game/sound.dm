@@ -1,3 +1,4 @@
+
 /proc/playsound(var/atom/source, soundin, vol as num, vary, extrarange as num)
 	//Frequency stuff only works with 45kbps oggs.
 
@@ -76,8 +77,8 @@
 		if ("hiss") soundin = pick('sound/voice/hiss1.ogg','sound/voice/hiss2.ogg','sound/voice/hiss3.ogg','sound/voice/hiss4.ogg')
 
 	var/sound/S = sound(soundin)
-	S.wait = 0 //No queue
-	S.channel = 0 //Any channel
+	S.wait = 0	// No queue
+	S.channel = 0	// Any channel
 	S.volume = vol
 
 	if (vary)
@@ -93,6 +94,7 @@
 	if(prefs.toggles & SOUND_LOBBY)
 		var/login_music = pick(\
 		'sound/music/lobby3.mid',\
-		'sound/music/space_oddity.ogg') //Ground Control to Major Tom, this song is cool, what's going on?
+		'sound/music/space_oddity.ogg')	// Ground Control to Major Tom, this song is cool, what's going on?
+
 		src.music = sound(login_music, repeat = 1, wait = 0, volume = 85, channel = 1) // MAD JAMS
 		src << sound(src.music, 1)

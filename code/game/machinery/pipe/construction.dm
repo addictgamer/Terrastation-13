@@ -54,36 +54,36 @@ Buildable meters
 			src.pipe_type = PIPE_HE_STRAIGHT + is_bent
 		else if(istype(make_from, /obj/machinery/atmospherics/pipe/simple/insulated))
 			src.pipe_type = PIPE_INSULATED_STRAIGHT + is_bent
-		else if(istype(make_from, /obj/machinery/atmospherics/pipe/simple))
+		else if(istype(make_from, /obj/machinery/atmospherics/pipe/simple/general))
 			src.pipe_type = PIPE_SIMPLE_STRAIGHT + is_bent
-		else if(istype(make_from, /obj/machinery/atmospherics/portables_connector))
-			src.pipe_type = PIPE_CONNECTOR
-		else if(istype(make_from, /obj/machinery/atmospherics/pipe/manifold))
+		else if(istype(make_from, /obj/machinery/atmospherics/pipe/manifold/general))
 			src.pipe_type = PIPE_MANIFOLD
+		else if(istype(make_from, /obj/machinery/atmospherics/pipe/manifold4w/general))
+			src.pipe_type = PIPE_MANIFOLD4W
+		else if(istype(make_from, /obj/machinery/atmospherics/pipe/cap))
+			src.pipe_type = PIPE_CAP
 		else if(istype(make_from, /obj/machinery/atmospherics/unary/vent_pump))
 			src.pipe_type = PIPE_UVENT
-		else if(istype(make_from, /obj/machinery/atmospherics/valve))
-			src.pipe_type = PIPE_MVALVE
-		else if(istype(make_from, /obj/machinery/atmospherics/binary/pump))
-			src.pipe_type = PIPE_PUMP
-		else if(istype(make_from, /obj/machinery/atmospherics/trinary/filter))
-			src.pipe_type = PIPE_GAS_FILTER
-		else if(istype(make_from, /obj/machinery/atmospherics/trinary/mixer))
-			src.pipe_type = PIPE_GAS_MIXER
 		else if(istype(make_from, /obj/machinery/atmospherics/unary/vent_scrubber))
 			src.pipe_type = PIPE_SCRUBBER
+		else if(istype(make_from, /obj/machinery/atmospherics/unary/heat_exchanger))
+			src.pipe_type = PIPE_HEAT_EXCHANGE
+		else if(istype(make_from, /obj/machinery/atmospherics/binary/pump))
+			src.pipe_type = PIPE_PUMP
 		else if(istype(make_from, /obj/machinery/atmospherics/binary/passive_gate))
 			src.pipe_type = PIPE_PASSIVE_GATE
 		else if(istype(make_from, /obj/machinery/atmospherics/binary/volume_pump))
 			src.pipe_type = PIPE_VOLUME_PUMP
-		else if(istype(make_from, /obj/machinery/atmospherics/unary/heat_exchanger))
-			src.pipe_type = PIPE_HEAT_EXCHANGE
+		else if(istype(make_from, /obj/machinery/atmospherics/trinary/filter))
+			src.pipe_type = PIPE_GAS_FILTER
+		else if(istype(make_from, /obj/machinery/atmospherics/trinary/mixer))
+			src.pipe_type = PIPE_GAS_MIXER
+		else if(istype(make_from, /obj/machinery/atmospherics/valve))
+			src.pipe_type = PIPE_MVALVE
 		else if(istype(make_from, /obj/machinery/atmospherics/tvalve))
 			src.pipe_type = PIPE_MTVALVE
-		else if(istype(make_from, /obj/machinery/atmospherics/pipe/manifold4w))
-			src.pipe_type = PIPE_MANIFOLD4W
-		else if(istype(make_from, /obj/machinery/atmospherics/pipe/cap))
-			src.pipe_type = PIPE_CAP
+		else if(istype(make_from, /obj/machinery/atmospherics/portables_connector))
+			src.pipe_type = PIPE_CONNECTOR
 	else
 		src.pipe_type = pipe_type
 		src.dir = dir
@@ -348,7 +348,7 @@ Buildable meters
 			if (M.node3)
 				M.node3.initialize()
 				M.node3.build_network()
-			
+
 		if(PIPE_MANIFOLD4W)		//4-way manifold
 			var/obj/machinery/atmospherics/pipe/manifold4w/M = new( src.loc )
 			M.dir = dir
@@ -515,7 +515,7 @@ Buildable meters
 			if (P.node2)
 				P.node2.initialize()
 				P.node2.build_network()
-				
+
 		if(PIPE_MTVALVE)		//manual t-valve
 			var/obj/machinery/atmospherics/tvalve/V = new(src.loc)
 			V.dir = dir
@@ -535,7 +535,7 @@ Buildable meters
 			if (V.node3)
 				V.node3.initialize()
 				V.node3.build_network()
-				
+
 		if(PIPE_CAP)
 			var/obj/machinery/atmospherics/pipe/cap/C = new(src.loc)
 			C.dir = dir

@@ -1,3 +1,4 @@
+
 /obj/machinery/computer/diseasesplicer
 	name = "Disease Splicer"
 	icon = 'icons/obj/computer.dmi'
