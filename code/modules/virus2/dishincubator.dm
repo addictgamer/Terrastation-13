@@ -1,3 +1,4 @@
+
 /obj/machinery/disease/incubator/
 	name = "Pathogenic incubator"
 	density = 1

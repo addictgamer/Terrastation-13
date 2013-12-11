@@ -1,3 +1,4 @@
+
 /obj/machinery/computer/centrifuge
 	name = "Isolation Centrifuge"
 	desc = "Used to separate things with different weight. Spin 'em round, round, right round."
@@ -148,6 +149,10 @@
 	state("\The [src.name] pings", "blue")
 
 /obj/machinery/computer/centrifuge/proc/isolate()
+	var/amt= sample.reagents.get_reagent_amount("blood")
+	sample.reagents.remove_reagent("blood",amt)
+	//sample.loc = src.loc
+
 	var/obj/item/weapon/virusdish/dish = new/obj/item/weapon/virusdish(src.loc)
 	dish.virus2 = virus2
 

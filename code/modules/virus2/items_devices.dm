@@ -1,8 +1,4 @@
 
-/obj/machinery/proc/state(var/msg)
-	for(var/mob/O in hearers(src, null))
-		O.show_message("\icon[src] <span class = 'notice'>[msg]</span>", 2)
-
 // ANTIBODY SCANNER
 /obj/item/device/antibody_scanner
 	name = "Antibody Scanner"

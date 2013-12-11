@@ -11,15 +11,6 @@
 	if(src.reload<180)
 		src.reload++
 
-/obj/structure/artilleryplaceholder
-	name = "artillery"
-	icon = 'icons/obj/machines/artillery.dmi'
-	anchored = 1
-	density = 1
-
-/obj/structure/artilleryplaceholder/decorative
-	density = 0
-
 /obj/machinery/artillerycontrol/attack_hand(mob/user as mob)
 	user.set_machine(src)
 	var/dat = "<B>Bluespace Artillery Control:</B><BR>"
@@ -51,7 +42,17 @@
 			explosion(loc,2,5,11)
 			reload = 0
 
-/*mob/proc/openfire()
+/obj/structure/artilleryplaceholder
+	name = "artillery"
+	icon = 'icons/obj/machines/artillery.dmi'
+	anchored = 1
+	density = 1
+
+/obj/structure/artilleryplaceholder/decorative
+	density = 0
+
+/*
+mob/proc/openfire()
 	var/A
 	A = input("Area to jump bombard", "Open Fire", A) in teleportlocs
 	var/area/thearea = teleportlocs[A]
@@ -62,4 +63,5 @@
 	for(var/turf/T in get_area_turfs(thearea.type))
 		L+=T
 	var/loc = pick(L)
-	explosion(loc,2,5,11)*/
+	explosion(loc,2,5,11)
+*/

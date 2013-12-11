@@ -1,3 +1,4 @@
+
 /obj/machinery/disease/biodestroyer
 	name = "Biohazard destroyer"
 	icon = 'icons/obj/pipes/disposal.dmi'

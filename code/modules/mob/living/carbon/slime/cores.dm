@@ -11,8 +11,8 @@
 	throw_speed = 3
 	throw_range = 6
 	origin_tech = "biotech=4"
-	var/Uses = 1 // uses before it goes inert
-	var/enhanced = 0 //has it been enhanced before?
+	var/Uses = 1	// uses before it goes inert
+	var/enhanced = 0	// has it been enhanced before?
 
 	attackby(obj/item/O as obj, mob/user as mob)
 		if(istype(O, /obj/item/weapon/slimesteroid2))
@@ -149,6 +149,9 @@
 		if(M.stat)
 			user << "\red The slime is dead!"
 			return..()
+		if(M.mind)
+			user << "\red The slime resists!"
+			return ..()
 		var/mob/living/simple_animal/slime/pet = new /mob/living/simple_animal/slime(M.loc)
 		pet.icon_state = "[M.colour] baby slime"
 		pet.icon_living = "[M.colour] baby slime"
@@ -166,7 +169,7 @@
 
 /obj/item/weapon/slimepotion2
 	name = "advanced docility potion"
-	desc = "A potent chemical mix that will nullify a slime's powers, causing it to become docile and tame. This one is meant for adult slimes"
+	desc = "A potent chemical mix that will nullify a slime's powers, causing it to become docile and tame. This one is meant for adult slimes."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle19"
 
@@ -177,6 +180,9 @@
 		if(M.stat)
 			user << "\red The slime is dead!"
 			return..()
+		if(M.mind)
+			user << "\red The slime resists!"
+			return ..()
 		var/mob/living/simple_animal/adultslime/pet = new /mob/living/simple_animal/adultslime(M.loc)
 		pet.icon_state = "[M.colour] adult slime"
 		pet.icon_living = "[M.colour] adult slime"
@@ -212,7 +218,27 @@
 		if(M.cores == 3)
 			user <<"\red The slime already has the maximum amount of extract!"
 			return..()
-
 		user <<"You feed the slime the steroid. It now has triple the amount of extract."
 		M.cores = 3
 		del (src)
+
+/obj/item/weapon/slimesteroid2
+	name = "extract enhancer"
+	desc = "A potent chemical mix that will give a slime extract three uses."
+	icon = 'icons/obj/chemical.dmi'
+	icon_state = "bottle17"
+
+/*	// used in /obj/item/slime_extract/attackby()
+	afterattack(obj/item/target, mob/user , flag)
+		if(istype(target, /obj/item/slime_extract))
+			if(target.enhanced == 1)
+				user << "\red This extract has already been enhanced!"
+				return ..()
+			if(target.Uses == 0)
+				user << "\red You can't enhance a used extract!"
+				return ..()
+			user <<"You apply the enhancer. It now has triple the amount of uses."
+			target.Uses = 3
+			target.enahnced = 1
+			del (src)
+*/
