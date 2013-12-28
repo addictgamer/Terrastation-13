@@ -14,7 +14,7 @@
 			if(src)	del(src)
 		else
 			for(var/mob/O in viewers(src, null))
-				O.show_message("<b>The [name]</b> seizes up and falls limp...", 1) //ded -- Urist
+				O.show_message("<b>The [name]</b> seizes up and falls limp...", 1)	// ded -- Urist
 
 	update_canmove()
 	if(blind)	blind.layer = 0

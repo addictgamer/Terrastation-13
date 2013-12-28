@@ -15,19 +15,17 @@
 	throw_speed = 3
 	throw_range = 6
 	origin_tech = "biotech=4"
-	var/POWERFLAG = 0 // sshhhhhhh
+	var/POWERFLAG = 0	// sshhhhhhh
 	var/Flush = 30
-	var/Uses = 5 // uses before it goes inert
+	var/Uses = 5	// uses before it goes inert
 
 /obj/item/slime_core/New()
 		..()
-		var/datum/reagents/R = new/datum/reagents(100)
-		reagents = R
-		R.my_atom = src
+		create_reagents(100)
 		POWERFLAG = rand(1,10)
 		Uses = rand(7, 25)
 		//flags |= NOREACT
-/*
+	/*
 		spawn()
 			Life()
 
@@ -38,9 +36,7 @@
 			if(Flush <= 0)
 				reagents.clear_reagents()
 				Flush = 30
-*/
-
-
+	*/
 
 /obj/item/weapon/reagent_containers/food/snacks/egg/slime
 	name = "slime egg"
@@ -77,7 +73,7 @@
 /obj/item/weapon/reagent_containers/food/snacks/egg/slime/process()
 	var/turf/location = get_turf(src)
 	var/datum/gas_mixture/environment = location.return_air()
-	if (environment.toxins > MOLES_PLASMA_VISIBLE)//plasma exposure causes the egg to hatch
+	if (environment.toxins > MOLES_PLASMA_VISIBLE)	// plasma exposure causes the egg to hatch
 		src.Hatch()
 
 /obj/item/weapon/reagent_containers/food/snacks/egg/slime/attackby(obj/item/weapon/W as obj, mob/user as mob)

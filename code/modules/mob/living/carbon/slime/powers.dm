@@ -255,7 +255,9 @@
 		src << "<i>I am not old enough to reproduce yet...</i>"
 */
 				var/newslime
-				if(prob(70))
+				if (prob(1))
+					newslime = /mob/living/carbon/slime/rainbow
+				else if(prob(70))
 					newslime = primarytype
 				else
 					newslime = slime_mutation[rand(1,4)]

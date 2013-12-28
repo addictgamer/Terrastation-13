@@ -24,14 +24,13 @@ mob/living/parasite
 
 	Login()
 		..()
-
-		// make the client see through the host instead
+	// make the client see through the host instead
 		client.eye = host
 		client.perspective = EYE_PERSPECTIVE
 
 
 mob/living/parasite/proc/enter_host(mob/living/carbon/host)
-	// by default, parasites can't share a body with other life forms
+// by default, parasites can't share a body with other life forms
 	if(host.parasites.len > 0)
 		return 0
 
