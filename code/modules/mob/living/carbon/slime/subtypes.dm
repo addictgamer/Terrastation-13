@@ -85,7 +85,6 @@
 		slime_mutation[3] = /mob/living/carbon/slime/lightgreen
 		slime_mutation[4] = /mob/living/carbon/slime/cueball
 
-
 // Tier 3
 
 /mob/living/carbon/slime/blue
@@ -235,7 +234,6 @@
 		slime_mutation[3] = /mob/living/carbon/slime/metal
 		slime_mutation[4] = /mob/living/carbon/slime/glass
 
-
 // Tier 4
 
 /mob/living/carbon/slime/darkblue
@@ -344,7 +342,6 @@
 		slime_mutation[3] = /mob/living/carbon/slime/pink
 		slime_mutation[4] = /mob/living/carbon/slime/purple
 
-
 // Tier 5
 
 /mob/living/carbon/slime/darkpurple
@@ -452,7 +449,6 @@
 		slime_mutation[3] = /mob/living/carbon/slime/platinum
 		slime_mutation[4] = /mob/living/carbon/slime/adamantine
 
-
 // Tier 6
 
 /mob/living/carbon/slime/death
@@ -480,7 +476,6 @@
 // Side tiers
 
 // 1
-
 /mob/living/carbon/slime/cueball
 	icon_state = "cueball baby slime"
 	colour = "cueball"
@@ -488,7 +483,6 @@
 	adulttype = /mob/living/carbon/slime/adult/cueball
 	coretype = /obj/item/slime_extract/cueball
 
-// 2
 /mob/living/carbon/slime/adult/cueball
 	icon_state = "cueball adult slime"
 	colour = "cueball"
@@ -503,6 +497,7 @@
 		slime_mutation[3] = /mob/living/carbon/slime/cueball
 		slime_mutation[4] = /mob/living/carbon/slime/cueball
 
+// 2
 /mob/living/carbon/slime/bluespace
 	icon_state = "bluespace baby slime"
 	colour = "bluespace"

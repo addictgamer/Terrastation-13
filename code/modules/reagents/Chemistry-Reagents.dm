@@ -430,6 +430,16 @@ datum
 				..()
 				return
 
+		slime_essense
+			name = "Slime Essense"
+			id = "slime_essense"
+			description = ""
+			reagent_state = LIQUID
+			color = "#13BC5E" // rgb: 19, 188, 94
+
+			on_mob_life(var/mob/living/M as mob)
+				// code goes here
+
 		stoxin
 			name = "Sleep Toxin"
 			id = "stoxin"

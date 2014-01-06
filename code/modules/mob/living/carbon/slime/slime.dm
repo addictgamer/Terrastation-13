@@ -55,7 +55,7 @@
 	var/adulttype = /mob/living/carbon/slime/adult
 	var/coretype = /obj/item/slime_extract/grey
 	var/list/slime_mutation[4]
-
+	//var/list/spec_mutation[]
 
 /mob/living/carbon/slime/New()
 	var/datum/reagents/R = new/datum/reagents(100)
@@ -725,3 +725,5 @@
 	slime_mutation[2] = /mob/living/carbon/slime/metal
 	slime_mutation[3] = /mob/living/carbon/slime/lightblue
 	slime_mutation[4] = /mob/living/carbon/slime/lightgreen
+	//slime_mutation[3] = /mob/living/carbon/slime/blue
+	//slime_mutation[4] = /mob/living/carbon/slime/purple

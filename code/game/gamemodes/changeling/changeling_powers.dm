@@ -427,7 +427,11 @@
 	C.SetWeakened(0)
 	C.lying = 0
 	C.update_canmove()
-
+/*	if(ishuman(src))
+		var/mob/living/carbon/human/H = src
+		if(H.said_last_words)
+		H.said_last_words = 0
+*/
 	src.verbs -= /mob/proc/changeling_unstun
 	spawn(5)	src.verbs += /mob/proc/changeling_unstun
 	feedback_add_details("changeling_powers","UNS")
