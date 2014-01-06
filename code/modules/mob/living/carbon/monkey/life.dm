@@ -15,43 +15,45 @@
 	if (monkeyizing)	return
 	..()
 
-	var/datum/gas_mixture/environment // Added to prevent null location errors-- TLE
+	var/datum/gas_mixture/environment	// Added to prevent null location errors-- TLE
 	if(loc)
 		environment = loc.return_air()
 
 	if (stat != DEAD) //still breathing
-		//First, resolve location and get a breath
+	// First, resolve location and get a breath
 		if(air_master.current_cycle%4==2)
-			//Only try to take a breath every 4 seconds, unless suffocating
+		// Only try to take a breath every 4 seconds, unless suffocating
 			breathe()
-		else //Still give containing object the chance to interact
+		else	// Still give containing object the chance to interact
 			if(istype(loc, /obj/))
 				var/obj/location_as_object = loc
 				location_as_object.handle_internal_lifeform(src, 0)
 
 
-		//Updates the number of stored chemicals for powers
+	// Updates the number of stored chemicals for powers
 		handle_changeling()
 
-		//Mutations and radiation
+	// Mutations and radiation
 		handle_mutations_and_radiation()
 
-		//Chemicals in the body
+	// Chemicals in the body
 		handle_chemicals_in_body()
 
-		//Disabilities
+	// Disabilities
 		handle_disabilities()
 
-		//Virus updates, duh
+	// Virus updates, duh
 		handle_virus_updates()
 
-	//Apparently, the person who wrote this code designed it so that
-	//blinded get reset each cycle and then get activated later in the
-	//code. Very ugly. I dont care. Moving this stuff here so its easy
-	//to find it.
+// Apparently, the person who wrote this code designed it so that
+// blinded get reset each cycle and then get activated later in the
+// code. Very ugly. I dont care. Moving this stuff here so its easy
+// to find it.
 	blinded = null
+// Check if we're on fire
+	handle_fire()
 
-	//Handle temperature/pressure differences between body and environment
+// Handle temperature/pressure differences between body and environment
 	if(environment)	// More error checking -- TLE
 		handle_environment(environment)
 
@@ -375,15 +377,19 @@
 			var/turf/heat_turf = get_turf(src)
 			environment_heat_capacity = heat_turf.heat_capacity
 
-		if((environment.temperature > (T0C + 50)) || (environment.temperature < (T0C + 10)))
-			var/transfer_coefficient = 1
+		//if((environment.temperature > (T0C + 50)) || (environment.temperature < (T0C + 10)))
+			//var/transfer_coefficient = 1
 
-			handle_temperature_damage(HEAD, environment.temperature, environment_heat_capacity*transfer_coefficient)
+		if(!on_fire)
+			if((environment.temperature > (T0C + 50)) || (environment.temperature < (T0C + 10)))
+				var/transfer_coefficient = 1
+
+				handle_temperature_damage(HEAD, environment.temperature, environment_heat_capacity*transfer_coefficient)
 
 		if(stat==2)
 			bodytemperature += 0.1*(environment.temperature - bodytemperature)*environment_heat_capacity/(environment_heat_capacity + 270000)
 
-		//Account for massive pressure differences
+	// Account for massive pressure differences
 
 		var/pressure = environment.return_pressure()
 		var/adjusted_pressure = calculate_affecting_pressure(pressure) //Returns how much pressure actually affects the mob.
@@ -653,3 +659,11 @@
 		if(mind && mind.changeling)
 			mind.changeling.regenerate()
 			mind.changeling.regenerate()
+
+// FIRE CODE
+	handle_fire()
+		if(..())
+			return
+		adjustFireLoss(6)
+		return
+// END FIRE CODE

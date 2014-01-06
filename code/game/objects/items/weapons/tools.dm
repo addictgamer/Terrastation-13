@@ -1,19 +1,6 @@
-//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
 
-/* Tools!
- * Note: Multitools are /obj/item/device
- *
- * Contains:
- * 		Wrench
- * 		Screwdriver
- * 		Wirecutters
- * 		Welding Tool
- * 		Crowbar
- */
+// Wrench
 
-/*
- * Wrench
- */
 /obj/item/weapon/wrench
 	name = "wrench"
 	desc = "A wrench with common uses. Can be found in your hand."
@@ -29,9 +16,8 @@
 	attack_verb = list("bashed", "battered", "bludgeoned", "whacked")
 
 
-/*
- * Screwdriver
- */
+// Screwdriver
+
 /obj/item/weapon/screwdriver
 	name = "screwdriver"
 	desc = "You can be totally screwwy with this."
@@ -261,6 +247,9 @@
 		var/turf/location = get_turf(user)
 		if (istype(location, /turf))
 			location.hotspot_expose(700, 50, 1)
+			if(isliving(O))
+				var/mob/living/L = O
+				L.IgniteMob()
 	return
 
 
