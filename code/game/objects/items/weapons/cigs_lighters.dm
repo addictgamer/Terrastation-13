@@ -81,7 +81,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	..()
 	if(istype(W, /obj/item/weapon/weldingtool))
 		var/obj/item/weapon/weldingtool/WT = W
-		if(WT.isOn())//Badasses dont get blinded while lighting their cig with a welding tool
+		if(WT.isOn())	// Badasses dont get blinded while lighting their cig with a welding tool
 			light("<span class='notice'>[user] casually lights the [name] with [W], what a badass.</span>")
 
 	else if(istype(W, /obj/item/weapon/lighter/zippo))
@@ -120,11 +120,11 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 
 /obj/item/clothing/mask/cigarette/afterattack(obj/item/weapon/reagent_containers/glass/glass, mob/user as mob)
 	..()
-	if(istype(glass))	//you can dip cigarettes into beakers
+	if(istype(glass))	// you can dip cigarettes into beakers
 		var/transfered = glass.reagents.trans_to(src, chem_volume)
-		if(transfered)	//if reagents were transfered, show the message
+		if(transfered)	// if reagents were transfered, show the message
 			user << "<span class='notice'>You dip \the [src] into \the [glass].</span>"
-		else			//if not, either the beaker was empty, or the cigarette was full
+		else	// if not, either the beaker was empty, or the cigarette was full
 			if(!glass.reagents.total_volume)
 				user << "<span class='notice'>[glass] is empty.</span>"
 			else
@@ -135,7 +135,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	if(!src.lit)
 		src.lit = 1
 		damtype = "fire"
-		if(reagents.get_reagent_amount("plasma")) // the plasma explodes when exposed to fire
+		if(reagents.get_reagent_amount("plasma"))	// the plasma explodes when exposed to fire
 			var/datum/effect/effect/system/reagents_explosion/e = new()
 			e.set_up(round(reagents.get_reagent_amount("plasma") / 2.5, 1), get_turf(src), 0, 0)
 			e.start()
@@ -144,7 +144,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 				M.drop_from_inventory(src)
 			del(src)
 			return
-		if(reagents.get_reagent_amount("fuel")) // the fuel explodes, too, but much less violently
+		if(reagents.get_reagent_amount("fuel"))	// the fuel explodes, too, but much less violently
 			var/datum/effect/effect/system/reagents_explosion/e = new()
 			e.set_up(round(reagents.get_reagent_amount("fuel") / 5, 1), get_turf(src), 0, 0)
 			e.start()
@@ -333,7 +333,7 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	desc = "A nicotine delivery system popularized by folksy backwoodsmen and kept popular in the modern age and beyond by space hipsters."
 	icon_state = "cobpipeoff"
 	item_state = "cobpipeoff"
-	icon_on = "cobpipeon"  //Note - these are in masks.dmi
+	icon_on = "cobpipeon" 	// Note - these are in masks.dmi
 	icon_off = "cobpipeoff"
 	smoketime = 400
 
@@ -356,21 +356,6 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 	slot_flags = SLOT_BELT
 	attack_verb = list("burnt", "singed")
 	var/lit = 0
-
-/obj/item/weapon/lighter/zippo
-	name = "Zippo lighter"
-	desc = "The zippo."
-	icon_state = "zippo"
-	item_state = "zippo"
-	icon_on = "zippoon"
-	icon_off = "zippo"
-
-/obj/item/weapon/lighter/random
-	New()
-		var/color = pick("r","c","y","g")
-		icon_on = "lighter-[color]-on"
-		icon_off = "lighter-[color]"
-		icon_state = icon_off
 
 /obj/item/weapon/lighter/attack_self(mob/living/user)
 	if(user.r_hand == src || user.l_hand == src)
@@ -444,3 +429,18 @@ CIGARETTE PACKETS ARE IN FANCY.DM
 		user.SetLuminosity(user.luminosity-2)
 		SetLuminosity(2)
 	return
+
+/obj/item/weapon/lighter/zippo
+	name = "Zippo lighter"
+	desc = "The zippo."
+	icon_state = "zippo"
+	item_state = "zippo"
+	icon_on = "zippoon"
+	icon_off = "zippo"
+
+/obj/item/weapon/lighter/random
+	New()
+		var/color = pick("r","c","y","g")
+		icon_on = "lighter-[color]-on"
+		icon_off = "lighter-[color]"
+		icon_state = icon_off
