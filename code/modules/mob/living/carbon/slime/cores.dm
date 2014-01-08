@@ -125,6 +125,11 @@
 	icon_state = "pink slime extract"
 	color = "pink"
 
+/obj/item/slime_extract/plasglass
+	name = "plasglass slime extract"
+	icon_state = "plasglass slime extract"
+	color = "plasglass"
+
 // Tier 5
 
 /obj/item/slime_extract/darkpurple
@@ -158,6 +163,11 @@
 	name = "death slime extract"
 	icon_state = "death slime extract"
 	color = "death"
+
+/obj/item/slime_extract/white
+	name = "white slime extract"
+	icon_state = "white slime extract"
+	color = "white"
 
 // Side tiers
 
@@ -264,15 +274,16 @@
 		pet.icon_dead = "[M.colour] baby slime dead"
 		pet.colour = "[M.colour]"
 		user <<"You feed the slime the potion, removing it's powers and calming it."
-		del (M)
+		del(M)
 		var/newname = copytext(sanitize(input(user, "Would you like to give the slime a name?", "Name your new pet", "pet slime") as null|text),1,MAX_NAME_LEN)
 
 		if (!newname)
 			newname = "pet slime"
 		pet.name = newname
 		pet.real_name = newname
-		del (src)
+		del(src)
 
+// Slime steriods
 
 /obj/item/weapon/slimesteroid
 	name = "slime steroid"
@@ -282,7 +293,7 @@
 
 	attack(mob/living/carbon/slime/M as mob, mob/user as mob)
 		if(!istype(M, /mob/living/carbon/slime))	// If target is not a slime.
-			user << "\red The steroid only works on baby slimes!"
+			user << "\red The steroid only works on slimes!"
 			return ..()
 		if(istype(M, /mob/living/carbon/slime/adult))	// Can't tame adults
 			user << "\red Only baby slimes can use the steroid!"
@@ -298,7 +309,7 @@
 			return..()
 		user <<"You feed the slime the steroid. It now has triple the amount of extract."
 		M.cores = 3
-		del (src)
+		del(src)
 
 /obj/item/weapon/slimesteroid2
 	name = "extract enhancer"
@@ -318,5 +329,35 @@
 			user <<"You apply the enhancer. It now has triple the amount of uses."
 			target.Uses = 3
 			target.enahnced = 1
-			del (src)
+			del(src)
 */
+
+/obj/item/weapon/slimeinsta
+	name = "slime growth enhancer"
+	desc = "A potent chemical mix that will instantly cause a slime to grow to adulthood."
+	icon = 'icons/obj/chemical.dmi'
+	icon_state = "bottle16"
+
+	attack(mob/living/carbon/slime/M as mob, mob/user as mob)
+		if(!istype(M, /mob/living/carbon/slime))	// If target is not a slime.
+			user << "\red The steroid only works on slimes!"
+			return ..()
+		if(istype(M, /mob/living/carbon/slime/adult))	// Can't tame adults
+			user << "\red Only baby slimes can use the steroid!"
+			return..()
+		if(istype(M, /mob/living/carbon/slime/master))	// Doesn't work on master slimes
+			user << "\red The slime rejects it!"
+			return..()
+		if(M.stat)
+			user << "\red The slime is dead!"
+			return..()
+		user <<"You feed the slime the steroid. It instantly grows into an adult slime."
+		var/mob/living/carbon/slime/adult/A = new M.adulttype(loc)
+		A.powerlevel = max(0, M.powerlevel-1)
+		A.amount_grown = 10
+		A.Friends = M.Friends
+		A.tame = M.tame
+		A.rabid = M.rabid
+		A.Discipline = M.Discipline
+		del(M)
+		del(src)

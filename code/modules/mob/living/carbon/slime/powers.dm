@@ -140,11 +140,11 @@
 					if(Victim.LAssailant && Victim.LAssailant != Victim)
 						if(prob(50))
 							if(!(Victim.LAssailant in Friends))
-								Friends.Add(Victim.LAssailant) // no idea why i was using the |= operator
+								Friends.Add(Victim.LAssailant)	// no idea why i was using the |= operator
 
 			if(M.client && istype(src, /mob/living/carbon/human))
 				if(prob(85))
-					rabid = 1 // UUUNNBGHHHH GONNA EAT JUUUUUU
+					rabid = 1	// UUUNNBGHHHH GONNA EAT JUUUUUU
 
 			if(client) src << "<i>This subject does not have a strong enough life energy anymore...</i>"
 		else
@@ -164,7 +164,7 @@
 /mob/living/carbon/slime/proc/UpdateFeed(var/mob/M)
 	if(Victim)
 		if(Victim == M)
-			loc = M.loc // simple "attach to head" effect!
+			loc = M.loc	// simple "attach to head" effect!
 
 
 /mob/living/carbon/slime/verb/Evolve()

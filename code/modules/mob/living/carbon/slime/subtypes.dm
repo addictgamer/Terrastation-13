@@ -342,6 +342,28 @@
 		slime_mutation[3] = /mob/living/carbon/slime/pink
 		slime_mutation[4] = /mob/living/carbon/slime/purple
 
+// Working name
+/mob/living/carbon/slime/plasglass
+	colour = "plasglass"
+	icon_state = "plasglass baby slime"
+	primarytype = /mob/living/carbon/slime/plasglass
+	adulttype = /mob/living/carbon/slime/adult/plasglass
+	coretype = /obj/item/slime_extract/plasglass
+
+/mob/living/carbon/slime/adult/plasglass
+	icon_state = "plasglass adult slime"
+	colour = "plasglass"
+	primarytype = /mob/living/carbon/slime/plasglass
+	adulttype = /mob/living/carbon/slime/adult/plasglass
+	coretype = /obj/item/slime_extract/plasglass
+
+	New()
+		..()
+		slime_mutation[1] = /mob/living/carbon/slime/plasglass
+		slime_mutation[2] = /mob/living/carbon/slime/glass
+		slime_mutation[3] = /mob/living/carbon/slime/glass
+		slime_mutation[4] = /mob/living/carbon/slime/plasglass
+
 // Tier 5
 
 /mob/living/carbon/slime/darkpurple
@@ -471,6 +493,27 @@
 		slime_mutation[2] = /mob/living/carbon/slime/black
 		slime_mutation[3] = /mob/living/carbon/slime/black
 		slime_mutation[4] = /mob/living/carbon/slime/death
+
+/mob/living/carbon/slime/white
+	icon_state = "white baby slime"
+	colour = "white"
+	primarytype = /mob/living/carbon/slime/white
+	adulttype = /mob/living/carbon/slime/adult/white
+	coretype = /obj/item/slime_extract/white
+
+/mob/living/carbon/slime/adult/white
+	icon_state = "white adult slime"
+	colour = "white"
+	primarytype = /mob/living/carbon/slime/white
+	adulttype = /mob/living/carbon/slime/adult/white
+	coretype = /obj/item/slime_extract/white
+
+	New()
+		..()
+		slime_mutation[1] = /mob/living/carbon/slime/white
+		slime_mutation[2] = /mob/living/carbon/slime/lightpink
+		slime_mutation[3] = /mob/living/carbon/slime/lightpink
+		slime_mutation[4] = /mob/living/carbon/slime/white
 
 
 // Side tiers

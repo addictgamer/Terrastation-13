@@ -1670,7 +1670,7 @@
 "Gf" = (/obj/machinery/vending/boozeomat,/turf/unsimulated/floor{icon_state = "freezerfloor"; dir = 2},/area/centcom/holding)
 "Gg" = (/obj/structure/table,/obj/item/weapon/storage/box/donkpockets{pixel_x = 3; pixel_y = 3},/obj/item/weapon/storage/box/donkpockets{pixel_x = 3; pixel_y = 3},/obj/item/weapon/storage/box/donkpockets{pixel_x = 3; pixel_y = 3},/obj/item/weapon/storage/box/donkpockets{pixel_x = 3; pixel_y = 3},/turf/unsimulated/floor{icon_state = "freezerfloor"; dir = 2},/area/centcom/holding)
 "Gh" = (/obj/structure/rack,/obj/item/device/camera,/turf/unsimulated/floor{icon_state = "cafeteria"; dir = 2},/area/centcom/holding)
-"Gi" = (/obj/structure/rack,/obj/item/toy/sword,/turf/unsimulated/floor{icon_state = "cafeteria"; dir = 2},/area/centcom/holding)
+"Gi" = (/obj/structure/rack,/obj/item/toy/esword,/turf/unsimulated/floor{icon_state = "cafeteria"; dir = 2},/area/centcom/holding)
 "Gj" = (/obj/structure/rack,/obj/item/toy/gun,/turf/unsimulated/floor{icon_state = "cafeteria"; dir = 2},/area/centcom/holding)
 "Gk" = (/obj/machinery/computer/arcade,/turf/unsimulated/floor{icon_state = "cafeteria"; dir = 2},/area/centcom/holding)
 "Gl" = (/turf/unsimulated/beach/sand,/area/centcom/holding)

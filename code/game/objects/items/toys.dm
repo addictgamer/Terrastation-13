@@ -1,23 +1,9 @@
-/* Toys!
- * ContainsL
- *		Balloons
- *		Fake telebeacon
- *		Fake singularity
- *		Toy gun
- *		Toy crossbow
- *		Toy swords
- *		Crayons
- *		Snap pops
- *		Water flower
- */
-
 
 /obj/item/toy
 	throwforce = 0
 	throw_speed = 4
 	throw_range = 20
 	force = 0
-
 
 /*
  * Balloons
@@ -84,7 +70,7 @@
 
 /obj/item/toy/syndicateballoon
 	name = "syndicate balloon"
-	desc = "There is a tag on the back that reads \"FUK NT!11!\"."
+	desc = "There is a tag on the back that reads \"FUK NT!!1!\"."
 	throwforce = 0
 	throw_speed = 4
 	throw_range = 20
@@ -311,16 +297,17 @@
 /*
  * Toy swords
  */
-/obj/item/toy/sword
-	name = "toy sword"
+
+/obj/item/toy/esword
+	name = "toy energy sword"
 	desc = "A cheap, plastic replica of an energy sword. Realistic sounds! Ages 8 and up."
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "sword0"
 	item_state = "sword0"
-	var/active = 0.0
 	w_class = 2.0
 	flags = FPRINT | TABLEPASS | NOSHIELD
 	attack_verb = list("attacked", "struck", "hit")
+	var/active = 0.0
 
 	attack_self(mob/user as mob)
 		src.active = !( src.active )
@@ -353,27 +340,6 @@
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced")
 
 /*
- * Crayons
- */
-
-/obj/item/toy/crayon
-	name = "crayon"
-	desc = "A colourful crayon. Looks tasty. Mmmm..."
-	icon = 'icons/obj/crayons.dmi'
-	icon_state = "crayonred"
-	w_class = 1.0
-	attack_verb = list("attacked", "coloured")
-	var/colour = "#FF0000" //RGB
-	var/shadeColour = "#220000" //RGB
-	var/uses = 30 //0 for unlimited uses
-	var/instant = 0
-	var/colourName = "red" //for updateIcon purposes
-
-	suicide_act(mob/user)
-		viewers(user) << "\red <b>[user] is jamming the [src.name] up \his nose and into \his brain. It looks like \he's trying to commit suicide.</b>"
-		return (BRUTELOSS|OXYLOSS)
-
-/*
  * Snap pops
  */
 /obj/item/toy/snappop
@@ -394,7 +360,7 @@
 		del(src)
 
 /obj/item/toy/snappop/HasEntered(H as mob|obj)
-	if((ishuman(H))) //i guess carp and shit shouldn't set them off
+	if((ishuman(H)))	// I guess carp and shit shouldn't set them off
 		var/mob/living/carbon/M = H
 		if(M.m_intent == "run")
 			M << "\red You step on the snap pop!"
@@ -419,88 +385,80 @@
 	var/empty = 0
 	flags =  USEDELAY
 
-/obj/item/toy/waterflower/New()
-	var/datum/reagents/R = new/datum/reagents(10)
-	reagents = R
-	R.my_atom = src
-	R.add_reagent("water", 10)
+	New()
+		var/datum/reagents/R = new/datum/reagents(10)
+		reagents = R
+		R.my_atom = src
+		R.add_reagent("water", 10)
 
-/obj/item/toy/waterflower/attack(mob/living/carbon/human/M as mob, mob/user as mob)
-	return
-
-/obj/item/toy/waterflower/afterattack(atom/A as mob|obj, mob/user as mob)
-
-	if (istype(A, /obj/item/weapon/storage/backpack ))
+	attack(mob/living/carbon/human/M as mob, mob/user as mob)
 		return
 
-	else if (locate (/obj/structure/table, src.loc))
+	afterattack(atom/A as mob|obj, mob/user as mob)
+		if (istype(A, /obj/item/weapon/storage/backpack ))
+			return
+		else if (locate (/obj/structure/table, src.loc))
+			return
+		else if (istype(A, /obj/structure/reagent_dispensers/watertank) && get_dist(src,A) <= 1)
+			A.reagents.trans_to(src, 10)
+			user << "\blue You refill your flower!"
+			return
+		else if (src.reagents.total_volume < 1)
+			src.empty = 1
+			user << "\blue Your flower has run dry!"
+			return
+		else
+			src.empty = 0
+			var/obj/effect/decal/D = new/obj/effect/decal/(get_turf(src))
+			D.name = "water"
+			D.icon = 'icons/obj/chemical.dmi'
+			D.icon_state = "chempuff"
+			D.create_reagents(5)
+			src.reagents.trans_to(D, 1)
+			playsound(src.loc, 'sound/effects/spray3.ogg', 50, 1, -6)
+			spawn(0)
+				for(var/i=0, i<1, i++)
+					step_towards(D,A)
+					D.reagents.reaction(get_turf(D))
+					for(var/atom/T in get_turf(D))
+						D.reagents.reaction(T)
+						if(ismob(T) && T:client)
+							T:client << "\red [user] has sprayed you with water!"
+					sleep(4)
+				del(D)
+			return
+
+	examine()
+		set src in usr
+		usr << text("\icon[] [] units of water left!", src, src.reagents.total_volume)
+		..()
 		return
-
-	else if (istype(A, /obj/structure/reagent_dispensers/watertank) && get_dist(src,A) <= 1)
-		A.reagents.trans_to(src, 10)
-		user << "\blue You refill your flower!"
-		return
-
-	else if (src.reagents.total_volume < 1)
-		src.empty = 1
-		user << "\blue Your flower has run dry!"
-		return
-
-	else
-		src.empty = 0
-
-
-		var/obj/effect/decal/D = new/obj/effect/decal/(get_turf(src))
-		D.name = "water"
-		D.icon = 'icons/obj/chemical.dmi'
-		D.icon_state = "chempuff"
-		D.create_reagents(5)
-		src.reagents.trans_to(D, 1)
-		playsound(src.loc, 'sound/effects/spray3.ogg', 50, 1, -6)
-
-		spawn(0)
-			for(var/i=0, i<1, i++)
-				step_towards(D,A)
-				D.reagents.reaction(get_turf(D))
-				for(var/atom/T in get_turf(D))
-					D.reagents.reaction(T)
-					if(ismob(T) && T:client)
-						T:client << "\red [user] has sprayed you with water!"
-				sleep(4)
-			del(D)
-
-		return
-
-/obj/item/toy/waterflower/examine()
-        set src in usr
-        usr << text("\icon[] [] units of water left!", src, src.reagents.total_volume)
-        ..()
-        return
 
 
 /*
  * Mech prizes
  */
+
+// all credit to skasi for toy mech fun ideas
 /obj/item/toy/prize
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "ripleytoy"
 	var/cooldown = 0
 
-//all credit to skasi for toy mech fun ideas
-/obj/item/toy/prize/attack_self(mob/user as mob)
-	if(cooldown < world.time - 8)
-		user << "<span class='notice'>You play with [src].</span>"
-		playsound(user, 'sound/mecha/mechstep.ogg', 20, 1)
-		cooldown = world.time
-
-/obj/item/toy/prize/attack_hand(mob/user as mob)
-	if(loc == user)
+	attack_self(mob/user as mob)
 		if(cooldown < world.time - 8)
 			user << "<span class='notice'>You play with [src].</span>"
-			playsound(user, 'sound/mecha/mechturn.ogg', 20, 1)
+			playsound(user, 'sound/mecha/mechstep.ogg', 20, 1)
 			cooldown = world.time
-			return
-	..()
+
+	attack_hand(mob/user as mob)
+		if(loc == user)
+			if(cooldown < world.time - 8)
+				user << "<span class='notice'>You play with [src].</span>"
+				playsound(user, 'sound/mecha/mechturn.ogg', 20, 1)
+				cooldown = world.time
+				return
+		..()
 
 /obj/item/toy/prize/ripley
 	name = "toy ripley"
@@ -520,7 +478,6 @@
 	name = "toy gygax"
 	desc = "Mini-Mecha action figure! Collect them all! 4/11."
 	icon_state = "gygaxtoy"
-
 
 /obj/item/toy/prize/durand
 	name = "toy durand"
@@ -557,20 +514,6 @@
 	desc = "Mini-Mecha action figure! Collect them all! 11/11."
 	icon_state = "phazonprize"
 
-/obj/item/toy/katana
-	name = "replica katana"
-	desc = "Woefully underpowered in D20."
-	icon = 'icons/obj/weapons.dmi'
-	icon_state = "katana"
-	item_state = "katana"
-	flags = FPRINT | TABLEPASS | CONDUCT
-	slot_flags = SLOT_BELT | SLOT_BACK
-	force = 5
-	throwforce = 5
-	w_class = 3
-	attack_verb = list("attacked", "slashed", "stabbed", "sliced")
-
-/* NYET.
 /obj/item/weapon/toddler
 	icon_state = "toddler"
 	name = "toddler"
@@ -578,4 +521,3 @@
 	force = 5
 	w_class = 4.0
 	slot_flags = SLOT_BACK
-*/
