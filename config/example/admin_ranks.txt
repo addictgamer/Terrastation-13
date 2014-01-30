@@ -13,6 +13,7 @@
 
 # KEYWORDS:
 # +ADMIN = general admin tools, verbs etc
+# +MOD = lesser admin powers
 # +FUN = events, other event-orientated actions. Access to the fun secrets in the secrets panel.
 # +BAN = the ability to ban, jobban and fullban
 # +STEALTH = the ability to stealthmin (make yourself appear with a fake name to everyone but other admins

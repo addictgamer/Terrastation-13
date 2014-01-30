@@ -120,6 +120,8 @@ client/proc/display_admin_reports()
 
 client/proc/Report(mob/M as mob in world)
 	set category = "Admin"
+	set name = "Report"
+	set desc = "Make a report on another player"
 	if(!src.holder)
 		return
 

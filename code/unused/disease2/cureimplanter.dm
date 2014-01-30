@@ -2,9 +2,9 @@
 	name = "Hypospray injector"
 	icon = 'icons/obj/items.dmi'
 	icon_state = "implanter1"
-	var/datum/disease2/resistance/resistance = null
+	var/datum/disease/resistance/resistance = null
 	var/works = 0
-	var/datum/disease2/disease/virus2 = null
+	var/datum/disease/disease/virus2 = null
 	item_state = "syringe_0"
 	throw_speed = 1
 	throw_range = 5
@@ -39,4 +39,5 @@
 		else if(works == 2)
 			M.adjustToxLoss(rand(50,100))
 		else if(works == 3)
+			infect_virus2(M,virus2,1)
 			infect_virus2(M,virus2,1)

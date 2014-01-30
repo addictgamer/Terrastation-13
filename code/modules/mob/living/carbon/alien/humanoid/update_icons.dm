@@ -1,22 +1,23 @@
-//Xeno Overlays Indexes//////////
-#define X_HEAD_LAYER			1
-#define X_SUIT_LAYER			2
-#define X_L_HAND_LAYER			3
-#define X_R_HAND_LAYER			4
-#define TARGETED_LAYER			5
-#define X_TOTAL_LAYERS			5
-/////////////////////////////////
+
+// Xeno Overlays Indexes
+#define X_HEAD_LAYER	1
+#define X_SUIT_LAYER	2
+#define X_L_HAND_LAYER	3
+#define X_R_HAND_LAYER	4
+#define X_FIRE_LAYER	5
+#define TARGETED_LAYER	6
+#define X_TOTAL_LAYERS	6
 
 /mob/living/carbon/alien/humanoid
 	var/list/overlays_lying[X_TOTAL_LAYERS]
 	var/list/overlays_standing[X_TOTAL_LAYERS]
 
 /mob/living/carbon/alien/humanoid/update_icons()
-	lying_prev = lying	//so we don't update overlays for lying/standing unless our stance changes again
-	update_hud()		//TODO: remove the need for this to be here
+	lying_prev = lying	// so we don't update overlays for lying/standing unless our stance changes again
+	update_hud()		// TODO: remove the need for this to be here
 	overlays.Cut()
 	if(stat == DEAD)
-		//If we mostly took damage from fire
+	// If we mostly took damage from fire
 		if(fireloss > 125)
 			icon_state = "alien[caste]_husked"
 		else
@@ -49,16 +50,29 @@
 	update_inv_pockets(0)
 	update_hud()
 	update_icons()
-
+	update_fire()
 
 /mob/living/carbon/alien/humanoid/update_hud()
-	//TODO
+// TODO
 	if (client)
-//		if(other)	client.screen |= hud_used.other		//Not used
-//		else		client.screen -= hud_used.other		//Not used
+		//if(other)	client.screen |= hud_used.other		//Not used
+		//else		client.screen -= hud_used.other		//Not used
 		client.screen |= contents
 
-
+/mob/living/carbon/alien/humanoid/update_fire()
+	overlays -= overlays_lying[X_FIRE_LAYER]
+	overlays -= overlays_standing[X_FIRE_LAYER]
+	if(on_fire)
+		overlays_lying[X_FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="Lying", "layer"= -X_FIRE_LAYER)
+		overlays_standing[X_FIRE_LAYER] = image("icon"='icons/mob/OnFire.dmi', "icon_state"="Standing", "layer"= -X_FIRE_LAYER)
+		if(src.lying)
+			overlays += overlays_lying[X_FIRE_LAYER]
+		else
+			overlays += overlays_standing[X_FIRE_LAYER]
+		return
+	else
+		overlays_lying[X_FIRE_LAYER] = null
+		overlays_standing[X_FIRE_LAYER] = null
 
 /mob/living/carbon/alien/humanoid/update_inv_wear_suit(var/update_icons=1)
 	if(wear_suit)
@@ -145,10 +159,11 @@
 		overlays_standing[TARGETED_LAYER]	= null
 	if(update_icons)		update_icons()
 
-//Xeno Overlays Indexes//////////
+//Xeno Overlays Indexes
 #undef X_HEAD_LAYER
 #undef X_SUIT_LAYER
 #undef X_L_HAND_LAYER
 #undef X_R_HAND_LAYER
+#undef X_FIRE_LAYER
 #undef TARGETED_LAYER
 #undef X_TOTAL_LAYERS

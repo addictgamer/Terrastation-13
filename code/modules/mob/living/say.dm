@@ -1,3 +1,4 @@
+
 #define SAY_MINIMUM_PRESSURE 10
 var/list/department_radio_keys = list(
 	  ":r" = "right hand",	"#r" = "right hand",	".r" = "right hand",
@@ -32,8 +33,8 @@ var/list/department_radio_keys = list(
 	  ":U" = "Supply",		"#U" = "Supply",		".U" = "Supply",
 	  ":G" = "changeling",	"#G" = "changeling",	".G" = "changeling",
 
-	  //kinda localization -- rastaf0
-	  //same keys as above, but on russian keyboard layout. This file uses cp1251 as encoding.
+	// kinda localization -- rastaf0
+	// same keys as above, but on russian keyboard layout. This file uses cp1251 as encoding.
 	  ":ê" = "right hand",	"#ê" = "right hand",	".ê" = "right hand",
 	  ":ä" = "left hand",	"#ä" = "left hand",		".ä" = "left hand",
 	  ":ø" = "intercom",	"#ø" = "intercom",		".ø" = "intercom",
@@ -74,25 +75,22 @@ var/list/department_radio_keys = list(
 		if(dongle.translate_hive) return 1
 
 /mob/living/say(var/message)
-
 	/*
 		Formatting and sanitizing.
 	*/
-
 	message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN))
 	message = capitalize(message)
 
 	/*
 		Sanity checking and speech failure.
 	*/
-
 	if (!message)
 		return
 
 	if(silent)
 		return
 
-	if (stat == 2) // Dead.
+	if (stat == 2)	// Dead.
 		return say_dead(message)
 	else if (stat) // Unconcious.
 		return
@@ -103,19 +101,23 @@ var/list/department_radio_keys = list(
 			return
 		if (src.client.handle_spam_prevention(message,MUTE_IC))
 			return
+// undo last word status.
+	if(ishuman(src))
+		var/mob/living/carbon/human/H=src
+		if(H.said_last_words)
+			H.said_last_words=0
 
-	// Mute disability
+// Mute disability
 	if (sdisabilities & MUTE)
 		return
 
-	// Muzzled.
+// Muzzled.
 	if (istype(wear_mask, /obj/item/clothing/mask/muzzle))
 		return
 
-	// Emotes.
+// Emotes.
 	if (copytext(message, 1, 2) == "*" && !stat)
 		return emote(copytext(message, 2))
-
 	/*
 		Identity hiding.
 	*/
@@ -127,11 +129,10 @@ var/list/department_radio_keys = list(
 	/*
 		Now we get into the real meat of the say processing. Determining the message mode.
 	*/
-
 	var/italics = 0
 	var/message_range = null
 	var/message_mode = null
-	var/datum/language/speaking = null //For use if a specific language is being spoken.
+	var/datum/language/speaking = null	// For use if a specific language is being spoken.
 
 	var/braindam = getBrainLoss()
 	if (braindam >= 60)
@@ -140,18 +141,18 @@ var/list/department_radio_keys = list(
 		if(prob(braindam))
 			message = uppertext(message)
 
-	// General public key. Special message handling
+// General public key. Special message handling
 	else if (copytext(message, 1, 2) == ";" || prob(braindam/2))
 		if (ishuman(src))
 			message_mode = "headset"
 		else if(ispAI(src) || isrobot(src))
 			message_mode = "pAI"
 		message = copytext(message, 2)
-	// Begin checking for either a message mode or a language to speak.
+// Begin checking for either a message mode or a language to speak.
 	else if (length(message) >= 2)
 		var/channel_prefix = copytext(message, 1, 3)
 
-		//Check if the person is speaking a language that they know.
+	// Check if the person is speaking a language that they know.
 		if(languages.len)
 			for(var/datum/language/L in languages)
 				if(lowertext(channel_prefix) == ":[L.key]")
@@ -161,10 +162,10 @@ var/list/department_radio_keys = list(
 		if (message_mode || speaking || copytext(message,1,2) == ":")
 			message = trim(copytext(message, 3))
 			if (!(istype(src,/mob/living/carbon/human) || istype(src,/mob/living/carbon/monkey) || istype(src, /mob/living/simple_animal/parrot) || isrobot(src) && (message_mode=="department" || (message_mode in radiochannels))))
-				message_mode = null //only humans can use headsets
+				message_mode = null	// only humans can use headsets
 
 	if(src.stunned > 2 || (traumatic_shock > 61 && prob(50)))
-		message_mode = null //Stunned people shouldn't be able to physically turn on their radio/hold down the button to speak into it
+		message_mode = null	// Stunned people shouldn't be able to physically turn on their radio/hold down the button to speak into it
 
 	if (!message)
 		return
@@ -212,7 +213,7 @@ var/list/department_radio_keys = list(
 			message_range = 1
 			italics = 1
 
-		//I see no reason to restrict such way of whispering
+	// I see no reason to restrict such way of whispering
 		if ("whisper")
 			whisper(message)
 			return
@@ -225,7 +226,7 @@ var/list/department_radio_keys = list(
 
 		if ("alientalk")
 			if(alien_talk_understand || hivecheck())
-			//message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN)) //seems redundant
+			// message = trim(copytext(sanitize(message), 1, MAX_MESSAGE_LEN)) //seems redundant
 				alien_talk(message)
 			return
 
@@ -255,7 +256,7 @@ var/list/department_radio_keys = list(
 					if((Changeling.mind && Changeling.mind.changeling) || istype(Changeling, /mob/dead/observer))
 						Changeling << "<i><font color=#800080><b>[mind.changeling.changelingID]:</b> [message]</font></i>"
 				return
-////SPECIAL HEADSETS START
+// SPECIAL HEADSETS START
 		else
 			//world << "SPECIAL HEADSETS"
 			if (message_mode in radiochannels)
@@ -270,12 +271,12 @@ var/list/department_radio_keys = list(
 						used_radios += src:ears
 				message_range = 1
 				italics = 1
-/////SPECIAL HEADSETS END
+// SPECIAL HEADSETS END
 
 	var/datum/gas_mixture/environment = loc.return_air()
 	if(environment)
 		var/pressure = environment.return_pressure()
-		if (pressure < SAY_MINIMUM_PRESSURE)	//in space no one can hear you scream
+		if (pressure < SAY_MINIMUM_PRESSURE)	// in space no one can hear you scream
 			italics = 1
 			message_range = 1
 
@@ -284,10 +285,10 @@ var/list/department_radio_keys = list(
 	listening = get_mobs_in_view(message_range, src)
 	for(var/mob/M in player_list)
 		if (!M.client)
-			continue //skip monkeys and leavers
+			continue	// skip monkeys and leavers
 		if (istype(M, /mob/new_player))
 			continue
-		if(M.stat == DEAD && (M.client.prefs.toggles & CHAT_GHOSTEARS) && src.client) // src.client is so that ghosts don't have to listen to mice
+		if(M.stat == DEAD && (M.client.prefs.toggles & CHAT_GHOSTEARS) && src.client)	// src.client is so that ghosts don't have to listen to mice
 			listening|=M
 
 	var/turf/T = get_turf(src)
@@ -300,23 +301,23 @@ var/list/department_radio_keys = list(
 		W |= M.contents
 
 	for (var/atom/A in W)
-		if(istype(A, /mob/living/simple_animal/parrot)) //Parrot speech mimickry
+		if(istype(A, /mob/living/simple_animal/parrot))	// Parrot speech mimickry
 			if(A == src)
-				continue //Dont imitate ourselves
+				continue	// Dont imitate ourselves
 
 			var/mob/living/simple_animal/parrot/P = A
 			if(P.speech_buffer.len >= 10)
 				P.speech_buffer.Remove(pick(P.speech_buffer))
 			P.speech_buffer.Add(message)
 
-		if(istype(A, /obj/)) //radio in pocket could work, radio in backpack wouldn't --rastaf0
+		if(istype(A, /obj/))	// radio in pocket could work, radio in backpack wouldn't --rastaf0
 			var/obj/O = A
 			spawn (0)
 				if(O && !istype(O.loc, /obj/item/weapon/storage))
 					O.hear_talk(src, message)
 
 
-/*			Commented out as replaced by code above from BS12
+/*	// Commented out as replaced by code above from BS12
 	for (var/obj/O in ((V | contents)-used_radios)) //radio in pocket could work, radio in backpack wouldn't --rastaf0
 		spawn (0)
 			if (O)
@@ -331,8 +332,8 @@ var/list/department_radio_keys = list(
 */
 
 
-	var/list/heard_a = list() // understood us
-	var/list/heard_b = list() // didn't understand us
+	var/list/heard_a = list()	// understood us
+	var/list/heard_b = list()	// didn't understand us
 
 	for (var/M in listening)
 		if(hascall(M,"say_understands"))

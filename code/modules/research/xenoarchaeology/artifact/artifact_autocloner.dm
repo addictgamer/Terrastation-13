@@ -19,7 +19,7 @@
 
 	ticks_required_to_spawn = rand(240,1440)
 
-	//33% chance to spawn nasties
+// 33% chance to spawn nasties
 	if(prob(33))
 		spawn_type = pick(\
 		/mob/living/simple_animal/hostile/giant_spider/nurse,\
@@ -44,7 +44,7 @@
 		/mob/living/carbon/monkey\
 		)
 
-//todo: how the hell is the asteroid permanently powered?
+// TODO: how the hell is the asteroid permanently powered?
 /obj/machinery/auto_cloner/process()
 	if(powered(power_channel))
 		if(!previous_power_state)
@@ -52,12 +52,12 @@
 			icon_state = "cellold1"
 			src.visible_message("\blue \icon[src] [src] suddenly comes to life!")
 
-		//slowly grow a mob
+	// slowly grow a mob
 		current_ticks_spawning++
 		if(prob(5))
 			src.visible_message("\blue \icon[src] [src] [pick("gloops","glugs","whirrs","whooshes","hisses","purrs","hums","gushes")].")
 
-		//if we've finished growing...
+	// if we've finished growing...
 		if(current_ticks_spawning >= ticks_required_to_spawn)
 			current_ticks_spawning = 0
 			use_power = 1
@@ -67,7 +67,7 @@
 			if(spawn_type)
 				new spawn_type(src.loc)
 
-		//if we're getting close to finished, kick into overdrive power usage
+	// if we're getting close to finished, kick into overdrive power usage
 		if(current_ticks_spawning / ticks_required_to_spawn > 0.75)
 			use_power = 2
 			icon_state = "cellold2"
@@ -82,6 +82,6 @@
 			icon_state = "cellold0"
 			src.visible_message("\blue \icon[src] [src] suddenly shuts down.")
 
-		//cloned mob slowly breaks down
+	// cloned mob slowly breaks down
 		if(current_ticks_spawning > 0)
 			current_ticks_spawning--

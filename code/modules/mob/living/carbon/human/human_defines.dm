@@ -1,32 +1,33 @@
+
 /mob/living/carbon/human
-	//Hair colour and style
+// Hair colour and style
 	var/r_hair = 0
 	var/g_hair = 0
 	var/b_hair = 0
 	var/h_style = "Bald"
 
-	//Facial hair colour and style
+// Facial hair colour and style
 	var/r_facial = 0
 	var/g_facial = 0
 	var/b_facial = 0
 	var/f_style = "Shaved"
 
-	//Eye colour
+// Eye colour
 	var/r_eyes = 0
 	var/g_eyes = 0
 	var/b_eyes = 0
 
-	var/s_tone = 0	//Skin tone
+	var/s_tone = 0	// Skin tone
 
-	var/lip_style = null	//no lipstick by default- arguably misleading, as it could be used for general makeup
+	var/lip_style = null	// no lipstick by default- arguably misleading, as it could be used for general makeup
 
-	var/age = 30		//Player's age (pure fluff)
-	var/b_type = "A+"	//Player's bloodtype (Not currently used, just character fluff)
+	var/age = 30	// Player's age (pure fluff)
+	var/b_type = "A+"	// Player's bloodtype (Not currently used, just character fluff)
 
-	var/underwear = 1	//Which underwear the player wants
-	var/backbag = 2		//Which backpack type the player has chosen. Nothing, Satchel or Backpack.
+	var/underwear = 1	// Which underwear the player wants
+	var/backbag = 2	// Which backpack type the player has chosen. Nothing, Satchel or Backpack.
 
-	//Equipment slots
+// Equipment slots
 	var/obj/item/wear_suit = null
 	var/obj/item/w_uniform = null
 	var/obj/item/shoes = null
@@ -47,11 +48,13 @@
 	var/icon/stand_icon = null
 	var/icon/lying_icon = null
 
-	var/miming = null //Toggle for the mime's abilities.
-	var/special_voice = "" // For changing our voice. Used by a symptom.
+	var/miming = null	// Toggle for the mime's abilities.
+	var/special_voice = ""	// For changing our voice. Used by a symptom.
 
-	var/failed_last_breath = 0 //This is used to determine if the mob failed a breath. If they did fail a brath, they will attempt to breathe each tick, otherwise just once per 4 ticks.
+	var/failed_last_breath = 0	// This is used to determine if the mob failed a breath. If they did fail a brath, they will attempt to breathe each tick, otherwise just once per 4 ticks.
 
-	var/xylophone = 0 //For the spoooooooky xylophone cooldown
+	var/xylophone = 0	// For the spoooooooky xylophone cooldown
 
 	var/mob/remoteview_target = null
+
+	var/said_last_words = 0

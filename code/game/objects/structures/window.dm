@@ -3,7 +3,7 @@
 	desc = "A window."
 	icon = 'icons/obj/structures.dmi'
 	density = 1
-	layer = 3.2//Just above doors
+	layer = 3.2	// Just above doors
 	pressure_resistance = 4*ONE_ATMOSPHERE
 	anchored = 1.0
 	flags = ON_BORDER
@@ -11,9 +11,10 @@
 	var/ini_dir = null
 	var/state = 0
 	var/reinf = 0
-//	var/silicate = 0 // number of units of silicate
-//	var/icon/silicateIcon = null // the silicated icon
-
+	var/basestate
+	var/shardtype = /obj/item/weapon/shard
+	//var/silicate = 0	// number of units of silicate
+	//var/icon/silicateIcon = null	// the silicated icon
 
 /obj/structure/window/bullet_act(var/obj/item/projectile/Proj)
 	health -= Proj.damage
@@ -23,7 +24,6 @@
 		new /obj/item/stack/rods(loc)
 		del(src)
 	return
-
 
 /obj/structure/window/ex_act(severity)
 	switch(severity)
@@ -42,19 +42,16 @@
 				del(src)
 				return
 
-
 /obj/structure/window/blob_act()
 	new /obj/item/weapon/shard(loc)
 	if(reinf) new /obj/item/stack/rods(loc)
 	del(src)
-
 
 /obj/structure/window/meteorhit()
 	//world << "glass at [x],[y],[z] Mhit"
 	new /obj/item/weapon/shard( loc )
 	if(reinf) new /obj/item/stack/rods( loc)
 	del(src)
-
 
 /obj/structure/window/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
 	if(istype(mover) && mover.checkpass(PASSGLASS))
@@ -66,14 +63,12 @@
 	else
 		return 1
 
-
 /obj/structure/window/CheckExit(atom/movable/O as mob|obj, target as turf)
 	if(istype(O) && O.checkpass(PASSGLASS))
 		return 1
 	if(get_dir(O.loc, target) == dir)
 		return 0
 	return 1
-
 
 /obj/structure/window/hitby(AM as mob|obj)
 	..()
@@ -95,7 +90,6 @@
 		new /obj/item/weapon/shard(loc)
 		if(reinf) new /obj/item/stack/rods(loc)
 		del(src)
-
 
 /obj/structure/window/attack_hand(mob/user as mob)
 	if(HULK in user.mutations)
@@ -380,18 +374,53 @@
 
 
 /obj/structure/window/basic
+	desc = "It looks thin and flimsy. A few knocks with... anything, really should shatter it."
 	icon_state = "window"
+	basestate = "window"
+
+/obj/structure/window/plasmabasic
+	name = "plasma window"
+	desc = "A plasma-glass alloy window. It looks insanely tough to break. It appears it's also insanely tough to burn through."
+	basestate = "plasmawindow"
+	icon_state = "plasmawindow"
+	shardtype = /obj/item/weapon/shard/plasma
+	health = 120
+
+/obj/structure/window/plasmabasic/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	if(exposed_temperature > T0C + 32000)
+		hit(round(exposed_volume / 1000), 0)
+	..()
+
+/obj/structure/window/plasmareinforced
+	name = "reinforced plasma window"
+	desc = "A plasma-glass alloy window, with rods supporting it. It looks hopelessly tough to break. It also looks completely fireproof, considering how basic plasma windows are insanely fireproof."
+	basestate = "plasmarwindow"
+	icon_state = "plasmarwindow"
+	shardtype = /obj/item/weapon/shard/plasma
+	reinf = 1
+	health = 160
+
+/obj/structure/window/plasmareinforced/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	return
 
 /obj/structure/window/reinforced
 	name = "reinforced window"
+	desc = "It looks rather strong. Might take a few good hits to shatter it."
 	icon_state = "rwindow"
+	basestate = "rwindow"
+	health = 40
 	reinf = 1
 
 /obj/structure/window/reinforced/tinted
 	name = "tinted window"
+	desc = "It looks rather strong and opaque. Might take a few good hits to shatter it."
 	icon_state = "twindow"
+	basestate = "twindow"
 	opacity = 1
 
 /obj/structure/window/reinforced/tinted/frosted
 	name = "frosted window"
+	desc = "It looks rather strong and frosted over. Looks like it might take a few less hits then a normal reinforced window."
 	icon_state = "fwindow"
+	basestate = "fwindow"
+	health = 30

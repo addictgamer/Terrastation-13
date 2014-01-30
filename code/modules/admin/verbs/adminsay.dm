@@ -1,6 +1,7 @@
+
 /client/proc/cmd_admin_say(msg as text)
+	set name = "Asay"	// Gave this shit a shorter name so you only have to time out "asay" rather than "admin say" to use it --NeoFite
 	set category = "Special Verbs"
-	set name = "Asay" //Gave this shit a shorter name so you only have to time out "asay" rather than "admin say" to use it --NeoFite
 	set hidden = 1
 	if(!check_rights(R_ADMIN))	return
 
@@ -14,13 +15,12 @@
 		for(var/client/C in admins)
 			if(R_ADMIN & C.holder.rights)
 				C << msg
-
-	feedback_add_details("admin_verb","M") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	feedback_add_details("admin_verb","M")	// If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/cmd_mod_say(msg as text)
-	set category = "Special Verbs"
 	set name = "Msay"
 	set hidden = 1
+	set category = "Special Verbs"
 
 	if(!check_rights(R_ADMIN|R_MOD))	return
 

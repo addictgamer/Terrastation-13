@@ -1,7 +1,7 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
 
-/var/const/access_security = 1 // Security equipment
-/var/const/access_brig = 2 // Brig timers and permabrig
+/var/const/access_security = 1	// Security equipment
+/var/const/access_brig = 2	// Brig timers and permabrig
 /var/const/access_armory = 3
 /var/const/access_forensics_lockers= 4
 /var/const/access_medical = 5
@@ -48,7 +48,7 @@
 /var/const/access_theatre = 46
 /var/const/access_research = 47
 /var/const/access_mining = 48
-/var/const/access_mining_office = 49 //not in use
+/var/const/access_mining_office = 49	// not in use
 /var/const/access_mailsorting = 50
 /var/const/access_mint = 51
 /var/const/access_mint_vault = 52
@@ -58,31 +58,31 @@
 /var/const/access_ce = 56
 /var/const/access_hop = 57
 /var/const/access_hos = 58
-/var/const/access_RC_announce = 59 //Request console announcements
-/var/const/access_keycard_auth = 60 //Used for events which require at least two people to confirm them
-/var/const/access_tcomsat = 61 // has access to the entire telecomms satellite / machinery
+/var/const/access_RC_announce = 59	// Request console announcements
+/var/const/access_keycard_auth = 60	// Used for events which require at least two people to confirm them
+/var/const/access_tcomsat = 61	// has access to the entire telecomms satellite / machinery
 /var/const/access_gateway = 62
-/var/const/access_sec_doors = 63 // Security front doors
-/var/const/access_psychiatrist = 64 // Psychiatrist's office
+/var/const/access_sec_doors = 63	// Security front doors
+/var/const/access_psychiatrist = 64	// Psychiatrist's office
 /var/const/access_xenoarch = 65
 
 	//BEGIN CENTCOM ACCESS
 	/*Should leave plenty of room if we need to add more access levels.
 /var/const/Mostly for admin fun times.*/
-/var/const/access_cent_general = 101//General facilities.
-/var/const/access_cent_thunder = 102//Thunderdome.
-/var/const/access_cent_specops = 103//Special Ops.
-/var/const/access_cent_medical = 104//Medical/Research
-/var/const/access_cent_living = 105//Living quarters.
-/var/const/access_cent_storage = 106//Generic storage areas.
-/var/const/access_cent_teleporter = 107//Teleporter.
-/var/const/access_cent_creed = 108//Creed's office.
-/var/const/access_cent_captain = 109//Captain's office/ID comp/AI.
+/var/const/access_cent_general = 101	// General facilities.
+/var/const/access_cent_thunder = 102	// Thunderdome.
+/var/const/access_cent_specops = 103	// Special Ops.
+/var/const/access_cent_medical = 104	// Medical/Research
+/var/const/access_cent_living = 105	// Living quarters.
+/var/const/access_cent_storage = 106	// Generic storage areas.
+/var/const/access_cent_teleporter = 107	// Teleporter.
+/var/const/access_cent_creed = 108	// Creed's office.
+/var/const/access_cent_captain = 109	// Captain's office/ID comp/AI.
 
-	//The Syndicate
-/var/const/access_syndicate = 150//General Syndicate Access
+	// The Syndicate
+/var/const/access_syndicate = 150	// General Syndicate Access
 
-	//MONEY
+	// MONEY
 /var/const/access_crate_cash = 200
 
 /obj/var/list/req_access = null
@@ -92,7 +92,7 @@
 
 /obj/New()
 	..()
-	//NOTE: If a room requires more than one access (IE: Morgue + medbay) set the req_acesss_txt to "5;6" if it requires 5 and 6
+// NOTE: If a room requires more than one access (IE: Morgue + medbay) set the req_acesss_txt to "5;6" if it requires 5 and 6
 	if(src.req_access_txt)
 		var/list/req_access_str = text2list(req_access_txt,";")
 		if(!req_access)
@@ -113,22 +113,22 @@
 
 
 
-//returns 1 if this mob has sufficient access to use this object
+// returns 1 if this mob has sufficient access to use this object
 /obj/proc/allowed(mob/M)
-	//check if it doesn't require any access at all
+// check if it doesn't require any access at all
 	if(src.check_access(null))
 		return 1
 	if(istype(M, /mob/living/silicon))
-		//AI can do whatever he wants
+	// AI can do whatever he wants
 		return 1
 	else if(istype(M, /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
-		//if they are holding or wearing a card that has access, that works
+	// if they are holding or wearing a card that has access, that works
 		if(src.check_access(H.get_active_hand()) || src.check_access(H.wear_id))
 			return 1
 	else if(istype(M, /mob/living/carbon/monkey) || istype(M, /mob/living/carbon/alien/humanoid))
 		var/mob/living/carbon/george = M
-		//they can only hold things :(
+	// they can only hold things :(
 		if(src.check_access(george.get_active_hand()))
 			return 1
 	return 0
@@ -141,22 +141,22 @@
 
 /obj/proc/check_access(obj/item/I)
 
-	if(!src.req_access && !src.req_one_access) //no requirements
+	if(!src.req_access && !src.req_one_access)	// no requirements
 		return 1
-	if(!istype(src.req_access, /list)) //something's very wrong
+	if(!istype(src.req_access, /list))	// something's very wrong
 		return 1
 
 	var/list/L = src.req_access
-	if(!L.len && (!src.req_one_access || !src.req_one_access.len)) //no requirements
+	if(!L.len && (!src.req_one_access || !src.req_one_access.len))	// no requirements
 		return 1
 	if(!I)
 		return 0
 	for(var/req in src.req_access)
-		if(!(req in I.GetAccess())) //doesn't have this access
+		if(!(req in I.GetAccess()))	// doesn't have this access
 			return 0
 	if(src.req_one_access && src.req_one_access.len)
 		for(var/req in src.req_one_access)
-			if(req in I.GetAccess()) //has an access from the single access list
+			if(req in I.GetAccess())	// has an access from the single access list
 				return 1
 		return 0
 	return 1
@@ -169,11 +169,11 @@
 	if(!L)	return 0
 	if(!istype(L, /list))	return 0
 	for(var/req in src.req_access)
-		if(!(req in L)) //doesn't have this access
+		if(!(req in L))	// doesn't have this access
 			return 0
 	if(src.req_one_access && src.req_one_access.len)
 		for(var/req in src.req_one_access)
-			if(req in L) //has an access from the single access list
+			if(req in L)	// has an access from the single access list
 				return 1
 		return 0
 	return 1
@@ -222,38 +222,38 @@
 	switch(code)
 		if(0)
 			return get_all_accesses()
-		if(1) //security
+		if(1) // security
 			return list(access_sec_doors, access_security, access_brig, access_armory, access_forensics_lockers, access_court, access_hos)
-		if(2) //medbay
+		if(2) // medbay
 			return list(access_medical, access_genetics, access_morgue, access_chemistry, access_psychiatrist, access_virology, access_surgery, access_cmo)
-		if(3) //research
+		if(3) // research
 			return list(access_research, access_tox, access_tox_storage, access_robotics, access_xenobiology, access_xenoarch, access_rd)
-		if(4) //engineering and maintenance
+		if(4) // engineering and maintenance
 			return list(access_construction, access_maint_tunnels, access_engine, access_engine_equip, access_external_airlocks, access_tech_storage, access_atmospherics, access_ce)
-		if(5) //command
+		if(5) // command
 			return list(access_heads, access_RC_announce, access_keycard_auth, access_change_ids, access_ai_upload, access_teleporter, access_eva, access_tcomsat, access_gateway, access_all_personal_lockers, access_heads_vault, access_hop, access_captain)
-		if(6) //station general
+		if(6) // station general
 			return list(access_kitchen,access_bar, access_hydroponics, access_janitor, access_chapel_office, access_crematorium, access_library, access_theatre, access_lawyer, access_clown, access_mime)
-		if(7) //supply
+		if(7) // supply
 			return list(access_mailsorting, access_mining, access_mining_station, access_cargo, access_qm)
 
 /proc/get_region_accesses_name(var/code)
 	switch(code)
 		if(0)
 			return "All"
-		if(1) //security
+		if(1) // security
 			return "Security"
-		if(2) //medbay
+		if(2) // medbay
 			return "Medbay"
-		if(3) //research
+		if(3) // research
 			return "Research"
-		if(4) //engineering and maintenance
+		if(4) // engineering and maintenance
 			return "Engineering"
-		if(5) //command
+		if(5) // command
 			return "Command"
-		if(6) //station general
+		if(6) // station general
 			return "Station General"
-		if(7) //supply
+		if(7) // supply
 			return "Supply"
 
 
@@ -343,10 +343,10 @@
 			return "Chief Medical Officer"
 		if(access_qm)
 			return "Quartermaster"
-/*		if(access_clown)
+		if(access_clown)
 			return "HONK! Access"
 		if(access_mime)
-			return "Silent Access"*/
+			return "Silent Access"
 		if(access_surgery)
 			return "Surgery"
 		if(access_theatre)
@@ -424,8 +424,8 @@
 /proc/get_all_centcom_jobs()
 	return list("VIP Guest","Custodian","Thunderdome Overseer","Intel Officer","Medical Officer","Death Commando","Research Officer","BlackOps Commander","Supreme Commander")
 
-//gets the actual job rank (ignoring alt titles)
-//this is used solely for sechuds
+// gets the actual job rank (ignoring alt titles)
+// this is used solely for sechuds
 /obj/proc/GetJobRealName()
 	if (!istype(src, /obj/item/device/pda) && !istype(src,/obj/item/weapon/card/id))
 		return
@@ -448,9 +448,9 @@
 
 	return "Unknown"
 
-//gets the alt title, failing that the actual job rank
-//this is unused
-/obj/proc/sdsdsd()	//GetJobDisplayName
+// gets the alt title, failing that the actual job rank
+// this is unused
+/obj/proc/sdsdsd()	// GetJobDisplayName
 	if (!istype(src, /obj/item/device/pda) && !istype(src,/obj/item/weapon/card/id))
 		return
 
@@ -495,10 +495,10 @@ proc/FindNameFromID(var/mob/living/carbon/human/H)
 		if(ID)
 			return ID.registered_name
 
-proc/get_all_job_icons() //For all existing HUD icons
+proc/get_all_job_icons()	// For all existing HUD icons
 	return get_all_jobs() + list("Prisoner")
 
-/obj/proc/GetJobName() //Used in secHUD icon generation
+/obj/proc/GetJobName()	// Used in secHUD icon generation
 	if (!istype(src, /obj/item/device/pda) && !istype(src,/obj/item/weapon/card/id))
 		return
 
@@ -510,9 +510,8 @@ proc/get_all_job_icons() //For all existing HUD icons
 	if(istype(src, /obj/item/weapon/card/id))
 		jobName = src:assignment
 
-	if(jobName in get_all_job_icons()) //Check if the job has a hud icon
+	if(jobName in get_all_job_icons())	// Check if the job has a hud icon
 		return jobName
-	if(jobName in get_all_centcom_jobs()) //Return with the NT logo if it is a Centcom job
+	if(jobName in get_all_centcom_jobs())	// Return with the NT logo if it is a Centcom job
 		return "Centcom"
-	return "Unknown" //Return unknown if none of the above apply
-
+	return "Unknown"	// Return unknown if none of the above apply

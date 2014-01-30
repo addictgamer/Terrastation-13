@@ -1,4 +1,5 @@
-/obj/machinery/disease2/diseaseanalyser
+
+/obj/machinery/disease/diseaseanalyser
 	name = "Disease Analyser"
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "analyser"
@@ -10,7 +11,7 @@
 
 	var/obj/item/weapon/virusdish/dish = null
 
-/obj/machinery/disease2/diseaseanalyser/attackby(var/obj/I as obj, var/mob/user as mob)
+/obj/machinery/disease/diseaseanalyser/attackby(var/obj/I as obj, var/mob/user as mob)
 	if(istype(I,/obj/item/weapon/virusdish))
 		var/mob/living/carbon/c = user
 		if(!dish)
@@ -25,7 +26,7 @@
 	return
 
 
-/obj/machinery/disease2/diseaseanalyser/process()
+/obj/machinery/disease/diseaseanalyser/process()
 	if(stat & (NOPOWER|BROKEN))
 		return
 	use_power(500)

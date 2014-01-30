@@ -22,6 +22,20 @@
 	var/planted = 0 // Is it occupied?
 	var/harvest = 0 //Ready to harvest?
 	var/obj/item/seeds/myseed = null // The currently planted seed
+	var/opened = 0.0
+
+/obj/machinery/hydroponics/New()
+	..()
+	component_parts = list()
+	component_parts += new /obj/item/weapon/circuitboard/hydroponics
+	component_parts += new /obj/item/weapon/stock_parts/matter_bin
+	component_parts += new /obj/item/weapon/stock_parts/matter_bin
+	component_parts += new /obj/item/weapon/stock_parts/scanning_module
+	component_parts += new /obj/item/weapon/stock_parts/capacitor
+	component_parts += new /obj/item/weapon/reagent_containers/glass/beaker
+	component_parts += new /obj/item/weapon/reagent_containers/glass/beaker
+	component_parts += new /obj/item/weapon/stock_parts/console_screen
+	RefreshParts()
 
 /obj/machinery/hydroponics/bullet_act(var/obj/item/projectile/Proj) //Works with the Somatoray to modify plant variables.
 	if(istype(Proj ,/obj/item/projectile/energy/floramut))
@@ -31,7 +45,7 @@
 		if(planted && myseed.yield == 0)//Oh god don't divide by zero you'll doom us all.
 			myseed.yield += 1
 			//world << "Yield increased by 1, from 0, to a total of [myseed.yield]"
-		else if (planted && (prob(1/(myseed.yield * myseed.yield) *100)))//This formula gives you diminishing returns based on yield. 100% with 1 yield, decreasing to 25%, 11%, 6, 4, 2...
+		else if (planted && (prob(1/(myseed.yield * myseed.yield) *100)))	// This formula gives you diminishing returns based on yield. 100% with 1 yield, decreasing to 25%, 11%, 6, 4, 2...
 			myseed.yield += 1
 			//world << "Yield increased by 1, to a total of [myseed.yield]"
 	else
@@ -337,7 +351,11 @@ obj/machinery/hydroponics/proc/mutatespecie() // Mutagent produced a new plant!
 
 	else if ( istype(myseed, /obj/item/seeds/chiliseed ))
 		del(myseed)
-		myseed = new /obj/item/seeds/icepepperseed
+		switch(rand(1,100))
+			if(1 to 60)
+				myseed = new /obj/item/seeds/icepepperseed
+			if(61 to 100)
+				myseed = new /obj/item/seeds/chillighost
 
 	else if ( istype(myseed, /obj/item/seeds/appleseed ))
 		del(myseed)
@@ -368,19 +386,30 @@ obj/machinery/hydroponics/proc/mutatespecie() // Mutagent produced a new plant!
 	else if ( istype(myseed, /obj/item/seeds/bluetomatoseed ))
 		del(myseed)
 		myseed = new /obj/item/seeds/bluespacetomatoseed
-
-	else if ( istype(myseed, /obj/item/seeds/grapeseed ))
-		del(myseed)
-		myseed = new /obj/item/seeds/greengrapeseed
 /*
-	else if ( istype(myseed, /obj/item/seeds/tomatoseed ))
+	else if ( istype(myseed, /obj/item/seeds/bloodtomatoseed ))
 		del(myseed)
 		myseed = new /obj/item/seeds/gibtomatoseed
 */
+	else if ( istype(myseed, /obj/item/seeds/grapeseed ))
+		del(myseed)
+		myseed = new /obj/item/seeds/greengrapeseed
+
 	else if ( istype(myseed, /obj/item/seeds/eggplantseed ))
 		del(myseed)
 		myseed = new /obj/item/seeds/eggyseed
 
+	else if ( istype(myseed, /obj/item/seeds/soyaseed ))
+		del(myseed)
+		myseed = new /obj/item/seeds/koiseed
+
+	else if ( istype(myseed, /obj/item/seeds/sunflowerseed ))
+		del(myseed)
+		switch(rand(1,100))
+			if(1 to 60)
+				myseed = new /obj/item/seeds/moonflowerseed
+			if(61 to 100)
+				myseed = new /obj/item/seeds/novaflowerseed
 	else
 		return
 
@@ -781,6 +810,31 @@ obj/machinery/hydroponics/attackby(var/obj/item/O as obj, var/mob/user as mob)
 			A.icon_state = src.icon_state
 			A.hydrotray_type = src.type
 			del(src)
+	else if(istype(O, /obj/item/weapon/screwdriver))
+		if(anchored)
+			user << "You have to unanchor the [src] first!"
+			return
+		if(!opened)
+			src.opened = 1
+			//src.icon_state = "chem_dispenser_t"
+			user << "You open the maintenance hatch of [src]"
+		else
+			src.opened = 0
+			//src.icon_state = "chem_dispenser"
+			user << "You close the maintenance hatch of [src]"
+			return 1
+	else if(opened)
+		if(istype(O, /obj/item/weapon/crowbar))
+			playsound(src.loc, 'sound/items/Crowbar.ogg', 50, 1)
+			var/obj/machinery/constructable_frame/machine_frame/M = new /obj/machinery/constructable_frame/machine_frame(src.loc)
+			M.state = 2
+			M.icon_state = "box_1"
+			for(var/obj/I in component_parts)
+				if(I.reliability != 100 && crit_fail)
+					I.crit_fail = 1
+				I.loc = src.loc
+			del(src)
+		return 1
 	return
 
 

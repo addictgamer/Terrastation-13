@@ -1,7 +1,8 @@
-//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
+
+// This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
 
 var/jobban_runonce			// Updates legacy bans with new info
-var/jobban_keylist[0]		//to store the keys & ranks
+var/jobban_keylist[0]		// to store the keys & ranks
 
 /proc/jobban_fullban(mob/M, rank, reason)
 	if (!M || !M.key) return
@@ -13,17 +14,17 @@ var/jobban_keylist[0]		//to store the keys & ranks
 	jobban_keylist.Add(text("[ckey] - [rank]"))
 	jobban_savebanfile()
 
-//returns a reason if M is banned from rank, returns 0 otherwise
+// returns a reason if M is banned from rank, returns 0 otherwise
 /proc/jobban_isbanned(mob/M, rank)
 	if(M && rank)
-		/*
+/*
 		if(_jobban_isbanned(M, rank)) return "Reason Unspecified"	//for old jobban
 		if (guest_jobbans(rank))
 			if(config.guest_jobban && IsGuestKey(M.key))
 				return "Guest Job-ban"
 			if(config.usewhitelist && !check_whitelist(M))
 				return "Whitelisted Job"
-		*/
+*/
 		for (var/s in jobban_keylist)
 			if( findtext(s,"[M.ckey] - [rank]") == 1 )
 				var/startpos = findtext(s, "## ")+3
@@ -35,7 +36,7 @@ var/jobban_keylist[0]		//to store the keys & ranks
 	return 0
 
 /*
-DEBUG
+// DEBUG
 /mob/verb/list_all_jobbans()
 	set name = "list all jobbans"
 
@@ -66,7 +67,7 @@ DEBUG
 			jobban_loadbanfile()
 			return
 
-		//Job permabans
+	// Job permabans
 		var/DBQuery/query = dbcon.NewQuery("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_PERMABAN' AND isnull(unbanned)")
 		query.Execute()
 
@@ -76,7 +77,7 @@ DEBUG
 
 			jobban_keylist.Add("[ckey] - [job]")
 
-		//Job tempbans
+	// Job tempbans
 		var/DBQuery/query1 = dbcon.NewQuery("SELECT ckey, job FROM erro_ban WHERE bantype = 'JOB_TEMPBAN' AND isnull(unbanned) AND expiration_time > Now()")
 		query1.Execute()
 

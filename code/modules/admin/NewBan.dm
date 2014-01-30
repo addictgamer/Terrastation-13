@@ -1,6 +1,6 @@
+
 var/CMinutes = null
 var/savefile/Banlist
-
 
 /proc/CheckBan(var/ckey, var/id, var/address)
 	if(!Banlist)		// if Banlist cannot be located for some reason
@@ -54,7 +54,7 @@ var/savefile/Banlist
 				return .
 	return 0
 
-/proc/UpdateTime() //No idea why i made this a proc.
+/proc/UpdateTime() // No idea why I made this a proc.
 	CMinutes = (world.realtime / 10) / 60
 	return 1
 
@@ -94,7 +94,6 @@ var/savefile/Banlist
 
 
 /proc/AddBan(ckey, computerid, reason, bannedby, temp, minutes, address)
-
 	var/bantimestamp
 
 	if (temp)
@@ -188,10 +187,9 @@ var/savefile/Banlist
 	dat = "<HR><B>Bans:</B> <FONT COLOR=blue>(U) = Unban , (E) = Edit Ban</FONT> - <FONT COLOR=green>([count] Bans)</FONT><HR><table border=1 rules=all frame=void cellspacing=0 cellpadding=3 >[dat]"
 	usr << browse(dat, "window=unbanp;size=875x400")
 
-//////////////////////////////////// DEBUG ////////////////////////////////////
+// DEBUG
 
 /proc/CreateBans()
-
 	UpdateTime()
 
 	var/i
@@ -223,4 +221,3 @@ var/savefile/Banlist
 	Banlist.cd = "/base"
 	for (var/A in Banlist.dir)
 		RemoveBan(A)
-

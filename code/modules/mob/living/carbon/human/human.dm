@@ -1051,7 +1051,7 @@
 	for (var/datum/disease/virus in viruses)
 		virus.cure()
 	for (var/ID in virus2)
-		var/datum/disease2/disease/V = virus2[ID]
+		var/datum/disease/disease/V = virus2[ID]
 		V.cure(src)
 
 	..()

@@ -1,3 +1,4 @@
+
 #define WHITELISTFILE "data/whitelist.txt"
 
 var/list/whitelist = list()
@@ -20,7 +21,7 @@ proc/load_alienwhitelist()
 	else
 		alien_whitelist = text2list(text, "\n")
 
-//todo: admin aliens
+// TODO: admin aliens
 /proc/is_alien_whitelisted(mob/M, var/species)
 	if(!config.usealienwhitelist)
 		return 1

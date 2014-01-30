@@ -1,17 +1,18 @@
-//Farmbots by GauHelldragon - 12/30/2012
-// A new type of buildable aiBot that helps out in hydroponics
+/*
+Farmbots by GauHelldragon - 12/30/2012
+A new type of buildable aiBot that helps out in hydroponics
 
-// Made by using a robot arm on a water tank and then adding:
-// A plant analyzer, a bucket, a mini-hoe and then a proximity sensor (in that order)
+Made by using a robot arm on a water tank and then adding:
+A plant analyzer, a bucket, a mini-hoe and then a proximity sensor (in that order)
 
-// Will water, weed and fertilize plants that need it
-// When emagged, it will "water", "weed" and "fertilize" humans instead
-// Holds up to 10 fertilizers (only the type dispensed by the machines, not chemistry bottles)
-// It will fill up it's water tank at a sink when low.
+Will water, weed and fertilize plants that need it
+When emagged, it will "water", "weed" and "fertilize" humans instead
+Holds up to 10 fertilizers (only the type dispensed by the machines, not chemistry bottles)
+It will fill up it's water tank at a sink when low.
 
-// The behavior panel can be unlocked with hydroponics access and be modified to disable certain behaviors
-// By default, it will ignore weeds and mushrooms, but can be set to tend to these types of plants as well.
-
+The behavior panel can be unlocked with hydroponics access and be modified to disable certain behaviors
+By default, it will ignore weeds and mushrooms, but can be set to tend to these types of plants as well.
+*/
 
 #define FARMBOT_MODE_WATER			1
 #define FARMBOT_MODE_FERTILIZE	 	2
@@ -19,9 +20,9 @@
 #define FARMBOT_MODE_REFILL			4
 #define FARMBOT_MODE_WAITING		5
 
-#define FARMBOT_ANIMATION_TIME		25 //How long it takes to use one of the action animations
-#define FARMBOT_EMAG_DELAY			60 //How long of a delay after doing one of the emagged attack actions
-#define FARMBOT_ACTION_DELAY		35 //How long of a delay after doing one of the normal actions
+#define FARMBOT_ANIMATION_TIME		25	// How long it takes to use one of the action animations
+#define FARMBOT_EMAG_DELAY			60	// How long of a delay after doing one of the emagged attack actions
+#define FARMBOT_ACTION_DELAY		35	// How long of a delay after doing one of the normal actions
 
 /obj/machinery/bot/farmbot
 	name = "Farmbot"
@@ -44,12 +45,12 @@
 	var/setting_ignoreWeeds = 1
 	var/setting_ignoreMushrooms = 1
 
-	var/atom/target //Current target, can be a human, a hydroponics tray, or a sink
-	var/mode //Which mode is being used, 0 means it is looking for work
+	var/atom/target	// Current target, can be a human, a hydroponics tray, or a sink
+	var/mode	// Which mode is being used, 0 means it is looking for work
 
-	var/obj/structure/reagent_dispensers/watertank/tank // the water tank that was used to make it, remains inside the bot.
+	var/obj/structure/reagent_dispensers/watertank/tank	// the water tank that was used to make it, remains inside the bot.
 
-	var/path[] = new() // used for pathing
+	var/path[] = new()	// used for pathing
 	var/frustration
 
 /obj/machinery/bot/farmbot/New()
@@ -59,12 +60,12 @@
 		src.botcard = new /obj/item/weapon/card/id(src)
 		src.botcard.access = req_access
 
-		if ( !tank ) //Should be set as part of making it... but lets check anyway
+		if ( !tank )	// Should be set as part of making it... but lets check anyway
 			tank = locate(/obj/structure/reagent_dispensers/watertank/) in contents
-		if ( !tank ) //An admin must have spawned the farmbot! Better give it a tank.
+		if ( !tank )	// An admin must have spawned the farmbot! Better give it a tank.
 			tank = new /obj/structure/reagent_dispensers/watertank(src)
 
-/obj/machinery/bot/farmbot/Bump(M as mob|obj) //Leave no door unopened!
+/obj/machinery/bot/farmbot/Bump(M as mob|obj)	// Leave no door unopened!
 	spawn(0)
 		if ((istype(M, /obj/machinery/door)) && (!isnull(src.botcard)))
 			var/obj/machinery/door/D = M
@@ -193,7 +194,7 @@
 	src.on = 1
 	src.icon_state = "farmbot[src.on]"
 	target = null
-	mode = FARMBOT_MODE_WAITING //Give the emagger a chance to get away! 15 seconds should be good.
+	mode = FARMBOT_MODE_WAITING	// Give the emagger a chance to get away! 15 seconds should be good.
 	spawn(150)
 		mode = 0
 
@@ -235,12 +236,12 @@
 	if ( mode == FARMBOT_MODE_WAITING )
 		return
 
-	if ( !mode || !target || !(target in view(7,src)) ) //Don't bother chasing down targets out of view
+	if ( !mode || !target || !(target in view(7,src)) )	// Don't bother chasing down targets out of view
 
 		mode = 0
 		target = null
 		if ( !find_target() )
-			// Couldn't find a target, wait a while before trying again.
+		// Couldn't find a target, wait a while before trying again.
 			mode = FARMBOT_MODE_WAITING
 			spawn(100)
 				mode = 0
@@ -248,7 +249,7 @@
 
 	if ( mode && target )
 		if ( get_dist(target,src) <= 1 || ( emagged && mode == FARMBOT_MODE_FERTILIZE ) )
-			// If we are in emagged fertilize mode, we throw the fertilizer, so distance doesn't matter
+		// If we are in emagged fertilize mode, we throw the fertilizer, so distance doesn't matter
 			frustration = 0
 			use_farmbot_item()
 		else
@@ -260,18 +261,18 @@
 		mode = 0
 		return 0
 
-	if ( emagged && !ismob(target) ) // Humans are plants!
+	if ( emagged && !ismob(target) )	// Humans are plants!
 		mode = 0
 		target = null
 		return 0
 
-	if ( !emagged && !istype(target,/obj/machinery/hydroponics) && !istype(target,/obj/structure/sink) ) // Humans are not plants!
+	if ( !emagged && !istype(target,/obj/machinery/hydroponics) && !istype(target,/obj/structure/sink) )	// Humans are not plants!
 		mode = 0
 		target = null
 		return 0
 
 	if ( mode == FARMBOT_MODE_FERTILIZE )
-		//Find which fertilizer to use
+	// Find which fertilizer to use
 		var/obj/item/nutrient/fert
 		for ( var/obj/item/nutrient/nut in contents )
 			fert = nut

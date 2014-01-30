@@ -1,4 +1,4 @@
-/obj/machinery/disease2/diseaseanalyser
+/obj/machinery/disease/diseaseanalyser
 	name = "Disease Analyser"
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "analyser"
@@ -10,7 +10,7 @@
 
 	var/obj/item/weapon/virusdish/dish = null
 
-/obj/machinery/disease2/diseaseanalyser/attackby(var/obj/I as obj, var/mob/user as mob)
+/obj/machinery/disease/diseaseanalyser/attackby(var/obj/I as obj, var/mob/user as mob)
 	if(istype(I,/obj/item/weapon/virusdish))
 		var/mob/living/carbon/c = user
 		if(!dish)
@@ -30,7 +30,7 @@
 	return
 
 
-/obj/machinery/disease2/diseaseanalyser/process()
+/obj/machinery/disease/diseaseanalyser/process()
 	if(stat & (NOPOWER|BROKEN))
 		return
 	use_power(500)
@@ -44,7 +44,7 @@
 			r += "<BR>Infection rate : [dish.virus2.infectionchance * 10]"
 			r += "<BR>Spread form : [dish.virus2.spreadtype]"
 			r += "<BR>Progress Speed : [dish.virus2.stageprob * 10]"
-			for(var/datum/disease2/effectholder/E in dish.virus2.effects)
+			for(var/datum/disease/effectholder/E in dish.virus2.effects)
 				r += "<BR>Effect:[E.effect.name]. Strength : [E.multiplier * 8]. Verosity : [E.chance * 15]. Type : [5-E.stage]."
 			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(src.loc)
 			P.info = r
@@ -72,4 +72,5 @@
 
 
 
+	return
 	return

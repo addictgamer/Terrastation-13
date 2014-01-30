@@ -5,11 +5,11 @@ var/global/datum/controller/occupations/job_master
 #define RETURN_TO_LOBBY 2
 
 /datum/controller/occupations
-		//List of all jobs
+// List of all jobs
 	var/list/occupations = list()
-		//Players who need jobs
+// Players who need jobs
 	var/list/unassigned = list()
-		//Debug info
+// Debug info
 	var/list/job_debug = list()
 
 
@@ -65,7 +65,7 @@ var/global/datum/controller/occupations/job_master
 		Debug("AR has failed, Player: [player], Rank: [rank]")
 		return 0
 
-	proc/FreeRole(var/rank)	//making additional slot on the fly
+	proc/FreeRole(var/rank)	// making additional slot on the fly
 		var/datum/job/job = GetJob(rank)
 		if(job && job.current_positions >= job.total_positions)
 			job.total_positions++
@@ -96,10 +96,10 @@ var/global/datum/controller/occupations/job_master
 			if(!job)
 				continue
 
-			if(istype(job, GetJob("Assistant"))) // We don't want to give him assistant, that's boring!
+			if(istype(job, GetJob("Assistant")))	// We don't want to give him assistant, that's boring!
 				continue
 
-			if(job in command_positions) //If you want a command position, select it!
+			if(job in command_positions)	// If you want a command position, select it!
 				continue
 
 			if(jobban_isbanned(player, job.title))
@@ -126,7 +126,7 @@ var/global/datum/controller/occupations/job_master
 		return
 
 
-	///This proc is called before the level loop of DivideOccupations() and will try to select a head, ignoring ALL non-head preferences for every level until it locates a head or runs out of levels to check
+//This proc is called before the level loop of DivideOccupations() and will try to select a head, ignoring ALL non-head preferences for every level until it locates a head or runs out of levels to check
 	proc/FillHeadPosition()
 		for(var/level = 1 to 3)
 			for(var/command_position in command_positions)
@@ -135,10 +135,10 @@ var/global/datum/controller/occupations/job_master
 				var/list/candidates = FindOccupationCandidates(job, level)
 				if(!candidates.len)	continue
 
-				// Build a weighted list, weight by age.
+			// Build a weighted list, weight by age.
 				var/list/weightedCandidates = list()
 
-				// Different head positions have different good ages.
+			// Different head positions have different good ages.
 				var/good_age_minimal = 25
 				var/good_age_maximal = 60
 				if(command_position == "Captain")
@@ -146,7 +146,7 @@ var/global/datum/controller/occupations/job_master
 					good_age_maximal = 70 // Old geezer captains ftw
 
 				for(var/mob/V in candidates)
-					// Log-out during round-start? What a bad boy, no head position for you!
+				// Log-out during round-start? What a bad boy, no head position for you!
 					if(!V.client) continue
 					var/age = V.client.prefs.age
 					switch(age)
@@ -163,7 +163,7 @@ var/global/datum/controller/occupations/job_master
 						if(good_age_maximal to good_age_maximal + 50)
 							weightedCandidates[V] = 3 // Geezer.
 						else
-							// If there's ABSOLUTELY NOBODY ELSE
+						// If there's ABSOLUTELY NOBODY ELSE
 							if(candidates.len == 1) weightedCandidates[V] = 1
 
 
@@ -173,7 +173,7 @@ var/global/datum/controller/occupations/job_master
 		return 0
 
 
-	///This proc is called at the start of the level loop of DivideOccupations() and will cause head jobs to be checked before any other jobs of the same level
+// This proc is called at the start of the level loop of DivideOccupations() and will cause head jobs to be checked before any other jobs of the same level
 	proc/CheckHeadPositions(var/level)
 		for(var/command_position in command_positions)
 			var/datum/job/job = GetJob(command_position)
@@ -203,7 +203,7 @@ var/global/datum/controller/occupations/job_master
 					if(AssignRole(candidate, "AI"))
 						ai_selected++
 						break
-			//Malf NEEDS an AI so force one if we didn't get a player who wanted it
+		// Malf NEEDS an AI so force one if we didn't get a player who wanted it
 			if((ticker.mode.name == "AI malfunction")&&(!ai_selected))
 				unassigned = shuffle(unassigned)
 				for(var/mob/new_player/player in unassigned)
@@ -220,17 +220,17 @@ var/global/datum/controller/occupations/job_master
  *  This proc must not have any side effect besides of modifying "assigned_role".
  **/
 	proc/DivideOccupations()
-		//Setup new player list and get the jobs list
+	// Setup new player list and get the jobs list
 		Debug("Running DO")
 		SetupOccupations()
 
-		//Holder for Triumvirate is stored in the ticker, this just processes it
+	// Holder for Triumvirate is stored in the ticker, this just processes it
 		if(ticker)
 			for(var/datum/job/ai/A in occupations)
 				if(ticker.triai)
 					A.spawn_positions = 3
 
-		//Get the players who are ready
+	// Get the players who are ready
 		for(var/mob/new_player/player in player_list)
 			if(player.ready && player.mind && !player.mind.assigned_role)
 				unassigned += player
@@ -238,12 +238,12 @@ var/global/datum/controller/occupations/job_master
 		Debug("DO, Len: [unassigned.len]")
 		if(unassigned.len == 0)	return 0
 
-		//Shuffle players and jobs
+	// Shuffle players and jobs
 		unassigned = shuffle(unassigned)
 
 		HandleFeedbackGathering()
 
-		//People who wants to be assistants, sure, go on.
+	// People who wants to be assistants, sure, go on.
 		Debug("DO, Running Assistant Check 1")
 		var/datum/job/assist = new /datum/job/assistant()
 		var/list/assistant_candidates = FindOccupationCandidates(assist, 3)
@@ -254,17 +254,17 @@ var/global/datum/controller/occupations/job_master
 			assistant_candidates -= player
 		Debug("DO, AC1 end")
 
-		//Select one head
+	// Select one head
 		Debug("DO, Running Head Check")
 		FillHeadPosition()
 		Debug("DO, Head Check end")
 
-		//Check for an AI
+	// Check for an AI
 		Debug("DO, Running AI Check")
 		FillAIPosition()
 		Debug("DO, AI Check end")
 
-		//Other jobs are now checked
+	// Other jobs are now checked
 		Debug("DO, Running Standard Check")
 
 
@@ -309,8 +309,8 @@ var/global/datum/controller/occupations/job_master
 		for(var/mob/new_player/player in unassigned)
 			if(player.client.prefs.alternate_option == GET_RANDOM_JOB)
 				GiveRandomJob(player)
-		/*
-		Old job system
+/*
+	// Old job system
 		for(var/level = 1 to 3)
 			for(var/datum/job/job in occupations)
 				Debug("Checking job: [job]")
@@ -325,19 +325,20 @@ var/global/datum/controller/occupations/job_master
 					var/mob/new_player/candidate = pick(candidates)
 					Debug("Selcted: [candidate], for: [job.title]")
 					AssignRole(candidate, job.title)
-					candidates -= candidate*/
+					candidates -= candidate
+*/
 
 		Debug("DO, Standard Check end")
 
 		Debug("DO, Running AC2")
 
-		// For those who wanted to be assistant if their preferences were filled, here you go.
+	// For those who wanted to be assistant if their preferences were filled, here you go.
 		for(var/mob/new_player/player in unassigned)
 			if(player.client.prefs.alternate_option == BE_ASSISTANT)
 				Debug("AC2 Assistant located, Player: [player]")
 				AssignRole(player, "Assistant")
 
-		//For ones returning to lobby
+	// For ones returning to lobby
 		for(var/mob/new_player/player in unassigned)
 			if(player.client.prefs.alternate_option == RETURN_TO_LOBBY)
 				player.ready = 0
@@ -367,7 +368,7 @@ var/global/datum/controller/occupations/job_master
 			if(istype(S, /obj/effect/landmark/start) && istype(S.loc, /turf))
 				H.loc = S.loc
 
-		//give them an account in the station database
+	// give them an account in the station database
 		if(centcomm_account_db)
 			var/datum/money_account/M = create_account(H.real_name, rand(50,500)*10, null)
 			if(H.mind)
@@ -383,7 +384,7 @@ var/global/datum/controller/occupations/job_master
 
 				H.mind.initial_account = M
 
-			// If they're head, give them the account info for their department
+		// If they're head, give them the account info for their department
 			if(H.mind && job.head_position)
 				var/remembered_info = ""
 				var/datum/money_account/department_account = department_accounts[job.department]
@@ -407,9 +408,9 @@ var/global/datum/controller/occupations/job_master
 				if("Cyborg")
 					H.Robotize()
 					return 1
-				if("AI","Clown")	//don't need bag preference stuff!
+				if("AI","Clown")	// don't need bag preference stuff!
 				else
-					switch(H.backbag) //BS12 EDIT
+					switch(H.backbag) // BS12 EDIT
 						if(1)
 							H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
 						if(2)
@@ -433,13 +434,13 @@ var/global/datum/controller/occupations/job_master
 		spawnId(H, rank, alt_title)
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset(H), slot_ears)
 
-		//Gives glasses to the vision impaired
+	// Gives glasses to the vision impaired
 		if(H.disabilities & NEARSIGHTED)
 			var/equipped = H.equip_to_slot_or_del(new /obj/item/clothing/glasses/regular(H), slot_glasses)
 			if(equipped != 1)
 				var/obj/item/clothing/glasses/G = H.glasses
 				G.prescription = 1
-//		H.update_icons()
+		//H.update_icons()
 		return 1
 
 
@@ -467,7 +468,7 @@ var/global/datum/controller/occupations/job_master
 			C.assignment = title ? title : rank
 			C.name = "[C.registered_name]'s ID Card ([C.assignment])"
 
-			//put the player's account number onto the ID
+		// put the player's account number onto the ID
 			if(H.mind && H.mind.initial_account)
 				C.associated_account_number = H.mind.initial_account.account_number
 
@@ -483,7 +484,7 @@ var/global/datum/controller/occupations/job_master
 		return 1
 
 
-	proc/LoadJobs(jobsfile) //ran during round setup, reads info from jobs.txt -- Urist
+	proc/LoadJobs(jobsfile)	// ran during round setup, reads info from jobs.txt -- Urist
 		if(!config.load_jobs_from_txt)
 			return 0
 
@@ -512,7 +513,7 @@ var/global/datum/controller/occupations/job_master
 				if(!J)	continue
 				J.total_positions = text2num(value)
 				J.spawn_positions = text2num(value)
-				if(name == "AI" || name == "Cyborg")//I dont like this here but it will do for now
+				if(name == "AI" || name == "Cyborg")	// I dont like this here but it will do for now
 					J.total_positions = 0
 
 		return 1
@@ -522,15 +523,15 @@ var/global/datum/controller/occupations/job_master
 		for(var/datum/job/job in occupations)
 			var/tmp_str = "|[job.title]|"
 
-			var/level1 = 0 //high
-			var/level2 = 0 //medium
-			var/level3 = 0 //low
-			var/level4 = 0 //never
-			var/level5 = 0 //banned
-			var/level6 = 0 //account too young
+			var/level1 = 0 // high
+			var/level2 = 0 // medium
+			var/level3 = 0 // low
+			var/level4 = 0 // never
+			var/level5 = 0 // banned
+			var/level6 = 0 // account too young
 			for(var/mob/new_player/player in player_list)
 				if(!(player.ready && player.mind && !player.mind.assigned_role))
-					continue //This player is not ready
+					continue	// This player is not ready
 				if(jobban_isbanned(player, job.title))
 					level5++
 					continue
@@ -543,7 +544,7 @@ var/global/datum/controller/occupations/job_master
 					level2++
 				else if(player.client.prefs.GetJobDepartment(job, 3) & job.flag)
 					level3++
-				else level4++ //not selected
+				else level4++	// not selected
 
 			tmp_str += "HIGH=[level1]|MEDIUM=[level2]|LOW=[level3]|NEVER=[level4]|BANNED=[level5]|YOUNG=[level6]|-"
 			feedback_add_details("job_preferences",tmp_str)

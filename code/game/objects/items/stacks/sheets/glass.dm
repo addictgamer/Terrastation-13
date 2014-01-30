@@ -1,13 +1,6 @@
-/* Glass stack types
- * Contains:
- *		Glass sheets
- *		Reinforced glass sheets
- *		Glass shards - TODO: Move this into code/game/object/item/weapons
- */
 
-/*
- * Glass sheets
- */
+// Glass sheets
+
 /obj/item/stack/sheet/glass
 	name = "glass"
 	desc = "HOLY SHEET! That is a lot of glass."
@@ -15,7 +8,7 @@
 	icon_state = "sheet-glass"
 	g_amt = 3750
 	origin_tech = "materials=1"
-
+	var/created_window = /obj/structure/window/basic
 
 /obj/item/stack/sheet/glass/attack_self(mob/user as mob)
 	construct_window(user)
@@ -71,7 +64,7 @@
 					user << "\red Can't let you do that."
 					return 1
 
-			//Determine the direction. It will first check in the direction the person making the window is facing, if it finds an already made window it will try looking at the next cardinal direction, etc.
+		// Determine the direction. It will first check in the direction the person making the window is facing, if it finds an already made window it will try looking at the next cardinal direction, etc.
 			var/dir_to_set = 2
 			for(var/direction in list( user.dir, turn(user.dir,90), turn(user.dir,180), turn(user.dir,270) ))
 				var/found = 0
@@ -106,9 +99,8 @@
 	return 0
 
 
-/*
- * Reinforced glass sheets
- */
+// Reinforced glass sheets
+
 /obj/item/stack/sheet/rglass
 	name = "reinforced glass"
 	desc = "Glass which seems to have rods or something stuck in them."
@@ -153,7 +145,7 @@
 					user << "\red Can't let you do that."
 					return 1
 
-			//Determine the direction. It will first check in the direction the person making the window is facing, if it finds an already made window it will try looking at the next cardinal direction, etc.
+		// Determine the direction. It will first check in the direction the person making the window is facing, if it finds an already made window it will try looking at the next cardinal direction, etc.
 			var/dir_to_set = 2
 			for(var/direction in list( user.dir, turn(user.dir,90), turn(user.dir,180), turn(user.dir,270) ))
 				var/found = 0
@@ -224,13 +216,11 @@
 					WD.ini_dir = NORTH
 		else
 			return 1
-
-
 	return 0
 
-/*
- * Glass shards - TODO: Move this into code/game/object/item/weapons
- */
+
+// Glass shards - TODO: Move this into code/game/object/item/weapons
+
 /obj/item/weapon/shard/Bump()
 
 	spawn( 0 )
@@ -293,3 +283,65 @@
 					H.UpdateDamageIcon()
 				H.updatehealth()
 	..()
+
+
+
+
+
+// Plasma Glass sheets
+
+/obj/item/stack/sheet/glass/plasmaglass
+	name = "plasma glass"
+	desc = "A very strong and very resistant sheet of a plasma-glass alloy."
+	singular_name = "glass sheet"
+	icon_state = "sheet-plasmaglass"
+	g_amt = 7500
+	origin_tech = "materials=3;plasma=2"
+	created_window = /obj/structure/window/plasmabasic
+
+/obj/item/stack/sheet/glass/plasmaglass/attack_self(mob/user as mob)
+	construct_window(user)
+
+/obj/item/stack/sheet/glass/plasmaglass/attackby(obj/item/W, mob/user)
+	..()
+	if( istype(W, /obj/item/stack/rods) )
+		var/obj/item/stack/rods/V  = W
+		var/obj/item/stack/sheet/glass/plasmarglass/RG = new (user.loc)
+		RG.add_fingerprint(user)
+		RG.add_to_stacks(user)
+		V.use(1)
+		var/obj/item/stack/sheet/glass/G = src
+		src = null
+		var/replace = (user.get_inactive_hand()==G)
+		G.use(1)
+		if (!G && !RG && replace)
+			user.put_in_hands(RG)
+	else
+		return ..()
+
+/obj/item/stack/sheet/glass/plasmaglass/recycle(var/obj/machinery/mineral/processing_unit/recycle/rec)
+	rec.addMaterial("plasma",1)
+	rec.addMaterial("glass",1)
+	return 1
+
+
+// Reinforced plasma glass sheets
+
+/obj/item/stack/sheet/glass/plasmarglass
+	name = "reinforced plasma glass"
+	desc = "Plasma glass which seems to have rods or something stuck in them."
+	singular_name = "reinforced plasma glass sheet"
+	icon_state = "sheet-plasmarglass"
+	g_amt = 7500
+	m_amt = 1875
+	origin_tech = "materials=4;plasma=2"
+	created_window = /obj/structure/window/plasmareinforced
+
+/obj/item/stack/sheet/glass/plasmarglass/attack_self(mob/user as mob)
+	construct_window(user)
+
+/obj/item/stack/sheet/glass/plasmaglass/recycle(var/obj/machinery/mineral/processing_unit/recycle/rec)
+	rec.addMaterial("plasma",1)
+	rec.addMaterial("glass",1)
+	rec.addMaterial("iron",0.5)
+	return 1
