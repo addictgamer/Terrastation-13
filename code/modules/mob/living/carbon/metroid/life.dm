@@ -1,3 +1,4 @@
+
 /mob/living/carbon/slime/Life()
 	set invisibility = 0
 	set background = 1
@@ -15,40 +16,37 @@
 
 		handle_targets()
 
-
-	var/datum/gas_mixture/environment // Added to prevent null location errors-- TLE
+	var/datum/gas_mixture/environment	// Added to prevent null location errors-- TLE
 	if(src.loc)
 		environment = loc.return_air()
 
-
-	//Apparently, the person who wrote this code designed it so that
-	//blinded get reset each cycle and then get activated later in the
-	//code. Very ugly. I dont care. Moving this stuff here so its easy
-	//to find it.
+	/*
+	 Apparently, the person who wrote this code designed it so that
+	 blinded get reset each cycle and then get activated later in the
+	 code. Very ugly. I dont care. Moving this stuff here so its easy
+	 to find it
+	*/
 	src.blinded = null
 
-	// Basically just deletes any screen objects :<
+// Basically just deletes any screen objects :<
 	regular_hud_updates()
 
-	//Handle temperature/pressure differences between body and environment
+//Handle temperature/pressure differences between body and environment
 	if(environment)
 		handle_environment(environment)
 
-	//Status updates, death etc.
+//Status updates, death etc.
 	handle_regular_status_updates()
 
 
-
-
-
 /mob/living/carbon/slime
-	var/AIproc = 0 // determines if the AI loop is activated
-	var/Atkcool = 0 // attack cooldown
-	var/Tempstun = 0 // temporary temperature stuns
-	var/Discipline = 0 // if a slime has been hit with a freeze gun, or wrestled/attacked off a human, they become disciplined and don't attack anymore for a while
-	var/SStun = 0 // stun variable
+	var/AIproc = 0	// determines if the AI loop is activated
+	var/Atkcool = 0	// attack cooldown
+	var/Tempstun = 0	// temporary temperature stuns
+	var/Discipline = 0	// if a slime has been hit with a freeze gun, or wrestled/attacked off a human, they become disciplined and don't attack anymore for a while
+	var/SStun = 0	// stun variable
 
-/mob/living/carbon/slime/proc/AIprocess()  // the master AI process
+/mob/living/carbon/slime/proc/AIprocess()	// the master AI process
 
 	//world << "AI proc started."
 	if(AIproc || stat == DEAD || client) return
@@ -67,7 +65,7 @@
 	AIproc = 1
 	//world << "AIproc [AIproc] && stat != 2 [stat] && (attacked > 0 [attacked] || starving [starving] || hungry [hungry] || rabid [rabid] || Victim [Victim] || Target [Target]"
 	while(AIproc && stat != 2 && (attacked > 0 || starving || hungry || rabid || Victim))
-		if(Victim) // can't eat AND have this little process at the same time
+		if(Victim)	// can't eat AND have this little process at the same time
 			//world << "break 1"
 			break
 
@@ -145,7 +143,7 @@
 		var/sleeptime = movement_delay()
 		if(sleeptime <= 0) sleeptime = 1
 
-		sleep(sleeptime + 2) // this is about as fast as a player slime can go
+		sleep(sleeptime + 2)	// this is about as fast as a player slime can go
 
 	AIproc = 0
 	//world << "AI proc ended."
@@ -166,7 +164,7 @@
 	else
 		loc_temp = environment.temperature
 
-	/*
+/*
 	if((environment.temperature > (T0C + 50)) || (environment.temperature < (T0C + 10)))
 		var/transfer_coefficient
 
@@ -174,28 +172,27 @@
 		if(wear_mask && (wear_mask.body_parts_covered & HEAD) && (environment.temperature < wear_mask.protective_temperature))
 			transfer_coefficient *= wear_mask.heat_transfer_coefficient
 
-		// handle_temperature_damage(HEAD, environment.temperature, environment_heat_capacity*transfer_coefficient)
-	*/
+		//handle_temperature_damage(HEAD, environment.temperature, environment_heat_capacity*transfer_coefficient)
+*/
 
 
-	if(loc_temp < 310.15) // a cold place
+	if(loc_temp < 310.15)	// a cold place
 		bodytemperature += adjust_body_temperature(bodytemperature, loc_temp, 1)
-	else // a hot place
+	else	// a hot place
 		bodytemperature += adjust_body_temperature(bodytemperature, loc_temp, 1)
 
-	/*
+/*
 	if(stat==2)
 		bodytemperature += 0.1*(environment.temperature - bodytemperature)*environment_heat_capacity/(environment_heat_capacity + 270000)
+*/
 
-	*/
-	//Account for massive pressure differences
-
-	if(bodytemperature < (T0C + 5)) // start calculating temperature damage etc
-		if(bodytemperature <= (T0C - 40)) // stun temperature
+// Account for massive pressure differences
+	if(bodytemperature < (T0C + 5))	// start calculating temperature damage etc
+		if(bodytemperature <= (T0C - 40))	// stun temperature
 			Tempstun = 1
 
-		if(bodytemperature <= (T0C - 50)) // hurt temperature
-			if(bodytemperature <= 50) // sqrting negative numbers is bad
+		if(bodytemperature <= (T0C - 50))	// hurt temperature
+			if(bodytemperature <= 50)	// sqrting negative numbers is bad
 				adjustToxLoss(200)
 			else
 				adjustToxLoss(round(sqrt(bodytemperature)) * 2)
@@ -205,17 +202,17 @@
 
 	updatehealth()
 
-	return //TODO: DEFERRED
+	return	// TODO: DEFERRED
 
 
 /mob/living/carbon/slime/proc/adjust_body_temperature(current, loc_temp, boost)
 	var/temperature = current
-	var/difference = abs(current-loc_temp)	//get difference
-	var/increments// = difference/10			//find how many increments apart they are
+	var/difference = abs(current-loc_temp)	// get difference
+	var/increments// = difference / 10		// find how many increments apart they are
 	if(difference > 50)
-		increments = difference/5
+		increments = difference / 5
 	else
-		increments = difference/10
+		increments = difference / 10
 	var/change = increments*boost	// Get the amount to change by (x per increment)
 	var/temp_change
 	if(current < loc_temp)
@@ -232,25 +229,21 @@
 
 	src.updatehealth()
 
-	return //TODO: DEFERRED
+	return	// TODO: DEFERRED
 
 
 /mob/living/carbon/slime/proc/handle_regular_status_updates()
-
 	if(istype(src, /mob/living/carbon/slime/adult))
 		health = 200 - (getOxyLoss() + getToxLoss() + getFireLoss() + getBruteLoss() + getCloneLoss())
 	else
 		health = 150 - (getOxyLoss() + getToxLoss() + getFireLoss() + getBruteLoss() + getCloneLoss())
-
-
-
 
 	if(health < config.health_threshold_dead && stat != 2)
 		death()
 		return
 
 	else if(src.health < config.health_threshold_crit)
-		// if(src.health <= 20 && prob(1)) spawn(0) emote("gasp")
+		//if(src.health <= 20 && prob(1)) spawn(0) emote("gasp")
 
 		//if(!src.rejuv) src.oxyloss++
 		if(!src.reagents.has_reagent("inaprovaline")) src.adjustOxyLoss(10)
@@ -264,14 +257,13 @@
 		adjustCloneLoss(-1)
 		adjustBruteLoss(-1)
 
-
 	if (src.stat == DEAD)
 
 		src.lying = 1
 		src.blinded = 1
 
 	else
-		if (src.paralysis || src.stunned || src.weakened || (status_flags && FAKEDEATH)) //Stunned etc.
+		if (src.paralysis || src.stunned || src.weakened || (status_flags && FAKEDEATH))	// Stunned etc.
 			if (src.stunned > 0)
 				AdjustStunned(-1)
 				src.stat = 0
@@ -316,7 +308,6 @@
 
 
 /mob/living/carbon/slime/proc/handle_nutrition()
-
 	if(prob(20))
 		if(istype(src, /mob/living/carbon/slime/adult)) nutrition-=rand(4,6)
 		else nutrition-=rand(2,3)
@@ -390,7 +381,7 @@
 			if(!client)
 				var/mob/living/carbon/slime/adult/A = new adulttype(src.loc)
 				A.nutrition = nutrition
-//				A.nutrition += 100
+				//A.nutrition += 100
 				A.powerlevel = max(0, powerlevel-1)
 				A.Friends = Friends
 				A.tame = tame
@@ -400,7 +391,7 @@
 
 /mob/living/carbon/slime/proc/handle_targets()
 	if(Tempstun)
-		if(!Victim) // not while they're eating!
+		if(!Victim)	// not while they're eating!
 			canmove = 0
 	else
 		canmove = 1
@@ -419,18 +410,16 @@
 		if(prob(10))
 			Discipline--
 
-
 	if(!client)
 
 		if(!canmove) return
 
-		// DO AI STUFF HERE
-
+	// DO AI STUFF HERE
 		if(Target)
 			if(attacked <= 0)
 				Target = null
 
-		if(Victim) return // if it's eating someone already, continue eating!
+		if(Victim) return	// if it's eating someone already, continue eating!
 
 
 		if(prob(1))
@@ -439,25 +428,25 @@
 		if(AIproc && SStun) return
 
 
-		var/hungry = 0 // determines if the slime is hungry
-		var/starving = 0 // determines if the slime is starving-hungry
-		if(istype(src, /mob/living/carbon/slime/adult)) // 1200 max nutrition
+		var/hungry = 0	// determines if the slime is hungry
+		var/starving = 0	// determines if the slime is starving-hungry
+		if(istype(src, /mob/living/carbon/slime/adult))	// 1200 max nutrition
 			switch(nutrition)
 				if(601 to 900)
-					if(prob(25)) hungry = 1//Ensures they continue eating, but aren't as aggressive at the same time
+					if(prob(25)) hungry = 1	// Ensures they continue eating, but aren't as aggressive at the same time
 				if(301 to 600) hungry = 1
 				if(0 to 300)
 					starving = 1
 
 		else
-			switch(nutrition)			// 1000 max nutrition
+			switch(nutrition)	// 1000 max nutrition
 				if(501 to 700)
 					if(prob(25)) hungry = 1
 				if(201 to 500) hungry = 1
 				if(0 to 200) starving = 1
 
 
-		if(starving && !client) // if a slime is starving, it starts losing its friends
+		if(starving && !client)	// if a slime is starving, it starts losing its friends
 			if(Friends.len > 0 && prob(1))
 				var/mob/nofriend = pick(Friends)
 				Friends -= nofriend
@@ -465,42 +454,42 @@
 		if(!Target)
 			var/list/targets = list()
 
-			if(hungry || starving) //Only add to the list if we need to
+			if(hungry || starving)	// Only add to the list if we need to
 				for(var/mob/living/L in view(7,src))
 
-					//Ignore other slimes, dead mobs and simple_animals
+				// Ignore other slimes, dead mobs and simple_animals
 					if(isslime(L) || L.stat != CONSCIOUS || isanimal(L))
 						continue
 
 					if(issilicon(L))
-						if(!istype(src, /mob/living/carbon/slime/adult)) //Non-starving diciplined adult slimes wont eat things
+						if(!istype(src, /mob/living/carbon/slime/adult))	// Non-starving diciplined adult slimes wont eat things
 							if(!starving && Discipline > 0)
 								continue
 
-						if(tame) //Tame slimes ignore electronic life
+						if(tame)	// Tame slimes ignore electronic life
 							continue
 
-						targets += L //Possible target found!
+						targets += L	// Possible target found!
 
 					else if(iscarbon(L))
 
-						if(istype(L, /mob/living/carbon/human)) //Ignore slime(wo)men
+						if(istype(L, /mob/living/carbon/human))	// Ignore slime(wo)men
 							var/mob/living/carbon/human/H = L
 							if(H.dna)
 								if(H.dna.mutantrace == "slime")
 									continue
 
-						if(!istype(src, /mob/living/carbon/slime/adult)) //Non-starving diciplined adult slimes wont eat things
+						if(!istype(src, /mob/living/carbon/slime/adult))	// Non-starving diciplined adult slimes wont eat things
 							if(!starving && Discipline > 0)
 								continue
 
-						if(L in Friends) //No eating friends!
+						if(L in Friends)	// No eating friends!
 							continue
 
-						if(tame && ishuman(L)) //Tame slimes dont eat people.
+						if(tame && ishuman(L))	// Tame slimes dont eat people.
 							continue
 
-						if(!L.canmove) //Only one slime can latch on at a time.
+						if(!L.canmove)	// Only one slime can latch on at a time.
 
 							var/notarget = 0
 							for(var/mob/living/carbon/slime/M in view(1,L))
@@ -509,9 +498,7 @@
 							if(notarget)
 								continue
 
-						targets += L //Possible target found!
-
-
+						targets += L	// Possible target found!
 
 			if((hungry || starving) && targets.len > 0)
 				if(!istype(src, /mob/living/carbon/slime/adult))
@@ -534,11 +521,11 @@
 					else
 						Target = targets[1]
 				else
-					Target = targets[1] // closest target
+					Target = targets[1]	// closest target
 
 			if(targets.len > 0)
 				if(attacked > 0 || rabid)
-					Target = targets[1] //closest mob probably attacked it, so override Target and attack the nearest!
+					Target = targets[1]	// closest mob probably attacked it, so override Target and attack the nearest!
 
 
 		if(!Target)

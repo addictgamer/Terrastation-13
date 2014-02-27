@@ -1,3 +1,4 @@
+
 //kobold
 /mob/living/simple_animal/kobold
 	name = "kobold"

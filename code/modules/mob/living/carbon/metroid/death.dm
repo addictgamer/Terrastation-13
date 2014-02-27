@@ -1,3 +1,4 @@
+
 /mob/living/carbon/slime/death(gibbed)
 	if(stat == DEAD)	return
 	stat = DEAD
