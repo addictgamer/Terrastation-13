@@ -331,7 +331,7 @@
 		if(istype(src, /mob/living/carbon/slime/adult))
 			if(!client)
 				for(var/i=1,i<=4,i++)
-					if(prob(70))
+/*					if(prob(70))
 						var/mob/living/carbon/slime/M = new primarytype(loc)
 						M.powerlevel = round(powerlevel/4)
 						M.Friends = Friends
@@ -376,6 +376,33 @@
 								if(i != 1) step_away(M,src)
 
 				del(src)
+*/
+				// Reproduction/mutation
+				// replacement
+					var/newslime
+					if(primarytype == /mob/living/carbon/slime/master)	// Master does not reproduce
+						del(src)
+						return
+					if(primarytype == /mob/living/carbon/slime/rainbow)
+						newslime = slime_mutation[i]
+					else if(prob(70))
+						newslime = primarytype
+					else if(prob(5))
+						newslime = /mob/living/carbon/slime/rainbow
+					else
+						newslime = slime_mutation[rand(1,4)]
+
+
+					var/mob/living/carbon/slime/M = new newslime(loc)
+					M.powerlevel = round(powerlevel/4)
+					M.Friends = Friends
+					M.tame = tame
+					M.rabid = rabid
+					M.Discipline = Discipline
+					if(i != 1) step_away(M,src)
+					feedback_add_details("slime_babies_born","slimebirth_[replacetext(M.colour," ","_")]")
+				del(src)
+				// end replacement
 
 		else
 			if(!client)

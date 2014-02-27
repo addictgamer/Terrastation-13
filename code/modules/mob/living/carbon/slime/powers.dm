@@ -208,7 +208,7 @@
 			var/new_nutrition = round(nutrition * 0.9)
 			var/new_powerlevel = round(powerlevel / 4)
 			for(var/i=1,i<=4,i++)
-				if(prob(80))
+/*				if(prob(80))
 					var/mob/living/carbon/slime/M = new primarytype(loc)
 					M.nutrition = new_nutrition
 					M.powerlevel = new_powerlevel
@@ -241,11 +241,32 @@
 							M.powerlevel = new_powerlevel
 							if(i != 1) step_away(M,src)
 							babies += M
+*/
+			// Reproduction/mutation
+			// replacement
+				var/newslime
+				if (prob(1))
+					newslime = /mob/living/carbon/slime/rainbow
+				else if(prob(70))
+					newslime = primarytype
+				else
+					newslime = slime_mutation[rand(1,4)]
+
+				var/mob/living/carbon/slime/M = new newslime(loc)
+				M.nutrition = new_nutrition
+				M.powerlevel = new_powerlevel
+				if(i != 1) step_away(M,src)
+				babies += M
+				feedback_add_details("slime_babies_born","slimebirth_[replacetext(M.colour," ","_")]")
+			// end replacement
 
 			var/mob/living/carbon/slime/new_slime = pick(babies)
-			new_slime.a_intent = "hurt"
+			new_slime.a_intent = "harm"
 			new_slime.universal_speak = universal_speak
-			new_slime.key = key
+			if(src.mind)
+				src.mind.transfer_to(new_slime)
+			else
+				new_slime.key = src.key
 
 			new_slime << "<B>You are now a slime!</B>"
 			del(src)
@@ -253,7 +274,6 @@
 			src << "<i>I am not ready to reproduce yet...</i>"
 	else
 		src << "<i>I am not old enough to reproduce yet...</i>"
-
 
 
 /mob/living/carbon/slime/verb/ventcrawl()

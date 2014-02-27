@@ -13,7 +13,7 @@
 		if(M.client.prefs.toggles & SOUND_MIDI)
 			M << uploaded_sound
 
-	feedback_add_details("admin_verb","PGS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	feedback_add_details("admin_verb","PGS")	// If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 
 /client/proc/play_local_sound(S as sound)
@@ -24,48 +24,59 @@
 	log_admin("[key_name(src)] played a local sound [S]")
 	message_admins("[key_name_admin(src)] played a local sound [S]", 1)
 	playsound(get_turf_loc(src.mob), S, 50, 0, 0)
-	feedback_add_details("admin_verb","PLS") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+	feedback_add_details("admin_verb","PLS")	// If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
+
+/client/proc/peel()
+	set name = "Damn banana peel!"
+	set category = "Sound Board"
+
+	world << sound('sound/board/06 peel.ogg')
 
 /client/proc/clownmusic()
-	set category = "Sound Board"
 	set name = "Clownmusic"
+	set category = "Sound Board"
 
 	//for(var/mob/m in world)
-	//	if (m.client) //If has client.
+	//	if (m.client)	// If has client.
 	//		m.music <<
 	world << sound('sound/music/clown_station_redux.ogg')
 
+/client/proc/hawly_shet()
+	set name = "HAWLY SHET!"
+	set category = "Sound Board"
+
+	world << sound('sound/board/HAWLY SHET.ogg')
 
 /client/proc/heyaheyamusic()
-	set category = "Sound Board"
 	set name = "Heyaheyaheya"
+	set category = "Sound Board"
 
-	world << sound('heman-heya-full.ogg')
+	world << sound('sound/board/heman-heya-full.ogg')
 
 /client/proc/fag()
-	set category = "Sound Board"
 	set name = "FAG!"
+	set category = "Sound Board"
 
-	world << sound('FAG.ogg')
+	world << sound('sound/board/FAG.ogg')
 
 /client/proc/ic_in_ooc()
-	set category = "Sound Board"
 	set name = "IC in OOC"
+	set category = "Sound Board"
 
-	world << sound('IC in OOC.ogg')
+	world << sound('sound/board/IC in OOC.ogg')
 /*
 /client/proc/ooc_in_ic()
+	set name = "OOC in IC"
 	set category = "Sound Board"
-	set name = "OOC IN IC"
 
-	world << sound('heman-heya-full.ogg')
+	world << sound('OOC in IC.ogg')
 */
 
 /*
 /client/proc/cuban_pete()
-	set category = "Fun"
 	set name = "Cuban Pete Time"
+	set category = "Fun"
 
 	message_admins("[key_name_admin(usr)] has declared Cuban Pete Time!", 1)
 	for(var/mob/M in world)
@@ -80,8 +91,8 @@
 
 
 /client/proc/bananaphone()
-	set category = "Fun"
 	set name = "Banana Phone"
+	set category = "Fun"
 
 	message_admins("[key_name_admin(usr)] has activated Banana Phone!", 1)
 	for(var/mob/M in world)
@@ -91,8 +102,8 @@
 
 
 client/proc/space_asshole()
-	set category = "Fun"
 	set name = "Space Asshole"
+	set category = "Fun"
 
 	message_admins("[key_name_admin(usr)] has played the Space Asshole Hymn.", 1)
 	for(var/mob/M in world)
@@ -102,11 +113,12 @@ client/proc/space_asshole()
 
 
 client/proc/honk_theme()
-	set category = "Fun"
 	set name = "Honk"
+	set category = "Fun"
 
 	message_admins("[key_name_admin(usr)] has creeped everyone out with Blackest Honks.", 1)
 	for(var/mob/M in world)
 		if(M.client)
 			if(M.client.midis)
-				M << 'honk_theme.ogg'*/
+				M << 'honk_theme.ogg'
+*/
