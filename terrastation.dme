@@ -1596,4 +1596,7 @@
 #include "maps\RandomZLevels\challenge.dm"
 #include "maps\RandomZLevels\stationCollision.dm"
 #include "maps\RandomZLevels\wildwest.dm"
+#include "maps\RandomZLevels\Academy.dmm"
+#include "maps\RandomZLevels\arcticwaste.dmm"
+#include "maps\RandomZLevels\challenge.dmm"
 // END_INCLUDE
