@@ -13,7 +13,11 @@
 	gender = NEUTER
 
 	update_icon = 0
+<<<<<<< HEAD
 	nutrition = 700 // 1000 = max
+=======
+	nutrition = 700	// 1000 = max
+>>>>>>> origin/master
 
 	see_in_dark = 8
 	update_slimes = 0
@@ -35,13 +39,20 @@
 	var/tame = 0	// if set to 1, the slime will not eat humans ever, or attack them
 	var/rabid = 0	// if set to 1, the slime will attack and eat anything it comes in contact with
 
+<<<<<<< HEAD
 	var/list/Friends = list() // A list of potential friends
 	var/list/FriendsWeight = list() // A list containing values respective to Friends. This determines how many times a slime "likes" something. If the slime likes it more than 2 times, it becomes a friend
 	// slimes pass on genetic data, so all their offspring have the same "Friends",
+=======
+	var/list/Friends = list()	// A list of potential friends
+	var/list/FriendsWeight = list()	// A list containing values respective to Friends. This determines how many times a slime "likes" something. If the slime likes it more than 2 times, it becomes a friend
+									// slimes pass on genetic data, so all their offspring have the same "Friends",
+>>>>>>> origin/master
 
 	var/co2overloadtime = null
 	var/temperature_resistance = T0C+75
 
+<<<<<<< HEAD
 	var/AIproc = 0	// determines if the AI loop is activated
 	var/Atkcool = 0	// attack cooldown
 	var/Tempstun = 0	// temporary temperature stuns
@@ -50,25 +61,42 @@
 
 	// TIME FOR THE ACTUAL SPECIES
 
+=======
+	//TIME FOR SUBSPECIES
+>>>>>>> origin/master
 	var/colour = "grey"
 	var/primarytype = /mob/living/carbon/slime
 	var/adulttype = /mob/living/carbon/slime/adult
 	var/coretype = /obj/item/slime_extract/grey
+<<<<<<< HEAD
 	var/list/slime_mutation[4]
 	//var/list/spec_mutation[]
+=======
+	//var/mutationone = /mob/living/carbon/slime/orange
+	//var/mutationtwo = /mob/living/carbon/slime/metal
+	//var/mutationthree = /mob/living/carbon/slime/blue
+	//var/mutationfour = /mob/living/carbon/slime/purple
+	var/list/slime_mutation[4]
+>>>>>>> origin/master
 
 /mob/living/carbon/slime/New()
 	var/datum/reagents/R = new/datum/reagents(100)
 	reagents = R
 	R.my_atom = src
+<<<<<<< HEAD
 /*
+=======
+>>>>>>> origin/master
 	if(name == "baby slime")
 		name = text("[colour] baby slime ([rand(1, 1000)])")
 	else
 		name = text("[colour] adult slime ([rand(1,1000)])")
 	real_name = name
+<<<<<<< HEAD
 */
 	name = text("[colour] baby slime ([rand(1, 1000)])")
+=======
+>>>>>>> origin/master
 	spawn (1)
 		regenerate_icons()
 		src << "\blue Your icons have been generated!"
@@ -87,13 +115,21 @@
 		if(reagents.has_reagent("hyperzine"))	// hyperzine slows slimes down
 			tally *= 2	// moves twice as slow
 
+<<<<<<< HEAD
 		if(reagents.has_reagent("frostoil")) // frostoil also makes them move VEEERRYYYYY slow
+=======
+		if(reagents.has_reagent("frostoil"))	// frostoil also makes them move VEEERRYYYYY slow
+>>>>>>> origin/master
 			tally *= 5
 
 	if(health <= 0)	// if damaged, the slime moves twice as slow
 		tally *= 2
 
+<<<<<<< HEAD
 	if (bodytemperature >= 330.23) // 135 F
+=======
+	if (bodytemperature >= 330.23)	// 135 F
+>>>>>>> origin/master
 		return -1	// slimes become supercharged at high temperatures
 
 	return tally+config.slime_delay
@@ -117,7 +153,10 @@
 					if(10) 	   probab = 95
 				if(prob(probab))
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 					if(istype(AM, /obj/structure/window) || istype(AM, /obj/structure/grille))
 						if(istype(src, /mob/living/carbon/slime/adult))
 							if(nutrition <= 600 && !Atkcool)
@@ -596,7 +635,10 @@
 /mob/living/carbon/slime/restrained()
 	return 0
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 /mob/living/carbon/slime/show_inv(mob/user as mob)
 
 	user.set_machine(src)
@@ -696,7 +738,11 @@
 						ok = 0
 
 	//del(D)
+<<<<<<< HEAD
 // Garbage Collect Dummy
+=======
+	//Garbage Collect Dummy
+>>>>>>> origin/master
 	D.loc = null
 	D = null
 	if (!( ok ))

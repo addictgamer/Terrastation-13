@@ -370,6 +370,7 @@
 	mutationfour = /mob/living/carbon/slime/adamantine
 	adulttype = /mob/living/carbon/slime/adult/adamantine
 	coretype = /obj/item/slime_extract/adamantine
+<<<<<<< HEAD:code/modules/mob/living/carbon/slime/subtypesOLD.dm
 
 
 // TODO
@@ -439,3 +440,5 @@
 	mutationfour = /mob/living/carbon/slime/blue
 	adulttype = /mob/living/carbon/slime/adult/darkblue
 	coretype = /obj/item/slime_extract/darkblue
+=======
+>>>>>>> origin/master:code/modules/mob/living/carbon/metroid/subtypes.dm

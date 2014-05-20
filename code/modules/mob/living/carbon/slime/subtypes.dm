@@ -41,7 +41,11 @@
 		slime_mutation[1] = /mob/living/carbon/slime/silver
 		slime_mutation[2] = /mob/living/carbon/slime/glass
 		slime_mutation[3] = /mob/living/carbon/slime/oil
+<<<<<<< HEAD
 		slime_mutation[4] = /mob/living/carbon/slime/metal
+=======
+		slime_mutation[4] = /mob/living/carbon/slime/plasma
+>>>>>>> origin/master
 
 /mob/living/carbon/slime/lightblue
 	colour = "light blue"
@@ -147,7 +151,11 @@
 		..()
 		slime_mutation[1] = /mob/living/carbon/slime/gold
 		slime_mutation[2] = /mob/living/carbon/slime/metal
+<<<<<<< HEAD
 		slime_mutation[3] = /mob/living/carbon/slime/silver
+=======
+		slime_mutation[3] = /mob/living/carbon/slime/plasma
+>>>>>>> origin/master
 		slime_mutation[4] = /mob/living/carbon/slime/pyrite
 
 /mob/living/carbon/slime/red
@@ -188,7 +196,11 @@
 	New()
 		..()
 		slime_mutation[1] = /mob/living/carbon/slime/yellow
+<<<<<<< HEAD
 		slime_mutation[2] = /mob/living/carbon/slime/yellow
+=======
+		slime_mutation[2] = /mob/living/carbon/slime/cueball
+>>>>>>> origin/master
 		slime_mutation[3] = /mob/living/carbon/slime/orange
 		slime_mutation[4] = /mob/living/carbon/slime/orange
 
@@ -232,7 +244,11 @@
 		slime_mutation[1] = /mob/living/carbon/slime/glass
 		slime_mutation[2] = /mob/living/carbon/slime/lightblue
 		slime_mutation[3] = /mob/living/carbon/slime/metal
+<<<<<<< HEAD
 		slime_mutation[4] = /mob/living/carbon/slime/glass
+=======
+		slime_mutation[4] = /mob/living/carbon/slime/plasglass
+>>>>>>> origin/master
 
 // Tier 4
 
@@ -255,7 +271,11 @@
 		slime_mutation[1] = /mob/living/carbon/slime/cerulean
 		slime_mutation[2] = /mob/living/carbon/slime/blue
 		slime_mutation[3] = /mob/living/carbon/slime/darkblue
+<<<<<<< HEAD
 		slime_mutation[4] = /mob/living/carbon/slime/bluespace
+=======
+		slime_mutation[4] = /mob/living/carbon/slime/darkblue
+>>>>>>> origin/master
 
 /mob/living/carbon/slime/darkgreen
 	colour = "dark green"
@@ -278,6 +298,7 @@
 		slime_mutation[3] = /mob/living/carbon/slime/darkgreen
 		slime_mutation[4] = /mob/living/carbon/slime/sepia
 
+<<<<<<< HEAD
 /mob/living/carbon/slime/gold
 	colour = "gold"
 	icon_state = "gold baby slime"
@@ -299,6 +320,8 @@
 		slime_mutation[3] = /mob/living/carbon/slime/platinum
 		slime_mutation[4] = /mob/living/carbon/slime/pyrite
 
+=======
+>>>>>>> origin/master
 /mob/living/carbon/slime/purple
 	colour = "purple"
 	icon_state = "purple baby slime"
@@ -342,6 +365,30 @@
 		slime_mutation[3] = /mob/living/carbon/slime/pink
 		slime_mutation[4] = /mob/living/carbon/slime/purple
 
+<<<<<<< HEAD
+=======
+/mob/living/carbon/slime/gold
+	colour = "gold"
+	icon_state = "gold baby slime"
+	primarytype = /mob/living/carbon/slime/gold
+	adulttype = /mob/living/carbon/slime/adult/gold
+	coretype = /obj/item/slime_extract/gold
+
+/mob/living/carbon/slime/adult/gold
+	icon_state = "gold adult slime"
+	colour = "gold"
+	primarytype = /mob/living/carbon/slime/gold
+	adulttype = /mob/living/carbon/slime/adult/gold
+	coretype = /obj/item/slime_extract/gold
+
+	New()
+		..()
+		slime_mutation[1] = /mob/living/carbon/slime/adamantine
+		slime_mutation[2] = /mob/living/carbon/slime/silver
+		slime_mutation[3] = /mob/living/carbon/slime/platinum
+		slime_mutation[4] = /mob/living/carbon/slime/pyrite
+
+>>>>>>> origin/master
 // Working name
 /mob/living/carbon/slime/plasglass
 	colour = "plasglass"
@@ -361,7 +408,11 @@
 		..()
 		slime_mutation[1] = /mob/living/carbon/slime/plasglass
 		slime_mutation[2] = /mob/living/carbon/slime/glass
+<<<<<<< HEAD
 		slime_mutation[3] = /mob/living/carbon/slime/glass
+=======
+		slime_mutation[3] = /mob/living/carbon/slime/plasma
+>>>>>>> origin/master
 		slime_mutation[4] = /mob/living/carbon/slime/plasglass
 
 // Tier 5
@@ -385,7 +436,11 @@
 		slime_mutation[1] = /mob/living/carbon/slime/darkpurple
 		slime_mutation[2] = /mob/living/carbon/slime/purple
 		slime_mutation[3] = /mob/living/carbon/slime/purple
+<<<<<<< HEAD
 		slime_mutation[4] = /mob/living/carbon/slime/darkpurple
+=======
+		slime_mutation[4] = /mob/living/carbon/slime/black
+>>>>>>> origin/master
 
 /mob/living/carbon/slime/lightpink
 	colour = "light pink"
@@ -406,6 +461,7 @@
 		slime_mutation[1] = /mob/living/carbon/slime/lightpink
 		slime_mutation[2] = /mob/living/carbon/slime/pink
 		slime_mutation[3] = /mob/living/carbon/slime/pink
+<<<<<<< HEAD
 		slime_mutation[4] = /mob/living/carbon/slime/lightpink
 
 /mob/living/carbon/slime/black
@@ -428,6 +484,9 @@
 		slime_mutation[2] = /mob/living/carbon/slime/darkgreen
 		slime_mutation[3] = /mob/living/carbon/slime/black
 		slime_mutation[4] = /mob/living/carbon/slime/black
+=======
+		slime_mutation[4] = /mob/living/carbon/slime/white
+>>>>>>> origin/master
 
 /mob/living/carbon/slime/cerulean
 	icon_state = "cerulean baby slime"
@@ -473,6 +532,53 @@
 
 // Tier 6
 
+<<<<<<< HEAD
+=======
+/mob/living/carbon/slime/black
+	icon_state = "black baby slime"
+	colour = "black"
+	primarytype = /mob/living/carbon/slime/black
+	adulttype = /mob/living/carbon/slime/adult/black
+	coretype = /obj/item/slime_extract/black
+
+/mob/living/carbon/slime/adult/black
+	icon_state = "black adult slime"
+	colour = "black"
+	primarytype = /mob/living/carbon/slime/black
+	adulttype = /mob/living/carbon/slime/adult/black
+	coretype = /obj/item/slime_extract/black
+
+	New()
+		..()
+		slime_mutation[1] = /mob/living/carbon/slime/death
+		slime_mutation[2] = /mob/living/carbon/slime/black
+		slime_mutation[3] = /mob/living/carbon/slime/darkpurple
+		slime_mutation[4] = /mob/living/carbon/slime/darkpurple
+
+/mob/living/carbon/slime/white
+	icon_state = "white baby slime"
+	colour = "white"
+	primarytype = /mob/living/carbon/slime/white
+	adulttype = /mob/living/carbon/slime/adult/white
+	coretype = /obj/item/slime_extract/white
+
+/mob/living/carbon/slime/adult/white
+	icon_state = "white adult slime"
+	colour = "white"
+	primarytype = /mob/living/carbon/slime/white
+	adulttype = /mob/living/carbon/slime/adult/white
+	coretype = /obj/item/slime_extract/white
+
+	New()
+		..()
+		slime_mutation[1] = /mob/living/carbon/slime/life
+		slime_mutation[2] = /mob/living/carbon/slime/white
+		slime_mutation[3] = /mob/living/carbon/slime/lightpink
+		slime_mutation[4] = /mob/living/carbon/slime/lightpink
+
+// Tier 7
+
+>>>>>>> origin/master
 /mob/living/carbon/slime/death
 	icon_state = "death baby slime"
 	colour = "death"
@@ -494,6 +600,7 @@
 		slime_mutation[3] = /mob/living/carbon/slime/black
 		slime_mutation[4] = /mob/living/carbon/slime/death
 
+<<<<<<< HEAD
 /mob/living/carbon/slime/white
 	icon_state = "white baby slime"
 	colour = "white"
@@ -514,6 +621,28 @@
 		slime_mutation[2] = /mob/living/carbon/slime/lightpink
 		slime_mutation[3] = /mob/living/carbon/slime/lightpink
 		slime_mutation[4] = /mob/living/carbon/slime/white
+=======
+/mob/living/carbon/slime/life
+	icon_state = "life baby slime"
+	colour = "life"
+	primarytype = /mob/living/carbon/slime/life
+	adulttype = /mob/living/carbon/slime/adult/life
+	coretype = /obj/item/slime_extract/life
+
+/mob/living/carbon/slime/adult/life
+	icon_state = "life adult slime"
+	colour = "life"
+	primarytype = /mob/living/carbon/slime/life
+	adulttype = /mob/living/carbon/slime/adult/life
+	coretype = /obj/item/slime_extract/life
+
+	New()
+		..()
+		slime_mutation[1] = /mob/living/carbon/slime/life
+		slime_mutation[2] = /mob/living/carbon/slime/white
+		slime_mutation[3] = /mob/living/carbon/slime/white
+		slime_mutation[4] = /mob/living/carbon/slime/life
+>>>>>>> origin/master
 
 
 // Side tiers
@@ -537,9 +666,36 @@
 		..()
 		slime_mutation[1] = /mob/living/carbon/slime/green
 		slime_mutation[2] = /mob/living/carbon/slime/lightgreen
+<<<<<<< HEAD
 		slime_mutation[3] = /mob/living/carbon/slime/cueball
 		slime_mutation[4] = /mob/living/carbon/slime/cueball
 
+=======
+		slime_mutation[3] = /mob/living/carbon/slime/yellow
+		slime_mutation[4] = /mob/living/carbon/slime/cueball
+
+/mob/living/carbon/slime/plasma
+	icon_state = "plasma baby slime"
+	colour = "plasma"
+	primarytype = /mob/living/carbon/slime/plasma
+	adulttype = /mob/living/carbon/slime/adult/plasma
+	coretype = /obj/item/slime_extract/plasma
+
+/mob/living/carbon/slime/adult/plasma
+	icon_state = "plasma adult slime"
+	colour = "plasma"
+	primarytype = /mob/living/carbon/slime/plasma
+	adulttype = /mob/living/carbon/slime/adult/plasma
+	coretype = /obj/item/slime_extract/plasma
+
+	New()
+		..()
+		slime_mutation[1] = /mob/living/carbon/slime/plasma
+		slime_mutation[2] = /mob/living/carbon/slime/metal
+		slime_mutation[3] = /mob/living/carbon/slime/silver
+		slime_mutation[4] = /mob/living/carbon/slime/plasglass
+
+>>>>>>> origin/master
 // 2
 /mob/living/carbon/slime/bluespace
 	icon_state = "bluespace baby slime"
@@ -557,7 +713,11 @@
 
 	New()
 		..()
+<<<<<<< HEAD
 		slime_mutation[1] = /mob/living/carbon/slime/darkblue
+=======
+		slime_mutation[1] = /mob/living/carbon/slime/blue
+>>>>>>> origin/master
 		slime_mutation[2] = /mob/living/carbon/slime/blue
 		slime_mutation[3] = /mob/living/carbon/slime/bluespace
 		slime_mutation[4] = /mob/living/carbon/slime/bluespace

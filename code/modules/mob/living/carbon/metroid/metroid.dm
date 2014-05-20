@@ -1,5 +1,9 @@
 
+<<<<<<< HEAD
 // Old shit from metroids/RoRos, and the old cores, would not take much work to re-add them
+=======
+//////////////////////////////Old shit from metroids/RoRos, and the old cores, would not take much work to re-add them////////////////////////
+>>>>>>> origin/master
 
 /*
 // Basically this slime Core catalyzes reactions that normally wouldn't happen anywhere

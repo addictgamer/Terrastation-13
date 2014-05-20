@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 //kobold
 /mob/living/simple_animal/kobold
 	name = "kobold"
@@ -33,6 +34,9 @@
 	if(!stat)
 		flick("kobold_walk",src)
 =======
+=======
+
+>>>>>>> origin/master
 //kobold
 /mob/living/simple_animal/kobold
 	name = "kobold"

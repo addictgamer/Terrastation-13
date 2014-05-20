@@ -27,6 +27,7 @@
 	feedback_add_details("admin_verb","PLS")	// If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 
+<<<<<<< HEAD
 /client/proc/clownmusic()
 	set name = "Clownmusic"
 	set desc = "Honk"
@@ -35,15 +36,41 @@
 	//for(var/mob/m in world)
 		//if (m.client) //If has client.
 			//m.music <<
+=======
+/client/proc/peel()
+	set name = "Damn banana peel!"
+	set category = "Sound Board"
+
+	world << sound('sound/board/06 peel.ogg')
+
+/client/proc/clownmusic()
+	set name = "Clownmusic"
+	set category = "Sound Board"
+
+	//for(var/mob/m in world)
+	//	if (m.client)	// If has client.
+	//		m.music <<
+>>>>>>> origin/master
 	world << sound('sound/music/clown_station_redux.ogg')
 
+/client/proc/hawly_shet()
+	set name = "HAWLY SHET!"
+	set category = "Sound Board"
+
+	world << sound('sound/board/HAWLY SHET.ogg')
 
 /client/proc/heyaheyamusic()
 	set name = "Heyaheyaheya"
+<<<<<<< HEAD
 	set desc = "HEYYEYAAEYAAAEYAEYAA"
 	set category = "Sound Board"
 
 	world << sound('sound/music/heman-heya-full.ogg')
+=======
+	set category = "Sound Board"
+
+	world << sound('sound/board/heman-heya-full.ogg')
+>>>>>>> origin/master
 
 /client/proc/fag()
 	set name = "FAG!"
@@ -58,10 +85,14 @@
 	world << sound('sound/board/IC in OOC.ogg')
 /*
 /client/proc/ooc_in_ic()
+<<<<<<< HEAD
 	set name = "OOC IN IC"
+=======
+	set name = "OOC in IC"
+>>>>>>> origin/master
 	set category = "Sound Board"
 
-	world << sound('heman-heya-full.ogg')
+	world << sound('OOC in IC.ogg')
 */
 
 /*
@@ -82,8 +113,8 @@
 
 
 /client/proc/bananaphone()
-	set category = "Fun"
 	set name = "Banana Phone"
+	set category = "Fun"
 
 	message_admins("[key_name_admin(usr)] has activated Banana Phone!", 1)
 	for(var/mob/M in world)
@@ -93,8 +124,8 @@
 
 
 client/proc/space_asshole()
-	set category = "Fun"
 	set name = "Space Asshole"
+	set category = "Fun"
 
 	message_admins("[key_name_admin(usr)] has played the Space Asshole Hymn.", 1)
 	for(var/mob/M in world)
@@ -104,8 +135,8 @@ client/proc/space_asshole()
 
 
 client/proc/honk_theme()
-	set category = "Fun"
 	set name = "Honk"
+	set category = "Fun"
 
 	message_admins("[key_name_admin(usr)] has creeped everyone out with Blackest Honks.", 1)
 	for(var/mob/M in world)

@@ -9,29 +9,46 @@
 	..()
 
 	if(stat != DEAD)
+<<<<<<< HEAD
 	// Chemicals in the body
+=======
+		//Chemicals in the body
+>>>>>>> origin/master
 		handle_chemicals_in_body()
 
 		handle_nutrition()
 
 		handle_targets()
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 	var/datum/gas_mixture/environment	// Added to prevent null location errors-- TLE
 	if(src.loc)
 		environment = loc.return_air()
 
+<<<<<<< HEAD
 /*
  Apparently, the person who wrote this code designed it so that
  blinded get reset each cycle and then get activated later in the
  code. Very ugly. I dont care. Moving this stuff here so its easy
  to find it.
 */
+=======
+	/*
+	 Apparently, the person who wrote this code designed it so that
+	 blinded get reset each cycle and then get activated later in the
+	 code. Very ugly. I dont care. Moving this stuff here so its easy
+	 to find it
+	*/
+>>>>>>> origin/master
 	src.blinded = null
 
 // Basically just deletes any screen objects :<
 	regular_hud_updates()
 
+<<<<<<< HEAD
 // Handle temperature/pressure differences between body and environment
 	if(environment)
 		handle_environment(environment)
@@ -41,6 +58,24 @@
 
 
 /mob/living/carbon/slime/proc/AIprocess()  // the master AI process
+=======
+//Handle temperature/pressure differences between body and environment
+	if(environment)
+		handle_environment(environment)
+
+//Status updates, death etc.
+	handle_regular_status_updates()
+
+
+/mob/living/carbon/slime
+	var/AIproc = 0	// determines if the AI loop is activated
+	var/Atkcool = 0	// attack cooldown
+	var/Tempstun = 0	// temporary temperature stuns
+	var/Discipline = 0	// if a slime has been hit with a freeze gun, or wrestled/attacked off a human, they become disciplined and don't attack anymore for a while
+	var/SStun = 0	// stun variable
+
+/mob/living/carbon/slime/proc/AIprocess()	// the master AI process
+>>>>>>> origin/master
 
 	//world << "AI proc started."
 	if(AIproc || stat == DEAD || client) return
@@ -59,7 +94,11 @@
 	AIproc = 1
 	//world << "AIproc [AIproc] && stat != 2 [stat] && (attacked > 0 [attacked] || starving [starving] || hungry [hungry] || rabid [rabid] || Victim [Victim] || Target [Target]"
 	while(AIproc && stat != 2 && (attacked > 0 || starving || hungry || rabid || Victim))
+<<<<<<< HEAD
 		if(Victim) // can't eat AND have this little process at the same time
+=======
+		if(Victim)	// can't eat AND have this little process at the same time
+>>>>>>> origin/master
 			//world << "break 1"
 			break
 
@@ -158,7 +197,11 @@
 	else
 		loc_temp = environment.temperature
 
+<<<<<<< HEAD
 	/*
+=======
+/*
+>>>>>>> origin/master
 	if((environment.temperature > (T0C + 50)) || (environment.temperature < (T0C + 10)))
 		var/transfer_coefficient
 
@@ -166,8 +209,13 @@
 		if(wear_mask && (wear_mask.body_parts_covered & HEAD) && (environment.temperature < wear_mask.protective_temperature))
 			transfer_coefficient *= wear_mask.heat_transfer_coefficient
 
+<<<<<<< HEAD
 		// handle_temperature_damage(HEAD, environment.temperature, environment_heat_capacity*transfer_coefficient)
 	*/
+=======
+		//handle_temperature_damage(HEAD, environment.temperature, environment_heat_capacity*transfer_coefficient)
+*/
+>>>>>>> origin/master
 
 
 	if(loc_temp < 310.15)	// a cold place
@@ -175,6 +223,7 @@
 	else	// a hot place
 		bodytemperature += adjust_body_temperature(bodytemperature, loc_temp, 1)
 
+<<<<<<< HEAD
 	/*
 	if(stat==2)
 		bodytemperature += 0.1*(environment.temperature - bodytemperature)*environment_heat_capacity/(environment_heat_capacity + 270000)
@@ -188,6 +237,20 @@
 
 		if(bodytemperature <= (T0C - 50)) // hurt temperature
 			if(bodytemperature <= 50) // sqrting negative numbers is bad
+=======
+/*
+	if(stat==2)
+		bodytemperature += 0.1*(environment.temperature - bodytemperature)*environment_heat_capacity/(environment_heat_capacity + 270000)
+*/
+
+// Account for massive pressure differences
+	if(bodytemperature < (T0C + 5))	// start calculating temperature damage etc
+		if(bodytemperature <= (T0C - 40))	// stun temperature
+			Tempstun = 1
+
+		if(bodytemperature <= (T0C - 50))	// hurt temperature
+			if(bodytemperature <= 50)	// sqrting negative numbers is bad
+>>>>>>> origin/master
 				adjustToxLoss(200)
 			else
 				adjustToxLoss(round(sqrt(bodytemperature)) * 2)
@@ -197,18 +260,30 @@
 
 	updatehealth()
 
+<<<<<<< HEAD
 	return //TODO: DEFERRED
+=======
+	return	// TODO: DEFERRED
+>>>>>>> origin/master
 
 
 /mob/living/carbon/slime/proc/adjust_body_temperature(current, loc_temp, boost)
 	var/temperature = current
 	var/difference = abs(current-loc_temp)	// get difference
+<<<<<<< HEAD
 	var/increments// = difference/10
 // find how many increments apart they are
 	if(difference > 50)
 		increments = difference/5
 	else
 		increments = difference/10
+=======
+	var/increments// = difference / 10		// find how many increments apart they are
+	if(difference > 50)
+		increments = difference / 5
+	else
+		increments = difference / 10
+>>>>>>> origin/master
 	var/change = increments*boost	// Get the amount to change by (x per increment)
 	var/temp_change
 	if(current < loc_temp)
@@ -229,7 +304,10 @@
 
 
 /mob/living/carbon/slime/proc/handle_regular_status_updates()
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 	if(istype(src, /mob/living/carbon/slime/adult))
 		health = 200 - (getOxyLoss() + getToxLoss() + getFireLoss() + getBruteLoss() + getCloneLoss())
 	else
@@ -254,7 +332,10 @@
 		adjustCloneLoss(-1)
 		adjustBruteLoss(-1)
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 	if (src.stat == DEAD)
 
 		src.lying = 1
@@ -306,7 +387,10 @@
 
 
 /mob/living/carbon/slime/proc/handle_nutrition()
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 	if(prob(20))
 		if(istype(src, /mob/living/carbon/slime/adult)) nutrition-=rand(4,6)
 		else nutrition-=rand(2,3)
@@ -330,7 +414,11 @@
 		if(istype(src, /mob/living/carbon/slime/adult))
 			if(!client)
 				for(var/i=1,i<=4,i++)
+<<<<<<< HEAD
 					/*if(prob(70))
+=======
+/*					if(prob(70))
+>>>>>>> origin/master
 						var/mob/living/carbon/slime/M = new primarytype(loc)
 						M.powerlevel = round(powerlevel/4)
 						M.Friends = Friends
@@ -436,13 +524,20 @@
 		if(prob(10))
 			Discipline--
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 	if(!client)
 
 		if(!canmove) return
 
+<<<<<<< HEAD
 		// DO AI STUFF HERE
 
+=======
+	// DO AI STUFF HERE
+>>>>>>> origin/master
 		if(Target)
 			if(attacked <= 0)
 				Target = null
@@ -528,8 +623,11 @@
 
 						targets += L	// Possible target found!
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> origin/master
 			if((hungry || starving) && targets.len > 0)
 				if(!istype(src, /mob/living/carbon/slime/adult))
 					if(!starving)

@@ -140,11 +140,19 @@
 					if(Victim.LAssailant && Victim.LAssailant != Victim)
 						if(prob(50))
 							if(!(Victim.LAssailant in Friends))
+<<<<<<< HEAD
 								Friends.Add(Victim.LAssailant)	// no idea why i was using the |= operator
 
 			if(M.client && istype(src, /mob/living/carbon/human))
 				if(prob(85))
 					rabid = 1	// UUUNNBGHHHH GONNA EAT JUUUUUU
+=======
+								Friends.Add(Victim.LAssailant) // no idea why i was using the |= operator
+
+			if(M.client && istype(src, /mob/living/carbon/human))
+				if(prob(85))
+					rabid = 1 // UUUNNBGHHHH GONNA EAT JUUUUUU
+>>>>>>> origin/master
 
 			if(client) src << "<i>This subject does not have a strong enough life energy anymore...</i>"
 		else
@@ -164,7 +172,11 @@
 /mob/living/carbon/slime/proc/UpdateFeed(var/mob/M)
 	if(Victim)
 		if(Victim == M)
+<<<<<<< HEAD
 			loc = M.loc	// simple "attach to head" effect!
+=======
+			loc = M.loc // simple "attach to head" effect!
+>>>>>>> origin/master
 
 
 /mob/living/carbon/slime/verb/Evolve()
@@ -208,7 +220,11 @@
 			var/new_nutrition = round(nutrition * 0.9)
 			var/new_powerlevel = round(powerlevel / 4)
 			for(var/i=1,i<=4,i++)
+<<<<<<< HEAD
 				/*if(prob(80))
+=======
+/*				if(prob(80))
+>>>>>>> origin/master
 					var/mob/living/carbon/slime/M = new primarytype(loc)
 					M.nutrition = new_nutrition
 					M.powerlevel = new_powerlevel
@@ -241,6 +257,7 @@
 							M.powerlevel = new_powerlevel
 							if(i != 1) step_away(M,src)
 							babies += M
+<<<<<<< HEAD
 
 			var/mob/living/carbon/slime/new_slime = pick(babies)
 			new_slime.a_intent = "hurt"
@@ -254,6 +271,11 @@
 	else
 		src << "<i>I am not old enough to reproduce yet...</i>"
 */
+=======
+*/
+			// Reproduction/mutation
+			// replacement
+>>>>>>> origin/master
 				var/newslime
 				if (prob(1))
 					newslime = /mob/living/carbon/slime/rainbow
@@ -268,6 +290,10 @@
 				if(i != 1) step_away(M,src)
 				babies += M
 				feedback_add_details("slime_babies_born","slimebirth_[replacetext(M.colour," ","_")]")
+<<<<<<< HEAD
+=======
+			// end replacement
+>>>>>>> origin/master
 
 			var/mob/living/carbon/slime/new_slime = pick(babies)
 			new_slime.a_intent = "harm"

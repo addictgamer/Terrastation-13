@@ -1,12 +1,19 @@
 
 /mob/living/carbon/slime/emote(var/act,var/m_type=1,var/message = null)
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 	if (findtext(act, "-", 1, null))
 		var/t1 = findtext(act, "-", 1, null)
 		//param = copytext(act, t1 + 1, length(act) + 1)
 		act = copytext(act, 1, t1)
 
+<<<<<<< HEAD
 	if(findtext(act,"s",-1) && !findtext(act,"_",-2))//Removes ending s's unless they are prefixed with a '_'
+=======
+	if(findtext(act,"s",-1) && !findtext(act,"_",-2))	// Removes ending s's unless they are prefixed with a '_'
+>>>>>>> origin/master
 		act = copytext(act,1,length(act))
 
 	switch(act)
