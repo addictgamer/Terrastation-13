@@ -194,7 +194,7 @@
 
 	end_step(mob/living/user, mob/living/carbon/slime/target, target_zone, obj/item/tool)
 		user.visible_message("\blue [user] cuts [target]'s flesh with \the [tool].",	\
-		"\blue You cut [target]'s flesh with \the [tool], exposing the innards")
+		"\blue You cut [target]'s flesh with \the [tool], exposing the cores")
 		target.brain_op_stage = 1
 
 	fail_step(mob/living/user, mob/living/carbon/slime/target, target_zone, obj/item/tool)

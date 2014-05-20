@@ -1,5 +1,4 @@
-
-// the core [tokamaka generator] big funky solenoid, it generates an EM field
+//the core [tokamaka generator] big funky solenoid, it generates an EM field
 
 /*
 when the core is turned on, it generates [creates] an electromagnetic field

@@ -1,4 +1,3 @@
-
 #define SPECIAL -1
 #define NON_CONTAGIOUS 0
 #define BLOOD 1
@@ -127,7 +126,7 @@ var/list/diseases = typesof(/datum/disease) - /datum/disease
 			source = affected_mob
 		else //no source and no mob affected. Rogue disease. Break
 			return
-
+	
 	if(affected_mob.reagents != null)
 		if(affected_mob)
 			if(affected_mob.reagents.has_reagent("spaceacillin"))

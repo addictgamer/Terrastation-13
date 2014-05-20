@@ -1,4 +1,3 @@
-
 /obj/machinery/wish_granter
 	name = "Wish Granter"
 	desc = "You're not so sure about this, anymore..."

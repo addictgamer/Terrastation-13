@@ -1,23 +1,23 @@
-
-/datum/disease/disease
+/datum/disease2/disease
 	var/infectionchance = 10
 	var/speed = 1
 	var/spreadtype = "Blood" // Can also be "Airborne"
+	var/stage = 1
 	var/stageprob = 10
 	var/dead = 0
 	var/clicks = 0
 	var/uniqueID = 0
-	var/list/datum/disease/effectholder/effects = list()
+	var/list/datum/disease2/effectholder/effects = list()
 	var/antigen = 0 // 16 bits describing the antigens, when one bit is set, a cure with that bit can dock here
 	var/max_stage = 4
 
-/datum/disease/disease/New()
+/datum/disease2/disease/New()
 	uniqueID = rand(0,10000)
 	..()
 
-/datum/disease/disease/proc/makerandom(var/greater=0)
+/datum/disease2/disease/proc/makerandom(var/greater=0)
 	for(var/i=1 ; i <= max_stage ; i++ )
-		var/datum/disease/effectholder/holder = new /datum/disease/effectholder
+		var/datum/disease2/effectholder/holder = new /datum/disease2/effectholder
 		holder.stage = i
 		if(greater)
 			holder.getrandomeffect(2)
@@ -30,7 +30,7 @@
 	antigen |= text2num(pick(ANTIGENS))
 	spreadtype = "Airborne"
 
-/datum/disease/disease/proc/activate(var/mob/living/carbon/mob)
+/datum/disease2/disease/proc/activate(var/mob/living/carbon/mob)
 	if(dead)
 		cure(mob)
 		return
@@ -62,41 +62,41 @@
 		stage++
 		clicks = 0
 	//Do nasty effects
-	for(var/datum/disease/effectholder/e in effects)
+	for(var/datum/disease2/effectholder/e in effects)
 		e.runeffect(mob,stage)
 
 	//fever
 	mob.bodytemperature = max(mob.bodytemperature, min(310+5*stage ,mob.bodytemperature+5*stage))
 	clicks+=speed
-/*
-/datum/disease/disease/proc/cure(var/mob/living/carbon/mob)
-	for(var/datum/disease/effectholder/e in effects)
+
+/datum/disease2/disease/proc/cure(var/mob/living/carbon/mob)
+	for(var/datum/disease2/effectholder/e in effects)
 		e.effect.deactivate(mob)
 	mob.virus2.Remove("[uniqueID]")
-*/
-/datum/disease/disease/proc/minormutate()
+
+/datum/disease2/disease/proc/minormutate()
 	uniqueID = rand(0,10000)
-	var/datum/disease/effectholder/holder = pick(effects)
+	var/datum/disease2/effectholder/holder = pick(effects)
 	holder.minormutate()
 	infectionchance = min(10,infectionchance + rand(0,1))
 
-/datum/disease/disease/proc/majormutate()
+/datum/disease2/disease/proc/majormutate()
 	uniqueID = rand(0,10000)
-	var/datum/disease/effectholder/holder = pick(effects)
+	var/datum/disease2/effectholder/holder = pick(effects)
 	holder.majormutate()
 	if (prob(5))
 		antigen = text2num(pick(ANTIGENS))
 		antigen |= text2num(pick(ANTIGENS))
 
-/datum/disease/disease/proc/getcopy()
-	var/datum/disease/disease/disease = new /datum/disease/disease
+/datum/disease2/disease/proc/getcopy()
+	var/datum/disease2/disease/disease = new /datum/disease2/disease
 	disease.infectionchance = infectionchance
 	disease.spreadtype = spreadtype
 	disease.stageprob = stageprob
 	disease.antigen   = antigen
 	disease.uniqueID = uniqueID
-	for(var/datum/disease/effectholder/holder in effects)
-		var/datum/disease/effectholder/newholder = new /datum/disease/effectholder
+	for(var/datum/disease2/effectholder/holder in effects)
+		var/datum/disease2/effectholder/newholder = new /datum/disease2/effectholder
 		newholder.effect = new holder.effect.type
 		newholder.chance = holder.chance
 		newholder.cure = holder.cure
@@ -106,14 +106,14 @@
 		disease.effects += newholder
 	return disease
 
-/datum/disease/disease/proc/issame(var/datum/disease/disease/disease)
+/datum/disease2/disease/proc/issame(var/datum/disease2/disease/disease)
 	var/list/types = list()
 	var/list/types2 = list()
-	for(var/datum/disease/effectholder/d in effects)
+	for(var/datum/disease2/effectholder/d in effects)
 		types += d.effect.type
 	var/equal = 1
 
-	for(var/datum/disease/effectholder/d in disease.effects)
+	for(var/datum/disease2/effectholder/d in disease.effects)
 		types2 += d.effect.type
 
 	for(var/type in types)
@@ -124,34 +124,34 @@
 		equal = 0
 	return equal
 
-/proc/virus_copylist(var/list/datum/disease/disease/viruses)
+/proc/virus_copylist(var/list/datum/disease2/disease/viruses)
 	var/list/res = list()
 	for (var/ID in viruses)
-		var/datum/disease/disease/V = viruses[ID]
+		var/datum/disease2/disease/V = viruses[ID]
 		res["[V.uniqueID]"] = V.getcopy()
 	return res
 
 
 var/global/list/virusDB = list()
 
-/datum/disease/disease/proc/name()
+/datum/disease2/disease/proc/name()
 	.= "stamm #[add_zero("[uniqueID]", 4)]"
 	if ("[uniqueID]" in virusDB)
 		var/datum/data/record/V = virusDB["[uniqueID]"]
 		.= V.fields["name"]
 
-/datum/disease/disease/proc/get_info()
+/datum/disease2/disease/proc/get_info()
 	var/r = "GNAv2 based virus lifeform - [name()], #[add_zero("[uniqueID]", 4)]"
 	r += "<BR>Infection rate : [infectionchance * 10]"
 	r += "<BR>Spread form : [spreadtype]"
 	r += "<BR>Progress Speed : [stageprob * 10]"
-	for(var/datum/disease/effectholder/E in effects)
+	for(var/datum/disease2/effectholder/E in effects)
 		r += "<BR>Effect:[E.effect.name]. Strength : [E.multiplier * 8]. Verosity : [E.chance * 15]. Type : [5-E.stage]."
 
 	r += "<BR>Antigen pattern: [antigens2string(antigen)]"
 	return r
 
-/datum/disease/disease/proc/addToDB()
+/datum/disease2/disease/proc/addToDB()
 	if ("[uniqueID]" in virusDB)
 		return 0
 	var/datum/data/record/v = new()
@@ -185,5 +185,4 @@ proc/virus2_greater_infection()
 
 	candidates = shuffle(candidates)
 
-	infect_mob_random_greater(candidates[1])
 	infect_mob_random_greater(candidates[1])

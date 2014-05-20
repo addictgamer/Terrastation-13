@@ -1,10 +1,10 @@
-/obj/machinery/disease/isolator/
+/obj/machinery/disease2/isolator/
 	name = "Pathogenic Isolator"
 	density = 1
 	anchored = 1
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "isolator"
-	var/datum/disease/disease/virus2 = null
+	var/datum/disease2/disease/virus2 = null
 	var/isolating = 0
 	var/beaker = null
 
@@ -117,7 +117,7 @@
 	name = "Virus containment/growth dish"
 	icon = 'icons/obj/items.dmi'
 	icon_state = "implantcase-b"
-	var/datum/disease/disease/virus2 = null
+	var/datum/disease2/disease/virus2 = null
 	var/growth = 0
 	var/info = 0
 	var/analysed = 0
@@ -136,5 +136,4 @@
 	usr << "This is a virus containment dish"
 	if(src.info)
 		usr << "It has the following information about its contents"
-		usr << src.info
 		usr << src.info

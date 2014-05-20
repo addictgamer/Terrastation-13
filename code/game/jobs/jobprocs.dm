@@ -1,4 +1,6 @@
 
+
+//TODO: put these somewhere else
 /client/proc/mimewall()
 	set category = "Mime"
 	set name = "Invisible wall"
@@ -24,7 +26,7 @@
 	new /obj/effect/forcefield/mime(locate(usr.x,usr.y,usr.z))
 	return
 
-// Mimewalls
+///////////Mimewalls///////////
 
 /obj/effect/forcefield/mime
 	icon_state = "empty"
@@ -44,6 +46,7 @@
 		processing_objects.Remove(src)
 		del(src)
 
+///////////////////////////////
 
 /client/proc/mimespeak()
 	set category = "Mime"

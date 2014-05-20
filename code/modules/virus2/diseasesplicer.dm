@@ -1,10 +1,9 @@
-
 /obj/machinery/computer/diseasesplicer
 	name = "Disease Splicer"
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "crew"
 
-	var/datum/disease/effectholder/memorybank = null
+	var/datum/disease2/effectholder/memorybank = null
 	var/analysed = 0
 	var/obj/item/weapon/virusdish/dish = null
 	var/burning = 0
@@ -70,7 +69,7 @@
 		if(dish)
 			if(dish.virus2)
 				if(dish.growth >= 50)
-					for(var/datum/disease/effectholder/e in dish.virus2.effects)
+					for(var/datum/disease2/effectholder/e in dish.virus2.effects)
 						dat += "<BR><A href='?src=\ref[src];grab=\ref[e]'> DNA strand"
 						if(dish.analysed)
 							dat += ": [e.effect.name]"
@@ -134,7 +133,7 @@
 
 	else if(href_list["splice"])
 		if(dish)
-			for(var/datum/disease/effectholder/e in dish.virus2.effects)
+			for(var/datum/disease2/effectholder/e in dish.virus2.effects)
 				if(e.stage == memorybank.stage)
 					e.effect = memorybank.effect
 			splicing = 10
@@ -145,5 +144,4 @@
 
 	src.add_fingerprint(usr)
 	src.updateUsrDialog()
-	return
 	return

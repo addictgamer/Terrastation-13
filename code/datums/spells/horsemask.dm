@@ -1,4 +1,3 @@
-
 /obj/effect/proc_holder/spell/targeted/horsemask
 	name = "Curse of the Horseman"
 	desc = "This spell triggers a curse on a target, causing them to wield an unremovable horse head mask. They will speak like a horse! Any masks they are wearing will be disintegrated. This spell does not require robes."
@@ -25,14 +24,14 @@
 		user << "<span class='notice'>It'd be stupid to curse [target] with a horse's head!</span>"
 		return
 
-	if(!(target in oview(range)))	// If they are not  in overview after selection.
+	if(!(target in oview(range)))//If they are not  in overview after selection.
 		user << "<span class='notice'>They are too far away!</span>"
 		return
 
 	var/obj/item/clothing/mask/horsehead/magichead = new /obj/item/clothing/mask/horsehead
-	magichead.canremove = 0		// curses!
-	magichead.flags_inv = null	// so you can still see their face
-	magichead.voicechange = 1	// NEEEEIIGHH
+	magichead.canremove = 0		//curses!
+	magichead.flags_inv = null	//so you can still see their face
+	magichead.voicechange = 1	//NEEEEIIGHH
 	target.visible_message(	"<span class='danger'>[target]'s face  lights up in fire, and after the event a horse's head takes its place!</span>", \
 							"<span class='danger'>Your face burns up, and shortly after the fire you realise you have the face of a horse!</span>")
 	target.equip_to_slot(magichead, slot_wear_mask)

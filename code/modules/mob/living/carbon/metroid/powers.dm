@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 
 /mob/living/carbon/slime/verb/Feed()
 	set category = "Slime"
@@ -264,4 +262,3 @@
 	set category = "Slime"
 	if(Victim)	return
 	handle_ventcrawl()
->>>>>>> origin/master

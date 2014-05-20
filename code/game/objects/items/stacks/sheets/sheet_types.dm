@@ -1,6 +1,15 @@
+/* Diffrent misc types of sheets
+ * Contains:
+ *		Metal
+ *		Plasteel
+ *		Wood
+ *		Cloth
+ *		Cardboard
+ */
 
-// Metal
-
+/*
+ * Metal
+ */
 var/global/list/datum/stack_recipe/metal_recipes = list ( \
 	new/datum/stack_recipe("stool", /obj/structure/stool, one_per_turf = 1, on_floor = 1), \
 	new/datum/stack_recipe("chair", /obj/structure/stool/bed/chair, one_per_turf = 1, on_floor = 1), \
@@ -86,8 +95,9 @@ var/global/list/datum/stack_recipe/metal_recipes = list ( \
 	return ..()
 
 
-// Plasteel
-
+/*
+ * Plasteel
+ */
 var/global/list/datum/stack_recipe/plasteel_recipes = list ( \
 	new/datum/stack_recipe("AI core", /obj/structure/AIcore, 4, time = 50, one_per_turf = 1), \
 	new/datum/stack_recipe("Metal crate", /obj/structure/closet/crate, 10, time = 50, one_per_turf = 1), \
@@ -110,13 +120,9 @@ var/global/list/datum/stack_recipe/plasteel_recipes = list ( \
 		recipes = plasteel_recipes
 		return ..()
 
-/obj/item/stack/sheet/plasteel/recycle(var/obj/machinery/mineral/processing_unit/recycle/rec)
-	rec.addMaterial("plasma",1)
-	rec.addMaterial("iron",1)
-	return 1
-
-// Wood
-
+/*
+ * Wood
+ */
 var/global/list/datum/stack_recipe/wood_recipes = list ( \
 	new/datum/stack_recipe("wooden sandals", /obj/item/clothing/shoes/sandal, 1), \
 	new/datum/stack_recipe("wood floor tile", /obj/item/stack/tile/wood, 1, 4, 20), \
@@ -139,8 +145,9 @@ var/global/list/datum/stack_recipe/wood_recipes = list ( \
 	recipes = wood_recipes
 	return ..()
 
-// Cloth
-
+/*
+ * Cloth
+ */
 /obj/item/stack/sheet/cloth
 	name = "cloth"
 	desc = "This roll of cloth is made from only the finest chemicals and bunny rabbits."
@@ -148,8 +155,9 @@ var/global/list/datum/stack_recipe/wood_recipes = list ( \
 	icon_state = "sheet-cloth"
 	origin_tech = "materials=2"
 
-// Cardboard
-
+/*
+ * Cardboard
+ */
 var/global/list/datum/stack_recipe/cardboard_recipes = list ( \
 	new/datum/stack_recipe("box", /obj/item/weapon/storage/box), \
 	new/datum/stack_recipe("light tubes", /obj/item/weapon/storage/box/lights/tubes), \
@@ -161,7 +169,7 @@ var/global/list/datum/stack_recipe/cardboard_recipes = list ( \
 	new/datum/stack_recipe("folder", /obj/item/weapon/folder), \
 )
 
-/obj/item/stack/sheet/cardboard	// BubbleWrap
+/obj/item/stack/sheet/cardboard	//BubbleWrap
 	name = "cardboard"
 	desc = "Large sheets of card, like boxes folded flat."
 	singular_name = "cardboard sheet"

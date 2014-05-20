@@ -1,4 +1,3 @@
-
 #define LIQUID_TRANSFER_THRESHOLD 0.05
 
 var/liquid_delay = 4
@@ -82,10 +81,10 @@ obj/effect/liquid/proc/spread()
 			spread_directions.Remove(direction)
 			//world << "ERROR: Map edge!"
 			continue //Map edge
-		if(!loc_turf.can_leave_liquid(direction))	// Check if this liquid can leave the tile in the direction
+		if(!loc_turf.can_leave_liquid(direction)) //Check if this liquid can leave the tile in the direction
 			spread_directions.Remove(direction)
 			continue
-		if(!T.can_accept_liquid(turn(direction,180)))	// Check if this liquid can enter the tile
+		if(!T.can_accept_liquid(turn(direction,180))) //Check if this liquid can enter the tile
 			spread_directions.Remove(direction)
 			continue
 		var/obj/effect/liquid/L = locate(/obj/effect/liquid) in T
@@ -93,15 +92,15 @@ obj/effect/liquid/proc/spread()
 			if(L.volume >= src.volume)
 				spread_directions.Remove(direction)
 				continue
-			surrounding_volume += L.volume	// If liquid already exists, add it's volume to our sum
+			surrounding_volume += L.volume //If liquid already exists, add it's volume to our sum
 		else
-			var/obj/effect/liquid/NL = new(T)	// Otherwise create a new object which we'll spread to.
+			var/obj/effect/liquid/NL = new(T) //Otherwise create a new object which we'll spread to.
 			NL.controller = src.controller
 			controller.liquid_objects.Add(NL)
 
 	if(!spread_directions.len)
 		//world << "ERROR: No candidate to spread to."
-		return	// No suitable candidate to spread to
+		return //No suitable candidate to spread to
 
 	var/average_volume = (src.volume + surrounding_volume) / (spread_directions.len + 1) //Average amount of volume on this and the surrounding tiles.
 	var/volume_difference = src.volume - average_volume //How much more/less volume this tile has than the surrounding tiles.

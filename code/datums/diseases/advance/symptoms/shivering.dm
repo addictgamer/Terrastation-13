@@ -1,4 +1,6 @@
 /*
+//////////////////////////////////////
+
 Shivering
 
 	No change to hidden.
@@ -9,6 +11,8 @@ Shivering
 
 Bonus
 	Cools down your body.
+
+//////////////////////////////////////
 */
 
 /datum/symptom/shivering

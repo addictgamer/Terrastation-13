@@ -1,5 +1,4 @@
-
-// DNA DATUM
+/////////////////////////// DNA DATUM
 /datum/dna
 	var/unique_enzymes = null
 	var/struc_enzymes = null
@@ -126,9 +125,9 @@
 	unique_enzymes = md5(character.real_name)
 	reg_dna[unique_enzymes] = character.real_name
 
-// DNA DATUM
+/////////////////////////// DNA DATUM
 
-// DNA HELPER-PROCS
+/////////////////////////// DNA HELPER-PROCS
 /proc/getleftblocks(input,blocknumber,blocksize)
 	var/string
 
@@ -218,8 +217,8 @@
 	if (!output) output = "5"
 	return output
 
-// Instead of picking a value far from the input, this will pick values closer to it.
-// Sorry for the block of code, but it's more efficient then calling text2hex -> loop -> hex2text
+//Instead of picking a value far from the input, this will pick values closer to it.
+//Sorry for the block of code, but it's more efficient then calling text2hex -> loop -> hex2text
 /proc/miniscrambletarget(input,rs,rd)
 	var/output = null
 	switch(input)
@@ -348,9 +347,9 @@
 	else
 		chtemp = rand(1,2049)
 		return add_zero2(num2hex(chtemp,1),3)
-// DNA HELPER-PROCS
+/////////////////////////// DNA HELPER-PROCS
 
-// DNA MISC-PROCS
+/////////////////////////// DNA MISC-PROCS
 /proc/updateappearance(mob/M as mob , structure)
 	if(istype(M, /mob/living/carbon/human))
 		M.dna.check_integrity()
@@ -516,14 +515,13 @@
 		M.disabilities |= NEARSIGHTED
 		M << "Your eyes feel weird..."
 
-// If you want the new mutations to work, UNCOMMENT THIS.
-/*
+	/* If you want the new mutations to work, UNCOMMENT THIS.
 	if(istype(M, /mob/living/carbon))
 		for (var/datum/mutations/mut in global_mutations)
 			mut.check_mutation(M)
-*/
+	*/
 
-// Monkey Block
+//////////////////////////////////////////////////////////// Monkey Block
 	if (isblockon(getblock(M.dna.struc_enzymes, MONKEYBLOCK,3),MONKEYBLOCK) && istype(M, /mob/living/carbon/human))
 	// human > monkey
 		var/mob/living/carbon/human/H = M

@@ -1,4 +1,3 @@
-
 /obj/effect/proc_holder/spell/targeted/emplosion
 	name = "Emplosion"
 	desc = "This spell emplodes an area."

@@ -38,30 +38,31 @@
 		if(crit_fail)
 			user << "\red The Bluespace generator isn't working."
 			return
-		if(istype(W, /obj/item/weapon/storage/backpack/holding)/* && !W.crit_fail*/)	// Not sure if it will work like this
+		if(istype(W, /obj/item/weapon/storage/backpack/holding) && !W.crit_fail)
 			user << "\red The Bluespace interfaces of the two devices conflict and malfunction."
 			del(W)
 			return
-	// uncommented out --Tauka
+			/* //BoH+BoH=Singularity, commented out.
 		if(istype(W, /obj/item/weapon/storage/backpack/holding) && !W.crit_fail)
 			investigate_log("has become a singularity. Caused by [user.key]","singulo")
 			user << "\red The Bluespace interfaces of the two devices catastrophically malfunction!"
 			del(W)
 			var/obj/machinery/singularity/singulo = new /obj/machinery/singularity (get_turf(src))
-			singulo.energy = 300	// should make it a bit bigger~
+			singulo.energy = 300 //should make it a bit bigger~
 			message_admins("[key_name_admin(user)] detonated a bag of holding")
 			log_game("[key_name(user)] detonated a bag of holding")
 			del(src)
 			return
+			*/
 		..()
 
 	proc/failcheck(mob/user as mob)
-		if (prob(src.reliability)) return 1	// No failure
+		if (prob(src.reliability)) return 1 //No failure
 		if (prob(src.reliability))
-			user << "\red The Bluespace portal resists your attempt to add another item."	// light failure
+			user << "\red The Bluespace portal resists your attempt to add another item." //light failure
 		else
 			user << "\red The Bluespace generator malfunctions!"
-			for (var/obj/O in src.contents)	// it broke, delete what was in it
+			for (var/obj/O in src.contents) //it broke, delete what was in it
 				del(O)
 			crit_fail = 1
 			icon_state = "brokenpack"

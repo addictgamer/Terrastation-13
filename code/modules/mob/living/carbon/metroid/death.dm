@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 
 /mob/living/carbon/slime/death(gibbed)
 	if(stat == DEAD)	return
@@ -24,4 +22,3 @@
 	ticker.mode.check_win()
 
 	return ..(gibbed)
->>>>>>> origin/master

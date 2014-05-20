@@ -1,4 +1,3 @@
-
 /var/create_object_html = null
 
 /datum/admins/proc/create_object(var/mob/user)

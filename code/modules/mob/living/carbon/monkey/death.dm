@@ -1,4 +1,3 @@
-
 /mob/living/carbon/monkey/gib()
 	death(1)
 	var/atom/movable/overlay/animation = null

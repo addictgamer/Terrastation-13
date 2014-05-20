@@ -1,12 +1,11 @@
+//To simplify, all diseases have 4 stages, with effects starting at stage 2
+//Stage 1 = Rest,Minor disease
+//Stage 2 = Minimal effect
+//Stage 3 = Medium effect
+//Stage 4 = Death/Really Really really bad effect
 
-// To simplify, all diseases have 4 stages, with effects starting at stage 2
-// Stage 1 = Rest,Minor disease
-// Stage 2 = Minimal effect
-// Stage 3 = Medium effect
-// Stage 4 = Death/Really Really really bad effect
 
-
-/proc/infect_virus2(var/mob/living/carbon/M,var/datum/disease/disease/disease,var/forced = 0)
+/proc/infect_virus2(var/mob/living/carbon/M,var/datum/disease2/disease/disease,var/forced = 0)
 	if(prob(disease.infectionchance))
 		if(M.virus2)
 			return
@@ -29,8 +28,8 @@
 
 			if(score > 15)
 				return
-			//else if(score == 20 && prob(95))
-				//return
+		//	else if(score == 20 && prob(95))
+		//		return
 			else if(score == 15 && prob(75))
 				return
 			else if(score == 10 && prob(55))
@@ -41,20 +40,20 @@
 			M.virus2 = disease.getcopy()
 			M.virus2.minormutate()
 
-			for(var/datum/disease/resistance/res in M.resistances)
+			for(var/datum/disease2/resistance/res in M.resistances)
 				if(res.resistsdisease(M.virus2))
 					M.virus2 = null
 
 
 
-/datum/disease/resistance
-	var/list/datum/disease/effect/resistances = list()
+/datum/disease2/resistance
+	var/list/datum/disease2/effect/resistances = list()
 
-	proc/resistsdisease(var/datum/disease/disease/virus2)
+	proc/resistsdisease(var/datum/disease2/disease/virus2)
 		var/list/res2 = list()
-		for(var/datum/disease/effect/e in resistances)
+		for(var/datum/disease2/effect/e in resistances)
 			res2 += e.type
-		for(var/datum/disease/effectholder/holder in virus2)
+		for(var/datum/disease2/effectholder/holder in virus2)
 			if(!(holder.effect.type in res2))
 				return 0
 			else
@@ -64,61 +63,58 @@
 		else
 			return 1
 
-	New(var/datum/disease/disease/virus2)
-		for(var/datum/disease/effectholder/h in virus2.effects)
+	New(var/datum/disease2/disease/virus2)
+		for(var/datum/disease2/effectholder/h in virus2.effects)
 			resistances += h.effect.type
 
 
 /proc/infect_mob_random(var/mob/living/carbon/M)
 	if(!M.virus2)
-		M.virus2 = new /datum/disease/disease
+		M.virus2 = new /datum/disease2/disease
 		M.virus2.makerandom()
 
-/datum/disease/disease
+/datum/disease2/disease
 	var/infectionchance = 10
-	var/spreadtype = "Blood"	// Can also be "Airborne"
+	var/spreadtype = "Blood" // Can also be "Airborne"
 	var/stage = 1
 	var/stageprob = 2
 	var/dead = 0
 	var/clicks = 0
 
 	var/uniqueID = 0
-	var/list/datum/disease/effectholder/effects = list()
-
+	var/list/datum/disease2/effectholder/effects = list()
 	proc/makerandom()
-		var/datum/disease/effectholder/holder = new /datum/disease/effectholder
+		var/datum/disease2/effectholder/holder = new /datum/disease2/effectholder
 		holder.stage = 1
 		holder.getrandomeffect()
 		effects += holder
-		holder = new /datum/disease/effectholder
+		holder = new /datum/disease2/effectholder
 		holder.stage = 2
 		holder.getrandomeffect()
 		effects += holder
-		holder = new /datum/disease/effectholder
+		holder = new /datum/disease2/effectholder
 		holder.stage = 3
 		holder.getrandomeffect()
 		effects += holder
-		holder = new /datum/disease/effectholder
+		holder = new /datum/disease2/effectholder
 		holder.stage = 4
 		holder.getrandomeffect()
 		effects += holder
 		uniqueID = rand(0,10000)
 		infectionchance = rand(1,10)
 		spreadtype = "Airborne"
-
 	proc/minormutate()
-		var/datum/disease/effectholder/holder = pick(effects)
+		var/datum/disease2/effectholder/holder = pick(effects)
 		holder.minormutate()
 		infectionchance = min(10,infectionchance + rand(0,1))
-
-	proc/issame(var/datum/disease/disease/disease)
+	proc/issame(var/datum/disease2/disease/disease)
 		var/list/types = list()
 		var/list/types2 = list()
-		for(var/datum/disease/effectholder/d in effects)
+		for(var/datum/disease2/effectholder/d in effects)
 			types += d.effect.type
 		var/equal = 1
 
-		for(var/datum/disease/effectholder/d in disease.effects)
+		for(var/datum/disease2/effectholder/d in disease.effects)
 			types2 += d.effect.type
 
 		for(var/type in types)
@@ -140,27 +136,27 @@
 		if(prob(stageprob) && prob(25 + (clicks/100)) && stage != 4)
 			stage++
 			clicks = 0
-		for(var/datum/disease/effectholder/e in effects)
+		for(var/datum/disease2/effectholder/e in effects)
 			e.runeffect(mob,stage)
 
-	proc/cure_added(var/datum/disease/resistance/res)
+	proc/cure_added(var/datum/disease2/resistance/res)
 		if(res.resistsdisease(src))
 			dead = 1
 
 	proc/majormutate()
-		var/datum/disease/effectholder/holder = pick(effects)
+		var/datum/disease2/effectholder/holder = pick(effects)
 		holder.majormutate()
 
 
 	proc/getcopy()
-		//world << "getting copy"
-		var/datum/disease/disease/disease = new /datum/disease/disease
+//		world << "getting copy"
+		var/datum/disease2/disease/disease = new /datum/disease2/disease
 		disease.infectionchance = infectionchance
 		disease.spreadtype = spreadtype
 		disease.stageprob = stageprob
-		for(var/datum/disease/effectholder/holder in effects)
-			//world << "adding effects"
-			var/datum/disease/effectholder/newholder = new /datum/disease/effectholder
+		for(var/datum/disease2/effectholder/holder in effects)
+	//		world << "adding effects"
+			var/datum/disease2/effectholder/newholder = new /datum/disease2/effectholder
 			newholder.effect = new holder.effect.type
 			newholder.chance = holder.chance
 			newholder.cure = holder.cure
@@ -168,80 +164,80 @@
 			newholder.happensonce = holder.happensonce
 			newholder.stage = holder.stage
 			disease.effects += newholder
-			//world << "[newholder.effect.name]"
-		//world << "[disease]"
+	//		world << "[newholder.effect.name]"
+	//	world << "[disease]"
 		return disease
 
-/datum/disease/effect
+/datum/disease2/effect
 	var/name = "Blanking effect"
 	var/stage = 4
 	var/maxm = 1
 	proc/activate(var/mob/living/carbon/mob,var/multiplier)
 
-/datum/disease/effect/gibbingtons
+/datum/disease2/effect/gibbingtons
 	name = "Gibbingtons Syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.gib()
 
-/datum/disease/effect/radian
+/datum/disease2/effect/radian
 	name = "Radian's syndrome"
 	stage = 4
 	maxm = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.radiation += (2*multiplier)
 
-/datum/disease/effect/toxins
+/datum/disease2/effect/toxins
 	name = "Hyperacid Syndrome"
 	stage = 3
 	maxm = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.adjustToxLoss(2*multiplier)
 
-/datum/disease/effect/scream
+/datum/disease2/effect/scream
 	name = "Random screaming syndrome"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*scream")
 
-/datum/disease/effect/drowsness
+/datum/disease2/effect/drowsness
 	name = "Automated sleeping syndrome"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.drowsyness += 10
 
-/datum/disease/effect/shakey
+/datum/disease2/effect/shakey
 	name = "World Shaking syndrome"
 	stage = 3
 	maxm = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		shake_camera(mob,5*multiplier)
 
-/datum/disease/effect/deaf
+/datum/disease2/effect/deaf
 	name = "Hard of hearing syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.ear_deaf += 20
 
-/datum/disease/effect/invisible
+/datum/disease2/effect/invisible
 	name = "Waiting Syndrome"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		return
 /*
-/datum/disease/effect/telepathic
+/datum/disease2/effect/telepathic
 	name = "Telepathy Syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.mutations |= 512
 */
-/datum/disease/effect/noface
+/datum/disease2/effect/noface
 	name = "Identity Loss syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.real_name = "Unknown"
 
-/datum/disease/effect/monkey
+/datum/disease2/effect/monkey
 	name = "Monkism syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
@@ -249,43 +245,43 @@
 			var/mob/living/carbon/human/h = mob
 			h.monkeyize()
 
-/datum/disease/effect/sneeze
+/datum/disease2/effect/sneeze
 	name = "Coldingtons Effect"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*sneeze")
 
-/datum/disease/effect/gunck
+/datum/disease2/effect/gunck
 	name = "Flemmingtons"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob << "\red Mucous runs down the back of your throat."
 
-/datum/disease/effect/killertoxins
+/datum/disease2/effect/killertoxins
 	name = "Toxification syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.adjustToxLoss(15)
 /*
-/datum/disease/effect/hallucinations
+/datum/disease2/effect/hallucinations
 	name = "Hallucinational Syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.hallucination += 25
 */
-/datum/disease/effect/sleepy
+/datum/disease2/effect/sleepy
 	name = "Resting syndrome"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*collapse")
 
-/datum/disease/effect/mind
+/datum/disease2/effect/mind
 	name = "Lazy mind syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.setBrainLoss(50)
 
-/datum/disease/effect/suicide
+/datum/disease2/effect/suicide
 	name = "Suicidal syndrome"
 	stage = 4
 	activate(var/mob/living/carbon/mob,var/multiplier)
@@ -297,9 +293,9 @@
 		spawn(200) //in case they get revived by cryo chamber or something stupid like that, let them suicide again in 20 seconds
 			mob.suiciding = 0
 
-/datum/disease/effectholder
+/datum/disease2/effectholder
 	var/name = "Holder"
-	var/datum/disease/effect/effect
+	var/datum/disease2/effect/effect
 	var/chance = 0 //Chance in percentage each tick
 	var/cure = "" //Type of cure it requires
 	var/happensonce = 0
@@ -313,10 +309,10 @@
 				happensonce = -1
 
 	proc/getrandomeffect()
-		var/list/datum/disease/effect/list = list()
-		for(var/e in (typesof(/datum/disease/effect) - /datum/disease/effect))
+		var/list/datum/disease2/effect/list = list()
+		for(var/e in (typesof(/datum/disease2/effect) - /datum/disease2/effect))
 		//	world << "Making [e]"
-			var/datum/disease/effect/f = new e
+			var/datum/disease2/effect/f = new e
 			if(f.stage == src.stage)
 				list += f
 		effect = pick(list)
@@ -332,5 +328,4 @@
 		getrandomeffect()
 
 /proc/dprob(var/p)
-	return(prob(sqrt(p)) && prob(sqrt(p)))
 	return(prob(sqrt(p)) && prob(sqrt(p)))

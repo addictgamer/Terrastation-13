@@ -1,4 +1,3 @@
-
 var/global/datum/controller/gameticker/ticker
 
 #define GAME_STATE_PREGAME		1
@@ -52,7 +51,7 @@ var/global/datum/controller/gameticker/ticker
 		while(current_state == GAME_STATE_PREGAME)
 			for(var/i=0, i<10, i++)
 				sleep(1)
-				//vote.process()
+				vote.process()
 			if(going)
 				pregame_timeleft--
 

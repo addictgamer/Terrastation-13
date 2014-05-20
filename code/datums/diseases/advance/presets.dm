@@ -1,4 +1,3 @@
-
 // Cold
 
 /datum/disease/advance/cold/New(var/process = 1, var/datum/disease/advance/D, var/copy = 0)

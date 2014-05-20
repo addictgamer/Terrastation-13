@@ -792,14 +792,14 @@ var/list/all_supply_groups = list("Operations","Security","Hospitality","Enginee
 	/obj/item/device/camera_film,
 	/obj/item/weapon/storage/photo_album,
 	/obj/item/weapon/packageWrap,
-	/obj/item/weapon/paint/red,
-	/obj/item/weapon/paint/green,
-	/obj/item/weapon/paint/blue,
-	/obj/item/weapon/paint/yellow,
-	/obj/item/weapon/paint/violet,
-	/obj/item/weapon/paint/black,
-	/obj/item/weapon/paint/white,
-	/obj/item/weapon/paint/paint_remover,
+	/obj/item/weapon/reagent_containers/glass/paint/red,
+	/obj/item/weapon/reagent_containers/glass/paint/green,
+	/obj/item/weapon/reagent_containers/glass/paint/blue,
+	/obj/item/weapon/reagent_containers/glass/paint/yellow,
+	/obj/item/weapon/reagent_containers/glass/paint/violet,
+	/obj/item/weapon/reagent_containers/glass/paint/black,
+	/obj/item/weapon/reagent_containers/glass/paint/white,
+	/obj/item/weapon/reagent_containers/glass/paint/remover,
 	/obj/item/weapon/contraband/poster,
 	/obj/item/weapon/wrapping_paper,
 	/obj/item/weapon/wrapping_paper,
@@ -992,30 +992,5 @@ var/list/all_supply_groups = list("Operations","Security","Hospitality","Enginee
 	cost = 20
 	containertype = /obj/structure/closet/crate/hydroponics
 	containername = "Beekeeping crate"
-	access = access_hydroponics
-	group = "Hydroponics"
-
-/datum/supply_packs/Hydroponics_Trays
-	name = "Hydroponic Trays Components Crate"
-	contains = list(
-					/obj/item/weapon/circuitboard/hydroponics,
-					/obj/item/weapon/stock_parts/matter_bin,
-					/obj/item/weapon/stock_parts/matter_bin,
-					/obj/item/weapon/stock_parts/scanning_module,
-					/obj/item/weapon/stock_parts/capacitor,
-					/obj/item/weapon/reagent_containers/glass/beaker,
-					/obj/item/weapon/reagent_containers/glass/beaker,
-					/obj/item/weapon/stock_parts/console_screen,
-					/obj/item/weapon/circuitboard/hydroponics,
-					/obj/item/weapon/stock_parts/matter_bin,
-					/obj/item/weapon/stock_parts/matter_bin,
-					/obj/item/weapon/stock_parts/scanning_module,
-					/obj/item/weapon/stock_parts/capacitor,
-					/obj/item/weapon/reagent_containers/glass/beaker,
-					/obj/item/weapon/reagent_containers/glass/beaker,
-					/obj/item/weapon/stock_parts/console_screen)
-	cost = 12
-	containertype = /obj/structure/closet/crate/hydroponics
-	containername = "Hydroponic Trays Components Crate"
 	access = access_hydroponics
 	group = "Hydroponics"

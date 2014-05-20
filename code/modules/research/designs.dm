@@ -131,24 +131,6 @@ datum/design/pandemic
 	materials = list("$glass" = 2000, "sacid" = 20)
 	build_path = "/obj/item/weapon/circuitboard/pandemic"
 
-datum/design/cryo
-	name = "Cicrcuit Design (Cryo)"
-	desc = "Allows for the construction of circuit boards used to build a Cryo Cell."
-	id = "cryo"
-	req_tech = list("programming" = 4, "biotech" = 3, "engineering" = 3)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/cryo"
-
-datum/design/chem_dispenser
-	name = "Circuit Design (Chemistry Dispenser)"
-	desc = "Allows for the construction of circuit boards used to build a Chemistry Dispenser"
-	id = "chem_dispenser"
-	req_tech = list("programming" = 3, "biotech" = 5, "engineering" = 4)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/chem_dispenser"
-
 datum/design/scan_console
 	name = "Circuit Design (DNA Machine)"
 	desc = "Allows for the construction of circuit boards used to build a new DNA scanning console."
@@ -241,78 +223,6 @@ datum/design/robocontrol
 	materials = list("$glass" = 2000, "sacid" = 20)
 	build_path = "/obj/item/weapon/circuitboard/robotics"
 
-datum/design/recharge_station
-	name = "Circuit Design (Cyborg Recharging Station)"
-	desc = "Allows for the construction of circuit boards used to build a Cyborg Recharging Station."
-	id = "recharge_station"
-	req_tech = list("programming" = 4, "powerstorage" = 3)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/recharge_station"
-
-datum/design/smes
-	name = "Circuit Design (SMES) "
-	desc = "Allows for the construction of circuit boards used to build SMES Power Storage Units"
-	id="smes"
-	req_tech = list("powerstorage" = 4, "engineering" = 4, "programming" = 4)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/smes"
-
-datum/design/defib_recharger
-	name = "Circuit Design (Defib Recharger)"
-	desc = "Allows for the construction of circuit boards used to build Defib Rechargers"
-	id="defib_recharger"
-	req_tech = list("powerstorage" = 2, "engineering" = 2, "programming" = 3, "biotech" = 4)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/defib_recharger"
-
-datum/design/photocopier
-	name = "Circuit Design (Photocopier)"
-	desc = "Allows for the construction of circuit boards to build photocopiers"
-	id = "photocopier"
-	req_tech = list ("powerstorage" = 2, "engineering" = 2, "programming" = 4)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/photocopier"
-
-datum/design/freezer
-	name = "Circuit Design (Freezer)"
-	desc = "Allows for the construction of circuit boards to build freezers."
-	id = "freezer"
-	req_tech = list("powerstorage" = 3, "engineering" = 4, "biotech" = 4)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/freezer"
-
-datum/design/heater
-	name = "Circuit Design (Heater)"
-	desc = "Allows for the construction of circuit boards to build heaters."
-	id ="heater"
-	req_tech = list("powerstorage" = 3, "engineering" = 5, "biotech"= 4)
-	build_type = IMPRINTER
-	materials = list ("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/heater"
-
-datum/design/chemmaster3000
-	name = "Circuit Design (ChemMaster 3000)"
-	desc = "Allows for the cosntruction of circuit boards used to build ChemMaster 3000s"
-	id="chemmaster3000"
-	req_tech = list ("engineering" = 3, "biotech" = 4)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/chemmaster3000"
-
-datum/design/condimaster
-	name = "Circuit Design (CondiMaster)"
-	desc = "Allows for the cosntruction of circuit boards used to build CondiMasters"
-	id="condimaster"
-	req_tech = list ("engineering" = 3, "biotech" = 4)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/condimaster"
-
 datum/design/clonecontrol
 	name = "Circuit Design (Cloning Machine Console)"
 	desc = "Allows for the construction of circuit boards used to build a new Cloning Machine console."
@@ -356,16 +266,7 @@ datum/design/powermonitor
 	req_tech = list("programming" = 2)
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/powermonitor
-
-datum/design/apc_board
-	name = "Circuit Design (Power Control Module)"
-	desc = "Allows for the construction of circuit boards used to build a new APC"
-	id = "apc_board"
-	req_tech = list("powerstorage"=2)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/module/power_control"
+	build_path = "/obj/item/weapon/circuitboard/powermonitor"
 
 datum/design/solarcontrol
 	name = "Circuit Design (Solar Control)"
@@ -430,15 +331,6 @@ datum/design/supplycomp
 	materials = list("$glass" = 2000, "sacid" = 20)
 	build_path = "/obj/item/weapon/circuitboard/supplycomp"
 
-datum/design/mining
-	name = "Circuit Design (Outpost Status Display)"
-	desc = "Allows for the construction of circuit boards used to build an outpost status display console."
-	id = "mining"
-	req_tech = list("programming" = 2)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/mining"
-
 datum/design/comm_monitor
 	name = "Circuit Design (Telecommunications Monitoring Console)"
 	desc = "Allows for the construction of circuit boards used to build a telecommunications monitor."
@@ -456,15 +348,6 @@ datum/design/comm_server
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
 	build_path = "/obj/item/weapon/circuitboard/comm_server"
-
-datum/design/traffic_control
-	name = "Circuit Design (Telecommunications Traffic Control Console)"
-	desc = "Allows for the construction of circuit boards used to build a telecommunications traffic control console."
-	id = "traffic_control"
-	req_tech = list("programming" = 5)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/comm_traffic"
 
 datum/design/message_monitor
 	name = "Circuit Design (Messaging Monitor Console)"
@@ -484,27 +367,9 @@ datum/design/aifixer
 	materials = list("$glass" = 2000, "sacid" = 20)
 	build_path = "/obj/item/weapon/circuitboard/aifixer"
 
-datum/design/pipedispenser
-	name = "Circuit Design (Pipe Dispenser)"
-	desc = "Allows for the construction of circuit boards used to build a Pipe Dispenser."
-	id = "pipedispenser"
-	req_tech = list("programming" = 3, "materials" = 3,"engineering" = 2, "powerstorage" = 2)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/pipedispenser"
-
-datum/design/pipedispenser/disposal
-	name = "Circuit Design (Disposal Pipe Dispenser)"
-	desc = "Allows for the construction of circuit boards used to build a Pipe Dispenser."
-	id = "pipedispenser"
-	req_tech = list("programming" = 3, "materials" = 3,"engineering" = 2, "powerstorage" = 2)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/pipedispenser/disposal"
-
-
-// AI Module Disks
-
+///////////////////////////////////
+//////////AI Module Disks//////////
+///////////////////////////////////
 datum/design/safeguard_module
 	name = "Module Design (Safeguard)"
 	desc = "Allows for the construction of a Safeguard AI Module."
@@ -762,34 +627,6 @@ datum/design/odysseus_peri
 	build_type = IMPRINTER
 	materials = list("$glass" = 2000, "sacid" = 20)
 	build_path = "/obj/item/weapon/circuitboard/mecha/odysseus/peripherals"
-
-datum/design/phazon_main
-	name = "Circuit Design (\"Phazon\" Central Control module)"
-	desc = "Allows for the construction of a \"Phazon\" Central Control module."
-	id = "phazon_main"
-	req_tech = list("materials" = 9,"bluespace" = 10)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/mecha/phazon/main"
-
-datum/design/phazon_peri
-	name = "Circuit Design (\"Phazon\" Peripherals Control module)"
-	desc = "Allows for the construction of a \"Phazon\" Peripheral Control module."
-	id = "phazon_peri"
-	req_tech = list("materials" = 9,"bluespace" = 10)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/mecha/phazon/peripherals"
-
-datum/design/phazon_phase_array
-	name = "Phazon Phase Array"
-	desc = "Show physics who's boss."
-	id = "phazon_phasearray"
-	req_tech = list("bluespace" = 10, "programming" = 4)
-	build_type = MECHFAB
-	materials = list("$metal" = 5000, "$phazon" = 2000)
-	category = "Misc"
-	build_path = "/obj/item/mecha_parts/part/phazon_phase_array"
 
 datum/design/gygax_main
 	name = "Circuit Design (\"Gygax\" Central Control module)"
@@ -1503,17 +1340,6 @@ datum/design/nanopaste
 	build_type = PROTOLATHE
 	materials = list("$metal" = 7000, "$glass" = 7000)
 	build_path = "/obj/item/stack/nanopaste"
-
-datum/design/medical_module_surgery
-	name = "medical module board"
-	desc = "Used to give a medical cyborg surgery tools."
-	id = "medical_module_surgery"
-	req_tech = list("biotech" = 3, "engineering" = 3)
-	build_type = MECHFAB
-	materials = list("$metal" = 80000, "$glass" = 20000)
-	build_path = "/obj/item/borg/upgrade/medical/surgery"
-	category = "Robotic Upgrade Modules"
-
 /////////////////////////////////////////
 /////////////////Weapons/////////////////
 /////////////////////////////////////////
@@ -1577,7 +1403,7 @@ datum/design/rapidsyringe
 	build_type = PROTOLATHE
 	materials = list("$metal" = 5000, "$glass" = 1000)
 	build_path = "/obj/item/weapon/gun/syringe/rapidsyringe"
-
+/*
 datum/design/largecrossbow
 	name = "Energy Crossbow"
 	desc = "A weapon favoured by syndicate infiltration teams."
@@ -1586,7 +1412,7 @@ datum/design/largecrossbow
 	build_type = PROTOLATHE
 	materials = list("$metal" = 5000, "$glass" = 1000, "$uranium" = 1000, "$silver" = 1000)
 	build_path = "/obj/item/weapon/gun/energy/crossbow/largecrossbow"
-
+*/
 datum/design/temp_gun
 	name = "Temperature Gun"
 	desc = "A gun that shoots temperature bullet energythings to change temperature."//Change it if you want
@@ -1794,119 +1620,3 @@ datum/design/borg_syndicate_module
 	req_tech = list("combat" = 4, "syndicate" = 3)
 	build_path = "/obj/item/borg/upgrade/syndicate"
 	category = "Cyborg Upgrade Modules"
-
-
-// Teleporter Machines
-
-datum/design/telehub
-	name = "Circuit Design (Teleporter Hub)"
-	desc = "Allows for the construction of circuit boards used to build a Teleporter Hub"
-	id = "telehub"
-	req_tech = list("programming" = 4, "engineering"=3, "bluespace" = 3)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/telehub"
-
-datum/design/telestation
-	name = "Circuit Design (Teleporter Station)"
-	desc = "Allows for the construction of circuit boards used to build a Teleporter Station."
-	id = "telestation"
-	req_tech = list("programming" = 4, "engineering" = 3, "bluespace" = 3)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/telestation"
-
-
-// Hospitality
-
-datum/design/biogenerator
-	name = "Circuit Design (Biogenerator)"
-	desc = "Allows for the construction of circuit boards used to build a Biogenerator."
-	id = "biogenerator"
-	req_tech = list("programming" = 3,"engineering" = 2, "biotech" = 3)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/biogenerator"
-
-datum/design/seed_extractor
-	name = "Circuit Design (Seed Extractor)"
-	desc = "Allows for the construction of circuit boards used to build a Seed Extractor."
-	id = "seed_extractor"
-	req_tech = list("programming" = 3,"engineering" = 2, "biotech" = 3)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/seed_extractor"
-
-datum/design/microwave
-	name = "Circuit Design (Microwave)"
-	desc = "Allows for the construction of circuit boards used to build a Microwave."
-	id = "microwave"
-	req_tech = list("programming" = 3,"engineering" = 2,"magnets" = 3)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/microwave"
-
-datum/design/reagentgrinder
-	name = "Circuit Design (All-In-One Grinder)"
-	desc = "Allows for the construction of circuit boards used to build an All-In-One Grinder."
-	id = "reagentgrinder"
-	req_tech = list("programming" = 3,"engineering" = 2)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/reagentgrinder"
-
-datum/design/smartfridge
-	name = "Circuit Design (SmartFridge)"
-	desc = "Allows for the construction of circuit boards used to build a smartfridge."
-	id = "smartfridge"
-	req_tech = list("programming" = 3,"engineering" = 2)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/smartfridge"
-
-datum/design/hydroponics
-	name = "Circuit Design (Hydroponics Tray)"
-	desc = "Allows for the construction of circuit boards used to build a Hydroponics Tray."
-	id = "hydroponics"
-	req_tech = list("programming" = 3,"engineering" = 2,"biotech" = 3,"powerstorage" = 2)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/hydroponics"
-
-datum/design/gibber
-	name = "Circuit Design (Gibber)"
-	desc = "Allows for the construction of circuit boards used to build a gibber."
-	id = "gibber"
-	req_tech = list("programming" = 3,"engineering" = 2,"biotech" = 3,"powerstorage" = 2)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/gibber"
-
-datum/design/processor
-	name = "Circuit Design (Food Processor)"
-	desc = "Allows for the construction of circuit boards used to build a Food Processor."
-	id = "processor"
-	req_tech = list("programming" = 3,"engineering" = 2,"biotech" = 3,"powerstorage" = 2)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/processor"
-
-/*
-datum/design/hydroseeds
-	name = "Circuit Design (MegaSeed Servitor)"
-	desc = "Allows for the construction of circuit boards used to build a MegaSeedServitor."
-	id = "hydroseeds"
-	req_tech = list("programming" = 3,"engineering" = 2,"biotech" = 3,"powerstorage" = 2)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/hydroseeds"
-
-datum/design/hydronutrients
-	name = "Circuit Design (Nutrimax)"
-	desc = "Allows for the construction of circuit boards used to build a Nutrimax."
-	id = "hydronutrients"
-	req_tech = list("programming" = 3,"engineering" = 2,"biotech" = 3,"powerstorage" = 2)
-	build_type = IMPRINTER
-	materials = list("$glass" = 2000, "sacid" = 20)
-	build_path = "/obj/item/weapon/circuitboard/hydronutrients"
-*/

@@ -13,5 +13,5 @@
 		var/client/C = M.client
 		var/icon/tempHud = 'hud.dmi'
 		for(var/mob/living/carbon/human/player in view(M))
-			// THIS line is where the code starts. Will be made once SQL server/database is set up and is understood
+			// THIS line is where the code starts. Will be made once SQL server/database is set up
 */

@@ -40,10 +40,6 @@ var/global/list/datum/stack_recipe/sandstone_recipes = list ( \
 	pixel_y = rand(0,4)-4
 	..()
 
-/obj/item/stack/sheet/mineral/sandstone/recycle(var/obj/machinery/mineral/processing_unit/recycle/rec)
-	rec.addMaterial("glass",1)
-	return 1
-
 /*
  * Diamond
  */
@@ -67,10 +63,6 @@ var/global/list/datum/stack_recipe/diamond_recipes = list ( \
 	pixel_x = rand(0,4)-4
 	pixel_y = rand(0,4)-4
 	..()
-
-/obj/item/stack/sheet/mineral/diamond/recycle(var/obj/machinery/mineral/processing_unit/recycle/rec)
-	rec.addMaterial("diamond",1)
-	return 1
 
 /*
  * Uranium
@@ -97,12 +89,9 @@ var/global/list/datum/stack_recipe/uranium_recipes = list ( \
 	pixel_y = rand(0,4)-4
 	..()
 
-/obj/item/stack/sheet/mineral/uranium/recycle(var/obj/machinery/mineral/processing_unit/recycle/rec)
-	rec.addMaterial("uranium",1)
-	return 1
-
-// Plasma
-
+/*
+ * Plasma
+ */
 /obj/item/stack/sheet/mineral/plasma
 	name = "solid plasma"
 	icon_state = "sheet-plasma"
@@ -124,12 +113,6 @@ var/global/list/datum/stack_recipe/plasma_recipes = list ( \
 	pixel_x = rand(0,4)-4
 	pixel_y = rand(0,4)-4
 	..()
-
-/obj/item/stack/sheet/mineral/plasma/recycle(var/obj/machinery/mineral/processing_unit/recycle/rec)
-	rec.addMaterial("plasma",1)
-	return 1
-
-// Plastic
 
 /obj/item/stack/sheet/mineral/plastic
 	name = "Plastic"
@@ -157,12 +140,9 @@ var/global/list/datum/stack_recipe/plastic_recipes = list ( \
 	pixel_y = rand(0,4)-4
 	..()
 
-/obj/item/stack/sheet/mineral/plastic/recycle(var/obj/machinery/mineral/processing_unit/recycle/rec)
-	//rec.addMaterial("plastic",1)
-	return 0
-
-// Gold
-
+/*
+ * Gold
+ */
 /obj/item/stack/sheet/mineral/gold
 	name = "gold"
 	icon_state = "sheet-gold"
@@ -185,12 +165,9 @@ var/global/list/datum/stack_recipe/gold_recipes = list ( \
 	pixel_y = rand(0,4)-4
 	..()
 
-/obj/item/stack/sheet/mineral/gold/recycle(var/obj/machinery/mineral/processing_unit/recycle/rec)
-	rec.addMaterial("gold",1)
-	return 1
-
-// Silver
-
+/*
+ * Silver
+ */
 /obj/item/stack/sheet/mineral/silver
 	name = "silver"
 	icon_state = "sheet-silver"
@@ -213,12 +190,9 @@ var/global/list/datum/stack_recipe/silver_recipes = list ( \
 	pixel_y = rand(0,4)-4
 	..()
 
-/obj/item/stack/sheet/mineral/silver/recycle(var/obj/machinery/mineral/processing_unit/recycle/rec)
-	rec.addMaterial("silver",1)
-	return 1
-
-// Clown
-
+/*
+ * Clown
+ */
 /obj/item/stack/sheet/mineral/clown
 	name = "bananium"
 	icon_state = "sheet-clown"
@@ -236,15 +210,12 @@ var/global/list/datum/stack_recipe/silver_recipes = list ( \
 	pixel_y = rand(0,4)-4
 	..()
 
-/obj/item/stack/sheet/mineral/clown/recycle(var/obj/machinery/mineral/processing_unit/recycle/rec)
-	rec.addMaterial("clown",1)
-	return 1
-
 
 /****************************** Others ****************************/
 
-// Enriched Uranium
-
+/*
+ * Enriched Uranium
+ */
 /obj/item/stack/sheet/mineral/enruranium
 	name = "enriched uranium"
 	icon_state = "sheet-enruranium"
@@ -256,8 +227,9 @@ var/global/list/datum/stack_recipe/silver_recipes = list ( \
 	origin_tech = "materials=5"
 	perunit = 1000
 
-// Adamantine
-
+/*
+ * Adamantine
+ */
 /obj/item/stack/sheet/mineral/adamantine
 	name = "adamantine"
 	icon_state = "sheet-adamantine"
@@ -269,8 +241,9 @@ var/global/list/datum/stack_recipe/silver_recipes = list ( \
 	origin_tech = "materials=4"
 	perunit = 2000
 
-// Mythril
-
+/*
+ * Mythril
+ */
 /obj/item/stack/sheet/mineral/mythril
 	name = "mythril"
 	icon_state = "sheet-mythril"

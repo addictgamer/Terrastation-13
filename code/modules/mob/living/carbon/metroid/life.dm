@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 
 /mob/living/carbon/slime/Life()
 	set invisibility = 0
@@ -541,4 +539,3 @@
 		else
 			if(!AIproc)
 				spawn() AIprocess()
->>>>>>> origin/master

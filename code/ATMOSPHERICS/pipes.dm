@@ -1,14 +1,13 @@
-
 obj/machinery/atmospherics/pipe
-	force = 20
-
-	layer = 2.4 //under wires with their 2.44
-	use_power = 0
 
 	var/datum/gas_mixture/air_temporary //used when reconstructing a pipeline that broke
 	var/datum/pipeline/parent
 
 	var/volume = 0
+	force = 20
+
+	layer = 2.4 //under wires with their 2.44
+	use_power = 0
 
 	var/alert_pressure = 80*ONE_ATMOSPHERE
 		//minimum pressure before check_pressure(...) should be called
@@ -73,7 +72,7 @@ obj/machinery/atmospherics/pipe
 		var/obj/machinery/atmospherics/node2
 
 		var/minimum_temperature_difference = 300
-		var/thermal_conductivity = 0	// WALL_HEAT_TRANSFER_COEFFICIENT No
+		var/thermal_conductivity = 0 //WALL_HEAT_TRANSFER_COEFFICIENT No
 
 		var/maximum_pressure = 70*ONE_ATMOSPHERE
 		var/fatigue_pressure = 55*ONE_ATMOSPHERE
@@ -109,6 +108,7 @@ obj/machinery/atmospherics/pipe
 				..()
 			else
 				. = PROCESS_KILL
+
 			/*if(!node1)
 				parent.mingle_with_turf(loc, volume)
 				if(!nodealert)
@@ -141,7 +141,7 @@ obj/machinery/atmospherics/pipe
 
 				if(abs(environment_temperature-pipe_air.temperature) > minimum_temperature_difference)
 					parent.temperature_interact(loc, volume, thermal_conductivity)
-*/  //Screw you heat lag
+			*/  //Screw you heat lag
 
 		check_pressure(pressure)
 			var/datum/gas_mixture/environment = loc.return_air()
@@ -152,7 +152,7 @@ obj/machinery/atmospherics/pipe
 				burst()
 
 			else if(pressure_difference > fatigue_pressure)
-			// TODO: leak to turf, doing pfshhhhh
+				//TODO: leak to turf, doing pfshhhhh
 				if(prob(5))
 					burst()
 
@@ -193,7 +193,6 @@ obj/machinery/atmospherics/pipe
 					if ("green") C = "-g"
 					if ("yellow") C = "-y"
 					if ("purple") C = "-p"
-					//if ("orange") C = "-o"	// TODO
 				icon_state = "intact[C][invisibility ? "-f" : "" ]"
 
 				//var/node1_direction = get_dir(src, node1)
@@ -203,7 +202,7 @@ obj/machinery/atmospherics/pipe
 
 			else
 				if(!node1&&!node2)
-					del(src)	// TODO: silent deleting looks weird
+					del(src) //TODO: silent deleting looks weird
 				var/have_node1 = node1?1:0
 				var/have_node2 = node2?1:0
 				icon_state = "exposed[have_node1][have_node2][invisibility ? "-f" : "" ]"
@@ -231,7 +230,7 @@ obj/machinery/atmospherics/pipe
 					break
 
 
-			var/turf/T = src.loc	// hide if turf is not intact
+			var/turf/T = src.loc			// hide if turf is not intact
 			hide(T.intact)
 			update_icon()
 			//update_icon()
@@ -251,22 +250,24 @@ obj/machinery/atmospherics/pipe
 
 			return null
 
-	simple/general
-		name="Pipe"
-		color=""
-		icon_state = ""
-
-	simple/general/visible
-		level = 2
-		icon_state = "intact"
-
-	simple/general/hidden
-		level = 1
-		icon_state = "intact-f"
-
 	simple/scrubbers
 		name="Scrubbers pipe"
 		color="red"
+		icon_state = ""
+
+	simple/supply
+		name="Air supply pipe"
+		color="blue"
+		icon_state = ""
+
+	simple/supplymain
+		name="Main air supply pipe"
+		color="purple"
+		icon_state = ""
+
+	simple/general
+		name="Pipe"
+		color=""
 		icon_state = ""
 
 	simple/scrubbers/visible
@@ -277,11 +278,6 @@ obj/machinery/atmospherics/pipe
 		level = 1
 		icon_state = "intact-r-f"
 
-	simple/supply
-		name="Air supply pipe"
-		color="blue"
-		icon_state = ""
-
 	simple/supply/visible
 		level = 2
 		icon_state = "intact-b"
@@ -290,11 +286,6 @@ obj/machinery/atmospherics/pipe
 		level = 1
 		icon_state = "intact-b-f"
 
-	simple/supplymain
-		name="Main air supply pipe"
-		color="purple"
-		icon_state = ""
-
 	simple/supplymain/visible
 		level = 2
 		icon_state = "intact-p"
@@ -302,7 +293,15 @@ obj/machinery/atmospherics/pipe
 	simple/supplymain/hidden
 		level = 1
 		icon_state = "intact-p-f"
-/*	// No idea why this exists --Tauka
+
+	simple/general/visible
+		level = 2
+		icon_state = "intact"
+
+	simple/general/hidden
+		level = 1
+		icon_state = "intact-f"
+
 	simple/yellow
 		name="Pipe"
 		color="yellow"
@@ -315,7 +314,7 @@ obj/machinery/atmospherics/pipe
 	simple/yellow/hidden
 		level = 1
 		icon_state = "intact-y-f"
-*/
+
 
 
 	simple/insulated
@@ -979,22 +978,24 @@ obj/machinery/atmospherics/pipe
 			//update_icon()
 			update_icon()
 
-	manifold4w/general
-		name="Air supply pipe"
-		color="gray"
-		icon_state = ""
-
-	manifold4w/general/visible
-		level = 2
-		icon_state = "manifold4w"
-
-	manifold4w/general/hidden
-		level = 1
-		icon_state = "manifold4w-f"
-
 	manifold4w/scrubbers
 		name="Scrubbers pipe"
 		color="red"
+		icon_state = ""
+
+	manifold4w/supply
+		name="Air supply pipe"
+		color="blue"
+		icon_state = ""
+
+	manifold4w/supplymain
+		name="Main air supply pipe"
+		color="purple"
+		icon_state = ""
+
+	manifold4w/general
+		name="Air supply pipe"
+		color="gray"
 		icon_state = ""
 
 	manifold4w/scrubbers/visible
@@ -1005,11 +1006,6 @@ obj/machinery/atmospherics/pipe
 		level = 1
 		icon_state = "manifold4w-r-f"
 
-	manifold4w/supply
-		name="Air supply pipe"
-		color="blue"
-		icon_state = ""
-
 	manifold4w/supply/visible
 		level = 2
 		icon_state = "manifold4w-b"
@@ -1018,11 +1014,6 @@ obj/machinery/atmospherics/pipe
 		level = 1
 		icon_state = "manifold4w-b-f"
 
-	manifold4w/supplymain
-		name="Main air supply pipe"
-		color="purple"
-		icon_state = ""
-
 	manifold4w/supplymain/visible
 		level = 2
 		icon_state = "manifold4w-p"
@@ -1030,6 +1021,14 @@ obj/machinery/atmospherics/pipe
 	manifold4w/supplymain/hidden
 		level = 1
 		icon_state = "manifold4w-p-f"
+
+	manifold4w/general/visible
+		level = 2
+		icon_state = "manifold4w"
+
+	manifold4w/general/hidden
+		level = 1
+		icon_state = "manifold4w-f"
 
 	cap
 		name = "pipe endcap"

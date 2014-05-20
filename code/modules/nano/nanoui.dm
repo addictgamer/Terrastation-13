@@ -1,4 +1,3 @@
-
 /datum/nanoui
 	var/mob/user
 	var/atom/movable/src_object

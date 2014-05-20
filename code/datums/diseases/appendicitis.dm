@@ -1,4 +1,3 @@
-
 /datum/disease/appendicitis
 	form = "Condition"
 	name = "Appendicitis"

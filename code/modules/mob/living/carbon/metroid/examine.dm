@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 
 /mob/living/carbon/slime/examine()
 	set src in oview()
@@ -38,4 +36,3 @@
 	msg += "*---------*</span>"
 	usr << msg
 	return
->>>>>>> origin/master

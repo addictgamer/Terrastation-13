@@ -126,6 +126,6 @@
 						src.remote_controlled.client.view = 12
 						src.remote_controlled << sound('imag_enh.ogg',volume=50)
 					else
-						src.remote_controlled.client.view = world.view	// world.view - default mob view size
+						src.remote_controlled.client.view = world.view//world.view - default mob view size
 			return
 */

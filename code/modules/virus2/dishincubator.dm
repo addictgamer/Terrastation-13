@@ -1,5 +1,4 @@
-
-/obj/machinery/disease/incubator/
+/obj/machinery/disease2/incubator/
 	name = "Pathogenic incubator"
 	density = 1
 	anchored = 1
@@ -17,7 +16,7 @@
 
 	var/virusing
 
-/obj/machinery/disease/incubator/attackby(var/obj/B as obj, var/mob/user as mob)
+/obj/machinery/disease2/incubator/attackby(var/obj/B as obj, var/mob/user as mob)
 	if(istype(B, /obj/item/weapon/reagent_containers/glass) || istype(B,/obj/item/weapon/reagent_containers/syringe))
 
 		if(src.beaker)
@@ -49,7 +48,7 @@
 				user << "You add the dish to the machine!"
 				src.updateUsrDialog()
 
-/obj/machinery/disease/incubator/Topic(href, href_list)
+/obj/machinery/disease2/incubator/Topic(href, href_list)
 	if(..()) return
 
 	if(usr) usr.set_machine(src)
@@ -96,7 +95,7 @@
 	src.add_fingerprint(usr)
 	src.updateUsrDialog()
 
-/obj/machinery/disease/incubator/attack_hand(mob/user as mob)
+/obj/machinery/disease2/incubator/attack_hand(mob/user as mob)
 	if(stat & BROKEN)
 		return
 	user.set_machine(src)
@@ -130,7 +129,7 @@
 	onclose(user, "incubator")
 	return
 
-/obj/machinery/disease/incubator/process()
+/obj/machinery/disease2/incubator/process()
 	if(dish && on && dish.virus2)
 		use_power(50,EQUIP)
 		if(!powered(EQUIP))

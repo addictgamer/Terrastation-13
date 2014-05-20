@@ -1,5 +1,9 @@
+/obj/machinery/proc/state(var/msg)
+	for(var/mob/O in hearers(src, null))
+		O.show_message("\icon[src] <span class = 'notice'>[msg]</span>", 2)
 
-// ANTIBODY SCANNER
+///////////////ANTIBODY SCANNER///////////////
+
 /obj/item/device/antibody_scanner
 	name = "Antibody Scanner"
 	desc = "Used to scan living beings for antibodies in their blood."
@@ -20,12 +24,13 @@
 	var/code = antigens2string(M.antibodies)
 	user << "<span class='notice'>[src] The antibody scanner displays a cryptic set of data: [code]</span>"
 
-// VIRUS DISH
+///////////////VIRUS DISH///////////////
+
 /obj/item/weapon/virusdish
 	name = "Virus containment/growth dish"
 	icon = 'icons/obj/items.dmi'
 	icon_state = "implantcase-b"
-	var/datum/disease/disease/virus2 = null
+	var/datum/disease2/disease/virus2 = null
 	var/growth = 0
 	var/info = 0
 	var/analysed = 0
@@ -37,7 +42,7 @@
 
 /obj/item/weapon/virusdish/random/New()
 	..()
-	src.virus2 = new /datum/disease/disease
+	src.virus2 = new /datum/disease2/disease
 	src.virus2.makerandom()
 	growth = rand(5, 50)
 
@@ -60,17 +65,17 @@
 		usr << "It has the following information about its contents"
 		usr << src.info
 
-// GNA DISK
+///////////////GNA DISK///////////////
+
 /obj/item/weapon/diseasedisk
 	name = "Blank GNA disk"
 	icon = 'icons/obj/cloning.dmi'
 	icon_state = "datadisk0"
-	var/datum/disease/effectholder/effect = null
+	var/datum/disease2/effectholder/effect = null
 	var/stage = 1
 
 /obj/item/weapon/diseasedisk/premade/New()
 	name = "Blank GNA disk (stage: [5-stage])"
-	effect = new /datum/disease/effectholder
-	effect.effect = new /datum/disease/effect/invisible
-	effect.stage = stage
+	effect = new /datum/disease2/effectholder
+	effect.effect = new /datum/disease2/effect/invisible
 	effect.stage = stage

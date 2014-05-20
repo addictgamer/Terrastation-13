@@ -1,4 +1,3 @@
-
 /client/proc/Jump(var/area/A in return_sorted_areas())
 	set name = "Jump to Area"
 	set desc = "Area to jump to"
@@ -18,7 +17,6 @@
 
 /client/proc/jumptoturf(var/turf/T in world)
 	set name = "Jump to Turf"
-	set desc = "Turf to jump to"
 	set category = "Admin"
 	if(!src.holder)
 		src << "Only administrators may use this command."
@@ -33,9 +31,8 @@
 	return
 
 /client/proc/jumptomob(var/mob/M in mob_list)
-	set name = "Jump to Mob"
-	set desc = "Mob to jump to"
 	set category = "Admin"
+	set name = "Jump to Mob"
 
 	if(!src.holder)
 		src << "Only administrators may use this command."
@@ -56,9 +53,8 @@
 		alert("Admin jumping disabled")
 
 /client/proc/jumptocoord(tx as num, ty as num, tz as num)
-	set name = "Jump to Coordinate"
-	set desc = "Jump to x,y,z coordinates"
 	set category = "Admin"
+	set name = "Jump to Coordinate"
 
 	if (!holder)
 		src << "Only administrators may use this command."
@@ -77,9 +73,8 @@
 		alert("Admin jumping disabled")
 
 /client/proc/jumptokey()
-	set name = "Jump to Key"
-	set desc = "Jump to player key"
 	set category = "Admin"
+	set name = "Jump to Key"
 
 	if(!src.holder)
 		src << "Only administrators may use this command."
@@ -102,9 +97,9 @@
 		alert("Admin jumping disabled")
 
 /client/proc/Getmob(var/mob/M in mob_list)
+	set category = "Admin"
 	set name = "Get Mob"
 	set desc = "Mob to teleport"
-	set category = "Admin"
 	if(!src.holder)
 		src << "Only administrators may use this command."
 		return
@@ -117,9 +112,9 @@
 		alert("Admin jumping disabled")
 
 /client/proc/Getkey()
+	set category = "Admin"
 	set name = "Get Key"
 	set desc = "Key to teleport"
-	set category = "Admin"
 
 	if(!src.holder)
 		src << "Only administrators may use this command."
@@ -145,9 +140,8 @@
 		alert("Admin jumping disabled")
 
 /client/proc/sendmob(var/mob/M in sortmobs())
-	set name = "Send Mob"
-	set desc = "Teleport mob"
 	set category = "Admin"
+	set name = "Send Mob"
 	if(!src.holder)
 		src << "Only administrators may use this command."
 		return

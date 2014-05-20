@@ -1,4 +1,3 @@
-
 /client/proc/edit_admin_permissions()
 	set category = "Admin"
 	set name = "Permissions Panel"

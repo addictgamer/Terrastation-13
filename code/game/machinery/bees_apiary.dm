@@ -1,10 +1,8 @@
-
-// http://www.youtube.com/watch?v=-1GadTfGFvU
-// i could have done these as just an ordinary plant, but fuck it - there would have been too much snowflake code
+//http://www.youtube.com/watch?v=-1GadTfGFvU
+//i could have done these as just an ordinary plant, but fuck it - there would have been too much snowflake code
 
 /obj/machinery/apiary
 	name = "apiary tray"
-	desc = "A place where the bees be. It looks kind of familar..."
 	icon = 'icons/obj/hydroponics.dmi'
 	icon_state = "hydrotray3"
 	density = 1
@@ -26,19 +24,19 @@
 	var/list/owned_bee_swarms = list()
 	var/hydrotray_type = /obj/machinery/hydroponics
 
-// overwrite this after it's created if the apiary needs a custom machinery sprite
+//overwrite this after it's created if the apiary needs a custom machinery sprite
 /obj/machinery/apiary/New()
 	..()
 	overlays += image('icons/obj/apiary_bees_etc.dmi', icon_state="apiary")
 
-/obj/machinery/apiary/bullet_act(var/obj/item/projectile/Proj)	// Works with the Somatoray to modify plant variables.
+/obj/machinery/apiary/bullet_act(var/obj/item/projectile/Proj) //Works with the Somatoray to modify plant variables.
 	if(istype(Proj ,/obj/item/projectile/energy/floramut))
 		mut++
 	else if(istype(Proj ,/obj/item/projectile/energy/florayield))
 		if(!yieldmod)
 			yieldmod += 1
 			//world << "Yield increased by 1, from 0, to a total of [myseed.yield]"
-		else if (prob(1/(yieldmod * yieldmod) *100))	// This formula gives you diminishing returns based on yield. 100% with 1 yield, decreasing to 25%, 11%, 6, 4, 2...
+		else if (prob(1/(yieldmod * yieldmod) *100))//This formula gives you diminishing returns based on yield. 100% with 1 yield, decreasing to 25%, 11%, 6, 4, 2...
 			yieldmod += 1
 			//world << "Yield increased by 1, to a total of [myseed.yield]"
 	else

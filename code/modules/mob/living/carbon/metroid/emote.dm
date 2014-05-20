@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-=======
 
 /mob/living/carbon/slime/emote(var/act,var/m_type=1,var/message = null)
 	if (findtext(act, "-", 1, null))
@@ -64,4 +62,3 @@
 				O.show_message(message, m_type)
 				//Foreach goto(746)
 	return
->>>>>>> origin/master

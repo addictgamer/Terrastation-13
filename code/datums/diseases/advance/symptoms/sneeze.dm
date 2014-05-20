@@ -1,4 +1,6 @@
 /*
+//////////////////////////////////////
+
 Sneezing
 
 	Very Noticable.
@@ -10,6 +12,8 @@ Sneezing
 Bonus
 	Forces a spread type of AIRBORNE
 	with extra range!
+
+//////////////////////////////////////
 */
 
 /datum/symptom/sneeze

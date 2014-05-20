@@ -31,8 +31,6 @@
 			Uses = 3
 			enhanced = 1
 			del (O)
-<<<<<<< HEAD
-=======
 		if(istype(O, /obj/item/weapon/slimepotion3))
 		// inb4 giant slimes
 /*			if(enhanced == 1 && Uses == 3)
@@ -93,7 +91,6 @@
 				enhanced = 0
 				name = "used [color] slime extract"
 			del (O)
->>>>>>> origin/master
 
 // Tier 1
 
@@ -205,14 +202,6 @@
 	icon_state = "light pink slime extract"
 	color = "light pink"
 
-<<<<<<< HEAD
-/obj/item/slime_extract/black
-	name = "black slime extract"
-	icon_state = "black slime extract"
-	color = "black"
-
-=======
->>>>>>> origin/master
 /obj/item/slime_extract/cerulean
 	name = "cerulean slime extract"
 	icon_state = "cerulean slime extract"
@@ -225,25 +214,16 @@
 
 // Tier 6
 
-<<<<<<< HEAD
-/obj/item/slime_extract/death
-	name = "death slime extract"
-	icon_state = "death slime extract"
-	color = "death"
-=======
 /obj/item/slime_extract/black
 	name = "black slime extract"
 	icon_state = "black slime extract"
 	color = "black"
->>>>>>> origin/master
 
 /obj/item/slime_extract/white
 	name = "white slime extract"
 	icon_state = "white slime extract"
 	color = "white"
 
-<<<<<<< HEAD
-=======
 // Tier 7
 
 /obj/item/slime_extract/death
@@ -256,7 +236,6 @@
 	icon_state = "life slime extract"
 	color = "life"
 
->>>>>>> origin/master
 // Side tiers
 
 // 1
@@ -265,14 +244,11 @@
 	icon_state = "cueball slime extract"
 	color = "cueball"
 
-<<<<<<< HEAD
-=======
 /obj/item/slime_extract/plasma
 	name = "plasma slime extract"
 	icon_state = "plasma slime extract"
 	color = "plasma"
 
->>>>>>> origin/master
 // 2
 /obj/item/slime_extract/bluespace
 	name = "bluespace slime extract"
@@ -333,19 +309,12 @@
 		if(M.mind)
 			user << "\red The slime resists!"
 			return ..()
-<<<<<<< HEAD
-=======
 		user <<"You feed the slime the potion, removing it's powers and calming it."
->>>>>>> origin/master
 		var/mob/living/simple_animal/slime/pet = new /mob/living/simple_animal/slime(M.loc)
 		pet.icon_state = "[M.colour] baby slime"
 		pet.icon_living = "[M.colour] baby slime"
 		pet.icon_dead = "[M.colour] baby slime dead"
 		pet.colour = "[M.colour]"
-<<<<<<< HEAD
-		user <<"You feed the slime the potion, removing it's powers and calming it."
-=======
->>>>>>> origin/master
 		del (M)
 		var/newname = copytext(sanitize(input(user, "Would you like to give the slime a name?", "Name your new pet", "pet slime") as null|text),1,MAX_NAME_LEN)
 
@@ -371,19 +340,12 @@
 		if(M.mind)
 			user << "\red The slime resists!"
 			return ..()
-<<<<<<< HEAD
-=======
 		user <<"You feed the slime the potion, removing it's powers and calming it."
->>>>>>> origin/master
 		var/mob/living/simple_animal/adultslime/pet = new /mob/living/simple_animal/adultslime(M.loc)
 		pet.icon_state = "[M.colour] adult slime"
 		pet.icon_living = "[M.colour] adult slime"
 		pet.icon_dead = "[M.colour] baby slime dead"
 		pet.colour = "[M.colour]"
-<<<<<<< HEAD
-		user <<"You feed the slime the potion, removing it's powers and calming it."
-=======
->>>>>>> origin/master
 		del(M)
 		var/newname = copytext(sanitize(input(user, "Would you like to give the slime a name?", "Name your new pet", "pet slime") as null|text),1,MAX_NAME_LEN)
 
@@ -393,24 +355,17 @@
 		pet.real_name = newname
 		del(src)
 
-<<<<<<< HEAD
-=======
 /obj/item/weapon/slimepotion3
 	name = "slime regenerative potion"
 	desc = "A very potent chemical mix that will grow a slime from a core and nullify its powers, causing it to become docile and tame."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle19"
 
->>>>>>> origin/master
 // Slime steriods
 
 /obj/item/weapon/slimesteroid
 	name = "slime steroid"
-<<<<<<< HEAD
-	desc = "A potent chemical mix that will cause a slime to generate more extract."
-=======
 	desc = "A potent chemical mix that will cause a slime to generate more extract. Has a chance to turn it rabid."
->>>>>>> origin/master
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle16"
 
@@ -432,13 +387,10 @@
 			return..()
 		user <<"You feed the slime the steroid. It now has triple the amount of extract."
 		M.cores = 3
-<<<<<<< HEAD
-=======
 		M.rabid = rand(0,1)
 		if (M.rabid)
 			for(var/mob/O in viewers(get_turf_loc(src), null))
 				O.show_message(text("\red The [M] is driven into a frenzy!"), 1)
->>>>>>> origin/master
 		del(src)
 
 /obj/item/weapon/slimesteroid2
@@ -462,15 +414,9 @@
 			del(src)
 */
 
-<<<<<<< HEAD
-/obj/item/weapon/slimeinsta
-	name = "slime growth enhancer"
-	desc = "A potent chemical mix that will instantly cause a slime to grow to adulthood."
-=======
 /obj/item/weapon/slimesteroid3	// slimeinsta
 	name = "slime growth enhancer"
 	desc = "A potent chemical mix that will instantly cause a slime to grow to adulthood, but make it rabid."
->>>>>>> origin/master
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle16"
 
@@ -492,15 +438,10 @@
 		A.powerlevel = max(0, M.powerlevel-1)
 		A.amount_grown = 10
 		A.Friends = M.Friends
-<<<<<<< HEAD
-		A.tame = M.tame
-		A.rabid = M.rabid
-=======
 		A.tame = 0
 		A.rabid = 1
 		for(var/mob/O in viewers(get_turf_loc(src), null))
 			O.show_message(text("\red The [A] is driven into a frenzy!"), 1)
->>>>>>> origin/master
 		A.Discipline = M.Discipline
 		del(M)
 		del(src)

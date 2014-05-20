@@ -87,26 +87,16 @@
 // -----------------------------
 
 /obj/item/weapon/storage/bag/plants
-	name = "Plant Bag"
-	desc = "Carry all your grown beauties in style."
 	icon = 'icons/obj/hydroponics.dmi'
 	icon_state = "plantbag"
-	storage_slots = 50;	// the number of plant pieces it can carry.
-	max_combined_w_class = 200	// Doesn't matter what this is, so long as it's more or equal to storage_slots * plants.w_class
+	name = "Plant Bag"
+	storage_slots = 50; //the number of plant pieces it can carry.
+	max_combined_w_class = 200 //Doesn't matter what this is, so long as it's more or equal to storage_slots * plants.w_class
 	max_w_class = 3
 	w_class = 1
-	can_hold = list("/obj/item/weapon/reagent_containers/food/snacks/grown","/obj/item/weapon/grown")
+	can_hold = list("/obj/item/weapon/reagent_containers/food/snacks/grown","/obj/item/seeds","/obj/item/weapon/grown")
 
-/obj/item/weapon/storage/bag/seeds
-	name = "Seed Bag"
-	desc = "Used to carry your seeds around. A little smaller than the plant bag."
-	icon = 'icons/obj/hydroponics.dmi'
-	icon_state = "seedbag"
-	storage_slots = 20; //the number of plant pieces it can carry.
-	max_combined_w_class = 200
-	max_w_class = 3
-	w_class = 1
-	can_hold = list("/obj/item/seeds")
+
 // -----------------------------
 //        Sheet Snatcher
 // -----------------------------
@@ -114,12 +104,12 @@
 // However, making it a storage/bag allows us to reuse existing code in some places. -Sayu
 
 /obj/item/weapon/storage/bag/sheetsnatcher
-	name = "Sheet Snatcher"
-	desc = "A patented Nanotrasen storage system designed for any kind of mineral sheet."
 	icon = 'icons/obj/mining.dmi'
 	icon_state = "sheetsnatcher"
+	name = "Sheet Snatcher"
+	desc = "A patented Nanotrasen storage system designed for any kind of mineral sheet."
 
-	var/capacity = 300; // the number of sheets it can carry.
+	var/capacity = 300; //the number of sheets it can carry.
 	w_class = 3
 
 	allow_quick_empty = 1 // this function is superceded
@@ -132,11 +122,11 @@
 		if(!istype(W,/obj/item/stack/sheet) || istype(W,/obj/item/stack/sheet/mineral/sandstone) || istype(W,/obj/item/stack/sheet/wood))
 			if(!stop_messages)
 				usr << "The snatcher does not accept [W]."
-			return 0 // I don't care, but the existing code rejects them for not being "sheets" *shrug* -Sayu
+			return 0 //I don't care, but the existing code rejects them for not being "sheets" *shrug* -Sayu
 		var/current = 0
 		for(var/obj/item/stack/sheet/S in contents)
 			current += S.amount
-		if(capacity == current)	// If it's full, you're done
+		if(capacity == current)//If it's full, you're done
 			if(!stop_messages)
 				usr << "\red The snatcher is full."
 			return 0

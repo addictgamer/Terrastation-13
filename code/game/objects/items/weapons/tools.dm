@@ -1,6 +1,19 @@
+//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:32
 
-// Wrench
+/* Tools!
+ * Note: Multitools are /obj/item/device
+ *
+ * Contains:
+ * 		Wrench
+ * 		Screwdriver
+ * 		Wirecutters
+ * 		Welding Tool
+ * 		Crowbar
+ */
 
+/*
+ * Wrench
+ */
 /obj/item/weapon/wrench
 	name = "wrench"
 	desc = "A wrench with common uses. Can be found in your hand."
@@ -16,8 +29,9 @@
 	attack_verb = list("bashed", "battered", "bludgeoned", "whacked")
 
 
-// Screwdriver
-
+/*
+ * Screwdriver
+ */
 /obj/item/weapon/screwdriver
 	name = "screwdriver"
 	desc = "You can be totally screwwy with this."
@@ -218,8 +232,8 @@
 				remove_fuel(1)
 
 
-// I'm not sure what this does. I assume it has to do with starting fires...
-// ...but it doesnt check to see if the welder is on or not.
+	//I'm not sure what this does. I assume it has to do with starting fires...
+	//...but it doesnt check to see if the welder is on or not.
 	var/turf/location = src.loc
 	if(istype(location, /mob/))
 		var/mob/M = location
@@ -247,9 +261,6 @@
 		var/turf/location = get_turf(user)
 		if (istype(location, /turf))
 			location.hotspot_expose(700, 50, 1)
-			if(isliving(O))
-				var/mob/living/L = O
-				L.IgniteMob()
 	return
 
 
@@ -257,7 +268,7 @@
 	toggle()
 	return
 
-// Returns the amount of fuel in the welder
+//Returns the amount of fuel in the welder
 /obj/item/weapon/weldingtool/proc/get_fuel()
 	return reagents.get_reagent_amount("fuel")
 

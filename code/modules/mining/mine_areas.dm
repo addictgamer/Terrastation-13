@@ -4,10 +4,6 @@
 	icon_state = "mining"
 	music = 'sound/ambience/song_game.ogg'
 
-/area/mine/cave
-	name = "cave"
-	icon_state = "cave"
-
 /area/mine/explored
 	name = "Mine"
 	icon_state = "explored"

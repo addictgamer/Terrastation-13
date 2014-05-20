@@ -5,7 +5,7 @@
 	density = 1
 	anchored = 1.0
 	layer = 2.8
-
+	
 	var/on = 0
 	var/temperature_archived
 	var/mob/living/carbon/occupant = null
@@ -65,12 +65,12 @@
 	ui_interact(user)
 
 /obj/machinery/atmospherics/unary/cryo_cell/ui_interact(mob/user, ui_key = "main")
-
+	
 	var/data[0]
 	data["isOperating"] = on
 
 	data["hasOccupant"] = occupant ? 1 : 0
-
+	
 	var/occupantData[0]
 	if (!occupant)
 		occupantData["name"] = null
@@ -103,9 +103,9 @@
 	var beakerContents[0]
 	if(beaker && beaker:reagents && beaker:reagents.reagent_list.len)
 		for(var/datum/reagent/R in beaker:reagents.reagent_list)
-			beakerContents.Add(list(list("name" = R.name, "volume" = R.volume))) // list in a list because Byond merges the first list...
+			beakerContents.Add(list(list("name" = R.name, "volume" = R.volume))) // list in a list because Byond merges the first list... 
 	data["beakerContents"] = beakerContents
-
+	
 	//user << list2json(data)
 
 	var/datum/nanoui/ui = nanomanager.get_open_ui(user, src, ui_key)
@@ -131,7 +131,7 @@
 			if (beaker)
 				var/obj/item/weapon/reagent_containers/glass/B = beaker
 				B.loc = get_step(loc, SOUTH)
-				beaker = null
+				beaker = null		
 
 		nanomanager.update_uis(src) // update all UIs attached to this object
 		add_fingerprint(usr)
@@ -230,7 +230,7 @@
 	occupant.loc = get_step(loc, SOUTH)	//this doesn't account for walls or anything, but i don't forsee that being a problem.
 	if (occupant.bodytemperature < 261 && occupant.bodytemperature > 140) //Patch by Aranclanos to stop people from taking burn damage after being ejected
 		occupant.bodytemperature = 261
-	//occupant.metabslow = 0
+//	occupant.metabslow = 0
 	occupant = null
 	update_icon()
 	return
@@ -255,10 +255,9 @@
 	if(M.health > -100 && (M.health < 0 || M.sleeping))
 		M << "\blue <b>You feel a cold liquid surround you. Your skin starts to freeze up.</b>"
 	occupant = M
-	//M.metabslow = 1
+//	M.metabslow = 1
 	add_fingerprint(usr)
 	update_icon()
-	M.ExtinguishMob()
 	return 1
 
 /obj/machinery/atmospherics/unary/cryo_cell/verb/move_eject()

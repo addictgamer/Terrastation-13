@@ -87,13 +87,7 @@ datum/controller/game_controller/proc/setup_objects()
 	sleep(-1)
 	for(var/obj/machinery/atmospherics/machine in machines)
 		machine.build_network()
-// TG random dirty floor
-/*	
-	world << "\red \b Making a mess..."
-	sleep(-1)
-	for(var/turf/simulated/floor/F in world)
-		F.MakeDirty()
-*/
+
 	world << "\red \b Initializing atmos machinery."
 	sleep(-1)
 	for(var/obj/machinery/atmospherics/unary/U in machines)

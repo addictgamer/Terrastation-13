@@ -1,4 +1,3 @@
-
 /obj/machinery/computer/centrifuge
 	name = "Isolation Centrifuge"
 	desc = "Used to separate things with different weight. Spin 'em round, round, right round."
@@ -8,7 +7,7 @@
 	var/isolating
 
 	var/obj/item/weapon/reagent_containers/glass/beaker/vial/sample = null
-	var/datum/disease/disease/virus2 = null
+	var/datum/disease2/disease/virus2 = null
 
 /obj/machinery/computer/centrifuge/attackby(var/obj/I as obj, var/mob/user as mob)
 	if(istype(I, /obj/item/weapon/screwdriver))
@@ -52,7 +51,7 @@
 
 				var/list/virus = B.data["virus2"]
 				for (var/ID in virus)
-					var/datum/disease/disease/V = virus[ID]
+					var/datum/disease2/disease/V = virus[ID]
 					dat += " </td></tr><tr><td> pathogen [V.name()]"
 					dat += "</td><td><A href='?src=\ref[src];action=isolate;isolate=[V.uniqueID]'>Isolate</a>"
 			else
@@ -149,10 +148,6 @@
 	state("\The [src.name] pings", "blue")
 
 /obj/machinery/computer/centrifuge/proc/isolate()
-	var/amt= sample.reagents.get_reagent_amount("blood")
-	sample.reagents.remove_reagent("blood",amt)
-	//sample.loc = src.loc
-
 	var/obj/item/weapon/virusdish/dish = new/obj/item/weapon/virusdish(src.loc)
 	dish.virus2 = virus2
 

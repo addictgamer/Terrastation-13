@@ -122,37 +122,18 @@
 		if ((M.client && M.machine == src))
 			src.attack_self(M)
 */
-
-// Sunflower
+/*
+ * Sunflower
+ */
 
 /obj/item/weapon/grown/sunflower/attack(mob/M as mob, mob/user as mob)
 	M << "<font color='green'><b> [user] smacks you with a sunflower!</font><font color='yellow'><b>FLOWER POWER<b></font>"
 	user << "<font color='green'> Your sunflower's </font><font color='yellow'><b>FLOWER POWER</b></font><font color='green'> strikes [M]</font>"
 
-// Novaflower
 
-/obj/item/weapon/grown/novaflower/attack(mob/living/carbon/M as mob, mob/user as mob)
-	if(!..()) return
-	if(istype(M, /mob/living))
-		M << "\red You are heated by the warmth of the of the [name]!"
-		M.bodytemperature += potency/2 * TEMPERATURE_DAMAGE_COEFFICIENT
-
-/obj/item/weapon/grown/novaflower/afterattack(atom/A as mob|obj, mob/user as mob,proximity)
-	if(!proximity) return
-	if(endurance > 0)
-		endurance -= rand(1,(endurance/3)+1)
-	else
-		usr << "All the petals have fallen off the [name] from violent whacking."
-		del(src)
-
-/obj/item/weapon/grown/novaflower/pickup(mob/living/carbon/human/user as mob)
-	if(!user.gloves)
-		user << "\red The [name] burns your bare hand!"
-		user.adjustFireLoss(rand(1,5))
-
-
-// Nettle
-
+/*
+ * Nettle
+ */
 /obj/item/weapon/grown/nettle/pickup(mob/living/carbon/human/user as mob)
 	if(!user.gloves)
 		user << "\red The nettle burns your bare hand!"
@@ -176,7 +157,9 @@
 	potency = newValue
 	force = round((5+potency/5), 1)
 
-// Deathnettle
+/*
+ * Deathnettle
+ */
 
 /obj/item/weapon/grown/deathnettle/pickup(mob/living/carbon/human/user as mob)
 	if(!user.gloves)
@@ -221,8 +204,9 @@
 	force = round((5+potency/2.5), 1)
 
 
-// Corncob
-
+/*
+ * Corncob
+ */
 /obj/item/weapon/corncob/attackby(obj/item/weapon/W as obj, mob/user as mob)
 	..()
 	if(istype(W, /obj/item/weapon/circular_saw) || istype(W, /obj/item/weapon/hatchet) || istype(W, /obj/item/weapon/kitchen/utensil/knife) || istype(W, /obj/item/weapon/kitchenknife) || istype(W, /obj/item/weapon/kitchenknife/ritual))

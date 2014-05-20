@@ -1,15 +1,14 @@
-
-/obj/machinery/disease/isolator/
+/obj/machinery/disease2/isolator/
 	name = "Pathogenic Isolator"
 	density = 1
 	anchored = 1
 	icon = 'icons/obj/virology.dmi'
 	icon_state = "isolator"
-	var/datum/disease/disease/virus2 = null
+	var/datum/disease2/disease/virus2 = null
 	var/isolating = 0
 	var/beaker = null
 
-/obj/machinery/disease/isolator/attackby(var/W as obj, var/mob/user)
+/obj/machinery/disease2/isolator/attackby(var/W as obj, var/mob/user)
 	if(!istype(W,/obj/item/weapon/reagent_containers/syringe))
 		return
 
@@ -27,7 +26,7 @@
 		src.updateUsrDialog()
 		icon_state = "isolator_in"
 
-/obj/machinery/disease/isolator/Topic(href, href_list)
+/obj/machinery/disease2/isolator/Topic(href, href_list)
 	if(..()) return
 
 	usr.machine = src
@@ -42,7 +41,7 @@
 				break
 		var/list/virus = virus_copylist(Blood.data["virus2"])
 		var/choice = text2num(href_list["isolate"]);
-		for (var/datum/disease/disease/V in virus)
+		for (var/datum/disease2/disease/V in virus)
 			if (V.uniqueID == choice)
 				virus2 = virus
 				isolating = 40
@@ -60,7 +59,7 @@
 		src.updateUsrDialog()
 		return
 
-/obj/machinery/disease/isolator/attack_hand(mob/user as mob)
+/obj/machinery/disease2/isolator/attack_hand(mob/user as mob)
 	if(stat & BROKEN)
 		return
 	user.machine = src
@@ -80,7 +79,7 @@
 			for(var/datum/reagent/blood/G in R.reagent_list)
 				if(G.data["virus2"])
 					var/list/virus = G.data["virus2"]
-					for (var/datum/disease/disease/V in virus)
+					for (var/datum/disease2/disease/V in virus)
 						dat += " <br>  [G.name]: <A href='?src=\ref[src];isolate=[V.uniqueID]'>Isolate pathogen #[V.uniqueID]</a>"
 				else
 					dat += "    <b>No pathogen</b>"
@@ -88,12 +87,11 @@
 	onclose(user, "isolator")
 	return
 
-/obj/machinery/disease/isolator/process()
+/obj/machinery/disease2/isolator/process()
 	if(isolating > 0)
 		isolating -= 1
 		if(isolating == 0)
 			var/obj/item/weapon/virusdish/d = new /obj/item/weapon/virusdish(src.loc)
 			d.virus2 = virus2.getcopy()
 			virus2 = null
-			icon_state = "isolator_in"
 			icon_state = "isolator_in"

@@ -24,9 +24,9 @@
 	New()
 		src.modules += new /obj/item/device/flashlight(src)
 		src.modules += new /obj/item/device/flash(src)
-		src.emag = new /obj/item/toy/esword(src)
+		src.emag = new /obj/item/toy/sword(src)
 		src.emag.name = "Placeholder Emag Item"
-//		src.jetpack = new /obj/item/toy/esword(src)
+//		src.jetpack = new /obj/item/toy/sword(src)
 //		src.jetpack.name = "Placeholder Upgrade Item"
 		return
 
