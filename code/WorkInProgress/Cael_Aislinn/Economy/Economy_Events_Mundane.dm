@@ -221,6 +221,7 @@
 	"Tommy B. Saif Sez: If You Break It, You Buy It",\
 	"Tommy B. Saif Sez: Reservations Must Be Cancelled 48 Hours Prior To Event To Obtain Refund",\
 	"Doughnuts: Is There Anything They Can't Do",\
+	"Hail Hydra",\
 	"If Tin Whistles Are Made Of Tin, What Do They Make Foghorns Out Of?",\
 	"Broccoli discovered to be colonies of tiny aliens with murder on their minds"\
 	)

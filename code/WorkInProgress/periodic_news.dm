@@ -88,6 +88,13 @@
 						with marriage tax-benefits."}
 			round_time = 60 * 30
 
+		hyrda
+			channel_name = "Tau Ceti Daily"
+			author = "Unknown"
+
+			message = {"Hail Hydra."}
+			round_time = 60 * 90
+
 	food_riots
 
 		breaking_news
