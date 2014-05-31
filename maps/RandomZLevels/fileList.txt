@@ -6,4 +6,4 @@
 #maps/RandomZLevels/awaymission.dmm
 maps/RandomZLevels/Academy.dmm
 maps/RandomZLevels/arcticwaste.dmm
-map/RandomZLevels/challenge.dmm
+#map/RandomZLevels/challenge.dmm

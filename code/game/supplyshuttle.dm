@@ -142,7 +142,7 @@ var/list/mechtoys = list(
 	var/list/supply_packs = list()
 	//shuttle movement
 	var/at_station = 0
-	var/movetime = 1200
+	var/movetime = 1800
 	var/moving = 0
 	var/eta_timeofday
 	var/eta

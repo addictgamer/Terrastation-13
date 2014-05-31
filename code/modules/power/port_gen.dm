@@ -52,7 +52,7 @@ display round(lastgen) and plasmatank amount
 	use_power = 0
 
 	var/active = 0
-	var/power_gen = 5000
+	var/power_gen = 5025
 	var/open = 0
 	var/recent_fault = 0
 	var/power_output = 1
@@ -93,8 +93,13 @@ display round(lastgen) and plasmatank amount
 	else
 		usr << "\blue The generator is off."
 
+/obj/machinery/power/port_gen/pingas
+	name = "Pingas Wheel Generator"
+	desc = "A portable generator for emergency backup power. It is rumored that this model generates its power with a disc that never stops spinning."
+
 /obj/machinery/power/port_gen/pacman
 	name = "P.A.C.M.A.N.-type Portable Generator"
+	power_gen = 5000
 	var/sheets = 0
 	var/max_sheets = 100
 	var/sheet_name = ""
