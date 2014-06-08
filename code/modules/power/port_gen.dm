@@ -52,7 +52,7 @@ display round(lastgen) and plasmatank amount
 	use_power = 0
 
 	var/active = 0
-	var/power_gen = 5025
+	var/power_gen = 5000
 	var/open = 0
 	var/recent_fault = 0
 	var/power_output = 1
@@ -93,13 +93,9 @@ display round(lastgen) and plasmatank amount
 	else
 		usr << "\blue The generator is off."
 
-/obj/machinery/power/port_gen/pingas
-	name = "Pingas Wheel Generator"
-	desc = "A portable generator for emergency backup power. It is rumored that this model generates its power with a disc that never stops spinning."
 
 /obj/machinery/power/port_gen/pacman
 	name = "P.A.C.M.A.N.-type Portable Generator"
-	power_gen = 5000
 	var/sheets = 0
 	var/max_sheets = 100
 	var/sheet_name = ""
@@ -321,7 +317,7 @@ display round(lastgen) and plasmatank amount
 			if (power_output > 1)
 				power_output--
 				src.updateUsrDialog()
-		if (href_list["action"] == "higher_power")
+		if (href_list["action"] == "higher_power")   //THIS IS WHERE THE POWER BOUNDS HAPPEN. THIS IS WHAT YOU NEED TO BUGGER WITH.
 			if (power_output < 4 || emagged)
 				power_output++
 				src.updateUsrDialog()
@@ -348,3 +344,40 @@ display round(lastgen) and plasmatank amount
 	board_path = "/obj/item/weapon/circuitboard/pacman/mrs"
 	overheat()
 		explosion(src.loc, 4, 4, 4, -1)
+
+//testing to get this goddamn thing working properly
+/obj/machinery/power/port_gen/pacman/pingas
+	name = "Pingas Wheel Generator"
+	desc = "A portable generator for emergency backup power. It is rumored that this model generates its power with a disc that never stops spinning."
+	power_gen = 5025
+
+/obj/machinery/power/port_gen/pacman/pingas/HasFuel()
+	return 1
+
+/obj/machinery/power/port_gen/pacman/pingas/UseFuel()
+ 	return
+
+/obj/machinery/power/port_gen/pacman/pingas/DropFuel()
+ 	return
+
+//This machine is at no time ever supposed to produce over 5025. This next block does exactly that but the inherited GUI doesn't reflect this behavior entirely.
+/obj/machinery/power/port_gen/pacman/pingas/process()
+	if(active && HasFuel() && !crit_fail && anchored && powernet)
+		add_avail(power_gen)
+		UseFuel()
+		src.updateDialog()
+
+	else
+		active = 0
+		icon_state = initial(icon_state)
+		handleInactive()
+
+//Not using inheritance because it doesn't need fuel, so I'm just flat-out redoing it.
+/obj/machinery/power/port_gen/pacman/examine()
+	set src in oview(1)
+	if(active)
+		usr << "\blue The generator is on."
+	else
+		usr << "\blue The generator is off."
+	usr << desc
+	if(crit_fail) usr << "\red The generator seems to have broken down."
