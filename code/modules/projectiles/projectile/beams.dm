@@ -95,6 +95,11 @@ var/list/beam_master = list()
 	icon_state = "heavylaser"
 	damage = 40
 
+/obj/item/projectile/beam/shiper
+	name = "shiper blast"
+	icon_state = "shipe"
+	damage = 45
+
 /obj/item/projectile/beam/xray
 	name = "xray beam"
 	icon_state = "xray"
