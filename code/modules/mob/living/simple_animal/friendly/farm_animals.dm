@@ -45,8 +45,8 @@
 			if(udder && prob(5))
 				udder.add_reagent("milk", rand(5, 10))
 
-		if(locate(/obj/effect/spacevine) in loc)
-			var/obj/effect/spacevine/SV = locate(/obj/effect/spacevine) in loc
+		if(locate(/obj/effect/plantsegment) in loc)
+			var/obj/effect/plantsegment/SV = locate(/obj/effect/plantsegment) in loc
 			del(SV)
 			if(prob(10))
 				say("Nom")
@@ -55,7 +55,7 @@
 			for(var/direction in shuffle(list(1,2,4,8,5,6,9,10)))
 				var/step = get_step(src, direction)
 				if(step)
-					if(locate(/obj/effect/spacevine) in step)
+					if(locate(/obj/effect/plantsegment) in step)
 						Move(step)
 
 /mob/living/simple_animal/hostile/retaliate/goat/Retaliate()
@@ -65,16 +65,16 @@
 /mob/living/simple_animal/hostile/retaliate/goat/Move()
 	..()
 	if(!stat)
-		if(locate(/obj/effect/spacevine) in loc)
-			var/obj/effect/spacevine/SV = locate(/obj/effect/spacevine) in loc
+		if(locate(/obj/effect/plantsegment) in loc)
+			var/obj/effect/plantsegment/SV = locate(/obj/effect/plantsegment) in loc
 			del(SV)
 			if(prob(10))
 				say("Nom")
 
 /mob/living/simple_animal/hostile/retaliate/goat/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	if(stat == CONSCIOUS && istype(O, /obj/item/weapon/reagent_containers/glass))
+	var/obj/item/weapon/reagent_containers/glass/G = O
+	if(stat == CONSCIOUS && istype(G) && G.is_open_container())
 		user.visible_message("<span class='notice'>[user] milks [src] using \the [O].</span>")
-		var/obj/item/weapon/reagent_containers/glass/G = O
 		var/transfered = udder.trans_id_to(G, "milk", rand(5,10))
 		if(G.reagents.total_volume >= G.volume)
 			user << "\red The [O] is full."
@@ -112,9 +112,9 @@
 	..()
 
 /mob/living/simple_animal/cow/attackby(var/obj/item/O as obj, var/mob/user as mob)
-	if(stat == CONSCIOUS && istype(O, /obj/item/weapon/reagent_containers/glass))
+	var/obj/item/weapon/reagent_containers/glass/G = O
+	if(stat == CONSCIOUS && istype(G) && G.is_open_container())
 		user.visible_message("<span class='notice'>[user] milks [src] using \the [O].</span>")
-		var/obj/item/weapon/reagent_containers/glass/G = O
 		var/transfered = udder.trans_id_to(G, "milk", rand(5,10))
 		if(G.reagents.total_volume >= G.volume)
 			user << "\red The [O] is full."
@@ -207,22 +207,22 @@ var/global/chicken_count = 0
 	attacktext = "kicks"
 	health = 10
 	var/eggsleft = 0
-	var/color
+	var/body_color
 	pass_flags = PASSTABLE
 	small = 1
 
 /mob/living/simple_animal/chicken/New()
 	..()
-	if(!color)
-		color = pick( list("brown","black","white") )
-	icon_state = "chicken_[color]"
-	icon_living = "chicken_[color]"
-	icon_dead = "chicken_[color]_dead"
+	if(!body_color)
+		body_color = pick( list("brown","black","white") )
+	icon_state = "chicken_[body_color]"
+	icon_living = "chicken_[body_color]"
+	icon_dead = "chicken_[body_color]_dead"
 	pixel_x = rand(-6, 6)
 	pixel_y = rand(0, 10)
 	chicken_count += 1
 
-/mob/living/simple_animal/chicken/Die()
+/mob/living/simple_animal/chicken/death()
 	..()
 	chicken_count -= 1
 

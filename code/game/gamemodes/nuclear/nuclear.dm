@@ -1,3 +1,10 @@
+/*
+	NUCLEAR EMERGENCY ROUNDTYPE
+*/
+
+var/global/list/turf/synd_spawn = list()
+
+
 /datum/game_mode
 	var/list/datum/mind/syndicates = list()
 
@@ -5,9 +12,9 @@
 /datum/game_mode/nuclear
 	name = "nuclear emergency"
 	config_tag = "nuclear"
-	required_players = 6
+	required_players = 15
 	required_players_secret = 25 // 25 players - 5 players to be the nuke ops = 20 players remaining
-	required_enemies = 5
+	required_enemies = 1
 	recommended_enemies = 5
 
 	uplink_welcome = "Corporate Backed Uplink Console:"
@@ -34,17 +41,25 @@
 	var/list/possible_syndicates = get_players_for_role(BE_OPERATIVE)
 	var/agent_number = 0
 
+    /*
+	 * if(possible_syndicates.len > agents_possible)
+	 * 	agent_number = agents_possible
+	 * else
+	 * 	agent_number = possible_syndicates.len
+	 *
+	 * if(agent_number > n_players)
+	 *	agent_number = n_players/2
+	 */
+
 	if(possible_syndicates.len < 1)
 		return 0
 
-	if(possible_syndicates.len > agents_possible)
-		agent_number = agents_possible
-	else
-		agent_number = possible_syndicates.len
-
+	//Antag number should scale to active crew.
 	var/n_players = num_players()
-	if(agent_number > n_players)
-		agent_number = n_players/2
+	agent_number = Clamp((n_players/5), 2, 6)
+
+	if(possible_syndicates.len < agent_number)
+		agent_number = possible_syndicates.len
 
 	while(agent_number > 0)
 		var/datum/mind/new_syndicate = pick(possible_syndicates)
@@ -108,26 +123,21 @@
 
 /datum/game_mode/nuclear/post_setup()
 
-	var/list/turf/synd_spawn = list()
-
-	for(var/obj/effect/landmark/A in landmarks_list)
-		if(A.name == "Syndicate-Spawn")
-			synd_spawn += get_turf(A)
-			del(A)
-			continue
-
-	var/obj/effect/landmark/uplinklocker = locate("landmark*Syndicate-Uplink")	//i will be rewriting this shortly
+	var/obj/effect/landmark/uplinkdevice = locate("landmark*Syndicate-Uplink")	//i will be rewriting this shortly
 	var/obj/effect/landmark/nuke_spawn = locate("landmark*Nuclear-Bomb")
 
 	var/nuke_code = "[rand(10000, 99999)]"
 	var/leader_selected = 0
-	var/agent_number = 1
 	var/spawnpos = 1
 
 	for(var/datum/mind/synd_mind in syndicates)
 		if(spawnpos > synd_spawn.len)
 			spawnpos = 1
 		synd_mind.current.loc = synd_spawn[spawnpos]
+
+		synd_mind.current.real_name = "[syndicate_name()] Operative" // placeholder while we get their actual name
+		spawn(0)
+			NukeNameAssign(synd_mind)
 
 		forge_syndicate_objectives(synd_mind)
 		greet_syndicate(synd_mind)
@@ -136,16 +146,15 @@
 		if(!leader_selected)
 			prepare_syndicate_leader(synd_mind, nuke_code)
 			leader_selected = 1
-		else
-			synd_mind.current.real_name = "[syndicate_name()] Operative #[agent_number]"
-			agent_number++
+
 		spawnpos++
 		update_synd_icons_added(synd_mind)
 
 	update_all_synd_icons()
 
-	if(uplinklocker)
-		new /obj/structure/closet/syndicate/nuclear(uplinklocker.loc)
+	if(uplinkdevice)
+		var/obj/item/device/radio/uplink/U = new(uplinkdevice.loc)
+		U.hidden_uplink.uses = 40
 	if(nuke_spawn && synd_spawn.len > 0)
 		var/obj/machinery/nuclearbomb/the_bomb = new /obj/machinery/nuclearbomb(nuke_spawn.loc)
 		the_bomb.r_code = nuke_code
@@ -157,18 +166,16 @@
 
 
 /datum/game_mode/proc/prepare_syndicate_leader(var/datum/mind/synd_mind, var/nuke_code)
-//	var/leader_title = pick("Czar", "Boss", "Commander", "Chief", "Kingpin", "Director", "Overlord")
-	spawn(1)
-//		NukeNameAssign(nukelastname(synd_mind.current),syndicates) //allows time for the rest of the syndies to be chosen
-	synd_mind.current.real_name = "[pick(first_names_male)] [pick(last_names)]"
+	var/obj/effect/landmark/code_spawn = locate("landmark*Nuclear-Code")
 	if (nuke_code)
 		synd_mind.store_memory("<B>Syndicate Nuclear Bomb Code</B>: [nuke_code]", 0, 0)
 		synd_mind.current << "The nuclear authorization code is: <B>[nuke_code]</B>"
+		synd_mind.current << "To speak on the strike team's private channel use :t"
 		var/obj/item/weapon/paper/P = new
 		P.info = "The nuclear authorization code is: <b>[nuke_code]</b>"
 		P.name = "nuclear bomb code"
 		if (ticker.mode.config_tag=="nuclear")
-			P.loc = synd_mind.current.loc
+			P.loc = code_spawn.loc
 		else
 			var/mob/living/carbon/human/H = synd_mind.current
 			P.loc = H.loc
@@ -181,49 +188,61 @@
 
 
 /datum/game_mode/proc/forge_syndicate_objectives(var/datum/mind/syndicate)
+
+	if (config.objectives_disabled)
+		return
+
 	var/datum/objective/nuclear/syndobj = new
 	syndobj.owner = syndicate
 	syndicate.objectives += syndobj
 
-
 /datum/game_mode/proc/greet_syndicate(var/datum/mind/syndicate, var/you_are=1)
 	if (you_are)
 		syndicate.current << "\blue You are a [syndicate_name()] agent!"
-	var/obj_count = 1
-	for(var/datum/objective/objective in syndicate.objectives)
-		syndicate.current << "<B>Objective #[obj_count]</B>: [objective.explanation_text]"
-		obj_count++
-	return
-
+	show_objectives(syndicate)
 
 /datum/game_mode/proc/random_radio_frequency()
 	return 1337 // WHY??? -- Doohl
 
 
 /datum/game_mode/proc/equip_syndicate(mob/living/carbon/human/synd_mob)
-	var/radio_freq = SYND_FREQ
-
 	var/obj/item/device/radio/R = new /obj/item/device/radio/headset/syndicate(synd_mob)
-	R.set_frequency(radio_freq)
-	synd_mob.equip_to_slot_or_del(R, slot_ears)
+	R.set_frequency(SYND_FREQ)
+	R.freerange = 1
+	synd_mob.equip_to_slot_or_del(R, slot_l_ear)
 
 	synd_mob.equip_to_slot_or_del(new /obj/item/clothing/under/syndicate(synd_mob), slot_w_uniform)
 	synd_mob.equip_to_slot_or_del(new /obj/item/clothing/shoes/black(synd_mob), slot_shoes)
-	synd_mob.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest(synd_mob), slot_wear_suit)
 	synd_mob.equip_to_slot_or_del(new /obj/item/clothing/gloves/swat(synd_mob), slot_gloves)
-	synd_mob.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/swat(synd_mob), slot_head)
 	synd_mob.equip_to_slot_or_del(new /obj/item/weapon/card/id/syndicate(synd_mob), slot_wear_id)
 	if(synd_mob.backbag == 2) synd_mob.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack(synd_mob), slot_back)
 	if(synd_mob.backbag == 3) synd_mob.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel_norm(synd_mob), slot_back)
 	if(synd_mob.backbag == 4) synd_mob.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel(synd_mob), slot_back)
-	synd_mob.equip_to_slot_or_del(new /obj/item/ammo_magazine/a12mm(synd_mob), slot_in_backpack)
-	synd_mob.equip_to_slot_or_del(new /obj/item/ammo_magazine/a12mm(synd_mob), slot_in_backpack)
-	synd_mob.equip_to_slot_or_del(new /obj/item/weapon/reagent_containers/pill/cyanide(synd_mob), slot_in_backpack)
-	synd_mob.equip_to_slot_or_del(new /obj/item/weapon/gun/projectile/automatic/c20r(synd_mob), slot_belt)
 	synd_mob.equip_to_slot_or_del(new /obj/item/weapon/storage/box/engineer(synd_mob.back), slot_in_backpack)
-	var/obj/item/weapon/implant/explosive/E = new/obj/item/weapon/implant/explosive(synd_mob)
-	E.imp_in = synd_mob
-	E.implanted = 1
+	synd_mob.equip_to_slot_or_del(new /obj/item/weapon/reagent_containers/pill/cyanide(synd_mob), slot_in_backpack)
+
+/*	Commented; nukes now have a suit cycler for changing rig-suits, they don't need to spawn with them
+	var/obj/item/clothing/suit/space/rig/syndi/new_suit = new(synd_mob)
+	var/obj/item/clothing/head/helmet/space/rig/syndi/new_helmet = new(synd_mob)
+
+	if(synd_mob.species)
+
+		var/race = synd_mob.species.name
+
+		switch(race)
+			if("Unathi")
+				new_suit.species_restricted = list("Unathi")
+			if("Tajara")
+				new_suit.species_restricted = list("Tajara")
+			if("Skrell")
+				new_suit.species_restricted = list("Skrell")
+
+	synd_mob.equip_to_slot_or_del(new_suit, slot_in_backpack)
+	synd_mob.equip_to_slot_or_del(new_helmet, slot_in_backpack)*/
+
+//	var/obj/item/weapon/implant/explosive/E = new/obj/item/weapon/implant/explosive(synd_mob)
+//	E.imp_in = synd_mob
+//	E.implanted = 1
 	synd_mob.update_icons()
 	return 1
 
@@ -244,13 +263,15 @@
 
 
 /datum/game_mode/nuclear/declare_completion()
+	if(config.objectives_disabled)
+		return
 	var/disk_rescued = 1
 	for(var/obj/item/weapon/disk/nuclear/D in world)
 		var/disk_area = get_area(D)
 		if(!is_type_in_list(disk_area, centcom_areas))
 			disk_rescued = 0
 			break
-	var/crew_evacuated = (emergency_shuttle.location==2)
+	var/crew_evacuated = (emergency_shuttle.returned())
 	//var/operatives_are_dead = is_operatives_are_dead()
 
 
@@ -344,12 +365,14 @@
 
 	return newname
 */
-/proc/NukeNameAssign(var/lastname,var/list/syndicates)
-	for(var/datum/mind/synd_mind in syndicates)
-		switch(synd_mind.current.gender)
-			if(MALE)
-				synd_mind.name = "[pick(first_names_male)] [pick(last_names)]"
-			if(FEMALE)
-				synd_mind.name = "[pick(first_names_female)] [pick(last_names)]"
-		synd_mind.current.real_name = synd_mind.name
-	return
+
+/proc/NukeNameAssign(var/datum/mind/synd_mind)
+	var/choose_name = input(synd_mind.current, "You are a [syndicate_name()] agent! What is your name?", "Choose a name") as text
+
+	if(!choose_name)
+		return
+
+	else
+		synd_mind.current.name = choose_name
+		synd_mind.current.real_name = choose_name
+		return

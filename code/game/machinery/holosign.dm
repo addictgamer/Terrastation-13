@@ -51,8 +51,8 @@ obj/machinery/holosign_switch/attack_paw(mob/user as mob)
 	return src.attack_hand(user)
 
 /obj/machinery/holosign_switch/attackby(obj/item/weapon/W, mob/user as mob)
-	if(istype(W, /obj/item/device/detective_scanner))
-		return
+/*	if(istype(W, /obj/item/device/detective_scanner))
+		return*/
 	return src.attack_hand(user)
 
 /obj/machinery/holosign_switch/attack_hand(mob/user as mob)

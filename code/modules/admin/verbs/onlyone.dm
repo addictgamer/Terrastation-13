@@ -20,10 +20,7 @@
 		H.mind.objectives += hijack_objective
 
 		H << "<B>You are the traitor.</B>"
-		var/obj_count = 1
-		for(var/datum/objective/OBJ in H.mind.objectives)
-			H << "<B>Objective #[obj_count]</B>: [OBJ.explanation_text]"
-			obj_count++
+		show_objectives(H.mind)
 
 		for (var/obj/item/I in H)
 			if (istype(I, /obj/item/weapon/implant))
@@ -31,7 +28,7 @@
 			del(I)
 
 		H.equip_to_slot_or_del(new /obj/item/clothing/under/kilt(H), slot_w_uniform)
-		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/heads/captain(H), slot_ears)
+		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/heads/captain(H), slot_l_ear)
 		H.equip_to_slot_or_del(new /obj/item/clothing/head/beret(H), slot_head)
 		H.equip_to_slot_or_del(new /obj/item/weapon/claymore(H), slot_l_hand)
 		H.equip_to_slot_or_del(new /obj/item/clothing/shoes/combat(H), slot_shoes)

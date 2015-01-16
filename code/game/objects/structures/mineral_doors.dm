@@ -82,6 +82,7 @@
 		state = 1
 		update_icon()
 		isSwitchingStates = 0
+		update_nearby_tiles()
 
 	proc/Close()
 		isSwitchingStates = 1
@@ -93,6 +94,7 @@
 		state = 0
 		update_icon()
 		isSwitchingStates = 0
+		update_nearby_tiles()
 
 	update_icon()
 		if(state)
@@ -155,23 +157,6 @@
 				CheckHardness()
 		return
 
-	proc/update_nearby_tiles(need_rebuild) //Copypasta from airlock code
-		if(!air_master) return 0
-
-		var/turf/simulated/source = loc
-		var/turf/simulated/north = get_step(source,NORTH)
-		var/turf/simulated/south = get_step(source,SOUTH)
-		var/turf/simulated/east = get_step(source,EAST)
-		var/turf/simulated/west = get_step(source,WEST)
-
-		if(istype(source)) air_master.tiles_to_update += source
-		if(istype(north)) air_master.tiles_to_update += north
-		if(istype(south)) air_master.tiles_to_update += south
-		if(istype(east)) air_master.tiles_to_update += east
-		if(istype(west)) air_master.tiles_to_update += west
-
-		return 1
-
 /obj/structure/mineral_door/iron
 	mineralType = "metal"
 	hardness = 3
@@ -199,8 +184,8 @@
 		..()
 		opacity = 0
 
-/obj/structure/mineral_door/transparent/plasma
-	mineralType = "plasma"
+/obj/structure/mineral_door/transparent/phoron
+	mineralType = "phoron"
 
 	attackby(obj/item/weapon/W as obj, mob/user as mob)
 		if(istype(W,/obj/item/weapon/weldingtool))
@@ -209,24 +194,18 @@
 				TemperatureAct(100)
 		..()
 
-	temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 		if(exposed_temperature > 300)
 			TemperatureAct(exposed_temperature)
 
 	proc/TemperatureAct(temperature)
 		for(var/turf/simulated/floor/target_tile in range(2,loc))
+			var/phoronToDeduce = temperature/10
+			target_tile.assume_gas("phoron", phoronToDeduce, 200+T0C)
 
-			var/datum/gas_mixture/napalm = new
-
-			var/toxinsToDeduce = temperature/10
-
-			napalm.toxins = toxinsToDeduce
-			napalm.temperature = 200+T0C
-
-			target_tile.assume_air(napalm)
 			spawn (0) target_tile.hotspot_expose(temperature, 400)
 
-			hardness -= toxinsToDeduce/100
+			hardness -= phoronToDeduce/100
 			CheckHardness()
 
 /obj/structure/mineral_door/transparent/diamond
@@ -271,7 +250,9 @@
 	var/close_delay = 100
 
 	TryToSwitchState(atom/user)
-		if(isalien(user))
+
+		var/mob/living/carbon/M = user
+		if(istype(M) && locate(/datum/organ/internal/xenos/hivenode) in M.internal_organs)
 			return ..()
 
 	Open()

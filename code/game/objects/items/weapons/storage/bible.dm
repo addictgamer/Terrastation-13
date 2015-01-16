@@ -16,8 +16,8 @@
 
 /obj/item/weapon/storage/bible/booze/New()
 	..()
-	new /obj/item/weapon/reagent_containers/food/drinks/beer(src)
-	new /obj/item/weapon/reagent_containers/food/drinks/beer(src)
+	new /obj/item/weapon/reagent_containers/food/drinks/cans/beer(src)
+	new /obj/item/weapon/reagent_containers/food/drinks/cans/beer(src)
 	new /obj/item/weapon/spacecash(src)
 	new /obj/item/weapon/spacecash(src)
 	new /obj/item/weapon/spacecash(src)
@@ -88,7 +88,8 @@
 		playsound(src.loc, "punch", 25, 1, -1)
 	return
 */
-/obj/item/weapon/storage/bible/afterattack(atom/A, mob/user as mob)
+/obj/item/weapon/storage/bible/afterattack(atom/A, mob/user as mob, proximity)
+	if(!proximity) return
 /*	if (istype(A, /turf/simulated/floor))
 		user << "\blue You hit the floor with the bible."
 		if(user.mind && (user.mind.assigned_role == "Chaplain"))
@@ -101,5 +102,6 @@
 			A.reagents.add_reagent("holywater",water2holy)
 
 /obj/item/weapon/storage/bible/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	playsound(src.loc, "rustle", 50, 1, -5)
+	if (src.use_sound)
+		playsound(src.loc, src.use_sound, 50, 1, -5)
 	..()

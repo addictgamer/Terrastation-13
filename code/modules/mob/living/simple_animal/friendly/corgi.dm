@@ -22,12 +22,12 @@
 	var/obj/item/inventory_back
 	var/facehugger
 
+/*
 /mob/living/simple_animal/corgi/Life()
 	..()
 	regenerate_icons()
 
 /mob/living/simple_animal/corgi/show_inv(mob/user as mob)
-	/* If you're turning this back on, scroll down and uncomment target_updated
 	user.set_machine(src)
 	if(user.stat) return
 
@@ -43,7 +43,6 @@
 
 	user << browse(dat, text("window=mob[];size=325x500", name))
 	onclose(user, "mob[real_name]")
-	*/
 	return
 
 /mob/living/simple_animal/corgi/attackby(var/obj/item/O as obj, var/mob/user as mob)
@@ -68,7 +67,7 @@
 
 	//Removing from inventory
 	if(href_list["remove_inv"])
-		if(get_dist(src,usr) > 1 || !(ishuman(usr) || ismonkey(usr) || isrobot(usr) ||  isalienadult(usr)))
+		if(!Adjacent(usr) || !(ishuman(usr) || ismonkey(usr) || isrobot(usr) ||  isalienadult(usr)))
 			return
 		var/remove_from = href_list["remove_inv"]
 		switch(remove_from)
@@ -99,7 +98,7 @@
 
 	//Adding things to inventory
 	else if(href_list["add_inv"])
-		if(get_dist(src,usr) > 1 || !(ishuman(usr) || ismonkey(usr) || isrobot(usr) ||  isalienadult(usr)))
+		if(!Adjacent(usr) || !(ishuman(usr) || ismonkey(usr) || isrobot(usr) ||  isalienadult(usr)))
 			return
 		var/add_to = href_list["add_inv"]
 		if(!usr.get_active_hand())
@@ -255,6 +254,7 @@
 		if(/obj/item/clothing/head/soft)
 			name = "Corgi Tech [real_name]"
 			desc = "The reason your yellow gloves have chew-marks."
+*/
 
 
 //IAN! SQUEEEEEEEEE~
@@ -351,7 +351,8 @@
 			if (!( AM.anchored ))
 				var/t = get_dir(src, AM)
 				if (istype(AM, /obj/structure/window))
-					if(AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
+					var/obj/structure/window/W = AM
+					if(W.is_full_window())
 						for(var/obj/structure/window/win in get_step(AM,t))
 							now_pushing = 0
 							return

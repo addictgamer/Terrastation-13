@@ -9,7 +9,7 @@
 	var/oxygen = 0
 	var/carbon_dioxide = 0
 	var/nitrogen = 0
-	var/toxins = 0
+	var/phoron = 0
 
 	//Properties for airtight tiles (/wall)
 	var/thermal_conductivity = 0.05
@@ -22,6 +22,10 @@
 	var/icon_old = null
 	var/pathweight = 1
 
+	//Mining resource generation stuff.
+	var/has_resources
+	var/list/resources
+
 /turf/New()
 	..()
 	for(var/atom/movable/AM as mob|obj in src)
@@ -29,17 +33,6 @@
 			src.Entered(AM)
 			return
 	return
-
-/turf/DblClick()
-	if(istype(usr, /mob/living/silicon/ai))
-		return move_camera_by_click()
-	if(usr.stat || usr.restrained() || usr.lying)
-		return ..()
-	return ..()
-
-/turf/Click()
-	if(!isAI(usr))
-		..()
 
 /turf/ex_act(severity)
 	return 0
@@ -93,7 +86,7 @@
 
 	//Finally, check objects/mobs to block entry that are not on the border
 	for(var/atom/movable/obstacle in src)
-		if(obstacle.flags & ~ON_BORDER)
+		if(!(obstacle.flags & ON_BORDER))
 			if(!obstacle.CanPass(mover, mover.loc, 1, 0) && (forget != obstacle))
 				mover.Bump(obstacle, 1)
 				return 0
@@ -119,41 +112,31 @@
 	if(!istype(atom, /atom/movable))
 		return
 
-	var/atom/movable/M = atom
+	var/atom/movable/A = atom
 
 	var/loopsanity = 100
-	if(ismob(M))
-		if(!M:lastarea)
-			M:lastarea = get_area(M.loc)
-		if(M:lastarea.has_gravity == 0)
+	if(ismob(A))
+		var/mob/M = A
+		if(!M.lastarea)
+			M.lastarea = get_area(M.loc)
+		if(M.lastarea.has_gravity == 0)
 			inertial_drift(M)
-
-	/*
-		if(M.flags & NOGRAV)
-			inertial_drift(M)
-	*/
-
-
 
 		else if(!istype(src, /turf/space))
-			M:inertia_dir = 0
+			M.inertia_dir = 0
+			M.make_floating(0)
 	..()
 	var/objects = 0
-	for(var/atom/A as mob|obj|turf|area in src)
+	for(var/atom/O as mob|obj|turf|area in range(1))
 		if(objects > loopsanity)	break
 		objects++
 		spawn( 0 )
-			if ((A && M))
-				A.HasEntered(M, 1)
+			if ((O && A))
+				O.HasProximity(A, 1)
 			return
-	objects = 0
-	for(var/atom/A as mob|obj|turf|area in range(1))
-		if(objects > loopsanity)	break
-		objects++
-		spawn( 0 )
-			if ((A && M))
-				A.HasProximity(M, 1)
-			return
+	return
+
+/turf/proc/adjacent_fire_act(turf/simulated/floor/source, temperature, volume)
 	return
 
 /turf/proc/is_plating()
@@ -211,34 +194,67 @@
 	if (!N)
 		return
 
+///// Z-Level Stuff ///// This makes sure that turfs are not changed to space when one side is part of a zone
+	if(N == /turf/space)
+		var/turf/controller = locate(1, 1, src.z)
+		for(var/obj/effect/landmark/zcontroller/c in controller)
+			if(c.down)
+				var/turf/below = locate(src.x, src.y, c.down_target)
+				if((air_master.has_valid_zone(below) || air_master.has_valid_zone(src)) && !istype(below, /turf/space)) // dont make open space into space, its pointless and makes people drop out of the station
+					var/turf/W = src.ChangeTurf(/turf/simulated/floor/open)
+					var/list/temp = list()
+					temp += W
+					c.add(temp,3,1) // report the new open space to the zcontroller
+					return W
+///// Z-Level Stuff
+
 	var/old_lumcount = lighting_lumcount - initial(lighting_lumcount)
+	var/obj/fire/old_fire = fire
+
+	//world << "Replacing [src.type] with [N]"
+
+	if(connections) connections.erase_all()
+
+	if(istype(src,/turf/simulated))
+		//Yeah, we're just going to rebuild the whole thing.
+		//Despite this being called a bunch during explosions,
+		//the zone will only really do heavy lifting once.
+		var/turf/simulated/S = src
+		if(S.zone) S.zone.rebuild()
 
 	if(ispath(N, /turf/simulated/floor))
+		//if the old turf had a zone, connect the new turf to it as well - Cael
+		//Adjusted by SkyMarshal 5/10/13 - The air master will handle the addition of the new turf.
+		//if(zone)
+		//	zone.RemoveTurf(src)
+		//	if(!zone.CheckStatus())
+		//		zone.SetStatus(ZONE_ACTIVE)
+
 		var/turf/simulated/W = new N( locate(src.x, src.y, src.z) )
-		W.Assimilate_Air()
+		//W.Assimilate_Air()
 
 		W.lighting_lumcount += old_lumcount
-		if(old_lumcount != W.lighting_lumcount)
-			W.lighting_changed = 1
-			lighting_controller.changed_turfs += W
+
+		if(W.lighting_lumcount)
+			W.UpdateAffectingLights()
+
+		if(old_fire)
+			fire = old_fire
 
 		if (istype(W,/turf/simulated/floor))
 			W.RemoveLattice()
 
-		//if the old turf had a zone, connect the new turf to it as well - Cael
-		if(src.zone)
-			src.zone.RemoveTurf(src)
-			W.zone = src.zone
-			W.zone.AddTurf(W)
-
-		for(var/turf/simulated/T in orange(src,1))
-			air_master.tiles_to_update.Add(T)
+		if(air_master)
+			air_master.mark_for_update(src)
 
 		W.levelupdate()
 		return W
+
 	else
-		/*if(istype(src, /turf/simulated) && src.zone)
-			src.zone.rebuild = 1*/
+		//if(zone)
+		//	zone.RemoveTurf(src)
+		//	if(!zone.CheckStatus())
+		//		zone.SetStatus(ZONE_ACTIVE)
 
 		var/turf/W = new N( locate(src.x, src.y, src.z) )
 		W.lighting_lumcount += old_lumcount
@@ -246,19 +262,22 @@
 			W.lighting_changed = 1
 			lighting_controller.changed_turfs += W
 
-		if(src.zone)
-			src.zone.RemoveTurf(src)
-			W.zone = src.zone
-			W.zone.AddTurf(W)
+		if(old_fire)
+			old_fire.RemoveFire()
 
 		if(air_master)
-			for(var/turf/simulated/T in orange(src,1))
-				air_master.tiles_to_update.Add(T)
+			air_master.mark_for_update(src)
 
 		W.levelupdate()
 		return W
 
+
+//Commented out by SkyMarshal 5/10/13 - If you are patching up space, it should be vacuum.
+//  If you are replacing a wall, you have increased the volume of the room without increasing the amount of gas in it.
+//  As such, this will no longer be used.
+
 //////Assimilate Air//////
+/*
 /turf/simulated/proc/Assimilate_Air()
 	var/aoxy = 0//Holders to assimilate air from nearby turfs
 	var/anitro = 0
@@ -302,6 +321,8 @@
 				S.air.toxins = air.toxins
 				S.air.temperature = air.temperature
 				S.air.update_values()
+*/
+
 
 /turf/proc/ReplaceWithLattice()
 	src.ChangeTurf(/turf/space)

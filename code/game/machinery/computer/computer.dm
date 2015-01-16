@@ -6,7 +6,7 @@
 	use_power = 1
 	idle_power_usage = 300
 	active_power_usage = 300
-	var/obj/item/weapon/circuitboard/circuit = null //if circuit==null, computer can't disassembly
+	var/circuit = null //The path to the circuit board type. If circuit==null, the computer can't be disassembled.
 	var/processing = 0
 
 /obj/machinery/computer/New()
@@ -27,7 +27,7 @@
 	for(var/x in verbs)
 		verbs -= x
 	set_broken()
-	var/datum/effect/effect/system/harmless_smoke_spread/smoke = new /datum/effect/effect/system/harmless_smoke_spread()
+	var/datum/effect/effect/system/smoke_spread/smoke = new /datum/effect/effect/system/smoke_spread()
 	smoke.set_up(5, 0, src)
 	smoke.start()
 	return
@@ -95,6 +95,11 @@
 	stat |= BROKEN
 	update_icon()
 
+/obj/machinery/computer/proc/decode(text)
+	// Adds line breaks
+	text = replacetext(text, "\n", "<BR>")
+	return text
+
 
 /obj/machinery/computer/attackby(I as obj, user as mob)
 	if(istype(I, /obj/item/weapon/screwdriver) && circuit)
@@ -115,6 +120,7 @@
 				user << "\blue You disconnect the monitor."
 				A.state = 4
 				A.icon_state = "4"
+			M.deconstruct(src)
 			del(src)
 	else
 		src.attack_hand(user)

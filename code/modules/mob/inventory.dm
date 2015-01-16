@@ -85,14 +85,18 @@
 	return 0
 
 
-/mob/proc/drop_from_inventory(var/obj/item/W)
+/mob/proc/drop_from_inventory(var/obj/item/W, var/atom/Target = null)
 	if(W)
+		if(!Target)
+			Target = loc
+
 		if(client)	client.screen -= W
 		u_equip(W)
+		if(!W) return 1 // self destroying objects (tk, grabs)
 		W.layer = initial(W.layer)
-		W.loc = loc
+		W.loc = Target
 
-		var/turf/T = get_turf(loc)
+		var/turf/T = get_turf(Target)
 		if(isturf(T))
 			T.Entered(W)
 
@@ -194,7 +198,8 @@
 
 	if(hasvar(src,"back")) if(src:back) items += src:back
 	if(hasvar(src,"belt")) if(src:belt) items += src:belt
-	if(hasvar(src,"ears")) if(src:ears) items += src:ears
+	if(hasvar(src,"l_ear")) if(src:l_ear) items += src:l_ear
+	if(hasvar(src,"r_ear")) if(src:r_ear) items += src:r_ear
 	if(hasvar(src,"glasses")) if(src:glasses) items += src:glasses
 	if(hasvar(src,"gloves")) if(src:gloves) items += src:gloves
 	if(hasvar(src,"head")) if(src:head) items += src:head
@@ -255,9 +260,13 @@
 			if(!src.wear_id && src.w_uniform)
 				src.wear_id = W
 				equipped = 1
-		if(slot_ears)
-			if(!src.ears)
-				src.ears = W
+		if(slot_l_ear)
+			if(!src.l_ear)
+				src.l_ear = W
+				equipped = 1
+		if(slot_r_ear)
+			if(!src.r_ear)
+				src.r_ear = W
 				equipped = 1
 		if(slot_glasses)
 			if(!src.glasses)
@@ -310,4 +319,3 @@
 		if (del_on_fail)
 			del(W)
 	return equipped
-

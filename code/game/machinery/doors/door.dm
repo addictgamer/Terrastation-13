@@ -1,4 +1,6 @@
 //This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
+#define DOOR_OPEN_LAYER 2.7		//Under all objects if opened. 2.7 due to tables being at 2.6
+#define DOOR_CLOSED_LAYER 3.1	//Above most items if closed
 
 /obj/machinery/door
 	name = "Door"
@@ -8,7 +10,9 @@
 	anchored = 1
 	opacity = 1
 	density = 1
-	layer = 2.7
+	layer = DOOR_OPEN_LAYER
+	var/open_layer = DOOR_OPEN_LAYER
+	var/closed_layer = DOOR_CLOSED_LAYER
 
 	var/secondsElectrified = 0
 	var/visible = 1
@@ -27,11 +31,11 @@
 /obj/machinery/door/New()
 	. = ..()
 	if(density)
-		layer = 3.1 //Above most items if closed
+		layer = closed_layer
 		explosion_resistance = initial(explosion_resistance)
 		update_heat_protection(get_turf(src))
 	else
-		layer = 2.7 //Under all objects if opened. 2.7 due to tables being at 2.6
+		layer = open_layer
 		explosion_resistance = 0
 
 
@@ -81,6 +85,14 @@
 			else
 				flick("door_deny", src)
 		return
+	if(istype(AM, /obj/structure/stool/bed/chair/wheelchair))
+		var/obj/structure/stool/bed/chair/wheelchair/wheel = AM
+		if(density)
+			if(wheel.pulling && (src.allowed(wheel.pulling)))
+				open()
+			else
+				flick("door_deny", src)
+		return
 	return
 
 
@@ -120,15 +132,21 @@
 /obj/machinery/door/attack_hand(mob/user as mob)
 	return src.attackby(user, user)
 
+/obj/machinery/door/attack_tk(mob/user as mob)
+	if(requiresID() && !allowed(null))
+		return
+	..()
 
 /obj/machinery/door/attackby(obj/item/I as obj, mob/user as mob)
-	if(istype(I, /obj/item/device/detective_scanner))
-		return
+/*	if(istype(I, /obj/item/device/detective_scanner))
+		return*/
 	if(src.operating || isrobot(user))	return //borgs can't attack doors open because it conflicts with their AI-like interaction with them.
 	src.add_fingerprint(user)
+	if(!Adjacent(user))
+		user = null
 	if(!src.requiresID())
 		user = null
-	if(src.density && (istype(I, /obj/item/weapon/card/emag)||istype(I, /obj/item/weapon/melee/energy/blade)))
+	if(src.density && ((operable() && istype(I, /obj/item/weapon/card/emag)) || istype(I, /obj/item/weapon/melee/energy/blade)))
 		flick("door_spark", src)
 		sleep(6)
 		open()
@@ -185,7 +203,7 @@
 	return
 
 
-/obj/machinery/door/proc/animate(animation)
+/obj/machinery/door/proc/do_animate(animation)
 	switch(animation)
 		if("opening")
 			if(p_open)
@@ -208,11 +226,11 @@
 	if(!ticker)			return 0
 	if(!operating)		operating = 1
 
-	animate("opening")
+	do_animate("opening")
 	icon_state = "door0"
 	src.SetOpacity(0)
 	sleep(10)
-	src.layer = 2.7
+	src.layer = open_layer
 	src.density = 0
 	explosion_resistance = 0
 	update_icon()
@@ -236,10 +254,10 @@
 	if(operating > 0)	return
 	operating = 1
 
-	animate("closing")
 	src.density = 1
 	explosion_resistance = initial(explosion_resistance)
-	src.layer = 3.1
+	src.layer = closed_layer
+	do_animate("closing")
 	sleep(10)
 	update_icon()
 	if(visible && !glass)
@@ -256,37 +274,13 @@
 /obj/machinery/door/proc/requiresID()
 	return 1
 
-/obj/machinery/door/proc/update_nearby_tiles(need_rebuild)
-	if(!air_master) return 0
+/obj/machinery/door/update_nearby_tiles(need_rebuild)
+	if(!air_master)
+		return 0
 
-	var/turf/simulated/source = loc
-	var/turf/simulated/north = get_step(source,NORTH)
-	var/turf/simulated/south = get_step(source,SOUTH)
-	var/turf/simulated/east = get_step(source,EAST)
-	var/turf/simulated/west = get_step(source,WEST)
-
-	update_heat_protection(loc)
-
-	if(istype(source)) air_master.tiles_to_update += source
-	if(istype(north)) air_master.tiles_to_update += north
-	if(istype(south)) air_master.tiles_to_update += south
-	if(istype(east)) air_master.tiles_to_update += east
-	if(istype(west)) air_master.tiles_to_update += west
-
-	if(width > 1)
-		var/turf/simulated/next_turf = src
-		var/step_dir = turn(dir, 180)
-		for(var/current_step = 2, current_step <= width, current_step++)
-			next_turf = get_step(src, step_dir)
-			north = get_step(next_turf, step_dir)
-			east = get_step(next_turf, turn(step_dir, 90))
-			south = get_step(next_turf, turn(step_dir, -90))
-
-			update_heat_protection(next_turf)
-
-			if(istype(north)) air_master.tiles_to_update |= north
-			if(istype(south)) air_master.tiles_to_update |= south
-			if(istype(east)) air_master.tiles_to_update |= east
+	for(var/turf/simulated/turf in locs)
+		update_heat_protection(turf)
+		air_master.mark_for_update(turf)
 
 	return 1
 
@@ -304,7 +298,7 @@
 	return
 
 /obj/machinery/door/Move(new_loc, new_dir)
-	update_nearby_tiles()
+	//update_nearby_tiles()
 	. = ..()
 	if(width > 1)
 		if(dir in list(EAST, WEST))

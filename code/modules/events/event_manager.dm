@@ -2,8 +2,8 @@ var/list/allEvents = typesof(/datum/event) - /datum/event
 var/list/potentialRandomEvents = typesof(/datum/event) - /datum/event
 //var/list/potentialRandomEvents = typesof(/datum/event) - /datum/event - /datum/event/spider_infestation - /datum/event/alien_infestation
 
-var/eventTimeLower = 9000	//15 minutes
-var/eventTimeUpper = 15000	//25 minutes
+var/eventTimeLower = 12000	//20 minutes
+var/eventTimeUpper = 24000	//40 minutes
 var/scheduledEvent = null
 
 
@@ -30,6 +30,10 @@ var/scheduledEvent = null
 				playercount_modifier = 0.9
 			if(36 to 100000)
 				playercount_modifier = 0.8
+
+		if(ticker.mode && ticker.mode.name == "calamity") //Calamity mode lowers the time required between events drastically.
+			playercount_modifier = playercount_modifier * 0.5
+
 		var/next_event_delay = rand(eventTimeLower, eventTimeUpper) * playercount_modifier
 		scheduledEvent = world.timeofday + next_event_delay
 		log_debug("Next event in [next_event_delay/600] minutes.")

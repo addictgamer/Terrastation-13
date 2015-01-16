@@ -5,12 +5,7 @@
 	energy_drain = 10
 	var/dam_force = 20
 	var/obj/mecha/working/ripley/cargo_holder
-
-	can_attach(obj/mecha/working/ripley/M as obj)
-		if(..())
-			if(istype(M))
-				return 1
-		return 0
+	required_type = list(/obj/mecha/working, /obj/mecha/hoverpod) //so that hoverpods are a bit more useful as space transportation
 
 	attach(obj/mecha/M as obj)
 		..()
@@ -75,6 +70,7 @@
 	equip_cooldown = 30
 	energy_drain = 10
 	force = 15
+	required_type = list(/obj/mecha/working, /obj/mecha/combat)
 
 	action(atom/target)
 		if(!action_checks(target)) return
@@ -94,7 +90,7 @@
 				else if(istype(target, /turf/simulated/mineral))
 					for(var/turf/simulated/mineral/M in range(chassis,1))
 						if(get_dir(chassis,M)&chassis.dir)
-							M.gets_drilled()
+							M.GetDrilled()
 					log_message("Drilled through [target]")
 					if(locate(/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp) in chassis.equipment)
 						var/obj/structure/ore_box/ore_box = locate(/obj/structure/ore_box) in chassis:cargo
@@ -117,12 +113,6 @@
 					log_message("Drilled through [target]")
 					target.ex_act(2)
 		return 1
-
-	can_attach(obj/mecha/M as obj)
-		if(..())
-			if(istype(M, /obj/mecha/working) || istype(M, /obj/mecha/combat))
-				return 1
-		return 0
 
 /obj/item/mecha_parts/mecha_equipment/tool/drill/diamonddrill
 	name = "Diamond Drill"
@@ -153,7 +143,7 @@
 				else if(istype(target, /turf/simulated/mineral))
 					for(var/turf/simulated/mineral/M in range(chassis,1))
 						if(get_dir(chassis,M)&chassis.dir)
-							M.gets_drilled()
+							M.GetDrilled()
 					log_message("Drilled through [target]")
 					if(locate(/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp) in chassis.equipment)
 						var/obj/structure/ore_box/ore_box = locate(/obj/structure/ore_box) in chassis:cargo
@@ -175,12 +165,6 @@
 					target.ex_act(2)
 		return 1
 
-	can_attach(obj/mecha/M as obj)
-		if(..())
-			if(istype(M, /obj/mecha/working) || istype(M, /obj/mecha/combat))
-				return 1
-		return 0
-
 /obj/item/mecha_parts/mecha_equipment/tool/extinguisher
 	name = "Extinguisher"
 	desc = "Exosuit-mounted extinguisher (Can be attached to: Engineering exosuits)"
@@ -188,6 +172,7 @@
 	equip_cooldown = 5
 	energy_drain = 0
 	range = MELEE|RANGED
+	required_type = /obj/mecha/working
 
 	New()
 		reagents = new/datum/reagents(200)
@@ -201,56 +186,57 @@
 		if(get_dist(chassis, target)>2) return
 		set_ready_state(0)
 		if(do_after_cooldown(target))
-			if(istype(target, /obj/structure/reagent_dispensers/watertank) && get_dist(chassis,target) <= 1)
+			if( istype(target, /obj/structure/reagent_dispensers/watertank) && get_dist(chassis,target) <= 1)
 				var/obj/o = target
 				o.reagents.trans_to(src, 200)
-				occupant_message("\blue Extinguisher refilled")
+				occupant_message("\blue \The [src] is now refilled")
 				playsound(chassis, 'sound/effects/refill.ogg', 50, 1, -6)
-			else
-				if(src.reagents.total_volume > 0)
-					playsound(chassis, 'sound/effects/extinguish.ogg', 75, 1, -3)
-					var/direction = get_dir(chassis,target)
-					var/turf/T = get_turf(target)
-					var/turf/T1 = get_step(T,turn(direction, 90))
-					var/turf/T2 = get_step(T,turn(direction, -90))
+				return
 
-					var/list/the_targets = list(T,T1,T2)
-					spawn(0)
-						for(var/a=0, a<5, a++)
-							var/obj/effect/effect/water/W = new /obj/effect/effect/water(get_turf(chassis))
+			if (src.reagents.total_volume < 1)
+				occupant_message("\red \The [src] is empty.")
+				return
+
+			playsound(chassis, 'sound/effects/extinguish.ogg', 75, 1, -3)
+
+			var/direction = get_dir(chassis,target)
+
+			var/turf/T = get_turf(target)
+			var/turf/T1 = get_step(T,turn(direction, 90))
+			var/turf/T2 = get_step(T,turn(direction, -90))
+
+			var/list/the_targets = list(T,T1,T2)
+
+			for(var/a=0, a<5, a++)
+				spawn(0)
+					var/obj/effect/effect/water/W = new /obj/effect/effect/water( get_turf(chassis) )
+					var/turf/my_target = pick(the_targets)
+					var/datum/reagents/R = new/datum/reagents(5)
+					if(!W) return
+					W.reagents = R
+					R.my_atom = W
+					if(!W || !src) return
+					src.reagents.trans_to(W,1)
+					for(var/b=0, b<5, b++)
+						step_towards(W,my_target)
+						if(!W || !W.reagents) return
+						W.reagents.reaction(get_turf(W))
+						for(var/atom/atm in get_turf(W))
 							if(!W)
 								return
-							var/turf/my_target = pick(the_targets)
-							var/datum/reagents/R = new/datum/reagents(5)
-							W.reagents = R
-							R.my_atom = W
-							src.reagents.trans_to(W,1)
-							for(var/b=0, b<4, b++)
-								if(!W)
-									return
-								step_towards(W,my_target)
-								if(!W)
-									return
-								var/turf/W_turf = get_turf(W)
-								W.reagents.reaction(W_turf)
-								for(var/atom/atm in W_turf)
-									W.reagents.reaction(atm)
-								if(W.loc == my_target)
-									break
-								sleep(2)
-		return 1
+							if(!W.reagents)
+								break
+							W.reagents.reaction(atm)
+						if(W.loc == my_target) break
+						sleep(2)
+					W.delete()
+			return 1
 
 	get_equip_info()
 		return "[..()] \[[src.reagents.total_volume]\]"
 
 	on_reagent_change()
 		return
-
-	can_attach(obj/mecha/working/M as obj)
-		if(..())
-			if(istype(M))
-				return 1
-		return 0
 
 
 /obj/item/mecha_parts/mecha_equipment/tool/rcd
@@ -262,7 +248,7 @@
 	energy_drain = 250
 	range = MELEE|RANGED
 	construction_time = 1200
-	construction_cost = list("metal"=30000,"plasma"=25000,"silver"=20000,"gold"=20000)
+	construction_cost = list("metal"=30000,"phoron"=25000,"silver"=20000,"gold"=20000)
 	var/mode = 0 //0 - deconstruct, 1 - wall or floor, 2 - airlock.
 	var/disabled = 0 //malf
 
@@ -439,8 +425,18 @@
 	var/atom/movable/locked
 	var/mode = 1 //1 - gravsling 2 - gravpush
 
+	var/last_fired = 0  //Concept stolen from guns.
+	var/fire_delay = 10 //Used to prevent spam-brute against humans.
 
 	action(atom/movable/target)
+
+		if(world.time >= last_fired + fire_delay)
+			last_fired = world.time
+		else
+			if (world.time % 3)
+				occupant_message("<span class='warning'>[src] is not ready to fire again!")
+			return 0
+
 		switch(mode)
 			if(1)
 				if(!action_checks(target) && !locked) return
@@ -454,7 +450,7 @@
 					return
 				else if(target!=locked)
 					if(locked in view(chassis))
-						locked.throw_at(target, 14, 1.5)
+						locked.throw_at(target, 14, 1.5, chassis)
 						locked = null
 						send_byjax(chassis.occupant,"exosuit.browser","\ref[src]",src.get_equip_info())
 						set_ready_state(0)
@@ -508,9 +504,8 @@
 
 	can_attach(obj/mecha/M as obj)
 		if(..())
-			if(!istype(M, /obj/mecha/combat/honker))
-				if(!M.proc_res["dynattackby"])
-					return 1
+			if(!M.proc_res["dynattackby"])
+				return 1
 		return 0
 
 	attach(obj/mecha/M as obj)
@@ -559,9 +554,8 @@
 
 	can_attach(obj/mecha/M as obj)
 		if(..())
-			if(!istype(M, /obj/mecha/combat/honker))
-				if(!M.proc_res["dynbulletdamage"] && !M.proc_res["dynhitby"])
-					return 1
+			if(!M.proc_res["dynbulletdamage"] && !M.proc_res["dynhitby"])
+				return 1
 		return 0
 
 	attach(obj/mecha/M as obj)
@@ -820,10 +814,10 @@
 
 
 /obj/item/mecha_parts/mecha_equipment/generator
-	name = "Plasma Converter"
-	desc = "Generates power using solid plasma as fuel. Pollutes the environment."
+	name = "Phoron Generator"
+	desc = "Generates power using solid phoron as fuel. Pollutes the environment."
 	icon_state = "tesla"
-	origin_tech = "plasmatech=2;powerstorage=2;engineering=1"
+	origin_tech = "phorontech=2;powerstorage=2;engineering=1"
 	equip_cooldown = 10
 	energy_drain = 0
 	range = MELEE
@@ -843,7 +837,7 @@
 		return
 
 	proc/init()
-		fuel = new /obj/item/stack/sheet/mineral/plasma(src)
+		fuel = new /obj/item/stack/sheet/mineral/phoron(src)
 		fuel.amount = 0
 		pr_mech_generator = new /datum/global_iterator/mecha_generator(list(src),0)
 		pr_mech_generator.set_delay(equip_cooldown)
@@ -916,14 +910,12 @@
 			return
 		var/datum/gas_mixture/GM = new
 		if(prob(10))
-			GM.toxins += 100
-			GM.temperature = 1500+T0C //should be enough to start a fire
-			T.visible_message("The [src] suddenly disgorges a cloud of heated plasma.")
+			T.assume_gas("phoron", 100, 1500+T0C)
+			T.visible_message("The [src] suddenly disgorges a cloud of heated phoron.")
 			destroy()
 		else
-			GM.toxins += 5
-			GM.temperature = istype(T) ? T.air.temperature : T20C
-			T.visible_message("The [src] suddenly disgorges a cloud of plasma.")
+			T.assume_gas("phoron", 5, istype(T) ? T.air.temperature : T20C)
+			T.visible_message("The [src] suddenly disgorges a cloud of phoron.")
 		T.assume_air(GM)
 		return
 
@@ -1003,12 +995,7 @@
 	energy_drain = 0
 	var/dam_force = 0
 	var/obj/mecha/working/ripley/cargo_holder
-
-	can_attach(obj/mecha/working/ripley/M as obj)
-		if(..())
-			if(istype(M))
-				return 1
-		return 0
+	required_type = /obj/mecha/working/ripley
 
 	attach(obj/mecha/M as obj)
 		..()
@@ -1072,3 +1059,153 @@
 	var/new_icon = "ripley"  //What base icon will the new mech use?
 	var/removable = null     //Can the kit be removed?
 	var/list/allowed_types = list() //Types of mech that the kit will work on.
+
+/obj/item/mecha_parts/mecha_equipment/tool/passenger
+	name = "passenger compartment"
+	desc = "A mountable passenger compartment for exo-suits. Rather cramped."
+	icon_state = "mecha_abooster_ccw"
+	origin_tech = "engineering=1;biotech=1"
+	energy_drain = 10
+	range = MELEE
+	construction_cost = list("metal"=5000,"glass"=5000)
+	reliability = 1000
+	equip_cooldown = 20
+	var/mob/living/carbon/occupant = null
+	var/door_locked = 1
+	salvageable = 0
+
+/obj/item/mecha_parts/mecha_equipment/tool/passenger/allow_drop()
+	return 0
+
+/obj/item/mecha_parts/mecha_equipment/tool/passenger/destroy()
+	for(var/atom/movable/AM in src)
+		AM.forceMove(get_turf(src))
+	return ..()
+
+/obj/item/mecha_parts/mecha_equipment/tool/passenger/Exit(atom/movable/O)
+	return 0
+
+/obj/item/mecha_parts/mecha_equipment/tool/passenger/proc/move_inside(var/mob/user)
+	if (chassis)
+		chassis.visible_message("\blue [user] starts to climb into [chassis].")
+
+	if(do_after(user, 40, needhand=0))
+		if(!src.occupant)
+			user.forceMove(src)
+			occupant = user
+			log_message("[user] boarded.")
+			occupant_message("[user] boarded.")
+		else if(src.occupant != user)
+			user << "\red [src.occupant] was faster. Try better next time, loser."
+	else
+		user << "You stop entering the exosuit."
+
+/obj/item/mecha_parts/mecha_equipment/tool/passenger/verb/eject()
+	set name = "Eject"
+	set category = "Exosuit Interface"
+	set src = usr.loc
+	set popup_menu = 0
+
+	if(usr != occupant)
+		return
+	occupant << "You climb out from \the [src]."
+	go_out()
+	occupant_message("[occupant] disembarked.")
+	log_message("[occupant] disembarked.")
+	add_fingerprint(usr)
+
+/obj/item/mecha_parts/mecha_equipment/tool/passenger/proc/go_out()
+	if(!occupant)
+		return
+	occupant.forceMove(get_turf(src))
+	occupant.reset_view()
+	/*
+	if(occupant.client)
+		occupant.client.eye = occupant.client.mob
+		occupant.client.perspective = MOB_PERSPECTIVE
+	*/
+	occupant = null
+	return
+
+/obj/item/mecha_parts/mecha_equipment/tool/passenger/attach()
+	..()
+	if (chassis)
+		chassis.verbs |= /obj/mecha/proc/move_inside_passenger
+
+/obj/item/mecha_parts/mecha_equipment/tool/passenger/detach()
+	if(occupant)
+		occupant_message("Unable to detach [src] - equipment occupied.")
+		return
+
+	var/obj/mecha/M = chassis
+	..()
+	if (M && !(locate(/obj/item/mecha_parts/mecha_equipment/tool/passenger) in M))
+		M.verbs -= /obj/mecha/proc/move_inside_passenger
+
+/obj/item/mecha_parts/mecha_equipment/tool/passenger/get_equip_info()
+	return "[..()] <br />[occupant? "\[Occupant: [occupant]\]|" : ""]Exterior Hatch: <a href='?src=\ref[src];toggle_lock=1'>Toggle Lock</a>"
+
+/obj/item/mecha_parts/mecha_equipment/tool/passenger/Topic(href,href_list)
+	..()
+	if (href_list["toggle_lock"])
+		door_locked = !door_locked
+		occupant_message("Passenger compartment hatch [door_locked? "locked" : "unlocked"].")
+		if (chassis)
+			chassis.visible_message("The hatch on \the [chassis] [door_locked? "locks" : "unlocks"].", "You hear something latching.")
+
+
+#define LOCKED 1
+#define OCCUPIED 2
+#undefine
+
+/obj/mecha/proc/move_inside_passenger()
+	set category = "Object"
+	set name = "Enter Passenger Compartment"
+	set src in oview(1)
+
+	//check that usr can climb in
+	if (usr.stat || !ishuman(usr))
+		return
+
+	if (!usr.Adjacent(src))
+		return
+
+	if (!isturf(usr.loc))
+		usr << "\red You can't reach the passenger compartment from here."
+		return
+
+	if(iscarbon(usr))
+		var/mob/living/carbon/C = usr
+		if(C.handcuffed)
+			usr << "\red Kinda hard to climb in while handcuffed don't you think?"
+			return
+
+	for(var/mob/living/carbon/slime/M in range(1,usr))
+		if(M.Victim == usr)
+			usr << "\red You're too busy getting your life sucked out of you."
+			return
+
+	//search for a valid passenger compartment
+	var/feedback = 0 //for nicer user feedback
+	for(var/obj/item/mecha_parts/mecha_equipment/tool/passenger/P in src)
+		if (P.occupant)
+			feedback |= OCCUPIED
+			continue
+		if (P.door_locked)
+			feedback |= LOCKED
+			continue
+
+		//found a boardable compartment
+		P.move_inside(usr)
+		return
+
+	//didn't find anything
+	switch (feedback)
+		if (OCCUPIED)
+			usr << "\red The passenger compartment is already occupied!"
+		if (LOCKED)
+			usr << "\red The passenger compartment hatch is locked!"
+		if (OCCUPIED|LOCKED)
+			usr << "\red All of the passenger compartments are already occupied or locked!"
+		if (0)
+			usr << "\red \The [src] doesn't have a passenger compartment."

@@ -4,9 +4,9 @@
 	icon = 'icons/obj/gun.dmi'
 	icon_state = "detective"
 	item_state = "gun"
-	flags =  FPRINT | TABLEPASS | CONDUCT |  USEDELAY
+	flags =  FPRINT | TABLEPASS | CONDUCT
 	slot_flags = SLOT_BELT
-	m_amt = 2000
+	matter = list("metal" = 2000)
 	w_class = 3.0
 	throwforce = 5
 	throw_speed = 4
@@ -28,8 +28,8 @@
 	var/automatic = 0 //Used to determine if you can target multiple people.
 	var/tmp/mob/living/last_moved_mob //Used to fire faster at more than one person.
 	var/tmp/told_cant_shoot = 0 //So that it doesn't spam them with the fact they cannot hit them.
-	var/firerate = 1 	// 0 for one bullet after tarrget moves and aim is lowered,
-						//1 for keep shooting until aim is lowered
+	var/firerate = 0 	//0 for keep shooting until aim is lowered
+						// 1 for one bullet after tarrget moves and aim is lowered
 	var/fire_delay = 6
 	var/last_fired = 0
 
@@ -51,7 +51,7 @@
 			O.emp_act(severity)
 
 /obj/item/weapon/gun/afterattack(atom/A as mob|obj|turf|area, mob/living/user as mob|obj, flag, params)
-	if(flag)	return //we're placing gun on a table or in backpack
+	if(flag)	return //It's adjacent, is the user, or is on the user's person
 	if(istype(target, /obj/machinery/recharger) && istype(src, /obj/item/weapon/gun/energy))	return//Shouldnt flag take care of this?
 	if(user && user.client && user.client.gun_mode && !(A in target))
 		PreFire(A,user,params) //They're using the new gun system, locate what they're aiming at.
@@ -136,6 +136,14 @@
 	in_chamber.current = curloc
 	in_chamber.yo = targloc.y - curloc.y
 	in_chamber.xo = targloc.x - curloc.x
+	if(istype(user, /mob/living/carbon))
+		var/mob/living/carbon/mob = user
+		if(mob.shock_stage > 120)
+			in_chamber.yo += rand(-2,2)
+			in_chamber.xo += rand(-2,2)
+		else if(mob.shock_stage > 70)
+			in_chamber.yo += rand(-1,1)
+			in_chamber.xo += rand(-1,1)
 
 	if(params)
 		var/list/mouse_control = params2list(params)
@@ -186,9 +194,14 @@
 				playsound(user, fire_sound, 10, 1)
 			else
 				playsound(user, fire_sound, 50, 1)
+			if(istype(in_chamber, /obj/item/projectile/beam/lastertag))
+				user.show_message("<span class = 'warning'>You feel rather silly, trying to commit suicide with a toy.</span>")
+				mouthshoot = 0
+				return
+
 			in_chamber.on_hit(M)
-			if (!in_chamber.nodamage)
-				user.apply_damage(in_chamber.damage*2.5, in_chamber.damage_type, "head", used_weapon = "Point blank shot in the mouth with \a [in_chamber]")
+			if (in_chamber.damage_type != HALLOSS)
+				user.apply_damage(in_chamber.damage*2.5, in_chamber.damage_type, "head", used_weapon = "Point blank shot in the mouth with \a [in_chamber]", sharp=1)
 				user.death()
 			else
 				user << "<span class = 'notice'>Ow...</span>"
@@ -205,7 +218,7 @@
 		//Point blank shooting if on harm intent or target we were targeting.
 		if(user.a_intent == "hurt")
 			user.visible_message("\red <b> \The [user] fires \the [src] point blank at [M]!</b>")
-			in_chamber.damage *= 1.3
+			if(istype(in_chamber)) in_chamber.damage *= 1.3
 			Fire(M,user)
 			return
 		else if(target && M in target)

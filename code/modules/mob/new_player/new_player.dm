@@ -78,15 +78,9 @@
 			else
 				if(ticker.hide_mode == 0)
 					stat("Game Mode:", "[master_mode]") // Old setting for showing the game mode
-				else
-					stat("Game Mode: ", "Secret")
-
-			if((ticker.current_state == GAME_STATE_PREGAME) && going)
-				stat("Time To Start:", ticker.pregame_timeleft)
-			if((ticker.current_state == GAME_STATE_PREGAME) && !going)
-				stat("Time To Start:", "DELAYED")
 
 			if(ticker.current_state == GAME_STATE_PREGAME)
+				stat("Time To Start:", "[ticker.pregame_timeleft][going ? "" : " (DELAYED)"]")
 				stat("Players: [totalPlayers]", "Players Ready: [totalPlayersReady]")
 				totalPlayers = 0
 				totalPlayersReady = 0
@@ -103,7 +97,10 @@
 			return 1
 
 		if(href_list["ready"])
-			ready = !ready
+			if(!ticker || ticker.current_state <= GAME_STATE_PREGAME) // Make sure we don't ready up after the round has started
+				ready = !ready
+			else
+				ready = 0
 
 		if(href_list["refresh"])
 			src << browse(null, "window=playersetup") //closes the player setup window
@@ -120,29 +117,43 @@
 				client << client.music
 				src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // MAD JAMS cant last forever yo
 
+
 				observer.started_as_observer = 1
 				close_spawn_windows()
 				var/obj/O = locate("landmark*Observer-Start")
 				src << "\blue Now teleporting."
 				observer.loc = O.loc
+				observer.timeofdeath = world.time // Set the time of death so that the respawn timer works correctly.
+
+				client.prefs.update_preview_icon()
+				observer.icon = client.prefs.preview_icon
+				observer.alpha = 127
+
 				if(client.prefs.be_random_name)
 					client.prefs.real_name = random_name(client.prefs.gender)
 				observer.real_name = client.prefs.real_name
 				observer.name = observer.real_name
+				if(!client.holder && !config.antag_hud_allowed)           // For new ghosts we remove the verb from even showing up if it's not allowed.
+					observer.verbs -= /mob/dead/observer/verb/toggle_antagHUD        // Poor guys, don't know what they are missing!
 				observer.key = key
-
 				del(src)
+
 				return 1
 
 		if(href_list["late_join"])
+
 			if(!ticker || ticker.current_state != GAME_STATE_PLAYING)
 				usr << "\red The round is either not ready, or has already finished..."
 				return
 
 			if(client.prefs.species != "Human")
-
 				if(!is_alien_whitelisted(src, client.prefs.species) && config.usealienwhitelist)
 					src << alert("You are currently not whitelisted to play [client.prefs.species].")
+					return 0
+
+				var/datum/species/S = all_species[client.prefs.species]
+				if(!(S.flags & IS_WHITELISTED))
+					src << alert("Your current species,[client.prefs.species], is not available for play on the station.")
 					return 0
 
 			LateChoices()
@@ -156,11 +167,17 @@
 				usr << "\blue There is an administrative lock on entering the game!"
 				return
 
-			if(!is_alien_whitelisted(src, client.prefs.species) && config.usealienwhitelist)
-				src << alert("You are currently not whitelisted to play [client.prefs.species].")
-				return 0
+			if(client.prefs.species != "Human")
+				if(!is_alien_whitelisted(src, client.prefs.species) && config.usealienwhitelist)
+					src << alert("You are currently not whitelisted to play [client.prefs.species].")
+					return 0
 
-			AttemptLateSpawn(href_list["SelectedJob"])
+				var/datum/species/S = all_species[client.prefs.species]
+				if(!(S.flags & IS_WHITELISTED))
+					src << alert("Your current species,[client.prefs.species], is not available for play on the station.")
+					return 0
+
+			AttemptLateSpawn(href_list["SelectedJob"],client.prefs.spawnpoint)
 			return
 
 		if(href_list["privacy_poll"])
@@ -271,7 +288,7 @@
 		return 1
 
 
-	proc/AttemptLateSpawn(rank)
+	proc/AttemptLateSpawn(rank,var/spawning_at)
 		if (src != usr)
 			return 0
 		if(!ticker || ticker.current_state != GAME_STATE_PLAYING)
@@ -284,13 +301,35 @@
 			src << alert("[rank] is not available. Please try another.")
 			return 0
 
+		spawning = 1
+		close_spawn_windows()
+
 		job_master.AssignRole(src, rank, 1)
 
 		var/mob/living/carbon/human/character = create_character()	//creates the human and transfers vars and mind
 		job_master.EquipRank(character, rank, 1)					//equips the human
+		UpdateFactionList(character)
 		EquipCustomItems(character)
-		character.loc = pick(latejoin)
+
+		//Find our spawning point.
+		var/join_message
+		var/datum/spawnpoint/S
+
+		if(spawning_at)
+			S = spawntypes[spawning_at]
+
+		if(S && istype(S))
+			character.loc = pick(S.turfs)
+			join_message = S.msg
+		else
+			character.loc = pick(latejoin)
+			join_message = "has arrived on the station"
+
 		character.lastarea = get_area(loc)
+		// Moving wheelchair if they have one
+		if(character.buckled && istype(character.buckled, /obj/structure/stool/bed/chair/wheelchair))
+			character.buckled.loc = character.loc
+			character.buckled.dir = character.dir
 
 		ticker.mode.latespawn(character)
 
@@ -299,18 +338,21 @@
 		if(character.mind.assigned_role != "Cyborg")
 			data_core.manifest_inject(character)
 			ticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.	//TODO!!!!! ~Carn
-			AnnounceArrival(character, rank)
+
+			//Grab some data from the character prefs for use in random news procs.
+
+			AnnounceArrival(character, rank, join_message)
 
 		else
 			character.Robotize()
 		del(src)
 
-	proc/AnnounceArrival(var/mob/living/carbon/human/character, var/rank)
+	proc/AnnounceArrival(var/mob/living/carbon/human/character, var/rank, var/join_message)
 		if (ticker.current_state == GAME_STATE_PLAYING)
 			var/obj/item/device/radio/intercom/a = new /obj/item/device/radio/intercom(null)// BS12 EDIT Arrivals Announcement Computer, rather than the AI.
 			if(character.mind.role_alt_title)
 				rank = character.mind.role_alt_title
-			a.autosay("[character.real_name],[rank ? " [rank]," : " visitor," ] has arrived on the station.", "Arrivals Announcement Computer")
+			a.autosay("[character.real_name],[rank ? " [rank]," : " visitor," ] [join_message ? join_message : "has arrived on the station"].", "Arrivals Announcement Computer")
 			del(a)
 
 	proc/LateChoices()
@@ -323,12 +365,13 @@
 		dat += "Round Duration: [round(hours)]h [round(mins)]m<br>"
 
 		if(emergency_shuttle) //In case Nanotrasen decides reposess CentComm's shuttles.
-			if(emergency_shuttle.direction == 2) //Shuttle is going to centcomm, not recalled
+			if(emergency_shuttle.going_to_centcom()) //Shuttle is going to centcomm, not recalled
 				dat += "<font color='red'><b>The station has been evacuated.</b></font><br>"
-			if(emergency_shuttle.direction == 1 && emergency_shuttle.timeleft() < 300 && emergency_shuttle.alert == 0) // Emergency shuttle is past the point of no recall
-				dat += "<font color='red'>The station is currently undergoing evacuation procedures.</font><br>"
-			if(emergency_shuttle.direction == 1 && emergency_shuttle.alert == 1) // Crew transfer initiated
-				dat += "<font color='red'>The station is currently undergoing crew transfer procedures.</font><br>"
+			if(emergency_shuttle.online())
+				if (emergency_shuttle.evac)	// Emergency shuttle is past the point of no recall
+					dat += "<font color='red'>The station is currently undergoing evacuation procedures.</font><br>"
+				else						// Crew transfer initiated
+					dat += "<font color='red'>The station is currently undergoing crew transfer procedures.</font><br>"
 
 		dat += "Choose from the following open positions:<br>"
 		for(var/datum/job/job in job_master.occupations)
@@ -351,23 +394,26 @@
 		src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // MAD JAMS cant last forever yo
 		close_spawn_windows()
 
-		var/mob/living/carbon/human/new_character = new(loc)
-		new_character.lastarea = get_area(loc)
+		var/mob/living/carbon/human/new_character
 
 		var/datum/species/chosen_species
 		if(client.prefs.species)
 			chosen_species = all_species[client.prefs.species]
 		if(chosen_species)
-			if(is_alien_whitelisted(src, client.prefs.species) || !config.usealienwhitelist || !(chosen_species.flags & WHITELISTED) || (client.holder.rights & R_ADMIN) )// Have to recheck admin due to no usr at roundstart. Latejoins are fine though.
-				new_character.set_species(client.prefs.species)
-				if(chosen_species.language)
-					new_character.add_language(chosen_species.language)
+			// Have to recheck admin due to no usr at roundstart. Latejoins are fine though.
+			if(is_species_whitelisted(chosen_species) || has_admin_rights())
+				new_character = new(loc, client.prefs.species)
+
+		if(!new_character)
+			new_character = new(loc)
+
+		new_character.lastarea = get_area(loc)
 
 		var/datum/language/chosen_language
 		if(client.prefs.language)
 			chosen_language = all_languages["[client.prefs.language]"]
 		if(chosen_language)
-			if(is_alien_whitelisted(src, client.prefs.language) || !config.usealienwhitelist || !(chosen_language.flags & WHITELISTED))
+			if(is_alien_whitelisted(src, client.prefs.language) || !config.usealienwhitelist || !(chosen_language.flags & WHITELISTED) || (new_character.species && (chosen_language.name in new_character.species.secondary_langs)))
 				new_character.add_language("[client.prefs.language]")
 
 		if(ticker.random_players)
@@ -390,8 +436,15 @@
 		new_character.dna.b_type = client.prefs.b_type
 
 		if(client.prefs.disabilities)
-			new_character.dna.struc_enzymes = setblock(new_character.dna.struc_enzymes,GLASSESBLOCK,toggledblock(getblock(new_character.dna.struc_enzymes,GLASSESBLOCK,3)),3)
+			// Set defer to 1 if you add more crap here so it only recalculates struc_enzymes once. - N3X
+			new_character.dna.SetSEState(GLASSESBLOCK,1,0)
 			new_character.disabilities |= NEARSIGHTED
+
+		// And uncomment this, too.
+		//new_character.dna.UpdateSE()
+
+		// Do the initial caching of the player's body icons.
+		new_character.regenerate_icons()
 
 		new_character.key = key		//Manually transfer the key to log them in
 
@@ -399,7 +452,7 @@
 
 	proc/ViewManifest()
 		var/dat = "<html><body>"
-		dat += "<h4>Crew Manifest</h4>"
+		dat += "<h4>Show Crew Manifest</h4>"
 		dat += data_core.get_manifest(OOC = 1)
 
 		src << browse(dat, "window=manifest;size=370x420;can_close=1")
@@ -407,10 +460,40 @@
 	Move()
 		return 0
 
-
 	proc/close_spawn_windows()
 		src << browse(null, "window=latechoices") //closes late choices window
 		src << browse(null, "window=playersetup") //closes the player setup window
-		//Hack to stop lobby music.
-		//if (client && client.music) src.client.music.status = SOUND_PAUSED | SOUND_UPDATE
-		//if (client && client.music) src.client << src.client.music
+
+
+	proc/has_admin_rights()
+		return client.holder.rights & R_ADMIN
+
+	proc/is_species_whitelisted(datum/species/S)
+		if(!S) return 1
+		return is_alien_whitelisted(src, S.name) || !config.usealienwhitelist || !(S.flags & IS_WHITELISTED)
+
+/mob/new_player/get_species()
+	var/datum/species/chosen_species
+	if(client.prefs.species)
+		chosen_species = all_species[client.prefs.species]
+
+	if(!chosen_species)
+		return "Human"
+
+	if(is_species_whitelisted(chosen_species) || has_admin_rights())
+		return chosen_species.name
+
+	return "Human"
+
+/mob/new_player/get_gender()
+	if(!client || !client.prefs) ..()
+	return client.prefs.gender
+
+/mob/new_player/is_ready()
+	return ready && ..()
+
+/mob/new_player/hear_say(var/message, var/verb = "says", var/datum/language/language = null, var/alt_name = "",var/italics = 0, var/mob/speaker = null)
+	return
+
+/mob/new_player/hear_radio(var/message, var/verb="says", var/datum/language/language=null, var/part_a, var/part_b, var/mob/speaker = null, var/hard_to_hear = 0)
+	return

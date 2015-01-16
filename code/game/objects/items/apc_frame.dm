@@ -24,7 +24,7 @@
 	if (!istype(loc, /turf/simulated/floor))
 		usr << "\red APC cannot be placed on this spot."
 		return
-	if (A.requires_power == 0 || A.name == "Space")
+	if (A.requires_power == 0 || istype(A, /area/space))
 		usr << "\red APC cannot be placed in this area."
 		return
 	if (A.get_apc())
@@ -35,7 +35,7 @@
 			usr << "\red There is another network terminal here."
 			return
 		else
-			var/obj/item/weapon/cable_coil/C = new /obj/item/weapon/cable_coil(loc)
+			var/obj/item/stack/cable_coil/C = new /obj/item/stack/cable_coil(loc)
 			C.amount = 10
 			usr << "You cut the cables and disassemble the unused power terminal."
 			del(T)

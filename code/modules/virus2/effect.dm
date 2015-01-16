@@ -22,7 +22,8 @@
 		if(f.stage == src.stage)
 			list += f
 	effect = pick(list)
-	chance = rand(1,6)
+	chance = rand(0,effect.chance_maxm)
+	multiplier = rand(1,effect.maxm)
 
 /datum/disease2/effectholder/proc/minormutate()
 	switch(pick(1,2,3,4,5))
@@ -46,23 +47,6 @@
 	var/badness = 1
 	proc/activate(var/mob/living/carbon/mob,var/multiplier)
 	proc/deactivate(var/mob/living/carbon/mob)
-
-////////////////////////SPECIAL/////////////////////////////////
-/*/datum/disease2/effect/alien
-	name = "Unidentified Foreign Body"
-	stage = 4
-	activate(var/mob/living/carbon/mob,var/multiplier)
-		mob << "\red You feel something tearing its way out of your stomach..."
-		mob.adjustToxLoss(10)
-		mob.updatehealth()
-		if(prob(40))
-			if(mob.client)
-				mob.client.mob = new/mob/living/carbon/alien/larva(mob.loc)
-			else
-				new/mob/living/carbon/alien/larva(mob.loc)
-			var/datum/disease2/disease/D = mob:virus2
-			mob:gib()
-			del D*/
 
 /datum/disease2/effect/invisible
 	name = "Waiting Syndrome"
@@ -134,10 +118,14 @@
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		if(istype(mob, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = mob
-			var/datum/organ/external/E = pick(H.organs)
+			var/organ = pick(list("r_arm","l_arm","r_leg","r_leg"))
+			var/datum/organ/external/E = H.organs_by_name[organ]
 			if (!(E.status & ORGAN_DEAD))
 				E.status |= ORGAN_DEAD
 				H << "<span class='notice'>You can't feel your [E.display_name] anymore...</span>"
+				for (var/datum/organ/external/C in E.children)
+					C.status |= ORGAN_DEAD
+			H.update_body(1)
 		mob.adjustToxLoss(15*multiplier)
 
 	deactivate(var/mob/living/carbon/mob,var/multiplier)
@@ -145,6 +133,9 @@
 			var/mob/living/carbon/human/H = mob
 			for (var/datum/organ/external/E in H.organs)
 				E.status &= ~ORGAN_DEAD
+				for (var/datum/organ/external/C in E.children)
+					C.status &= ~ORGAN_DEAD
+			H.update_body(1)
 
 /datum/disease2/effect/immortal
 	name = "Longevity Syndrome"
@@ -202,8 +193,7 @@
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.dna.check_integrity()
-		var/newdna = setblock(mob.dna.struc_enzymes,REMOTETALKBLOCK,toggledblock(getblock(mob.dna.struc_enzymes,REMOTETALKBLOCK,3)),3)
-		mob.dna.struc_enzymes = newdna
+		mob.dna.SetSEState(REMOTETALKBLOCK,1)
 		domutcheck(mob, null)
 
 /datum/disease2/effect/mind
@@ -212,8 +202,9 @@
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		if(istype(mob, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = mob
-			var/datum/organ/internal/brain/B = H.internal_organs["brain"]
-			B.take_damage(5)
+			var/datum/organ/internal/brain/B = H.internal_organs_by_name["brain"]
+			if (B && B.damage < B.min_broken_damage)
+				B.take_damage(5)
 		else
 			mob.setBrainLoss(50)
 
@@ -285,11 +276,8 @@
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob.say("*cough")
-		for(var/mob/living/carbon/M in view(1,mob))
-			if(airborne_can_reach(get_turf(mob), get_turf(M)))
-				for (var/datum/disease2/disease/V in mob.virus2)
-					if(V.spreadtype == "Airborne")
-						infect_virus2(M,V)
+		for(var/mob/living/carbon/M in oview(2,mob))
+			mob.spread_disease_to(M)
 
 /datum/disease2/effect/hungry
 	name = "Appetiser Effect"
@@ -320,8 +308,8 @@
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		mob << "<span class='notice'>You feel a rush of energy inside you!</span>"
-		if (mob.reagents.get_reagent_amount("hyperzine") < 30)
-			mob.reagents.add_reagent("hyperzine", 10)
+		if (mob.reagents.get_reagent_amount("hyperzine") < 10)
+			mob.reagents.add_reagent("hyperzine", 4)
 		if (prob(30))
 			mob.jitteriness += 10
 
@@ -331,7 +319,12 @@
 	name = "Coldingtons Effect"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
+		if (prob(30))
+			mob << "<span class='warning'>You feel like you are about to sneeze!</span>"
+		sleep(5)
 		mob.say("*sneeze")
+		for(var/mob/living/carbon/M in get_step(mob,mob.dir))
+			mob.spread_disease_to(M)
 		if (prob(50))
 			var/obj/effect/decal/cleanable/mucus/M = new(get_turf(mob))
 			M.virus2 = virus_copylist(mob.virus2)

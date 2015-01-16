@@ -29,6 +29,8 @@
 		new /obj/item/clothing/suit/armor/captain(src)
 		new /obj/item/weapon/melee/telebaton(src)
 		new /obj/item/clothing/under/dress/dress_cap(src)
+		new /obj/item/clothing/head/helmet/formalcaptain(src)
+		new /obj/item/clothing/under/captainformal(src)
 		return
 
 
@@ -82,6 +84,7 @@
 		new /obj/item/clothing/shoes/leather(src)
 		new /obj/item/clothing/shoes/white(src)
 		new /obj/item/clothing/under/rank/head_of_personnel_whimsy(src)
+		new /obj/item/clothing/head/helmet/hop(src)
 		return
 
 
@@ -115,14 +118,14 @@
 		new /obj/item/clothing/glasses/sunglasses/sechud(src)
 		new /obj/item/taperoll/police(src)
 		new /obj/item/weapon/shield/riot(src)
-		new /obj/item/weapon/storage/lockbox/loyalty(src)
 		new /obj/item/weapon/storage/box/flashbangs(src)
 		new /obj/item/weapon/storage/belt/security(src)
 		new /obj/item/device/flash(src)
-		new /obj/item/weapon/melee/baton(src)
+		new /obj/item/weapon/melee/baton/loaded(src)
 		new /obj/item/weapon/gun/energy/gun(src)
 		new /obj/item/clothing/tie/holster/waist(src)
 		new /obj/item/weapon/melee/telebaton(src)
+		new /obj/item/clothing/head/beret/sec/hos(src)
 		return
 
 
@@ -157,9 +160,10 @@
 		new /obj/item/weapon/storage/box/flashbangs(src)
 		new /obj/item/weapon/storage/belt/security(src)
 		new /obj/item/weapon/reagent_containers/spray/pepper(src)
-		new /obj/item/weapon/melee/baton(src)
+		new /obj/item/weapon/melee/baton/loaded(src)
 		new /obj/item/weapon/gun/energy/taser(src)
 		new /obj/item/weapon/storage/box/holobadge(src)
+		new /obj/item/clothing/head/beret/sec/warden(src)
 		return
 
 
@@ -189,7 +193,7 @@
 		new /obj/item/device/flash(src)
 		new /obj/item/weapon/reagent_containers/spray/pepper(src)
 		new /obj/item/weapon/grenade/flashbang(src)
-		new /obj/item/weapon/melee/baton(src)
+		new /obj/item/weapon/melee/baton/loaded(src)
 		new /obj/item/weapon/gun/energy/taser(src)
 		new /obj/item/clothing/glasses/sunglasses/sechud(src)
 		new /obj/item/taperoll/police(src)
@@ -247,20 +251,24 @@
 		..()
 		sleep(2)
 		new /obj/item/clothing/under/det(src)
+		new /obj/item/clothing/under/det/black(src)
+		new /obj/item/clothing/under/det/slob(src)
 		new /obj/item/clothing/suit/storage/det_suit(src)
+		new /obj/item/clothing/suit/storage/det_suit/black(src)
 		new /obj/item/clothing/suit/storage/forensics/blue(src)
 		new /obj/item/clothing/suit/storage/forensics/red(src)
 		new /obj/item/clothing/gloves/black(src)
 		new /obj/item/clothing/head/det_hat(src)
+		new /obj/item/clothing/head/det_hat/black(src)
 		new /obj/item/clothing/shoes/brown(src)
 		new /obj/item/weapon/storage/box/evidence(src)
 		new /obj/item/device/radio/headset/headset_sec(src)
-		new /obj/item/device/detective_scanner(src)
+//		new /obj/item/device/detective_scanner(src)
 		new /obj/item/clothing/suit/armor/det_suit(src)
-		new /obj/item/ammo_magazine/c38(src)
-		new /obj/item/ammo_magazine/c38(src)
+		new /obj/item/ammo_magazine/c45r(src)
+		new /obj/item/ammo_magazine/c45r(src)
 		new /obj/item/taperoll/police(src)
-		new /obj/item/weapon/gun/projectile/detective(src)
+		new /obj/item/weapon/gun/projectile/detective/semiauto(src)
 		new /obj/item/clothing/tie/holster/armpit(src)
 		return
 
@@ -297,6 +305,7 @@
 	var/id = null
 
 	New()
+		..()
 		new /obj/item/clothing/under/color/orange( src )
 		new /obj/item/clothing/shoes/orange( src )
 		return

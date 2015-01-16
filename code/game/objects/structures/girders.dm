@@ -4,6 +4,22 @@
 	density = 1
 	layer = 2
 	var/state = 0
+	var/health = 200
+
+
+	bullet_act(var/obj/item/projectile/Proj)
+				//Tasers and the like should not damage girders.
+		if(Proj.damage_type == HALLOSS || Proj.damage_type == TOX || Proj.damage_type == CLONE)
+			return
+
+		if(istype(Proj, /obj/item/projectile/beam))
+			health -= Proj.damage
+			..()
+			if(health <= 0)
+				new /obj/item/stack/sheet/metal(get_turf(src))
+				del(src)
+
+			return
 
 	attackby(obj/item/W as obj, mob/user as mob)
 		if(istype(W, /obj/item/weapon/wrench) && state == 0)
@@ -13,8 +29,7 @@
 				if(do_after(user,40))
 					if(!src) return
 					user << "\blue You dissasembled the girder!"
-					new /obj/item/stack/sheet/metal(get_turf(src))
-					del(src)
+					dismantle()
 			else if(!anchored)
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 100, 1)
 				user << "\blue Now securing the girder"
@@ -28,13 +43,11 @@
 			if(do_after(user,30))
 				if(!src) return
 				user << "\blue You slice apart the girder!"
-				new /obj/item/stack/sheet/metal(get_turf(src))
-				del(src)
+				dismantle()
 
 		else if(istype(W, /obj/item/weapon/pickaxe/diamonddrill))
 			user << "\blue You drill through the girder!"
-			new /obj/item/stack/sheet/metal(get_turf(src))
-			del(src)
+			dismantle()
 
 		else if(istype(W, /obj/item/weapon/screwdriver) && state == 2 && istype(src,/obj/structure/girder/reinforced))
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
@@ -69,55 +82,50 @@
 
 				if(/obj/item/stack/sheet/metal, /obj/item/stack/sheet/metal/cyborg)
 					if(!anchored)
-						if(S.amount < 2) return
-						S.use(2)
-						user << "\blue You create a false wall! Push on it to open or close the passage."
-						new /obj/structure/falsewall (src.loc)
-						del(src)
-					else
-						if(S.amount < 2) return ..()
-						user << "\blue Now adding plating..."
-						if (do_after(user,40))
-							if(!src || !S || S.amount < 2) return
-							S.use(2)
-							user << "\blue You added the plating!"
-							var/turf/Tsrc = get_turf(src)
-							Tsrc.ChangeTurf(/turf/simulated/wall)
-							for(var/turf/simulated/wall/X in Tsrc.loc)
-								if(X)	X.add_hiddenprint(usr)
+						if(S.use(2))
+							user << "<span class='notice'>You create a false wall! Push on it to open or close the passage.</span>"
+							new /obj/structure/falsewall (src.loc)
 							del(src)
+					else
+						if(S.get_amount() < 2) return ..()
+						user << "<span class='notice'>Now adding plating...</span>"
+						if (do_after(user,40))
+							if (S.use(2))
+								user << "<span class='notice'>You added the plating!</span>"
+								var/turf/Tsrc = get_turf(src)
+								Tsrc.ChangeTurf(/turf/simulated/wall)
+								for(var/turf/simulated/wall/X in Tsrc.loc)
+									if(X)	X.add_hiddenprint(usr)
+								del(src)
 						return
 
 				if(/obj/item/stack/sheet/plasteel)
 					if(!anchored)
-						if(S.amount < 2) return
-						S.use(2)
-						user << "\blue You create a false wall! Push on it to open or close the passage."
-						new /obj/structure/falserwall (src.loc)
-						del(src)
+						if(S.use(2))
+							user << "\blue You create a false wall! Push on it to open or close the passage."
+							new /obj/structure/falserwall (src.loc)
+							del(src)
 					else
 						if (src.icon_state == "reinforced") //I cant believe someone would actually write this line of code...
-							if(S.amount < 1) return ..()
-							user << "\blue Now finalising reinforced wall."
+							if(S.get_amount() < 1) return ..()
+							user << "<span class='notice'>Now finalising reinforced wall.</span>"
 							if(do_after(user, 50))
-								if(!src || !S || S.amount < 1) return
-								S.use(1)
-								user << "\blue Wall fully reinforced!"
-								var/turf/Tsrc = get_turf(src)
-								Tsrc.ChangeTurf(/turf/simulated/wall/r_wall)
-								for(var/turf/simulated/wall/r_wall/X in Tsrc.loc)
-									if(X)	X.add_hiddenprint(usr)
-								del(src)
+								if (S.use(1))
+									user << "<span class='notice'>Wall fully reinforced!</span>"
+									var/turf/Tsrc = get_turf(src)
+									Tsrc.ChangeTurf(/turf/simulated/wall/r_wall)
+									for(var/turf/simulated/wall/r_wall/X in Tsrc.loc)
+										if(X)	X.add_hiddenprint(usr)
+									del(src)
 							return
 						else
-							if(S.amount < 1) return ..()
-							user << "\blue Now reinforcing girders"
+							if(S.get_amount() < 1) return ..()
+							user << "<span class='notice'>Now reinforcing girders...</span>"
 							if (do_after(user,60))
-								if(!src || !S || S.amount < 1) return
-								S.use(1)
-								user << "\blue Girders reinforced!"
-								new/obj/structure/girder/reinforced( src.loc )
-								del(src)
+								if(S.use(1))
+									user << "<span class='notice'>Girders reinforced!</span>"
+									new/obj/structure/girder/reinforced( src.loc )
+									del(src)
 							return
 
 			if(S.sheettype)
@@ -154,6 +162,23 @@
 		else
 			..()
 
+	proc/dismantle()
+		new /obj/item/stack/sheet/metal(get_turf(src))
+		del(src)
+
+	attack_hand(mob/user as mob)
+		if (HULK in user.mutations)
+			visible_message("<span class='danger'>[user] smashes [src] apart!</span>")
+			dismantle()
+			return
+		return ..()
+
+	attack_animal(mob/living/simple_animal/user)
+		if(user.wall_smash)
+			visible_message("<span class='danger'>[user] smashes [src] apart!</span>")
+			dismantle()
+			return
+		return ..()
 
 	blob_act()
 		if(prob(40))
@@ -183,10 +208,12 @@
 /obj/structure/girder/displaced
 	icon_state = "displaced"
 	anchored = 0
+	health = 50
 
 /obj/structure/girder/reinforced
 	icon_state = "reinforced"
 	state = 2
+	health = 500
 
 /obj/structure/cultgirder
 	icon= 'icons/obj/cult.dmi'
@@ -194,6 +221,7 @@
 	anchored = 1
 	density = 1
 	layer = 2
+	var/health = 250
 
 	attackby(obj/item/W as obj, mob/user as mob)
 		if(istype(W, /obj/item/weapon/wrench))
@@ -220,6 +248,15 @@
 		if(prob(40))
 			del(src)
 
+	bullet_act(var/obj/item/projectile/Proj) //No beam check- How else will you destroy the cult girder with silver bullets?????
+
+		health -= Proj.damage
+		..()
+		if(health <= 0)
+			new /obj/item/stack/sheet/metal(get_turf(src))
+			del(src)
+
+		return
 
 	ex_act(severity)
 		switch(severity)

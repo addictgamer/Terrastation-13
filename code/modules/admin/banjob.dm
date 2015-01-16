@@ -18,12 +18,14 @@ var/jobban_keylist[0]		//to store the keys & ranks
 	if(M && rank)
 		/*
 		if(_jobban_isbanned(M, rank)) return "Reason Unspecified"	//for old jobban
+		*/
+
 		if (guest_jobbans(rank))
 			if(config.guest_jobban && IsGuestKey(M.key))
 				return "Guest Job-ban"
 			if(config.usewhitelist && !check_whitelist(M))
 				return "Whitelisted Job"
-		*/
+
 		for (var/s in jobban_keylist)
 			if( findtext(s,"[M.ckey] - [rank]") == 1 )
 				var/startpos = findtext(s, "## ")+3
@@ -48,6 +50,10 @@ DEBUG
 	jobban_loadbanfile()
 */
 
+/hook/startup/proc/loadJobBans()
+	jobban_loadbanfile()
+	return 1
+
 /proc/jobban_loadbanfile()
 	if(config.ban_legacy_system)
 		var/savefile/S=new("data/job_full.ban")
@@ -60,8 +66,8 @@ DEBUG
 			log_admin("jobban_keylist was empty")
 	else
 		if(!establish_db_connection())
-			world.log << "Database connection failed. Reverting to the legacy ban system."
-			diary << "Database connection failed. Reverting to the legacy ban system."
+			error("Database connection failed. Reverting to the legacy ban system.")
+			log_misc("Database connection failed. Reverting to the legacy ban system.")
 			config.ban_legacy_system = 1
 			jobban_loadbanfile()
 			return
@@ -97,15 +103,6 @@ DEBUG
 
 /proc/ban_unban_log_save(var/formatted_log)
 	text2file(formatted_log,"data/ban_unban_log.txt")
-
-
-/proc/jobban_updatelegacybans()
-	if(!jobban_runonce)
-		log_admin("Updating jobbanfile!")
-		// Updates bans.. Or fixes them. Either way.
-		for(var/T in jobban_keylist)
-			if(!T)	continue
-		jobban_runonce++	//don't run this update again
 
 
 /proc/jobban_remove(X)

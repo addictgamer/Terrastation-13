@@ -2,7 +2,7 @@
 // the power cell
 // charge from 0 to 100%
 // fits in APC to provide backup power
-
+/* commented out because redefined elsewhere with working vars
 /obj/item/weapon/cell
 	name = "power cell"
 	desc = "A rechargable electrochemical power cell."
@@ -28,7 +28,7 @@
 	suicide_act(mob/user)
 		viewers(user) << "\red <b>[user] is licking the electrodes of the [src.name]! It looks like \he's trying to commit suicide.</b>"
 		return (FIRELOSS)
-
+*/
 /obj/item/weapon/cell/New()
 	..()
 	charge = maxcharge
@@ -49,6 +49,9 @@
 /obj/item/weapon/cell/proc/percent()		// return % charge of cell
 	return 100.0*charge/maxcharge
 
+/obj/item/weapon/cell/proc/fully_charged()
+	return (charge == maxcharge)
+
 // use power from a cell
 /obj/item/weapon/cell/proc/use(var/amount)
 	if(rigged && amount > 0)
@@ -66,15 +69,15 @@
 		return 0
 
 	if(maxcharge < amount)	return 0
-	var/power_used = min(maxcharge-charge,amount)
+	var/amount_used = min(maxcharge-charge,amount)
 	if(crit_fail)	return 0
 	if(!prob(reliability))
 		minor_fault++
 		if(prob(minor_fault))
 			crit_fail = 1
 			return 0
-	charge += power_used
-	return power_used
+	charge += amount_used
+	return amount_used
 
 
 /obj/item/weapon/cell/examine()
@@ -90,8 +93,11 @@
 /obj/item/weapon/cell/attack_self(mob/user as mob)
 	src.add_fingerprint(user)
 	if(ishuman(user))
-		if(istype(user:gloves, /obj/item/clothing/gloves/space_ninja)&&user:gloves:candrain&&!user:gloves:draining)
-			call(/obj/item/clothing/gloves/space_ninja/proc/drain)("CELL",src,user:wear_suit)
+		var/mob/living/carbon/human/H = user
+		var/obj/item/clothing/gloves/space_ninja/SNG = H.gloves
+		if(!istype(SNG) || !SNG.candrain || !SNG.draining) return
+
+		SNG.drain("CELL",src,H.wear_suit)
 	return
 
 /obj/item/weapon/cell/attackby(obj/item/W, mob/user)
@@ -101,12 +107,12 @@
 
 		user << "You inject the solution into the power cell."
 
-		if(S.reagents.has_reagent("plasma", 5))
+		if(S.reagents.has_reagent("phoron", 5))
 
 			rigged = 1
 
-			log_admin("LOG: [user.name] ([user.ckey]) injected a power cell with plasma, rigging it to explode.")
-			message_admins("LOG: [user.name] ([user.ckey]) injected a power cell with plasma, rigging it to explode.")
+			log_admin("LOG: [user.name] ([user.ckey]) injected a power cell with phoron, rigging it to explode.")
+			message_admins("LOG: [user.name] ([user.ckey]) injected a power cell with phoron, rigging it to explode.")
 
 		S.reagents.clear_reagents()
 
@@ -206,6 +212,8 @@
 		else
 			return 0
 
+
+/* Commented because redefined elsewhere with working vars
 /obj/item/weapon/cell/crap
 	name = "\improper Nanotrasen brand rechargable AA battery"
 	desc = "You can't top the plasma top."	// TOTALLY TRADEMARK INFRINGEMENT
@@ -299,3 +307,4 @@
 	maxcharge = 10000
 	m_amt = 0
 	g_amt = 0
+*/

@@ -14,6 +14,25 @@
 	multiple_sprites = 1
 
 
+/obj/item/ammo_magazine/c45m
+	name = "magazine (.45)"
+	icon_state = "45"
+	ammo_type = "/obj/item/ammo_casing/c45"
+	max_ammo = 7
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/c45/empty
+	max_ammo = 0
+
+/obj/item/ammo_magazine/c45r
+	name = "magazine (.45 rubber)"
+	icon_state = "45"
+	ammo_type = "/obj/item/ammo_casing/c45r"
+	max_ammo = 7
+	multiple_sprites = 1
+
+/obj/item/ammo_magazine/c45r/empty
+	max_ammo = 0
 
 /obj/item/ammo_magazine/a418
 	name = "ammo box (.418)"
@@ -117,3 +136,19 @@
 	ammo_type = "/obj/item/ammo_casing/a762"
 	max_ammo = 0
 	multiple_sprites = 1
+
+/obj/item/ammo_magazine/chameleon
+	name = "magazine (.45)"
+	icon_state = "45"
+	ammo_type = "/obj/item/ammo_casing/chameleon"
+	max_ammo = 7
+	multiple_sprites = 1
+	matter = list()
+
+/obj/item/ammo_magazine/chameleon/empty
+	name = "magazine (.45)"
+	icon_state = "45"
+	ammo_type = "/obj/item/ammo_casing/chameleon"
+	max_ammo = 0
+	multiple_sprites = 1
+	matter = list()

@@ -15,9 +15,8 @@
 
 // Run all strings to be used in an SQL query through this proc first to properly escape out injection attempts.
 /proc/sanitizeSQL(var/t as text)
-	var/sanitized_text = replacetext(t, "'", "\\'")
-	sanitized_text = replacetext(sanitized_text, "\"", "\\\"")
-	return sanitized_text
+	var/sqltext = dbcon.Quote(t);
+	return copytext(sqltext, 2, lentext(sqltext));//Quote() adds quotes around input, we already do that
 
 /*
  * Text sanitization
@@ -40,6 +39,15 @@
 		var/index = findtext(t, char)
 		while(index)
 			t = copytext(t, 1, index) + repl_chars[char] + copytext(t, index+1)
+			index = findtext(t, char)
+	return t
+
+/proc/readd_quotes(var/t)
+	var/list/repl_chars = list("&#34;" = "\"")
+	for(var/char in repl_chars)
+		var/index = findtext(t, char)
+		while(index)
+			t = copytext(t, 1, index) + repl_chars[char] + copytext(t, index+5)
 			index = findtext(t, char)
 	return t
 
@@ -195,32 +203,10 @@ proc/checkhtml(var/t)
  * Text modification
  */
 /proc/replacetext(text, find, replacement)
-	var/find_len = length(find)
-	if(find_len < 1)	return text
-	. = ""
-	var/last_found = 1
-	while(1)
-		var/found = findtext(text, find, last_found, 0)
-		. += copytext(text, last_found, found)
-		if(found)
-			. += replacement
-			last_found = found + find_len
-			continue
-		return .
+	return list2text(text2list(text, find), replacement)
 
 /proc/replacetextEx(text, find, replacement)
-	var/find_len = length(find)
-	if(find_len < 1)	return text
-	. = ""
-	var/last_found = 1
-	while(1)
-		var/found = findtextEx(text, find, last_found, 0)
-		. += copytext(text, last_found, found)
-		if(found)
-			. += replacement
-			last_found = found + find_len
-			continue
-		return .
+	return list2text(text2listEx(text, find), replacement)
 
 //Adds 'u' number of zeros ahead of the text 't'
 /proc/add_zero(t, u)
@@ -287,27 +273,6 @@ proc/checkhtml(var/t)
 		return message
 	return copytext(message, 1, length + 1)
 
-/*
- * Misc
- */
-
-/proc/stringsplit(txt, character)
-	var/cur_text = txt
-	var/last_found = 1
-	var/found_char = findtext(cur_text,character)
-	var/list/list = list()
-	if(found_char)
-		var/fs = copytext(cur_text,last_found,found_char)
-		list += fs
-		last_found = found_char+length(character)
-		found_char = findtext(cur_text,character,last_found)
-	while(found_char)
-		var/found_string = copytext(cur_text,last_found,found_char)
-		last_found = found_char+length(character)
-		list += found_string
-		found_char = findtext(cur_text,character,last_found)
-	list += copytext(cur_text,last_found,length(cur_text)+1)
-	return list
 
 /proc/stringmerge(var/text,var/compare,replace = "*")
 //This proc fills in all spaces with the "replace" var (* by default) with whatever
@@ -347,3 +312,14 @@ proc/checkhtml(var/t)
 	for(var/i = length(text); i > 0; i--)
 		new_text += copytext(text, i, i+1)
 	return new_text
+
+//Used in preferences' SetFlavorText and human's set_flavor verb
+//Previews a string of len or less length
+proc/TextPreview(var/string,var/len=40)
+	if(lentext(string) <= len)
+		if(!lentext(string))
+			return "\[...\]"
+		else
+			return string
+	else
+		return "[copytext(string, 1, 37)]..."

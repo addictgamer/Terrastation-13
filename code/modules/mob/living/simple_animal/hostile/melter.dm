@@ -12,7 +12,7 @@
 	melee_damage_lower = 1
 	melee_damage_upper = 2
 
-	Die()
+	death()
 		src.visible_message("<b>[src]</b> ruptures and explodes!")
 		var/turf/T = get_turf(src.loc)
 		if(T)

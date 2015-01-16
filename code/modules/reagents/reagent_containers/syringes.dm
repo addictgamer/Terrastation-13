@@ -6,14 +6,17 @@
 #define SYRINGE_BROKEN 2
 
 /obj/item/weapon/reagent_containers/syringe
-	name = "Syringe"
+	name = "syringe"
 	desc = "A syringe."
 	icon = 'icons/obj/syringe.dmi'
 	item_state = "syringe_0"
 	icon_state = "0"
+	matter = list("glass" = 150)
 	amount_per_transfer_from_this = 5
 	possible_transfer_amounts = null //list(5,10,15)
 	volume = 15
+	w_class = 1
+	sharp = 1
 	var/mode = SYRINGE_DRAW
 
 	on_reagent_change()
@@ -49,7 +52,8 @@
 
 		return
 
-	afterattack(obj/target, mob/user , flag)
+	afterattack(obj/target, mob/user, proximity)
+		if(!proximity) return
 		if(!target.reagents) return
 
 		if(mode == SYRINGE_BROKEN)
@@ -87,7 +91,15 @@
 							user << "\red You are unable to locate any blood."
 							return
 
-						var/datum/reagent/B = T.take_blood(src,amount)
+						var/datum/reagent/B
+						if(istype(T,/mob/living/carbon/human))
+							var/mob/living/carbon/human/H = T
+							if(H.species && H.species.flags & NO_BLOOD)
+								H.reagents.trans_to(src,amount)
+							else
+								B = T.take_blood(src,amount)
+						else
+							B = T.take_blood(src,amount)
 
 						if (B)
 							src.reagents.reagent_list += B
@@ -116,7 +128,7 @@
 
 			if(SYRINGE_INJECT)
 				if(!reagents.total_volume)
-					user << "\red The Syringe is empty."
+					user << "\red The syringe is empty."
 					return
 				if(istype(target, /obj/item/weapon/implantcase/chem))
 					return
@@ -129,11 +141,23 @@
 					return
 
 				if(ismob(target) && target != user)
+
 					var/time = 30 //Injecting through a hardsuit takes longer due to needing to find a port.
+
 					if(istype(target,/mob/living/carbon/human))
+
 						var/mob/living/carbon/human/H = target
-						if(H.wear_suit && istype(H.wear_suit,/obj/item/clothing/suit/space))
-							time = 60
+						if(H.wear_suit)
+							if(istype(H.wear_suit,/obj/item/clothing/suit/space))
+								time = 60
+							else if(!H.can_inject(user, 1))
+								return
+
+					else if(isliving(target))
+
+						var/mob/living/M = target
+						if(!M.can_inject(user, 1))
+							return
 
 					for(var/mob/O in viewers(world.view, user))
 						if(time == 30)
@@ -212,7 +236,7 @@
 
 		if(istype(target, /mob/living/carbon/human))
 
-			var/target_zone = check_zone(user.zone_sel.selecting, target)
+			var/target_zone = ran_zone(check_zone(user.zone_sel.selecting, target))
 			var/datum/organ/external/affecting = target:get_organ(target_zone)
 
 			if (!affecting)
@@ -397,6 +421,17 @@
 	New()
 		..()
 		reagents.add_reagent("spaceacillin", 15)
+		mode = SYRINGE_INJECT
+		update_icon()
+
+/obj/item/weapon/reagent_containers/syringe/drugs
+	name = "Syringe (drugs)"
+	desc = "Contains aggressive drugs meant for torture."
+	New()
+		..()
+		reagents.add_reagent("space_drugs",  5)
+		reagents.add_reagent("mindbreaker",  5)
+		reagents.add_reagent("cryptobiolin", 5)
 		mode = SYRINGE_INJECT
 		update_icon()
 

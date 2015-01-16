@@ -8,7 +8,8 @@
 	icon_state = null
 	item_state = "pill"
 	possible_transfer_amounts = null
-	volume = 50
+	w_class = 1
+	volume = 60
 
 	New()
 		..()
@@ -19,18 +20,28 @@
 		return
 	attack(mob/M as mob, mob/user as mob, def_zone)
 		if(M == user)
+
+			if(istype(M, /mob/living/carbon/human))
+				var/mob/living/carbon/human/H = M
+				if(H.species.flags & IS_SYNTHETIC)
+					H << "\red You have a monitor for a head, where do you think you're going to put that?"
+					return
+
 			M << "\blue You swallow [src]."
 			M.drop_from_inventory(src) //icon update
 			if(reagents.total_volume)
-				reagents.reaction(M, INGEST)
-				spawn(5)
-					reagents.trans_to(M, reagents.total_volume)
-					del(src)
+				reagents.trans_to_ingest(M, reagents.total_volume)
+				del(src)
 			else
 				del(src)
 			return 1
 
 		else if(istype(M, /mob/living/carbon/human) )
+
+			var/mob/living/carbon/human/H = M
+			if(H.species.flags & IS_SYNTHETIC)
+				H << "\red They have a monitor for a head, where do you think you're going to put that?"
+				return
 
 			for(var/mob/O in viewers(world.view, user))
 				O.show_message("\red [user] attempts to force [M] to swallow [src].", 1)
@@ -46,10 +57,8 @@
 			msg_admin_attack("[user.name] ([user.ckey]) fed [M.name] ([M.ckey]) with [src.name] Reagents: [reagentlist(src)] (INTENT: [uppertext(user.a_intent)]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
 
 			if(reagents.total_volume)
-				reagents.reaction(M, INGEST)
-				spawn(5)
-					reagents.trans_to(M, reagents.total_volume)
-					del(src)
+				reagents.trans_to_ingest(M, reagents.total_volume)
+				del(src)
 			else
 				del(src)
 
@@ -57,16 +66,22 @@
 
 		return 0
 
-	afterattack(obj/target, mob/user , flag)
+	afterattack(obj/target, mob/user, proximity)
+		if(!proximity) return
 
 		if(target.is_open_container() != 0 && target.reagents)
 			if(!target.reagents.total_volume)
 				user << "\red [target] is empty. Cant dissolve pill."
 				return
 			user << "\blue You dissolve the pill in [target]"
+
+			user.attack_log += text("\[[time_stamp()]\] <font color='red'>Spiked \a [target] with a pill. Reagents: [reagentlist(src)]</font>")
+			msg_admin_attack("[user.name] ([user.ckey]) spiked \a [target] with a pill. Reagents: [reagentlist(src)] (INTENT: [uppertext(user.a_intent)]) (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[user.x];Y=[user.y];Z=[user.z]'>JMP</a>)")
+
 			reagents.trans_to(target, reagents.total_volume)
 			for(var/mob/O in viewers(2, user))
-				O.show_message("\red [user] puts something in [target].", 1)
+				O.show_message("\red [user] puts something in \the [target].", 1)
+
 			spawn(5)
 				del(src)
 
@@ -115,7 +130,7 @@
 	icon_state = "pill8"
 	New()
 		..()
-		reagents.add_reagent("stoxin", 30)
+		reagents.add_reagent("stoxin", 15)
 
 /obj/item/weapon/reagent_containers/pill/kelotane
 	name = "Kelotane pill"
@@ -123,7 +138,15 @@
 	icon_state = "pill11"
 	New()
 		..()
-		reagents.add_reagent("kelotane", 30)
+		reagents.add_reagent("kelotane", 15)
+
+/obj/item/weapon/reagent_containers/pill/paracetamol
+	name = "Paracetamol pill"
+	desc = "Tylenol! A painkiller for the ages. Chewables!"
+	icon_state = "pill8"
+	New()
+		..()
+		reagents.add_reagent("paracetamol", 15)
 
 /obj/item/weapon/reagent_containers/pill/tramadol
 	name = "Tramadol pill"
@@ -165,7 +188,7 @@
 	icon_state = "pill16"
 	New()
 		..()
-		reagents.add_reagent("dexalin", 30)
+		reagents.add_reagent("dexalin", 15)
 
 /obj/item/weapon/reagent_containers/pill/bicaridine
 	name = "Bicaridine pill"
@@ -173,7 +196,7 @@
 	icon_state = "pill18"
 	New()
 		..()
-		reagents.add_reagent("bicaridine", 30)
+		reagents.add_reagent("bicaridine", 20)
 
 /obj/item/weapon/reagent_containers/pill/happy
 	name = "Happy pill"

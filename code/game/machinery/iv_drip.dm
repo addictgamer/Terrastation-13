@@ -70,6 +70,7 @@
 	set background = 1
 
 	if(src.attached)
+
 		if(!(get_dist(src, src.attached) <= 1 && isturf(src.attached.loc)))
 			visible_message("The needle is ripped out of [src.attached], doesn't that hurt?")
 			src.attached:apply_damage(3, BRUTE, pick("r_arm", "l_arm"))
@@ -105,6 +106,9 @@
 			if(NOCLONE in T.mutations)
 				return
 
+			if(T.species && T.species.flags & NO_BLOOD)
+				return
+
 			// If the human is losing too much blood, beep.
 			if(T.vessel.get_reagent_amount("blood") < BLOOD_VOLUME_SAFE) if(prob(5))
 				visible_message("\The [src] beeps loudly.")
@@ -128,6 +132,7 @@
 
 
 /obj/machinery/iv_drip/verb/toggle_mode()
+	set category = "Object"
 	set name = "Toggle Mode"
 	set src in view(1)
 

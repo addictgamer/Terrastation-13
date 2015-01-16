@@ -56,7 +56,7 @@
 	var/dx = abs(Ax - Bx)	//sides of right-angled triangle
 	var/dy = abs(Ay - By)
 	if(dx>=dy)	return (k1*dx) + (k2*dy)	//No sqrt or powers :)
-	else		return (k1*dx) + (k2*dy)
+	else		return (k2*dx) + (k1*dy)
 #undef k1
 #undef k2
 
@@ -89,6 +89,14 @@
 
 	//turfs += centerturf
 	return atoms
+
+/proc/trange(rad = 0, turf/centre = null) //alternative to range (ONLY processes turfs and thus less intensive)
+	if(!centre)
+		return
+
+	var/turf/x1y1 = locate(((centre.x-rad)<1 ? 1 : centre.x-rad),((centre.y-rad)<1 ? 1 : centre.y-rad),centre.z)
+	var/turf/x2y2 = locate(((centre.x+rad)>world.maxx ? world.maxx : centre.x+rad),((centre.y+rad)>world.maxy ? world.maxy : centre.y+rad),centre.z)
+	return block(x1y1,x2y2)
 
 /proc/get_dist_euclidian(atom/Loc1 as turf|mob|obj,atom/Loc2 as turf|mob|obj)
 	var/dx = Loc1.x - Loc2.x
@@ -142,7 +150,7 @@
 		if(ismob(A))
 			var/mob/M = A
 			if(client_check && !M.client)
-				L = recursive_mob_check(A, L, recursion_limit - 1, client_check, sight_check, include_radio)
+				L |= recursive_mob_check(A, L, recursion_limit - 1, client_check, sight_check, include_radio)
 				continue
 			if(sight_check && !isInSight(A, O))
 				continue
@@ -155,7 +163,7 @@
 			L |= A
 
 		if(isobj(A) || ismob(A))
-			L = recursive_mob_check(A, L, recursion_limit - 1, client_check, sight_check, include_radio)
+			L |= recursive_mob_check(A, L, recursion_limit - 1, client_check, sight_check, include_radio)
 	return L
 
 // The old system would loop through lists for a total of 5000 per function call, in an empty server.
@@ -182,7 +190,7 @@
 			hear += A
 
 		if(isobj(A) || ismob(A))
-			hear = recursive_mob_check(A, hear, 3, 1, 0, 1)
+			hear |= recursive_mob_check(A, hear, 3, 1, 0, 1)
 
 	return hear
 
@@ -194,9 +202,18 @@
 	. = list()
 	// Returns a list of mobs who can hear any of the radios given in @radios
 	var/list/speaker_coverage = list()
-	for(var/i = 1; i <= radios.len; i++)
-		var/obj/item/device/radio/R = radios[i]
+	for(var/obj/item/device/radio/R in radios)
 		if(R)
+			//Cyborg checks. Receiving message uses a bit of cyborg's charge.
+			var/obj/item/device/radio/borg/BR = R
+			if(istype(BR) && BR.myborg)
+				var/mob/living/silicon/robot/borg = BR.myborg
+				var/datum/robot_component/CO = borg.get_component("radio")
+				if(!CO)
+					continue //No radio component (Shouldn't happen)
+				if(!borg.is_component_functioning("radio") || !borg.cell_use_power(CO.active_usage))
+					continue //No power.
+
 			var/turf/speaker = get_turf(R)
 			if(speaker)
 				for(var/turf/T in hear(R.canhear_range,speaker))
@@ -209,8 +226,9 @@
 		if(M)
 			var/turf/ear = get_turf(M)
 			if(ear)
-				if(speaker_coverage[ear])
-					. |= M
+				// Ghostship is magic: Ghosts can hear radio chatter from anywhere
+				if(speaker_coverage[ear] || (istype(M, /mob/dead/observer) && (M.client) && (M.client.prefs.toggles & CHAT_GHOSTRADIO)))
+					. |= M		// Since we're already looping through mobs, why bother using |= ? This only slows things down.
 	return .
 
 #define SIGN(X) ((X<0)?-1:1)
@@ -281,46 +299,6 @@ proc/isInSight(var/atom/A, var/atom/B)
 			return M
 	return null
 
-//i think this is used soley by verb/give(), cael
-proc/check_can_reach(atom/user, atom/target)
-	if(!in_range(user,target))
-		return 0
-	return CanReachThrough(get_turf(user), get_turf(target), target)
-
-//dummy caching, used to speed up reach checks
-var/list/DummyCache = list()
-
-/proc/CanReachThrough(turf/srcturf, turf/targetturf, atom/target)
-
-	var/obj/item/weapon/dummy/D = locate() in DummyCache
-	if(!D)
-		D = new /obj/item/weapon/dummy( srcturf )
-	else
-		DummyCache.Remove(D)
-		D.loc = srcturf
-
-	if(targetturf.density && targetturf != get_turf(target))
-		return 0
-
-	//Now, check objects to block exit that are on the border
-	for(var/obj/border_obstacle in srcturf)
-		if(border_obstacle.flags & ON_BORDER)
-			if(!border_obstacle.CheckExit(D, targetturf))
-				D.loc = null
-				DummyCache.Add(D)
-				return 0
-
-	//Next, check objects to block entry that are on the border
-	for(var/obj/border_obstacle in targetturf)
-		if((border_obstacle.flags & ON_BORDER) && (target != border_obstacle))
-			if(!border_obstacle.CanPass(D, srcturf, 1, 0))
-				D.loc = null
-				DummyCache.Add(D)
-				return 0
-
-	D.loc = null
-	DummyCache.Add(D)
-	return 1
 
 // Will return a list of active candidates. It increases the buffer 5 times until it finds a candidate which is active within the buffer.
 /proc/get_active_candidates(var/buffer = 1)
@@ -367,3 +345,135 @@ var/list/DummyCache = list()
 		spawn(delay)
 			for(var/client/C in group)
 				C.screen -= O
+
+datum/projectile_data
+	var/src_x
+	var/src_y
+	var/time
+	var/distance
+	var/power_x
+	var/power_y
+	var/dest_x
+	var/dest_y
+
+/datum/projectile_data/New(var/src_x, var/src_y, var/time, var/distance, \
+						   var/power_x, var/power_y, var/dest_x, var/dest_y)
+	src.src_x = src_x
+	src.src_y = src_y
+	src.time = time
+	src.distance = distance
+	src.power_x = power_x
+	src.power_y = power_y
+	src.dest_x = dest_x
+	src.dest_y = dest_y
+
+/proc/projectile_trajectory(var/src_x, var/src_y, var/rotation, var/angle, var/power)
+
+	// returns the destination (Vx,y) that a projectile shot at [src_x], [src_y], with an angle of [angle],
+	// rotated at [rotation] and with the power of [power]
+	// Thanks to VistaPOWA for this function
+
+	var/power_x = power * cos(angle)
+	var/power_y = power * sin(angle)
+	var/time = 2* power_y / 10 //10 = g
+
+	var/distance = time * power_x
+
+	var/dest_x = src_x + distance*sin(rotation);
+	var/dest_y = src_y + distance*cos(rotation);
+
+	return new /datum/projectile_data(src_x, src_y, time, distance, power_x, power_y, dest_x, dest_y)
+
+/proc/GetRedPart(const/hexa)
+	return hex2num(copytext(hexa,2,4))
+
+/proc/GetGreenPart(const/hexa)
+	return hex2num(copytext(hexa,4,6))
+
+/proc/GetBluePart(const/hexa)
+	return hex2num(copytext(hexa,6,8))
+
+/proc/GetHexColors(const/hexa)
+	return list(
+			GetRedPart(hexa),
+			GetGreenPart(hexa),
+			GetBluePart(hexa)
+		)
+
+/proc/MixColors(const/list/colors)
+	var/list/reds = list()
+	var/list/blues = list()
+	var/list/greens = list()
+	var/list/weights = list()
+
+	for (var/i = 0, ++i <= colors.len)
+		reds.Add(GetRedPart(colors[i]))
+		blues.Add(GetBluePart(colors[i]))
+		greens.Add(GetGreenPart(colors[i]))
+		weights.Add(1)
+
+	var/r = mixOneColor(weights, reds)
+	var/g = mixOneColor(weights, greens)
+	var/b = mixOneColor(weights, blues)
+	return rgb(r,g,b)
+
+/**
+* Gets the highest and lowest pressures from the tiles in cardinal directions
+* around us, then checks the difference.
+*/
+/proc/getOPressureDifferential(var/turf/loc)
+	var/minp=16777216;
+	var/maxp=0;
+	for(var/dir in cardinal)
+		var/turf/simulated/T=get_turf(get_step(loc,dir))
+		var/cp=0
+		if(T && istype(T) && T.zone)
+			var/datum/gas_mixture/environment = T.return_air()
+			cp = environment.return_pressure()
+		else
+			if(istype(T,/turf/simulated))
+				continue
+		if(cp<minp)minp=cp
+		if(cp>maxp)maxp=cp
+	return abs(minp-maxp)
+
+/proc/convert_k2c(var/temp)
+	return ((temp - T0C))
+
+/proc/convert_c2k(var/temp)
+	return ((temp + T0C))
+
+/proc/getCardinalAirInfo(var/turf/loc, var/list/stats=list("temperature"))
+	var/list/temps = new/list(4)
+	for(var/dir in cardinal)
+		var/direction
+		switch(dir)
+			if(NORTH)
+				direction = 1
+			if(SOUTH)
+				direction = 2
+			if(EAST)
+				direction = 3
+			if(WEST)
+				direction = 4
+		var/turf/simulated/T=get_turf(get_step(loc,dir))
+		var/list/rstats = new /list(stats.len)
+		if(T && istype(T) && T.zone)
+			var/datum/gas_mixture/environment = T.return_air()
+			for(var/i=1;i<=stats.len;i++)
+				if(stats[i] == "pressure")
+					rstats[i] = environment.return_pressure()
+				else
+					rstats[i] = environment.vars[stats[i]]
+		else if(istype(T, /turf/simulated))
+			rstats = null // Exclude zone (wall, door, etc).
+		else if(istype(T, /turf))
+			// Should still work.  (/turf/return_air())
+			var/datum/gas_mixture/environment = T.return_air()
+			for(var/i=1;i<=stats.len;i++)
+				if(stats[i] == "pressure")
+					rstats[i] = environment.return_pressure()
+				else
+					rstats[i] = environment.vars[stats[i]]
+		temps[direction] = rstats
+	return temps

@@ -134,13 +134,8 @@
 	density = 1
 	layer = 2.0
 	var/obj/structure/morgue/connected = null
-	anchored = 1.0
-
-/obj/structure/m_tray/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if (istype(mover, /obj/item/weapon/dummy))
-		return 1
-	else
-		return ..()
+	anchored = 1
+	throwpass = 1
 
 /obj/structure/m_tray/attack_paw(mob/user as mob)
 	return src.attack_hand(user)
@@ -163,6 +158,8 @@
 	if ((!( istype(O, /atom/movable) ) || O.anchored || get_dist(user, src) > 1 || get_dist(user, O) > 1 || user.contents.Find(src) || user.contents.Find(O)))
 		return
 	if (!ismob(O) && !istype(O, /obj/structure/closet/body_bag))
+		return
+	if (!ismob(user) || user.stat || user.lying || user.stunned)
 		return
 	O.loc = src.loc
 	if (user != O)
@@ -322,7 +319,13 @@
 
 		for(var/mob/living/M in contents)
 			if (M.stat!=2)
-				M.emote("scream")
+				if (!iscarbon(M))
+					M.emote("scream")
+				else
+					var/mob/living/carbon/C = M
+					if (!(C.species && (C.species.flags & NO_PAIN)))
+						C.emote("scream")
+				
 			//Logging for this causes runtimes resulting in the cremator locking up. Commenting it out until that's figured out.
 			//M.attack_log += "\[[time_stamp()]\] Has been cremated by <b>[user]/[user.ckey]</b>" //No point in this when the mob's about to be deleted
 			//user.attack_log +="\[[time_stamp()]\] Cremated <b>[M]/[M.ckey]</b>"
@@ -353,13 +356,8 @@
 	density = 1
 	layer = 2.0
 	var/obj/structure/crematorium/connected = null
-	anchored = 1.0
-
-/obj/structure/c_tray/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if (istype(mover, /obj/item/weapon/dummy))
-		return 1
-	else
-		return ..()
+	anchored = 1
+	throwpass = 1
 
 /obj/structure/c_tray/attack_paw(mob/user as mob)
 	return src.attack_hand(user)
@@ -382,6 +380,8 @@
 	if ((!( istype(O, /atom/movable) ) || O.anchored || get_dist(user, src) > 1 || get_dist(user, O) > 1 || user.contents.Find(src) || user.contents.Find(O)))
 		return
 	if (!ismob(O) && !istype(O, /obj/structure/closet/body_bag))
+		return
+	if (!ismob(user) || user.stat || user.lying || user.stunned)
 		return
 	O.loc = src.loc
 	if (user != O)

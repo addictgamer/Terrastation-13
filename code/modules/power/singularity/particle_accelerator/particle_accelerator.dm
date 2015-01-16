@@ -6,7 +6,8 @@ proc
 emit_particle()
 
 1 power box
-the only part of this thing that uses power, can hack to mess with the pa/make it better
+the only part of this thing that uses power, can hack to mess with the pa/make it better.
+Lies, only the control computer draws power.
 
 1 fuel chamber
 contains procs for mixing gas and whatever other fuel it uses
@@ -60,7 +61,7 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 /obj/structure/particle_accelerator
 	name = "Particle Accelerator"
 	desc = "Part of a Particle Accelerator."
-	icon = 'icons/obj/machines/particle_accelerator.dmi'
+	icon = 'icons/obj/machines/particle_accelerator2.dmi'
 	icon_state = "none"
 	anchored = 0
 	density = 1
@@ -258,7 +259,7 @@ So, hopefully this is helpful if any more icons are to be added/changed/wonderin
 /obj/machinery/particle_accelerator
 	name = "Particle Accelerator"
 	desc = "Part of a Particle Accelerator."
-	icon = 'icons/obj/machines/particle_accelerator.dmi'
+	icon = 'icons/obj/machines/particle_accelerator2.dmi'
 	icon_state = "none"
 	anchored = 0
 	density = 1

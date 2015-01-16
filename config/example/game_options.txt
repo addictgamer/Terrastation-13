@@ -1,5 +1,8 @@
 ### HEALTH ###
 
+## level of health at which a mob goes into continual shock (soft crit)
+HEALTH_THRESHOLD_SOFTCRIT 0
+
 ## level of health at which a mob becomes unconscious (crit)
 HEALTH_THRESHOLD_CRIT -50
 
@@ -53,3 +56,11 @@ MONKEY_DELAY 0
 ALIEN_DELAY 0
 METROID_DELAY 0
 ANIMAL_DELAY 0
+
+
+### Miscellaneous ###
+
+## Config options which, of course, don't fit into previous categories.
+
+## Remove the # in front of this config option to have loyalty implants spawn by default on your server.
+#USE_LOYALTY_IMPLANTS

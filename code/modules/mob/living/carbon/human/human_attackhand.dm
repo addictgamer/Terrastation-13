@@ -22,7 +22,7 @@
 		if(G.cell)
 			if(M.a_intent == "hurt")//Stungloves. Any contact will stun the alien.
 				if(G.cell.charge >= 2500)
-					G.cell.charge -= 2500
+					G.cell.use(2500)
 					visible_message("\red <B>[src] has been touched with the stun gloves by [M]!</B>")
 					M.attack_log += text("\[[time_stamp()]\] <font color='red'>Stungloved [src.name] ([src.ckey])</font>")
 					src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been stungloved by [M.name] ([M.ckey])</font>")
@@ -59,6 +59,10 @@
 				apply_effect(4, WEAKEN, armor_block)
 
 			return
+	else
+		if(istype(M,/mob/living/carbon))
+//			log_debug("No gloves, [M] is truing to infect [src]")
+			M.spread_disease_to(src, "Contact")
 
 
 	switch(M.a_intent)
@@ -87,35 +91,41 @@
 			return 1
 
 		if("grab")
-			if(M == src)	return 0
-			if(w_uniform)	w_uniform.add_fingerprint(M)
-			var/obj/item/weapon/grab/G = new /obj/item/weapon/grab(M, M, src)
+			if(M == src || anchored)
+				return 0
+			if(w_uniform)
+				w_uniform.add_fingerprint(M)
 
+			var/obj/item/weapon/grab/G = new /obj/item/weapon/grab(M, src)
+			if(buckled)
+				M << "<span class='notice'>You cannot grab [src], \he is buckled in!</span>"
+			if(!G)	//the grab will delete itself in New if affecting is anchored
+				return
 			M.put_in_active_hand(G)
-
-			grabbed_by += G
 			G.synch()
 			LAssailant = M
 
 			playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-			visible_message("\red [M] has grabbed [src] passively!")
+			visible_message("<span class='warning'>[M] has grabbed [src] passively!</span>")
 			return 1
 
 		if("hurt")
 
-			M.attack_log += text("\[[time_stamp()]\] <font color='red'>[M.species.attack_verb]ed [src.name] ([src.ckey])</font>")
-			src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been [M.species.attack_verb]ed by [M.name] ([M.ckey])</font>")
+			// See if they can attack, and which attacks to use.
+			var/datum/unarmed_attack/attack = M.species.unarmed
+			if(!attack.is_usable(M))
+				attack = M.species.secondary_unarmed
+			if(!attack.is_usable(M))
+				return 0
 
-			log_attack("[M.name] ([M.ckey]) [M.species.attack_verb]ed [src.name] ([src.ckey])")
+			M.attack_log += text("\[[time_stamp()]\] <font color='red'>[pick(attack.attack_verb)]ed [src.name] ([src.ckey])</font>")
+			src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been [pick(attack.attack_verb)]ed by [M.name] ([M.ckey])</font>")
+			msg_admin_attack("[key_name(M)] [pick(attack.attack_verb)]ed [key_name(src)]")
 
 			var/damage = rand(0, 5)//BS12 EDIT
 			if(!damage)
-				if(M.species.attack_verb == "punch")
-					playsound(loc, 'sound/weapons/punchmiss.ogg', 25, 1, -1)
-				else
-					playsound(loc, 'sound/weapons/slashmiss.ogg', 25, 1, -1)
-
-				visible_message("\red <B>[M] has attempted to [M.species.attack_verb] [src]!</B>")
+				playsound(loc, attack.miss_sound, 25, 1, -1)
+				visible_message("\red <B>[M] tried to [pick(attack.attack_verb)] [src]!</B>")
 				return 0
 
 
@@ -125,26 +135,23 @@
 			if(HULK in M.mutations)			damage += 5
 
 
-			if(M.species.attack_verb == "punch")
-				playsound(loc, "punch", 25, 1, -1)
-			else
-				playsound(loc, 'sound/weapons/slice.ogg', 25, 1, -1)
+			playsound(loc, attack.attack_sound, 25, 1, -1)
 
-			visible_message("\red <B>[M] has [M.species.attack_verb]ed [src]!</B>")
+			visible_message("\red <B>[M] [pick(attack.attack_verb)]ed [src]!</B>")
 			//Rearranged, so claws don't increase weaken chance.
 			if(damage >= 5 && prob(50))
 				visible_message("\red <B>[M] has weakened [src]!</B>")
-				apply_effect(2, WEAKEN, armor_block)
+				apply_effect(3, WEAKEN, armor_block)
 
-			if(M.species.attack_verb != "punch")	damage += 5
-			apply_damage(damage, BRUTE, affecting, armor_block)
+			damage += attack.damage
+			apply_damage(damage, BRUTE, affecting, armor_block, sharp=attack.sharp, edge=attack.edge)
 
 
 		if("disarm")
 			M.attack_log += text("\[[time_stamp()]\] <font color='red'>Disarmed [src.name] ([src.ckey])</font>")
 			src.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been disarmed by [M.name] ([M.ckey])</font>")
 
-			log_attack("[M.name] ([M.ckey]) disarmed [src.name] ([src.ckey])")
+			msg_admin_attack("[key_name(M)] disarmed [src.name] ([src.ckey])")
 
 			if(w_uniform)
 				w_uniform.add_fingerprint(M)
@@ -172,7 +179,7 @@
 
 			var/randn = rand(1, 100)
 			if (randn <= 25)
-				apply_effect(4, WEAKEN, run_armor_check(affecting, "melee"))
+				apply_effect(3, WEAKEN, run_armor_check(affecting, "melee"))
 				playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 				visible_message("\red <B>[M] has pushed [src]!</B>")
 				return

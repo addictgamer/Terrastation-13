@@ -44,18 +44,17 @@
 	sleep(2)
 	new /obj/item/clothing/under/rank/janitor(src)
 	new /obj/item/weapon/cartridge/janitor(src)
-	new /obj/item/device/flashlight(src)
-	new /obj/item/clothing/shoes/galoshes(src)
-	new /obj/item/weapon/caution(src)
-	new /obj/item/weapon/caution(src)
-	new /obj/item/weapon/caution(src)
-	new /obj/item/weapon/caution(src)
-	new /obj/item/weapon/caution(src)
-	new /obj/item/weapon/caution(src)
-	new /obj/item/weapon/storage/bag/trash(src)
-	new /obj/item/device/lightreplacer(src)
 	new /obj/item/clothing/gloves/black(src)
 	new /obj/item/clothing/head/soft/purple(src)
+	new /obj/item/clothing/head/beret/jan(src)
+	new /obj/item/device/flashlight(src)
+	new /obj/item/weapon/caution(src)
+	new /obj/item/weapon/caution(src)
+	new /obj/item/weapon/caution(src)
+	new /obj/item/weapon/caution(src)
+	new /obj/item/device/lightreplacer(src)
+	new /obj/item/weapon/storage/bag/trash(src)
+	new /obj/item/clothing/shoes/galoshes(src)
 
 /*
  * Lawyer
@@ -67,6 +66,7 @@
 	icon_closed = "blue"
 
 /obj/structure/closet/lawcloset/New()
+	..()
 	new /obj/item/clothing/under/lawyer/female(src)
 	new /obj/item/clothing/under/lawyer/black(src)
 	new /obj/item/clothing/under/lawyer/red(src)

@@ -228,9 +228,12 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	if (findtext(key, "Guest-", 1, 7) != 1) //was findtextEx
 		return 0
 
-	var/i, ch, len = length(key)
+	var/i = 7, ch, len = length(key)
 
-	for (i = 7, i <= len, ++i)
+	if(copytext(key, 7, 8) == "W") //webclient
+		i++
+
+	for (, i <= len, ++i)
 		ch = text2ascii(key, i)
 		if (ch < 48 || ch > 57)
 			return 0
@@ -330,13 +333,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 				//world << "<b>[newname] is the AI!</b>"
 				//world << sound('sound/AI/newAI.ogg')
 				// Set eyeobj name
-				if(A.eyeobj)
-					A.eyeobj.name = "[newname] (AI Eye)"
-
-				// Set ai pda name
-				if(A.aiPDA)
-					A.aiPDA.owner = newname
-					A.aiPDA.name = newname + " (" + A.aiPDA.ownjob + ")"
+				A.SetName(newname)
 
 
 		fully_replace_character_name(oldname,newname)
@@ -352,7 +349,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 	var/select = null
 	var/list/borgs = list()
 	for (var/mob/living/silicon/robot/A in player_list)
-		if (A.stat == 2 || A.connected_ai || A.scrambledcodes)
+		if (A.stat == 2 || A.connected_ai || A.scrambledcodes || istype(A,/mob/living/silicon/robot/drone))
 			continue
 		var/name = "[A.real_name] ([A.modtype] [A.braintype])"
 		borgs[name] = A
@@ -493,7 +490,7 @@ Turf and target are seperate in case you want to teleport some distance from a t
 		return -M
 
 
-/proc/key_name(var/whom, var/include_link = null, var/include_name = 1)
+/proc/key_name(var/whom, var/include_link = null, var/include_name = 1, var/highlight_special_characters = 1)
 	var/mob/M
 	var/client/C
 	var/key
@@ -531,75 +528,24 @@ Turf and target are seperate in case you want to teleport some distance from a t
 		. += "*no key*"
 
 	if(include_name && M)
+		var/name
+
 		if(M.real_name)
-			. += "/([M.real_name])"
+			name = M.real_name
 		else if(M.name)
-			. += "/([M.name])"
+			name = M.name
+
+
+		if(include_link && is_special_character(M) && highlight_special_characters)
+			. += "/(<font color='#FFA500'>[name]</font>)" //Orange
+		else
+			. += "/([name])"
 
 	return .
 
 /proc/key_name_admin(var/whom, var/include_name = 1)
 	return key_name(whom, 1, include_name)
 
-
-// Registers the on-close verb for a browse window (client/verb/.windowclose)
-// this will be called when the close-button of a window is pressed.
-//
-// This is usually only needed for devices that regularly update the browse window,
-// e.g. canisters, timers, etc.
-//
-// windowid should be the specified window name
-// e.g. code is	: user << browse(text, "window=fred")
-// then use 	: onclose(user, "fred")
-//
-// Optionally, specify the "ref" parameter as the controlled atom (usually src)
-// to pass a "close=1" parameter to the atom's Topic() proc for special handling.
-// Otherwise, the user mob's machine var will be reset directly.
-//
-/proc/onclose(mob/user, windowid, var/atom/ref=null)
-	if(!user.client) return
-	var/param = "null"
-	if(ref)
-		param = "\ref[ref]"
-
-	winset(user, windowid, "on-close=\".windowclose [param]\"")
-
-	//world << "OnClose [user]: [windowid] : ["on-close=\".windowclose [param]\""]"
-
-
-// the on-close client verb
-// called when a browser popup window is closed after registering with proc/onclose()
-// if a valid atom reference is supplied, call the atom's Topic() with "close=1"
-// otherwise, just reset the client mob's machine var.
-//
-/client/verb/windowclose(var/atomref as text)
-	set hidden = 1						// hide this verb from the user's panel
-	set name = ".windowclose"			// no autocomplete on cmd line
-
-	//world << "windowclose: [atomref]"
-	if(atomref!="null")				// if passed a real atomref
-		var/hsrc = locate(atomref)	// find the reffed atom
-		var/href = "close=1"
-		if(hsrc)
-			//world << "[src] Topic [href] [hsrc]"
-			usr = src.mob
-			src.Topic(href, params2list(href), hsrc)	// this will direct to the atom's
-			return										// Topic() proc via client.Topic()
-
-	// no atomref specified (or not found)
-	// so just reset the user mob's machine var
-	if(src && src.mob)
-		//world << "[src] was [src.mob.machine], setting to null"
-		src.mob.unset_machine()
-	return
-
-//Will return the location of the turf an atom is ultimatly sitting on
-/proc/get_turf_loc(var/atom/movable/M) //gets the location of the turf that the atom is on, or what the atom is in is on, etc
-	//in case they're in a closet or sleeper or something
-	var/atom/loc = M.loc
-	while(!istype(loc, /turf/))
-		loc = loc.loc
-	return loc
 
 // returns the turf located at the map edge in the specified direction relative to A
 // used for mass driver
@@ -771,14 +717,15 @@ proc/anim(turf/location as turf,target as mob|obj,a_icon,a_icon_state as text,fl
 		return 0
 
 	var/delayfraction = round(delay/numticks)
-	var/turf/T = get_turf(user)
+	var/original_loc = user.loc
+	var/original_turf = get_turf(user)
 	var/holding = user.get_active_hand()
 
 	for(var/i = 0, i<numticks, i++)
 		sleep(delayfraction)
 
 
-		if(!user || user.stat || user.weakened || user.stunned || !(user.loc == T))
+		if(!user || user.stat || user.weakened || user.stunned || user.loc != original_loc || get_turf(user) != original_turf)
 			return 0
 		if(needhand && !(user.get_active_hand() == holding))	//Sometimes you don't want the user to have to keep their active hand
 			return 0
@@ -906,10 +853,18 @@ proc/anim(turf/location as turf,target as mob|obj,a_icon,a_icon_state as text,fl
 					var/old_icon_state1 = T.icon_state
 					var/old_icon1 = T.icon
 
-					var/turf/X = new T.type(B)
+					var/turf/X = B.ChangeTurf(T.type)
 					X.dir = old_dir1
 					X.icon_state = old_icon_state1
 					X.icon = old_icon1 //Shuttle floors are in shuttle.dmi while the defaults are floors.dmi
+
+					var/turf/simulated/ST = T
+					if(istype(ST) && ST.zone)
+						var/turf/simulated/SX = X
+						if(!SX.air)
+							SX.make_air()
+						SX.air.copy_from(ST.zone.air)
+						ST.zone.remove(ST)
 
 					/* Quick visual fix for some weird shuttle corner artefacts when on transit space tiles */
 					if(direction && findtext(X.icon_state, "swall_s"))
@@ -959,16 +914,7 @@ proc/anim(turf/location as turf,target as mob|obj,a_icon,a_icon_state as text,fl
 					toupdate += X
 
 					if(turftoleave)
-						var/turf/ttl = new turftoleave(T)
-
-//						var/area/AR2 = ttl.loc
-
-//						if(AR2.lighting_use_dynamic)						//TODO: rewrite this code so it's not messed by lighting ~Carn
-//							ttl.opacity = !ttl.opacity
-//							ttl.sd_SetOpacity(!ttl.opacity)
-
-						fromupdate += ttl
-
+						fromupdate += T.ChangeTurf(turftoleave)
 					else
 						T.ChangeTurf(/turf/space)
 
@@ -1210,8 +1156,9 @@ proc/get_mob_with_client_list()
 	else if (zone == "r_foot") return "right foot"
 	else return zone
 
-
-/proc/get_turf(turf/location)
+//gets the turf the atom is located in (or itself, if it is a turf).
+//returns null if the atom is not in a turf.
+/proc/get_turf(atom/location)
 	while(location)
 		if(isturf(location))
 			return location
@@ -1231,7 +1178,7 @@ proc/get_mob_with_client_list()
 
 //Quick type checks for some tools
 var/global/list/common_tools = list(
-/obj/item/weapon/cable_coil,
+/obj/item/stack/cable_coil,
 /obj/item/weapon/wrench,
 /obj/item/weapon/weldingtool,
 /obj/item/weapon/screwdriver,
@@ -1255,7 +1202,7 @@ var/global/list/common_tools = list(
 	return 0
 
 /proc/iscoil(O)
-	if(istype(O, /obj/item/weapon/cable_coil))
+	if(istype(O, /obj/item/stack/cable_coil))
 		return 1
 	return 0
 
@@ -1280,7 +1227,7 @@ var/global/list/common_tools = list(
 	return 0
 
 /proc/iswire(O)
-	if(istype(O, /obj/item/weapon/cable_coil))
+	if(istype(O, /obj/item/stack/cable_coil))
 		return 1
 	return 0
 
@@ -1292,12 +1239,12 @@ proc/is_hot(obj/item/W as obj)
 				return 3800
 			else
 				return 0
-		if(/obj/item/weapon/lighter)
+		if(/obj/item/weapon/flame/lighter)
 			if(W:lit)
 				return 1500
 			else
 				return 0
-		if(/obj/item/weapon/match)
+		if(/obj/item/weapon/flame/match)
 			if(W:lit)
 				return 1000
 			else
@@ -1316,31 +1263,32 @@ proc/is_hot(obj/item/W as obj)
 
 	return 0
 
-//Is this even used for anything besides balloons? Yes I took out the W:lit stuff because : really shouldnt be used.
-/proc/is_sharp(obj/item/W as obj)		// For the record, WHAT THE HELL IS THIS METHOD OF DOING IT?
+//Whether or not the given item counts as sharp in terms of dealing damage
+/proc/is_sharp(obj/O as obj)
+	if (!O) return 0
+	if (O.sharp) return 1
+	if (O.edge) return 1
+	return 0
+
+//Whether or not the given item counts as cutting with an edge in terms of removing limbs
+/proc/has_edge(obj/O as obj)
+	if (!O) return 0
+	if (O.edge) return 1
+	return 0
+
+//Returns 1 if the given item is capable of popping things like balloons, inflatable barriers, or cutting police tape.
+/proc/can_puncture(obj/item/W as obj)		// For the record, WHAT THE HELL IS THIS METHOD OF DOING IT?
+	if(!W) return 0
 	if(W.sharp) return 1
 	return ( \
 		W.sharp													  || \
 		istype(W, /obj/item/weapon/screwdriver)                   || \
 		istype(W, /obj/item/weapon/pen)                           || \
 		istype(W, /obj/item/weapon/weldingtool)					  || \
-		istype(W, /obj/item/weapon/lighter/zippo)				  || \
-		istype(W, /obj/item/weapon/match)            		      || \
+		istype(W, /obj/item/weapon/flame/lighter/zippo)			  || \
+		istype(W, /obj/item/weapon/flame/match)            		  || \
 		istype(W, /obj/item/clothing/mask/cigarette) 		      || \
-		istype(W, /obj/item/weapon/wirecutters)                   || \
-		istype(W, /obj/item/weapon/circular_saw)                  || \
-		istype(W, /obj/item/weapon/melee/energy/sword)            || \
-		istype(W, /obj/item/weapon/melee/energy/blade)            || \
-		istype(W, /obj/item/weapon/shovel)                        || \
-		istype(W, /obj/item/weapon/kitchenknife)                  || \
-		istype(W, /obj/item/weapon/butch)						  || \
-		istype(W, /obj/item/weapon/scalpel)                       || \
-		istype(W, /obj/item/weapon/kitchen/utensil/knife)         || \
-		istype(W, /obj/item/weapon/shard)                         || \
-		istype(W, /obj/item/weapon/broken_bottle)				  || \
-		istype(W, /obj/item/weapon/reagent_containers/syringe)    || \
-		istype(W, /obj/item/weapon/kitchen/utensil/fork) && W.icon_state != "forkloaded" || \
-		istype(W, /obj/item/weapon/twohanded/fireaxe) \
+		istype(W, /obj/item/weapon/shovel) \
 	)
 
 /proc/is_surgery_tool(obj/item/W as obj)
@@ -1355,11 +1303,10 @@ proc/is_hot(obj/item/W as obj)
 
 //check if mob is lying down on something we can operate him on.
 /proc/can_operate(mob/living/carbon/M)
-	return (locate(/obj/machinery/optable, M.loc) && M.resting) || \
-	(locate(/obj/structure/stool/bed/roller, M.loc) && 	\
-	(M.buckled || M.lying || M.weakened || M.stunned || M.paralysis || M.sleeping || M.stat)) && prob(75) || 	\
-	(locate(/obj/structure/table/, M.loc) && 	\
-	(M.lying || M.weakened || M.stunned || M.paralysis || M.sleeping || M.stat) && prob(66))
+	return (M.lying && \
+	locate(/obj/machinery/optable, M.loc) || \
+	(locate(/obj/structure/stool/bed/roller, M.loc) && prob(75)) || \
+	(locate(/obj/structure/table/, M.loc) && prob(66)))
 
 /proc/reverse_direction(var/dir)
 	switch(dir)
@@ -1423,3 +1370,11 @@ var/list/WALLITEMS = list(
 				if(O.pixel_x == 0 && O.pixel_y == 0)
 					return 1
 	return 0
+
+/proc/format_text(text)
+	return replacetext(replacetext(text,"\proper ",""),"\improper ","")
+
+/proc/topic_link(var/datum/D, var/arglist, var/content)
+	if(istype(arglist,/list))
+		arglist = list2params(arglist)
+	return "<a href='?src=\ref[D];[arglist]'>[content]</a>"

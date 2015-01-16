@@ -1,14 +1,18 @@
 /* Toys!
- * ContainsL
+ * Contains:
  *		Balloons
  *		Fake telebeacon
  *		Fake singularity
  *		Toy gun
  *		Toy crossbow
  *		Toy swords
+ *      Toy mechs
  *		Crayons
  *		Snap pops
  *		Water flower
+ *      Therapy dolls
+ *      Toddler doll
+ *      Inflatable duck
  */
 
 
@@ -37,7 +41,8 @@
 /obj/item/toy/balloon/attack(mob/living/carbon/human/M as mob, mob/user as mob)
 	return
 
-/obj/item/toy/balloon/afterattack(atom/A as mob|obj, mob/user as mob)
+/obj/item/toy/balloon/afterattack(atom/A as mob|obj, mob/user as mob, proximity)
+	if(!proximity) return
 	if (istype(A, /obj/structure/reagent_dispensers/watertank) && get_dist(src,A) <= 1)
 		A.reagents.trans_to(src, 10)
 		user << "\blue You fill the balloon with the contents of [A]."
@@ -122,11 +127,12 @@
 	icon = 'icons/obj/gun.dmi'
 	icon_state = "revolver"
 	item_state = "gun"
-	flags =  FPRINT | TABLEPASS | CONDUCT | USEDELAY
+	flags =  FPRINT | TABLEPASS | CONDUCT
 	slot_flags = SLOT_BELT
 	w_class = 3.0
-	g_amt = 10
-	m_amt = 10
+
+	matter = list("glass" = 10,"metal" = 10)
+
 	attack_verb = list("struck", "pistol whipped", "hit", "bashed")
 	var/bullets = 7.0
 
@@ -181,8 +187,9 @@
 	icon_state = "357-7"
 	flags = FPRINT | TABLEPASS| CONDUCT
 	w_class = 1.0
-	g_amt = 10
-	m_amt = 10
+
+	matter = list("metal" = 10,"glass" = 10)
+
 	var/amount_left = 7.0
 
 	update_icon()
@@ -200,7 +207,7 @@
 	icon = 'icons/obj/gun.dmi'
 	icon_state = "crossbow"
 	item_state = "crossbow"
-	flags = FPRINT | TABLEPASS | USEDELAY
+	flags = FPRINT | TABLEPASS
 	w_class = 2.0
 	attack_verb = list("attacked", "struck", "hit")
 	var/bullets = 5
@@ -293,7 +300,7 @@
 
 /obj/item/toy/ammo/crossbow
 	name = "foam dart"
-	desc = "Its nerf or nothing! Ages 8 and up."
+	desc = "It's nerf or nothing! Ages 8 and up."
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "foamdart"
 	flags = FPRINT | TABLEPASS
@@ -336,6 +343,12 @@
 			src.icon_state = "sword0"
 			src.item_state = "sword0"
 			src.w_class = 2
+
+		if(istype(user,/mob/living/carbon/human))
+			var/mob/living/carbon/human/H = user
+			H.update_inv_l_hand()
+			H.update_inv_r_hand()
+
 		src.add_fingerprint(user)
 		return
 
@@ -358,7 +371,7 @@
 
 /obj/item/toy/crayon
 	name = "crayon"
-	desc = "A colourful crayon. Looks tasty. Mmmm..."
+	desc = "A colourful crayon. Please refrain from eating it or putting it in your nose."
 	icon = 'icons/obj/crayons.dmi'
 	icon_state = "crayonred"
 	w_class = 1.0
@@ -393,7 +406,7 @@
 		playsound(src, 'sound/effects/snap.ogg', 50, 1)
 		del(src)
 
-/obj/item/toy/snappop/HasEntered(H as mob|obj)
+/obj/item/toy/snappop/Crossed(H as mob|obj)
 	if((ishuman(H))) //i guess carp and shit shouldn't set them off
 		var/mob/living/carbon/M = H
 		if(M.m_intent == "run")
@@ -417,7 +430,7 @@
 	icon_state = "sunflower"
 	item_state = "sunflower"
 	var/empty = 0
-	flags =  USEDELAY
+	flags
 
 /obj/item/toy/waterflower/New()
 	var/datum/reagents/R = new/datum/reagents(10)
@@ -570,6 +583,55 @@
 	w_class = 3
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced")
 
+/obj/item/toy/therapy_red
+	name = "red therapy doll"
+	desc = "A toy for therapeutic and recreational purposes. This one is red."
+	icon = 'icons/obj/weapons.dmi'
+	icon_state = "therapyred"
+	item_state = "egg4" // It's the red egg in items_left/righthand
+	w_class = 1
+
+/obj/item/toy/therapy_purple
+	name = "purple therapy doll"
+	desc = "A toy for therapeutic and recreational purposes. This one is purple."
+	icon = 'icons/obj/weapons.dmi'
+	icon_state = "therapypurple"
+	item_state = "egg1" // It's the magenta egg in items_left/righthand
+	w_class = 1
+
+/obj/item/toy/therapy_blue
+	name = "blue therapy doll"
+	desc = "A toy for therapeutic and recreational purposes. This one is blue."
+	icon = 'icons/obj/weapons.dmi'
+	icon_state = "therapyblue"
+	item_state = "egg2" // It's the blue egg in items_left/righthand
+	w_class = 1
+
+/obj/item/toy/therapy_yellow
+	name = "yellow therapy doll"
+	desc = "A toy for therapeutic and recreational purposes. This one is yellow."
+	icon = 'icons/obj/weapons.dmi'
+	icon_state = "therapyyellow"
+	item_state = "egg5" // It's the yellow egg in items_left/righthand
+	w_class = 1
+
+/obj/item/toy/therapy_orange
+	name = "orange therapy doll"
+	desc = "A toy for therapeutic and recreational purposes. This one is orange."
+	icon = 'icons/obj/weapons.dmi'
+	icon_state = "therapyorange"
+	item_state = "egg4" // It's the red one again, lacking an orange item_state and making a new one is pointless
+	w_class = 1
+
+/obj/item/toy/therapy_green
+	name = "green therapy doll"
+	desc = "A toy for therapeutic and recreational purposes. This one is green."
+	icon = 'icons/obj/weapons.dmi'
+	icon_state = "therapygreen"
+	item_state = "egg3" // It's the green egg in items_left/righthand
+	w_class = 1
+
+
 /* NYET.
 /obj/item/weapon/toddler
 	icon_state = "toddler"
@@ -579,3 +641,14 @@
 	w_class = 4.0
 	slot_flags = SLOT_BACK
 */
+
+//This should really be somewhere else but I don't know where. w/e
+
+/obj/item/weapon/inflatable_duck
+	name = "inflatable duck"
+	desc = "No bother to sink or swim when you can just float!"
+	icon_state = "inflatable"
+	item_state = "inflatable"
+	flags = FPRINT | TABLEPASS
+	icon = 'icons/obj/clothing/belts.dmi'
+	slot_flags = SLOT_BELT

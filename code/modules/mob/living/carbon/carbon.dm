@@ -1,3 +1,10 @@
+/mob/living/carbon/Life()
+	..()
+
+	// Increase germ_level regularly
+	if(germ_level < GERM_LEVEL_AMBIENT && prob(30))	//if you're just standing there, you shouldn't get more germs beyond an ambient level
+		germ_level++
+
 /mob/living/carbon/Move(NewLoc, direct)
 	. = ..()
 	if(.)
@@ -7,6 +14,10 @@
 				src.nutrition -= HUNGER_FACTOR/10
 		if((FAT in src.mutations) && src.m_intent == "run" && src.bodytemperature <= 360)
 			src.bodytemperature += 2
+
+		// Moving around increases germ_level faster
+		if(germ_level < GERM_LEVEL_MOVE_CAP && prob(8))
+			germ_level++
 
 /mob/living/carbon/relaymove(var/mob/user, direction)
 	if(user in src.stomach_contents)
@@ -46,7 +57,7 @@
 		for(var/mob/N in viewers(src, null))
 			if(N.client)
 				N.show_message(text("\red <B>[M] bursts out of [src]!</B>"), 2)
-	. = ..()
+	. = ..(null,1)
 
 /mob/living/carbon/attack_hand(mob/M as mob)
 	if(!istype(M, /mob/living/carbon)) return
@@ -88,24 +99,34 @@
 
 	return
 
-/mob/living/carbon/electrocute_act(var/shock_damage, var/obj/source, var/siemens_coeff = 1.0)
+/mob/living/carbon/electrocute_act(var/shock_damage, var/obj/source, var/siemens_coeff = 1.0, var/def_zone = null)
 	if(status_flags & GODMODE)	return 0	//godmode
 	shock_damage *= siemens_coeff
 	if (shock_damage<1)
 		return 0
-	src.take_overall_damage(0,shock_damage,used_weapon="Electrocution")
-	//src.burn_skin(shock_damage)
-	//src.adjustFireLoss(shock_damage) //burn_skin will do this for us
-	//src.updatehealth()
-	src.visible_message(
-		"\red [src] was shocked by the [source]!", \
-		"\red <B>You feel a powerful shock course through your body!</B>", \
-		"\red You hear a heavy electrical crack." \
-	)
-//	if(src.stunned < shock_damage)	src.stunned = shock_damage
-	Stun(10)//This should work for now, more is really silly and makes you lay there forever
-//	if(src.weakened < 20*siemens_coeff)	src.weakened = 20*siemens_coeff
-	Weaken(10)
+
+	src.apply_damage(shock_damage, BURN, def_zone, used_weapon="Electrocution")
+
+	playsound(loc, "sparks", 50, 1, -1)
+	if (shock_damage > 10)
+		src.visible_message(
+			"\red [src] was shocked by the [source]!", \
+			"\red <B>You feel a powerful shock course through your body!</B>", \
+			"\red You hear a heavy electrical crack." \
+		)
+		Stun(10)//This should work for now, more is really silly and makes you lay there forever
+		Weaken(10)
+	else
+		src.visible_message(
+			"\red [src] was mildly shocked by the [source].", \
+			"\red You feel a mild shock course through your body.", \
+			"\red You hear a light zapping." \
+		)
+
+	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
+	s.set_up(5, 1, loc)
+	s.start()
+
 	return shock_damage
 
 
@@ -135,10 +156,10 @@
 	if(istext(selhand))
 		selhand = lowertext(selhand)
 
-	if(selhand == "right" || selhand == "r")
-		selhand = 0
-	if(selhand == "left" || selhand == "l")
-		selhand = 1
+		if(selhand == "right" || selhand == "r")
+			selhand = 0
+		if(selhand == "left" || selhand == "l")
+			selhand = 1
 
 	if(selhand != src.hand)
 		swap_hand()
@@ -195,17 +216,26 @@
 			if (istype(src,/mob/living/carbon/human) && src:w_uniform)
 				var/mob/living/carbon/human/H = src
 				H.w_uniform.add_fingerprint(M)
-			src.sleeping = max(0,src.sleeping-5)
-			if(src.sleeping == 0)
-				src.resting = 0
+
+			if(lying || src.sleeping)
+				src.sleeping = max(0,src.sleeping-5)
+				if(src.sleeping == 0)
+					src.resting = 0
+				M.visible_message("<span class='notice'>[M] shakes [src] trying to wake [t_him] up!", \
+									"<span class='notice'>You shake [src] trying to wake [t_him] up!")
+			else
+				var/mob/living/carbon/human/H = M
+				if(istype(H))
+					H.species.hug(H,src)
+				else
+					M.visible_message("<span class='notice'>[M] hugs [src] to make [t_him] feel better!</span>", \
+								"<span class='notice'>You hug [src] to make [t_him] feel better!</span>")
+
 			AdjustParalysis(-3)
 			AdjustStunned(-3)
 			AdjustWeakened(-3)
+
 			playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-			M.visible_message( \
-				"\blue [M] shakes [src] trying to wake [t_him] up!", \
-				"\blue You shake [src] trying to wake [t_him] up!", \
-				)
 
 /mob/living/carbon/proc/eyecheck()
 	return 0
@@ -220,97 +250,6 @@
 	dna = newDNA
 
 // ++++ROCKDTBEN++++ MOB PROCS //END
-
-/mob/living/carbon/proc/handle_ventcrawl() // -- TLE -- Merged by Carn
-
-	if(!stat)
-		if(!lying)
-
-			var/obj/machinery/atmospherics/unary/vent_pump/vent_found
-			for(var/obj/machinery/atmospherics/unary/vent_pump/v in range(1,src))
-				if(!v.welded)
-					vent_found = v
-				else
-					src << "\red That vent is welded."
-
-			if(vent_found)
-				if(vent_found.network&&vent_found.network.normal_members.len)
-					var/list/vents[0]
-					for(var/obj/machinery/atmospherics/unary/vent_pump/temp_vent in vent_found.network.normal_members)
-						if(temp_vent.loc == loc)
-							continue
-						if(temp_vent.welded)
-							continue
-						var/turf/T = get_turf(temp_vent)
-
-						if(!T || T.z != loc.z)
-							continue
-
-						var/i = 1
-						var/index = "[T.loc.name]\[[i]\]"
-						while(index in vents)
-							i++
-							index = "[T.loc.name]\[[i]\]"
-						vents[index] = temp_vent
-
-					var/turf/startloc = loc
-					var/obj/selection = input("Select a destination.", "Duct System") as null|anything in sortList(vents)
-
-					if(!selection)
-						return
-
-					if(!do_after(src, 45))
-						return
-
-					if(!src||!selection)
-						return
-
-					if(loc==startloc)
-						if(contents.len)
-							for(var/obj/item/carried_item in contents)//If the monkey got on objects.
-								if( !istype(carried_item, /obj/item/weapon/implant) && !istype(carried_item, /obj/item/clothing/mask/facehugger) )//If it's not an implant or a facehugger
-									src << "\red You can't be carrying items or have items equipped when vent crawling!"
-									return
-						var/obj/machinery/atmospherics/unary/vent_pump/target_vent = vents[selection]
-						if(target_vent)
-							for(var/mob/O in viewers(src, null))
-								O.show_message(text("<B>[src] scrambles into the ventillation ducts!</B>"), 1)
-							loc = target_vent
-
-							var/travel_time = round(get_dist(loc, target_vent.loc) / 2)
-
-							spawn(travel_time)
-
-								if(!target_vent)	return
-								for(var/mob/O in hearers(target_vent,null))
-									O.show_message("You hear something squeezing through the ventilation ducts.",2)
-
-								sleep(travel_time)
-
-								if(!target_vent)	return
-								if(target_vent.welded)			//the vent can be welded while alien scrolled through the list or travelled.
-									target_vent = vent_found 	//travel back. No additional time required.
-									src << "\red The vent you were heading to appears to be welded."
-								loc = target_vent.loc
-								var/area/new_area = get_area(loc)
-								if(new_area)
-									new_area.Entered(src)
-
-					else
-						src << "You need to remain still while entering a vent."
-				else
-					src << "This vent is not connected to anything."
-
-			else
-				src << "You must be standing on or beside an air vent to enter it."
-
-		else
-			src << "You can't vent crawl while you're stunned!"
-
-	else
-		src << "You must be conscious to do this!"
-	return
-
 
 /mob/living/carbon/clean_blood()
 	. = ..()
@@ -331,19 +270,6 @@
 //Throwing stuff
 
 /mob/living/carbon/proc/toggle_throw_mode()
-	var/obj/item/W = get_active_hand()
-	if( !W )//Not holding anything
-		if( client && (TK in mutations) )
-			var/obj/item/tk_grab/O = new(src)
-			put_in_active_hand(O)
-			O.host = src
-		return
-
-	if( istype(W,/obj/item/tk_grab) )
-		if(hand)	del(l_hand)
-		else		del(r_hand)
-		return
-
 	if (src.in_throw_mode)
 		throw_mode_off()
 	else
@@ -351,13 +277,18 @@
 
 /mob/living/carbon/proc/throw_mode_off()
 	src.in_throw_mode = 0
-	src.throw_icon.icon_state = "act_throw_off"
+	if(src.throw_icon) //in case we don't have the HUD and we use the hotkey
+		src.throw_icon.icon_state = "act_throw_off"
 
 /mob/living/carbon/proc/throw_mode_on()
 	src.in_throw_mode = 1
-	src.throw_icon.icon_state = "act_throw_on"
+	if(src.throw_icon)
+		src.throw_icon.icon_state = "act_throw_on"
 
-/mob/living/carbon/proc/throw_item(atom/target)
+/mob/proc/throw_item(atom/target)
+	return
+
+/mob/living/carbon/throw_item(atom/target)
 	src.throw_mode_off()
 	if(usr.stat || !target)
 		return
@@ -413,7 +344,7 @@
 */
 
 
-		item.throw_at(target, item.throw_range, item.throw_speed)
+		item.throw_at(target, item.throw_range, item.throw_speed, src)
 
 /mob/living/carbon/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	..()
@@ -487,77 +418,112 @@
 			return method ? ">250" : "extremely weak and fast, patient's artery feels like a thread"
 //			output for machines^	^^^^^^^output for people^^^^^^^^^
 
+/mob/living/carbon/verb/mob_sleep()
+	set name = "Sleep"
+	set category = "IC"
 
-//Brain slug proc for voluntary removal of control.
-/mob/living/carbon/proc/release_control()
-
-	set category = "Alien"
-	set name = "Release Control"
-	set desc = "Release control of your host's body."
-
-	var/mob/living/simple_animal/borer/B = has_brain_worms()
-
-	if(!B)
+	if(usr.sleeping)
+		usr << "\red You are already sleeping"
 		return
+	if(alert(src,"You sure you want to sleep for a while?","Sleep","Yes","No") == "Yes")
+		usr.sleeping = 20 //Short nap
 
-	if(B.controlling)
-		src << "\red <B>You withdraw your probosci, releasing control of [B.host_brain]</B>"
-		B.host_brain << "\red <B>Your vision swims as the alien parasite releases control of your body.</B>"
-		B.ckey = ckey
-		B.controlling = 0
-	if(B.host_brain.ckey)
-		ckey = B.host_brain.ckey
-		B.host_brain.ckey = null
-		B.host_brain.name = "host brain"
-		B.host_brain.real_name = "host brain"
+/mob/living/carbon/Bump(atom/movable/AM as mob|obj, yes)
 
-	verbs -= /mob/living/carbon/proc/release_control
-	verbs -= /mob/living/carbon/proc/punish_host
-	verbs -= /mob/living/carbon/proc/spawn_larvae
+	spawn( 0 )
+		if ((!( yes ) || now_pushing))
+			return
+		now_pushing = 1
+		if(ismob(AM))
+			var/mob/tmob = AM
 
-//Brain slug proc for tormenting the host.
-/mob/living/carbon/proc/punish_host()
-	set category = "Alien"
-	set name = "Torment host"
-	set desc = "Punish your host with agony."
+			if( istype(tmob, /mob/living/carbon) && prob(10) )
+				src.spread_disease_to(AM, "Contact")
 
-	var/mob/living/simple_animal/borer/B = has_brain_worms()
+			if(istype(tmob, /mob/living/carbon/human))
 
-	if(!B)
+				if(HULK in tmob.mutations)
+					if(prob(70))
+						usr << "\red <B>You fail to push [tmob]'s fat ass out of the way.</B>"
+						now_pushing = 0
+						return
+				if(!(tmob.status_flags & CANPUSH))
+					now_pushing = 0
+					return
+
+				for(var/mob/M in range(tmob, 1))
+					if(tmob.pinned.len ||  ((M.pulling == tmob && ( tmob.restrained() && !( M.restrained() ) && M.stat == 0)) || locate(/obj/item/weapon/grab, tmob.grabbed_by.len)) )
+						if ( !(world.time % 5) )
+							src << "\red [tmob] is restrained, you cannot push past"
+						now_pushing = 0
+						return
+					if( tmob.pulling == M && ( M.restrained() && !( tmob.restrained() ) && tmob.stat == 0) )
+						if ( !(world.time % 5) )
+							src << "\red [tmob] is restraining [M], you cannot push past"
+						now_pushing = 0
+						return
+
+			//Leaping mobs just land on the tile, no pushing, no anything.
+			if(status_flags & LEAPING)
+				loc = tmob.loc
+				status_flags &= ~LEAPING
+				now_pushing = 0
+				return
+
+			// Step over drones.
+			// I have no idea why the hell this isn't already happening. How do mice do it?
+			if(istype(tmob,/mob/living/silicon/robot/drone))
+				loc = tmob.loc
+				now_pushing = 0
+				return
+
+			if((tmob.a_intent == "help" || tmob.restrained()) && (a_intent == "help" || src.restrained()) && tmob.canmove && !tmob.buckled && canmove) // mutual brohugs all around!
+				var/turf/oldloc = loc
+				loc = tmob.loc
+				tmob.loc = oldloc
+				now_pushing = 0
+				for(var/mob/living/carbon/slime/slime in view(1,tmob))
+					if(slime.Victim == tmob)
+						slime.UpdateFeed()
+				return
+
+			if(istype(tmob, /mob/living/carbon/human) && (FAT in tmob.mutations))
+				if(prob(40) && !(FAT in src.mutations))
+					src << "\red <B>You fail to push [tmob]'s fat ass out of the way.</B>"
+					now_pushing = 0
+					return
+			if(tmob.r_hand && istype(tmob.r_hand, /obj/item/weapon/shield/riot))
+				if(prob(99))
+					now_pushing = 0
+					return
+			if(tmob.l_hand && istype(tmob.l_hand, /obj/item/weapon/shield/riot))
+				if(prob(99))
+					now_pushing = 0
+					return
+			if(!(tmob.status_flags & CANPUSH))
+				now_pushing = 0
+				return
+
+			tmob.LAssailant = src
+
+		now_pushing = 0
+		..()
+		if (!( istype(AM, /atom/movable) ))
+			return
+		if (!( now_pushing ))
+			now_pushing = 1
+			if (!( AM.anchored ))
+				var/t = get_dir(src, AM)
+				if (istype(AM, /obj/structure/window))
+					var/obj/structure/window/W = AM
+					if(W.is_full_window())
+						for(var/obj/structure/window/win in get_step(AM,t))
+							now_pushing = 0
+							return
+				step(AM, t)
+			now_pushing = 0
 		return
+	return
 
-	if(B.host_brain.ckey)
-		src << "\red <B>You send a punishing spike of psychic agony lancing into your host's brain.</B>"
-		B.host_brain << "\red <B><FONT size=3>Horrific, burning agony lances through you, ripping a soundless scream from your trapped mind!</FONT></B>"
-
-//Check for brain worms in head.
-/mob/living/carbon/proc/has_brain_worms()
-
-	for(var/I in contents)
-		if(istype(I,/mob/living/simple_animal/borer))
-			return I
-
-	return 0
-
-/mob/living/carbon/proc/spawn_larvae()
-	set category = "Alien"
-	set name = "Reproduce"
-	set desc = "Spawn several young."
-
-	var/mob/living/simple_animal/borer/B = has_brain_worms()
-
-	if(!B)
-		return
-
-	if(B.chemicals >= 100)
-		src << "\red <B>Your host twitches and quivers as you rapdly excrete several larvae from your sluglike body.</B>"
-		visible_message("\red <B>[src] heaves violently, expelling a rush of vomit and a wriggling, sluglike creature!</B>")
-		B.chemicals -= 100
-
-		new /obj/effect/decal/cleanable/vomit(get_turf(src))
-		playsound(loc, 'sound/effects/splat.ogg', 50, 1)
-		new /mob/living/simple_animal/borer(get_turf(src))
-
-	else
-		src << "You do not have enough chemicals stored to reproduce."
-		return
+/mob/living/carbon/can_use_vents()
+	return

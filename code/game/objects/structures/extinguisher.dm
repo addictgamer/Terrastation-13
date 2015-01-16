@@ -10,7 +10,7 @@
 
 
 /obj/structure/extinguisher_cabinet/attackby(obj/item/O, mob/user)
-	if(isrobot(user) || isalien(user))
+	if(isrobot(user))
 		return
 	if(istype(O, /obj/item/weapon/extinguisher))
 		if(!has_extinguisher && opened)
@@ -26,8 +26,15 @@
 
 
 /obj/structure/extinguisher_cabinet/attack_hand(mob/user)
-	if(isrobot(user) || isalien(user))
+	if(isrobot(user))
 		return
+	if (hasorgans(user))
+		var/datum/organ/external/temp = user:organs_by_name["r_hand"]
+		if (user.hand)
+			temp = user:organs_by_name["l_hand"]
+		if(temp && !temp.is_usable())
+			user << "<span class='notice'>You try to move your [temp.display_name], but cannot!"
+			return
 	if(has_extinguisher)
 		user.put_in_hands(has_extinguisher)
 		user << "<span class='notice'>You take [has_extinguisher] from [src].</span>"
@@ -37,6 +44,15 @@
 		opened = !opened
 	update_icon()
 
+/obj/structure/extinguisher_cabinet/attack_tk(mob/user)
+	if(has_extinguisher)
+		has_extinguisher.loc = loc
+		user << "<span class='notice'>You telekinetically remove [has_extinguisher] from [src].</span>"
+		has_extinguisher = null
+		opened = 1
+	else
+		opened = !opened
+	update_icon()
 
 /obj/structure/extinguisher_cabinet/attack_paw(mob/user)
 	attack_hand(user)

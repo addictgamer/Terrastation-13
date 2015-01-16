@@ -24,7 +24,7 @@
 	return 0
 
 /obj/item/weapon/melee/energy/sword/New()
-	color = pick("red","blue","green","purple")
+	item_color = pick("red","blue","green","purple")
 
 /obj/item/weapon/melee/energy/sword/attack_self(mob/living/user as mob)
 	if ((CLUMSY in user.mutations) && prob(50))
@@ -36,10 +36,11 @@
 		if(istype(src,/obj/item/weapon/melee/energy/sword/pirate))
 			icon_state = "cutlass1"
 		else
-			icon_state = "sword[color]"
+			icon_state = "sword[item_color]"
 		w_class = 4
 		playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
 		user << "\blue [src] is now active."
+
 	else
 		force = 3
 		if(istype(src,/obj/item/weapon/melee/energy/sword/pirate))
@@ -49,6 +50,12 @@
 		w_class = 2
 		playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
 		user << "\blue [src] can now be concealed."
+
+	if(istype(user,/mob/living/carbon/human))
+		var/mob/living/carbon/human/H = user
+		H.update_inv_l_hand()
+		H.update_inv_r_hand()
+
 	add_fingerprint(user)
 	return
 
@@ -84,7 +91,7 @@
 */
 	if (user.a_intent == "hurt")
 		if(!..()) return
-		playsound(src.loc, "swing_hit", 50, 1, -1)
+		//playsound(src.loc, "swing_hit", 50, 1, -1)
 		if (M.stuttering < 8 && (!(HULK in M.mutations))  /*&& (!istype(H:wear_suit, /obj/item/clothing/suit/judgerobe))*/)
 			M.stuttering = 8
 		M.Stun(8)
@@ -97,7 +104,7 @@
 		M.Weaken(5)
 		M.attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been attacked with [src.name] by [user.name] ([user.ckey])</font>")
 		user.attack_log += text("\[[time_stamp()]\] <font color='red'>Used the [src.name] to attack [M.name] ([M.ckey])</font>")
-		log_attack("[user.name] ([user.ckey]) attacked [M.name] ([M.ckey]) with [src.name] (INTENT: [uppertext(user.a_intent)])")
+		msg_admin_attack("[key_name(user)] attacked [key_name(user)] with [src.name] (INTENT: [uppertext(user.a_intent)])")
 		src.add_fingerprint(user)
 
 		for(var/mob/O in viewers(M))
@@ -106,7 +113,7 @@
 //Telescopic baton
 /obj/item/weapon/melee/telebaton
 	name = "telescopic baton"
-	desc = "A compact yet robust personal defense weapon. Can be concealed when folded."
+	desc = "A compact yet rebalanced personal defense weapon. Can be concealed when folded."
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "telebaton_0"
 	item_state = "telebaton_0"
@@ -137,10 +144,16 @@
 		w_class = 2
 		force = 3//not so robust now
 		attack_verb = list("hit", "punched")
+
+	if(istype(user,/mob/living/carbon/human))
+		var/mob/living/carbon/human/H = user
+		H.update_inv_l_hand()
+		H.update_inv_r_hand()
+
 	playsound(src.loc, 'sound/weapons/empty.ogg', 50, 1)
 	add_fingerprint(user)
 
-	if(blood_overlay && (blood_DNA.len >= 1))							//updates blood overlay, if any
+	if(blood_overlay && blood_DNA && (blood_DNA.len >= 1)) //updates blood overlay, if any
 		overlays.Cut()//this might delete other item overlays as well but eeeeeeeh
 
 		var/icon/I = new /icon(src.icon, src.icon_state)
@@ -163,12 +176,9 @@
 			else
 				user.take_organ_damage(2*force)
 			return
-
-		if(!..()) return
-		playsound(src.loc, "swing_hit", 50, 1, -1)
-		//target.Stun(4)	//naaah
-		target.Weaken(4)
-		return
+		if(..())
+			//playsound(src.loc, "swing_hit", 50, 1, -1)
+			return
 	else
 		return ..()
 
@@ -180,11 +190,11 @@
 
 /obj/item/weapon/melee/energy/sword/green
 	New()
-		color = "green"
+		item_color = "green"
 
 /obj/item/weapon/melee/energy/sword/red
 	New()
-		color = "red"
+		item_color = "red"
 
 /obj/item/weapon/melee/energy/blade/New()
 	spark_system = new /datum/effect/effect/system/spark_spread()
@@ -203,8 +213,6 @@
 /*
  * Energy Axe
  */
-/obj/item/weapon/melee/energy/axe/attack(target as mob, mob/user as mob)
-	..()
 
 /obj/item/weapon/melee/energy/axe/attack_self(mob/user as mob)
 	src.active = !( src.active )
@@ -242,11 +250,18 @@
 		w_class = 4
 		playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
 		user << "\blue [src] is now active."
+
 	else
 		force = 3
 		icon_state = "eshield[active]"
 		w_class = 1
 		playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
 		user << "\blue [src] can now be concealed."
+
+	if(istype(user,/mob/living/carbon/human))
+		var/mob/living/carbon/human/H = user
+		H.update_inv_l_hand()
+		H.update_inv_r_hand()
+
 	add_fingerprint(user)
 	return

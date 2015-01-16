@@ -54,7 +54,7 @@
 					caliber = "357"
 					desc = "The barrel and chamber assembly seems to have been modified."
 					user << "<span class='warning'>You reinforce the barrel of [src]! Now it will fire .357 rounds.</span>"
-			else
+			else if (caliber == "357")
 				user << "<span class='notice'>You begin to revert the modifications to [src].</span>"
 				if(loaded.len)
 					afterattack(user, user)	//and again
@@ -70,6 +70,27 @@
 					user << "<span class='warning'>You remove the modifications on [src]! Now it will fire .38 rounds.</span>"
 
 
+/obj/item/weapon/gun/projectile/detective/semiauto
+	desc = "A cheap Martian knock-off of a Colt M1911. Uses less-than-lethal .45 rounds."
+	name = "\improper Colt M1911"
+	icon_state = "colt"
+	max_shells = 7
+	caliber = ".45"
+	ammo_type = "/obj/item/ammo_casing/c45r"
+	load_method = 2
+
+/obj/item/weapon/gun/projectile/detective/semiauto/New()
+	..()
+	empty_mag = new /obj/item/ammo_magazine/c45r/empty(src)
+	return
+
+/obj/item/weapon/gun/projectile/detective/semiauto/afterattack(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, flag)
+	..()
+	if(!loaded.len && empty_mag)
+		empty_mag.loc = get_turf(src.loc)
+		empty_mag = null
+		user << "<span class='notice'>The Magazine falls out and clatters on the floor!</span>"
+	return
 
 
 /obj/item/weapon/gun/projectile/mateba
@@ -162,7 +183,7 @@
 				playsound(user, fire_sound, 50, 1)
 				user.visible_message("<span class='danger'>[user.name] fires [src] at \his head!</span>", "<span class='danger'>You fire [src] at your head!</span>", "You hear a [istype(in_chamber, /obj/item/projectile/beam) ? "laser blast" : "gunshot"]!")
 				if(!P.nodamage)
-					user.apply_damage(300, BRUTE, affecting) // You are dead, dead, dead.
+					user.apply_damage(300, BRUTE, affecting, sharp=1) // You are dead, dead, dead.
 				return
 	..()
 

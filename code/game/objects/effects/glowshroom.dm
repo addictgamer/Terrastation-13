@@ -8,6 +8,8 @@
 	icon = 'icons/obj/lighting.dmi'
 	icon_state = "glowshroomf"
 	layer = 2.1
+	l_color = "#003300"
+
 	var/endurance = 30
 	var/potency = 30
 	var/delay = 1200
@@ -16,6 +18,8 @@
 	var/spreadChance = 40
 	var/spreadIntoAdjacentChance = 60
 	var/evolveChance = 2
+	var/lastTick = 0
+	var/spreaded = 1
 
 /obj/effect/glowshroom/single
 	spreadChance = 0
@@ -40,15 +44,21 @@
 	else //if on the floor, glowshroom on-floor sprite
 		icon_state = "glowshroomf"
 
-	spawn(delay)
-		SetLuminosity(round(potency/10))
-		Spread()
+	processing_objects += src
 
-/obj/effect/glowshroom/proc/Spread()
-	set background = 1
-	var/spreaded = 1
+	SetLuminosity(round(potency/15))
+	lastTick = world.timeofday
 
-	while(spreaded)
+/obj/effect/glowshroom/Del()
+	processing_objects -= src
+	..()
+
+/obj/effect/glowshroom/process()
+	if(!spreaded)
+		return
+
+	if(((world.timeofday - lastTick) > delay) || ((world.timeofday - lastTick) < 0))
+		lastTick = world.timeofday
 		spreaded = 0
 
 		for(var/i=1,i<=yield,i++)
@@ -89,8 +99,6 @@
 
 		if(prob(evolveChance)) //very low chance to evolve on its own
 			potency += rand(4,6)
-
-		sleep(delay)
 
 /obj/effect/glowshroom/proc/CalcDir(turf/location = loc)
 	set background = 1
@@ -148,7 +156,7 @@
 		else
 	return
 
-/obj/effect/glowshroom/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+/obj/effect/glowshroom/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(exposed_temperature > 300)
 		endurance -= 5
 		CheckEndurance()

@@ -45,6 +45,18 @@
 		cmd_admin_pm(C,null)
 		return
 
+	if(href_list["irc_msg"])
+		if(!holder && received_irc_pm < world.time - 6000) //Worse they can do is spam IRC for 10 minutes
+			usr << "<span class='warning'>You are no longer able to use this, it's been more then 10 minutes since an admin on IRC has responded to you</span>"
+			return
+		if(mute_irc)
+			usr << "<span class='warning'You cannot use this as your client has been muted from sending messages to the admins on IRC</span>"
+			return
+		cmd_admin_irc_pm()
+		return
+
+
+
 	//Logs all hrefs
 	if(config && config.log_hrefs && href_logfile)
 		href_logfile << "<small>[time2text(world.timeofday,"hh:mm")] [src] (usr:[usr])</small> || [hsrc ? "[hsrc] " : ""][href]<br>"
@@ -93,22 +105,24 @@
 /client/New(TopicData)
 	TopicData = null							//Prevent calls to client.Topic from connect
 
-	if(connection != "seeker")					//Invalid connection type.
+	if(!(connection in list("seeker", "web")))					//Invalid connection type.
 		return null
 	if(byond_version < MIN_CLIENT_VERSION)		//Out of date client.
 		return null
 
-	/*if(IsGuestKey(key))
-		alert(src,"Baystation12 doesn't allow guest accounts to play. Please go to http://www.byond.com/ and register for a key.","Guest","OK")
+
+	if(!guests_allowed && IsGuestKey(key))
+		alert(src,"This server doesn't allow guest accounts to play. Please go to http://www.byond.com/ and register for a key.","Guest","OK")
+
 		del(src)
-		return*/
+		return
 
 	// Change the way they should download resources.
 	if(config.resource_urls)
 		src.preload_rsc = pick(config.resource_urls)
 	else src.preload_rsc = 1 // If config.resource_urls is not set, preload like normal.
 
-	src << "\red If the title screen is black (or you see a bunch of walls and weird stuff), resources are still downloading. Please be patient until the title screen appears. NOTE: IF YOU HEAR THE SPACE ODDITY LOBBY MUSIC YOU WILL HAVE TO RELOG AFTER JOINING TO GET IT TO STOP. WE ARE WORKING ON FIXING THIS."
+	src << "\red If the title screen is black, resources are still downloading. Please be patient until the title screen appears."
 
 
 	clients += src
@@ -147,6 +161,7 @@
 	log_client_to_db()
 
 	send_resources()
+	nanomanager.send_resources(src)
 
 	if(prefs.lastchangelog != changelog_hash) //bolds the changelog button on the interface so we know there are updates.
 		winset(src, "rpane.changelog", "background-color=#eaeaea;font-style=bold")
@@ -179,6 +194,7 @@
 	var/DBQuery/query = dbcon.NewQuery("SELECT id, datediff(Now(),firstseen) as age FROM erro_player WHERE ckey = '[sql_ckey]'")
 	query.Execute()
 	var/sql_id = 0
+	player_age = 0	// New players won't have an entry so knowing we have a connection we set this to zero to be updated if their is a record.
 	while(query.NextRow())
 		sql_id = query.item[1]
 		player_age = text2num(query.item[2])
@@ -241,22 +257,12 @@
 
 //send resources to the client. It's here in its own proc so we can move it around easiliy if need be
 /client/proc/send_resources()
+
 	getFiles(
-		'nano/js/libraries.min.js',
-		'nano/js/nano_update.js',
-		'nano/js/nano_config.js',
-		'nano/js/nano_base_helpers.js',
-		'nano/css/shared.css',
-		'nano/css/icons.css',
-		'nano/templates/cryo.tmpl',
-		'nano/images/uiBackground.png',
-		'nano/images/uiIcons16.png',
-		'nano/images/uiIcons24.png',
-		'nano/images/uiLinkPendingIcon.gif',
-		'nano/images/uiNoticeBackground.jpg',
-		'nano/images/uiTitleFluff.png',
 		'html/search.js',
 		'html/panels.css',
+		'html/painew.png',
+		'html/loading.gif',
 		'icons/pda_icons/pda_atmos.png',
 		'icons/pda_icons/pda_back.png',
 		'icons/pda_icons/pda_bell.png',
@@ -295,8 +301,5 @@
 		'icons/spideros_icons/sos_12.png',
 		'icons/spideros_icons/sos_13.png',
 		'icons/spideros_icons/sos_14.png',
-		'icons/xenoarch_icons/chart1.jpg',
-		'icons/xenoarch_icons/chart2.jpg',
-		'icons/xenoarch_icons/chart3.jpg',
-		'icons/xenoarch_icons/chart4.jpg'
+		'html/images/ntlogo.png'
 		)

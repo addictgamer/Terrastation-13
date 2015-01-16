@@ -1,19 +1,23 @@
+#define HEAT_CAPACITY_HUMAN 100 //249840 J/K, for a 72 kg person.
+
 /obj/machinery/atmospherics/unary/cryo_cell
-	name = "Cryo Cell"
+	name = "cryo cell"
 	icon = 'icons/obj/cryogenics.dmi'
 	icon_state = "cell-off"
 	density = 1
 	anchored = 1.0
 	layer = 2.8
-	
+
 	var/on = 0
+	use_power = 1
+	idle_power_usage = 20
+	active_power_usage = 200
+
 	var/temperature_archived
 	var/mob/living/carbon/occupant = null
-	var/beaker = null
+	var/obj/item/weapon/reagent_containers/glass/beaker = null
 
 	var/current_heat_capacity = 50
-
-
 
 /obj/machinery/atmospherics/unary/cryo_cell/New()
 	..()
@@ -64,32 +68,39 @@
 /obj/machinery/atmospherics/unary/cryo_cell/attack_hand(mob/user)
 	ui_interact(user)
 
-/obj/machinery/atmospherics/unary/cryo_cell/ui_interact(mob/user, ui_key = "main")
-	
+ /**
+  * The ui_interact proc is used to open and update Nano UIs
+  * If ui_interact is not used then the UI will not update correctly
+  * ui_interact is currently defined for /atom/movable (which is inherited by /obj and /mob)
+  *
+  * @param user /mob The mob who is interacting with this ui
+  * @param ui_key string A string key to use for this ui. Allows for multiple unique uis on one obj/mob (defaut value "main")
+  * @param ui /datum/nanoui This parameter is passed by the nanoui process() proc when updating an open ui
+  *
+  * @return nothing
+  */
+/obj/machinery/atmospherics/unary/cryo_cell/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
+
+	if(user == occupant || user.stat)
+		return
+
+	// this is the data which will be sent to the ui
 	var/data[0]
 	data["isOperating"] = on
-
 	data["hasOccupant"] = occupant ? 1 : 0
-	
+
 	var/occupantData[0]
-	if (!occupant)
-		occupantData["name"] = null
-		occupantData["stat"] = null
-		occupantData["health"] = null
-		occupantData["bruteLoss"] = null
-		occupantData["oxyLoss"] = null
-		occupantData["toxLoss"] = null
-		occupantData["fireLoss"] = null
-		occupantData["bodyTemperature"] = null
-	else
+	if (occupant)
 		occupantData["name"] = occupant.name
 		occupantData["stat"] = occupant.stat
-		occupantData["health"] = round(occupant.health)
-		occupantData["bruteLoss"] = round(occupant.getBruteLoss())
-		occupantData["oxyLoss"] = round(occupant.getOxyLoss())
-		occupantData["toxLoss"] = round(occupant.getToxLoss())
-		occupantData["fireLoss"] = round(occupant.getFireLoss())
-		occupantData["bodyTemperature"] = round(occupant.bodytemperature)
+		occupantData["health"] = occupant.health
+		occupantData["maxHealth"] = occupant.maxHealth
+		occupantData["minHealth"] = config.health_threshold_dead
+		occupantData["bruteLoss"] = occupant.getBruteLoss()
+		occupantData["oxyLoss"] = occupant.getOxyLoss()
+		occupantData["toxLoss"] = occupant.getToxLoss()
+		occupantData["fireLoss"] = occupant.getFireLoss()
+		occupantData["bodyTemperature"] = occupant.bodytemperature
 	data["occupant"] = occupantData;
 
 	data["cellTemperature"] = round(air_contents.temperature)
@@ -100,42 +111,61 @@
 		data["cellTemperatureStatus"] = "average"
 
 	data["isBeakerLoaded"] = beaker ? 1 : 0
+	/* // Removing beaker contents list from front-end, replacing with a total remaining volume
 	var beakerContents[0]
-	if(beaker && beaker:reagents && beaker:reagents.reagent_list.len)
-		for(var/datum/reagent/R in beaker:reagents.reagent_list)
-			beakerContents.Add(list(list("name" = R.name, "volume" = R.volume))) // list in a list because Byond merges the first list... 
+	if(beaker && beaker.reagents && beaker.reagents.reagent_list.len)
+		for(var/datum/reagent/R in beaker.reagents.reagent_list)
+			beakerContents.Add(list(list("name" = R.name, "volume" = R.volume))) // list in a list because Byond merges the first list...
 	data["beakerContents"] = beakerContents
-	
-	//user << list2json(data)
+	*/
+	data["beakerLabel"] = null
+	data["beakerVolume"] = 0
+	if(beaker)
+		data["beakerLabel"] = beaker.label_text ? beaker.label_text : null
+		if (beaker.reagents && beaker.reagents.reagent_list.len)
+			for(var/datum/reagent/R in beaker.reagents.reagent_list)
+				data["beakerVolume"] += R.volume
 
-	var/datum/nanoui/ui = nanomanager.get_open_ui(user, src, ui_key)
+	// update the ui if it exists, returns null if no ui is passed/found
+	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
+		// the ui does not exist, so we'll create a new() one
+        // for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
 		ui = new(user, src, ui_key, "cryo.tmpl", "Cryo Cell Control System", 520, 410)
-		// When the UI is first opened this is the data it will use
+		// when the ui is first opened this is the data it will use
 		ui.set_initial_data(data)
+		// open the new ui window
 		ui.open()
-		// Auto update every Master Controller tick
+		// auto update every Master Controller tick
 		ui.set_auto_update(1)
-	else
-		// The UI is already open so push the new data to it
-		ui.push_data(data)
-		return
-	//user.set_machine(src)
 
 /obj/machinery/atmospherics/unary/cryo_cell/Topic(href, href_list)
-	if ((get_dist(src, usr) <= 1) || istype(usr, /mob/living/silicon/ai))
-		if(href_list["start"])
-			on = !on
-			update_icon()
-		if(href_list["eject"])
-			if (beaker)
-				var/obj/item/weapon/reagent_containers/glass/B = beaker
-				B.loc = get_step(loc, SOUTH)
-				beaker = null		
+	if(usr == occupant)
+		return 0 // don't update UIs attached to this object
 
-		nanomanager.update_uis(src) // update all UIs attached to this object
-		add_fingerprint(usr)
-		return
+	if(..())
+		return 0 // don't update UIs attached to this object
+
+	if(href_list["switchOn"])
+		on = 1
+		update_icon()
+
+	if(href_list["switchOff"])
+		on = 0
+		update_icon()
+
+	if(href_list["ejectBeaker"])
+		if(beaker)
+			beaker.loc = get_step(loc, SOUTH)
+			beaker = null
+
+	if(href_list["ejectOccupant"])
+		if(!occupant || isslime(usr) || ispAI(usr))
+			return 0 // don't update UIs attached to this object
+		go_out()
+
+	add_fingerprint(usr)
+	return 1 // update UIs attached to this object
 
 /obj/machinery/atmospherics/unary/cryo_cell/attackby(var/obj/item/weapon/G as obj, var/mob/user as mob)
 	if(istype(G, /obj/item/weapon/reagent_containers/glass))
@@ -170,7 +200,7 @@
 	icon_state = "cell-off"
 
 /obj/machinery/atmospherics/unary/cryo_cell/proc/process_occupant()
-	if(air_contents.total_moles() < 10)
+	if(air_contents.total_moles < 10)
 		return
 	if(occupant)
 		if(occupant.stat == 2)
@@ -181,7 +211,7 @@
 		if(occupant.bodytemperature < T0C)
 			occupant.sleeping = max(5, (1/occupant.bodytemperature)*2000)
 			occupant.Paralyse(max(5, (1/occupant.bodytemperature)*3000))
-			if(air_contents.oxygen > 2)
+			if(air_contents.gas["oxygen"] > 2)
 				if(occupant.getOxyLoss()) occupant.adjustOxyLoss(-1)
 			else
 				occupant.adjustOxyLoss(-1)
@@ -196,11 +226,11 @@
 		var/has_clonexa = occupant.reagents.get_reagent_amount("clonexadone") >= 1
 		var/has_cryo_medicine = has_cryo || has_clonexa
 		if(beaker && !has_cryo_medicine)
-			beaker:reagents.trans_to(occupant, 1, 10)
-			beaker:reagents.reaction(occupant)
+			beaker.reagents.trans_to(occupant, 1, 10)
+			beaker.reagents.reaction(occupant)
 
 /obj/machinery/atmospherics/unary/cryo_cell/proc/heat_gas_contents()
-	if(air_contents.total_moles() < 1)
+	if(air_contents.total_moles < 1)
 		return
 	var/air_heat_capacity = air_contents.heat_capacity()
 	var/combined_heat_capacity = current_heat_capacity + air_heat_capacity
@@ -209,7 +239,7 @@
 		air_contents.temperature = combined_energy/combined_heat_capacity
 
 /obj/machinery/atmospherics/unary/cryo_cell/proc/expel_gas()
-	if(air_contents.total_moles() < 1)
+	if(air_contents.total_moles < 1)
 		return
 //	var/datum/gas_mixture/expel_gas = new
 //	var/remove_amount = air_contents.total_moles()/50
@@ -228,15 +258,20 @@
 		occupant.client.eye = occupant.client.mob
 		occupant.client.perspective = MOB_PERSPECTIVE
 	occupant.loc = get_step(loc, SOUTH)	//this doesn't account for walls or anything, but i don't forsee that being a problem.
-	if (occupant.bodytemperature < 261 && occupant.bodytemperature > 140) //Patch by Aranclanos to stop people from taking burn damage after being ejected
-		occupant.bodytemperature = 261
+	if (occupant.bodytemperature < 261 && occupant.bodytemperature >= 70) //Patch by Aranclanos to stop people from taking burn damage after being ejected
+		occupant.bodytemperature = 261									  // Changed to 70 from 140 by Zuhayr due to reoccurance of bug.
 //	occupant.metabslow = 0
 	occupant = null
+	current_heat_capacity = initial(current_heat_capacity)
+	update_use_power(1)
 	update_icon()
 	return
 /obj/machinery/atmospherics/unary/cryo_cell/proc/put_mob(mob/living/carbon/M as mob)
+	if (stat & (NOPOWER|BROKEN))
+		usr << "\red The cryo cell is not functioning."
+		return
 	if (!istype(M))
-		usr << "\red <B>The cryo cell cannot handle such liveform!</B>"
+		usr << "\red <B>The cryo cell cannot handle such a lifeform!</B>"
 		return
 	if (occupant)
 		usr << "\red <B>The cryo cell is already occupied!</B>"
@@ -255,6 +290,8 @@
 	if(M.health > -100 && (M.health < 0 || M.sleeping))
 		M << "\blue <b>You feel a cold liquid surround you. Your skin starts to freeze up.</b>"
 	occupant = M
+	current_heat_capacity = HEAT_CAPACITY_HUMAN
+	update_use_power(2)
 //	M.metabslow = 1
 	add_fingerprint(usr)
 	update_icon()
@@ -287,7 +324,7 @@
 		if(M.Victim == usr)
 			usr << "You're too busy getting your life sucked out of you."
 			return
-	if (usr.stat != 0 || stat & (NOPOWER|BROKEN))
+	if (usr.stat != 0)
 		return
 	put_mob(usr)
 	return

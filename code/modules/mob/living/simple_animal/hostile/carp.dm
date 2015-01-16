@@ -34,7 +34,7 @@
 	max_n2 = 0
 	minbodytemp = 0
 
-	break_stuff_probability = 2
+	break_stuff_probability = 15
 
 	faction = "carp"
 
@@ -44,7 +44,7 @@
 /mob/living/simple_animal/hostile/carp/FindTarget()
 	. = ..()
 	if(.)
-		emote("nashes at [.]")
+		custom_emote(1,"nashes at [.]")
 
 /mob/living/simple_animal/hostile/carp/AttackingTarget()
 	. =..()

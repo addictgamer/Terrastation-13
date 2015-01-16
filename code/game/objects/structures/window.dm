@@ -8,14 +8,19 @@
 	anchored = 1.0
 	flags = ON_BORDER
 	var/health = 14.0
-	var/ini_dir = null
-	var/state = 0
+	var/state = 2
 	var/reinf = 0
+	var/basestate
+	var/shardtype = /obj/item/weapon/shard
 //	var/silicate = 0 // number of units of silicate
 //	var/icon/silicateIcon = null // the silicated icon
 
-
 /obj/structure/window/bullet_act(var/obj/item/projectile/Proj)
+
+	//Tasers and the like should not damage windows.
+	if(Proj.damage_type == HALLOSS)
+		return
+
 	health -= Proj.damage
 	..()
 	if(health <= 0)
@@ -55,11 +60,16 @@
 	if(reinf) new /obj/item/stack/rods( loc)
 	del(src)
 
+//TODO: Make full windows a separate type of window.
+//Once a full window, it will always be a full window, so there's no point
+//having the same type for both.
+/obj/structure/window/proc/is_full_window()
+	return (dir == SOUTHWEST || dir == SOUTHEAST || dir == NORTHWEST || dir == NORTHEAST)
 
 /obj/structure/window/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
 	if(istype(mover) && mover.checkpass(PASSGLASS))
 		return 1
-	if(dir == SOUTHWEST || dir == SOUTHEAST || dir == NORTHWEST || dir == NORTHEAST)
+	if(is_full_window())
 		return 0	//full tile window, you can't move into it!
 	if(get_dir(loc, target) == dir)
 		return !density
@@ -96,6 +106,9 @@
 		if(reinf) new /obj/item/stack/rods(loc)
 		del(src)
 
+/obj/structure/window/attack_tk(mob/user as mob)
+	user.visible_message("<span class='notice'>Something knocks on [src].</span>")
+	playsound(loc, 'sound/effects/Glasshit.ogg', 50, 1)
 
 /obj/structure/window/attack_hand(mob/user as mob)
 	if(HULK in user.mutations)
@@ -104,7 +117,15 @@
 		new /obj/item/weapon/shard(loc)
 		if(reinf) new /obj/item/stack/rods(loc)
 		del(src)
+
 	else if (usr.a_intent == "hurt")
+
+		if (istype(usr,/mob/living/carbon/human))
+			var/mob/living/carbon/human/H = usr
+			if(H.species.can_shred(H))
+				attack_generic(H,25)
+				return
+
 		playsound(src.loc, 'sound/effects/glassknock.ogg', 80, 1)
 		usr.visible_message("\red [usr.name] bangs against the [src.name]!", \
 							"\red You bang against the [src.name]!", \
@@ -121,7 +142,7 @@
 	return attack_hand(user)
 
 
-/obj/structure/window/proc/attack_generic(mob/user as mob, damage = 0)	//used by attack_alien, attack_animal, and attack_slime
+/obj/structure/window/proc/attack_generic(mob/user as mob, damage = 0)	//used by attack_animal and attack_slime
 	health -= damage
 	if(health <= 0)
 		user.visible_message("<span class='danger'>[user] smashes through [src]!</span>")
@@ -132,11 +153,6 @@
 		user.visible_message("<span class='danger'>[user] smashes into [src]!</span>")
 		playsound(loc, 'sound/effects/Glasshit.ogg', 100, 1)
 
-
-/obj/structure/window/attack_alien(mob/user as mob)
-	if(islarva(user)) return
-	attack_generic(user, 15)
-
 /obj/structure/window/attack_animal(mob/user as mob)
 	if(!isanimal(user)) return
 	var/mob/living/simple_animal/M = user
@@ -145,36 +161,40 @@
 
 
 /obj/structure/window/attack_slime(mob/user as mob)
-	if(!isslimeadult(user)) return
+	var/mob/living/carbon/slime/S = user
+	if (!S.is_adult)
+		return
 	attack_generic(user, rand(10, 15))
 
 
-/obj/structure/window/attackby(obj/item/weapon/W as obj, mob/user as mob)
+/obj/structure/window/attackby(obj/item/W as obj, mob/user as mob)
 	if(!istype(W)) return//I really wish I did not need this
-
 	if (istype(W, /obj/item/weapon/grab) && get_dist(src,user)<2)
 		var/obj/item/weapon/grab/G = W
-		if (istype(G.affecting, /mob/living))
+		if(istype(G.affecting,/mob/living))
 			var/mob/living/M = G.affecting
 			var/state = G.state
 			del(W)	//gotta delete it here because if window breaks, it won't get deleted
 			switch (state)
 				if(1)
+					M.visible_message("<span class='warning'>[user] slams [M] against \the [src]!</span>")
 					M.apply_damage(7)
 					hit(10)
-					visible_message("\red [user] slams [M] against \the [src]!")
 				if(2)
+					M.visible_message("<span class='danger'>[user] bashes [M] against \the [src]!</span>")
 					if (prob(50))
 						M.Weaken(1)
 					M.apply_damage(10)
 					hit(25)
-					visible_message("\red <b>[user] bashes [M] against \the [src]!</b>")
 				if(3)
+					M.visible_message("<span class='danger'><big>[user] crushes [M] against \the [src]!</big></span>")
 					M.Weaken(5)
 					M.apply_damage(20)
 					hit(50)
-					visible_message("\red <big><b>[user] crushes [M] against \the [src]!</b></big>")
 			return
+
+	if(W.flags & NOBLUDGEON) return
+
 	if(istype(W, /obj/item/weapon/screwdriver))
 		if(reinf && state >= 1)
 			state = 3 - state
@@ -216,11 +236,11 @@
 			var/index = null
 			index = 0
 			while(index < 2)
-				new /obj/item/weapon/shard(loc)
+				new shardtype(loc)
 				if(reinf) new /obj/item/stack/rods(loc)
 				index++
 		else
-			new /obj/item/weapon/shard(loc)
+			new shardtype(loc)
 			if(reinf) new /obj/item/stack/rods(loc)
 		del(src)
 		return
@@ -239,7 +259,6 @@
 	dir = turn(dir, 90)
 //	updateSilicate()
 	update_nearby_tiles(need_rebuild=1)
-	ini_dir = dir
 	return
 
 
@@ -256,7 +275,6 @@
 	dir = turn(dir, 270)
 //	updateSilicate()
 	update_nearby_tiles(need_rebuild=1)
-	ini_dir = dir
 	return
 
 
@@ -276,27 +294,18 @@
 */
 
 
-/obj/structure/window/New(Loc,re=0)
+/obj/structure/window/New(Loc, start_dir=null, constructed=0)
 	..()
 
-	if(re)	reinf = re
+	//player-constructed windows
+	if (constructed)
+		anchored = 0
 
-	ini_dir = dir
-	if(reinf)
-		icon_state = "rwindow"
-		desc = "A reinforced window."
-		name = "reinforced window"
-		state = 2*anchored
-		health = 40
-		if(opacity)
-			icon_state = "twindow"
-	else
-		icon_state = "window"
+	if (start_dir)
+		dir = start_dir
 
 	update_nearby_tiles(need_rebuild=1)
 	update_nearby_icons()
-
-	return
 
 
 /obj/structure/window/Del()
@@ -308,35 +317,15 @@
 
 
 /obj/structure/window/Move()
+	var/ini_dir = dir
 	update_nearby_tiles(need_rebuild=1)
 	..()
 	dir = ini_dir
 	update_nearby_tiles(need_rebuild=1)
 
-
-//This proc has to do with airgroups and atmos, it has nothing to do with smoothwindows, that's update_nearby_tiles().
-/obj/structure/window/proc/update_nearby_tiles(need_rebuild)
-	if(!air_master) return 0
-	if(!dir in cardinal)
-		var/turf/simulated/source = get_turf(src)
-		if(istype(source))
-			air_master.tiles_to_update |= source
-			for(var/dir in cardinal)
-				var/turf/simulated/target = get_step(source,dir)
-				if(istype(target)) air_master.tiles_to_update |= target
-		return 1
-
-	var/turf/simulated/source = get_turf(src)
-	var/turf/simulated/target = get_step(source,dir)
-
-	if(istype(source)) air_master.tiles_to_update |= source
-	if(istype(target)) air_master.tiles_to_update |= target
-
-	return 1
-
 //checks if this window is full-tile one
 /obj/structure/window/proc/is_fulltile()
-	if(dir in list(5,6,9,10))
+	if(dir & (dir - 1))
 		return 1
 	return 0
 
@@ -355,6 +344,7 @@
 	spawn(2)
 		if(!src) return
 		if(!is_fulltile())
+			icon_state = "[basestate]"
 			return
 		var/junction = 0 //will be used to determine from which side the window is connected to other windows
 		if(anchored)
@@ -363,16 +353,16 @@
 					if(abs(x-W.x)-abs(y-W.y) ) 		//doesn't count windows, placed diagonally to src
 						junction |= get_dir(src,W)
 		if(opacity)
-			icon_state = "twindow[junction]"
+			icon_state = "[basestate][junction]"
 		else
 			if(reinf)
-				icon_state = "rwindow[junction]"
+				icon_state = "[basestate][junction]"
 			else
-				icon_state = "window[junction]"
+				icon_state = "[basestate][junction]"
 
 		return
 
-/obj/structure/window/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+/obj/structure/window/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(exposed_temperature > T0C + 800)
 		hit(round(exposed_volume / 100), 0)
 	..()
@@ -380,18 +370,73 @@
 
 
 /obj/structure/window/basic
+	desc = "It looks thin and flimsy. A few knocks with... anything, really should shatter it."
 	icon_state = "window"
+	basestate = "window"
+
+/obj/structure/window/phoronbasic
+	name = "phoron window"
+	desc = "A phoron-glass alloy window. It looks insanely tough to break. It appears it's also insanely tough to burn through."
+	basestate = "phoronwindow"
+	icon_state = "phoronwindow"
+	shardtype = /obj/item/weapon/shard/phoron
+	health = 120
+
+/obj/structure/window/phoronbasic/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	if(exposed_temperature > T0C + 32000)
+		hit(round(exposed_volume / 1000), 0)
+	..()
+
+/obj/structure/window/phoronreinforced
+	name = "reinforced phoron window"
+	desc = "A phoron-glass alloy window, with rods supporting it. It looks hopelessly tough to break. It also looks completely fireproof, considering how basic phoron windows are insanely fireproof."
+	basestate = "phoronrwindow"
+	icon_state = "phoronrwindow"
+	shardtype = /obj/item/weapon/shard/phoron
+	reinf = 1
+	health = 160
+
+/obj/structure/window/phoronreinforced/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
+	return
 
 /obj/structure/window/reinforced
 	name = "reinforced window"
+	desc = "It looks rather strong. Might take a few good hits to shatter it."
 	icon_state = "rwindow"
+	basestate = "rwindow"
+	health = 40
 	reinf = 1
+
+/obj/structure/window/New(Loc, constructed=0)
+	..()
+
+	//player-constructed windows
+	if (constructed)
+		state = 0
 
 /obj/structure/window/reinforced/tinted
 	name = "tinted window"
+	desc = "It looks rather strong and opaque. Might take a few good hits to shatter it."
 	icon_state = "twindow"
+	basestate = "twindow"
 	opacity = 1
 
 /obj/structure/window/reinforced/tinted/frosted
 	name = "frosted window"
+	desc = "It looks rather strong and frosted over. Looks like it might take a few less hits then a normal reinforced window."
 	icon_state = "fwindow"
+	basestate = "fwindow"
+	health = 30
+
+/obj/structure/window/shuttle
+	name = "shuttle window"
+	desc = "It looks rather strong. Might take a few good hits to shatter it."
+	icon = 'icons/obj/podwindows.dmi'
+	icon_state = "window"
+	basestate = "window"
+	health = 40
+	reinf = 1
+	dir = 5
+
+	update_icon() //icon_state has to be set manually
+		return

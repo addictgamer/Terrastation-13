@@ -29,12 +29,12 @@
 
 /obj/structure/filingcabinet/initialize()
 	for(var/obj/item/I in loc)
-		if(istype(I, /obj/item/weapon/paper) || istype(I, /obj/item/weapon/folder) || istype(I, /obj/item/weapon/photo))
+		if(istype(I, /obj/item/weapon/paper) || istype(I, /obj/item/weapon/folder) || istype(I, /obj/item/weapon/photo) || istype(I, /obj/item/weapon/paper_bundle))
 			I.loc = src
 
 
 /obj/structure/filingcabinet/attackby(obj/item/P as obj, mob/user as mob)
-	if(istype(P, /obj/item/weapon/paper) || istype(P, /obj/item/weapon/folder) || istype(P, /obj/item/weapon/photo))
+	if(istype(P, /obj/item/weapon/paper) || istype(P, /obj/item/weapon/folder) || istype(P, /obj/item/weapon/photo) || istype(P, /obj/item/weapon/paper_bundle))
 		user << "<span class='notice'>You put [P] in [src].</span>"
 		user.drop_item()
 		P.loc = src
@@ -57,15 +57,29 @@
 
 	user.set_machine(src)
 	var/dat = "<center><table>"
-	var/i
-	for(i=contents.len, i>=1, i--)
-		var/obj/item/P = contents[i]
+	for(var/obj/item/P in src)
 		dat += "<tr><td><a href='?src=\ref[src];retrieve=\ref[P]'>[P.name]</a></td></tr>"
 	dat += "</table></center>"
 	user << browse("<html><head><title>[name]</title></head><body>[dat]</body></html>", "window=filingcabinet;size=350x300")
 
 	return
 
+/obj/structure/filingcabinet/attack_tk(mob/user)
+	if(anchored)
+		attack_self_tk(user)
+	else
+		..()
+
+/obj/structure/filingcabinet/attack_self_tk(mob/user)
+	if(contents.len)
+		if(prob(40 + contents.len * 5))
+			var/obj/item/I = pick(contents)
+			I.loc = loc
+			if(prob(25))
+				step_rand(I)
+			user << "<span class='notice'>You pull \a [I] out of [src] at random.</span>"
+			return
+	user << "<span class='notice'>You find nothing in [src].</span>"
 
 /obj/structure/filingcabinet/Topic(href, href_list)
 	if(href_list["retrieve"])
@@ -73,12 +87,13 @@
 
 		//var/retrieveindex = text2num(href_list["retrieve"])
 		var/obj/item/P = locate(href_list["retrieve"])//contents[retrieveindex]
-		if(P && in_range(src, usr))
+		if(istype(P) && (P.loc == src) && src.Adjacent(usr))
 			usr.put_in_hands(P)
 			updateUsrDialog()
 			icon_state = "[initial(icon_state)]-open"
-			sleep(5)
-			icon_state = initial(icon_state)
+			spawn(0)
+				sleep(5)
+				icon_state = initial(icon_state)
 
 
 /*
@@ -88,7 +103,7 @@
 	var/virgin = 1
 
 
-/obj/structure/filingcabinet/security/attack_hand(mob/user as mob)
+/obj/structure/filingcabinet/security/proc/populate()
 	if(virgin)
 		for(var/datum/data/record/G in data_core.general)
 			var/datum/data/record/S
@@ -105,11 +120,18 @@
 				P.info += "[S.fields["com_[counter]"]]<BR>"
 				counter++
 			P.info += "</TT>"
-			P.name = "paper - '[G.fields["name"]]'"
+			P.name = "Security Record ([G.fields["name"]])"
 			virgin = 0	//tabbing here is correct- it's possible for people to try and use it
 						//before the records have been generated, so we do this inside the loop.
 	..()
 
+/obj/structure/filingcabinet/security/attack_hand()
+	populate()
+	..()
+
+/obj/structure/filingcabinet/security/attack_tk()
+	populate()
+	..()
 
 /*
  * Medical Record Cabinets
@@ -117,7 +139,7 @@
 /obj/structure/filingcabinet/medical
 	var/virgin = 1
 
-/obj/structure/filingcabinet/medical/attack_hand(mob/user as mob)
+/obj/structure/filingcabinet/medical/proc/populate()
 	if(virgin)
 		for(var/datum/data/record/G in data_core.general)
 			var/datum/data/record/M
@@ -134,7 +156,15 @@
 				P.info += "[M.fields["com_[counter]"]]<BR>"
 				counter++
 			P.info += "</TT>"
-			P.name = "paper - '[G.fields["name"]]'"
+			P.name = "Medical Record ([G.fields["name"]])"
 			virgin = 0	//tabbing here is correct- it's possible for people to try and use it
 						//before the records have been generated, so we do this inside the loop.
+	..()
+
+/obj/structure/filingcabinet/medical/attack_hand()
+	populate()
+	..()
+
+/obj/structure/filingcabinet/medical/attack_tk()
+	populate()
 	..()

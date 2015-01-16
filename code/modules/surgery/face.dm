@@ -47,7 +47,7 @@
 /datum/surgery_step/face/mend_vocal
 	allowed_tools = list(
 	/obj/item/weapon/hemostat = 100, 	\
-	/obj/item/weapon/cable_coil = 75, 	\
+	/obj/item/stack/cable_coil = 75, 	\
 	/obj/item/device/assembly/mousetrap = 10	//I don't know. Don't ask me. But I'm leaving it because hilarity.
 	)
 
@@ -85,26 +85,26 @@
 		return ..() && target.op_stage.face == 2
 
 	begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-		user.visible_message("[user] starts pulling skin on [target]'s face back in place with \the [tool].", \
-		"You start pulling skin on [target]'s face back in place with \the [tool].")
+		user.visible_message("[user] starts pulling the skin on [target]'s face back in place with \the [tool].", \
+		"You start pulling the skin on [target]'s face back in place with \the [tool].")
 		..()
 
 	end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-		user.visible_message("\blue [user] pulls skin on [target]'s face back in place with \the [tool].",	\
-		"\blue You pull skin on [target]'s face back in place with \the [tool].")
+		user.visible_message("\blue [user] pulls the skin on [target]'s face back in place with \the [tool].",	\
+		"\blue You pull the skin on [target]'s face back in place with \the [tool].")
 		target.op_stage.face = 3
 
 	fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/datum/organ/external/affected = target.get_organ(target_zone)
 		user.visible_message("\red [user]'s hand slips, tearing skin on [target]'s face with \the [tool]!", \
 		"\red Your hand slips, tearing skin on [target]'s face with \the [tool]!")
-		target.apply_damage(10, BRUTE, affected)
+		target.apply_damage(10, BRUTE, affected, sharp=1, sharp=1)
 
 /datum/surgery_step/face/cauterize
 	allowed_tools = list(
 	/obj/item/weapon/cautery = 100,			\
 	/obj/item/clothing/mask/cigarette = 75,	\
-	/obj/item/weapon/lighter = 50,			\
+	/obj/item/weapon/flame/lighter = 50,			\
 	/obj/item/weapon/weldingtool = 25
 	)
 

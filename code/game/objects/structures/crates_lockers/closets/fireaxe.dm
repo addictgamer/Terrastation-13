@@ -25,10 +25,10 @@
 			if(istype(O, /obj/item/device/multitool))
 				user << "\red Resetting circuitry..."
 				playsound(user, 'sound/machines/lockreset.ogg', 50, 1)
-				sleep(50) // Sleeping time~
-				src.locked = 0
-				user << "\blue You disable the locking modules."
-				update_icon()
+				if(do_after(user, 20))
+					src.locked = 0
+					user << "<span class = 'caution'> You disable the locking modules.</span>"
+					update_icon()
 				return
 			else if(istype(O, /obj/item/weapon))
 				var/obj/item/weapon/W = O
@@ -87,6 +87,9 @@
 					src.locked = 1
 					user << "\blue You re-enable the locking modules."
 					playsound(user, 'sound/machines/lockenable.ogg', 50, 1)
+					if(do_after(user,20))
+						src.locked = 1
+						user << "<span class = 'caution'> You re-enable the locking modules.</span>"
 					return
 			else
 				localopened = !localopened
@@ -136,6 +139,15 @@
 			else
 				src.icon_state = text("fireaxe[][][][]closing",hasaxe,src.localopened,src.hitstaken,src.smashed)
 				spawn(10) update_icon()
+
+	attack_tk(mob/user as mob)
+		if(localopened && fireaxe)
+			fireaxe.loc = loc
+			user << "\blue You telekinetically remove the fire axe."
+			fireaxe = null
+			update_icon()
+			return
+		attack_hand(user)
 
 	verb/toggle_openness() //nice name, huh? HUH?! -Erro //YEAH -Agouri
 		set name = "Open/Close"

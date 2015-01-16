@@ -42,7 +42,7 @@
 	if(src.corpsegloves)
 		M.equip_to_slot_or_del(new src.corpsegloves(M), slot_gloves)
 	if(src.corpseradio)
-		M.equip_to_slot_or_del(new src.corpseradio(M), slot_ears)
+		M.equip_to_slot_or_del(new src.corpseradio(M), slot_l_ear)
 	if(src.corpseglasses)
 		M.equip_to_slot_or_del(new src.corpseglasses(M), slot_glasses)
 	if(src.corpsemask)
@@ -161,9 +161,9 @@
 	corpseidaccess = "Station Engineer"
 
 /obj/effect/landmark/corpse/engineer/rig
-	corpsesuit = /obj/item/clothing/suit/space/rig
+	corpsesuit = /obj/item/clothing/suit/space/rig/engineering
 	corpsemask = /obj/item/clothing/mask/breath
-	corpsehelmet = /obj/item/clothing/head/helmet/space/rig
+	corpsehelmet = /obj/item/clothing/head/helmet/space/rig/engineering
 
 /obj/effect/landmark/corpse/clown
 	name = "Clown"
@@ -227,7 +227,7 @@
 	corpsehelmet = /obj/item/clothing/head/centhat
 	corpsegloves = /obj/item/clothing/gloves/swat
 	corpseshoes = /obj/item/clothing/shoes/swat
-	corpsepocket1 = /obj/item/weapon/lighter/zippo
+	corpsepocket1 = /obj/item/weapon/flame/lighter/zippo
 	corpseid = 1
 	corpseidjob = "Commander"
 	corpseidaccess = "Captain"

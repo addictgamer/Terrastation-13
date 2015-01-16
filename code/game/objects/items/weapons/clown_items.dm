@@ -8,10 +8,10 @@
 /*
  * Banana Peals
  */
-/obj/item/weapon/bananapeel/HasEntered(AM as mob|obj)
+/obj/item/weapon/bananapeel/Crossed(AM as mob|obj)
 	if (istype(AM, /mob/living/carbon))
 		var/mob/M =	AM
-		if (istype(M, /mob/living/carbon/human) && (isobj(M:shoes) && M:shoes.flags&NOSLIP))
+		if (istype(M, /mob/living/carbon/human) && (isobj(M:shoes) && M:shoes.flags&NOSLIP) || M.buckled)
 			return
 
 		M.stop_pulling()
@@ -23,10 +23,10 @@
 /*
  * Soap
  */
-/obj/item/weapon/soap/HasEntered(AM as mob|obj) //EXACTLY the same as bananapeel for now, so it makes sense to put it in the same dm -- Urist
+/obj/item/weapon/soap/Crossed(AM as mob|obj) //EXACTLY the same as bananapeel for now, so it makes sense to put it in the same dm -- Urist
 	if (istype(AM, /mob/living/carbon))
 		var/mob/M =	AM
-		if (istype(M, /mob/living/carbon/human) && (isobj(M:shoes) && M:shoes.flags&NOSLIP))
+		if (istype(M, /mob/living/carbon/human) && (isobj(M:shoes) && M:shoes.flags&NOSLIP) || M.buckled)
 			return
 
 		M.stop_pulling()
@@ -35,7 +35,8 @@
 		M.Stun(3)
 		M.Weaken(2)
 
-/obj/item/weapon/soap/afterattack(atom/target, mob/user as mob)
+/obj/item/weapon/soap/afterattack(atom/target, mob/user as mob, proximity)
+	if(!proximity) return
 	//I couldn't feasibly  fix the overlay bugs caused by cleaning items we are wearing.
 	//So this is a workaround. This also makes more sense from an IC standpoint. ~Carn
 	if(user.client && (target in user.client.screen))

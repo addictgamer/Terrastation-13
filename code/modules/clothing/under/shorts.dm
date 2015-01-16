@@ -6,21 +6,26 @@
 	body_parts_covered = LOWER_TORSO
 
 /obj/item/clothing/under/shorts/red
+	name = "red athletic shorts"
 	icon_state = "redshorts"
-	color = "redshorts"
+	item_color = "redshorts"
 
 /obj/item/clothing/under/shorts/green
+	name = "green athletic shorts"
 	icon_state = "greenshorts"
-	color = "greenshorts"
+	item_color = "greenshorts"
 
 /obj/item/clothing/under/shorts/blue
+	name = "blue athletic shorts"
 	icon_state = "blueshorts"
-	color = "blueshorts"
+	item_color = "blueshorts"
 
 /obj/item/clothing/under/shorts/black
+	name = "black athletic shorts"
 	icon_state = "blackshorts"
-	color = "blackshorts"
+	item_color = "blackshorts"
 
 /obj/item/clothing/under/shorts/grey
+	name = "grey athletic shorts"
 	icon_state = "greyshorts"
-	color = "greyshorts"
+	item_color = "greyshorts"

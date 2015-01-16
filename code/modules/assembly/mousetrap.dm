@@ -2,8 +2,7 @@
 	name = "mousetrap"
 	desc = "A handy little spring-loaded trap for catching pesty rodents."
 	icon_state = "mousetrap"
-	m_amt = 100
-	w_amt = 10
+	matter = list("metal" = 100, "waste" = 10)
 	origin_tech = "combat=1"
 	var/armed = 0
 
@@ -45,6 +44,7 @@
 			visible_message("\red <b>SPLAT!</b>")
 			M.splat()
 		playsound(target.loc, 'sound/effects/snap.ogg', 50, 1)
+		layer = MOB_LAYER - 0.2
 		armed = 0
 		update_icon()
 		pulse(0)
@@ -81,7 +81,7 @@
 		..()
 
 
-	HasEntered(AM as mob|obj)
+	Crossed(AM as mob|obj)
 		if(armed)
 			if(ishuman(AM))
 				var/mob/living/carbon/H = AM
@@ -113,3 +113,15 @@
 /obj/item/device/assembly/mousetrap/armed
 	icon_state = "mousetraparmed"
 	armed = 1
+
+
+/obj/item/device/assembly/mousetrap/verb/hide_under()
+	set src in oview(1)
+	set name = "Hide"
+	set category = "Object"
+
+	if(usr.stat)
+		return
+
+	layer = TURF_LAYER+0.2
+	usr << "<span class='notice'>You hide [src].</span>"
