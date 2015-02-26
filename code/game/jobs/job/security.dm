@@ -115,7 +115,7 @@
 		else
 			H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
 			H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/evidence(H), slot_in_backpack)
-			H.equip_to_slot_or_del(new /obj/item/device/detective_scanner(H), slot_in_backpack)
+//			H.equip_to_slot_or_del(new /obj/item/device/detective_scanner(H), slot_in_backpack)
 		if(H.mind.role_alt_title && H.mind.role_alt_title == "Forensic Technician")
 			H.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/forensics/blue(H), slot_wear_suit)
 		else

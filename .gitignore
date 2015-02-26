@@ -1,6 +1,6 @@
 .directory
 terrastation.int
 *.lk
-data/logs/
+data/
 /config/*
 !/config/*/*

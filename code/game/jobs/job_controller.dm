@@ -578,7 +578,7 @@ var/global/datum/controller/occupations/job_master
 		if(locate(/obj/item/device/pda,H))
 			var/obj/item/device/pda/pda = locate(/obj/item/device/pda,H)
 			pda.owner = H.real_name
-			pda.ownjob = C.assignment
+//			pda.ownjob = C.assignment //testing this as the Wheeling Bug points to this line --LZ
 			pda.ownrank = C.rank
 			pda.name = "PDA-[H.real_name] ([pda.ownjob])"
 
