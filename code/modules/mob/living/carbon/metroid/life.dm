@@ -42,7 +42,7 @@
 
 	handle_regular_status_updates() // Status updates, death etc.
 
-/mob/living/carbon/slime/proc/AIprocess()	// the master AI process
+/mob/living/carbon/slime/proc/AIprocess()  // the master AI process
 
 	if(AIproc || stat == DEAD || client) return
 
@@ -83,7 +83,7 @@
 							Atkcool = 0
 
 						if(Target.Adjacent(src))
-							Target.attack_slime(src)
+							UnarmedAttack(Target)
 					return
 				if(!Target.lying && prob(80))
 
@@ -94,7 +94,7 @@
 								Atkcool = 0
 
 							if(Target.Adjacent(src))
-								Target.attack_slime(src)
+								UnarmedAttack(Target)
 
 					else
 						if(!Atkcool && Target.Adjacent(src))
@@ -118,7 +118,7 @@
 		var/sleeptime = movement_delay()
 		if(sleeptime <= 0) sleeptime = 1
 
-		sleep(sleeptime + 2)	// this is about as fast as a player slime can go
+		sleep(sleeptime + 2) // this is about as fast as a player slime can go
 
 	AIproc = 0
 
@@ -138,10 +138,9 @@
 	else
 		loc_temp = environment.temperature
 
-
 	if(loc_temp < 310.15) // a cold place
 		bodytemperature += adjust_body_temperature(bodytemperature, loc_temp, 1)
-	else	// a hot place
+	else // a hot place
 		bodytemperature += adjust_body_temperature(bodytemperature, loc_temp, 1)
 
 	//Account for massive pressure differences
@@ -150,8 +149,8 @@
 		if(bodytemperature <= (T0C - 40)) // stun temperature
 			Tempstun = 1
 
-		if(bodytemperature <= (T0C - 50))	// hurt temperature
-			if(bodytemperature <= 50)	// sqrting negative numbers is bad
+		if(bodytemperature <= (T0C - 50)) // hurt temperature
+			if(bodytemperature <= 50) // sqrting negative numbers is bad
 				adjustToxLoss(200)
 			else
 				adjustToxLoss(round(sqrt(bodytemperature)) * 2)
@@ -161,16 +160,16 @@
 
 	updatehealth()
 
-	return	// TODO: DEFERRED
+	return //TODO: DEFERRED
 
 /mob/living/carbon/slime/proc/adjust_body_temperature(current, loc_temp, boost)
 	var/temperature = current
-	var/difference = abs(current-loc_temp)	// get difference
-	var/increments// = difference / 10		// find how many increments apart they are
+	var/difference = abs(current-loc_temp)	//get difference
+	var/increments// = difference/10			//find how many increments apart they are
 	if(difference > 50)
-		increments = difference / 5
+		increments = difference/5
 	else
-		increments = difference / 10
+		increments = difference/10
 	var/change = increments*boost	// Get the amount to change by (x per increment)
 	var/temp_change
 	if(current < loc_temp)
@@ -186,9 +185,10 @@
 
 	src.updatehealth()
 
-	return	// TODO: DEFERRED
+	return //TODO: DEFERRED
 
 /mob/living/carbon/slime/proc/handle_regular_status_updates()
+
 	if(is_adult)
 		health = 200 - (getOxyLoss() + getToxLoss() + getFireLoss() + getBruteLoss() + getCloneLoss())
 	else
@@ -199,6 +199,7 @@
 		return
 
 	else if(src.health < config.health_threshold_crit)
+
 		if(!src.reagents.has_reagent("inaprovaline"))
 			src.adjustOxyLoss(10)
 
@@ -216,7 +217,7 @@
 		src.lying = 1
 		src.blinded = 1
 	else
-		if (src.paralysis || src.stunned || src.weakened || (status_flags && FAKEDEATH))	// Stunned etc.
+		if (src.paralysis || src.stunned || src.weakened || (status_flags && FAKEDEATH)) //Stunned etc.
 			if (src.stunned > 0)
 				AdjustStunned(-1)
 				src.stat = 0
@@ -260,6 +261,7 @@
 	return 1
 
 /mob/living/carbon/slime/proc/handle_nutrition()
+
 	if (prob(15))
 		nutrition -= 1 + is_adult
 
@@ -280,7 +282,7 @@
 
 /mob/living/carbon/slime/proc/handle_targets()
 	if(Tempstun)
-		if(!Victim)	// not while they're eating!
+		if(!Victim) // not while they're eating!
 			canmove = 0
 	else
 		canmove = 1
@@ -301,16 +303,13 @@
 	if(!client)
 		if(!canmove) return
 
-
 		if(Victim) return // if it's eating someone already, continue eating!
-
 
 		if(Target)
 			--target_patience
 			if (target_patience <= 0 || SStun || Discipline || attacked) // Tired of chasing or something draws out attention
 				target_patience = 0
 				Target = null
-
 
 		if(AIproc && SStun) return
 
@@ -322,7 +321,6 @@
 			hungry = 1
 
 		if(hungry == 2 && !client) // if a slime is starving, it starts losing its friends
-
 			if(Friends.len > 0 && prob(1))
 				var/mob/nofriend = pick(Friends)
 				--Friends[nofriend]
@@ -330,7 +328,6 @@
 		if(!Target)
 			if(will_hunt() && hungry || attacked || rabid) // Only add to the list if we need to
 				var/list/targets = list()
-
 
 				for(var/mob/living/L in view(7,src))
 
@@ -345,9 +342,8 @@
 
 					if(istype(L, /mob/living/carbon/human) && dna) //Ignore slime(wo)men
 						var/mob/living/carbon/human/H = L
-						if(H.dna)
-							if(H.dna.mutantrace == "slime")
-								continue
+						if(H.species.name == "Slime")
+							continue
 
 					if(!L.canmove) // Only one slime can latch on at a time.
 						var/notarget = 0
@@ -358,7 +354,6 @@
 							continue
 
 					targets += L // Possible target found!
-
 
 				if(targets.len > 0)
 					if(attacked || rabid || hungry == 2)
@@ -579,3 +574,6 @@
 	if (Leader) return 0
 	if (holding_still) return 0
 	return 1
+
+/mob/living/carbon/slime/slip() //Can't slip something without legs.
+	return 0

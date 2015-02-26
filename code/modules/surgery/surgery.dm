@@ -5,7 +5,7 @@
 
 	// type path referencing tools that can be used for this step, and how well are they suited for it
 	var/list/allowed_tools = null
-	// type paths referencing mutantraces that this step applies to.
+	// type paths referencing races that this step applies to.
 	var/list/allowed_species = null
 	var/list/disallowed_species = null
 
@@ -98,7 +98,7 @@ proc/do_surgery(mob/living/carbon/M, mob/living/user, obj/item/tool)
 				//We had proper tools! (or RNG smiled.) and user did not move or change hands.
 				if(prob(S.tool_quality(tool)) &&  do_mob(user, M, rand(S.min_duration, S.max_duration)))
 					S.end_step(user, M, user.zone_sel.selecting, tool)		//finish successfully
-				else if (tool in user.contents && user.Adjacent(M))			//or
+				else if ((tool in user.contents) && user.Adjacent(M))			//or
 					S.fail_step(user, M, user.zone_sel.selecting, tool)		//malpractice~
 				else // This failing silently was a pain.
 					user << "\red You must remain close to your patient to conduct surgery."
