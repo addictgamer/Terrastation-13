@@ -46,10 +46,12 @@ var/global/datum/controller/gameticker/ticker
 	'sound/music/halloween/halloween.ogg',\
 	'sound/music/halloween/ghosts.ogg'*/
 	'sound/music/space.ogg',\
-	'sound/music/traitor.ogg',\
-	'sound/music/title2.ogg',\
+	'sound/music/b12_combined_start.ogg',\
+	'sound/music/darkest_blue.ogg',\
 	'sound/music/clouds.s3m',\
 	'sound/music/space_oddity.ogg') //Ground Control to Major Tom, this song is cool, what's going on?
+//Removed traitor and title2 because spess ambience also. Added b12_stuff because I love that track for some reason. Added DB because
+//I've wanted it in here since fukkin forever. --LZ
 
 	do
 		pregame_timeleft = 180
