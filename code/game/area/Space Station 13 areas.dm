@@ -1165,7 +1165,7 @@ var/list/ghostteleportlocs = list()
 
 	aft
 		name = "\improper Aft Solar Array"
-		icon_state = "aft"
+		icon_state = "bluenew"
 
 	starboard
 		name = "\improper Aft Starboard Solar Array"
