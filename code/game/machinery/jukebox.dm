@@ -30,7 +30,10 @@ datum/track/New(var/title_name, var/audio)
 		new/datum/track("Part A", 'sound/misc/TestLoop1.ogg'),
 		new/datum/track("Scratch", 'sound/music/title1.ogg'),
 		new/datum/track("Trai`Tor", 'sound/music/traitor.ogg'),
+		new/datum/track("Red Sky", 'sound/music/redsky.ogg'),
+		new/datum/track("Darkest Blue", 'sound/music/darkest_blue.ogg'),
 	)
+//Red Sky and Darkest Blue added to this thing. --LZ
 
 /obj/machinery/media/jukebox/Del()
 	StopPlaying()
