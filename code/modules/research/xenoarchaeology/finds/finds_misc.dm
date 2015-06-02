@@ -47,6 +47,7 @@
 	name = "Crystal"
 	icon = 'icons/obj/mining.dmi'
 	icon_state = "crystal"
+	desc = "An energy crystal has been f- wait, fuck. This is the wrong game entirely."
 
 /obj/machinery/crystal/New()
 	if(prob(50))
