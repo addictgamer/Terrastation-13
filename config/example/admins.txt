@@ -6,3 +6,7 @@
 ######################################################################
 
 # not_a_user - Admin
+
+lordzakida - Host
+addictgamer - Game Master
+# taukausanake - Tauka
