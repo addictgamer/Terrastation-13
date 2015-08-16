@@ -5,3 +5,8 @@ data/
 /config/*
 !/config/*/*
 maps/Rock2-1liam.dmm
+Thumbs.db
+*.log
+*.int
+*.rsc
+*.backup

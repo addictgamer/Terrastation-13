@@ -60,8 +60,9 @@
 		return
 
 	//clean the message if it's not sent by a high-rank admin
+	//todo: sanitize for all???
 	if(!check_rights(R_SERVER|R_DEBUG,0))
-		msg = sanitize(copytext(msg,1,MAX_MESSAGE_LEN))
+		msg = sanitize(msg)
 		if(!msg)	return
 
 	var/recieve_pm_type = "Player"
@@ -91,7 +92,7 @@
 			spawn(0)	//so we don't hold the caller proc up
 				var/sender = src
 				var/sendername = key
-				var/reply = input(C, msg,"[recieve_pm_type] PM from [sendername]", "") as text|null		//show message and await a reply
+				var/reply = sanitize(input(C, msg,"[recieve_pm_type] PM from [sendername]", "") as text|null)		//show message and await a reply
 				if(C && reply)
 					if(sender)
 						C.cmd_admin_pm(sender,reply)										//sender is still about, let's reply to them
@@ -107,6 +108,7 @@
 		C << 'sound/effects/adminhelp.ogg'
 
 	log_admin("PM: [key_name(src)]->[key_name(C)]: [msg]")
+	send2adminirc("Reply: [key_name(src)]->[key_name(C)]: [html_decode(msg)]")
 
 	//we don't use message_admins here because the sender/receiver might get it too
 	for(var/client/X in admins)
@@ -135,7 +137,7 @@
 
 	send2adminirc("PlayerPM from [key_name(src)]: [html_decode(msg)]")
 
-	src << "<span class='pm'><span class='out'>" + create_text_tag("pm_out_alt", "", src) + " to <span class='name'Admin IRC</span>: <span class='message'>[msg]</span></span></span>"
+	src << "<span class='pm'><span class='out'>" + create_text_tag("pm_out_alt", "", src) + " to <span class='name'>Admin IRC</span>: <span class='message'>[msg]</span></span></span>"
 
 	log_admin("PM: [key_name(src)]->IRC: [msg]")
 	for(var/client/X in admins)

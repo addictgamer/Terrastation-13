@@ -88,8 +88,11 @@ var/const/FALLOFF_SOUNDS = 0.5
 		// The y value is for above your head, but there is no ceiling in 2d spessmens.
 		S.y = 1
 		S.falloff = (falloff ? falloff : FALLOFF_SOUNDS)
+
 	if(!is_global)
-		S.environment = 2
+		var/area/A = get_area(src)
+		S.environment = A.sound_env
+
 	src << S
 
 /client/proc/playtitlemusic()
