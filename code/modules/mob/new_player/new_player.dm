@@ -40,8 +40,7 @@
 
 		output += "<p><a href='byond://?src=\ref[src];observe=1'>Observe</A></p>"
 
-		//TODO: Bring the poll stuff up to snuff with our code.
-		/* if(!IsGuestKey(src.key))
+		if(!IsGuestKey(src.key))
 			establish_db_connection()
 
 			if(dbcon.IsConnected())
@@ -59,7 +58,6 @@
 					output += "<p><b><a href='byond://?src=\ref[src];showpoll=1'>Show Player Polls</A> (NEW!)</b></p>"
 				else
 					output += "<p><a href='byond://?src=\ref[src];showpoll=1'>Show Player Polls</A></p>"
-		*/
 
 		output += "</div>"
 
@@ -115,8 +113,8 @@
 				var/mob/dead/observer/observer = new()
 
 				spawning = 1
-				client.music.status = SOUND_PAUSED | SOUND_UPDATE
-				client << client.music
+				/*client.music.status = SOUND_PAUSED | SOUND_UPDATE
+				client << client.music*/ //Possibly breaks things - Cip
 				src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // MAD JAMS cant last forever yo
 
 
@@ -427,8 +425,8 @@
 	proc/create_character()
 		spawning = 1
 		//src << "MAD JAMS can't last forever yo"
-		if (src.client && src.client.music) src.client.music.status = SOUND_PAUSED | SOUND_UPDATE
-		if (src.client && src.client.music) src.client << src.client.music
+		/*if (src.client && src.client.music) src.client.music.status = SOUND_PAUSED | SOUND_UPDATE
+		if (src.client && src.client.music) src.client << src.client.music*/ //Possibly breaks things - Cip
 		src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // MAD JAMS cant last forever yo
 		close_spawn_windows()
 
@@ -460,6 +458,8 @@
 			client.prefs.randomize_appearance_for(new_character)
 		else
 			client.prefs.copy_to(new_character)
+
+		src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // MAD JAMS cant last forever yo
 
 		if(mind)
 			mind.active = 0					//we wish to transfer the key manually

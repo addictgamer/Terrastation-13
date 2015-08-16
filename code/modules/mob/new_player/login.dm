@@ -3,8 +3,6 @@
 	if(join_motd)
 		src << "<div class=\"motd\">[join_motd]</div>"
 
-	client.playtitlemusic()
-
 	if(!mind)
 		mind = new /datum/mind(key)
 		mind.active = 1
@@ -32,3 +30,4 @@
 	spawn(40)
 		if(client)
 			handle_privacy_poll()
+			client.playtitlemusic()
