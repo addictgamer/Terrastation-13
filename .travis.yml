@@ -1,0 +1,25 @@
+#pretending we're C because otherwise ruby will initialize, even with "language: dm".
+language: c
+
+env:
+    global:
+    - BYOND_MAJOR="508"
+    - BYOND_MINOR="1289"
+    matrix:
+    - DM_MAPFILE="cyberiad"
+
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install libc6:i386 libgcc1:i386 libstdc++6:i386 -qq
+
+install:
+  - curl "http://www.byond.com/download/build/${BYOND_MAJOR}/${BYOND_MAJOR}.${BYOND_MINOR}_byond_linux.zip" -o byond.zip
+  - unzip byond.zip
+  - cd byond
+  - sudo make install
+  - cd ..
+
+script:
+  - shopt -s globstar
+  - (! grep 'step_[xy]' _maps/map_files/**/*.dmm)
+  - bash dm.sh -M${DM_MAPFILE} paradise.dme
