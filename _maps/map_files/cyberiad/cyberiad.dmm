@@ -4323,7 +4323,7 @@
 "bFg" = (/obj/structure/disposalpipe/junction{dir = 1; icon_state = "pipe-j2"; tag = "icon-pipe-j2"},/turf/simulated/floor,/area/quartermaster/office)
 "bFh" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor,/area/quartermaster/office)
 "bFi" = (/obj/effect/landmark/start{name = "Cargo Technician"},/obj/structure/stool/bed/chair/office/dark{dir = 4},/turf/simulated/floor,/area/quartermaster/office)
-"bFj" = (/obj/structure/table/reinforced,/obj/machinery/door/firedoor{dir = 4; name = "Firelock East"},/obj/machinery/door/window/westleft{name = "Cargo Desk"; req_access_txt = "50"},/obj/structure/noticeboard{pixel_y = 27},/turf/simulated/floor,/area/quartermaster/office)
+"bFj" = (/obj/structure/table/reinforced,/obj/machinery/door/firedoor{dir = 4; name = "Firelock East"},/obj/machinery/door/window/westleft{dir = 2; name = "Cargo Desk"; req_access_txt = "50"},/obj/structure/noticeboard{pixel_y = 27},/turf/simulated/floor,/area/quartermaster/office)
 "bFk" = (/turf/simulated/floor{icon_state = "delivery"},/area/quartermaster/office)
 "bFl" = (/obj/structure/stool/bed/chair{dir = 8},/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/effect/landmark/start{name = "Civilian"},/turf/simulated/floor,/area/quartermaster/office)
 "bFm" = (/obj/structure/disposalpipe/segment{dir = 4; icon_state = "pipe-c"},/turf/simulated/floor{icon_state = "red"; dir = 4},/area/hallway/primary/central/sw)

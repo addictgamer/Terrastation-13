@@ -27,8 +27,12 @@ z8 = syndicate station
         #define MAP_FILE "complex.dmm"
         #define MAP_NAME "NSS Complex"
 
+/area/quartermaster/garage
+	name = "\improper Cargo Garage"
+	icon_state = "quartoffice"
+
 #elif !defined(MAP_OVERRIDE)
 
-	#warn a map has already been included, ignoring Cyberiad.
+	#warn a map has already been included, ignoring Complex.
 
 #endif
