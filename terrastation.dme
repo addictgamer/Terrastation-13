@@ -53,6 +53,7 @@
 #define FILE_DIR "icons/obj/machines"
 #define FILE_DIR "icons/obj/pipes"
 #define FILE_DIR "icons/obj/power_cond"
+#define FILE_DIR "icons/obj/terra"
 #define FILE_DIR "icons/obj/tram"
 #define FILE_DIR "icons/pda_icons"
 #define FILE_DIR "icons/pods"
