@@ -18,3 +18,20 @@ z8 = syndicate station*
 
 #if !defined(MAP_FILE)
 //		#include "map_files\rockstation\(whatever Z is named goes here).dmm"
+		#include "map_files\rockstation\Rock2-1.dmm"
+		#include "map_files\rockstation\z2.dmm"
+        #include "map_files\rockstation\z3.dmm"
+        #include "map_files\rockstation\z4.dmm"
+        #include "map_files\rockstation\z5.dmm"
+        #include "map_files\rockstation\z6.dmm"
+        #include "map_files\rockstation\z7.dmm"
+        #include "map_files\rockstation\z8.dmm"
+
+		#define MAP_FILE "rockstation.dmm"
+        #define MAP_NAME "NSS Rock"
+
+#elif !defined(MAP_OVERRIDE)
+
+	#warn a map has already been included, ignoring Rock2-1.
+
+#endif
