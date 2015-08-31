@@ -26,6 +26,7 @@
 
 /area/terralabs
 	icon_state = "away"
+	music = "music/mines03.ogg"
 	//Nothing; this is intended for inheritance use only and not for the actual maps
 
 /area/terralabs/hallway
@@ -67,10 +68,47 @@
 
 /area/geostat/hydro
 	name = "Geostation Hydroponics Wing"
-	icon_state = "garden"
+	icon_state = "radiation"
 
 /area/geostat/disposal
 	name = "The ShitHub"
 	icon_state = "law"
+
+
+// SUBSTATIONS (I stole these from our old bay stuff if we ever want to use them in something... which I will, in rock)
+// (Subtype of maint, that should let them serve as shielded area during radstorm)
+
+/area/maintenance/substation
+	name = "Substation"
+	icon = 'icons/turf/areas2.dmi' //Using separate area icon file to avoid merge bullshit
+	icon_state = "substation"
+
+/area/maintenance/substation/engineering //selfexplanatory
+	name = "Engineering Substation"
+
+/area/maintenance/substation/medical_science // Unused in bay, but depending on your map demands.... This is both med and sci
+	name = "Medical Research Substation"
+
+/area/maintenance/substation/medical //med
+	name = "Medical Substation"
+
+/area/maintenance/substation/research //sci
+	name = "Research Substation"
+
+/area/maintenance/substation/civilian_east // Bar, kitchen, dorms, whatever you can hook to it really
+	name = "Civilian East Substation"
+
+/area/maintenance/substation/civilian_west // anything on the other side that's civ area stuff
+	name = "Civilian West Substation"
+
+/area/maintenance/substation/cargo //Not initially on this list when I stole it; but I'm gonna have a dedicated substation for cargo. As always.
+	name = "Cargo Substation"
+
+/area/maintenance/substation/command // Bridge and HoS plus whatever else is up there
+	name = "Command Substation"
+
+/area/maintenance/substation/security // sec
+	name = "Security Substation"
+
 
 //butts
