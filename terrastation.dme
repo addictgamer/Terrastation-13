@@ -1619,6 +1619,7 @@
 #include "code\modules\paperwork\stamps.dm"
 #include "code\modules\pooling\atom_pool.dm"
 #include "code\modules\power\apc.dm"
+#include "code\modules\power\breaker_box.dm"
 #include "code\modules\power\cable.dm"
 #include "code\modules\power\cable_heavyduty.dm"
 #include "code\modules\power\cable_logic.dm"
