@@ -16,8 +16,11 @@ z8 = syndicate station*
 *But high likelyhood ^that shit won't stay that way
 */
 
-#if !defined(MAP_FILE)
+//This is for the next block of shit; only putting above it in case it doesn't like comments in its pingas (too lazy to test it)
 //		#include "map_files\rockstation\(whatever Z is named goes here).dmm"
+
+#if !defined(MAP_FILE)
+
 		#include "map_files\rockstation\Rock2-1.dmm"
 		#include "map_files\rockstation\z2.dmm"
         #include "map_files\rockstation\z3.dmm"
@@ -32,6 +35,6 @@ z8 = syndicate station*
 
 #elif !defined(MAP_OVERRIDE)
 
-	#warn a map has already been included, ignoring Rock2-1.
+	#warn a map has already been included, ignoring Rock2.
 
 #endif

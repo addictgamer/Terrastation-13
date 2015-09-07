@@ -6,7 +6,7 @@
 
 /obj/machinery/power/breakerbox
 	name = "Breaker Box"
-	icon = 'icons/obj/power.dmi'
+	icon = 'icons/obj/power2.dmi'
 	icon_state = "bbox_off"
 	//directwired = 0
 	var/icon_state_on = "bbox_on"
