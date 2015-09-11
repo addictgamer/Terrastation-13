@@ -111,4 +111,14 @@
 	name = "Security Substation"
 
 
+// ENGINEERING AREAS THAT PARADISE CANNED FOR WHATEVER REASON
+
+/area/engine/d_fab
+	name = "Drone Fabrication"
+	icon_state = "engine"
+
+/area/engine/e_waste
+	name = "Engine Waste Handling"
+	icon_state = "engine"
+
 //butts
