@@ -177,7 +177,7 @@
 
 /obj/item/weapon/reagent_containers/glass/beaker
 	name = "beaker"
-	desc = "A beaker. Can hold up to 50 units."
+	desc = "A beaker. Can hold up to 60 units."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "beaker"
 	item_state = "beaker"
@@ -274,10 +274,10 @@
 
 /obj/item/weapon/reagent_containers/glass/beaker/large
 	name = "large beaker"
-	desc = "A large beaker. Can hold up to 100 units."
+	desc = "A large beaker. Can hold up to 120 units."
 	icon_state = "beakerlarge"
 	g_amt = 2500
-	volume = 100
+	volume = 120
 	amount_per_transfer_from_this = 10
 	possible_transfer_amounts = list(5,10,15,25,30,50,100)
 	flags = OPENCONTAINER
@@ -294,10 +294,10 @@
 
 /obj/item/weapon/reagent_containers/glass/beaker/noreact
 	name = "cryostasis beaker"
-	desc = "A cryostasis beaker that allows for chemical storage without reactions. Can hold up to 50 units."
+	desc = "A cryostasis beaker that allows for chemical storage without reactions. Can hold up to 60 units."
 	icon_state = "beakernoreact"
 	g_amt = 500
-	volume = 50
+	volume = 60
 	amount_per_transfer_from_this = 10
 	flags = OPENCONTAINER | NOREACT
 
