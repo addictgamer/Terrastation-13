@@ -34,13 +34,22 @@ var/global/datum/controller/gameticker/ticker
 
 	var/round_end_announced = 0 // Spam Prevention. Announce round end only once.
 
-/datum/controller/gameticker/proc/pregame()
-	login_music = pick(\
+/* This is shit that was in the lobby music block below before I put my dick in it. --LZ
+login_music = pick(\
 	'sound/music/THUNDERDOME.ogg',\
 	'sound/music/space.ogg',\
 	'sound/music/Title1.ogg',\
 	'sound/music/Title2.ogg',\
 	'sound/music/Title3.ogg',)
+	*/
+
+/datum/controller/gameticker/proc/pregame()
+	login_music = pick(\
+	'sound/music/robocop_slow.ogg',\
+	'sound/music/redsky.ogg',\
+	'sound/music/muh_face.ogg',\
+	'sound/music/darkest_blue.ogg',\
+	'sound/music/Atmosdel_Sub_Balloon.ogg',)
 	do
 		pregame_timeleft = 180
 		world << "<B><FONT color='blue'>Welcome to the pre-game lobby!</FONT></B>"
@@ -504,7 +513,7 @@ var/global/datum/controller/gameticker/ticker
 		world << "<b>There [dronecount>1 ? "were" : "was"] [dronecount] industrious maintenance [dronecount>1 ? "drones" : "drone"] this round."
 
 	mode.declare_completion()//To declare normal completion.
-	
+
 	//calls auto_declare_completion_* for all modes
 	for(var/handler in typesof(/datum/game_mode/proc))
 		if (findtext("[handler]","auto_declare_completion_"))
