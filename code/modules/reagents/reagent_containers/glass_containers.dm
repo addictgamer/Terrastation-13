@@ -183,6 +183,7 @@
 	item_state = "beaker"
 	m_amt = 0
 	g_amt = 500
+	volume = 60
 	var/obj/item/device/assembly_holder/assembly = null
 
 	on_reagent_change()
