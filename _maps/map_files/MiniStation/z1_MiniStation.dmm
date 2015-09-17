@@ -974,7 +974,7 @@
 "sL" = (/obj/machinery/atmospherics/pipe/simple{dir = 9; icon_state = "intact"; level = 2},/turf/simulated/floor{icon_state = "white"},/area/medical/medbay)
 "sM" = (/obj/machinery/light/small,/obj/structure/closet/gmcloset,/obj/machinery/atmospherics/unary/vent_pump{dir = 1; on = 1},/turf/simulated/floor/wood,/area/crew_quarters/bar)
 "sN" = (/obj/machinery/light/small,/obj/machinery/processor,/obj/machinery/atmospherics/unary/vent_scrubber{dir = 1; on = 1},/turf/simulated/floor/wood,/area/crew_quarters/bar)
-"sO" = (/obj/machinery/pipedispenser/disposal/transit_tube,/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/turf/simulated/floor,/area/engine/engineering)
+"sO" = (/obj/structure/transit_tube,/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 4},/turf/simulated/floor,/area/engine/engineering)
 "sP" = (/obj/structure/grille,/obj/structure/window/full/shuttle,/turf/simulated/floor/plating,/area/shuttle/arrival)
 "sQ" = (/obj/effect/spawner/window/reinforced,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 4},/turf/simulated/floor/plating,/area/engine/engineering)
 "sR" = (/obj/structure/table/reinforced,/obj/machinery/door/window/brigdoor{base_state = "rightsecure"; dir = 2; icon_state = "rightsecure"; name = "Head of Personnel's Desk"; req_access_txt = "57"},/obj/machinery/door/window/northright{name = "Reception Window"},/turf/simulated/floor/plating,/area/crew_quarters/heads{name = "\improper Job Assignment"})
