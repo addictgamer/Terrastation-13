@@ -93,7 +93,7 @@
 #define DEBUG
 // END_PREFERENCES
 // BEGIN_INCLUDE
-#include "_maps\complex.dm"
+#include "_maps\cyberiad2.dm"
 #include "code\_compile_options.dm"
 #include "code\hub.dm"
 #include "code\stylesheet.dm"
