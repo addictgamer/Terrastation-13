@@ -27,6 +27,7 @@ z8 = syndicate station
         #define MAP_FILE "outpostgamma.dmm"
         #define MAP_NAME "Outpost Gamma"
 
+
 #elif !defined(MAP_OVERRIDE)
 
 	#warn a map has already been included, ignoring outpostgamma.
