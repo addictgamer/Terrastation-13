@@ -9,7 +9,7 @@ z2 = centcomm
 z3 = telecommunications center
 z4 = engineering ship*
 z5 = mining
-z6 = russian derelict*
+z6 = ruskie station and other spessdiver goodies
 z7 = empty*
 z8 = syndicate station*
 
