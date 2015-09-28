@@ -12,6 +12,11 @@
 	update_icon()
 		return
 
+/obj/item/weapon/gun/energy/laser/shiper/chrome
+	name = "Chrome Shiper"
+	icon_state = "cshiper"
+	desc = "A more rifle-like variant of the shotgun-sniper-thing. This one has a chrome finish."
+
 
 //Beam
 

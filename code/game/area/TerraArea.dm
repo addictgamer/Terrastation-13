@@ -74,6 +74,13 @@
 	name = "The ShitHub"
 	icon_state = "law"
 
+/area/geostat/maint
+	name = "maintenance"
+	icon_state = "maintcentral"
+
+/area/geostat/exterior
+	name = "Geostation Exterior"
+	icon_state = "cave"
 
 // SUBSTATIONS (I stole these from our old bay stuff if we ever want to use them in something... which I will, in rock)
 // (Subtype of maint, that should let them serve as shielded area during radstorm)

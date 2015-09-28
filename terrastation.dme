@@ -1306,6 +1306,7 @@
 #include "code\modules\media\broadcast\receivers\radio.dm"
 #include "code\modules\media\broadcast\transmitters\broadcast.dm"
 #include "code\modules\mining\abandonedcrates.dm"
+#include "code\modules\mining\asteroids.dm"
 #include "code\modules\mining\coins.dm"
 #include "code\modules\mining\equipment_locker.dm"
 #include "code\modules\mining\machine_input_output_plates.dm"
