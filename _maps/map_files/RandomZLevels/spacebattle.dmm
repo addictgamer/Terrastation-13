@@ -315,7 +315,7 @@
 "gc" = (/obj/structure/artilleryplaceholder/decorative{tag = "icon-25"; icon_state = "25"},/turf/simulated/floor/plating/airless,/area/awaymission/spacebattle/cruiser)
 "gd" = (/obj/structure/artilleryplaceholder/decorative{tag = "icon-26"; icon_state = "26"},/turf/simulated/floor/plating/airless,/area/awaymission/spacebattle/cruiser)
 "ge" = (/obj/structure/artilleryplaceholder/decorative{tag = "icon-27"; icon_state = "27"},/turf/simulated/floor/plating/airless,/area/awaymission/spacebattle/cruiser)
-"gf" = (/obj/structure/artilleryplaceholder/decorative{tag = "icon-28"; icon_state = "28"},/obj/machinery/artillerycontrol,/turf/simulated/floor/plating/airless,/area/awaymission/spacebattle/cruiser)
+"gf" = (/obj/structure/artilleryplaceholder/decorative{tag = "icon-28"; icon_state = "28"},/obj/machinery/computer/artillerycontrol,/turf/simulated/floor/plating/airless,/area/awaymission/spacebattle/cruiser)
 "gg" = (/obj/structure/artilleryplaceholder/decorative{tag = "icon-29"; icon_state = "29"},/turf/simulated/floor/plating/airless,/area/awaymission/spacebattle/cruiser)
 "gh" = (/obj/structure/artilleryplaceholder/decorative{tag = "icon-30"; icon_state = "30"},/turf/simulated/floor/plating/airless,/area/awaymission/spacebattle/cruiser)
 "gi" = (/obj/structure/artilleryplaceholder/decorative{tag = "icon-31"; icon_state = "31"},/turf/simulated/floor/plating/airless,/area/awaymission/spacebattle/cruiser)
