@@ -21,7 +21,7 @@ z8 = syndicate station*
 
 #if !defined(MAP_FILE)
 
-		#include "map_files\rockstation\Rock2-1.dmm"
+		#include "map_files\rockstation\Rock2.dmm"
 		#include "map_files\rockstation\z2.dmm"
         #include "map_files\rockstation\z3.dmm"
         #include "map_files\rockstation\z4.dmm"
