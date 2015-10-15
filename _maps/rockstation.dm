@@ -38,3 +38,6 @@ z8 = syndicate station*
 	#warn a map has already been included, ignoring Rock2.
 
 #endif
+
+
+//I'M ABOUT TO KILL SOME MOTHERFUCKERS
