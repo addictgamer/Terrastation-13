@@ -34,6 +34,7 @@ By design, d1 is the smallest direction and d2 is the highest
 	var/d2 = 1
 	layer = 2.44 //Just below unary stuff, which is at 2.45 and above pipes, which are at 2.4
 	color = COLOR_RED
+	var/obj/machinery/power/breakerbox/breaker_box
 
 /obj/structure/cable/yellow
 	color = COLOR_YELLOW
@@ -123,9 +124,9 @@ By design, d1 is the smallest direction and d2 is the highest
 			user << "<span class='warning'>You must cut this cable from above.</span>"
 			return */
 ///// Z-Level Stuff
-		/* if(breaker_box)
+		if(breaker_box)
 			user << "\red This cable is connected to nearby breaker box. Use breaker box to interact with it."
-			return */
+			return
 
 		if (shock(user, 50))
 			return
