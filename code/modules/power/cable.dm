@@ -34,7 +34,6 @@ By design, d1 is the smallest direction and d2 is the highest
 	var/d2 = 1
 	layer = 2.44 //Just below unary stuff, which is at 2.45 and above pipes, which are at 2.4
 	color = COLOR_RED
-	var/obj/machinery/power/breakerbox/breaker_box
 
 /obj/structure/cable/yellow
 	color = COLOR_YELLOW
@@ -124,9 +123,9 @@ By design, d1 is the smallest direction and d2 is the highest
 			user << "<span class='warning'>You must cut this cable from above.</span>"
 			return */
 ///// Z-Level Stuff
-		if(breaker_box)
+		/* if(breaker_box)
 			user << "\red This cable is connected to nearby breaker box. Use breaker box to interact with it."
-			return
+			return */
 
 		if (shock(user, 50))
 			return
@@ -149,7 +148,7 @@ By design, d1 is the smallest direction and d2 is the highest
 						if(c.d1 == 12 || c.d2 == 12)
 							c.qdel()*/
 ///// Z-Level Stuff
-		investigate_log("was cut by [key_name(usr, usr.client)] in [user.loc.loc]","wires")
+		investigate_log("was cut by [key_name(usr, usr.client)] in [user.loc.loc]([T.x], [T.y], [T.z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)","wires")
 
 		qdel(src) // qdel
 		return
@@ -433,12 +432,15 @@ obj/structure/cable/proc/cableColor(var/colorC)
 				P.disconnect_from_network() //remove from current network (and delete powernet)
 		return
 
+	var/obj/O = P_list[1]
 	// remove the cut cable from its turf and powernet, so that it doesn't get count in propagate_network worklist
 	loc = null
 	powernet.remove_cable(src) //remove the cut cable from its powernet
 
-	var/datum/powernet/newPN = new()// creates a new powernet...
-	propagate_network(P_list[1], newPN)//... and propagates it to the other side of the cable
+	spawn(0) //so we don't rebuild the network X times when singulo/explosion destroys a line of X cables
+		if(O && !qdeleted(O))
+			var/datum/powernet/newPN = new()// creates a new powernet...
+			propagate_network(O, newPN)//... and propagates it to the other side of the cable
 
 	// Disconnect machines connected to nodes
 	if(d1 == 0) // if we cut a node (O-X) cable
@@ -468,8 +470,7 @@ obj/structure/cable/proc/cableColor(var/colorC)
 	w_class = 2.0
 	throw_speed = 2
 	throw_range = 5
-	m_amt = 50
-	g_amt = 20
+	materials = list(MAT_METAL=50, MAT_GLASS=20)
 	flags = CONDUCT
 	slot_flags = SLOT_BELT
 	item_state = "coil"
@@ -505,7 +506,7 @@ obj/structure/cable/proc/cableColor(var/colorC)
 
 		if(!S)
 			return
-		if(!(S.status & ORGAN_ROBOT) || user.a_intent != "help" || S.open == 2)
+		if(!(S.status & ORGAN_ROBOT) || user.a_intent != I_HELP || S.open == 2)
 			return ..()
 
 		if(S.burn_dam)
@@ -540,15 +541,16 @@ obj/structure/cable/proc/cableColor(var/colorC)
 	else
 		w_class = 2.0
 
-/obj/item/stack/cable_coil/examine()
-	set src in view(1)
+/obj/item/stack/cable_coil/examine(mob/user)
+	if(!..(user, 1))
+		return
 
 	if(get_amount() == 1)
-		usr << "A short piece of power cable."
+		user << "A short piece of power cable."
 	else if(get_amount() == 2)
-		usr << "A piece of power cable."
+		user << "A piece of power cable."
 	else
-		usr << "A coil of power cable. There are [get_amount()] lengths of cable in the coil."
+		user << "A coil of power cable. There are [get_amount()] lengths of cable in the coil."
 
 
 /obj/item/stack/cable_coil/verb/make_restraint()
@@ -608,7 +610,7 @@ obj/structure/cable/proc/cableColor(var/colorC)
 		if(ismob(loc)) //handle mob icon update
 			var/mob/M = loc
 			M.unEquip(src)
-		qqdel(src)
+		qdel(src)
 		return 1
 	else
 		amount -= used

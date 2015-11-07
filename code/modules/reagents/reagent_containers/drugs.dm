@@ -18,17 +18,6 @@
 		src.pixel_y = rand(-10.0, 10)
 		base_name = name
 
-
-	examine()
-		set src in view()
-		..()
-		if (!(usr in view(2)) && usr!=src.loc) return
-		usr << "\blue It contains:"
-		if(reagents && reagents.reagent_list.len)
-			usr << "\blue [src.reagents.total_volume] units of powder."
-		else
-			usr << "\blue Nothing."
-
 	afterattack(obj/target, mob/user, proximity)
 		if(!proximity) return
 

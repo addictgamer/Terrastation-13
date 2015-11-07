@@ -36,7 +36,7 @@ var/prison_shuttle_timeleft = 0
 	attackby(I as obj, user as mob, params)
 		if(istype(I, /obj/item/weapon/screwdriver))
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
-			if(do_after(user, 20))
+			if(do_after(user, 20, target = src))
 				var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 				var/obj/item/weapon/circuitboard/prison_shuttle/M = new /obj/item/weapon/circuitboard/prison_shuttle( A )
 				for (var/obj/C in src)
@@ -46,7 +46,7 @@ var/prison_shuttle_timeleft = 0
 
 				if (src.stat & BROKEN)
 					user << "\blue The broken glass falls out."
-					PoolOrNew(/obj/item/weapon/shard, loc)
+					new /obj/item/weapon/shard(loc)
 					A.state = 3
 					A.icon_state = "3"
 				else

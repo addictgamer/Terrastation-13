@@ -57,6 +57,8 @@
 	//LETTING SIMPLE ANIMALS ATTACK? WHAT COULD GO WRONG. Defaults to zero so Ian can still be cuddly
 	var/melee_damage_lower = 0
 	var/melee_damage_upper = 0
+	var/melee_damage_type = BRUTE //Damage type of a simple mob's melee attack, should it do damage.
+	var/list/ignored_damage_types = list(BRUTE = 0, BURN = 0, TOX = 0, CLONE = 0, STAMINA = 1, OXY = 0) //Set 0 to receive that damage type, 1 to ignore
 	var/attacktext = "attacks"
 	var/attack_sound = null
 	var/friendly = "nuzzles" //If the mob does no damage with it's attack
@@ -80,17 +82,19 @@
 
 /mob/living/simple_animal/Login()
 	if(src && src.client)
-		src.client.screen = null
+		src.client.screen = list()
+		client.screen += client.void
 	..()
 
 /mob/living/simple_animal/updatehealth()
-	return
+	..()
+	health = Clamp(health, 0, maxHealth)
 
 /mob/living/simple_animal/Life()
-	if(paralysis || stunned || weakened || buckled || resting) 
-		canmove = 0
-	else 
-		canmove = 1
+	updatehealth()
+
+	update_gravity(mob_has_gravity())
+	update_canmove()
 
 	//Health
 	if(stat == DEAD)
@@ -105,9 +109,6 @@
 	if(health < 1)
 		Die()
 
-	if(health > maxHealth)
-		health = maxHealth
-		
 	if(resting && icon_resting && stat != DEAD)
 		icon_state = icon_resting
 	else if(icon_resting && stat != DEAD)
@@ -130,8 +131,10 @@
 			turns_since_move++
 			if(turns_since_move >= turns_per_move)
 				if(!(stop_automated_movement_when_pulled && pulledby)) //Soma animals don't move when pulled
-					Move(get_step(src,pick(cardinal)))
-					turns_since_move = 0
+					var/anydir = pick(cardinal)
+					if(Process_Spacemove(anydir))
+						Move(get_step(src,anydir), anydir)
+						turns_since_move = 0
 
 	//Speaking
 	if(!client && speak_chance && (ckey == null))
@@ -149,23 +152,23 @@
 					else
 						randomValue -= speak.len
 						if(emote_see && randomValue <= emote_see.len)
-							emote(pick(emote_see),1)
+							custom_emote(1, pick(emote_see))
 						else
-							emote(pick(emote_hear),2)
+							custom_emote(2, pick(emote_hear))
 				else
 					say(pick(speak))
 			else
 				if(!(emote_hear && emote_hear.len) && (emote_see && emote_see.len))
-					emote(pick(emote_see),1)
+					custom_emote(1, pick(emote_see))
 				if((emote_hear && emote_hear.len) && !(emote_see && emote_see.len))
-					emote(pick(emote_hear),2)
+					custom_emote(2, pick(emote_hear))
 				if((emote_hear && emote_hear.len) && (emote_see && emote_see.len))
 					var/length = emote_hear.len + emote_see.len
 					var/pick = rand(1,length)
 					if(pick <= emote_see.len)
-						emote(pick(emote_see),1)
+						custom_emote(1, pick(emote_see))
 					else
-						emote(pick(emote_hear),2)
+						custom_emote(2,pick(emote_hear))
 
 
 	//Atmos
@@ -257,18 +260,19 @@
 	adjustBruteLoss(20)
 	return
 
-/mob/living/simple_animal/emote(var/act,var/m_type=1,var/message = null)
-	if(stat)
-		return
-	switch(act)
+/mob/living/simple_animal/emote(var/act, var/m_type=1, var/message = null)
+	if(stat)	return
+
+	switch(act) //IMPORTANT: Emotes MUST NOT CONFLICT anywhere along the chain.
 		if("scream")
-			message = "<B>The [src.name]</B> whimpers."
+			message = "<B>\The [src]</B> whimpers."
 			m_type = 2
-	..()
+
+	..(act, m_type, message)
 
 /mob/living/simple_animal/attack_animal(mob/living/simple_animal/M as mob)
 	if(M.melee_damage_upper == 0)
-		M.emote("me", 1, "[M.friendly] [src]")
+		M.custom_emote(1, "[M.friendly] [src]")
 	else
 		M.do_attack_animation(src)
 		if(M.attack_sound)
@@ -277,7 +281,7 @@
 				"<span class='userdanger'>\The [M] [M.attacktext] [src]!</span>")
 		add_logs(M, src, "attacked", admin=0)
 		var/damage = rand(M.melee_damage_lower, M.melee_damage_upper)
-		adjustBruteLoss(damage)
+		attack_threshold_check(damage,M.melee_damage_type)
 
 /mob/living/simple_animal/bullet_act(var/obj/item/projectile/Proj)
 	if(!Proj)
@@ -292,12 +296,12 @@
 
 	switch(M.a_intent)
 
-		if("help")
+		if(I_HELP)
 			if (health > 0)
 				visible_message("<span class='notice'> [M] [response_help] [src].</span>")
 				playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 
-		if("grab")
+		if(I_GRAB)
 			if (M == src || anchored)
 				return
 			if (!(status_flags & CANPUSH))
@@ -314,11 +318,11 @@
 			visible_message("<span class='warning'>[M] has grabbed [src] passively!</span>")
 			playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 
-		if("harm", "disarm")
+		if(I_HARM, I_DISARM)
 			M.do_attack_animation(src)
 			visible_message("<span class='danger'>[M] [response_harm] [src]!</span>")
 			playsound(loc, "punch", 25, 1, -1)
-			adjustBruteLoss(harm_intent_damage)
+			attack_threshold_check(harm_intent_damage)
 
 	return
 
@@ -326,39 +330,26 @@
 
 	switch(M.a_intent)
 
-		if ("help")
+		if (I_HELP)
 
 			visible_message("<span class='notice'>[M] caresses [src] with its scythe like arm.</span>")
-		if ("grab")
-			if(M == src || anchored)
-				return
-			if(!(status_flags & CANPUSH))
-				return
+		if (I_GRAB)
+			grabbedby(M)
 
-			var/obj/item/weapon/grab/G = new /obj/item/weapon/grab(M, src )
-
-			M.put_in_active_hand(G)
-
-			G.synch()
-			LAssailant = M
-
-			playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-			visible_message("<span class='warning'>[M] has grabbed [src] passively!</span>")
-
-		if("harm", "disarm")
+		if(I_HARM, I_DISARM)
 			M.do_attack_animation(src)
 			var/damage = rand(15, 30)
 			visible_message("<span class='danger'>[M] has slashed at [src]!</span>", \
 					"<span class='userdanger'>[M] has slashed at [src]!</span>")
 			playsound(loc, 'sound/weapons/slice.ogg', 25, 1, -1)
-			adjustBruteLoss(damage)
+			attack_threshold_check(damage)
 
 	return
 
 /mob/living/simple_animal/attack_larva(mob/living/carbon/alien/larva/L as mob)
 
 	switch(L.a_intent)
-		if("help")
+		if(I_HELP)
 			visible_message("<span class='notice'>[L] rubs its head against [src].</span>")
 
 
@@ -371,7 +362,7 @@
 
 			if(stat != DEAD)
 				L.amount_grown = min(L.amount_grown + damage, L.max_grown)
-				adjustBruteLoss(damage)
+				attack_threshold_check(damage)
 
 
 /mob/living/simple_animal/attack_slime(mob/living/carbon/slime/M as mob)
@@ -393,7 +384,7 @@
 		else
 			damage = rand(5, 35)
 
-		adjustBruteLoss(damage)
+		attack_threshold_check(damage)
 
 
 	return
@@ -484,9 +475,20 @@
 			adjustBruteLoss(30)
 
 /mob/living/simple_animal/adjustBruteLoss(damage)
-	health = Clamp(health - damage, 0, maxHealth)
-	if(health < 1)
-		Die()
+	if(!ignored_damage_types[BRUTE])
+		..()
+
+/mob/living/simple_animal/adjustFireLoss(damage)
+	if(!ignored_damage_types[BURN])
+		..(damage)
+
+/mob/living/simple_animal/adjustToxLoss(damage)
+	if(!ignored_damage_types[TOX])
+		..(damage)
+
+/mob/living/simple_animal/adjustCloneLoss(damage)
+	if(!ignored_damage_types[CLONE])
+		..(damage)
 
 /mob/living/simple_animal/proc/CanAttack(var/atom/the_target)
 	if(see_invisible < the_target.invisibility)
@@ -504,6 +506,14 @@
 		if (S.occupant || S.occupant2)
 			return 0
 	return 1
+
+/mob/living/simple_animal/proc/attack_threshold_check(damage, damagetype = BRUTE)
+	if(damage <= force_threshold || ignored_damage_types[damagetype])
+		visible_message("<span class='warning'>[src] looks unharmed from the damage.</span>")
+	else
+		adjustBruteLoss(damage)
+		updatehealth()
+
 
 /mob/living/simple_animal/update_fire()
 	return
@@ -557,21 +567,34 @@
 	gib()
 	return
 
-/mob/living/simple_animal/say(var/message,var/datum/language/speaking,var/verb)
-	if(stat)
-		return
-
-	if(copytext(message,1,2) == "*")
-		return emote(copytext(message,2))
-
-	if(stat)
-		return
-
-	verb = "says"
+/mob/living/simple_animal/say_quote(var/message)
+	var/verb = "says"
 
 	if(speak_emote.len)
 		verb = pick(speak_emote)
 
-	message = capitalize(trim_left(message))
+	return verb
 
-	..(message, speaking, verb)
+/mob/living/simple_animal/update_canmove()
+	if(paralysis || stunned || weakened || stat || resting)
+		drop_r_hand()
+		drop_l_hand()
+		canmove = 0
+	else if(buckled)
+		canmove = 0
+	else
+		canmove = 1
+	update_transform()
+	return canmove
+
+/mob/living/simple_animal/update_transform()
+	var/matrix/ntransform = matrix(transform) //aka transform.Copy()
+	var/changed = 0
+
+	if(resize != RESIZE_DEFAULT_SIZE)
+		changed++
+		ntransform.Scale(resize)
+		resize = RESIZE_DEFAULT_SIZE
+
+	if(changed)
+		animate(src, transform = ntransform, time = 2, easing = EASE_IN|EASE_OUT)

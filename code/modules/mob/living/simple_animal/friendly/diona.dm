@@ -10,22 +10,22 @@
 	icon_living = "nymph"
 	icon_dead = "nymph_dead"
 	icon_resting = "nymph_sleep"
-	pass_flags = PASSTABLE
+	pass_flags = PASSTABLE | PASSMOB
 	small = 1
 	ventcrawler = 2
-	
+
 	maxHealth = 50
-	health = 50	
-	
+	health = 50
+
 	voice_name = "diona nymph"
-	speak_emote = list("chirrups")	
+	speak_emote = list("chirrups")
 	emote_hear = list("chirrups")
 	emote_see = list("chirrups")
-	
+
 	response_help  = "pets"
 	response_disarm = "pushes"
 	response_harm   = "kicks"
-	
+
 	melee_damage_lower = 5
 	melee_damage_upper = 8
 	attacktext = "bites"
@@ -34,8 +34,7 @@
 	speed = 0
 	stop_automated_movement = 0
 	turns_per_move = 4
-	status_flags = 0
-	
+
 	var/list/donors = list()
 	var/ready_evolve = 0
 	holder_type = /obj/item/weapon/holder/diona
@@ -45,13 +44,13 @@
 	if(name == initial(name)) //To stop Pun-Pun becoming generic.
 		name = "[name] ([rand(1, 1000)])"
 		real_name = name
-		
+
 	add_language("Rootspeak")
 	src.verbs += /mob/living/simple_animal/diona/proc/merge
 
 /mob/living/simple_animal/diona/attack_hand(mob/living/carbon/human/M as mob)
 	//Let people pick the little buggers up.
-	if(M.a_intent == "help")
+	if(M.a_intent == I_HELP)
 		if(M.species && M.species.name == "Diona")
 			M << "You feel your being twine with that of [src] as it merges with your biomass."
 			src << "You feel your being twine with that of [M] as you merge with its biomass."
@@ -248,44 +247,25 @@
 /mob/living/simple_animal/diona/put_in_active_hand(obj/item/W)
 	src << "<span class='warning'>You don't have any hands!</span>"
 	return
-	
 
-/mob/living/simple_animal/diona/say(var/message)
-	if(client)
-		if(client.prefs.muted & MUTE_IC)
-			src << "\red You cannot speak in IC (Muted)."
-			return
-
-	var/verb
-	message = trim_strip_html_properly(message)
-
-	if(stat)
-		if(stat == 2)
-			return say_dead(message)
+/mob/living/simple_animal/diona/emote(var/act, var/m_type=1, var/message = null)
+	if(stat)	
 		return
-
-	if (is_muzzled())
-		src << "<span class='danger'>You're muzzled and cannot speak!</span>"
-		return
-
-	if(copytext(message,1,2) == "*")
-		return emote(copytext(message,2))
 		
-	//parse the language code and consume it
-	var/datum/language/speaking = parse_language(message)
-	if(speaking)
-		message = copytext(message,2+length(speaking.key))
-	else
-		speaking = get_default_language()
+	var/on_CD = 0
+	switch(act)
+		if("chirp")
+			on_CD = handle_emote_CD()			
+		else
+			on_CD = 0	
 
-	var/ending = copytext(message, length(message))
-	if (speaking)
-		// This is broadcast to all mobs with the language,
-		// irrespective of distance or anything else.
-		if(speaking.flags & HIVEMIND)
-			speaking.broadcast(src,trim(message))
-			return
-		//If we've gotten this far, keep going!
-		verb = speaking.get_spoken_verb(ending)
+	if(on_CD == 1)
+		return			
 
-	..(message,speaking,verb)
+	switch(act) //IMPORTANT: Emotes MUST NOT CONFLICT anywhere along the chain.
+		if("chirp")
+			message = "<B>\The [src]</B> chirps!"
+			m_type = 2 //audible
+			playsound(src, 'sound/misc/nymphchirp.ogg', 40, 1, 1)
+
+	..(act, m_type, message)

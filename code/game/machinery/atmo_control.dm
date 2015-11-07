@@ -77,7 +77,7 @@ obj/machinery/air_sensor
 				return 1
 			playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 			user << "\blue You begin to unfasten \the [src]..."
-			if(do_after(user, 40))
+			if(do_after(user, 40, target = src))
 				user.visible_message("[user] unfastens \the [src].", "\blue You have unfastened \the [src].", "You hear ratchet.")
 				new /obj/item/pipe_gsensor(src.loc)
 				qdel(src)
@@ -128,6 +128,7 @@ obj/machinery/air_sensor
 			radio_connection = radio_controller.add_object(src, frequency, RADIO_ATMOSIA)
 
 	initialize()
+		..()
 		set_frequency(frequency)
 
 	Destroy()
@@ -271,6 +272,7 @@ legend {
 			radio_connection = radio_controller.add_object(src, frequency, RADIO_ATMOSIA)
 
 	initialize()
+		..()
 		set_frequency(frequency)
 
 	multitool_menu(var/mob/user, var/obj/item/device/multitool/P)

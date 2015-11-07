@@ -28,11 +28,11 @@ var/global/datum/controller/process/air_system/air_master
 	start_delay = 4
 	air_master = src
 
-	world << "<span class='danger'>Processing Geometry...</span>"
-	var/start_time = world.timeofday
+	var/watch = start_watch()
+	log_startup_progress("Processing geometry...")
 	setup_allturfs() // Get all currently active tiles that need processing each atmos tick.
 	setup_overlays() // Assign icons and such for gas-turf-overlays
-	world << "<span class='danger'>Geometry processed in [(world.timeofday-start_time)/10] seconds!</span>"
+	log_startup_progress("  Geometry processed in [stop_watch(watch)]s.")
 
 /datum/controller/process/air_system/doWork()
 	if(kill_air)
@@ -48,7 +48,7 @@ var/global/datum/controller/process/air_system/air_master
 /datum/controller/process/air_system/statProcess()
 	..()
 	stat(null, "[last_active] active")
-	stat(null, "[last_excited] EG|[last_hpd] HPD|[last_asc] ASC|[last_hotspots] Hot")
+	stat(null, "[last_excited] EG | [last_hpd] HPD | [last_asc] ASC | [last_hotspots] Hot")
 
 /datum/controller/process/air_system/proc/process_hotspots()
 	last_hotspots = hotspots.len

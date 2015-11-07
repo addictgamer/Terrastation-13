@@ -152,7 +152,7 @@
 			step(AM, t)
 		now_pushing = null
 
-/mob/living/carbon/slime/Process_Spacemove()
+/mob/living/carbon/slime/Process_Spacemove(var/movement_dir = 0)
 	return 2
 
 /mob/living/carbon/slime/Stat()
@@ -252,7 +252,7 @@
 
 /mob/living/carbon/slime/attack_animal(mob/living/simple_animal/M as mob)
 	if(M.melee_damage_upper == 0)
-		M.emote("[M.friendly] [src]")
+		M.custom_emote(1, "[M.friendly] [src]")
 	else
 		M.do_attack_animation(src)
 		if(M.attack_sound)
@@ -270,7 +270,7 @@
 
 	switch(L.a_intent)
 
-		if("help")
+		if(I_HELP)
 			visible_message("<span class='notice'>[L] rubs its head against [src].</span>")
 
 
@@ -366,22 +366,11 @@
 
 	switch(M.a_intent)
 
-		if ("help")
+		if (I_HELP)
 			help_shake_act(M)
 
-		if ("grab")
-			if (M == src || anchored)
-				return
-			var/obj/item/weapon/grab/G = new /obj/item/weapon/grab(M, src)
-
-			M.put_in_active_hand(G)
-
-			G.synch()
-
-			LAssailant = M
-
-			playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-			visible_message("<span class='warning'>[M] has grabbed [src] passively!</span>")
+		if (I_GRAB)
+			grabbedby(M)
 
 		else
 			M.do_attack_animation(src)
@@ -427,10 +416,10 @@
 		return
 
 	switch(M.a_intent)
-		if ("help")
+		if (I_HELP)
 			visible_message("<span class='notice'>[M] caresses [src] with its scythe like arm.</span>")
 
-		if ("harm")
+		if (I_HARM)
 			M.do_attack_animation(src)
 			if (prob(95))
 				attacked += 10
@@ -450,21 +439,10 @@
 				visible_message("<span class='danger'>[M] has attempted to lunge at [name]!</span>", \
 						"<span class='userdanger'>[M] has attempted to lunge at [name]!</span>")
 
-		if ("grab")
-			if (M == src || anchored)
-				return
-			var/obj/item/weapon/grab/G = new /obj/item/weapon/grab(M, src )
+		if (I_GRAB)
+			grabbedby(M)
 
-			M.put_in_active_hand(G)
-
-			G.synch()
-
-			LAssailant = M
-
-			playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-			visible_message("<span class='warning'> [M] has grabbed [name] passively!</span>")
-
-		if ("disarm")
+		if (I_DISARM)
 			M.do_attack_animation(src)
 			playsound(loc, 'sound/weapons/pierce.ogg', 25, 1, -1)
 			var/damage = 5
@@ -609,7 +587,7 @@ mob/living/carbon/slime/var/temperature_resistance = T0C+75
 	throw_speed = 3
 	throw_range = 6
 	origin_tech = "biotech=4"
-	_color = "grey"
+	item_color = "grey"
 	var/Uses = 1 // uses before it goes inert
 	var/enhanced = 0 //has it been enhanced before?
 
@@ -634,87 +612,87 @@ mob/living/carbon/slime/var/temperature_resistance = T0C+75
 /obj/item/slime_extract/grey
 	name = "grey slime extract"
 	icon_state = "grey slime extract"
-	_color = "grey"
+	item_color = "grey"
 
 /obj/item/slime_extract/gold
 	name = "gold slime extract"
 	icon_state = "gold slime extract"
-	_color = "gold"
+	item_color = "gold"
 
 /obj/item/slime_extract/silver
 	name = "silver slime extract"
 	icon_state = "silver slime extract"
-	_color = "silver"
+	item_color = "silver"
 
 /obj/item/slime_extract/metal
 	name = "metal slime extract"
 	icon_state = "metal slime extract"
-	_color = "metal"
+	item_color = "metal"
 
 /obj/item/slime_extract/purple
 	name = "purple slime extract"
 	icon_state = "purple slime extract"
-	_color = "purple"
+	item_color = "purple"
 
 /obj/item/slime_extract/darkpurple
 	name = "dark purple slime extract"
 	icon_state = "dark purple slime extract"
-	_color = "darkpurple"
+	item_color = "darkpurple"
 
 /obj/item/slime_extract/orange
 	name = "orange slime extract"
 	icon_state = "orange slime extract"
-	_color = "orange"
+	item_color = "orange"
 
 /obj/item/slime_extract/yellow
 	name = "yellow slime extract"
 	icon_state = "yellow slime extract"
-	_color = "yellow"
+	item_color = "yellow"
 
 /obj/item/slime_extract/red
 	name = "red slime extract"
 	icon_state = "red slime extract"
-	_color = "red"
+	item_color = "red"
 
 /obj/item/slime_extract/blue
 	name = "blue slime extract"
 	icon_state = "blue slime extract"
-	_color = "blue"
+	item_color = "blue"
 
 /obj/item/slime_extract/darkblue
 	name = "dark blue slime extract"
 	icon_state = "dark blue slime extract"
-	_color = "darkblue"
+	item_color = "darkblue"
 
 /obj/item/slime_extract/pink
 	name = "pink slime extract"
 	icon_state = "pink slime extract"
-	_color = "pink"
+	item_color = "pink"
 
 /obj/item/slime_extract/green
 	name = "green slime extract"
 	icon_state = "green slime extract"
-	_color = "green"
+	item_color = "green"
 
 /obj/item/slime_extract/lightpink
 	name = "light pink slime extract"
 	icon_state = "light pink slime extract"
-	_color = "lightpink"
+	item_color = "lightpink"
 
 /obj/item/slime_extract/black
 	name = "black slime extract"
 	icon_state = "black slime extract"
-	_color = "black"
+	item_color = "black"
 
 /obj/item/slime_extract/oil
 	name = "oil slime extract"
 	icon_state = "oil slime extract"
-	_color = "oil"
+	item_color = "oil"
 
 /obj/item/slime_extract/adamantine
 	name = "adamantine slime extract"
 	icon_state = "adamantine slime extract"
-	_color = "adamantine"
+	item_color = "adamantine"
 
 /obj/item/slime_extract/bluespace
 	name = "bluespace slime extract"

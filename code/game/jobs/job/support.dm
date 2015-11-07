@@ -18,6 +18,7 @@
 			if(3) H.equip_or_collect(new /obj/item/weapon/storage/backpack/satchel_norm(H), slot_back)
 			if(4) H.equip_or_collect(new /obj/item/weapon/storage/backpack/satchel(H), slot_back)
 		H.equip_or_collect(new /obj/item/device/radio/headset/headset_service(H), slot_l_ear)
+		H.equip_or_collect(new /obj/item/clothing/glasses/sunglasses/reagent(H), slot_glasses)
 		H.equip_or_collect(new /obj/item/clothing/shoes/black(H), slot_shoes)
 		H.equip_or_collect(new /obj/item/clothing/suit/armor/vest(H), slot_wear_suit)
 		H.equip_or_collect(new /obj/item/clothing/under/rank/bartender(H), slot_w_uniform)
@@ -29,6 +30,7 @@
 			H.equip_or_collect(Barpack, slot_r_hand)
 		else
 			H.equip_or_collect(new /obj/item/weapon/storage/box/survival(H), slot_in_backpack)
+			H.equip_or_collect(new /obj/item/toy/russian_revolver(H.back), slot_in_backpack)
 
 		H.dna.SetSEState(SOBERBLOCK,1)
 		H.mutations += SOBER
@@ -293,7 +295,7 @@
 	title = "Janitor"
 	flag = JANITOR
 	department_flag = SUPPORT
-	total_positions = 1
+	total_positions = 2
 	spawn_positions = 1
 	supervisors = "the head of personnel"
 	selection_color = "#dddddd"
@@ -360,6 +362,7 @@
 	spawn_positions = 1
 	supervisors = "the head of personnel"
 	selection_color = "#dddddd"
+	alt_titles = list("Hair Stylist","Beautician")
 	access = list(access_maint_tunnels)
 	minimal_access = list(access_maint_tunnels)
 
@@ -377,4 +380,6 @@
 			H.equip_or_collect(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
 		else
 			H.equip_or_collect(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
+		H.equip_or_collect(new /obj/item/weapon/storage/box/barber(H.back), slot_in_backpack)
+		H.equip_or_collect(new /obj/item/weapon/storage/box/lip_stick(H.back), slot_in_backpack)
 		return 1

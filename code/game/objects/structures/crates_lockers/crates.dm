@@ -45,7 +45,7 @@
 
 	playsound(src.loc, 'sound/machines/click.ogg', 15, 1, -3)
 	for(var/obj/O in src)
-		O.loc = get_turf(src)
+		O.forceMove(loc)
 	icon_state = icon_opened
 	src.opened = 1
 
@@ -71,7 +71,7 @@
 			var/obj/structure/stool/bed/B = O
 			if(B.buckled_mob)
 				continue
-		O.loc = src
+		O.forceMove(src)
 		itemcount++
 
 	icon_state = icon_closed
@@ -81,7 +81,7 @@
 /obj/structure/closet/crate/attackby(obj/item/weapon/W as obj, mob/user as mob, params)
 	if(istype(W, /obj/item/weapon/rcs) && !src.opened)
 		var/obj/item/weapon/rcs/E = W
-		if(E.rcharges != 0)
+		if(E.rcell && (E.rcell.charge >= E.chargecost))
 			if(!(src.z in config.player_levels))
 				user << "<span class='warning'>The rapid-crate-sender can't locate any telepads!</span>"
 				return
@@ -103,20 +103,16 @@
 					playsound(E.loc, 'sound/machines/click.ogg', 50, 1)
 					user << "\blue Teleporting [src.name]..."
 					E.teleporting = 1
-					sleep(50)
+					if(!do_after(user, 50, target = src))
+						E.teleporting = 0
+						return
 					E.teleporting = 0
 					var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 					s.set_up(5, 1, src)
 					s.start()
 					do_teleport(src, E.pad, 0)
-					E.rcharges--
-					if(E.rcharges != 1)
-						user << "\blue Teleport successful. [E.rcharges] charges left."
-						E.desc = "Use this to send crates and closets to cargo telepads. There are [E.rcharges] charges left."
-						return
-					else
-						user << "\blue Teleport successful. [E.rcharges] charge left."
-						E.desc = "Use this to send crates and closets to cargo telepads. There is [E.rcharges] charge left."
+					E.rcell.use(E.chargecost)
+					user << "<span class='notice'>Teleport successful. [round(E.rcell.charge/E.chargecost)] charge\s left.</span>"
 					return
 			else
 				E.rand_x = rand(50,200)
@@ -125,23 +121,19 @@
 				playsound(E.loc, 'sound/machines/click.ogg', 50, 1)
 				user << "\blue Teleporting [src.name]..."
 				E.teleporting = 1
-				sleep(50)
+				if(!do_after(user, 50, target = src))
+					E.teleporting = 0
+					return
 				E.teleporting = 0
 				var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 				s.set_up(5, 1, src)
 				s.start()
 				do_teleport(src, L)
-				E.rcharges--
-				if(E.rcharges != 1)
-					user << "\blue Teleport successful. [E.rcharges] charges left."
-					E.desc = "Use this to send crates and closets to cargo telepads. There are [E.rcharges] charges left."
-					return
-				else
-					user << "\blue Teleport successful. [E.rcharges] charge left."
-					E.desc = "Use this to send crates and closets to cargo telepads. There is [E.rcharges] charge left."
-					return
+				E.rcell.use(E.chargecost)
+				user << "<span class='notice'>Teleport successful. [round(E.rcell.charge/E.chargecost)] charge\s left.</span>"
+				return
 		else
-			user << "\red Out of charges."
+			user << "<span class='warning'>Out of charges.</span>"
 			return
 
 	if(opened)
@@ -151,7 +143,7 @@
 			user << "<span class='notice'>\The [W] is stuck to your hand, you cannot put it in \the [src]!</span>"
 			return
 		if(W)
-			W.loc = src.loc
+			W.forceMove(loc)
 	else if(istype(W, /obj/item/stack/packageWrap))
 		return
 	else if(istype(W, /obj/item/stack/cable_coil))
@@ -167,7 +159,7 @@
 		if(rigged)
 			user  << "<span class='notice'>You attach [W] to [src].</span>"
 			user.drop_item()
-			W.loc = src
+			W.forceMove(src)
 			return
 	else if(istype(W, /obj/item/weapon/wirecutters))
 		if(rigged)
@@ -201,7 +193,7 @@
 	if(manifest)
 		user << "<span class='notice'>You tear the manifest off of the crate.</span>"
 		playsound(src.loc, 'sound/items/poster_ripped.ogg', 75, 1)
-		manifest.loc = loc
+		manifest.forceMove(loc)
 		if(ishuman(user))
 			user.put_in_hands(manifest)
 		manifest = null
@@ -282,7 +274,7 @@
 	if(manifest)
 		user << "<span class='notice'>You tear the manifest off of the crate.</span>"
 		playsound(src.loc, 'sound/items/poster_ripped.ogg', 75, 1)
-		manifest.loc = loc
+		manifest.forceMove(loc)
 		if(ishuman(user))
 			user.put_in_hands(manifest)
 		manifest = null
@@ -295,7 +287,7 @@
 
 
 /obj/structure/closet/crate/secure/attackby(obj/item/weapon/W as obj, mob/user as mob, params)
-	if(is_type_in_list(W, list(/obj/item/stack/packageWrap, /obj/item/stack/cable_coil, /obj/item/device/radio/electropack, /obj/item/weapon/wirecutters)))
+	if(is_type_in_list(W, list(/obj/item/stack/packageWrap, /obj/item/stack/cable_coil, /obj/item/device/radio/electropack, /obj/item/weapon/wirecutters,/obj/item/weapon/rcs)))
 		return ..()
 	if((istype(W, /obj/item/weapon/card/emag) || istype(W, /obj/item/weapon/melee/energy/blade)))
 		emag_act(user)
@@ -503,12 +495,12 @@
 				continue
 			if(!S.anchored)
 				found = 1
-				S.loc = src
+				S.forceMove(src)
 				break
 		if(!found)
 			for(var/obj/machinery/M in src.loc)
 				if(!M.anchored)
-					M.loc = src
+					M.forceMove(src)
 					break
 	return
 
@@ -531,12 +523,12 @@
 				continue
 			if(!S.anchored)
 				found = 1
-				S.loc = src
+				S.forceMove(src)
 				break
 		if(!found)
 			for(var/obj/machinery/M in src.loc)
 				if(!M.anchored)
-					M.loc = src
+					M.forceMove(src)
 					break
 	return
 

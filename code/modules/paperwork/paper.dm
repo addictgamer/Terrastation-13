@@ -52,21 +52,30 @@
 		return
 	icon_state = "paper"
 
-/obj/item/weapon/paper/examine()
-	if(in_range(usr, src) || istype(usr, /mob/dead/observer))
-		show_content(usr)
+/obj/item/weapon/paper/examine(mob/user)
+	if(in_range(user, src) || istype(user, /mob/dead/observer))
+		show_content(user)
 	else
-		usr << "<span class='notice'>You have to go closer if you want to read it.</span>"
-	return
+		user << "<span class='notice'>You have to go closer if you want to read it.</span>"
 
-/obj/item/weapon/paper/proc/show_content(var/mob/user, var/forceshow=0)
+/obj/item/weapon/paper/proc/show_content(var/mob/user, var/forceshow = 0, var/forcestars = 0, var/infolinks = 0, var/view = 1)
 	set src in oview(1)
-	if(!(istype(usr, /mob/living/carbon/human) || istype(usr, /mob/dead/observer) || istype(usr, /mob/living/silicon)) && !forceshow)
-		usr << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[stars(info)][stamps]</BODY></HTML>", "window=[name]")
-		onclose(usr, "[name]")
+	if(user.client) // Send the paper images to the client
+		var/datum/asset/simple/S = new/datum/asset/simple/paper()
+		send_asset_list(user.client, S.assets)
+
+	var/data
+	if((!user.say_understands(null, all_languages["Galactic Common"]) && !forceshow) || forcestars) //assuming all paper is written in common is better than hardcoded type checks
+		data = "<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[stars(info)][stamps]</BODY></HTML>"
+		if(view)
+			usr << browse(data, "window=[name]")
+			onclose(usr, "[name]")
 	else
-		usr << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[info][stamps]</BODY></HTML>", "window=[name]")
-		onclose(usr, "[name]")
+		data = "<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[infolinks ? info_links : info][stamps]</BODY></HTML>"
+		if(view)
+			usr << browse(data, "window=[name]")
+			onclose(usr, "[name]")
+	return data
 
 /obj/item/weapon/paper/verb/rename()
 	set name = "Rename paper"
@@ -85,7 +94,7 @@
 	return
 
 /obj/item/weapon/paper/attack_self(mob/living/user as mob)
-	src.examine(user)
+	user.examinate(src)
 	if(rigged && (holiday_master.holidays && holiday_master.holidays[APRIL_FOOLS]))
 		if(spam_flag == 0)
 			spam_flag = 1
@@ -101,18 +110,16 @@
 	else //cyborg or AI not seeing through a camera
 		dist = get_dist(src, user)
 	if(dist < 2)
-		usr << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[info][stamps]</BODY></HTML>", "window=[name]")
-		onclose(usr, "[name]")
+		show_content(user, forceshow = 1)
 	else
-		usr << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[stars(info)][stamps]</BODY></HTML>", "window=[name]")
-		onclose(usr, "[name]")
+		show_content(user, forcestars = 1)
 	return
 
 /obj/item/weapon/paper/attack(mob/living/carbon/M as mob, mob/living/carbon/user as mob)
 	if(user.zone_sel.selecting == "eyes")
 		user.visible_message("<span class='notice'>You show the paper to [M]. </span>", \
 			"<span class='notice'> [user] holds up a paper and shows it to [M]. </span>")
-		src.examine(user)
+		M.examinate(src)
 
 	else if(user.zone_sel.selecting == "mouth")
 		if(!istype(M, /mob))	return
@@ -126,7 +133,7 @@
 			else
 				user.visible_message("<span class='warning'>[user] begins to wipe [H]'s face clean with \the [src].</span>", \
 								 	 "<span class='notice'>You begin to wipe off [H]'s face.</span>")
-				if(do_after(user, 10) && do_after(H, 10, 5, 0))	//user needs to keep their active hand, H does not.
+				if(do_after(user, 10, target = H) && do_after(H, 10, 5, 0))	//user needs to keep their active hand, H does not.
 					user.visible_message("<span class='notice'>[user] wipes [H]'s face clean with \the [src].</span>", \
 										 "<span class='notice'>You wipe off [H]'s face.</span>")
 					H.lip_style = null
@@ -347,7 +354,7 @@
 			info += t // Oh, he wants to edit to the end of the file, let him.
 			updateinfolinks()
 
-		usr << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[info_links][stamps]</BODY></HTML>", "window=[name]") // Update the window
+		show_content(usr, forceshow = 1, infolinks = 1)
 
 		update_icon()
 
@@ -411,10 +418,11 @@
 		B.update_icon()
 
 	else if(istype(P, /obj/item/weapon/pen) || istype(P, /obj/item/toy/crayon))
-		if ( istype(P, /obj/item/weapon/pen/robopen) && P:mode == 2 )
-			P:RenamePaper(user,src)
+		var/obj/item/weapon/pen/robopen/RP = P
+		if(istype(P, /obj/item/weapon/pen/robopen) && RP.mode == 2)
+			RP.RenamePaper(user,src)
 		else
-			user << browse("<HTML><HEAD><TITLE>[name]</TITLE></HEAD><BODY>[info_links][stamps]</BODY></HTML>", "window=[name]")
+			show_content(user, infolinks = 1)
 		//openhelp(user)
 		return
 
@@ -422,36 +430,12 @@
 		if((!in_range(src, usr) && loc != user && !( istype(loc, /obj/item/weapon/clipboard) ) && loc.loc != user && user.get_active_hand() != P))
 			return
 
-		//stamps += (stamps=="" ? "<HR>" : "<BR>") + "<i>This paper has been stamped with the [P.name].</i>"
-		stamps += (stamps=="" ? "<HR>" : "") + "<img src=large_[P.icon_state].png>"
-
-		var/image/stampoverlay = image('icons/obj/bureaucracy.dmi')
-		var/{x; y;}
-		if(istype(P, /obj/item/weapon/stamp/captain) || istype(P, /obj/item/weapon/stamp/centcom))
-			x = rand(-2, 0)
-			y = rand(-1, 2)
-		else
-			x = rand(-2, 2)
-			y = rand(-3, 2)
-		offset_x += x
-		offset_y += y
-		stampoverlay.pixel_x = x
-		stampoverlay.pixel_y = y
-
 		if(istype(P, /obj/item/weapon/stamp/clown))
 			if(!clown)
 				user << "<span class='notice'>You are totally unable to use the stamp. HONK!</span>"
 				return
 
-		if(!ico)
-			ico = new
-		ico += "paper_[P.icon_state]"
-		stampoverlay.icon_state = "paper_[P.icon_state]"
-
-		if(!stamped)
-			stamped = new
-		stamped += P.type
-		overlays += stampoverlay
+		stamp(P)
 
 		user << "<span class='notice'>You stamp the paper with your rubber stamp.</span>"
 
@@ -460,6 +444,32 @@
 
 	add_fingerprint(user)
 	return
+
+/obj/item/weapon/paper/proc/stamp(var/obj/item/weapon/stamp/S)
+	stamps += (!stamps || stamps == "" ? "<HR>" : "") + "<img src=large_[S.icon_state].png>"
+
+	var/image/stampoverlay = image('icons/obj/bureaucracy.dmi')
+	var/{x; y;}
+	if(istype(S, /obj/item/weapon/stamp/captain) || istype(S, /obj/item/weapon/stamp/centcom))
+		x = rand(-2, 0)
+		y = rand(-1, 2)
+	else
+		x = rand(-2, 2)
+		y = rand(-3, 2)
+	offset_x += x
+	offset_y += y
+	stampoverlay.pixel_x = x
+	stampoverlay.pixel_y = y
+
+	if(!ico)
+		ico = new
+	ico += "paper_[S.icon_state]"
+	stampoverlay.icon_state = "paper_[S.icon_state]"
+
+	if(!stamped)
+		stamped = new
+	stamped += S.type
+	overlays += stampoverlay
 
 /*
  * Premade paper
@@ -580,6 +590,10 @@
 /obj/item/weapon/paper/syndimemo
 	name = "paper- 'Memo'"
 	info = "GET DAT FUKKEN DISK"
+
+/obj/item/weapon/paper/synditele
+	name = "Teleporter Instructions"
+	info = "<h3>Teleporter Instruction</h3><hr><ol><li>Install circuit board, glass and wiring to complete Teleporter Control Console</li><li>Use a screwdriver, wirecutter and screwdriver again on the Teleporter Station to connect it</li><li>Set destination with Teleporter Control Computer</li><li>Activate Teleporter Hub with Teleporter Station</li></ol>"
 
 /obj/item/weapon/paper/russiantraitorobj
 	name = "paper- 'Mission Objectives'"

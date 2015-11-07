@@ -66,7 +66,6 @@
 	energy_drain = 120
 	projectile = /obj/item/projectile/ion
 	fire_sound = 'sound/weapons/Laser.ogg'
-	construction_cost = list("silver" = 6000, "metal" = 20000, "uranium" = 2000)
 
 /obj/item/mecha_parts/mecha_equipment/weapon/energy/pulse
 	equip_cooldown = 30
@@ -119,8 +118,6 @@
 	energy_drain = 200
 	equip_cooldown = 150
 	range = MELEE|RANGED
-	construction_time = 500
-	construction_cost = list("metal"=20000,"bananium"=10000)
 
 	can_attach(obj/mecha/combat/honker/M as obj)
 		if(..())
@@ -167,8 +164,8 @@
 		chassis.use_power(energy_drain)
 		log_message("Honked from [src.name]. HONK!")
 		var/turf/T = get_turf(src)
-		message_admins("[key_name_admin(chassis.occupant, chassis.occupant.client)](<A HREF='?_src_=holder;adminmoreinfo=\ref[chassis.occupant]'>?</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[chassis.occupant]'>FLW</A>) used a Mecha Honker in ([T.x],[T.y],[T.z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)",0,1)
-		log_game("[chassis.occupant.ckey]([chassis.occupant]) used a Mecha Honker in ([T.x],[T.y],[T.z])")
+		msg_admin_attack("[key_name_admin(chassis.occupant)] used a Mecha Honker in ([T.x], [T.y], [T.z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)")
+		log_game("[key_name(chassis.occupant)] used a Mecha Honker in [T.x], [T.y], [T.z]")
 		do_after_cooldown()
 		return
 
@@ -242,8 +239,8 @@
 		set_ready_state(0)
 		log_message("Fired from [src.name], targeting [target].")
 		var/turf/T = get_turf(src)
-		message_admins("[key_name(chassis.occupant, chassis.occupant.client)](<A HREF='?_src_=holder;adminmoreinfo=\ref[chassis.occupant]'>?</A>) fired a [src] in ([T.x],[T.y],[T.z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)",0,1)
-		log_game("[key_name(chassis.occupant)] fired a [src] ([T.x],[T.y],[T.z])")
+		msg_admin_attack("[key_name_admin(chassis.occupant)] fired a [src] in ([T.x], [T.y], [T.z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)")
+		log_game("[key_name(chassis.occupant)] fired a [src] in [T.x], [T.y], [T.z]")
 		do_after_cooldown()
 		return
 
@@ -346,7 +343,6 @@
 	equip_cooldown = 60
 	var/missile_speed = 2
 	var/missile_range = 30
-	construction_cost = list("silver" = 8000, "metal" = 22000, "gold" = 6000)
 
 	action(target)
 		if(!action_checks(target)) return
@@ -358,8 +354,8 @@
 		projectiles--
 		log_message("Fired from [src.name], targeting [target].")
 		var/turf/T = get_turf(src)
-		message_admins("[key_name(chassis.occupant, chassis.occupant.client)](<A HREF='?_src_=holder;adminmoreinfo=\ref[chassis.occupant]'>?</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[chassis.occupant]'>FLW</A>) fired a [src] in ([T.x],[T.y],[T.z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)",0,1)
-		log_game("[key_name(chassis.occupant)] fired a [src] ([T.x],[T.y],[T.z])")
+		msg_admin_attack("[key_name_admin(chassis.occupant)] fired a [src] in ([T.x], [T.y], [T.z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</a>)")
+		log_game("[key_name(chassis.occupant)] fired a [src] in [T.x], [T.y], [T.z]")
 		do_after_cooldown()
 		return
 
@@ -406,10 +402,9 @@
 	name = "SOB-3 Grenade Launcher"
 	desc = "A weapon for combat exosuits. Launches primed clusterbangs. You monster."
 	projectiles = 3
-	projectile = /obj/item/weapon/grenade/flashbang/clusterbang
+	projectile = /obj/item/weapon/grenade/clusterbuster
 	projectile_energy_cost = 1600 //getting off cheap seeing as this is 3 times the flashbangs held in the grenade launcher.
 	equip_cooldown = 90
-	construction_cost = list("metal"=20000,"gold"=10000,"uranium"=10000) //now as expensive as a Honkblast.
 	size=1
 
 /obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/flashbang/clusterbang/limited/get_equip_info()//Limited version of the clusterbang launcher that can't reload
@@ -427,8 +422,6 @@
 	missile_speed = 1.5
 	projectile_energy_cost = 100
 	equip_cooldown = 20
-	construction_time = 300
-	construction_cost = list("metal"=20000,"bananium"=5000)
 
 	can_attach(obj/mecha/combat/honker/M as obj)
 		if(..())
@@ -457,8 +450,6 @@
 	missile_speed = 1.5
 	projectile_energy_cost = 100
 	equip_cooldown = 10
-	construction_time = 300
-	construction_cost = list("metal"=20000,"bananium"=5000)
 
 	can_attach(obj/mecha/combat/honker/M as obj)
 		if(..())

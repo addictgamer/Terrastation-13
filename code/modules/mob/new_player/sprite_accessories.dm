@@ -781,6 +781,36 @@
 		icon_state = "vox_keetquills"
 		species_allowed = list("Vox")
 
+	vox_quills_kingly
+		name = "Kingly Vox Quills"
+		icon_state = "vox_kingly"
+		species_allowed = list("Vox")
+
+	vox_quills_fluff
+		name = "Fluffy Quills"
+		icon_state = "vox_afro"
+		species_allowed = list("Vox")
+
+	vox_quills_mohawk
+		name = "Quill Mohawk"
+		icon_state = "vox_mohawk"
+		species_allowed = list("Vox")
+
+	vox_quills_long
+		name = "Long Vox Quills"
+		icon_state = "vox_yasu"
+		species_allowed = list("Vox")
+
+	vox_horns
+		name = "Vox Spikes"
+		icon_state = "vox_horns"
+		species_allowed = list("Vox")
+
+	vox_nights
+		name = "Vox Pigtails"
+		icon_state = "vox_nights"
+		species_allowed = list("Vox")
+
 // Apollo-specific
 
 	//Wryn antennae
@@ -855,9 +885,30 @@
 		species_allowed = list("Tajaran")
 
 	taj_smallstache
-		name = "Tajara Smallsatche"
+		name = "Tajara Smallstache"
 		icon_state = "facial_smallstache"
 		species_allowed = list("Tajaran")
+
+	vox_colonel
+		name = "Vox Colonel Beard"
+		icon_state = "vox_colonel"
+		species_allowed = list("Vox")
+
+	vox_long
+		name = "Long Mustache"
+		icon_state = "vox_fu"
+		species_allowed = list("Vox")
+
+	vox_neck
+		name = "Neck Quills"
+		icon_state = "vox_neck"
+		species_allowed = list("Vox")
+
+	vox_beard
+		name = "Vox Quill Beard"
+		icon_state = "vox_beard"
+		species_allowed = list("Vox")
+
 
 //Vulpkanin
 
@@ -1261,3 +1312,192 @@
 	icon_state = "tank_fire"
 	gender = NEUTER
 //end tanktops
+
+///////////////////////
+// Socks Definitions //
+///////////////////////
+/datum/sprite_accessory/socks
+	icon = 'icons/mob/underwear.dmi'
+
+/datum/sprite_accessory/socks/nude
+	name = "Nude"
+	icon_state = null
+	gender = NEUTER
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skellington","Vox")
+
+
+/datum/sprite_accessory/socks/white_norm
+	name = "Normal White"
+	icon_state = "white_norm"
+	gender = NEUTER
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skellington")
+
+
+/datum/sprite_accessory/socks/black_norm
+	name = "Normal Black"
+	icon_state = "black_norm"
+	gender = NEUTER
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skellington")
+
+
+/datum/sprite_accessory/socks/white_short
+	name = "Short White"
+	icon_state = "white_short"
+	gender = NEUTER
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skellington")
+
+
+/datum/sprite_accessory/socks/black_short
+	name = "Short Black"
+	icon_state = "black_short"
+	gender = NEUTER
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skellington")
+
+
+/datum/sprite_accessory/socks/white_knee
+	name = "Knee-high White"
+	icon_state = "white_knee"
+	gender = NEUTER
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skellington")
+
+
+/datum/sprite_accessory/socks/black_knee
+	name = "Knee-high Black"
+	icon_state = "black_knee"
+	gender = NEUTER
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skellington")
+
+
+/datum/sprite_accessory/socks/thin_knee
+	name = "Knee-high Thin"
+	icon_state = "thin_knee"
+	gender = FEMALE
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skellington")
+
+
+/datum/sprite_accessory/socks/striped_knee
+	name = "Knee-high Striped"
+	icon_state = "striped_knee"
+	gender = NEUTER
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skellington")
+
+
+/datum/sprite_accessory/socks/rainbow_knee
+	name = "Knee-high Rainbow"
+	icon_state = "rainbow_knee"
+	gender = NEUTER
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skellington")
+
+
+/datum/sprite_accessory/socks/white_thigh
+	name = "Thigh-high White"
+	icon_state = "white_thigh"
+	gender = NEUTER
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skellington")
+
+/datum/sprite_accessory/socks/black_thigh
+	name = "Thigh-high Black"
+	icon_state = "black_thigh"
+	gender = NEUTER
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skellington")
+
+
+/datum/sprite_accessory/socks/thin_thigh
+	name = "Thigh-high Thin"
+	icon_state = "thin_thigh"
+	gender = FEMALE
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skellington")
+
+
+/datum/sprite_accessory/socks/striped_thigh
+	name = "Thigh-high Striped"
+	icon_state = "striped_thigh"
+	gender = NEUTER
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skellington")
+
+
+/datum/sprite_accessory/socks/rainbow_thigh
+	name = "Thigh-high Rainbow"
+	icon_state = "rainbow_thigh"
+	gender = NEUTER
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skellington")
+
+
+/datum/sprite_accessory/socks/pantyhose
+	name = "Pantyhose"
+	icon_state = "pantyhose"
+	gender = FEMALE
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skellington")
+
+
+/datum/sprite_accessory/socks/black_fishnet
+	name = "Black Fishnet"
+	icon_state = "black_fishnet"
+	gender = NEUTER
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skellington")
+
+/datum/sprite_accessory/socks/vox_white
+	name = "Vox White"
+	icon_state = "vox_white"
+	gender = NEUTER
+	species_allowed = list("Vox")
+
+/datum/sprite_accessory/socks/vox_black
+	name = "Vox Black"
+	icon_state = "vox_black"
+	gender = NEUTER
+	species_allowed = list("Vox")
+
+/datum/sprite_accessory/socks/vox_thin
+	name = "Vox Black Thin"
+	icon_state = "vox_blackthin"
+	gender = NEUTER
+	species_allowed = list("Vox")
+
+/datum/sprite_accessory/socks/vox_rainbow
+	name = "Vox Rainbow"
+	icon_state = "vox_rainbow"
+	gender = NEUTER
+	species_allowed = list("Vox")
+
+/datum/sprite_accessory/socks/vox_stripped
+	name = "Vox Striped"
+	icon_state = "vox_white"
+	gender = NEUTER
+	species_allowed = list("Vox")
+
+/datum/sprite_accessory/socks/vox_white_thigh
+	name = "Vox Thigh-high White"
+	icon_state = "vox_whiteTH"
+	gender = NEUTER
+	species_allowed = list("Vox")
+
+/datum/sprite_accessory/socks/vox_black_thigh
+	name = "Vox Thigh-high Black"
+	icon_state = "vox_blackTH"
+	gender = NEUTER
+	species_allowed = list("Vox")
+
+/datum/sprite_accessory/socks/vox_thin_thigh
+	name = "Vox Thigh-high Thin"
+	icon_state = "vox_blackthinTH"
+	gender = NEUTER
+	species_allowed = list("Vox")
+
+/datum/sprite_accessory/socks/vox_rainbow_thigh
+	name = "Vox Thigh-high Rainbow"
+	icon_state = "vox_rainbowTH"
+	gender = NEUTER
+	species_allowed = list("Vox")
+
+/datum/sprite_accessory/socks/vox_striped_thigh
+	name = "Vox Thigh-high Striped"
+	icon_state = "vox_stripedTH"
+	gender = NEUTER
+	species_allowed = list("Vox")
+
+/datum/sprite_accessory/socks/vox_fishnet
+	name = "Vox Fishnets"
+	icon_state = "vox_fishnet"
+	gender = NEUTER
+	species_allowed = list("Vox")

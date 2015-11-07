@@ -513,16 +513,25 @@ datum/reagent/morphine/addiction_act_stage4(var/mob/living/M as mob)
 
 datum/reagent/oculine/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
-	M.eye_blurry = max(M.eye_blurry-5 , 0)
-	M.eye_blind = max(M.eye_blind-5 , 0)
-	if(ishuman(M))
-		var/mob/living/carbon/human/H = M
-		var/obj/item/organ/eyes/E = H.internal_organs_by_name["eyes"]
-		if(istype(E))
-			if(E.damage > 0)
-				E.damage -= 1
+	if(prob(80))
+		if(ishuman(M))
+			var/mob/living/carbon/human/H = M
+			var/obj/item/organ/eyes/E = H.internal_organs_by_name["eyes"]
+			if(istype(E))
+				E.damage = max(E.damage-1, 0)
+		M.eye_blurry = max(M.eye_blurry-1 , 0)
+		M.ear_damage = max(M.ear_damage-1, 0)
+	if(prob(50))
+		M.disabilities &= ~NEARSIGHTED
+	if(prob(30))
+		M.sdisabilities &= ~BLIND
+		M.eye_blind = 0
+	if(M.ear_damage <= 25)
+		if(prob(30))
+			M.ear_deaf = 0
 	..()
 	return
+
 /datum/chemical_reaction/oculine
 	name = "Oculine"
 	id = "oculine"
@@ -633,6 +642,7 @@ datum/reagent/strange_reagent/reaction_mob(var/mob/living/M as mob, var/method=T
 		if(method == TOUCH)
 			if(M.stat == DEAD)
 				M.health = M.maxHealth
+				M.update_revive()
 				M.visible_message("<span class='warning'>[M] seems to rise from the dead!</span>")
 	if(istype(M, /mob/living/carbon))
 		if(method == INGEST)
@@ -648,13 +658,12 @@ datum/reagent/strange_reagent/reaction_mob(var/mob/living/M as mob, var/method=T
 					M.visible_message("<span class='notice'>[M] doesn't appear to respond, perhaps try again later?</span>")
 				if(!M.suiciding && !ghost && !(NOCLONE in M.mutations))
 					M.visible_message("<span class='warning'>[M] seems to rise from the dead!</span>")
-					M.stat = 1
 					M.setOxyLoss(0)
 					M.adjustBruteLoss(rand(0,15))
 					M.adjustToxLoss(rand(0,15))
 					M.adjustFireLoss(rand(0,15))
-					dead_mob_list -= M
-					living_mob_list |= list(M)
+					M.update_revive()
+					M.stat = UNCONSCIOUS
 					add_logs(M, M, "revived", object="strange reagent")
 	..()
 	return
@@ -702,14 +711,12 @@ proc/chemical_mob_spawn(var/datum/reagents/holder, var/amount_to_spawn, var/reac
 		var/atom/A = holder.my_atom
 		var/turf/T = get_turf(A)
 		var/area/my_area = get_area(T)
-		var/message = "A [reaction_name] reaction has occured in [my_area.name]. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>JMP</A>)"
-		message += " (<A HREF='?_src_=vars;Vars=\ref[A]'>VV</A>)"
-
+		var/message = "A [reaction_name] reaction has occured in (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[T.x];Y=[T.y];Z=[T.z]'>[my_area.name]</A>)"
 		var/mob/M = get(A, /mob)
 		if(M)
-			message += " - Carried By: [M.real_name] ([M.key]) (<A HREF='?_src_=holder;adminplayeropts=\ref[M]'>PP</A>) (<A HREF='?_src_=holder;adminmoreinfo=\ref[M]'>?</A>)"
+			message += " - carried by: [key_name_admin(M)]"
 		else
-			message += " - Last Fingerprint: [(A.fingerprintslast ? A.fingerprintslast : "N/A")]"
+			message += " - last fingerprint: [(A.fingerprintslast ? A.fingerprintslast : "N/A")]"
 
 		message_admins(message, 0, 1)
 
@@ -824,6 +831,35 @@ datum/reagent/stimulants/reagent_deleted(var/mob/living/M as mob)
 	M.adjustBruteLoss(12)
 	M.adjustToxLoss(24)
 	M.Stun(4)
+	..()
+	return
+
+/datum/reagent/medicine/stimulative_agent
+	name = "Stimulative Agent"
+	id = "stimulative_agent"
+	description = "An illegal compound that dramatically enhances the body's performance and healing capabilities."
+	color = "#C8A5DC"
+	metabolization_rate = 0.5 * REAGENTS_METABOLISM
+	overdose_threshold = 60
+
+/datum/reagent/medicine/stimulative_agent/on_mob_life(mob/living/M)
+	M.status_flags |= GOTTAGOFAST
+	if(M.health < 50 && M.health > 0)
+		M.adjustOxyLoss(-1*REM)
+		M.adjustToxLoss(-1*REM)
+		M.adjustBruteLoss(-1*REM)
+		M.adjustFireLoss(-1*REM)
+	M.AdjustParalysis(-3)
+	M.AdjustStunned(-3)
+	M.AdjustWeakened(-3)
+	M.adjustStaminaLoss(-5*REM)
+	..()
+
+/datum/reagent/medicine/stimulative_agent/overdose_process(mob/living/M)
+	if(prob(33))
+		M.adjustStaminaLoss(2.5*REM)
+		M.adjustToxLoss(1*REM)
+		M.losebreath++
 	..()
 	return
 
@@ -1013,3 +1049,21 @@ datum/reagent/haloperidol/on_mob_life(var/mob/living/M as mob)
 	result_amount = 3
 	min_temp = 370
 	mix_message = "The solution gently swirls with a metallic sheen."
+
+
+datum/reagent/medicine/syndicate_nanites //Used exclusively by Syndicate medical cyborgs
+	name = "Restorative Nanites"
+	id = "syndicate_nanites"
+	description = "Miniature medical robots that swiftly restore bodily damage. May begin to attack their host's cells in high amounts."
+	reagent_state = SOLID
+	color = "#555555"
+
+datum/reagent/medicine/syndicate_nanites/on_mob_life(mob/living/M)
+	M.adjustBruteLoss(-5*REM) //A ton of healing - this is a 50 telecrystal investment.
+	M.adjustFireLoss(-5*REM)
+	M.adjustOxyLoss(-15*REM)
+	M.adjustToxLoss(-5*REM)
+	M.adjustBrainLoss(-15*REM)
+	M.adjustCloneLoss(-3*REM)
+	..()
+	return

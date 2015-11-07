@@ -2,6 +2,7 @@
 var/global/list/all_objectives = list()
 
 var/list/potential_theft_objectives=subtypesof(/datum/theft_objective) \
+	- /datum/theft_objective/steal \
 	- /datum/theft_objective/special \
 	- /datum/theft_objective/number \
 	- /datum/theft_objective/number/special \
@@ -327,7 +328,7 @@ datum/objective/protect//The opposite of killing a dude.
 
 
 datum/objective/hijack
-	explanation_text = "Hijack the emergency shuttle by escaping alone."
+	explanation_text = "Hijack the shuttle to ensure no loyalist Nanotrasen crew escape alive."
 
 	check_completion()
 		if(!owner.current || owner.current.stat)
@@ -337,14 +338,44 @@ datum/objective/hijack
 		if(issilicon(owner.current))
 			return 0
 		var/area/shuttle = locate(/area/shuttle/escape/centcom)
-		var/list/protected_mobs = list(/mob/living/silicon/ai, /mob/living/silicon/pai)
 		for(var/mob/living/player in player_list)
-			if(player.type in protected_mobs)	continue
+			if(istype(player, /mob/living/silicon) || istype(player, /mob/living/simple_animal) || player.mind.special_role && !player.mind.special_role == "Response Team")
+				continue
 			if (player.mind && (player.mind != owner))
 				if(player.stat != DEAD)			//they're not dead!
 					if(get_turf(player) in shuttle)
 						return 0
 		return 1
+
+/datum/objective/hijackclone
+	explanation_text = "Hijack the emergency shuttle by ensuring only you (or your copies) escape."
+
+	check_completion()
+		if(!owner.current)
+			return 0
+		if(!emergency_shuttle.returned())
+			return 0
+
+		var/area/A = locate(/area/shuttle/escape/centcom)
+
+		for(var/mob/living/player in player_list) //Make sure nobody else is onboard
+			if(player.mind && player.mind != owner)
+				if(player.stat != DEAD)
+					if(istype(player, /mob/living/silicon))
+						continue
+					if(get_area(player) == A)
+						if(player.real_name != owner.current.real_name && !istype(get_turf(player.mind.current), /turf/simulated/shuttle/floor4))
+							return 0
+
+		for(var/mob/living/player in player_list) //Make sure at least one of you is onboard
+			if(player.mind && player.mind != owner)
+				if(player.stat != DEAD)
+					if(istype(player, /mob/living/silicon))
+						continue
+					if(get_area(player) == A)
+						if(player.real_name == owner.current.real_name && !istype(get_turf(player.mind.current), /turf/simulated/shuttle/floor4))
+							return 1
+		return 0
 
 datum/objective/block
 	explanation_text = "Do not allow any organic lifeforms to escape on the shuttle alive."

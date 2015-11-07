@@ -15,7 +15,7 @@
 	response_harm = "hits the"
 	speak = list("ALERT.","Hostile-ile-ile entities dee-twhoooo-wected.","Threat parameterszzzz- szzet.","Bring sub-sub-sub-systems uuuup to combat alert alpha-a-a.")
 	emote_see = list("beeps menacingly","whirrs threateningly","scans its immediate vicinity")
-	a_intent = "harm"
+	a_intent = I_HARM
 	stop_automated_movement_when_pulled = 0
 	health = 300
 	maxHealth = 300
@@ -161,7 +161,7 @@
 	..()
 	qdel(src)
 
-/mob/living/simple_animal/hostile/retaliate/malf_drone/Destroy()
+/mob/living/simple_animal/hostile/retaliate/malf_drone/Destroy() //Seriously, what the actual hell.
 	//some random debris left behind
 	if(has_loot)
 		var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
@@ -170,16 +170,16 @@
 		var/obj/O
 
 		//shards
-		O = PoolOrNew(/obj/item/weapon/shard, loc)
+		O = new /obj/item/weapon/shard(loc)
 		step_to(O, get_turf(pick(view(7, src))))
 		if(prob(75))
-			O = PoolOrNew(/obj/item/weapon/shard, loc)
+			O = new /obj/item/weapon/shard(loc)
 			step_to(O, get_turf(pick(view(7, src))))
 		if(prob(50))
-			O = PoolOrNew(/obj/item/weapon/shard, loc)
+			O = new /obj/item/weapon/shard(loc)
 			step_to(O, get_turf(pick(view(7, src))))
 		if(prob(25))
-			O = PoolOrNew(/obj/item/weapon/shard, loc)
+			O = new /obj/item/weapon/shard(loc)
 			step_to(O, get_turf(pick(view(7, src))))
 
 		//rods

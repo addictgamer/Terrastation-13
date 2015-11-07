@@ -6,7 +6,12 @@
 	throw_speed = 1
 	throw_range = 5
 	w_class = 2.0
+	origin_tech = "materials=1;biotech=3;programming=2"
 	var/obj/item/weapon/implant/imp = null
+
+/obj/item/weapon/implanter/New()
+	..()
+	update()
 
 /obj/item/weapon/implanter/proc/update()
 
@@ -14,8 +19,10 @@
 /obj/item/weapon/implanter/update()
 	if (src.imp)
 		src.icon_state = "implanter1"
+		src.origin_tech = src.imp.origin_tech
 	else
 		src.icon_state = "implanter0"
+		src.origin_tech = initial(src.origin_tech)
 	return
 
 
@@ -27,7 +34,7 @@
 			O.show_message("\red [user] is attemping to implant [M].", 1)
 
 		var/turf/T1 = get_turf(M)
-		if (T1 && ((M == user) || do_after(user, 50)))
+		if (T1 && ((M == user) || do_after(user, 50, target = M)))
 			if(user && M && (get_turf(M) == T1) && src && src.imp)
 				for (var/mob/O in viewers(M, null))
 					O.show_message("\red [M] has been implanted by [user].", 1)

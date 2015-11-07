@@ -362,7 +362,7 @@ var/global/list/rockTurfEdgeCache
 		user << "<span class='notice'>You start picking...</span>"
 		P.playDigSound()
 
-		if(do_after(user, P.digspeed))
+		if(do_after(user, P.digspeed, target = src))
 			if(istype(src, /turf/simulated/mineral)) //sanity check against turf being deleted during digspeed delay
 				user << "<span class='notice'>You finish cutting into the rock.</span>"
 				P.update_icon()
@@ -392,6 +392,13 @@ var/global/list/rockTurfEdgeCache
 	if(user.environment_smash >= 2)
 		gets_drilled()
 	..()
+
+/turf/simulated/mineral/attack_alien(var/mob/living/carbon/alien/M)
+	M << "<span class='notice'>You start digging into the rock...</span>"
+	playsound(src, 'sound/effects/break_stone.ogg', 50, 1)
+	if(do_after(M, 40, target = src))
+		M << "<span class='notice'>You tunnel into the rock.</span>"
+		gets_drilled()
 
 /turf/simulated/mineral/Bumped(AM as mob|obj)
 	. = ..()

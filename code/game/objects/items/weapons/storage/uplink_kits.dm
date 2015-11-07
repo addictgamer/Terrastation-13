@@ -44,7 +44,7 @@
 				return
 
 			if("murder")
-				new /obj/item/weapon/melee/energy/sword(src)
+				new /obj/item/weapon/melee/energy/sword/saber(src)
 				new /obj/item/clothing/glasses/thermal/syndi(src)
 				new /obj/item/weapon/card/emag(src)
 				new /obj/item/clothing/shoes/syndigaloshes(src)
@@ -79,8 +79,8 @@
 				return
 
 			if("darklord")
-				new /obj/item/weapon/melee/energy/sword(src)
-				new /obj/item/weapon/melee/energy/sword(src)
+				new /obj/item/weapon/melee/energy/sword/saber(src)
+				new /obj/item/weapon/melee/energy/sword/saber(src)
 				new /obj/item/weapon/dnainjector/telemut/darkbundle(src)
 				new /obj/item/clothing/head/chaplain_hood(src)
 				new /obj/item/clothing/suit/chaplain_hoodie(src)
@@ -208,3 +208,17 @@
 		new /obj/item/weapon/grenade/chem_grenade/tabungas(src)
 		new /obj/item/weapon/grenade/chem_grenade/tabungas(src)
 		new /obj/item/weapon/grenade/chem_grenade/tabungas(src)
+
+/obj/item/weapon/storage/box/syndie_kit/bioterror
+	name = "bioterror syringe box"
+
+	New()
+		..()
+		new /obj/item/weapon/reagent_containers/syringe/bioterror(src)
+		new /obj/item/weapon/reagent_containers/syringe/bioterror(src)
+		new /obj/item/weapon/reagent_containers/syringe/bioterror(src)
+		new /obj/item/weapon/reagent_containers/syringe/bioterror(src)
+		new /obj/item/weapon/reagent_containers/syringe/bioterror(src)
+		new /obj/item/weapon/reagent_containers/syringe/bioterror(src)
+		new /obj/item/weapon/reagent_containers/syringe/bioterror(src)
+		return

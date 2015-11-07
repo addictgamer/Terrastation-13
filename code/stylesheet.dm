@@ -11,9 +11,12 @@ em						{font-style: normal;	font-weight: bold;}
 .motd a, .motd a:link, .motd a:visited, .motd a:active, .motd a:hover
 	{color: #638500;}
 
+.italics				{					font-style: italic;}
+
 .prefix					{					font-weight: bold;}
 
 .ooc					{					font-weight: bold;}
+.looc					{color: #6699CC;}
 .adminobserverooc		{color: #0099cc;	font-weight: bold;}
 .adminooc				{color: #b82e00;	font-weight: bold;}
 
@@ -74,7 +77,7 @@ h1.alert, h2.alert		{color: #000000;}
 .tajaran				{color: #803B56;}
 .tajaran_signlang		{color: #941C1C;}
 .skrell					{color: #00CED1;}
-.soghun					{color: #228B22;}
+.soghun					{color: #145314;}
 .solcom					{color: #22228B;}
 .changeling				{color: #800080;}
 .vox					{color: #AA00AA;}
@@ -85,9 +88,10 @@ h1.alert, h2.alert		{color: #000000;}
 .clown					{color: #ff0000;}
 .shadowling				{color: #3b2769;}
 .vulpkanin				{color: #B97A57;}
-.rough					{font-family: "Trebuchet MS", cursive, sans-serif;}
+.rough					{color: #7092BE; font-family: "Trebuchet MS", cursive, sans-serif;}
 .say_quote				{font-family: Georgia, Verdana, sans-serif;}
 .sans					{font-family: "Comic Sans MS", cursive, sans-serif; font-weight: bold;}
+.cultspeech				{color: #7F0000; font-style: italic;}
 
 .say_quote				{font-family: Georgia, Verdana, sans-serif;}
 
@@ -98,7 +102,9 @@ h1.alert, h2.alert		{color: #000000;}
 .greentext				{color: #00FF00;	font-size: 3;}
 .redtext				{color: #FF0000;	font-size: 3;}
 
-BIG IMG.icon 			{width: 32px; height: 32px;}
+.memo					{color: #638500;	text-align: center;}
+.memoedit				{text-align: center;	font-size: 2;}
 
+BIG IMG.icon 			{width: 32px; height: 32px;}
 
 </style>"}

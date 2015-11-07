@@ -113,6 +113,11 @@ nanoui is used to open and update nano browser uis
 	add_stylesheet("shared.css") // this CSS sheet is common to all UIs
 	add_stylesheet("icons.css") // this CSS sheet is common to all UIs
 
+	//codemirror
+	add_script("codemirror-compressed.js") // A custom compressed JS file of codemirror, with CSS highlighting
+	add_stylesheet("codemirror.css") // this CSS sheet is common to all UIs, so all UIs can use codemirror
+	add_stylesheet("cm_lesser-dark.css") //CSS styling for codemirror, dark theme
+
  /**
   * Set the current status (also known as visibility) of this ui.
   *
@@ -347,7 +352,7 @@ nanoui is used to open and update nano browser uis
 		template_data_json = list2json(templates)
 
 	var/list/send_data = get_send_data(initial_data)
-	var/initial_data_json = replacetext(list2json_usecache(send_data), "'", "&#39;")
+	var/initial_data_json = replacetext(replacetext(list2json_usecache(send_data), "&#34;", "&amp;#34;"), "'", "&#39;")
 
 	var/url_parameters_json = list2json(list("src" = "\ref[src]"))
 

@@ -84,6 +84,9 @@
 	if(stat == DEAD)	return
 	if(healths)		healths.icon_state = "health5"
 
+	if(!gibbed)
+		emote("deathgasp") //let the world KNOW WE ARE DEAD
+
 	stat = DEAD
 	dizziness = 0
 	jitteriness = 0
@@ -128,13 +131,11 @@
 			H.mind.kills += "[name] ([ckey])"
 
 	if(!gibbed)
-		emote("deathgasp") //let the world KNOW WE ARE DEAD
-
 		update_canmove()
 		if(client) blind.layer = 0
 
-	tod = worldtime2text()		//weasellos time of death patch
-	if(mind)	mind.store_memory("Time of death: [tod]", 0)
+	timeofdeath = worldtime2text()
+	if(mind)	mind.store_memory("Time of death: [timeofdeath]", 0)
 	if(ticker && ticker.mode)
 //		log_to_dd("k")
 		sql_report_death(src)

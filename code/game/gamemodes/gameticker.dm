@@ -34,22 +34,13 @@ var/global/datum/controller/gameticker/ticker
 
 	var/round_end_announced = 0 // Spam Prevention. Announce round end only once.
 
-/* This is shit that was in the lobby music block below before I put my dick in it. --LZ
-login_music = pick(\
+/datum/controller/gameticker/proc/pregame()
+	login_music = pick(\
 	'sound/music/THUNDERDOME.ogg',\
 	'sound/music/space.ogg',\
 	'sound/music/Title1.ogg',\
 	'sound/music/Title2.ogg',\
 	'sound/music/Title3.ogg',)
-	*/
-
-/datum/controller/gameticker/proc/pregame()
-	login_music = pick(\
-	'sound/music/robocop_slow.ogg',\
-	'sound/music/redsky.ogg',\
-	'sound/music/muh_face.ogg',\
-	'sound/music/darkest_blue.ogg',\
-	'sound/music/Atmosdel_Sub_Balloon.ogg',)
 	do
 		pregame_timeleft = 180
 		world << "<B><FONT color='blue'>Welcome to the pre-game lobby!</FONT></B>"
@@ -112,7 +103,7 @@ login_music = pick(\
 	can_continue = src.mode.pre_setup()//Setup special modes
 	job_master.DivideOccupations() //Distribute jobs
 	if(!can_continue)
-		del(mode)
+		qdel(mode)
 		current_state = GAME_STATE_PREGAME
 		world << "<B>Error setting up [master_mode].</B> Reverting to pre-game lobby."
 		job_master.ResetOccupations()
@@ -147,7 +138,7 @@ login_music = pick(\
 		for(var/obj/effect/landmark/start/S in landmarks_list)
 			//Deleting Startpoints but we need the ai point to AI-ize people later
 			if (S.name != "AI")
-				del(S)
+				qdel(S)
 
 		// take care of random spesspod spawning
 		var/list/obj/effect/landmark/spacepod/random/L = list()
@@ -158,7 +149,7 @@ login_music = pick(\
 			var/obj/effect/landmark/spacepod/random/S = pick(L)
 			new /obj/spacepod/random(S.loc)
 			for(var/obj/effect/landmark/spacepod/random/R in L)
-				del(R)
+				qdel(R)
 
 		world << "<FONT color='blue'><B>Enjoy the game!</B></FONT>"
 		world << sound('sound/AI/welcome.ogg') // Skie
@@ -234,7 +225,7 @@ login_music = pick(\
 
 	if(config.sql_enabled)
 		spawn(3000)
-		statistic_cycle() // Polls population totals regularly and stores them in an SQL DB -- TLE
+			statistic_cycle() // Polls population totals regularly and stores them in an SQL DB
 
 	votetimer()
 
@@ -376,7 +367,6 @@ login_music = pick(\
 				if(player.mind.assigned_role == "Captain")
 					captainless=0
 				if(player.mind.assigned_role != "MODE")
-					EquipRacialItems(player)
 					job_master.EquipRank(player, player.mind.assigned_role, 0)
 					EquipCustomItems(player)
 		if(captainless)
@@ -413,26 +403,9 @@ login_music = pick(\
 				callHook("roundend")
 
 				if (mode.station_was_nuked)
-					feedback_set_details("end_proper","nuke")
-					if(!delay_end)
-						world << "\blue <B>Rebooting due to destruction of station in [restart_timeout/10] seconds</B>"
+					world.Reboot("Station destroyed by Nuclear Device.", "end_proper", "nuke")
 				else
-					feedback_set_details("end_proper","proper completion")
-					if(!delay_end)
-						world << "\blue <B>Restarting in [restart_timeout/10] seconds</B>"
-
-
-				if(blackbox)
-					blackbox.save_all_data_to_sql()
-
-				if(!delay_end)
-					sleep(restart_timeout)
-					if(!delay_end)
-						world.Reboot()
-					else
-						world << "\blue <B>An admin has delayed the round end</B>"
-				else
-					world << "\blue <B>An admin has delayed the round end</B>"
+					world.Reboot("Round ended.", "end_proper", "proper completion")
 
 		else if (mode_finished)
 			post_game = 1
@@ -518,8 +491,6 @@ login_music = pick(\
 	for(var/handler in typesof(/datum/game_mode/proc))
 		if (findtext("[handler]","auto_declare_completion_"))
 			call(mode, handler)()
-
-	mode.declare_job_completion()
 
 	scoreboard()
 	karmareminder()

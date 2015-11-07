@@ -42,7 +42,7 @@
 	icon_living = "brainslug"
 	icon_dead = "brainslug_dead"
 	speed = 5
-	a_intent = "harm"
+	a_intent = I_HARM
 	stop_automated_movement = 1
 	status_flags = CANPUSH
 	attacktext = "nips"
@@ -67,7 +67,7 @@
 
 	if(host)
 
-		if(!stat && !host.stat)
+		if(!stat && host.stat != DEAD)
 
 			if(host.reagents.has_reagent("sugar"))
 				if(!docile)
@@ -294,7 +294,7 @@
 		if(!host || !src) return
 
 		if(src.stat)
-			src << "You cannot infest a target in your current state."
+			src << "You cannot release a target in your current state."
 			return
 
 		src << "You wiggle out of [host]'s ear and plop to the ground."
@@ -360,7 +360,7 @@ mob/living/simple_animal/borer/proc/detatch()
 
 	if(!host)	return
 
-	src.loc = get_turf(host)
+	src.forceMove(get_turf(host))
 
 	reset_view(null)
 	machine = null
@@ -406,7 +406,7 @@ mob/living/simple_animal/borer/proc/detatch()
 
 	src << "You slither up [M] and begin probing at their ear canal..."
 
-	if(!do_after(src,50))
+	if(!do_after(src,50, target = M))
 		src << "As [M] moves away, you are dislodged and fall to the ground."
 		return
 
@@ -426,7 +426,7 @@ mob/living/simple_animal/borer/proc/detatch()
 			M << "Something disgusting and slimy wiggles into your ear!"
 
 		src.host = M
-		src.loc = M
+		src.forceMove(M)
 
 		if(istype(M,/mob/living/carbon/human))
 			var/mob/living/carbon/human/H = M
@@ -442,7 +442,7 @@ mob/living/simple_animal/borer/proc/detatch()
 
 /mob/living/simple_animal/borer/proc/perform_infestation(var/mob/living/carbon/M)
 	src.host = M
-	src.loc = M
+	src.forceMove(M)
 
 	if(istype(M,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M

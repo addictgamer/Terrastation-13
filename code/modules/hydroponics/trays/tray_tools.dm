@@ -113,6 +113,7 @@
 	dat += "<tr><td><b>Maturation time</b></td><td>[grown_seed.get_trait(TRAIT_MATURATION)]</td></tr>"
 	dat += "<tr><td><b>Production time</b></td><td>[grown_seed.get_trait(TRAIT_PRODUCTION)]</td></tr>"
 	dat += "<tr><td><b>Potency</b></td><td>[grown_seed.get_trait(TRAIT_POTENCY)]</td></tr>"
+	dat += "<tr><td><b>Species Discovery Value</b></td><td>[grown_seed.get_trait(TRAIT_RARITY)]</td></tr>"
 
 	//--FalseIncarnate
 	//Tray-specific stats like Age and Mutation Modifier, not shown if target was not a hydroponics tray or soil
@@ -264,7 +265,7 @@
 	force = 5.0
 	throwforce = 7.0
 	w_class = 2.0
-	m_amt = 50
+	materials = list(MAT_METAL=50)
 	attack_verb = list("slashed", "sliced", "cut", "clawed")
 
 //Hatchets and things to kill kudzu
@@ -281,7 +282,7 @@
 	throwforce = 15.0
 	throw_speed = 4
 	throw_range = 4
-	m_amt = 15000
+	materials = list(MAT_METAL=15000)
 	origin_tech = "materials=2;combat=1"
 	attack_verb = list("chopped", "torn", "cut")
 	hitsound = 'sound/weapons/bladeslice.ogg'

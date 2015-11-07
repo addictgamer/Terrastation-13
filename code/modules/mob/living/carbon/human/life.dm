@@ -43,40 +43,23 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 	var/tinttotal = 0				// Total level of visually impairing items
 
 /mob/living/carbon/human/Life()
-	set invisibility = 0
-	//set background = 1
-
-	if (notransform)	return
-	if(!loc)			return	// Fixing a null error that occurs when the mob isn't found in the world -- TLE
-
-	..()
-
-	//Apparently, the person who wrote this code designed it so that
-	//blinded get reset each cycle and then get activated later in the
-	//code. Very ugly. I dont care. Moving this stuff here so its easy
-	//to find it.
-	blinded = null
 	fire_alert = 0 //Reset this here, because both breathe() and handle_environment() have a chance to set it.
 	tinttotal = tintcheck() //here as both hud updates and status updates call it
-
-	//TODO: seperate this out
-	// update the current life tick, can be used to e.g. only do something every 4 ticks
 	life_tick++
-	var/datum/gas_mixture/environment = loc.return_air()
 
+	in_stasis = 0
 	if(istype(loc, /obj/structure/closet/body_bag/cryobag))
 		var/obj/structure/closet/body_bag/cryobag/loc_as_cryobag = loc
 		if(!loc_as_cryobag.opened)
 			loc_as_cryobag.used++
 			in_stasis = 1
 
-	if(life_tick % 30 == 15)
+	if(mob_master.current_cycle % 30 == 15)
 		hud_updateflag = 1022
 
 	voice = GetVoice()
 
-	//No need to update all of these procs if the guy is dead.
-	if(stat != DEAD && !in_stasis)
+	if(..() && !in_stasis)
 		if(mob_master.current_cycle % 4 == 2 || failed_last_breath) 	//First, resolve location and get a breath
 			breathe() 				//Only try to take a breath every 4 ticks, unless suffocating
 
@@ -86,43 +69,15 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 				location_as_object.handle_internal_lifeform(src, 0)
 
 		if(check_mutations)
-//			testing("Updating [src.real_name]'s mutations: "+english_list(mutations))
 			domutcheck(src,null)
 			update_mutations()
 			check_mutations=0
 
-		//Updates the number of stored chemicals for powers
-		handle_changeling()
-
-		//Mutations and radiation
-		handle_mutations_and_radiation()
-
-		//Chemicals in the body
-		handle_chemicals_in_body()
-
-		//Disabilities
-		handle_disabilities()
-
-		//Random events (vomiting etc)
-		handle_random_events()
-
 		handle_virus_updates()
 
-		//Check if we're on fire
-		handle_fire()
-
-		//Decrease wetness over time
-		handle_wetness()
-
-		//stuff in the stomach
-		handle_stomach()
-
 		handle_shock()
-
 		handle_pain()
-
 		handle_heartbeat()
-
 		handle_heartattack()
 
 		if(!client)
@@ -136,27 +91,9 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 	if(life_tick > 5 && timeofdeath && (timeofdeath < 5 || world.time - timeofdeath > 6000))	//We are long dead, or we're junk mobs spawned like the clowns on the clown shuttle
 		return											//We go ahead and process them 5 times for HUD images and other stuff though.
 
-
-	//Handle temperature/pressure differences between body and environment
-	handle_environment(environment)		//Optimized a good bit.
-
-	//Status updates, death etc.
-	handle_regular_status_updates()		//Optimized a bit
-
-	handle_actions()
-
-	update_canmove()
-
 	//Update our name based on whether our face is obscured/disfigured
 	name = get_visible_name()
-
-	handle_regular_hud_updates()
-
 	pulse = handle_pulse()
-
-	// Grabbing
-	for(var/obj/item/weapon/grab/G in src)
-		G.process()
 
 	if(mind && mind.vampire)
 		handle_vampire()
@@ -179,7 +116,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 		return ONE_ATMOSPHERE - pressure_difference
 
 
-/mob/living/carbon/human/proc/handle_disabilities()
+/mob/living/carbon/human/handle_disabilities()
 	if (disabilities & EPILEPSY)
 		if ((prob(1) && paralysis < 1))
 			visible_message("<span class='danger'>[src] starts having a seizure!</span>","<span class='alert'>You have a seizure!</span>")
@@ -244,7 +181,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 		// as cloneloss
 		adjustCloneLoss(0.1)
 
-/mob/living/carbon/human/proc/handle_mutations_and_radiation()
+/mob/living/carbon/human/handle_mutations_and_radiation()
 	if(getFireLoss())
 		if((RESIST_HEAT in mutations) || (prob(1)))
 			heal_organ_damage(0,1)
@@ -449,7 +386,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 
 	return species.handle_breath(breath, src)
 
-/mob/living/carbon/human/proc/handle_environment(datum/gas_mixture/environment)
+/mob/living/carbon/human/handle_environment(datum/gas_mixture/environment)
 	if(!environment)
 		return
 
@@ -557,11 +494,6 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 		bodytemperature += BODYTEMP_HEATING_MAX
 	return
 //END FIRE CODE
-
-/mob/living/carbon/human/proc/handle_wetness()
-	if(mob_master.current_cycle%20==2) //dry off a bit once every 20 ticks or so
-		wetlevel = max(wetlevel - 1,0)
-	return
 
 	/*
 /mob/living/carbon/human/proc/adjust_body_temperature(current, loc_temp, boost)
@@ -735,7 +667,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 
 	return covered
 
-/mob/living/carbon/human/proc/handle_chemicals_in_body()
+/mob/living/carbon/human/handle_chemicals_in_body()
 
 	if(reagents)
 		reagents.metabolize(src)
@@ -767,7 +699,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 			light_amount = T.get_lumcount()*10
 		if(light_amount > species.light_dam && !incorporeal_move) //if there's enough light, start dying
 			if(species.light_effect_amp)
-				adjustFireLoss(5) //This gets doubled by Shadowling's innate fire weakness, so it ends up being 10.
+				adjustFireLoss(4.7) //This gets multiplied by 1.5 due to Shadowling's innate fire weakness, so it ends up being about 7.
 			else
 				adjustFireLoss(1)
 				adjustBruteLoss(1)
@@ -849,7 +781,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 
 	return //TODO: DEFERRED
 
-/mob/living/carbon/human/proc/handle_regular_status_updates()
+/mob/living/carbon/human/handle_regular_status_updates()
 
 	if(status_flags & GODMODE)	return 0
 
@@ -957,7 +889,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 			if(halloss > 0)
 				adjustHalLoss(-1)
 
-		if(embedded_flag && !(life_tick % 10))
+		if(embedded_flag && !(mob_master.current_cycle % 10))
 			var/list/E
 			E = get_visible_implants(0)
 			if(!E.len)
@@ -967,7 +899,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 		var/obj/item/organ/vision
 		if(species.vision_organ)
 			vision = internal_organs_by_name[species.vision_organ]
-		
+
 		if(!species.vision_organ) // Presumably if a species has no vision organs, they see via some other means.
 			eye_blind =  0
 			blinded =    0
@@ -976,7 +908,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 			eye_blind =  1
 			blinded =    1
 			eye_blurry = 1
-		else 
+		else
 			//blindness
 			if(sdisabilities & BLIND) // Disabled-blind, doesn't get better on its own
 				blinded =    1
@@ -986,7 +918,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 			else if(istype(glasses, /obj/item/clothing/glasses/sunglasses/blindfold))	//resting your eyes with a blindfold heals blurry eyes faster
 				eye_blurry = max(eye_blurry-3, 0)
 				blinded =    1
-			
+
 			//blurry sight
 			if(vision.is_bruised())   // Vision organs impaired? Permablurry.
 				eye_blurry = 1
@@ -1061,7 +993,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 
 	return 1
 
-/mob/living/carbon/human/proc/handle_regular_hud_updates()
+/mob/living/carbon/human/handle_regular_hud_updates()
 	if(hud_updateflag)
 		handle_hud_list()
 
@@ -1219,18 +1151,19 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 						if(ANTAGHUD)
 							process_antag_hud(src)
 
-
-
-
 		else if(!seer)
 			see_in_dark = species.darksight
 			see_invisible = SEE_INVISIBLE_LIVING
-			
+
+		if(vision_type)
+			see_in_dark = max(see_in_dark, vision_type.see_in_dark, species.darksight)
+			see_invisible = vision_type.see_invisible
+			if(vision_type.light_sensitive)
+				weakeyes = 1
+			sight |= vision_type.sight_flags
+
 		if(see_override)	//Override all
 			see_invisible = see_override
-
-		if(ticker && ticker.mode.name == "nations")
-			process_nations()
 
 		if(healths)
 			if (analgesic)
@@ -1284,12 +1217,6 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 		if(pressure)
 			pressure.icon_state = "pressure[pressure_alert]"
 
-		if(pullin)
-			if(pulling)								pullin.icon_state = "pull1"
-			else									pullin.icon_state = "pull0"
-//			if(rest)	//Not used with new UI
-//				if(resting || lying || sleeping)		rest.icon_state = "rest1"
-//				else									rest.icon_state = "rest0"
 		if(toxin)
 			if(hal_screwyhud == 4 || toxins_alert)	toxin.icon_state = "tox1"
 			else									toxin.icon_state = "tox0"
@@ -1392,7 +1319,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 				reset_view(null)
 	return 1
 
-/mob/living/carbon/human/proc/handle_random_events()
+/mob/living/carbon/human/handle_random_events()
 	// Puke if toxloss is too high
 	if(!stat)
 		if (getToxLoss() >= 45 && nutrition > 20)
@@ -1437,7 +1364,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 		for (var/ID in virus2)
 			var/datum/disease2/disease/V = virus2[ID]
 			V.cure(src)
-	if(life_tick % 3) //don't spam checks over all objects in view every tick.
+	if(mob_master.current_cycle % 3) //don't spam checks over all objects in view every tick.
 		for(var/obj/effect/decal/cleanable/O in view(1,src))
 			if(istype(O,/obj/effect/decal/cleanable/blood))
 				var/obj/effect/decal/cleanable/blood/B = O
@@ -1468,24 +1395,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 			V.dead = 1
 	return
 
-/mob/living/carbon/human/proc/handle_stomach()
-	spawn(0)
-		for(var/mob/living/M in stomach_contents)
-			if(M.loc != src)
-				stomach_contents.Remove(M)
-				continue
-			if(isliving(M) && stat != 2)
-				if(M.stat == 2)
-					M.death(1)
-					stomach_contents.Remove(M)
-					qdel(M)
-					continue
-				if(mob_master.current_cycle%3==1)
-					if(!(M.status_flags & GODMODE))
-						M.adjustBruteLoss(5)
-					nutrition += 10
-
-/mob/living/carbon/human/proc/handle_changeling()
+/mob/living/carbon/human/handle_changeling()
 	if(mind && mind.changeling)
 		mind.changeling.regenerate()
 
@@ -1508,7 +1418,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 		src << "<font color='red'><b>"+pick("It hurts so much!", "You really need some painkillers..", "Dear god, the pain!")
 
 	if(shock_stage >= 30)
-		if(shock_stage == 30) emote("me",1,"is having trouble keeping their eyes open.")
+		if(shock_stage == 30) custom_emote(1,"is having trouble keeping their eyes open.")
 		eye_blurry = max(2, eye_blurry)
 		stuttering = max(stuttering, 5)
 
@@ -1516,7 +1426,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 		src << "<font color='red'><b>"+pick("The pain is excrutiating!", "Please, just end the pain!", "Your whole body is going numb!")
 
 	if(shock_stage >=60)
-		if(shock_stage == 60) emote("me",1,"'s body becomes limp.")
+		if(shock_stage == 60) custom_emote(1,"falls limp.")
 		if (prob(2))
 			src << "<font color='red'><b>"+pick("The pain is excrutiating!", "Please, just end the pain!", "Your whole body is going numb!")
 			Weaken(20)
@@ -1532,7 +1442,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 			Paralyse(5)
 
 	if(shock_stage == 150)
-		emote("me",1,"can no longer stand, collapsing!")
+		custom_emote(1,"can no longer stand, collapsing!")
 		Weaken(20)
 
 	if(shock_stage >= 150)
@@ -1541,7 +1451,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 
 /mob/living/carbon/human/proc/handle_pulse()
 
-	if(life_tick % 5) return pulse	//update pulse every 5 life ticks (~1 tick/sec, depending on server load)
+	if(mob_master.current_cycle % 5) return pulse	//update pulse every 5 life ticks (~1 tick/sec, depending on server load)
 
 	if(species && species.flags & NO_BLOOD) return PULSE_NONE //No blood, no pulse.
 
@@ -1821,33 +1731,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 					holder.icon_state = "hudshadowlingthrall"
 
 			hud_list[SPECIALROLE_HUD] = holder
-
-	if(hud_updateflag & 1 << NATIONS_HUD)
-		var/image/holder = hud_list[NATIONS_HUD]
-		holder.icon_state = "hudblank"
-
-		if(mind && mind.nation)
-			switch(mind.nation.name)
-				if("Atmosia")
-					holder.icon_state = "hudatmosia"
-				if("Brigston")
-					holder.icon_state = "hudbrigston"
-				if("Cargonia")
-					holder.icon_state = "hudcargonia"
-				if("People's Republic of Commandzakstan")
-					holder.icon_state = "hudcommand"
-				if("Medistan")
-					holder.icon_state = "hudmedistan"
-				if("Scientopia")
-					holder.icon_state = "hudscientopia"
-
-			hud_list[NATIONS_HUD] = holder
 	hud_updateflag = 0
-
-/mob/living/carbon/human/proc/process_nations()
-	var/client/C = client
-	for(var/mob/living/carbon/human/H in view(src, 14))
-		C.images += H.hud_list[NATIONS_HUD]
 
 /mob/living/carbon/human/handle_silent()
 	if(..())

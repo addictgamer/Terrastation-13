@@ -31,7 +31,7 @@
 	component_parts += new /obj/item/device/assembly/igniter(null)
 	component_parts += new /obj/item/weapon/stock_parts/console_screen(null)
 	RefreshParts()
-	
+
 /obj/machinery/mineral/ore_redemption/upgraded/New()
 	..()
 	component_parts = list()
@@ -101,22 +101,23 @@
 			inserted_id = I
 			interact(user)
 		return
-	if(exchange_parts(user, W))
-		return
-
-	if(default_deconstruction_crowbar(W))
-		return
-
-	if(default_unfasten_wrench(user, W))
-		return
+		
 	if(default_deconstruction_screwdriver(user, "ore_redemption-open", "ore_redemption", W))
 		updateUsrDialog()
 		return
+		
+	if(exchange_parts(user, W))
+		return
+
 	if(panel_open)
 		if(istype(W, /obj/item/weapon/crowbar))
 			empty_content()
 			default_deconstruction_crowbar(W)
-		return 1
+		return
+
+	if(default_unfasten_wrench(user, W))
+		return
+
 	..()
 
 /obj/machinery/mineral/ore_redemption/proc/SmeltMineral(var/obj/item/weapon/ore/O)
@@ -253,7 +254,7 @@
 		while(s.amount > s.max_amount)
 			new s.type(loc,s.max_amount)
 			s.use(s.max_amount)
-		s.loc = loc
+		s.forceMove(loc)
 		s.layer = initial(s.layer)
 
 /**********************Mining Equipment Locker**************************/
@@ -436,9 +437,9 @@
 			user << "<span class='info'>There's no points left on [src].</span>"
 	..()
 
-/obj/item/weapon/card/mining_point_card/examine()
-	..()
-	usr << "There's [points] points on the card."
+/obj/item/weapon/card/mining_point_card/examine(mob/user)
+	..(user)
+	user << "There's [points] points on the card."
 
 /**********************Jaunter**********************/
 
@@ -570,7 +571,7 @@
 			playsound(src,'sound/weapons/resonator_blast.ogg',50,1)
 			if(creator)
 				for(var/mob/living/L in src.loc)
-					add_logs(creator, L, "used a resonator field on", object="resonator")
+					add_logs(L, creator, "used a resonator field on", object="resonator")
 					L << "<span class='danger'>The [src.name] ruptured with you in it!</span>"
 					L.adjustBruteLoss(resonance_damage)
 			else
@@ -604,7 +605,7 @@
 	stop_automated_movement_when_pulled = 1
 	mouse_opacity = 1
 	faction = list("neutral")
-	a_intent = "harm"
+	a_intent = I_HARM
 	min_oxy = 0
 	max_oxy = 0
 	min_tox = 0
@@ -655,7 +656,7 @@
 		return
 	..()
 
-/mob/living/simple_animal/hostile/mining_drone/death()
+/mob/living/simple_animal/hostile/mining_drone/Die()
 	..()
 	visible_message("<span class='danger'>[src] is destroyed!</span>")
 	new /obj/effect/decal/cleanable/blood/gibs/robot(src.loc)
@@ -668,7 +669,7 @@
 	SetCollectBehavior()
 
 /mob/living/simple_animal/hostile/mining_drone/attack_hand(mob/living/carbon/human/M)
-	if(M.a_intent == "help")
+	if(M.a_intent == I_HELP)
 		switch(search_objects)
 			if(0)
 				SetCollectBehavior()
@@ -706,11 +707,11 @@
 /mob/living/simple_animal/hostile/mining_drone/proc/CollectOre()
 	var/obj/item/weapon/ore/O
 	for(O in src.loc)
-		O.loc = src
+		O.forceMove(src)
 	for(var/dir in alldirs)
 		var/turf/T = get_step(src,dir)
 		for(O in T)
-			O.loc = src
+			O.forceMove(src)
 	return
 
 /mob/living/simple_animal/hostile/mining_drone/proc/DropOre()
@@ -718,7 +719,7 @@
 		return
 	for(var/obj/item/weapon/ore/O in contents)
 		contents -= O
-		O.loc = src.loc
+		O.forceMove(loc)
 	return
 
 /mob/living/simple_animal/hostile/mining_drone/adjustBruteLoss()
@@ -734,7 +735,6 @@
 	icon = 'icons/obj/syringe.dmi'
 	icon_state = "lazarus_hypo"
 	item_state = "hypo"
-	icon_override = 'icons/mob/in-hand/tools.dmi'
 	throwforce = 0
 	w_class = 2.0
 	throw_speed = 3
@@ -778,7 +778,7 @@
 		malfunctioning = 1
 
 /obj/item/weapon/lazarus_injector/examine(mob/user)
-	..()
+	..(user)
 	if(!loaded)
 		user << "<span class='info'>[src] is empty.</span>"
 	if(malfunctioning)

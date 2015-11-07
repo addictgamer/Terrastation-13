@@ -1,7 +1,7 @@
 /obj/item/device/pizza_bomb
 	name = "pizza box"
 	desc = "A box suited for pizzas."
-	icon = 'icons/obj/food.dmi'
+	icon = 'icons/obj/food/food.dmi'
 	icon_state = "pizzabox1"
 	var/timer = 10 //Adjustable timer
 	var/timer_set = 0
@@ -84,7 +84,7 @@
 			user << "<span class='warning'>You can't see the box well enough to cut the wires out.</span>"
 			return
 		user.visible_message("<span class='notice'>[user] starts removing the payload and wires from \the [src].</span>")
-		if(do_after(user, 40))
+		if(do_after(user, 40, target = src))
 			playsound(src, 'sound/items/Wirecutter.ogg', 50, 1, 1)
 			user.unEquip(src)
 			user.visible_message("<span class='notice'>[user] removes the insides of \the [src]!</span>")

@@ -21,7 +21,7 @@
 		if(!opened)		// if closed, any item at the crate's loc is put in the contents
 			for(var/obj/item/I in src.loc)
 				if(I.density || I.anchored || I == src) continue
-				I.loc = src
+				I.forceMove(src)
 
 // Fix for #383 - C4 deleting fridges with corpses
 /obj/structure/closet/Destroy()
@@ -49,13 +49,13 @@
 /obj/structure/closet/proc/dump_contents()
 	//Cham Projector Exception
 	for(var/obj/effect/dummy/chameleon/AD in src)
-		AD.loc = src.loc
+		AD.forceMove(loc)
 
 	for(var/obj/I in src)
-		I.loc = src.loc
+		I.forceMove(loc)
 
 	for(var/mob/M in src)
-		M.loc = src.loc
+		M.forceMove(loc)
 		if(M.client)
 			M.client.eye = M.client.mob
 			M.client.perspective = MOB_PERSPECTIVE
@@ -90,14 +90,14 @@
 	for(var/obj/effect/dummy/chameleon/AD in src.loc)
 		if(itemcount >= storage_capacity)
 			break
-		AD.loc = src
+		AD.forceMove(src)
 		itemcount++
 
 	for(var/obj/item/I in src.loc)
 		if(itemcount >= storage_capacity)
 			break
 		if(!I.anchored)
-			I.loc = src
+			I.forceMove(src)
 			itemcount++
 
 	for(var/mob/M in src.loc)
@@ -112,7 +112,7 @@
 			M.client.perspective = EYE_PERSPECTIVE
 			M.client.eye = src
 
-		M.loc = src
+		M.forceMove(src)
 		itemcount++
 
 	src.icon_state = src.icon_closed
@@ -134,20 +134,22 @@
 	switch(severity)
 		if(1)
 			for(var/atom/movable/A as mob|obj in src)//pulls everything out of the locker and hits it with an explosion
-				A.loc = src.loc
+				A.forceMove(src.loc)
 				A.ex_act(severity++)
 			qdel(src)
 		if(2)
 			if(prob(50))
 				for (var/atom/movable/A as mob|obj in src)
-					A.loc = src.loc
+					A.forceMove(loc)
 					A.ex_act(severity++)
+				new /obj/item/stack/sheet/metal(loc)
 				qdel(src)
 		if(3)
 			if(prob(5))
 				for(var/atom/movable/A as mob|obj in src)
-					A.loc = src.loc
+					A.forceMove(loc)
 					A.ex_act(severity++)
+				new /obj/item/stack/sheet/metal(loc)
 				qdel(src)
 
 /obj/structure/closet/bullet_act(var/obj/item/projectile/Proj)
@@ -156,7 +158,7 @@
 		health -= Proj.damage
 		if(health <= 0)
 			for(var/atom/movable/A as mob|obj in src)
-				A.loc = src.loc
+				A.forceMove(loc)
 			qdel(src)
 	return
 
@@ -165,20 +167,22 @@
 		user.do_attack_animation(src)
 		visible_message("\red [user] destroys the [src]. ")
 		for(var/atom/movable/A as mob|obj in src)
-			A.loc = src.loc
+			A.forceMove(loc)
 		qdel(src)
 
 // this should probably use dump_contents()
 /obj/structure/closet/blob_act()
 	if(prob(75))
 		for(var/atom/movable/A as mob|obj in src)
-			A.loc = src.loc
+			A.forceMove(loc)
 		qdel(src)
 
 /obj/structure/closet/attackby(obj/item/weapon/W as obj, mob/user as mob, params)
 	if(istype(W, /obj/item/weapon/rcs) && !src.opened)
+		if(user in contents) //to prevent self-teleporting.
+			return
 		var/obj/item/weapon/rcs/E = W
-		if(E.rcharges != 0)
+		if(E.rcell && (E.rcell.charge >= E.chargecost))
 			if(!(src.z in config.contact_levels))
 				user << "<span class='warning'>The rapid-crate-sender can't locate any telepads!</span>"
 				return
@@ -200,20 +204,16 @@
 					playsound(E.loc, 'sound/machines/click.ogg', 50, 1)
 					user << "\blue Teleporting [src.name]..."
 					E.teleporting = 1
-					sleep(50)
+					if(!do_after(user, 50, target = src))
+						E.teleporting = 0
+						return
 					E.teleporting = 0
 					var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 					s.set_up(5, 1, src)
 					s.start()
 					do_teleport(src, E.pad, 0)
-					E.rcharges--
-					if(E.rcharges != 1)
-						user << "\blue Teleport successful. [E.rcharges] charges left."
-						E.desc = "Use this to send crates and closets to cargo telepads. There are [E.rcharges] charges left."
-						return
-					else
-						user << "\blue Teleport successful. [E.rcharges] charge left."
-						E.desc = "Use this to send crates and closets to cargo telepads. There is [E.rcharges] charge left."
+					E.rcell.use(E.chargecost)
+					user << "<span class='notice'>Teleport successful. [round(E.rcell.charge/E.chargecost)] charge\s left.</span>"
 					return
 			else
 				E.rand_x = rand(50,200)
@@ -222,23 +222,19 @@
 				playsound(E.loc, 'sound/machines/click.ogg', 50, 1)
 				user << "\blue Teleporting [src.name]..."
 				E.teleporting = 1
-				sleep(50)
+				if(!do_after(user, 50, target = src))
+					E.teleporting = 0
+					return
 				E.teleporting = 0
 				var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 				s.set_up(5, 1, src)
 				s.start()
 				do_teleport(src, L)
-				E.rcharges--
-				if(E.rcharges != 1)
-					user << "\blue Teleport successful. [E.rcharges] charges left."
-					E.desc = "Use this to send crates and closets to cargo telepads. There are [E.rcharges] charges left."
-					return
-				else
-					user << "\blue Teleport successful. [E.rcharges] charge left."
-					E.desc = "Use this to send crates and closets to cargo telepads. There is [E.rcharges] charge left."
-					return
+				E.rcell.use(E.chargecost)
+				user << "<span class='notice'>Teleport successful. [round(E.rcell.charge/E.chargecost)] charge\s left.</span>"
+				return
 		else
-			user << "\red Out of charges."
+			user << "<span class='warning'>Out of charges.</span>"
 			return
 
 	if(src.opened)
@@ -261,7 +257,7 @@
 		if(!usr.drop_item())
 			return
 		if(W)
-			W.loc = src.loc
+			W.forceMove(loc)
 	else if(istype(W, /obj/item/stack/packageWrap))
 		return
 	else if(istype(W, /obj/item/weapon/weldingtool))

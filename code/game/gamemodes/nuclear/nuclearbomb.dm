@@ -23,7 +23,7 @@ var/bomb_set
 	unacidable = 1
 	var/previous_level = ""
 	var/datum/wires/nuclearbomb/wires = null
-	
+
 /obj/machinery/nuclearbomb/syndicate
 	is_syndicate = 1
 
@@ -32,11 +32,12 @@ var/bomb_set
 	r_code = "[rand(10000, 99999.0)]"//Creates a random code upon object spawn.
 	wires = new/datum/wires/nuclearbomb(src)
 	previous_level = get_security_level()
-	
+
 /obj/machinery/nuclearbomb/Destroy()
 	qdel(wires)
-	return ..()	
-	
+	wires = null
+	return ..()
+
 /obj/machinery/nuclearbomb/process()
 	if (timing)
 		bomb_set = 1 //So long as there is one nuke timing, it means one nuke is armed.
@@ -95,7 +96,7 @@ var/bomb_set
 
 					user.visible_message("[user] starts cutting loose the anchoring bolt covers on [src].", "You start cutting loose the anchoring bolt covers with [O]...")
 
-					if(do_after(user,40))
+					if(do_after(user,40, target = src))
 						if(!src || !user || !WT.remove_fuel(5, user)) return
 						user.visible_message("[user] cuts through the bolt covers on [src].", "You cut through the bolt cover.")
 						removal_stage = 1
@@ -105,7 +106,7 @@ var/bomb_set
 				if(istype(O,/obj/item/weapon/crowbar))
 					user.visible_message("[user] starts forcing open the bolt covers on [src].", "You start forcing open the anchoring bolt covers with [O]...")
 
-					if(do_after(user,15))
+					if(do_after(user,15, target = src))
 						if(!src || !user) return
 						user.visible_message("[user] forces open the bolt covers on [src].", "You force open the bolt covers.")
 						removal_stage = 2
@@ -122,7 +123,7 @@ var/bomb_set
 
 					user.visible_message("[user] starts cutting apart the anchoring system sealant on [src].", "You start cutting apart the anchoring system's sealant with [O]...")
 
-					if(do_after(user,40))
+					if(do_after(user,40, target = src))
 						if(!src || !user || !WT.remove_fuel(5, user)) return
 						user.visible_message("[user] cuts apart the anchoring system sealant on [src].", "You cut apart the anchoring system's sealant.")
 						removal_stage = 3
@@ -133,7 +134,7 @@ var/bomb_set
 
 					user.visible_message("[user] begins unwrenching the anchoring bolts on [src].", "You begin unwrenching the anchoring bolts...")
 
-					if(do_after(user,50))
+					if(do_after(user,50, target = src))
 						if(!src || !user) return
 						user.visible_message("[user] unwrenches the anchoring bolts on [src].", "You unwrench the anchoring bolts.")
 						removal_stage = 4
@@ -144,7 +145,7 @@ var/bomb_set
 
 					user.visible_message("[user] begins lifting [src] off of the anchors.", "You begin lifting the device off the anchors...")
 
-					if(do_after(user,80))
+					if(do_after(user,80, target = src))
 						if(!src || !user) return
 						user.visible_message("[user] crowbars [src] off of the anchors. It can now be moved.", "You jam the crowbar under the nuclear device and lift it off its anchors. You can now move it!")
 						anchored = 0
@@ -154,7 +155,7 @@ var/bomb_set
 
 /obj/machinery/nuclearbomb/attack_ghost(mob/user as mob)
 	attack_hand(user)
-	
+
 /obj/machinery/nuclearbomb/attack_hand(mob/user as mob)
 	if (extended)
 		if (panel_open)
@@ -199,7 +200,7 @@ var/bomb_set
 		data["message"] = code
 		if (yes_code)
 			data["message"] = "*****"
-		
+
 	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
 		ui = new(user, src, ui_key, "nuclear_bomb.tmpl", "Nuke Control Panel", 300, 510)
@@ -223,18 +224,18 @@ var/bomb_set
 		deployable = 1
 	return
 
-/obj/machinery/nuclearbomb/proc/is_auth(user as mob)
+/obj/machinery/nuclearbomb/proc/is_auth(var/mob/user)
 	if(auth)
 		return 1
-	if(isobserver(user) && check_rights(R_ADMIN, 0, user))
+	else if(user.can_admin_interact())
 		return 1
 	else
 		return 0
-	
+
 /obj/machinery/nuclearbomb/Topic(href, href_list)
 	if(..())
 		return 1
-		
+
 	if (href_list["auth"])
 		if (auth)
 			auth.loc = loc
@@ -311,7 +312,7 @@ var/bomb_set
 					visible_message("\red \The [src] makes a highly unpleasant crunching noise. It looks like the anchoring bolts have been cut.")
 					nanomanager.update_uis(src)
 					return
-			
+
 				if(!isinspace())
 					anchored = !(anchored)
 					if(anchored)
@@ -380,15 +381,7 @@ var/bomb_set
 															//kinda shit but I couldn't  get permission to do what I wanted to do.
 
 			if(!ticker.mode.check_finished())//If the mode does not deal with the nuke going off so just reboot because everyone is stuck as is
-				world << "<B>Resetting in 30 seconds!</B>"
-
-				feedback_set_details("end_error","nuke - unhandled ending")
-
-				if(blackbox)
-					blackbox.save_all_data_to_sql()
-				sleep(300)
-				log_game("Rebooting due to nuclear detonation.")
-				world.Reboot()
+				world.Reboot("Station destroyed by Nuclear Device.", "end_error", "nuke - unhandled ending")
 				return
 	return
 

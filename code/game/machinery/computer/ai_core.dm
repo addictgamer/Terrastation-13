@@ -9,13 +9,21 @@
 	var/obj/item/weapon/circuitboard/circuit = null
 	var/obj/item/device/mmi/brain = null
 
+/obj/structure/AIcore/Destroy()
+	qdel(laws)
+	qdel(circuit)
+	qdel(brain)
+	laws = null
+	circuit = null
+	brain = null
+	return ..()
 
 /obj/structure/AIcore/attackby(obj/item/P as obj, mob/user as mob, params)
 	switch(state)
 		if(0)
 			if(istype(P, /obj/item/weapon/wrench))
 				playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
-				if(do_after(user, 20))
+				if(do_after(user, 20, target = src))
 					user << "\blue You wrench the frame into place."
 					anchored = 1
 					state = 1
@@ -25,7 +33,7 @@
 					user << "The welder must be on for this task."
 					return
 				playsound(loc, 'sound/items/Welder.ogg', 50, 1)
-				if(do_after(user, 20))
+				if(do_after(user, 20, target = src))
 					if(!src || !WT.remove_fuel(0, user)) return
 					user << "\blue You deconstruct the frame."
 					new /obj/item/stack/sheet/plasteel( loc, 4)
@@ -33,7 +41,7 @@
 		if(1)
 			if(istype(P, /obj/item/weapon/wrench))
 				playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
-				if(do_after(user, 20))
+				if(do_after(user, 20, target = src))
 					user << "\blue You unfasten the frame."
 					anchored = 0
 					state = 0
@@ -65,7 +73,7 @@
 			if(istype(P, /obj/item/stack/cable_coil))
 				if(P:amount >= 5)
 					playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
-					if(do_after(user, 20))
+					if(do_after(user, 20, target = src))
 						P:amount -= 5
 						if(!P:amount) qdel(P)
 						user << "\blue You add cables to the frame."
@@ -86,7 +94,7 @@
 			if(istype(P, /obj/item/stack/sheet/rglass))
 				if(P:amount >= 2)
 					playsound(loc, 'sound/items/Deconstruct.ogg', 50, 1)
-					if(do_after(user, 20))
+					if(do_after(user, 20, target = src))
 						if (P)
 							P:amount -= 2
 							if(!P:amount) qdel(P)
@@ -94,23 +102,23 @@
 							state = 4
 							icon_state = "4"
 
-			if(istype(P, /obj/item/weapon/aiModule/core/full)) //Allows any full core boards to be applied to AI cores.
-				var/obj/item/weapon/aiModule/core/M = P
+			if(istype(P, /obj/item/weapon/aiModule/purge))
 				laws.clear_inherent_laws()
-				for(var/templaw in M.laws)
-					laws.add_inherent_law(templaw)
 				usr << "<span class='notice'>Law module applied.</span>"
+				return
 
-			if(istype(P, /obj/item/weapon/aiModule/reset/purge))
-				laws.clear_inherent_laws()
-				usr << "Law module applied."
-
-			if(istype(P, /obj/item/weapon/aiModule/supplied/freeform) || istype(P, /obj/item/weapon/aiModule/core/freeformcore))
-				var/obj/item/weapon/aiModule/supplied/freeform/M = P
-				if(M.laws[1] == "")
-					return
-				laws.add_inherent_law(M.laws[1])
+			if(istype(P, /obj/item/weapon/aiModule/freeform))
+				var/obj/item/weapon/aiModule/freeform/M = P
+				laws.add_inherent_law(M.newFreeFormLaw)
 				usr << "<span class='notice'>Added a freeform law.</span>"
+				return
+
+			if(istype(P, /obj/item/weapon/aiModule))
+				var/obj/item/weapon/aiModule/M = P
+				if(!M.laws)
+					usr << "<span class='warning'>This AI module can not be applied directly to AI cores.</span>"
+					return
+				laws = M.laws
 
 			if(istype(P, /obj/item/device/mmi) || istype(P, /obj/item/device/mmi/posibrain))
 				if(!P:brainmob)
@@ -122,6 +130,10 @@
 
 				if(jobban_isbanned(P:brainmob, "AI") || jobban_isbanned(P:brainmob,"nonhumandept"))
 					user << "\red This [P] does not seem to fit."
+					return
+
+				if(istype(P, /obj/item/device/mmi/syndie))
+					user << "<span class='warning'>This MMI does not seem to fit!</span>"
 					return
 
 				if(P:brainmob.mind)
@@ -176,7 +188,8 @@
 	state = 20//So it doesn't interact based on the above. Not really necessary.
 
 /obj/structure/AIcore/deactivated/Destroy()
-	empty_playable_ai_cores -= src
+	if(src in empty_playable_ai_cores)
+		empty_playable_ai_cores -= src
 	return ..()
 
 /obj/structure/AIcore/deactivated/attackby(var/obj/item/W, var/mob/user, params)
@@ -186,7 +199,7 @@
 	else if(istype(W, /obj/item/weapon/wrench))
 		if(anchored)
 			user.visible_message("\blue \The [user] starts to unbolt \the [src] from the plating...")
-			if(!do_after(user,40))
+			if(!do_after(user,40, target = src))
 				user.visible_message("\blue \The [user] decides not to unbolt \the [src].")
 				return
 			user.visible_message("\blue \The [user] finishes unfastening \the [src]!")
@@ -194,7 +207,7 @@
 			return
 		else
 			user.visible_message("\blue \The [user] starts to bolt \the [src] to the plating...")
-			if(!do_after(user,40))
+			if(!do_after(user,40, target = src))
 				user.visible_message("\blue \The [user] decides not to bolt \the [src].")
 				return
 			user.visible_message("\blue \The [user] finishes fastening down \the [src]!")
@@ -257,4 +270,3 @@ atom/proc/transfer_ai(var/interaction, var/mob/user, var/mob/living/silicon/ai/A
 		qdel(src)
 	else //If for some reason you use an empty card on an empty AI terminal.
 		user << "There is no AI loaded on this terminal!"
-		

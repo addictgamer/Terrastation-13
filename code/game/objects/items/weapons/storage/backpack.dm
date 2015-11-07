@@ -8,10 +8,13 @@
 	desc = "You wear this on your back and put items into it."
 	icon_state = "backpack"
 	item_state = "backpack"
+	lefthand_file = 'icons/mob/inhands/clothing_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/clothing_righthand.dmi'
 	w_class = 4.0
 	slot_flags = SLOT_BACK	//ERROOOOO
 	max_w_class = 3
 	max_combined_w_class = 21
+	storage_slots = 21
 
 /obj/item/weapon/storage/backpack/attackby(obj/item/weapon/W as obj, mob/user as mob, params)
 	playsound(src.loc, "rustle", 50, 1, -5)
@@ -73,7 +76,6 @@
 	icon_state = "giftbag0"
 	item_state = "giftbag"
 	w_class = 4.0
-	storage_slots = 20
 	max_w_class = 3
 	max_combined_w_class = 400 // can store a ton of shit!
 
@@ -197,7 +199,6 @@
 	desc = "A very slim satchel that can easily fit into tight spaces."
 	icon_state = "satchel-flat"
 	w_class = 3 //Can fit in backpacks itself.
-	storage_slots = 5
 	max_combined_w_class = 15
 	level = 1
 	cant_hold = list(/obj/item/weapon/storage/backpack/satchel_flat) //muh recursive backpacks
@@ -224,26 +225,67 @@
 /obj/item/weapon/storage/backpack/duffel
 	name = "duffelbag"
 	desc = "A large grey duffelbag designed to hold more items than a regular bag."
-	icon_override = 'icons/mob/in-hand/duffelbag.dmi'
 	icon_state = "duffel"
 	item_state = "duffel"
-	storage_slots = 9 // Duffelbags can hold more items.
-	max_combined_w_class = 27
+	max_combined_w_class = 30
 	slowdown = 1
 
-/obj/item/weapon/storage/backpack/duffel/syndimed
+/obj/item/weapon/storage/backpack/duffel/syndie
+	name = "suspicious looking dufflebag"
+	desc = "A large dufflebag for holding extra tactical supplies."
+	icon_state = "duffel-syndi"
+	item_state = "duffel-syndimed"
+	origin_tech = "syndicate=1"
+	silent = 1
+	slowdown = 0
+
+/obj/item/weapon/storage/backpack/duffel/syndie/med
 	name = "suspicious duffelbag"
 	desc = "A black and red duffelbag with a red and white cross sewn onto it."
 	icon_state = "duffel-syndimed"
 	item_state = "duffel-syndimed"
-	slowdown = 0
 
-/obj/item/weapon/storage/backpack/duffel/syndiammo
+/obj/item/weapon/storage/backpack/duffel/syndie/ammo
 	name = "suspicious duffelbag"
 	desc = "A black and red duffelbag with a patch depicting shotgun shells sewn onto it."
 	icon_state = "duffel-syndiammo"
 	item_state = "duffel-syndiammo"
-	slowdown = 0
+
+/obj/item/weapon/storage/backpack/duffel/syndie/ammo/loaded
+	desc = "A large dufflebag, packed to the brim with Bulldog shotgun ammo."
+
+/obj/item/weapon/storage/backpack/duffel/syndie/ammo/loaded/New()
+	..()
+	new /obj/item/ammo_box/magazine/m12g(src)
+	new /obj/item/ammo_box/magazine/m12g(src)
+	new /obj/item/ammo_box/magazine/m12g(src)
+	new /obj/item/ammo_box/magazine/m12g(src)
+	new /obj/item/ammo_box/magazine/m12g(src)
+	new /obj/item/ammo_box/magazine/m12g(src)
+	new /obj/item/ammo_box/magazine/m12g/buckshot(src)
+	new /obj/item/ammo_box/magazine/m12g/stun(src)
+	new /obj/item/ammo_box/magazine/m12g/dragon(src)
+
+/obj/item/weapon/storage/backpack/duffel/syndie/surgery
+	name = "surgery dufflebag"
+	desc = "A suspicious looking dufflebag for holding surgery tools."
+	icon_state = "duffel-syndimed"
+	item_state = "duffle-syndimed"
+
+/obj/item/weapon/storage/backpack/duffel/syndie/surgery/New()
+	..()
+	new /obj/item/weapon/scalpel(src)
+	new /obj/item/weapon/hemostat(src)
+	new /obj/item/weapon/retractor(src)
+	new /obj/item/weapon/circular_saw(src)
+	new /obj/item/weapon/surgicaldrill(src)
+	new /obj/item/weapon/cautery(src)
+	new /obj/item/weapon/bonegel(src)
+	new /obj/item/weapon/bonesetter(src)
+	new /obj/item/weapon/FixOVein(src)
+	new /obj/item/clothing/suit/straight_jacket(src)
+	new /obj/item/clothing/mask/muzzle(src)
+	new /obj/item/device/mmi/syndie(src)
 
 /obj/item/weapon/storage/backpack/duffel/captain
 	name = "captain's duffelbag"

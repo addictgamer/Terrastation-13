@@ -25,6 +25,7 @@
 			return
 		data["poweravail"] = powermonitor.powernet.avail
 		data["powerload"] = num2text(powermonitor.powernet.viewload,10)	
+		data["powerdemand"] = powermonitor.powernet.load
 		data["apcs"] = apc_repository.apc_data(powermonitor)
 	
 	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
@@ -41,6 +42,7 @@
 	if(href_list["selectmonitor"])
 		if(issilicon(usr))
 			powermonitor = locate(href_list["selectmonitor"])
+			powermonitor.powernet = powermonitor.find_powernet() // Refresh the powernet of the monitor
 		return 1
 		
 	if(href_list["return"])

@@ -481,12 +481,12 @@ var/list/sacrificed = list()
 			T.imbue = "blind"
 			imbued_from = R
 			break
-		if(R.word1==cultwords["self"] && R.word2==cultwords["other"] && R.word3==cultwords["technology"]) //communicat
+		if(R.word1==cultwords["self"] && R.word2==cultwords["other"] && R.word3==cultwords["technology"]) //communicate
 			T = new(src.loc)
 			T.imbue = "communicate"
 			imbued_from = R
 			break
-		if(R.word1==cultwords["join"] && R.word2==cultwords["hide"] && R.word3==cultwords["technology"]) //communicat
+		if(R.word1==cultwords["join"] && R.word2==cultwords["hide"] && R.word3==cultwords["technology"]) //stun
 			T = new(src.loc)
 			T.imbue = "runestun"
 			imbued_from = R
@@ -558,14 +558,14 @@ var/list/sacrificed = list()
 	else
 		usr.whisper("[input]")
 
-	log_say("Cult Message: [key_name(usr)]: [input]")	
+	log_say("Cult Message: [key_name(usr)]: [input]")
 	for(var/datum/mind/H in ticker.mode.cult)
 		if (H.current)
 			H.current << "<span class='cultspeech'><span class='name'>[cultName]: </span><span class='message'>[input]</span></span>"
 
 	for(var/mob/spirit/spirit in spirits)
 		spirit << "<span class='cultspeech'><span class='name'><a href='byond://?src=\ref[spirit];track2=\ref[spirit];track=\ref[usr]'>[displayName]: </a></span><span class='message'>[input]</span></span>"
-		
+
 	for(var/mob/dead/observer/G in player_list)
 		G.show_message("<span class='cultspeech'><span class='name'>[displayName] ([cultName]) ([ghost_follow_link(usr, ghost=G)]): </span><span class='message'>[input]</span></span>")
 
@@ -699,7 +699,7 @@ var/list/sacrificed = list()
 	if (istype(W,/obj/item/weapon/paper/talisman))
 		rad = 4
 		go = 1
-	if (istype(W,/obj/item/weapon/nullrod))
+	if (istype(W,/obj/item/weapon/storage/bible))
 		rad = 1
 		go = 1
 	if(go)
@@ -708,7 +708,7 @@ var/list/sacrificed = list()
 				R:visibility=15
 			S=1
 	if(S)
-		if(istype(W,/obj/item/weapon/nullrod))
+		if(istype(W,/obj/item/weapon/storage/bible))
 			usr << "\red Arcane markings suddenly glow from underneath a thin layer of dust!"
 			return
 		if(istype(W,/obj/effect/rune))

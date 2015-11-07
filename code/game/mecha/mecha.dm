@@ -47,7 +47,7 @@
 	var/internal_tank_valve = ONE_ATMOSPHERE
 	var/obj/machinery/portable_atmospherics/canister/internal_tank
 	var/datum/gas_mixture/cabin_air
-	var/obj/machinery/atmospherics/portables_connector/connected_port = null
+	var/obj/machinery/atmospherics/unary/portables_connector/connected_port = null
 
 	var/obj/item/device/radio/radio = null
 
@@ -59,7 +59,6 @@
 	var/list/internals_req_access = list(access_engine,access_robotics)//required access level to open cell compartment
 
 	var/datum/global_iterator/pr_int_temp_processor //normalizes internal air mixture temperature
-	var/datum/global_iterator/pr_inertial_movement //controls intertial movement in spesss
 	var/datum/global_iterator/pr_give_air //moves air from tank to cabin
 	var/datum/global_iterator/pr_internal_damage //processes internal damage
 
@@ -90,7 +89,6 @@
 	add_cell()
 	add_iterators()
 	removeVerb(/obj/mecha/verb/disconnect_from_port)
-	removeVerb(/atom/movable/verb/pull)
 	log_message("[src.name] created.")
 	loc.Entered(src)
 	mechas_list += src //global mech list
@@ -136,11 +134,10 @@
 
 /obj/mecha/proc/add_iterators()
 	pr_int_temp_processor = new /datum/global_iterator/mecha_preserve_temp(list(src))
-	pr_inertial_movement = new /datum/global_iterator/mecha_intertial_movement(null,0)
 	pr_give_air = new /datum/global_iterator/mecha_tank_give_air(list(src))
 	pr_internal_damage = new /datum/global_iterator/mecha_internal_damage(list(src),0)
 
-/obj/mecha/proc/do_after(delay as num)
+/obj/mecha/proc/mecha_do_after(delay as num)
 	sleep(delay)
 	if(src)
 		return 1
@@ -159,32 +156,24 @@
 	return 1
 
 
-
-/obj/mecha/proc/check_for_support()
-	if(locate(/obj/structure/grille, orange(1, src)) || locate(/obj/structure/lattice, orange(1, src)) || locate(/turf/simulated, orange(1, src)) || locate(/turf/unsimulated, orange(1, src)))
-		return 1
-	else
-		return 0
-
-/obj/mecha/examine()
-	set src in view()
-	..()
+/obj/mecha/examine(mob/user)
+	..(user)
 	var/integrity = health/initial(health)*100
 	switch(integrity)
 		if(85 to 100)
-			usr << "It's fully intact."
+			user << "It's fully intact."
 		if(65 to 85)
-			usr << "It's slightly damaged."
+			user << "It's slightly damaged."
 		if(45 to 65)
-			usr << "It's badly damaged."
+			user << "It's badly damaged."
 		if(25 to 45)
-			usr << "It's heavily damaged."
+			user << "It's heavily damaged."
 		else
-			usr << "It's falling apart."
+			user << "It's falling apart."
 	if(equipment && equipment.len)
-		usr << "It's equipped with:"
+		user << "It's equipped with:"
 		for(var/obj/item/mecha_parts/mecha_equipment/ME in equipment)
-			usr << "\icon[ME] [ME]"
+			user << "\icon[ME] [ME]"
 	return
 
 
@@ -252,7 +241,7 @@
 			return
 		target.mech_melee_attack(src)
 		melee_can_hit = 0
-		if(do_after(melee_cooldown))
+		if(mecha_do_after(melee_cooldown))
 			melee_can_hit = 1
 	return
 
@@ -290,11 +279,15 @@
 ////////  Movement procs  ////////
 //////////////////////////////////
 
-/obj/mecha/Move()
+/obj/mecha/Move(atom/newLoc, direct)
 	. = ..()
 	if(.)
 		events.fireEvent("onMove",get_turf(src))
-	return
+
+/obj/mecha/Process_Spacemove(var/movement_dir = 0)
+	if(occupant)
+		return occupant.Process_Spacemove(movement_dir) //We'll just say you used the clamp to grab the wall
+	return ..()
 
 /obj/mecha/relaymove(mob/user,direction)
 	if(user != src.occupant) //While not "realistic", this piece is player friendly.
@@ -317,7 +310,7 @@
 /obj/mecha/proc/dyndomove(direction)
 	if(!can_move)
 		return 0
-	if(src.pr_inertial_movement.active())
+	if(!Process_Spacemove(direction))
 		return 0
 	if(!has_charge(step_energy_drain))
 		return 0
@@ -327,15 +320,10 @@
 	else if(src.dir!=direction)
 		move_result = mechturn(direction)
 	else
-		move_result	= mechstep(direction)
+		move_result = mechstep(direction)
 	if(move_result)
 		can_move = 0
-		use_power(step_energy_drain)
-		if(istype(src.loc, /turf/space))
-			if(!src.check_for_support())
-				src.pr_inertial_movement.start(list(src,direction))
-				src.log_message("Movement control lost. Inertial movement started.")
-		if(do_after(step_in))
+		if(mecha_do_after(step_in))
 			can_move = 1
 		return 1
 	return 0
@@ -363,7 +351,7 @@
 	if(src.throwing)//high velocity mechas in your face!
 		var/breakthrough = 0
 		if(istype(obstacle, /obj/structure/window/))
-			obstacle.Destroy(brokenup = 1)
+			qdel(obstacle)
 			breakthrough = 1
 
 		else if(istype(obstacle, /obj/structure/grille/))
@@ -372,12 +360,12 @@
 			G.destroyed = 1
 			G.icon_state = "[initial(G.icon_state)]-b"
 			G.density = 0
-			PoolOrNew(/obj/item/stack/rods, get_turf(G.loc))
+			new /obj/item/stack/rods(get_turf(G.loc))
 			breakthrough = 1
 
 		else if(istype(obstacle, /obj/structure/table))
 			var/obj/structure/table/T = obstacle
-			T.destroy()
+			qdel(T)
 			breakthrough = 1
 
 		else if(istype(obstacle, /obj/structure/rack))
@@ -450,7 +438,7 @@
 		if(ignore_threshold || src.health*100/initial(src.health)<src.internal_damage_threshold)
 			var/obj/item/mecha_parts/mecha_equipment/destr = safepick(equipment)
 			if(destr)
-				destr.destroy()
+				qdel(destr)
 	return
 
 /obj/mecha/proc/hasInternalDamage(int_dam_flag=null)
@@ -500,7 +488,7 @@
 	if(src.health > 0)
 		src.spark_system.start()
 	else
-		src.destroy()
+		qdel(src)
 	return
 
 /obj/mecha/attack_hand(mob/living/user as mob)
@@ -541,7 +529,7 @@
 /obj/mecha/attack_animal(mob/living/simple_animal/user as mob)
 	src.log_message("Attack by simple animal. Attacker - [user].",1)
 	if(user.melee_damage_upper == 0)
-		user.emote("[user.friendly] [src]")
+		user.custom_emote(1, "[user.friendly] [src]")
 	else
 		user.do_attack_animation(src)
 		if(!prob(src.deflect_chance))
@@ -609,22 +597,22 @@
 	Proj.on_hit(src)
 	return
 
-/obj/mecha/proc/destroy()
+/obj/mecha/Destroy()
 	go_out()
 	for(var/mob/M in src) //Let's just be ultra sure
 		if(isAI(M))
 			M.gib() //AIs are loaded into the mech computer itself. When the mech dies, so does the AI. Forever.
 		else
 			M.Move(loc)
-			
+
 	if(prob(30))
 		explosion(get_turf(loc), 0, 0, 1, 3)
-			
+
 	if(istype(src, /obj/mecha/working/ripley/))
 		var/obj/mecha/working/ripley/R = src
 		if(R.cargo)
 			for(var/obj/O in R.cargo) //Dump contents of stored cargo
-				O.loc = loc
+				O.forceMove(loc)
 				R.cargo -= O
 				loc.Entered(O)
 
@@ -638,7 +626,7 @@
 				E.reliability = round(rand(E.reliability/3,E.reliability))
 			else
 				E.forceMove(loc)
-				E.destroy()
+				qdel(E)
 		if(cell)
 			WR.crowbar_salvage += cell
 			cell.forceMove(WR)
@@ -649,7 +637,7 @@
 	else
 		for(var/obj/item/mecha_parts/mecha_equipment/E in equipment)
 			E.forceMove(loc)
-			E.destroy()
+			qdel(E)
 		if(cell)
 			qdel(cell)
 		if(internal_tank)
@@ -666,7 +654,7 @@
 	pr_give_air = null
 	pr_internal_damage = null
 	spark_system = null
-				
+
 	mechas_list -= src //global mech list
 	return ..()
 
@@ -677,16 +665,16 @@
 		src.log_append_to_last("Armor saved, changing severity to [severity].")
 	switch(severity)
 		if(1.0)
-			src.destroy()
+			qdel(src)
 		if(2.0)
 			if (prob(30))
-				src.destroy()
+				qdel(src)
 			else
 				src.take_damage(initial(src.health)/2)
 				src.check_for_internal_damage(list(MECHA_INT_FIRE,MECHA_INT_TEMP_CONTROL,MECHA_INT_TANK_BREACH,MECHA_INT_CONTROL_LOST,MECHA_INT_SHORT_CIRCUIT),1)
 		if(3.0)
 			if (prob(5))
-				src.destroy()
+				qdel(src)
 			else
 				src.take_damage(initial(src.health)/5)
 				src.check_for_internal_damage(list(MECHA_INT_FIRE,MECHA_INT_TEMP_CONTROL,MECHA_INT_TANK_BREACH,MECHA_INT_CONTROL_LOST,MECHA_INT_SHORT_CIRCUIT),1)
@@ -844,7 +832,7 @@
 				user << "There's already a powercell installed."
 		return
 
-	else if(istype(W, /obj/item/weapon/weldingtool) && user.a_intent != "harm")
+	else if(istype(W, /obj/item/weapon/weldingtool) && user.a_intent != I_HARM)
 		var/obj/item/weapon/weldingtool/WT = W
 		if (WT.remove_fuel(0,user))
 			if (hasInternalDamage(MECHA_INT_TANK_BREACH))
@@ -920,7 +908,7 @@
 		emagged = 1
 		usr << "\blue You slide the card through the [src]'s ID slot."
 		playsound(src.loc, "sparks", 100, 1)
-		src.desc += "</br><b>\red The mech's equiptment slots spark dangerously!</b>"
+		src.desc += "</br><b>\red The mech's equipment slots spark dangerously!</b>"
 	else
 		usr <<"\red The [src]'s ID slot rejects the card."
 	return
@@ -962,7 +950,7 @@
 				return
 			AI.aiRestorePowerRoutine = 0//So the AI initially has power.
 			AI.control_disabled = 1
-			AI.aiRadio.disabledAi = 1 	
+			AI.aiRadio.disabledAi = 1
 			AI.loc = card
 			occupant = null
 			AI.controlled_mech = null
@@ -1058,7 +1046,7 @@
 			. = t_air.return_temperature()
 	return
 
-/obj/mecha/proc/connect(obj/machinery/atmospherics/portables_connector/new_port)
+/obj/mecha/proc/connect(obj/machinery/atmospherics/unary/portables_connector/new_port)
 	//Make sure not already connected to something else
 	if(connected_port || !new_port || new_port.connected_device)
 		return 0
@@ -1070,12 +1058,8 @@
 	//Perform the connection
 	connected_port = new_port
 	connected_port.connected_device = src
+	connected_port.parent.reconcile_air()
 
-	//Actually enforce the air sharing
-	var/datum/pipe_network/network = connected_port.return_network(src)
-	if(network && !(internal_tank.return_air() in network.gases))
-		network.gases += internal_tank.return_air()
-		network.update = 1
 	log_message("Connected to gas port.")
 	return 1
 
@@ -1083,14 +1067,13 @@
 	if(!connected_port)
 		return 0
 
-	var/datum/pipe_network/network = connected_port.return_network(src)
-	if(network)
-		network.gases -= internal_tank.return_air()
-
 	connected_port.connected_device = null
 	connected_port = null
 	src.log_message("Disconnected from gas port.")
 	return 1
+
+/obj/mecha/portableConnectorReturnAir()
+	return internal_tank.return_air()
 
 
 /////////////////////////
@@ -1106,7 +1089,7 @@
 	if(!src.occupant) return
 	if(usr!=src.occupant)
 		return
-	var/obj/machinery/atmospherics/portables_connector/possible_port = locate(/obj/machinery/atmospherics/portables_connector/) in loc
+	var/obj/machinery/atmospherics/unary/portables_connector/possible_port = locate(/obj/machinery/atmospherics/unary/portables_connector/) in loc
 	if(possible_port)
 		if(connect(possible_port))
 			src.occupant_message("\blue [name] connects to the port.")
@@ -1687,7 +1670,7 @@
 	if(href_list["rfreq"])
 		if(usr != src.occupant)	return
 		var/new_frequency = (radio.frequency + filter.getNum("rfreq"))
-		if (!radio.freerange || (radio.frequency < 1200 || radio.frequency > 1600))
+		if ((radio.frequency < PUBLIC_LOW_FREQ || radio.frequency > PUBLIC_HIGH_FREQ))
 			new_frequency = sanitize_frequency(new_frequency)
 		radio.set_frequency(new_frequency)
 		send_byjax(src.occupant,"exosuit.browser","rfreq","[format_frequency(radio.frequency)]")
@@ -1783,7 +1766,7 @@
 		src.occupant_message("Recalibrating coordination system.")
 		src.log_message("Recalibration of coordination system started.")
 		var/T = src.loc
-		if(do_after(100))
+		if(mecha_do_after(100))
 			if(T == src.loc)
 				src.clearInternalDamage(MECHA_INT_CONTROL_LOST)
 				src.occupant_message("<font color='blue'>Recalibration successful.</font>")
@@ -1887,16 +1870,6 @@
 			return stop()
 		return
 
-/datum/global_iterator/mecha_intertial_movement //inertial movement in space
-	delay = 7
-
-	process(var/obj/mecha/mecha as obj,direction)
-		if(direction)
-			if(!step(mecha, direction)||mecha.check_for_support())
-				src.stop()
-		else
-			src.stop()
-		return
 
 /datum/global_iterator/mecha_internal_damage // processing internal damage
 

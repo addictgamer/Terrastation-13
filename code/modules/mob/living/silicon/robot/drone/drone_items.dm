@@ -12,7 +12,8 @@
 		/obj/item/weapon/firealarm_electronics,
 		/obj/item/weapon/airalarm_electronics,
 		/obj/item/weapon/airlock_electronics,
-		/obj/item/weapon/module/power_control,
+		/obj/item/weapon/intercom_electronics,
+		/obj/item/weapon/apc_electronics,
 		/obj/item/weapon/stock_parts,
 		/obj/item/mounted/frame/light_fixture,
 		/obj/item/mounted/frame/apc_frame,
@@ -192,7 +193,7 @@
 
 			D << "\red You begin decompiling the other drone."
 
-			if(!do_after(D,50))
+			if(!do_after(D,50, target = target))
 				D << "\red You need to remain still while decompiling such a large object."
 				return
 

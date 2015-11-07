@@ -14,6 +14,7 @@
 	var/menustat = "menu"
 	var/efficiency = 0
 	var/productivity = 0
+	var/max_items = 40
 
 /obj/machinery/biogenerator/New()
 	..()
@@ -25,7 +26,7 @@
 	component_parts += new /obj/item/weapon/stock_parts/console_screen(null)
 	component_parts += new /obj/item/stack/cable_coil(null, 1)
 	RefreshParts()
-	
+
 /obj/machinery/biogenerator/upgraded/New()
 	..()
 	component_parts = list()
@@ -39,12 +40,15 @@
 /obj/machinery/biogenerator/RefreshParts()
 	var/E = 0
 	var/P = 0
+	var/max_storage = 40
 	for(var/obj/item/weapon/stock_parts/matter_bin/B in component_parts)
 		P += B.rating
+		max_storage = 40 * B.rating
 	for(var/obj/item/weapon/stock_parts/manipulator/M in component_parts)
 		E += M.rating
 	efficiency = E
 	productivity = P
+	max_items = max_storage
 
 /obj/machinery/biogenerator/on_reagent_change()			//When the reagents change, change the icon as well.
 		update_icon()
@@ -66,8 +70,10 @@
 			user << "<span class='warning'>A container is already loaded into the machine.</span>"
 			return
 		else
-			user.unEquip(O)
-			O.loc = src
+			if(!user.drop_item())
+				user << "<span class='warning'>\The [O] is stuck to you!</span>"
+				return
+			O.forceMove(src)
 			beaker = O
 			user << "<span class='notice'>You add the container to the machine.</span>"
 			updateUsrDialog()
@@ -78,7 +84,7 @@
 		if(default_deconstruction_screwdriver(user, "biogen-empty-o", "biogen-empty", O))
 			if(beaker)
 				var/obj/item/weapon/reagent_containers/glass/B = beaker
-				B.loc = loc
+				B.forceMove(loc)
 				beaker = null
 			return
 
@@ -94,15 +100,15 @@
 		var/i = 0
 		for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in contents)
 			i++
-		if(i >= 10)
+		if(i >= max_items)
 			user << "<span class='warning'>The biogenerator is already full! Activate it.</span>"
 		else
 			for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in O.contents)
-				if(i >= 10)
+				if(i >= max_items)
 					break
-				G.loc = src
+				G.forceMove(src)
 				i++
-			if(i<10)
+			if(i < max_items)
 				user << "<span class='info'>You empty the plant bag into the biogenerator.</span>"
 			else if(O.contents.len == 0)
 				user << "<span class='info'>You empty the plant bag into the biogenerator, filling it to its capacity.</span>"
@@ -115,11 +121,11 @@
 		var/i = 0
 		for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in contents)
 			i++
-		if(i >= 10)
+		if(i >= max_items)
 			user << "<span class='warning'>The biogenerator is full! Activate it.</span>"
 		else
 			user.unEquip(O)
-			O.loc = src
+			O.forceMove(src)
 			user << "<span class='info'>You put [O.name] in [src.name]</span>"
 
 
@@ -335,7 +341,7 @@
 
 /obj/machinery/biogenerator/proc/detach()
 	if(beaker)
-		beaker.loc = src.loc
+		beaker.forceMove(src.loc)
 		beaker = null
 		update_icon()
 

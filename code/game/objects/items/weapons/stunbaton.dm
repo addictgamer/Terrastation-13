@@ -53,7 +53,7 @@
 		icon_state = "[initial(icon_state)]"
 
 /obj/item/weapon/melee/baton/examine(mob/user)
-	..()
+	..(user)
 	if(bcell)
 		user <<"<span class='notice'>The baton is [round(bcell.percent())]% charged.</span>"
 	if(!bcell)
@@ -117,7 +117,7 @@
 
 	var/mob/living/L = M
 
-	if(user.a_intent != "harm")
+	if(user.a_intent != I_HARM)
 		if(status)
 			user.do_attack_animation(L)
 			baton_stun(L, user)

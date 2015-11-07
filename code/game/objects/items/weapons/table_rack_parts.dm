@@ -12,7 +12,7 @@
 	gender = PLURAL
 	icon = 'icons/obj/items.dmi'
 	icon_state = "table_parts"
-	m_amt = 3750
+	materials = list(MAT_METAL=4000)
 	flags = CONDUCT
 	attack_verb = list("slammed", "bashed", "battered", "bludgeoned", "thrashed", "whacked")
 
@@ -21,7 +21,7 @@
 	desc = "Hard table parts. Well...harder..."
 	icon = 'icons/obj/items.dmi'
 	icon_state = "reinf_tableparts"
-	m_amt = 7500
+	materials = list(MAT_METAL=8000)
 	flags = CONDUCT
 
 /obj/item/weapon/table_parts/wood
@@ -42,7 +42,7 @@
 	icon = 'icons/obj/items.dmi'
 	icon_state = "rack_parts"
 	flags = CONDUCT
-	m_amt = 3750
+	materials = list(MAT_METAL=2000)
 
 /*
  * Table Parts

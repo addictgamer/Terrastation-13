@@ -21,7 +21,6 @@ var/global/mulebot_count = 0
 	var/atom/movable/load = null		// the loaded crate (usually)
 	var/list/delivery_beacons = list() //List of beacons that serve as delivery locations.
 	beacon_freq = 1400
-	control_freq = 1447
 	bot_type = MULE_BOT
 	bot_type_name = "MULEbot"
 	bot_filter = RADIO_MULEBOT
@@ -79,7 +78,14 @@ var/global/mulebot_count = 0
 			suffix = "#[mulebot_count]"
 		name = "\improper Mulebot ([suffix])"
 
-
+/obj/machinery/bot/mulebot/Destroy()
+	unload(0)
+	qdel(wires)
+	wires = null
+	if(cell)
+		qdel(cell)
+		cell = null
+	return ..()
 
 // attack by item
 // emag : lock/unlock,

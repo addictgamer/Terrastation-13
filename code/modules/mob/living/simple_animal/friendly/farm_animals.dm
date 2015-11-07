@@ -137,7 +137,7 @@
 		milk_content = min(50, milk_content+rand(5, 10))
 
 /mob/living/simple_animal/cow/attack_hand(mob/living/carbon/M as mob)
-	if(!stat && M.a_intent == "disarm" && icon_state != icon_dead)
+	if(!stat && M.a_intent == I_DISARM && icon_state != icon_dead)
 		M.visible_message("<span class='warning'>[M] tips over [src].</span>","<span class='notice'>You tip over [src].</span>")
 		Weaken(30)
 		icon_state = icon_dead
@@ -218,18 +218,18 @@ var/global/chicken_count = 0
 	attacktext = "kicks"
 	health = 10
 	var/eggsleft = 0
-	var/_color
+	var/chicken_color
 	pass_flags = PASSTABLE | PASSMOB
 	small = 1
 	can_hide = 1
 
 /mob/living/simple_animal/chicken/New()
 	..()
-	if(!_color)
-		_color = pick( list("brown","black","white") )
-	icon_state = "chicken_[_color]"
-	icon_living = "chicken_[_color]"
-	icon_dead = "chicken_[_color]_dead"
+	if(!chicken_color)
+		chicken_color = pick( list("brown","black","white") )
+	icon_state = "chicken_[chicken_color]"
+	icon_living = "chicken_[chicken_color]"
+	icon_dead = "chicken_[chicken_color]_dead"
 	pixel_x = rand(-6, 6)
 	pixel_y = rand(0, 10)
 	chicken_count += 1

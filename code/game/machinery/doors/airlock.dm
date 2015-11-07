@@ -318,7 +318,6 @@
 		return
 
 
-
 /*
 About the new airlock wires panel:
 *	An airlock wire dialog can be accessed by the normal way or by using wirecutters or a multitool on the door while the wire-panel is open. This would show the following wires, which you can either wirecut/mend or send a multitool pulse through. There are 9 wires.
@@ -334,6 +333,11 @@ About the new airlock wires panel:
 */
 // You can find code for the airlock wires in the wire datum folder.
 
+
+/obj/machinery/door/airlock/Destroy()
+	qdel(wires)
+	wires = null
+	return ..()
 
 /obj/machinery/door/airlock/bumpopen(mob/living/user as mob) //Airlocks now zap you when you 'bump' them open when they're electrified. --NeoFite
 	if(!issilicon(usr))
@@ -596,7 +600,7 @@ About the new airlock wires panel:
 	if (src.isElectrified())
 		if (istype(mover, /obj/item))
 			var/obj/item/i = mover
-			if (i.m_amt)
+			if (i.materials[MAT_METAL])
 				var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
 				s.set_up(5, 1, src)
 				s.start()
@@ -789,7 +793,7 @@ About the new airlock wires panel:
 		if( beingcrowbarred && src.p_open && (operating == -1 || (density && welded && operating != 1 && !src.arePowerSystemsOn() && !src.locked)) )
 			playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
 			user.visible_message("[user] removes the electronics from the airlock assembly.", "You start to remove electronics from the airlock assembly.")
-			if(do_after(user,40))
+			if(do_after(user,40, target = src))
 				user << "\blue You removed the airlock electronics!"
 
 				var/obj/structure/door_assembly/da = new assembly_type(src.loc)
@@ -924,9 +928,10 @@ About the new airlock wires panel:
 		set_opacity(1)
 	operating = 0
 	air_update_turf(1)
-	update_freelok_sight()
-	if(locate(/mob/living) in get_turf(src))
-		open()
+	update_freelook_sight()
+	if(safe)
+		if(locate(/mob/living) in get_turf(src))
+			open()
 
 	return
 
@@ -1049,4 +1054,4 @@ About the new airlock wires panel:
 		src.unlock()
 		src.open()
 		src.lock()
-	return	
+	return

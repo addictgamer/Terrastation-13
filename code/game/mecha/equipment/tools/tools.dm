@@ -21,9 +21,6 @@
 		if(!action_checks(target)) return
 		if(!cargo_holder) return
 		if(istype(target, /obj/structure/stool)) return
-		for(var/M in target.contents)
-			if(istype(M, /mob/living))
-				return
 
 		if(istype(target,/obj))
 			var/obj/O = target
@@ -53,7 +50,7 @@
 		else if(istype(target,/mob/living))
 			var/mob/living/M = target
 			if(M.stat>1) return
-			if(chassis.occupant.a_intent == "harm")
+			if(chassis.occupant.a_intent == I_HARM)
 				M.take_overall_damage(dam_force)
 				M.adjustOxyLoss(round(dam_force/2))
 				M.updatehealth()
@@ -138,7 +135,6 @@
 	desc = "This is an upgraded version of the drill that'll pierce the heavens! (Can be attached to: Combat and Engineering Exosuits)"
 	icon_state = "mecha_diamond_drill"
 	origin_tech = "materials=4;engineering=3"
-	construction_cost = list("metal"=10000,"diamond"=6500)
 	equip_cooldown = 20
 	force = 15
 
@@ -279,18 +275,16 @@
 	equip_cooldown = 10
 	energy_drain = 250
 	range = MELEE|RANGED
-	construction_time = 1200
-	construction_cost = list("metal"=30000,"plasma"=25000,"silver"=20000,"gold"=20000)
 	var/mode = 0 //0 - deconstruct, 1 - wall or floor, 2 - airlock.
 	var/canRwall = 0
-	
+
 	New()
 		rcd_list += src
 		..()
 
 	Destroy()
 		rcd_list -= src
-		..()
+		return ..()
 
 	action(atom/target)
 		if(istype(target, /turf/space/transit))//>implying these are ever made -Sieve
@@ -524,7 +518,6 @@
 	equip_cooldown = 10
 	energy_drain = 50
 	range = 0
-	construction_cost = list("metal"=20000,"silver"=5000)
 	var/deflect_coeff = 1.15
 	var/damage_coeff = 0.8
 
@@ -575,7 +568,6 @@
 	equip_cooldown = 10
 	energy_drain = 50
 	range = 0
-	construction_cost = list("metal"=20000,"gold"=5000)
 	var/deflect_coeff = 1.15
 	var/damage_coeff = 0.8
 
@@ -647,7 +639,6 @@
 	equip_cooldown = 20
 	energy_drain = 100
 	range = 0
-	construction_cost = list("metal"=10000,"gold"=1000,"silver"=2000,"glass"=5000)
 	var/health_boost = 2
 	var/datum/global_iterator/pr_repair_droid
 	var/icon/droid_overlay
@@ -665,10 +656,9 @@
 		M.overlays += droid_overlay
 		return
 
-	destroy()
+	Destroy()
 		chassis.overlays -= droid_overlay
-		..()
-		return
+		return ..()
 
 	detach()
 		chassis.overlays -= droid_overlay
@@ -737,7 +727,6 @@
 	equip_cooldown = 10
 	energy_drain = 0
 	range = 0
-	construction_cost = list("metal"=10000,"gold"=2000,"silver"=3000,"glass"=2000)
 	var/datum/global_iterator/pr_energy_relay
 	var/coeff = 100
 	var/list/use_channels = list(EQUIP,ENVIRON,LIGHT)
@@ -849,7 +838,6 @@
 	equip_cooldown = 10
 	energy_drain = 0
 	range = MELEE
-	construction_cost = list("metal"=10000,"silver"=500,"glass"=1000)
 	var/datum/global_iterator/pr_mech_generator
 	var/coeff = 100
 	var/obj/item/stack/sheet/fuel
@@ -941,7 +929,7 @@
 			GM.toxins += 100
 			GM.temperature = 1500+T0C //should be enough to start a fire
 			T.visible_message("The [src] suddenly disgorges a cloud of heated plasma.")
-			destroy()
+			qdel(src)
 		else
 			GM.toxins += 5
 			GM.temperature = istype(T) ? T.air.temperature : T20C
@@ -986,7 +974,6 @@
 	desc = "Generates power using uranium. Pollutes the environment."
 	icon_state = "tesla"
 	origin_tech = "powerstorage=3;engineering=3"
-	construction_cost = list("metal"=10000,"silver"=500,"glass"=1000)
 	max_fuel = 50000
 	fuel_per_cycle_idle = 10
 	fuel_per_cycle_active = 30
@@ -1009,10 +996,7 @@
 	process(var/obj/item/mecha_parts/mecha_equipment/generator/nuclear/EG)
 		if(..())
 			for(var/mob/living/carbon/M in view(EG.chassis))
-				if(istype(M,/mob/living/carbon/human))
-					M.apply_effect((EG.rad_per_cycle*3),IRRADIATE,0)
-				else
-					M.radiation += EG.rad_per_cycle
+				M.apply_effect((EG.rad_per_cycle*3),IRRADIATE,0)
 		return 1
 
 
@@ -1068,10 +1052,10 @@
 		else if(istype(target,/mob/living))
 			var/mob/living/M = target
 			if(M.stat>1) return
-			if(chassis.occupant.a_intent == "harm")
+			if(chassis.occupant.a_intent == I_HARM)
 				chassis.occupant_message("\red You obliterate [target] with [src.name], leaving blood and guts everywhere.")
 				chassis.visible_message("\red [chassis] destroys [target] in an unholy fury.")
-			if(chassis.occupant.a_intent == "disarm")
+			if(chassis.occupant.a_intent == I_DISARM)
 				chassis.occupant_message("\red You tear [target]'s limbs off with [src.name].")
 				chassis.visible_message("\red [chassis] rips [target]'s arms off.")
 			else

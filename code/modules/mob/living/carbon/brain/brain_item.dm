@@ -1,6 +1,7 @@
 /obj/item/organ/brain
 	name = "brain"
 	health = 400 //They need to live awhile longer than other organs.
+	max_damage = 200
 	icon_state = "brain2"
 	force = 1.0
 	w_class = 2.0
@@ -16,6 +17,12 @@
 
 /obj/item/organ/brain/attack_self(mob/user as mob)
 	return  //let's not have players taken out of the round as easily as a click, once you have their brain.
+
+/obj/item/organ/brain/surgeryize()
+	if(!owner)
+		return
+	owner.ear_damage = 0 //Yeah, didn't you...hear? The ears are totally inside the brain.
+	owner.ear_deaf = 0
 
 /obj/item/organ/brain/xeno
 	name = "thinkpan"

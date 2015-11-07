@@ -39,8 +39,26 @@
 	verbs += /mob/living/carbon/verb/mob_sleep
 	verbs += /mob/living/verb/lay_down
 	internal_organs += new /obj/item/organ/brain/xeno
-
 	..()
+
+/mob/living/carbon/alien/get_default_language()
+	if(default_language)
+		return default_language
+	return all_languages["Xenomorph"]
+
+/mob/living/carbon/alien/say_quote(var/message, var/datum/language/speaking = null)
+	var/verb = "hisses"
+	var/ending = copytext(message, length(message))
+
+	if(speaking && (speaking.name != "Galactic Common")) //this is so adminbooze xenos speaking common have their custom verbs,
+		verb = speaking.get_spoken_verb(ending)          //and use normal verbs for their own languages and non-common languages
+	else
+		if(ending=="!")
+			verb = "roars"
+		else if(ending=="?")
+			verb = "hisses curiously"
+	return verb
+
 
 /mob/living/carbon/alien/adjustToxLoss(amount)
 	storedPlasma = min(max(storedPlasma + amount,0),max_plasma) //upper limit of max_plasma, lower limit of 0
@@ -67,7 +85,7 @@
 		return
 	health = maxHealth - getOxyLoss() - getFireLoss() - getBruteLoss() - getCloneLoss()
 
-/mob/living/carbon/alien/proc/handle_environment(var/datum/gas_mixture/environment)
+/mob/living/carbon/alien/handle_environment(var/datum/gas_mixture/environment)
 
 	//If there are alien weeds on the ground then heal if needed or give some toxins
 	if(locate(/obj/structure/alien/weeds) in loc)
@@ -118,7 +136,7 @@
 					fire_alert = max(fire_alert, 2)
 	return
 
-/mob/living/carbon/alien/proc/handle_mutations_and_radiation()
+/mob/living/carbon/alien/handle_mutations_and_radiation()
 	if(getFireLoss())
 		if((RESIST_HEAT in mutations) || prob(5))
 			adjustFireLoss(-1)
@@ -153,16 +171,8 @@
 	bodytemperature += BODYTEMP_HEATING_MAX //If you're on fire, you heat up!
 	return
 
-/mob/living/carbon/alien/proc/handle_wetness()
-	if(mob_master.current_cycle%20==2) //dry off a bit once every 20 ticks or so
-		wetlevel = max(wetlevel - 1,0)
-	return
-
 /mob/living/carbon/alien/IsAdvancedToolUser()
 	return has_fine_manipulation
-
-/mob/living/carbon/alien/Process_Spaceslipping()
-	return 0 // Don't slip in space.
 
 /mob/living/carbon/alien/Stat()
 

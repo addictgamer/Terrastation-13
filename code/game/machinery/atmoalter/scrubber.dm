@@ -109,7 +109,7 @@
 	src.add_hiddenprint(user)
 	return src.attack_hand(user)
 	
-/obj/machinery/portable_atmospherics/scrubber/attack_ghost(var/mob/user)
+/obj/machinery/portable_atmospherics/scrubber/attack_ghost(var/mob/user as mob)
 	return src.attack_hand(user)
 
 /obj/machinery/portable_atmospherics/scrubber/attack_hand(var/mob/user as mob)
@@ -205,8 +205,9 @@
 		user << "<span class='notice'>You [anchored ? "wrench" : "unwrench"] \the [src].</span>"
 		return
 
-	..()
-
+	else if ((istype(W, /obj/item/device/analyzer)) && get_dist(user, src) <= 1)
+		atmosanalyzer_scan(air_contents, user)
+		
 /obj/machinery/portable_atmospherics/scrubber/huge/stationary
 	name = "Stationary Air Scrubber"
 	stationary = 1

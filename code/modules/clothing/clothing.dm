@@ -2,6 +2,7 @@
 	name = "clothing"
 	var/list/species_restricted = null //Only these species can wear this kit.
 	var/rig_restrict_helmet = 0 // Stops the user from equipping a rig helmet without attaching it to the suit first.
+	var/scan_reagents = 0 //Can the wearer see reagents while it's equipped?
 
 	/*
 		Sprites used when the clothing item is refit. This is done by setting icon_override.
@@ -10,6 +11,8 @@
 		while sprite_sheets should be used for "flexible" clothing items that do not need to be refitted (e.g. vox wearing jumpsuits).
 	*/
 	var/list/sprite_sheets_refit = null
+	lefthand_file = 'icons/mob/inhands/clothing_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/clothing_righthand.dmi'
 
 //BS12: Species-restricted clothing check.
 /obj/item/clothing/mob_can_equip(M as mob, slot)
@@ -130,6 +133,7 @@
 	w_class = 2.0
 	flags = GLASSESCOVERSEYES
 	slot_flags = SLOT_EYES
+	materials = list(MAT_GLASS = 250)
 	var/vision_flags = 0
 	var/darkness_view = 0//Base human is 2
 	var/invisa_view = 0
@@ -162,6 +166,10 @@ BLIND     // can't see anything
 	var/pickpocket = 0 //Master pickpocket?
 	var/clipped = 0
 	species_restricted = list("exclude","Unathi","Tajaran","Wryn")
+	species_fit = list("Vox")
+	sprite_sheets = list(
+		"Vox" = 'icons/mob/species/vox/gloves.dmi'
+		)
 
 /obj/item/clothing/gloves/attackby(obj/item/weapon/W, mob/user, params)
 	if(istype(W, /obj/item/weapon/wirecutters))
@@ -183,53 +191,48 @@ BLIND     // can't see anything
 /obj/item/clothing/gloves/proc/Touch()
 	return
 
-/obj/item/clothing/gloves/examine()
-	set src in usr
-	..()
-	return
-
-/obj/item/clothing/under/proc/set_sensors(mob/usr as mob)
-	var/mob/M = usr
+/obj/item/clothing/under/proc/set_sensors(mob/user as mob)
+	var/mob/M = user
 	if (istype(M, /mob/dead/)) return
-	if (usr.stat || usr.restrained()) return
+	if (user.stat || user.restrained()) return
 	if(has_sensor >= 2)
-		usr << "The controls are locked."
+		user << "The controls are locked."
 		return 0
 	if(has_sensor <= 0)
-		usr << "This suit does not have any sensors."
+		user << "This suit does not have any sensors."
 		return 0
 
 	var/list/modes = list("Off", "Binary sensors", "Vitals tracker", "Tracking beacon")
 	var/switchMode = input("Select a sensor mode:", "Suit Sensor Mode", modes[sensor_mode + 1]) in modes
-	if(get_dist(usr, src) > 1)
-		usr << "You have moved too far away."
+	if(get_dist(user, src) > 1)
+		user << "You have moved too far away."
 		return
 	sensor_mode = modes.Find(switchMode) - 1
 
-	if (src.loc == usr)
+	if (src.loc == user)
 		switch(sensor_mode)
 			if(0)
-				usr << "You disable your suit's remote sensing equipment."
+				user << "You disable your suit's remote sensing equipment."
 			if(1)
-				usr << "Your suit will now report whether you are live or dead."
+				user << "Your suit will now report whether you are live or dead."
 			if(2)
-				usr << "Your suit will now report your vital lifesigns."
+				user << "Your suit will now report your vital lifesigns."
 			if(3)
-				usr << "Your suit will now report your vital lifesigns as well as your coordinate position."
+				user << "Your suit will now report your vital lifesigns as well as your coordinate position."
 	else if (istype(src.loc, /mob))
 		switch(sensor_mode)
 			if(0)
-				for(var/mob/V in viewers(usr, 1))
-					V.show_message("\red [usr] disables [src.loc]'s remote sensing equipment.", 1)
+				for(var/mob/V in viewers(user, 1))
+					V.show_message("\red [user] disables [src.loc]'s remote sensing equipment.", 1)
 			if(1)
-				for(var/mob/V in viewers(usr, 1))
-					V.show_message("[usr] turns [src.loc]'s remote sensors to binary.", 1)
+				for(var/mob/V in viewers(user, 1))
+					V.show_message("[user] turns [src.loc]'s remote sensors to binary.", 1)
 			if(2)
-				for(var/mob/V in viewers(usr, 1))
-					V.show_message("[usr] sets [src.loc]'s sensors to track vitals.", 1)
+				for(var/mob/V in viewers(user, 1))
+					V.show_message("[user] sets [src.loc]'s sensors to track vitals.", 1)
 			if(3)
-				for(var/mob/V in viewers(usr, 1))
-					V.show_message("[usr] sets [src.loc]'s sensors to maximum.", 1)
+				for(var/mob/V in viewers(user, 1))
+					V.show_message("[user] sets [src.loc]'s sensors to maximum.", 1)
 
 /obj/item/clothing/under/verb/toggle()
 	set name = "Toggle Suit Sensors"
@@ -243,7 +246,6 @@ BLIND     // can't see anything
 	icon = 'icons/obj/clothing/hats.dmi'
 	body_parts_covered = HEAD
 	slot_flags = SLOT_HEAD
-	var/loose = 10 // probability (0..100) of coming off your head when you fall over or lay down
 	var/blockTracking // Do we block AI tracking?
 	var/flash_protect = 0
 	var/tint = 0
@@ -302,9 +304,15 @@ BLIND     // can't see anything
 	body_parts_covered = FEET
 	slot_flags = SLOT_FEET
 
+
 	permeability_coefficient = 0.50
 	slowdown = SHOES_SLOWDOWN
 	species_restricted = list("exclude","Unathi","Tajaran","Wryn")
+	species_fit = list("Vox")
+	sprite_sheets = list(
+		"Vox" = 'icons/mob/species/vox/shoes.dmi'
+		)
+
 
 /obj/item/proc/negates_gravity()
 	return 0
@@ -338,7 +346,6 @@ BLIND     // can't see anything
 	max_heat_protection_temperature = SPACE_HELM_MAX_TEMP_PROTECT
 	siemens_coefficient = 0.9
 	species_restricted = list("exclude","Diona","Vox","Wryn")
-	loose = 0 // What kind of idiot designs a pressurized suit where the helmet can fall off?
 	flash_protect = 2
 
 /obj/item/clothing/suit/space
@@ -370,6 +377,10 @@ BLIND     // can't see anything
 	permeability_coefficient = 0.90
 	slot_flags = SLOT_ICLOTHING
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
+	species_fit = list("Vox")
+	sprite_sheets = list(
+		"Vox" = 'icons/mob/species/vox/uniform.dmi'
+		)
 	var/has_sensor = 1//For the crew computer 2 = unable to change mode
 	var/sensor_mode = 0
 		/*
@@ -445,21 +456,20 @@ BLIND     // can't see anything
 			return
 	return
 
-/obj/item/clothing/under/examine()
-	set src in view()
-	..()
+/obj/item/clothing/under/examine(mob/user)
+	..(user)
 	switch(src.sensor_mode)
 		if(0)
-			usr << "Its sensors appear to be disabled."
+			user << "Its sensors appear to be disabled."
 		if(1)
-			usr << "Its binary life sensors appear to be enabled."
+			user << "Its binary life sensors appear to be enabled."
 		if(2)
-			usr << "Its vital tracker appears to be enabled."
+			user << "Its vital tracker appears to be enabled."
 		if(3)
-			usr << "Its vital tracker and tracking beacon appear to be enabled."
+			user << "Its vital tracker and tracking beacon appear to be enabled."
 	if(accessories.len)
 		for(var/obj/item/clothing/accessory/A in accessories)
-			usr << "\A [A] is attached to it."
+			user << "\A [A] is attached to it."
 
 
 /obj/item/clothing/under/verb/rollsuit()
@@ -469,11 +479,11 @@ BLIND     // can't see anything
 	if(!istype(usr, /mob/living)) return
 	if(usr.stat) return
 
-	if(copytext(_color,-2) != "_d")
-		basecolor = _color
+	if(copytext(item_color,-2) != "_d")
+		basecolor = item_color
 	usr << "DEBUG:[basecolor]"
 	if(basecolor + "_d_s" in icon_states('icons/mob/uniform.dmi'))
-		_color = _color == "[basecolor]" ? "[basecolor]_d" : "[basecolor]"
+		item_color = item_color == "[basecolor]" ? "[basecolor]_d" : "[basecolor]"
 		usr.update_inv_w_uniform()
 	else
 		usr << "<span class='notice'>You cannot roll down the uniform!</span>"

@@ -74,7 +74,6 @@
 /var/const/access_magistrate = 74
 /var/const/access_minisat = 75
 /var/const/access_mineral_storeroom = 76
-/var/const/access_assembly = 77
 
 /var/const/access_weapons = 99 //Weapon authorization for secbots
 
@@ -173,17 +172,19 @@
 
 
 /obj/proc/check_access_list(var/list/L)
-	if(!src.req_access  && !src.req_one_access)	return 1
-	if(!istype(src.req_access, /list))	return 1
-	if(!src.req_access.len && (!src.req_one_access || !src.req_one_access.len))	return 1
+	if(!req_access)		req_access = list()
+	if(!req_one_access)	req_one_access = list()
 	if(!L)	return 0
 	if(!istype(L, /list))	return 0
-	for(var/req in src.req_access)
-		if(!(req in L)) //doesn't have this access
+	return has_access(req_access, req_one_access, L)
+	
+/proc/has_access(var/list/req_access, var/list/req_one_access, var/list/accesses)
+	for(var/req in req_access)
+		if(!(req in accesses)) //doesn't have this access
 			return 0
-	if(src.req_one_access && src.req_one_access.len)
-		for(var/req in src.req_one_access)
-			if(req in L) //has an access from the single access list
+	if(req_one_access.len)
+		for(var/req in req_one_access)
+			if(req in accesses) //has an access from the single access list
 				return 1
 		return 0
 	return 1
@@ -246,20 +247,20 @@
 	            access_theatre, access_research, access_mining, access_mailsorting,
 	            access_heads_vault, access_mining_station, access_xenobiology, access_ce, access_hop, access_hos, access_RC_announce,
 	            access_keycard_auth, access_tcomsat, access_gateway, access_xenoarch, access_paramedic, access_blueshield, access_mechanic,access_weapons,
-	            access_pilot, access_ntrep, access_magistrate, access_mineral_storeroom, access_minisat, access_assembly)
+	            access_pilot, access_ntrep, access_magistrate, access_mineral_storeroom, access_minisat)
 
 /proc/get_all_centcom_access()
 	return list(access_cent_general, access_cent_living, access_cent_medical, access_cent_security, access_cent_storage, access_cent_shuttles, access_cent_telecomms, access_cent_teleporter, access_cent_specops, access_cent_specops_commander, access_cent_blackops, access_cent_thunder, access_cent_bridge, access_cent_commander)
 
 /proc/get_all_syndicate_access()
 	return list(access_syndicate, access_syndicate_leader, access_vox)
-
+	
 /proc/get_all_misc_access()
 	return list(access_salvage_captain)
-
+	
 /proc/get_absolutely_all_accesses()
 	return (get_all_accesses() | get_all_centcom_access() | get_all_syndicate_access() | get_all_misc_access())
-
+		
 /proc/get_region_accesses(var/code)
 	switch(code)
 		if(0)
@@ -269,9 +270,9 @@
 		if(2) //medbay
 			return list(access_medical, access_genetics, access_morgue, access_chemistry, access_psychiatrist, access_virology, access_surgery, access_cmo, access_paramedic)
 		if(3) //research
-			return list(access_research, access_tox, access_tox_storage, access_robotics, access_xenobiology, access_xenoarch, access_minisat, access_rd, access_assembly)
+			return list(access_research, access_tox, access_tox_storage, access_robotics, access_xenobiology, access_xenoarch, access_minisat, access_rd)
 		if(4) //engineering and maintenance
-			return list(access_construction, access_maint_tunnels, access_engine, access_engine_equip, access_external_airlocks, access_tech_storage, access_atmospherics, access_minisat, access_ce, access_mechanic, access_assembly)
+			return list(access_construction, access_maint_tunnels, access_engine, access_engine_equip, access_external_airlocks, access_tech_storage, access_atmospherics, access_minisat, access_ce, access_mechanic)
 		if(5) //command
 			return list(access_heads, access_RC_announce, access_keycard_auth, access_change_ids, access_ai_upload, access_teleporter, access_eva, access_tcomsat, access_gateway, access_all_personal_lockers, access_heads_vault, access_blueshield, access_ntrep, access_hop, access_captain)
 		if(6) //station general
@@ -449,8 +450,6 @@
 			return "AI Satellite"
 		if(access_weapons)
 			return "Weapon Permit"
-		if(access_assembly)
-			return "Assembly Workshop"
 
 /proc/get_centcom_access_desc(A)
 	switch(A)

@@ -82,6 +82,14 @@ datum/reagents/proc/metabolize(var/mob/M)
 	addiction_tick++
 	update_total()
 
+/datum/reagents/proc/overdose_list()
+	var/od_chems[0]
+	for(var/datum/reagent/R in reagent_list)
+		if(R.overdosed)
+			od_chems.Add(R.id)
+	return od_chems
+
+
 datum/reagents/proc/reagent_on_tick()
 	for(var/datum/reagent/R in reagent_list)
 		R.on_tick()
@@ -96,7 +104,7 @@ datum/reagents/proc/check_ignoreslow(var/mob/M)
 
 datum/reagents/proc/check_gofast(var/mob/M)
 	if(istype(M, /mob))
-		if(M.reagents.has_reagent("unholywater")||M.reagents.has_reagent("nuka_cola"))
+		if(M.reagents.has_reagent("unholywater")||M.reagents.has_reagent("nuka_cola")||M.reagents.has_reagent("stimulative_agent"))
 			return 1
 		else
 			M.status_flags &= ~GOTTAGOFAST

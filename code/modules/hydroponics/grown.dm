@@ -294,7 +294,7 @@
 	if(user == M)
 		return ..()
 
-	if(user.a_intent == "harm")
+	if(user.a_intent == I_HARM)
 
 		// This is being copypasted here because reagent_containers (WHY DOES FOOD DESCEND FROM THAT) overrides it completely.
 		// TODO: refactor all food paths to be less horrible and difficult to work with in this respect. ~Z
@@ -359,7 +359,7 @@
 	if(istype(user.loc,/turf/space))
 		return
 
-	if(user.a_intent == "harm")
+	if(user.a_intent == I_HARM)
 		user.visible_message("<span class='danger'>\The [user] squashes \the [src]!</span>")
 		seed.thrown_at(src,user)
 		sleep(-1)
@@ -395,13 +395,13 @@
 				var/obj/item/stack/medical/bruise_pack/tajaran/poultice = new /obj/item/stack/medical/bruise_pack/tajaran(user.loc)
 				poultice.heal_brute = potency
 				user << "<span class='notice'>You mash the leaves into a poultice.</span>"
-				del(src)
+				qdel(src)
 				return
 			if("mtear")
 				var/obj/item/stack/medical/ointment/tajaran/poultice = new /obj/item/stack/medical/ointment/tajaran(user.loc)
 				poultice.heal_burn = potency
 				user << "<span class='notice'>You mash the petals into a poultice.</span>"
-				del(src)
+				qdel(src)
 				return
 	*/
 

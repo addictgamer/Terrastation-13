@@ -41,8 +41,11 @@
 		H += M.rating
 	for(var/obj/item/weapon/stock_parts/micro_laser/M in component_parts)
 		T += M.rating
-	min_temperature = T0C - (170 + (T*15))
+	min_temperature = max(0,T0C - (170 + (T*15)))
 	current_heat_capacity = 1000 * ((H - 1) ** 2)
+	
+/obj/machinery/atmospherics/unary/cold_sink/freezer/construction()
+	..(dir,dir)
 
 /obj/machinery/atmospherics/unary/cold_sink/freezer/attackby(obj/item/I, mob/user, params)
 	if(default_deconstruction_screwdriver(user, "freezer-o", "freezer", I))
@@ -80,12 +83,16 @@
 	return
 
 /obj/machinery/atmospherics/unary/cold_sink/freezer/attack_ai(mob/user as mob)
-	src.attack_hand(user)
+	attack_hand(user)
+	
+/obj/machinery/atmospherics/unary/cold_sink/freezer/attack_ghost(mob/user as mob)
+	attack_hand(user)
 
 /obj/machinery/atmospherics/unary/cold_sink/freezer/attack_hand(mob/user as mob)
 	if(panel_open)
 		user << "<span class='notice'>Close the maintenance panel first.</span>"
 		return
+		
 	src.ui_interact(user)
 
 /obj/machinery/atmospherics/unary/cold_sink/freezer/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
@@ -137,9 +144,6 @@
 	src.add_fingerprint(usr)
 	return 1
 
-/obj/machinery/atmospherics/unary/cold_sink/freezer/process()
-	..()
-
 /obj/machinery/atmospherics/unary/cold_sink/freezer/power_change()
 	..()
 	if(stat & NOPOWER)
@@ -188,6 +192,9 @@
 	component_parts += new /obj/item/stack/cable_coil(src, 1)
 	RefreshParts()
 
+/obj/machinery/atmospherics/unary/heat_reservoir/heater/construction()
+	..(dir,dir)	
+	
 /obj/machinery/atmospherics/unary/heat_reservoir/heater/RefreshParts()
 	var/H
 	var/T
@@ -234,7 +241,10 @@
 	return
 
 /obj/machinery/atmospherics/unary/heat_reservoir/heater/attack_ai(mob/user as mob)
-	src.attack_hand(user)
+	attack_hand(user)
+	
+/obj/machinery/atmospherics/unary/heat_reservoir/heater/attack_ghost(mob/user as mob)
+	src.attack_hand(user)	
 
 /obj/machinery/atmospherics/unary/heat_reservoir/heater/attack_hand(mob/user as mob)
 	if(panel_open)
@@ -275,6 +285,8 @@
 		ui.set_auto_update(1)
 
 /obj/machinery/atmospherics/unary/heat_reservoir/heater/Topic(href, href_list)
+	if(..())
+		return 1
 	if (href_list["toggleStatus"])
 		src.on = !src.on
 		update_icon()
@@ -286,9 +298,6 @@
 			src.current_temperature = max(T20C, src.current_temperature+amount)
 	src.add_fingerprint(usr)
 	return 1
-
-/obj/machinery/atmospherics/unary/heat_reservoir/heater/process()
-	..()
 
 /obj/machinery/atmospherics/unary/heat_reservoir/heater/power_change()
 	..()

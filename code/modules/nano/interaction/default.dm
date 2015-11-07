@@ -10,7 +10,7 @@
 	return STATUS_CLOSE // By default no mob can do anything with NanoUI
 
 /mob/dead/observer/default_can_use_topic()
-	if(check_rights(R_ADMIN, 0, src))
+	if(can_admin_interact())
 		return STATUS_INTERACTIVE				// Admins are more equal
 	return STATUS_UPDATE						// Ghosts can view updates
 
@@ -102,3 +102,10 @@
 		. = min(., shared_living_nano_distance(src_object))
 		if(. == STATUS_UPDATE && (TK in mutations))	// If we have telekinesis and remain close enough, allow interaction.
 			return STATUS_INTERACTIVE
+
+/mob/living/carbon/alien/default_can_use_topic(var/src_object)
+	. = shared_nano_interaction(src_object)
+	if(. != STATUS_CLOSE)
+		. = min(., shared_living_nano_distance(src_object))
+		if(!IsAdvancedToolUser())
+			. = STATUS_CLOSE

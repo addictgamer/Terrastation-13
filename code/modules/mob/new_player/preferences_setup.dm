@@ -7,6 +7,7 @@ datum/preferences
 			gender = pick(MALE, FEMALE)
 		underwear = random_underwear(gender)
 		undershirt = random_undershirt(gender)
+		socks = random_socks(gender)
 		if(species == "Human")
 			s_tone = random_skin_tone()
 		h_style = random_hair_style(gender, species)
@@ -188,9 +189,9 @@ datum/preferences
 		return clothes_s
 
 	proc/update_preview_icon(var/for_observer=0)		//seriously. This is horrendous.
-		del(preview_icon_front)
-		del(preview_icon_side)
-		del(preview_icon)
+		qdel(preview_icon_front)
+		qdel(preview_icon_side)
+		qdel(preview_icon)
 
 		var/g = "m"
 		if(gender == FEMALE)	g = "f"
@@ -253,16 +254,22 @@ datum/preferences
 
 
 		var/icon/underwear_s = null
-		if(underwear && current_species.flags & HAS_UNDERWEAR)
+		if(underwear && current_species.clothing_flags & HAS_UNDERWEAR)
 			var/datum/sprite_accessory/underwear/U = underwear_list[underwear]
 			if(U)
 				underwear_s = new/icon(U.icon, "[U.icon_state]_s", ICON_OVERLAY)
 
 		var/icon/undershirt_s = null
-		if(undershirt && current_species.flags & HAS_UNDERWEAR)
+		if(undershirt && current_species.clothing_flags & HAS_UNDERSHIRT)
 			var/datum/sprite_accessory/undershirt/U2 = undershirt_list[undershirt]
 			if(U2)
 				undershirt_s = new/icon(U2.icon, "[U2.icon_state]_s", ICON_OVERLAY)
+
+		var/icon/socks_s = null
+		if(socks && current_species.clothing_flags & HAS_SOCKS)
+			var/datum/sprite_accessory/socks/U3 = socks_list[socks]
+			if(U3)
+				socks_s = new/icon(U3.icon, "[U3.icon_state]_s", ICON_OVERLAY)
 
 		var/icon/clothes_s = null
 		var/uniform_dmi='icons/mob/uniform.dmi'
@@ -395,7 +402,7 @@ datum/preferences
 				if(LAWYER)
 					clothes_s = new /icon(uniform_dmi, "internalaffairs_s")
 					clothes_s.Blend(new /icon('icons/mob/feet.dmi', "brown"), ICON_UNDERLAY)
-					clothes_s.Blend(new /icon('icons/mob/items_righthand.dmi', "briefcase"), ICON_UNDERLAY)
+					clothes_s.Blend(new /icon('icons/mob/inhands/items_righthand.dmi', "briefcase"), ICON_UNDERLAY)
 					if(prob(1))
 						clothes_s.Blend(new /icon('icons/mob/suit.dmi', "suitjacket_blue"), ICON_OVERLAY)
 					switch(backbag)
@@ -562,7 +569,7 @@ datum/preferences
 					clothes_s.Blend(new /icon('icons/mob/hands.dmi', "bgloves"), ICON_UNDERLAY)
 					clothes_s.Blend(new /icon('icons/mob/suit.dmi', "labcoat_open"), ICON_OVERLAY)
 					if(prob(1))
-						clothes_s.Blend(new /icon('icons/mob/items_righthand.dmi', "toolbox_blue"), ICON_OVERLAY)
+						clothes_s.Blend(new /icon('icons/mob/inhands/items_righthand.dmi', "toolbox_blue"), ICON_OVERLAY)
 					switch(backbag)
 						if(2)
 							clothes_s.Blend(new /icon('icons/mob/back.dmi', "backpack"), ICON_OVERLAY)
@@ -648,7 +655,7 @@ datum/preferences
 					clothes_s.Blend(new /icon('icons/mob/belt.dmi', "utility"), ICON_OVERLAY)
 					clothes_s.Blend(new /icon('icons/mob/head.dmi', "hardhat0_white"), ICON_OVERLAY)
 					if(prob(1))
-						clothes_s.Blend(new /icon('icons/mob/items_righthand.dmi', "blueprints"), ICON_OVERLAY)
+						clothes_s.Blend(new /icon('icons/mob/inhands/items_righthand.dmi', "blueprints"), ICON_OVERLAY)
 					switch(backbag)
 						if(2)
 							clothes_s.Blend(new /icon('icons/mob/back.dmi', "engiepack"), ICON_OVERLAY)
@@ -753,7 +760,7 @@ datum/preferences
 					clothes_s = new /icon(uniform_dmi, "officer_s")
 					clothes_s.Blend(new /icon('icons/mob/feet.dmi', "jackboots"), ICON_UNDERLAY)
 					clothes_s.Blend(new /icon('icons/mob/hands.dmi', "swat_gl"), ICON_UNDERLAY)
-					clothes_s.Blend(new /icon('icons/mob/suit.dmi', "deus_blueshield"), ICON_OVERLAY)
+					clothes_s.Blend(new /icon('icons/mob/suit.dmi', "blueshield"), ICON_OVERLAY)
 					switch(backbag)
 						if(2)
 							clothes_s.Blend(new /icon('icons/mob/back.dmi', "securitypack"), ICON_OVERLAY)
@@ -792,12 +799,15 @@ datum/preferences
 			preview_icon.Blend(underwear_s, ICON_OVERLAY)
 		if(undershirt_s)
 			preview_icon.Blend(undershirt_s, ICON_OVERLAY)
+		if(socks_s)
+			preview_icon.Blend(socks_s, ICON_OVERLAY)
 		if(clothes_s)
 			preview_icon.Blend(clothes_s, ICON_OVERLAY)
 		preview_icon_front = new(preview_icon, dir = SOUTH)
 		preview_icon_side = new(preview_icon, dir = WEST)
 
-		del(eyes_s)
-		del(underwear_s)
-		del(undershirt_s)
-		del(clothes_s)
+		qdel(eyes_s)
+		qdel(underwear_s)
+		qdel(undershirt_s)
+		qdel(socks_s)
+		qdel(clothes_s)

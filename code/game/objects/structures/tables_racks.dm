@@ -299,8 +299,8 @@
 	user.do_attack_animation(src)
 	visible_message("<span class='danger'>[user] slices [src] apart!</span>")
 	destroy()
-	
-/obj/structure/table/mech_melee_attack(obj/mecha/M)		
+
+/obj/structure/table/mech_melee_attack(obj/mecha/M)
 	visible_message("<span class='danger'>[M] smashes [src] apart!</span>")
 	destroy()
 
@@ -402,7 +402,7 @@
 		if (istype(G.affecting, /mob/living))
 			var/mob/living/M = G.affecting
 			if (G.state < 2)
-				if(user.a_intent == "harm")
+				if(user.a_intent == I_HARM)
 					if (prob(15))	M.Weaken(5)
 					M.apply_damage(8,def_zone = "head")
 					visible_message("\red [G.assailant] slams [G.affecting]'s face against \the [src]!")
@@ -420,7 +420,7 @@
 	if (istype(W, /obj/item/weapon/wrench))
 		user << "\blue Now disassembling table"
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
-		if(do_after(user,50))
+		if(do_after(user,50, target = src))
 			destroy()
 		return
 
@@ -696,7 +696,7 @@
 		var/obj/item/stack/sheet/glass/G = I
 		if(G.amount >= 2)
 			user << "<span class='notice'>You start to add the glass to \the [src].</span>"
-			if(do_after(user, 10))
+			if(do_after(user, 10, target = src))
 				G.use(2)
 				user << "<span class='notice'>You add the glass to \the [src].</span>"
 				playsound(get_turf(src), 'sound/items/Deconstruct.ogg', 50, 1)
@@ -709,7 +709,7 @@
 	if(iswrench(I))
 		user << "<span class='notice'>You start to deconstruct \the [src].</span>"
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
-		if(do_after(user, 10))
+		if(do_after(user, 10, target = src))
 			playsound(src.loc, 'sound/items/Deconstruct.ogg', 75, 1)
 			user << "<span class='notice'>You dismantle \the [src].</span>"
 			new /obj/item/stack/sheet/metal(loc)
@@ -729,9 +729,9 @@
 /obj/structure/table/glass/proc/collapse() //glass table collapse is called twice in this code, more efficent to just have a proc
 	src.visible_message("<span class='warning'>\The [src] shatters, and the frame collapses!</span>", "<span class='warning'>You hear metal collapsing and glass shattering.</span>")
 	new /obj/item/weapon/table_parts/glass(loc)
-	PoolOrNew(/obj/item/weapon/shard, loc)
+	new /obj/item/weapon/shard(loc)
 	if(prob(50)) //50% chance to spawn two shards
-		PoolOrNew(/obj/item/weapon/shard, loc)
+		new /obj/item/weapon/shard(loc)
 	qdel(src)
 
 /obj/structure/table/glass/attackby(obj/item/I as obj, mob/user as mob, params)
@@ -816,14 +816,14 @@
 			if(src.status == 2)
 				user << "\blue Now weakening the reinforced table"
 				playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
-				if (do_after(user, 50))
+				if (do_after(user, 50, target = src))
 					if(!src || !WT.isOn()) return
 					user << "\blue Table weakened"
 					src.status = 1
 			else
 				user << "\blue Now strengthening the reinforced table"
 				playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
-				if (do_after(user, 50))
+				if (do_after(user, 50, target = src))
 					if(!src || !WT.isOn()) return
 					user << "\blue Table strengthened"
 					src.status = 2
@@ -848,6 +848,7 @@
 	anchored = 1.0
 	throwpass = 1	//You can throw objects over this, despite it's density.
 	var/parts = /obj/item/weapon/rack_parts
+	var/health = 5
 
 /obj/structure/rack/proc/destroy()
 	new parts(loc)
@@ -914,8 +915,16 @@
 		visible_message("<span class='danger'>[user] smashes [src] apart!</span>")
 		user.say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!" ))
 		destroy()
-		
-/obj/structure/rack/mech_melee_attack(obj/mecha/M)		
+	else
+		user.changeNext_move(CLICK_CD_MELEE)
+		user.do_attack_animation(src)
+		playsound(loc, 'sound/items/dodgeball.ogg', 80, 1)
+		user.visible_message("<span class='warning'>[user] kicks [src].</span>", \
+							 "<span class='danger'>You kick [src].</span>")
+		health -= rand(1,2)
+		healthcheck()
+
+/obj/structure/rack/mech_melee_attack(obj/mecha/M)
 	visible_message("<span class='danger'>[M] smashes [src] apart!</span>")
 	destroy()
 
@@ -933,3 +942,19 @@
 
 /obj/structure/rack/attack_tk() // no telehulk sorry
 	return
+
+/obj/structure/rack/proc/healthcheck()
+	if(health <= 0)
+		destroy()
+
+/obj/structure/rack/skeletal_bar
+	name = "skeletal minibar"
+	desc = "Made with the skulls of the fallen."
+	icon = 'icons/obj/stationobjs.dmi'
+	icon_state = "minibar"
+
+/obj/structure/rack/skeletal_bar/left
+	icon_state = "minibar_left"
+
+/obj/structure/rack/skeletal_bar/right
+	icon_state = "minibar_right"

@@ -36,10 +36,6 @@
 	//height=42
 	icon='icons/fence-ns.dmi'
 
-/obj/structure/grille/Destroy()
-	..()
-	return QDEL_HINT_PUTINPOOL //pool grilles
-
 /obj/structure/grille/ex_act(severity)
 	qdel(src)
 
@@ -174,7 +170,7 @@
 				user << "<span class='notice'>There is already a window facing this way there.</span>"
 				return
 		user << "<span class='notice'>You start placing the window.</span>"
-		if(do_after(user,20))
+		if(do_after(user,20, target = src))
 			if(!src) return //Grille destroyed while waiting
 			for(var/obj/structure/window/WINDOW in loc)
 				if(WINDOW.dir == dir_to_set)//checking this for a 2nd time to check if a window was made while we were waiting.
@@ -220,11 +216,11 @@
 			icon_state = "brokengrille"
 			density = 0
 			destroyed = 1
-			PoolOrNew(/obj/item/stack/rods,loc)
+			new /obj/item/stack/rods(loc)
 
 		else
 			if(health <= -6)
-				PoolOrNew(/obj/item/stack/rods,loc)
+				new /obj/item/stack/rods(loc)
 				qdel(src)
 				return
 	return

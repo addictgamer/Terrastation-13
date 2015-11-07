@@ -11,11 +11,12 @@
 	var/datum/money_account/detailed_account_view
 	var/creating_new_account = 0
 	var/activated = 1
+	var/const/fund_cap = 1000000
 	
 	light_color = LIGHT_COLOR_GREEN
 
-/obj/machinery/computer/account_database/proc/get_access_level(user as mob)
-	if(isobserver(user) && check_rights(R_ADMIN, 0, user))
+/obj/machinery/computer/account_database/proc/get_access_level(var/mob/user)
+	if(user.can_admin_interact())
 		return 2
 	if (!held_card)
 		return 0
@@ -131,9 +132,9 @@
 	if(..())
 		return 1
 		
-	if("insert_card")
+	if(href_list["insert_card"])
 		if(held_card)
-			held_card.loc = src.loc
+			held_card.forceMove(loc)
 
 			if(ishuman(usr) && !usr.get_active_hand())
 				usr.put_in_hands(held_card)
@@ -144,7 +145,7 @@
 			if (istype(I, /obj/item/weapon/card/id))
 				var/obj/item/weapon/card/id/C = I
 				usr.drop_item()
-				C.loc = src
+				C.forceMove(src)
 				held_card = C		
 		
 	if(!get_access_level(usr))
@@ -175,6 +176,10 @@
 			if("finalise_create_account")
 				var/account_name = href_list["holder_name"]
 				var/starting_funds = max(text2num(href_list["starting_funds"]), 0)
+				
+				starting_funds = Clamp(starting_funds, 0, station_account.money)	// Not authorized to put the station in debt.
+				starting_funds = min(starting_funds, fund_cap)						// Not authorized to give more than the fund cap.				
+				
 				create_account(account_name, starting_funds, src)
 				if(starting_funds > 0)
 					//subtract the money

@@ -65,10 +65,10 @@ var/shuttle_call/shuttle_calls[0]
 	..()
 	crew_announcement.newscast = 1
 	
-/obj/machinery/computer/communications/proc/is_authenticated(user as mob, var/message = 1)
+/obj/machinery/computer/communications/proc/is_authenticated(var/mob/user, var/message = 1)
 	if(authenticated == 2)
 		return 2
-	else if(isobserver(user) && check_rights(R_ADMIN, 0, user))
+	else if(user.can_admin_interact())
 		return 2
 	else if(authenticated)
 		return 1
@@ -86,6 +86,9 @@ var/shuttle_call/shuttle_calls[0]
 		return 1
 		
 	if(href_list["login"])
+		if(!ishuman(usr))
+			usr << "<span class='warning'>Access denied.</span>" 
+			return
 		var/mob/living/carbon/human/M = usr
 		var/obj/item/card = M.get_active_hand()
 		var/obj/item/weapon/card/id/I = (card && card.GetID())||M.wear_id||M.wear_pda
@@ -161,7 +164,7 @@ var/shuttle_call/shuttle_calls[0]
 					nanomanager.update_uis(src)
 					return
 				var/input = input(usr, "Please write a message to announce to the station crew.", "Priority Announcement")
-				if(!input || ..() || !(is_authenticated(usr) == 2))
+				if(!input || message_cooldown || ..() || !(is_authenticated(usr) == 2))
 					nanomanager.update_uis(src)
 					return
 				crew_announcement.Announce(input)

@@ -14,6 +14,9 @@
 	var/obj/master = null	//A reference to the object in the slot. Grabs or items, generally.
 	var/gun_click_time = -100 //I'm lazy.
 
+/obj/screen/Destroy()
+	master = null
+	return ..()
 
 /obj/screen/text
 	icon = null
@@ -66,7 +69,7 @@
 	if(master)
 		var/obj/item/I = usr.get_active_hand()
 		if(I)
-			master.attackby(I, usr, params, params)
+			master.attackby(I, usr, params)
 	return 1
 
 /obj/screen/gun
@@ -166,6 +169,21 @@
 /obj/screen/zone_sel/update_icon()
 	overlays.Cut()
 	overlays += image('icons/mob/zone_sel.dmi', "[selecting]")
+
+/obj/screen/pull
+	name = "stop pulling"
+	icon = 'icons/mob/screen1_Midnight.dmi'
+	icon_state = "pull"
+
+/obj/screen/pull/Click()
+	usr.stop_pulling()
+
+/obj/screen/pull/update_icon(mob/mymob)
+	if(!mymob) return
+	if(mymob.pulling)
+		icon_state = "pull"
+	else
+		icon_state = "pull0"
 
 
 /obj/screen/Click(location, control, params)
@@ -333,20 +351,17 @@
 		if("act_intent")
 			usr.a_intent_change("right")
 		if("help")
-			usr.a_intent = "help"
+			usr.a_intent = I_HELP
 			usr.hud_used.action_intent.icon_state = "intent_help"
 		if("harm")
-			usr.a_intent = "harm"
+			usr.a_intent = I_HARM
 			usr.hud_used.action_intent.icon_state = "intent_harm"
 		if("grab")
-			usr.a_intent = "grab"
+			usr.a_intent = I_GRAB
 			usr.hud_used.action_intent.icon_state = "intent_grab"
 		if("disarm")
-			usr.a_intent = "disarm"
+			usr.a_intent = I_DISARM
 			usr.hud_used.action_intent.icon_state = "intent_disarm"
-
-		if("pull")
-			usr.stop_pulling()
 		if("throw")
 			if(!usr.stat && isturf(usr.loc) && !usr.restrained())
 				usr:toggle_throw_mode()
@@ -378,7 +393,7 @@
 			if(isrobot(usr))
 				var/mob/living/silicon/robot/R = usr
 				R.sensor_mode()
-				
+
 		if("Toggle Headlamp")
 			if(isrobot(usr))
 				var/mob/living/silicon/robot/R = usr
@@ -435,7 +450,7 @@
 		if("Allow Item Use")
 			if(gun_click_time > world.time - 30)	//give them 3 seconds between mode changes.
 				return
-			if(!istype(usr.equipped(),/obj/item/weapon/gun))
+			if(!istype(usr.get_active_hand(), /obj/item/weapon/gun))
 				usr << "You need your gun in your active hand to do that!"
 				return
 			usr.client.AllowTargetClick()
@@ -445,7 +460,7 @@
 		if("Disallow Item Use")
 			if(gun_click_time > world.time - 30)	//give them 3 seconds between mode changes.
 				return
-			if(!istype(usr.equipped(),/obj/item/weapon/gun))
+			if(!istype(usr.get_active_hand(), /obj/item/weapon/gun))
 				usr << "You need your gun in your active hand to do that!"
 				return
 			usr.client.AllowTargetClick()
@@ -501,10 +516,10 @@
 				var/mob/living/silicon/ai/AI = usr
 				AI.ai_call_shuttle()
 
-		if("State Laws")
+		if("Law Manager")
 			if(isAI(usr))
 				var/mob/living/silicon/ai/AI = usr
-				AI.checklaws()
+				AI.subsystem_law_manager()
 
 		if("PDA - Send Message")
 			if(isAI(usr))

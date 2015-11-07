@@ -66,7 +66,7 @@
 /obj/machinery/clonepod/Destroy()
 	if(connected)
 		connected.pods -= src
-	..()
+	return ..()
 
 /obj/machinery/clonepod/RefreshParts()
 	speed_coeff = 0
@@ -75,7 +75,7 @@
 		efficiency += S.rating
 	for(var/obj/item/weapon/stock_parts/manipulator/P in component_parts)
 		speed_coeff += P.rating
-	heal_level = (efficiency * 15) + 10
+	heal_level = min((efficiency * 15) + 10, 100)
 
 //The return of data disks?? Just for transferring between genetics machine/cloning machine.
 //TO-DO: Make the genetics machine accept them.
@@ -150,11 +150,10 @@
 	src.read_only = !src.read_only
 	user << "You flip the write-protect tab to [src.read_only ? "protected" : "unprotected"]."
 
-/obj/item/weapon/disk/data/examine()
-	set src in oview(5)
-	..()
-	usr << text("The write-protect tab is set to [src.read_only ? "protected" : "unprotected"].")
-	return
+/obj/item/weapon/disk/data/examine(mob/user)
+	..(user)
+	user << "The write-protect tab is set to [src.read_only ? "protected" : "unprotected"]."
+
 
 //Health Tracker Implant
 

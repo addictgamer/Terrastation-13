@@ -9,6 +9,7 @@
 	name = "storage"
 	icon = 'icons/obj/storage.dmi'
 	w_class = 3.0
+	var/silent = 0 // No message on putting items in
 	var/list/can_hold = new/list() //List of objects which this item can store (if set, it can't store anything else)
 	var/list/cant_hold = new/list() //List of objects which this item can't store (in effect only if can_hold isn't set)
 	var/max_w_class = 2 //Max size of objects that this object can store (in effect only if can_hold isn't set)
@@ -234,7 +235,7 @@
 		return 0 //Means the item is already in the storage item
 	if(contents.len >= storage_slots)
 		if(!stop_messages)
-			usr << "<span class='notice'>[src] is full, make some space.</span>"
+			usr << "<span class='warning'>[W] won't fit in [src], make some space!</span>"
 		return 0 //Storage item is full
 
 	if(can_hold.len)
@@ -292,6 +293,8 @@
 		if(!usr.unEquip(W))
 			return 0
 		usr.update_icons()	//update our overlays
+	if(silent)
+		prevent_warning = 1
 	W.loc = src
 	W.on_enter_storage(src)
 	if(usr)

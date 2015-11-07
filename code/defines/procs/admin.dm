@@ -21,12 +21,13 @@
 	. = ""
 
 	if(key)
-		if(include_link && C)
-			. += "<a href='?priv_msg=\ref[C];type=[type]'>"
-
 		if(C && C.holder && C.holder.fakekey && !include_name)
+			if(include_link)
+				. += "<a href='?priv_msg=[C.findStealthKey()];type=[type]'>"
 			. += "Administrator"
 		else
+			if(include_link)
+				. += "<a href='?priv_msg=\ref[C];type=[type]'>"
 			. += key
 
 		if(include_link)
@@ -48,8 +49,8 @@
 	return message
 
 /proc/log_and_message_admins(var/message as text)
-	log_admin("[usr]([usr.ckey]) " + message)
-	message_admins("[usr]([usr.ckey]) " + message)
+	log_admin("[key_name(usr)] " + message)
+	message_admins("[key_name_admin(usr)] " + message)
 
 /proc/admin_log_and_message_admins(var/message as text)
 	log_admin("[key_name(usr)] " + message)

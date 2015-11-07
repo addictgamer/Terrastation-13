@@ -12,6 +12,10 @@
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/underwear, underwear_list, underwear_m, underwear_f)
 	//undershirt
 	init_sprite_accessory_subtypes(/datum/sprite_accessory/undershirt, undershirt_list, undershirt_m, undershirt_f)
+	//socks
+	init_sprite_accessory_subtypes(/datum/sprite_accessory/socks, socks_list, socks_m, socks_f)
+
+
 
 	var/list/paths
 	//Surgery Steps - Initialize all /datum/surgery_step into a list
@@ -26,11 +30,6 @@
 	for(var/T in paths)
 		var/datum/job/J = new T
 		joblist[J.title] = J
-
-	paths = subtypesof(/datum/nations)
-	for(var/T in paths)
-		var/datum/nations/N = new T
-		all_nations[N.name] = N
 
 	paths = subtypesof(/datum/superheroes)
 	for(var/T in paths)

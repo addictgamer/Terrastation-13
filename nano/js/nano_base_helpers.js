@@ -102,6 +102,10 @@ NanoBaseHelpers = function ()
 				parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 				return parts.join(".");
 			},
+			// Capitalize the first letter of a string. From http://stackoverflow.com/questions/1026069/capitalize-the-first-letter-of-string-in-javascript
+			capitalizeFirstLetter: function(string) {
+				return string.charAt(0).toUpperCase() + string.slice(1);
+			},
 			// Display a bar. Used to show health, capacity, etc.
 			displayBar: function(value, rangeMin, rangeMax, styleClass, showText) {
 
@@ -235,6 +239,18 @@ NanoBaseHelpers = function ()
 
                 html += '</div>';
 
+				return html;
+			},
+			cMirror: function(domID) {
+				if(!domID)
+				{
+				    return "ERR - NO domID provided";
+				}
+				
+			    var html = '<script>var editor = CodeMirror.fromTextArea(document.getElementById("';
+			    html += domID
+				html += '"), {lineNumbers: true,	indentUnit: 4,	indentWithTabs: true,	theme: "lesser-dark"});';
+			    html += '</script>'
 				return html;
 			}
 		};

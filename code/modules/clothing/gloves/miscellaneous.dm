@@ -3,7 +3,7 @@
 	desc = "Plain black gloves without fingertips for the hard working."
 	icon_state = "fingerless"
 	item_state = "fingerless"
-	_color = null	//So they don't wash.
+	item_color = null	//So they don't wash.
 	transfer_prints = TRUE
 	cold_protection = HANDS
 	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT
@@ -15,10 +15,6 @@
 	icon_state = "black"
 	item_state = "r_hands"
 	siemens_coefficient = 1.0
-	species_fit = list("Vox")
-	sprite_sheets = list(
-		"Vox" = 'icons/mob/species/vox/mask.dmi'
-		)
 
 /obj/item/clothing/gloves/combat
 	desc = "These tactical gloves are somewhat fire and impact resistant."
@@ -31,10 +27,6 @@
 	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT
 	heat_protection = HANDS
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
-	species_fit = list("Vox")
-	sprite_sheets = list(
-		"Vox" = 'icons/mob/species/vox/mask.dmi'
-		)
 
 /obj/item/clothing/gloves/botanic_leather
 	desc = "These leather gloves protect against thorns, barbs, prickles, spikes and other harmful objects of floral origin."
@@ -46,17 +38,10 @@
 	min_cold_protection_temperature = GLOVES_MIN_TEMP_PROTECT
 	heat_protection = HANDS
 	max_heat_protection_temperature = GLOVES_MAX_TEMP_PROTECT
-	species_fit = list("Vox")
-	sprite_sheets = list(
-		"Vox" = 'icons/mob/species/vox/mask.dmi'
-		)
+
 /obj/item/clothing/gloves/batmangloves
 	desc = "Used for handling all things bat related."
 	name = "batgloves"
 	icon_state = "bmgloves"
 	item_state = "bmgloves"
-	_color="bmgloves"
-	species_fit = list("Vox")
-	sprite_sheets = list(
-		"Vox" = 'icons/mob/species/vox/mask.dmi'
-		)
+	item_color="bmgloves"

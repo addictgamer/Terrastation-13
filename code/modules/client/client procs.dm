@@ -1,6 +1,9 @@
 	////////////
 	//SECURITY//
 	////////////
+//debugging, uncomment for viewing topic calls
+// #define TOPIC_DEBUGGING 1
+
 #define TOPIC_SPAM_DELAY	2		//2 ticks is about 2/10ths of a second; it was 4 ticks, but that caused too many clicks to be lost due to lag
 #define UPLOAD_LIMIT		10485760	//Restricts client uploads to the server to 10MB //Boosted this thing. What's the worst that can happen?
 #define MIN_CLIENT_VERSION	0		//Just an ambiguously low version for now, I don't want to suddenly stop people playing.
@@ -23,6 +26,11 @@
 /client/Topic(href, href_list, hsrc)
 	if(!usr || usr != mob)	//stops us calling Topic for somebody else's client. Also helps prevent usr=null
 		return
+
+	#if defined(TOPIC_DEBUGGING)
+	world << "[src]'s Topic: [href] destined for [hsrc]."
+	#endif
+
 
 	//Reduces spamming of links by dropping calls that happen during the delay period
 	if(next_allowed_topic_time > world.time)
@@ -179,6 +187,12 @@
 
 	..()	//redirect to hsrc.Topic()
 
+/client/proc/is_content_unlocked()
+	if(!prefs.unlock_content)
+		src << "Become a BYOND member to access member-perks and features, as well as support the engine that makes this game possible. <a href='http://www.byond.com/membership'>Click here to find out more</a>."
+		return 0
+	return 1
+
 /client/proc/handle_spam_prevention(var/message, var/mute_type)
 	if(config.automute_on && !holder && src.last_message == message)
 		src.last_message_count++
@@ -214,6 +228,8 @@
 	///////////
 /client/New(TopicData)
 	TopicData = null							//Prevent calls to client.Topic from connect
+	client_cache += src
+	client_cache[src] = list()
 
 	if(connection != "seeker")					//Invalid connection type.
 		return null
@@ -221,7 +237,7 @@
 		return null
 
 	if(IsGuestKey(key))
-		alert(src,"Baystation12 doesn't allow guest accounts to play. Please go to http://www.byond.com/ and register for a key.","Guest","OK")
+		alert(src,"This server doesn't allow guest accounts to play. Please go to http://www.byond.com/ and register for a key.","Guest","OK")
 		del(src)
 		return
 
@@ -264,7 +280,7 @@
 
 	if(holder)
 		add_admin_verbs()
-		admin_memo_show()
+		admin_memo_output("Show", 0, 1)
 
 	// Forcibly enable hardware-accelerated graphics, as we need them for the lighting overlays.
 	// (but turn them off first, since sometimes BYOND doesn't turn them on properly otherwise)
@@ -275,13 +291,24 @@
 
 	log_client_to_db()
 
+	if (ckey in clientmessages)
+		for (var/message in clientmessages[ckey])
+			src << message
+		clientmessages.Remove(ckey)
+
+	if (config && config.autoconvert_notes)
+		convert_notes_sql(ckey)
+
 	send_resources()
 
-	nanomanager.send_resources(src)
+	if(!void)
+		void = new()
 
-	//////////////
-	//DISCONNECT//
-	//////////////
+	screen += void
+
+//////////////
+//DISCONNECT//
+//////////////
 /client/Del()
 	if(holder)
 		holder.owner = null
@@ -324,18 +351,17 @@
 	related_accounts_cid = list()
 	while(query_cid.NextRow())
 		if(ckey != query_cid.item[1])
-			related_accounts_cid.Add("[query_cid.item[1]]")			
-			
+			related_accounts_cid.Add("[query_cid.item[1]]")
+
 	//Log all the alts
 	if(related_accounts_cid.len)
 		log_access("Alts: [key_name(src)]:[list2text(related_accounts_cid, " - ")]")
 
-	var/DBQuery/query_watch = dbcon.NewQuery("SELECT ckey, reason FROM [format_table_name("watch")] WHERE (ckey = '[sql_ckey]')")
-	query_watch.Execute()
-	if(query_watch.NextRow())
-		message_admins("<font color='red'><B>Notice: </B></font><font color='blue'>[key_name_admin(src)] is flagged for watching and has just connected - Reason: [query_watch.item[2]]</font>")
-		send2irc_adminless_only("Watchlist", "[key_name_admin(src)] is flagged for watching and has just connected - Reason: [query_watch.item[2]]")		
-		
+	var/watchreason = check_watchlist(sql_ckey)
+	if(watchreason)
+		message_admins("<font color='red'><B>Notice: </B></font><font color='blue'>[key_name_admin(src)] is on the watchlist and has just connected - Reason: [watchreason]</font>")
+		send2irc_adminless_only("Watchlist", "[key_name(src)] is on the watchlist and has just connected - Reason: [watchreason]")
+
 	//Just the standard check to see if it's actually a number
 	if(sql_id)
 		if(istext(sql_id))
@@ -377,65 +403,22 @@
 	if(inactivity > duration)	return inactivity
 	return 0
 
-//send resources to the client. It's here in its own proc so we can move it around easiliy if need be
+//Send resources to the client.
 /client/proc/send_resources()
-//	preload_vox() //Causes long delays with initial start window and subsequent windows when first logged in.
-
+	// Most assets are now handled through global_cache.dm
 	getFiles(
-		'html/search.js',
-		'html/panels.css',
-		'html/painew.png',
-		'html/loading.gif',
-		'icons/pda_icons/pda_atmos.png',
-		'icons/pda_icons/pda_back.png',
-		'icons/pda_icons/pda_bell.png',
-		'icons/pda_icons/pda_blank.png',
-		'icons/pda_icons/pda_boom.png',
-		'icons/pda_icons/pda_bucket.png',
-		'icons/pda_icons/pda_crate.png',
-		'icons/pda_icons/pda_cuffs.png',
-		'icons/pda_icons/pda_eject.png',
-		'icons/pda_icons/pda_exit.png',
-		'icons/pda_icons/pda_flashlight.png',
-		'icons/pda_icons/pda_honk.png',
-		'icons/pda_icons/pda_mail.png',
-		'icons/pda_icons/pda_medical.png',
-		'icons/pda_icons/pda_menu.png',
-		'icons/pda_icons/pda_mule.png',
-		'icons/pda_icons/pda_notes.png',
-		'icons/pda_icons/pda_power.png',
-		'icons/pda_icons/pda_rdoor.png',
-		'icons/pda_icons/pda_reagent.png',
-		'icons/pda_icons/pda_refresh.png',
-		'icons/pda_icons/pda_scanner.png',
-		'icons/pda_icons/pda_signaler.png',
-		'icons/pda_icons/pda_status.png',
-		'icons/spideros_icons/sos_1.png',
-		'icons/spideros_icons/sos_2.png',
-		'icons/spideros_icons/sos_3.png',
-		'icons/spideros_icons/sos_4.png',
-		'icons/spideros_icons/sos_5.png',
-		'icons/spideros_icons/sos_6.png',
-		'icons/spideros_icons/sos_7.png',
-		'icons/spideros_icons/sos_8.png',
-		'icons/spideros_icons/sos_9.png',
-		'icons/spideros_icons/sos_10.png',
-		'icons/spideros_icons/sos_11.png',
-		'icons/spideros_icons/sos_12.png',
-		'icons/spideros_icons/sos_13.png',
-		'icons/spideros_icons/sos_14.png',
-		'icons/stamp_icons/large_stamp-clown.png',
-		'icons/stamp_icons/large_stamp-deny.png',
-		'icons/stamp_icons/large_stamp-ok.png',
-		'icons/stamp_icons/large_stamp-hop.png',
-		'icons/stamp_icons/large_stamp-cmo.png',
-		'icons/stamp_icons/large_stamp-ce.png',
-		'icons/stamp_icons/large_stamp-hos.png',
-		'icons/stamp_icons/large_stamp-rd.png',
-		'icons/stamp_icons/large_stamp-cap.png',
-		'icons/stamp_icons/large_stamp-qm.png',
-		'icons/stamp_icons/large_stamp-law.png',
-		'icons/stamp_icons/large_stamp-cent.png',
-		'html/talisman.png',
-		'html/images/ntlogo.png'
-		)
+		'html/search.js', // Used in various non-NanoUI HTML windows for search functionality
+		'html/panels.css' // Used for styling certain panels, such as in the new player panel
+	)
+
+	// Send NanoUI resources to this client
+	spawn nanomanager.send_resources(src)
+
+//For debugging purposes
+/client/proc/list_all_languages()
+	for(var/L in all_languages)
+		var/datum/language/lang = all_languages[L]
+		var/message = "[lang.name] : [lang.type]"
+		if(lang.flags & RESTRICTED)
+			message += " (RESTRICTED)"
+		world << "[message]"

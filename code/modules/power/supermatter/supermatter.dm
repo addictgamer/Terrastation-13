@@ -72,6 +72,7 @@
 /obj/machinery/power/supermatter_shard/Destroy()
 	investigate_log("has been destroyed.", "supermatter")
 	qdel(radio)
+	radio = null
 	return ..()
 
 /obj/machinery/power/supermatter_shard/proc/explode()
@@ -175,9 +176,16 @@
 
 	env.merge(removed)
 
-	for(var/mob/living/carbon/human/l in view(src, min(7, round(power ** 0.25)))) // If they can see it without mesons on.  Bad on them.
-		if(!istype(l.glasses, /obj/item/clothing/glasses/meson))
-			l.hallucination = max(0, min(200, l.hallucination + power * config_hallucination_power * sqrt( 1 / max(1, get_dist(l, src)) ) ) )
+	for(var/mob/living/carbon/human/l in view(src, min(7, round(sqrt(power/6)))))
+		// If they can see it without mesons on.  Bad on them.
+		if(l.glasses && istype(l.glasses, /obj/item/clothing/glasses/meson))
+			continue
+		// Where we're going, we don't need eyes.
+		// Prosthetic eyes will also protect against this business.
+		var/obj/item/organ/eyes = l.internal_organs_by_name["eyes"]
+		if(!istype(eyes))
+			continue
+		l.hallucination = max(0, min(200, l.hallucination + power * config_hallucination_power * sqrt( 1 / max(1,get_dist(l, src)) ) ) )
 
 	for(var/mob/living/l in range(src, round((power / 100) ** 0.25)))
 		var/rads = (power / 10) * sqrt( 1 / max(get_dist(l, src),1) )
@@ -226,7 +234,7 @@
 
 /obj/machinery/power/supermatter_shard/attack_ai(mob/user as mob)
 	ui_interact(user)
-	
+
 /obj/machinery/power/supermatter_shard/attack_ghost(mob/user as mob)
 	ui_interact(user)
 
@@ -235,16 +243,16 @@
 		"<span class=\"danger\">You reach out and touch \the [src]. Everything starts burning and all you can hear is ringing. Your last thought is \"That was not a wise decision.\"</span>",\
 		"<span class=\"warning\">You hear an uneartly ringing, then what sounds like a shrilling kettle as you are washed with a wave of heat.</span>")
 
-	playsound(get_turf(src), 'sound/effects/supermatter.ogg', 50, 1)	
-		
+	playsound(get_turf(src), 'sound/effects/supermatter.ogg', 50, 1)
+
 	Consume(user)
-	
+
 /obj/machinery/power/supermatter_shard/proc/get_integrity()
 	var/integrity = damage / explosion_point
 	integrity = round(100 - integrity * 100)
 	integrity = integrity < 0 ? 0 : integrity
 	return integrity
-	
+
 // This is purely informational UI that may be accessed by AIs or robots
 /obj/machinery/power/supermatter_shard/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null, var/force_open = 1)
 	var/data[0]
