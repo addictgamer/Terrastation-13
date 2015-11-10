@@ -49,7 +49,7 @@ Changes to the uplinks were made to discourage murderboning, the rest is the sam
 #if !defined(MAP_FILE)
 
         #include "map_files\MiniStation\z1_MiniStation.dmm"
-        #include "map_files\MiniStation\z2_CANT_READ.dmm"
+        #include "map_files\MiniStation\z2.dmm"
         #include "map_files\MiniStation\z3_empty.dmm"
         #include "map_files\MiniStation\z4_Ruskie_ClownCrash.dmm"
         #include "map_files\MiniStation\z5_Asteroids.dmm"
