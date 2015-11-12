@@ -585,7 +585,7 @@
 "lm" = (/turf/simulated/floor/engine/cult{tag = "icon-cultdamage6"; icon_state = "cultdamage6"},/area/wizard_station)
 "ln" = (/turf/simulated/floor/engine/cult,/turf/simulated/shuttle/wall{dir = 2; icon_state = "swall_f10"; layer = 2},/area/wizard_station)
 "lo" = (/obj/machinery/recharge_station,/turf/simulated/shuttle/floor/syndicate,/area/shuttle/syndicate_elite/mothership)
-"lp" = (/obj/machinery/portable_atmospherics/canister/oxygen,/turf/simulated/shuttle/floor/syndicate,/area/shuttle/syndicate_elite/mothership)
+"lp" = (/obj/machinery/atmospherics/unary/tank/oxygen,/turf/simulated/shuttle/floor/syndicate,/area/shuttle/syndicate_elite/mothership)
 "lq" = (/obj/structure/table,/obj/item/stack/medical/ointment,/obj/item/stack/medical/bruise_pack,/turf/simulated/shuttle/floor/syndicate,/area/shuttle/syndicate_elite/mothership)
 "lr" = (/obj/structure/lattice,/obj/effect/forcefield,/turf/space,/area/wizard_station)
 "ls" = (/obj/effect/forcefield,/turf/space/transit,/area/wizard_station)
