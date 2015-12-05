@@ -40,7 +40,9 @@ var/global/datum/controller/gameticker/ticker
 	'sound/music/Atmosdel_Sub_Balloon.ogg',\
 	'sound/music/muh_face.ogg',\
 	'sound/music/robocop_slow.ogg',\
-	'sound/music/redsky.ogg',)
+	'sound/music/redsky.ogg',\
+	'sound/music/firefucker.ogg',\
+	'sound/music/darkcloud.ogg',)
 	do
 		pregame_timeleft = 180
 		world << "<B><FONT color='blue'>Welcome to the pre-game lobby!</FONT></B>"

@@ -146,4 +146,13 @@ area/salvage/support //intended for the ministation's supportability
 	name = "Support Room"
 //TODO: add shuttle areas for this section
 
+
+//ABSOLUTELY POINTLESS!
+
+/area/maintenance/pointless
+	name = "Absolutely Pointless"
+	icon = 'icons/turf/areas2.dmi' //Because FAK
+	icon_state = "honk"
+	ambientsounds = list('music/atmosdel.ogg')
+
 //butts
