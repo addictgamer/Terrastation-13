@@ -343,7 +343,7 @@
 			//Search for item to steal
 			parrot_interest = search_for_item()
 			if(parrot_interest)
-				custom_emote(1,"looks in [parrot_interest]'s direction and takes flight")
+				custom_emote(1,"looks in [parrot_interest]'s direction and takes flight.")
 				parrot_state = PARROT_SWOOP | PARROT_STEAL
 				icon_state = "parrot_fly"
 			return
@@ -709,9 +709,8 @@
 
 	message = capitalize(trim_left(message))
 	if(message_mode)
-		if(message_mode in radiochannels)
-			if(ears && istype(ears,/obj/item/device/radio))
-				ears.talk_into(src, message, message_mode, verb, null)
+		if(ears && istype(ears,/obj/item/device/radio))
+			ears.talk_into(src, message, message_mode, verb, null)
 
 	..(message)
 

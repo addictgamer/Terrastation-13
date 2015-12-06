@@ -183,6 +183,7 @@ var/list/ai_verbs_default = list(
 	hud_list[IMPCHEM_HUD]     = image('icons/mob/hud.dmi', src, "hudblank")
 	hud_list[IMPTRACK_HUD]    = image('icons/mob/hud.dmi', src, "hudblank")
 	hud_list[SPECIALROLE_HUD] = image('icons/mob/hud.dmi', src, "hudblank")
+	hud_list[NATIONS_HUD]     = image('icons/mob/hud.dmi', src, "hudblank")
 
 	ai_list += src
 	..()
@@ -999,3 +1000,13 @@ var/list/ai_verbs_default = list(
 		loc = card//Throw AI into the card.
 		src << "You have been downloaded to a mobile storage device. Remote device connection severed."
 		user << "<span class='boldnotice'>Transfer successful</span>: [name] ([rand(1000,9999)].exe) removed from host terminal and stored within local memory."
+
+// Pass lying down or getting up to our pet human, if we're in a rig.
+/mob/living/silicon/ai/lay_down()
+	set name = "Rest"
+	set category = "IC"
+
+	resting = 0
+	var/obj/item/weapon/rig/rig = src.get_rig()
+	if(rig)
+		rig.force_rest(src)

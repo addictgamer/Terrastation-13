@@ -20,6 +20,7 @@
 	var/sheet_per_ore = 1
 	var/point_upgrade = 1
 	var/list/ore_values = list(("sand" = 1), ("iron" = 1), ("gold" = 20), ("silver" = 20), ("uranium" = 20), ("bananium" = 30), ("diamond" = 40), ("plasma" = 40))
+	var/list/supply_consoles = list("Science", "Robotics", "Research Director's Desk", "Mechanic", "Engineering" = list("metal", "glass", "plasma"), "Chief Engineer's Desk" = list("metal", "glass", "plasma"), "Atmospherics" = list("metal", "glass", "plasma"), "Bar" = list("uranium", "plasma"))
 
 /obj/machinery/mineral/ore_redemption/New()
 	..()
@@ -64,6 +65,14 @@
 			var/obj/item/stack/sheet/s = new processed_sheet(src,0)
 			s.amount = 0
 			stack_list[processed_sheet] = s
+			// Not including tg's ignoring of metal, glass being stocked because if cargo's not telling science when ores are there, they probably won't
+			// help with restocking metal/glass either
+			var/msg = "\[[worldtime2text()]\]: [capitalize(s.name)] sheets have been stocked in the ore reclaimer."
+			for(var/obj/machinery/requests_console/D in allConsoles)
+				if(D.department in src.supply_consoles)
+					if(supply_consoles[D.department] == null || (s.name in supply_consoles[D.department]))
+						D.createMessage("Ore Redemption Machine", "New Minerals Available!", msg, 1)
+
 		var/obj/item/stack/sheet/storage = stack_list[processed_sheet]
 		storage.amount += sheet_per_ore //Stack the sheets
 		O.loc = null //Let the old sheet...
@@ -160,6 +169,11 @@
 		var/obj/item/stack/sheet/plasmastack = stack_list[/obj/item/stack/sheet/mineral/plasma]
 		if(min(metalstack.amount, plasmastack.amount))
 			dat += text("Plasteel Alloy (Metal + Plasma): <A href='?src=\ref[src];plasteel=1'>Smelt</A><BR>")
+	if((/obj/item/stack/sheet/glass in stack_list) && (/obj/item/stack/sheet/mineral/plasma in stack_list))
+		var/obj/item/stack/sheet/glassstack = stack_list[/obj/item/stack/sheet/glass]
+		var/obj/item/stack/sheet/plasmastack = stack_list[/obj/item/stack/sheet/mineral/plasma]
+		if(min(glassstack.amount, plasmastack.amount))
+			dat += "Plasma Glass (Glass + Plasma): <A href='?src=\ref[src];plasglass=1'>Smelt</A><BR>"
 
 	dat += text("<br><div class='statusDisplay'><b>Mineral Value List:</b><BR>[get_ore_values()]</div>")
 
@@ -229,11 +243,27 @@
 				unload_mineral(plasteelout)
 		else
 			usr << "<span class='warning'>Required access not found.</span>"
+	if(href_list["plasglass"])
+		if(check_access(inserted_id) || allowed(usr))
+			if(!(/obj/item/stack/sheet/glass in stack_list)) return
+			if(!(/obj/item/stack/sheet/mineral/plasma in stack_list)) return
+			var/obj/item/stack/sheet/glassstack = stack_list[/obj/item/stack/sheet/glass]
+			var/obj/item/stack/sheet/plasmastack = stack_list[/obj/item/stack/sheet/mineral/plasma]
+			
+			var/desired = input("How much?", "How much would you like to smelt?", 1) as num
+			var/obj/item/stack/sheet/plasmaglass/plasglassout = new
+			plasglassout.amount = min(desired, 50, glassstack.amount, plasmastack.amount)
+			if(plasglassout.amount >= 1)
+				glassstack.amount -= plasglassout.amount
+				plasmastack.amount -= plasglassout.amount
+				unload_mineral(plasglassout)
+		else
+			usr << "<span class='warning'>Required access not found.</span>"
 	updateUsrDialog()
 	return
 
 /obj/machinery/mineral/ore_redemption/ex_act(severity, target)
-	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
+	var/datum/effect/system/spark_spread/s = new /datum/effect/system/spark_spread
 	s.set_up(5, 1, src)
 	s.start()
 	if(severity == 1)
@@ -401,7 +431,7 @@
 	qdel(voucher)
 
 /obj/machinery/mineral/equipment_vendor/ex_act(severity, target)
-	var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
+	var/datum/effect/system/spark_spread/s = new /datum/effect/system/spark_spread
 	s.set_up(5, 1, src)
 	s.start()
 	if(prob(50 / severity) && severity < 3)

@@ -14,6 +14,10 @@
 
 
 	var/health_deficiency = (100 - health + staminaloss)
+	if(reagents)
+		for(var/datum/reagent/R in reagents.reagent_list)
+			if(R.shock_reduction)
+				health_deficiency -= R.shock_reduction
 	if(health_deficiency >= 40)
 		tally += (health_deficiency / 25)
 
@@ -43,6 +47,8 @@
 
 	if(RUN in mutations)
 		tally = -1
+	if(HULK in mutations)
+		tally += 1
 	if(status_flags & IGNORESLOWDOWN) // make sure this is always at the end so we don't have ignore slowdown getting ignored itself
 		tally = -1
 
@@ -51,17 +57,25 @@
 	if(status_flags & GOTTAGOREALLYFAST)
 		tally -= 2
 
-	return (tally+config.human_delay)
+	return (tally + config.human_delay)
 
 /mob/living/carbon/human/Process_Spacemove(movement_dir = 0)
 
 	if(..())
 		return 1
 
-	//Do we have a working jetpack
-	if(istype(back, /obj/item/weapon/tank/jetpack) && isturf(loc)) //Second check is so you can't use a jetpack in a mech
-		var/obj/item/weapon/tank/jetpack/J = back
-		if((movement_dir || J.stabilization_on) && J.allow_thrust(0.01, src))
+	//Do we have a working jetpack?
+	var/obj/item/weapon/tank/jetpack/thrust
+	if(istype(back,/obj/item/weapon/tank/jetpack))
+		thrust = back
+	else if(istype(back,/obj/item/weapon/rig))
+		var/obj/item/weapon/rig/rig = back
+		for(var/obj/item/rig_module/maneuvering_jets/module in rig.installed_modules)
+			thrust = module.jets
+			break
+
+	if(thrust)
+		if((movement_dir || thrust.stabilization_on) && thrust.allow_thrust(0.01, src))
 			return 1
 	return 0
 

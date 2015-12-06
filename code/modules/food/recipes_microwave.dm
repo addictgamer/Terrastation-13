@@ -45,6 +45,12 @@
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/donut/normal
 
+/datum/recipe/microwave/donut/sprinkles
+	reagents = list("sugar" = 5, "sprinkles" = 3)
+	items = list(
+		/obj/item/weapon/reagent_containers/food/snacks/dough
+	)
+	result = /obj/item/weapon/reagent_containers/food/snacks/donut/sprinkles
 
 /datum/recipe/microwave/human/burger
 	items = list(
@@ -642,6 +648,10 @@ datum/recipe/microwave/slimesandwich
 	)
 	result = /obj/item/weapon/ruinedvirusdish
 
+/datum/recipe/microwave/mashedtaters
+	fruit = list("potato" = 1)
+	reagents = list("gravy" = 5)
+	result = /obj/item/weapon/reagent_containers/food/snacks/mashed_potatoes
 
 //////////////////////////////////////////
 // bs12 food port stuff
@@ -667,7 +677,7 @@ datum/recipe/microwave/slimesandwich
 	)
 	result = /obj/item/weapon/reagent_containers/food/snacks/fries
 
-/datum/recipe/microwave/mint
+/datum/recipe/microwave/mint_2
 	reagents = list("sugar" = 5, "frostoil" = 5)
 	result = /obj/item/weapon/reagent_containers/food/snacks/mint
 

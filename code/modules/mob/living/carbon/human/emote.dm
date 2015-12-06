@@ -335,7 +335,7 @@
 					m_type = 2
 
 		if ("deathgasp")
-			message = "<B>[src]</B> [species.death_message]"	
+			message = "<B>[src]</B> [species.death_message]"
 			m_type = 1
 
 		if ("giggle")
@@ -725,7 +725,7 @@
 			if(locate(/obj/item/weapon/storage/bible) in get_turf(src))
 				viewers(src) << "<span class='warning'><b>[src] farts on the Bible!</b></span>"
 				viewers(src) << "<span class='notice'><b>A mysterious force smites [src]!</b></span>"
-				var/datum/effect/effect/system/spark_spread/s = new /datum/effect/effect/system/spark_spread
+				var/datum/effect/system/spark_spread/s = new /datum/effect/system/spark_spread
 				s.set_up(3, 1, src)
 				s.start()
 				src.gib()
@@ -743,7 +743,7 @@
 			// Process toxic farts first.
 			if(TOXIC_FARTS in mutations)
 				for(var/mob/M in range(location,aoe_range))
-					if (M.internal != null && M.wear_mask && (M.wear_mask.flags & MASKINTERNALS))
+					if (M.internal != null && M.wear_mask && (M.wear_mask.flags & AIRTIGHT))
 						continue
 					if(!airborne_can_reach(location,M,aoe_range))
 						continue

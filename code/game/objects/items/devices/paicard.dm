@@ -12,6 +12,13 @@
 	var/looking_for_personality = 0
 	var/mob/living/silicon/pai/pai
 
+/obj/item/device/paicard/relaymove(var/mob/user, var/direction)
+	if(user.stat || user.stunned)
+		return
+	var/obj/item/weapon/rig/rig = src.get_rig()
+	if(istype(rig))
+		rig.forced_move(direction, user)
+
 /obj/item/device/paicard/New()
 	..()
 	overlays += "pai-off"
@@ -226,7 +233,7 @@
 		return
 
 	if(pai)
-		if(!in_range(src, U) || pai.canmove || pai.resting)
+		if(!in_range(src, U))
 			U << browse(null, "window=paicard")
 			usr.unset_machine()
 			return
