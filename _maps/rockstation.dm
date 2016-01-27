@@ -10,7 +10,7 @@ z3 = telecommunications center
 z4 = salvage yard
 z5 = mining
 z6 = ruskie station and other spessdiver goodies
-z7 = empty*
+z7 = AI satellite and other hogshit
 z8 = terralabs
 
 *But high likelyhood ^that shit won't stay that way
