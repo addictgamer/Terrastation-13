@@ -139,7 +139,7 @@
 				else
 					LAssailant = M
 
-				var/damage = rand(0, M.species.max_hurt_damage)//BS12 EDIT
+				var/damage = rand(M.species.punchdamagelow, M.species.punchdamagehigh)
 				damage += attack.damage
 				if(!damage)
 					playsound(loc, attack.miss_sound, 25, 1, -1)
@@ -151,15 +151,14 @@
 				var/armor_block = run_armor_check(affecting, "melee")
 
 				if(HULK in M.mutations)
-					damage += 5
-					Weaken(4)
+					adjustBruteLoss(15)
 
 				playsound(loc, attack.attack_sound, 25, 1, -1)
 
 				visible_message("\red <B>[M] [pick(attack.attack_verb)]ed [src]!</B>")
 
 				apply_damage(damage, BRUTE, affecting, armor_block, sharp=attack.sharp, edge=attack.edge) //moving this back here means Armalis are going to knock you down  70% of the time, but they're pure adminbus anyway.
-				if((stat != DEAD) && damage >= 9)
+				if((stat != DEAD) && damage >= M.species.punchstunthreshold)
 					visible_message("<span class='danger'>[M] has weakened [src]!</span>", \
 									"<span class='userdanger'>[M] has weakened [src]!</span>")
 					apply_effect(4, WEAKEN, armor_block)

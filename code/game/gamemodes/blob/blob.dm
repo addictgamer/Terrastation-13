@@ -29,7 +29,7 @@ var/list/blob_nodes = list()
 
 /datum/game_mode/blob/pre_setup()
 
-	var/list/possible_blobs = get_players_for_role(BE_BLOB)
+	var/list/possible_blobs = get_players_for_role(ROLE_BLOB)
 
 	// stop setup if no possible traitors
 	if(!possible_blobs.len)
@@ -58,7 +58,7 @@ var/list/blob_nodes = list()
 /datum/game_mode/blob/proc/get_blob_candidates()
 	var/list/candidates = list()
 	for(var/mob/living/carbon/human/player in player_list)
-		if(!player.stat && player.mind && !player.mind.special_role && !jobban_isbanned(player, "Syndicate") && (player.client.prefs.be_special & BE_BLOB))
+		if(!player.stat && player.mind && !player.mind.special_role && !jobban_isbanned(player, "Syndicate") && (ROLE_BLOB in player.client.prefs.be_special))
 			candidates += player
 	return candidates
 
@@ -126,7 +126,7 @@ var/list/blob_nodes = list()
 					spawn(300)
 						burst_blob(blob, 1)
 				else
-					burst ++
+					burst++
 					log_admin("[key_name(C)] was in space when attempting to burst as a blob.")
 					message_admins("[key_name_admin(C)] was in space when attempting to burst as a blob.")
 					C.gib()
@@ -134,7 +134,7 @@ var/list/blob_nodes = list()
 					check_finished() //Still needed in case we can't make any blobs
 
 			else if(blob_client && location)
-				burst ++
+				burst++
 				C.gib()
 				var/obj/effect/blob/core/core = new(location, 200, blob_client, blob_point_rate)
 				if(core.overmind && core.overmind.mind)
@@ -148,8 +148,8 @@ var/list/blob_nodes = list()
 	for(var/datum/mind/blob in infected_crew)
 		greet_blob(blob)
 
-	if(emergency_shuttle)
-		emergency_shuttle.auto_recall = 1
+	if(shuttle_master)
+		shuttle_master.emergencyNoEscape = 1
 
 	spawn(0)
 

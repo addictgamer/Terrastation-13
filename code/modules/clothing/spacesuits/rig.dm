@@ -19,12 +19,14 @@
 		"Tajaran" = 'icons/mob/species/tajaran/helmet.dmi',
 		"Skrell" = 'icons/mob/species/skrell/helmet.dmi',
 		"Vox" = 'icons/mob/species/vox/helmet.dmi',
+		"Vulpkanin" = 'icons/mob/species/vulpkanin/helmet.dmi',
 		)
 	sprite_sheets_obj = list(
 		"Unathi" = 'icons/obj/clothing/species/unathi/hats.dmi',
 		"Tajaran" = 'icons/obj/clothing/species/tajaran/hats.dmi',
 		"Skrell" = 'icons/obj/clothing/species/skrell/hats.dmi',
 		"Vox" = 'icons/obj/clothing/species/vox/hats.dmi',
+		"Vulpkanin" = 'icons/obj/clothing/species/vulpkanin/hats.dmi',
 		)
 
 /obj/item/clothing/head/helmet/space/rig/attack_self(mob/user)
@@ -54,6 +56,7 @@
 	slowdown = 2
 	armor = list(melee = 10, bullet = 5, laser = 10, energy = 5, bomb = 10, bio = 100, rad = 75)
 	allowed = list(/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/device/t_scanner, /obj/item/weapon/rcd)
+	siemens_coefficient = 0
 
 	species_restricted = list("exclude","Diona","Wryn")
 	sprite_sheets = list(
@@ -61,12 +64,14 @@
 		"Tajaran" = 'icons/mob/species/tajaran/suit.dmi',
 		"Skrell" = 'icons/mob/species/skrell/suit.dmi',
 		"Vox" = 'icons/mob/species/vox/suit.dmi',
+		"Vulpkanin" = 'icons/mob/species/vulpkanin/suit.dmi',
 		)
 	sprite_sheets_obj = list(
 		"Unathi" = 'icons/obj/clothing/species/unathi/suits.dmi',
 		"Tajaran" = 'icons/obj/clothing/species/tajaran/suits.dmi',
 		"Skrell" = 'icons/obj/clothing/species/skrell/suits.dmi',
 		"Vox" = 'icons/obj/clothing/species/vox/suits.dmi',
+		"Vulpkanin" = 'icons/obj/clothing/species/vulpkanin/suits.dmi',
 		)
 
 	//Breach thresholds, should ideally be inherited by most (if not all) hardsuits.
@@ -306,7 +311,7 @@
 		user << "<span class='notice'>You switch your helmet to travel mode. It will allow you to stand in zero pressure environments, at the cost of speed and armor.</span>"
 		name = "blood-red hardsuit helmet"
 		desc = "A dual-mode advanced helmet designed for work in special operations. It is in travel mode. Property of Gorlex Marauders."
-		flags = HEADCOVERSEYES | BLOCKHAIR | HEADCOVERSMOUTH | STOPSPRESSUREDMAGE | THICKMATERIAL
+		flags = HEADCOVERSEYES | BLOCKHAIR | HEADCOVERSMOUTH | STOPSPRESSUREDMAGE | THICKMATERIAL | NODROP
 		flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE
 		cold_protection = HEAD
 		set_light(brightness_on)
@@ -314,7 +319,7 @@
 		user << "<span class='notice'>You switch your helmet to combat mode. You will take damage in zero pressure environments, but you are more suited for a fight.</span>"
 		name = "blood-red hardsuit helmet (combat)"
 		desc = "A dual-mode advanced helmet designed for work in special operations. It is in combat mode. Property of Gorlex Marauders."
-		flags = BLOCKHAIR | THICKMATERIAL
+		flags = BLOCKHAIR | THICKMATERIAL | NODROP
 		flags_inv = HIDEEARS
 		cold_protection = null
 		set_light(0)
@@ -343,7 +348,7 @@
 	on = !on
 	if(on)
 		user << "<span class='notice'>You switch your hardsuit to travel mode. It will allow you to stand in zero pressure environments, at the cost of speed and armor.</span>"
-		name = "blood-red hardsuit helmet"
+		name = "blood-red hardsuit"
 		desc = "A dual-mode advanced hardsuit designed for work in special operations. It is in travel mode. Property of Gorlex Marauders."
 		slowdown = 1
 		flags = STOPSPRESSUREDMAGE | THICKMATERIAL
@@ -351,7 +356,7 @@
 		cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | FEET | ARMS | HANDS
 	else
 		user << "<span class='notice'>You switch your hardsuit to combat mode. You will take damage in zero pressure environments, but you are more suited for a fight.</span>"
-		name = "blood-red hardsuit helmet (combat)"
+		name = "blood-red hardsuit (combat)"
 		desc = "A dual-mode advanced hardsuit designed for work in special operations. It is in combat mode. Property of Gorlex Marauders."
 		slowdown = 0
 		flags = THICKMATERIAL
@@ -363,6 +368,45 @@
 	user.update_inv_wear_suit()
 	user.update_inv_w_uniform()
 
+//Elite Syndie suit
+/obj/item/clothing/head/helmet/space/rig/syndi/elite
+	name = "elite syndicate hardsuit helmet"
+	desc = "An elite version of the syndicate helmet, with improved armour and fire shielding. It is in travel mode. Property of Gorlex Marauders."
+	icon_state = "hardsuit0-syndielite"
+	item_color = "syndielite"
+	armor = list(melee = 80, bullet = 70, laser = 50, energy = 25, bomb = 55, bio = 100, rad = 70)
+	heat_protection = HEAD
+	max_heat_protection_temperature = FIRE_IMMUNITY_SUIT_MAX_TEMP_PROTECT
+	sprite_sheets = null
+
+/obj/item/clothing/head/helmet/space/rig/syndi/elite/attack_self(mob/user)
+	..()
+	if(on)
+		name = "elite syndicate hardsuit helmet"
+		desc = "An elite version of the syndicate helmet, with improved armour and fire shielding. It is in travel mode. Property of Gorlex Marauders."
+	else
+		name = "elite syndicate hardsuit helmet (combat)"
+		desc = "An elite version of the syndicate helmet, with improved armour and fire shielding. It is in combat mode. Property of Gorlex Marauders."
+
+/obj/item/clothing/suit/space/rig/syndi/elite
+	name = "elite syndicate hardsuit"
+	desc = "An elite version of the syndicate hardsuit, with improved armour and fire shielding. It is in travel mode."
+	icon_state = "hardsuit0-syndielite"
+	item_color = "syndielite"
+	armor = list(melee = 80, bullet = 70, laser = 50, energy = 25, bomb = 55, bio = 100, rad = 70)
+	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS
+	max_heat_protection_temperature = FIRE_IMMUNITY_SUIT_MAX_TEMP_PROTECT
+	sprite_sheets = null
+
+/obj/item/clothing/suit/space/rig/syndi/elite/attack_self(mob/user)
+	..()
+	if(on)
+		name = "elite syndicate hardsuit"
+		desc = "An elite version of the syndicate hardsuit, with improved armour and fire shielding. It is in travel mode. Property of Gorlex Marauders."
+	else
+		name = "elite syndicate hardsuit (combat)"
+		desc = "An elite version of the syndicate hardsuit, with improved armour and fire shielding. It is in combat mode. Property of Gorlex Marauders."
+
 //Wizard Rig
 /obj/item/clothing/head/helmet/space/rig/wizard
 	name = "gem-encrusted hardsuit helmet"
@@ -372,7 +416,6 @@
 	item_color = "wiz"
 	unacidable = 1 //No longer shall our kind be foiled by lone chemists with spray bottles!
 	armor = list(melee = 40, bullet = 20, laser = 20,energy = 20, bomb = 35, bio = 100, rad = 60)
-	siemens_coefficient = 0.7
 	heat_protection = HEAD												//Uncomment to enable firesuit protection
 	max_heat_protection_temperature = FIRE_IMMUNITY_HELM_MAX_TEMP_PROTECT
 	unacidable = 1
@@ -391,7 +434,6 @@
 	heat_protection = UPPER_TORSO|LOWER_TORSO|LEGS|FEET|ARMS|HANDS					//Uncomment to enable firesuit protection
 	max_heat_protection_temperature = FIRE_IMMUNITY_SUIT_MAX_TEMP_PROTECT
 	unacidable = 1
-	siemens_coefficient = 0.7
 	sprite_sheets = null
 
 //Medical Rig
@@ -423,7 +465,6 @@
 	item_state = "sec_helm"
 	item_color = "sec"
 	armor = list(melee = 30, bullet = 15, laser = 30,energy = 10, bomb = 10, bio = 100, rad = 50)
-	siemens_coefficient = 0.7
 
 /obj/item/clothing/suit/space/rig/security
 	icon_state = "rig-sec"
@@ -432,7 +473,6 @@
 	item_state = "sec_hardsuit"
 	armor = list(melee = 30, bullet = 15, laser = 30, energy = 10, bomb = 10, bio = 100, rad = 50)
 	allowed = list(/obj/item/weapon/gun,/obj/item/device/flashlight,/obj/item/weapon/tank,/obj/item/weapon/melee/baton,/obj/item/weapon/reagent_containers/spray/pepper,/obj/item/ammo_box,/obj/item/ammo_casing,/obj/item/weapon/restraints/handcuffs)
-	siemens_coefficient = 0.7
 
 
 //Atmospherics Rig (BS12)

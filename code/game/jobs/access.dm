@@ -267,7 +267,7 @@
 		if(0)
 			return get_all_accesses()
 		if(1) //security
-			return list(access_sec_doors, access_security, access_brig, access_armory, access_forensics_lockers, access_court, access_pilot, access_hos)
+			return list(access_sec_doors, access_weapons, access_security, access_brig, access_armory, access_forensics_lockers, access_court, access_pilot, access_hos)
 		if(2) //medbay
 			return list(access_medical, access_genetics, access_morgue, access_chemistry, access_psychiatrist, access_virology, access_surgery, access_cmo, access_paramedic)
 		if(3) //research

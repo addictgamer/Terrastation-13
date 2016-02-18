@@ -289,6 +289,21 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 	cost = 15
 	containername = "tactical armor crate"
 
+/datum/supply_packs/security/armory/swat
+	name = "SWAT gear crate"
+	contains = list(/obj/item/clothing/head/helmet/swat,
+					/obj/item/clothing/head/helmet/swat,
+					/obj/item/clothing/suit/space/swat,
+					/obj/item/clothing/suit/space/swat,
+					/obj/item/weapon/kitchen/knife/combat,
+					/obj/item/weapon/kitchen/knife/combat,
+					/obj/item/clothing/mask/gas/sechailer/swat,
+					/obj/item/clothing/mask/gas/sechailer/swat,
+					/obj/item/weapon/storage/belt/military/assault,
+					/obj/item/weapon/storage/belt/military/assault)
+	cost = 60
+	containername = "assault armor crate"
+
 /datum/supply_packs/security/armory/laserarmor
 	name = "Ablative Armor Crate"
 	contains = list(/obj/item/clothing/suit/armor/laserproof,
@@ -301,9 +316,9 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 
 /datum/supply_packs/security/armory/ballistic
 	name = "Combat Shotguns Crate"
-	contains = list(/obj/item/weapon/gun/projectile/shotgun/combat,
-					/obj/item/weapon/gun/projectile/shotgun/combat,
-					/obj/item/weapon/gun/projectile/shotgun/combat,
+	contains = list(/obj/item/weapon/gun/projectile/shotgun/automatic/combat,
+					/obj/item/weapon/gun/projectile/shotgun/automatic/combat,
+					/obj/item/weapon/gun/projectile/shotgun/automatic/combat,
 					/obj/item/weapon/storage/belt/bandolier,
 					/obj/item/weapon/storage/belt/bandolier,
 					/obj/item/weapon/storage/belt/bandolier)
@@ -331,6 +346,22 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 	containertype = /obj/structure/closet/crate/secure/plasma
 	containername = "incendiary weapons crate"
 	access = access_heads
+
+/datum/supply_packs/security/armory/wt550
+	name = "WT-550 Auto Rifle Crate"
+	contains = list(/obj/item/weapon/gun/projectile/automatic/wt550,
+					/obj/item/weapon/gun/projectile/automatic/wt550)
+	cost = 35
+	containername = "auto rifle crate"
+
+/datum/supply_packs/security/armory/wt550ammo
+	name = "WT-550 Rifle Ammo Crate"
+	contains = list(/obj/item/ammo_box/magazine/wt550m9,
+					/obj/item/ammo_box/magazine/wt550m9,
+					/obj/item/ammo_box/magazine/wt550m9,
+					/obj/item/ammo_box/magazine/wt550m9,)
+	cost = 30
+	containername = "auto rifle ammo crate"
 
 /////// Implants & etc
 
@@ -482,8 +513,8 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 
 /datum/supply_packs/engineering/engine/field_gen
 	name = "Field Generator Crate"
-	contains = list(/obj/machinery/field_generator,
-					/obj/machinery/field_generator)
+	contains = list(/obj/machinery/field/generator,
+					/obj/machinery/field/generator)
 	cost = 10
 	containername = "field generator crate"
 
@@ -492,6 +523,27 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 	contains = list(/obj/machinery/the_singularitygen)
 	cost = 10
 	containername = "singularity generator crate"
+
+/datum/supply_packs/engineering/engine/tesla
+	name = "Energy Ball Generator Crate"
+	contains = list(/obj/machinery/the_singularitygen/tesla)
+	cost = 10
+	containername = "energy ball generator crate"
+
+/datum/supply_packs/engineering/engine/coil
+	name = "Tesla Coil Crate"
+	contains = list(/obj/machinery/power/tesla_coil,
+					/obj/machinery/power/tesla_coil,
+					/obj/machinery/power/tesla_coil)
+	cost = 10
+	containername = "tesla coil crate"
+
+/datum/supply_packs/engineering/engine/grounding
+	name = "Grounding Rod Crate"
+	contains = list(/obj/machinery/power/grounding_rod,
+					/obj/machinery/power/grounding_rod)
+	cost = 10
+	containername = "grounding rod crate"
 
 /datum/supply_packs/engineering/engine/collector
 	name = "Collector Crate"
@@ -516,9 +568,12 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 /datum/supply_packs/engineering/engine/spacesuit
 	name = "Space Suit Crate"
 	contains = list(/obj/item/clothing/suit/space,
+					/obj/item/clothing/suit/space,
 					/obj/item/clothing/head/helmet/space,
+					/obj/item/clothing/head/helmet/space,
+					/obj/item/clothing/mask/breath,
 					/obj/item/clothing/mask/breath,)
-	cost = 80
+	cost = 30
 	containertype = /obj/structure/closet/crate/secure
 	containername = "space suit crate"
 	access = access_eva
@@ -1232,6 +1287,12 @@ var/list/all_supply_groups = list(supply_emergency,supply_security,supply_engine
 					/obj/item/weapon/storage/box/lights/mixed)
 	cost = 10
 	containername = "replacement lights crate"
+
+/datum/supply_packs/misc/noslipfloor
+	name = "High-traction Floor Tiles"
+	contains = list(/obj/item/stack/tile/noslip/loaded)
+	cost = 20
+	containername = "high-traction floor tiles"
 
 ///////////// Costumes
 

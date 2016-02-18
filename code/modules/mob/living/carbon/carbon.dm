@@ -7,11 +7,26 @@ mob/living
 	update_hud()
 	return
 
+/mob/living/carbon/prepare_huds()
+	..()
+	prepare_data_huds()
+
+/mob/living/carbon/proc/prepare_data_huds()
+	..()
+	med_hud_set_health()
+	med_hud_set_status()
+
+/mob/living/carbon/updatehealth()
+	..()
+	med_hud_set_health()
+	med_hud_set_status()
+
 /mob/living/carbon/Destroy()
 	for(var/atom/movable/guts in internal_organs)
 		qdel(guts)
 	for(var/atom/movable/food in stomach_contents)
 		qdel(food)
+	remove_from_all_data_huds()
 	return ..()
 
 /mob/living/carbon/blob_act()
@@ -100,49 +115,41 @@ mob/living
 			return
 	return
 
-/mob/living/carbon/electrocute_act(var/shock_damage, var/obj/source, var/siemens_coeff = 1.0, var/def_zone = null,var/override = 0)
-
+/mob/living/carbon/electrocute_act(shock_damage, obj/source, siemens_coeff = 1, override = 0, tesla_shock = 0)
 	if(status_flags & GODMODE)	//godmode
 		return 0
 	if(NO_SHOCK in mutations) //shockproof
 		return 0
+
 	shock_damage *= siemens_coeff
 	if(shock_damage<1 && !override)
 		return 0
-
-	src.apply_damage(shock_damage, BURN, def_zone, used_weapon="Electrocution")
-
-	if(heart_attack && prob(25))
-		heart_attack = 0
-	playsound(loc, "sparks", 50, 1, -1)
-	if (shock_damage < 10)
-		src.visible_message(
-			"\red [src] was mildly shocked by the [source].", \
-			"\red You feel a mild shock course through your body.", \
-			"\red You hear a light zapping." \
-		)
-		jitteriness += (rand(2,4))//mostly for the swarmer trap
-		do_jitter_animation(jitteriness)
-	if (shock_damage > 10)
-		if (shock_damage < 200)
-			src.visible_message(
-				"\red [src] was shocked by the [source]!", \
-				"\red <B>You feel a powerful shock course through your body!</B>", \
-				"\red You hear a heavy electrical crack." \
-			)
-		jitteriness += 1000 //High numbers for violent convulsions
-		do_jitter_animation(jitteriness)
-		stuttering += 2
+	if(reagents.has_reagent("teslium"))
+		shock_damage *= 1.5 //If the mob has teslium in their body, shocks are 50% more damaging!
+	take_overall_damage(0,shock_damage)
+	//src.burn_skin(shock_damage)
+	//src.adjustFireLoss(shock_damage) //burn_skin will do this for us
+	//src.updatehealth()
+	visible_message(
+		"<span class='danger'>[src] was shocked by \the [source]!</span>", \
+		"<span class='userdanger'>You feel a powerful shock coursing through your body!</span>", \
+		"<span class='italics'>You hear a heavy electrical crack.</span>" \
+	)
+	jitteriness += 1000 //High numbers for violent convulsions
+	do_jitter_animation(jitteriness)
+	stuttering += 2
+	if(!tesla_shock || (tesla_shock && siemens_coeff > 0.5))
 		Stun(2)
-		spawn(20)
-			jitteriness -= 990 //Still jittery, but vastly less
+	spawn(20)
+		jitteriness = max(jitteriness - 990, 10) //Still jittery, but vastly less
+		if(!tesla_shock || (tesla_shock && siemens_coeff > 0.5))
 			Stun(3)
 			Weaken(3)
 	if (shock_damage > 200)
 		src.visible_message(
-			"\red [src] was arc flashed by the [source]!", \
-			"\red <B>The [source] arc flashes and electrocutes you!</B>", \
-			"\red You hear a lightning-like crack!" \
+			"<span class='danger'>[src] was arc flashed by the [source]!</span>", \
+			"<span class='userdanger'>The [source] arc flashes and electrocutes you!</span>", \
+			"<span class='italics'>You hear a lightning-like crack!</span>" \
 		)
 		playsound(loc, "sound/effects/eleczap.ogg", 50, 1, -1)
 		explosion(src.loc,-1,0,2,2)
@@ -150,6 +157,7 @@ mob/living
 		return override
 	else
 		return shock_damage
+
 
 
 /mob/living/carbon/proc/swap_hand()
@@ -254,20 +262,29 @@ mob/living
 				AdjustStunned(-3)
 				AdjustWeakened(-3)
 				playsound(src.loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-				M.visible_message( \
-					"\blue [M] shakes [src] trying to wake [t_him] up!", \
-					"\blue You shake [src] trying to wake [t_him] up!", \
-					)
+				if(!player_logged)
+					M.visible_message( \
+						"<span class='notice'>[M] shakes [src] trying to wake [t_him] up!</span>",\
+						"<span class='notice'>You shake [src] trying to wake [t_him] up!</span>",\
+						)
 			// BEGIN HUGCODE - N3X
 			else
-				if (istype(src,/mob/living/carbon/human) && src:w_uniform)
-					var/mob/living/carbon/human/H = src
-					H.w_uniform.add_fingerprint(M)
 				playsound(get_turf(src), 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
-				M.visible_message( \
-					"\blue [M] gives [src] a [pick("hug","warm embrace")].", \
-					"\blue You hug [src].", \
+				if(M.zone_sel.selecting == "head")
+					M.visible_message(\
+					"<span class='notice'>[M] pats [src] on the head.</span>",\
+					"<span class='notice'>You pat [src] on the head.</span>",\
 					)
+				else
+
+					M.visible_message(\
+					"<span class='notice'>[M] gives [src] a [pick("hug","warm embrace")].</span>",\
+					"<span class='notice'>You hug [src].</span>",\
+					)
+					if(istype(src,/mob/living/carbon/human))
+						var/mob/living/carbon/human/H = src
+						if(H.w_uniform)
+							H.w_uniform.add_fingerprint(M)
 
 
 /mob/living/carbon/proc/eyecheck()
@@ -725,3 +742,55 @@ var/list/ventcrawl_machinery = list(/obj/machinery/atmospherics/unary/vent_pump,
 				legcuffed,
 				back,
 				wear_mask)
+
+/mob/living/carbon/proc/uncuff()
+	if (handcuffed)
+		var/obj/item/weapon/W = handcuffed
+		handcuffed = null
+		if (buckled && buckled.buckle_requires_restraints)
+			buckled.unbuckle_mob()
+		update_inv_handcuffed()
+		if (client)
+			client.screen -= W
+		if (W)
+			W.loc = loc
+			W.dropped(src)
+			if (W)
+				W.layer = initial(W.layer)
+	if (legcuffed)
+		var/obj/item/weapon/W = legcuffed
+		legcuffed = null
+		update_inv_legcuffed()
+		if (client)
+			client.screen -= W
+		if (W)
+			W.loc = loc
+			W.dropped(src)
+			if (W)
+				W.layer = initial(W.layer)
+
+
+/mob/living/carbon/proc/slip(var/description, var/stun, var/weaken, var/tilesSlipped, var/walkSafely, var/slipAny)
+	if (flying || buckled || (walkSafely && m_intent == "walk"))
+		return
+	if ((lying) && (!(tilesSlipped)))
+		return
+	if (istype(loc, /obj/structure/closet)) // for getting in a locker
+		return
+	for (var/obj/structure/closet/closet in loc.contents) // for getting out of a locker
+		return
+	if (!(slipAny))
+		if (istype(src, /mob/living/carbon/human))
+			var/mob/living/carbon/human/H = src
+			if ((isobj(H.shoes) && H.shoes.flags & NOSLIP) || H.species.bodyflags & FEET_NOSLIP)
+				return
+	if (tilesSlipped)
+		for(var/t = 0, t<=tilesSlipped, t++)
+			spawn (t) step(src, src.dir)
+	stop_pulling()
+	src << "<span class='notice'>You slipped on the [description]!</span>"
+	playsound(src.loc, 'sound/misc/slip.ogg', 50, 1, -3)
+	if (stun)
+		Stun(stun)
+	Weaken(weaken)
+	return 1

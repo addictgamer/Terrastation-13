@@ -74,15 +74,8 @@
 	if (chambered)
 		user << "A [chambered.BB ? "live" : "spent"] one is in the chamber."
 
-// COMBAT SHOTGUN //
-
-/obj/item/weapon/gun/projectile/shotgun/combat
-	name = "combat shotgun"
-	desc = "A traditional shotgun with tactical furniture and an eight-shell capacity underneath."
-	icon_state = "cshotgun"
-	origin_tech = "combat=5;materials=2"
-	mag_type = "/obj/item/ammo_box/magazine/internal/shotcom"
-	w_class = 5
+/obj/item/weapon/gun/projectile/shotgun/isHandgun() //You cannot, in fact, holster a shotgun.
+	return 0
 
 // RIOT SHOTGUN //
 
@@ -132,6 +125,38 @@
 	..(user)
 	user << "The bolt is [bolt_open ? "open" : "closed"]."
 
+/obj/item/weapon/gun/projectile/shotgun/boltaction/enchanted
+	name = "enchanted bolt action rifle"
+	desc = "Careful not to lose your head."
+	var/guns_left = 30
+	mag_type = "/obj/item/ammo_box/magazine/internal/boltaction/enchanted"
+
+/obj/item/weapon/gun/projectile/shotgun/boltaction/enchanted/New()
+	..()
+	bolt_open = 1
+	pump()
+
+/obj/item/weapon/gun/projectile/shotgun/boltaction/enchanted/dropped()
+	guns_left = 0
+
+/obj/item/weapon/gun/projectile/shotgun/boltaction/enchanted/Fire(atom/target as mob|obj|turf|area, mob/living/carbon/user as mob|obj, params, reflex = 0)
+	..()
+	if(guns_left)
+		var/obj/item/weapon/gun/projectile/shotgun/boltaction/enchanted/GUN = new
+		GUN.guns_left = src.guns_left - 1
+		user.drop_item()
+		user.swap_hand()
+		user.put_in_hands(GUN)
+	else
+		user.drop_item()
+	spawn(0)
+		throw_at(pick(oview(7,get_turf(user))),1,1)
+	user.visible_message("<span class='warning'>[user] tosses aside the spent rifle!</span>")
+
+
+/obj/item/ammo_box/magazine/internal/boltaction/enchanted
+	max_ammo =1
+
 /////////////////////////////
 // DOUBLE BARRELED SHOTGUN //
 /////////////////////////////
@@ -169,6 +194,9 @@
 		user << "<span class = 'notice'>You break open \the [src] and unload [num_unloaded] shell\s.</span>"
 	else
 		user << "<span class='notice'>[src] is empty.</span>"
+
+/obj/item/weapon/gun/projectile/revolver/doublebarrel/isHandgun() //contrary to popular opinion, double barrels are not, shockingly, handguns
+	return 0
 
 // IMPROVISED SHOTGUN //
 
@@ -237,7 +265,7 @@
 		return
 	else
 		sawn_state = SAWN_INTACT
-	
+
 /obj/item/weapon/gun/projectile/automatic/shotgun/bulldog
 	name = "\improper 'Bulldog' Shotgun"
 	desc = "A compact, mag-fed semi-automatic shotgun for combat in narrow corridors, nicknamed 'Bulldog' by boarding parties. Compatible only with specialized 8-round drum magazines."
@@ -273,3 +301,17 @@
 	..()
 	empty_alarm()
 	return
+
+/obj/item/weapon/gun/projectile/shotgun/automatic/Fire(mob/living/user as mob|obj)
+	..()
+	pump(user)
+
+// COMBAT SHOTGUN //
+
+/obj/item/weapon/gun/projectile/shotgun/automatic/combat
+	name = "combat shotgun"
+	desc = "A semi automatic shotgun with tactical furniture and a six-shell capacity underneath."
+	icon_state = "cshotgun"
+	origin_tech = "combat=5;materials=2"
+	mag_type = "/obj/item/ammo_box/magazine/internal/shotcom"
+	w_class = 5

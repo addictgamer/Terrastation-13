@@ -31,7 +31,7 @@ proc/issyndicate(mob/living/M as mob)
 	if(!..())
 		return 0
 
-	var/list/possible_syndicates = get_players_for_role(BE_OPERATIVE)
+	var/list/possible_syndicates = get_players_for_role(ROLE_OPERATIVE)
 	var/agent_number = 0
 
 	if(possible_syndicates.len < 1)
@@ -64,44 +64,16 @@ proc/issyndicate(mob/living/M as mob)
 
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
-/datum/game_mode/proc/update_all_synd_icons()
-	spawn(0)
-		for(var/datum/mind/synd_mind in syndicates)
-			if(synd_mind.current)
-				if(synd_mind.current.client)
-					for(var/image/I in synd_mind.current.client.images)
-						if(I.icon_state == "synd")
-							qdel(I)
-
-		for(var/datum/mind/synd_mind in syndicates)
-			if(synd_mind.current)
-				if(synd_mind.current.client)
-					for(var/datum/mind/synd_mind_1 in syndicates)
-						if(synd_mind_1.current)
-							var/I = image('icons/mob/mob.dmi', loc = synd_mind_1.current, icon_state = "synd")
-							synd_mind.current.client.images += I
 
 /datum/game_mode/proc/update_synd_icons_added(datum/mind/synd_mind)
-	spawn(0)
-		if(synd_mind.current)
-			if(synd_mind.current.client)
-				var/I = image('icons/mob/mob.dmi', loc = synd_mind.current, icon_state = "synd")
-				synd_mind.current.client.images += I
+	var/datum/atom_hud/antag/opshud = huds[ANTAG_HUD_OPS]
+	opshud.join_hud(synd_mind.current)
+	set_antag_hud(synd_mind.current, "hudoperative")
 
 /datum/game_mode/proc/update_synd_icons_removed(datum/mind/synd_mind)
-	spawn(0)
-		for(var/datum/mind/synd in syndicates)
-			if(synd.current)
-				if(synd.current.client)
-					for(var/image/I in synd.current.client.images)
-						if(I.icon_state == "synd" && I.loc == synd_mind.current)
-							qdel(I)
-
-		if(synd_mind.current)
-			if(synd_mind.current.client)
-				for(var/image/I in synd_mind.current.client.images)
-					if(I.icon_state == "synd")
-						qdel(I)
+	var/datum/atom_hud/antag/opshud = huds[ANTAG_HUD_OPS]
+	opshud.leave_hud(synd_mind.current)
+	set_antag_hud(synd_mind.current, null)
 
 ////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////
@@ -150,7 +122,7 @@ proc/issyndicate(mob/living/M as mob)
 		spawnpos++
 		update_synd_icons_added(synd_mind)
 
-	update_all_synd_icons()
+	//update_all_synd_icons()
 
 	if(uplinklocker)
 		new /obj/structure/closet/syndicate/nuclear(uplinklocker.loc)
@@ -201,6 +173,10 @@ proc/issyndicate(mob/living/M as mob)
 	synd_mind.current.real_name = "[syndicate_name()] Team [leader_title]"
 	synd_mind.current << "<B>You are the Syndicate leader for this mission. You are responsible for the distribution of telecrystals and your ID is the only one who can open the launch bay doors.</B>"
 	synd_mind.current << "<B>If you feel you are not up to this task, give your ID to another operative.</B>"
+	synd_mind.current << "<B>In your hand you will find a special item capable of triggering a greater challenge for your team. Examine it carefully and consult with your fellow operatives before activating it.</B>"
+
+	var/obj/item/device/nuclear_challenge/challenge = new /obj/item/device/nuclear_challenge
+	synd_mind.current.equip_to_slot_or_del(challenge, slot_r_hand)
 
 	var/list/foundIDs = synd_mind.current.search_contents_for(/obj/item/weapon/card/id)
 
@@ -297,9 +273,8 @@ proc/issyndicate(mob/living/M as mob)
 				if (synd_mob.internals)
 					synd_mob.internals.icon_state = "internal1"
 
-	var/obj/item/weapon/implant/dexplosive/E = new/obj/item/weapon/implant/dexplosive(synd_mob)
-	E.imp_in = synd_mob
-	E.implanted = 1
+	var/obj/item/weapon/implant/explosive/E = new/obj/item/weapon/implant/explosive(synd_mob)
+	E.implant(synd_mob)
 	synd_mob.faction |= "syndicate"
 	synd_mob.update_icons()
 	return 1
@@ -325,9 +300,11 @@ proc/issyndicate(mob/living/M as mob)
 	for(var/obj/item/weapon/disk/nuclear/D in world)
 		var/disk_area = get_area(D)
 		if(!is_type_in_list(disk_area, centcom_areas))
+			if(disk_area == shuttle_master.emergency.areaInstance && shuttle_master.emergency.mode >= SHUTTLE_ESCAPE) //snowflaked into objectives because shitty bay shuttles had areas to auto-determine this
+				break
 			disk_rescued = 0
 			break
-	var/crew_evacuated = (emergency_shuttle.returned())
+	var/crew_evacuated = (shuttle_master.emergency.mode >= SHUTTLE_ESCAPE)
 	//var/operatives_are_dead = is_operatives_are_dead()
 
 

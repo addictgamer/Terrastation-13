@@ -248,6 +248,7 @@ var/send_emergency_team
 	var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(M)
 	L.imp_in = M
 	L.implanted = 1
+	M.sec_hud_set_implants()
 
 	switch(officer_type)
 		if("Engineer")
@@ -381,7 +382,7 @@ var/send_emergency_team
 			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/color/black(M), slot_gloves)
 			M.equip_to_slot_or_del(new /obj/item/clothing/suit/armor/vest/ert/security(M), slot_wear_suit)
 			M.equip_to_slot_or_del(new /obj/item/weapon/gun/energy/advtaser(M), slot_s_store)
-			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses/sechud(M), slot_glasses)
+			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/security/sunglasses(M), slot_glasses)
 
 			M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/ert/security(M), slot_in_backpack)
 			M.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/sechailer(M), slot_in_backpack)
@@ -458,7 +459,7 @@ var/send_emergency_team
 			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/color/black(M), slot_gloves)
 			M.equip_to_slot_or_del(new /obj/item/clothing/suit/space/rig/ert/security(M), slot_wear_suit)
 			M.equip_to_slot_or_del(new /obj/item/weapon/gun/energy/advtaser(M), slot_s_store)
-			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses/sechud(M), slot_glasses)
+			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/security/sunglasses(M), slot_glasses)
 
 			M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/space/rig/ert/security(M), slot_in_backpack)
 			M.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/sechailer(M), slot_in_backpack)
@@ -475,7 +476,7 @@ var/send_emergency_team
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/white(M), slot_shoes)
 			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/color/latex/nitrile(M), slot_gloves)
 			M.equip_to_slot_or_del(new /obj/item/clothing/suit/space/rig/ert/medical(M), slot_wear_suit)
-			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/health_advanced(M), slot_glasses)
+			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/health/health_advanced(M), slot_glasses)
 
 			M.equip_to_slot_or_del(new /obj/item/weapon/defibrillator/compact/loaded(M), slot_belt)
 
@@ -494,7 +495,7 @@ var/send_emergency_team
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/combat(M), slot_shoes)
 			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/color/black(M), slot_gloves)
 			M.equip_to_slot_or_del(new /obj/item/clothing/suit/space/rig/ert/commander(M), slot_wear_suit)
-			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/sunglasses/sechud(M), slot_glasses)
+			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/security/sunglasses(M), slot_glasses)
 
 			M.equip_to_slot_or_del(new /obj/item/weapon/gun/energy/gun/nuclear(M), slot_belt)
 
@@ -569,6 +570,8 @@ var/send_emergency_team
 			M.equip_to_slot_or_del(new /obj/item/weapon/reagent_containers/hypospray/combat/nanites(src), slot_l_store)
 			M.equip_to_slot_or_del(new /obj/item/weapon/melee/classic_baton/telescopic(M), slot_r_store)
 
+			M.equip_to_slot_or_del(new /obj/item/weapon/gun/medbeam(M), slot_r_hand)
+
 		if("Commander")
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/combat/swat(M), slot_shoes)
 			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(M), slot_gloves)
@@ -602,7 +605,7 @@ var/send_emergency_team
 	new /obj/item/clothing/mask/breath( src )
 	new /obj/item/weapon/tank/emergency_oxygen/engi( src )
 	new /obj/item/device/flashlight/flare( src )
-	new /obj/item/weapon/kitchenknife/combat( src )
+	new /obj/item/weapon/kitchen/knife/combat( src )
 	new /obj/item/device/radio/centcom( src )
 	new /obj/item/weapon/reagent_containers/pill/salicylic( src )
 	new /obj/item/weapon/reagent_containers/pill/patch/synthflesh( src )

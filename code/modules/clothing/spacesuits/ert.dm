@@ -5,7 +5,6 @@
 	icon_state = "rig0-ert_commander"
 	item_state = "helm-command"
 	armor = list(melee = 50, bullet = 50, laser = 30,energy = 15, bomb = 30, bio = 100, rad = 60)
-	siemens_coefficient = 0.6
 	rig_restrict_helmet = 0 // ERT helmets can be taken on and off at will.
 	var/obj/machinery/camera/camera
 	strip_delay = 130
@@ -37,7 +36,6 @@
 	/obj/item/weapon/screwdriver, /obj/item/weapon/weldingtool, /obj/item/weapon/wirecutters, /obj/item/weapon/wrench, /obj/item/device/multitool, \
 	/obj/item/device/radio, /obj/item/device/analyzer, /obj/item/weapon/gun/energy/laser, /obj/item/weapon/gun/energy/pulse_rifle, \
 	/obj/item/weapon/gun/energy/advtaser, /obj/item/weapon/melee/baton, /obj/item/weapon/gun/energy/gun)
-	siemens_coefficient = 0.6
 	strip_delay = 130
 
 //Commander
@@ -103,3 +101,24 @@
 	name = "emergency response team janitor suit"
 	desc = "A suit worn by the janitorial of a Nanotrasen Emergency Response Team. Has purple highlights. Armoured, space ready, and fire resistant."
 	icon_state = "ert_janitor"
+
+/obj/item/clothing/head/helmet/space/rig/ert/paranormal
+	name = "paranormal response unit helmet"
+	desc = "A helmet worn by those who deal with paranormal threats for a living."
+	icon_state = "rig0-ert_paranormal"
+	item_color = "ert_paranormal"
+	max_heat_protection_temperature = FIRE_IMMUNITY_HELM_MAX_TEMP_PROTECT
+	sprite_sheets = null
+
+/obj/item/clothing/suit/space/rig/ert/paranormal
+	name = "paranormal response team suit"
+	desc = "Powerful wards are built into this hardsuit, protecting the user from all manner of paranormal threats."
+	icon_state = "knight_grey"
+	item_state = "knight_grey"
+	max_heat_protection_temperature = FIRE_IMMUNITY_SUIT_MAX_TEMP_PROTECT
+	sprite_sheets = null
+
+
+/obj/item/clothing/suit/space/rig/ert/paranormal/New()
+	..()
+	new /obj/item/weapon/nullrod(src)

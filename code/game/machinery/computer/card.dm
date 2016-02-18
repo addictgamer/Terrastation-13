@@ -3,7 +3,7 @@
 var/time_last_changed_position = 0
 
 /obj/machinery/computer/card
-	name = "Identification Computer"
+	name = "identification computer"
 	desc = "Terminal for programming Nanotrasen employee ID cards to access parts of the station."
 	icon_keyboard = "id_key"
 	icon_screen = "id"
@@ -372,17 +372,20 @@ var/time_last_changed_position = 0
 					else if (modify && !mode)
 						P.name = "access report"
 						P.info = {"<h4>Access Report</h4>
-							<u>Prepared By:</u> [scan.registered_name ? scan.registered_name : "Unknown"]<br>
+							<u>Prepared By:</u> [scan && scan.registered_name ? scan.registered_name : "Unknown"]<br>
 							<u>For:</u> [modify.registered_name ? modify.registered_name : "Unregistered"]<br>
 							<hr>
 							<u>Assignment:</u> [modify.assignment]<br>
 							<u>Account Number:</u> #[modify.associated_account_number]<br>
 							<u>Blood Type:</u> [modify.blood_type]<br><br>
-							<u>Access:</u><br>
+							<u>Access:</u><div style="margin-left:1em">
 						"}
 
+						var/first = 1
 						for(var/A in modify.access)
-							P.info += "  [get_access_desc(A)]"
+							P.info += "[first ? "" : ", "][get_access_desc(A)]"
+							first = 0
+						P.info += "</div>"
 
 		if ("terminate")
 			if (is_authenticated(usr))
@@ -428,6 +431,6 @@ var/time_last_changed_position = 0
 	return 1
 
 /obj/machinery/computer/card/centcom
-	name = "CentCom Identification Computer"
+	name = "\improper CentCom identification computer"
 	circuit = /obj/item/weapon/circuitboard/card/centcom
 	req_access = list(access_cent_commander)

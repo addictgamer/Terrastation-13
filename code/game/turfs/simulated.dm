@@ -17,24 +17,32 @@
 
 /turf/simulated/proc/burn_tile()
 
-/turf/simulated/proc/MakeSlippery(var/wet_setting = 1) // 1 = Water, 2 = Lube
+/turf/simulated/proc/MakeSlippery(wet_setting = TURF_WET_WATER) // 1 = Water, 2 = Lube, 3 = Ice
 	if(wet >= wet_setting)
 		return
 	wet = wet_setting
-	if(wet_setting == 1)
+	if(wet_setting != TURF_DRY)
 		if(wet_overlay)
 			overlays -= wet_overlay
 			wet_overlay = null
-		wet_overlay = image('icons/effects/water.dmi', src, "wet_floor_static")
+		var/turf/simulated/floor/F = src
+		if(istype(F))
+			wet_overlay = image('icons/effects/water.dmi', src, "wet_floor_static")
+		else
+			wet_overlay = image('icons/effects/water.dmi', src, "wet_static")
 		overlays += wet_overlay
 
 	spawn(rand(790, 820)) // Purely so for visual effect
 		if(!istype(src, /turf/simulated)) //Because turfs don't get deleted, they change, adapt, transform, evolve and deform. they are one and they are all.
 			return
-		if(wet > wet_setting) return
-		wet = 0
-		if(wet_overlay)
-			overlays -= wet_overlay
+		MakeDry(wet_setting)
+
+/turf/simulated/proc/MakeDry(wet_setting = TURF_WET_WATER)
+	if(wet > wet_setting)
+		return
+	wet = TURF_DRY
+	if(wet_overlay)
+		overlays -= wet_overlay
 
 /turf/simulated/proc/AddTracks(var/typepath,var/bloodDNA,var/comingdir,var/goingdir,var/bloodcolor="#A10808")
 	var/obj/effect/decal/cleanable/blood/tracks/tracks = locate(typepath) in src
@@ -87,50 +95,21 @@
 
 			bloodDNA = null
 
-		var/noslip = 0
-		for (var/obj/structure/stool/bed/chair/C in contents)
-			if (C.buckled_mob == M)
-				noslip = 1
-		if (noslip)
-			return // no slipping while sitting in a chair, plz
 		switch (src.wet)
-			if(1)
-				if ((M.m_intent == "run") && !(istype(M:shoes, /obj/item/clothing/shoes) && M.shoes.flags&NOSLIP))
-					M.stop_pulling()
-					step(M, M.dir)
-					M << "\blue You slipped on the wet floor!"
-					playsound(src, 'sound/misc/slip.ogg', 50, 1, -3)
-					M.Stun(4)
-					M.Weaken(2)
-				else
+			if(TURF_WET_WATER)
+				if (!(M.slip("wet floor", 4, 2, 0, 1)))
 					M.inertia_dir = 0
 					return
 
-
-			if(2) //lube                //can cause infinite loops - needs work
-				if(!M.buckled)
-					M.stop_pulling()
-					step(M, M.dir)
-					spawn(1) step(M, M.dir)
-					spawn(2) step(M, M.dir)
-					spawn(3) step(M, M.dir)
-					spawn(4) step(M, M.dir)
+			if(TURF_WET_LUBE) //lube
+				if(M.slip("floor", 0, 7, 4, 0, 1))
 					M.take_organ_damage(2) // Was 5 -- TLE
-					M << "\blue You slipped on the floor!"
-					playsound(src, 'sound/misc/slip.ogg', 50, 1, -3)
-					M.Weaken(7)
 
-			if(3) // Ice
-				if ((M.m_intent == "run") && !(istype(M:shoes, /obj/item/clothing/shoes) && M:shoes.flags&NOSLIP) && prob(30))
-					M.stop_pulling()
-					step(M, M.dir)
-					M << "\blue You slipped on the icy floor!"
-					playsound(src, 'sound/misc/slip.ogg', 50, 1, -3)
-					M.Stun(4)
-					M.Weaken(2)
-				else
+
+			if(TURF_WET_ICE) // Ice
+				if (!(prob(30) && M.slip("icy floor", 4, 2, 1, 1)))
 					M.inertia_dir = 0
-					return
+
 
 //returns 1 if made bloody, returns 0 otherwise
 /turf/simulated/add_blood(mob/living/carbon/human/M as mob)
@@ -157,3 +136,8 @@
 	else if( istype(M, /mob/living/silicon/robot ))
 		new /obj/effect/decal/cleanable/blood/oil(src)
 
+/turf/simulated/ChangeTurf(var/path)
+	. = ..()
+	smooth_icon_neighbors(src)
+
+/turf/simulated/proc/is_shielded()

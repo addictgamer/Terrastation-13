@@ -47,7 +47,7 @@
 	if(config.protect_roles_from_antagonist)
 		restricted_jobs += protected_jobs
 
-	var/list/datum/mind/possible_vampires = get_players_for_role(BE_VAMPIRE)
+	var/list/datum/mind/possible_vampires = get_players_for_role(ROLE_VAMPIRE)
 
 	vampire_amount = 1 + round(num_players() / 10)
 
@@ -59,6 +59,9 @@
 			vampires += vampire
 			vampire.restricted_roles = restricted_jobs
 			modePlayer += vampires
+			var/datum/mindslaves/slaved = new()
+			slaved.masters += vampire
+			vampire.som = slaved //we MIGT want to mindslave someone
 			vampire.special_role = "Vampire" // Needs to be done in pre-setup to prevent role bugs
 		return 1
 	else
@@ -200,6 +203,7 @@ You are weak to holy things and starlight. Don't go into space and avoid the Cha
 	var/list/powers = list() // list of available powers and passives, see defines in setup.dm
 	var/mob/living/carbon/human/draining // who the vampire is draining of blood
 	var/nullified = 0 //Nullrod makes them useless for a short while.
+	var/upgradedRegen = 0
 /datum/vampire/New(gend = FEMALE)
 	gender = gend
 
@@ -321,8 +325,9 @@ You are weak to holy things and starlight. Don't go into space and avoid the Cha
 			vamp.powers.Add(VAMP_BATS)
 		if(!(VAMP_SCREAM in vamp.powers))
 			vamp.powers.Add(VAMP_SCREAM)
-		// Commented out until we can figured out a way to stop this from spamming.
-		//src << "\blue Your rejuvination abilities have improved and will now heal you over time when used."
+		if(!(vamp.upgradedRegen))	// to prevent spamming
+			src << "<span class='notice'>Your rejuvination abilities have improved and will now heal you over time when used.</span>"
+			vamp.upgradedRegen = 1
 
 	// TIER 3.5 (/vg/)
 	if(vamp.bloodtotal >= 250)
@@ -377,54 +382,17 @@ You are weak to holy things and starlight. Don't go into space and avoid the Cha
 				if(VAMP_FULL)
 					src << "\blue You have reached your full potential and are no longer weak to the effects of anything holy and your vision has been improved greatly."
 					//no verb
+
 //prepare for copypaste
 /datum/game_mode/proc/update_vampire_icons_added(datum/mind/vampire_mind)
-	var/ref = "\ref[vampire_mind]"
-	if(ref in vampire_thralls)
-		if(vampire_mind.current)
-			if(vampire_mind.current.client)
-				var/I = image('icons/mob/mob.dmi', loc = vampire_mind.current, icon_state = "vampire")
-				vampire_mind.current.client.images += I
-	for(var/headref in vampire_thralls)
-		for(var/datum/mind/t_mind in vampire_thralls[headref])
-			var/datum/mind/head = locate(headref)
-			if(head)
-				if(head.current)
-					if(head.current.client)
-						var/I = image('icons/mob/mob.dmi', loc = t_mind.current, icon_state = "vampthrall")
-						head.current.client.images += I
-				if(t_mind.current)
-					if(t_mind.current.client)
-						var/I = image('icons/mob/mob.dmi', loc = head.current, icon_state = "vampire")
-						t_mind.current.client.images += I
-				if(t_mind.current)
-					if(t_mind.current.client)
-						var/I = image('icons/mob/mob.dmi', loc = t_mind.current, icon_state = "vampthrall")
-						t_mind.current.client.images += I
+	var/datum/atom_hud/antag/vamp_hud = huds[ANTAG_HUD_SOLO]
+	vamp_hud.join_solo_hud(vampire_mind.current)
+	set_antag_hud(vampire_mind.current, ((vampire_mind in vampires) ? "hudvampire" : "hudvampirethrall"))
 
 /datum/game_mode/proc/update_vampire_icons_removed(datum/mind/vampire_mind)
-	for(var/headref in vampire_thralls)
-		var/datum/mind/head = locate(headref)
-		for(var/datum/mind/t_mind in vampire_thralls[headref])
-			if(t_mind.current)
-				if(t_mind.current.client)
-					for(var/image/I in t_mind.current.client.images)
-						if((I.icon_state == "vampthrall" || I.icon_state == "vampire") && I.loc == vampire_mind.current)
-							//log_to_dd("deleting [vampire_mind] overlay")
-							qdel(I)
-		if(head)
-			//log_to_dd("found [head.name]")
-			if(head.current)
-				if(head.current.client)
-					for(var/image/I in head.current.client.images)
-						if((I.icon_state == "vampthrall" || I.icon_state == "vampire") && I.loc == vampire_mind.current)
-							//log_to_dd("deleting [vampire_mind] overlay")
-							qdel(I)
-	if(vampire_mind.current)
-		if(vampire_mind.current.client)
-			for(var/image/I in vampire_mind.current.client.images)
-				if(I.icon_state == "vampthrall" || I.icon_state == "vampire")
-					qdel(I)
+	var/datum/atom_hud/antag/vampire_hud = huds[ANTAG_HUD_SOLO]
+	vampire_hud.leave_hud(vampire_mind.current)
+	set_antag_hud(vampire_mind.current, null)
 
 /datum/game_mode/proc/remove_vampire_mind(datum/mind/vampire_mind, datum/mind/head)
 	//var/list/removal
@@ -435,6 +403,10 @@ You are weak to holy things and starlight. Don't go into space and avoid the Cha
 		vampire_thralls[ref] -= vampire_mind
 	vampire_enthralled -= vampire_mind
 	vampire_mind.special_role = null
+	var/datum/mindslaves/slaved = vampire_mind.som
+	slaved.serv -= vampire_mind
+	vampire_mind.som = null
+	slaved.leave_serv_hud(vampire_mind)
 	update_vampire_icons_removed(vampire_mind)
 	//world << "Removed [vampire_mind.current.name] from vampire shit"
 	vampire_mind.current << "\red <FONT size = 3><B>The fog clouding your mind clears. You remember nothing from the moment you were enthralled until now.</B></FONT>"
@@ -461,10 +433,7 @@ You are weak to holy things and starlight. Don't go into space and avoid the Cha
 	if(hud_used)
 		if(!hud_used.vampire_blood_display)
 			hud_used.vampire_hud()
-			hud_used.human_hud('icons/mob/screen1_Vampire.dmi')
-		hud_used.vampire_blood_display.maptext_width = 64
-		hud_used.vampire_blood_display.maptext_height = 26
-		hud_used.vampire_blood_display.maptext = "<div align='left' valign='top' style='position:relative; top:0px; left:6px'> U:<font color='#33FF33' size='1'>[mind.vampire.bloodusable]</font><br> T:<font color='#FFFF00' size='1'>[mind.vampire.bloodtotal]</font></div>"
+		hud_used.vampire_blood_display.maptext = "<div align='center' valign='middle' style='position:relative; top:0px; left:6px'><font color='#dd66dd'>[mind.vampire.bloodusable]</font></div>"
 	handle_vampire_cloak()
 	if(istype(loc, /turf/space))
 		check_sun()

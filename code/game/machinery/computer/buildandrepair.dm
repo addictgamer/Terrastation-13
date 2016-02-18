@@ -144,9 +144,34 @@
 /obj/item/weapon/circuitboard/prisoner
 	name = "Circuit board (Prisoner Management)"
 	build_path = /obj/machinery/computer/prisoner
+
+
+// RD console circuits, so that {de,re}constructing one of the special consoles doesn't ruin everything forever
 /obj/item/weapon/circuitboard/rdconsole
 	name = "Circuit Board (RD Console)"
+	desc = "Swipe a Research Director level ID or higher to reconfigure."
 	build_path = /obj/machinery/computer/rdconsole/core
+	req_access = list(access_rd) // This is for adjusting the type of computer we're building - in case something messes up the pre-existing robotics or mechanics consoles
+	var/access_types = list("R&D Core", "Robotics", "E.X.P.E.R.I-MENTOR", "Mechanics", "Public")
+	id = 1
+/obj/item/weapon/circuitboard/rdconsole/robotics
+	name = "Circuit Board (RD Console - Robotics)"
+	build_path = /obj/machinery/computer/rdconsole/robotics
+	id = 2
+/obj/item/weapon/circuitboard/rdconsole/experiment
+	name = "Circuit Board (RD Console - E.X.P.E.R.I-MENTOR)"
+	build_path = /obj/machinery/computer/rdconsole/experiment
+	id = 3
+/obj/item/weapon/circuitboard/rdconsole/mechanics
+	name = "Circuit Board (RD Console - Mechanics)"
+	build_path = /obj/machinery/computer/rdconsole/mechanics
+	id = 4
+/obj/item/weapon/circuitboard/rdconsole/public
+	name = "Circuit Board (RD Console - Public)"
+	build_path = /obj/machinery/computer/rdconsole/public
+	id = 5
+
+
 /obj/item/weapon/circuitboard/mecha_control
 	name = "Circuit Board (Exosuit Control Console)"
 	build_path = /obj/machinery/computer/mecha
@@ -191,35 +216,39 @@
 	build_path = /obj/machinery/computer/telecomms/traffic
 	origin_tech = "programming=3"
 
+
+/obj/item/weapon/circuitboard/shuttle
+	name = "circuit board (Shuttle)"
+	build_path = /obj/machinery/computer/shuttle
+	var/shuttleId
+	var/possible_destinations = ""
+
+/obj/item/weapon/circuitboard/labor_shuttle
+	name = "circuit Board (Labor Shuttle)"
+	build_path = /obj/machinery/computer/shuttle/labor
+/obj/item/weapon/circuitboard/labor_shuttle/one_way
+	name = "circuit Board (Prisoner Shuttle Console)"
+	build_path = /obj/machinery/computer/shuttle/labor/one_way
+/obj/item/weapon/circuitboard/ferry
+	name = "circuit Board (Transport Ferry)"
+	build_path = /obj/machinery/computer/shuttle/ferry
+/obj/item/weapon/circuitboard/ferry/request
+	name = "circuit Board (Transport Ferry Console)"
+	build_path = /obj/machinery/computer/shuttle/ferry/request
+/obj/item/weapon/circuitboard/mining_shuttle
+	name = "circuit Board (Mining Shuttle)"
+	build_path = /obj/machinery/computer/shuttle/mining
+/obj/item/weapon/circuitboard/white_ship
+	name = "circuit Board (White Ship)"
+	build_path = /obj/machinery/computer/shuttle/white_ship
+
+
 /obj/item/weapon/circuitboard/curefab
 	name = "Circuit board (Cure Fabricator)"
 	build_path = /obj/machinery/computer/curer
 /obj/item/weapon/circuitboard/splicer
 	name = "Circuit board (Disease Splicer)"
 	build_path = /obj/machinery/computer/diseasesplicer
-/obj/item/weapon/circuitboard/labor_shuttle
-	name = "circuit Board (Labor Shuttle)"
-	build_path = /obj/machinery/computer/labor_shuttle
-/obj/item/weapon/circuitboard/labor_shuttle/one_way
-	name = "circuit Board (Prisoner Shuttle Console)"
-	build_path = /obj/machinery/computer/labor_shuttle/one_way
-/obj/item/weapon/circuitboard/mining_shuttle
-	name = "Circuit board (Mining Shuttle)"
-	build_path = /obj/machinery/computer/shuttle_control/mining
-	origin_tech = "programming=2"
-/obj/item/weapon/circuitboard/white_ship
-	name = "circuit Board (White Ship)"
-	desc = {"A dusty circuitboard, marked "property of the NGV Venal"."}
-	build_path = /obj/machinery/computer/shuttle_control/multi/whiteship
-	origin_tech = "programming=2"
-/obj/item/weapon/circuitboard/engineering_shuttle
-	name = "Circuit board (Engineering Shuttle)"
-	build_path = /obj/machinery/computer/shuttle_control/engineering
-	origin_tech = "programming=2"
-/obj/item/weapon/circuitboard/research_shuttle
-	name = "Circuit board (Research Shuttle)"
-	build_path = /obj/machinery/computer/shuttle_control/research
-	origin_tech = "programming=2"
 /obj/item/weapon/circuitboard/HolodeckControl
 	name = "Circuit board (Holodeck Control)"
 	build_path = /obj/machinery/computer/HolodeckControl
@@ -231,10 +260,6 @@
 /obj/item/weapon/circuitboard/area_atmos
 	name = "Circuit board (Area Air Control)"
 	build_path = /obj/machinery/computer/area_atmos
-	origin_tech = "programming=2"
-/obj/item/weapon/circuitboard/prison_shuttle
-	name = "Circuit board (Prison Shuttle)"
-	build_path = /obj/machinery/computer/prison_shuttle
 	origin_tech = "programming=2"
 /obj/item/weapon/circuitboard/telesci_console
 	name = "Circuit board (Telepad Control Console)"
@@ -285,16 +310,37 @@
 	return
 
 /obj/item/weapon/circuitboard/rdconsole/attackby(obj/item/I as obj, mob/user as mob, params)
-	if(istype(I,/obj/item/weapon/screwdriver))
-		user.visible_message("\blue \the [user] adjusts the jumper on the [src]'s access protocol pins.", "\blue You adjust the jumper on the access protocol pins.")
-		if(src.build_path == "/obj/machinery/computer/rdconsole/core")
-			src.name = "Circuit Board (RD Console - Robotics)"
-			src.build_path = /obj/machinery/computer/rdconsole/robotics
-			user << "\blue Access protocols set to robotics."
+	if(istype(I,/obj/item/weapon/card/id)||istype(I, /obj/item/device/pda))
+		if(allowed(user))
+			user.visible_message("<span class='notice'>\the [user] waves their ID past the [src]'s access protocol scanner.</span>", "<span class='notice'>You swipe your ID past the [src]'s access protocol scanner.</span>")
+			var/console_choice = input(user, "What do you want to configure the access to?", "Access Modification", "R&D Core") as null|anything in access_types
+			if(console_choice == null)
+				return
+			switch(console_choice)
+				if("R&D Core")
+					name = "Circuit Board (RD Console)"
+					build_path = /obj/machinery/computer/rdconsole/core
+					id = 1
+				if("Robotics")
+					name = "Circuit Board (RD Console - Robotics)"
+					build_path = /obj/machinery/computer/rdconsole/robotics
+					id = 2
+				if("E.X.P.E.R.I-MENTOR")
+					name = "Circuit Board (RD Console - E.X.P.E.R.I-MENTOR)"
+					build_path = /obj/machinery/computer/rdconsole/experiment
+					id = 3
+				if("Mechanics")
+					name = "Circuit Board (RD Console - Mechanics)"
+					build_path = /obj/machinery/computer/rdconsole/mechanics
+					id = 4
+				if("Public")
+					name = "Circuit Board (RD Console - Public)"
+					build_path = /obj/machinery/computer/rdconsole/public
+					id = 5
+
+			user << "<span class='notice'>Access protocols set to [console_choice].</span>"
 		else
-			src.name = "Circuit Board (RD Console)"
-			src.build_path = /obj/machinery/computer/rdconsole/core
-			user << "\blue Access protocols set to default."
+			user << "<span class='warning'>Access Denied</span>"
 	return
 
 /obj/structure/computerframe/attackby(obj/item/P as obj, mob/user as mob, params)

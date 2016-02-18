@@ -3,7 +3,6 @@
  *		Balloons
  *		Fake telebeacon
  *		Fake singularity
- *		Toy gun
  *		Toy crossbow
  *		Toy Tommy Gun
  *		Toy swords
@@ -125,78 +124,6 @@
 	icon = 'icons/obj/singularity.dmi'
 	icon_state = "singularity_s1"
 
-/*
- * Toy gun: Why isnt this an /obj/item/weapon/gun?
- */
-/obj/item/toy/gun
-	name = "cap gun"
-	desc = "There are 0 caps left. Looks almost like the real thing! Ages 8 and up. Please recycle in an autolathe when you're out of caps!"
-	icon = 'icons/obj/gun.dmi'
-	icon_state = "revolver"
-	item_state = "gun"
-	lefthand_file = 'icons/mob/inhands/guns_lefthand.dmi'
-	righthand_file = 'icons/mob/inhands/guns_righthand.dmi'
-	flags = CONDUCT
-	slot_flags = SLOT_BELT
-	w_class = 3.0
-	materials = list(MAT_METAL=10, MAT_GLASS=10)
-	attack_verb = list("struck", "pistol whipped", "hit", "bashed")
-	var/bullets = 7.0
-
-	examine(mob/user)
-		if(..(user, 0))
-			user << "There are [bullets] caps\s left. Looks almost like the real thing! Ages 8 and up."
-
-	attackby(obj/item/toy/ammo/gun/A as obj, mob/user as mob, params)
-
-		if (istype(A, /obj/item/toy/ammo/gun))
-			if (src.bullets >= 7)
-				user << "\blue It's already fully loaded!"
-				return 1
-			if (A.amount_left <= 0)
-				user << "\red There is no more caps!"
-				return 1
-			if (A.amount_left < (7 - src.bullets))
-				src.bullets += A.amount_left
-				user << text("\red You reload [] caps\s!", A.amount_left)
-				A.amount_left = 0
-			else
-				user << text("\red You reload [] caps\s!", 7 - src.bullets)
-				A.amount_left -= 7 - src.bullets
-				src.bullets = 7
-			A.update_icon()
-			return 1
-		return
-
-	afterattack(atom/target as mob|obj|turf|area, mob/user as mob, flag)
-		if (flag)
-			return
-		if (!user.IsAdvancedToolUser())
-			user << "<span class='warning'>You don't have the dexterity to do this!</span>"
-			return
-		src.add_fingerprint(user)
-		if (src.bullets < 1)
-			user.show_message("<span class='alert'>*click* *click*</span>", 2)
-			playsound(user, 'sound/weapons/empty.ogg', 100, 1)
-			return
-		playsound(user, 'sound/weapons/Gunshot.ogg', 100, 1)
-		src.bullets--
-		user.visible_message("<span class='danger'>[user] fires a cap gun at [target]!</span>", null, "You hear a gunshot.")
-
-/obj/item/toy/ammo/gun
-	name = "ammo-caps"
-	desc = "There are 7 caps left! Make sure to recyle the box in an autolathe when it gets empty."
-	icon = 'icons/obj/ammo.dmi'
-	icon_state = "357-7"
-	flags = CONDUCT
-	w_class = 1.0
-	materials = list(MAT_METAL=10, MAT_GLASS=10)
-	var/amount_left = 7.0
-
-	update_icon()
-		src.icon_state = text("357-[]", src.amount_left)
-		src.desc = text("There are [] caps\s left! Make sure to recycle the box in an autolathe when it gets empty.", src.amount_left)
-		return
 
 /*
  * Toy crossbow
@@ -1644,7 +1571,7 @@ obj/item/toy/cards/deck/syndicate/black
 /obj/item/toy/figure/attack_self(mob/user as mob)
 	if(cooldown < world.time)
 		cooldown = (world.time + 30) //3 second cooldown
-		user << "<span class='notice'>The [src] says \"[toysay]\".</span>"
+		user.visible_message("<span class='notice'>\icon[src] The [src] says \"[toysay]\".</span>")
 		playsound(user, 'sound/machines/click.ogg', 20, 1)
 
 /obj/item/toy/figure/cmo
@@ -1738,7 +1665,7 @@ obj/item/toy/cards/deck/syndicate/black
 	toysay = "I'm not qualified for this job."
 
 /obj/item/toy/figure/hop
-	name = "Head of Persomnel action figure"
+	name = "Head of Personnel action figure"
 	icon_state = "hop"
 	toysay = "Giving out all access!"
 
@@ -1758,9 +1685,9 @@ obj/item/toy/cards/deck/syndicate/black
 	toysay = "Look at the signs, you idiot."
 
 /obj/item/toy/figure/lawyer
-	name = "Lawyer action figure"
+	name = "Internal Affairs Agent action figure"
 	icon_state = "lawyer"
-	toysay = "My client is a dirty traitor!"
+	toysay = "Standard Operating Procedure says they're guilty! Hacking is proof they're an Enemy of the Corporation!"
 
 /obj/item/toy/figure/librarian
 	name = "Librarian action figure"
@@ -1827,3 +1754,32 @@ obj/item/toy/cards/deck/syndicate/black
 	name = "Warden action figure"
 	icon_state = "warden"
 	toysay = "Execute him for breaking in!"
+
+//////////////////////////////////////////////////////
+//				Magic 8-Ball / Conch				//
+//////////////////////////////////////////////////////
+
+/obj/item/toy/eight_ball
+	name = "Magic 8-Ball"
+	desc = "Mystical! Magical! Ages 8+!"
+	icon = 'icons/obj/toy.dmi'
+	icon_state = "eight-ball"
+	var/use_action = "shakes the ball"
+	var/cooldown = 0
+	var/list/possible_answers = list("Definitely", "All signs point to yes.", "Most likely.", "Yes.", "Ask again later.", "Better not tell you now.", "Future Unclear.", "Maybe.", "Doubtful.", "No.", "Don't count on it.", "Never.")
+
+/obj/item/toy/eight_ball/attack_self(mob/user as mob)
+	if(!cooldown)
+		var/answer = pick(possible_answers)
+		user.visible_message("<span class='notice'>[user] focuses on their question and [use_action]...</span>")
+		user.visible_message("<span class='notice'>\icon[src] The [src] says \"[answer]\"</span>")
+		spawn(30)
+			cooldown = 0
+		return
+
+/obj/item/toy/eight_ball/conch
+	name = "Magic Conch Shell"
+	desc = "All hail the Magic Conch!"
+	icon_state = "conch"
+	use_action = "pulls the string"
+	possible_answers = list("Yes.", "No.", "Try asking again.", "Nothing.", "I don't think so.", "Neither.", "Maybe someday.")

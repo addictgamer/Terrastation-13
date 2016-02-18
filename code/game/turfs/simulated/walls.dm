@@ -1,7 +1,8 @@
 /turf/simulated/wall
 	name = "wall"
 	desc = "A huge chunk of metal used to seperate rooms."
-	icon = 'icons/turf/walls.dmi'
+	icon = 'icons/turf/walls/wall.dmi'
+	icon_state = "wall"
 	var/mineral = "metal"
 	var/rotting = 0
 
@@ -25,22 +26,20 @@
 	var/hardness = 40 //lower numbers are harder. Used to determine the probability of a hulk smashing through.
 	var/engraving, engraving_quality //engraving on the wall
 
-	var/del_suppress_resmoothing = 0 // Do not resmooth neighbors on Destroy. (smoothwall.dm)
 	canSmoothWith = list(
 	/turf/simulated/wall,
+	/turf/simulated/wall/r_wall,
 	/obj/structure/falsewall,
-	/obj/structure/falsewall/reinforced  // WHY DO WE SMOOTH WITH FALSE R-WALLS WHEN WE DON'T SMOOTH WITH REAL R-WALLS.
-	)
+	/obj/structure/falsewall/reinforced,
+	/turf/simulated/wall/rust,
+	/turf/simulated/wall/r_wall/rust)
+	smooth = SMOOTH_TRUE
 
 /turf/simulated/wall/ChangeTurf(var/newtype)
 	for(var/obj/effect/E in src)
 		if(E.name == "Wallrot")
 			qdel(E)
-	var/dsr=0
-	if(del_suppress_resmoothing)	dsr=1
-	..(newtype)
-	if(!dsr)
-		relativewall_neighbours(sko=1)
+	. = ..(newtype)
 
 //Appearance
 
@@ -65,8 +64,10 @@
 	if(!damage_overlays[1]) //list hasn't been populated
 		generate_overlays()
 
+	smooth_icon(src)
 	if(!damage)
-		overlays.Cut()
+		overlays -= damage_overlays[damage_overlay]
+		damage_overlay = 0
 		return
 
 	var/overlay = round(damage / damage_cap * damage_overlays.len) + 1
@@ -75,8 +76,7 @@
 
 	if(damage_overlay && overlay == damage_overlay) //No need to update.
 		return
-
-	overlays.Cut()
+	overlays -= damage_overlays[damage_overlay]
 	overlays += damage_overlays[overlay]
 	damage_overlay = overlay
 
@@ -427,23 +427,21 @@
 				"[user] starts drilling a hole in \the [src].", \
 				"\blue You start drilling a hole in \the [src].", \
 				"You hear ratchet.")
-			if (do_after(user, 80, target = src))
+			if(do_after(user, 80, target = src))
 				user.visible_message( \
 					"[user] drills a hole in \the [src] and pushes \a [P] into the void", \
 					"\blue You have finished drilling in \the [src] and push the [P] into the void.", \
 					"You hear ratchet.")
 
 				user.drop_item()
-				if (P.pipe_type in list (1,3,12))  // bent pipe rotation fix see construction.dm
+				if(P.is_bent_pipe())  // bent pipe rotation fix see construction.dm
 					P.dir = 5
-					if (user.dir == 1)
+					if(user.dir == 1)
 						P.dir = 6
-					if (user.dir == 2)
+					else if(user.dir == 2)
 						P.dir = 9
-					if (user.dir == 4)
+					else if(user.dir == 4)
 						P.dir = 10
-					if (user.dir == 5)
-						P.dir = 8
 				else
 					P.dir = user.dir
 				P.x = src.x

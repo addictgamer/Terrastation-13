@@ -23,6 +23,7 @@
 	var/unarmed                  //For empty hand harm-intent attack
 	var/unarmed_type = /datum/unarmed_attack
 	var/slowdown = 0              // Passive movement speed malus (or boost, if negative)
+	var/silent_steps = 0          // Stops step noises
 
 	var/breath_type = "oxygen"   // Non-oxygen gas breathed, if any.
 	var/poison_type = "plasma"   // Poisonous air.
@@ -41,6 +42,8 @@
 	var/passive_temp_gain = 0			//IS_SYNTHETIC species will gain this much temperature every second
 	var/reagent_tag                 //Used for metabolizing reagents.
 
+	var/siemens_coeff = 1 //base electrocution coefficient
+
 	var/darksight = 2
 	var/hazard_high_pressure = HAZARD_HIGH_PRESSURE   // Dangerously high pressure.
 	var/warning_high_pressure = WARNING_HIGH_PRESSURE // High pressure warning.
@@ -54,7 +57,9 @@
 	var/light_effect_amp //If 0, takes/heals 1 burn and brute per tick. Otherwise, both healing and damage effects are amplified.
 
 	var/total_health = 100
-	var/max_hurt_damage = 9 // Max melee damage dealt + 5 if hulk
+	var/punchdamagelow = 0       //lowest possible punch damage
+	var/punchdamagehigh = 9      //highest possible punch damage
+	var/punchstunthreshold = 9	 //damage at which punches from this race will stun //yes it should be to the attacked race but it's not useful that way even if it's logical
 	var/list/default_genes = list()
 
 	var/ventcrawler = 0 //Determines if the mob can go through the vents.
@@ -62,7 +67,7 @@
 
 	var/flags = 0       // Various specific features.
 	var/clothing_flags = 0 // Underwear and socks.
-	var/bloodflags = 0
+	var/exotic_blood
 	var/bodyflags = 0
 	var/dietflags  = 0	// Make sure you set this, otherwise it won't be able to digest a lot of foods
 
@@ -85,6 +90,11 @@
 
 	//Death vars.
 	var/death_message = "seizes up and falls limp, their eyes dead and lifeless..."
+	var/list/suicide_messages = list(
+		"is attempting to bite their tongue off!",
+		"is jamming their thumbs into their eye sockets!",
+		"is twisting their own neck!",
+		"is holding their breath!")
 
 	// Language/culture vars.
 	var/default_language = "Galactic Common" // Default language is used when 'say' is used without modifiers.
@@ -117,6 +127,7 @@
 		"l_foot" = list("path" = /obj/item/organ/external/foot),
 		"r_foot" = list("path" = /obj/item/organ/external/foot/right)
 		)
+	var/cyborg_type = "Cyborg"
 
 /datum/species/New()
 	//If the species has eyes, they are the default vision organ
@@ -303,10 +314,9 @@
 	return
 
 /datum/species/proc/handle_post_spawn(var/mob/living/carbon/C) //Handles anything not already covered by basic species assignment.
-	handle_dna(C)
 	return
 
-/datum/species/proc/handle_dna(var/mob/living/carbon/C, var/remove) //Handles DNA mutations, as that doesn't work at init.
+/datum/species/proc/handle_dna(var/mob/living/carbon/C, var/remove) //Handles DNA mutations, as that doesn't work at init. Make sure you call genemutcheck on any blocks changed here
 	return
 
 // Used for species-specific names (Vox, etc)
@@ -337,7 +347,7 @@
 
 /datum/unarmed_attack
 	var/attack_verb = list("attack")	// Empty hand hurt intent verb.
-	var/damage = 0						// Extra empty hand attack damage.
+	var/damage = 0						// How much flat bonus damage an attack will do. This is a *bonus* guaranteed damage amount on top of the random damage attacks do.
 	var/attack_sound = "punch"
 	var/miss_sound = 'sound/weapons/punchmiss.ogg'
 	var/sharp = 0
@@ -348,7 +358,6 @@
 
 /datum/unarmed_attack/punch/weak
 	attack_verb = list("flail")
-	damage = 1
 
 /datum/unarmed_attack/diona
 	attack_verb = list("lash", "bludgeon")
@@ -362,7 +371,7 @@
 
 /datum/unarmed_attack/claws/armalis
 	attack_verb = list("slash", "claw")
-	damage = 6	//they're huge! they should do a little more damage, i'd even go for 15-20 maybe...
+	damage = 6
 
 /datum/species/proc/handle_can_equip(obj/item/I, slot, disable_warning = 0, mob/living/carbon/human/user)
 	return 0
@@ -379,7 +388,7 @@
 		H.see_invisible = SEE_INVISIBLE_LIVING
 
 		if(H.mind && H.mind.vampire)
-			if(VAMP_VISION in H.mind.vampire.powers && !(VAMP_FULL in H.mind.vampire.powers))
+			if((VAMP_VISION in H.mind.vampire.powers) && (!(VAMP_FULL in H.mind.vampire.powers)))
 				H.sight |= SEE_MOBS
 
 			else if(VAMP_FULL in H.mind.vampire.powers)
@@ -411,6 +420,7 @@
 				if(H.client)
 					H.client.screen += global_hud.darkMask
 
+		var/minimum_darkness_view = INFINITY
 		if(H.glasses)
 			if(istype(H.glasses, /obj/item/clothing/glasses))
 				var/obj/item/clothing/glasses/G = H.glasses
@@ -418,33 +428,37 @@
 
 				if(G.darkness_view)
 					H.see_in_dark = G.darkness_view
+					minimum_darkness_view = G.darkness_view
 
 				if(!G.see_darkness)
 					H.see_invisible = SEE_INVISIBLE_MINIMUM
 
-				switch(G.HUDType)
-					if(SECHUD)
-						process_sec_hud(H,1)
-					if(MEDHUD)
-						process_med_hud(H,1)
-					if(ANTAGHUD)
-						process_antag_hud(H)
+				//switch(G.HUDType)
+				//	if(SECHUD)
+				//		process_sec_hud(H,1)
+				//	if(MEDHUD)
+				//		process_med_hud(H,1)
+				//	if(ANTAGHUD)
+				//		process_antag_hud(H)
 
 		if(H.head)
 			if(istype(H.head, /obj/item/clothing/head))
 				var/obj/item/clothing/head/hat = H.head
 				H.sight |= hat.vision_flags
 
+				if(hat.darkness_view && hat.darkness_view < minimum_darkness_view) // Pick the lowest of the two darkness_views between the glasses and helmet.
+					H.see_in_dark = hat.darkness_view
+
 				if(!hat.see_darkness)
 					H.see_invisible = SEE_INVISIBLE_MINIMUM
 
-				switch(hat.HUDType)
-					if(SECHUD)
-						process_sec_hud(H,1)
-					if(MEDHUD)
-						process_med_hud(H,1)
-					if(ANTAGHUD)
-						process_antag_hud(H)
+				//switch(hat.HUDType)
+				//	if(SECHUD)
+				//		process_sec_hud(H,1)
+				//	if(MEDHUD)
+				//		process_med_hud(H,1)
+				//	if(ANTAGHUD)
+				//		process_antag_hud(H)
 
 		if(istype(H.back, /obj/item/weapon/rig)) ///ahhhg so snowflakey
 			var/obj/item/weapon/rig/rig = H.back
@@ -460,13 +474,13 @@
 							if(!G.see_darkness)
 								H.see_invisible = SEE_INVISIBLE_MINIMUM
 
-							switch(G.HUDType)
-								if(SECHUD)
-									process_sec_hud(H,1)
-								if(MEDHUD)
-									process_med_hud(H,1)
-								if(ANTAGHUD)
-									process_antag_hud(H)
+							//switch(G.HUDType)
+							//	if(SECHUD)
+							//		process_sec_hud(H,1)
+							//	if(MEDHUD)
+							//		process_med_hud(H,1)
+							//	if(ANTAGHUD)
+							//		process_antag_hud(H)
 
 		if(H.vision_type)
 			H.see_in_dark = max(H.see_in_dark, H.vision_type.see_in_dark, darksight)
@@ -591,4 +605,20 @@
 			else
 				H.bodytemp.icon_state = "temp0"
 
+	return 1
+
+/*
+Returns the path corresponding to the corresponding organ
+It'll return null if the organ doesn't correspond, so include null checks when using this!
+*/
+/datum/species/proc/return_organ(var/organ_slot)
+	if(!(organ_slot in has_organ))
+		return null
+	return has_organ[organ_slot]
+
+// Do species-specific reagent handling here
+// Return 1 if it should do normal processing too
+// Return 0 if it shouldn't deplete and do its normal effect
+// Other return values will cause weird badness
+/datum/species/proc/handle_reagents(var/mob/living/carbon/human/H, var/datum/reagent/R)
 	return 1

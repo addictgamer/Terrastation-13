@@ -151,7 +151,7 @@
 					break
 
 /datum/game_mode/proc/check_finished() //to be called by ticker
-	if(emergency_shuttle.returned() || station_was_nuked)
+	if(shuttle_master.emergency.mode >= SHUTTLE_ENDGAME || station_was_nuked)
 		return 1
 	return 0
 
@@ -171,7 +171,10 @@
 	var/escaped_on_pod_5 = 0
 	var/escaped_on_shuttle = 0
 
-	var/list/area/escape_locations = list(/area/shuttle/escape/centcom, /area/shuttle/escape_pod1/centcom, /area/shuttle/escape_pod2/centcom, /area/shuttle/escape_pod3/centcom, /area/shuttle/escape_pod5/centcom)
+	var/list/area/escape_locations = list(/area/shuttle/escape, /area/shuttle/escape_pod1/centcom, /area/shuttle/escape_pod2/centcom, /area/shuttle/escape_pod3/centcom, /area/shuttle/escape_pod5/centcom)
+
+	if(shuttle_master.emergency.mode < SHUTTLE_ENDGAME) //shuttle didn't get to centcom
+		escape_locations -= /area/shuttle/escape
 
 	for(var/mob/M in player_list)
 		if(M.client)
@@ -186,7 +189,7 @@
 				if(M.loc && M.loc.loc && M.loc.loc.type in escape_locations)
 					escaped_total++
 
-				if(M.loc && M.loc.loc && M.loc.loc.type == /area/shuttle/escape/centcom)
+				if(M.loc && M.loc.loc && M.loc.loc.type == shuttle_master.emergency.areaInstance.type && shuttle_master.emergency.mode >= SHUTTLE_ENDGAME)
 					escaped_on_shuttle++
 
 				if(M.loc && M.loc.loc && M.loc.loc.type == /area/shuttle/escape_pod1/centcom)
@@ -251,7 +254,7 @@
 
 	// Get a list of all the people who want to be the antagonist for this round, except those with incompatible species
 	for(var/mob/new_player/player in players)
-		if(player.client.prefs.be_special & role && !(player.client.prefs.species in protected_species))
+		if((role in player.client.prefs.be_special) && !(player.client.prefs.species in protected_species))
 			log_debug("[player.key] had [roletext] enabled, so we are drafting them.")
 			candidates += player.mind
 			players -= player
@@ -273,57 +276,6 @@
 				if(player.assigned_role == job)
 					candidates -= player
 
-	/*if(candidates.len < recommended_enemies)
-		for(var/mob/new_player/player in players)
-			if(player.client && player.ready)
-				if(!(player.client.prefs.be_special & role)) // We don't have enough people who want to be antagonist, make a seperate list of people who don't want to be one
-					if(!jobban_isbanned(player, "Syndicate") && !jobban_isbanned(player, roletext)) //Nodrak/Carn: Antag Job-bans
-						drafted += player.mind
-
-	if(restricted_jobs)
-		for(var/datum/mind/player in drafted)				// Remove people who can't be an antagonist
-			for(var/job in restricted_jobs)
-				if(player.assigned_role == job)
-					drafted -= player
-
-	drafted = shuffle(drafted) // Will hopefully increase randomness, Donkie
-
-	while(candidates.len < recommended_enemies)				// Pick randomlly just the number of people we need and add them to our list of candidates
-		if(drafted.len > 0)
-			applicant = pick(drafted)
-			if(applicant)
-				candidates += applicant
-				log_debug("[applicant.key] was force-drafted as [roletext], because there aren't enough candidates.")
-				drafted.Remove(applicant)
-
-		else												// Not enough scrubs, ABORT ABORT ABORT
-			break
-
-	if(candidates.len < recommended_enemies && override_jobbans) //If we still don't have enough people, we're going to start drafting banned people.
-		for(var/mob/new_player/player in players)
-			if (player.client && player.ready)
-				if(jobban_isbanned(player, "Syndicate") || jobban_isbanned(player, roletext)) //Nodrak/Carn: Antag Job-bans
-					drafted += player.mind
-
-	if(restricted_jobs)
-		for(var/datum/mind/player in drafted)				// Remove people who can't be an antagonist
-			for(var/job in restricted_jobs)
-				if(player.assigned_role == job)
-					drafted -= player
-
-	drafted = shuffle(drafted) // Will hopefully increase randomness, Donkie
-
-	while(candidates.len < recommended_enemies)				// Pick randomlly just the number of people we need and add them to our list of candidates
-		if(drafted.len > 0)
-			applicant = pick(drafted)
-			if(applicant)
-				candidates += applicant
-				drafted.Remove(applicant)
-				log_debug("[applicant.key] was force-drafted as [roletext], because there aren't enough candidates.")
-
-		else												// Not enough scrubs, ABORT ABORT ABORT
-			break
-	*/
 
 	return candidates		// Returns: The number of people who had the antagonist role set to yes, regardless of recomended_enemies, if that number is greater than recommended_enemies
 							//			recommended_enemies if the number of people with that role set to yes is less than recomended_enemies,
@@ -333,7 +285,7 @@
 /datum/game_mode/proc/latespawn(var/mob)
 
 /*
-/datum/game_mode/proc/check_player_role_pref(var/role, var/mob/new_player/player)
+/datum/game_mode/proc/check_player_role_pref(var/role, var/mob/player)
 	if(player.preferences.be_special & role)
 		return 1
 	return 0
@@ -343,13 +295,13 @@
 	. = 0
 	for(var/mob/new_player/P in player_list)
 		if(P.client && P.ready)
-			. ++
+			.++
 
 /datum/game_mode/proc/num_players_started()
 	. = 0
 	for(var/mob/living/carbon/human/H in player_list)
 		if(H.client)
-			. ++
+			.++
 
 ///////////////////////////////////
 //Keeps track of all living heads//
@@ -486,22 +438,7 @@ proc/get_nt_opposed()
 		obj_count++
 
 /proc/get_roletext(var/role)
-	var/roletext
-	switch(role)
-		if(BE_CHANGELING)	roletext="changeling"
-		if(BE_TRAITOR)		roletext="traitor"
-		if(BE_OPERATIVE)	roletext="operative"
-		if(BE_WIZARD)		roletext="wizard"
-		if(BE_MALF)			roletext="malf AI"
-		if(BE_REV)			roletext="revolutionary"
-		if(BE_CULTIST)		roletext="cultist"
-		if(BE_NINJA)		roletext="ninja"
-		if(BE_RAIDER)		roletext="raider"
-		if(BE_VAMPIRE)		roletext="vampire"
-		if(BE_ALIEN)		roletext="alien"
-		if(BE_MUTINEER)		roletext="mutineer"
-		if(BE_BLOB)			roletext="blob"
-	return roletext
+	return role
 
 /proc/get_nuke_code()
 	var/nukecode = "ERROR"
@@ -509,3 +446,17 @@ proc/get_nt_opposed()
 		if(bomb && bomb.r_code && bomb.z == ZLEVEL_STATION)
 			nukecode = bomb.r_code
 	return nukecode
+
+/datum/game_mode/proc/replace_jobbaned_player(mob/living/M, role_type, pref)
+	var/list/mob/dead/observer/candidates = pollCandidates("Do you want to play as a [role_type]?", "[role_type]", null, pref, 100)
+	var/mob/dead/observer/theghost = null
+	if(candidates.len)
+		theghost = pick(candidates)
+		M << "<span class='userdanger'>Your mob has been taken over by a ghost! Appeal your job ban if you want to avoid this in the future!</span>"
+		message_admins("[key_name_admin(theghost)] has taken control of ([key_name_admin(M)]) to replace a jobbanned player.")
+		M.ghostize()
+		M.key = theghost.key
+	else
+		message_admins("[M] ([M.key] has been converted into [role_type] with an active antagonist jobban for said role since no ghost has volunteered to take their place.")
+		M << "<span class='biggerdanger'>You have been converted into [role_type] with an active jobban. Any further violations of the rules on your part are likely to result in a permanent ban.</span>"
+>>>>>>> refs/remotes/ParadRem/master

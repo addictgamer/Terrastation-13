@@ -34,7 +34,7 @@
 	if(config.protect_roles_from_antagonist)
 		restricted_jobs += protected_jobs
 
-	var/list/possible_traitors = get_players_for_role(BE_TRAITOR)
+	var/list/possible_traitors = get_players_for_role(ROLE_TRAITOR)
 
 	// stop setup if no possible traitors
 	if(!possible_traitors.len)
@@ -53,6 +53,9 @@
 		var/datum/mind/traitor = pick(possible_traitors)
 		traitors += traitor
 		traitor.special_role = "traitor"
+		var/datum/mindslaves/slaved = new()
+		slaved.masters += traitor
+		traitor.som = slaved //we MIGT want to mindslave someone
 		traitor.restricted_roles = restricted_jobs
 		possible_traitors.Remove(traitor)
 
@@ -337,52 +340,16 @@
 		traitor_mob.mind.store_memory("<b>Potential Collaborator</b>: [M.real_name]")
 
 /datum/game_mode/proc/update_traitor_icons_added(datum/mind/traitor_mind)
-	var/ref = "\ref[traitor_mind]"
-	if(ref in implanter)
-		if(traitor_mind.current)
-			if(traitor_mind.current.client)
-				var/I = image('icons/mob/mob.dmi', loc = traitor_mind.current, icon_state = "greytide_head")
-				traitor_mind.current.client.images += I
-	for(var/headref in implanter)
-		for(var/datum/mind/t_mind in implanter[headref])
-			var/datum/mind/head = locate(headref)
-			if(head)
-				if(head.current)
-					if(head.current.client)
-						var/I = image('icons/mob/mob.dmi', loc = t_mind.current, icon_state = "greytide")
-						head.current.client.images += I
-				if(t_mind.current)
-					if(t_mind.current.client)
-						var/I = image('icons/mob/mob.dmi', loc = head.current, icon_state = "greytide_head")
-						t_mind.current.client.images += I
-				if(t_mind.current)
-					if(t_mind.current.client)
-						var/I = image('icons/mob/mob.dmi', loc = t_mind.current, icon_state = "greytide")
-						t_mind.current.client.images += I
+	var/datum/atom_hud/antag/tatorhud = huds[ANTAG_HUD_SOLO]
+	//var/ref = "\ref[traitor_mind]"
+	tatorhud.join_solo_hud(traitor_mind.current)
+	set_antag_hud(traitor_mind.current, "hudsyndicate")
 
 /datum/game_mode/proc/update_traitor_icons_removed(datum/mind/traitor_mind)
-	for(var/headref in implanter)
-		var/datum/mind/head = locate(headref)
-		for(var/datum/mind/t_mind in implanter[headref])
-			if(t_mind.current)
-				if(t_mind.current.client)
-					for(var/image/I in t_mind.current.client.images)
-						if((I.icon_state == "greytide" || I.icon_state == "greytide_head") && I.loc == traitor_mind.current)
-							//log_to_dd("deleting [traitor_mind] overlay")
-							qdel(I)
-		if(head)
-			//log_to_dd("found [head.name]")
-			if(head.current)
-				if(head.current.client)
-					for(var/image/I in head.current.client.images)
-						if((I.icon_state == "greytide" || I.icon_state == "greytide_head") && I.loc == traitor_mind.current)
-							//log_to_dd("deleting [traitor_mind] overlay")
-							qdel(I)
-	if(traitor_mind.current)
-		if(traitor_mind.current.client)
-			for(var/image/I in traitor_mind.current.client.images)
-				if(I.icon_state == "greytide" || I.icon_state == "greytide_head")
-					qdel(I)
+	var/datum/atom_hud/antag/tatorhud = huds[ANTAG_HUD_SOLO]
+	tatorhud.leave_hud(traitor_mind.current)
+	set_antag_hud(traitor_mind.current, null)
+
 
 /datum/game_mode/proc/remove_traitor_mind(datum/mind/traitor_mind, datum/mind/head)
 	//var/list/removal
@@ -391,7 +358,13 @@
 		implanter[ref] -= traitor_mind
 	implanted -= traitor_mind
 	traitors -= traitor_mind
-	traitor_mind.special_role = null
+	if(traitor_mind.som)
+		var/datum/mindslaves/slaved = traitor_mind.som
+		slaved.serv -= traitor_mind
+		traitor_mind.special_role = null
+		traitor_mind.som = null
+		slaved.leave_serv_hud(traitor_mind)
+
 	update_traitor_icons_removed(traitor_mind)
 	//world << "Removed [traitor_mind.current.name] from traitor shit"
 	traitor_mind.current << "\red <FONT size = 3><B>The fog clouding your mind clears. You remember nothing from the moment you were implanted until now.(You don't remember who implanted you)</B></FONT>"

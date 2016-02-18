@@ -83,15 +83,15 @@ I'm using this for Stat to give it a more nifty interface to work with
 	..()
 	if(has_synthetic_assistance())
 		statpanel("Status")
-		stat(null, "Station Time: [worldtime2text()]")
+		show_stat_station_time()
+		show_stat_emergency_shuttle_eta()
 
-		if(emergency_shuttle)
-			var/eta_status = emergency_shuttle.get_status_panel_eta()
-			if(eta_status)
-				stat(null, eta_status)
 		if(client.statpanel == "Status")
 			//Knowing how well-off your mech is doing is really important as an MMI
 			if(istype(src.loc, /obj/mecha))
 				var/obj/mecha/M = src.loc
 				stat("Exosuit Charge:", "[istype(M.cell) ? "[M.cell.charge] / [M.cell.maxcharge]" : "No cell detected"]")
 				stat("Exosuit Integrity", "[!M.health ? "0" : "[(M.health / initial(M.health)) * 100]"]%")
+
+/mob/living/carbon/brain/can_safely_leave_loc()
+	return 0 //You're not supposed to be ethereal jaunting, brains

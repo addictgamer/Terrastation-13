@@ -67,7 +67,7 @@ var/global/datum/global_init/init = new ()
 		processScheduler.setup()
 
 		master_controller.setup()
-		
+
 	#ifdef MAP_NAME
 	map_name = "[MAP_NAME]"
 	#else
@@ -210,6 +210,15 @@ var/world_topic_spam_protect_time = world.timeofday
 
 		return show_player_info_irc(input["notes"])
 
+	else if (copytext(T,1,9) == "announce")
+		var/input[] = params2list(T)
+		if(config.comms_password)
+			if(input["key"] != config.comms_password)
+				return "Bad Key"
+			else
+				for(var/client/C in clients)
+					C << "<span class='announce'>PR: [input["announce"]]</span>"
+
 /world/Reboot(var/reason, var/feedback_c, var/feedback_r, var/time)
 	if (reason == 1) //special reboot, do none of the normal stuff
 		if(usr)
@@ -239,9 +248,9 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	spawn(0)
 		world << sound(pick('sound/AI/newroundsexy.ogg','sound/misc/apcdestroyed.ogg','sound/misc/bangindonk.ogg')) // random end sounds!! - LastyBatsy
-	
+
 	processScheduler.stop()
-			
+
 	for(var/client/C in clients)
 		if(config.server)	//if you set a server location in config.txt, it sends you there instead of trying to reconnect to the same world address. -- NeoFite
 			C << link("byond://[config.server]")

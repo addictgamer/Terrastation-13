@@ -37,6 +37,14 @@
 	new /obj/item/weapon/pickaxe(src)
 	new /obj/item/clothing/glasses/meson(src)
 
+/**********************Shuttle Computer**************************/
+
+/obj/machinery/computer/shuttle/mining
+	name = "Mining Shuttle Console"
+	desc = "Used to call and send the mining shuttle."
+	circuit = /obj/item/weapon/circuitboard/mining_shuttle
+	shuttleId = "mining"
+	possible_destinations = "mining_home;mining_away"
 
 /******************************Lantern*******************************/
 
@@ -70,6 +78,14 @@
 
 /obj/item/weapon/pickaxe/proc/playDigSound()
 		playsound(src, pick(digsound),20,1)
+
+/obj/item/weapon/pickaxe/silver
+	name = "silver-plated pickaxe"
+	icon_state = "spickaxe"
+	item_state = "spickaxe"
+	digspeed = 30 //mines faster than a normal pickaxe, bought from mining vendor
+	origin_tech = "materials=3;engineering=2"
+	desc = "A silver-plated pickaxe that mines slightly faster than standard-issue."
 
 /obj/item/weapon/pickaxe/diamond
 	name = "diamond-tipped pickaxe"
@@ -169,10 +185,68 @@
 
 /obj/structure/closet/crate/miningcar
 	desc = "A mining car. This one doesn't work on rails, but has to be dragged."
-	name = "Mining car (not for rails)"
+	name = "mining car (not for rails)"
 	icon = 'icons/obj/storage.dmi'
 	icon_state = "miningcar"
 	density = 1
 	icon_opened = "miningcaropen"
 	icon_closed = "miningcar"
 
+/*********************Mob Capsule*************************/
+
+/obj/item/device/mobcapsule
+	name = "lazarus capsule"
+	desc = "It allows you to store and deploy lazarus-injected creatures easier."
+	icon = 'icons/obj/mobcap.dmi'
+	icon_state = "mobcap0"
+	w_class = 1.0
+	throw_range = 20
+	var/mob/living/simple_animal/captured = null
+	var/colorindex = 0
+
+/obj/item/device/mobcapsule/Destroy()
+	if(captured)
+		qdel(captured)
+		captured = null
+	return ..()
+
+/obj/item/device/mobcapsule/attack(var/atom/A, mob/user, prox_flag)
+	if(!istype(A, /mob/living/simple_animal))
+		return ..()
+	capture(A, user)
+	return 1
+
+/obj/item/device/mobcapsule/proc/capture(var/mob/target, var/mob/U as mob)
+	var/mob/living/simple_animal/T = target
+	if(captured)
+		U << "<span class='notice'>Capture failed!</span>: The capsule already has a mob registered to it!"
+	else
+		if(istype(T) && "neutral" in T.faction)
+			T.forceMove(src)
+			T.name = "[U.name]'s [initial(T.name)]"
+			T.cancel_camera()
+			name = "Lazarus Capsule: [initial(T.name)]"
+			U << "<span class='notice'>You placed a [T.name] inside the Lazarus Capsule!</span>"
+			captured = T
+		else
+			U << "You can't capture that mob!"
+
+/obj/item/device/mobcapsule/throw_impact(atom/A, mob/user)
+	..()
+	if(captured)
+		dump_contents(user)
+
+/obj/item/device/mobcapsule/proc/dump_contents(mob/user)
+	if(captured)
+		captured.forceMove(get_turf(src))
+		if(captured.client)
+			captured.client.eye = captured.client.mob
+			captured.client.perspective = MOB_PERSPECTIVE
+		captured = null
+
+/obj/item/device/mobcapsule/attack_self(mob/user)
+	colorindex += 1
+	if(colorindex >= 6)
+		colorindex = 0
+	icon_state = "mobcap[colorindex]"
+	update_icon()

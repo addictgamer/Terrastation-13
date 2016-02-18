@@ -444,44 +444,59 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 	var/list/areas_with_intercom = list()
 	var/list/areas_with_camera = list()
 
+	var/list/areas_with_multiple_APCs = list()
+	var/list/areas_with_multiple_air_alarms = list()
+
 	for(var/area/A in world)
-		if(!(A.type in areas_all))
-			areas_all.Add(A.type)
+		areas_all |= A.type
 
 	for(var/obj/machinery/power/apc/APC in world)
 		var/area/A = get_area(APC)
+		if(!A)
+			continue
 		if(!(A.type in areas_with_APC))
-			areas_with_APC.Add(A.type)
+			areas_with_APC |= A.type
+		else
+			areas_with_multiple_APCs |= A.type
 
 	for(var/obj/machinery/alarm/alarm in world)
 		var/area/A = get_area(alarm)
+		if(!A)
+			continue
 		if(!(A.type in areas_with_air_alarm))
-			areas_with_air_alarm.Add(A.type)
+			areas_with_air_alarm |= A.type
+		else
+			areas_with_multiple_air_alarms |= A.type
 
 	for(var/obj/machinery/requests_console/RC in world)
 		var/area/A = get_area(RC)
-		if(!(A.type in areas_with_RC))
-			areas_with_RC.Add(A.type)
+		if(!A)
+			continue
+		areas_with_RC |= A.type
 
 	for(var/obj/machinery/light/L in world)
 		var/area/A = get_area(L)
-		if(!(A.type in areas_with_light))
-			areas_with_light.Add(A.type)
+		if(!A)
+			continue
+		areas_with_light |= A.type
 
 	for(var/obj/machinery/light_switch/LS in world)
 		var/area/A = get_area(LS)
-		if(!(A.type in areas_with_LS))
-			areas_with_LS.Add(A.type)
+		if(!A)
+			continue
+		areas_with_LS |= A.type
 
 	for(var/obj/item/device/radio/intercom/I in world)
 		var/area/A = get_area(I)
-		if(!(A.type in areas_with_intercom))
-			areas_with_intercom.Add(A.type)
+		if(!A)
+			continue
+		areas_with_intercom |= A.type
 
 	for(var/obj/machinery/camera/C in world)
 		var/area/A = get_area(C)
-		if(!(A.type in areas_with_camera))
-			areas_with_camera.Add(A.type)
+		if(!A)
+			continue
+		areas_with_camera |= A.type
 
 	var/list/areas_without_APC = areas_all - areas_with_APC
 	var/list/areas_without_air_alarm = areas_all - areas_with_air_alarm
@@ -497,6 +512,14 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 
 	world << "<b>AREAS WITHOUT AN AIR ALARM:</b>"
 	for(var/areatype in areas_without_air_alarm)
+		world << "* [areatype]"
+
+	world << "<b>AREAS WITH TOO MANY APCS:</b>"
+	for(var/areatype in areas_with_multiple_APCs)
+		world << "* [areatype]"
+
+	world << "<b>AREAS WITH TOO MANY AIR ALARMS:</b>"
+	for(var/areatype in areas_with_multiple_air_alarms)
 		world << "* [areatype]"
 
 	world << "<b>AREAS WITHOUT A REQUEST CONSOLE:</b>"
@@ -647,7 +670,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 			M.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/thunderdome(M), slot_head)
 
 			M.equip_to_slot_or_del(new /obj/item/weapon/gun/energy/pulse_rifle/destroyer(M), slot_r_hand)
-			M.equip_to_slot_or_del(new /obj/item/weapon/kitchenknife(M), slot_l_hand)
+			M.equip_to_slot_or_del(new /obj/item/weapon/kitchen/knife(M), slot_l_hand)
 			M.equip_to_slot_or_del(new /obj/item/weapon/grenade/smokebomb(M), slot_r_store)
 
 
@@ -671,9 +694,9 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 			M.equip_to_slot_or_del(new /obj/item/clothing/head/chefhat(M), slot_head)
 
 			M.equip_to_slot_or_del(new /obj/item/weapon/kitchen/rollingpin(M), slot_r_hand)
-			M.equip_to_slot_or_del(new /obj/item/weapon/kitchenknife(M), slot_l_hand)
-			M.equip_to_slot_or_del(new /obj/item/weapon/kitchenknife(M), slot_r_store)
-			M.equip_to_slot_or_del(new /obj/item/weapon/kitchenknife(M), slot_s_store)
+			M.equip_to_slot_or_del(new /obj/item/weapon/kitchen/knife(M), slot_l_hand)
+			M.equip_to_slot_or_del(new /obj/item/weapon/kitchen/knife(M), slot_r_store)
+			M.equip_to_slot_or_del(new /obj/item/weapon/kitchen/knife(M), slot_s_store)
 
 		if ("tournament janitor")
 			M.equip_to_slot_or_del(new /obj/item/clothing/under/rank/janitor(M), slot_w_uniform)
@@ -750,7 +773,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 			M.equip_to_slot_or_del(new /obj/item/device/radio/headset(M), slot_l_ear)
 			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/thermal/monocle(M), slot_glasses)
 			M.equip_to_slot_or_del(new /obj/item/clothing/suit/apron(M), slot_wear_suit)
-			M.equip_to_slot_or_del(new /obj/item/weapon/kitchenknife(M), slot_l_store)
+			M.equip_to_slot_or_del(new /obj/item/weapon/kitchen/knife(M), slot_l_store)
 			M.equip_to_slot_or_del(new /obj/item/weapon/scalpel(M), slot_r_store)
 
 			var/obj/item/weapon/twohanded/fireaxe/fire_axe = new(M)
@@ -1095,7 +1118,7 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 		if(E.anchored)
 			E.active = 1
 
-	for(var/obj/machinery/field_generator/F in world)
+	for(var/obj/machinery/field/generator/F in world)
 		if(F.anchored)
 			F.Varedit_start = 1
 	spawn(30)
@@ -1177,3 +1200,18 @@ But you can call procs that are of type /mob/living/carbon/human/proc/ for that 
 		log_admin("[key_name(src)] has toggled [M.key]'s [blockname] block [state]!")
 	else
 		alert("Invalid mob")
+
+/client/proc/reload_nanoui_resources()
+	set category = "Debug"
+	set name = "Reload NanoUI Resources"
+	set desc = "Force the client to redownload NanoUI Resources"
+
+	// Close open NanoUIs.
+	nanomanager.close_user_uis(usr)
+
+	// Re-load the assets.
+	var/datum/asset/assets = get_asset_datum(/datum/asset/nanoui)
+	assets.register()
+
+	// Clear the user's cache so they get resent.
+	usr.client.cache = list()

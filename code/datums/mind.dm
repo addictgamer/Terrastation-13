@@ -58,6 +58,10 @@
 	var/datum/vampire/vampire			//vampire holder
 	var/datum/nations/nation			//nation holder
 
+	var/antag_hud_icon_state = null //this mind's ANTAG_HUD should have this icon_state
+	var/datum/atom_hud/antag/antag_hud = null //this mind's antag HUD
+	var/datum/mindslaves/som //stands for slave or master...hush..
+
 	var/rev_cooldown = 0
 
 	// the world.time since the mob has been brigged, or -1 if not at all
@@ -79,9 +83,11 @@
 
 	if(new_character.mind)		//remove any mind currently in our new body's mind variable
 		new_character.mind.current = null
-
+	var/datum/atom_hud/antag/hud_to_transfer = antag_hud//we need this because leave_hud() will clear this list
+	leave_all_huds()									//leave all the huds in the old body, so it won't get huds if somebody else enters it
 	current = new_character		//link ourself to our new body
 	new_character.mind = src	//and link our new body to ourself
+	transfer_antag_huds(hud_to_transfer)				//inherit the antag HUD
 	transfer_actions(new_character)
 
 	if(active)
@@ -141,7 +147,7 @@
 	var/mob/living/carbon/human/H = current
 	if (istype(current, /mob/living/carbon/human))
 		/** Impanted**/
-		if(H.is_loyalty_implanted())
+		if(isloyal(H))
 			text = "Loyalty Implant:<a href='?src=\ref[src];implant=remove'>Remove</a>|<b>Implanted</b></br>"
 		else
 			text = "Loyalty Implant:<b>No Implant</b>|<a href='?src=\ref[src];implant=add'>Implant him!</a></br>"
@@ -151,7 +157,7 @@
 		if (ticker.mode.config_tag=="revolution")
 			text += uppertext(text)
 		text = "<i><b>[text]</b></i>: "
-		if (H.is_loyalty_implanted())
+		if (isloyal(H))
 			text += "<b>LOYAL EMPLOYEE</b>|headrev|rev"
 		else if (src in ticker.mode.head_revolutionaries)
 			text = "<a href='?src=\ref[src];revolution=clear'>employee</a>|<b>HEADREV</b>|<a href='?src=\ref[src];revolution=rev'>rev</a>"
@@ -175,7 +181,7 @@
 		else
 			text += "<b>EMPLOYEE</b>|<a href='?src=\ref[src];revolution=headrev'>headrev</a>|<a href='?src=\ref[src];revolution=rev'>rev</a>"
 
-		if(current && current.client && current.client.prefs.be_special & BE_REV)
+		if(current && current.client && (ROLE_REV in current.client.prefs.be_special))
 			text += "|Enabled in Prefs"
 		else
 			text += "|Disabled in Prefs"
@@ -187,7 +193,7 @@
 		if (ticker.mode.config_tag=="cult")
 			text = uppertext(text)
 		text = "<i><b>[text]</b></i>: "
-		if (H.is_loyalty_implanted())
+		if (isloyal(H))
 			text += "<B>LOYAL EMPLOYEE</B>|cultist"
 		else if (src in ticker.mode.cult)
 			text += "<a href='?src=\ref[src];cult=clear'>employee</a>|<b>CULTIST</b>"
@@ -200,7 +206,7 @@
 			text += "<b>EMPLOYEE</b>|<a href='?src=\ref[src];cult=cultist'>cultist</a>"
 
 
-		if(current && current.client && current.client.prefs.be_special & BE_CULTIST)
+		if(current && current.client && (ROLE_CULTIST in current.client.prefs.be_special))
 			text += "|Enabled in Prefs"
 		else
 			text += "|Disabled in Prefs"
@@ -220,7 +226,7 @@
 		else
 			text += "<a href='?src=\ref[src];wizard=wizard'>yes</a>|<b>NO</b>"
 
-		if(current && current.client && current.client.prefs.be_special & BE_WIZARD)
+		if(current && current.client && (ROLE_WIZARD in current.client.prefs.be_special))
 			text += "|Enabled in Prefs"
 		else
 			text += "|Disabled in Prefs"
@@ -241,7 +247,7 @@
 		else
 			text += "<a href='?src=\ref[src];changeling=changeling'>yes</a>|<b>NO</b>"
 
-		if(current && current.client && current.client.prefs.be_special & BE_CHANGELING)
+		if(current && current.client && (ROLE_CHANGELING in current.client.prefs.be_special))
 			text += "|Enabled in Prefs"
 		else
 			text += "|Disabled in Prefs"
@@ -289,7 +295,7 @@
 		else
 			text += "<a href='?src=\ref[src];nuclear=nuclear'>operative</a>|<b>NANOTRASEN</b>"
 
-		if(current && current.client && current.client.prefs.be_special & BE_OPERATIVE)
+		if(current && current.client && (ROLE_OPERATIVE in current.client.prefs.be_special))
 			text += "|Enabled in Prefs"
 		else
 			text += "|Disabled in Prefs"
@@ -301,7 +307,7 @@
 		if (ticker.mode.config_tag=="traitor" || ticker.mode.config_tag=="traitorchan")
 			text = uppertext(text)
 		text = "<i><b>[text]</b></i>: "
-		if (H.is_loyalty_implanted())
+		if (isloyal(H))
 			text +="traitor|<b>LOYAL EMPLOYEE</b>"
 		else
 			if (src in ticker.mode.traitors)
@@ -311,7 +317,7 @@
 			else
 				text += "<a href='?src=\ref[src];traitor=traitor'>traitor</a>|<b>EMPLOYEE</b>"
 
-		if(current && current.client && current.client.prefs.be_special & BE_TRAITOR)
+		if(current && current.client && (ROLE_TRAITOR in current.client.prefs.be_special))
 			text += "|Enabled in Prefs"
 		else
 			text += "|Disabled in Prefs"
@@ -330,7 +336,7 @@
 		else
 			text += "<a href='?src=\ref[src];shadowling=shadowling'>shadowling</a>|<a href='?src=\ref[src];shadowling=thrall'>thrall</a>|<b>HUMAN</b>"
 
-		if(current && current.client && current.client.prefs.be_special & BE_SHADOWLING)
+		if(current && current.client && (ROLE_SHADOWLING in current.client.prefs.be_special))
 			text += "|Enabled in Prefs"
 		else
 			text += "|Disabled in Prefs"
@@ -610,14 +616,12 @@
 	else if(href_list["implant"])
 		var/mob/living/carbon/human/H = current
 
-		H.hud_updateflag |= (1 << IMPLOYAL_HUD)   // updates that players HUD images so secHUD's pick up they are implanted or not.
-
 		switch(href_list["implant"])
 			if("remove")
 				for(var/obj/item/weapon/implant/loyalty/I in H.contents)
-					for(var/obj/item/organ/external/organs in H.organs)
-						if(I in organs.implants)
-							qdel(I)
+					if(I && I.implanted)
+						I.removed(H)
+						qdel(I)
 				H << "\blue <Font size =3><B>Your loyalty implant has been deactivated.</B></FONT>"
 				log_admin("[key_name(usr)] has deactivated [key_name(current)]'s loyalty implant")
 				message_admins("[key_name_admin(usr)] has deactivated [key_name_admin(current)]'s loyalty implant")
@@ -625,9 +629,7 @@
 				var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(H)
 				L.imp_in = H
 				L.implanted = 1
-				var/obj/item/organ/external/affected = H.organs_by_name["head"]
-				affected.implants += L
-				L.part = affected
+				H.sec_hud_set_implants()
 
 				log_admin("[key_name(usr)] has given [key_name(current)] a loyalty implant")
 				message_admins("[key_name_admin(usr)] has given [key_name_admin(current)] a loyalty implant")
@@ -650,14 +652,8 @@
 						cult.memorize_cult_objectives(src)
 					current << "\red <FONT size = 3><B>The nanobots in the loyalty implant remove all thoughts about being in a cult.  Have a productive day!</B></FONT>"
 					memory = ""
-				if(src in ticker.mode.traitors)
-					ticker.mode.traitors -= src
-					special_role = null
-					current << "\red <FONT size = 3><B>The nanobots in the loyalty implant remove all thoughts about being a traitor to Nanotrasen.  Have a nice day!</B></FONT>"
-					log_admin("[key_name_admin(usr)] has de-traitor'ed [current].")
 
 	else if (href_list["revolution"])
-		current.hud_updateflag |= (1 << SPECIALROLE_HUD)
 
 		switch(href_list["revolution"])
 			if("clear")
@@ -761,7 +757,6 @@
 				message_admins("[key_name_admin(usr)] has equipped [key_name_admin(current)] as a revolutionary")
 
 	else if (href_list["cult"])
-		current.hud_updateflag |= (1 << SPECIALROLE_HUD)
 		switch(href_list["cult"])
 			if("clear")
 				if(src in ticker.mode.cult)
@@ -804,7 +799,6 @@
 				message_admins("[key_name_admin(usr)] has equipped [key_name_admin(current)] as a cultist")
 
 	else if (href_list["wizard"])
-		current.hud_updateflag |= (1 << SPECIALROLE_HUD)
 
 		switch(href_list["wizard"])
 			if("clear")
@@ -813,6 +807,7 @@
 					special_role = null
 					current.spellremove(current)
 					current.faction = list("Station")
+					ticker.mode.update_wiz_icons_removed(src)
 					current << "\red <FONT size = 3><B>You have been brainwashed! You are no longer a wizard!</B></FONT>"
 					log_admin("[key_name(usr)] has de-wizarded [key_name(current)]")
 					message_admins("[key_name_admin(usr)] has de-wizarded [key_name_admin(current)]")
@@ -821,6 +816,7 @@
 					ticker.mode.wizards += src
 					special_role = "Wizard"
 					//ticker.mode.learn_basic_spells(current)
+					ticker.mode.update_wiz_icons_added(src)
 					current << "<B>\red You are the Space Wizard!</B>"
 					current.faction = list("wizard")
 					log_admin("[key_name(usr)] has wizarded [key_name(current)]")
@@ -845,13 +841,13 @@
 
 
 	else if (href_list["changeling"])
-		current.hud_updateflag |= (1 << SPECIALROLE_HUD)
 		switch(href_list["changeling"])
 			if("clear")
 				if(src in ticker.mode.changelings)
 					ticker.mode.changelings -= src
 					special_role = null
 					current.remove_changeling_powers()
+					ticker.mode.update_change_icons_removed(src)
 					if(changeling)	qdel(changeling)
 					current << "<FONT color='red' size = 3><B>You grow weak and lose your powers! You are no longer a changeling and are stuck in your current form!</B></FONT>"
 					log_admin("[key_name(usr)] has de-changelinged [key_name(current)]")
@@ -860,6 +856,7 @@
 				if(!(src in ticker.mode.changelings))
 					ticker.mode.changelings += src
 					ticker.mode.grant_changeling_powers(current)
+					ticker.mode.update_change_icons_added(src)
 					special_role = "Changeling"
 					current << "<B><font color='red'>Your powers are awoken. A flash of memory returns to us...we are a changeling!</font></B>"
 					log_admin("[key_name(usr)] has changelinged [key_name(current)]")
@@ -889,6 +886,7 @@
 					ticker.mode.vampires -= src
 					special_role = null
 					current.remove_vampire_powers()
+					ticker.mode.update_vampire_icons_removed(src)
 					if(vampire)  qdel(vampire)
 					current << "<FONT color='red' size = 3><B>You grow weak and lose your powers! You are no longer a vampire and are stuck in your current form!</B></FONT>"
 					log_admin("[key_name(usr)] has de-vampired [key_name(current)]")
@@ -897,6 +895,10 @@
 				if(!(src in ticker.mode.vampires))
 					ticker.mode.vampires += src
 					ticker.mode.grant_vampire_powers(current)
+					ticker.mode.update_vampire_icons_added(src)
+					var/datum/mindslaves/slaved = new()
+					slaved.masters += src
+					src.som = slaved //we MIGT want to mindslave someone
 					special_role = "Vampire"
 					current << "<B><font color='red'>Your powers are awoken. Your lust for blood grows... You are a Vampire!</font></B>"
 					log_admin("[key_name(usr)] has vampired [key_name(current)]")
@@ -911,8 +913,6 @@
 
 	else if (href_list["nuclear"])
 		var/mob/living/carbon/human/H = current
-
-		current.hud_updateflag |= (1 << SPECIALROLE_HUD)
 
 		switch(href_list["nuclear"])
 			if("clear")
@@ -977,7 +977,6 @@
 					usr << "\red No valid nuke found!"
 
 	else if (href_list["traitor"])
-		current.hud_updateflag |= (1 << SPECIALROLE_HUD)
 		switch(href_list["traitor"])
 			if("clear")
 				if(src in ticker.mode.traitors)
@@ -990,11 +989,15 @@
 						var/mob/living/silicon/ai/A = current
 						A.set_zeroth_law("")
 						A.show_laws()
+					ticker.mode.update_traitor_icons_removed(src)
 
 
 			if("traitor")
 				if(!(src in ticker.mode.traitors))
 					ticker.mode.traitors += src
+					var/datum/mindslaves/slaved = new()
+					slaved.masters += src
+					src.som = slaved //we MIGT want to mindslave someone
 					special_role = "traitor"
 					current << "<B>\red You are a traitor!</B>"
 					log_admin("[key_name(usr)] has traitored [key_name(current)]")
@@ -1003,6 +1006,7 @@
 						var/mob/living/silicon/A = current
 						call(/datum/game_mode/proc/add_law_zero)(A)
 						A.show_laws()
+					ticker.mode.update_traitor_icons_added(src)
 
 			if("autoobjectives")
 				ticker.mode.forge_traitor_objectives(src)
@@ -1054,7 +1058,6 @@
 				log_admin("[key_name(usr)] has thralled [current].")
 
 	else if (href_list["silicon"])
-		current.hud_updateflag |= (1 << SPECIALROLE_HUD)
 		switch(href_list["silicon"])
 			if("unmalf")
 				if(src in ticker.mode.malf_ai)
@@ -1073,7 +1076,6 @@
 					qdel(A.malf_picker)
 					A.show_laws()
 					A.icon_state = "ai"
-
 					A << "\red <FONT size = 3><B>You have been patched! You are no longer malfunctioning!</B></FONT>"
 					message_admins("[key_name_admin(usr)] has de-malf'ed [A].")
 					log_admin("[key_name(usr)] has de-malf'd [key_name(current)]")
@@ -1233,6 +1235,7 @@
 		ticker.mode.forge_traitor_objectives(src)
 		ticker.mode.finalize_traitor(src)
 		ticker.mode.greet_traitor(src)
+		ticker.mode.update_traitor_icons_added(src)
 
 /datum/mind/proc/make_Nuke()
 	if(!(src in ticker.mode.syndicates))
@@ -1272,6 +1275,7 @@
 		special_role = "Changeling"
 		ticker.mode.forge_changeling_objectives(src)
 		ticker.mode.greet_changeling(src)
+		ticker.mode.update_change_icons_added(src)
 
 /datum/mind/proc/make_Wizard()
 	if(!(src in ticker.mode.wizards))
@@ -1291,6 +1295,7 @@
 		ticker.mode.name_wizard(current)
 		ticker.mode.forge_wizard_objectives(src)
 		ticker.mode.greet_wizard(src)
+		ticker.mode.update_wiz_icons_added(src)
 
 
 /datum/mind/proc/make_Cultist()

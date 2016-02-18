@@ -170,3 +170,13 @@
 #define POLLTYPE_MULTI		"MULTICHOICE"
 
 #define MIDNIGHT_ROLLOVER	864000 //number of deciseconds in a day
+
+#define MANIFEST_ERROR_NAME		1
+#define MANIFEST_ERROR_COUNT	2
+#define MANIFEST_ERROR_ITEM		4
+
+//Turf wet states
+#define TURF_DRY		0
+#define TURF_WET_WATER	1
+#define TURF_WET_LUBE	2
+#define TURF_WET_ICE	3

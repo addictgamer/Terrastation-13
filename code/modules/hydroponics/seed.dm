@@ -42,6 +42,7 @@
 	set_trait(TRAIT_MATURATION,           0)            // Time taken before the plant is mature.
 	set_trait(TRAIT_PRODUCTION,           0)            // Time before harvesting can be undertaken again.
 	set_trait(TRAIT_TELEPORTING,          0)            // Uses the bluespace tomato effect.
+	set_trait(TRAIT_BATTERY_RECHARGE,     0)            // Used for glowcaps; recharges batteries on a user.
 	set_trait(TRAIT_BIOLUM,               0)            // Plant is bioluminescent.
 	set_trait(TRAIT_ALTER_TEMP,           0)            // If set, the plant will periodically alter local temp by this amount.
 	set_trait(TRAIT_PRODUCT_ICON,         0)            // Icon to use for fruit coming from this plant.
@@ -143,6 +144,8 @@
 // Adds reagents to a target.
 /datum/seed/proc/do_sting(var/mob/living/carbon/human/target, var/obj/item/fruit, var/target_limb)
 	if(!get_trait(TRAIT_STINGS))
+		return
+	if(!istype(target))
 		return
 	if(!target_limb)		//if we weren't given a target_limb, pick a random one to try stinging
 		target_limb = pick("l_foot","r_foot","l_leg","r_leg","l_hand","r_hand","l_arm", "r_arm","head","chest","groin")
@@ -675,7 +678,7 @@
 			P.values["[TRAIT_EXUDE_GASSES]"] = exude_gasses
 			traits_to_copy = list(TRAIT_POTENCY)
 		if(GENE_OUTPUT)
-			traits_to_copy = list(TRAIT_PRODUCES_POWER,TRAIT_BIOLUM)
+			traits_to_copy = list(TRAIT_PRODUCES_POWER,TRAIT_BIOLUM,TRAIT_BATTERY_RECHARGE)
 		if(GENE_ATMOSPHERE)
 			traits_to_copy = list(TRAIT_HEAT_TOLERANCE,TRAIT_LOWKPA_TOLERANCE,TRAIT_HIGHKPA_TOLERANCE)
 		if(GENE_HARDINESS)
@@ -770,7 +773,7 @@
 // When the seed in this machine mutates/is modified, the tray seed value
 // is set to a new datum copied from the original. This datum won't actually
 // be put into the global datum list until the product is harvested, though.
-/datum/seed/proc/diverge(var/modified)
+/datum/seed/proc/diverge(var/modified = 0)
 
 	if(get_trait(TRAIT_IMMUTABLE) > 0) return
 
@@ -792,8 +795,17 @@
 	new_seed.modular_icon = modular_icon
 	new_seed.preset_icon = preset_icon
 
-	new_seed.seed_name =            "[(roundstart ? "[(modified ? "modified" : "mutant")] " : "")][seed_name]"
-	new_seed.display_name =         "[(roundstart ? "[(modified ? "modified" : "mutant")] " : "")][display_name]"
+	switch(modified)
+		if(0)	//Mutant (default)
+			new_seed.seed_name = "mutant [seed_name]"
+			new_seed.display_name = "mutant [seed_name]"
+		if(1)	//Modified
+			new_seed.seed_name = "modified [seed_name]"
+			new_seed.display_name = "modified [seed_name]"
+		if(2)	//Enhanced
+			new_seed.seed_name = "enhanced [seed_name]"
+			new_seed.display_name = "enhanced [seed_name]"
+
 	new_seed.seed_noun =            seed_noun
 	new_seed.traits = traits.Copy()
 	new_seed.update_growth_stages()

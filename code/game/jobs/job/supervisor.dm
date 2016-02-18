@@ -38,10 +38,8 @@ var/datum/announcement/minor/captain_announcement = new(do_newscast = 1)
 		var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(H)
 		L.imp_in = H
 		L.implanted = 1
+		H.sec_hud_set_implants()
 		captain_announcement.Announce("All hands, captain [H.real_name] on deck!")
-		var/obj/item/organ/external/affected = H.organs_by_name["head"]
-		affected.implants += L
-		L.part = affected
 		callHook("captain_spawned", list("captain" = H))
 		return 1
 
@@ -136,9 +134,7 @@ var/datum/announcement/minor/captain_announcement = new(do_newscast = 1)
 		var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(H)
 		L.imp_in = H
 		L.implanted = 1
-		var/obj/item/organ/external/affected = H.organs_by_name["head"]
-		affected.implants += L
-		L.part = affected
+		H.sec_hud_set_implants()
 		return 1
 
 /datum/job/blueshield
@@ -171,21 +167,21 @@ var/datum/announcement/minor/captain_announcement = new(do_newscast = 1)
 		H.equip_or_collect(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
 		H.equip_or_collect(new /obj/item/clothing/gloves/combat(H), slot_gloves)
 		H.equip_or_collect(new /obj/item/clothing/shoes/jackboots(H), slot_shoes)
-		H.equip_or_collect(new /obj/item/clothing/glasses/hud/health_advanced, slot_glasses)
+		H.equip_or_collect(new /obj/item/clothing/glasses/hud/health/health_advanced, slot_glasses)
 		H.equip_or_collect(new /obj/item/clothing/under/rank/blueshield(H), slot_w_uniform)
 		H.equip_or_collect(new /obj/item/clothing/suit/armor/vest/blueshield(H), slot_wear_suit)
-		H.equip_or_collect(new /obj/item/weapon/gun/energy/advtaser(H), slot_s_store)
 		H.equip_or_collect(new /obj/item/device/pda/heads/blueshield(H), slot_wear_pda)
+
 		if(H.backbag == 1)
 			H.equip_or_collect(new /obj/item/weapon/storage/box/deathimp(H), slot_r_hand)
+			H.equip_or_collect(new /obj/item/weapon/gun/energy/blueshield(H), slot_l_hand)
 		else
 			H.equip_or_collect(new /obj/item/weapon/storage/box/deathimp(H.back), slot_in_backpack)
+			H.equip_or_collect(new /obj/item/weapon/gun/energy/blueshield(H.back), slot_in_backpack)
 		var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(H)
 		L.imp_in = H
 		L.implanted = 1
-		var/obj/item/organ/external/affected = H.organs_by_name["head"]
-		affected.implants += L
-		L.part = affected
+		H.sec_hud_set_implants()
 		return 1
 
 /datum/job/judge
@@ -219,16 +215,14 @@ var/datum/announcement/minor/captain_announcement = new(do_newscast = 1)
 		H.equip_or_collect(new /obj/item/clothing/suit/judgerobe(H), slot_wear_suit)
 		H.equip_or_collect(new /obj/item/clothing/shoes/centcom(H), slot_shoes)
 		H.equip_or_collect(new /obj/item/clothing/head/powdered_wig(H), slot_head)
-		H.equip_or_collect(new /obj/item/clothing/glasses/sunglasses/sechud(H), slot_glasses)
+		H.equip_or_collect(new /obj/item/clothing/glasses/hud/security/sunglasses(H), slot_glasses)
 		H.equip_or_collect(new /obj/item/device/pda/heads/magistrate(H), slot_wear_pda)
 		H.equip_or_collect(new /obj/item/weapon/melee/classic_baton/telescopic(H.back), slot_in_backpack)
 		H.equip_or_collect(new /obj/item/device/flash(H), slot_r_store)
 		var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(H)
 		L.imp_in = H
 		L.implanted = 1
-		var/obj/item/organ/external/affected = H.organs_by_name["head"]
-		affected.implants += L
-		L.part = affected
+		H.sec_hud_set_implants()
 		return 1
 
 //var/global/lawyer = 0//Checks for another lawyer //This changed clothes on 2nd lawyer, both IA get the same dreds.
@@ -256,7 +250,7 @@ var/datum/announcement/minor/captain_announcement = new(do_newscast = 1)
 		H.equip_or_collect(new /obj/item/clothing/under/rank/internalaffairs(H), slot_w_uniform)
 		H.equip_or_collect(new /obj/item/clothing/suit/storage/internalaffairs(H), slot_wear_suit)
 		H.equip_or_collect(new /obj/item/clothing/shoes/brown(H), slot_shoes)
-		H.equip_or_collect(new /obj/item/clothing/glasses/sunglasses/sechud(H), slot_glasses)
+		H.equip_or_collect(new /obj/item/clothing/glasses/hud/security/sunglasses(H), slot_glasses)
 		H.equip_or_collect(new /obj/item/device/pda/lawyer(H), slot_wear_pda)
 		H.equip_or_collect(new /obj/item/weapon/storage/briefcase(H), slot_l_hand)
 		H.equip_or_collect(new /obj/item/device/laser_pointer(H), slot_l_store)
@@ -268,7 +262,5 @@ var/datum/announcement/minor/captain_announcement = new(do_newscast = 1)
 		var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(H)
 		L.imp_in = H
 		L.implanted = 1
-		var/obj/item/organ/external/affected = H.organs_by_name["head"]
-		affected.implants += L
-		L.part = affected
+		H.sec_hud_set_implants()
 		return 1

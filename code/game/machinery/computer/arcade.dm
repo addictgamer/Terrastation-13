@@ -13,7 +13,7 @@
 							/obj/item/toy/blink								= 2,
 							/obj/item/weapon/storage/box/fakesyndiesuit		= 2,
 							/obj/item/toy/sword								= 2,
-							/obj/item/toy/gun								= 2,
+							/obj/item/weapon/gun/projectile/revolver/capgun								= 2,
 							/obj/item/toy/crossbow							= 2,
 							/obj/item/weapon/storage/fancy/crayons			= 2,
 							/obj/item/toy/spinningtoy						= 2,
@@ -39,6 +39,7 @@
 							/obj/item/toy/toy_xeno                          = 2,
 							/obj/random/figure								= 16,
 							/obj/random/plushie                          	= 7,
+							/obj/item/stack/tile/fakespace/loaded			= 2,
 							)
 
 /obj/machinery/computer/arcade/power_change()
@@ -60,8 +61,8 @@
 		var/prizeselect = pickweight(prizes)
 		new prizeselect(src.loc)
 
-		if(istype(prizeselect, /obj/item/toy/gun)) //Ammo comes with the gun
-			new /obj/item/toy/ammo/gun(src.loc)
+		if(istype(prizeselect, /obj/item/weapon/gun/projectile/revolver/capgun)) //Ammo comes with the gun
+			new /obj/item/ammo_box/caps(src.loc)
 
 		else if(istype(prizeselect, /obj/item/clothing/suit/syndicatefake)) //Helmet is part of the suit
 			new	/obj/item/clothing/head/syndicatefake(src.loc)
@@ -154,7 +155,7 @@
 			src.blocked = 1
 			var/attackamt = rand(2,6)
 			src.temp = "You attack for [attackamt] damage!"
-			playsound(src.loc, 'sound/arcade/Hit.ogg', 50, 1, extrarange = -3, falloff = 10)
+			playsound(src.loc, 'sound/arcade/Hit.ogg', 20, 1, extrarange = -6, falloff = 10)
 			src.updateUsrDialog()
 			if(turtle > 0)
 				turtle--
@@ -168,7 +169,7 @@
 			var/pointamt = rand(1,3)
 			var/healamt = rand(6,8)
 			src.temp = "You use [pointamt] magic to heal for [healamt] damage!"
-			playsound(src.loc, 'sound/arcade/Heal.ogg', 50, 1, extrarange = -3, falloff = 10)
+			playsound(src.loc, 'sound/arcade/Heal.ogg', 20, 1, extrarange = -6, falloff = 10)
 			src.updateUsrDialog()
 			turtle++
 
@@ -183,7 +184,7 @@
 			src.blocked = 1
 			var/chargeamt = rand(4,7)
 			src.temp = "You regain [chargeamt] points"
-			playsound(src.loc, 'sound/arcade/Mana.ogg', 50, 1, extrarange = -3, falloff = 10)
+			playsound(src.loc, 'sound/arcade/Mana.ogg', 20, 1, extrarange = -6, falloff = 10)
 			src.player_mp += chargeamt
 			if(turtle > 0)
 				turtle--
@@ -218,7 +219,7 @@
 		if(!gameover)
 			src.gameover = 1
 			src.temp = "[src.enemy_name] has fallen! Rejoice!"
-			playsound(src.loc, 'sound/arcade/Win.ogg', 50, 1, extrarange = -3, falloff = 10)
+			playsound(src.loc, 'sound/arcade/Win.ogg', 20, 1, extrarange = -6, falloff = 10)
 
 			if(emagged)
 				feedback_inc("arcade_win_emagged")
@@ -235,13 +236,13 @@
 	else if (emagged && (turtle >= 4))
 		var/boomamt = rand(5,10)
 		src.temp = "[src.enemy_name] throws a bomb, exploding you for [boomamt] damage!"
-		playsound(src.loc, 'sound/arcade/Boom.ogg', 50, 1, extrarange = -3, falloff = 10)
+		playsound(src.loc, 'sound/arcade/Boom.ogg', 20, 1, extrarange = -6, falloff = 10)
 		src.player_hp -= boomamt
 
 	else if ((src.enemy_mp <= 5) && (prob(70)))
 		var/stealamt = rand(2,3)
 		src.temp = "[src.enemy_name] steals [stealamt] of your power!"
-		playsound(src.loc, 'sound/arcade/Steal.ogg', 50, 1, extrarange = -3, falloff = 10)
+		playsound(src.loc, 'sound/arcade/Steal.ogg', 20, 1, extrarange = -6, falloff = 10)
 		src.player_mp -= stealamt
 		src.updateUsrDialog()
 
@@ -249,7 +250,7 @@
 			src.gameover = 1
 			sleep(10)
 			src.temp = "You have been drained! GAME OVER"
-			playsound(src.loc, 'sound/arcade/Lose.ogg', 50, 1, extrarange = -3, falloff = 10)
+			playsound(src.loc, 'sound/arcade/Lose.ogg', 20, 1, extrarange = -6, falloff = 10)
 			if(emagged)
 				feedback_inc("arcade_loss_mana_emagged")
 				usr.gib()
@@ -258,20 +259,20 @@
 
 	else if ((src.enemy_hp <= 10) && (src.enemy_mp > 4))
 		src.temp = "[src.enemy_name] heals for 4 health!"
-		playsound(src.loc, 'sound/arcade/Heal.ogg', 50, 1, extrarange = -3, falloff = 10)
+		playsound(src.loc, 'sound/arcade/Heal.ogg', 20, 1, extrarange = -6, falloff = 10)
 		src.enemy_hp += 4
 		src.enemy_mp -= 4
 
 	else
 		var/attackamt = rand(3,6)
 		src.temp = "[src.enemy_name] attacks for [attackamt] damage!"
-		playsound(src.loc, 'sound/arcade/Hit.ogg', 50, 1, extrarange = -3, falloff = 10)
+		playsound(src.loc, 'sound/arcade/Hit.ogg', 20, 1, extrarange = -6, falloff = 10)
 		src.player_hp -= attackamt
 
 	if ((src.player_mp <= 0) || (src.player_hp <= 0))
 		src.gameover = 1
 		src.temp = "You have been crushed! GAME OVER"
-		playsound(src.loc, 'sound/arcade/Lose.ogg', 50, 1, extrarange = -3, falloff = 10)
+		playsound(src.loc, 'sound/arcade/Lose.ogg', 20, 1, extrarange = -6, falloff = 10)
 		if(emagged)
 			feedback_inc("arcade_loss_hp_emagged")
 			usr.gib()
@@ -533,9 +534,9 @@
 								T.ChangeTurf(/turf/simulated/floor/plating/)
 					else
 						atom_say("Something slams into the floor around [src] - luckily, it didn't get through!")
-						playsound(src.loc, 'sound/effects/bang.ogg', 50, 1)
+						playsound(src.loc, 'sound/effects/bang.ogg', 20, 1)
 				if(ORION_TRAIL_MALFUNCTION)
-					playsound(src.loc, 'sound/effects/EMPulse.ogg', 50, 1)
+					playsound(src.loc, 'sound/effects/EMPulse.ogg', 20, 1)
 					src.visible_message("<span class='danger'>[src] malfunctions, randomizing in-game stats!</span>")
 					var/oldfood = food
 					var/oldfuel = fuel
@@ -549,7 +550,7 @@
 							src.audible_message("<span class='danger'>[src] lets out a somehow ominous chime.</span>")
 						food = oldfood
 						fuel = oldfuel
-						playsound(src.loc, 'sound/machines/chime.ogg', 50, 1)
+						playsound(src.loc, 'sound/machines/chime.ogg', 20, 1)
 
 	else if(href_list["newgame"]) //Reset everything
 		newgame()

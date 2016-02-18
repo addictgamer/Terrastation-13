@@ -10,7 +10,7 @@
 		return 0
 
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
-	return affected && affected.open == (affected.encased ? 3 : 2)
+	return affected && affected.open_enough_for_surgery()
 
 //////////////////////////////////////////////////////////////////
 //					Dethrall Shadowling 						//
@@ -29,25 +29,29 @@
 		if (!hasorgans(target))
 			return
 		var/obj/item/organ/external/affected = target.get_organ(target_zone)
-		return ..() && affected && is_thrall(target) && affected.open == 3 && target_zone == "head"
+		return ..() && affected && is_thrall(target) && affected.open_enough_for_surgery() && target_zone == target.named_organ_parent("brain")
 
 	begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-		user.visible_message("[user] begins looking around in [target]'s head.", "<span class='notice'>You begin looking for foreign influences on [target]'s brain...")
+		var/braincase = target.named_organ_parent("brain")
+		user.visible_message("[user] begins looking around in [target]'s [braincase].", "<span class='notice'>You begin looking for foreign influences on [target]'s brain...")
 		user << "<span class='warning'>You locate a small, pulsing black tumor on the side of [target]'s brain and begin to remove it.</span>"
-		target << "<span class='boldannounce'>A small part of your head pulses with agony as the light impacts it.</span>"
-		user.visible_message("[user] begins removing something from [target]'s head.</span>", \
+		target << "<span class='boldannounce'>A small part of your [braincase] pulses with agony as the light impacts it.</span>"
+		user.visible_message("[user] begins removing something from [target]'s [braincase].</span>", \
 							 "<span class='notice'>You begin carefully extracting the tumor...</span>")
 		..()
 
 	end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+		var/braincase = target.named_organ_parent("brain")
 		user.visible_message("<span class='notice'>[user] carefully extracts the tumor from [target]'s brain!</span>", \
-							 "<span class='notice'>You extract the black tumor from [target]'s head. It quickly shrivels and burns away.</span>")
+							 "<span class='notice'>You extract the black tumor from [target]'s [braincase]. It quickly shrivels and burns away.</span>")
 		ticker.mode.remove_thrall(target.mind,0)
 
 	fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+		var/braincase = target.named_organ_parent("brain")
 		if(prob(50))
-			user.visible_message("<span class='warning'>[user] slips and rips the tumor out from [target]'s head!</span>", \
+			user.visible_message("<span class='warning'>[user] slips and rips the tumor out from [target]'s [braincase]!</span>", \
 								 "<span class='warning'><b>You fumble and tear out [target]'s tumor!</span>")
+			target.adjustBrainLoss(110) // This is so you can't just defib'n go
 			ticker.mode.remove_thrall(target.mind,1)
 		else
 			user.visible_message("<span class='warning'>[user]'s hand slips and fumbles! Luckily, they didn't damage anything!</span>")
@@ -75,7 +79,7 @@
 		if (!hasorgans(target))
 			return
 		var/obj/item/organ/external/affected = target.get_organ(target_zone)
-		return ..() && affected && embryo && affected.open == 3 && target_zone == "chest"
+		return ..() && affected && embryo && affected.open_enough_for_surgery() && target_zone == "chest"
 
 	begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/msg = "[user] starts to pull something out from [target]'s ribcage with \the [tool]."
@@ -113,7 +117,7 @@
 			return
 		var/is_organ_damaged = 0
 		for(var/obj/item/organ/I in affected.internal_organs)
-			if(I.damage > 0)
+			if(I.damage > 0 && I.robotic < 2)
 				is_organ_damaged = 1
 				break
 		return ..() && is_organ_damaged
@@ -132,6 +136,7 @@
 		for(var/obj/item/organ/I in affected.internal_organs)
 			if(I && I.damage > 0)
 				if(I.robotic < 2)
+					spread_germs_to_organ(I, user)
 					user.visible_message("[user] starts treating damage to [target]'s [I.name] with [tool_name].", \
 					"You start treating damage to [target]'s [I.name] with [tool_name]." )
 
@@ -184,7 +189,7 @@
 
 	allowed_tools = list(
 	/obj/item/weapon/scalpel = 100,		\
-	/obj/item/weapon/kitchenknife = 75,	\
+	/obj/item/weapon/kitchen/knife = 75,	\
 	/obj/item/weapon/shard = 50, 		\
 	)
 
@@ -202,18 +207,20 @@
 			return 0
 
 		target.op_stage.current_organ = null
+		target.op_stage.organ_ref = null
 
 		var/list/attached_organs = list()
-		for(var/organ in target.internal_organs_by_name)
-			var/obj/item/organ/I = target.internal_organs_by_name[organ]
+		for(var/organ in affected.internal_organs)
+			var/obj/item/organ/I = organ
 			if(I && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == target_zone)
-				attached_organs |= organ
+				attached_organs[I.organ_tag] = I
 
 		var/organ_to_remove = input(user, "Which organ do you want to prepare for removal?") as null|anything in attached_organs
 		if(!organ_to_remove)
 			return 0
 
 		target.op_stage.current_organ = organ_to_remove
+		target.op_stage.organ_ref = attached_organs[organ_to_remove]
 
 		return ..() && organ_to_remove
 
@@ -230,8 +237,9 @@
 		user.visible_message("\blue [user] has separated [target]'s [target.op_stage.current_organ] with \the [tool]." , \
 		"\blue You have separated [target]'s [target.op_stage.current_organ] with \the [tool].")
 
-		var/obj/item/organ/I = target.internal_organs_by_name[target.op_stage.current_organ]
+		var/obj/item/organ/I = target.op_stage.organ_ref
 		if(I && istype(I))
+			spread_germs_to_organ(I, user)
 			I.status |= ORGAN_CUT_AWAY
 
 	fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -255,20 +263,26 @@
 
 		if (!..())
 			return 0
+		var/obj/item/organ/external/affected = target.get_organ(target_zone)
+
+		if(!istype(affected))
+			return 0
 
 		target.op_stage.current_organ = null
+		target.op_stage.organ_ref = null
 
 		var/list/removable_organs = list()
-		for(var/organ in target.internal_organs_by_name)
-			var/obj/item/organ/I = target.internal_organs_by_name[organ]
-			if((I.status & ORGAN_CUT_AWAY) && I.parent_organ == target_zone)
-				removable_organs |= organ
+		for(var/organ in affected.internal_organs)
+			var/obj/item/organ/I = organ
+			if(istype(I) && (I.status & ORGAN_CUT_AWAY) && I.parent_organ == target_zone)
+				removable_organs[I.organ_tag] = I
 
 		var/organ_to_remove = input(user, "Which organ do you want to remove?") as null|anything in removable_organs
 		if(!organ_to_remove)
 			return 0
 
 		target.op_stage.current_organ = organ_to_remove
+		target.op_stage.organ_ref = removable_organs[organ_to_remove]
 		return ..()
 
 	begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -283,10 +297,10 @@
 
 		// Extract the organ!
 		if(target.op_stage.current_organ)
-			var/obj/item/organ/O = target.internal_organs_by_name[target.op_stage.current_organ]
+			var/obj/item/organ/O = target.op_stage.organ_ref
 			if(O && istype(O))
+				spread_germs_to_organ(O, user)
 				O.removed(user)
-			target.op_stage.current_organ = null
 
 	fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/obj/item/organ/external/affected = target.get_organ(target_zone)
@@ -365,6 +379,7 @@
 		var/obj/item/organ/O = tool
 		if(istype(O))
 			O.replaced(target,affected)
+			spread_germs_to_organ(O, user)
 
 	fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		user.visible_message("\red [user]'s hand slips, damaging \the [tool]!", \
@@ -387,19 +402,26 @@
 		if (!..())
 			return 0
 
+		var/obj/item/organ/external/affected = target.get_organ(target_zone)
+
+		if(!istype(affected))
+			return 0
+
 		target.op_stage.current_organ = null
+		target.op_stage.organ_ref = null
 
 		var/list/removable_organs = list()
-		for(var/organ in target.internal_organs_by_name)
-			var/obj/item/organ/I = target.internal_organs_by_name[organ]
-			if(I && (I.status & ORGAN_CUT_AWAY) && !(I.status & ORGAN_ROBOT) && I.parent_organ == target_zone)
-				removable_organs |= organ
+		for(var/organ in affected.internal_organs)
+			var/obj/item/organ/I = organ
+			if(I && istype(I) && (I.status & ORGAN_CUT_AWAY) && !(I.status & ORGAN_ROBOT) && I.parent_organ == target_zone)
+				removable_organs[I.organ_tag] = I
 
 		var/organ_to_replace = input(user, "Which organ do you want to reattach?") as null|anything in removable_organs
 		if(!organ_to_replace)
 			return 0
 
 		target.op_stage.current_organ = organ_to_replace
+		target.op_stage.organ_ref = removable_organs[organ_to_replace]
 		return ..()
 
 	begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -412,9 +434,10 @@
 		user.visible_message("\blue [user] has reattached [target]'s [target.op_stage.current_organ] with \the [tool]." , \
 		"\blue You have reattached [target]'s [target.op_stage.current_organ] with \the [tool].")
 
-		var/obj/item/organ/I = target.internal_organs_by_name[target.op_stage.current_organ]
+		var/obj/item/organ/I = target.op_stage.organ_ref
 		if(I && istype(I))
 			I.status &= ~ORGAN_CUT_AWAY
+			spread_germs_to_organ(I, user)
 
 	fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/obj/item/organ/external/affected = target.get_organ(target_zone)
@@ -429,7 +452,7 @@
 // /datum/surgery_step/ribcage/heart/cut
 //	allowed_tools = list(
 //	/obj/item/weapon/scalpel = 100,		\
-//	/obj/item/weapon/kitchenknife = 75,	\
+//	/obj/item/weapon/kitchen/knife = 75,	\
 //	/obj/item/weapon/shard = 50, 		\
 //	)
 

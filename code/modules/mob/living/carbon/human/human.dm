@@ -6,7 +6,7 @@
 	icon_state = "body_m_s"
 
 	//why are these here and not in human_defines.dm
-	var/list/hud_list[10]
+	//var/list/hud_list[10]
 	var/datum/species/species //Contains icon generation and language information, set during New().
 	var/embedded_flag	  //To check if we've need to roll for damage on movement while an item is imbedded in us.
 	var/obj/item/weapon/rig/wearing_rig // This is very not good, but it's much much better than calling get_rig() every update_canmove() call.
@@ -18,27 +18,19 @@
 
 	if(!species)
 		if(new_species)
-			set_species(new_species, 1)
+			set_species(new_species, 1, delay_icon_update = 1)
 		else
-			set_species()
+			set_species(delay_icon_update = 1)
 
 	if(species)
-		name = species.get_random_name(gender)
+		real_name = species.get_random_name(gender)
+		name = real_name
+		if(mind)
+			mind.name = real_name
 
 	var/datum/reagents/R = new/datum/reagents(330)
 	reagents = R
 	R.my_atom = src
-
-	hud_list[HEALTH_HUD]      = image('icons/mob/hud.dmi', src, "hudhealth100")
-	hud_list[STATUS_HUD]      = image('icons/mob/hud.dmi', src, "hudhealthy")
-	hud_list[ID_HUD]          = image('icons/mob/hud.dmi', src, "hudunknown")
-	hud_list[WANTED_HUD]      = image('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPLOYAL_HUD]    = image('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPCHEM_HUD]     = image('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[IMPTRACK_HUD]    = image('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[SPECIALROLE_HUD] = image('icons/mob/hud.dmi', src, "hudblank")
-	hud_list[STATUS_HUD_OOC]  = image('icons/mob/hud.dmi', src, "hudhealthy")
-	hud_list[NATIONS_HUD]     = image('icons/mob/hud.dmi', src, "hudblank")
 
 	..()
 
@@ -53,7 +45,21 @@
 		dna.ready_dna(src)
 		dna.real_name = real_name
 		sync_organ_dna() //this shouldn't be necessaaaarrrryyyyyyyy
+
+	if(species)
+		species.handle_dna(src)
+
 	UpdateAppearance()
+
+/mob/living/carbon/human/prepare_data_huds()
+	//Update med hud images...
+	..()
+	//...sec hud images...
+	sec_hud_set_ID()
+	sec_hud_set_implants()
+	sec_hud_set_security_status()
+	//...and display them.
+	add_to_all_human_data_huds()
 
 /mob/living/carbon/human/Destroy()
 	for(var/atom/movable/organelle in organs)
@@ -70,7 +76,7 @@
 	..(new_loc, "Skrell")
 
 /mob/living/carbon/human/tajaran/New(var/new_loc)
-	h_style = "Tajaran Ears"
+	ha_style = "Tajaran Ears"
 	..(new_loc, "Tajaran")
 
 /mob/living/carbon/human/vulpkanin/New(var/new_loc)
@@ -89,9 +95,9 @@
 	h_style = "Bald"
 	..(new_loc, "Vox Armalis")
 
-/mob/living/carbon/human/skellington/New(var/new_loc)
+/mob/living/carbon/human/skeleton/New(var/new_loc)
 	h_style = "Bald"
-	..(new_loc, "Skellington")
+	..(new_loc, "Skeleton")
 
 /mob/living/carbon/human/kidan/New(var/new_loc)
 	..(new_loc, "Kidan")
@@ -246,15 +252,13 @@
 	stat(null, "Intent: [a_intent]")
 	stat(null, "Move Mode: [m_intent]")
 
-	stat(null, "Station Time: [worldtime2text()]")
+	show_stat_station_time()
 
 	if(ticker && ticker.mode && ticker.mode.name == "AI malfunction")
 		if(ticker.mode:malf_mode_declared)
 			stat(null, "Time left: [max(ticker.mode:AI_win_timeleft/(ticker.mode:apcs/3), 0)]")
-	if(emergency_shuttle)
-		var/eta_status = emergency_shuttle.get_status_panel_eta()
-		if(eta_status)
-			stat(null, eta_status)
+
+	show_stat_emergency_shuttle_eta()
 
 	if(client.statpanel == "Status")
 		if(locate(/obj/item/device/assembly/health) in src)
@@ -278,6 +282,10 @@
 			if(mind.changeling)
 				stat("Chemical Storage", "[mind.changeling.chem_charges]/[mind.changeling.chem_storage]")
 				stat("Absorbed DNA", mind.changeling.absorbedcount)
+
+			if(mind.vampire)
+				stat("Total Blood", "[mind.vampire.bloodtotal]")
+				stat("Usable Blood", "[mind.vampire.bloodusable]")
 
 			if(mind.nation)
 				stat("Nation Name", "[mind.nation.current_name ? "[mind.nation.current_name]" : "[mind.nation.default_name]"]")
@@ -374,33 +382,7 @@
 			if(prob(50) && !shielded)
 				Paralyse(10)
 
-	var/update = 0
-	var/weapon_message = "Explosive Blast"
-	for(var/obj/item/organ/external/temp in organs)
-		switch(temp.limb_name)
-			if("head")
-				update |= temp.take_damage(b_loss * 0.2,   f_loss * 0.2,   used_weapon = weapon_message)
-			if("chest")
-				update |= temp.take_damage(b_loss * 0.4,   f_loss * 0.4,   used_weapon = weapon_message)
-			if("groin")
-				update |= temp.take_damage(b_loss * 0.1,   f_loss * 0.1,   used_weapon = weapon_message)
-			if("l_arm")
-				update |= temp.take_damage(b_loss * 0.05,  f_loss * 0.05,  used_weapon = weapon_message)
-			if("r_arm")
-				update |= temp.take_damage(b_loss * 0.05,  f_loss * 0.05,  used_weapon = weapon_message)
-			if("l_leg")
-				update |= temp.take_damage(b_loss * 0.05,  f_loss * 0.05,  used_weapon = weapon_message)
-			if("r_leg")
-				update |= temp.take_damage(b_loss * 0.05,  f_loss * 0.05,  used_weapon = weapon_message)
-			if("r_foot")
-				update |= temp.take_damage(b_loss * 0.025, f_loss * 0.025, used_weapon = weapon_message)
-			if("l_foot")
-				update |= temp.take_damage(b_loss * 0.025, f_loss * 0.025, used_weapon = weapon_message)
-			if("r_hand")
-				update |= temp.take_damage(b_loss * 0.025, f_loss * 0.025, used_weapon = weapon_message)
-			if("l_hand")
-				update |= temp.take_damage(b_loss * 0.025, f_loss * 0.025, used_weapon = weapon_message)
-	if(update)	UpdateDamageIcon()
+	take_overall_damage(b_loss,f_loss, used_weapon = "Explosive Blast")
 
 	..()
 
@@ -411,6 +393,15 @@
 	var/dam_zone = pick("head", "chest", "groin", "l_arm", "l_hand", "r_arm", "r_hand", "l_leg", "l_foot", "r_leg", "r_foot")
 	var/obj/item/organ/external/affecting = get_organ(ran_zone(dam_zone))
 	apply_damage(5, BRUTE, affecting, run_armor_check(affecting, "melee"))
+
+/mob/living/carbon/human/bullet_act()
+	if(martial_art && martial_art.deflection_chance) //Some martial arts users can deflect projectiles!
+		if(!prob(martial_art.deflection_chance))
+			return ..()
+		if(!src.lying && !(HULK in mutations)) //But only if they're not lying down, and hulks can't do it
+			src.visible_message("<span class='warning'>[src] deflects the projectile!</span>", "<span class='userdanger'>You deflect the projectile!</span>")
+			return 0
+	..()
 
 /mob/living/carbon/human/attack_animal(mob/living/simple_animal/M as mob)
 	if(M.melee_damage_upper == 0)
@@ -456,19 +447,10 @@
 			var/armor_block = run_armor_check(affecting, "melee")
 			apply_damage(damage, BRUTE, affecting, armor_block)
 
-/mob/living/carbon/human/proc/is_loyalty_implanted()
-	for(var/L in contents)
-		if(istype(L, /obj/item/weapon/implant/loyalty))
-			for(var/obj/item/organ/external/O in organs)
-				if(L in O.implants)
-					return 1
-	return 0
-
 /mob/living/carbon/human/attack_slime(mob/living/carbon/slime/M as mob)
 	if(M.Victim) return // can't attack while eating!
 
-	if (health > -100)
-
+	if(stat != DEAD)
 		M.do_attack_animation(src)
 		visible_message("<span class='danger'>The [M.name] glomps [src]!</span>", \
 				"<span class='userdanger'>The [M.name] glomps [src]!</span>")
@@ -743,20 +725,37 @@
 
 //Removed the horrible safety parameter. It was only being used by ninja code anyways.
 //Now checks siemens_coefficient of the affected area by default
-/mob/living/carbon/human/electrocute_act(var/shock_damage, var/obj/source, var/base_siemens_coeff = 1.0, var/def_zone = null,var/override = 0)
-
+/mob/living/carbon/human/electrocute_act(shock_damage, obj/source, siemens_coeff = 1, safety = 0, override = 0, tesla_shock = 0)
 	if(status_flags & GODMODE)	//godmode
 		return 0
 	if(NO_SHOCK in mutations) //shockproof
 		return 0
-
-	if (!def_zone)
-		def_zone = pick("l_hand", "r_hand")
-
-	var/obj/item/organ/external/affected_organ = get_organ(check_zone(def_zone))
-	var/siemens_coeff = base_siemens_coeff * get_siemens_coefficient_organ(affected_organ)
-
-	return ..(shock_damage, source, siemens_coeff, def_zone,override)
+	if(tesla_shock)
+		var/total_coeff = 1
+		if(gloves)
+			var/obj/item/clothing/gloves/G = gloves
+			if(G.siemens_coefficient <= 0)
+				total_coeff -= 0.5
+		if(wear_suit)
+			var/obj/item/clothing/suit/S = wear_suit
+			if(S.siemens_coefficient <= 0)
+				total_coeff -= 0.95
+		siemens_coeff = total_coeff
+	else if(!safety)
+		var/gloves_siemens_coeff = 1
+		var/species_siemens_coeff = 1
+		if(gloves)
+			var/obj/item/clothing/gloves/G = gloves
+			gloves_siemens_coeff = G.siemens_coefficient
+		if(species)
+			species_siemens_coeff = species.siemens_coeff
+		siemens_coeff = gloves_siemens_coeff * species_siemens_coeff
+	if(heart_attack)
+		if(shock_damage * siemens_coeff >= 1 && prob(25))
+			heart_attack = 0
+			if(stat == CONSCIOUS)
+				src << "<span class='notice'>You feel your heart beating again!</span>"
+	. = ..()
 
 
 /mob/living/carbon/human/Topic(href, href_list)
@@ -858,13 +857,12 @@
 										modified = 1
 
 										spawn()
-											hud_updateflag |= 1 << WANTED_HUD
 											if(istype(usr,/mob/living/carbon/human))
-												var/mob/living/carbon/human/U = usr
-												U.handle_regular_hud_updates()
+												//var/mob/living/carbon/human/U = usr
+												sec_hud_set_security_status()
 											if(istype(usr,/mob/living/silicon/robot))
-												var/mob/living/silicon/robot/U = usr
-												U.handle_regular_hud_updates()
+												//var/mob/living/silicon/robot/U = usr
+												sec_hud_set_security_status()
 
 			if(!modified)
 				usr << "\red Unable to locate a data core entry for this person."
@@ -990,11 +988,11 @@
 
 									spawn()
 										if(istype(usr,/mob/living/carbon/human))
-											var/mob/living/carbon/human/U = usr
-											U.handle_regular_hud_updates()
+											//var/mob/living/carbon/human/U = usr
+											sec_hud_set_security_status()
 										if(istype(usr,/mob/living/silicon/robot))
-											var/mob/living/silicon/robot/U = usr
-											U.handle_regular_hud_updates()
+											//var/mob/living/silicon/robot/U = usr
+											sec_hud_set_security_status()
 
 			if(!modified)
 				usr << "\red Unable to locate a data core entry for this person."
@@ -1449,7 +1447,7 @@
 	else
 		usr << "\blue [self ? "Your" : "[src]'s"] pulse is [src.get_pulse(GETPULSE_HAND)]."
 
-/mob/living/carbon/human/proc/set_species(var/new_species, var/default_colour)
+/mob/living/carbon/human/proc/set_species(var/new_species, var/default_colour, var/delay_icon_update = 0)
 
 	var/datum/species/oldspecies = species
 	if(!dna)
@@ -1482,6 +1480,10 @@
 	make_blood()
 
 	maxHealth = species.total_health
+
+	toxins_alert = 0
+	oxygen_alert = 0
+	fire_alert = 0
 
 	if(species.language)
 		add_language(species.language)
@@ -1520,7 +1522,8 @@
 		regenerate_icons()
 		fixblood()
 
-	UpdateAppearance()
+	if(!delay_icon_update)
+		UpdateAppearance()
 
 	if(species)
 		return 1
@@ -1583,7 +1586,7 @@
 			src << "<span class='warning'>You ran out of blood to write with!</span>"
 
 		var/obj/effect/decal/cleanable/blood/writing/W = new(T)
-
+		W.message = message
 		W.add_fingerprint(src)
 
 // Allows IPC's to change their monitor display

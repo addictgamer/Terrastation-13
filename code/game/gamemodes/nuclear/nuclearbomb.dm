@@ -203,7 +203,7 @@ var/bomb_set
 
 	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
 	if (!ui)
-		ui = new(user, src, ui_key, "nuclear_bomb.tmpl", "Nuke Control Panel", 300, 510)
+		ui = new(user, src, ui_key, "nuclear_bomb.tmpl", "Nuke Control Panel", 450, 550)
 		ui.set_initial_data(data)
 		ui.open()
 		ui.set_auto_update(1)
@@ -361,9 +361,9 @@ var/bomb_set
 
 	if(ticker)
 		if(ticker.mode && ticker.mode.name == "nuclear emergency")
-			var/obj/machinery/computer/shuttle_control/multi/syndicate/syndie_location = locate(/obj/machinery/computer/shuttle_control/multi/syndicate)
-			if(syndie_location)
-				ticker.mode:syndies_didnt_escape = (syndie_location.z > 1 ? 0 : 1)	//muskets will make me change this, but it will do for now
+			var/obj/docking_port/mobile/syndie_shuttle = shuttle_master.getShuttle("syndicate")
+			if(syndie_shuttle)
+				ticker.mode:syndies_didnt_escape = (syndie_shuttle.z > 1 ? 0 : 1)	//muskets will make me change this, but it will do for now
 			ticker.mode:nuke_off_station = off_station
 		ticker.station_explosion_cinematic(off_station,null)
 		if(ticker.mode)

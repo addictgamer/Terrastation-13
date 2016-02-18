@@ -54,7 +54,7 @@
 	update_canmove()
 
 	if(client)
-		regular_hud_updates() //THIS DOESN'T FUCKING UPDATE SHIT
+		//regular_hud_updates() //THIS DOESN'T FUCKING UPDATE SHIT
 		handle_regular_hud_updates() //IT JUST REMOVES FUCKING HUD IMAGES
 	if(get_nations_mode())
 		process_nations()
@@ -110,6 +110,7 @@
 	handle_drugged()
 	handle_slurring()
 	handle_paralysed()
+	handle_sleeping()
 
 
 /mob/living/proc/handle_stunned()
@@ -150,6 +151,11 @@
 	if(paralysis)
 		AdjustParalysis(-1)
 	return paralysis
+
+/mob/living/proc/handle_sleeping()
+	if(sleeping)
+		sleeping = max(sleeping - 1, 0)
+	return sleeping
 
 
 

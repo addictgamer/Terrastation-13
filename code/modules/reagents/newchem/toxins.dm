@@ -454,6 +454,7 @@ datum/reagent/lipolicide
 	description = "A compound found in many seedy dollar stores in the form of a weight-loss tonic."
 	reagent_state = SOLID
 	color = "#D1DED1"
+	metabolization_rate = 0.2
 
 /datum/chemical_reaction/lipolicide
 	name = "lipolicide"
@@ -465,7 +466,8 @@ datum/reagent/lipolicide
 datum/reagent/lipolicide/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
 	if(!holder.has_reagent("nutriment"))
-		M.adjustToxLoss(1)
+		if(prob(30))
+			M.adjustToxLoss(1)
 	M.nutrition -= 10 * REAGENTS_METABOLISM
 	M.overeatduration = 0
 	if(M.nutrition < 0)//Prevent from going into negatives.
@@ -742,4 +744,38 @@ datum/reagent/ants/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
 	M.adjustBruteLoss(2)
 	..()
+	return
+
+/datum/reagent/teslium //Teslium. Causes periodic shocks, and makes shocks against the target much more effective.
+	name = "Teslium"
+	id = "teslium"
+	description = "An unstable, electrically-charged metallic slurry. Increases the conductance of living things."
+	reagent_state = LIQUID
+	color = "#20324D" //RGB: 32, 50, 77
+	metabolization_rate = 0.2
+	var/shock_timer = 0
+
+/datum/reagent/teslium/on_mob_life(mob/living/M)
+	shock_timer++
+	if(shock_timer >= rand(5,30)) //Random shocks are wildly unpredictable
+		shock_timer = 0
+		M.electrocute_act(rand(5,20), "Teslium in their body", 1, 1) //Override because it's caused from INSIDE of you
+		playsound(M, "sparks", 50, 1)
+	..()
+
+/datum/chemical_reaction/teslium
+	name = "Teslium"
+	id = "teslium"
+	result = "teslium"
+	required_reagents = list("plasma" = 1, "silver" = 1, "blackpowder" = 1)
+	result_amount = 3
+	mix_message = "<span class='danger'>A jet of sparks flies from the mixture as it merges into a flickering slurry.</span>"
+	min_temp = 400
+	mix_sound = null
+
+/datum/chemical_reaction/teslium/on_reaction(var/datum/reagents/holder, var/created_volume)
+	var/location = get_turf(holder.my_atom)
+	var/datum/effect/system/spark_spread/s = new /datum/effect/system/spark_spread
+	s.set_up(6, 1, location)
+	s.start()
 	return

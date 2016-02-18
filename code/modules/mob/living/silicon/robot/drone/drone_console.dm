@@ -1,5 +1,5 @@
 /obj/machinery/computer/drone_control
-	name = "Maintenance Drone Control"
+	name = "maintenance drone control console"
 	desc = "Used to monitor the station's drone population and the assembler that services them."
 	icon_screen = "power"
 	icon_keyboard = "power_key"
@@ -22,6 +22,13 @@
 	if(!allowed(user))
 		user << "\red Access denied."
 		return
+
+	interact(user)
+
+/obj/machinery/computer/drone_control/attack_ghost(mob/user as mob)
+	interact(user)
+
+/obj/machinery/computer/drone_control/interact(mob/user)
 
 	user.set_machine(src)
 	var/dat

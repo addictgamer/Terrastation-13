@@ -278,6 +278,7 @@ datum/reagent/sal_acid
 	description = "This is a is a standard salicylate pain reliever and fever reducer."
 	reagent_state = LIQUID
 	color = "#B3B3B3"
+	metabolization_rate = 0.1
 	shock_reduction = 25
 	overdose_threshold = 25
 
@@ -285,6 +286,10 @@ datum/reagent/sal_acid/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
 	if(prob(55))
 		M.adjustBruteLoss(-2*REM)
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		if(H.traumatic_shock < 100)
+			H.shock_stage = 0
 	..()
 	return
 
@@ -458,6 +463,10 @@ datum/reagent/morphine/on_mob_life(var/mob/living/M as mob)
 		if(36 to INFINITY)
 			M.Paralyse(10)
 			M.drowsyness = max(M.drowsyness, 15)
+	if(ishuman(M))
+		var/mob/living/carbon/human/H = M
+		if(H.traumatic_shock < 100)
+			H.shock_stage = 0
 	..()
 	return
 
@@ -641,8 +650,7 @@ datum/reagent/strange_reagent/reaction_mob(var/mob/living/M as mob, var/method=T
 	if(istype(M, /mob/living/simple_animal))
 		if(method == TOUCH)
 			if(M.stat == DEAD)
-				M.health = M.maxHealth
-				M.update_revive()
+				M.revive()
 				M.visible_message("<span class='warning'>[M] seems to rise from the dead!</span>")
 	if(istype(M, /mob/living/carbon))
 		if(method == INGEST)
@@ -752,19 +760,20 @@ proc/chemical_mob_spawn(var/datum/reagents/holder, var/amount_to_spawn, var/reac
 
 /datum/reagent/mutadone/on_mob_life(var/mob/living/carbon/human/M as mob)
 	M.jitteriness = 0
-	var/needs_update = 1 //M.mutations.len > 0
+	var/needs_update = M.mutations.len > 0 || M.disabilities > 0 || M.sdisabilities > 0
 
-	for(var/block=1;block<=DNA_SE_LENGTH;block++)
-		M.dna.SetSEState(block,0)
-		genemutcheck(M,block,null,MUTCHK_FORCED)
-		M.update_mutations()
+	if(needs_update)
+		for(var/block=1;block<=DNA_SE_LENGTH;block++)
+			M.dna.SetSEState(block,0, 1)
+			genemutcheck(M,block,null,MUTCHK_FORCED)
+		M.dna.UpdateSE()
 
-	M.dna.struc_enzymes = M.dna.struc_enzymes_original
+		M.dna.struc_enzymes = M.dna.struc_enzymes_original
 
-	// Might need to update appearance for hulk etc.
-	if(needs_update && ishuman(M))
-		var/mob/living/carbon/human/H = M
-		H.update_mutations()
+		// Might need to update appearance for hulk etc.
+		if(ishuman(M))
+			var/mob/living/carbon/human/H = M
+			H.update_mutations()
 	..()
 	return
 
@@ -794,7 +803,7 @@ datum/reagent/antihol/on_mob_life(var/mob/living/M as mob)
 	M.drowsyness = 0
 	M.slurring = 0
 	M.confused = 0
-	M.reagents.remove_reagent("ethanol", 8)
+	M.reagents.remove_all_type(/datum/reagent/ethanol, 8, 0, 1)
 	if(M.health < 25)
 		M.adjustToxLoss(-2.0)
 	..()
@@ -1007,12 +1016,8 @@ datum/reagent/haloperidol/on_mob_life(var/mob/living/M as mob)
 	if (!istype(T)) return
 	src = null
 	if(volume >= 1)
-		if(T.wet >= 2)			//Clears lube! Fight back against the slipping, and WIN!
-			T.wet = 0
-			if(T.wet_overlay)
-				T.overlays -= T.wet_overlay
-				T.wet_overlay = null
-			return
+		if(istype(T) && T.wet)
+			T.MakeDry(TURF_WET_LUBE)
 
 /datum/reagent/degreaser/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom

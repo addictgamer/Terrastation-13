@@ -60,6 +60,18 @@
 	locked = 1
 	category = list("Weapons")
 
+/datum/design/wormhole_projector
+	name = "Bluespace Wormhole Projector"
+	desc = "A projector that emits high density quantum-coupled bluespace beams."
+	id = "wormholeprojector"
+	req_tech = list("combat" = 6, "materials" = 6, "bluespace" = 4)
+	build_type = PROTOLATHE
+	materials = list(MAT_SILVER = 1000, MAT_METAL = 5000, MAT_DIAMOND = 3000)
+	build_path = /obj/item/weapon/gun/energy/wormhole_projector
+	locked = 1
+	access_requirement = list(access_rd) //screw you, HoS, this aint yours; this is only for a man of science---and trouble.
+	category = list("Weapons")
+
 /datum/design/large_grenade
 	name = "Large Grenade"
 	desc = "A grenade that affects a larger area and use larger containers."
@@ -133,7 +145,7 @@
 	materials = list(MAT_METAL = 2000)
 	build_path = /obj/item/ammo_box/magazine/smgm9mm
 	category = list("Weapons")
-	
+
 /datum/design/mag_smg/ap_mag
 	name = "Saber Submachine Gun Magazine (9mmAP)"
 	desc = "A 30-round armour piercing magazine for the Saber submachine gun. Deals slightly less damage but bypasses most armor."
@@ -154,6 +166,39 @@
 	id = "mag_smg_tx"
 	materials = list(MAT_METAL = 3000, MAT_GLASS = 200, MAT_URANIUM = 1000)
 	build_path = /obj/item/ammo_box/magazine/smgm9mm/toxin
+
+//WT550 Mags
+
+/datum/design/mag_oldsmg
+	name = "WT-550 Auto Gun Magazine (4.6×30mm)"
+	desc = "A 20 round magazine for the out of date security WT-550 Auto Rifle"
+	id = "mag_oldsmg"
+	req_tech = list("combat" = 1, "materials" = 1)
+	build_type = PROTOLATHE
+	materials = list(MAT_METAL = 4000)
+	build_path = /obj/item/ammo_box/magazine/wt550m9
+	category = list("Weapons")
+
+/datum/design/mag_oldsmg/ap_mag
+	name = "WT-550 Auto Gun Armour Piercing Magazine (4.6×30mm AP)"
+	desc = "A 20 round armour piercing magazine for the out of date security WT-550 Auto Rifle"
+	id = "mag_oldsmg_ap"
+	materials = list(MAT_METAL = 6000, MAT_SILVER = 600)
+	build_path = /obj/item/ammo_box/magazine/wt550m9/wtap
+
+/datum/design/mag_oldsmg/ic_mag
+	name = "WT-550 Auto Gun Incendiary Magazine (4.6×30mm IC)"
+	desc = "A 20 round armour piercing magazine for the out of date security WT-550 Auto Rifle"
+	id = "mag_oldsmg_ic"
+	materials = list(MAT_METAL = 6000, MAT_SILVER = 600, MAT_GLASS = 1000)
+	build_path = /obj/item/ammo_box/magazine/wt550m9/wtic
+
+/datum/design/mag_oldsmg/tx_mag
+	name = "WT-550 Auto Gun Urnaium Magazine (4.6×30mm TX)"
+	desc = "A 20 round urnaium tipped magazine for the out of date security WT-550 Auto Rifle"
+	id = "mag_oldsmg_tx"
+	materials = list(MAT_METAL = 6000, MAT_SILVER = 600, MAT_URANIUM = 2000)
+	build_path = /obj/item/ammo_box/magazine/wt550m9/wttx
 
 /datum/design/rapidsyringe
 	name = "Rapid Syringe Gun"

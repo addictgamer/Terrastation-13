@@ -36,7 +36,7 @@
 	var/feature_object_spell_system = 0 //spawns a spellbook which gives object-type spells instead of verb-type spells for the wizard
 	var/traitor_scaling = 0 			//if amount of traitors scales based on amount of players
 	var/protect_roles_from_antagonist = 0// If security and such can be tratior/cult/other
-	var/continous_rounds = 0			// Gamemodes which end instantly will instead keep on going until the round ends by escape shuttle or nuke.
+	var/continuous_rounds = 0			// Gamemodes which end instantly will instead keep on going until the round ends by escape shuttle or nuke.
 	var/allow_Metadata = 0				// Metadata is supported.
 	var/popup_admin_pm = 0				//adminPMs to non-admins show in a pop-up 'reply' window when set to 1.
 	var/Ticklag = 0.9
@@ -106,6 +106,8 @@
 
 	var/auto_toggle_ooc_during_round = 0
 
+	var/shuttle_refuel_delay = 12000
+
 	//Used for modifying movement speed for mobs.
 	//Unversal modifiers
 	var/run_speed = 0
@@ -133,7 +135,7 @@
 	var/comms_password = ""
 
 	var/use_irc_bot = 0
-	var/irc_bot_host = ""
+	var/list/irc_bot_host = list()
 	var/main_irc = ""
 	var/admin_irc = ""
 	var/python_path = "" //Path to the python executable.  Defaults to "python" on windows and "/usr/bin/env python2" on unix
@@ -447,7 +449,7 @@
 					config.gateway_delay = text2num(value)
 
 				if("continuous_rounds")
-					config.continous_rounds = 1
+					config.continuous_rounds = 1
 
 				if("ghost_interaction")
 					config.ghost_interaction = 1
@@ -456,7 +458,7 @@
 					config.comms_password = value
 
 				if("irc_bot_host")
-					config.irc_bot_host = value
+					config.irc_bot_host = text2list(value, ";")
 
 				if("main_irc")
 					config.main_irc = value
@@ -599,6 +601,8 @@
 					config.bones_can_break = value
 				if("limbs_can_break")
 					config.limbs_can_break = value
+				if("shuttle_refuel_delay")
+					config.shuttle_refuel_delay     = text2num(value)
 				if("reactionary_explosions")
 					config.reactionary_explosions	= 1
 				if("bombcap")

@@ -64,20 +64,20 @@ obj/effect/proc_holder/spell/targeted/lightning/proc/Reset(mob/user = usr)
 		Reset(user)
 		return
 
-	user.Beam(target,icon_state="lightning",icon='icons/effects/effects.dmi',time=5)
+	user.Beam(target,icon_state="lightning[rand(1,12)]",icon='icons/effects/effects.dmi',time=5)
 
 	var/energy = min(world.time - start_time,100)
 	Bolt(user,target,max(15,energy/2),5,user) //5 bounces for energy/2 burn
 	Reset(user)
 
 /obj/effect/proc_holder/spell/targeted/lightning/proc/Bolt(mob/origin, mob/target, bolt_energy, bounces, mob/user = usr)
-	origin.Beam(target,icon_state="lightning",icon='icons/effects/effects.dmi',time=5)
+	origin.Beam(target,icon_state="lightning[rand(1,12)]",icon='icons/effects/effects.dmi',time=5)
 	var/mob/living/carbon/current = target
 	if(bounces < 1)
-		current.electrocute_act(bolt_energy,"Lightning Bolt", def_zone = "chest")
+		current.electrocute_act(bolt_energy,"Lightning Bolt",safety=1)
 		playsound(get_turf(current), 'sound/machines/defib_zap.ogg', 50, 1, -1)
 	else
-		current.electrocute_act(bolt_energy,"Lightning Bolt", def_zone = "chest")
+		current.electrocute_act(bolt_energy,"Lightning Bolt",safety=1)
 		playsound(get_turf(current), 'sound/machines/defib_zap.ogg', 50, 1, -1)
 		var/list/possible_targets = new
 		for(var/mob/living/M in view_or_range(range,target,"view"))

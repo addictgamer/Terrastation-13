@@ -42,7 +42,7 @@
 	var/gender = NEUTER	//Determines if the accessory will be skipped or included in random hair generations
 
 	// Restrict some styles to specific species
-	var/list/species_allowed = list("Human")
+	var/list/species_allowed = list("Human", "Slime People")
 
 	// Whether or not the accessory can be affected by colouration
 	var/do_colouration = 1
@@ -64,7 +64,7 @@
 		name = "Bald"
 		icon_state = "bald"
 		gender = MALE
-		species_allowed = list("Human","Unathi","Vox","Diona","Kidan","Grey","Plasmaman","Skellington")
+		species_allowed = list("Human","Unathi","Vox","Diona","Kidan","Grey","Plasmaman","Skeleton")
 
 	short
 		name = "Short Hair"	  // try to capatilize the names please~
@@ -368,79 +368,104 @@
 //////END VG HAIRSTYLES///////
 //////////////////////////////
 
-	icp_screen_pink
+	ipc_screen_pink
 		name = "pink IPC screen"
 		icon_state = "ipc_pink"
 		species_allowed = list("Machine")
 
-	icp_screen_red
+	ipc_screen_red
 		name = "red IPC screen"
 		icon_state = "ipc_red"
 		species_allowed = list("Machine")
 
-	icp_screen_green
+	ipc_screen_green
 		name = "green IPC screen"
 		icon_state = "ipc_green"
 		species_allowed = list("Machine")
 
-	icp_screen_blue
+	ipc_screen_blue
 		name = "blue IPC screen"
 		icon_state = "ipc_blue"
 		species_allowed = list("Machine")
 
-	icp_screen_breakout
+	ipc_screen_breakout
 		name = "breakout IPC screen"
 		icon_state = "ipc_breakout"
 		species_allowed = list("Machine")
 
-	icp_screen_eight
+	ipc_screen_eight
 		name = "eight IPC screen"
 		icon_state = "ipc_eight"
 		species_allowed = list("Machine")
 
-	icp_screen_goggles
+	ipc_screen_rainbow
+		name = "rainbow IPC screen"
+		icon_state = "ipc_rainbow"
+		species_allowed = list("Machine")
+
+	ipc_screen_goggles
 		name = "goggles IPC screen"
 		icon_state = "ipc_goggles"
 		species_allowed = list("Machine")
 
-	icp_screen_heart
+	ipc_screen_heart
 		name = "heart IPC screen"
 		icon_state = "ipc_heart"
 		species_allowed = list("Machine")
 
-	icp_screen_monoeye
+	ipc_screen_monoeye
 		name = "monoeye IPC screen"
 		icon_state = "ipc_monoeye"
 		species_allowed = list("Machine")
 
-	icp_screen_nature
+	ipc_screen_nature
 		name = "nature IPC screen"
 		icon_state = "ipc_nature"
 		species_allowed = list("Machine")
 
-	icp_screen_orange
+	ipc_screen_orange
 		name = "orange IPC screen"
 		icon_state = "ipc_orange"
 		species_allowed = list("Machine")
 
-	icp_screen_purple
+	ipc_screen_purple
 		name = "purple IPC screen"
 		icon_state = "ipc_purple"
 		species_allowed = list("Machine")
 
-	icp_screen_shower
+	ipc_screen_shower
 		name = "shower IPC screen"
 		icon_state = "ipc_shower"
 		species_allowed = list("Machine")
 
-	icp_screen_static
+	ipc_screen_static
 		name = "static IPC screen"
 		icon_state = "ipc_static"
 		species_allowed = list("Machine")
 
-	icp_screen_yellow
+	ipc_screen_yellow
 		name = "yellow IPC screen"
 		icon_state = "ipc_yellow"
+		species_allowed = list("Machine")
+
+	ipc_screen_scrolling
+		name = "scanline IPC screen"
+		icon_state = "ipc_scroll"
+		species_allowed = list("Machine")
+
+	ipc_screen_console
+		name = "console IPC screen"
+		icon_state = "ipc_console"
+		species_allowed = list("Machine")
+
+	ipc_screen_rgb
+		name = "rgb IPC screen"
+		icon_state = "ipc_rgb"
+		species_allowed = list("Machine")
+
+	ipc_screen_glider
+		name = "glider IPC screen"
+		icon_state = "ipc_gol_glider"
 		species_allowed = list("Machine")
 
 /*
@@ -460,7 +485,7 @@
 		name = "Shaved"
 		icon_state = "bald"
 		gender = NEUTER
-		species_allowed = list("Human","Unathi","Tajaran","Skrell","Vox","Diona","Kidan","Greys","Machine", "Vulpkanin")
+		species_allowed = list("Human","Unathi","Tajaran","Skrell","Vox","Diona","Kidan","Greys","Machine", "Vulpkanin", "Slime People")
 
 
 	watson
@@ -564,25 +589,6 @@
 */
 
 /datum/sprite_accessory/hair
-	una_spines_long
-		name = "Long Unathi Spines"
-		icon_state = "soghun_longspines"
-		species_allowed = list("Unathi")
-
-	una_spines_short
-		name = "Short Unathi Spines"
-		icon_state = "soghun_shortspines"
-		species_allowed = list("Unathi")
-
-	una_frills_long
-		name = "Long Unathi Frills"
-		icon_state = "soghun_longfrills"
-		species_allowed = list("Unathi")
-
-	una_frills_short
-		name = "Short Unathi Frills"
-		icon_state = "soghun_shortfrills"
-		species_allowed = list("Unathi")
 
 	una_horns
 		name = "Unathi Horns"
@@ -872,6 +878,8 @@
 
 /datum/sprite_accessory/facial_hair
 
+//Tajara
+
 	taj_sideburns
 		name = "Tajara Sideburns"
 		icon_state = "facial_sideburns"
@@ -901,6 +909,8 @@
 		name = "Tajara Smallstache"
 		icon_state = "facial_smallstache"
 		species_allowed = list("Tajaran")
+
+//Vox
 
 	vox_colonel
 		name = "Vox Colonel Beard"
@@ -937,9 +947,9 @@
 		species_allowed = list("Vulpkanin")
 		gender = NEUTER
 
-	vulp_earfluff
-		name = "Earfluff"
-		icon_state = "vulp_facial_earfluff"
+	vulp_vulpine_fluff
+		name = "Vulpine and Earfluff"
+		icon_state = "vulp_facial_vulpine_fluff"
 		species_allowed = list("Vulpkanin")
 		gender = NEUTER
 
@@ -972,6 +982,51 @@
 		icon_state = "vulp_facial_swift"
 		species_allowed = list("Vulpkanin")
 		gender = NEUTER
+
+//Unathi
+
+	una_spines_long
+		name = "Long Spines"
+		icon_state = "soghun_longspines"
+		species_allowed = list("Unathi")
+		gender = NEUTER
+
+	una_spines_short
+		name = "Short Spines"
+		icon_state = "soghun_shortspines"
+		species_allowed = list("Unathi")
+		gender = NEUTER
+
+	una_frills_long
+		name = "Long Frills"
+		icon_state = "soghun_longfrills"
+		species_allowed = list("Unathi")
+		gender = NEUTER
+
+	una_frills_short
+		name = "Short Frills"
+		icon_state = "soghun_shortfrills"
+		species_allowed = list("Unathi")
+		gender = NEUTER
+
+	una_frills_webbed_long
+		name = "Long Webbed Frills"
+		icon_state = "soghun_longfrills_webbed"
+		species_allowed = list("Unathi")
+		gender = NEUTER
+
+	una_frills_webbed_short
+		name = "Short Webbed Frills"
+		icon_state = "soghun_shortfrills_webbed"
+		species_allowed = list("Unathi")
+		gender = NEUTER
+
+	una_frills_webbed_aquatic
+		name = "Aquatic Frills"
+		icon_state = "soghun_aquaticfrills_webbed"
+		species_allowed = list("Unathi")
+		gender = NEUTER
+
 
 //skin styles - WIP
 //going to have to re-integrate this with surgery
@@ -1019,7 +1074,7 @@
 /datum/sprite_accessory/underwear
 	icon = 'icons/mob/underwear.dmi'
 
-	species_allowed = list("Human","Unathi","Vox","Diona","Vulpkanin","Kidan","Grey","Plasmaman","Skellington")
+	species_allowed = list("Human","Unathi","Vox","Diona","Vulpkanin","Kidan","Grey","Plasmaman","Skeleton")
 
 	nude
 		name = "Nude"
@@ -1036,6 +1091,11 @@
 		icon_state = "male_grey"
 		gender = MALE
 
+	male_grey
+		name = "Mens Grey Alt"
+		icon_state = "male_greyalt"
+		gender = MALE
+
 	male_green
 		name = "Mens Green"
 		icon_state = "male_green"
@@ -1046,9 +1106,34 @@
 		icon_state = "male_blue"
 		gender = MALE
 
+	male_red
+		name = "Mens Red"
+		icon_state = "male_red"
+		gender = MALE
+
 	male_black
 		name = "Mens Black"
 		icon_state = "male_black"
+		gender = MALE
+
+	male_black_alt
+		name = "Mens Black Alt"
+		icon_state = "male_blackalt"
+		gender = MALE
+
+	male_striped
+		name = "Mens Striped"
+		icon_state = "male_stripe"
+		gender = MALE
+
+	male_heart
+		name = "Mens Hearts"
+		icon_state = "male_hearts"
+		gender = MALE
+
+	male_kinky
+		name = "Mens Kinky"
+		icon_state = "male_kinky"
 		gender = MALE
 
 	male_mankini
@@ -1061,9 +1146,24 @@
 		icon_state = "female_red"
 		gender = FEMALE
 
+	female_green
+		name = "Ladies Green"
+		icon_state = "female_green"
+		gender = FEMALE
+
 	female_white
 		name = "Ladies White"
 		icon_state = "female_white"
+		gender = FEMALE
+
+	female_whiter
+		name = "Ladies Whiter"
+		icon_state = "female_whiter"
+		gender = FEMALE
+
+	female_whitealt
+		name = "Ladies White Alt"
+		icon_state = "female_whitealt"
 		gender = FEMALE
 
 	female_yellow
@@ -1076,14 +1176,44 @@
 		icon_state = "female_blue"
 		gender = FEMALE
 
+	female_babyblue
+		name = "Ladies Baby Blue"
+		icon_state = "female_babyblue"
+		gender = FEMALE
+
 	female_black
 		name = "Ladies Black"
 		icon_state = "female_black"
 		gender = FEMALE
 
+	female_blacker
+		name = "Ladies Blacker"
+		icon_state = "female_blacker"
+		gender = FEMALE
+
+	female_blackalt
+		name = "Ladies Black Alt"
+		icon_state = "female_blackalt"
+		gender = FEMALE
+
 	female_kinky
 		name = "Ladies Kinky"
 		icon_state = "female_kinky"
+		gender = FEMALE
+
+	female_babydoll
+		name = "Ladies Full Grey"
+		icon_state = "female_babydoll"
+		gender = FEMALE
+
+	female_pink
+		name = "Ladies Pink"
+		icon_state = "female_pink"
+		gender = FEMALE
+
+	female_thong
+		name = "Ladies Thong"
+		icon_state = "female_thong"
 		gender = FEMALE
 
 ////////////////////////////
@@ -1092,7 +1222,7 @@
 /datum/sprite_accessory/undershirt
 	icon = 'icons/mob/underwear.dmi'
 
-	species_allowed = list("Human","Unathi","Vox","Diona","Vulpkanin","Kidan","Grey","Plasmaman","Skellington")
+	species_allowed = list("Human","Unathi","Vox","Diona","Vulpkanin","Kidan","Grey","Plasmaman","Skeleton")
 
 /datum/sprite_accessory/undershirt/nude
 	name = "Nude"
@@ -1108,6 +1238,11 @@
 /datum/sprite_accessory/undershirt/shirt_black
 	name = "Black Shirt"
 	icon_state = "shirt_black"
+	gender = NEUTER
+
+/datum/sprite_accessory/undershirt/shirt_blacker
+	name = "Blacker Shirt"
+	icon_state = "shirt_blacker"
 	gender = NEUTER
 
 /datum/sprite_accessory/undershirt/shirt_grey
@@ -1159,6 +1294,16 @@
 /datum/sprite_accessory/undershirt/shirt_corgi
 	name = "Corgi Shirt"
 	icon_state = "shirt_corgi"
+	gender = NEUTER
+
+/datum/sprite_accessory/undershirt/shirt_clown
+	name = "Clown Shirt"
+	icon_state = "shirt_clown"
+	gender = NEUTER
+
+/datum/sprite_accessory/undershirt/shirt_alien
+	name = "Alien Shirt"
+	icon_state = "shirt_alien"
 	gender = NEUTER
 
 /datum/sprite_accessory/undershirt/shirt_jack
@@ -1305,6 +1450,21 @@
 
 
 //tanktops
+/datum/sprite_accessory/undershirt/tank_redtop
+	name = "Red Crop-Top"
+	icon_state = "tank_redtop"
+	gender = FEMALE
+
+/datum/sprite_accessory/undershirt/tank_whitetop
+	name = "White Crop-Top"
+	icon_state = "tank_whitetop"
+	gender = FEMALE
+
+/datum/sprite_accessory/undershirt/tank_midriff
+	name = "White Mid Tank-Top"
+	icon_state = "tank_midriff"
+	gender = FEMALE
+
 /datum/sprite_accessory/undershirt/tank_white
 	name = "White Tank-Top"
 	icon_state = "tank_white"
@@ -1315,15 +1475,32 @@
 	icon_state = "tank_black"
 	gender = NEUTER
 
+/datum/sprite_accessory/undershirt/tank_blacker
+	name = "Blacker Tank-Top"
+	icon_state = "tank_blacker"
+	gender = NEUTER
+
 /datum/sprite_accessory/undershirt/tank_grey
 	name = "Grey Tank-Top"
 	icon_state = "tank_grey"
+	gender = NEUTER
+
+/datum/sprite_accessory/undershirt/tank_red
+	name = "Red Tank-Top"
+	icon_state = "tank_red"
 	gender = NEUTER
 
 /datum/sprite_accessory/undershirt/tank_fire
 	name = "Fire Tank-Top"
 	icon_state = "tank_fire"
 	gender = NEUTER
+
+/datum/sprite_accessory/undershirt/tank_stripes
+	name = "Striped Tank-Top"
+	icon_state = "tank_stripes"
+	gender = NEUTER
+
+
 //end tanktops
 
 ///////////////////////
@@ -1331,13 +1508,13 @@
 ///////////////////////
 /datum/sprite_accessory/socks
 	icon = 'icons/mob/underwear.dmi'
-	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skellington")
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skeleton")
 
 /datum/sprite_accessory/socks/nude
 	name = "Nude"
 	icon_state = null
 	gender = NEUTER
-	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skellington","Vox")
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skeleton","Vox")
 
 
 /datum/sprite_accessory/socks/white_norm
@@ -1499,3 +1676,137 @@
 	icon_state = "vox_fishnet"
 	gender = NEUTER
 	species_allowed = list("Vox")
+
+/* HEAD ACCESSORY */
+
+/datum/sprite_accessory/head_accessory
+	icon = 'icons/mob/body_accessory.dmi'
+	species_allowed = list("Unathi", "Vulpkanin", "Tajaran")
+	icon_state = "accessory_none"
+
+/datum/sprite_accessory/head_accessory/none
+	name = "None"
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skeleton","Vox")
+	icon_state = "accessory_none"
+
+/datum/sprite_accessory/head_accessory/simple
+	name = "Simple"
+	species_allowed = list("Unathi")
+	icon_state = "horns_simple"
+
+/datum/sprite_accessory/head_accessory/short
+	name = "Short"
+	species_allowed = list("Unathi")
+	icon_state = "horns_short"
+
+/datum/sprite_accessory/head_accessory/curled
+	name = "Curled"
+	species_allowed = list("Unathi")
+	icon_state = "horns_curled"
+
+/datum/sprite_accessory/head_accessory/ram
+	name = "Ram"
+	species_allowed = list("Unathi")
+	icon_state = "horns_ram"
+
+/datum/sprite_accessory/head_accessory/vulp_earfluff
+	icon = 'icons/mob/human_face.dmi'
+	name = "Vulpkanin Earfluff"
+	icon_state = "vulp_facial_earfluff"
+	species_allowed = list("Vulpkanin")
+
+/datum/sprite_accessory/head_accessory/vulp_blaze
+	icon = 'icons/mob/human_face.dmi'
+	name = "Blaze"
+	icon_state = "vulp_facial_blaze"
+	species_allowed = list("Vulpkanin")
+
+/datum/sprite_accessory/head_accessory/vulp_vulpine
+	icon = 'icons/mob/human_face.dmi'
+	name = "Vulpine"
+	icon_state = "vulp_facial_vulpine"
+	species_allowed = list("Vulpkanin")
+
+/datum/sprite_accessory/head_accessory/vulp_vulpine_fluff
+	icon = 'icons/mob/human_face.dmi'
+	name = "Vulpine and Earfluff"
+	icon_state = "vulp_facial_vulpine_fluff"
+	species_allowed = list("Vulpkanin")
+
+/datum/sprite_accessory/head_accessory/vulp_mask
+	icon = 'icons/mob/human_face.dmi'
+	name = "Mask"
+	icon_state = "vulp_facial_mask"
+	species_allowed = list("Vulpkanin")
+
+/datum/sprite_accessory/head_accessory/vulp_patch
+	icon = 'icons/mob/human_face.dmi'
+	name = "Patch"
+	icon_state = "vulp_facial_patch"
+	species_allowed = list("Vulpkanin")
+
+/datum/sprite_accessory/head_accessory/vulp_ruff
+	icon = 'icons/mob/human_face.dmi'
+	name = "Ruff"
+	icon_state = "vulp_facial_ruff"
+	species_allowed = list("Vulpkanin")
+
+/datum/sprite_accessory/head_accessory/vulp_kita
+	icon = 'icons/mob/human_face.dmi'
+	name = "Kita"
+	icon_state = "vulp_facial_kita"
+	species_allowed = list("Vulpkanin")
+
+/datum/sprite_accessory/head_accessory/vulp_swift
+	icon = 'icons/mob/human_face.dmi'
+	name = "Swift"
+	icon_state = "vulp_facial_swift"
+	species_allowed = list("Vulpkanin")
+
+/datum/sprite_accessory/head_accessory/taj_ears
+	icon = 'icons/mob/human_face.dmi'
+	name = "Tajaran Ears"
+	icon_state = "ears_plain"
+	species_allowed = list("Tajaran")
+
+/* BODY MARKINGS */
+
+/datum/sprite_accessory/body_markings
+	icon = 'icons/mob/body_accessory.dmi'
+	species_allowed = list("Unathi", "Tajaran", "Vulpkanin")
+	icon_state = "accessory_none"
+
+/datum/sprite_accessory/body_markings/none
+	name = "None"
+	species_allowed = list("Human","Unathi","Diona","Grey","Machine","Tajaran","Vulpkanin","Slime People","Skeleton","Vox")
+	icon_state = "accessory_none"
+
+/datum/sprite_accessory/body_markings/stripe
+	name = "Stripe"
+	species_allowed = list("Unathi")
+	icon_state = "markings_stripe"
+
+/datum/sprite_accessory/body_markings/tiger
+	name = "Tiger Body"
+	species_allowed = list("Unathi", "Tajaran", "Vulpkanin")
+	icon_state = "markings_tiger"
+
+/datum/sprite_accessory/body_markings/tigerhead
+	name = "Tiger Body + Head"
+	species_allowed = list("Unathi", "Tajaran", "Vulpkanin")
+	icon_state = "markings_tigerhead"
+
+/datum/sprite_accessory/body_markings/tigerheadface_taj
+	name = "Tajaran Tiger Body + Head + Face"
+	species_allowed = list("Tajaran")
+	icon_state = "markings_tigerheadface_taj"
+
+/datum/sprite_accessory/body_markings/tigerheadface_vulp
+	name = "Vulpkanin Tiger Body + Head + Face"
+	species_allowed = list("Vulpkanin")
+	icon_state = "markings_tigerheadface_vulp"
+
+/datum/sprite_accessory/body_markings/tigerheadface_una
+	name = "Unathi Tiger Body + Head + Face"
+	species_allowed = list("Unathi")
+	icon_state = "markings_tigerheadface_una"

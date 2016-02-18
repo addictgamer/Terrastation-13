@@ -6,7 +6,6 @@
 	desc = "It's good to be emperor."
 	item_state = "centhat"
 	armor = list(melee = 50, bullet = 15, laser = 50, energy = 10, bomb = 25, bio = 0, rad = 0)
-	siemens_coefficient = 0.9
 	strip_delay = 80
 
 /obj/item/clothing/head/hairflower
@@ -31,7 +30,6 @@
 	desc = "It's an amish looking hat."
 	icon_state = "tophat"
 	item_state = "that"
-	siemens_coefficient = 0.9
 
 /obj/item/clothing/head/redcoat
 	name = "redcoat's hat"
@@ -48,7 +46,6 @@
 	desc = "These were once used by Plague doctors. They're pretty much useless."
 	icon_state = "plaguedoctor"
 	permeability_coefficient = 0.01
-	siemens_coefficient = 0.9
 
 /obj/item/clothing/head/hasturhood
 	name = "hastur's hood"
@@ -60,7 +57,6 @@
 	name = "nurse's hat"
 	desc = "It allows quick identification of trained medical personnel."
 	icon_state = "nursehat"
-	siemens_coefficient = 0.9
 
 /obj/item/clothing/head/syndicatefake
 	name = "black and red space-helmet replica"
@@ -69,11 +65,10 @@
 	desc = "A plastic replica of a syndicate agent's space helmet, you'll look just like a real murderous syndicate agent in this! This is a toy, it is not made for use in space!"
 	flags = BLOCKHAIR
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE
-	siemens_coefficient = 2.0
 
 /obj/item/clothing/head/cueball
 	name = "cueball helmet"
-	desc = "A large, featureless white orb mean to be worn on your head. How do you even see out of this thing?"
+	desc = "A large, featureless white orb meant to be worn on your head. How do you even see out of this thing?"
 	icon_state = "cueball"
 	flags = HEADCOVERSEYES | HEADCOVERSMOUTH | BLOCKHAIR
 	item_state="cueball"
@@ -104,7 +99,7 @@
 
 /obj/item/clothing/head/justice
 	name = "justice hat"
-	desc = "fight for what's righteous!"
+	desc = "Fight for what's righteous!"
 	icon_state = "justicered"
 	item_state = "justicered"
 	flags = HEADCOVERSEYES | HEADCOVERSMOUTH | BLOCKHAIR
@@ -127,7 +122,7 @@
 
 /obj/item/clothing/head/rabbitears
 	name = "rabbit ears"
-	desc = "Wearing these makes you looks useless, and only good for your sex appeal."
+	desc = "Wearing these makes you look useless, and only good for your sex appeal."
 	icon_state = "bunny"
 
 /obj/item/clothing/head/flatcap
@@ -135,7 +130,6 @@
 	desc = "A working man's cap."
 	icon_state = "flat_cap"
 	item_state = "detective"
-	siemens_coefficient = 0.9
 
 /obj/item/clothing/head/pirate
 	name = "pirate hat"
@@ -203,7 +197,6 @@
 	icon_state = "witch"
 	item_state = "witch"
 	flags = BLOCKHAIR
-	siemens_coefficient = 2.0
 
 /obj/item/clothing/head/chicken
 	name = "chicken suit head"
@@ -211,7 +204,6 @@
 	icon_state = "chickenhead"
 	item_state = "chickensuit"
 	flags = BLOCKHAIR
-	siemens_coefficient = 2.0
 
 /obj/item/clothing/head/corgi
 	name = "corgi suit head"
@@ -219,7 +211,6 @@
 	icon_state = "corgihead"
 	item_state = "chickensuit"
 	flags = BLOCKHAIR | NODROP
-	siemens_coefficient = 2.0
 
 /obj/item/clothing/head/corgi/en
 	name = "E-N suit head"
@@ -231,7 +222,6 @@
 	icon_state = "bearpelt"
 	item_state = "bearpelt"
 	flags = BLOCKHAIR
-	siemens_coefficient = 2.0
 
 /obj/item/clothing/head/xenos
 	name = "xenos helmet"
@@ -240,7 +230,6 @@
 	desc = "A helmet made out of chitinous alien hide."
 	flags = BLOCKHAIR
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE
-	siemens_coefficient = 2.0
 
 /obj/item/clothing/head/crown
 	name = "bananium crown"
@@ -288,18 +277,27 @@
 /obj/item/clothing/head/beret/purple
 	name = "Pierson Family Beret"
 	desc = " A purple beret, with a small golden crescent moon sewn onto it."
-	icon_state = "purpleberet"
+	icon_state = "beret_purple"
 	item_state = "purpleberet"
 
 /obj/item/clothing/head/beret/centcom/officer
 	name = "officers beret"
 	desc = "A black beret adorned with the shield—a silver kite shield with an engraved sword—of the Nanotrasen security forces, announcing to the world that the wearer is a defender of Nanotrasen."
-	icon_state = "centcomofficerberet"
+	icon_state = "beret_centcom_officer"
+	armor = list(melee = 30, bullet = 25, laser = 25, energy = 10, bomb = 0, bio = 0, rad = 0)
+	strip_delay = 60
+
+/obj/item/clothing/head/beret/centcom/officer/navy
+	name = "navy blue officers beret"
+	desc = "A navy blue beret adorned with the shield—a silver kite shield with an engraved sword—of the Nanotrasen security forces, announcing to the world that the wearer is a defender of Nanotrasen."
+	icon_state = "beret_centcom_officer_navy"
+	armor = list(melee = 30, bullet = 25, laser = 25, energy = 10, bomb = 0, bio = 0, rad = 0)
+	strip_delay = 60
 
 /obj/item/clothing/head/beret/centcom/captain
 	name = "captains beret"
 	desc = "A white beret adorned with the shield—a cobalt kite shield with an engraved sword—of the Nanotrasen security forces, worn only by those captaining a vessel of the Nanotrasen Navy."
-	icon_state = "centcomcaptain"
+	icon_state = "beret_centcom_captain"
 
 /obj/item/clothing/head/sombrero
 	name = "sombrero"

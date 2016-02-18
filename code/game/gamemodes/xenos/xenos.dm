@@ -25,7 +25,7 @@
 	if(!..())
 		return 0
 
-	var/list/candidates = get_players_for_role(BE_ALIEN)
+	var/list/candidates = get_players_for_role(ROLE_ALIEN)
 	var/playersready = 0
 	var/xenos_num
 	for(var/mob/new_player/player in player_list)
@@ -50,6 +50,7 @@
 	for(var/datum/mind/xeno in xenos)
 		xeno.assigned_role = "MODE"
 		xeno.special_role = "Alien"
+		set_antag_hud(xeno, "hudalien")//like this is needed...
 	return 1
 
 /datum/game_mode/xenos/pre_setup()
@@ -111,7 +112,7 @@
 	var/playeralienratio = 0
 	if(playersalive)
 		playeralienratio = xenosalive / playersalive
-	if(emergency_shuttle && emergency_shuttle.returned())
+	if(shuttle_master && shuttle_master.emergency.mode >= SHUTTLE_ESCAPE)
 		return ..()
 	if(!xenosalive)
 		result = 1
@@ -134,15 +135,7 @@
 		return ..()
 
 /datum/game_mode/xenos/check_finished()
-	if(config.continous_rounds)
-		if(result)
-			return ..()
-	if(emergency_shuttle && emergency_shuttle.returned())
-		return ..()
-	if(result || station_was_nuked)
-		return 1
-	else
-		return 0
+	return result != 0
 
 /datum/game_mode/xenos/proc/xenos_alive()
 	var/list/livingxenos = list()
@@ -156,7 +149,7 @@
 	var/list/livingplayers = list()
 	for(var/mob/M in player_list)
 		var/turf/T = get_turf(M)
-		if((M) && (M.stat != 2) && M.client && T && ((T.z in config.station_levels) || emergency_shuttle.departed && ((T.z in config.station_levels) || (T.z in config.admin_levels))))
+		if((M) && (M.stat != 2) && M.client && T && ((T.z in config.station_levels) || shuttle_master.emergency.mode >= SHUTTLE_ESCAPE && ((T.z in config.station_levels) || (T.z in config.admin_levels))))
 			if(ishuman(M))
 				livingplayers += 1
 	return livingplayers.len

@@ -135,6 +135,7 @@
 	flags = GLASSESCOVERSEYES
 	slot_flags = SLOT_EYES
 	materials = list(MAT_GLASS = 250)
+	var/emagged = 0
 	var/vision_flags = 0
 	var/darkness_view = 0//Base human is 2
 	var/invisa_view = 0
@@ -177,19 +178,20 @@ BLIND     // can't see anything
 
 /obj/item/clothing/gloves/attackby(obj/item/weapon/W, mob/user, params)
 	if(istype(W, /obj/item/weapon/wirecutters))
-		if(clipped == 0)
+		if(!clipped)
 			playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
-			user.visible_message("\red [user] snips the fingertips off [src].","\red You snip the fingertips off [src].")
+			user.visible_message("<span class='warning'>[user] snips the fingertips off [src].</span>","<span class='warning'>You snip the fingertips off [src].</span>")
 			clipped = 1
+			name = "mangled [name]"
+			desc = "[desc] They have had the fingertips cut off of them."
 			if("exclude" in species_restricted)
-				name = "mangled [name]"
-				desc = "[desc] They have had the fingertips cut off of them."
 				species_restricted -= "Unathi"
 				species_restricted -= "Tajaran"
-		else if(clipped == 1)
-			user << "<span class='notice'>[src] have already been clipped!</span>"
 			update_icon()
+		else
+			user << "<span class='notice'>[src] have already been clipped!</span>"
 		return
+	else
 		..()
 
 /obj/item/clothing/gloves/proc/Touch()
@@ -223,6 +225,11 @@ BLIND     // can't see anything
 				user << "Your suit will now report your vital lifesigns."
 			if(3)
 				user << "Your suit will now report your vital lifesigns as well as your coordinate position."
+		if(istype(user,/mob/living/carbon/human))
+			var/mob/living/carbon/human/H = user
+			if(H.w_uniform == src)
+				H.update_suit_sensors()
+
 	else if (istype(src.loc, /mob))
 		switch(sensor_mode)
 			if(0)
@@ -237,6 +244,10 @@ BLIND     // can't see anything
 			if(3)
 				for(var/mob/V in viewers(user, 1))
 					V.show_message("[user] sets [src.loc]'s sensors to maximum.", 1)
+		if(istype(src,/mob/living/carbon/human))
+			var/mob/living/carbon/human/H = src
+			if(H.w_uniform == src)
+				H.update_suit_sensors()
 
 /obj/item/clothing/under/verb/toggle()
 	set name = "Toggle Suit Sensors"
@@ -253,7 +264,8 @@ BLIND     // can't see anything
 	var/blockTracking // Do we block AI tracking?
 	var/flash_protect = 0
 	var/tint = 0
-	var/HUDType = 0
+	var/HUDType = null
+	var/darkness_view = 0
 	var/vision_flags = 0
 	var/see_darkness = 1
 
@@ -273,16 +285,32 @@ BLIND     // can't see anything
 
 //Proc that moves gas/breath masks out of the way
 /obj/item/clothing/mask/proc/adjustmask(var/mob/user)
+	var/mob/living/carbon/human/H = usr //Used to check if the mask is on the head, to check if the hands are full, and to turn off internals if they were on when the mask was pushed out of the way.
 	if(!ignore_maskadjust)
 		if(!user.canmove || user.stat || user.restrained())
 			return
 		if(src.mask_adjusted == 1)
-			src.icon_state = initial(icon_state)
+			src.icon_state = copytext(src.icon_state, 1, findtext(src.icon_state, "_up")) //Trims the '_up' off the end of the icon state, thus reverting to the most recent previous state
 			gas_transfer_coefficient = initial(gas_transfer_coefficient)
 			permeability_coefficient = initial(permeability_coefficient)
 			user << "You push \the [src] back into place."
 			src.mask_adjusted = 0
 			slot_flags = initial(slot_flags)
+			if(flags_inv != initial(flags_inv)) //If the mask is one that hides the face and can be adjusted yet lost that trait when it was adjusted, make it hide the face again.
+				flags_inv += HIDEFACE
+			if(H.head == src)
+				if(src.flags_inv == HIDEFACE) //Means that only things like bandanas and balaclavas will be affected since they obscure the identity of the wearer.
+					if(H.l_hand && H.r_hand) //If both hands are occupied, drop the object on the ground.
+						user.unEquip(src)
+					else
+						src.loc = user
+						H.head = null
+						if(!(H.l_hand) && H.r_hand) //If only the left hand is free, put the bandana there instead.
+							user.put_in_l_hand(src)
+						else if(!(H.r_hand) && H.l_hand) //Otherwise if only the right hand is free, put the bandana there instead.
+							user.put_in_r_hand(src)
+						else if(!(H.l_hand && H.r_hand)) //Otherwise if both hands are free, pick the active one to put the bandana into.
+							user.put_in_active_hand(src)
 		else
 			src.icon_state += "_up"
 			user << "You push \the [src] out of the way."
@@ -292,12 +320,28 @@ BLIND     // can't see anything
 			if(adjusted_flags)
 				slot_flags = adjusted_flags
 			if(ishuman(user))
-				var/mob/living/carbon/human/H = user
 				if(H.internal)
 					if(H.internals)
 						H.internals.icon_state = "internal0"
 					H.internal = null
+			if(user.wear_mask == src)
+				if(src.flags_inv == HIDEFACE) //Means that only things like bandanas and balaclavas will be affected since they obscure the identity of the wearer.
+					if(H.l_hand && H.r_hand) //If both hands are occupied, drop the object on the ground.
+						user.unEquip(src)
+					else
+						src.loc = user
+						user.wear_mask = null
+						if(!(H.l_hand) && H.r_hand) //If only the left hand is free, put the bandana there instead.
+							user.put_in_l_hand(src)
+						else if(!(H.r_hand) && H.l_hand) //Otherwise if only the right hand is free, put the bandana there instead.
+							user.put_in_r_hand(src)
+						else if(!(H.l_hand && H.r_hand)) //Otherwise if both hands are free, pick the active one to put the bandana into.
+							user.put_in_active_hand(src)
+					flags_inv -= HIDEFACE /*Done after the above to avoid having to do a check for initial(src.flags_inv == HIDEFACE).
+											This reveals the user's face since the bandana will now be going on their head.*/
+
 		usr.update_inv_wear_mask()
+		usr.update_inv_head()
 
 //Shoes
 /obj/item/clothing/shoes
@@ -306,10 +350,12 @@ BLIND     // can't see anything
 	desc = "Comfortable-looking shoes."
 	gender = PLURAL //Carn: for grammarically correct text-parsing
 	var/chained = 0
-	siemens_coefficient = 0.9
+	var/can_cut_open = 0
+	var/cut_open = 0
 	body_parts_covered = FEET
 	slot_flags = SLOT_FEET
 
+	var/silence_steps = 0
 
 	permeability_coefficient = 0.50
 	slowdown = SHOES_SLOWDOWN
@@ -319,6 +365,41 @@ BLIND     // can't see anything
 		"Vox" = 'icons/mob/species/vox/shoes.dmi'
 		)
 
+/obj/item/clothing/shoes/attackby(obj/item/I, mob/user, params)
+	if(istype(I, /obj/item/weapon/match) && src.loc == user)
+		var/obj/item/weapon/match/M = I
+		if(!M.lit) // Match isn't lit, but isn't burnt.
+			M.lit = 1
+			M.icon_state = "match_lit"
+			processing_objects.Add(M)
+			M.update_icon()
+			user.visible_message("<span class='warning'>[user] strikes a [M] on the bottom of [src], lighting it.</span>","<span class='warning'>You strike the [M] on the bottom of [src] to light it.</span>")
+		else if(M.lit == 1) // Match is lit, not extinguished.
+			M.dropped()
+			user.visible_message("<span class='warning'>[user] crushes the [M] into the bottom of [src]. extinguishing it.</span>","<span class='warning'>You crush the [M] into the bottom of [src], extinguishing it.</span>")
+		else // Match has been previously lit and extinguished.
+			user << "<span class='notice'>The [M] has already been extinguished.</span>"
+		return
+
+	if(istype(I, /obj/item/weapon/wirecutters))
+		if(can_cut_open)
+			if(!cut_open)
+				playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
+				user.visible_message("<span class='warning'>[user] cuts open the toes of [src].</span>","<span class='warning'>You cut open the toes of [src].</span>")
+				cut_open = 1
+				icon_state = "[icon_state]_opentoe"
+				item_state = "[item_state]_opentoe"
+				name = "mangled [name]"
+				desc = "[desc] They have had their toes opened up."
+				if("exclude" in species_restricted)
+					species_restricted -= "Unathi"
+					species_restricted -= "Tajaran"
+				update_icon()
+			else
+				user << "<span class='notice'>[src] have already had their toes cut open!</span>"
+			return
+	else
+		..()
 
 /obj/item/proc/negates_gravity()
 	return 0
@@ -332,7 +413,6 @@ BLIND     // can't see anything
 	armor = list(melee = 0, bullet = 0, laser = 0,energy = 0, bomb = 0, bio = 0, rad = 0)
 	slot_flags = SLOT_OCLOTHING
 	var/blood_overlay_type = "suit"
-	siemens_coefficient = 0.9
 
 //Spacesuit
 //Note: Everything in modules/clothing/spacesuits should have the entire suit grouped together.
@@ -350,7 +430,6 @@ BLIND     // can't see anything
 	min_cold_protection_temperature = SPACE_HELM_MIN_TEMP_PROTECT
 	heat_protection = HEAD
 	max_heat_protection_temperature = SPACE_HELM_MAX_TEMP_PROTECT
-	siemens_coefficient = 0.9
 	species_restricted = list("exclude","Diona","Vox","Wryn")
 	flash_protect = 2
 	strip_delay = 50
@@ -376,7 +455,6 @@ BLIND     // can't see anything
 	max_heat_protection_temperature = SPACE_SUIT_MAX_TEMP_PROTECT
 	strip_delay = 80
 	put_on_delay = 80
-	siemens_coefficient = 0.9
 	species_restricted = list("exclude","Diona","Vox","Wryn")
 
 //Under clothing

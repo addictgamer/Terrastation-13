@@ -98,7 +98,7 @@
 			var/stability = num2text(round((damage / explosion_point) * 100))
 
 			if(damage > emergency_point)
-				radio.autosay("[emergency_alert] Instability: [stability]%", src)
+				radio.autosay("[emergency_alert] Instability: [stability]%", src.name)
 				lastwarning = world.timeofday
 				if(!has_reached_emergency)
 					investigate_log("has reached the emergency point for the first time.", "supermatter")
@@ -106,21 +106,25 @@
 					has_reached_emergency = 1
 
 			else if(damage >= damage_archived) // The damage is still going up
-				radio.autosay("[warning_alert] Instability: [stability]%", src)
+				radio.autosay("[warning_alert] Instability: [stability]%", src.name)
 				lastwarning = world.timeofday - 150
 
 			else                                                 // Phew, we're safe
-				radio.autosay("[safe_alert]", src)
+				radio.autosay("[safe_alert]", src.name)
 				lastwarning = world.timeofday
 
 		if(damage > explosion_point)
-			for(var/mob/living/mob in living_mob_list)
-				if(istype(mob, /mob/living/carbon/human))
-					//Hilariously enough, running into a closet should make you get hit the hardest.
-					var/mob/living/carbon/human/H = mob
-					H.hallucination += max(50, min(300, DETONATION_HALLUCINATION * sqrt(1 / (get_dist(mob, src) + 1)) ) )
-				var/rads = DETONATION_RADS * sqrt( 1 / (get_dist(mob, src) + 1) )
-				mob.apply_effect(rads, IRRADIATE)
+			if(get_turf(src))
+				var/turf/position = get_turf(src)
+				for(var/mob/living/mob in living_mob_list)
+					var/turf/mob_pos = get_turf(mob)
+					if(mob_pos && mob_pos.z == position.z)
+						if(ishuman(mob))
+							//Hilariously enough, running into a closet should make you get hit the hardest.
+							var/mob/living/carbon/human/H = mob
+							H.hallucination += max(50, min(300, DETONATION_HALLUCINATION * sqrt(1 / (get_dist(mob, src) + 1)) ) )
+						var/rads = DETONATION_RADS * sqrt( 1 / (get_dist(mob, src) + 1) )
+						mob.apply_effect(rads, IRRADIATE)
 
 			explode()
 

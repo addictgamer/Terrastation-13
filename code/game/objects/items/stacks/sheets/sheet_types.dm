@@ -152,6 +152,7 @@ var/global/list/datum/stack_recipe/wood_recipes = list ( \
 	new/datum/stack_recipe("coffin", /obj/structure/closet/coffin, 5, time = 15, one_per_turf = 1, on_floor = 1), \
 	new/datum/stack_recipe("apiary", /obj/item/apiary, 10, time = 25, one_per_turf = 0, on_floor = 0), \
 	new/datum/stack_recipe("easel", /obj/structure/easel, 3, one_per_turf = 1, on_floor = 1), \
+	new/datum/stack_recipe("wooden buckler", /obj/item/weapon/shield/riot/buckler, 20, time = 40), \
 	)
 
 /obj/item/stack/sheet/wood
@@ -196,6 +197,7 @@ var/global/list/datum/stack_recipe/cardboard_recipes = list ( \
 	new/datum/stack_recipe("pizza box", /obj/item/pizzabox), \
 	new/datum/stack_recipe("folder", /obj/item/weapon/folder), \
 	new/datum/stack_recipe("cardboard tube", /obj/item/weapon/c_tube), \
+	new/datum/stack_recipe("large box", /obj/structure/closet/cardboard, 4), \
 )
 
 /obj/item/stack/sheet/cardboard	//BubbleWrap

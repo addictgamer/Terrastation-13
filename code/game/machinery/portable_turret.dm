@@ -477,9 +477,9 @@ var/list/turret_icons
 			emagged = 1
 
 		enabled=0
-		sleep(rand(60,600))
-		if(!enabled)
-			enabled=1
+		spawn(rand(60,600))
+			if(!enabled)
+				enabled=1
 
 	..()
 
@@ -545,6 +545,9 @@ var/list/turret_icons
 
 /obj/machinery/porta_turret/proc/assess_living(var/mob/living/L)
 	if(!istype(L))
+		return TURRET_NOT_TARGET
+
+	if(get_turf(L) == get_turf(src))
 		return TURRET_NOT_TARGET
 
 	if(L.invisibility >= INVISIBILITY_LEVEL_ONE) // Cannot see him. see_invisible is a mob-var

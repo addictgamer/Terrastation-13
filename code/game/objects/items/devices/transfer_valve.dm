@@ -68,6 +68,11 @@
 	for(var/obj/O in contents)
 		O.hear_talk(M, msg)
 
+/obj/item/device/transfer_valve/hear_message(mob/living/M as mob, msg)
+	..()
+	for(var/obj/O in contents)
+		O.hear_message(M, msg)
+
 /obj/item/device/transfer_valve/attack_self(mob/user as mob)
 	ui_interact(user)
 
@@ -182,7 +187,7 @@
 			attacher_name = "[key_name_admin(attacher)]"
 
 		var/mob/mob = get_mob_by_key(src.fingerprintslast)
-		
+
 		bombers += "Bomb valve opened at [A.name] ([bombturf.x],[bombturf.y],[bombturf.z]) with [attached_device ? attached_device : "no device"], attached by [attacher_name]. Last touched by: [key_name(mob)]"
 		message_admins("Bomb valve opened at <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[bombturf.x];Y=[bombturf.y];Z=[bombturf.z]'>[A.name] (JMP)</a> with [attached_device ? attached_device : "no device"], attached by [attacher_name]. Last touched by: [key_name_admin(mob)]")
 		log_game("Bomb valve opened at [A.name] ([bombturf.x],[bombturf.y],[bombturf.z]) with [attached_device ? attached_device : "no device"], attached by [attacher_name]. Last touched by: [key_name(mob)]")

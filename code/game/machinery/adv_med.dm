@@ -1,7 +1,7 @@
 /obj/machinery/bodyscanner
 	var/mob/living/carbon/occupant
 	var/locked
-	name = "Body Scanner"
+	name = "body scanner"
 	icon = 'icons/obj/Cryogenic2.dmi'
 	icon_state = "bodyscanner-open"
 	density = 1
@@ -93,7 +93,7 @@
 		qdel(G)
 
 
-/obj/machinery/bodyscanner/MouseDrop_T(mob/living/carbon/O, mob/user as mob)
+/obj/machinery/bodyscanner/MouseDrop_T(mob/living/carbon/human/O, mob/user as mob)
 	if(!istype(O))
 		return 0 //not a mob
 	if(user.incapacitated())
@@ -196,7 +196,6 @@
 
 /obj/machinery/body_scanconsole
 	var/obj/machinery/bodyscanner/connected
-	var/known_implants = list(/obj/item/weapon/implant/chem, /obj/item/weapon/implant/death_alarm, /obj/item/weapon/implant/loyalty, /obj/item/weapon/implant/tracking)
 	var/delete
 	var/temphtml
 	name = "Body Scanner Console"
@@ -209,6 +208,7 @@
 	active_power_usage = 500
 	var/printing = null
 	var/printing_text = null
+	var/known_implants = list(/obj/item/weapon/implant/chem, /obj/item/weapon/implant/death_alarm, /obj/item/weapon/implant/loyalty, /obj/item/weapon/implant/tracking)
 
 /obj/machinery/body_scanconsole/power_change()
 	if(stat & BROKEN)
@@ -250,14 +250,14 @@
 		qdel(src)
 
 /obj/machinery/body_scanconsole/proc/findscanner()
-	spawn( 5 )
-		var/obj/machinery/bodyscanner/bodyscannernew = null
-		// Loop through every direction
-		for(dir in list(NORTH,EAST,SOUTH,WEST))
-			// Try to find a scanner in that direction
-			bodyscannernew = locate(/obj/machinery/bodyscanner, get_step(src, dir))
-		src.connected = bodyscannernew
-		return
+	var/obj/machinery/bodyscanner/bodyscannernew = null
+	// Loop through every direction
+	for(dir in list(NORTH,EAST,SOUTH,WEST))
+		// Try to find a scanner in that direction
+		var/temp = locate(/obj/machinery/bodyscanner, get_step(src, dir))
+		if(!isnull(temp))
+			bodyscannernew = temp
+	src.connected = bodyscannernew
 	return
 
 
@@ -310,11 +310,12 @@
 		data["occupied"] = connected.occupant ? 1 : 0
 
 		var/occupantData[0]
-		if(connected.occupant && ishuman(connected.occupant))
+		if(connected.occupant)
 			var/mob/living/carbon/human/H = connected.occupant
 			occupantData["name"] = H.name
 			occupantData["stat"] = H.stat
 			occupantData["health"] = H.health
+			occupantData["maxHealth"] = H.maxHealth
 
 			occupantData["hasVirus"] = H.virus2.len
 
@@ -334,22 +335,25 @@
 			occupantData["hasBorer"] = H.has_brain_worms()
 
 			var/bloodData[0]
-			if(H.vessel)
+			bloodData["hasBlood"] = 0
+			if(ishuman(H) && H.vessel && !(H.species && H.species.flags & NO_BLOOD))
 				var/blood_volume = round(H.vessel.get_reagent_amount("blood"))
+				bloodData["hasBlood"] = 1
 				bloodData["volume"] = blood_volume
 				bloodData["percent"] = round(((blood_volume / 560)*100))
-
+				bloodData["pulse"] = H.get_pulse(GETPULSE_TOOL)
+				bloodData["bloodLevel"] = round(H.vessel.get_reagent_amount("blood"))
+				bloodData["bloodMax"] = H.max_blood
 			occupantData["blood"] = bloodData
 
-			var/reagentData[0]
-			if(H.reagents)
-				reagentData["epinephrine"] = H.reagents.get_reagent_amount("Epinephrine")
-				reagentData["ether"] = H.reagents.get_reagent_amount("ether")
-				reagentData["silver_sulfadiazine"] = H.reagents.get_reagent_amount("silver_sulfadiazine")
-				reagentData["styptic_powder"] = H.reagents.get_reagent_amount("styptic_powder")
-				reagentData["salbutamol"] = H.reagents.get_reagent_amount("salbutamol")
-
-			occupantData["reagents"] = reagentData
+			var/implantData[0]
+			for(var/obj/item/weapon/implant/I in H)
+				if(I.implanted && is_type_in_list(I, known_implants))
+					var/implantSubData[0]
+					implantSubData["name"] = sanitize(I.name)
+					implantData.Add(list(implantSubData))
+			occupantData["implant"] = implantData
+			occupantData["implant_len"] = implantData.len
 
 			var/extOrganData[0]
 			for(var/obj/item/organ/external/E in H.organs)
@@ -359,18 +363,20 @@
 				organData["germ_level"] = E.germ_level
 				organData["bruteLoss"] = E.brute_dam
 				organData["fireLoss"] = E.burn_dam
+				organData["totalLoss"] = E.brute_dam + E.burn_dam
+				organData["maxHealth"] = E.max_damage
+				organData["bruised"] = E.min_bruised_damage
+				organData["broken"] = E.min_broken_damage
 
-				var/implantData[0]
+				var/shrapnelData[0]
 				for(var/obj/I in E.implants)
-					var/implantSubData[0]
-					implantSubData["name"] = I.name
-					if(is_type_in_list(I, known_implants))
-						implantSubData["known"] = 1
+					var/shrapnelSubData[0]
+					shrapnelSubData["name"] = I.name
 
-					implantData.Add(list(implantSubData))
+					shrapnelData.Add(list(shrapnelSubData))
 
-				organData["implants"] = implantData
-				organData["implants_len"] = implantData.len
+				organData["shrapnel"] = shrapnelData
+				organData["shrapnel_len"] = shrapnelData.len
 
 				var/organStatus[0]
 				if(E.status & ORGAN_DESTROYED)
@@ -405,6 +411,10 @@
 				organData["desc"] = I.desc
 				organData["germ_level"] = I.germ_level
 				organData["damage"] = I.damage
+				organData["maxHealth"] = I.max_damage
+				organData["bruised"] = I.min_broken_damage
+				organData["broken"] = I.min_bruised_damage
+				organData["robotic"] = I.robotic
 
 				intOrganData.Add(list(organData))
 
@@ -426,6 +436,9 @@
 /obj/machinery/body_scanconsole/Topic(href, href_list)
 	if(..())
 		return 1
+
+	if (href_list["ejectify"])
+		src.connected.eject()
 
 	if (href_list["print_p"])
 		generate_printing_text()
@@ -565,10 +578,7 @@
 
 				var/unknown_body = 0
 				for(var/I in e.implants)
-					if(is_type_in_list(I,known_implants))
-						imp += "[I] implanted:"
-					else
-						unknown_body++
+					unknown_body++
 
 				if(unknown_body || e.hidden)
 					imp += "Unknown body present:"

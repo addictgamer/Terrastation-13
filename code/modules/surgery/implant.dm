@@ -31,7 +31,7 @@
 			if ("groin")
 				return "abdominal"
 		return ""
-		
+
 	fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/obj/item/organ/external/chest/affected = target.get_organ(target_zone)
 		user.visible_message("\red [user]'s hand slips, scraping around inside [target]'s [affected.name] with \the [tool]!", \
@@ -156,45 +156,49 @@
 
 	end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/obj/item/organ/external/affected = target.get_organ(target_zone)
-
-		var/find_prob = 0
+		var/obj/item/weapon/implant/I = locate(/obj/item/weapon/implant) in target
 
 		if (affected.implants.len)
 
 			var/obj/item/obj = affected.implants[1]
 
-			if(istype(obj,/obj/item/weapon/implant))
-				var/obj/item/weapon/implant/imp = obj
-				if (imp.islegal())
-					find_prob +=60
-				else
-					find_prob +=40
+			user.visible_message("\blue [user] takes something out of [target]'s [affected.name] with \the [tool].", \
+			"\blue You take [obj] out of [target]'s [affected.name]s with \the [tool]." )
+			affected.implants -= obj
+
+			//Handle possessive brain borers.
+			if(istype(obj,/mob/living/simple_animal/borer))
+				var/mob/living/simple_animal/borer/worm = obj
+				if(worm.controlling)
+					target.release_control()
+				worm.detatch()
+				worm.leave_host()
+
+			obj.loc = get_turf(target)
+
+		else if(I && target_zone == "chest") //implant removal only works on the chest.
+			user.visible_message("<span class='notice'>[user] takes something out of [target]'s [affected.name] with \the [tool].</span>", \
+			"<span class='notice'>You take [I] out of [target]'s [affected.name]s with \the [tool].</span>" )
+
+			I.removed(target)
+
+			var/obj/item/weapon/implantcase/case
+
+			if(istype(user.get_item_by_slot(slot_l_hand), /obj/item/weapon/implantcase))
+				case = user.get_item_by_slot(slot_l_hand)
+			else if(istype(user.get_item_by_slot(slot_r_hand), /obj/item/weapon/implantcase))
+				case = user.get_item_by_slot(slot_r_hand)
 			else
-				find_prob +=50
+				case = locate(/obj/item/weapon/implantcase) in get_turf(target)
 
-			if (prob(find_prob))
-				user.visible_message("\blue [user] takes something out of [target]'s [affected.name] with \the [tool].", \
-				"\blue You take [obj] out of [target]'s [affected.name]s with \the [tool]." )
-				affected.implants -= obj
-
-				target.hud_updateflag |= 1 << IMPLOYAL_HUD
-
-				//Handle possessive brain borers.
-				if(istype(obj,/mob/living/simple_animal/borer))
-					var/mob/living/simple_animal/borer/worm = obj
-					if(worm.controlling)
-						target.release_control()
-					worm.detatch()
-					worm.leave_host()
-
-				obj.loc = get_turf(target)
-				if(istype(obj,/obj/item/weapon/implant))
-					var/obj/item/weapon/implant/imp = obj
-					imp.imp_in = null
-					imp.implanted = 0
+			if(case && !case.imp)
+				case.imp = I
+				I.loc = case
+				case.update_icon()
+				user.visible_message("[user] places [I] into [case]!", "<span class='notice'>You place [I] into [case].</span>")
 			else
-				user.visible_message("\blue [user] removes \the [tool] from [target]'s [affected.name].", \
-				"\blue There's something inside [target]'s [affected.name], but you just missed it this time." )
+				qdel(I)
+
 		else if (affected.hidden)
 			user.visible_message("\blue [user] takes something out of incision on [target]'s [affected.name] with \the [tool].", \
 			"\blue You take something out of incision on [target]'s [affected.name]s with \the [tool]." )

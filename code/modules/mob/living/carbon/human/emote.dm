@@ -26,15 +26,25 @@
 	var/on_CD = 0
 	switch(act)
 		//Cooldown-inducing emotes
-		if("ping","buzz","beep")
+		if("ping","buzz","beep", "yes", "no")
 			if (species.name == "Machine")		//Only Machines can beep, ping, and buzz
 				on_CD = handle_emote_CD()			//proc located in code\modules\mob\emote.dm
 			else								//Everyone else fails, skip the emote attempt
 				return
 		if("squish")
+			var/found_slime_bodypart = 0
+
 			if(species.name == "Slime People")	//Only Slime People can squish
-				on_CD = handle_emote_CD()			//proc located in code\modules\mob\emote.dm
-			else								//Everyone else fails, skip the emote attempt
+				on_CD = handle_emote_CD()			//proc located in code\modules\mob\emote.dm'
+				found_slime_bodypart = 1
+			else
+				for(var/obj/item/organ/external/L in organs) // if your limbs are squishy you can squish too!
+					if(L.dna.species in list("Slime People"))
+						on_CD = handle_emote_CD()
+						found_slime_bodypart = 1
+						break
+
+			if(!found_slime_bodypart)								//Everyone else fails, skip the emote attempt
 				return
 		if("scream", "fart", "flip", "snap")
 			on_CD = handle_emote_CD()				//proc located in code\modules\mob\emote.dm
@@ -118,6 +128,36 @@
 			playsound(src.loc, 'sound/effects/slime_squish.ogg', 50, 0) //Credit to DrMinky (freesound.org) for the sound.
 			m_type = 1
 
+		if("yes")
+			var/M = null
+			if(param)
+				for (var/mob/A in view(null, null))
+					if (param == A.name)
+						M = A
+						break
+			if(!M)
+				param = null
+
+			if (param)
+				message = "<B>[src]</B> emits an affirmative blip."
+			playsound(src.loc, 'sound/machines/synth_yes.ogg', 50, 0)
+			m_type = 1
+
+		if("no")
+			var/M = null
+			if(param)
+				for (var/mob/A in view(null, null))
+					if (param == A.name)
+						M = A
+						break
+			if(!M)
+				param = null
+
+			if (param)
+				message = "<B>[src]</B> emits a negative blip."
+			playsound(src.loc, 'sound/machines/synth_no.ogg', 50, 0)
+			m_type = 1
+
 		if("wag")
 			if(body_accessory)
 				if(body_accessory.try_restrictions(src))
@@ -189,7 +229,7 @@
 
 		if ("choke")
 			if(miming)
-				message = "<B>[src]</B> clutches his throat desperately!"
+				message = "<B>[src]</B> clutches \his throat desperately!"
 				m_type = 1
 			else
 				if (!muzzled)
@@ -218,7 +258,7 @@
 					m_type = 1
 		if ("flap")
 			if (!src.restrained())
-				message = "<B>[src]</B> flaps his wings."
+				message = "<B>[src]</B> flaps \his wings."
 				m_type = 2
 				if(miming)
 					m_type = 1
@@ -250,7 +290,7 @@
 
 		if ("aflap")
 			if (!src.restrained())
-				message = "<B>[src]</B> flaps his wings ANGRILY!"
+				message = "<B>[src]</B> flaps \his wings ANGRILY!"
 				m_type = 2
 				if(miming)
 					m_type = 1
@@ -485,7 +525,7 @@
 					message = "<B>[src]</B> takes a drag from a cigarette and blows \"[M]\" out in smoke."
 					m_type = 1
 				else
-					message = "<B>[src]</B> says, \"[M], please. He had a family.\" [src.name] takes a drag from a cigarette and blows his name out in smoke."
+					message = "<B>[src]</B> says, \"[M], please. They had a family.\" [src.name] takes a drag from a cigarette and blows their name out in smoke."
 					m_type = 2
 
 		if ("point")

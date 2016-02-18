@@ -460,7 +460,9 @@
 
 	toggle(mob/living/silicon/pai/user)
 		user.secHUD = !user.secHUD
-
+		user.remove_med_sec_hud()
+		if(user.secHUD)
+			user.add_sec_hud()
 	is_active(mob/living/silicon/pai/user)
 		return user.secHUD
 
@@ -471,6 +473,9 @@
 
 	toggle(mob/living/silicon/pai/user)
 		user.medHUD = !user.medHUD
+		user.remove_med_sec_hud()
+		if(user.medHUD)
+			user.add_med_hud()
 
 	is_active(mob/living/silicon/pai/user)
 		return user.medHUD
@@ -574,6 +579,7 @@
 		if(isliving(held))
 			data["holder"] = held
 			data["health"] = "[held.stat > 1 ? "dead" : "[held.health]% healthy"]"
+			data["brute"] = "[held.getBruteLoss() > 50 ? "<font color=#FF5555>" : "<font color=#55FF55>"][held.getBruteLoss()]</font>"
 			data["oxy"] = "[held.getOxyLoss() > 50 ? "<font color=#FF5555>" : "<font color=#55FF55>"][held.getOxyLoss()]</font>"
 			data["tox"] = "[held.getToxLoss() > 50 ? "<font color=#FF5555>" : "<font color=#55FF55>"][held.getToxLoss()]</font>"
 			data["burn"] = "[held.getFireLoss() > 50 ? "<font color=#FF5555>" : "<font color=#55FF55>"][held.getFireLoss()]</font>"

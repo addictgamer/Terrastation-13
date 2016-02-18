@@ -51,8 +51,9 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 			loc_as_cryobag.used++
 			in_stasis = 1
 
-	if(mob_master.current_cycle % 30 == 15)
-		hud_updateflag = 1022
+	//if(mob_master.current_cycle % 30 == 15)
+		//hud_updateflag = 1022
+		//HudRefactor:WTF do i put here....
 
 	voice = GetVoice()
 
@@ -212,94 +213,95 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 			speech_problem_flag = 1
 			gene.OnMobLife(src)
 
-	if (radiation)
+	if(!(species.flags & RADIMMUNE))
+		if (radiation)
 
-		if((locate(src.internal_organs_by_name["resonant crystal"]) in src.internal_organs))
-			var/rads = radiation/25
-			radiation -= rads
-			radiation -= 0.1
-			reagents.add_reagent("radium", rads/10)
-			if( prob(10) )
-				src << "<span class='notice'>You feel relaxed.</span>"
-			return
-
-		if (radiation > 100)
-			radiation = 100
-			if(!(species.flags & RAD_ABSORB))
-				Weaken(10)
-				if(!lying)
-					src << "<span class='alert'>You feel weak.</span>"
-					emote("collapse")
-
-		if (radiation < 0)
-			radiation = 0
-
-		else
-			if(species.flags & RAD_ABSORB)
+			if((locate(src.internal_organs_by_name["resonant crystal"]) in src.internal_organs))
 				var/rads = radiation/25
 				radiation -= rads
-				nutrition += rads
-				adjustBruteLoss(-(rads))
-				adjustOxyLoss(-(rads))
-				adjustToxLoss(-(rads))
-				updatehealth()
+				radiation -= 0.1
+				reagents.add_reagent("radium", rads/10)
+				if( prob(10) )
+					src << "<span class='notice'>You feel relaxed.</span>"
 				return
 
-			var/damage = 0
-			switch(radiation)
-				if(0 to 49)
-					radiation--
-					if(prob(25))
-						adjustToxLoss(1)
+			if (radiation > 100)
+				radiation = 100
+				if(!(species.flags & RAD_ABSORB))
+					Weaken(10)
+					if(!lying)
+						src << "<span class='alert'>You feel weak.</span>"
+						emote("collapse")
+
+			if (radiation < 0)
+				radiation = 0
+
+			else
+				if(species.flags & RAD_ABSORB)
+					var/rads = radiation/25
+					radiation -= rads
+					nutrition += rads
+					adjustBruteLoss(-(rads))
+					adjustOxyLoss(-(rads))
+					adjustToxLoss(-(rads))
+					updatehealth()
+					return
+
+				var/damage = 0
+				switch(radiation)
+					if(0 to 49)
+						radiation--
+						if(prob(25))
+							adjustToxLoss(1)
+							damage = 1
+							updatehealth()
+
+					if(50 to 74)
+						radiation -= 2
 						damage = 1
+						adjustToxLoss(1)
+						if(prob(5))
+							radiation -= 5
+							Weaken(3)
+							if(!lying)
+								src << "<span class='alert'>You feel weak.</span>"
+								emote("collapse")
 						updatehealth()
 
-				if(50 to 74)
-					radiation -= 2
-					damage = 1
-					adjustToxLoss(1)
-					if(prob(5))
+					if(75 to 100)
+						radiation -= 3
+						adjustToxLoss(3)
+						damage = 3
+						if(prob(1))
+							src << "<span class='alert'>You mutate!</span>"
+							randmutb(src)
+							domutcheck(src,null)
+							emote("gasp")
+						updatehealth()
+
+					else
 						radiation -= 5
-						Weaken(3)
-						if(!lying)
-							src << "<span class='alert'>You feel weak.</span>"
-							emote("collapse")
-					updatehealth()
+						adjustToxLoss(5)
+						damage = 5
+						if(prob(1))
+							src << "<span class='alert'>You mutate!</span>"
+							randmutb(src)
+							domutcheck(src,null)
+							emote("gasp")
+						updatehealth()
 
-				if(75 to 100)
-					radiation -= 3
-					adjustToxLoss(3)
-					damage = 3
-					if(prob(1))
-						src << "<span class='alert'>You mutate!</span>"
-						randmutb(src)
-						domutcheck(src,null)
-						emote("gasp")
-					updatehealth()
-
-				else
-					radiation -= 5
-					adjustToxLoss(5)
-					damage = 5
-					if(prob(1))
-						src << "<span class='alert'>You mutate!</span>"
-						randmutb(src)
-						domutcheck(src,null)
-						emote("gasp")
-					updatehealth()
-
-			if(damage && organs.len)
-				var/obj/item/organ/external/O = pick(organs)
-				if(istype(O)) O.add_autopsy_data("Radiation Poisoning", damage)
+				if(damage && organs.len)
+					var/obj/item/organ/external/O = pick(organs)
+					if(istype(O)) O.add_autopsy_data("Radiation Poisoning", damage)
 
 /mob/living/carbon/human/breathe()
-	if(reagents.has_reagent("lexorin"))
+
+	if((NO_BREATH in mutations) || (species && (species.flags & NO_BREATHE)) || reagents.has_reagent("lexorin"))
+		adjustOxyLoss(-5)
+		oxygen_alert = 0
+		toxins_alert = 0
 		return
-	if(NO_BREATH in mutations)
-		return // No breath mutation means no breathing. //DID YOU REALLY NEED TO FUCKING STATE THIS?
 	if(istype(loc, /obj/machinery/atmospherics/unary/cryo_cell))
-		return
-	if(species && (species.flags & NO_BREATHE))
 		return
 
 	var/datum/gas_mixture/environment
@@ -826,10 +828,6 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 
 	. = ..()
 
-	//SSD check, if a logged player is awake put them back to sleep!
-	if(player_logged && sleeping < 2)
-		sleeping = 2
-
 	if(.) //alive
 		if(REGEN in mutations)
 			if(nutrition)
@@ -847,7 +845,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 		//the analgesic effect wears off slowly
 		analgesic = max(0, analgesic - 1)
 
-		if(hallucination && !(species.flags & NO_DNA_RAD))
+		if(hallucination)
 			spawn()
 				handle_hallucinations()
 
@@ -863,11 +861,6 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 
 		else if(sleeping)
 			speech_problem_flag = 1
-
-			if(mind)
-				//Are they SSD? If so we'll keep them asleep but work off some of that sleep var in case of ether or similar.
-				if(player_logged)
-					sleeping = max(sleeping - 1, 2)
 
 			blinded = 1
 			stat = UNCONSCIOUS
@@ -990,15 +983,6 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 /mob/living/carbon/human/handle_hud_icons()
 	species.handle_hud_icons(src)
 
-/mob/living/carbon/human/handle_regular_hud_updates()
-	if(hud_updateflag)
-		handle_hud_list()
-
-	if(..())
-		if(hud_updateflag)
-			handle_hud_list()
-
-
 /mob/living/carbon/human/handle_random_events()
 	// Puke if toxloss is too high
 	if(!stat)
@@ -1076,8 +1060,15 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 	return
 
 /mob/living/carbon/human/handle_changeling()
-	if(mind && mind.changeling)
-		mind.changeling.regenerate()
+	if(mind)
+		if(mind.changeling)
+			mind.changeling.regenerate()
+			if(hud_used)
+				hud_used.lingchemdisplay.invisibility = 0
+				hud_used.lingchemdisplay.maptext = "<div align='center' valign='middle' style='position:relative; top:0px; left:6px'><font color='#dd66dd'>[round(mind.changeling.chem_charges)]</font></div>"
+		else
+			if(hud_used)
+				hud_used.lingchemdisplay.invisibility = 101
 
 /mob/living/carbon/human/handle_shock()
 	..()
@@ -1259,183 +1250,6 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 	This proc below is only called when those HUD elements need to change as determined by the mobs hud_updateflag.
 */
 
-
-/mob/living/carbon/human/proc/handle_hud_list()
-
-	if(hud_updateflag & 1 << HEALTH_HUD)
-		var/image/holder = hud_list[HEALTH_HUD]
-		if(stat == 2)
-			holder.icon_state = "hudhealth-100" 	// X_X
-		else
-			holder.icon_state = "hud[RoundHealth(health)]"
-
-		hud_list[HEALTH_HUD] = holder
-
-
-	if(hud_updateflag & 1 << STATUS_HUD)
-		var/foundVirus = 0
-		for (var/ID in virus2)
-			if (ID in virusDB)
-				foundVirus = 1
-				break
-
-		var/image/holder = hud_list[STATUS_HUD]
-		var/image/holder2 = hud_list[STATUS_HUD_OOC]
-		if(stat == 2)
-			holder.icon_state = "huddead"
-			holder2.icon_state = "huddead"
-		else if(status_flags & XENO_HOST)
-			holder.icon_state = "hudxeno"
-			holder2.icon_state = "hudxeno"
-		else if(foundVirus)
-			holder.icon_state = "hudill"
-		else if(has_brain_worms())
-			var/mob/living/simple_animal/borer/B = has_brain_worms()
-			if(B.controlling)
-				holder.icon_state = "hudbrainworm"
-			else
-				holder.icon_state = "hudhealthy"
-			holder2.icon_state = "hudbrainworm"
-		else
-			holder.icon_state = "hudhealthy"
-			if(virus2.len)
-				holder2.icon_state = "hudill"
-			else
-				holder2.icon_state = "hudhealthy"
-
-		hud_list[STATUS_HUD] = holder
-		hud_list[STATUS_HUD_OOC] = holder2
-
-
-	if(hud_updateflag & 1 << ID_HUD)
-		var/image/holder = hud_list[ID_HUD]
-		if(wear_id)
-			var/obj/item/weapon/card/id/I = wear_id.GetID()
-			if(I)
-				holder.icon_state = "hud[ckey(I.GetJobName())]"
-			else
-				holder.icon_state = "hudunknown"
-		else
-			holder.icon_state = "hudunknown"
-
-
-		hud_list[ID_HUD] = holder
-
-
-	if(hud_updateflag & 1 << WANTED_HUD)
-		var/image/holder = hud_list[WANTED_HUD]
-		holder.icon_state = "hudblank"
-		var/perpname = name
-		if(wear_id)
-			var/obj/item/weapon/card/id/I = wear_id.GetID()
-			if(I)
-				perpname = I.registered_name
-		for(var/datum/data/record/E in data_core.general)
-			if(E.fields["name"] == perpname)
-				for (var/datum/data/record/R in data_core.security)
-					if((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "*Arrest*"))
-						holder.icon_state = "hudwanted"
-						break
-					else if((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "Incarcerated"))
-						holder.icon_state = "hudprisoner"
-						break
-					else if((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "Parolled"))
-						holder.icon_state = "hudparolled"
-						break
-					else if((R.fields["id"] == E.fields["id"]) && (R.fields["criminal"] == "Released"))
-						holder.icon_state = "hudreleased"
-						break
-		hud_list[WANTED_HUD] = holder
-
-
-	if(hud_updateflag & 1 << IMPLOYAL_HUD || hud_updateflag & 1 << IMPCHEM_HUD || hud_updateflag & 1 << IMPTRACK_HUD)
-		var/image/holder1 = hud_list[IMPTRACK_HUD]
-		var/image/holder2 = hud_list[IMPLOYAL_HUD]
-		var/image/holder3 = hud_list[IMPCHEM_HUD]
-
-		holder1.icon_state = "hudblank"
-		holder2.icon_state = "hudblank"
-		holder3.icon_state = "hudblank"
-
-		for(var/obj/item/weapon/implant/I in src)
-			if(I.implanted)
-				if(istype(I,/obj/item/weapon/implant/tracking))
-					holder1.icon_state = "hud_imp_tracking"
-				if(istype(I,/obj/item/weapon/implant/loyalty))
-					holder2.icon_state = "hud_imp_loyal"
-				if(istype(I,/obj/item/weapon/implant/chem))
-					holder3.icon_state = "hud_imp_chem"
-
-		hud_list[IMPTRACK_HUD] = holder1
-		hud_list[IMPLOYAL_HUD] = holder2
-		hud_list[IMPCHEM_HUD] = holder3
-
-	if(hud_updateflag & 1 << SPECIALROLE_HUD)
-		var/image/holder = hud_list[SPECIALROLE_HUD]
-		holder.icon_state = "hudblank"
-
-		if(mind)
-
-			switch(mind.special_role)
-				if("traitor","Syndicate")
-					holder.icon_state = "hudsyndicate"
-				if("Revolutionary")
-					holder.icon_state = "hudrevolutionary"
-				if("Head Revolutionary")
-					holder.icon_state = "hudheadrevolutionary"
-				if("Cultist")
-					holder.icon_state = "hudcultist"
-				if("Changeling")
-					holder.icon_state = "hudchangeling"
-				if("Wizard","Fake Wizard")
-					holder.icon_state = "hudwizard"
-				if("Death Commando")
-					holder.icon_state = "huddeathsquad"
-				if("Ninja")
-					holder.icon_state = "hudninja"
-				if("Vampire") // TODO: Check this
-					holder.icon_state = "hudvampire"
-				if("VampThrall")
-					holder.icon_state = "hudvampthrall"
-				if("head_loyalist")
-					holder.icon_state = "loyalist"
-				if("loyalist")
-					holder.icon_state = "loyalist"
-				if("head_mutineer")
-					holder.icon_state = "mutineer"
-				if("mutineer")
-					holder.icon_state = "mutineer"
-				if("Shadowling")
-					holder.icon_state = "hudshadowling"
-				if("shadowling thrall")
-					holder.icon_state = "hudshadowlingthrall"
-
-			hud_list[SPECIALROLE_HUD] = holder
-
-	if(hud_updateflag & 1 << NATIONS_HUD)
-		var/image/holder = hud_list[NATIONS_HUD]
-		holder.icon_state = "hudblank"
-
-		if(mind && mind.nation)
-			switch(mind.nation.default_name)
-				if("Atmosia")
-					holder.icon_state = "hudatmosia"
-				if("Brigston")
-					holder.icon_state = "hudbrigston"
-				if("Cargonia")
-					holder.icon_state = "hudcargonia"
-				if("People's Republic of Commandzakstan")
-					holder.icon_state = "hudcommand"
-				if("Servicion")
-					holder.icon_state = "hudservice"
-				if("Medistan")
-					holder.icon_state = "hudmedistan"
-				if("Scientopia")
-					holder.icon_state = "hudscientopia"
-
-			hud_list[NATIONS_HUD] = holder
-
-	hud_updateflag = 0
 
 /mob/living/carbon/human/handle_silent()
 	if(..())

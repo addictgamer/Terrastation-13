@@ -16,13 +16,11 @@
 		return 0
 	if(iscultist(mind.current))
 		return 1 //If they're already in the cult, assume they are convertable
-	if(jobban_isbanned(mind.current, "cultist") || jobban_isbanned(mind.current, "Syndicate"))
-		return 0
 	if(ishuman(mind.current) && (mind.assigned_role in list("Captain", "Chaplain")))
 		return 0
 	if(ishuman(mind.current))
 		var/mob/living/carbon/human/H = mind.current
-		if(H.is_loyalty_implanted())
+		if(isloyal(H))
 			return 0
 	return 1
 
@@ -71,7 +69,7 @@
 	if(config.protect_roles_from_antagonist)
 		restricted_jobs += protected_jobs
 
-	var/list/cultists_possible = get_players_for_role(BE_CULTIST)
+	var/list/cultists_possible = get_players_for_role(ROLE_CULTIST)
 
 	for(var/cultists_number = 1 to max_cultists_to_start)
 		if(!cultists_possible.len)
@@ -186,6 +184,9 @@
 		cult += cult_mind
 		add_cult_viewpoint(cult_mind.current)
 		update_cult_icons_added(cult_mind)
+		cult_mind.current.attack_log += "\[[time_stamp()]\] <span class='danger'>Has been converted to the cult!</span>"
+		if(jobban_isbanned(cult_mind.current, ROLE_CULTIST))
+			replace_jobbaned_player(cult_mind.current, ROLE_CULTIST, ROLE_CULTIST)
 		return 1
 
 
@@ -201,8 +202,6 @@
 		cult_mind.current << "\red <FONT size = 3><B>An unfamiliar white light flashes through your mind, cleansing the taint of the dark-one and the memories of your time as his servant with it.</B></FONT>"
 		cult_mind.memory = ""
 		cult_mind.special_role = null
-		cult_mind.current.hud_updateflag |= 1 << SPECIALROLE_HUD
-
 		// remove the cult viewpoint object
 		var/obj/viewpoint = getCultViewpoint(cult_mind.current)
 		qdel(viewpoint)
@@ -213,121 +212,41 @@
 				M << "<FONT size = 3>[cult_mind.current] looks like they just reverted to their old faith!</FONT>"
 
 
-/datum/game_mode/proc/update_all_cult_icons()
-	spawn(0)
-		// reset the cult
-		for(var/datum/mind/cultist in cult)
-			reset_cult_icons_for_cultist(cultist)
-		// reset the spirits
-		for(var/mob/spirit/currentSpirit in spirits)
-			reset_cult_icons_for_spirit(currentSpirit)
-
-
-/datum/game_mode/proc/reset_cult_icons_for_cultist(var/datum/mind/target)
-	if(target.current)
-		if(target.current.client)
-			remove_all_cult_icons(target)
-			for(var/datum/mind/cultist in cult)
-				if(cultist.current)
-					add_cult_icon(target.current.client,cultist.current)
-
-
-/datum/game_mode/proc/reset_cult_icons_for_spirit(mob/spirit/target)
-	if (target.client)
-		remove_all_cult_icons(target)
-		for(var/datum/mind/cultist in cult)
-			if(cultist.current)
-				add_cult_icon(target.client,cultist.current)
-
-
-/datum/game_mode/proc/add_cult_icon(client/target_client,mob/target_mob)
-	var/I = image('icons/mob/mob.dmi', loc = target_mob, icon_state = "cult")
-	target_client.images += I
-
-
-/datum/game_mode/proc/remove_cult_icon(client/target_client,mob/target_mob)
-	for(var/image/I in target_client.images)
-		if(I.icon_state == "cult" && I.loc == target_mob)
-			qdel(I)
-
-
-/datum/game_mode/proc/remove_all_cult_icons_from_client(client/target)
-	for(var/image/I in target.images)
-		if(I.icon_state == "cult")
-			qdel(I)
-
-
-/datum/game_mode/proc/remove_all_cult_icons(target)
-	var/datum/mind/cultist = target
-	if(istype(cultist))
-		if(cultist.current)
-			if(cultist.current.client)
-				remove_all_cult_icons_from_client(cultist.current.client)
-		return TRUE
-	var/mob/spirit/currentSpirit = target
-	if(istype(currentSpirit))
-		if (currentSpirit.client)
-			remove_all_cult_icons_from_client(currentSpirit.client)
-		return TRUE
-	return FALSE
-
-
-/datum/game_mode/proc/add_cult_icon_to_spirit(mob/spirit/currentSpirit,datum/mind/cultist)
-	if(!istype(currentSpirit) || !istype(cultist))
+/datum/game_mode/proc/add_cult_icon_to_spirit(mob/spirit/currentSpirit)
+	if(!istype(currentSpirit))
 		return FALSE
 	if (currentSpirit.client)
-		if (cultist.current)
-			add_cult_icon(currentSpirit.client,cultist.current)
+		var/datum/atom_hud/antag/maskhud = huds[ANTAG_HUD_CULT]
+		maskhud.join_hud(currentSpirit)
+		set_antag_hud(currentSpirit,"hudcultist")
 
 
-/datum/game_mode/proc/add_cult_icon_to_cultist(datum/mind/first_cultist,datum/mind/second_cultist)
-	if(first_cultist.current && second_cultist.current)
-		if(first_cultist.current.client)
-			add_cult_icon(first_cultist.current.client, second_cultist.current)
-
-
-/datum/game_mode/proc/remove_cult_icon_from_cultist(datum/mind/first_cultist,datum/mind/second_cultist)
-	if(first_cultist.current && second_cultist.current)
-		if(first_cultist.current.client)
-			remove_cult_icon(first_cultist.current.client,second_cultist.current)
-
-
-/datum/game_mode/proc/remove_cult_icon_from_spirit(mob/spirit/currentSpirit,datum/mind/cultist)
-	if(!istype(currentSpirit) || !istype(cultist))
+/datum/game_mode/proc/remove_cult_icon_from_spirit(mob/spirit/currentSpirit)
+	if(!istype(currentSpirit))
 		return FALSE
 	if (currentSpirit.client)
-		if (cultist.current)
-			remove_cult_icon(currentSpirit.client,cultist.current)
-
-
-/datum/game_mode/proc/cult_icon_pair_link(datum/mind/first_cultist,datum/mind/second_cultist)
-	if (!istype(first_cultist) || !istype(second_cultist))
-		return 0
-	add_cult_icon_to_cultist(first_cultist,second_cultist)
-	add_cult_icon_to_cultist(second_cultist,first_cultist)
-
-
-/datum/game_mode/proc/cult_icon_pair_unlink(datum/mind/first_cultist,datum/mind/second_cultist)
-	if (!istype(first_cultist) || !istype(second_cultist))
-		return 0
-	remove_cult_icon_from_cultist(first_cultist,second_cultist)
-	remove_cult_icon_from_cultist(second_cultist,first_cultist)
+		var/datum/atom_hud/antag/maskhud = huds[ANTAG_HUD_CULT]
+		maskhud.leave_hud(currentSpirit)
+		set_antag_hud(currentSpirit, null)
 
 
 /datum/game_mode/proc/update_cult_icons_added(datum/mind/cult_mind)
-	spawn(0)
-		for(var/datum/mind/cultist in cult)
-			cult_icon_pair_link(cultist,cult_mind)
-		for(var/mob/spirit/currentSpirit in spirits)
-			add_cult_icon_to_spirit(currentSpirit,cult_mind)
+	for(var/mob/spirit/currentSpirit in spirits)
+		add_cult_icon_to_spirit(currentSpirit,cult_mind)
+
+	var/datum/atom_hud/antag/culthud = huds[ANTAG_HUD_CULT]
+	culthud.join_hud(cult_mind.current)
+	set_antag_hud(cult_mind.current, "hudcultist")
 
 
 /datum/game_mode/proc/update_cult_icons_removed(datum/mind/cult_mind)
-	spawn(0)
-		for(var/datum/mind/cultist in cult)
-			cult_icon_pair_unlink(cultist,cult_mind)
-		for(var/mob/spirit/currentSpirit in spirits)
-			remove_cult_icon_from_spirit(currentSpirit,cult_mind)
+
+	for(var/mob/spirit/currentSpirit in spirits)
+		remove_cult_icon_from_spirit(currentSpirit,cult_mind)
+
+	var/datum/atom_hud/antag/culthud = huds[ANTAG_HUD_CULT]
+	culthud.leave_hud(cult_mind.current)
+	set_antag_hud(cult_mind.current, null)
 
 
 /datum/game_mode/cult/proc/get_unconvertables()
@@ -358,6 +277,9 @@
 			var/area/A = get_area(cult_mind.current )
 			if ( is_type_in_list(A, centcom_areas))
 				acolytes_survived++
+			else if(A == shuttle_master.emergency.areaInstance && shuttle_master.emergency.mode >= SHUTTLE_ESCAPE)  //snowflaked into objectives because shitty bay shuttles had areas to auto-determine this
+				acolytes_survived++
+
 	if(acolytes_survived>=acolytes_needed)
 		return 0
 	else

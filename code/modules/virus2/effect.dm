@@ -348,14 +348,14 @@
 							E.droplimb(0,DROPLIMB_EDGE)
 			if(3)
 				if(ishuman(mob))
-					if(H.species.name != "Skellington")
+					if(H.species.name != "Skeleton")
 						mob << "<span class = 'warning'> Your necrotic skin ruptures!</span>"
 						for (var/obj/item/organ/external/E in H.organs)
 							if(pick(1,0) && !(E.status & ORGAN_ROBOT))
 								E.createwound(CUT, pick(2,4))
 						if(prob(30))
-							if(H.species.name != "Skellington")
-								if(H.set_species("Skellington"))
+							if(H.species.name != "Skeleton")
+								if(H.set_species("Skeleton"))
 									mob << "<span class = 'warning'> A massive amount of flesh sloughs off your bones!</span>"
 									H.regenerate_icons()
 					else
@@ -556,19 +556,8 @@
 
 			if(istype(mob.loc,/turf/simulated))
 				var/turf/simulated/T = mob.loc
-				if(T.wet < 1)
-					T.wet = 1
-					if(T.wet_overlay)
-						T.overlays -= T.wet_overlay
-						T.wet_overlay = null
-					T.wet_overlay = image('icons/effects/water.dmi',T,"wet_floor")
-					T.overlays += T.wet_overlay
-					spawn(800)
-						if (istype(T) && T.wet < 2)
-							T.wet = 0
-							if(T.wet_overlay)
-								T.overlays -= T.wet_overlay
-								T.wet_overlay = null
+				if(T.wet < TURF_WET_WATER)
+					T.MakeSlippery()
 
 
 
@@ -593,7 +582,7 @@
 			if(H.species.name == "Human" && !(H.f_style == "Elvis Sideburns"))
 				spawn(50)
 					H.f_style = "Elvis Sideburns"
-					H.update_hair()
+					H.update_fhair()
 
 
 /obj/item/clothing/glasses/virussunglasses
@@ -805,7 +794,7 @@ var/list/compatible_mobs = list(/mob/living/carbon/human)
 				H << "<span class='warning'>Your chin and neck itch!.</span>"
 				spawn(50)
 					H.f_style = "Full Beard"
-					H.update_hair()
+					H.update_fhair()
 
 /datum/disease2/effect/bloodynose
 	name = "Intranasal Hemorrhage"

@@ -135,23 +135,14 @@
 								src << "Receiving control information from APC."
 								sleep(2)
 								//bring up APC dialog
-								apc_override = 1
-								theAPC.attack_ai(src)
-								apc_override = 0
 								aiRestorePowerRoutine = 3
+								theAPC.attack_ai(src)
 								src << "Here are your current laws:"
 								src.show_laws() //WHY THE FUCK IS THIS HERE
 						sleep(50)
 						theAPC = null
 
 	process_queued_alarms()
-	regular_hud_updates()
-
-	switch(sensor_mode)
-		if (SEC_HUD)
-			process_sec_hud(src, 1, eyeobj)
-		if (MED_HUD)
-			process_med_hud(src, 1, eyeobj)
 
 	if(get_nations_mode())
 		process_nations_ai()
@@ -165,6 +156,9 @@
 			health = 100 - getOxyLoss() - getToxLoss() - getBruteLoss()
 		else
 			health = 100 - getOxyLoss() - getToxLoss() - getFireLoss() - getBruteLoss()
+		diag_hud_set_status()
+		diag_hud_set_health()
+
 
 /mob/living/silicon/ai/proc/lacks_power()
 	var/turf/T = get_turf(src)

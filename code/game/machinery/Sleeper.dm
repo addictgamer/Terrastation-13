@@ -57,14 +57,14 @@
 	return
 
 /obj/machinery/sleep_console/proc/findsleeper()
-	spawn( 5 )
-		var/obj/machinery/sleeper/sleepernew = null
-		// Loop through every direction
-		for(dir in list(NORTH,EAST,SOUTH,WEST))
-			// Try to find a scanner in that direction
-			sleepernew = locate(/obj/machinery/sleeper, get_step(src, dir))
-		src.connected = sleepernew
-		return
+	var/obj/machinery/sleeper/sleepernew = null
+	// Loop through every direction
+	for(dir in list(NORTH,EAST,SOUTH,WEST))
+		// Try to find a scanner in that direction
+		var/temp = locate(/obj/machinery/sleeper, get_step(src, dir))
+		if(!isnull(temp))
+			sleepernew = temp
+	src.connected = sleepernew
 	return
 
 /obj/machinery/sleeper/attack_animal(var/mob/living/simple_animal/M)//Stop putting hostile mobs in things guise
@@ -322,6 +322,11 @@
 	max_chem = E * 20
 	min_health = -E * 25
 
+/obj/machinery/sleeper/relaymove(mob/user as mob)
+	if(user.incapacitated())
+		return 0 //maybe they should be able to get out with cuffs, but whatever
+	go_out()
+
 /obj/machinery/sleeper/process()
 	if(filtering > 0)
 		if(beaker)
@@ -566,10 +571,6 @@
 	if(occupant)
 		user << "<span class='boldnotice'>The sleeper is already occupied!</span>"
 		return
-/*	if(isrobot(user))
-		if(!istype(user:module, /obj/item/weapon/robot_module/medical))
-			user << "<span class='warning'>You do not have the means to do this!</span>"
-			return*/
 	var/mob/living/L = O
 	if(!istype(L) || L.buckled)
 		return
@@ -600,7 +601,7 @@
 		L << "<span class='boldnotice'>You feel cool air surround you. You go numb as your senses turn inward.</span>"
 		src.add_fingerprint(user)
 		if(user.pulling == L)
-			user.pulling = null
+			user.stop_pulling()
 		return
 	return
 

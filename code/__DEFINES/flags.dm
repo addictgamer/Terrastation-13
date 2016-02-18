@@ -36,7 +36,7 @@
 
 #define NO_BLOOD		1
 #define NO_BREATHE 		2
-#define NO_DNA_RAD		4
+#define NO_DNA			4
 #define RAD_ABSORB		8
 #define NO_SCAN 		16
 #define NO_PAIN 		32
@@ -48,22 +48,25 @@
 #define IS_RESTRICTED 	2048
 #define NO_INTORGANS	4096
 #define NO_POISON		8192
+#define RADIMMUNE		16384
 
 //Species clothing flags
 #define HAS_UNDERWEAR 	1
 #define HAS_UNDERSHIRT 	2
 #define HAS_SOCKS		4
 
-//Species Blood Flags
-#define BLOOD_SLIME		1
 //Species Body Flags
-#define FEET_CLAWS		1
-#define FEET_PADDED		2
-#define FEET_NOSLIP		4
-#define HAS_TAIL 		8
-#define HAS_SKIN_TONE 	16
-#define HAS_SKIN_COLOR	32
-#define TAIL_WAGGING    64
+#define FEET_CLAWS			1
+#define FEET_PADDED			2
+#define FEET_NOSLIP			4
+#define HAS_HEAD_ACCESSORY	8
+#define HAS_TAIL 			16
+#define TAIL_OVERLAPPED		32
+#define HAS_SKIN_TONE 		64
+#define HAS_SKIN_COLOR		128
+#define HAS_MARKINGS		256
+#define TAIL_WAGGING    	512
+#define NO_EYES				1024
 
 //Species Diet Flags
 #define DIET_CARN		1

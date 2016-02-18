@@ -1,5 +1,5 @@
 /obj/machinery/computer/teleporter
-	name = "Teleporter Control Console"
+	name = "teleporter control console"
 	desc = "Used to control a linked teleportation Hub and Station."
 	icon_screen = "teleport"
 	icon_keyboard = "teleport_key"
@@ -192,7 +192,7 @@
 				areaindex[tmpname] = 1
 			L[tmpname] = R
 
-		for (var/obj/item/weapon/implant/tracking/I in tracking_implants)
+		for (var/obj/item/weapon/implant/tracking/I in tracked_implants)
 			if (!I.implanted || !ismob(I.loc))
 				continue
 			else
@@ -276,9 +276,9 @@
 	link_power_station()
 	component_parts = list()
 	component_parts += new /obj/item/weapon/circuitboard/teleporter_hub(null)
-	component_parts += new /obj/item/bluespace_crystal/artificial(null)
-	component_parts += new /obj/item/bluespace_crystal/artificial(null)
-	component_parts += new /obj/item/bluespace_crystal/artificial(null)
+	component_parts += new /obj/item/weapon/ore/bluespace_crystal/artificial(null)
+	component_parts += new /obj/item/weapon/ore/bluespace_crystal/artificial(null)
+	component_parts += new /obj/item/weapon/ore/bluespace_crystal/artificial(null)
 	component_parts += new /obj/item/weapon/stock_parts/matter_bin(null)
 	RefreshParts()
 
@@ -286,9 +286,9 @@
 	..()
 	component_parts = list()
 	component_parts += new /obj/item/weapon/circuitboard/teleporter_hub(null)
-	component_parts += new /obj/item/bluespace_crystal/artificial(null)
-	component_parts += new /obj/item/bluespace_crystal/artificial(null)
-	component_parts += new /obj/item/bluespace_crystal/artificial(null)
+	component_parts += new /obj/item/weapon/ore/bluespace_crystal/artificial(null)
+	component_parts += new /obj/item/weapon/ore/bluespace_crystal/artificial(null)
+	component_parts += new /obj/item/weapon/ore/bluespace_crystal/artificial(null)
 	component_parts += new /obj/item/weapon/stock_parts/matter_bin/super(null)
 	RefreshParts()
 
@@ -317,6 +317,8 @@
 	return power_station
 
 /obj/machinery/teleport/hub/Bumped(M as mob|obj)
+	if(z == ZLEVEL_CENTCOMM)
+		M << "You can't use this here."
 	if(power_station && power_station.engaged && !panel_open)
 		//--FalseIncarnate
 		//Prevents AI cores from using the teleporter, prints out failure messages for clarity
@@ -385,8 +387,8 @@
 	..()
 	component_parts = list()
 	component_parts += new /obj/item/weapon/circuitboard/teleporter_station(null)
-	component_parts += new /obj/item/bluespace_crystal/artificial(null)
-	component_parts += new /obj/item/bluespace_crystal/artificial(null)
+	component_parts += new /obj/item/weapon/ore/bluespace_crystal/artificial(null)
+	component_parts += new /obj/item/weapon/ore/bluespace_crystal/artificial(null)
 	component_parts += new /obj/item/weapon/stock_parts/capacitor(null)
 	component_parts += new /obj/item/weapon/stock_parts/capacitor(null)
 	component_parts += new /obj/item/weapon/stock_parts/console_screen(null)

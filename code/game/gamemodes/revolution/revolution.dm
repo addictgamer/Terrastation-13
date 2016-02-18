@@ -45,7 +45,7 @@
 	if(config.protect_roles_from_antagonist)
 		restricted_jobs += protected_jobs
 
-	var/list/datum/mind/possible_headrevs = get_players_for_role(BE_REV)
+	var/list/datum/mind/possible_headrevs = get_players_for_role(ROLE_REV)
 
 	for (var/i=1 to max_headrevs)
 		if(possible_headrevs.len==0)
@@ -83,8 +83,8 @@
 	for(var/datum/mind/rev_mind in head_revolutionaries)
 		greet_revolutionary(rev_mind)
 	modePlayer += head_revolutionaries
-	if(emergency_shuttle)
-		emergency_shuttle.no_escape = 1
+	if(shuttle_master)
+		shuttle_master.emergencyNoEscape = 1
 	..()
 
 
@@ -203,20 +203,11 @@
 //Checks if the round is over//
 ///////////////////////////////
 /datum/game_mode/revolution/check_finished()
-	if(config.continous_rounds)
+	if(config.continuous_rounds)
 		if(finished != 0)
-			if(emergency_shuttle)
-				if(emergency_shuttle.auto_recall)
-					emergency_shuttle.auto_recall = 0
-				else if(emergency_shuttle.is_stranded())
-					emergency_shuttle.no_escape = 0
-					emergency_shuttle.shuttle.moving_status = SHUTTLE_IDLE
-					emergency_shuttle.shuttle_arrived()
-		return ..()
-	if(finished != 0)
-		return 1
-	else
-		return 0
+			if(shuttle_master && shuttle_master.emergencyNoEscape)
+				shuttle_master.emergencyNoEscape = 0
+	return finished != 0
 
 ///////////////////////////////////////////////////
 //Deals with converting players to the revolution//
@@ -234,6 +225,8 @@
 	rev_mind.current << "\red <FONT size = 3> You are now a revolutionary! Help your cause. Do not harm your fellow freedom fighters. You can identify your comrades by the red \"R\" icons, and your leaders by the blue \"R\" icons. Help them kill the heads to win the revolution!</FONT>"
 	rev_mind.special_role = "Revolutionary"
 	update_rev_icons_added(rev_mind)
+	if(jobban_isbanned(rev_mind.current, ROLE_REV))
+		replace_jobbaned_player(rev_mind.current, ROLE_REV, ROLE_REV)
 	return 1
 //////////////////////////////////////////////////////////////////////////////
 //Deals with players being converted from the revolution (Not a rev anymore)//  // Modified to handle borged MMIs.  Accepts another var if the target is being borged at the time  -- Polymorph.
@@ -242,7 +235,6 @@
 	if(rev_mind in revolutionaries)
 		revolutionaries -= rev_mind
 		rev_mind.special_role = null
-		rev_mind.current.hud_updateflag |= 1 << SPECIALROLE_HUD
 
 		if(beingborged)
 			rev_mind.current << "\red <FONT size = 3><B>The frame's firmware detects and deletes your neural reprogramming!  You remember nothing from the moment you were flashed until now.</B></FONT>"
@@ -259,104 +251,21 @@
 				M << "[rev_mind.current] looks like they just remembered their real allegiance!"
 
 
-/////////////////////////////////////////////////////////////////////////////////////////////////
-//Keeps track of players having the correct icons////////////////////////////////////////////////
-//CURRENTLY CONTAINS BUGS:///////////////////////////////////////////////////////////////////////
-//-PLAYERS THAT HAVE BEEN REVS FOR AWHILE OBTAIN THE BLUE ICON WHILE STILL NOT BEING A REV HEAD//
-// -Possibly caused by cloning of a standard rev/////////////////////////////////////////////////
-//-UNCONFIRMED: DECONVERTED REVS NOT LOSING THEIR ICON PROPERLY//////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////////////////////
-/datum/game_mode/proc/update_all_rev_icons()
-	spawn(0)
-		for(var/datum/mind/head_rev_mind in head_revolutionaries)
-			if(head_rev_mind.current)
-				if(head_rev_mind.current.client)
-					for(var/image/I in head_rev_mind.current.client.images)
-						if(I.icon_state == "rev" || I.icon_state == "rev_head")
-							qdel(I)
-
-		for(var/datum/mind/rev_mind in revolutionaries)
-			if(rev_mind.current)
-				if(rev_mind.current.client)
-					for(var/image/I in rev_mind.current.client.images)
-						if(I.icon_state == "rev" || I.icon_state == "rev_head")
-							qdel(I)
-
-		for(var/datum/mind/head_rev in head_revolutionaries)
-			if(head_rev.current)
-				if(head_rev.current.client)
-					for(var/datum/mind/rev in revolutionaries)
-						if(rev.current)
-							var/I = image('icons/mob/mob.dmi', loc = rev.current, icon_state = "rev")
-							head_rev.current.client.images += I
-					for(var/datum/mind/head_rev_1 in head_revolutionaries)
-						if(head_rev_1.current)
-							var/I = image('icons/mob/mob.dmi', loc = head_rev_1.current, icon_state = "rev_head")
-							head_rev.current.client.images += I
-
-		for(var/datum/mind/rev in revolutionaries)
-			if(rev.current)
-				if(rev.current.client)
-					for(var/datum/mind/head_rev in head_revolutionaries)
-						if(head_rev.current)
-							var/I = image('icons/mob/mob.dmi', loc = head_rev.current, icon_state = "rev_head")
-							rev.current.client.images += I
-					for(var/datum/mind/rev_1 in revolutionaries)
-						if(rev_1.current)
-							var/I = image('icons/mob/mob.dmi', loc = rev_1.current, icon_state = "rev")
-							rev.current.client.images += I
-
-////////////////////////////////////////////////////
-//Keeps track of converted revs icons///////////////
-//Refer to above bugs. They may apply here as well//
-////////////////////////////////////////////////////
+/////////////////////////////////////
+//Adds the rev hud to a new convert//
+/////////////////////////////////////
 /datum/game_mode/proc/update_rev_icons_added(datum/mind/rev_mind)
-	spawn(0)
-		for(var/datum/mind/head_rev_mind in head_revolutionaries)
-			if(head_rev_mind.current)
-				if(head_rev_mind.current.client)
-					var/I = image('icons/mob/mob.dmi', loc = rev_mind.current, icon_state = "rev")
-					head_rev_mind.current.client.images += I
-			if(rev_mind.current)
-				if(rev_mind.current.client)
-					var/image/J = image('icons/mob/mob.dmi', loc = head_rev_mind.current, icon_state = "rev_head")
-					rev_mind.current.client.images += J
+	var/datum/atom_hud/antag/revhud = huds[ANTAG_HUD_REV]
+	revhud.join_hud(rev_mind.current)
+	set_antag_hud(rev_mind.current, ((rev_mind in head_revolutionaries) ? "hudheadrevolutionary" : "hudrevolutionary"))
 
-		for(var/datum/mind/rev_mind_1 in revolutionaries)
-			if(rev_mind_1.current)
-				if(rev_mind_1.current.client)
-					var/I = image('icons/mob/mob.dmi', loc = rev_mind.current, icon_state = "rev")
-					rev_mind_1.current.client.images += I
-			if(rev_mind.current)
-				if(rev_mind.current.client)
-					var/image/J = image('icons/mob/mob.dmi', loc = rev_mind_1.current, icon_state = "rev")
-					rev_mind.current.client.images += J
-
-///////////////////////////////////
-//Keeps track of deconverted revs//
-///////////////////////////////////
+/////////////////////////////////////////
+//Removes the hud from deconverted revs//
+/////////////////////////////////////////
 /datum/game_mode/proc/update_rev_icons_removed(datum/mind/rev_mind)
-	spawn(0)
-		for(var/datum/mind/head_rev_mind in head_revolutionaries)
-			if(head_rev_mind.current)
-				if(head_rev_mind.current.client)
-					for(var/image/I in head_rev_mind.current.client.images)
-						if((I.icon_state == "rev" || I.icon_state == "rev_head") && I.loc == rev_mind.current)
-							qdel(I)
-
-		for(var/datum/mind/rev_mind_1 in revolutionaries)
-			if(rev_mind_1.current)
-				if(rev_mind_1.current.client)
-					for(var/image/I in rev_mind_1.current.client.images)
-						if((I.icon_state == "rev" || I.icon_state == "rev_head") && I.loc == rev_mind.current)
-							qdel(I)
-
-		if(rev_mind.current)
-			if(rev_mind.current.client)
-				for(var/image/I in rev_mind.current.client.images)
-					if(I.icon_state == "rev" || I.icon_state == "rev_head")
-						qdel(I)
-
+	var/datum/atom_hud/antag/revhud = huds[ANTAG_HUD_REV]
+	revhud.leave_hud(rev_mind.current)
+	set_antag_hud(rev_mind.current, null)
 //////////////////////////
 //Checks for rev victory//
 //////////////////////////

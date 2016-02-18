@@ -41,8 +41,8 @@
 	if(prob(1))
 		H.emote(pick("scratch","jump","roll","tail"))
 
-datum/species/monkey/get_random_name(var/gender)
-	return
+/datum/species/monkey/get_random_name()
+	return "[lowertext(name)] ([rand(100,999)])"
 
 /datum/species/monkey/handle_post_spawn(var/mob/living/carbon/human/H)
 	H.real_name = "[lowertext(name)] ([rand(100,999)])"
@@ -51,6 +51,7 @@ datum/species/monkey/get_random_name(var/gender)
 
 /datum/species/monkey/handle_dna(var/mob/living/carbon/human/H)
 	H.dna.SetSEState(MONKEYBLOCK,1)
+	genemutcheck(H, MONKEYBLOCK)
 
 /datum/species/monkey/handle_can_equip(obj/item/I, slot, disable_warning = 0, mob/living/carbon/human/user)
 	switch(slot)
@@ -98,7 +99,7 @@ datum/species/monkey/get_random_name(var/gender)
 	greater_form = "Tajaran"
 	default_language = "Farwa"
 	flesh_color = "#AFA59E"
-	base_color = "#333333"
+	base_color = "#000000"
 	tail = "farwatail"
 	reagent_tag = PROCESS_ORG
 
@@ -113,7 +114,7 @@ datum/species/monkey/get_random_name(var/gender)
 	greater_form = "Vulpkanin"
 	default_language = "Wolpin"
 	flesh_color = "#966464"
-	base_color = "#BE8264"
+	base_color = "#000000"
 	tail = "wolpintail"
 	reagent_tag = PROCESS_ORG
 
@@ -146,7 +147,7 @@ datum/species/monkey/get_random_name(var/gender)
 	greater_form = "Unathi"
 	default_language = "Stok"
 	flesh_color = "#34AF10"
-	base_color = "#066000"
+	base_color = "#000000"
 	reagent_tag = PROCESS_ORG
 
 	bodyflags = FEET_CLAWS | HAS_TAIL

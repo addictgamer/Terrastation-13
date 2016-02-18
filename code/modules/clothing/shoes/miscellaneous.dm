@@ -9,8 +9,8 @@
 	flags = NOSLIP
 	origin_tech = "syndicate=3"
 	var/list/clothing_choices = list()
-	siemens_coefficient = 0.8
 	species_restricted = null
+	silence_steps = 1
 
 /obj/item/clothing/shoes/mime
 	name = "mime shoes"
@@ -24,7 +24,6 @@
 	item_state = "jackboots"
 	armor = list(melee = 50, bullet = 50, laser = 50, energy = 25, bomb = 50, bio = 10, rad = 0)
 	species_restricted = null //Syndicate tech means even Tajarans can kick ass with these
-	siemens_coefficient = 0.6
 	strip_delay = 70
 
 /obj/item/clothing/shoes/combat/swat //overpowered boots for death squads
@@ -58,6 +57,16 @@
 	put_on_delay = 50
 	species_restricted = null
 
+/obj/item/clothing/shoes/galoshes/dry
+	name = "absorbent galoshes"
+	desc = "A pair of purple rubber boots, designed to prevent slipping on wet surfaces while also drying them."
+	icon_state = "galoshes_dry"
+
+/obj/item/clothing/shoes/galoshes/dry/step_action()
+	var/turf/simulated/t_loc = get_turf(src)
+	if(istype(t_loc) && t_loc.wet)
+		t_loc.MakeDry(TURF_WET_WATER)
+
 /obj/item/clothing/shoes/clown_shoes
 	desc = "The prankster's standard-issue clowning shoes. Damn they're huge!"
 	name = "clown shoes"
@@ -67,6 +76,7 @@
 	item_color = "clown"
 	var/footstep = 1	//used for squeeks whilst walking
 	species_restricted = null
+	silence_steps = 1
 
 /obj/item/clothing/shoes/clown_shoes/step_action(var/mob/living/carbon/human/H)
 	if(!istype(H))	return 0
@@ -83,13 +93,14 @@
 /obj/item/clothing/shoes/jackboots
 	name = "jackboots"
 	desc = "Nanotrasen-issue Security combat boots for combat scenarios or combat situations. All combat, all the time."
+	can_cut_open = 1
 	icon_state = "jackboots"
 	item_state = "jackboots"
 	item_color = "hosred"
-	siemens_coefficient = 0.7
 	strip_delay = 50
 	put_on_delay = 50
 	var/footstep = 1
+	silence_steps = 1
 
 /obj/item/clothing/shoes/jackboots/step_action(var/mob/living/carbon/human/H)
 	if(!istype(H))	return 0
@@ -116,7 +127,6 @@
 	icon_state = "cult"
 	item_state = "cult"
 	item_color = "cult"
-	siemens_coefficient = 0.7
 
 	cold_protection = FEET
 	min_cold_protection_temperature = SHOES_MIN_TEMP_PROTECT
@@ -175,3 +185,25 @@
 	icon_state = "noble_boot"
 	item_color = "noble_boot"
 	item_state = "noble_boot"
+
+
+/obj/item/clothing/shoes/attackby(obj/item/I, mob/user, params)
+	if(istype(I, /obj/item/shoe_silencer))
+		silence_steps = 1
+		user.unEquip(I)
+		qdel(I)
+	else . = ..()
+
+/obj/item/shoe_silencer
+	name = "shoe rags"
+	desc = "Looks sneaky."
+	icon_state = "sheet-cloth"
+
+/datum/table_recipe/shoe_rags
+	name = "Shoe Rags"
+
+	result = /obj/item/shoe_silencer
+	reqs = list(/obj/item/stack/tape_roll = 10)
+	tools = list(/obj/item/weapon/wirecutters)
+
+	time = 40

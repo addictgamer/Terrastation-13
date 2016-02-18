@@ -234,6 +234,9 @@
 	if(grown_seed.get_trait(TRAIT_PRODUCES_POWER))
 		dat += "<br>The fruit will function as a battery if prepared appropriately."
 
+	if(grown_seed.get_trait(TRAIT_BATTERY_RECHARGE))
+		dat += "<br>The fruit hums with an odd electrical energy."
+
 	if(grown_seed.get_trait(TRAIT_STINGS))
 		dat += "<br>The fruit is covered in stinging spines."
 
@@ -293,15 +296,6 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "unathiknife"
 	attack_verb = list("ripped", "torn", "cut")
-
-/obj/item/weapon/hatchet/tacknife
-	name = "tactical knife"
-	desc = "You'd be killing loads of people if this was Medal of Valor: Heroes of Nyx."
-	icon = 'icons/obj/weapons.dmi'
-	icon_state = "tacknife"
-	item_state = "knife"
-	attack_verb = list("stabbed", "chopped", "cut")
-
 
 /obj/item/weapon/scythe
 	icon_state = "scythe0"

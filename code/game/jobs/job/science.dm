@@ -11,11 +11,11 @@
 	access = list(access_rd, access_heads, access_tox, access_genetics, access_morgue,
 			            access_tox_storage, access_tech_storage, access_teleporter, access_sec_doors,
 			            access_research, access_robotics, access_xenobiology, access_ai_upload,
-			            access_RC_announce, access_keycard_auth, access_tcomsat, access_gateway, access_xenoarch, access_minisat, access_mineral_storeroom, access_assembly)
+			            access_RC_announce, access_keycard_auth, access_tcomsat, access_gateway, access_xenoarch, access_minisat, access_mineral_storeroom)
 	minimal_access = list(access_eva, access_rd, access_heads, access_tox, access_genetics, access_morgue,
 			            access_tox_storage, access_tech_storage, access_teleporter, access_sec_doors,
 			            access_research, access_robotics, access_xenobiology, access_ai_upload,
-			            access_RC_announce, access_keycard_auth, access_tcomsat, access_gateway, access_xenoarch, access_minisat, access_maint_tunnels, access_mineral_storeroom, access_assembly)
+			            access_RC_announce, access_keycard_auth, access_tcomsat, access_gateway, access_xenoarch, access_minisat, access_maint_tunnels, access_mineral_storeroom)
 	minimal_player_age = 21
 
 	// All science-y guys get bonuses for maxing out their tech.
@@ -27,7 +27,7 @@
 		if(!H)	return 0
 		switch(H.backbag)
 			if(1) H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
-			if(2) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack(H), slot_back)
+			if(2) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/science(H), slot_back)
 			if(3) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel_tox(H), slot_back)
 			if(4) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel(H), slot_back)
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/heads/rd(H), slot_l_ear)
@@ -65,7 +65,7 @@
 		if(!H)	return 0
 		switch(H.backbag)
 			if(1) H.equip_to_slot_or_del(new /obj/item/weapon/storage/box/survival(H), slot_r_hand)
-			if(2) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack(H), slot_back)
+			if(2) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/science(H), slot_back)
 			if(3) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel_tox(H), slot_back)
 			if(4) H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/satchel(H), slot_back)
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset/headset_sci(H), slot_l_ear)
@@ -87,8 +87,8 @@
 	supervisors = "the research director"
 	selection_color = "#ffeeff"
 	idtype = /obj/item/weapon/card/id/research
-	access = list(access_robotics, access_tox, access_tox_storage, access_tech_storage, access_morgue, access_research, access_mineral_storeroom, access_assembly) //As a job that handles so many corpses, it makes sense for them to have morgue access.
-	minimal_access = list(access_robotics, access_tech_storage, access_morgue, access_research, access_maint_tunnels, access_mineral_storeroom, access_assembly) //As a job that handles so many corpses, it makes sense for them to have morgue access.
+	access = list(access_robotics, access_tox, access_tox_storage, access_tech_storage, access_morgue, access_research, access_mineral_storeroom) //As a job that handles so many corpses, it makes sense for them to have morgue access.
+	minimal_access = list(access_robotics, access_tech_storage, access_morgue, access_research, access_maint_tunnels, access_mineral_storeroom) //As a job that handles so many corpses, it makes sense for them to have morgue access.
 	alt_titles = list("Biomechanical Engineer","Mechatronic Engineer")
 	minimal_player_age = 3
 

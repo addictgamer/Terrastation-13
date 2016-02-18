@@ -198,6 +198,9 @@
 			update_equip_info()
 		return
 
+	container_resist(var/mob/living/L)
+		go_out()
+
 	update_equip_info()
 		if(..())
 			send_byjax(chassis.occupant,"msleeper.browser","lossinfo",get_occupant_dam())
@@ -341,9 +344,9 @@
 	proc/dismantleFloor(var/turf/new_turf)
 		if(istype(new_turf, /turf/simulated/floor))
 			var/turf/simulated/floor/T = new_turf
-			if(!T.is_plating())
+			if(!istype(T, /turf/simulated/floor/plating))
 				if(!T.broken && !T.burnt)
-					new T.floor_tile.type(T)
+					new T.floor_tile(T)
 				T.make_plating()
 		return !new_turf.intact
 
@@ -383,6 +386,9 @@
 	desc = "Exosuit-mounted chem synthesizer with syringe gun. Reagents inside are held in stasis, so no reactions will occur. (Can be attached to: Medical Exosuits)"
 	icon = 'icons/obj/gun.dmi'
 	icon_state = "syringegun"
+	item_state = "syringegun"
+	lefthand_file = 'icons/mob/inhands/guns_lefthand.dmi'
+	righthand_file = 'icons/mob/inhands/guns_righthand.dmi'
 	var/list/syringes
 	var/list/known_reagents
 	var/list/processed_reagents

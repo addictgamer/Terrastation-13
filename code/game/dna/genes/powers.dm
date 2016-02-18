@@ -155,15 +155,14 @@
 
 	OnMobLife(var/mob/living/carbon/human/M)
 		if(!istype(M)) return
-		if ((HULK in M.mutations) && M.health <= 25)
+		if ((HULK in M.mutations) && M.health <= 0)
 			M.mutations.Remove(HULK)
 			M.dna.SetSEState(HULKBLOCK,0)
+			genemutcheck(M, HULKBLOCK,null,MUTCHK_FORCED)
 			M.update_mutations()		//update our mutation overlays
 			M.update_body()
 			M.status_flags |= CANSTUN | CANWEAKEN | CANPARALYSE | CANPUSH //temporary fix until the problem can be solved.
 			M << "<span class='danger'>You suddenly feel very weak.</span>"
-			M.Weaken(3)
-			M.emote("collapse")
 
 /datum/dna/gene/basic/xray
 	name="X-Ray Vision"

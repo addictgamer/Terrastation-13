@@ -79,24 +79,28 @@
 	switch(stage)
 		if(0)
 			if(istype(W,/obj/item/weapon/scalpel))
+				spread_germs_to_organ(src,user)
 				user.visible_message("<span class='danger'><b>[user]</b> cuts [src] open with [W]!")
 				stage++
 				return
 		if(1)
 			if(istype(W,/obj/item/weapon/retractor))
+				spread_germs_to_organ(src,user)
 				user.visible_message("<span class='danger'><b>[user]</b> cracks [src] open like an egg with [W]!")
 				stage++
 				return
 		if(2)
 			if(istype(W,/obj/item/weapon/hemostat))
+				spread_germs_to_organ(src,user)
 				if(contents.len)
 					var/obj/item/removing = pick(contents)
 					removing.loc = get_turf(user.loc)
 					var/obj/item/organ/O = removing
 					if(istype(O))
 						O.status |= ORGAN_CUT_AWAY
+						spread_germs_to_organ(O,user) // This wouldn't be any cleaner than the actual surgery
 						O.removed(user)
-					else if(!(user.l_hand && user.r_hand))
+					if(!(user.l_hand && user.r_hand))
 						user.put_in_hands(removing)
 					user.visible_message("<span class='danger'><b>[user]</b> extracts [removing] from [src] with [W]!")
 				else
@@ -139,6 +143,9 @@
 	//robot limbs take reduced damage
 	brute_mod = 0.66
 	burn_mod = 0.66
+	// Robot parts also lack bones
+	// This is so surgery isn't kaput, let's see how this does
+	encased = null
 
 /****************************************************
 			   DAMAGE PROCS
@@ -559,7 +566,11 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 		if(!(status & ORGAN_ROBOT) && W.bleeding())
 			W.bleed_timer--
-			status |= ORGAN_BLEEDING
+			if(H && (H.species.flags & NO_BLOOD)) // Bloodless organic races are finicky
+				W.clamped = 1
+				W.bleed_timer = 0
+			else
+				status |= ORGAN_BLEEDING
 
 		clamped |= W.clamped
 
@@ -820,6 +831,9 @@ Note that amputating the affected organ does in fact remove the infection from t
 		H.drop_item()
 	W.loc = owner
 
+/obj/item/organ/external/proc/open_enough_for_surgery()
+	return (encased ? (open == 3) : (open == 2))
+
 /obj/item/organ/external/removed(var/mob/living/user, var/ignore_children)
 
 	if(!owner)
@@ -849,7 +863,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	release_restraints(victim)
 	victim.organs -= src
-	victim.organs_by_name[limb_name] = null // Remove from owner's vars.
+	if(is_primary_organ(victim))
+		victim.organs_by_name[limb_name] = null	// Remove from owner's vars.
 
 	//Robotic limbs explode if sabotaged.
 	if(is_robotic && sabotaged)
@@ -879,3 +894,10 @@ Note that amputating the affected organ does in fact remove the infection from t
 			"\red <b>Your [name] melts away!</b>",	\
 			"\red You hear a sickening sizzle.")
 	disfigured = 1
+
+/obj/item/organ/external/is_primary_organ(var/mob/living/carbon/human/O = null)
+	if (isnull(O))
+		O = owner
+	if (!istype(O)) // You're not the primary organ of ANYTHING, bucko
+		return 0
+	return src == O.organs_by_name[limb_name]

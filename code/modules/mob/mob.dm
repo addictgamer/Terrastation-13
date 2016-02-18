@@ -18,7 +18,12 @@
 		dead_mob_list += src
 	else
 		living_mob_list += src
+	prepare_huds()
 	..()
+
+/atom/proc/prepare_huds()
+	for(var/hud in hud_possible)
+		hud_list[hud] = image('icons/mob/hud.dmi', src, "")
 
 /mob/proc/generate_name()
 	return name
@@ -106,7 +111,21 @@
 	for(var/mob/M in get_mobs_in_view(range, src))
 		if(self_message && M==src)
 			msg = self_message
-		M.show_message( msg, 2, deaf_message, 1)
+		M.show_message(msg, 2, deaf_message, 1)
+
+	// based on say code
+	var/omsg = replacetext(message, "<B>[src]</B> ", "")
+	var/list/listening_obj = new
+	for(var/atom/movable/A in view(range, src))
+		if(istype(A, /mob))
+			var/mob/M = A
+			for(var/obj/O in M.contents)
+				listening_obj |= O
+		else if(istype(A, /obj))
+			var/obj/O = A
+			listening_obj |= O
+	for(var/obj/O in listening_obj)
+		O.hear_message(src, omsg)
 
 // Show a message to all mobs in earshot of this atom
 // Use for objects performing audible actions
@@ -158,6 +177,7 @@
 
 	if(ishuman(src) && W == src:head)
 		src:update_hair()
+		src:update_fhair()
 
 /mob/proc/put_in_any_hand_if_possible(obj/item/W as obj, del_on_fail = 0, disable_warning = 1, redraw_mob = 1)
 	if(equip_to_slot_if_possible(W, slot_l_hand, del_on_fail, disable_warning, redraw_mob))
@@ -970,6 +990,36 @@ var/list/slot_equipment_priority = list( \
 
 	statpanel("Status") // Switch to the Status panel again, for the sake of the lazy Stat procs
 
+// this function displays the station time in the status panel
+/mob/proc/show_stat_station_time()
+	stat(null, "Station Time: [worldtime2text()]")
+
+// this function displays the shuttles ETA in the status panel if the shuttle has been called
+/mob/proc/show_stat_emergency_shuttle_eta()
+	var/obj/docking_port/mobile/emergency/E = shuttle_master.emergency
+
+	if(E.mode >= SHUTTLE_RECALL)
+		var/message = ""
+
+		var/timeleft = E.timeLeft()
+		message = "[add_zero(num2text((timeleft / 60) % 60),2)]:[add_zero(num2text(timeleft % 60), 2)]"
+
+		switch(E.mode)
+			if(SHUTTLE_RECALL, SHUTTLE_ESCAPE)
+				message = "ETR-[message]"
+			if(SHUTTLE_CALL)
+				message = "ETA-[message]"
+			if(SHUTTLE_DOCKED)
+				if(timeleft < 5)
+					message = "Departing..."
+				else
+					message = "ETD-[message]"
+			if(SHUTTLE_STRANDED)
+				message = "ETA-ERR"
+			if(SHUTTLE_ENDGAME)
+				return
+
+		stat(null, message)
 
 /mob/proc/add_stings_to_statpanel(var/list/stings)
 	for(var/obj/effect/proc_holder/changeling/S in stings)
@@ -1379,6 +1429,10 @@ mob/proc/yank_out_object()
 		spell.action.Grant(src)
 	return
 
+//override to avoid rotating pixel_xy on mobs
+/mob/shuttleRotate(rotation)
+	dir = angle2dir(rotation+dir2angle(dir))
+
 /mob/proc/handle_ventcrawl()
 	return // Only living mobs can ventcrawl
 
@@ -1413,3 +1467,7 @@ mob/proc/yank_out_object()
 //Can the mob see reagents inside of containers?
 /mob/proc/can_see_reagents()
 	return 0
+
+//Can this mob leave its location without breaking things terrifically?
+/mob/proc/can_safely_leave_loc()
+	return 1 // Yes, you can

@@ -14,6 +14,7 @@
 	density = 0
 	req_access = list(access_engine, access_robotics)
 	local_transmit = 1
+	ventcrawler = 2
 
 	// We need to keep track of a few module items so we don't need to do list operations
 	// every time we need them. These get set in New() after the module is chosen.
@@ -211,12 +212,12 @@
 //Drones killed by damage will gib.
 /mob/living/silicon/robot/drone/handle_regular_status_updates()
 
-	if(health <= -35 && src.stat != 2)
+	if(health <= -35 && src.stat != DEAD)
 		timeofdeath = world.time
 		death() //Possibly redundant, having trouble making death() cooperate.
 		gib()
 		return
-	..()
+	return ..() // If you don't return anything here, you won't update status effects, like weakening
 
 /mob/living/silicon/robot/drone/death(gibbed)
 
@@ -258,7 +259,7 @@
 		if(jobban_isbanned(O,"nonhumandept") || jobban_isbanned(O,"Drone"))
 			continue
 		if(O.client)
-			if(O.client.prefs.be_special & BE_PAI)
+			if(ROLE_PAI in O.client.prefs.be_special)
 				question(O.client,O)
 
 /mob/living/silicon/robot/drone/proc/question(var/client/C,var/mob/M)

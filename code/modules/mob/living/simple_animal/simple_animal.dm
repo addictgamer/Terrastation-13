@@ -102,6 +102,9 @@
 			handle_automated_speech()
 		. = 1
 
+	handle_state_icons()
+
+/mob/living/simple_animal/proc/handle_state_icons()
 	if(resting && icon_resting && stat != DEAD)
 		icon_state = icon_resting
 	else if(stat != DEAD)
@@ -224,9 +227,9 @@
 
 /mob/living/simple_animal/proc/handle_temperature_damage()
 	if(bodytemperature < minbodytemp)
-		adjustBruteLoss(2)
+		adjustBruteLoss(cold_damage_per_tick)
 	else if(bodytemperature > maxbodytemp)
-		adjustBruteLoss(3)
+		adjustBruteLoss(heat_damage_per_tick)
 
 /mob/living/simple_animal/Bumped(AM as mob|obj)
 	if(!AM) return
@@ -409,9 +412,9 @@
 			user << "\blue [src] is dead, medical items won't bring it back to life."
 			return
 	else if(meat_type && (stat == DEAD))	//if the animal has a meat, and if it is dead.
-		if(istype(O, /obj/item/weapon/kitchenknife) || istype(O, /obj/item/weapon/butch))
+		if(istype(O, /obj/item/weapon/kitchen/knife))
 			harvest()
-	else
+	else if(istype(O) && istype(user) && !O.attack(src, user))
 		user.changeNext_move(CLICK_CD_MELEE)
 		user.do_attack_animation(src)
 		var/damage = 0

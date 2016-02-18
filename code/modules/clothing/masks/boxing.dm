@@ -8,9 +8,12 @@
 	w_class = 2
 	action_button_name = "Adjust Balaclava"
 	ignore_maskadjust = 0
-	species_fit = list("Vox")
+	species_fit = list("Vox", "Unathi", "Tajaran", "Vulpkanin")
 	sprite_sheets = list(
-		"Vox" = 'icons/mob/species/vox/mask.dmi'
+		"Vox" = 'icons/mob/species/vox/mask.dmi',
+		"Unathi" = 'icons/mob/species/unathi/mask.dmi',
+		"Tajaran" = 'icons/mob/species/tajaran/mask.dmi',
+		"Vulpkanin" = 'icons/mob/species/vulpkanin/mask.dmi'
 		)
 
 /obj/item/clothing/mask/balaclava/attack_self(var/mob/user)
@@ -24,7 +27,13 @@
 	flags = BLOCKHAIR
 	flags_inv = HIDEFACE
 	w_class = 2
-	siemens_coefficient = 3.0
+	species_fit = list("Vox", "Unathi", "Tajaran", "Vulpkanin")
+	sprite_sheets = list(
+		"Vox" = 'icons/mob/species/vox/mask.dmi',
+		"Unathi" = 'icons/mob/species/unathi/mask.dmi',
+		"Tajaran" = 'icons/mob/species/tajaran/mask.dmi',
+		"Vulpkanin" = 'icons/mob/species/vulpkanin/mask.dmi'
+		)
 
 /obj/item/clothing/mask/luchador/tecnicos
 	name = "Tecnicos Mask"

@@ -142,45 +142,41 @@
 		..() // -> item/attackby(, params)
 
 	if(istype(W,/obj/item/weapon/kitchen/utensil))
-		//This will allow forks/spoons/plastic cutlery to pick up sliceables, but requires it to be unsliceable for the knife to pick it up
-		if((istype(W, /obj/item/weapon/kitchen/utensil/knife) && !slice_path) || !istype(W, /obj/item/weapon/kitchen/utensil/knife))
 
-			var/obj/item/weapon/kitchen/utensil/U = W
+		var/obj/item/weapon/kitchen/utensil/U = W
 
-			if(!U.reagents)
-				U.create_reagents(5)
+		if(!U.reagents)
+			U.create_reagents(5)
 
-			if (U.reagents.total_volume > 0)
-				user << "\red You already have something on your [U]."
-				return
-
-			user.visible_message( \
-				"[user] scoops up some [src] with \the [U]!", \
-				"\blue You scoop up some [src] with \the [U]!" \
-			)
-
-			src.bitecount++
-			U.overlays.Cut()
-			U.loaded = "[src]"
-			var/image/I = new(U.icon, "loadedfood")
-			I.color = src.filling_color
-			U.overlays += I
-
-			reagents.trans_to(U,min(reagents.total_volume,5))
-
-			if (reagents.total_volume <= 0)
-				qdel(src)
+		if (U.reagents.total_volume > 0)
+			user << "\red You already have something on your [U]."
 			return
+
+		user.visible_message( \
+			"[user] scoops up some [src] with \the [U]!", \
+			"\blue You scoop up some [src] with \the [U]!" \
+		)
+
+		src.bitecount++
+		U.overlays.Cut()
+		U.loaded = "[src]"
+		var/image/I = new(U.icon, "loadedfood")
+		I.color = src.filling_color
+		U.overlays += I
+
+		reagents.trans_to(U,min(reagents.total_volume,5))
+
+		if (reagents.total_volume <= 0)
+			qdel(src)
+		return
 
 	if((slices_num <= 0 || !slices_num) || !slice_path)
 		return 0
 
 	var/inaccurate = 0
 	if( \
-			istype(W, /obj/item/weapon/kitchenknife) || \
-			istype(W, /obj/item/weapon/butch) || \
-			istype(W, /obj/item/weapon/scalpel) || \
-			istype(W, /obj/item/weapon/kitchen/utensil/knife) \
+			istype(W, /obj/item/weapon/kitchen/knife) || \
+			istype(W, /obj/item/weapon/scalpel) \
 		)
 	else if( \
 			istype(W, /obj/item/weapon/circular_saw) || \
@@ -245,7 +241,8 @@
 				M.visible_message("[M] [pick("burps from enjoyment", "yaps for more", "woofs twice", "looks at the area where \the [src] was")].","<span class=\"notice\">You swallow up the last part of \the [src].")
 				playsound(src.loc,'sound/items/eatfood.ogg', rand(10,50), 1)
 				var/mob/living/simple_animal/pet/corgi/C = M
-				C.health = min(C.health + 5, C.maxHealth)
+				C.adjustBruteLoss(-5)
+				C.adjustFireLoss(-5)
 				qdel(src)
 			else
 				M.visible_message("[M] takes a bite of \the [src].","<span class=\"notice\">You take a bite of \the [src].")
@@ -257,7 +254,8 @@
 			if(prob(50))
 				N.visible_message("[N] nibbles away at [src].", "")
 			//N.emote("nibbles away at the [src]")
-			N.health = min(N.health + 1, N.maxHealth)
+			N.adjustBruteLoss(-1)
+			N.adjustFireLoss(-1)
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -403,16 +401,15 @@
 		reagents.add_reagent("coco", 2)
 		bitesize = 2
 
-/obj/item/weapon/reagent_containers/food/snacks/reagentchocolatebar //for reagent chocolate
-	name = "Chocolate Bar"
-	desc = "A plain chocolate bar. Is it dark chocolate, milk chocolate? Who knows!"
-	icon_state = "chocolatebar"
+/obj/item/weapon/reagent_containers/food/snacks/cocoa_pile //for reagent chocolate being spilled on turfs
+	name = "Pile of Cocoa Powder"
+	desc = "A pile of pure cocoa powder."
+	icon_state = "cocoa"
 	filling_color = "#7D5F46"
 
 	New()
 		..()
-		reagents.add_reagent("sugar", 10)
-		reagents.add_reagent("chocolate",10)
+		reagents.add_reagent("chocolate",5)		//no longer can be used to generate the reagent infinitely
 		bitesize = 2
 
 /obj/item/weapon/reagent_containers/food/snacks/chocolateegg
@@ -837,7 +834,7 @@
 		reagents.add_reagent("synaptizine", 15)
 		reagents.add_reagent("salglu_solution", 15)
 		reagents.add_reagent("salbutamol", 15)
-		reagents.add_reagent("methamphetamine", 15)
+		reagents.add_reagent("methamphetamine2", 15)
 
 /obj/item/weapon/reagent_containers/food/snacks/brainburger
 	name = "brainburger"
@@ -1678,10 +1675,10 @@
 		return Expand()
 
 /obj/item/weapon/reagent_containers/food/snacks/monkeycube/proc/Expand()
-	visible_message("<span class='notice'>[src] expands!</span>")
-	var/mob/living/carbon/human/H = new (get_turf(src))
-	H.set_species(monkey_type)
-	qdel(src)
+	if(isnull(gcDestroyed))
+		visible_message("<span class='notice'>[src] expands!</span>")
+		new/mob/living/carbon/human(get_turf(src),monkey_type)
+		qdel(src)
 
 /obj/item/weapon/reagent_containers/food/snacks/monkeycube/proc/Unwrap(mob/user)
 	icon_state = "monkeycube"
@@ -1761,6 +1758,29 @@
 		reagents.add_reagent("nutriment",8)
 		reagents.add_reagent("capsaicin", 6)
 		bitesize = 4
+
+/obj/item/weapon/reagent_containers/food/snacks/burrito
+	name = "Burrito"
+	desc = "Meat, beans, cheese, and rice wrapped up as an easy-to-hold meal."
+	icon_state = "burrito"
+	trash = /obj/item/trash/plate
+	filling_color = "#A36A1F"
+
+/obj/item/weapon/reagent_containers/food/snacks/burrito/New()
+	..()
+	reagents.add_reagent("nutriment", 5)
+
+/obj/item/weapon/reagent_containers/food/snacks/chimichanga
+	name = "Chimichanga"
+	desc = "Time to eat a chimi-f***ing-changa."
+	icon_state = "chimichanga"
+	trash = /obj/item/trash/plate
+	filling_color = "#A36A1F"
+
+/obj/item/weapon/reagent_containers/food/snacks/chimichanga/New()
+	..()
+	reagents.add_reagent("omnizine", 4)		//Deadpool reference. Deal with it.
+	reagents.add_reagent("cheese", 2)
 
 /obj/item/weapon/reagent_containers/food/snacks/monkeysdelight
 	name = "monkey's Delight"
@@ -3327,7 +3347,7 @@
 
 // potato + knife = raw sticks
 /obj/item/weapon/reagent_containers/food/snacks/grown/potato/attackby(obj/item/weapon/W as obj, mob/user as mob, params)
-	if(istype(W,/obj/item/weapon/kitchen/utensil/knife))
+	if(istype(W,/obj/item/weapon/kitchen/knife))
 		new /obj/item/weapon/reagent_containers/food/snacks/rawsticks(src)
 		user << "You cut the potato."
 		qdel(src)

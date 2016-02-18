@@ -41,6 +41,7 @@
 	origin_tech = "materials=2;biotech=3;powerstorage=3"
 	modifystate = "floramut"
 	var/mode = 0 //0 = mutate, 1 = yield boost
+	needs_permit = 0
 
 	self_recharge = 1
 
@@ -202,35 +203,47 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	fire_sound = 'sound/weapons/Kenetic_accel.ogg'
 	charge_cost = 5000
 	cell_type = "/obj/item/weapon/stock_parts/cell/emproof"
+	needs_permit = 0 // Aparently these are safe to carry? I'm sure Golliaths would disagree.
 	fire_delay = 16 //Because guncode is bad and you can bug the reload for rapid fire otherwise.
-	var/overheat = 0
-	var/overheat_time = 16
-	var/recent_reload = 1
+	var/recently_fired = 0
+
+/obj/item/weapon/gun/energy/kinetic_accelerator/super
+	name = "super-kinetic accelerator"
+	desc = "An upgraded, superior version of the proto-kinetic accelerator."
+	icon_state = "kineticgun_u"
+	projectile_type = "/obj/item/projectile/kinetic/super"
+	fire_delay = 15
+	origin_tech = "combat=3;powerstorage=2"
+
+/obj/item/weapon/gun/energy/kinetic_accelerator/hyper
+	name = "hyper-kinetic accelerator"
+	desc = "An upgraded, even more superior version of the proto-kinetic accelerator."
+	icon_state = "kineticgun_h"
+	projectile_type = "/obj/item/projectile/kinetic/hyper"
+	fire_delay = 13
+	origin_tech = "combat=4;powerstorage=3"
 
 /obj/item/weapon/gun/energy/kinetic_accelerator/cyborg
 	flags = NODROP
 
 /obj/item/weapon/gun/energy/kinetic_accelerator/Fire()
-	overheat = 1
-	spawn(overheat_time)
-		overheat = 0
-		recent_reload = 0
+	if(!recently_fired)
+		recently_fired = 1
+		spawn(fire_delay)
+			reload(usr)
 	..()
 
 /obj/item/weapon/gun/energy/kinetic_accelerator/emp_act(severity)
 	return
 
-/obj/item/weapon/gun/energy/kinetic_accelerator/attack_self(var/mob/living/user/L)
-	if(overheat || recent_reload)
-		return
+/obj/item/weapon/gun/energy/kinetic_accelerator/proc/reload(mob/living/user)
 	power_supply.give(5000)
 	if(!silenced)
 		playsound(src.loc, 'sound/weapons/kenetic_reload.ogg', 60, 1)
-	else
+	else if(user)
 		usr << "<span class='warning'>You silently charge [src].<span>"
-	recent_reload = 1
+	recently_fired = 0
 	update_icon()
-	return
 
 /obj/item/weapon/gun/energy/kinetic_accelerator/crossbow
 	name = "mini energy crossbow"
@@ -243,7 +256,6 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	silenced = 1
 	projectile_type = "/obj/item/projectile/energy/bolt"
 	fire_sound = 'sound/weapons/Genhit.ogg'
-	overheat_time = 20
 	fire_delay = 20
 
 /obj/item/weapon/gun/energy/kinetic_accelerator/crossbow/large
@@ -338,3 +350,71 @@ modules/mob/living/carbon/human/life.dm if you die, you will be zoomed out.
 	self_recharge = 1
 	use_external_power = 1
 	recharge_time = 5
+
+/obj/item/weapon/gun/energy/printer/update_icon()
+	return
+
+/obj/item/weapon/gun/energy/wormhole_projector
+	name = "bluespace wormhole projector"
+	desc = "A projector that emits high density quantum-coupled bluespace beams."
+	projectile_type = "/obj/item/projectile/beam/wormhole"
+	charge_cost = 0
+	fire_sound = "sound/weapons/pulse3.ogg"
+	item_state = null
+	icon_state = "wormhole_projector100"
+	modifystate = "wormhole_projector"
+	var/obj/effect/portal/blue
+	var/obj/effect/portal/orange
+
+	var/mode = 0 //0 = blue 1 = orange
+
+
+/obj/item/weapon/gun/energy/wormhole_projector/attack_self(mob/living/user as mob)
+	switch_modes()
+
+/obj/item/weapon/gun/energy/wormhole_projector/proc/switch_modes(mob/living/user as mob)
+	switch(mode)
+		if(0)
+			mode = 1
+			user << "<span class='warning'>[name] is now set to orange.</span>"
+			projectile_type = "/obj/item/projectile/beam/wormhole/orange"
+			modifystate = "wormhole_projector_orange"
+		if(1)
+			mode = 0
+			user << "<span class='warning'>[name] is now set to blue.</span>"
+			projectile_type = "/obj/item/projectile/beam/wormhole"
+			modifystate = "wormhole_projector"
+	update_icon()
+	if(user.hand)
+		user.update_inv_l_hand()
+	else
+		user.update_inv_r_hand()
+
+/obj/item/weapon/gun/energy/wormhole_projector/Fire(atom/target as mob|obj|turf|area, mob/living/user as mob|obj, params, reflex = 0)
+	..()
+	switch_modes(user)
+
+/obj/item/weapon/gun/energy/wormhole_projector/proc/portal_destroyed(obj/effect/portal/P)
+	if(P.icon_state == "portal")
+		blue = null
+		if(orange)
+			orange.target = null
+	else
+		orange = null
+		if(blue)
+			blue.target = null
+
+/obj/item/weapon/gun/energy/wormhole_projector/proc/create_portal(obj/item/projectile/beam/wormhole/W)
+	var/obj/effect/portal/P = new /obj/effect/portal(get_turf(W), null, src)
+	P.precision = 0
+	P.failchance = 0
+	if(W.name == "bluespace beam")
+		qdel(blue)
+		blue = P
+	else
+		qdel(orange)
+		P.icon_state = "portal1"
+		orange = P
+	if(orange && blue)
+		blue.target = get_turf(orange)
+		orange.target = get_turf(blue)

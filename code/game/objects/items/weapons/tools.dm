@@ -172,7 +172,7 @@
 	return
 
 /obj/item/weapon/weldingtool/examine(mob/user)
-	if(!..(user, 0))
+	if(..(user, 0))
 		user << "It contains [get_fuel()] unit\s of fuel out of [max_fuel]."
 
 /obj/item/weapon/weldingtool/suicide_act(mob/user)
@@ -461,7 +461,7 @@
 	max_fuel = 40
 	w_class = 3.0
 	materials = list(MAT_METAL=70, MAT_GLASS=120)
-	origin_tech = "engineering=4;plasma=3"
+	origin_tech = "engineering=4;plasmatech=3"
 	var/last_gen = 0
 	change_icons = 0
 	can_off_process = 1

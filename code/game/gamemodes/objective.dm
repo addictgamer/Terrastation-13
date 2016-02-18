@@ -333,17 +333,26 @@ datum/objective/hijack
 	check_completion()
 		if(!owner.current || owner.current.stat)
 			return 0
-		if(!emergency_shuttle.returned())
+		if(shuttle_master.emergency.mode < SHUTTLE_ENDGAME)
 			return 0
 		if(issilicon(owner.current))
 			return 0
-		var/area/shuttle = locate(/area/shuttle/escape/centcom)
+
+		var/area/A = get_area(owner.current)
+		if(shuttle_master.emergency.areaInstance != A)
+			return 0
+
 		for(var/mob/living/player in player_list)
-			if(istype(player, /mob/living/silicon) || istype(player, /mob/living/simple_animal) || player.mind.special_role && !player.mind.special_role == "Response Team")
-				continue
-			if (player.mind && (player.mind != owner))
-				if(player.stat != DEAD)			//they're not dead!
-					if(get_turf(player) in shuttle)
+			if(player.mind && player.mind != owner)
+				if(player.stat != DEAD)
+					if(issilicon(player)) //Borgs are technically dead anyways
+						continue
+					if(isanimal(player)) //Poly does not own the shuttle
+						continue
+					if(player.mind.special_role && !(player.mind.special_role == "Response Team")) //Is antag, and not ERT
+						continue
+
+					if(get_area(player) == A)
 						return 0
 		return 1
 
@@ -353,10 +362,10 @@ datum/objective/hijack
 	check_completion()
 		if(!owner.current)
 			return 0
-		if(!emergency_shuttle.returned())
+		if(shuttle_master.emergency.mode < SHUTTLE_ENDGAME)
 			return 0
 
-		var/area/A = locate(/area/shuttle/escape/centcom)
+		var/area/A = shuttle_master.emergency.areaInstance
 
 		for(var/mob/living/player in player_list) //Make sure nobody else is onboard
 			if(player.mind && player.mind != owner)
@@ -383,43 +392,29 @@ datum/objective/block
 	check_completion()
 		if(!istype(owner.current, /mob/living/silicon))
 			return 0
-		if(!emergency_shuttle.returned())
+		if(shuttle_master.emergency.mode < SHUTTLE_ENDGAME)
 			return 0
 		if(!owner.current)
 			return 0
-		var/area/shuttle = locate(/area/shuttle/escape/centcom)
-		var/protected_mobs[] = list(/mob/living/silicon/ai, /mob/living/silicon/pai, /mob/living/silicon/robot)
-		for(var/mob/living/player in player_list)
-			if(player.type in protected_mobs)	continue
-			if (player.mind)
-				if (player.stat != DEAD)
-					if (get_turf(player) in shuttle)
-						return 0
-		return 1
 
-datum/objective/silence
-	explanation_text = "Do not allow anyone to escape the station.  Only allow the shuttle to be called when everyone is dead and your story is the only one left."
-
-	check_completion()
-		if(!emergency_shuttle.returned())
-			return 0
+		var/area/A = shuttle_master.emergency.areaInstance
+		var/list/protected_mobs = list(/mob/living/silicon/ai, /mob/living/silicon/pai, /mob/living/silicon/robot)
 
 		for(var/mob/living/player in player_list)
-			if(player == owner.current)
+			if(player.type in protected_mobs)
 				continue
-			if(player.mind)
-				if(player.stat != DEAD)
-					var/turf/T = get_turf(player)
-					if(!T)	continue
-					switch(T.loc.type)
-						if(/area/shuttle/escape/centcom, /area/shuttle/escape_pod1/centcom, /area/shuttle/escape_pod2/centcom, /area/shuttle/escape_pod3/centcom, /area/shuttle/escape_pod5/centcom)
-							return 0
+
+			if(player.mind && player.stat != DEAD)
+				if(get_area(player) == A)
+					return 0
+
 		return 1
+
 
 
 datum/objective/escape
 	explanation_text = "Escape on the shuttle or an escape pod alive and free."
-	var/escape_areas = list(/area/shuttle/escape/centcom,
+	var/escape_areas = list(/area/shuttle/escape,
 		/area/shuttle/escape_pod1/centcom,
 		/area/shuttle/escape_pod1/transit,
 		/area/shuttle/escape_pod2/centcom,
@@ -435,21 +430,22 @@ datum/objective/escape
 			return 0
 		if(isbrain(owner.current))
 			return 0
-		if(!emergency_shuttle.returned())
-			return 0
 		if(!owner.current || owner.current.stat == DEAD)
 			return 0
-		if(owner.current.restrained())
+		if(shuttle_master.emergency.mode < SHUTTLE_ENDGAME)
 			return 0
-		var/turf/location = get_turf(owner.current.loc)
+		var/turf/location = get_turf(owner.current)
 		if(!location)
 			return 0
 
-		var/area/check_area = get_area(location)
-		if(check_area && check_area.type in escape_areas)
-			return 1
-		else
+		if(istype(location, /turf/simulated/shuttle/floor4)) // Fails traitors if they are in the shuttle brig -- Polymorph
 			return 0
+
+		if(location.onCentcom() || location.onSyndieBase())
+			return 1
+
+		return 0
+
 
 datum/objective/escape/escape_with_identity
 	var/target_real_name // Has to be stored because the target's real_name can change over the course of the round
@@ -700,13 +696,13 @@ datum/objective/absorb
 					if(P.client && P.ready && P.mind != owner)
 						if(P.client.prefs && (P.client.prefs.species == "Vox" || P.client.prefs.species == "Slime People" || P.client.prefs.species == "Machine")) // Special check for species that can't be absorbed. No better solution.
 							continue
-						n_p ++
+						n_p++
 			else if (ticker.current_state == GAME_STATE_PLAYING)
 				for(var/mob/living/carbon/human/P in player_list)
 					if(P.species.flags & NO_SCAN)
 						continue
 					if(P.client && !(P.mind in ticker.mode.changelings) && P.mind!=owner)
-						n_p ++
+						n_p++
 			target_amount = min(target_amount, n_p)
 
 		explanation_text = "Absorb [target_amount] compatible genomes."
@@ -856,19 +852,21 @@ datum/objective/heist/kidnap
 	check_completion()
 		if(target && target.current)
 			if (target.current.stat == DEAD)
-				return 0 // They're dead. Fail.
-			//if (!target.current.restrained())
-			//	return 0 // They're loose. Close but no cigar.
+				return 0
 
-			var/area/shuttle/vox/station/A = locate()
+			var/area/shuttle/vox/A = locate() //stupid fucking hardcoding
+			var/area/vox_station/B = locate() //but necessary
+
 			for(var/mob/living/carbon/human/M in A)
 				if(target.current == M)
-					return 1 //They're restrained on the shuttle. Success.
+					return 1
+			for(var/mob/living/carbon/human/M in B)
+				if(target.current == M)
+					return 1
 		else
 			return 0
 
 datum/objective/heist/loot
-
 	choose_target()
 		var/loot = "an object"
 		switch(rand(1,8))
@@ -908,26 +906,38 @@ datum/objective/heist/loot
 		explanation_text = "We are lacking in hardware. Steal or trade [loot]."
 
 	check_completion()
-
 		var/total_amount = 0
 
-		for(var/obj/O in locate(/area/shuttle/vox/station))
-			if(istype(O,target)) total_amount++
+		for(var/obj/O in locate(/area/shuttle/vox))
+			if(istype(O, target))
+				total_amount++
 			for(var/obj/I in O.contents)
-				if(istype(I,target)) total_amount++
-			if(total_amount >= target_amount) return 1
+				if(istype(I, target))
+					total_amount++
+				if(total_amount >= target_amount)
+					return 1
+
+		for(var/obj/O in locate(/area/vox_station))
+			if(istype(O, target))
+				total_amount++
+			for(var/obj/I in O.contents)
+				if(istype(I, target))
+					total_amount++
+				if(total_amount >= target_amount)
+					return 1
 
 		var/datum/game_mode/heist/H = ticker.mode
 		for(var/datum/mind/raider in H.raiders)
 			if(raider.current)
 				for(var/obj/O in raider.current.get_contents())
-					if(istype(O,target)) total_amount++
-					if(total_amount >= target_amount) return 1
+					if(istype(O,target))
+						total_amount++
+					if(total_amount >= target_amount)
+						return 1
 
 		return 0
 
 datum/objective/heist/salvage
-
 	choose_target()
 		switch(rand(1,8))
 			if(1)
@@ -958,16 +968,28 @@ datum/objective/heist/salvage
 		explanation_text = "Ransack or trade with the station and escape with [target_amount] [target]."
 
 	check_completion()
-
 		var/total_amount = 0
 
-		for(var/obj/item/O in locate(/area/shuttle/vox/station))
-
+		for(var/obj/item/O in locate(/area/shuttle/vox))
 			var/obj/item/stack/sheet/S
 			if(istype(O,/obj/item/stack/sheet))
 				if(O.name == target)
 					S = O
 					total_amount += S.get_amount()
+
+			for(var/obj/I in O.contents)
+				if(istype(I,/obj/item/stack/sheet))
+					if(I.name == target)
+						S = I
+						total_amount += S.get_amount()
+
+		for(var/obj/item/O in locate(/area/vox_station))
+			var/obj/item/stack/sheet/S
+			if(istype(O,/obj/item/stack/sheet))
+				if(O.name == target)
+					S = O
+					total_amount += S.get_amount()
+
 			for(var/obj/I in O.contents)
 				if(istype(I,/obj/item/stack/sheet))
 					if(I.name == target)
@@ -992,7 +1014,8 @@ datum/objective/heist/inviolate_crew
 
 	check_completion()
 		var/datum/game_mode/heist/H = ticker.mode
-		if(H.is_raider_crew_safe()) return 1
+		if(H.is_raider_crew_safe())
+			return 1
 		return 0
 
 #define MAX_VOX_KILLS 10 //Number of kills during the round before the Inviolate is broken.

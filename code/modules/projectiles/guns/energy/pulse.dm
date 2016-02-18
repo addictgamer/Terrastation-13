@@ -47,7 +47,7 @@
 		var/mob/living/silicon/robot/R = src.loc
 		if(R && R.cell)
 			R.cell.use(charge_cost)
-			in_chamber = new/obj/item/projectile/beam(src)
+			in_chamber = new projectile_type(src)
 			return 1
 	return 0
 
@@ -79,6 +79,9 @@
 	icon_state = "pulse_pistol"
 	item_state = "gun"
 	cell_type = "/obj/item/weapon/stock_parts/cell/pulse/pistol"
+
+/obj/item/weapon/gun/energy/pulse_rifle/pistol/isHandgun()
+	return 1
 
 /obj/item/weapon/gun/energy/pulse_rifle/pistol/m1911
 	name = "\improper M1911-P"

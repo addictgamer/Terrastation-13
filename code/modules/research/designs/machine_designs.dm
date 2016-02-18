@@ -152,6 +152,16 @@
 	build_path = /obj/item/weapon/circuitboard/chem_dispenser
 	category = list("Medical Machinery")
 
+/datum/design/chem_master
+	name = "Machine Design (Chem Master Board)"
+	desc = "The circuit board for a Chem Master 2999."
+	id = "chem_master"
+	req_tech = list("biotech" = 1, "materials" = 2, "programming" = 2)
+	build_type = IMPRINTER
+	materials = list(MAT_GLASS = 1000, "sacid" = 20)
+	build_path = /obj/item/weapon/circuitboard/chem_master
+	category = list("Medical Machinery")
+
 /datum/design/chem_heater
 	name = "Machine Design (Chemical Heater Board)"
 	desc = "The circuit board for a chemical heater."
@@ -463,11 +473,21 @@
 	category = list ("Misc. Machinery")
 
 /datum/design/mining_equipment_vendor
-	name = "Machine Design (Mining Rewards Vender Board)"
-	desc = "The circuit board for a Mining Rewards Vender."
+	name = "Machine Design (Mining Rewards Vendor Board)"
+	desc = "The circuit board for a Mining Rewards Vendor."
 	id = "mining_equipment_vendor"
 	req_tech = list("programming" = 1, "engineering" = 2)
 	build_type = IMPRINTER
 	materials = list(MAT_GLASS=1000, "sacid"=20)
 	build_path = /obj/item/weapon/circuitboard/mining_equipment_vendor
+	category = list ("Misc. Machinery")
+
+/datum/design/clawgame
+	name = "Machine Design (Claw Game Board)"
+	desc = "The circuit board for a Claw Game."
+	id = "clawgame"
+	req_tech = list("programming" = 2)
+	build_type = IMPRINTER
+	materials = list(MAT_GLASS=1000, "sacid"=20)
+	build_path = /obj/item/weapon/circuitboard/clawgame
 	category = list ("Misc. Machinery")

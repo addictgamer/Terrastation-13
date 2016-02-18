@@ -105,6 +105,7 @@
 /obj/item/weapon/storage/belt/medical/response_team
 
 /obj/item/weapon/storage/belt/medical/response_team/New()
+	..()
 	new /obj/item/weapon/reagent_containers/pill/salbutamol(src)
 	new /obj/item/weapon/reagent_containers/pill/salbutamol(src)
 	new /obj/item/weapon/reagent_containers/pill/charcoal(src)
@@ -158,6 +159,7 @@
 		"/obj/item/ammo_box",
 		"/obj/item/weapon/reagent_containers/food/snacks/donut/normal",
 		"/obj/item/weapon/reagent_containers/food/snacks/donut/jelly",
+		"/obj/item/weapon/kitchen/knife/combat",
 		"/obj/item/weapon/melee/baton",
 		"/obj/item/weapon/melee/classic_baton",
 		"/obj/item/device/flashlight/seclite",
@@ -171,7 +173,7 @@
 
 /obj/item/weapon/storage/belt/security/response_team/New()
 	..()
-	new /obj/item/weapon/kitchenknife/combat(src)
+	new /obj/item/weapon/kitchen/knife/combat(src)
 	new /obj/item/weapon/melee/baton/loaded(src)
 	new /obj/item/device/flash(src)
 	new /obj/item/weapon/melee/classic_baton/telescopic(src)
@@ -214,6 +216,13 @@
 	icon_state = "militarybelt"
 	item_state = "military"
 
+/obj/item/weapon/storage/belt/military/assault
+	name = "assault belt"
+	desc = "A tactical assault belt."
+	icon_state = "assaultbelt"
+	item_state = "assault"
+	storage_slots = 6
+
 /obj/item/weapon/storage/belt/janitor
 	name = "janibelt"
 	desc = "A belt used to hold most janitorial supplies."
@@ -239,18 +248,51 @@
 	new /obj/item/weapon/grenade/chem_grenade/cleaner(src)
 	new /obj/item/weapon/grenade/chem_grenade/cleaner(src)
 
+/obj/item/weapon/storage/belt/lazarus
+	name = "trainer's belt"
+	desc = "For the mining master, holds your lazarus capsules."
+	icon_state = "lazarusbelt"
+	item_state = "lazbelt"
+	w_class = 4
+	max_w_class = 1
+	max_combined_w_class = 6
+	storage_slots = 6
+	can_hold = list("/obj/item/device/mobcapsule")
+
+/obj/item/weapon/storage/belt/lazarus/New()
+	..()
+	update_icon()
+
+
+/obj/item/weapon/storage/belt/lazarus/update_icon()
+	..()
+	icon_state = "[initial(icon_state)]_[contents.len]"
+
+/obj/item/weapon/storage/belt/lazarus/attackby(obj/item/W, mob/user)
+	var/amount = contents.len
+	. = ..()
+	if(amount != contents.len)
+		update_icon()
+
+/obj/item/weapon/storage/belt/lazarus/remove_from_storage(obj/item/W as obj, atom/new_location)
+	..()
+	update_icon()
+
+
 /obj/item/weapon/storage/belt/bandolier
 	name = "bandolier"
 	desc = "A bandolier for holding shotgun ammunition."
 	icon_state = "bandolier"
 	item_state = "bandolier"
-	storage_slots = 6
+	storage_slots = 8
 	can_hold = list(
 		"/obj/item/ammo_casing/shotgun"
 		)
 
 /obj/item/weapon/storage/belt/bandolier/full/New()
 	..()
+	new /obj/item/ammo_casing/shotgun/beanbag(src)
+	new /obj/item/ammo_casing/shotgun/beanbag(src)
 	new /obj/item/ammo_casing/shotgun/beanbag(src)
 	new /obj/item/ammo_casing/shotgun/beanbag(src)
 	new /obj/item/ammo_casing/shotgun/beanbag(src)

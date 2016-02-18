@@ -3,29 +3,38 @@
 //						COMMON STEPS							//
 //////////////////////////////////////////////////////////////////
 
-/datum/surgery_step/robotics/
+/datum/surgery_step/robotics
 	can_infect = 0
-	can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
-		if (isslime(target))
-			return 0
-		if (target_zone == "eyes")	//there are specific steps for eye surgery
-			return 0
-		if (!hasorgans(target))
-			return 0
-		var/obj/item/organ/external/affected = target.get_organ(target_zone)
-		if (affected == null)
-			return 0
-		if (affected.status & ORGAN_DESTROYED)
-			return 0
-		if (!(affected.status & ORGAN_ROBOT))
-			return 0
-		return 1
 
-/datum/surgery_step/robotics/unscrew_hatch
+/datum/surgery_step/robotics/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	if (isslime(target))
+		return 0
+	if (target_zone == "eyes")	//there are specific steps for eye surgery
+		return 0
+	if (!hasorgans(target))
+		return 0
+	var/obj/item/organ/external/affected = target.get_organ(target_zone)
+	if (affected == null)
+		return 0
+	if (affected.status & ORGAN_DESTROYED)
+		return 0
+	return 1
+
+/datum/surgery_step/robotics/external
+
+/datum/surgery_step/robotics/external/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	if (!..())
+		return 0
+	var/obj/item/organ/external/affected = target.get_organ(target_zone)
+	if (!(affected.status & ORGAN_ROBOT))
+		return 0
+	return 1
+
+/datum/surgery_step/robotics/external/unscrew_hatch
 	allowed_tools = list(
 		/obj/item/weapon/screwdriver = 100,
 		/obj/item/weapon/coin = 50,
-		/obj/item/weapon/kitchen/utensil/knife = 50
+		/obj/item/weapon/kitchen/knife = 50
 	)
 
 	min_duration = 90
@@ -53,7 +62,7 @@
 		user.visible_message("\red [user]'s [tool.name] slips, failing to unscrew [target]'s [affected.name].", \
 		"\red Your [tool] slips, failing to unscrew [target]'s [affected.name].")
 
-/datum/surgery_step/robotics/open_hatch
+/datum/surgery_step/robotics/external/open_hatch
 	allowed_tools = list(
 		/obj/item/weapon/retractor = 100,
 		/obj/item/weapon/crowbar = 100,
@@ -85,7 +94,7 @@
 		user.visible_message("\red [user]'s [tool.name] slips, failing to open the hatch on [target]'s [affected.name].",
 		"\red Your [tool] slips, failing to open the hatch on [target]'s [affected.name].")
 
-/datum/surgery_step/robotics/close_hatch
+/datum/surgery_step/robotics/external/close_hatch
 	allowed_tools = list(
 		/obj/item/weapon/retractor = 100,
 		/obj/item/weapon/crowbar = 100,
@@ -118,7 +127,7 @@
 		user.visible_message("\red [user]'s [tool.name] slips, failing to close the hatch on [target]'s [affected.name].",
 		"\red Your [tool.name] slips, failing to close the hatch on [target]'s [affected.name].")
 
-/datum/surgery_step/robotics/repair_brute
+/datum/surgery_step/robotics/external/repair_brute
 	allowed_tools = list(
 		/obj/item/weapon/weldingtool = 100,
 		/obj/item/weapon/gun/energy/plasmacutter = 50
@@ -134,7 +143,7 @@
 				var/obj/item/weapon/weldingtool/welder = tool
 				if(!welder.isOn() || !welder.remove_fuel(1,user))
 					return 0
-			return affected && affected.open == 2 && affected.brute_dam > 0 && target_zone != "mouth"
+			return affected && affected.open == 2 && (affected.brute_dam > 0 || affected.disfigured)&& target_zone != "mouth"
 
 	begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/obj/item/organ/external/affected = target.get_organ(target_zone)
@@ -147,6 +156,10 @@
 		user.visible_message("\blue [user] finishes patching damage to [target]'s [affected.name] with \the [tool].", \
 		"\blue You finish patching damage to [target]'s [affected.name] with \the [tool].")
 		affected.heal_damage(rand(30,50),0,1,1)
+		if(affected.disfigured)
+			affected.disfigured = 0
+			affected.update_icon()
+			target.regenerate_icons()
 
 	fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 		var/obj/item/organ/external/affected = target.get_organ(target_zone)
@@ -154,7 +167,7 @@
 		"\red Your [tool.name] slips, damaging the internal structure of [target]'s [affected.name].")
 		target.apply_damage(rand(5,10), BURN, affected)
 
-/datum/surgery_step/robotics/repair_burn
+/datum/surgery_step/robotics/external/repair_burn
 	allowed_tools = list(
 		/obj/item/stack/cable_coil = 100
 	)
@@ -215,7 +228,7 @@
 			if(I.damage > 0 && I.robotic >= 2)
 				is_organ_damaged = 1
 				break
-		return affected.open == 2 && is_organ_damaged
+		return affected.open_enough_for_surgery() && is_organ_damaged
 
 	begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
 
@@ -276,22 +289,24 @@
 		var/obj/item/organ/external/affected = target.get_organ(target_zone)
 		if(!(affected && (affected.status & ORGAN_ROBOT)))
 			return 0
-		if(affected.open != 2)
+		if(!affected.open_enough_for_surgery())
 			return 0
 
 		target.op_stage.current_organ = null
+		target.op_stage.organ_ref = null
 
 		var/list/attached_organs = list()
-		for(var/organ in target.internal_organs_by_name)
-			var/obj/item/organ/I = target.internal_organs_by_name[organ]
-			if(I && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == target_zone)
-				attached_organs |= organ
+		for(var/organ in affected.internal_organs)
+			var/obj/item/organ/I = organ
+			if(I && istype(I) && !(I.status & ORGAN_CUT_AWAY) && I.parent_organ == target_zone)
+				attached_organs[I.organ_tag] = I
 
 		var/organ_to_remove = input(user, "Which organ do you want to prepare for removal?") as null|anything in attached_organs
 		if(!organ_to_remove)
 			return 0
 
 		target.op_stage.current_organ = organ_to_remove
+		target.op_stage.organ_ref = attached_organs[organ_to_remove]
 
 		return ..() && organ_to_remove
 
@@ -325,22 +340,24 @@
 		var/obj/item/organ/external/affected = target.get_organ(target_zone)
 		if(!(affected && (affected.status & ORGAN_ROBOT)))
 			return 0
-		if(affected.open != 2)
+		if(!affected.open_enough_for_surgery())
 			return 0
 
 		target.op_stage.current_organ = null
+		target.op_stage.organ_ref = null
 
 		var/list/removable_organs = list()
-		for(var/organ in target.internal_organs_by_name)
-			var/obj/item/organ/I = target.internal_organs_by_name[organ]
-			if(I && (I.status & ORGAN_CUT_AWAY) && (I.status & ORGAN_ROBOT) && I.parent_organ == target_zone)
-				removable_organs |= organ
+		for(var/organ in affected.internal_organs)
+			var/obj/item/organ/I = organ
+			if(I && istype(I) && (I.status & ORGAN_CUT_AWAY) && (I.status & ORGAN_ROBOT) && I.parent_organ == target_zone)
+				removable_organs[I.organ_tag] = I
 
 		var/organ_to_replace = input(user, "Which organ do you want to reattach?") as null|anything in removable_organs
 		if(!organ_to_replace)
 			return 0
 
 		target.op_stage.current_organ = organ_to_replace
+		target.op_stage.organ_ref = removable_organs[organ_to_replace]
 		return ..()
 
 	begin_step(mob/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
@@ -375,7 +392,7 @@
 
 		var/obj/item/device/mmi/M = tool
 		var/obj/item/organ/external/affected = target.get_organ(target_zone)
-		if(!(affected && affected.open == 2))
+		if(!(affected && affected.open_enough_for_surgery()))
 			return 0
 
 		if(!istype(M))

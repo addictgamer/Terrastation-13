@@ -444,7 +444,7 @@ Traitors and the like can also be revived with the previous role mostly intact.
 		var/list/candidates = list()
 		for(var/mob/M in player_list)
 			if(M.stat != DEAD)		continue	//we are not dead!
-			if(!M.client.prefs.be_special & BE_ALIEN)	continue	//we don't want to be an alium
+			if(!(ROLE_ALIEN in M.client.prefs.be_special))	continue	//we don't want to be an alium
 			if(jobban_isbanned(M, "alien") || jobban_isbanned(M, "Syndicate")) continue //we are jobbanned
 			if(M.client.is_afk())	continue	//we are afk
 			if(M.mind && M.mind.current && M.mind.current.stat != DEAD)	continue	//we have a live body we are tied to
@@ -749,10 +749,11 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	feedback_add_details("admin_verb","CVRA") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/admin_call_shuttle()
+
 	set category = "Admin"
 	set name = "Call Shuttle"
 
-	if ((!( ticker ) || !emergency_shuttle.location()))
+	if(shuttle_master.emergency.mode >= SHUTTLE_DOCKED)
 		return
 
 	if(!check_rights(R_ADMIN))
@@ -761,30 +762,11 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	var/confirm = alert(src, "You sure?", "Confirm", "Yes", "No")
 	if(confirm != "Yes") return
 
-	var/choice
-	if(emergency_shuttle.auto_recall)
-		choice = input("The shuttle will just return if you call it. Call anyway?") in list("Confirm", "Cancel")
-		if(choice != "Confirm")
-			return
-
-	if(emergency_shuttle.no_escape)
-		choice = input("The shuttle will not be able to leave if you call it. Call anyway?") in list("Confirm", "Cancel")
-		if(choice != "Confirm")
-			return
-
-
-
-	choice = input("Is this an emergency evacuation or a crew transfer?") in list("Emergency", "Crew Transfer")
-	if (choice == "Emergency")
-		var/reason = input(usr, "Optional: Please enter the reason for calling the shuttle.", "Shuttle Call Reason.","") as text|null
-		emergency_shuttle.call_evac(reason)
-	else
-		emergency_shuttle.call_transfer()
-
+	shuttle_master.emergency.request()
 
 	feedback_add_details("admin_verb","CSHUT") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	log_admin("[key_name(usr)] admin-called the emergency shuttle.")
-	message_admins("\blue [key_name_admin(usr)] admin-called the emergency shuttle.", 1)
+	message_admins("<span class='adminnotice'>[key_name_admin(usr)] admin-called the emergency shuttle.</span>")
 	return
 
 /client/proc/admin_cancel_shuttle()
@@ -793,17 +775,15 @@ Traitors and the like can also be revived with the previous role mostly intact.
 
 	if(!check_rights(R_ADMIN))
 		return
-
 	if(alert(src, "You sure?", "Confirm", "Yes", "No") != "Yes") return
 
-	if(!ticker || !emergency_shuttle.can_recall())
+	if(shuttle_master.emergency.mode >= SHUTTLE_DOCKED)
 		return
 
-	emergency_shuttle.recall()
+	shuttle_master.emergency.cancel()
 	feedback_add_details("admin_verb","CCSHUT") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 	log_admin("[key_name(usr)] admin-recalled the emergency shuttle.")
-	message_admins("\blue [key_name_admin(usr)] admin-recalled the emergency shuttle.", 1)
-
+	message_admins("<span class='adminnotice'>[key_name_admin(usr)] admin-recalled the emergency shuttle.</span>")
 	return
 
 /client/proc/admin_deny_shuttle()
@@ -816,10 +796,11 @@ Traitors and the like can also be revived with the previous role mostly intact.
 	if(!check_rights(R_ADMIN))
 		return
 
-	emergency_shuttle.deny_shuttle = !emergency_shuttle.deny_shuttle
+	if(shuttle_master)
+		shuttle_master.emergencyNoEscape = !shuttle_master.emergencyNoEscape
 
-	log_admin("[key_name(src)] has [emergency_shuttle.deny_shuttle ? "denied" : "allowed"] the shuttle to be called.")
-	message_admins("[key_name_admin(usr)] has [emergency_shuttle.deny_shuttle ? "denied" : "allowed"] the shuttle to be called.")
+	log_admin("[key_name(src)] has [shuttle_master.emergencyNoEscape ? "denied" : "allowed"] the shuttle to be called.")
+	message_admins("[key_name_admin(usr)] has [shuttle_master.emergencyNoEscape ? "denied" : "allowed"] the shuttle to be called.")
 
 /client/proc/cmd_admin_attack_log(mob/M as mob in mob_list)
 	set category = "Special Verbs"

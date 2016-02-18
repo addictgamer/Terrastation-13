@@ -40,18 +40,23 @@
 		if(crit_fail)
 			user << "\red The Bluespace generator isn't working."
 			return
-		if(istype(W, /obj/item/weapon/storage/backpack/holding) && !W.crit_fail)
-			investigate_log("has become a singularity. Caused by [user.key]","singulo")
-			user << "\red The Bluespace interfaces of the two devices catastrophically malfunction!"
-			qdel(W)
-			var/obj/singularity/singulo = new /obj/singularity (get_turf(src))
-			singulo.energy = 300 //should make it a bit bigger~
-			message_admins("[key_name_admin(user)] detonated a bag of holding")
-			log_game("[key_name(user)] detonated a bag of holding")
-			qdel(src)
-			return
-
-		..()
+		else if(istype(W, /obj/item/weapon/storage/backpack/holding) && !W.crit_fail)
+			var/response = alert(user, "Are you sure you want to put the bag of holding inside another bag of holding?","Are you sure you want to die?","Yes","No")
+			if(response == "Yes")
+				user.visible_message("<span class='warning'>[user] grins as he begins to put a Bag of Holding into a Bag of Holding!</span>", "<span class='warning'>You begin to put the Bag of Holding into the Bag of Holding!</span>")
+				if(do_after(user,30,target=src))
+					investigate_log("has become a singularity. Caused by [user.key]","singulo")
+					user.visible_message("<span class='warning'>[user] erupts in evil laughter as he puts the Bag of Holding into another Bag of Holding!</span>", "<span class='warning'>You can't help yourself from laughing as you put the Bag of Holding into another Bag of Holding, complete darkness surrounding you</span>","<span class='warning'> You hear the sound of scientific evil brewing! </span>")
+					qdel(W)
+					var/obj/singularity/singulo = new /obj/singularity(get_turf(user))
+					singulo.energy = 300 //To give it a small boost
+					message_admins("[key_name_admin(user)] detonated a bag of holding <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>)")
+					log_game("[key_name(user)] detonated a bag of holding")
+					qdel(src)
+				else
+					user.visible_message("After careful consideration, [user] has decided that putting a Bag of Holding inside another Bag of Holding would not yield the ideal outcome","You come to the realization that this might not be the greatest idea")
+		else
+			. = ..()
 
 	proc/failcheck(mob/user as mob)
 		if (prob(src.reliability)) return 1 //No failure
@@ -120,6 +125,36 @@
 	icon_state = "engiepack"
 	item_state = "engiepack"
 
+/obj/item/weapon/storage/backpack/botany
+	name = "botany backpack"
+	desc = "It's a backpack made of all-natural fibers."
+	icon_state = "botpack"
+	item_state = "botpack"
+
+/obj/item/weapon/storage/backpack/chemistry
+	name = "chemistry backpack"
+	desc = "A backpack specially designed to repel stains and hazardous liquids."
+	icon_state = "chempack"
+	item_state = "chempack"
+
+/obj/item/weapon/storage/backpack/genetics
+	name = "genetics backpack"
+	desc = "A bag designed to be super tough, just in case someone hulks out on you."
+	icon_state = "genepack"
+	item_state = "genepack"
+
+/obj/item/weapon/storage/backpack/science
+	name = "science backpack"
+	desc = "A specially designed backpack. It's fire resistant and smells vaguely of plasma."
+	icon_state = "toxpack"
+	item_state = "toxpack"
+
+/obj/item/weapon/storage/backpack/virology
+	name = "virology backpack"
+	desc = "A backpack made of hypo-allergenic fibers. It's designed to help prevent the spread of disease. Smells like monkey."
+	icon_state = "viropack"
+	item_state = "viropack"
+
 /*
  * Satchel Types
  */
@@ -149,13 +184,11 @@
 	name = "industrial satchel"
 	desc = "A tough satchel with extra pockets."
 	icon_state = "satchel-eng"
-	item_state = "engiepack"
 
 /obj/item/weapon/storage/backpack/satchel_med
 	name = "medical satchel"
 	desc = "A sterile satchel used in medical departments."
 	icon_state = "satchel-med"
-	item_state = "medicalpack"
 
 /obj/item/weapon/storage/backpack/satchel_vir
 	name = "virologist satchel"
@@ -181,18 +214,16 @@
 	name = "security satchel"
 	desc = "A robust satchel for security related needs."
 	icon_state = "satchel-sec"
-	item_state = "securitypack"
 
 /obj/item/weapon/storage/backpack/satchel_hyd
 	name = "hydroponics satchel"
 	desc = "A green satchel for plant related work."
-	icon_state = "satchel_hyd"
+	icon_state = "satchel-hyd"
 
 /obj/item/weapon/storage/backpack/satchel_cap
 	name = "captain's satchel"
 	desc = "An exclusive satchel for Nanotrasen officers."
 	icon_state = "satchel-cap"
-	item_state = "captainpack"
 
 /obj/item/weapon/storage/backpack/satchel_flat
 	name = "smuggler's satchel"
