@@ -1,0 +1,39 @@
+        deleted by them: code/controllers/shuttle_controller.dm
+        deleted by them: code/game/mecha/equipment/tools/unused_tools.dm
+        deleted by them: code/modules/destilery/main.dm
+        deleted by them: code/modules/liquid/splash_simulation.dm
+        deleted by them: code/modules/mob/living/carbon/alien/humanoid/hud.dm
+        deleted by them: code/modules/mob/living/carbon/alien/larva/login.dm
+        deleted by them: code/modules/mob/living/carbon/alien/special/_main.dm
+        deleted by them: code/modules/mob/living/carbon/alien/special/snakeman.d
+m
+        deleted by them: code/modules/mob/living/carbon/human/hud.dm
+        deleted by them: code/modules/mob/living/carbon/metroid/hud.dm
+        deleted by them: code/modules/mob/living/silicon/robot/hud.dm
+        deleted by them: code/modules/power/antimatter/computer.dm
+        deleted by them: code/modules/power/antimatter/containment_jar.dm
+        deleted by them: code/modules/power/antimatter/control.dm
+        deleted by them: code/modules/power/antimatter/engine.dm
+        deleted by them: code/modules/power/antimatter/shielding.dm
+        deleted by them: code/modules/reagents/reagent_containers/food/snacks/gr
+own.dm
+
+
+
+
+
+
+
+
+also: code/modules/virus2/biohazard destroyer.dm
+I fucked up and didn't put this in sooner
+
+
+
+
+
+
+
+
+BE FUCKING AWARE:
+The hud.dm files are renamed in here to correspond to where they came from and YOU WILL NEED TO RENAME THESE BY REMOVING THE PARENTHESIS if you put them back for any reason

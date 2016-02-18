@@ -210,4 +210,3 @@
 					playsound(src.loc, 'sound/machines/defib_saftyOff.ogg', 50, 0)
 				if(healthAnnounce && victim.health <= healthAlarm)
 					atom_say("[round(victim.health)]")
->>>>>>> refs/remotes/ParadRem/master
