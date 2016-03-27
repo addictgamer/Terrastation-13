@@ -70,6 +70,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 		handle_pain()
 		handle_heartbeat()
 		handle_heartattack()
+		species.handle_life(src)
 
 		if(!client)
 			species.handle_npc(src)
@@ -87,7 +88,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 	pulse = handle_pulse()
 
 	if(mind && mind.vampire)
-		handle_vampire()
+		mind.vampire.handle_vampire()
 		if(life_tick == 1)
 			regenerate_icons() // Make sure the inventory updates
 
@@ -199,11 +200,6 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 		adjustCloneLoss(0.1)
 
 /mob/living/carbon/human/handle_mutations_and_radiation()
-	if(getFireLoss())
-		if((RESIST_HEAT in mutations) || (prob(1)))
-			heal_organ_damage(0,1)
-
-
 	for(var/datum/dna/gene/gene in dna_genes)
 		if(!gene.block)
 			continue
@@ -216,7 +212,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 	if(!(species.flags & RADIMMUNE))
 		if (radiation)
 
-			if((locate(src.internal_organs_by_name["resonant crystal"]) in src.internal_organs))
+			if(get_int_organ(/obj/item/organ/internal/nucleation/resonant_crystal))
 				var/rads = radiation/25
 				radiation -= rads
 				radiation -= 0.1
@@ -457,19 +453,20 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 		//Body temperature is too hot.
 		fire_alert = max(fire_alert, 1)
 		if(status_flags & GODMODE)	return 1	//godmode
+		var/mult = species.hot_env_multiplier
 
 		if(bodytemperature >= species.heat_level_1 && bodytemperature <= species.heat_level_2)
-			take_overall_damage(burn=HEAT_DAMAGE_LEVEL_1, used_weapon = "High Body Temperature")
+			take_overall_damage(burn=mult*HEAT_DAMAGE_LEVEL_1, used_weapon = "High Body Temperature")
 			fire_alert = max(fire_alert, 2)
 		if(bodytemperature > species.heat_level_2 && bodytemperature <= species.heat_level_3)
-			take_overall_damage(burn=HEAT_DAMAGE_LEVEL_2, used_weapon = "High Body Temperature")
+			take_overall_damage(burn=mult*HEAT_DAMAGE_LEVEL_2, used_weapon = "High Body Temperature")
 			fire_alert = max(fire_alert, 2)
 		if(bodytemperature > species.heat_level_3 && bodytemperature < INFINITY)
 			if(on_fire)
-				take_overall_damage(burn=HEAT_DAMAGE_LEVEL_3, used_weapon = "Fire")
+				take_overall_damage(burn=mult*HEAT_DAMAGE_LEVEL_3, used_weapon = "Fire")
 				fire_alert = max(fire_alert, 2)
 			else
-				take_overall_damage(burn=HEAT_DAMAGE_LEVEL_2, used_weapon = "High Body Temperature")
+				take_overall_damage(burn=mult*HEAT_DAMAGE_LEVEL_2, used_weapon = "High Body Temperature")
 				fire_alert = max(fire_alert, 2)
 
 	else if(bodytemperature < species.cold_level_1)
@@ -479,14 +476,15 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 		if(stat == DEAD) return 1 //ZomgPonies -- No need for cold burn damage if dead
 
 		if(!istype(loc, /obj/machinery/atmospherics/unary/cryo_cell))
+			var/mult = species.cold_env_multiplier
 			if(bodytemperature >= species.cold_level_2 && bodytemperature <= species.cold_level_1)
-				take_overall_damage(burn=COLD_DAMAGE_LEVEL_1, used_weapon = "Low Body Temperature")
+				take_overall_damage(burn=mult*COLD_DAMAGE_LEVEL_1, used_weapon = "Low Body Temperature")
 				fire_alert = max(fire_alert, 1)
 			if(bodytemperature >= species.cold_level_3 && bodytemperature < species.cold_level_2)
-				take_overall_damage(burn=COLD_DAMAGE_LEVEL_2, used_weapon = "Low Body Temperature")
+				take_overall_damage(burn=mult*COLD_DAMAGE_LEVEL_2, used_weapon = "Low Body Temperature")
 				fire_alert = max(fire_alert, 1)
 			if(bodytemperature > -INFINITY && bodytemperature < species.cold_level_3)
-				take_overall_damage(burn=COLD_DAMAGE_LEVEL_3, used_weapon = "Low Body Temperature")
+				take_overall_damage(burn=mult*COLD_DAMAGE_LEVEL_3, used_weapon = "Low Body Temperature")
 				fire_alert = max(fire_alert, 1)
 
 	// Account for massive pressure differences.  Done by Polymorph
@@ -733,32 +731,6 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 				adjustOxyLoss(-(light_amount))
 				//TODO: heal wounds, heal broken limbs.
 
-	if(species.light_dam)
-		var/light_amount = 0
-		if(isturf(loc))
-			var/turf/T = loc
-			light_amount = T.get_lumcount()*10
-		if(light_amount > species.light_dam && !incorporeal_move) //if there's enough light, start dying
-			if(species.light_effect_amp)
-				adjustFireLoss(4.7) //This gets multiplied by 1.5 due to Shadowling's innate fire weakness, so it ends up being about 7.
-			else
-				adjustFireLoss(1)
-				adjustBruteLoss(1)
-			src << "<span class='userdanger'>The light burns you!</span>"
-			src << 'sound/weapons/sear.ogg'
-		else //heal in the dark
-			if(species.light_effect_amp)
-				adjustFireLoss(-5)
-				adjustBruteLoss(-5)
-				adjustBrainLoss(-25) //gibbering shadowlings are hilarious but also bad to have
-				adjustCloneLoss(-1)
-				SetWeakened(0)
-				SetStunned(0)
-			else
-				adjustFireLoss(-1)
-				adjustBruteLoss(-1)
-
-
 	//The fucking FAT mutation is the greatest shit ever. It makes everyone so hot and bothered.
 	if(species.flags & CAN_BE_FAT)
 		if(FAT in mutations)
@@ -830,13 +802,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 
 	if(.) //alive
 		if(REGEN in mutations)
-			if(nutrition)
-				if(prob(10))
-					var/randumb = rand(1, 5)
-					nutrition -= randumb
-					heal_overall_damage(randumb, randumb)
-				if(nutrition < 0)
-					nutrition = 0
+			heal_overall_damage(0.1, 0.1)
 
 		if(!in_stasis)
 			handle_organs()
@@ -851,7 +817,6 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 
 			if(hallucination <= 2)
 				hallucination = 0
-				halloss = 0
 			else
 				hallucination -= 2
 
@@ -886,7 +851,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 		//Vision //god knows why this is here
 		var/obj/item/organ/vision
 		if(species.vision_organ)
-			vision = internal_organs_by_name[species.vision_organ]
+			vision = get_int_organ(species.vision_organ)
 
 		if(!species.vision_organ) // Presumably if a species has no vision organs, they see via some other means.
 			eye_blind =  0
@@ -1206,7 +1171,7 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 /mob/living/carbon/human/proc/handle_heartbeat()
 	var/client/C = src.client
 	if(C && C.prefs.sound & SOUND_HEARTBEAT) //disable heartbeat by pref
-		var/obj/item/organ/heart/H = internal_organs_by_name["heart"]
+		var/obj/item/organ/internal/heart/H = get_int_organ(/obj/item/organ/internal/heart)
 
 		if(!H) //H.status will runtime if there is no H (obviously)
 			return
@@ -1276,11 +1241,10 @@ var/global/list/brutefireloss_overlays = list("1" = image("icon" = 'icons/mob/sc
 	if(!heart_attack)
 		return
 	else
-		losebreath += 5
-		adjustOxyLoss(10)
-		adjustBrainLoss(rand(4,10))
-		Paralyse(2)
-	return
+		if(losebreath < 3)
+			losebreath += 2
+		adjustOxyLoss(5)
+		adjustBruteLoss(1)
 
 
 

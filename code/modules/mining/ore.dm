@@ -16,6 +16,29 @@
 			user << "<span class='info'>Not enough fuel to smelt [src].</span>"
 	..()
 
+/obj/item/weapon/ore/Crossed(AM as mob|obj)
+	var/obj/item/weapon/storage/bag/ore/OB
+	var/turf/simulated/floor/F = get_turf(src)
+	if(loc != F)
+		return ..()
+	if(ishuman(AM))
+		var/mob/living/carbon/human/H = AM
+		for(var/thing in H.get_body_slots())
+			if(istype(thing, /obj/item/weapon/storage/bag/ore))
+				OB = thing
+				break
+	else if(isrobot(AM))
+		var/mob/living/silicon/robot/R = AM
+		for(var/thing in R.get_all_slots())
+			if(istype(thing, /obj/item/weapon/storage/bag/ore))
+				OB = thing
+				break
+	if(OB && istype(F, /turf/simulated/floor/plating/airless/asteroid))
+		F.attackby(OB, AM)
+	return ..()
+
+
+
 /obj/item/weapon/ore/uranium
 	name = "uranium ore"
 	icon_state = "Uranium ore"
@@ -106,6 +129,14 @@
 	points = 60
 	refined_type = /obj/item/stack/sheet/mineral/bananium
 	materials = list(MAT_BANANIUM=MINERAL_MATERIAL_AMOUNT)
+
+/obj/item/weapon/ore/tranquillite
+	name = "tranquillite ore"
+	icon_state = "Mime ore"
+	origin_tech = "materials=4"
+	points = 60
+	refined_type = /obj/item/stack/sheet/mineral/tranquillite
+	materials = list(MAT_TRANQUILLITE=MINERAL_MATERIAL_AMOUNT)
 
 /obj/item/weapon/ore/slag
 	name = "slag"

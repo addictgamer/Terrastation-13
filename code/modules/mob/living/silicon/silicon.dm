@@ -50,9 +50,14 @@
 		AH.unregister(src)
 	return ..()
 
-/mob/living/silicon/proc/SetName(pickedName as text)
-	real_name = pickedName
+/mob/living/silicon/rename_character(oldname, newname)
+	// we actually don't want it changing minds and stuff
+	if(!newname)
+		return 0
+
+	real_name = newname
 	name = real_name
+	return 1
 
 /mob/living/silicon/proc/show_laws()
 	return
@@ -105,11 +110,11 @@
 	if(!effect || (blocked >= 2))	return 0
 	switch(effecttype)
 		if(STUN)
-			stunned = max(stunned,(effect/(blocked+1)))
+			Stun(effect / (blocked + 1))
 		if(WEAKEN)
-			weakened = max(weakened,(effect/(blocked+1)))
+			Weaken(effect / (blocked + 1))
 		if(PARALYZE)
-			paralysis = max(paralysis,(effect/(blocked+1)))
+			Paralyse(effect / (blocked + 1))
 		if(IRRADIATE)
 			radiation += min((effect - (effect*getarmor(null, "rad"))), 0)//Rads auto check armor
 		if(STUTTER)
@@ -344,4 +349,5 @@
 /mob/living/silicon/adjustToxLoss(var/amount)
 	return
 
-
+/mob/living/silicon/get_access()
+	return IGNORE_ACCESS //silicons always have access

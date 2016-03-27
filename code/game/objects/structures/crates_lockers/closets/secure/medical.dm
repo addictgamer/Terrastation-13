@@ -78,6 +78,7 @@
 		new /obj/item/weapon/defibrillator/loaded(src)
 		new /obj/item/weapon/storage/belt/medical(src)
 		new /obj/item/clothing/glasses/hud/health(src)
+		new /obj/item/clothing/shoes/sandal/white(src)
 		return
 
 //Exam Room
@@ -120,10 +121,10 @@
 
 /obj/item/weapon/storage/pill_bottle/psychiatrist/New()
 	..()
-	new /obj/item/weapon/reagent_containers/pill/haloperidol(src)
-	new /obj/item/weapon/reagent_containers/pill/haloperidol(src)
-	new /obj/item/weapon/reagent_containers/pill/methamphetamine(src)
-	new /obj/item/weapon/reagent_containers/pill/methamphetamine(src)
+	new /obj/item/weapon/reagent_containers/food/pill/haloperidol(src)
+	new /obj/item/weapon/reagent_containers/food/pill/haloperidol(src)
+	new /obj/item/weapon/reagent_containers/food/pill/methamphetamine(src)
+	new /obj/item/weapon/reagent_containers/food/pill/methamphetamine(src)
 
 /obj/structure/closet/secure_closet/psychiatrist
 	name = "psychiatrist's locker"
@@ -185,6 +186,7 @@
 		new /obj/item/weapon/storage/belt/medical(src)
 		new /obj/item/device/flash(src)
 		new /obj/item/weapon/reagent_containers/hypospray/CMO(src)
+		new /obj/item/organ/internal/cyberimp/eyes/hud/medical(src)
 		return
 
 

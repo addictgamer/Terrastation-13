@@ -221,7 +221,7 @@
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		if(istype(mob, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = mob
-			var/obj/item/organ/brain/B = H.internal_organs_by_name["brain"]
+			var/obj/item/organ/internal/brain/B = H.get_int_organ(/obj/item/organ/internal/brain)
 			if (B.damage < B.min_broken_damage)
 				B.take_damage(5, 1)
 		else
@@ -404,9 +404,9 @@
 	name = "Phantom Pain Syndrome"
 	stage = 3
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		if (mob.halloss < 100)
+		if (mob.staminaloss < 100)
 			mob << "<span class = 'warning'> You feel like your body is on fire. Make the pain stop!</span>"
-			mob.apply_effect(20,AGONY,0)
+			mob.apply_effect(20,STAMINA,0)
 
 // === burn brute toxin clone brain damage symptoms - Bone White ===
 
@@ -442,7 +442,7 @@
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		if(istype(mob, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = mob
-			var/obj/item/organ/brain/B = H.internal_organs_by_name["brain"]
+			var/obj/item/organ/internal/brain/B = H.get_int_organ(/obj/item/organ/internal/brain)
 			if (B.damage < B.min_broken_damage)
 				B.take_damage(1, 1)
 		else
@@ -655,9 +655,9 @@ var/list/compatible_mobs = list(/mob/living/carbon/human)
 	name = "Acute Muscle Ache"
 	stage = 2
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		if (mob.halloss < 50)
+		if (mob.staminaloss < 50)
 			mob << "<span class='warning'>You ache all over!</span>"
-			mob.apply_effect(10,AGONY,0)
+			mob.apply_effect(10,STAMINA,0)
 
 // === burn brute toxin clone brain damage symptoms - Bone White ===
 
@@ -693,7 +693,7 @@ var/list/compatible_mobs = list(/mob/living/carbon/human)
 	activate(var/mob/living/carbon/mob,var/multiplier)
 		if(istype(mob, /mob/living/carbon/human))
 			var/mob/living/carbon/human/H = mob
-			var/obj/item/organ/brain/B = H.internal_organs_by_name["brain"]
+			var/obj/item/organ/internal/brain/B = H.get_int_organ(/obj/item/organ/internal/brain)
 			if (B.damage < B.min_broken_damage)
 				B.take_damage(0.5, 1)
 		else
@@ -844,9 +844,9 @@ var/list/compatible_mobs = list(/mob/living/carbon/human)
 	name = "Heightened Sensitivity"
 	stage = 1
 	activate(var/mob/living/carbon/mob,var/multiplier)
-		if (mob.halloss < 20)
+		if (mob.staminaloss < 20)
 			mob << "<span class='warning'>Your body aches.</span>"
-			mob.apply_effect(5,AGONY,0)
+			mob.apply_effect(5,STAMINA,0)
 
 /datum/disease2/effect/stimulant
 	name = "Adrenaline Extra"
@@ -925,7 +925,7 @@ var/list/compatible_mobs = list(/mob/living/carbon/human)
 	name = "Watery Eyes"
 	stage = 1
 	activate(var/mob/living/carbon/human/mob,var/multiplier)
-		var/obj/item/organ/eyes/E = mob.internal_organs_by_name["eyes"]
+		var/obj/item/organ/internal/eyes/E = mob.get_int_organ(/obj/item/organ/internal/eyes)
 		if(!istype(E) || (E.status & ORGAN_ROBOT)) // No eyes or robotic eyes? No problem!
 			return
 		mob << "<span class='warning'>Your eyes sting and water!</span>"

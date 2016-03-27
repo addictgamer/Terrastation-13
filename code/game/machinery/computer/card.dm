@@ -358,6 +358,7 @@ var/time_last_changed_position = 0
 		if ("print")
 			if (!printing)
 				printing = 1
+				playsound(loc, "sound/goonstation/machines/printer_dotmatrix.ogg", 50, 1)
 				spawn(50)
 					printing = null
 					nanomanager.update_uis(src)
@@ -431,6 +432,6 @@ var/time_last_changed_position = 0
 	return 1
 
 /obj/machinery/computer/card/centcom
-	name = "\improper CentCom identification computer"
+	name = "\improper CentComm identification computer"
 	circuit = /obj/item/weapon/circuitboard/card/centcom
 	req_access = list(access_cent_commander)

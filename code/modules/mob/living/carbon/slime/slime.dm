@@ -12,7 +12,6 @@
 	health = 150
 	gender = NEUTER
 
-	update_icon = 0
 	nutrition = 700
 
 	see_in_dark = 8
@@ -349,6 +348,12 @@
 				step_away(src,M)
 
 			return
+	else
+		if(stat == DEAD && surgeries.len)
+			if(M.a_intent == I_HELP)
+				for(var/datum/surgery/S in surgeries)
+					if(S.next_step(M, src))
+						return 1
 
 /*
 	if(M.gloves && istype(M.gloves,/obj/item/clothing/gloves))
@@ -482,6 +487,11 @@
 	return
 
 /mob/living/carbon/slime/attackby(obj/item/W, mob/user, params)
+	if(stat == DEAD && surgeries.len)
+		if(user.a_intent == I_HELP)
+			for(var/datum/surgery/S in surgeries)
+				if(S.next_step(user, src))
+					return 1
 	if(istype(W,/obj/item/stack/sheet/mineral/plasma)) //Lets you feed slimes plasma.
 		if (user in Friends)
 			++Friends[user]
@@ -574,3 +584,9 @@ mob/living/carbon/slime/var/temperature_resistance = T0C+75
 	if(Victim)
 		return "You cannot ventcrawl while feeding."
 	..()
+
+/mob/living/carbon/slime/forceFed(var/obj/item/weapon/reagent_containers/food/toEat, mob/user, fullness)
+	if(istype(toEat, /obj/item/weapon/reagent_containers/food/drinks))
+		return 1
+	user << "This creature does not seem to have a mouth!"
+	return 0

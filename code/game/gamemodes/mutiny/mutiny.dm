@@ -105,9 +105,9 @@ datum/game_mode/mutiny
 		if (!pda)
 			return 0
 
-		pda.play_ringtone()
-
-		head_mutineer.current << fluff.get_pda_body()
+		var/datum/data/pda/app/messenger/pdam = pda.find_program(/datum/data/pda/app/messenger)
+		if(pdam)
+			pdam.notify(fluff.get_pda_body(), 0)
 		return 1
 
 	proc/get_equipment_slots()

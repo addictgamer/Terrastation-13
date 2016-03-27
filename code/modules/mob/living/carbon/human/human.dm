@@ -44,7 +44,7 @@
 	if(!delay_ready_dna && dna)
 		dna.ready_dna(src)
 		dna.real_name = real_name
-		sync_organ_dna() //this shouldn't be necessaaaarrrryyyyyyyy
+		sync_organ_dna(1)
 
 	if(species)
 		species.handle_dna(src)
@@ -278,6 +278,11 @@
 				cell_status = "[suit.cell.charge]/[suit.cell.maxcharge]"
 			stat(null, "Suit charge: [cell_status]")
 
+		// I REALLY need to split up status panel things into datums
+		var/mob/living/simple_animal/borer/B = has_brain_worms()
+		if(B && B.controlling)
+			stat("Chemicals", B.chemicals)
+
 		if(mind)
 			if(mind.changeling)
 				stat("Chemical Storage", "[mind.changeling.chem_charges]/[mind.changeling.chem_storage]")
@@ -302,6 +307,9 @@
 	var/shielded = 0
 	var/b_loss = null
 	var/f_loss = null
+
+	if(status_flags & GODMODE)
+		return 0
 
 	switch(severity)
 		if(1)
@@ -399,7 +407,7 @@
 		if(!prob(martial_art.deflection_chance))
 			return ..()
 		if(!src.lying && !(HULK in mutations)) //But only if they're not lying down, and hulks can't do it
-			src.visible_message("<span class='warning'>[src] deflects the projectile!</span>", "<span class='userdanger'>You deflect the projectile!</span>")
+			visible_message("<span class='danger'>[src] deflects the projectile; they can't be hit with ranged weapons!</span>", "<span class='userdanger'>You deflect the projectile!</span>")
 			return 0
 	..()
 
@@ -686,10 +694,10 @@
 	return
 
 //repurposed proc. Now it combines get_id_name() and get_face_name() to determine a mob's name variable. Made into a seperate proc as it'll be useful elsewhere
-/mob/living/carbon/human/proc/get_visible_name()
-	if( wear_mask && (wear_mask.flags_inv&HIDEFACE) )	//Wearing a mask which hides our face, use id-name if possible
+/mob/living/carbon/human/get_visible_name()
+	if(wear_mask && (wear_mask.flags_inv & HIDEFACE))	//Wearing a mask which hides our face, use id-name if possible
 		return get_id_name("Unknown")
-	if( head && (head.flags_inv&HIDEFACE) )
+	if(head && (head.flags_inv & HIDEFACE))
 		return get_id_name("Unknown")		//Likewise for hats
 	var/face_name = get_face_name()
 	var/id_name = get_id_name("")
@@ -760,6 +768,12 @@
 
 /mob/living/carbon/human/Topic(href, href_list)
 	if(!usr.stat && usr.canmove && !usr.restrained() && in_range(src, usr))
+		var/thief_mode = 0
+		if(ishuman(usr))
+			var/mob/living/carbon/human/H = usr
+			var/obj/item/clothing/gloves/G = H.gloves
+			if(G && G.pickpocket)
+				thief_mode = 1
 
 		if(href_list["item"])
 			var/slot = text2num(href_list["item"])
@@ -788,6 +802,8 @@
 				if(pocket_item)
 					if(pocket_item == (pocket_id == slot_r_store ? r_store : l_store)) //item still in the pocket we search
 						unEquip(pocket_item)
+						if(thief_mode)
+							usr.put_in_hands(pocket_item)
 				else
 					if(place_item)
 						usr.unEquip(place_item)
@@ -797,8 +813,9 @@
 				if(usr.machine == src && in_range(src, usr))
 					show_inv(usr)
 			else
-				// Display a warning if the user mocks up
-				src << "<span class='warning'>You feel your [pocket_side] pocket being fumbled with!</span>"
+				// Display a warning if the user mocks up if they don't have pickpocket gloves.
+				if(!thief_mode)
+					src << "<span class='warning'>You feel your [pocket_side] pocket being fumbled with!</span>"
 
 		if(href_list["set_sensor"])
 			if(istype(w_uniform, /obj/item/clothing/under))
@@ -810,24 +827,17 @@
 				var/obj/item/clothing/under/U = w_uniform
 				if(U.accessories.len)
 					var/obj/item/clothing/accessory/A = U.accessories[1]
-					usr.visible_message("<span class='danger'>\The [usr] starts to take off \the [A] from \the [src]'s [U]!</span>", \
-										"<span class='danger'>You start to take off \the [A] from \the [src]'s [U]!</span>")
+					if(!thief_mode)
+						usr.visible_message("<span class='danger'>\The [usr] starts to take off \the [A] from \the [src]'s [U]!</span>", \
+											"<span class='danger'>You start to take off \the [A] from \the [src]'s [U]!</span>")
 
 					if(do_mob(usr, src, 40) && A && U.accessories.len)
-						usr.visible_message("<span class='danger'>\The [usr] takes \the [A] off of \the [src]'s [U]!</span>", \
-											"<span class='danger'>You take \the [A] off of \the [src]'s [U]!</span>")
+						if(!thief_mode)
+							usr.visible_message("<span class='danger'>\The [usr] takes \the [A] off of \the [src]'s [U]!</span>", \
+												"<span class='danger'>You take \the [A] off of \the [src]'s [U]!</span>")
 						A.on_removed(usr)
 						U.accessories -= A
 						update_inv_w_uniform()
-
-	if (href_list["refresh"])
-		if((machine)&&(in_range(src, usr)))
-			show_inv(machine)
-
-	if (href_list["mach_close"])
-		var/t1 = text("window=[]", href_list["mach_close"])
-		unset_machine()
-		src << browse(null, t1)
 
 	if (href_list["criminal"])
 		if(hasHUD(usr,"security"))
@@ -1100,7 +1110,7 @@
 ///eyecheck()
 ///Returns a number between -1 to 2
 /mob/living/carbon/human/eyecheck()
-	var/number = 0
+	var/number = ..()
 	if(istype(src.head, /obj/item/clothing/head))			//are they wearing something on their head
 		var/obj/item/clothing/head/HFP = src.head			//if yes gets the flash protection value from that item
 		number += HFP.flash_protect
@@ -1110,6 +1120,9 @@
 	if(istype(src.wear_mask, /obj/item/clothing/mask))		//mask
 		var/obj/item/clothing/mask/MFP = src.wear_mask
 		number += MFP.flash_protect
+	for(var/obj/item/organ/internal/cyberimp/eyes/EFP in src.internal_organs)
+		number += EFP.flash_protect
+
 	return number
 
 ///tintcheck()
@@ -1286,7 +1299,8 @@
 /mob/living/carbon/human/revive()
 
 	if(species && !(species.flags & NO_BLOOD))
-		vessel.add_reagent("blood",560-vessel.total_volume)
+		var/blood_reagent = get_blood_name()
+		vessel.add_reagent(blood_reagent, max_blood-vessel.total_volume)
 		fixblood()
 
 	// Fix up all organs.
@@ -1294,7 +1308,7 @@
 	species.create_organs(src)
 
 	if(!client || !key) //Don't boot out anyone already in the mob.
-		for (var/obj/item/organ/brain/H in world)
+		for (var/obj/item/organ/internal/brain/H in world)
 			if(H.brainmob)
 				if(H.brainmob.real_name == src.real_name)
 					if(H.brainmob.mind)
@@ -1310,14 +1324,14 @@
 	..()
 
 /mob/living/carbon/human/proc/is_lung_ruptured()
-	var/obj/item/organ/lungs/L = internal_organs_by_name["lungs"]
+	var/obj/item/organ/internal/lungs/L = get_int_organ(/obj/item/organ/internal/lungs)
 	if(!L)
 		return 0
 
 	return L.is_bruised()
 
 /mob/living/carbon/human/proc/rupture_lung()
-	var/obj/item/organ/lungs/L = internal_organs_by_name["lungs"]
+	var/obj/item/organ/internal/lungs/L = get_int_organ(/obj/item/organ/internal/lungs)
 	if(!L)
 		return 0
 
@@ -1390,6 +1404,8 @@
 /mob/living/carbon/human/generate_name()
 	name = species.makeName(gender,src)
 	real_name = name
+	if(dna)
+		dna.real_name = name
 	return name
 
 /mob/living/carbon/human/proc/handle_embedded_objects()
@@ -1468,6 +1484,8 @@
 
 		if(species.default_language)
 			remove_language(species.default_language)
+
+		species.handle_pre_change(src)
 
 	species = all_species[new_species]
 
@@ -1592,26 +1610,36 @@
 // Allows IPC's to change their monitor display
 /mob/living/carbon/human/proc/change_monitor()
 	set category = "IC"
-	set name = "Change Monitor Display"
-	set desc = "Change the display on your monitor."
+	set name = "Change Monitor/Optical Display"
+	set desc = "Change the display on your monitor or the colour of your optics."
 
-	if(stat || paralysis || stunned || weakened)
-		src << "<span class='warning'>You cannot change your monitor display in your current state.</span>"
+	if(incapacitated())
+		src << "<span class='warning'>You cannot change your monitor or optical display in your current state.</span>"
 		return
 
-	var/list/hair = list()
-	for(var/i in hair_styles_list)
-		var/datum/sprite_accessory/hair/tmp_hair = hair_styles_list[i]
-		if(species.name in tmp_hair.species_allowed)
-			hair += i
+	if(species.flags & ALL_RPARTS) //If they can have a fully cybernetic body...
+		if(client.prefs.rlimb_data["head"]) //If head is present here, that means it's not the default Morpheus. Thus, no screen to adjust. Instead, let them change the colour of their optics!
+			var/optic_colour = input(src, "Select optic colour", rgb(r_markings, g_markings, b_markings)) as color|null
+			if(optic_colour)
+				r_markings = hex2num(copytext(optic_colour, 2, 4))
+				g_markings = hex2num(copytext(optic_colour, 4, 6))
+				b_markings = hex2num(copytext(optic_colour, 6, 8))
 
-	var/new_style = input(src, "Select a monitor display", "Monitor Display")  as null|anything in hair
-	if(stat || paralysis || stunned || weakened)
-		return
-	if(new_style)
-		h_style = new_style
+			update_markings()
+		else if(!client.prefs.rlimb_data["head"])//Means that the character has the default Morpheus head, which has a screen. Time to customize.
+			var/list/hair = list()
+			for(var/i in hair_styles_list)
+				var/datum/sprite_accessory/hair/tmp_hair = hair_styles_list[i]
+				if(species.name in tmp_hair.species_allowed)
+					hair += i
 
-	update_hair()
+			var/new_style = input(src, "Select a monitor display", "Monitor Display", h_style)  as null|anything in hair
+			if(incapacitated())
+				return
+			if(new_style)
+				h_style = new_style
+
+		update_hair()
 
 //Putting a couple of procs here that I don't know where else to dump.
 //Mostly going to be used for Vox and Vox Armalis, but other human mobs might like them (for adminbuse).
@@ -1858,3 +1886,56 @@
 	for(var/obj/item/clothing/C in src) //If they have some clothing equipped that lets them see reagents, they can see reagents
 		if(C.scan_reagents)
 			return 1
+
+/mob/living/carbon/human/can_eat(flags = 255)
+	return species && (species.dietflags & flags)
+
+/mob/living/carbon/human/selfFeed(var/obj/item/weapon/reagent_containers/food/toEat, fullness)
+	if(!check_has_mouth())
+		src << "Where do you intend to put \the [toEat]? You don't have a mouth!"
+		return 0
+	return ..()
+
+/mob/living/carbon/human/forceFed(var/obj/item/weapon/reagent_containers/food/toEat, mob/user, fullness)
+	if(!check_has_mouth())
+		if(!((istype(toEat, /obj/item/weapon/reagent_containers/food/drinks) && (get_species() == "Machine"))))
+			user << "Where do you intend to put \the [toEat]? \The [src] doesn't have a mouth!"
+			return 0
+	return ..()
+
+/mob/living/carbon/human/selfDrink(var/obj/item/weapon/reagent_containers/food/drinks/toDrink)
+	if(!check_has_mouth())
+		if(!get_species() == "Machine")
+			src << "Where do you intend to put \the [src]? You don't have a mouth!"
+			return 0
+		else
+			src << "<span class='notice'>You pour a bit of liquid from [toDrink] into your connection port.</span>"
+	else
+		src << "<span class='notice'>You swallow a gulp of [toDrink].</span>"
+	return 1
+
+/mob/living/carbon/human/can_track(mob/living/user)
+	if(wear_id)
+		var/obj/item/weapon/card/id/id = wear_id
+		if(istype(id) && id.is_untrackable())
+			return 0
+	if(istype(head, /obj/item/clothing/head))
+		var/obj/item/clothing/head/hat = head
+		if(hat.blockTracking)
+			return 0
+
+	return ..()
+
+/mob/living/carbon/human/proc/get_age_pitch()
+	return 1.0 + 0.5*(30 - age)/80
+
+/mob/living/carbon/human/get_access()
+	. = ..()
+
+	if(wear_id)
+		. |= wear_id.GetAccess()
+	if(istype(w_uniform, /obj/item/clothing/under))
+		var/obj/item/clothing/under/U = w_uniform
+		if(U.accessories)
+			for(var/obj/item/clothing/accessory/A in U.accessories)
+				. |= A.GetAccess()

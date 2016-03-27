@@ -160,7 +160,8 @@ var/list/admin_verbs_possess = list(
 	)
 var/list/admin_verbs_permissions = list(
 	/client/proc/edit_admin_permissions,
-	/client/proc/create_poll
+	/client/proc/create_poll,
+	/client/proc/big_brother
 	)
 var/list/admin_verbs_rejuv = list(
 	/client/proc/respawn_character,
@@ -428,6 +429,7 @@ var/list/admin_verbs_proccall = list (
 		return
 
 	if(holder)
+		holder.big_brother = 0
 		if(holder.fakekey)
 			holder.fakekey = null
 		else
@@ -440,6 +442,29 @@ var/list/admin_verbs_proccall = list (
 		log_admin("[key_name(usr)] has turned stealth mode [holder.fakekey ? "ON" : "OFF"]")
 		message_admins("[key_name_admin(usr)] has turned stealth mode [holder.fakekey ? "ON" : "OFF"]", 1)
 	feedback_add_details("admin_verb","SM") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
+
+/client/proc/big_brother()
+	set category = "Admin"
+	set name = "Big Brother Mode"
+
+	if(!check_rights(R_PERMISSIONS))
+		return
+
+	if(holder)
+		if(holder.fakekey)
+			holder.fakekey = null
+			holder.big_brother = 0
+		else
+			var/new_key = ckeyEx(input("Enter your desired display name. Unlike normal stealth mode, this will not appear in Who at all, except for other heads.", "Fake Key", key) as text|null)
+			if(!new_key)
+				return
+			if(length(new_key) >= 26)
+				new_key = copytext(new_key, 1, 26)
+			holder.fakekey = new_key
+			holder.big_brother = 1
+			createStealthKey()
+		log_admin("[key_name(usr)] has turned BB mode [holder.fakekey ? "ON" : "OFF"]")
+		feedback_add_details("admin_verb","BBSM")
 
 #define MAX_WARNS 3
 #define AUTOBANTIME 10
@@ -784,7 +809,17 @@ var/list/admin_verbs_proccall = list (
 		return
 
 	if(!istype(H))
-		return
+		if(istype(H, /mob/living/carbon/brain))
+			var/mob/living/carbon/brain/B = H
+			if(istype(B.container, /obj/item/device/mmi/posibrain/ipc))
+				var/obj/item/device/mmi/posibrain/ipc/C = B.container
+				var/obj/item/organ/internal/brain/mmi_holder/posibrain/P = C.loc
+				if(istype(P.owner, /mob/living/carbon/human))
+					H = P.owner
+			else
+				return
+		else
+			return
 
 	if(holder)
 		admin_log_and_message_admins("is altering the appearance of [H].")
@@ -800,7 +835,17 @@ var/list/admin_verbs_proccall = list (
 		return
 
 	if(!istype(H))
-		return
+		if(istype(H, /mob/living/carbon/brain))
+			var/mob/living/carbon/brain/B = H
+			if(istype(B.container, /obj/item/device/mmi/posibrain/ipc))
+				var/obj/item/device/mmi/posibrain/ipc/C = B.container
+				var/obj/item/organ/internal/brain/mmi_holder/posibrain/P = C.loc
+				if(istype(P.owner, /mob/living/carbon/human))
+					H = P.owner
+			else
+				return
+		else
+			return
 
 	if(!H.client)
 		usr << "Only mobs with clients can alter their own appearance."
@@ -881,6 +926,7 @@ var/list/admin_verbs_proccall = list (
 		return
 
 	prefs.toggles ^= CHAT_DEBUGLOGS
+	prefs.save_preferences(src)
 	if (prefs.toggles & CHAT_DEBUGLOGS)
 		usr << "You now will get debug log messages"
 	else

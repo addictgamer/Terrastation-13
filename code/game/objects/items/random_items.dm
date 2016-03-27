@@ -88,7 +88,7 @@
 		..()
 		var/list/additional_drinks = list()
 		if(prob(50))
-			additional_drinks += list("pancuronium","adminordrazine","lsd","omnizine","blood")
+			additional_drinks += list("pancuronium","lsd","omnizine","blood")
 
 		var/datum/reagent/R = pick(drinks + additional_drinks)
 		reagents.add_reagent(R,volume)
@@ -128,7 +128,7 @@
 				R = pick(standard_medicines + rare_medicines)
 			else
 				R = pick(standard_medicines)
-			var/obj/item/weapon/reagent_containers/pill/P = new(src)
+			var/obj/item/weapon/reagent_containers/food/pill/P = new(src)
 
 			if(rare_medicines.Find(R))
 				P.reagents.add_reagent(R,10)

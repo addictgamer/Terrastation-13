@@ -22,7 +22,7 @@
 	// Sobering multiplier.
 	// Sober block makes it more difficult to get drunk
 	var/sober_str=!(SOBER in M.mutations)?1:2
-	M:nutrition += nutriment_factor
+	M.nutrition += nutriment_factor
 	if(!src.data) data = 1
 	src.data++
 
@@ -34,16 +34,17 @@
 
 	d/=sober_str
 
+	var/obj/item/organ/internal/liver/L
 	if(ishuman(M))
 		var/mob/living/carbon/human/H = M
-		var/obj/item/organ/liver/L = H.internal_organs_by_name["liver"]
+		L = H.get_int_organ(/obj/item/organ/internal/liver)
 		if(!L || (istype(L) && L.dna.species in list("Skrell", "Neara")))
 			d*=5
 
 	M.dizziness += dizzy_adj.
 	if(d >= slur_start && d < pass_out)
-		if (!M:slurring) M:slurring = 1
-		M:slurring += slurr_adj/sober_str
+		if (!M.slurring) M.slurring = 1
+		M.slurring += slurr_adj/sober_str
 	if(d >= brawl_start && ishuman(M))
 		var/mob/living/carbon/human/H = M
 		F.teach(H,1)
@@ -51,21 +52,20 @@
 			if(H.martial_art == F)
 				F.remove(H)
 	if(d >= confused_start && prob(33))
-		if (!M:confused) M:confused = 1
-		M.confused = max(M:confused+(confused_adj/sober_str),0)
+		if (!M.confused) M.confused = 1
+		M.confused = max(M.confused+(confused_adj/sober_str),0)
 	if(d >= blur_start)
 		M.eye_blurry = max(M.eye_blurry, 10/sober_str)
-		M:drowsyness  = max(M:drowsyness, 0)
+		M.drowsyness  = max(M.drowsyness, 0)
 	if(d >= vomit_start)
 		if(prob(8))
 			M.fakevomit()
 	if(d >= pass_out)
-		M:paralysis = max(M:paralysis, 20/sober_str)
-		M:drowsyness  = max(M:drowsyness, 30/sober_str)
+		M.Paralyse(20 / sober_str)
+		M.drowsyness = max(M.drowsyness, 30/sober_str)
 		if(ishuman(M))
 			var/mob/living/carbon/human/H = M
-			var/obj/item/organ/liver/L = H.internal_organs_by_name["liver"]
-			if (istype(L))
+			if (L)
 				L.take_damage(0.1, 1)
 			H.adjustToxLoss(0.1)
 	..()
@@ -639,7 +639,7 @@
 
 
 /datum/reagent/ethanol/neurotoxin
-	name = "Neurotoxin"
+	name = "Neuro-toxin"
 	id = "neurotoxin"
 	description = "A strong neurotoxin that puts the subject into a death-like state."
 	reagent_state = LIQUID
