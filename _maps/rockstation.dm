@@ -60,7 +60,7 @@ Mining Asteroid;5;linked
 
 Ruskie plus;6;linked
 
-Empty Area;7;linked
+AI Sat;7;linked
 
 Terralabs;8;unlinked
 }
