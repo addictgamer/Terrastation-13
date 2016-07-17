@@ -41,7 +41,7 @@ var/round_start_time = 0
 	'sound/music/after_light_that_burns.ogg',\
 	'sound/music/Atmosdel_Sub_Balloon.ogg',\
 	'sound/music/muh_face.ogg',\
-	'sound/music/robocop_slow.ogg',\
+	'sound/music/lazarus.ogg',\
 	'sound/music/redsky.ogg',\
 	'sound/music/firefucker.ogg',\
 	'sound/music/darkcloud.ogg',)
