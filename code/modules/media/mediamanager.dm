@@ -51,26 +51,21 @@ if(vlc.attachEvent) {
 "}
 
 // Hook into the events we desire.
-/hook_handler/soundmanager
-	// Set up player on login
-	proc/OnLogin(var/list/args)
-		//testing("Received OnLogin.")
-		var/client/C = args["client"]
-		C.media = new /datum/media_manager(args["mob"])
-		C.media.open()
-		spawn(20)
-			C.media.update_music()
+/hook/mob_login/proc/init_media_manager(client/client, mob/mob)
+	client.media = new /datum/media_manager(mob)
+	client.media.open()
+	spawn(20)
+		client.media.update_music()
+	return 1
 
 	// Update when moving between areas.
-	proc/OnMobAreaChange(var/list/args)
-		var/mob/M = args["mob"]
-		//if(istype(M, /mob/living/carbon/human)||istype(M, /mob/dead/observer))
-		//	testing("Received OnMobAreaChange for [M.type] [M] (M.client=[M.client==null?"null":"/client"]).")
-		if(M.client)
-			M.update_music()
+/hook/mob_area_change/proc/update_media(mob/mob, area/newarea, area/oldarea)
+	if(mob.client)
+		mob.update_music()
+	return 1
 
 /mob/proc/update_music()
-	if (client && client.media)
+	if(client && client.media)
 		client.media.update_music()
 	//else
 	//	testing("[src] - client: [client?"Y":"N"]; client.media: [client && client.media ? "Y":"N"]")
@@ -81,7 +76,7 @@ if(vlc.attachEvent) {
 
 
 #ifdef DEBUG_MEDIAPLAYER
-#define MP_DEBUG(x) owner << x
+to_chat(#define MP_DEBUG(x) owner, x)
 #warning Please comment out #define DEBUG_MEDIAPLAYER before committing.
 #else
 #define MP_DEBUG(x)
@@ -124,7 +119,7 @@ if(vlc.attachEvent) {
 		var/targetURL = ""
 		var/targetStartTime = 0
 
-		if (!owner)
+		if(!owner)
 			//testing("owner is null")
 			return
 
@@ -137,11 +132,11 @@ if(vlc.attachEvent) {
 		if(M && M.playing)
 			targetURL = M.media_url
 			targetStartTime = M.media_start_time
-			//owner << "Found audio source: [M.media_url] @ [(world.time - start_time) / 10]s."
+//			to_chat(owner, "Found audio source: [M.media_url] @ [(world.time - start_time) / 10]s.")
 		//else
 		//	testing("M is not playing or null.")
 
-		if (url != targetURL || abs(targetStartTime - start_time) > 1)
+		if(url != targetURL || abs(targetStartTime - start_time) > 1)
 			url = targetURL
 			start_time = targetStartTime
 			send_update()
@@ -155,7 +150,7 @@ if(vlc.attachEvent) {
 	set desc = "Set jukebox volume"
 
 	if(!media || !istype(media))
-		usr << "You have no media datum to change, if you're not in the lobby tell an admin."
+		to_chat(usr, "You have no media datum to change, if you're not in the lobby tell an admin.")
 		return
 	var/value = input("Choose your Jukebox volume.", "Jukebox volume", media.get_volume())
 	value = round(max(0, min(100, value)))

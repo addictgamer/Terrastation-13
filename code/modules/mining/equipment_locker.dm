@@ -19,8 +19,8 @@
 	var/ore_pickup_rate = 15
 	var/sheet_per_ore = 1
 	var/point_upgrade = 1
-	var/list/ore_values = list(("sand" = 1), ("iron" = 1), ("plasma" = 15), ("silver" = 16), ("gold" = 18), ("uranium" = 30), ("diamond" = 50), ("bananium" = 60), ("tranquillite" = 60))
-	var/list/supply_consoles = list("Science", "Robotics", "Research Director's Desk", "Mechanic", "Engineering" = list("metal", "glass", "plasma"), "Chief Engineer's Desk" = list("metal", "glass", "plasma"), "Atmospherics" = list("metal", "glass", "plasma"), "Bar" = list("uranium", "plasma"), "Virology" = list("uranium", "gold"))
+	var/list/ore_values = list(("sand" = 1), ("iron" = 1), ("plasma" = 15), ("silver" = 16), ("gold" = 18), ("uranium" = 30), ("diamond" = 50), ("bluespace crystal" = 50), ("bananium" = 60), ("tranquillite" = 60))
+	var/list/supply_consoles = list("Science", "Robotics", "Research Director's Desk", "Mechanic", "Engineering" = list("metal", "glass", "plasma"), "Chief Engineer's Desk" = list("metal", "glass", "plasma"), "Atmospherics" = list("metal", "glass", "plasma"), "Bar" = list("uranium", "plasma"), "Virology" = list("plasma", "uranium", "gold"))
 
 /obj/machinery/mineral/ore_redemption/New()
 	..()
@@ -49,11 +49,11 @@
 	var/point_upgrade_temp = 1
 	var/sheet_per_ore_temp = 1
 	for(var/obj/item/weapon/stock_parts/matter_bin/B in component_parts)
-		sheet_per_ore_temp = B.rating
+		sheet_per_ore_temp = 0.65 + (0.35 * B.rating)
 	for(var/obj/item/weapon/stock_parts/manipulator/M in component_parts)
 		ore_pickup_rate_temp = 15 * M.rating
 	for(var/obj/item/weapon/stock_parts/micro_laser/L in component_parts)
-		point_upgrade_temp = L.rating
+		point_upgrade_temp = 0.65 + (0.35 * L.rating)
 	ore_pickup_rate = ore_pickup_rate_temp
 	point_upgrade = point_upgrade_temp
 	sheet_per_ore = sheet_per_ore_temp
@@ -84,9 +84,9 @@
 		var/i = 0
 		if(T)
 			for(var/obj/item/weapon/ore/O in T)
-				if (i >= ore_pickup_rate)
+				if(i >= ore_pickup_rate)
 					break
-				else if (!O || !O.refined_type)
+				else if(!O || !O.refined_type)
 					continue
 				else
 					process_sheet(O)
@@ -95,16 +95,16 @@
 			var/obj/structure/ore_box/B = locate() in T
 			if(B)
 				for(var/obj/item/weapon/ore/O in B.contents)
-					if (i >= ore_pickup_rate)
+					if(i >= ore_pickup_rate)
 						break
-					else if (!O || !O.refined_type)
+					else if(!O || !O.refined_type)
 						continue
 					else
 						process_sheet(O)
 						i++
 
 /obj/machinery/mineral/ore_redemption/attackby(var/obj/item/weapon/W, var/mob/user, params)
-	if (!powered())
+	if(!powered())
 		return
 	if(istype(W,/obj/item/weapon/card/id))
 		var/obj/item/weapon/card/id/I = usr.get_active_hand()
@@ -209,7 +209,7 @@
 					inserted_id.mining_points += points
 					points = 0
 				else
-					usr << "<span class='warning'>Required access not found.</span>"
+					to_chat(usr, "<span class='warning'>Required access not found.</span>")
 		else if(href_list["choice"] == "insert")
 			var/obj/item/weapon/card/id/I = usr.get_active_hand()
 			if(istype(I))
@@ -217,21 +217,22 @@
 					return
 				I.loc = src
 				inserted_id = I
-			else usr << "<span class='warning'>No valid ID.</span>"
+			else
+				to_chat(usr, "<span class='warning'>No valid ID.</span>")
 	if(href_list["release"])
 		if(check_access(inserted_id) || allowed(usr)) //Check the ID inside, otherwise check the user.
 			if(!(text2path(href_list["release"]) in stack_list)) return
 			var/obj/item/stack/sheet/inp = stack_list[text2path(href_list["release"])]
 			var/obj/item/stack/sheet/out = new inp.type()
 			var/desired = input("How much?", "How much to eject?", 1) as num
-			out.amount = min(desired,50,inp.amount)
+			out.amount = round(min(desired,50,inp.amount))
 			if(out.amount >= 1)
 				inp.amount -= out.amount
 				unload_mineral(out)
 			if(inp.amount < 1)
 				stack_list -= text2path(href_list["release"])
 		else
-			usr << "<span class='warning'>Required access not found.</span>"
+			to_chat(usr, "<span class='warning'>Required access not found.</span>")
 	if(href_list["plasteel"])
 		if(check_access(inserted_id) || allowed(usr))
 			if(!(/obj/item/stack/sheet/metal in stack_list)) return
@@ -241,13 +242,13 @@
 
 			var/desired = input("How much?", "How much would you like to smelt?", 1) as num
 			var/obj/item/stack/sheet/plasteel/plasteelout = new
-			plasteelout.amount = min(desired,50,metalstack.amount,plasmastack.amount)
+			plasteelout.amount = round(min(desired,50,metalstack.amount,plasmastack.amount))
 			if(plasteelout.amount >= 1)
 				metalstack.amount -= plasteelout.amount
 				plasmastack.amount -= plasteelout.amount
 				unload_mineral(plasteelout)
 		else
-			usr << "<span class='warning'>Required access not found.</span>"
+			to_chat(usr, "<span class='warning'>Required access not found.</span>")
 	if(href_list["plasglass"])
 		if(check_access(inserted_id) || allowed(usr))
 			if(!(/obj/item/stack/sheet/glass in stack_list)) return
@@ -257,13 +258,13 @@
 
 			var/desired = input("How much?", "How much would you like to smelt?", 1) as num
 			var/obj/item/stack/sheet/plasmaglass/plasglassout = new
-			plasglassout.amount = min(desired, 50, glassstack.amount, plasmastack.amount)
+			plasglassout.amount = round(min(desired, 50, glassstack.amount, plasmastack.amount))
 			if(plasglassout.amount >= 1)
 				glassstack.amount -= plasglassout.amount
 				plasmastack.amount -= plasglassout.amount
 				unload_mineral(plasglassout)
 		else
-			usr << "<span class='warning'>Required access not found.</span>"
+			to_chat(usr, "<span class='warning'>Required access not found.</span>")
 	updateUsrDialog()
 	return
 
@@ -291,6 +292,7 @@
 			s.use(s.max_amount)
 		s.forceMove(loc)
 		s.layer = initial(s.layer)
+		s.plane = initial(s.plane)
 
 /obj/machinery/mineral/ore_redemption/power_change()
 	..()
@@ -325,6 +327,10 @@
 		new /datum/data/mining_equipment("Advanced Scanner",	/obj/item/device/t_scanner/adv_mining_scanner,                     400),
 		new /datum/data/mining_equipment("Hivelord Stabilizer",	/obj/item/weapon/hivelordstabilizer,                               400),
 		new /datum/data/mining_equipment("Mining Drone",        /obj/item/weapon/mining_drone_cube,                                500),
+		new /datum/data/mining_equipment("Drone Melee Upgrade", /obj/item/device/mine_bot_ugprade,      			   			   400),
+		new /datum/data/mining_equipment("Drone Health Upgrade",/obj/item/device/mine_bot_ugprade/health,      			   	       400),
+		new /datum/data/mining_equipment("Drone Ranged Upgrade",/obj/item/device/mine_bot_ugprade/cooldown,      			   	   600),
+		new /datum/data/mining_equipment("Drone AI Upgrade",    /obj/item/slimepotion/sentience/mining,      			   	      1000),
 		new /datum/data/mining_equipment("GAR mesons",			/obj/item/clothing/glasses/meson/gar,							   500),
 		new /datum/data/mining_equipment("Brute First-Aid Kit",	/obj/item/weapon/storage/firstaid/brute,						   600),
 		new /datum/data/mining_equipment("Jaunter",             /obj/item/device/wormhole_jaunter,                                 600),
@@ -414,11 +420,12 @@
 					return
 				I.loc = src
 				inserted_id = I
-			else usr << "<span class='danger'>No valid ID.</span>"
+			else
+				to_chat(usr, "<span class='danger'>No valid ID.</span>")
 	if(href_list["purchase"])
 		if(istype(inserted_id))
 			var/datum/data/mining_equipment/prize = locate(href_list["purchase"])
-			if (!prize || !(prize in prize_list))
+			if(!prize || !(prize in prize_list))
 				return
 			if(prize.cost > inserted_id.mining_points)
 			else
@@ -495,15 +502,15 @@
 		if(points)
 			var/obj/item/weapon/card/id/C = I
 			C.mining_points += points
-			user << "<span class='info'>You transfer [points] points to [C].</span>"
+			to_chat(user, "<span class='info'>You transfer [points] points to [C].</span>")
 			points = 0
 		else
-			user << "<span class='info'>There's no points left on [src].</span>"
+			to_chat(user, "<span class='info'>There's no points left on [src].</span>")
 	..()
 
 /obj/item/weapon/card/mining_point_card/examine(mob/user)
 	..(user)
-	user << "There's [points] points on the card."
+	to_chat(user, "There's [points] points on the card.")
 
 /**********************Jaunter**********************/
 
@@ -514,7 +521,7 @@
 	icon_state = "Jaunter"
 	item_state = "electronic"
 	throwforce = 0
-	w_class = 2.0
+	w_class = 2
 	throw_speed = 3
 	throw_range = 5
 	origin_tech = "bluespace=2"
@@ -522,7 +529,7 @@
 /obj/item/device/wormhole_jaunter/attack_self(mob/user as mob)
 	var/turf/device_turf = get_turf(user)
 	if(!device_turf||device_turf.z==2||device_turf.z>=7)
-		user << "<span class='notice'>You're having difficulties getting the [src.name] to work.</span>"
+		to_chat(user, "<span class='notice'>You're having difficulties getting the [src.name] to work.</span>")
 		return
 	else
 		user.visible_message("<span class='notice'>[user.name] activates the [src.name]!</span>")
@@ -532,7 +539,7 @@
 			if(T.z == ZLEVEL_STATION)
 				L += B
 		if(!L.len)
-			user << "<span class='notice'>The [src.name] failed to create a wormhole.</span>"
+			to_chat(user, "<span class='notice'>The [src.name] failed to create a wormhole.</span>")
 			return
 		var/chosen_beacon = pick(L)
 		var/obj/effect/portal/wormhole/jaunt_tunnel/J = new /obj/effect/portal/wormhole/jaunt_tunnel(get_turf(src), chosen_beacon)
@@ -603,10 +610,10 @@
 /obj/item/weapon/resonator/attack_self(mob/user as mob)
 	if(burst_time == 50)
 		burst_time = 30
-		user << "<span class='info'>You set the resonator's fields to detonate after 3 seconds.</span>"
+		to_chat(user, "<span class='info'>You set the resonator's fields to detonate after 3 seconds.</span>")
 	else
 		burst_time = 50
-		user << "<span class='info'>You set the resonator's fields to detonate after 5 seconds.</span>"
+		to_chat(user, "<span class='info'>You set the resonator's fields to detonate after 5 seconds.</span>")
 
 /obj/item/weapon/resonator/afterattack(atom/target, mob/user, proximity_flag)
 	if(proximity_flag)
@@ -643,11 +650,11 @@
 			if(creator)
 				for(var/mob/living/L in src.loc)
 					add_logs(L, creator, "used a resonator field on", object="resonator")
-					L << "<span class='danger'>The [src.name] ruptured with you in it!</span>"
+					to_chat(L, "<span class='danger'>The [src.name] ruptured with you in it!</span>")
 					L.adjustBruteLoss(resonance_damage)
 			else
 				for(var/mob/living/L in src.loc)
-					L << "<span class='danger'>The [src.name] ruptured with you in it!</span>"
+					to_chat(L, "<span class='danger'>The [src.name] ruptured with you in it!</span>")
 					L.adjustBruteLoss(resonance_damage)
 			qdel(src)
 
@@ -670,7 +677,7 @@
 /obj/item/weapon/mining_drone_cube
 	name = "mining drone cube"
 	desc = "Compressed mining drone, ready for deployment. Just press the button to activate!"
-	w_class = 2.0
+	w_class = 2
 	icon = 'icons/obj/aibots.dmi'
 	icon_state = "minedronecube"
 	item_state = "electronic"
@@ -706,9 +713,11 @@
 	melee_damage_lower = 15
 	melee_damage_upper = 15
 	environment_smash = 0
+	check_friendly_fire = 1
 	attacktext = "drills"
 	attack_sound = 'sound/weapons/circsawhit.ogg'
 	ranged = 1
+	sentience_type = SENTIENCE_MINEBOT
 	ranged_message = "shoots"
 	ranged_cooldown_cap = 3
 	projectiletype = /obj/item/projectile/kinetic
@@ -722,17 +731,17 @@
 	if(istype(I, /obj/item/weapon/weldingtool))
 		var/obj/item/weapon/weldingtool/W = I
 		if(W.welding && !stat)
-			if(stance != HOSTILE_STANCE_IDLE)
-				user << "<span class='info'>[src] is moving around too much to repair!</span>"
+			if(FindTarget())//if the bot has anything to shoot at, to prevent combat repair cheesing
+				to_chat(user, "<span class='info'>[src] is moving around too much to repair!</span>")
 				return
 			if(maxHealth == health)
-				user << "<span class='info'>[src] is at full integrity.</span>"
+				to_chat(user, "<span class='info'>[src] is at full integrity.</span>")
 			else
-				health += 10
-				user << "<span class='info'>You repair some of the armor on [src].</span>"
+				adjustHealth(-10)//actually repairs the bot, not damages it
+				to_chat(user, "<span class='info'>You repair some of the armor on [src].</span>")
 			return
 	if(istype(I, /obj/item/device/mining_scanner) || istype(I, /obj/item/device/t_scanner/adv_mining_scanner))
-		user << "<span class='info'>You instruct [src] to drop any collected ore.</span>"
+		to_chat(user, "<span class='info'>You instruct [src] to drop any collected ore.</span>")
 		DropOre()
 		return
 	..()
@@ -754,10 +763,10 @@
 		switch(search_objects)
 			if(0)
 				SetCollectBehavior()
-				M << "<span class='info'>[src] has been set to search and store loose ore.</span>"
+				to_chat(M, "<span class='info'>[src] has been set to search and store loose ore.</span>")
 			if(2)
 				SetOffenseBehavior()
-				M << "<span class='info'>[src] has been set to attack hostile wildlife.</span>"
+				to_chat(M, "<span class='info'>[src] has been set to attack hostile wildlife.</span>")
 		return
 	..()
 
@@ -803,11 +812,71 @@
 		O.forceMove(loc)
 	return
 
-/mob/living/simple_animal/hostile/mining_drone/adjustBruteLoss()
+/mob/living/simple_animal/hostile/mining_drone/adjustHealth()
 	if(search_objects)
 		SetOffenseBehavior()
 	..()
 
+
+/**********************Minebot Upgrades**********************/
+
+//Melee
+
+/obj/item/device/mine_bot_ugprade
+	name = "minebot melee upgrade"
+	desc = "A minebot upgrade."
+	icon_state = "door_electronics"
+	icon = 'icons/obj/doors/door_assembly.dmi'
+
+/obj/item/device/mine_bot_ugprade/afterattack(mob/living/simple_animal/hostile/mining_drone/M, mob/user)
+	if(!istype(M))
+		return
+	upgrade_bot(M, user)
+
+/obj/item/device/mine_bot_ugprade/proc/upgrade_bot(mob/living/simple_animal/hostile/mining_drone/M, mob/user)
+	if(M.melee_damage_upper != initial(M.melee_damage_upper))
+		to_chat(user, "[M] already has a combat upgrade installed!")
+		return
+	M.melee_damage_lower = 22
+	M.melee_damage_upper = 22
+	to_chat(user, "You upgrade [M]'s combat module.")
+	qdel(src)
+
+//Health
+
+/obj/item/device/mine_bot_ugprade/health
+	name = "minebot chassis upgrade"
+
+/obj/item/device/mine_bot_ugprade/health/upgrade_bot(mob/living/simple_animal/hostile/mining_drone/M, mob/user)
+	if(M.maxHealth != initial(M.maxHealth))
+		to_chat(user, "[M] already has a reinforced chassis!")
+		return
+	M.maxHealth = 170
+	to_chat(user, "You reinforce [M]'s chassis.")
+	qdel(src)
+
+
+//Cooldown
+
+/obj/item/device/mine_bot_ugprade/cooldown
+	name = "minebot cooldown upgrade"
+
+/obj/item/device/mine_bot_ugprade/cooldown/upgrade_bot(mob/living/simple_animal/hostile/mining_drone/M, mob/user)
+	if(M.ranged_cooldown_cap != initial(M.ranged_cooldown_cap))
+		to_chat(user, "[M] already has a decreased weapon cooldown!")
+		return
+	M.ranged_cooldown_cap = 1
+	to_chat(user, "You upgrade [M]'s ranged weaponry, reducing its cooldown.")
+	qdel(src)
+
+
+//AI
+/obj/item/slimepotion/sentience/mining
+	name = "minebot AI upgrade"
+	desc = "Can be used to grant sentience to minebots."
+	icon_state = "door_electronics"
+	icon = 'icons/obj/doors/door_assembly.dmi'
+	sentience_type = SENTIENCE_MINEBOT
 
 /**********************Mining drone kit**********************/
 
@@ -829,11 +898,11 @@
 /obj/item/weapon/lazarus_injector
 	name = "lazarus injector"
 	desc = "An injector with a cocktail of nanomachines and chemicals, this device can seemingly raise animals from the dead, making them become friendly to the user. Unfortunately, the process is useless on higher forms of life and incredibly costly, so these were hidden in storage until an executive thought they'd be great motivation for some of their employees."
-	icon = 'icons/obj/syringe.dmi'
+	icon = 'icons/obj/hypo.dmi'
 	icon_state = "lazarus_hypo"
 	item_state = "hypo"
 	throwforce = 0
-	w_class = 2.0
+	w_class = 2
 	throw_speed = 3
 	throw_range = 5
 	var/loaded = 1
@@ -848,6 +917,7 @@
 			if(M.stat == DEAD)
 				M.faction = list("neutral")
 				M.revive()
+				M.can_collar = 1
 				if(istype(target, /mob/living/simple_animal/hostile))
 					var/mob/living/simple_animal/hostile/H = M
 					if(malfunctioning)
@@ -864,10 +934,10 @@
 				icon_state = "lazarus_empty"
 				return
 			else
-				user << "<span class='info'>[src] is only effective on the dead.</span>"
+				to_chat(user, "<span class='info'>[src] is only effective on the dead.</span>")
 				return
 		else
-			user << "<span class='info'>[src] is only effective on lesser beings.</span>"
+			to_chat(user, "<span class='info'>[src] is only effective on lesser beings.</span>")
 			return
 
 /obj/item/weapon/lazarus_injector/emag_act()
@@ -881,21 +951,22 @@
 /obj/item/weapon/lazarus_injector/examine(mob/user)
 	..(user)
 	if(!loaded)
-		user << "<span class='info'>[src] is empty.</span>"
+		to_chat(user, "<span class='info'>[src] is empty.</span>")
 	if(malfunctioning)
-		user << "<span class='info'>The display on [src] seems to be flickering.</span>"
+		to_chat(user, "<span class='info'>The display on [src] seems to be flickering.</span>")
 
 /**********************Mining Scanner**********************/
 
 /obj/item/device/mining_scanner
-	desc = "A scanner that checks surrounding rock for useful minerals, it can also be used to stop gibtonite detonations. Requires you to wear mesons to work properly."
-	name = "mining scanner"
+	desc = "A scanner that checks surrounding rock for useful minerals; it can also be used to stop gibtonite detonations. Wear material scanners for optimal results."
+	name = "manual mining scanner"
 	icon_state = "mining1"
 	item_state = "analyzer"
-	w_class = 2.0
+	w_class = 2
 	flags = CONDUCT
 	slot_flags = SLOT_BELT
 	var/cooldown = 0
+	origin_tech = "engineering=1;magnets=1"
 
 /obj/item/device/mining_scanner/attack_self(mob/user)
 	if(!user.client)
@@ -919,29 +990,51 @@
 	qdel(src)
 
 /obj/item/device/t_scanner/adv_mining_scanner
-	desc = "A scanner that automatically checks surrounding rock for useful minerals; it can also be used to stop gibtonite detonations. Requires you to wear mesons to function properly."
-	name = "advanced mining scanner"
+	desc = "A scanner that automatically checks surrounding rock for useful minerals; it can also be used to stop gibtonite detonations. Wear meson scanners for optimal results. This one has an extended range."
+	name = "advanced automatic mining scanner"
 	icon_state = "mining0"
 	item_state = "analyzer"
-	w_class = 2.0
+	w_class = 2
 	flags = CONDUCT
 	slot_flags = SLOT_BELT
-	var/cooldown = 0
+	var/cooldown = 35
+	var/on_cooldown = 0
+	var/range = 7
+	var/meson = TRUE
+	origin_tech = "engineering=3;magnets=3"
 
 /obj/item/device/t_scanner/adv_mining_scanner/cyborg
 	flags = CONDUCT | NODROP
 
+/obj/item/device/t_scanner/adv_mining_scanner/material
+	meson = FALSE
+	desc = "A scanner that automatically checks surrounding rock for useful minerals; it can also be used to stop gibtonite detonations. Wear material scanners for optimal results. This one has an extended range."
+
+/obj/item/device/t_scanner/adv_mining_scanner/lesser
+	name = "automatic mining scanner"
+	desc = "A scanner that automatically checks surrounding rock for useful minerals; it can also be used to stop gibtonite detonations. Wear meson scanners for optimal results."
+	range = 4
+	cooldown = 50
+
+/obj/item/device/t_scanner/adv_mining_scanner/lesser/material
+	desc = "A scanner that automatically checks surrounding rock for useful minerals; it can also be used to stop gibtonite detonations. Wear material scanners for optimal results."
+	meson = FALSE
+
 /obj/item/device/t_scanner/adv_mining_scanner/scan()
-	if(!cooldown)
-		cooldown = 1
-		spawn(35)
-			cooldown = 0
+	if(!on_cooldown)
+		on_cooldown = 1
+		spawn(cooldown)
+			on_cooldown = 0
 		var/turf/t = get_turf(src)
 		var/list/mobs = recursive_mob_check(t, client_check = 1, sight_check = 0, include_radio = 0)
 		if(!mobs.len)
 			return
-		mineral_scan_pulse(mobs, t)
+		if(meson)
+			mineral_scan_pulse(mobs, t, range)
+		else
+			mineral_scan_pulse_material(mobs, t, range)
 
+//For use with mesons
 /proc/mineral_scan_pulse(list/mobs, turf/T, range = world.view)
 	var/list/minerals = list()
 	for(var/turf/simulated/mineral/M in range(range, T))
@@ -958,6 +1051,26 @@
 					spawn(30)
 						if(C)
 							C.images -= I
+
+//For use with material scanners
+/proc/mineral_scan_pulse_material(list/mobs, turf/T, range = world.view)
+	var/list/minerals = list()
+	for(var/turf/simulated/mineral/M in range(range, T))
+		if(M.scan_state)
+			minerals += M
+	if(minerals.len)
+		for(var/turf/simulated/mineral/M in minerals)
+			var/obj/effect/overlay/temp/mining_overlay/C = new/obj/effect/overlay/temp/mining_overlay(M)
+			C.icon_state = M.scan_state
+
+/obj/effect/overlay/temp/mining_overlay
+	layer = 18
+	icon = 'icons/turf/mining.dmi'
+	anchored = 1
+	mouse_opacity = 0
+	duration = 30
+	pixel_x = -4
+	pixel_y = -4
 
 /**********************Xeno Warning Sign**********************/
 /obj/structure/sign/xeno_warning_mining
@@ -989,8 +1102,8 @@
 /obj/item/weapon/hivelordstabilizer/afterattack(obj/item/organ/internal/M, mob/user)
 	var/obj/item/organ/internal/hivelord_core/C = M
 	if(!istype(C, /obj/item/organ/internal/hivelord_core))
-		user << "<span class='warning'>The stabilizer only works on hivelord cores.</span>"
+		to_chat(user, "<span class='warning'>The stabilizer only works on hivelord cores.</span>")
 		return ..()
 	C.preserved = 1
-	user << "<span class='notice'>You inject the hivelord core with the stabilizer. It will no longer go inert.</span>"
+	to_chat(user, "<span class='notice'>You inject the hivelord core with the stabilizer. It will no longer go inert.</span>")
 	qdel(src)

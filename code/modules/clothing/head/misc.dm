@@ -5,7 +5,7 @@
 	icon_state = "centcom"
 	desc = "It's good to be emperor."
 	item_state = "centhat"
-	armor = list(melee = 50, bullet = 15, laser = 50, energy = 10, bomb = 25, bio = 0, rad = 0)
+	armor = list(melee = 30, bullet = 15, laser = 30, energy = 10, bomb = 25, bio = 0, rad = 0)
 	strip_delay = 80
 
 /obj/item/clothing/head/hairflower
@@ -24,6 +24,15 @@
 	desc = "A powdered wig."
 	icon_state = "pwig"
 	item_state = "pwig"
+
+/obj/item/clothing/head/beret/blue
+	icon_state = "beret_blue"
+
+/obj/item/clothing/head/beret/black
+	icon_state = "beret_black"
+
+/obj/item/clothing/head/beret/purple_normal
+	icon_state = "beret_purple_normal"
 
 /obj/item/clothing/head/that
 	name = "top-hat"
@@ -88,14 +97,6 @@
 	icon_state = "greenbandana"
 	item_state = "greenbandana"
 	flags_inv = 0
-
-/obj/item/clothing/head/cardborg
-	name = "cardborg helmet"
-	desc = "A helmet made out of a box."
-	icon_state = "cardborg_h"
-	item_state = "cardborg_h"
-	flags = HEADCOVERSEYES | HEADCOVERSMOUTH
-	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE
 
 /obj/item/clothing/head/justice
 	name = "justice hat"
@@ -169,6 +170,12 @@
 	item_state = "boater_hat"
 	desc = "Goes well with celery."
 
+/obj/item/clothing/head/cowboyhat
+	name = "cowboy hat"
+	icon_state = "cowboyhat"
+	item_state = "fedora"
+	desc = "There's a new sheriff in town. Pass the whiskey."
+
 /obj/item/clothing/head/fedora
 	name = "\improper fedora"
 	icon_state = "fedora"
@@ -210,9 +217,14 @@
 	desc = "Woof!"
 	icon_state = "corgihead"
 	item_state = "chickensuit"
+	flags = BLOCKHAIR
+
+/obj/item/clothing/head/corgi/super_hero
+	name = "super-hero corgi suit head"
+	desc = "Woof! This one seems to pulse with a strange power"
 	flags = BLOCKHAIR | NODROP
 
-/obj/item/clothing/head/corgi/en
+/obj/item/clothing/head/corgi/super_hero/en
 	name = "E-N suit head"
 	icon_state = "enhead"
 
@@ -328,7 +340,7 @@
 	throwforce = 3.0
 	throw_speed = 2
 	throw_range = 5
-	w_class = 2.0
+	w_class = 2
 	attack_verb = list("warned", "cautioned", "smashed")
 
 /obj/item/clothing/head/griffin

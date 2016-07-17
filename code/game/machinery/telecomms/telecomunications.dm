@@ -39,7 +39,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 
 	if(!on)
 		return
-	//world << "[src] ([src.id]) - [signal.debug_print()]"
+//	to_chat(world, "[src] ([src.id]) - [signal.debug_print()]")
 	var/send_count = 0
 
 
@@ -145,6 +145,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 		listening_level = position.z
 
 /obj/machinery/telecomms/initialize()
+	..()
 	if(autolinkers.len)
 		// Links nearby machines
 		if(!long_range_link)
@@ -387,7 +388,7 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 			src.receive_information(signal, src)
 
 		// Try sending it!
-		var/list/try_send = list("/obj/machinery/telecomms/server", "/obj/machinery/telecomms/hub", "/obj/machinery/telecomms/broadcaster", "/obj/machinery/telecomms/bus")
+		var/list/try_send = list("/obj/machinery/telecomms/server", "/obj/machinery/telecomms/hub", "/obj/machinery/telecomms/broadcaster")
 		var/i = 0
 		for(var/send in try_send)
 			if(i)
@@ -584,10 +585,3 @@ var/global/list/obj/machinery/telecomms/telecomms_list = list()
 	var/name = "data packet (#)"
 	var/garbage_collector = 1 // if set to 0, will not be garbage collected
 	var/input_type = "Speech File"
-
-
-
-
-
-
-

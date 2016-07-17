@@ -5,7 +5,7 @@ var/global/list/plant_seed_sprites = list()
 	name = "packet of seeds"
 	icon = 'icons/obj/seeds.dmi'
 	icon_state = "blank"
-	w_class = 2.0
+	w_class = 2
 
 	var/seed_type
 	var/datum/seed/seed
@@ -62,7 +62,7 @@ var/global/list/plant_seed_sprites = list()
 /obj/item/seeds/examine(mob/user)
 	..(user)
 	if(seed && !seed.roundstart)
-		user << "It's tagged as variety #[seed.uid]."
+		to_chat(user, "It's tagged as variety #[seed.uid].")
 
 /obj/item/seeds/cutting
 	name = "cuttings"
@@ -221,6 +221,9 @@ var/global/list/plant_seed_sprites = list()
 /obj/item/seeds/ambrosiadeusseed
 	seed_type = "ambrosiadeus"
 
+/obj/item/seeds/ambrosiavulgarisseed/cruciatus
+	seed_type = "ambrosia"
+
 /obj/item/seeds/whitebeetseed
 	seed_type = "whitebeet"
 
@@ -307,3 +310,6 @@ var/global/list/plant_seed_sprites = list()
 
 /obj/item/seeds/coffeerseed
 	seed_type = "coffeer"
+
+/obj/item/seeds/cash
+	seed_type = "cashtree"

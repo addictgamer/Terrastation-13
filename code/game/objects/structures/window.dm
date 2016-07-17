@@ -127,16 +127,16 @@ var/global/wcCommon = pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e", "#8f
 		user.say(pick(";RAAAAAAAARGH!", ";HNNNNNNNNNGGGGGGH!", ";GWAAAAAAAARRRHHH!", "NNNNNNNNGGGGGGGGHH!", ";AAAAAAARRRGH!"))
 		user.visible_message("<span class='danger'>[user] smashes through [src]!</span>")
 		destroy()
-	else if (usr.a_intent == I_HARM)
+	else if(user.a_intent == I_HARM)
 		user.changeNext_move(CLICK_CD_MELEE)
 		playsound(get_turf(src), 'sound/effects/glassknock.ogg', 80, 1)
-		usr.visible_message("\red [usr.name] bangs against the [src.name]!", \
+		user.visible_message("\red [user.name] bangs against the [src.name]!", \
 							"\red You bang against the [src.name]!", \
 							"You hear a banging sound.")
 	else
 		user.changeNext_move(CLICK_CD_MELEE)
 		playsound(src.loc, 'sound/effects/glassknock.ogg', 80, 1)
-		usr.visible_message("[usr.name] knocks on the [src.name].", \
+		user.visible_message("[user.name] knocks on the [src.name].", \
 							"You knock on the [src.name].", \
 							"You hear a knocking sound.")
 	return
@@ -168,27 +168,27 @@ var/global/wcCommon = pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e", "#8f
 
 /obj/structure/window/attack_slime(mob/living/user as mob)
 	var/mob/living/carbon/slime/S = user
-	if (!S.is_adult)
+	if(!S.is_adult)
 		return
 	attack_generic(user, rand(10, 15))
 
 
 /obj/structure/window/attackby(obj/item/weapon/W as obj, mob/living/user as mob, params)
 	if(!istype(W)) return//I really wish I did not need this
-	if (istype(W, /obj/item/weapon/grab) && get_dist(src,user)<2)
+	if(istype(W, /obj/item/weapon/grab) && get_dist(src,user)<2)
 		var/obj/item/weapon/grab/G = W
 		if(istype(G.affecting,/mob/living))
 			var/mob/living/M = G.affecting
 			var/state = G.state
 			qdel(W)	//gotta delete it here because if window breaks, it won't get deleted
-			switch (state)
+			switch(state)
 				if(1)
 					M.visible_message("<span class='warning'>[user] slams [M] against \the [src]!</span>")
 					M.apply_damage(7)
 					hit(10)
 				if(2)
 					M.visible_message("<span class='danger'>[user] bashes [M] against \the [src]!</span>")
-					if (prob(50))
+					if(prob(50))
 						M.Weaken(1)
 					M.apply_damage(10)
 					hit(25)
@@ -210,42 +210,42 @@ var/global/wcCommon = pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e", "#8f
 		if(reinf && state >= 1)
 			state = 3 - state
 			playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
-			user << (state == 1 ? "<span class='notice'>You have unfastened the window from the frame.</span>" : "<span class='notice'>You have fastened the window to the frame.</span>")
+			to_chat(user, (state == 1 ? "<span class='notice'>You have unfastened the window from the frame.</span>" : "<span class='notice'>You have fastened the window to the frame.</span>"))
 		else if(reinf && state == 0)
 			anchored = !anchored
 			update_nearby_icons()
 			playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
-			user << (anchored ? "<span class='notice'>You have fastened the frame to the floor.</span>" : "<span class='notice'>You have unfastened the frame from the floor.</span>")
+			to_chat(user, (anchored ? "<span class='notice'>You have fastened the frame to the floor.</span>" : "<span class='notice'>You have unfastened the frame from the floor.</span>"))
 		else if(!reinf)
 			anchored = !anchored
 			update_nearby_icons()
 			playsound(loc, 'sound/items/Screwdriver.ogg', 75, 1)
-			user << (anchored ? "<span class='notice'>You have fastened the window to the floor.</span>" : "<span class='notice'>You have unfastened the window.</span>")
+			to_chat(user, (anchored ? "<span class='notice'>You have fastened the window to the floor.</span>" : "<span class='notice'>You have unfastened the window.</span>"))
 	else if(istype(W, /obj/item/weapon/crowbar) && reinf && state <= 1)
 		state = 1 - state
 		playsound(loc, 'sound/items/Crowbar.ogg', 75, 1)
-		user << (state ? "<span class='notice'>You have pried the window into the frame.</span>" : "<span class='notice'>You have pried the window out of the frame.</span>")
+		to_chat(user, (state ? "<span class='notice'>You have pried the window into the frame.</span>" : "<span class='notice'>You have pried the window out of the frame.</span>"))
 	else if(istype(W, /obj/item/weapon/wrench) && !anchored && health > 7) //Disassemble deconstructed window into parts
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
 		for(var/i=0;i<sheets;i++)
 			var/obj/item/stack/sheet/glass/NG = new glasstype(src.loc)
-			for (var/obj/item/stack/sheet/glass/G in src.loc) //Stack em up
+			for(var/obj/item/stack/sheet/glass/G in src.loc) //Stack em up
 				if(G==NG)
 					continue
 				if(G.amount>=G.max_amount)
 					continue
 				G.attackby(NG, user, params)
 
-			if (reinf)
+			if(reinf)
 				var/obj/item/stack/rods/NR = new (src.loc)
-				for (var/obj/item/stack/rods/R in src.loc)
+				for(var/obj/item/stack/rods/R in src.loc)
 					if(R==NR)
 						continue
 					if(R.amount>=R.max_amount)
 						continue
 					R.attackby(NR, user, params)
 
-		user << "<span class='notice'>You have disassembled the window.</span>"
+		to_chat(user, "<span class='notice'>You have disassembled the window.</span>")
 		disassembled = 1
 		density = 0
 		air_update_turf(1)
@@ -288,7 +288,7 @@ var/global/wcCommon = pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e", "#8f
 		return
 
 	if(anchored)
-		usr << "<span class='warning'>It is fastened to the floor therefore you can't rotate it!</span>"
+		to_chat(usr, "<span class='warning'>It is fastened to the floor therefore you can't rotate it!</span>")
 		return 0
 
 	dir = turn(dir, 90)
@@ -307,7 +307,7 @@ var/global/wcCommon = pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e", "#8f
 		return
 
 	if(anchored)
-		usr << "<span class='warning'>It is fastened to the floor therefore you can't rotate it!</span>"
+		to_chat(usr, "<span class='warning'>It is fastened to the floor therefore you can't rotate it!</span>")
 		return 0
 
 	dir = turn(dir, 270)
@@ -338,9 +338,12 @@ var/global/wcCommon = pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e", "#8f
 	ini_dir = dir
 	if(!color && !istype(src,/obj/structure/window/plasmabasic) && !istype(src,/obj/structure/window/plasmareinforced))
 		color = color_windows(src)
-	air_update_turf(1)
 	update_nearby_icons()
 	return
+
+/obj/structure/window/initialize()
+	air_update_turf(1)
+	return ..()
 
 /obj/structure/window/Destroy()
 	density = 0
@@ -402,9 +405,12 @@ var/global/wcCommon = pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e", "#8f
 /obj/structure/window/plasmabasic/New(Loc,re=0)
 	..()
 	ini_dir = dir
-	air_update_turf(1)
 	update_nearby_icons()
 	return
+
+/obj/structure/window/plasmabasic/initialize()
+	..()
+	air_update_turf(1)
 
 /obj/structure/window/plasmabasic/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	if(exposed_temperature > T0C + 32000)
@@ -433,9 +439,12 @@ var/global/wcCommon = pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e", "#8f
 /obj/structure/window/plasmareinforced/New(Loc,re=0)
 	..()
 	ini_dir = dir
-	air_update_turf(1)
 	update_nearby_icons()
 	return
+
+/obj/structure/window/plasmareinforced/initialize()
+	..()
+	air_update_turf(1)
 
 /obj/structure/window/plasmareinforced/temperature_expose(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	return
@@ -505,7 +514,7 @@ var/global/wcCommon = pick(list("#379963", "#0d8395", "#58b5c3", "#49e46e", "#8f
 	update_icon()
 
 	for(var/obj/structure/window/reinforced/polarized/W in range(src,range))
-		if (W.id == src.id || !W.id)
+		if(W.id == src.id || !W.id)
 			spawn(0)
 				W.toggle()
 				return

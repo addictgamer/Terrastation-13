@@ -154,15 +154,15 @@
 proc/checkhtml(var/t)
 	t = sanitize_simple(t, list("&#"="."))
 	var/p = findtext(t,"<",1)
-	while (p)	//going through all the tags
+	while(p)	//going through all the tags
 		var/start = p++
 		var/tag = copytext(t,p, p+1)
-		if (tag != "/")
-			while (reject_bad_text(copytext(t, p, p+1), 1))
+		if(tag != "/")
+			while(reject_bad_text(copytext(t, p, p+1), 1))
 				tag = copytext(t,start, p)
 				p++
 			tag = copytext(t,start+1, p)
-			if (!(tag in paper_tag_whitelist))	//if it's unkown tag, disarming it
+			if(!(tag in paper_tag_whitelist))	//if it's unkown tag, disarming it
 				t = copytext(t,1,start-1) + "&lt;" + copytext(t,start+1)
 		p = findtext(t,"<",p)
 	return t
@@ -203,21 +203,22 @@ proc/checkhtml(var/t)
  * Text modification
  */
 // See bygex.dm
-#ifndef USE_BYGEX
-/proc/replacetext(text, find, replacement)
-	return list2text(text2list(text, find), replacement)
-
-/proc/replacetextEx(text, find, replacement)
-	return list2text(text2listEx(text, find), replacement)
-#endif
 /proc/replace_characters(var/t,var/list/repl_chars)
 	for(var/char in repl_chars)
 		t = replacetext(t, char, repl_chars[char])
 	return t
 
+//Strips the first char and returns it and the new string as a list
+/proc/strip_first(t)
+	return list(copytext(t, 1, 2), copytext(t, 2, 0))
+
+//Strips the last char and returns it and the new string as a list
+/proc/strip_last(t)
+	return list(copytext(t, 1, length(t)), copytext(t, length(t)))
+
 //Adds 'u' number of zeros ahead of the text 't'
 /proc/add_zero(t, u)
-	while (length(t) < u)
+	while(length(t) < u)
 		t = "0[t]"
 	return t
 
@@ -235,15 +236,15 @@ proc/checkhtml(var/t)
 
 //Returns a string with reserved characters and spaces before the first letter removed
 /proc/trim_left(text)
-	for (var/i = 1 to length(text))
-		if (text2ascii(text, i) > 32)
+	for(var/i = 1 to length(text))
+		if(text2ascii(text, i) > 32)
 			return copytext(text, i)
 	return ""
 
 //Returns a string with reserved characters and spaces after the last letter removed
 /proc/trim_right(text)
-	for (var/i = length(text), i > 0, i--)
-		if (text2ascii(text, i) > 32)
+	for(var/i = length(text), i > 0, i--)
+		if(text2ascii(text, i) > 32)
 			return copytext(text, 1, i + 1)
 
 	return ""
@@ -371,3 +372,21 @@ proc/checkhtml(var/t)
 //this is a problem of double-encode(when & becomes &amp;), use sanitize() with encode=0, but not the sanitizeSafe()!
 /proc/sanitizeSafe(var/input, var/max_length = MAX_MESSAGE_LEN, var/encode = 1, var/trim = 1, var/extra = 1)
 	return sanitize(replace_characters(input, list(">"=" ","<"=" ", "\""="'")), max_length, encode, trim, extra)
+
+
+//Replaces \red \blue \green \b etc with span classes for to_chat
+/proc/replace_text_macro(match, code, rest)
+    var/regex/text_macro = new("(\\xFF.)(.*)$")
+    switch(code)
+        if("\red")
+            return "<span class='warning'>[text_macro.Replace(rest, /proc/replace_text_macro)]</span>"
+        if("\blue", "\green")
+            return "<span class='notice'>[text_macro.Replace(rest, /proc/replace_text_macro)]</span>"
+        if("\b")
+            return "<b>[text_macro.Replace(rest, /proc/replace_text_macro)]</b>"
+        else
+            return text_macro.Replace(rest, /proc/replace_text_macro)
+
+/proc/macro2html(text)
+    var/static/regex/text_macro = new("(\\xFF.)(.*)$")
+    return text_macro.Replace(text, /proc/replace_text_macro)

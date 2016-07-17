@@ -81,8 +81,8 @@
 	spawn_positions = 2
 	supervisors = "the head of personnel"
 	selection_color = "#dddddd"
-	access = list(access_hydroponics, access_bar, access_kitchen, access_morgue) // Removed tox and chem access because STOP PISSING OFF THE CHEMIST GUYS // //Removed medical access because WHAT THE FUCK YOU AREN'T A DOCTOR YOU GROW WHEAT //Given Morgue access because they have a viable means of cloning.
-	minimal_access = list(access_hydroponics, access_morgue, access_maint_tunnels) // Removed tox and chem access because STOP PISSING OFF THE CHEMIST GUYS // //Removed medical access because WHAT THE FUCK YOU AREN'T A DOCTOR YOU GROW WHEAT //Given Morgue access because they have a viable means of cloning.
+	access = list(access_hydroponics, access_bar, access_kitchen)
+	minimal_access = list(access_hydroponics, access_maint_tunnels)
 	alt_titles = list("Hydroponicist", "Botanical Researcher")
 
 
@@ -184,27 +184,25 @@
 	alt_titles = list("Spelunker")
 
 	equip(var/mob/living/carbon/human/H)
-		if(!H)	return 0
-		H.equip_or_collect(new /obj/item/device/radio/headset/headset_cargo (H), slot_l_ear)
+		if(!H)
+			return 0
+		H.equip_or_collect(new /obj/item/device/radio/headset/headset_cargo/mining(H), slot_l_ear)
 		switch(H.backbag)
-			if(2) H.equip_or_collect(new /obj/item/weapon/storage/backpack/industrial(H), slot_back)
-			if(3) H.equip_or_collect(new /obj/item/weapon/storage/backpack/satchel_eng(H), slot_back)
-			if(4) H.equip_or_collect(new /obj/item/weapon/storage/backpack/satchel(H), slot_back)
+			if(2)
+				H.equip_or_collect(new /obj/item/weapon/storage/backpack/industrial(H), slot_back)
+			if(3)
+				H.equip_or_collect(new /obj/item/weapon/storage/backpack/satchel_eng(H), slot_back)
+			if(4)
+				H.equip_or_collect(new /obj/item/weapon/storage/backpack/satchel(H), slot_back)
 		H.equip_or_collect(new /obj/item/clothing/under/rank/miner(H), slot_w_uniform)
+		H.equip_or_collect(new /obj/item/clothing/gloves/fingerless(H), slot_gloves)
 		H.equip_or_collect(new /obj/item/device/pda/shaftminer(H), slot_wear_pda)
-		H.equip_or_collect(new /obj/item/clothing/shoes/black(H), slot_shoes)
-		H.equip_or_collect(new /obj/item/weapon/pickaxe(H), slot_belt)
-		H.equip_or_collect(new /obj/item/weapon/mining_voucher(H), slot_r_hand)
-		if(H.backbag == 1)
-			H.equip_or_collect(new /obj/item/weapon/storage/box/engineer(H), slot_r_hand)
-			H.equip_or_collect(new /obj/item/weapon/crowbar(H), slot_l_hand)
-			H.equip_or_collect(new /obj/item/weapon/storage/bag/ore(H), slot_l_store)
-			H.equip_or_collect(new /obj/item/weapon/reagent_containers/food/pill/patch/styptic(H), slot_r_store)
-		else
-			H.equip_or_collect(new /obj/item/weapon/storage/box/engineer(H.back), slot_in_backpack)
-			H.equip_or_collect(new /obj/item/weapon/crowbar(H), slot_in_backpack)
-			H.equip_or_collect(new /obj/item/weapon/storage/bag/ore(H), slot_in_backpack)
-			H.equip_or_collect(new /obj/item/weapon/reagent_containers/food/pill/patch/styptic(H), slot_in_backpack)
+		H.equip_or_collect(new /obj/item/clothing/shoes/workboots(H), slot_shoes)
+		H.equip_or_collect(new /obj/item/weapon/reagent_containers/food/pill/patch/styptic(H), slot_l_store)
+		H.equip_or_collect(new /obj/item/device/flashlight/seclite(H), slot_r_store)
+		H.equip_or_collect(new /obj/item/weapon/storage/box/survival_mining(H.back), slot_in_backpack)
+		H.equip_or_collect(new /obj/item/weapon/mining_voucher(H.back), slot_in_backpack)
+		H.equip_or_collect(new /obj/item/weapon/storage/bag/ore(H.back), slot_in_backpack)
 		return 1
 
 
@@ -244,6 +242,10 @@
 		H.equip_or_collect(new /obj/item/toy/crayon/rainbow(H), slot_in_backpack)
 		H.equip_or_collect(new /obj/item/weapon/storage/fancy/crayons(H), slot_in_backpack)
 		H.equip_or_collect(new /obj/item/weapon/reagent_containers/spray/waterflower(H), slot_in_backpack)
+		if(H.get_species() == "Machine")
+			var/obj/item/organ/internal/cyberimp/brain/clown_voice/implant
+			implant = new
+			implant.insert(H)
 		H.mutations.Add(CLUMSY)
 		H.dna.SetSEState(COMICBLOCK,1,1)
 		genemutcheck(H,COMICBLOCK,null,MUTCHK_FORCED)
@@ -282,6 +284,7 @@
 		H.equip_or_collect(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
 		H.equip_or_collect(new /obj/item/toy/crayon/mime(H), slot_in_backpack)
 		H.equip_or_collect(new /obj/item/weapon/reagent_containers/food/drinks/bottle/bottleofnothing(H), slot_in_backpack)
+		H.equip_or_collect(new /obj/item/weapon/cane(H), slot_in_backpack)
 		if(H.mind)
 			H.mind.AddSpell(new /obj/effect/proc_holder/spell/aoe_turf/conjure/mime_wall(null))
 			H.mind.AddSpell(new /obj/effect/proc_holder/spell/targeted/mime/speak(null))
@@ -294,7 +297,7 @@
 	title = "Janitor"
 	flag = JANITOR
 	department_flag = SUPPORT
-	total_positions = 2
+	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the head of personnel"
 	selection_color = "#dddddd"

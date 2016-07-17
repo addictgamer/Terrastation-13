@@ -104,13 +104,13 @@
 	for(var/mob/player in player_list)
 		if(istype(player,/mob/dead) && follow)
 			var/msg_dead = "<i><span class='game say'>[name], <span class='name'>[speaker_mask]</span> ([ghost_follow_link(speaker, ghost=player)]) [format_message(message, get_spoken_verb(message))]</span></i>"
-			player << msg_dead
+			to_chat(player, msg_dead)
 			continue
 
-		else if(istype(player,/mob/dead) || ((src in player.languages) && check_special_condition(player)))
-			player << msg
+		else if(istype(player,/mob/dead) || ((src in player.languages) && check_special_condition(player, speaker)))
+			to_chat(player, msg)
 
-/datum/language/proc/check_special_condition(var/mob/other)
+/datum/language/proc/check_special_condition(var/mob/other, var/mob/living/speaker)
 	return 1
 
 /datum/language/proc/get_spoken_verb(var/msg_end)
@@ -213,7 +213,7 @@
 	colour = "vox"
 	key = "v"
 	flags = RESTRICTED | WHITELISTED
-	syllables = list("ti","ti","ti","hi","hi","ki","ki","ki","ki","ya","ta","ha","ka","ya","chi","cha","kah", \
+	syllables = list("ti","ti","ti","hi","hi","ki","ki","ki","ki","ya","ta","ha","ka","ya", "yi", "chi","cha","kah", \
 	"SKRE","AHK","EHK","RAWK","KRA","AAA","EEE","KI","II","KRI","KA")
 
 /datum/language/vox/get_random_name()
@@ -276,6 +276,41 @@
 	flags = RESTRICTED | WHITELISTED
 	syllables = list("blob","plop","pop","bop","boop")
 
+/datum/language/grey
+	name = "Psionic Communication"
+	desc = "The grey's psionic communication, less potent version of their distant cousin's telepathy. Talk to other greys within a limited radius."
+	speech_verb = "expresses"
+	ask_verb = "inquires"
+	exclaim_verb = "imparts"
+	colour = "abductor"
+	key = "^"
+	flags = RESTRICTED | HIVEMIND
+
+/datum/language/grey/broadcast(var/mob/living/speaker,var/message,var/speaker_mask)
+	..(speaker,message,speaker.real_name)
+
+/datum/language/grey/check_special_condition(var/mob/living/carbon/human/other, var/mob/living/carbon/human/speaker)
+	if(other in range(7, speaker))
+		return 1
+	return 0
+
+/datum/language/drask
+	name = "Orluum"
+	desc = "The droning, vibrous language of the Drask. It sounds somewhat like whalesong."
+	speech_verb = "drones"
+	ask_verb = "hums"
+	exclaim_verb = "rumbles"
+	colour = "drask"
+	key = "%"
+	flags = RESTRICTED | WHITELISTED
+	syllables = list("hoorb","vrrm","ooorm","urrrum","ooum","ee","ffm","hhh","mn","ongg")
+
+/datum/language/drask/get_random_name()
+	var/new_name = "[pick(list("Hoorm","Viisk","Saar","Mnoo","Oumn","Fmong","Gnii","Vrrm","Oorm","Dromnn","Ssooumn","Ovv", "Hoorb","Vaar","Gaar","Goom","Ruum","Rumum"))]"
+	new_name += "-[pick(list("Hoorm","Viisk","Saar","Mnoo","Oumn","Fmong","Gnii","Vrrm","Oorm","Dromnn","Ssooumn","Ovv", "Hoorb","Vaar","Gaar","Goom","Ruum","Rumum"))]"
+	new_name += "-[pick(list("Hoorm","Viisk","Saar","Mnoo","Oumn","Fmong","Gnii","Vrrm","Oorm","Dromnn","Ssooumn","Ovv", "Hoorb","Vaar","Gaar","Goom","Ruum","Rumum"))]"
+	return new_name
+
 /datum/language/common
 	name = "Galactic Common"
 	desc = "The common galactic tongue."
@@ -337,7 +372,7 @@
 	speech_verb = "growls"
 	ask_verb = "gnarls"
 	exclaim_verb = "snarls"
-	colour = "rough"
+	colour = "gutter"
 	key = "3"
 	syllables = list ("gra","ba","ba","breh","bra","rah","dur","ra","ro","gro","go","ber","bar","geh","heh", "gra")
 
@@ -409,6 +444,7 @@
 	key = "8"
 	flags = RESTRICTED | HIVEMIND
 
+
 /datum/language/shadowling/broadcast(var/mob/living/speaker, var/message, var/speaker_mask)
 	if(speaker.mind && speaker.mind.special_role)
 		..(speaker, message, "([speaker.mind.special_role]) [speaker]")
@@ -421,6 +457,25 @@
 		..(speaker,message,speaker.mind.changeling.changelingID)
 	else
 		..(speaker,message)
+
+/datum/language/abductor
+	name = "Abductor Mindlink"
+	desc = "Abductors are incapable of speech, but have a psychic link attuned to their own team."
+	speech_verb = "gibbers"
+	ask_verb = "gibbers"
+	exclaim_verb = "gibbers"
+	colour = "abductor"
+	key = "zw" //doesn't matter, this is their default and only language
+	flags = RESTRICTED | HIVEMIND
+
+/datum/language/abductor/broadcast(var/mob/living/speaker,var/message,var/speaker_mask)
+	..(speaker,message,speaker.real_name)
+
+/datum/language/abductor/check_special_condition(var/mob/living/carbon/human/other, var/mob/living/carbon/human/speaker)
+	if(other.mind && other.mind.abductor)
+		if(other.mind.abductor.team == speaker.mind.abductor.team)
+			return 1
+	return 0
 
 /datum/language/corticalborer
 	name = "Cortical Link"
@@ -463,24 +518,24 @@
 	if(!speaker.binarycheck())
 		return
 
-	if (!message)
+	if(!message)
 		return
 
 	var/message_start = "<i><span class='game say'>[name], <span class='name'>[speaker.name]</span>"
 	var/message_body = "<span class='message'>[speaker.say_quote(message)], \"[message]\"</span></span></i>"
 
-	for (var/mob/M in dead_mob_list)
+	for(var/mob/M in dead_mob_list)
 		if(!istype(M,/mob/new_player) && !istype(M,/mob/living/carbon/brain))
 			var/message_start_dead = "<i><span class='game say'>[name], <span class='name'>[speaker.name] ([ghost_follow_link(speaker, ghost=M)])</span>"
 			M.show_message("[message_start_dead] [message_body]", 2)
 
-	for (var/mob/living/S in living_mob_list)
+	for(var/mob/living/S in living_mob_list)
 
 		if(drone_only && !istype(S,/mob/living/silicon/robot/drone))
 			continue
 		else if(istype(S , /mob/living/silicon/ai))
 			message_start = "<i><span class='game say'>[name], <a href='byond://?src=\ref[S];track=\ref[speaker]'><span class='name'>[speaker.name]</span></a>"
-		else if (!S.binarycheck())
+		else if(!S.binarycheck())
 			continue
 
 		S.show_message("[message_start] [message_body]", 2)
@@ -488,16 +543,10 @@
 	var/list/listening = hearers(1, src)
 	listening -= src
 
-	for (var/mob/living/M in listening)
+	for(var/mob/living/M in listening)
 		if(istype(M, /mob/living/silicon) || M.binarycheck())
 			continue
 		M.show_message("<i><span class='game say'><span class='name'>synthesised voice</span> <span class='message'>beeps, \"beep beep beep\"</span></span></i>",2)
-
-	//robot binary xmitter component power usage
-	if (isrobot(speaker))
-		var/mob/living/silicon/robot/R = speaker
-		var/datum/robot_component/C = R.components["comms"]
-		R.use_power(C.energy_consumption)
 
 /datum/language/binary/drone
 	name = "Drone Talk"

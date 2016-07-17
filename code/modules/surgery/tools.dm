@@ -5,7 +5,7 @@
 	icon_state = "retractor"
 	materials = list(MAT_METAL=6000, MAT_GLASS=3000)
 	flags = CONDUCT
-	w_class = 2.0
+	w_class = 2
 	origin_tech = "materials=1;biotech=1"
 
 
@@ -16,7 +16,7 @@
 	icon_state = "hemostat"
 	materials = list(MAT_METAL=5000, MAT_GLASS=2500)
 	flags = CONDUCT
-	w_class = 1.0
+	w_class = 1
 	origin_tech = "materials=1;biotech=1"
 	attack_verb = list("attacked", "pinched")
 
@@ -28,7 +28,7 @@
 	icon_state = "cautery"
 	materials = list(MAT_METAL=2500, MAT_GLASS=750)
 	flags = CONDUCT
-	w_class = 1.0
+	w_class = 1
 	origin_tech = "materials=1;biotech=1"
 	attack_verb = list("burnt")
 
@@ -44,13 +44,13 @@
 	force = 15.0
 	sharp = 1
 	edge = 1
-	w_class = 3.0
+	w_class = 3
 	origin_tech = "materials=1;biotech=1"
 	attack_verb = list("drilled")
 
 	suicide_act(mob/user)
-		viewers(user) << pick("<span class='suicide'>[user] is pressing [src] to \his temple and activating it! It looks like \he's trying to commit suicide.</span>", \
-							"<span class='suicide'>[user] is pressing [src] to \his chest and activating it! It looks like \he's trying to commit suicide.</span>")
+		to_chat(viewers(user), pick("<span class='suicide'>[user] is pressing [src] to \his temple and activating it! It looks like \he's trying to commit suicide.</span>",
+							"<span class='suicide'>[user] is pressing [src] to \his chest and activating it! It looks like \he's trying to commit suicide.</span>"))
 		return (BRUTELOSS)
 
 
@@ -63,7 +63,7 @@
 	force = 10.0
 	sharp = 1
 	edge = 1
-	w_class = 1.0
+	w_class = 1
 	throwforce = 5.0
 	throw_speed = 3
 	throw_range = 5
@@ -73,9 +73,9 @@
 	hitsound = 'sound/weapons/bladeslice.ogg'
 
 	suicide_act(mob/user)
-		viewers(user) << pick("<span class='suicide'>[user] is slitting \his wrists with [src]! It looks like \he's trying to commit suicide.</span>", \
-							"<span class='suicide'>[user] is slitting \his throat with [src]! It looks like \he's trying to commit suicide.</span>", \
-							"<span class='suicide'>[user] is slitting \his stomach open with [src]! It looks like \he's trying to commit seppuku.</span>")
+		to_chat(viewers(user), pick("<span class='suicide'>[user] is slitting \his wrists with [src]! It looks like \he's trying to commit suicide.</span>",
+							"<span class='suicide'>[user] is slitting \his throat with [src]! It looks like \he's trying to commit suicide.</span>",
+							"<span class='suicide'>[user] is slitting \his stomach open with [src]! It looks like \he's trying to commit seppuku.</span>"))
 		return (BRUTELOSS)
 
 
@@ -124,7 +124,7 @@
 	force = 15.0
 	sharp = 1
 	edge = 1
-	w_class = 3.0
+	w_class = 3
 	throwforce = 9.0
 	throw_speed = 3
 	throw_range = 5
@@ -138,7 +138,7 @@
 	icon = 'icons/obj/surgery.dmi'
 	icon_state = "bone-gel"
 	force = 0
-	w_class = 2.0
+	w_class = 2
 	throwforce = 1.0
 	origin_tech = "materials=1;biotech=1"
 
@@ -149,7 +149,7 @@
 	force = 0
 	throwforce = 1.0
 	origin_tech = "materials=1;biotech=1"
-	w_class = 2.0
+	w_class = 2
 
 /obj/item/weapon/bonesetter
 	name = "bone setter"
@@ -159,7 +159,7 @@
 	throwforce = 9.0
 	throw_speed = 3
 	throw_range = 5
-	w_class = 2.0
+	w_class = 2
 	attack_verb = list("attacked", "hit", "bludgeoned")
 	origin_tech = "materials=1;biotech=1"
 
@@ -168,6 +168,6 @@
 	desc = "Nanotrasen brand surgical drapes provide optimal safety and infection control."
 	icon = 'icons/obj/surgery.dmi'
 	icon_state = "surgical_drapes"
-	w_class = 1.0
+	w_class = 1
 	origin_tech = "biotech=1"
 	attack_verb = list("slapped")

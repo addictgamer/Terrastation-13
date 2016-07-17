@@ -54,7 +54,7 @@
 		M.adjustFireLoss(intialFire - M.getFireLoss())
 		M.adjustBruteLoss(intialBrute - M.getBruteLoss())
 		M.setOxyLoss(intialOxy)
-	if (timer <= 0)
+	if(timer <= 0)
 		dump_contents()
 		processing_objects.Remove(src)
 		qdel(src)
@@ -67,7 +67,7 @@
 		if(S.mind)
 			for(var/mob/M in contents)
 				S.mind.transfer_to(M)
-				M << "As the animating magic wears off you feel yourself coming back to your senses. You are yourself again!"
+				to_chat(M, "As the animating magic wears off you feel yourself coming back to your senses. You are yourself again!")
 				break
 		qdel(S)
 
@@ -108,8 +108,6 @@
 	health -= Proj.damage
 	check_health()
 
-	return
-
 /obj/structure/closet/statue/attack_animal(mob/living/simple_animal/user as mob)
 	if(user.environment_smash)
 		for(var/mob/M in src)
@@ -147,7 +145,7 @@
 	return
 
 /obj/structure/closet/statue/proc/shatter(mob/user as mob)
-	if (user)
+	if(user)
 		user.dust()
 	dump_contents()
 	visible_message("\red [src] shatters!. ")

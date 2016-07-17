@@ -16,10 +16,10 @@
 
 /obj/item/weapon/melee/energy/attack_self(mob/living/carbon/user)
 	if(user.disabilities & CLUMSY && prob(50))
-		user << "<span class='warning'>You accidentally cut yourself with [src], like a doofus!</span>"
+		to_chat(user, "<span class='warning'>You accidentally cut yourself with [src], like a doofus!</span>")
 		user.take_organ_damage(5,5)
 	active = !active
-	if (active)
+	if(active)
 		force = force_on
 		throwforce = throwforce_on
 		hitsound = 'sound/weapons/blade1.ogg'
@@ -31,7 +31,7 @@
 			icon_state = "sword[item_color]"
 		w_class = w_class_on
 		playsound(user, 'sound/weapons/saberon.ogg', 35, 1) //changed it from 50% volume to 35% because deafness
-		user << "<span class='notice'>[src] is now active.</span>"
+		to_chat(user, "<span class='notice'>[src] is now active.</span>")
 	else
 		force = initial(force)
 		throwforce = initial(throwforce)
@@ -41,7 +41,7 @@
 		icon_state = initial(icon_state)
 		w_class = initial(w_class)
 		playsound(user, 'sound/weapons/saberoff.ogg', 35, 1)  //changed it from 50% volume to 35% because deafness
-		user << "<span class='notice'>[src] can now be concealed.</span>"
+		to_chat(user, "<span class='notice'>[src] can now be concealed.</span>")
 	if(istype(user,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = user
 		H.update_inv_l_hand()
@@ -62,7 +62,8 @@
 	w_class = 3
 	w_class_on = 5
 	hitsound = "swing_hit"
-	flags = CONDUCT | NOSHIELD
+	flags = CONDUCT
+	armour_penetration = 100
 	origin_tech = "combat=3"
 	attack_verb = list("attacked", "chopped", "cleaved", "torn", "cut")
 	attack_verb_on = list()
@@ -82,8 +83,9 @@
 	throw_speed = 3
 	throw_range = 5
 	hitsound = "swing_hit"
-	flags = NOSHIELD
+	armour_penetration = 35
 	origin_tech = "magnets=3;syndicate=4"
+	block_chance = 50
 	sharp = 1
 	edge = 1
 	var/hacked = 0
@@ -93,9 +95,9 @@
 	if(item_color == null)
 		item_color = pick("red", "blue", "green", "purple")
 
-/obj/item/weapon/melee/energy/sword/IsShield()
+/obj/item/weapon/melee/energy/sword/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance)
 	if(active)
-		return 1
+		return ..()
 	return 0
 
 /obj/item/weapon/melee/energy/sword/cyborg
@@ -106,7 +108,7 @@
 		var/obj/item/weapon/stock_parts/cell/C = R.cell
 		if(active && !(C.use(hitcost)))
 			attack_self()
-			R << "<span class='notice'>It's out of charge!</span>"
+			to_chat(R, "<span class='notice'>It's out of charge!</span>")
 			return
 		..()
 	return
@@ -131,7 +133,7 @@
 	..()
 	item_color = null
 
-/obj/item/weapon/melee/energy/sword/cyborg/saw/IsShield()
+/obj/item/weapon/melee/energy/sword/cyborg/saw/hit_reaction()
 	return 0
 
 /obj/item/weapon/melee/energy/sword/saber
@@ -152,11 +154,11 @@
 	..()
 	if(istype(W, /obj/item/weapon/melee/energy/sword/saber))
 		if(W == src)
-			user << "<span class='notice'>You try to attach the end of the energy sword to... itself. You're not very smart, are you?</span>"
+			to_chat(user, "<span class='notice'>You try to attach the end of the energy sword to... itself. You're not very smart, are you?</span>")
 			if(ishuman(user))
 				user.adjustBrainLoss(10)
 		else
-			user << "<span class='notice'>You attach the ends of the two energy swords, making a single double-bladed weapon! You're cool.</span>"
+			to_chat(user, "<span class='notice'>You attach the ends of the two energy swords, making a single double-bladed weapon! You're cool.</span>")
 			var/obj/item/weapon/twohanded/dualsaber/newSaber = new /obj/item/weapon/twohanded/dualsaber(user.loc)
 			if(src.hacked) // That's right, we'll only check the "original" esword.
 				newSaber.hacked = 1
@@ -170,7 +172,7 @@
 		if(hacked == 0)
 			hacked = 1
 			item_color = "rainbow"
-			user << "<span class='warning'>RNBW_ENGAGE</span>"
+			to_chat(user, "<span class='warning'>RNBW_ENGAGE</span>")
 
 			if(active)
 				icon_state = "swordrainbow"
@@ -182,7 +184,7 @@
 					user.update_inv_l_hand()
 
 		else
-			user << "<span class='warning'>It's already fabulous!</span>"
+			to_chat(user, "<span class='warning'>It's already fabulous!</span>")
 
 /obj/item/weapon/melee/energy/sword/pirate
 	name = "energy cutlass"
@@ -204,7 +206,7 @@
 	throw_speed = 3
 	throw_range = 1
 	w_class = 4//So you can't hide it in your pocket or some such.
-	flags = NOSHIELD
+	armour_penetration = 50
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 	var/datum/effect/system/spark_spread/spark_system
 

@@ -8,7 +8,7 @@
 	return ..()
 
 /mob/living/carbon/human/AIize(move=1) // 'move' argument needs defining here too because BYOND is dumb
-	if (notransform)
+	if(notransform)
 		return
 	for(var/t in organs)
 		qdel(t)
@@ -16,7 +16,7 @@
 	return ..(move)
 
 /mob/living/carbon/AIize()
-	if (notransform)
+	if(notransform)
 		return
 	for(var/obj/item/W in src)
 		unEquip(W)
@@ -28,7 +28,8 @@
 
 /mob/proc/AIize()
 	if(client)
-		src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // stop the jams for AIs
+		src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1)// stop the jams for AIs
+
 	var/mob/living/silicon/ai/O = new (loc,,,1)//No MMI but safety is in effect.
 	O.invisibility = 0
 	O.aiRestorePowerRoutine = 0
@@ -41,21 +42,21 @@
 
 	var/obj/loc_landmark
 	for(var/obj/effect/landmark/start/sloc in landmarks_list)
-		if (sloc.name != "AI")
+		if(sloc.name != "AI")
 			continue
-		if (locate(/mob/living) in sloc.loc)
+		if(locate(/mob/living) in sloc.loc)
 			continue
 		loc_landmark = sloc
-	if (!loc_landmark)
+	if(!loc_landmark)
 		for(var/obj/effect/landmark/tripai in landmarks_list)
-			if (tripai.name == "tripai")
+			if(tripai.name == "tripai")
 				if(locate(/mob/living) in tripai.loc)
 					continue
 				loc_landmark = tripai
-	if (!loc_landmark)
-		O << "Oh god sorry we can't find an unoccupied AI spawn location, so we're spawning you on top of someone."
+	if(!loc_landmark)
+		to_chat(O, "Oh god sorry we can't find an unoccupied AI spawn location, so we're spawning you on top of someone.")
 		for(var/obj/effect/landmark/start/sloc in landmarks_list)
-			if (sloc.name == "AI")
+			if(sloc.name == "AI")
 				loc_landmark = sloc
 
 	O.loc = loc_landmark.loc
@@ -95,7 +96,7 @@
 	new_spirit.key = key
 	new_spirit.loc=loc
 
-	if (should_gib)
+	if(should_gib)
 		spawn(0)
 			src.gib() // gib the body
 	else
@@ -106,8 +107,8 @@
 				"You hear strange noise, you can't quite place it.")
 			qdel(src)
 
-	new_spirit << "<font color=\"purple\"><b><i>You are a Mask of Nar'sie now. You are a tiny fragment of the unknowable entity that is the god.</b></i></font>"
-	new_spirit << "<font color=\"purple\"><b><i>Your job is to help your acolytes complete their goals. Be spooky. Do evil.</b></i></font>"
+	to_chat(new_spirit, "<font color=\"purple\"><b><i>You are a Mask of Nar'sie now. You are a tiny fragment of the unknowable entity that is the god.</b></i></font>")
+	to_chat(new_spirit, "<font color=\"purple\"><b><i>Your job is to help your acolytes complete their goals. Be spooky. Do evil.</b></i></font>")
 
 	new_spirit.set_name()
 
@@ -123,7 +124,7 @@
 
 //human -> robot
 /mob/living/carbon/human/proc/Robotize()
-	if (notransform)
+	if(notransform)
 		return
 	for(var/obj/item/W in src)
 		unEquip(W)
@@ -183,7 +184,7 @@
 
 //human -> alien
 /mob/living/carbon/human/proc/Alienize()
-	if (notransform)
+	if(notransform)
 		return
 	for(var/obj/item/W in src)
 		unEquip(W)
@@ -208,14 +209,14 @@
 	new_xeno.a_intent = I_HARM
 	new_xeno.key = key
 
-	new_xeno << "<B>You are now an alien.</B>"
+	to_chat(new_xeno, "<B>You are now an alien.</B>")
 	new_xeno.update_pipe_vision()
 	spawn(0)//To prevent the proc from returning null.
 		qdel(src)
 	return
 
 /mob/living/carbon/human/proc/slimeize(adult as num, reproduce as num)
-	if (notransform)
+	if(notransform)
 		return
 	for(var/obj/item/W in src)
 		unEquip(W)
@@ -244,14 +245,14 @@
 		else
 	new_slime.key = key
 
-	new_slime << "<B>You are now a slime. Skreee!</B>"
+	to_chat(new_slime, "<B>You are now a slime. Skreee!</B>")
 	new_slime.update_pipe_vision()
 	spawn(0)//To prevent the proc from returning null.
 		qdel(src)
 	return
 
 /mob/living/carbon/human/proc/corgize()
-	if (notransform)
+	if(notransform)
 		return
 	for(var/obj/item/W in src)
 		unEquip(W)
@@ -267,7 +268,7 @@
 	new_corgi.a_intent = I_HARM
 	new_corgi.key = key
 
-	new_corgi << "<B>You are now a Corgi. Yap Yap!</B>"
+	to_chat(new_corgi, "<B>You are now a Corgi. Yap Yap!</B>")
 	new_corgi.update_pipe_vision()
 	spawn(0)//To prevent the proc from returning null.
 		qdel(src)
@@ -298,7 +299,7 @@
 	new_mob.a_intent = I_HARM
 
 
-	new_mob << "You suddenly feel more... animalistic."
+	to_chat(new_mob, "You suddenly feel more... animalistic.")
 	new_mob.update_pipe_vision()
 	spawn()
 		qdel(src)
@@ -313,10 +314,39 @@
 
 	new_mob.key = key
 	new_mob.a_intent = I_HARM
-	new_mob << "You feel more... animalistic"
+	to_chat(new_mob, "You feel more... animalistic")
 	new_mob.update_pipe_vision()
 
 	qdel(src)
+
+
+/mob/living/carbon/human/proc/paize(var/name)
+	if(notransform)
+		return
+	for(var/obj/item/W in src)
+		unEquip(W)
+	regenerate_icons()
+	notransform = 1
+	canmove = 0
+	icon = null
+	invisibility = 101
+	for(var/t in organs)	//this really should not be necessary
+		qdel(t)
+
+	var/obj/item/device/paicard/card = new(loc)
+	var/mob/living/silicon/pai/pai = new(card)
+	pai.key = key
+	card.setPersonality(pai)
+
+	pai.name = name
+	pai.real_name = name
+	card.name = name
+
+	to_chat(pai, "<B>You have become a pAI! Your name is [pai.name].</B>")
+	pai.update_pipe_vision()
+	spawn(0)//To prevent the proc from returning null.
+		qdel(src)
+	return
 
 /mob/proc/safe_respawn(var/MP)
 	if(!MP)
@@ -345,10 +375,10 @@
 	if(ispath(MP, /mob/living/simple_animal/butterfly))
 		return 1
 
-	if(ispath(MP, /mob/living/simple_animal/borer) && !jobban_isbanned(src, "alien") && !jobban_isbanned(src, "Syndicate"))
+	if(ispath(MP, /mob/living/simple_animal/borer) && !jobban_isbanned(src, ROLE_BORER) && !jobban_isbanned(src, "Syndicate"))
 		return 1
 
-	if(ispath(MP, /mob/living/simple_animal/diona) && !jobban_isbanned(src, "Dionaea"))
+	if(ispath(MP, /mob/living/simple_animal/diona) && !jobban_isbanned(src, ROLE_NYMPH))
 		return 1
 
 	return 0

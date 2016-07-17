@@ -50,7 +50,7 @@
 		var/mob/living/silicon/ai/AI = usr
 		if(AI.eyeobj && AI.client.eye == AI.eyeobj)
 			AI.cameraFollow = null
-			if (isturf(src.loc) || isturf(src))
+			if(isturf(src.loc) || isturf(src))
 				AI.eyeobj.setLoc(src)
 
 // AI MOVEMENT
@@ -82,7 +82,7 @@
 
 	//user.unset_machine() //Uncomment this if it causes problems.
 	//user.lightNearbyCamera()
-	if (user.camera_light_on)
+	if(user.camera_light_on)
 		user.light_cameras()
 
 // Return to the Core.
@@ -101,7 +101,7 @@
 	if(src.eyeobj && src.loc)
 		src.eyeobj.loc = src.loc
 	else
-		src << "ERROR: Eyeobj not found. Creating new eye..."
+		to_chat(src, "ERROR: Eyeobj not found. Creating new eye...")
 		src.eyeobj = new(src.loc)
 		src.eyeobj.ai = src
 		src.eyeobj.name = "[src.name] (AI Eye)" // Give it a name
@@ -115,4 +115,4 @@
 	if(usr.stat == 2)
 		return //won't work if dead
 	acceleration = !acceleration
-	usr << "Camera acceleration has been toggled [acceleration ? "on" : "off"]."
+	to_chat(usr, "Camera acceleration has been toggled [acceleration ? "on" : "off"].")

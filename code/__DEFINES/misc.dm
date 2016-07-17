@@ -66,6 +66,7 @@
 #define COLOR_YELLOW 	"#FFFF00"
 #define COLOR_ORANGE 	"#FF9900"
 #define COLOR_WHITE 	"#FFFFFF"
+#define COLOR_GRAY      "#808080"
 
 //some arbitrary defines to be used by self-pruning global lists. (see master_controller)
 #define PROCESS_KILL 26	//Used to trigger removal from a processing list
@@ -142,11 +143,21 @@
 #define STAGE_FIVE 9
 #define STAGE_SIX 11 //From supermatter shard
 
+#define in_range(source, user)		(get_dist(source, user) <= 1)
+
+#define RANGE_TURFS(RADIUS, CENTER) \
+  block( \
+	locate(max(CENTER.x-(RADIUS),1),		  max(CENTER.y-(RADIUS),1),		  CENTER.z), \
+	locate(min(CENTER.x+(RADIUS),world.maxx), min(CENTER.y+(RADIUS),world.maxy), CENTER.z) \
+  )
+
 #define FOR_DVIEW(type, range, center, invis_flags) \
 	dview_mob.loc = center; \
 	dview_mob.see_invisible = invis_flags; \
 	for(type in view(range, dview_mob))
 #define END_FOR_DVIEW dview_mob.loc = null
+
+#define get_turf(A) (get_step(A, 0))
 
 #define MIN_SUPPLIED_LAW_NUMBER 15
 #define MAX_SUPPLIED_LAW_NUMBER 50
@@ -188,3 +199,73 @@
 // teehee no one will find these here
 #define MFOAM_ALUMINUM 	1
 #define MFOAM_IRON 		2
+
+//Human Overlays Indexes/////////
+#define MUTANTRACE_LAYER		1
+#define TAIL_UNDERLIMBS_LAYER	2
+#define LIMBS_LAYER				3
+#define MARKINGS_LAYER			4
+#define UNDERWEAR_LAYER			5
+#define MUTATIONS_LAYER			6
+#define DAMAGE_LAYER			7
+#define UNIFORM_LAYER			8
+#define ID_LAYER				9
+#define SHOES_LAYER				10
+#define GLOVES_LAYER			11
+#define EARS_LAYER				12
+#define SUIT_LAYER				13
+#define GLASSES_LAYER			14
+#define BELT_LAYER				15	//Possible make this an overlay of somethign required to wear a belt?
+#define SUIT_STORE_LAYER		16
+#define BACK_LAYER				17
+#define TAIL_LAYER				18	//bs12 specific. this hack is probably gonna come back to haunt me
+#define HAIR_LAYER				19	//TODO: make part of head layer?
+#define HEAD_ACCESSORY_LAYER	20
+#define FHAIR_LAYER				21
+#define FACEMASK_LAYER			22
+#define HEAD_LAYER				23
+#define COLLAR_LAYER			24
+#define HANDCUFF_LAYER			25
+#define LEGCUFF_LAYER			26
+#define L_HAND_LAYER			27
+#define R_HAND_LAYER			28
+#define TARGETED_LAYER			29	//BS12: Layer for the target overlay from weapon targeting system
+#define FIRE_LAYER				30	//If you're on fire
+#define TOTAL_LAYERS			30
+
+///Access Region Codes///
+#define REGION_ALL			0
+#define REGION_GENERAL		1
+#define REGION_SECURITY		2
+#define REGION_MEDBAY		3
+#define REGION_RESEARCH		4
+#define REGION_ENGINEERING	5
+#define REGION_SUPPLY		6
+#define REGION_COMMAND		7
+#define REGION_CENTCOMM		8
+
+//used for maploader
+#define MAP_MINX 1
+#define MAP_MINY 2
+#define MAP_MINZ 3
+#define MAP_MAXX 4
+#define MAP_MAXY 5
+#define MAP_MAXZ 6
+
+//Matricies
+#define MATRIX_DEFAULT list(1, 0, 0, 0,\
+                            0, 1, 0, 0,\
+                            0, 0, 1, 0,\
+                            0, 0, 0, 1)
+
+#define MATRIX_GREYSCALE list(0.3, 0.3, 0.3, 0,\
+                              0.3, 0.3, 0.3, 0,\
+                              0.3, 0.3, 0.3, 0,\
+                              0,   0,   0,   1)
+//Gun trigger guards
+#define TRIGGER_GUARD_ALLOW_ALL -1
+#define TRIGGER_GUARD_NONE 0
+#define TRIGGER_GUARD_NORMAL 1
+
+// Macro to get the current elapsed round time, rather than total world runtime
+#define ROUND_TIME (round_start_time ? (world.time - round_start_time) : 0)

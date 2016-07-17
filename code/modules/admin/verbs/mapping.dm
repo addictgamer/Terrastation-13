@@ -86,7 +86,7 @@ var/intercom_range_display_status = 0
 			if(!(locate(/obj/structure/grille,T)))
 				var/window_check = 0
 				for(var/obj/structure/window/W in T)
-					if (W.dir == turn(C1.dir,180) || W.is_fulltile() )
+					if(W.dir == turn(C1.dir,180) || W.is_fulltile() )
 						window_check = 1
 						break
 				if(!window_check)
@@ -115,7 +115,7 @@ var/intercom_range_display_status = 0
 		for(var/obj/item/device/radio/intercom/I in world)
 			for(var/turf/T in orange(7,I))
 				var/obj/effect/debugging/marker/F = new/obj/effect/debugging/marker(T)
-				if (!(F in view(7,I.loc)))
+				if(!(F in view(7,I.loc)))
 					qdel(F)
 	feedback_add_details("admin_verb","mIRD") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
@@ -188,7 +188,7 @@ var/list/admin_verbs_show_debug_verbs = list(
 					count++
 					atom_list += A
 
-	world << "There are [count] objects of type [type_path] on z-level [num_level]."
+	to_chat(world, "There are [count] objects of type [type_path] on z-level [num_level].")
 	feedback_add_details("admin_verb","mOBJZ") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!
 
 /client/proc/count_objects_all()
@@ -209,5 +209,5 @@ var/list/admin_verbs_show_debug_verbs = list(
 		if(istype(A,type_path))
 			count++
 
-	world << "There are [count] objects of type [type_path] in the game world."
+	to_chat(world, "There are [count] objects of type [type_path] in the game world.")
 	feedback_add_details("admin_verb","mOBJ") //If you are copy-pasting this, ensure the 2nd parameter is unique to the new proc!

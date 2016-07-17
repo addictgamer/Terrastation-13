@@ -34,8 +34,6 @@
 	brute_mod = 1.5
 	burn_mod = 1.5
 
-	flags = IS_RESTRICTED
-
 /datum/species/monkey/handle_npc(var/mob/living/carbon/human/H)
 	if(H.stat != CONSCIOUS)
 		return
@@ -50,6 +48,8 @@
 /datum/species/monkey/handle_post_spawn(var/mob/living/carbon/human/H)
 	H.real_name = "[lowertext(name)] ([rand(100,999)])"
 	H.name = H.real_name
+	H.butcher_results = list(/obj/item/weapon/reagent_containers/food/snacks/meat/monkey = 5)
+
 	..()
 
 /datum/species/monkey/handle_dna(var/mob/living/carbon/human/H)

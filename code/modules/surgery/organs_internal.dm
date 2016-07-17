@@ -15,7 +15,6 @@
 	possible_locs = list("chest","head","groin", "eyes", "mouth")
 	steps = list(/datum/surgery_step/generic/cut_open,/datum/surgery_step/generic/clamp_bleeders, /datum/surgery_step/generic/retract_skin, /datum/surgery_step/internal/manipulate_organs,/datum/surgery_step/generic/cauterize)
 	requires_organic_bodypart = 1
-	allowed_mob = list(/mob/living/carbon/human/diona)
 
 /datum/surgery/organ_manipulation/alien
 	name = "alien organ manipulation"
@@ -30,9 +29,21 @@
 		var/obj/item/organ/external/affected = H.get_organ(user.zone_sel.selecting)
 		if(affected && (affected.status & ORGAN_ROBOT))
 			return 0
-		if((target.get_species() == "Machine"))
+		if(target.get_species() == "Machine")//i know organ robot might be enough but i am not taking chances...
 			return 0
-		if((target.get_species() == "Diona"))
+		if(affected && !affected.encased) //no bone, problem.
+			return 0
+		return 1
+
+/datum/surgery/organ_manipulation_boneless/can_start(mob/user, mob/living/carbon/target)
+	if(istype(target,/mob/living/carbon/human))
+		var/mob/living/carbon/human/H = target
+		var/obj/item/organ/external/affected = H.get_organ(user.zone_sel.selecting)
+
+		if(affected && (affected.status & ORGAN_ROBOT))
+			return 0//no operating on robotic limbs in an organic surgery
+
+		if(affected && affected.encased) //no bones no problem.
 			return 0
 		return 1
 
@@ -49,7 +60,7 @@
 
 /datum/surgery_step/internal/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool,datum/surgery/surgery)
 
-	if (!hasorgans(target))
+	if(!hasorgans(target))
 		return 0
 
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
@@ -87,15 +98,15 @@
 		current_type = "insert"
 		I = tool
 		if(target_zone != I.parent_organ || target.get_organ_slot(I.slot))
-			user << "<span class='notice'>There is no room for [I] in [target]'s [parse_zone(target_zone)]!</span>"
+			to_chat(user, "<span class='notice'>There is no room for [I] in [target]'s [parse_zone(target_zone)]!</span>")
 			return -1
 
 		if(I.damage > (I.max_damage * 0.75))
-			user << "<span class='notice'> \The [I] is in no state to be transplanted.</span>"
+			to_chat(user, "<span class='notice'> \The [I] is in no state to be transplanted.</span>")
 			return -1
 
 		if(target.get_int_organ(I))
-			user << "<span class='warning'> \The [target] already has [I].</span>"
+			to_chat(user, "<span class='warning'> \The [target] already has [I].</span>")
 			return -1
 		if(affected)
 			user.visible_message("[user] starts transplanting \the [tool] into [target]'s [affected.name].", \
@@ -123,7 +134,7 @@
 		current_type = "extract"
 		var/list/organs = target.get_organs_zone(target_zone)
 		if(!organs.len)
-			user << "<span class='notice'>There are no removeable organs in [target]'s [parse_zone(target_zone)]!</span>"
+			to_chat(user, "<span class='notice'>There are no removeable organs in [target]'s [parse_zone(target_zone)]!</span>")
 			return -1
 		else
 			for(var/obj/item/organ/internal/O in organs)
@@ -145,15 +156,15 @@
 	else if(implement_type in implements_mend)
 		current_type = "mend"
 		var/tool_name = "\the [tool]"
-		if (istype(tool, /obj/item/stack/medical/advanced/bruise_pack))
+		if(istype(tool, /obj/item/stack/medical/advanced/bruise_pack))
 			tool_name = "regenerative membrane"
-		else if (istype(tool, /obj/item/stack/medical/bruise_pack))
+		else if(istype(tool, /obj/item/stack/medical/bruise_pack))
 			tool_name = "the bandaid"
-		else if (istype(tool, /obj/item/stack/nanopaste))
+		else if(istype(tool, /obj/item/stack/nanopaste))
 			tool_name = "\the [tool]" //what else do you call nanopaste medically?
 
 		if(!hasorgans(target))
-			user << "They do not have organs to mend!"
+			to_chat(user, "They do not have organs to mend!")
 			return
 		for(var/obj/item/organ/internal/I in affected.internal_organs)
 			if(I && I.damage > 0)
@@ -166,25 +177,25 @@
 					user.visible_message("[user] starts treating damage to [target]'s [I.name] with [tool_name].", \
 					"You start treating damage to [target]'s [I.name] with [tool_name]." )
 
-			user << "[I] does not appear to be damaged."
+			to_chat(user, "[I] does not appear to be damaged.")
 		H.custom_pain("The pain in your [affected.name] is living hell!",1)
 
 	else if(istype(tool, /obj/item/weapon/reagent_containers/food/snacks/organ))
-		user << "<span class='warning'>[tool] was biten by someone! It's too damaged to use!</span>"
+		to_chat(user, "<span class='warning'>[tool] was biten by someone! It's too damaged to use!</span>")
 		return -1
 	..()
 
 /datum/surgery_step/internal/manipulate_organs/end_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool,datum/surgery/surgery)
 	if(current_type == "mend")
 		var/tool_name = "\the [tool]"
-		if (istype(tool, /obj/item/stack/medical/advanced/bruise_pack))
+		if(istype(tool, /obj/item/stack/medical/advanced/bruise_pack))
 			tool_name = "regenerative membrane"
-		if (istype(tool, /obj/item/stack/medical/bruise_pack))
+		if(istype(tool, /obj/item/stack/medical/bruise_pack))
 			tool_name = "the bandaid"
-		if (istype(tool, /obj/item/stack/nanopaste))
+		if(istype(tool, /obj/item/stack/nanopaste))
 			tool_name = "\the [tool]" //what else do you call nanopaste medically?
 
-		if (!hasorgans(target))
+		if(!hasorgans(target))
 			return
 		for(var/obj/item/organ/internal/I in affected.internal_organs)
 			if(I)
@@ -205,7 +216,7 @@
 		I.insert(target)
 		spread_germs_to_organ(I, user)
 		if(!user.canUnEquip(I, 0))
-			user << "<span class='warning'>[I] is stuck to your hand, you can't put it in [target]!</span>"
+			to_chat(user, "<span class='warning'>[I] is stuck to your hand, you can't put it in [target]!</span>")
 			return 0
 
 		if(affected)
@@ -248,17 +259,17 @@
 
 /datum/surgery_step/internal/manipulate_organs/fail_step(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool,datum/surgery/surgery)
 	if(current_type == "mend")
-		if (!hasorgans(target))
+		if(!hasorgans(target))
 			return
 
 		user.visible_message("<span class='warning'> [user]'s hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [tool]!</span>", \
 		"<span class='warning'> Your hand slips, getting mess and tearing the inside of [target]'s [affected.name] with \the [tool]!</span>")
 		var/dam_amt = 2
 
-		if (istype(tool, /obj/item/stack/medical/advanced/bruise_pack))
+		if(istype(tool, /obj/item/stack/medical/advanced/bruise_pack))
 			target.adjustToxLoss(5)
 
-		else if (istype(tool, /obj/item/stack/medical/bruise_pack) || istype(tool, /obj/item/stack/nanopaste))
+		else if(istype(tool, /obj/item/stack/medical/bruise_pack) || istype(tool, /obj/item/stack/nanopaste))
 			dam_amt = 5
 			target.adjustToxLoss(10)
 			affected.createwound(CUT, 5)
@@ -389,10 +400,10 @@
 /datum/surgery_step/retract_carapace/begin_step(mob/living/user, mob/living/carbon/target, target_zone, obj/item/tool,datum/surgery/surgery)
 	var/msg = "[user] starts to pry open the incision on [target]'s [target_zone] with \the [tool]."
 	var/self_msg = "You start to pry open the incision on [target]'s [target_zone] with \the [tool]."
-	if (target_zone == "chest")
+	if(target_zone == "chest")
 		msg = "[user] starts to separate the ribcage and rearrange the organs in [target]'s torso with \the [tool]."
 		self_msg = "You start to separate the ribcage and rearrange the organs in [target]'s torso with \the [tool]."
-	if (target_zone == "groin")
+	if(target_zone == "groin")
 		msg = "[user] starts to pry open the incision and rearrange the organs in [target]'s lower abdomen with \the [tool]."
 		self_msg = "You start to pry open the incision and rearrange the organs in [target]'s lower abdomen with \the [tool]."
 	user.visible_message(msg, self_msg)
@@ -401,10 +412,10 @@
 /datum/surgery_step/retract_carapace/end_step(mob/living/user, mob/living/carbon/target, target_zone, obj/item/tool,datum/surgery/surgery)
 	var/msg = "<span class='notice'> [user] keeps the incision open on [target]'s [target_zone] with \the [tool]</span>."
 	var/self_msg = "<span class='notice'> You keep the incision open on [target]'s [target_zone] with \the [tool].</span>"
-	if (target_zone == "chest")
+	if(target_zone == "chest")
 		msg = "<span class='notice'> [user] keeps the ribcage open on [target]'s torso with \the [tool].</span>"
 		self_msg = "<span class='notice'> You keep the ribcage open on [target]'s torso with \the [tool].</span>"
-	if (target_zone == "groin")
+	if(target_zone == "groin")
 		msg = "<span class='notice'> [user] keeps the incision open on [target]'s lower abdomen with \the [tool].</span>"
 		self_msg = "<span class='notice'> You keep the incision open on [target]'s lower abdomen with \the [tool].</span>"
 	user.visible_message(msg, self_msg)
@@ -413,10 +424,10 @@
 /datum/surgery_step/generic/retract_carapace/fail_step(mob/living/user, mob/living/carbon/target, target_zone, obj/item/tool,datum/surgery/surgery)
 	var/msg = "<span class='warning'> [user]'s hand slips, tearing the edges of incision on [target]'s [target_zone] with \the [tool]!</span>"
 	var/self_msg = "<span class='warning'> Your hand slips, tearing the edges of incision on [target]'s [target_zone] with \the [tool]!</span>"
-	if (target_zone == "chest")
+	if(target_zone == "chest")
 		msg = "<span class='warning'> [user]'s hand slips, damaging several organs [target]'s torso with \the [tool]!</span>"
 		self_msg = "<span class='warning'> Your hand slips, damaging several organs [target]'s torso with \the [tool]!</span>"
-	if (target_zone == "groin")
+	if(target_zone == "groin")
 		msg = "<span class='warning'> [user]'s hand slips, damaging several organs [target]'s lower abdomen with \the [tool]</span>"
 		self_msg = "<span class='warning'> Your hand slips, damaging several organs [target]'s lower abdomen with \the [tool]!</span>"
 	user.visible_message(msg, self_msg)

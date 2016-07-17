@@ -32,7 +32,8 @@
 			qdel(meter)
 	. = ..()
 
-	if(parent && isnull(parent.gcDestroyed))
+	// if we're somehow by ourself
+	if(parent && isnull(parent.gcDestroyed) && parent.members.len == 1 && parent.members[1] == src)
 		qdel(parent)
 	parent = null
 
@@ -84,3 +85,7 @@
 		return node.pipe_color
 	else
 		return pipe_color
+
+// A check to make sure both nodes exist - self-delete if they aren't present
+/obj/machinery/atmospherics/pipe/proc/check_nodes_exist()
+	return

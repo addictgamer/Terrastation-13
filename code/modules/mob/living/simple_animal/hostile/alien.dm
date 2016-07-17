@@ -29,6 +29,7 @@
 	see_in_dark = 8
 	see_invisible = SEE_INVISIBLE_MINIMUM
 	heat_damage_per_tick = 20
+	gold_core_spawnable = CHEM_MOB_SPAWN_HOSTILE
 
 
 /mob/living/simple_animal/hostile/alien/drone
@@ -37,18 +38,18 @@
 	icon_living = "aliend_running"
 	icon_dead = "aliend_l"
 	health = 60
+	maxHealth = 60
 	melee_damage_lower = 15
 	melee_damage_upper = 15
 	var/plant_cooldown = 30
 	var/plants_off = 0
 
-/mob/living/simple_animal/hostile/alien/drone/process_ai()
-	. = ..()
-	if(!.)
+/mob/living/simple_animal/hostile/alien/drone/handle_automated_action()
+	if(!..()) //AIStatus is off
 		return
 
 	plant_cooldown--
-	if(stance==HOSTILE_STANCE_IDLE)
+	if(AIStatus == AI_IDLE)
 		if(!plants_off && prob(10) && plant_cooldown<=0)
 			plant_cooldown = initial(plant_cooldown)
 			SpreadPlants()
@@ -59,6 +60,7 @@
 	icon_living = "aliens_running"
 	icon_dead = "aliens_l"
 	health = 120
+	maxHealth = 120
 	melee_damage_lower = 15
 	melee_damage_upper = 15
 	ranged = 1
@@ -89,12 +91,12 @@
 	var/egg_cooldown = 30
 	var/plant_cooldown = 30
 
-/mob/living/simple_animal/hostile/alien/queen/process_ai()
-	..()
-
+/mob/living/simple_animal/hostile/alien/queen/handle_automated_action()
+	if(!..())
+		return
 	egg_cooldown--
 	plant_cooldown--
-	if(stance==HOSTILE_STANCE_IDLE)
+	if(AIStatus == AI_IDLE)
 		if(!plants_off && prob(10) && plant_cooldown<=0)
 			plant_cooldown = initial(plant_cooldown)
 			SpreadPlants()
@@ -127,6 +129,7 @@
 	move_to_delay = 4
 	maxHealth = 400
 	health = 400
+	gold_core_spawnable = CHEM_MOB_SPAWN_INVALID
 
 /obj/item/projectile/neurotox
 	name = "neurotoxin"
@@ -151,6 +154,7 @@
 	icon_state = "maid"
 	icon_living = "maid"
 	icon_dead = "maid_dead"
+	gold_core_spawnable = CHEM_MOB_SPAWN_INVALID //no fun allowed
 
 /mob/living/simple_animal/hostile/alien/maid/AttackingTarget()
 	if(istype(target, /atom/movable))

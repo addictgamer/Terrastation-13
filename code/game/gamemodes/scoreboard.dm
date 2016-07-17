@@ -39,7 +39,7 @@
 	if(shuttle_master.emergency.mode >= SHUTTLE_ENDGAME)
 		for(var/mob/living/player in mob_list)
 			if(player.client)
-				if (player.stat != DEAD)
+				if(player.stat != DEAD)
 					var/turf/location = get_turf(player.loc)
 					var/area/escape_zone = locate(/area/shuttle/escape)
 					if(location in escape_zone)
@@ -148,8 +148,8 @@
 	score_crewscore -= plaguepoints
 
 	// Show the score - might add "ranks" later
-	world << "<b>The crew's final score is:</b>"
-	world << "<b><font size='4'>[score_crewscore]</font></b>"
+	to_chat(world, "<b>The crew's final score is:</b>")
+	to_chat(world, "<b><font size='4'>[score_crewscore]</font></b>")
 	for(var/mob/E in player_list)
 		if(E.client)
 			if(E.client.prefs && !(E.client.prefs.toggles & DISABLE_SCOREBOARD))
@@ -192,7 +192,7 @@
 	<b>Ore Mined:</b> [score_oremined] ([score_oremined * 2] Points)<br>
 	<b>Refreshments Prepared:</b> [score_meals] ([score_meals * 5] Points)<br>
 	<b>Research Completed:</b> [score_researchdone] ([score_researchdone * 30] Points)<br>"}
-	if (shuttle_master.emergency.mode == SHUTTLE_ENDGAME) dat += "<b>Shuttle Escapees:</b> [score_escapees] ([score_escapees * 25] Points)<br>"
+	if(shuttle_master.emergency.mode == SHUTTLE_ENDGAME) dat += "<b>Shuttle Escapees:</b> [score_escapees] ([score_escapees * 25] Points)<br>"
 	dat += {"<b>Random Events Endured:</b> [score_eventsendured] ([score_eventsendured * 50] Points)<br>
 	<b>Whole Station Powered:</b> [score_powerbonus ? "Yes" : "No"] ([score_powerbonus * 2500] Points)<br>
 	<b>Ultra-Clean Station:</b> [score_mess ? "No" : "Yes"] ([score_messbonus * 3000] Points)<br><br>
@@ -205,10 +205,10 @@
 	<b>AI Destroyed:</b> [score_deadaipenalty ? "Yes" : "No"] (-[score_deadaipenalty * 250] Points)<br><br>
 	<U>The Weird</U><br>
 
-	<b>Food Eaten:</b> [score_foodeaten]<br>
+	<b>Food Eaten:</b> [score_foodeaten] bites/sips<br>
 	<b>Times a Clown was Abused:</b> [score_clownabuse]<br><br>
 	"}
-	if (score_escapees)
+	if(score_escapees)
 		dat += {"<b>Richest Escapee:</b> [score_richestname], [score_richestjob]: $[num2text(score_richestcash,50)] ([score_richestkey])<br>
 		<b>Most Battered Escapee:</b> [score_dmgestname], [score_dmgestjob]: [score_dmgestdamage] damage ([score_dmgestkey])<br>"}
 	else

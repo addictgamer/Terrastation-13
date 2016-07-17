@@ -138,6 +138,7 @@
 	var/redeem_immediately = 0	// redeem immediately for holding cell
 
 /obj/machinery/treadmill_monitor/initialize()
+	..()
 	if(id)
 		for(var/obj/machinery/power/treadmill/T in machines)
 			if(T.id == id)
@@ -168,7 +169,7 @@
 
 /obj/machinery/treadmill_monitor/examine(mob/user)
 	..()
-	user << "The display reads:<div style='text-align: center'>[line1]<br>[line2]</div>"
+	to_chat(user, "The display reads:<div style='text-align: center'>[line1]<br>[line2]</div>")
 
 /obj/machinery/treadmill_monitor/update_icon()
 	overlays.Cut()

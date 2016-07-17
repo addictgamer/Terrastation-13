@@ -18,6 +18,8 @@
 	stop_automated_movement = 1
 	status_flags = CANPUSH
 	attack_sound = 'sound/misc/demon_attack1.ogg'
+	var/feast_sound = 'sound/misc/Demon_consume.ogg'
+	var/death_sound = 'sound/misc/demon_dies.ogg'
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	minbodytemp = 0
 	maxbodytemp = INFINITY
@@ -42,10 +44,12 @@
 	var/cooldown = 0
 	var/gorecooldown = 0
 	var/vialspawned = FALSE
+	loot = list(/obj/effect/decal/cleanable/blood/innards, /obj/effect/decal/cleanable/blood, /obj/effect/gibspawner/generic, /obj/effect/gibspawner/generic, /obj/item/organ/internal/heart/demon)
 	var/playstyle_string = "<B>You are the Slaughter Demon, a terrible creature from another existence. You have a single desire: To kill.  \
 						You may Ctrl+Click on blood pools to travel through them, appearing and dissaapearing from the station at will. \
 						Pulling a dead or critical mob while you enter a pool will pull them in with you, allowing you to feast. \
 						You move quickly upon leaving a pool of blood, but the material world will soon sap your strength and leave you sluggish. </B>"
+	var/deathmessage = "screams in anger as it collapses into a puddle of viscera!"
 
 
 /mob/living/simple_animal/slaughter/New()
@@ -55,8 +59,8 @@
 	if(istype(loc, /obj/effect/dummy/slaughter))
 		bloodspell.phased = 1
 	if(mind)
-		src << src.playstyle_string
-		src << "<B><span class ='notice'>You are not currently in the same plane of existence as the station. Ctrl+Click a blood pool to manifest.</span></B>"
+		to_chat(src, src.playstyle_string)
+		to_chat(src, "<B><span class ='notice'>You are not currently in the same plane of existence as the station. Ctrl+Click a blood pool to manifest.</span></B>")
 		src << 'sound/misc/demon_dies.ogg'
 		mind.current.verbs += /mob/living/simple_animal/slaughter/proc/slaughterWhisper
 		if(!(vialspawned))
@@ -68,8 +72,8 @@
 			//Paradise Port:I added the objective for one spawned like this
 			mind.objectives += objective
 			mind.objectives += fluffObjective
-			src << "<B>Objective #[1]</B>: [objective.explanation_text]"
-			src << "<B>Objective #[2]</B>: [fluffObjective.explanation_text]"
+			to_chat(src, "<B>Objective #[1]</B>: [objective.explanation_text]")
+			to_chat(src, "<B>Objective #[2]</B>: [fluffObjective.explanation_text]")
 
 
 /mob/living/simple_animal/slaughter/Life()
@@ -79,19 +83,16 @@
 	else
 		speed = 0
 
+/obj/effect/decal/cleanable/blood/innards
+	icon = 'icons/obj/surgery.dmi'
+	icon_state = "innards"
+	name = "pile of viscera"
+	desc = "A repulsive pile of guts and gore."
+
 /mob/living/simple_animal/slaughter/death()
 	..()
-	var/obj/effect/decal/cleanable/blood/innards = new (get_turf(src))
-	innards.icon = 'icons/obj/surgery.dmi'
-	innards.icon_state = "innards"
-	innards.name = "pile of viscera"
-	innards.desc = "A repulsive pile of guts and gore."
-	new /obj/effect/decal/cleanable/blood(loc)
-	new /obj/effect/gibspawner/generic(get_turf(src))
-	new /obj/effect/gibspawner/generic(get_turf(src))
-	new /obj/item/organ/internal/heart/demon(loc)
-	playsound(get_turf(src),'sound/misc/demon_dies.ogg', 200, 1)
-	visible_message("<span class='danger'>[src] screams in anger as it collapses into a puddle of viscera, its most recent meals spilling out of it.</span>")
+	playsound(get_turf(src), death_sound, 200, 1)
+	visible_message("<span class='danger'>[src] [deathmessage].</span>")
 	for(var/mob/living/M in consumed_mobs)
 		M.forceMove(get_turf(src))
 	ghostize()
@@ -125,8 +126,8 @@
 		if(!(msg))
 			return
 		log_say("Slaughter Demon Transmit: [key_name(usr)]->[key_name(M)]: [msg]")
-		usr << "<span class='info'><b>You whisper to [M]: </b>[msg]</span>"
-		M << "<span class='deadsay'><b>Suddenly a strange, demonic voice resonates in your head... </b></span><i><span class='danger'> [msg]</span></I>"
+		to_chat(usr, "<span class='info'><b>You whisper to [M]: </b>[msg]</span>")
+		to_chat(M, "<span class='deadsay'><b>Suddenly a strange, demonic voice resonates in your head... </b></span><i><span class='danger'> [msg]</span></I>")
 		for(var/mob/dead/observer/G in player_list)
 			G.show_message("<i>Demonic message from <b>[usr]</b> ([ghost_follow_link(usr, ghost=G)]) to <b>[M]</b> ([ghost_follow_link(M, ghost=G)]): [msg]</i>")
 
@@ -161,10 +162,10 @@
 						 "<span class='userdanger'>You feel a strange power seep into your body... you have absorbed the demon's blood-travelling powers!</span>")
 		user.bloodcrawl = BLOODCRAWL
 	else if(user.bloodcrawl == BLOODCRAWL)
-		user << "You feel diffr-<span class = 'danger'> CONSUME THEM! </span>"
+		to_chat(user, "You feel diffr-<span class = 'danger'> CONSUME THEM! </span>")
 		user.bloodcrawl = BLOODCRAWL_EAT
 	else
-		user <<"<span class='warning'>...and you don't feel any different.</span>"
+		to_chat(user, "<span class='warning'>...and you don't feel any different.</span>")
 
 	user.drop_item()
 	insert(user) //Consuming the heart literally replaces your heart with a demon heart. H A R D C O R E
@@ -182,6 +183,36 @@
 
 /obj/item/organ/internal/heart/demon/Stop()
 	return 0 // Always beating.
+
+
+/mob/living/simple_animal/slaughter/laughter
+	// The laughter demon! It's everyone's best friend! It just wants to hug
+	// them so much, it wants to hug everyone at once!
+	name = "laughter demon"
+	real_name = "laughter demon"
+	desc = "A large, adorable creature covered in armor with pink bows."
+	speak_emote = list("giggles", "titters", "chuckles")
+	emote_hear = list("gaffaws", "laughs")
+	response_help  = "hugs"
+	attacktext = "wildly tickles"
+
+	attack_sound = 'sound/items/bikehorn.ogg'
+	feast_sound = 'sound/spookoween/scary_horn2.ogg'
+	death_sound = 'sound/misc/sadtrombone.ogg'
+
+	icon_state = "bowmon"
+	icon_living = "bowmon"
+	deathmessage = "fades out, as all of its friends are released from its prison of hugs."
+	loot = list(/mob/living/simple_animal/pet/cat/kitten{name = "Laughter"})
+
+/mob/living/simple_animal/slaughter/laughter/death()
+	for(var/mob/living/M in consumed_mobs)
+		if(M.revive())
+			M.grab_ghost(force = TRUE)
+			playsound(get_turf(src), feast_sound, 50, 1, -1)
+			to_chat(M, "<span class='clown'>You leave the [src]'s warm embrace, and feel ready to take on the world.</span>")
+	..()
+
 
 //Objectives and helpers.
 

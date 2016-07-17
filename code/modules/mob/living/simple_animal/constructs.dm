@@ -20,6 +20,7 @@
 	flying = 1
 	universal_speak = 1
 	var/list/construct_spells = list()
+	loot = list(/obj/item/weapon/reagent_containers/food/snacks/ectoplasm)
 
 /mob/living/simple_animal/construct/New()
 	..()
@@ -31,7 +32,6 @@
 
 /mob/living/simple_animal/construct/death()
 	..()
-	new /obj/item/weapon/reagent_containers/food/snacks/ectoplasm (src.loc)
 	for(var/mob/M in viewers(src, null))
 		if((M.client && !( M.blinded )))
 			M.show_message("\red [src] collapses in a shattered heap. ")
@@ -40,19 +40,20 @@
 	return
 
 /mob/living/simple_animal/construct/examine(mob/user)
+	to_chat(user, "<span class='info'>*---------*</span>")
 	..(user)
 
-	var/msg = ""
-	if (src.health < src.maxHealth)
+	var/msg = "<span class='info'>"
+	if(src.health < src.maxHealth)
 		msg += "<span class='warning'>"
-		if (src.health >= src.maxHealth/2)
+		if(src.health >= src.maxHealth/2)
 			msg += "It looks slightly dented.\n"
 		else
 			msg += "<B>It looks severely dented!</B>\n"
 		msg += "</span>"
 	msg += "*---------*</span>"
 
-	user << msg
+	to_chat(user, msg)
 
 /mob/living/simple_animal/construct/attack_animal(mob/living/simple_animal/M as mob)
 	if(istype(M, /mob/living/simple_animal/construct/builder))
@@ -251,10 +252,10 @@
 	set category = "Behemoth"
 	set name = "Summon Cultist (300)"
 	set desc = "Teleport a cultist to your location"
-	if (istype(usr,/mob/living/simple_animal/constructbehemoth))
+	if(istype(usr,/mob/living/simple_animal/constructbehemoth))
 
 		if(usr.energy<300)
-			usr << "\red You do not have enough power stored!"
+			to_chat(usr, "\red You do not have enough power stored!")
 			return
 
 		if(usr.stat)
@@ -263,12 +264,12 @@
 		usr.energy -= 300
 	var/list/mob/living/cultists = new
 	for(var/datum/mind/H in ticker.mode.cult)
-		if (istype(H.current,/mob/living))
+		if(istype(H.current,/mob/living))
 			cultists+=H.current
 			var/mob/cultist = input("Choose the one who you want to summon", "Followers of Geometer") as null|anything in (cultists - usr)
 			if(!cultist)
 				return
-			if (cultist == usr) //just to be sure.
+			if(cultist == usr) //just to be sure.
 				return
 			cultist.loc = usr.loc
 			usr.visible_message("/red [cultist] appears in a flash of red light as [usr] glows with power")*/

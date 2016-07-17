@@ -17,11 +17,11 @@
 			select_colour(user)
 
 		if("Mode")
-			if (mode == 1)
+			if(mode == 1)
 				mode = 2
 			else
 				mode = 1
-			user << "Changed printing mode to '[mode == 2 ? "Rename Paper" : "Write Paper"]'"
+			to_chat(user, "Changed printing mode to '[mode == 2 ? "Rename Paper" : "Write Paper"]'")
 			playsound(src.loc, 'sound/effects/pop.ogg', 50, 0)
 
 	return
@@ -30,10 +30,10 @@
 // see code\modules\paperwork\paper.dm line 62
 
 /obj/item/weapon/pen/multi/robopen/proc/RenamePaper(mob/user as mob,obj/paper as obj)
-	if ( !user || !paper )
+	if( !user || !paper )
 		return
 	var/n_name = input(user, "What would you like to label the paper?", "Paper Labelling", null)  as text
-	if ( !user || !paper )
+	if( !user || !paper )
 		return
 
 	n_name = copytext(n_name, 1, 32)
@@ -87,7 +87,7 @@
 	set src in range(0)
 
 	var/N = input("How much damage should the shield absorb?") in list("5","10","25","50","75","100")
-	if (N)
+	if(N)
 		shield_level = text2num(N)/100
 
 /obj/item/borg/combat/mobility

@@ -16,7 +16,7 @@
 	var/movable = 0 // For mobility checks
 
 /obj/structure/stool/bed/MouseDrop(atom/over_object)
-	..(over_object, 1)
+	..(over_object, skip_fucking_stool_shit = 1)
 
 /obj/structure/stool/psychbed
 	name = "psych bed"
@@ -118,10 +118,10 @@
 
 /obj/item/roller_holder/attack_self(mob/user as mob)
 	if(!held)
-		user << "<span class='info'> The rack is empty.</span>"
+		to_chat(user, "<span class='info'> The rack is empty.</span>")
 		return
 
-	user << "<span class='notice'>You deploy the roller bed.</span>"
+	to_chat(user, "<span class='notice'>You deploy the roller bed.</span>")
 	var/obj/structure/stool/bed/roller/R = new /obj/structure/stool/bed/roller(user.loc)
 	R.add_fingerprint(user)
 	qdel(held)

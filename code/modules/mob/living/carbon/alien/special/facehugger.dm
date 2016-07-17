@@ -49,11 +49,11 @@ var/const/MAX_ACTIVE_TIME = 400
 		return
 	switch(stat)
 		if(DEAD,UNCONSCIOUS)
-			user << "<span class='boldannounce'>[src] is not moving.</span>"
+			to_chat(user, "<span class='boldannounce'>[src] is not moving.</span>")
 		if(CONSCIOUS)
-			user << "<span class='boldannounce'>[src] seems to be active!</span>"
-	if (sterile)
-		user << "<span class='boldannounce'>It looks like the proboscis has been removed.</span>"
+			to_chat(user, "<span class='boldannounce'>[src] seems to be active!</span>")
+	if(sterile)
+		to_chat(user, "<span class='boldannounce'>It looks like the proboscis has been removed.</span>")
 
 /obj/item/clothing/mask/facehugger/attackby(obj/item/O,mob/m, params)
 	if(O.force)
@@ -148,7 +148,7 @@ var/const/MAX_ACTIVE_TIME = 400
 		target.equip_to_slot(src, slot_wear_mask,,0)
 		if(!sterile)
 			M.Paralyse(MAX_IMPREGNATION_TIME/6) //something like 25 ticks = 20 seconds with the default settings
-	else if (iscorgi(M))
+	else if(iscorgi(M))
 		var/mob/living/simple_animal/pet/corgi/C = M
 		loc = C
 		C.facehugger = src

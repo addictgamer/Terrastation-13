@@ -52,7 +52,7 @@
 	add_fingerprint(usr)
 	update_icon(1)
 	sleep(10)
-	if (open)
+	if(open)
 		close()
 		return
 	open()
@@ -74,7 +74,7 @@
 	if(!powered())
 		return
 	if(!src.allowed(user))
-		user << "<span class='alert'>Access denied.</span>"
+		to_chat(user, "<span class='alert'>Access denied.</span>")
 		return
 	..()
 

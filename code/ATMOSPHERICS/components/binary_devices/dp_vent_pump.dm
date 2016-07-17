@@ -32,19 +32,19 @@
 	//1: Do not pass external_pressure_bound
 	//2: Do not pass input_pressure_min
 	//4: Do not pass output_pressure_max
-	
+
 /obj/machinery/atmospherics/binary/dp_vent_pump/New()
 	..()
-	if (!id_tag)
+	if(!id_tag)
 		assign_uid()
 		id_tag = num2text(uid)
 	icon = null
-	
+
 /obj/machinery/atmospherics/binary/dp_vent_pump/initialize()
 	..()
 	if(frequency)
 		set_frequency(frequency)
-	
+
 /obj/machinery/atmospherics/binary/dp_vent_pump/high_volume
 	name = "large dual port air vent"
 
@@ -93,19 +93,17 @@
 		if(T.intact && node1 && node2 && node1.level == 1 && node2.level == 1 && istype(node1, /obj/machinery/atmospherics/pipe) && istype(node2, /obj/machinery/atmospherics/pipe))
 			return
 		else
-			if (node1)
+			if(node1)
 				add_underlay(T, node1, turn(dir, -180), node1.icon_connect_type)
 			else
 				add_underlay(T, node1, turn(dir, -180))
-			if (node2)
+			if(node2)
 				add_underlay(T, node2, dir, node2.icon_connect_type)
 			else
 				add_underlay(T, node2, dir)
 
 /obj/machinery/atmospherics/binary/dp_vent_pump/process()
-	..()
-
-	if(!on)
+	if(!..() || !on)
 		return 0
 
 	var/datum/gas_mixture/environment = loc.return_air()
@@ -236,7 +234,7 @@
 	if(istype(W, /obj/item/device/multitool))
 		update_multitool_menu(user)
 		return 1
-		
+
 	return ..()
 
 /obj/machinery/atmospherics/binary/dp_vent_pump/multitool_menu(var/mob/user,var/obj/item/device/multitool/P)
@@ -254,5 +252,4 @@
 		return .
 	if("toggleadvcontrol" in href_list)
 		advcontrol = !advcontrol
-		return MT_UPDATE	
-		
+		return MT_UPDATE

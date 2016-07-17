@@ -17,7 +17,7 @@ var/global/datum/controller/occupations/job_master
 		occupations = list()
 		var/list/all_jobs = subtypesof(/datum/job)
 		if(!all_jobs.len)
-			world << "\red \b Error setting up jobs, no job datums found"
+			to_chat(world, "\red \b Error setting up jobs, no job datums found")
 			return 0
 		for(var/J in all_jobs)
 			var/datum/job/job = new J()
@@ -120,6 +120,9 @@ var/global/datum/controller/occupations/job_master
 			if(job.title in whitelisted_positions) // No random whitelisted job, sorry!
 				continue
 
+			if(job.admin_only) // No admin positions either.
+				continue
+
 			if(jobban_isbanned(player, job.title))
 				Debug("GRJ isbanned failed, Player: [player], Job: [job.title]")
 				continue
@@ -214,7 +217,7 @@ var/global/datum/controller/occupations/job_master
 		if((job.title == "AI") && (config) && (!config.allow_ai))	return 0
 
 		if(ticker.mode.name == "AI malfunction")	// malf. AIs are pre-selected before jobs
-			for (var/datum/mind/mAI in ticker.mode.malf_ai)
+			for(var/datum/mind/mAI in ticker.mode.malf_ai)
 				AssignRole(mAI.current, "AI")
 				ai_selected++
 			if(ai_selected)	return 1
@@ -379,11 +382,62 @@ var/global/datum/controller/occupations/job_master
 	proc/EquipRank(var/mob/living/carbon/human/H, var/rank, var/joined_late = 0)
 		if(!H)	return null
 		var/datum/job/job = GetJob(rank)
+		var/list/spawn_in_storage = list()
+
 		if(job)
+
+			//Equip custom gear loadout.
+			var/list/custom_equip_slots = list() //If more than one item takes the same slot, all after the first one spawn in storage.
+			var/list/custom_equip_leftovers = list()
+			if(H.client.prefs.gear && H.client.prefs.gear.len && job.title != "Cyborg" && job.title != "AI")
+				for(var/thing in H.client.prefs.gear)
+					var/datum/gear/G = gear_datums[thing]
+					if(G)
+						var/permitted
+						if(G.allowed_roles)
+							for(var/job_name in G.allowed_roles)
+								if(job.title == job_name)
+									permitted = 1
+						else
+							permitted = 1
+
+						if(G.whitelisted && (G.whitelisted != H.species.name || !is_alien_whitelisted(H, G.whitelisted)))
+							permitted = 0
+
+						if(!permitted)
+							to_chat(H, "<span class='warning'>Your current job or whitelist status does not permit you to spawn with [thing]!</span>")
+							continue
+
+						if(G.slot && !(G.slot in custom_equip_slots))
+							// This is a miserable way to fix the loadout overwrite bug, but the alternative requires
+							// adding an arg to a bunch of different procs. Will look into it after this merge. ~ Z
+							if(G.slot == slot_wear_mask || G.slot == slot_wear_suit || G.slot == slot_head)
+								custom_equip_leftovers += thing
+							else if(H.equip_to_slot_or_del(G.spawn_item(H), G.slot))
+								to_chat(H, "<span class='notice'>Equipping you with \the [thing]!</span>")
+								custom_equip_slots.Add(G.slot)
+							else
+								custom_equip_leftovers.Add(thing)
+						else
+							spawn_in_storage += thing
+
 			job.equip(H)
 			job.apply_fingerprints(H)
+
+			//If some custom items could not be equipped before, try again now.
+			for(var/thing in custom_equip_leftovers)
+				var/datum/gear/G = gear_datums[thing]
+				if(G.slot in custom_equip_slots)
+					spawn_in_storage += thing
+				else
+					var/metadata = H.client.prefs.gear[G.display_name]
+					if(H.equip_to_slot_or_del(G.spawn_item(H, metadata), G.slot))
+						to_chat(H, "<span class='notice'>Equipping you with \the [thing]!</span>")
+						custom_equip_slots.Add(G.slot)
+					else
+						spawn_in_storage += thing
 		else
-			H << "Your job is [rank] and the game just can't handle it! Please report this bug to an administrator."
+			to_chat(H, "Your job is [rank] and the game just can't handle it! Please report this bug to an administrator.")
 
 		H.job = rank
 
@@ -431,7 +485,7 @@ var/global/datum/controller/occupations/job_master
 			H.mind.store_memory(remembered_info)
 
 		spawn(0)
-			H << "\blue<b>Your account number is: [M.account_number], your account pin is: [M.remote_access_pin]</b>"
+			to_chat(H, "\blue<b>Your account number is: [M.account_number], your account pin is: [M.remote_access_pin]</b>")
 
 		var/alt_title = null
 		if(H.mind)
@@ -464,10 +518,30 @@ var/global/datum/controller/occupations/job_master
 							H.equip_to_slot_or_del(BPK, slot_back,1)
 					H.species.equip(H)
 
-		H << "<B>You are the [alt_title ? alt_title : rank].</B>"
-		H << "<b>As the [alt_title ? alt_title : rank] you answer directly to [job.supervisors]. Special circumstances may change this.</b>"
+			//Deferred item spawning.
+			for(var/thing in spawn_in_storage)
+				var/datum/gear/G = gear_datums[thing]
+				var/metadata = H.client.prefs.gear[G.display_name]
+				var/item = G.spawn_item(null, metadata)
+
+				var/atom/placed_in = H.equip_or_collect(item)
+				if(placed_in)
+					to_chat(H, "<span class='notice'>Placing \the [item] in your [placed_in.name]!</span>")
+					continue
+				if(H.equip_to_appropriate_slot(item))
+					to_chat(H, "<span class='notice'>Placing \the [item] in your inventory!</span>")
+					continue
+				if(H.put_in_hands(item))
+					to_chat(H, "<span class='notice'>Placing \the [item] in your hands!</span>")
+					continue
+				to_chat(H, "<span class='danger'>Failed to locate a storage object on your mob, either you spawned with no arms and no backpack or this is a bug.</span>")
+				qdel(item)
+
+
+		to_chat(H, "<B>You are the [alt_title ? alt_title : rank].</B>")
+		to_chat(H, "<b>As the [alt_title ? alt_title : rank] you answer directly to [job.supervisors]. Special circumstances may change this.</b>")
 		if(job.req_admin_notify)
-			H << "<b>You are playing a job that is important for the game progression. If you have to disconnect, please notify the admins via adminhelp.</b>"
+			to_chat(H, "<b>You are playing a job that is important for the game progression. If you have to disconnect, please notify the admins via adminhelp.</b>")
 
 		spawnId(H, rank, alt_title)
 		H.equip_to_slot_or_del(new /obj/item/device/radio/headset(H), slot_l_ear)
@@ -542,7 +616,7 @@ var/global/datum/controller/occupations/job_master
 				continue
 
 			job = trim(job)
-			if (!length(job))
+			if(!length(job))
 				continue
 
 			var/pos = findtext(job, "=")

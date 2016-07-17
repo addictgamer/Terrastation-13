@@ -9,7 +9,7 @@
 	if(!s_busy)
 		display_spideros()
 	else
-		affecting << "<span class='danger'>The interface is locked!</span>"
+		to_chat(affecting, "<span class='danger'>The interface is locked!</span>")
 
 
 /obj/item/clothing/suit/space/space_ninja/proc/display_spideros()
@@ -70,7 +70,7 @@
 		if(1)
 			dat += "<h4><img src=sos_5.png> Atmospheric Scan:</h4>"//Headers don't need breaks. They are automatically placed.
 			var/turf/T = get_turf(U.loc)
-			if (isnull(T))
+			if(isnull(T))
 				dat += "Unable to obtain a reading."
 			else
 				var/datum/gas_mixture/environment = T.return_air()
@@ -80,7 +80,7 @@
 
 				dat += "Air Pressure: [round(pressure,0.1)] kPa"
 
-				if (total_moles)
+				if(total_moles)
 					var/o2_level = environment.oxygen/total_moles
 					var/n2_level = environment.nitrogen/total_moles
 					var/co2_level = environment.carbon_dioxide/total_moles
@@ -101,12 +101,12 @@
 			dat += "<h4><img src=sos_6.png> Detected PDAs:</h4>"
 			dat += "<ul>"
 			var/count = 0
-			for (var/obj/item/device/pda/P in get_viewable_pdas())
+			for(var/obj/item/device/pda/P in get_viewable_pdas())
 				dat += "<li><a href='byond://?src=\ref[src];choice=Message;target=\ref[P]'>[P]</a>"
 				dat += "</li>"
 				count++
 			dat += "</ul>"
-			if (count == 0)
+			if(count == 0)
 				dat += "None detected.<br>"
 		if(4)
 			dat += {"
@@ -126,7 +126,7 @@
 					A mix of traitor, changeling, and wizard. Ninjas rely on energy, or electricity to be precise, to keep their suits running (when out of energy, a suit hibernates). Suits gain energy from objects or creatures that contain electrical charge. APCs, cell batteries, rechargers, SMES batteries, cyborgs, mechs, and exposed wires are currently supported. Through energy ninjas gain access to special powers--while all powers are tied to the ninja suit, the most useful of them are verb activated--to help them in their mission.<br>It is a constant struggle for a ninja to remain hidden long enough to recharge the suit and accomplish their objective; despite their arsenal of abilities, ninjas can die like any other. Unlike wizards, ninjas do not possess good crowd control and are typically forced to play more subdued in order to achieve their goals. Some of their abilities are specifically designed to confuse and disorient others.<br>With that said, it should be perfectly possible to completely flip the fuck out and rampage as a ninja.
 					<h5>Their powers:</h5>
 					There are two primary types: Equipment and Abilties. Passive effect are always on. Active effect must be turned on and remain active only when there is energy to do so. Ability costs are listed next to them.
-					<b>Equipment</b>: cannot be tracked by AI (passive), faster speed (passive), stealth (active), vision switch (passive if toggled), voice masking (passive), SpiderOS (passive if toggled), energy drain (passive if toggled).
+					<b>Equipment</b>: cannot be tracked by AI (passive), faster speed (passive), stealth (active), vision switch(passive if toggled), voice masking (passive), SpiderOS (passive if toggled), energy drain (passive if toggled).
 					<ul>
 					<li><i>Voice masking</i> generates a random name the ninja can use over the radio and in-person. Although, the former use is recommended.</li>
 					<li><i>Toggling vision</i> cycles to one of the following: thermal, meson, or darkness vision. The starting mode allows one to scout the identity of those in view, revealing their role. Traitors, revolutionaries, wizards, and other such people will be made known to you.</li>
@@ -194,7 +194,7 @@
 
 
 	if(!affecting||U.stat||!s_initialized)//Check to make sure the guy is wearing the suit after clicking and it's on.
-		U << "<span class='danger'>Your suit must be worn and active to use this function.</span>"
+		to_chat(U, "<span class='danger'>Your suit must be worn and active to use this function.</span>")
 		U << browse(null, "window=spideros")//Closes the window.
 		return
 
@@ -217,7 +217,7 @@
 				display_to << browse(null, "window=spideros")
 				return
 			if(isnull(P)||P.toff)//So it doesn't freak out if the object no-longer exists.
-				display_to << "<span class='danger'>Error: unable to deliver message.</span>"
+				to_chat(display_to, "<span class='danger'>Error: unable to deliver message.</span>")
 				display_spideros()
 				return
 			
@@ -226,12 +226,12 @@
 
 		if("Inject")
 			if( (href_list["tag"]=="radium"? (reagents.get_reagent_amount("radium"))<=(a_boost*a_transfer) : !reagents.get_reagent_amount(href_list["tag"])) )//Special case for radium. If there are only a_boost*a_transfer radium units left.
-				display_to << "<span class='danger'>Error: the suit cannot perform this function. Out of [href_list["name"]].</span>"
+				to_chat(display_to, "<span class='danger'>Error: the suit cannot perform this function. Out of [href_list["name"]].</span>")
 			else
 				reagents.reaction(U, 2)
 				reagents.trans_id_to(U, href_list["tag"], href_list["tag"]=="nutriment"?5:a_transfer)//Nutriment is a special case since it's very potent. Shouldn't influence actual refill amounts or anything.
-				display_to << "Injecting..."
-				U << "You feel a tiny prick and a sudden rush of substance in to your veins."
+				to_chat(display_to, "Injecting...")
+				to_chat(U, "You feel a tiny prick and a sudden rush of substance in to your veins.")
 
 		if("Trigger Ability")
 			var/ability_name = href_list["name"]+href_list["cost"]//Adds the name and cost to create the full proc name.
@@ -251,7 +251,7 @@
 				proc_arguments = pick(targets)
 				safety = 0
 			if(!safety)
-				U << "[href_list["name"]] suddenly triggered!"
+				to_chat(U, "[href_list["name"]] suddenly triggered!")
 				call(src,ability_name)(proc_arguments)
 
 		if("Eject Disk")
@@ -265,11 +265,11 @@
 					t_disk.loc = T
 					t_disk = null
 				else
-					U << "<span class='userdanger'>ERROR</span>: Could not eject disk."
+					to_chat(U, "<span class='userdanger'>ERROR</span>: Could not eject disk.")
 
 		if("Copy to Disk")
 			var/datum/tech/current_data = locate(href_list["target"])
-			U << "[current_data.name] successfully [(!t_disk.stored) ? "copied" : "overwritten"] to disk."
+			to_chat(U, "[current_data.name] successfully [(!t_disk.stored) ? "copied" : "overwritten"] to disk.")
 			t_disk.stored = current_data
 
 

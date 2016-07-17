@@ -4,7 +4,7 @@
 	max_damage = 200
 	icon_state = "brain2"
 	force = 1.0
-	w_class = 2.0
+	w_class = 2
 	throwforce = 1.0
 	throw_speed = 3
 	throw_range = 5
@@ -15,6 +15,8 @@
 	parent_organ = "head"
 	slot = "brain"
 	vital = 1
+	var/mmi_icon = 'icons/obj/assemblies.dmi'
+	var/mmi_icon_state = "mmi_full"
 
 /obj/item/organ/internal/brain/surgeryize()
 	if(!owner)
@@ -27,6 +29,8 @@
 	desc = "We barely understand the brains of terrestial animals. Who knows what we may find in the brain of such an advanced species?"
 	icon_state = "brain-x"
 	origin_tech = "biotech=7"
+	mmi_icon = 'icons/mob/alien.dmi'
+	mmi_icon_state = "AlienMMI"
 
 /obj/item/organ/internal/brain/New()
 	..()
@@ -48,19 +52,19 @@
 	if(H.mind)
 		H.mind.transfer_to(brainmob)
 
-	brainmob << "<span class='notice'>You feel slightly disoriented. That's normal when you're just a [initial(src.name)].</span>"
+	to_chat(brainmob, "<span class='notice'>You feel slightly disoriented. That's normal when you're just a [initial(src.name)].</span>")
 	callHook("debrain", list(brainmob))
 
 /obj/item/organ/internal/brain/examine(mob/user) // -- TLE
 	..(user)
 	if(brainmob && brainmob.client)//if thar be a brain inside... the brain.
-		user << "You can feel the small spark of life still left in this one."
+		to_chat(user, "You can feel the small spark of life still left in this one.")
 	else
-		user << "This one seems particularly lifeless. Perhaps it will regain some of its luster later.."
+		to_chat(user, "This one seems particularly lifeless. Perhaps it will regain some of its luster later..")
 
 /obj/item/organ/internal/brain/remove(var/mob/living/user,special = 0)
-
-	name = "[dna.real_name]'s [initial(name)]"
+	if(dna)
+		name = "[dna.real_name]'s [initial(name)]"
 
 	if(!owner) return ..() // Probably a redundant removal; just bail
 
@@ -107,6 +111,7 @@
 	desc = "A complex, organic knot of jelly and crystalline particles."
 	icon = 'icons/mob/slimes.dmi'
 	icon_state = "green slime extract"
+	mmi_icon_state = "slime_mmi"
 //	parent_organ = "chest" Hello I am from the ministry of rubber forehead aliens how are you
 
 /obj/item/organ/brain/slime/take_damage(var/amount, var/silent = 1)

@@ -29,6 +29,28 @@
 	for(var/obj/item/weapon/stock_parts/manipulator/M in component_parts)
 		rating_speed = M.rating
 
+/obj/machinery/processor/process()
+	..()
+	// The irony
+	// To be clear, if it's grinding, then it can't suck them up
+	if(processing)
+		return
+	var/mob/living/carbon/slime/picked_slime
+	for(var/mob/living/carbon/slime/slime in range(1, src))
+		if(slime.loc == src)
+			continue
+		if(slime.stat)
+			picked_slime = slime
+			break
+	if(!picked_slime)
+		return
+	var/datum/food_processor_process/P = select_recipe(picked_slime)
+	if(!P)
+		return
+
+	visible_message("[picked_slime] is sucked into \the [src].")
+	picked_slime.forceMove(src)
+
 //RECIPE DATUMS
 /datum/food_processor_process
 	var/input
@@ -36,10 +58,10 @@
 	var/time = 40
 
 /datum/food_processor_process/proc/process_food(loc, what, obj/machinery/processor/processor)
-	if (src.output && loc && processor)
+	if(src.output && loc && processor)
 		for(var/i = 0, i < processor.rating_amount, i++)
 			new src.output(loc)
-	if (what)
+	if(what)
 		qdel(what)
 
 /////////////////////////
@@ -85,7 +107,7 @@
 		S.loc = loc
 		S.visible_message("<span class='notice'>[S] crawls free of the processor!</span>")
 		return
-	for(var/i = 1, i <= C + processor.rating_amount, i++)
+	for(var/i in 1 to (C+processor.rating_amount-1))
 		new S.coretype(loc)
 		feedback_add_details("slime_core_harvested","[replacetext(S.colour," ","_")]")
 	..()
@@ -96,7 +118,7 @@
 
 /datum/food_processor_process/mob/monkey/process_food(loc, what, processor)
 	var/mob/living/carbon/human/monkey/O = what
-	if (O.client) //grief-proof
+	if(O.client) //grief-proof
 		O.loc = loc
 		O.visible_message("<span class='notice'>Suddenly [O] jumps out from the processor!</span>", \
 				"<span class='notice'>You jump out of \the [src].</span>", \
@@ -121,13 +143,13 @@
 //END RECIPE DATUMS
 
 /obj/machinery/processor/proc/select_recipe(var/X)
-	for (var/Type in subtypesof(/datum/food_processor_process) - /datum/food_processor_process/mob)
+	for(var/Type in subtypesof(/datum/food_processor_process) - /datum/food_processor_process/mob)
 		var/datum/food_processor_process/P = new Type()
 		if(istype(X, /obj/item/weapon/reagent_containers/food/snacks/grown))
 			var/obj/item/weapon/reagent_containers/food/snacks/grown/G = X
 			if(G.seed.kitchen_tag != P.input)
 				continue
-		else if (!istype(X, P.input))
+		else if(!istype(X, P.input))
 			continue
 		return P
 	return 0
@@ -135,7 +157,7 @@
 /obj/machinery/processor/attackby(var/obj/item/O as obj, var/mob/user as mob, params)
 
 	if(src.processing)
-		user << "<span class='warning'>\the [src] is already processing something!</span>"
+		to_chat(user, "<span class='warning'>\the [src] is already processing something!</span>")
 		return 1
 
 	if(default_deconstruction_screwdriver(user, "processor1", "processor", O))
@@ -151,14 +173,14 @@
 
 	var/obj/item/what = O
 
-	if (istype(O, /obj/item/weapon/grab))
+	if(istype(O, /obj/item/weapon/grab))
 		var/obj/item/weapon/grab/G = O
 		what = G.affecting
 
 	var/datum/food_processor_process/P = select_recipe(what)
 
-	if (!P)
-		user << "<span class='warning'>That probably won't blend.</span>"
+	if(!P)
+		to_chat(user, "<span class='warning'>That probably won't blend.</span>")
 		return 1
 
 	user.visible_message("<span class='notice'>\the [user] puts \the [what] into \the [src].</span>", \
@@ -174,11 +196,11 @@
 		return
 
 	if(src.processing)
-		user << "<span class='warning'>\the [src] is already processing something!</span>"
+		to_chat(user, "<span class='warning'>\the [src] is already processing something!</span>")
 		return 1
 
 	if(src.contents.len == 0)
-		user << "<span class='warning'>\the [src] is empty.</span>"
+		to_chat(user, "<span class='warning'>\the [src] is empty.</span>")
 		return 1
 	src.processing = 1
 	user.visible_message("[user] turns on [src].", \
@@ -189,7 +211,7 @@
 	var/total_time = 0
 	for(var/O in src.contents)
 		var/datum/food_processor_process/P = select_recipe(O)
-		if (!P)
+		if(!P)
 			log_debug("The [O] in processor([src]) does not have a suitable recipe, but it was somehow put inside of the processor anyways.")
 			continue
 		total_time += P.time
@@ -197,7 +219,7 @@
 
 	for(var/O in src.contents)
 		var/datum/food_processor_process/P = select_recipe(O)
-		if (!P)
+		if(!P)
 			log_debug("The [O] in processor([src]) does not have a suitable recipe, but it was somehow put inside of the processor anyways.")
 			continue
 		P.process_food(src.loc, O, src)

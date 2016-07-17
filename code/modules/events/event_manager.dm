@@ -73,7 +73,7 @@
 	if(!report_at_round_end)
 		return
 
-	world << "<br><br><br><font size=3><b>Random Events This Round:</b></font>"
+	to_chat(world, "<br><br><br><font size=3><b>Random Events This Round:</b></font>")
 	for(var/datum/event/E in active_events|finished_events)
 		var/datum/event_meta/EM = E.event_meta
 		if(EM.name == "Nothing")
@@ -87,7 +87,7 @@
 			else
 				message += "and ran to completion."
 
-		world << message
+		to_chat(world, message)
 
 /datum/event_manager/proc/GetInteractWindow()
 	var/html = "<A align='right' href='?src=\ref[src];refresh=1'>Refresh</A>"
@@ -337,18 +337,18 @@
 
 	var/list/event_areas = list()
 
-	for (var/areapath in the_station_areas)
+	for(var/areapath in the_station_areas)
 		event_areas += typesof(areapath)
-	for (var/areapath in safe_areas)
+	for(var/areapath in safe_areas)
 		event_areas -= typesof(areapath)
-	for (var/areapath in danger_areas)
+	for(var/areapath in danger_areas)
 		event_areas += typesof(areapath)
 
-	while (event_areas.len > 0)
+	while(event_areas.len > 0)
 		var/list/event_turfs = null
 		candidate = locate(pick_n_take(event_areas))
 		event_turfs = get_area_turfs(candidate)
-		if (event_turfs.len > 0)
+		if(event_turfs.len > 0)
 			break
 
 	return candidate

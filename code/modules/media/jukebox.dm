@@ -115,7 +115,7 @@ var/global/loopModeNames=list(
 
 /obj/machinery/media/jukebox/attack_hand(var/mob/user)
 	if(stat & NOPOWER)
-		usr << "\red You don't see anything to mess with."
+		to_chat(usr, "\red You don't see anything to mess with.")
 		return
 	if(stat & BROKEN && playlist!=null)
 		user.visible_message("\red <b>[user.name] smacks the side of \the [src.name].</b>","\red You hammer the side of \the [src.name].")
@@ -180,17 +180,17 @@ var/global/loopModeNames=list(
 /obj/machinery/media/jukebox/Topic(href, href_list)
 	..()
 	if(emagged)
-		usr << "\red You touch the bluescreened menu. Nothing happens. You feel dumber."
+		to_chat(usr, "\red You touch the bluescreened menu. Nothing happens. You feel dumber.")
 		return
 
-	if (href_list["power"])
+	if(href_list["power"])
 		playing=!playing
 		update_music()
 		update_icon()
 
-	if (href_list["playlist"])
+	if(href_list["playlist"])
 		if(!check_reload())
-			usr << "\red You must wait 60 seconds between playlist reloads."
+			to_chat(usr, "\red You must wait 60 seconds between playlist reloads.")
 			return
 		playlist_id=href_list["playlist"]
 		last_reload=world.time
@@ -199,12 +199,12 @@ var/global/loopModeNames=list(
 		update_music()
 		update_icon()
 
-	if (href_list["song"])
+	if(href_list["song"])
 		current_song=Clamp(text2num(href_list["song"]),1,playlist.len)
 		update_music()
 		update_icon()
 
-	if (href_list["mode"])
+	if(href_list["mode"])
 		loop_mode = (loop_mode % JUKEMODE_COUNT) + 1
 
 	return attack_hand(usr)
@@ -218,22 +218,19 @@ var/global/loopModeNames=list(
 		if(response)
 			var/json = file2text(response["CONTENT"])
 			if("/>" in json)
-				visible_message("<span class='warning'>\icon[src] \The [src] buzzes, unable to update its playlist.</span>","<em>You hear a buzz.</em>")
+				visible_message("<span class='warning'>[bicon(src)] \The [src] buzzes, unable to update its playlist.</span>","<em>You hear a buzz.</em>")
 				stat &= BROKEN
 				update_icon()
 				return
-			var/json_reader/reader = new()
-			reader.tokens = reader.ScanJson(json)
-			reader.i = 1
-			var/songdata = reader.read_value()
+			var/songdata = json_decode(json)
 			for(var/list/record in songdata)
 				playlist += new /datum/song_info(record)
 			if(playlist.len==0)
-				visible_message("<span class='warning'>\icon[src] \The [src] buzzes, unable to update its playlist.</span>","<em>You hear a buzz.</em>")
+				visible_message("<span class='warning'>[bicon(src)] \The [src] buzzes, unable to update its playlist.</span>","<em>You hear a buzz.</em>")
 				stat &= BROKEN
 				update_icon()
 				return
-			visible_message("<span class='notice'>\icon[src] \The [src] beeps, and the menu on its front fills with [playlist.len] items.</span>","<em>You hear a beep.</em>")
+			visible_message("<span class='notice'>[bicon(src)] \The [src] beeps, and the menu on its front fills with [playlist.len] items.</span>","<em>You hear a beep.</em>")
 			if(autoplay)
 				playing=1
 				autoplay=0
@@ -264,8 +261,8 @@ var/global/loopModeNames=list(
 		var/datum/song_info/song = playlist[current_song]
 		media_url = song.url
 		media_start_time = world.time
-		visible_message("<span class='notice'>\icon[src] \The [src] begins to play [song.display()].</span>","<em>You hear music.</em>")
-		//visible_message("<span class='notice'>\icon[src] \The [src] warbles: [song.length/10]s @ [song.url]</notice>")
+		visible_message("<span class='notice'>[bicon(src)] \The [src] begins to play [song.display()].</span>","<em>You hear music.</em>")
+		//visible_message("<span class='notice'>[bicon(src)] \The [src] warbles: [song.length/10]s @ [song.url]</notice>")
 	else
 		media_url=""
 		media_start_time = 0

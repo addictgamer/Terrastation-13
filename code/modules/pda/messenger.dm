@@ -43,7 +43,7 @@
 			var/obj/item/device/pda/P = A
 			var/datum/data/pda/app/messenger/PM = P.find_program(/datum/data/pda/app/messenger)
 
-			if (!P.owner || PM.toff || P == pda || PM.m_hidden)
+			if(!P.owner || PM.toff || P == pda || PM.m_hidden)
 				continue
 			if(conversations.Find("\ref[P]"))
 				convopdas.Add(list(list("Name" = "[P]", "Reference" = "\ref[P]", "Detonate" = "[P.detonate]", "inconvo" = "1")))
@@ -105,7 +105,7 @@
 
 			var/obj/item/device/pda/P = locate(href_list["target"])
 			if(!P)
-				usr << "PDA not found."
+				to_chat(usr, "PDA not found.")
 
 			var/datum/data/pda/messenger_plugin/plugin = locate(href_list["plugin"])
 			if(plugin && (plugin in pda.cartridge.messenger_plugins))
@@ -123,17 +123,17 @@
 		return
 	t = sanitize(copytext(t, 1, MAX_MESSAGE_LEN))
 	t = readd_quotes(t)
-	if (!t || !istype(P))
+	if(!t || !istype(P))
 		return
-	if (!in_range(pda, U) && pda.loc != U)
+	if(!in_range(pda, U) && pda.loc != U)
 		return
 
 	var/datum/data/pda/app/messenger/PM = P.find_program(/datum/data/pda/app/messenger)
 
-	if (!PM || PM.toff || toff)
+	if(!PM || PM.toff || toff)
 		return
 
-	if (last_text && world.time < last_text + 5)
+	if(last_text && world.time < last_text + 5)
 		return
 
 	if(!pda.can_use())
@@ -166,7 +166,7 @@
 
 	if(useMS && useTC) // only send the message if it's stable
 		if(useTC != 2) // Does our recipient have a broadcaster on their level?
-			U << "ERROR: Cannot reach recipient."
+			to_chat(U, "ERROR: Cannot reach recipient.")
 			return
 		useMS.send_pda_message("[P.owner]","[pda.owner]","[t]")
 		tnote.Add(list(list("sent" = 1, "owner" = "[P.owner]", "job" = "[P.ownjob]", "message" = "[t]", "target" = "\ref[P]")))
@@ -181,15 +181,15 @@
 		PM.notify("<b>Message from [pda.owner] ([pda.ownjob]), </b>\"[t]\" (<a href='?src=\ref[PM];choice=Message;target=\ref[pda]'>Reply</a>)")
 		log_pda("[usr] (PDA: [src.name]) sent \"[t]\" to [P.name]")
 	else
-		U << "<span class='notice'>ERROR: Messaging server is not responding.</span>"
+		to_chat(U, "<span class='notice'>ERROR: Messaging server is not responding.</span>")
 
 /datum/data/pda/app/messenger/proc/available_pdas()
 	var/list/names = list()
 	var/list/plist = list()
 	var/list/namecounts = list()
 
-	if (toff)
-		usr << "Turn on your receiver in order to send messages."
+	if(toff)
+		to_chat(usr, "Turn on your receiver in order to send messages.")
 		return
 
 	for(var/A in PDAs)
@@ -200,7 +200,7 @@
 			continue
 
 		var/name = P.owner
-		if (name in names)
+		if(name in names)
 			namecounts[name]++
 			name = text("[name] ([namecounts[name]])")
 		else

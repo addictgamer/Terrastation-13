@@ -82,3 +82,10 @@
 	control_freak = CONTROL_FREAK_ALL | CONTROL_FREAK_SKIN | CONTROL_FREAK_MACROS
 
 	var/datum/click_intercept/click_intercept = null
+
+	//datum that controls the displaying and hiding of tooltips
+	var/datum/tooltip/tooltips
+
+	// Their chat window, sort of important.
+	// See /goon/code/datums/browserOutput.dm
+	var/datum/chatOutput/chatOutput

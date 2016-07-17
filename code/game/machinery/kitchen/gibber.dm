@@ -63,11 +63,11 @@
 		return
 
 	if(operating)
-		user << "<span class='danger'>The gibber is locked and running, wait for it to finish.</span>"
+		to_chat(user, "<span class='danger'>The gibber is locked and running, wait for it to finish.</span>")
 		return
 
 	if(locked)
-		user << "<span class='warning'>Wait for [occupant.name] to finish being loaded!</span>"
+		to_chat(user, "<span class='warning'>Wait for [occupant.name] to finish being loaded!</span>")
 		return
 
 	else
@@ -77,7 +77,7 @@
 	if(istype(P, /obj/item/weapon/grab))
 		var/obj/item/weapon/grab/G = P
 		if(G.state < 2)
-			user << "<span class='danger'>You need a better grip to do that!</span>"
+			to_chat(user, "<span class='danger'>You need a better grip to do that!</span>")
 			return
 		move_into_gibber(user,G.affecting)
 		qdel(G)
@@ -110,19 +110,19 @@
 
 /obj/machinery/gibber/proc/move_into_gibber(var/mob/user,var/mob/living/victim)
 	if(occupant)
-		user << "<span class='danger'>The gibber is full, empty it first!</span>"
+		to_chat(user, "<span class='danger'>The gibber is full, empty it first!</span>")
 		return
 
 	if(operating)
-		user << "<span class='danger'>The gibber is locked and running, wait for it to finish.</span>"
+		to_chat(user, "<span class='danger'>The gibber is locked and running, wait for it to finish.</span>")
 		return
 
 	if(!ishuman(victim) || issmall(victim))
-		user << "<span class='danger'>This is not suitable for the gibber!</span>"
+		to_chat(user, "<span class='danger'>This is not suitable for the gibber!</span>")
 		return
 
 	if(victim.abiotic(1))
-		user << "<span class='danger'>Subject may not have abiotic items on.</span>"
+		to_chat(user, "<span class='danger'>Subject may not have abiotic items on.</span>")
 		return
 
 	user.visible_message("<span class='danger'>[user] starts to put [victim] into the gibber!</span>")
@@ -281,12 +281,12 @@
 		playsound(get_turf(src), 'sound/effects/splat.ogg', 50, 1)
 		operating = 0
 
-		for (var/obj/item/thing in contents) //Meat is spawned inside the gibber and thrown out afterwards.
+		for(var/obj/item/thing in contents) //Meat is spawned inside the gibber and thrown out afterwards.
 			thing.loc = get_turf(thing) // Drop it onto the turf for throwing.
 			thing.throw_at(get_edge_target_turf(src,gib_throw_dir),rand(1,5),15) // Being pelted with bits of meat and bone would hurt.
 			sleep(1)
 
-		for (var/obj/effect/gibs in contents) //throw out the gibs too
+		for(var/obj/effect/gibs in contents) //throw out the gibs too
 			gibs.loc = get_turf(gibs) //drop onto turf for throwing
 			gibs.throw_at(get_edge_target_turf(src,gib_throw_dir),rand(1,5),15)
 			sleep(1)

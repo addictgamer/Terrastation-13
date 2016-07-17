@@ -53,7 +53,7 @@
 			if(is_component_functioning("camera"))
 				aiCamera.captureimage(A, usr)
 			else
-				src << "<span class='userdanger'>Your camera isn't functional.</span>"
+				to_chat(src, "<span class='userdanger'>Your camera isn't functional.</span>")
 			return
 
 	/*
@@ -139,7 +139,9 @@
 /obj/machinery/door/airlock/BorgAltShiftClick()  // Enables emergency override on doors! Forwards to AI code.
 	AIAltShiftClick()
 
-/atom/proc/BorgShiftClick()
+/atom/proc/BorgShiftClick(var/mob/user)
+	if(user.client && user.client.eye == user)
+		user.examinate(src)
 	return
 
 /obj/machinery/door/airlock/BorgShiftClick()  // Opens and closes doors! Forwards to AI code.

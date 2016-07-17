@@ -4,6 +4,9 @@
 // Humans need 30 seconds (AI is faster when it comes to complex electronics)
 // Used for advanced grid control (read: Substations)
 
+
+//THIS IS CURRENTLY BROKEN --LZ
+
 /obj/machinery/power/breakerbox
 	name = "Breaker Box"
 	icon = 'icons/obj/power2.dmi'

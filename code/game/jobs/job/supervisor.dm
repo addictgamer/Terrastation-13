@@ -125,7 +125,7 @@ var/datum/announcement/minor/captain_announcement = new(do_newscast = 1)
 			if(3) H.equip_or_collect(new /obj/item/weapon/storage/backpack/satchel_norm(H), slot_back)
 			if(4) H.equip_or_collect(new /obj/item/weapon/storage/backpack/satchel(H), slot_back)
 		H.equip_or_collect(new /obj/item/weapon/storage/box/survival(H.back), slot_in_backpack)
-		H.equip_or_collect(new /obj/item/weapon/melee/baton/loaded/ntcane(H.back), slot_in_backpack)
+		H.equip_or_collect(new /obj/item/weapon/melee/classic_baton/ntcane(H.back), slot_in_backpack)
 		H.equip_or_collect(new /obj/item/weapon/lighter/zippo/nt_rep(H.back), slot_in_backpack)
 		H.equip_or_collect(new /obj/item/clothing/under/rank/ntrep(H), slot_w_uniform)
 		H.equip_or_collect(new /obj/item/clothing/suit/storage/ntrep(H), slot_wear_suit)
@@ -174,10 +174,10 @@ var/datum/announcement/minor/captain_announcement = new(do_newscast = 1)
 
 		if(H.backbag == 1)
 			H.equip_or_collect(new /obj/item/weapon/storage/box/deathimp(H), slot_r_hand)
-			H.equip_or_collect(new /obj/item/weapon/gun/energy/blueshield(H), slot_l_hand)
+			H.equip_or_collect(new /obj/item/weapon/gun/energy/gun/blueshield(H), slot_l_hand)
 		else
 			H.equip_or_collect(new /obj/item/weapon/storage/box/deathimp(H.back), slot_in_backpack)
-			H.equip_or_collect(new /obj/item/weapon/gun/energy/blueshield(H.back), slot_in_backpack)
+			H.equip_or_collect(new /obj/item/weapon/gun/energy/gun/blueshield(H.back), slot_in_backpack)
 		var/obj/item/weapon/implant/loyalty/L = new/obj/item/weapon/implant/loyalty(H)
 		L.imp_in = H
 		L.implanted = 1

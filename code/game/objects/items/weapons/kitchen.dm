@@ -18,7 +18,7 @@
  */
 /obj/item/weapon/kitchen/utensil
 	force = 5.0
-	w_class = 1.0
+	w_class = 1
 	throwforce = 0.0
 	throw_speed = 3
 	throw_range = 5
@@ -30,7 +30,7 @@
 	var/max_contents = 1
 
 /obj/item/weapon/kitchen/utensil/New()
-	if (prob(60))
+	if(prob(60))
 		src.pixel_y = rand(0, 4)
 
 	create_reagents(5)
@@ -48,11 +48,11 @@
 		else
 			return ..()
 
-	if (contents.len)
+	if(contents.len)
 		var/obj/item/weapon/reagent_containers/food/snacks/toEat = contents[1]
 		if(istype(toEat))
 			if(M.eat(toEat, user))
-				toEat.On_Consume(M)
+				toEat.On_Consume(M, user)
 				spawn(0)
 					if(toEat)
 						qdel(toEat)
@@ -164,7 +164,7 @@
 	throwforce = 10.0
 	throw_speed = 3
 	throw_range = 7
-	w_class = 3.0
+	w_class = 3
 	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "whacked")
 
 /* Trays moved to /obj/item/weapon/storage/bag */
@@ -181,7 +181,7 @@
 	throwforce = 5
 	throw_speed = 3
 	throw_range = 3
-	w_class = 2.0
+	w_class = 2
 	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "smashed")
 
 /obj/item/weapon/kitchen/mould/bear

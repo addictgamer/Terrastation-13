@@ -22,7 +22,7 @@
 	recharging_mecha = null
 	return ..()
 
-/turf/simulated/floor/mech_bay_recharge_floor/Entered(var/obj/mecha/mecha)
+/turf/simulated/floor/mech_bay_recharge_floor/Entered(var/obj/mecha/mecha, atom/OL, ignoreRest = 0)
 	. = ..()
 	if(istype(mecha))
 		mecha.occupant_message("<b>Initializing power control devices.</b>")
@@ -283,7 +283,7 @@
 	else
 		data["has_mech"] = 0
 	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if (!ui)
+	if(!ui)
 		// the ui does not exist, so we'll create a new() one
         // for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
 		ui = new(user, src, ui_key, "mech_bay_console.tmpl", "Mech Bay Control Console", 500, 325)

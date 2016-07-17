@@ -94,8 +94,8 @@
 	category = list("Weapons")
 
 /datum/design/lasercannon
-	name = "Laser Cannon"
-	desc = "A heavy duty laser cannon."
+	name = "Accelerator Laser Cannon"
+	desc = "A heavy duty laser cannon. It does more damage the farther away the target is."
 	id = "lasercannon"
 	req_tech = list("combat" = 4, "materials" = 3, "powerstorage" = 3)
 	build_type = PROTOLATHE
@@ -125,52 +125,10 @@
 	locked = 1
 	category = list("Weapons")
 
-/datum/design/smg
-	name = "Nanotrasen Saber SMG"
-	desc = "A prototype weapon made using lightweight materials on a traditional frame, designed to fire standard 9mm rounds."
-	id = "smg"
-	req_tech = list("combat" = 4, "materials" = 3)
-	build_type = PROTOLATHE
-	materials = list(MAT_METAL = 8000, MAT_SILVER = 2000, MAT_DIAMOND = 1000)
-	build_path = /obj/item/weapon/gun/projectile/automatic/proto
-	locked = 1
-	category = list("Weapons")
-
-/datum/design/mag_smg
-	name = "Saber Submachine Gun Magazine (9mm)"
-	desc = "A 30-round magazine for the Saber submachine gun."
-	id = "mag_smg"
-	req_tech = list("combat" = 4, "materials" = 3)
-	build_type = PROTOLATHE
-	materials = list(MAT_METAL = 2000)
-	build_path = /obj/item/ammo_box/magazine/smgm9mm
-	category = list("Weapons")
-
-/datum/design/mag_smg/ap_mag
-	name = "Saber Submachine Gun Magazine (9mmAP)"
-	desc = "A 30-round armour piercing magazine for the Saber submachine gun. Deals slightly less damage but bypasses most armor."
-	id = "mag_smg_ap"
-	materials = list(MAT_METAL = 3000, MAT_SILVER = 100)
-	build_path = /obj/item/ammo_box/magazine/smgm9mm/ap
-
-/datum/design/mag_smg/incin_mag
-	name = "Saber Submachine Gun Magazine (9mmIC)"
-	desc = "A 30-round incendiary round magazine for the Saber submachine gun. Deals significantly less damage but sets the target on fire."
-	id = "mag_smg_ic"
-	materials = list(MAT_METAL = 3000, MAT_SILVER = 100, MAT_GLASS = 400)
-	build_path = /obj/item/ammo_box/magazine/smgm9mm/fire
-
-/datum/design/mag_smg/incin_tox
-	name = "Saber Submachine Gun Magazine (9mmTX)"
-	desc = "A 30-round uranium tipped round magazine for the Saber submachine gun. Deals toxin damage, but less overall damage."
-	id = "mag_smg_tx"
-	materials = list(MAT_METAL = 3000, MAT_GLASS = 200, MAT_URANIUM = 1000)
-	build_path = /obj/item/ammo_box/magazine/smgm9mm/toxin
-
 //WT550 Mags
 
 /datum/design/mag_oldsmg
-	name = "WT-550 Auto Gun Magazine (4.6×30mm)"
+	name = "WT-550 Auto Gun Magazine (4.6x30mm)"
 	desc = "A 20 round magazine for the out of date security WT-550 Auto Rifle"
 	id = "mag_oldsmg"
 	req_tech = list("combat" = 1, "materials" = 1)
@@ -180,21 +138,21 @@
 	category = list("Weapons")
 
 /datum/design/mag_oldsmg/ap_mag
-	name = "WT-550 Auto Gun Armour Piercing Magazine (4.6×30mm AP)"
+	name = "WT-550 Auto Gun Armour Piercing Magazine (4.6x30mm AP)"
 	desc = "A 20 round armour piercing magazine for the out of date security WT-550 Auto Rifle"
 	id = "mag_oldsmg_ap"
 	materials = list(MAT_METAL = 6000, MAT_SILVER = 600)
 	build_path = /obj/item/ammo_box/magazine/wt550m9/wtap
 
 /datum/design/mag_oldsmg/ic_mag
-	name = "WT-550 Auto Gun Incendiary Magazine (4.6×30mm IC)"
+	name = "WT-550 Auto Gun Incendiary Magazine (4.6x30mm IC)"
 	desc = "A 20 round armour piercing magazine for the out of date security WT-550 Auto Rifle"
 	id = "mag_oldsmg_ic"
 	materials = list(MAT_METAL = 6000, MAT_SILVER = 600, MAT_GLASS = 1000)
 	build_path = /obj/item/ammo_box/magazine/wt550m9/wtic
 
 /datum/design/mag_oldsmg/tx_mag
-	name = "WT-550 Auto Gun Urnaium Magazine (4.6×30mm TX)"
+	name = "WT-550 Auto Gun Urnaium Magazine (4.6x30mm TX)"
 	desc = "A 20 round urnaium tipped magazine for the out of date security WT-550 Auto Rifle"
 	id = "mag_oldsmg_tx"
 	materials = list(MAT_METAL = 6000, MAT_SILVER = 600, MAT_URANIUM = 2000)
@@ -221,13 +179,13 @@
 	category = list("Weapons")
 
 /datum/design/stunrevolver
-	name = "Stun Revolver"
-	desc = "A high-tech revolver that fires internal, reusable stun cartidges in a revolving cylinder. The stun cartridges can be recharged using a conventional energy weapon recharger."
+	name = "Tesla Revolver"
+	desc = "A high-tech revolver that fires internal, reusable shock cartridges in a revolving cylinder. The cartridges can be recharged using conventional rechargers."
 	id = "stunrevolver"
-	req_tech = list("combat" = 3, "materials" = 3, "powerstorage" = 2)
+	req_tech = list("combat" = 3, "materials" = 3, "powerstorage" = 5)
 	build_type = PROTOLATHE
-	materials = list(MAT_METAL = 4000, MAT_GLASS = 1000)
-	build_path = /obj/item/weapon/gun/energy/stunrevolver
+	materials = list(MAT_METAL = 10000, MAT_GLASS = 10000, MAT_SILVER = 10000)
+	build_path = /obj/item/weapon/gun/energy/shock_revolver
 	locked = 1
 	category = list("Weapons")
 

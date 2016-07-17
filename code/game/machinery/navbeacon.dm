@@ -46,7 +46,7 @@
 
 	codes = new()
 
-	var/list/entries = text2list(codes_txt, ";")	// entries are separated by semicolons
+	var/list/entries = splittext(codes_txt, ";")	// entries are separated by semicolons
 
 	for(var/e in entries)
 		var/index = findtext(e, "=")		// format is "key=value"
@@ -86,16 +86,16 @@
 
 		updateicon()
 
-	else if (istype(I, /obj/item/weapon/card/id)||istype(I, /obj/item/device/pda))
+	else if(istype(I, /obj/item/weapon/card/id)||istype(I, /obj/item/device/pda))
 		if(open)
-			if (src.allowed(user))
+			if(src.allowed(user))
 				src.locked = !src.locked
-				user << "<span class='notice'>Controls are now [src.locked ? "locked" : "unlocked"].</span>"
+				to_chat(user, "<span class='notice'>Controls are now [src.locked ? "locked" : "unlocked"].</span>")
 			else
-				user << "<span class='danger'>Access denied.</span>"
+				to_chat(user, "<span class='danger'>Access denied.</span>")
 			updateDialog()
 		else
-			user << "<span class='warning'>You must open the cover first!</span>"
+			to_chat(user, "<span class='warning'>You must open the cover first!</span>")
 	return
 
 /obj/machinery/navbeacon/attack_ai(mob/user)
@@ -113,7 +113,7 @@
 		return		// prevent intraction when T-scanner revealed
 
 	if(!open && !ai)	// can't alter controls if not open, unless you're an AI
-		user << "<span class='warning'>The beacon's control cover is closed!</span>"
+		to_chat(user, "<span class='warning'>The beacon's control cover is closed!</span>")
 		return
 
 

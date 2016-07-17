@@ -130,12 +130,12 @@
 		if(istype(D, /obj/item/weapon/screwdriver))
 			playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 			if(do_after(user, 20, target = src))
-				if (src.stat & BROKEN)
-					user << "\blue The broken glass falls out."
+				if(src.stat & BROKEN)
+					to_chat(user, "\blue The broken glass falls out.")
 					var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 					new /obj/item/weapon/shard(loc)
 					var/obj/item/weapon/circuitboard/comm_monitor/M = new /obj/item/weapon/circuitboard/comm_monitor( A )
-					for (var/obj/C in src)
+					for(var/obj/C in src)
 						C.loc = src.loc
 					A.circuit = M
 					A.state = 3
@@ -143,10 +143,10 @@
 					A.anchored = 1
 					qdel(src)
 				else
-					user << "\blue You disconnect the monitor."
+					to_chat(user, "\blue You disconnect the monitor.")
 					var/obj/structure/computerframe/A = new /obj/structure/computerframe( src.loc )
 					var/obj/item/weapon/circuitboard/comm_monitor/M = new /obj/item/weapon/circuitboard/comm_monitor( A )
-					for (var/obj/C in src)
+					for(var/obj/C in src)
 						C.loc = src.loc
 					A.circuit = M
 					A.state = 4
@@ -160,4 +160,4 @@
 		if(!emagged)
 			playsound(src.loc, 'sound/effects/sparks4.ogg', 75, 1)
 			emagged = 1
-			user << "\blue You you disable the security protocols"
+			to_chat(user, "\blue You you disable the security protocols")

@@ -40,6 +40,7 @@
 	var/obj/effect/blob/factory/factory = null
 	var/list/human_overlays = list()
 	var/is_zombie = 0
+	gold_core_spawnable = CHEM_MOB_SPAWN_HOSTILE
 
 /mob/living/simple_animal/hostile/blob/blobspore/fire_act(datum/gas_mixture/air, exposed_temperature, exposed_volume)
 	..()
@@ -67,6 +68,7 @@
 	..()
 
 /mob/living/simple_animal/hostile/blob/blobspore/proc/Zombify(var/mob/living/carbon/human/H)
+	var/obj/item/organ/external/head/head_organ = H.get_organ("head")
 	is_zombie = 1
 	if(H.wear_suit)
 		var/obj/item/clothing/suit/armor/A = H.wear_suit
@@ -81,7 +83,7 @@
 	icon = H.icon
 	speak_emote = list("groans")
 	icon_state = "zombie2_s"
-	H.h_style = null
+	head_organ.h_style = null
 	H.update_hair()
 	human_overlays = H.overlays
 	update_icons()
@@ -89,6 +91,8 @@
 	loc.visible_message("<span class='warning'>The corpse of [H.name] suddenly rises!</span>")
 
 /mob/living/simple_animal/hostile/blob/blobspore/death()
+	..()
+
 	// On death, create a small smoke of harmful gas (s-Acid)
 	var/datum/effect/system/chem_smoke_spread/S = new
 	var/turf/location = get_turf(src)
@@ -106,7 +110,6 @@
 	S.set_up(reagents, 1, 1, location, 15, 1) // only 1-2 smoke cloud
 	S.start()
 
-	ghostize()
 	qdel(src)
 
 /mob/living/simple_animal/hostile/blob/blobspore/Destroy()
@@ -160,6 +163,7 @@
 	maxbodytemp = 360
 	force_threshold = 10
 	environment_smash = 3
+	gold_core_spawnable = CHEM_MOB_SPAWN_HOSTILE
 
 
 /mob/living/simple_animal/hostile/blob/blobbernaut/blob_act()

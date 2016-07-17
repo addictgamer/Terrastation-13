@@ -38,12 +38,12 @@
 			tickets += T.amount
 			qdel(T)
 		else
-			user << "<span class='warning'>\The [T] seems stuck to your hand!</span>"
+			to_chat(user, "<span class='warning'>\The [T] seems stuck to your hand!</span>")
 		return
 	if(istype(O, /obj/item/weapon/screwdriver) && anchored)
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 		panel_open = !panel_open
-		user << "You [panel_open ? "open" : "close"] the maintenance panel."
+		to_chat(user, "You [panel_open ? "open" : "close"] the maintenance panel.")
 		update_icon()
 		return
 	if(panel_open)
@@ -171,7 +171,7 @@ td.cost.toomuch {
 	if(href_list["eject"])
 		print_tickets()
 
-	if (href_list["buy"])
+	if(href_list["buy"])
 		var/itemID = text2num(href_list["buy"])
 		var/datum/prize_item/item = global_prizes.prizes[itemID]
 		var/sure = alert(usr,"Are you sure you wish to purchase [item.name] for [item.cost] tickets?","You sure?","Yes","No") in list("Yes","No")
@@ -179,9 +179,9 @@ td.cost.toomuch {
 			updateUsrDialog()
 			return
 		if(!global_prizes.PlaceOrder(src, itemID))
-			usr << "<span class='warning'>Unable to complete the exchange.</span>"
+			to_chat(usr, "<span class='warning'>Unable to complete the exchange.</span>")
 		else
-			usr << "<span class='notice'>You've successfully purchased the item.</span>"
+			to_chat(usr, "<span class='notice'>You've successfully purchased the item.</span>")
 
 	interact(usr)
 	return

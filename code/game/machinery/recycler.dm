@@ -45,9 +45,9 @@ var/const/SAFETY_COOLDOWN = 100
 
 /obj/machinery/recycler/examine(mob/user)
 	..(user)
-	user << "The power light is [(stat & NOPOWER) ? "off" : "on"]."
-	user << "The safety-mode light is [safety_mode ? "on" : "off"]."
-	user << "The safety-sensors status light is [emagged ? "off" : "on"]."
+	to_chat(user, "The power light is [(stat & NOPOWER) ? "off" : "on"].")
+	to_chat(user, "The safety-mode light is [safety_mode ? "on" : "off"].")
+	to_chat(user, "The safety-sensors status light is [emagged ? "off" : "on"].")
 
 /obj/machinery/recycler/power_change()
 	..()
@@ -78,7 +78,7 @@ var/const/SAFETY_COOLDOWN = 100
 			safety_mode = 0
 			update_icon()
 		playsound(src.loc, "sparks", 75, 1, -1)
-		user << "<span class='notice'>You use the cryptographic sequencer on the [src.name].</span>"
+		to_chat(user, "<span class='notice'>You use the cryptographic sequencer on the [src.name].</span>")
 
 /obj/machinery/recycler/update_icon()
 	..()
@@ -129,7 +129,7 @@ var/const/SAFETY_COOLDOWN = 100
 		return
 
 	if(sound)
-		playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
+		playsound(src.loc, 'sound/machines/recycler.ogg', 100, 0)
 	var/material_amount = materials.get_item_material_amount(I)
 	if(!material_amount)
 		qdel(I)
@@ -155,7 +155,7 @@ var/const/SAFETY_COOLDOWN = 100
 	L.loc = src.loc
 
 	if(issilicon(L))
-		playsound(src.loc, 'sound/items/Welder.ogg', 50, 1)
+		playsound(src.loc, 'sound/machines/recycler.ogg', 100, 0)
 	else
 		playsound(src.loc, 'sound/effects/splat.ogg', 50, 1)
 
@@ -194,11 +194,11 @@ var/const/SAFETY_COOLDOWN = 100
 
 	if(usr.stat || !usr.canmove || usr.restrained())
 		return
-	if (src.anchored)
-		usr << "[src] is fastened to the floor!"
+	if(src.anchored)
+		to_chat(usr, "[src] is fastened to the floor!")
 		return 0
 	eat_dir = turn(eat_dir, 270)
-	user << "<span class='notice'>[src] will now accept items from [dir2text(eat_dir)].</span>"
+	to_chat(user, "<span class='notice'>[src] will now accept items from [dir2text(eat_dir)].</span>")
 	return 1
 
 /obj/machinery/recycler/verb/rotateccw()
@@ -210,11 +210,11 @@ var/const/SAFETY_COOLDOWN = 100
 
 	if(usr.stat || !usr.canmove || usr.restrained())
 		return
-	if (src.anchored)
-		usr << "[src] is fastened to the floor!"
+	if(src.anchored)
+		to_chat(usr, "[src] is fastened to the floor!")
 		return 0
 	eat_dir = turn(eat_dir, 90)
-	user << "<span class='notice'>[src] will now accept items from [dir2text(eat_dir)].</span>"
+	to_chat(user, "<span class='notice'>[src] will now accept items from [dir2text(eat_dir)].</span>")
 	return 1
 
 /obj/item/weapon/paper/recycler

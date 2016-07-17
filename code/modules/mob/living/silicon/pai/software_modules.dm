@@ -56,7 +56,7 @@
 			while(!istype(M, /mob/living))
 				if(!M || !M.loc || count > 6)
 					//For a runtime where M ends up in nullspace (similar to bluespace but less colourful)
-					src << "You are not being carried by anyone!"
+					to_chat(src, "You are not being carried by anyone!")
 					return 0
 				M = M.loc
 				count++
@@ -65,16 +65,16 @@
 			var/answer = input(M, "[P] is requesting a DNA sample from you. Will you allow it to confirm your identity?", "[P] Check DNA", "No") in list("Yes", "No")
 			if(answer == "Yes")
 				var/turf/T = get_turf_or_move(P.loc)
-				for (var/mob/v in viewers(T))
+				for(var/mob/v in viewers(T))
 					v.show_message("<span class='notice'>[M] presses \his thumb against [P].</span>", 3, "<span class='notice'>[P] makes a sharp clicking sound as it extracts DNA material from [M].</span>", 2)
 				var/datum/dna/dna = M.dna
-				P << "<font color = red><h3>[M]'s UE string : [dna.unique_enzymes]</h3></font>"
+				to_chat(P, "<font color = red><h3>[M]'s UE string : [dna.unique_enzymes]</h3></font>")
 				if(dna.unique_enzymes == P.master_dna)
-					P << "<b>DNA is a match to stored Master DNA.</b>"
+					to_chat(P, "<b>DNA is a match to stored Master DNA.</b>")
 				else
-					P << "<b>DNA does not match stored Master DNA.</b>"
+					to_chat(P, "<b>DNA does not match stored Master DNA.</b>")
 			else
-				P << "[M] does not seem like \he is going to provide a DNA sample willingly."
+				to_chat(P, "[M] does not seem like \he is going to provide a DNA sample willingly.")
 			return 1
 
 /datum/pai_software/radio_config
@@ -123,7 +123,7 @@
 	on_ui_interact(mob/living/silicon/pai/user, datum/nanoui/ui=null, force_open=1)
 
 		var/data[0]
-		data["manifest"] = list("__json_cache" = ManifestJSON)
+		data["manifest"] = PDA_Manifest
 
 		ui = nanomanager.try_update_ui(user, user, id, ui, data, force_open)
 		if(!ui)
@@ -296,7 +296,7 @@
 						return
 					t = sanitize(copytext(t, 1, MAX_MESSAGE_LEN))
 					t = readd_quotes(t)
-					if (!t)
+					if(!t)
 						return
 
 					M.current_room.topic = t
@@ -329,7 +329,7 @@
 							return
 						t = sanitize(copytext(t, 1, MAX_MESSAGE_LEN))
 						t = readd_quotes(t)
-						if (!t || !P.pda.can_use())
+						if(!t || !P.pda.can_use())
 							return
 
 						target.post(M, t)
@@ -380,12 +380,12 @@
 			if(record)
 				var/datum/data/record/R = record
 				var/datum/data/record/M = null
-				if (!( data_core.general.Find(R) ))
+				if(!( data_core.general.Find(R) ))
 					P.medical_cannotfind = 1
 				else
 					P.medical_cannotfind = 0
 					for(var/datum/data/record/E in data_core.medical)
-						if ((E.fields["name"] == R.fields["name"] || E.fields["id"] == R.fields["id"]))
+						if((E.fields["name"] == R.fields["name"] || E.fields["id"] == R.fields["id"]))
 							M = E
 					P.medicalActive1 = R
 					P.medicalActive2 = M
@@ -434,14 +434,14 @@
 			if(record)
 				var/datum/data/record/R = record
 				var/datum/data/record/S = null
-				if (!( data_core.general.Find(R) ))
+				if(!( data_core.general.Find(R) ))
 					P.securityActive1 = null
 					P.securityActive2 = null
 					P.security_cannotfind = 1
 				else
 					P.security_cannotfind = 0
 					for(var/datum/data/record/E in data_core.security)
-						if ((E.fields["name"] == R.fields["name"] || E.fields["id"] == R.fields["id"]))
+						if((E.fields["name"] == R.fields["name"] || E.fields["id"] == R.fields["id"]))
 							S = E
 					P.securityActive1 = R
 					P.securityActive2 = S
@@ -502,9 +502,9 @@
 		if(!T || !(T.z in config.contact_levels))
 			break
 		if(T.loc)
-			AI << "<font color = red><b>Network Alert: Brute-force encryption crack in progress in [T.loc].</b></font>"
+			to_chat(AI, "<font color = red><b>Network Alert: Brute-force encryption crack in progress in [T.loc].</b></font>")
 		else
-			AI << "<font color = red><b>Network Alert: Brute-force encryption crack in progress. Unable to pinpoint location.</b></font>"
+			to_chat(AI, "<font color = red><b>Network Alert: Brute-force encryption crack in progress. Unable to pinpoint location.</b></font>")
 	var/obj/machinery/door/D = cable.machine
 	if(!istype(D))
 		hack_aborted = 1
@@ -627,6 +627,7 @@
 			user.add_language("Rootspeak")
 			user.add_language("Chittin")
 			user.add_language("Bubblish")
+			user.add_language("Orluum")
 			user.add_language("Clownish")
 		else
 			user.remove_language("Sinta'unathi")
@@ -637,6 +638,7 @@
 			user.remove_language("Rootspeak")
 			user.remove_language("Chittin")
 			user.remove_language("Bubblish")
+			user.remove_language("Orluum")
 			user.remove_language("Clownish")
 
 	is_active(mob/living/silicon/pai/user)
@@ -668,7 +670,7 @@
 		if(href_list["send"])
 			P.sradio.send_signal("ACTIVATE")
 			for(var/mob/O in hearers(1, P.loc))
-				O.show_message(text("\icon[] *beep* *beep*", P), 3, "*beep* *beep*", 2)
+				O.show_message("[bicon(P)] *beep* *beep*", 3, "*beep* *beep*", 2)
 			return 1
 
 		else if(href_list["freq"])
@@ -702,7 +704,7 @@
 		while(!isliving(held))
 			if(!held || !held.loc || count > 6)
 				//For a runtime where M ends up in nullspace (similar to bluespace but less colourful)
-				src << "You are not being carried by anyone!"
+				to_chat(src, "You are not being carried by anyone!")
 				return 0
 			held = held.loc
 			count++

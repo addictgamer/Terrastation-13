@@ -30,7 +30,7 @@
 	flags = CONDUCT
 	force = 5.0
 	throwforce = 7.0
-	w_class = 2.0
+	w_class = 2
 	materials = list(MAT_METAL=50)
 	attack_verb = list("bludgeoned", "whacked", "disciplined", "thrashed")
 
@@ -40,7 +40,7 @@
 	icon = 'icons/obj/items.dmi'
 	icon_state = "c_tube"
 	throwforce = 1
-	w_class = 1.0
+	w_class = 1
 	throw_speed = 4
 	throw_range = 5
 
@@ -62,7 +62,7 @@
 	var/data = ""
 	var/base_url = "http://svn.slurm.us/public/spacestation13/misc/game_kit"
 	item_state = "sheet-metal"
-	w_class = 5.0
+	w_class = 5
 */
 
 /obj/item/weapon/gift
@@ -73,7 +73,7 @@
 	var/size = 3.0
 	var/obj/item/gift = null
 	item_state = "gift"
-	w_class = 4.0
+	w_class = 4
 
 /obj/item/weapon/kidanglobe
 	name = "Kidan homeworld globe"
@@ -93,7 +93,7 @@
 
 	afterattack(atom/A as mob|obj|turf|area, mob/living/user as mob|obj, flag, params)
 		var/angle = get_angle(A, user)
-		//world << angle
+//		to_chat(world, angle)
 		angle = round(angle) + 45
 		if(angle > 180)
 			angle -= 180
@@ -102,9 +102,9 @@
 
 		if(!angle)
 			angle = 1
-		//world << "adjusted [angle]"
+//		to_chat(world, "adjusted [angle]")
 		icon_state = "[angle]"
-		//world << "[angle] [(get_dist(user, A) - 1)]"
+//		to_chat(world, "[angle] [(get_dist(user, A) - 1)]")
 		user.Beam(A, "lightning", 'icons/obj/zap.dmi', 50, 15)
 
 /obj/item/weapon/newton
@@ -127,10 +127,16 @@
 	icon = 'icons/obj/items.dmi'
 	icon_state = "red_phone"
 	flags = CONDUCT
-	force = 3.0
-	throwforce = 2.0
+	force = 3
+	throwforce = 2
 	throw_speed = 1
 	throw_range = 4
 	w_class = 2
 	attack_verb = list("called", "rang")
 	hitsound = 'sound/weapons/ring.ogg'
+	var/cooldown = 0
+
+/obj/item/weapon/phone/attack_self(mob/user)
+	if(cooldown < world.time - 20)
+		playsound(user.loc, 'sound/weapons/ring.ogg', 50, 1)
+		cooldown = world.time

@@ -48,8 +48,8 @@ var/list/icons_to_ignore_at_floor_init = list("damaged1","damaged2","damaged3","
 
 
 //turf/simulated/floor/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-//	if ((istype(mover, /obj/machinery/vehicle) && !(src.burnt)))
-//		if (!( locate(/obj/machinery/mass_driver, src) ))
+//	if((istype(mover, /obj/machinery/vehicle) && !(src.burnt)))
+//		if(!( locate(/obj/machinery/mass_driver, src) ))
 //			return 0
 //	return ..()
 
@@ -75,7 +75,7 @@ var/list/icons_to_ignore_at_floor_init = list("damaged1","damaged2","damaged3","
 					src.hotspot_expose(1000,CELL_VOLUME)
 					if(prob(33)) new /obj/item/stack/sheet/metal(src)
 		if(3.0)
-			if (prob(50))
+			if(prob(50))
 				src.break_tile()
 				src.hotspot_expose(1000,CELL_VOLUME)
 	return
@@ -129,16 +129,17 @@ var/list/icons_to_ignore_at_floor_init = list("damaged1","damaged2","damaged3","
 /turf/simulated/floor/proc/make_plating()
 	return ChangeTurf(/turf/simulated/floor/plating)
 
-/turf/simulated/floor/ChangeTurf(turf/simulated/floor/T)
+/turf/simulated/floor/ChangeTurf(turf/simulated/floor/T, defer_change = FALSE, keep_icon = TRUE)
 	if(!istype(src,/turf/simulated/floor)) return ..() //fucking turfs switch the fucking src of the fucking running procs
 	if(!ispath(T,/turf/simulated/floor)) return ..()
 	var/old_icon = icon_regular_floor
 	var/old_plating = icon_plating
 	var/old_dir = dir
 	var/turf/simulated/floor/W = ..()
-	W.icon_regular_floor = old_icon
-	W.icon_plating = old_plating
-	W.dir = old_dir
+	if(keep_icon)
+		W.icon_regular_floor = old_icon
+		W.icon_plating = old_plating
+		W.dir = old_dir
 	W.update_icon()
 	return W
 
@@ -152,15 +153,15 @@ var/list/icons_to_ignore_at_floor_init = list("damaged1","damaged2","damaged3","
 		if(broken || burnt)
 			broken = 0
 			burnt = 0
-			user << "<span class='danger'>You remove the broken plating.</span>"
+			to_chat(user, "<span class='danger'>You remove the broken plating.</span>")
 		else
 			if(istype(src, /turf/simulated/floor/wood))
-				user << "<span class='danger'>You forcefully pry off the planks, destroying them in the process.</span>"
+				to_chat(user, "<span class='danger'>You forcefully pry off the planks, destroying them in the process.</span>")
 			else if(!builtin_tile)
-				user << "<span class='notice'>You are unable to pry up \the [src] with a crowbar.</span>"
+				to_chat(user, "<span class='notice'>You are unable to pry up \the [src] with a crowbar.</span>")
 				return 1
 			else
-				user << "<span class='danger'>You remove \the [builtin_tile.singular_name].</span>"
+				to_chat(user, "<span class='danger'>You remove \the [builtin_tile.singular_name].</span>")
 				builtin_tile.loc = src
 				builtin_tile = null //deassociate tile, it no longer belongs to this turf
 		make_plating()

@@ -1,6 +1,6 @@
 /mob/living/simple_animal/bot/emote(var/act, var/m_type=1, var/message = null)
 	var/param = null
-	if (findtext(act, "-", 1, null))
+	if(findtext(act, "-", 1, null))
 		var/t1 = findtext(act, "-", 1, null)
 		param = copytext(act, t1 + 1, length(act) + 1)
 		act = copytext(act, 1, t1)
@@ -11,6 +11,7 @@
 	//Emote Cooldown System (it's so simple!)
 	// proc/handle_emote_CD() located in [code\modules\mob\emote.dm]
 	var/on_CD = 0
+	act = lowertext(act)
 	switch(act)
 		//Cooldown-inducing emotes
 		if("scream", "screams")
@@ -29,14 +30,14 @@
 		if("ping")
 			var/M = null
 			if(param)
-				for (var/mob/A in view(null, null))
-					if (param == A.name)
+				for(var/mob/A in view(null, null))
+					if(param == A.name)
 						M = A
 						break
 			if(!M)
 				param = null
 
-			if (param)
+			if(param)
 				message = "<B>[src]</B> pings at [param]."
 			else
 				message = "<B>[src]</B> pings."
@@ -46,14 +47,14 @@
 		if("buzz")
 			var/M = null
 			if(param)
-				for (var/mob/A in view(null, null))
-					if (param == A.name)
+				for(var/mob/A in view(null, null))
+					if(param == A.name)
 						M = A
 						break
 			if(!M)
 				param = null
 
-			if (param)
+			if(param)
 				message = "<B>[src]</B> buzzes at [param]."
 			else
 				message = "<B>[src]</B> buzzes."
@@ -63,14 +64,14 @@
 		if("beep")
 			var/M = null
 			if(param)
-				for (var/mob/A in view(null, null))
-					if (param == A.name)
+				for(var/mob/A in view(null, null))
+					if(param == A.name)
 						M = A
 						break
 			if(!M)
 				param = null
 
-			if (param)
+			if(param)
 				message = "<B>[src]</B> beeps at [param]."
 			else
 				message = "<B>[src]</B> beeps."
@@ -80,14 +81,14 @@
 		if("yes")
 			var/M = null
 			if(param)
-				for (var/mob/A in view(null, null))
-					if (param == A.name)
+				for(var/mob/A in view(null, null))
+					if(param == A.name)
 						M = A
 						break
 			if(!M)
 				param = null
 
-			if (param)
+			if(param)
 				message = "<B>[src]</B> emits an affirmative blip at [param]."
 			else
 				message = "<B>[src]</B> emits an affirmative blip."
@@ -97,14 +98,14 @@
 		if("no")
 			var/M = null
 			if(param)
-				for (var/mob/A in view(null, null))
-					if (param == A.name)
+				for(var/mob/A in view(null, null))
+					if(param == A.name)
 						M = A
 						break
 			if(!M)
 				param = null
 
-			if (param)
+			if(param)
 				message = "<B>[src]</B> emits a negative blip at [param]."
 			else
 				message = "<B>[src]</B> emits a negative blip."

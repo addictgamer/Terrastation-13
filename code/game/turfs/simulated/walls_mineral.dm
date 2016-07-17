@@ -134,7 +134,7 @@
 
 /*
 /turf/simulated/wall/mineral/proc/shock()
-	if (electrocute_mob(user, C, src))
+	if(electrocute_mob(user, C, src))
 		var/datum/effect/system/spark_spread/s = new /datum/effect/system/spark_spread
 		s.set_up(5, 1, src)
 		s.start()
@@ -176,3 +176,13 @@
 	walltype = "iron"
 	mineral = "rods"
 	canSmoothWith = list(/turf/simulated/wall/mineral/iron, /obj/structure/falsewall/iron)
+
+/turf/simulated/wall/mineral/abductor
+	name = "alien wall"
+	desc = "A wall with alien alloy plating."
+	icon = 'icons/turf/walls/abductor_wall.dmi'
+	icon_state = "abductor"
+	walltype = "abductor"
+	mineral = "abductor"
+	explosion_block = 3
+	canSmoothWith = list(/turf/simulated/wall/mineral/abductor, /obj/structure/falsewall/abductor)

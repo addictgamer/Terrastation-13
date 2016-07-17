@@ -181,7 +181,7 @@
 
 	//proc/camera_list(var/datum/file/camnet_key/key)
 	get_machines(var/datum/file/camnet_key/key)
-		if (!computer || computer.z > 6)
+		if(!computer || computer.z > 6)
 			return null
 
 		var/list/L = list()
@@ -316,7 +316,7 @@
 			if(key)
 				interact()
 			else
-				usr << "The screen turns to static."
+				to_chat(usr, "The screen turns to static.")
 			return
 
 			// Atlantis: Required for camnetkeys to work.

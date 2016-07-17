@@ -1,6 +1,6 @@
 /obj/item/flag
 	icon = 'icons/obj/flag.dmi'
-	w_class = 4.0
+	w_class = 4
 	var/lit = 0
 	var/burntime = 30
 
@@ -160,6 +160,11 @@
 	name = "Vulpkanin flag"
 	desc = "A flag proudly proclaiming the superior heritage of Vulpkanin."
 	icon_state = "vulpflag"
+
+/obj/item/flag/species/drask
+	name = "Drask flag"
+	desc = "A flag proudly proclaiming the superior heritage of Drask."
+	icon_state = "draskflag"
 
 //Department Flags
 

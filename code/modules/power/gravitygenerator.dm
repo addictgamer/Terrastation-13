@@ -82,6 +82,7 @@ var/const/GRAV_NEEDS_WRENCH = 3
 //
 
 /obj/machinery/gravity_generator/main/station/initialize()
+	..()
 	setup_parts()
 	middle.overlays += "activated"
 	update_list()
@@ -123,7 +124,7 @@ var/const/GRAV_NEEDS_WRENCH = 3
 		O.main_part = null
 		qdel(O)
 	for(var/area/A in world)
-		if (!(A.z in config.station_levels)) continue
+		if(!(A.z in config.station_levels)) continue
 		A.gravitychange(0,A)
 	shake_everyone()
 	return ..()
@@ -182,14 +183,14 @@ var/const/GRAV_NEEDS_WRENCH = 3
 	switch(broken_state)
 		if(GRAV_NEEDS_SCREWDRIVER)
 			if(istype(I, /obj/item/weapon/screwdriver))
-				user << "<span class='notice'>You secure the screws of the framework.</span>"
+				to_chat(user, "<span class='notice'>You secure the screws of the framework.</span>")
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
 				broken_state++
 		if(GRAV_NEEDS_WELDING)
 			if(istype(I, /obj/item/weapon/weldingtool))
 				var/obj/item/weapon/weldingtool/WT = I
 				if(WT.remove_fuel(1, user))
-					user << "<span class='notice'>You mend the damaged framework.</span>"
+					to_chat(user, "<span class='notice'>You mend the damaged framework.</span>")
 					playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
 					broken_state++
 		if(GRAV_NEEDS_PLASTEEL)
@@ -197,14 +198,14 @@ var/const/GRAV_NEEDS_WRENCH = 3
 				var/obj/item/stack/sheet/plasteel/PS = I
 				if(PS.amount >= 10)
 					PS.use(10)
-					user << "<span class='notice'>You add the plating to the framework.</span>"
+					to_chat(user, "<span class='notice'>You add the plating to the framework.</span>")
 					playsound(src.loc, 'sound/machines/click.ogg', 75, 1)
 					broken_state++
 				else
-					user << "<span class='notice'>You need 10 sheets of plasteel.</span>"
+					to_chat(user, "<span class='notice'>You need 10 sheets of plasteel.</span>")
 		if(GRAV_NEEDS_WRENCH)
 			if(istype(I, /obj/item/weapon/wrench))
-				user << "<span class='notice'>You secure the plating to the framework.</span>"
+				to_chat(user, "<span class='notice'>You secure the plating to the framework.</span>")
 				playsound(src.loc, 'sound/items/Ratchet.ogg', 75, 1)
 				set_fix()
 		else
@@ -215,17 +216,17 @@ var/const/GRAV_NEEDS_WRENCH = 3
 /obj/machinery/gravity_generator/main/attack_hand(mob/user as mob)
 	if(!..())
 		return interact(user)
-		
+
 /obj/machinery/gravity_generator/main/attack_ai(mob/user as mob)
 	return 1
-	
+
 /obj/machinery/gravity_generator/main/attack_ghost(mob/user as mob)
 	return interact(user)
 
 /obj/machinery/gravity_generator/main/interact(mob/user as mob)
 	if(stat & BROKEN)
 		return
-		
+
 	var/dat = "Gravity Generator Breaker: "
 	if(breaker)
 		dat += "<span class='linkOn'>ON</span> <A href='?src=\ref[src];gentoggle=1'>OFF</A>"
@@ -300,7 +301,7 @@ var/const/GRAV_NEEDS_WRENCH = 3
 			investigate_log("was brought online and is now producing gravity for this level.", "gravity")
 			message_admins("The gravity generator was brought online. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>[area.name]</a>)")
 			for(var/area/A in world)
-				if (!(A.z in config.station_levels)) continue
+				if(!(A.z in config.station_levels)) continue
 				A.gravitychange(1,A)
 	else
 		if(gravity_in_level() == 1)
@@ -308,7 +309,7 @@ var/const/GRAV_NEEDS_WRENCH = 3
 			investigate_log("was brought offline and there is now no gravity for this level.", "gravity")
 			message_admins("The gravity generator was brought offline with no backup generator. (<A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>[area.name]</a>)")
 			for(var/area/A in world)
-				if (!(A.z in config.station_levels)) continue
+				if(!(A.z in config.station_levels)) continue
 				A.gravitychange(0,A)
 
 	update_icon()

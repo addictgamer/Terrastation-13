@@ -16,7 +16,7 @@
 /obj/proc/get_card_account(var/obj/item/weapon/card/I, var/mob/user=null, var/terminal_name="", var/transaction_purpose="", var/require_pin=0)
 	if(terminal_name=="")
 		terminal_name=src.name
-	if (istype(I, /obj/item/weapon/card/id))
+	if(istype(I, /obj/item/weapon/card/id))
 		var/obj/item/weapon/card/id/C = I
 		var/attempt_pin=0
 		var/datum/money_account/D = get_money_account(C.associated_account_number)
@@ -48,7 +48,7 @@
 
 /datum/money_account/proc/charge(var/transaction_amount,var/datum/money_account/dest,var/transaction_purpose, var/terminal_name="", var/terminal_id=0, var/dest_name = "UNKNOWN")
 	if(suspended)
-		usr << "<span class='warning'>Unable to access source account: account suspended.</span>"
+		to_chat(usr, "<span class='warning'>Unable to access source account: account suspended.</span>")
 		return 0
 	
 	if(transaction_amount <= money)
@@ -88,5 +88,5 @@
 		transaction_log.Add(T)
 		return 1
 	else
-		usr << "<span class='warning'>Insufficient funds in account.</span>"
+		to_chat(usr, "<span class='warning'>Insufficient funds in account.</span>")
 		return 0

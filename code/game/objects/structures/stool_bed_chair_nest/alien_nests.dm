@@ -34,7 +34,7 @@
 				"<span class='notice'>You hear squelching...</span>")
 			if(!do_after(M, 1200, target = src))
 				if(M && M.buckled)
-					M << "<span class='warning'>You fail to escape \the [src]!</span>"
+					to_chat(M, "<span class='warning'>You fail to escape \the [src]!</span>")
 				return
 			if(!M.buckled)
 				return
@@ -47,7 +47,7 @@
 
 
 /obj/structure/stool/bed/nest/user_buckle_mob(mob/living/M, mob/living/user)
-	if ( !ismob(M) || (get_dist(src, user) > 1) || (M.loc != src.loc) || user.restrained() || usr.stat || M.buckled || istype(user, /mob/living/silicon/pai) )
+	if( !ismob(M) || (get_dist(src, user) > 1) || (M.loc != src.loc) || user.restrained() || usr.stat || M.buckled || istype(user, /mob/living/silicon/pai) )
 		return
 
 	if(M.get_int_organ(/obj/item/organ/internal/xenos/plasmavessel))

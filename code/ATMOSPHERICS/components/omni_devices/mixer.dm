@@ -84,8 +84,7 @@
 	return 0
 
 /obj/machinery/atmospherics/omni/mixer/process()
-	..()
-	if(!on)
+	if(!..() || !on)
 		return 0
 
 	var/datum/gas_mixture/output_air = output.air
@@ -108,7 +107,7 @@
 
 	for(var/datum/omni_port/P in inputs)
 		if(!P.transfer_moles)
-			return
+			return 1
 		if(P.air.total_moles() < P.transfer_moles)
 			ratio_check = 1
 			continue
@@ -142,7 +141,7 @@
 
 	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data)
 
-	if (!ui)
+	if(!ui)
 		ui = new(user, src, ui_key, "omni_mixer.tmpl", "Omni Mixer Control", 360, 330)
 		ui.set_initial_data(data)
 		ui.open()
@@ -180,7 +179,7 @@
 	return data
 
 /obj/machinery/atmospherics/omni/mixer/Topic(href, href_list)
-	if(..()) 
+	if(..())
 		return 1
 
 	switch(href_list["command"])
@@ -295,4 +294,3 @@
 	for(var/datum/omni_port/P in inputs)
 		if(P.dir == port)
 			P.con_lock = !P.con_lock
-		

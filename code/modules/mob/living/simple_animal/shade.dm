@@ -24,11 +24,11 @@
 	status_flags = 0
 	faction = list("cult")
 	status_flags = CANPUSH
+	loot = list(/obj/item/weapon/reagent_containers/food/snacks/ectoplasm)
 
 
 	death()
 		..()
-		new /obj/item/weapon/reagent_containers/food/snacks/ectoplasm (src.loc)
 		for(var/mob/M in viewers(src, null))
 			if((M.client && !( M.blinded )))
 				M.show_message("\red [src] lets out a contented sigh as their form unwinds. ")
@@ -41,15 +41,15 @@
 		else
 			if(O.force)
 				var/damage = O.force
-				if (O.damtype == STAMINA)
+				if(O.damtype == STAMINA)
 					damage = 0
 				health -= damage
 				for(var/mob/M in viewers(src, null))
-					if ((M.client && !( M.blinded )))
+					if((M.client && !( M.blinded )))
 						M.show_message("\red \b [src] has been attacked with the [O] by [user]. ")
 			else
-				usr << "\red This weapon is ineffective, it does no damage."
+				to_chat(usr, "\red This weapon is ineffective, it does no damage.")
 				for(var/mob/M in viewers(src, null))
-					if ((M.client && !( M.blinded )))
+					if((M.client && !( M.blinded )))
 						M.show_message("\red [user] gently taps [src] with the [O]. ")
 		return

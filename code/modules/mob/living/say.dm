@@ -28,7 +28,8 @@ var/list/department_radio_keys = list(
 	  ":T" = "Syndicate",	"#T" = "Syndicate",		".T" = "Syndicate",
 	  ":U" = "Supply",		"#U" = "Supply",		".U" = "Supply",
 	  ":Z" = "Service",		"#Z" = "Service",		".Z" = "Service",
-	  ":P" = "AI Private",	"#P" = "AI Private",	".P" = "AI Private"
+	  ":P" = "AI Private",	"#P" = "AI Private",	".P" = "AI Private",
+	  ":-" = "Special Ops",		"#-" = "Special Ops",		".-" = "Special Ops"
 )
 
 
@@ -48,14 +49,14 @@ proc/get_radio_key_from_channel(var/channel)
 
 /mob/living/proc/binarycheck()
 
-	if (istype(src, /mob/living/silicon/pai))
+	if(istype(src, /mob/living/silicon/pai))
 		return
 
-	if (!ishuman(src))
+	if(!ishuman(src))
 		return
 
 	var/mob/living/carbon/human/H = src
-	if (H.l_ear || H.r_ear)
+	if(H.l_ear || H.r_ear)
 		var/obj/item/device/radio/headset/dongle
 		if(istype(H.l_ear,/obj/item/device/radio/headset))
 			dongle = H.l_ear
@@ -70,7 +71,7 @@ proc/get_radio_key_from_channel(var/channel)
 /mob/living/proc/handle_speech_problems(var/message, var/verb)
 	var/list/returns[3]
 	var/speech_problem_flag = 0
-
+	var/robot = isSynthetic()
 
 
 	if((HULK in mutations) && health >= 25 && length(message))
@@ -79,18 +80,21 @@ proc/get_radio_key_from_channel(var/channel)
 		speech_problem_flag = 1
 
 	if(slurring)
-		message = slur(message)
+		if(robot)
+			message = slur(message, list("@", "!", "#", "$", "%", "&", "?"))
+		else
+			message = slur(message)
 		verb = "slurs"
 		speech_problem_flag = 1
 	if(stuttering)
-		message = stutter(message)
+		if(robot)
+			message = robostutter(message)
+		else
+			message = stutter(message)
 		verb = "stammers"
 		speech_problem_flag = 1
 
-	if(GREY in mutations)
-		message = "<span class='grey'>[message]</span>"
-
-	else if(COMIC in mutations)
+	if(COMIC in mutations)
 		message = "<span class='sans'>[message]</span>"
 
 	if(!IsVocal())
@@ -119,7 +123,7 @@ proc/get_radio_key_from_channel(var/channel)
 /mob/living/say(var/message, var/datum/language/speaking = null, var/verb = "says", var/alt_name="")
 	if(client)
 		if(client.prefs.muted & MUTE_IC)
-			src << "\red You cannot speak in IC (Muted)."
+			to_chat(src, "\red You cannot speak in IC (Muted).")
 			return
 
 	message = trim_strip_html_properly(message)
@@ -135,8 +139,8 @@ proc/get_radio_key_from_channel(var/channel)
 		return emote(copytext(message,2))
 
 	//parse the radio code and consume it
-	if (message_mode)
-		if (message_mode == "headset")
+	if(message_mode)
+		if(message_mode == "headset")
 			message = copytext(message,2)	//it would be really nice if the parse procs could do this for us.
 		else
 			message = copytext(message,3)
@@ -160,8 +164,13 @@ proc/get_radio_key_from_channel(var/channel)
 	verb = say_quote(message, speaking)
 
 	if(is_muzzled())
-		src << "<span class='danger'>You're muzzled and cannot speak!</span>"
-		return
+		var/obj/item/clothing/mask/muzzle/G = wear_mask
+		if(G.mute) //if the mask is supposed to mute you completely or just muffle you
+			to_chat(src, "<span class='danger'>You're muzzled and cannot speak!</span>")
+			return
+		else
+			message = muffledspeech(message)
+			verb = "mumbles"
 
 	message = trim_left(message)
 
@@ -198,18 +207,18 @@ proc/get_radio_key_from_channel(var/channel)
 		for(var/mob/living/M in hearers(5, src))
 			if((M != src) && msg)
 				M.show_message(msg)
-			if (speech_sound)
+			if(speech_sound)
 				sound_vol *= 0.5
 
 	var/turf/T = get_turf(src)
 
 	//handle nonverbal and sign languages here
-	if (speaking)
-		if (speaking.flags & NONVERBAL)
-			if (prob(30))
+	if(speaking)
+		if(speaking.flags & NONVERBAL)
+			if(prob(30))
 				src.custom_emote(1, "[pick(speaking.signlang_verb)].")
 
-		if (speaking.flags & SIGNLANG)
+		if(speaking.flags & SIGNLANG)
 			return say_signlang(message, pick(speaking.signlang_verb), speaking)
 
 	var/list/listening = list()
@@ -222,7 +231,7 @@ proc/get_radio_key_from_channel(var/channel)
 		if(pressure < SOUND_MINIMUM_PRESSURE)
 			message_range = 1
 
-		if (pressure < ONE_ATMOSPHERE*0.4) //sound distortion pressure, to help clue people in that the air is thin, even if it isn't a vacuum yet
+		if(pressure < ONE_ATMOSPHERE*0.4) //sound distortion pressure, to help clue people in that the air is thin, even if it isn't a vacuum yet
 			italics = 1
 			sound_vol *= 0.5 //muffle the sound a bit, so it's like we're actually talking through contact
 
@@ -242,9 +251,9 @@ proc/get_radio_key_from_channel(var/channel)
 				listening_obj |= O
 
 		for(var/mob/M in player_list)
-			if (!M.client)
+			if(!M.client)
 				continue //skip monkeys and leavers
-			if (istype(M, /mob/new_player))
+			if(istype(M, /mob/new_player))
 				continue
 			if(M.stat == DEAD && M.client && (M.client.prefs.toggles & CHAT_GHOSTEARS) && src.client) // src.client is so that ghosts don't have to listen to mice
 				listening |= M
@@ -275,7 +284,7 @@ proc/get_radio_key_from_channel(var/channel)
 	return 1
 
 /mob/living/proc/say_signlang(var/message, var/verb="gestures", var/datum/language/language)
-	for (var/mob/O in viewers(src, null))
+	for(var/mob/O in viewers(src, null))
 		O.hear_signlang(message, verb, language, src)
 	return 1
 
@@ -311,7 +320,7 @@ proc/get_radio_key_from_channel(var/channel)
 
 	else //everything else failed, emote is probably invalid
 		if(act == "help")	return //except help, because help is handled individually
-		src << "\blue Unusable emote '[act]'. Say *help for a list."
+		to_chat(src, "\blue Unusable emote '[act]'. Say *help for a list.")
 
 /mob/living/whisper(message as text)
 	message = trim_strip_html_properly(message)
@@ -334,10 +343,14 @@ proc/get_radio_key_from_channel(var/channel)
 
 	whisper_say(message, speaking)
 
+// for weird circumstances where you're inside an atom that is also you, like pai's
+/mob/living/proc/get_whisper_loc()
+	return src
+
 /mob/living/proc/whisper_say(var/message, var/datum/language/speaking = null, var/alt_name="", var/verb="whispers")
 	if(client)
 		if(client.prefs.muted & MUTE_IC)
-			src << "<span class='danger'>You cannot speak in IC (Muted).</span>"
+			to_chat(src, "<span class='danger'>You cannot speak in IC (Muted).</span>")
 			return
 
 	if(stat)
@@ -346,7 +359,10 @@ proc/get_radio_key_from_channel(var/channel)
 		return
 
 	if(is_muzzled())
-		src << "<span class='danger'>You're muzzled and cannot speak!</span>"
+		if(istype(wear_mask, /obj/item/clothing/mask/muzzle/tapegag)) //just for tape
+			to_chat(src, "<span class='danger'>Your mouth is taped and you cannot speak!</span>")
+		else
+			to_chat(src, "<span class='danger'>You're muzzled and cannot speak!</span>")
 		return
 
 	var/message_range = 1
@@ -382,7 +398,8 @@ proc/get_radio_key_from_channel(var/channel)
 	if(!message || message=="")
 		return
 
-	var/list/listening = hearers(message_range, src)
+	var/atom/whisper_loc = get_whisper_loc()
+	var/list/listening = hearers(message_range, whisper_loc)
 	listening |= src
 
 	//ghosts
@@ -399,16 +416,16 @@ proc/get_radio_key_from_channel(var/channel)
 				listening += C
 
 	//pass on the message to objects that can hear us.
-	for(var/obj/O in view(message_range, src))
+	for(var/obj/O in view(message_range, whisper_loc))
 		spawn(0)
 			if(O)
 				O.hear_talk(src, message, verb, speaking)
 
-	var/list/eavesdropping = hearers(eavesdropping_range, src)
+	var/list/eavesdropping = hearers(eavesdropping_range, whisper_loc)
 	eavesdropping -= src
 	eavesdropping -= listening
 
-	var/list/watching = hearers(watching_range, src)
+	var/list/watching = hearers(watching_range, whisper_loc)
 	watching  -= src
 	watching  -= listening
 	watching  -= eavesdropping
@@ -436,7 +453,7 @@ proc/get_radio_key_from_channel(var/channel)
 
 	if(watching.len)
 		var/rendered = "<span class='game say'><span class='name'>[src.name]</span> [not_heard].</span>"
-		for (var/mob/M in watching)
+		for(var/mob/M in watching)
 			M.show_message(rendered, 2)
 
 	log_whisper("[src.name]/[src.key] : [message]")

@@ -92,17 +92,17 @@ var/const/INGEST = 2
 	return the_id
 
 /datum/reagents/proc/trans_to(var/target, var/amount=1, var/multiplier=1, var/preserve_data=1)//if preserve_data=0, the reagents data will be lost. Usefull if you use data for some strange stuff and don't want it to be transferred.
-	if (!target)
+	if(!target)
 		return
 	if(src.total_volume <= 0)
 		return
 	var/datum/reagents/R
 	if(istype(target, /obj))
 		var/obj/O = target
-		if (!O.reagents )
+		if(!O.reagents )
 			return
 		R = O.reagents
-	else if (istype(target, /mob/living))
+	else if(istype(target, /mob/living))
 		var/mob/living/M = target
 		if(!M.reagents)
 			return
@@ -115,10 +115,10 @@ var/const/INGEST = 2
 	amount = min(min(amount, src.total_volume), R.maximum_volume-R.total_volume)
 	var/part = amount / src.total_volume
 	var/trans_data = null
-	for (var/datum/reagent/current_reagent in src.reagent_list)
-		if (!current_reagent)
+	for(var/datum/reagent/current_reagent in src.reagent_list)
+		if(!current_reagent)
 			continue
-		if (current_reagent.id == "blood" && ishuman(target))
+		if(current_reagent.id == "blood" && ishuman(target))
 			var/mob/living/carbon/human/H = target
 			H.inject_blood(my_atom, amount)
 			continue
@@ -144,7 +144,7 @@ var/const/INGEST = 2
 	amount = min(min(amount, src.total_volume), R.maximum_volume-R.total_volume)
 	var/part = amount / src.total_volume
 	var/trans_data = null
-	for (var/datum/reagent/current_reagent in src.reagent_list)
+	for(var/datum/reagent/current_reagent in src.reagent_list)
 		var/current_reagent_transfer = current_reagent.volume * part
 		if(preserve_data)
 			trans_data = copy_data(current_reagent)
@@ -157,9 +157,9 @@ var/const/INGEST = 2
 	return amount
 
 /datum/reagents/proc/trans_id_to(var/obj/target, var/reagent, var/amount=1, var/preserve_data=1)//Not sure why this proc didn't exist before. It does now! /N
-	if (!target)
+	if(!target)
 		return
-	if (!target.reagents || src.total_volume<=0 || !src.get_reagent_amount(reagent))
+	if(!target.reagents || src.total_volume<=0 || !src.get_reagent_amount(reagent))
 		return
 
 	var/datum/reagents/R = target.reagents
@@ -167,7 +167,7 @@ var/const/INGEST = 2
 		amount = src.get_reagent_amount(reagent)
 	amount = min(amount, R.maximum_volume-R.total_volume)
 	var/trans_data = null
-	for (var/datum/reagent/current_reagent in src.reagent_list)
+	for(var/datum/reagent/current_reagent in src.reagent_list)
 		if(current_reagent.id == reagent)
 			if(preserve_data)
 				trans_data = copy_data(current_reagent)
@@ -182,7 +182,7 @@ var/const/INGEST = 2
 	return amount
 
 /*
-	if (!target) return
+	if(!target) return
 	var/total_transfered = 0
 	var/current_list_element = 1
 	var/datum/reagents/R = target.reagents
@@ -302,14 +302,14 @@ var/const/INGEST = 2
 					var/list/seen = viewers(4, get_turf(my_atom))
 					for(var/mob/M in seen)
 						if(!C.no_message)
-							M << "\blue \icon[my_atom] [C.mix_message]"
+							to_chat(M, "\blue [bicon(my_atom)] [C.mix_message]")
 
 					if(istype(my_atom, /obj/item/slime_extract))
 						var/obj/item/slime_extract/ME2 = my_atom
 						ME2.Uses--
 						if(ME2.Uses <= 0) // give the notification that the slime core is dead
 							for(var/mob/M in seen)
-								M << "\blue \icon[my_atom] The [my_atom]'s power is consumed in the reaction."
+								to_chat(M, "\blue [bicon(my_atom)] The [my_atom]'s power is consumed in the reaction.")
 								ME2.name = "used slime extract"
 								ME2.desc = "This extract has been used up."
 
@@ -326,14 +326,14 @@ var/const/INGEST = 2
 /datum/reagents/proc/isolate_reagent(var/reagent)
 	for(var/A in reagent_list)
 		var/datum/reagent/R = A
-		if (R.id != reagent)
+		if(R.id != reagent)
 			del_reagent(R.id)
 			update_total()
 
 /datum/reagents/proc/del_reagent(var/reagent)
 	for(var/A in reagent_list)
 		var/datum/reagent/R = A
-		if (R.id == reagent)
+		if(R.id == reagent)
 			if(istype(my_atom, /mob/living))
 				var/mob/living/M = my_atom
 				R.reagent_deleted(M)
@@ -387,45 +387,48 @@ var/const/INGEST = 2
 			can_process = 1
 	return can_process
 
-/datum/reagents/proc/reaction(var/atom/A, var/method=TOUCH, var/volume_modifier=0)
-
+/datum/reagents/proc/reaction(atom/A, method=TOUCH, volume_modifier = 1)
 	switch(method)
 		if(TOUCH)
 			for(var/datum/reagent/R in reagent_list)
 				if(ismob(A))
-					spawn(0)
-						if(!R) return
-						var/check = reaction_check(A, R)
-						if(!check)
-							continue
-						else
-							R.reaction_mob(A, TOUCH, R.volume+volume_modifier)
+					if(!R)
+						return
+					var/check = reaction_check(A, R)
+					if(!check)
+						continue
+					else
+						R.reaction_mob(A, TOUCH, R.volume*volume_modifier)
 				if(isturf(A))
-					spawn(0)
-						if(!R) return
-						else R.reaction_turf(A, R.volume+volume_modifier)
+					if(!R)
+						return
+					else
+						R.reaction_turf(A, R.volume*volume_modifier)
 				if(isobj(A))
-					spawn(0)
-						if(!R) return
-						else R.reaction_obj(A, R.volume+volume_modifier)
+					if(!R)
+						return
+					else
+						R.reaction_obj(A, R.volume*volume_modifier)
 		if(INGEST)
 			for(var/datum/reagent/R in reagent_list)
 				if(ismob(A) && R)
-					spawn(0)
-						if(!R) return
-						var/check = reaction_check(A, R)
-						if(!check)
-							continue
-						else
-							R.reaction_mob(A, INGEST, R.volume+volume_modifier)
+					if(!R)
+						return
+					var/check = reaction_check(A, R)
+					if(!check)
+						continue
+					else
+						R.reaction_mob(A, INGEST, R.volume*volume_modifier)
 				if(isturf(A) && R)
-					spawn(0)
-						if(!R) return
-						else R.reaction_turf(A, R.volume+volume_modifier)
+					if(!R)
+						return
+					else
+						R.reaction_turf(A, R.volume*volume_modifier)
 				if(isobj(A) && R)
-					spawn(0)
-						if(!R) return
-						else R.reaction_obj(A, R.volume+volume_modifier)
+					if(!R)
+						return
+					else
+						R.reaction_obj(A, R.volume*volume_modifier)
 	return
 
 /datum/reagents/proc/add_reagent_list(list/list_reagents, list/data=null) // Like add_reagent but you can enter a list. Format it like this: list("toxin" = 10, "beer" = 15)
@@ -443,7 +446,7 @@ var/const/INGEST = 2
 	for(var/A in reagent_list)
 
 		var/datum/reagent/R = A
-		if (R.id == reagent)
+		if(R.id == reagent)
 			R.volume += amount
 			update_total()
 			my_atom.on_reagent_change()
@@ -479,7 +482,7 @@ var/const/INGEST = 2
 
 	for(var/A in reagent_list)
 		var/datum/reagent/R = A
-		if (R.id == reagent)
+		if(R.id == reagent)
 			R.volume -= amount
 			update_total()
 			if(!safety)//So it does not handle reactions when it need not to
@@ -493,7 +496,7 @@ var/const/INGEST = 2
 
 	for(var/A in reagent_list)
 		var/datum/reagent/R = A
-		if (R.id == reagent)
+		if(R.id == reagent)
 			if(!amount) return R
 			else
 				if(R.volume >= amount) return R
@@ -504,7 +507,7 @@ var/const/INGEST = 2
 /datum/reagents/proc/get_reagent_amount(var/reagent)
 	for(var/A in reagent_list)
 		var/datum/reagent/R = A
-		if (R.id == reagent)
+		if(R.id == reagent)
 			return R.volume
 
 	return 0
@@ -512,7 +515,7 @@ var/const/INGEST = 2
 /datum/reagents/proc/get_reagents()
 	var/res = ""
 	for(var/datum/reagent/A in reagent_list)
-		if (res != "") res += ","
+		if(res != "") res += ","
 		res += A.name
 
 	return res
@@ -552,18 +555,18 @@ var/const/INGEST = 2
 /datum/reagents/proc/get_data(var/reagent_id)
 	for(var/datum/reagent/D in reagent_list)
 		if(D.id == reagent_id)
-			//world << "proffering a data-carrying reagent ([reagent_id])"
+//			to_chat(world, "proffering a data-carrying reagent ([reagent_id])")
 			return D.data
 
 /datum/reagents/proc/set_data(var/reagent_id, var/new_data)
 	for(var/datum/reagent/D in reagent_list)
 		if(D.id == reagent_id)
-			//world << "reagent data set ([reagent_id])"
+//			to_chat(world, "reagent data set ([reagent_id])")
 			D.data = new_data
 
 /datum/reagents/proc/copy_data(var/datum/reagent/current_reagent)
-	if (!current_reagent || !current_reagent.data) return null
-	if (!istype(current_reagent.data, /list)) return current_reagent.data
+	if(!current_reagent || !current_reagent.data) return null
+	if(!istype(current_reagent.data, /list)) return current_reagent.data
 
 	var/list/trans_data = current_reagent.data.Copy()
 

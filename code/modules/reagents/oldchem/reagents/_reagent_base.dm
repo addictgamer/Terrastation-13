@@ -39,12 +39,12 @@
 
 			if(can_become_addicted)
 				if(prob(self.addiction_chance) && !is_type_in_list(self, M.reagents.addiction_list))
-					M << "<span class='danger'>You suddenly feel invigorated and guilty...</span>"
+					to_chat(M, "<span class='danger'>You suddenly feel invigorated and guilty...</span>")
 					var/datum/reagent/new_reagent = new self.type()
 					new_reagent.last_addiction_dose = world.timeofday
 					M.reagents.addiction_list.Add(new_reagent)
 				else if(is_type_in_list(self, M.reagents.addiction_list))
-					M << "<span class='notice'>You feel slightly better, but for how long?</span>"
+					to_chat(M, "<span class='notice'>You feel slightly better, but for how long?</span>")
 					for(var/A in M.reagents.addiction_list)
 						var/datum/reagent/AD = A
 						if(AD && istype(AD, self))
@@ -63,13 +63,11 @@
 	return
 
 /datum/reagent/proc/on_mob_life(var/mob/living/M as mob, var/alien)
-	if(!istype(M, /mob/living)) // YOU'RE A FUCKING RETARD NEO WHY CAN'T YOU JUST FIX THE PROBLEM ON THE REAGENT - Iamgoofball
-		return //Noticed runtime errors from facid trying to damage ghosts, this should fix. --NEO
-				// Certain elements in too large amounts cause side-effects
+	if(!istype(M))
+		return
 	if(holder)
-		holder.remove_reagent(src.id, metabolization_rate) //By default it slowly disappears.
+		holder.remove_reagent(id, metabolization_rate) //By default it slowly disappears.
 		current_cycle++
-	return
 
 // Called when two reagents of the same are mixing.
 /datum/reagent/proc/on_merge(var/data)

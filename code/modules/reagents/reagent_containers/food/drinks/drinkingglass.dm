@@ -4,8 +4,11 @@
 	name = "glass"
 	desc = "Your standard drinking glass."
 	icon_state = "glass_empty"
+	item_state = "drinking_glass"
 	amount_per_transfer_from_this = 10
 	volume = 50
+	lefthand_file = 'icons/goonstation/mob/inhands/items_lefthand.dmi'
+	righthand_file = 'icons/goonstation/mob/inhands/items_righthand.dmi'
 	materials = list(MAT_GLASS=500)
 
 
@@ -89,7 +92,7 @@
 		/*else if(reagents.reagent_list.len == 1)
 			for(var/datum/reagent/R in reagents.reagent_list)
 				switch(R.id)*/
-		if (reagents.reagent_list.len > 0)
+		if(reagents.reagent_list.len > 0)
 			//mrid = R.get_master_reagent_id()
 			switch(reagents.get_master_reagent_id())
 				if("beer")
@@ -180,7 +183,7 @@
 					icon_state = "cognacglass"
 					name = "Glass of cognac"
 					desc = "Damn, you feel like some kind of French aristocrat just by holding this."
-				if ("kahlua")
+				if("kahlua")
 					icon_state = "kahluaglass"
 					name = "Glass of RR coffee Liquor"
 					desc = "DAMN, THIS THING LOOKS ROBUST"
@@ -456,6 +459,10 @@
 					icon_state = "cafe_latte"
 					name = "Cafe Latte"
 					desc = "A nice, strong and refreshing beverage while you are reading."
+				if("cafe_mocha")
+					icon_state = "cafe_latte"
+					name = "Cafe Mocha"
+					desc = "The perfect blend of coffe, milk, and chocolate."
 				if("acidspit")
 					icon_state = "acidspitglass"
 					name = "Acid Spit"

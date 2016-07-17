@@ -132,7 +132,7 @@ td.cost.toomuch {
 
 	src.add_fingerprint(usr)
 
-	if (href_list["buy"])
+	if(href_list["buy"])
 		var/itemID = text2num(href_list["buy"])
 		var/datum/storeitem/item = centcomm_store.items[itemID]
 		var/sure = alert(usr,"Are you sure you wish to purchase [item.name] for $[item.cost]?","You sure?","Yes","No") in list("Yes","No")
@@ -140,8 +140,8 @@ td.cost.toomuch {
 			updateUsrDialog()
 			return
 		if(!centcomm_store.PlaceOrder(usr,itemID))
-			usr << "\red Unable to charge your account."
+			to_chat(usr, "\red Unable to charge your account.")
 		else
-			usr << "\blue You've successfully purchased the item.  It should be in your hands or on the floor."
+			to_chat(usr, "\blue You've successfully purchased the item.  It should be in your hands or on the floor.")
 	src.updateUsrDialog()
 	return

@@ -3,7 +3,7 @@
 	desc = "HONK! brand Bananas. In a special applicator for rapid slipping of wide areas."
 	icon_state = "banana"
 	item_state = "flashbang"
-	w_class = 2.0
+	w_class = 2
 	force = 2.0
 	var/stage = 0
 	var/state = 0
@@ -55,7 +55,7 @@
 	icon = 'icons/obj/items.dmi'
 	icon_state = "banana_peel"
 	item_state = "banana_peel"
-	w_class = 1.0
+	w_class = 1
 	throwforce = 0
 	throw_speed = 4
 	throw_range = 20
@@ -69,7 +69,7 @@
 					if((M:shoes.flags&NOSLIP) || (M:species.bodyflags & FEET_NOSLIP))
 						return
 				else
-					M << "\red Your feet feel like they're on fire!"
+					to_chat(M, "\red Your feet feel like they're on fire!")
 					M.take_overall_damage(0, max(0, (burned - 2)))
 
 			if(!istype(M, /mob/living/carbon/slime) && !isrobot(M))

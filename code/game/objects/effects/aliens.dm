@@ -31,11 +31,13 @@
 	var/resintype = null
 	smooth = SMOOTH_TRUE
 
-
-/obj/structure/alien/resin/New(location)
-	..()
+/obj/structure/alien/resin/initialize()
 	air_update_turf(1)
-	return
+	..()
+
+/obj/structure/alien/resin/Destroy()
+	air_update_turf(1)
+	return ..()
 
 /obj/structure/alien/resin/Move()
 	var/turf/T = loc
@@ -179,7 +181,7 @@
 
 /obj/structure/alien/weeds/Destroy()
 	var/turf/T = loc
-	for (var/obj/structure/alien/weeds/W in range(1,T))
+	for(var/obj/structure/alien/weeds/W in range(1,T))
 		W.updateWeedOverlays()
 	linked_node = null
 	return ..()
@@ -267,7 +269,7 @@
 
 
 /obj/structure/alien/weeds/proc/fullUpdateWeedOverlays()
-	for (var/obj/structure/alien/weeds/W in range(1,src))
+	for(var/obj/structure/alien/weeds/W in range(1,src))
 		W.updateWeedOverlays()
 
 //Weed nodes
@@ -318,19 +320,19 @@
 	if(user.get_int_organ(/obj/item/organ/internal/xenos/plasmavessel))
 		switch(status)
 			if(BURST)
-				user << "<span class='notice'>You clear the hatched egg.</span>"
+				to_chat(user, "<span class='notice'>You clear the hatched egg.</span>")
 				playsound(loc, 'sound/effects/attackblob.ogg', 100, 1)
 				qdel(src)
 				return
 			if(GROWING)
-				user << "<span class='notice'>The child is not developed yet.</span>"
+				to_chat(user, "<span class='notice'>The child is not developed yet.</span>")
 				return
 			if(GROWN)
-				user << "<span class='notice'>You retrieve the child.</span>"
+				to_chat(user, "<span class='notice'>You retrieve the child.</span>")
 				Burst(0)
 				return
 	else
-		user << "<span class='notice'>It feels slimy.</span>"
+		to_chat(user, "<span class='notice'>It feels slimy.</span>")
 		user.changeNext_move(CLICK_CD_MELEE)
 
 

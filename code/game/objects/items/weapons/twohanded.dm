@@ -43,9 +43,9 @@
 		user.update_inv_r_hand()
 		user.update_inv_l_hand()
 	if(isrobot(user))
-		user << "<span class='notice'>You free up your module.</span>"
+		to_chat(user, "<span class='notice'>You free up your module.</span>")
 	else
-		user << "<span class='notice'>You are now carrying the [name] with one hand.</span>"
+		to_chat(user, "<span class='notice'>You are now carrying the [name] with one hand.</span>")
 	if(unwieldsound)
 		playsound(loc, unwieldsound, 50, 1)
 	var/obj/item/weapon/twohanded/offhand/O = user.get_inactive_hand()
@@ -58,10 +58,10 @@
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H.species.is_small)
-			user << "<span class='warning'>It's too heavy for you to wield fully.</span>"
+			to_chat(user, "<span class='warning'>It's too heavy for you to wield fully.</span>")
 			return
 	if(user.get_inactive_hand())
-		user << "<span class='warning'>You need your other hand to be empty!</span>"
+		to_chat(user, "<span class='warning'>You need your other hand to be empty!</span>")
 		return
 	wielded = 1
 	force = force_wielded
@@ -71,10 +71,10 @@
 		user.update_inv_r_hand()
 		user.update_inv_l_hand()
 	if(isrobot(user))
-		user << "<span class='notice'>You dedicate your module to [name].</span>"
+		to_chat(user, "<span class='notice'>You dedicate your module to [name].</span>")
 	else
-		user << "<span class='notice'>You grab the [name] with both hands.</span>"
-	if (wieldsound)
+		to_chat(user, "<span class='notice'>You grab the [name] with both hands.</span>")
+	if(wieldsound)
 		playsound(loc, wieldsound, 50, 1)
 	var/obj/item/weapon/twohanded/offhand/O = new(user) ////Let's reserve his other hand~
 	O.name = "[name] - offhand"
@@ -85,7 +85,7 @@
 /obj/item/weapon/twohanded/mob_can_equip(mob/M, slot)
 	//Cannot equip wielded items.
 	if(wielded)
-		M << "<span class='warning'>Unwield the [name] first!</span>"
+		to_chat(M, "<span class='warning'>Unwield the [name] first!</span>")
 		return 0
 	return ..()
 
@@ -109,7 +109,7 @@
 
 ///////////OFFHAND///////////////
 /obj/item/weapon/twohanded/offhand
-	w_class = 5.0
+	w_class = 5
 	icon_state = "offhand"
 	name = "offhand"
 	flags = ABSTRACT
@@ -120,25 +120,17 @@
 /obj/item/weapon/twohanded/offhand/wield()
 	qdel(src)
 
-/obj/item/weapon/twohanded/offhand/IsShield()//if the actual twohanded weapon is a shield, we count as a shield too!
-	var/mob/user = loc
-	if(!istype(user)) return 0
-	var/obj/item/I = user.get_active_hand()
-	if(I == src) I = user.get_inactive_hand()
-	if(!I) return 0
-	return I.IsShield()
-
 ///////////Two hand required objects///////////////
 //This is for objects that require two hands to even pick up
 /obj/item/weapon/twohanded/required/
-	w_class = 5.0
+	w_class = 5
 
 /obj/item/weapon/twohanded/required/attack_self()
 	return
 
 /obj/item/weapon/twohanded/required/mob_can_equip(M as mob, slot)
 	if(wielded)
-		M << "<span class='warning'>[src.name] is too cumbersome to carry with anything but your hands!</span>"
+		to_chat(M, "<span class='warning'>[src.name] is too cumbersome to carry with anything but your hands!</span>")
 		return 0
 	return ..()
 
@@ -165,7 +157,7 @@
 	throwforce = 15
 	sharp = 1
 	edge = 1
-	w_class = 4.0
+	w_class = 4
 	slot_flags = SLOT_BACK
 	force_unwielded = 5
 	force_wielded = 24
@@ -200,14 +192,15 @@
 	throwforce = 5.0
 	throw_speed = 1
 	throw_range = 5
-	w_class = 2.0
+	w_class = 2
 	force_unwielded = 3
 	force_wielded = 34
 	wieldsound = 'sound/weapons/saberon.ogg'
 	unwieldsound = 'sound/weapons/saberoff.ogg'
-	flags = NOSHIELD
+	armour_penetration = 35
 	origin_tech = "magnets=3;syndicate=4"
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
+	block_chance = 75
 	sharp = 1
 	edge = 1
 	no_embed = 1 // Like with the single-handed esword, this shouldn't be embedding in people.
@@ -222,9 +215,13 @@
 		icon_state = "dualsaber0"
 
 /obj/item/weapon/twohanded/dualsaber/attack(target as mob, mob/living/user as mob)
+	if(HULK in user.mutations)
+		to_chat(user, "<span class='warning'>You grip the blade too hard and accidentally close it!</span>")
+		unwield()
+		return
 	..()
 	if((CLUMSY in user.mutations) && (wielded) &&prob(40))
-		user << "\red You twirl around a bit before losing your balance and impaling yourself on the [src]."
+		to_chat(user, "\red You twirl around a bit before losing your balance and impaling yourself on the [src].")
 		user.take_organ_damage(20,25)
 		return
 	if((wielded) && prob(50))
@@ -233,11 +230,10 @@
 				user.dir = i
 				sleep(1)
 
-/obj/item/weapon/twohanded/dualsaber/IsShield()
+/obj/item/weapon/twohanded/dualsaber/hit_reaction(mob/living/carbon/human/owner, attack_text, final_block_chance)
 	if(wielded)
-		return 1
-	else
-		return 0
+		return ..()
+	return 0
 
 /obj/item/weapon/twohanded/dualsaber/green/New()
 	blade_color = "green"
@@ -259,7 +255,10 @@
 	if(wielded)
 		return 1
 
-/obj/item/weapon/twohanded/dualsaber/wield()
+/obj/item/weapon/twohanded/dualsaber/wield(mob/living/carbon/M) //Specific wield () hulk checks due to reflection chance for balance issues and switches hitsounds.
+	if(HULK in M.mutations)
+		to_chat(M, "<span class='warning'>You lack the grace to wield this!</span>")
+		return
 	..()
 	hitsound = 'sound/weapons/blade1.ogg'
 
@@ -268,11 +267,11 @@
 	if(istype(W, /obj/item/device/multitool))
 		if(hacked == 0)
 			hacked = 1
-			user << "<span class='warning'>2XRNBW_ENGAGE</span>"
+			to_chat(user, "<span class='warning'>2XRNBW_ENGAGE</span>")
 			blade_color = "rainbow"
 			update_icon()
 		else
-			user << "<span class='warning'>It's starting to look like a triple rainbow - no, nevermind.</span>"
+			to_chat(user, "<span class='warning'>It's starting to look like a triple rainbow - no, nevermind.</span>")
 
 //spears
 /obj/item/weapon/twohanded/spear
@@ -280,14 +279,14 @@
 	name = "spear"
 	desc = "A haphazardly-constructed yet still deadly weapon of ancient design."
 	force = 10
-	w_class = 4.0
+	w_class = 4
 	slot_flags = SLOT_BACK
 	force_unwielded = 10
 	force_wielded = 18 // Was 13, Buffed - RR
 	throwforce = 20
 	throw_speed = 3
+	armour_penetration = 10
 	no_spin_thrown = 1 // Thrown spears that spin look dumb. -Fox
-	flags = NOSHIELD
 	attack_verb = list("attacked", "poked", "jabbed", "torn", "gored")
 
 /obj/item/weapon/twohanded/spear/update_icon()
@@ -299,9 +298,9 @@
 	return ..()
 
 //Putting heads on spears
-/obj/item/weapon/organ/head/attackby(var/obj/item/weapon/W, var/mob/living/user, params)
+/obj/item/organ/external/head/attackby(var/obj/item/weapon/W, var/mob/living/user, params)
 	if(istype(W, /obj/item/weapon/twohanded/spear))
-		user << "<span class='notice'>You stick the head onto the spear and stand it upright on the ground.</span>"
+		to_chat(user, "<span class='notice'>You stick the head onto the spear and stand it upright on the ground.</span>")
 		var/obj/structure/headspear/HS = new /obj/structure/headspear(user.loc)
 		var/matrix/M = matrix()
 		src.transform = M
@@ -315,8 +314,8 @@
 	return ..()
 
 /obj/item/weapon/twohanded/spear/attackby(var/obj/item/I, var/mob/living/user)
-	if(istype(I, /obj/item/weapon/organ/head))
-		user << "<span class='notice'>You stick the head onto the spear and stand it upright on the ground.</span>"
+	if(istype(I, /obj/item/organ/external/head))
+		to_chat(user, "<span class='notice'>You stick the head onto the spear and stand it upright on the ground.</span>")
 		var/obj/structure/headspear/HS = new /obj/structure/headspear(user.loc)
 		var/matrix/M = matrix()
 		I.transform = M
@@ -339,7 +338,7 @@
 /obj/structure/headspear/attack_hand(mob/living/user)
 	user.visible_message("<span class='warning'>[user] kicks over \the [src]!</span>", "<span class='danger'>You kick down \the [src]!</span>")
 	new /obj/item/weapon/twohanded/spear(user.loc)
-	for(var/obj/item/weapon/organ/head/H in src)
+	for(var/obj/item/organ/external/head/H in src)
 		H.loc = user.loc
 	qdel(src)
 
@@ -357,12 +356,12 @@
 	throwforce = 15
 	throw_speed = 1
 	throw_range = 5
-	w_class = 4.0 // can't fit in backpacks
+	w_class = 4 // can't fit in backpacks
 	force_unwielded = 15 //still pretty robust
 	force_wielded = 40  //you'll gouge their eye out! Or a limb...maybe even their entire body!
 	wieldsound = 'sound/weapons/chainsawstart.ogg'
 	hitsound = null
-	flags = NOSHIELD
+	armour_penetration = 35
 	origin_tech = "materials=6;syndicate=4"
 	attack_verb = list("sawed", "cut", "hacked", "carved", "cleaved", "butchered", "felled", "timbered")
 	sharp = 1
@@ -571,7 +570,7 @@
 				Z.ex_act(2)
 				charged = 3
 				playsound(user, 'sound/weapons/marauder.ogg', 50, 1)
-			else if (istype(A, /obj/structure) || istype(A, /obj/mecha/))
+			else if(istype(A, /obj/structure) || istype(A, /obj/mecha/))
 				var/obj/Z = A
 				Z.ex_act(2)
 				charged = 3

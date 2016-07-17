@@ -19,7 +19,7 @@ var/global/list/default_pai_software = list()
 		var/datum/pai_software/P = new type()
 		if(pai_software_by_key[P.id])
 			var/datum/pai_software/O = pai_software_by_key[P.id]
-			world << "<span class='warning'>pAI software module [P.name] has the same key as [O.name]!</span>"
+			to_chat(world, "<span class='warning'>pAI software module [P.name] has the same key as [O.name]!</span>")
 			r = 0
 			continue
 		pai_software_by_key[P.id] = P
@@ -85,7 +85,7 @@ var/global/list/default_pai_software = list()
 	data["current_emotion"] = card.current_emotion
 
 	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
-	if (!ui)
+	if(!ui)
 		ui = new(user, src, ui_key, "pai_interface.tmpl", "pAI Software Interface", 450, 600)
 		ui.set_initial_data(data)
 		ui.open()

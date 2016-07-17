@@ -18,7 +18,7 @@
 /obj/item/device/mmi/posibrain/attack_self(mob/user as mob)
 	if(brainmob && !brainmob.key && searching == 0)
 		//Start the process of searching for a new user.
-		user << "\blue You carefully locate the manual activation switch and start the positronic brain's boot process."
+		to_chat(user, "\blue You carefully locate the manual activation switch and start the positronic brain's boot process.")
 		icon_state = "posibrain-searching"
 		ghost_volunteers.Cut()
 		src.searching = 1
@@ -32,23 +32,21 @@
 	else
 		if(silenced)
 			silenced = 0
-			user << "<span class='notice'>You toggle the speaker to 'on', on the [src].</span>"
+			to_chat(user, "<span class='notice'>You toggle the speaker to 'on', on the [src].</span>")
 			desc = "A cube of shining metal, four inches to a side and covered in shallow grooves. The speaker switch is set to 'on'."
 			if(brainmob && brainmob.key)
-				brainmob << "<span class='warning'>Your internal speaker has been toggled to 'on'.</span>"
+				to_chat(brainmob, "<span class='warning'>Your internal speaker has been toggled to 'on'.</span>")
 		else
 			silenced = 1
-			user << "<span class='notice'>You toggle the speaker to 'off', on the [src].</span>"
+			to_chat(user, "<span class='notice'>You toggle the speaker to 'off', on the [src].</span>")
 			desc = "A cube of shining metal, four inches to a side and covered in shallow grooves. The speaker switch is set to 'off'."
 			if(brainmob && brainmob.key)
-				brainmob << "<span class='warning'>Your internal speaker has been toggled to 'off'.</span>"
+				to_chat(brainmob, "<span class='warning'>Your internal speaker has been toggled to 'off'.</span>")
 
 /obj/item/device/mmi/posibrain/proc/request_player()
 	for(var/mob/dead/observer/O in player_list)
 		if(check_observer(O))
-			O << "<span class='boldnotice'>\A [src] has been activated. (<a href='?src=\ref[O];jump=\ref[src]'>Teleport</a> | <a href='?src=\ref[src];signup=\ref[O]'>Sign Up</a>)</span>"
-//			if(ROLE_POSIBRAIN in O.client.prefs.be_special) The Guardian implementation looks cleaner
-//				question(O.client)
+			to_chat(O, "<span class='boldnotice'>\A [src] has been activated. (<a href='?src=\ref[O];jump=\ref[src]'>Teleport</a> | <a href='?src=\ref[src];signup=\ref[O]'>Sign Up</a>)</span>")
 
 /obj/item/device/mmi/posibrain/proc/check_observer(var/mob/dead/observer/O)
 	if(O.has_enabled_antagHUD == 1 && config.antag_hud_restricted)
@@ -66,7 +64,7 @@
 		if(!C || brainmob.key || 0 == searching)	return		//handle logouts that happen whilst the alert is waiting for a response, and responses issued after a brain has been located.
 		if(response == "Yes")
 			transfer_personality(C.mob)
-		else if (response == "Never for this round")
+		else if(response == "Never for this round")
 			C.prefs.be_special -= ROLE_POSIBRAIN
 
 // This should not ever happen, but let's be safe
@@ -86,7 +84,7 @@
 		brainmob.mind.assigned_role = "Positronic Brain"
 	if(H.mind)
 		H.mind.transfer_to(brainmob)
-	brainmob << "<span class='notice'>You feel slightly disoriented. That's normal when you're just a metal cube.</span>"
+	to_chat(brainmob, "<span class='notice'>You feel slightly disoriented. That's normal when you're just a metal cube.</span>")
 	icon_state = "posibrain-occupied"
 	return
 
@@ -95,13 +93,13 @@
 	src.brainmob.key = candidate.key
 	src.name = "positronic brain ([src.brainmob.name])"
 
-	src.brainmob << "<b>You are a positronic brain, brought into existence on [station_name()].</b>"
-	src.brainmob << "<b>As a synthetic intelligence, you answer to all crewmembers, as well as the AI.</b>"
-	src.brainmob << "<b>Remember, the purpose of your existence is to serve the crew and the station. Above all else, do no harm.</b>"
+	to_chat(src.brainmob, "<b>You are a positronic brain, brought into existence on [station_name()].</b>")
+	to_chat(src.brainmob, "<b>As a synthetic intelligence, you answer to all crewmembers, as well as the AI.</b>")
+	to_chat(src.brainmob, "<b>Remember, the purpose of your existence is to serve the crew and the station. Above all else, do no harm.</b>")
 	src.brainmob.mind.assigned_role = "Positronic Brain"
 
 	var/turf/T = get_turf_or_move(src.loc)
-	for (var/mob/M in viewers(T))
+	for(var/mob/M in viewers(T))
 		M.show_message("\blue The positronic brain chimes quietly.")
 	icon_state = "posibrain-occupied"
 
@@ -112,7 +110,7 @@
 	icon_state = "posibrain"
 
 	var/turf/T = get_turf_or_move(src.loc)
-	for (var/mob/M in viewers(T))
+	for(var/mob/M in viewers(T))
 		M.show_message("\blue The positronic brain buzzes quietly, and the golden lights fade away. Perhaps you could try again?")
 
 /obj/item/device/mmi/posibrain/Topic(href,href_list)
@@ -123,34 +121,35 @@
 
 /obj/item/device/mmi/posibrain/proc/volunteer(var/mob/dead/observer/O)
 	if(!searching)
-		O << "Not looking for a ghost, yet."
+		to_chat(O, "Not looking for a ghost, yet.")
 		return
 	if(!istype(O))
-		O << "\red Error."
+		to_chat(O, "\red Error.")
 		return
 	if(O in ghost_volunteers)
-		O << "\blue Removed from registration list."
+		to_chat(O, "\blue Removed from registration list.")
 		ghost_volunteers.Remove(O)
 		return
 	if(!check_observer(O))
-		O << "\red You cannot be \a [src]."
+		to_chat(O, "\red You cannot be \a [src].")
 		return
 	if(O.has_enabled_antagHUD == 1 && config.antag_hud_restricted)
-		O << "\red Upon using the antagHUD you forfeited the ability to join the round."
+		to_chat(O, "\red Upon using the antagHUD you forfeited the ability to join the round.")
 		return
 	if(jobban_isbanned(O, "Cyborg") || jobban_isbanned(O,"nonhumandept"))
-		O << "\red You are job banned from this role."
+		to_chat(O, "\red You are job banned from this role.")
 		return
-	O.<< "\blue You've been added to the list of ghosts that may become this [src].  Click again to unvolunteer."
+	to_chat(O., "\blue You've been added to the list of ghosts that may become this [src].  Click again to unvolunteer.")
 	ghost_volunteers.Add(O)
 
 
 /obj/item/device/mmi/posibrain/examine(mob/user)
+	to_chat(user, "<span class='info'>*---------*</span>")
 	if(!..(user))
+		to_chat(user, "<span class='info'>*---------*</span>")
 		return
 
-	var/msg = "<span class='info'>*---------*\nThis is \icon[src] \a <EM>[src]</EM>!\n[desc]\n"
-	msg += "<span class='warning'>"
+	var/msg = "<span class='info'>"
 
 	if(src.brainmob && src.brainmob.key)
 		switch(src.brainmob.stat)
@@ -160,8 +159,8 @@
 			if(DEAD)			msg += "<span class='deadsay'>It appears to be completely inactive.</span>\n"
 	else
 		msg += "<span class='deadsay'>It appears to be completely inactive.</span>\n"
-	msg += "<span class='info'>*---------*</span>"
-	user << msg
+	msg += "*---------*</span>"
+	to_chat(user, msg)
 
 /obj/item/device/mmi/posibrain/emp_act(severity)
 	if(!src.brainmob)
@@ -194,7 +193,7 @@
 		volunteer(O)
 	else
 		var/turf/T = get_turf_or_move(src.loc)
-		for (var/mob/M in viewers(T))
+		for(var/mob/M in viewers(T))
 			M.show_message("\blue The positronic brain pings softly.")
 
 /obj/item/device/mmi/posibrain/ipc

@@ -8,6 +8,7 @@ var/global/datum/controller/process/timer/timer_master
 	name = "timer"
 	schedule_interval = 5 //every 0.5 seconds
 	timer_master = src
+	log_startup_progress("Timer process starting up.")
 
 /datum/controller/process/timer/statProcess()
 	..()
@@ -28,7 +29,8 @@ var/global/datum/controller/process/timer/timer_master
 
 /datum/controller/process/timer/proc/runevent(datum/timedevent/event)
 	set waitfor = 0
-	call(event.thingToCall, event.procToCall)(arglist(event.argList))
+	if(event.thingToCall)
+		call(event.thingToCall, event.procToCall)(arglist(event.argList))
 
 /datum/timedevent
 	var/thingToCall
@@ -60,7 +62,7 @@ var/global/datum/controller/process/timer/timer_master
 	event.thingToCall = thingToCall
 	event.procToCall = procToCall
 	event.timeToRun = world.time + wait
-	event.hash = list2text(args)
+	event.hash = jointext(args, null)
 	if(args.len > 4)
 		event.argList = args.Copy(5)
 

@@ -1,27 +1,26 @@
 /mob/living/carbon/human/attack_hand(mob/living/carbon/human/M as mob)
-	if (istype(loc, /turf) && istype(loc.loc, /area/start))
-		M << "No attacking people at spawn, you jackass."
+	if(istype(loc, /turf) && istype(loc.loc, /area/start))
+		to_chat(M, "No attacking people at spawn, you jackass.")
 		return
 
 	if(frozen)
-		M << "\red Do not touch Admin-Frozen people."
+		to_chat(M, "\red Do not touch Admin-Frozen people.")
 		return
 
 	var/mob/living/carbon/human/H = M
 	if(istype(H))
 		var/obj/item/organ/external/temp = H.organs_by_name["r_hand"]
-		if (H.hand)
+		if(H.hand)
 			temp = H.organs_by_name["l_hand"]
 		if(!temp || !temp.is_usable())
-			H << "\red You can't use your hand."
+			to_chat(H, "\red You can't use your hand.")
 			return
 
 	..()
 
-	if((M != src) && check_shields(0, M.name))
+	if((M != src) && M.a_intent != "help" && check_shields(0, M.name, attack_type = UNARMED_ATTACK))
 		add_logs(src, M, "attempted to touch")
-		M.do_attack_animation(src)
-		visible_message("\red <B>[M] attempted to touch [src]!</B>")
+		visible_message("<span class='warning'>[M] attempted to touch [src]!</span>")
 		return 0
 
 		if(istype(M.gloves , /obj/item/clothing/gloves/boxing/hologlove))
@@ -55,6 +54,8 @@
 
 	switch(M.a_intent)
 		if(I_HELP)
+			if(attacker_style && attacker_style.help_act(H, src))//adminfu only...
+				return 1
 			if(can_operate(src))
 				if(health >= config.health_threshold_crit)
 					if(src.surgeries.len)
@@ -70,16 +71,16 @@
 				add_logs(src, M, "shaked")
 				return 1
 			if(!H.check_has_mouth())
-				H << "<span class='danger'>You don't have a mouth, you cannot perform CPR!</span>"
+				to_chat(H, "<span class='danger'>You don't have a mouth, you cannot perform CPR!</span>")
 				return
 			if(!check_has_mouth())
-				H << "<span class='danger'>They don't have a mouth, you cannot perform CPR!</span>"
+				to_chat(H, "<span class='danger'>They don't have a mouth, you cannot perform CPR!</span>")
 				return
 			if((M.head && (M.head.flags & HEADCOVERSMOUTH)) || (M.wear_mask && (M.wear_mask.flags & MASKCOVERSMOUTH) && !M.wear_mask.mask_adjusted))
-				M << "<span class='warning'>Remove your mask!</span>"
+				to_chat(M, "<span class='warning'>Remove your mask!</span>")
 				return 0
 			if((head && (head.flags & HEADCOVERSMOUTH)) || (wear_mask && (wear_mask.flags & MASKCOVERSMOUTH) && !wear_mask.mask_adjusted))
-				M << "<span class='warning'>Remove his mask!</span>"
+				to_chat(M, "<span class='warning'>Remove his mask!</span>")
 				return 0
 
 			M.visible_message("<span class='danger'>\The [M] is trying to perform CPR on \the [src]!</span>", \
@@ -92,12 +93,12 @@
 					M.visible_message("<span class='danger'>\The [M] performs CPR on \the [src]!</span>", \
 									  "<span class='notice'>You perform CPR on \the [src].</span>")
 
-					src << "<span class='notice'>You feel a breath of fresh air enter your lungs. It feels good.</span>"
-					M << "<span class='alert'>Repeat at least every 7 seconds."
+					to_chat(src, "<span class='notice'>You feel a breath of fresh air enter your lungs. It feels good.</span>")
+					to_chat(M, "<span class='alert'>Repeat at least every 7 seconds.")
 					add_logs(src, M, "CPRed")
 					return 1
 			else
-				M << "<span class='danger'>You need to stay still while performing CPR!</span>"
+				to_chat(M, "<span class='danger'>You need to stay still while performing CPR!</span>")
 
 		if(I_GRAB)
 			if(attacker_style && attacker_style.grab_act(H, src))
@@ -107,35 +108,33 @@
 				return 1
 
 		if(I_HARM)
+			//Vampire code
+			if(M.mind && M.mind.vampire && (M.mind in ticker.mode.vampires) && !M.mind.vampire.draining && M.zone_sel && M.zone_sel.selecting == "head" && src != M)
+				if((head && (head.flags & HEADCOVERSMOUTH)) || (wear_mask && (wear_mask.flags & MASKCOVERSMOUTH)))
+					to_chat(M, "<span class='warning'>Remove their mask!</span>")
+					return
+				if((M.head && (M.head.flags & HEADCOVERSMOUTH)) || (M.wear_mask && (M.wear_mask.flags & MASKCOVERSMOUTH)))
+					to_chat(M, "<span class='warning'>Remove your mask!</span>")
+					return
+				if(mind && mind.vampire && (mind in ticker.mode.vampires))
+					to_chat(M, "<span class='warning'>Your fangs fail to pierce [src.name]'s cold flesh</span>")
+					return
+				if(SKELETON in mutations)
+					to_chat(M, "<span class='warning'>There is no blood in a skeleton!</span>")
+					return
+				if(issmall(src) && !ckey) //Monkeyized humans are okay, humanized monkeys are okey, monkeys are not.
+					to_chat(M, "<span class='warning'>Blood from a monkey is useless!</span>")
+					return
+				//we're good to suck the blood, blaah
+				M.mind.vampire.handle_bloodsucking(src)
+				add_logs(src, M, "vampirebit")
+				msg_admin_attack("[key_name_admin(M)] vampirebit [key_name_admin(src)]")
+				return
+				//end vampire codes
 			if(attacker_style && attacker_style.harm_act(H, src))
 				return 1
 			else
 				var/datum/unarmed_attack/attack = M.species.unarmed
-
-				//Vampire code
-				if(M.zone_sel && M.zone_sel.selecting == "head" && src != M)
-					if(M.mind && M.mind.vampire && (M.mind in ticker.mode.vampires) && !M.mind.vampire.draining)
-						if((head && (head.flags & HEADCOVERSMOUTH)) || (wear_mask && (wear_mask.flags & MASKCOVERSMOUTH)))
-							M << "<span class='warning'>Remove their mask!</span>"
-							return 0
-						if((M.head && (M.head.flags & HEADCOVERSMOUTH)) || (M.wear_mask && (M.wear_mask.flags & MASKCOVERSMOUTH)))
-							M << "<span class='warning'>Remove your mask!</span>"
-							return 0
-						if(mind && mind.vampire && (mind in ticker.mode.vampires))
-							M << "<span class='warning'>Your fangs fail to pierce [src.name]'s cold flesh</span>"
-							return 0
-						if(SKELETON in mutations)
-							M << "<span class='warning'>There is no blood in a skeleton!</span>"
-							return 0
-						if(issmall(src) && !ckey) //Monkeyized humans are okay, humanized monkeys are okey, monkeys are not.
-							M << "<span class='warning'>Blood from a monkey is useless!</span>"
-							return 0
-						//we're good to suck the blood, blaah
-						M.mind.vampire.handle_bloodsucking(src)
-						add_logs(src, M, "vampirebit")
-						msg_admin_attack("[key_name_admin(M)] vampirebit [key_name_admin(src)]")
-						return
-				//end vampire codes
 
 				M.do_attack_animation(src)
 				add_logs(src, M, "[pick(attack.attack_verb)]ed")
@@ -183,7 +182,7 @@
 					w_uniform.add_fingerprint(M)
 				var/obj/item/organ/external/affecting = get_organ(ran_zone(M.zone_sel.selecting))
 				var/randn = rand(1, 100)
-				if (randn <= 25)
+				if(randn <= 25)
 					apply_effect(2, WEAKEN, run_armor_check(affecting, "melee"))
 					playsound(loc, 'sound/weapons/thudswoosh.ogg', 50, 1, -1)
 					visible_message("\red <B>[M] has pushed [src]!</B>")

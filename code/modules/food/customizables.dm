@@ -324,12 +324,12 @@
 
 /obj/item/weapon/reagent_containers/food/snacks/customizable/attackby(obj/item/I, mob/user, params)
 	if(src.contents.len > sandwich_limit)
-		user << "<span class='warning'>If you put anything else in or on [src] it's going to make a mess.</span>"
+		to_chat(user, "<span class='warning'>If you put anything else in or on [src] it's going to make a mess.</span>")
 		return
 	if(!istype(I, /obj/item/weapon/reagent_containers/food/snacks))
-		user << "\The [I] isn't exactly something that you would want to eat."
+		to_chat(user, "\The [I] isn't exactly something that you would want to eat.")
 		return
-	user << "<span class='notice'>You add [I] to [src].</span>"
+	to_chat(user, "<span class='notice'>You add [I] to [src].</span>")
 	if(istype(I,  /obj/item/weapon/reagent_containers/))
 		var/obj/item/weapon/reagent_containers/F = I
 		F.reagents.trans_to(src, F.reagents.total_volume)
@@ -386,7 +386,7 @@
 	..(user)
 	var/whatsinside = pick(ingredients)
 
-	user << "<span class='notice'> You think you can see [whatsinside] in there.</span>"
+	to_chat(user, "<span class='notice'> You think you can see [whatsinside] in there.</span>")
 
 /*
 /obj/item/weapon/reagent_containers/food/snacks/customizable/attack(mob/M as mob, mob/user as mob, def_zone) //SNOOOOOOOWFLAAAAAAAAAAAAAAAAAKES
@@ -402,7 +402,7 @@
 		H = M
 
 	if(H && shard && M == user) //This needs a check for feeding the food to other people, but that could be abusable.
-		H << "\red You lacerate your mouth on a [shard.name] in the sandwich!"
+		to_chat(H, "\red You lacerate your mouth on a [shard.name] in the sandwich!")
 		H.adjustBruteLoss(5) //TODO: Target head if human.
 	..()
 */
@@ -425,24 +425,24 @@
 			continue
 
 
-		if (istype(ing, /obj/item/weapon/reagent_containers/food/snacks/customizable))				// split the ingredients into ones with basenames (sandwich, burger, etc) and ones without, keeping track of how many of each there are
+		if(istype(ing, /obj/item/weapon/reagent_containers/food/snacks/customizable))				// split the ingredients into ones with basenames (sandwich, burger, etc) and ones without, keeping track of how many of each there are
 			var/obj/item/weapon/reagent_containers/food/snacks/customizable/gettype = ing
-			if (unsortedtypes[gettype.basename])
+			if(unsortedtypes[gettype.basename])
 				unsortedtypes[gettype.basename]++
-				if (unsortedtypes[gettype.basename] > ct)
+				if(unsortedtypes[gettype.basename] > ct)
 					ct = unsortedtypes[gettype.basename]
 			else
 				(unsortedtypes[gettype.basename]) = 1
-				if (unsortedtypes[gettype.basename] > ct)
+				if(unsortedtypes[gettype.basename] > ct)
 					ct = unsortedtypes[gettype.basename]
 		else
 			if(unsorteditems[ing.name])
 				unsorteditems[ing.name]++
-				if (unsorteditems[ing.name] > ci)
+				if(unsorteditems[ing.name] > ci)
 					ci = unsorteditems[ing.name]
 			else
 				unsorteditems[ing.name] = 1
-				if (unsorteditems[ing.name] > ci)
+				if(unsorteditems[ing.name] > ci)
 					ci = unsorteditems[ing.name]
 
 	sorteditems = sortlist(unsorteditems, ci)				//order both types going from the lowest number to the highest number
@@ -450,30 +450,30 @@
 
 	for(var/ings in sorteditems)			   //add the non-basename items to the name, sorting out the , and the and
 		c++
-		if (c == sorteditems.len - 1)
+		if(c == sorteditems.len - 1)
 			seperator = " and "
-		else if (c == sorteditems.len)
+		else if(c == sorteditems.len)
 			seperator = " "
 		else
 			seperator = ", "
 
-		if (sorteditems[ings] > levels.len)
+		if(sorteditems[ings] > levels.len)
 			sorteditems[ings] = levels.len
 
-		if (sorteditems[ings] <= 1)
+		if(sorteditems[ings] <= 1)
 			sendback +="[ings][seperator]"
 		else
 			sendback +="[levels[sorteditems[ings]]] [ings][seperator]"
 
-	for (var/ingtype in sortedtypes)   // now add the types basenames, keeping the src one seperate so it can go on the end
-		if (sortedtypes[ingtype] > levels.len)
+	for(var/ingtype in sortedtypes)   // now add the types basenames, keeping the src one seperate so it can go on the end
+		if(sortedtypes[ingtype] > levels.len)
 			sortedtypes[ingtype] = levels.len
-		if (ingtype == basename)
-			if (sortedtypes[ingtype] < levels.len)
+		if(ingtype == basename)
+			if(sortedtypes[ingtype] < levels.len)
 				sortedtypes[ingtype]++
 			endpart = "[levels[sortedtypes[ingtype]]] decker [basename]"
 			continue
-		if (sortedtypes[ingtype] >= 2)
+		if(sortedtypes[ingtype] >= 2)
 			sendback += "[levels[sortedtypes[ingtype]]] decker [ingtype] "
 		else
 			sendback += "[ingtype] "
@@ -491,7 +491,7 @@
 	var/sorted[0]
 	for(var/i = 1, i<= highest, i++)
 		for(var/it in unsorted)
-			if (unsorted[it] == i)
+			if(unsorted[it] == i)
 				sorted[it] = i
 	return sorted
 

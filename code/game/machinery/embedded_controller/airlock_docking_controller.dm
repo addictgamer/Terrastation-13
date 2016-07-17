@@ -26,7 +26,7 @@
 
 	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data, force_open)
 
-	if (!ui)
+	if(!ui)
 		ui = new(user, src, ui_key, "docking_airlock_console.tmpl", name, 470, 290)
 		ui.set_initial_data(data)
 		ui.open()
@@ -71,8 +71,8 @@
 	airlock_program.master_prog = src
 
 /datum/computer/file/embedded_program/docking/airlock/receive_user_command(command)
-	if (command == "toggle_override")
-		if (override_enabled)
+	if(command == "toggle_override")
+		if(override_enabled)
 			disable_override()
 		else
 			enable_override()
@@ -120,7 +120,7 @@
 	var/datum/computer/file/embedded_program/docking/airlock/master_prog
 
 /datum/computer/file/embedded_program/airlock/docking/receive_user_command(command)
-	if (master_prog.undocked() || master_prog.override_enabled)	//only allow the port to be used as an airlock if nothing is docked here or the override is enabled
+	if(master_prog.undocked() || master_prog.override_enabled)	//only allow the port to be used as an airlock if nothing is docked here or the override is enabled
 		..(command)
 
 /datum/computer/file/embedded_program/airlock/docking/proc/enable_mech_regulators()
@@ -134,22 +134,22 @@
 	toggleDoor(memory["exterior_status"], tag_exterior_door, memory["secure"], "open")
 
 /datum/computer/file/embedded_program/airlock/docking/cycleDoors(var/target)
-	if (master_prog.undocked() || master_prog.override_enabled)	//only allow the port to be used as an airlock if nothing is docked here or the override is enabled
+	if(master_prog.undocked() || master_prog.override_enabled)	//only allow the port to be used as an airlock if nothing is docked here or the override is enabled
 		..(target)
 
 /*** DEBUG VERBS ***
 
 /datum/computer/file/embedded_program/docking/proc/print_state()
-	world << "id_tag: [id_tag]"
-	world << "dock_state: [dock_state]"
-	world << "control_mode: [control_mode]"
-	world << "tag_target: [tag_target]"
-	world << "response_sent: [response_sent]"
+	to_chat(world, "id_tag: [id_tag]")
+	to_chat(world, "dock_state: [dock_state]")
+	to_chat(world, "control_mode: [control_mode]")
+	to_chat(world, "tag_target: [tag_target]")
+	to_chat(world, "response_sent: [response_sent]")
 
 /datum/computer/file/embedded_program/docking/post_signal(datum/signal/signal, comm_line)
-	world << "Program [id_tag] sent a message!"
+	to_chat(world, "Program [id_tag] sent a message!")
 	print_state()
-	world << "[id_tag] sent command \"[signal.data["command"]]\" to \"[signal.data["recipient"]]\""
+	to_chat(world, "[id_tag] sent command \"[signal.data["command"]]\" to \"[signal.data["recipient"]]\"")
 	..(signal)
 
 /obj/machinery/embedded_controller/radio/airlock/docking_port/verb/view_state()

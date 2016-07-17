@@ -9,7 +9,7 @@
 		return
 
 	garbageCollector.del_everything = !garbageCollector.del_everything
-	// world << "<b>GC: qdel turned [garbageCollector.del_everything ? "off" : "on"].</b>"
+//	to_chat(world, "<b>GC: qdel turned [garbageCollector.del_everything ? "off" : "on"].</b>")
 	log_admin("[key_name(usr)] turned qdel [garbageCollector.del_everything ? "off" : "on"].")
 	message_admins("\blue [key_name_admin(usr)] turned qdel [garbageCollector.del_everything ? "off" : "on"].", 1)
 
@@ -44,12 +44,12 @@
 		return
 
 	if(!gc_hard_del_types || !gc_hard_del_types.len)
-		usr << "<span class='notice'>No hard del()'d types found.</span>"
+		to_chat(usr, "<span class='notice'>No hard del()'d types found.</span>")
 		return
 
-	usr << "Types hard del()'d by the GC:"
+	to_chat(usr, "Types hard del()'d by the GC:")
 	for(var/A in gc_hard_del_types)
-	 usr << "[A]"
+		to_chat(usr, "[A]")
 
 // Profiling stuff
 var/global/del_profiling = 0
@@ -71,17 +71,17 @@ var/global/list/ghdels_profiled = list()
 		code = 2
 	switch(code)
 		if(0) // Directly deleted (skipped the GC queue entirely)
-			if (!("[type]" in dels_profiled))
+			if(!("[type]" in dels_profiled))
 				dels_profiled["[type]"] = 0
 
 			dels_profiled["[type]"] += 1
 		if(1) // Hard-deleted by the GC
-			if (!("[type]" in ghdels_profiled))
+			if(!("[type]" in ghdels_profiled))
 				ghdels_profiled["[type]"] = 0
 
 			ghdels_profiled["[type]"] += 1
 		if(2) // qdel'd and garbage collected by BYOND
-			if (!("[type]" in gdels_profiled))
+			if(!("[type]" in gdels_profiled))
 				gdels_profiled["[type]"] = 0
 
 			gdels_profiled["[type]"] += 1
@@ -117,7 +117,7 @@ var/global/list/ghdels_profiled = list()
 		L.Swap(i,s)
 
 	var/dat = "<table border='1' id='[anchorid]'><tr><th colspan='2'>[header]</th></tr>"
-	for (var/t in L)
+	for(var/t in L)
 		dat +="<tr><td>[L[t]]</td><td>[t]</td></tr>"
 	dat += "</table>"
 	return dat
@@ -169,7 +169,7 @@ var/global/list/ghdels_profiled = list()
 	if(usr && usr.client)
 		usr.client.running_find_references = null
 	running_find_references = null
-	
+
 /client/verb/purge_all_destroyed_objects()
 	set category = "Debug"
 	if(garbageCollector)
@@ -190,4 +190,3 @@ var/global/list/ghdels_profiled = list()
 	if(!running_find_references)
 		find_references(remove_from_queue = FALSE)
 #endif
-	

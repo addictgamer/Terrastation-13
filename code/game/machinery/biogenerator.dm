@@ -67,15 +67,15 @@
 /obj/machinery/biogenerator/attackby(var/obj/item/O as obj, var/mob/user as mob, params)
 	if(istype(O, /obj/item/weapon/reagent_containers/glass) && !panel_open)
 		if(beaker)
-			user << "<span class='warning'>A container is already loaded into the machine.</span>"
+			to_chat(user, "<span class='warning'>A container is already loaded into the machine.</span>")
 			return
 		else
 			if(!user.drop_item())
-				user << "<span class='warning'>\The [O] is stuck to you!</span>"
+				to_chat(user, "<span class='warning'>\The [O] is stuck to you!</span>")
 				return
 			O.forceMove(src)
 			beaker = O
-			user << "<span class='notice'>You add the container to the machine.</span>"
+			to_chat(user, "<span class='notice'>You add the container to the machine.</span>")
 			updateUsrDialog()
 			update_icon()
 			return
@@ -93,15 +93,15 @@
 
 	else if(istype(O, /obj/item/weapon/crowbar))
 	else if(panel_open)
-		user << "<span class='notice'>Close the maintenance panel first.</span>"
+		to_chat(user, "<span class='notice'>Close the maintenance panel first.</span>")
 	else if(processing)
-		user << "<span class='warning'>The biogenerator is currently processing.</span>"
+		to_chat(user, "<span class='warning'>The biogenerator is currently processing.</span>")
 	else if(istype(O, /obj/item/weapon/storage/bag/plants))
 		var/i = 0
 		for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in contents)
 			i++
 		if(i >= max_items)
-			user << "<span class='warning'>The biogenerator is already full! Activate it.</span>"
+			to_chat(user, "<span class='warning'>The biogenerator is already full! Activate it.</span>")
 		else
 			for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in O.contents)
 				if(i >= max_items)
@@ -109,24 +109,24 @@
 				G.forceMove(src)
 				i++
 			if(i < max_items)
-				user << "<span class='info'>You empty the plant bag into the biogenerator.</span>"
+				to_chat(user, "<span class='info'>You empty the plant bag into the biogenerator.</span>")
 			else if(O.contents.len == 0)
-				user << "<span class='info'>You empty the plant bag into the biogenerator, filling it to its capacity.</span>"
+				to_chat(user, "<span class='info'>You empty the plant bag into the biogenerator, filling it to its capacity.</span>")
 			else
-				user << "<span class='info'>You fill the biogenerator to its capacity.</span>"
+				to_chat(user, "<span class='info'>You fill the biogenerator to its capacity.</span>")
 
 	else if(!istype(O, /obj/item/weapon/reagent_containers/food/snacks/grown) && !istype(O, /obj/item/weapon/crowbar))
-		user << "<span class='warning'>You can not put this in [src.name]</span>"
+		to_chat(user, "<span class='warning'>You can not put this in [src.name]</span>")
 	else
 		var/i = 0
 		for(var/obj/item/weapon/reagent_containers/food/snacks/grown/G in contents)
 			i++
 		if(i >= max_items)
-			user << "<span class='warning'>The biogenerator is full! Activate it.</span>"
+			to_chat(user, "<span class='warning'>The biogenerator is full! Activate it.</span>")
 		else
 			user.unEquip(O)
 			O.forceMove(src)
-			user << "<span class='info'>You put [O.name] in [src.name]</span>"
+			to_chat(user, "<span class='info'>You put [O.name] in [src.name]</span>")
 
 
 	default_deconstruction_crowbar(O)
@@ -207,12 +207,12 @@
 	interact(user)
 
 /obj/machinery/biogenerator/proc/activate()
-	if (usr.stat != 0)
+	if(usr.stat != 0)
 		return
-	if (src.stat != 0) //NOPOWER etc
+	if(src.stat != 0) //NOPOWER etc
 		return
 	if(src.processing)
-		usr << "<span class='warning'>The biogenerator is in the process of working.</span>"
+		to_chat(usr, "<span class='warning'>The biogenerator is in the process of working.</span>")
 		return
 	var/S = 0
 	for(var/obj/item/weapon/reagent_containers/food/snacks/grown/I in contents)
@@ -236,7 +236,7 @@
 	return
 
 /obj/machinery/biogenerator/proc/check_cost(var/cost, var/checkonly)
-	if (cost > points)
+	if(cost > points)
 		menustat = "nopoints"
 		return 1
 	else if(checkonly)
@@ -258,89 +258,89 @@
 		//Food
 		if("milk")
 			if(check_container_volume(10)) return 0
-			else if (check_cost(20/efficiency)) return 0
+			else if(check_cost(20/efficiency)) return 0
 			else beaker.reagents.add_reagent("milk",10)
 		if("cream")
 			if(check_container_volume(10)) return 0
-			else if (check_cost(30/efficiency)) return 0
+			else if(check_cost(30/efficiency)) return 0
 			else beaker.reagents.add_reagent("cream",10)
 		if("meat")
-			if (check_cost(250/efficiency)) return 0
+			if(check_cost(250/efficiency)) return 0
 			else new/obj/item/weapon/reagent_containers/food/snacks/monkeycube(src.loc)
 		//Nutrients
 		if("ez")
-			if (check_cost(10/efficiency, 1)) return 0
+			if(check_cost(10/efficiency, 1)) return 0
 			if(in_beaker)
 				if(check_container_volume(10)) return 0
 				else beaker.reagents.add_reagent("eznutrient",10)
 			else
 				new/obj/item/weapon/reagent_containers/glass/fertilizer/ez(src.loc)
-			if (check_cost(10/efficiency)) return 0
+			if(check_cost(10/efficiency)) return 0
 		if("l4z")
-			if (check_cost(20/efficiency, 1)) return 0
+			if(check_cost(20/efficiency, 1)) return 0
 			if(in_beaker)
 				if(check_container_volume(10)) return 0
 				else beaker.reagents.add_reagent("left4zed",10)
 			else
 				new/obj/item/weapon/reagent_containers/glass/fertilizer/l4z(src.loc)
-			if (check_cost(20/efficiency)) return 0
+			if(check_cost(20/efficiency)) return 0
 		if("rh")
-			if (check_cost(25/efficiency, 1)) return 0
+			if(check_cost(25/efficiency, 1)) return 0
 			if(in_beaker)
 				if(check_container_volume(10)) return 0
 				else beaker.reagents.add_reagent("robustharvest",10)
 			else
 				new/obj/item/weapon/reagent_containers/glass/fertilizer/rh(src.loc)
-			if (check_cost(25/efficiency)) return 0
+			if(check_cost(25/efficiency)) return 0
 		//Leather
 		if("wallet")
-			if (check_cost(100/efficiency)) return 0
+			if(check_cost(100/efficiency)) return 0
 			else new/obj/item/weapon/storage/wallet(src.loc)
 		if("bkbag")
-			if (check_cost(200/efficiency)) return 0
+			if(check_cost(200/efficiency)) return 0
 			else new/obj/item/weapon/storage/bag/books(src.loc)
 		if("ptbag")
-			if (check_cost(200/efficiency)) return 0
+			if(check_cost(200/efficiency)) return 0
 			else new/obj/item/weapon/storage/bag/plants(src.loc)
 		if("mnbag")
-			if (check_cost(200/efficiency)) return 0
+			if(check_cost(200/efficiency)) return 0
 			else new/obj/item/weapon/storage/bag/ore(src.loc)
 		if("chbag")
-			if (check_cost(200/efficiency)) return 0
+			if(check_cost(200/efficiency)) return 0
 			else new/obj/item/weapon/storage/bag/chemistry(src.loc)
 		if("rag")
-			if (check_cost(200/efficiency)) return 0
+			if(check_cost(200/efficiency)) return 0
 			else new/obj/item/weapon/reagent_containers/glass/rag(src.loc)
 		if("gloves")
-			if (check_cost(250/efficiency)) return 0
+			if(check_cost(250/efficiency)) return 0
 			else new/obj/item/clothing/gloves/botanic_leather(src.loc)
 		if("satchel")
-			if (check_cost(400/efficiency)) return 0
+			if(check_cost(400/efficiency)) return 0
 			else new/obj/item/weapon/storage/backpack/satchel(src.loc)
 		if("cashbag")
-			if (check_cost(400/efficiency)) return 0
+			if(check_cost(400/efficiency)) return 0
 			else new/obj/item/weapon/storage/bag/cash(src.loc)
 		if("jacket")
-			if (check_cost(500/efficiency)) return 0
+			if(check_cost(500/efficiency)) return 0
 			else new/obj/item/clothing/suit/jacket/leather(src.loc)
 		//Belts
 		if("tbelt")
-			if (check_cost(300/efficiency)) return 0
+			if(check_cost(300/efficiency)) return 0
 			else new/obj/item/weapon/storage/belt/utility(src.loc)
 		if("bbelt")
-			if (check_cost(300/efficiency)) return 0
+			if(check_cost(300/efficiency)) return 0
 			else new/obj/item/weapon/storage/belt/botany(src.loc)
 		if("sbelt")
-			if (check_cost(300/efficiency)) return 0
+			if(check_cost(300/efficiency)) return 0
 			else new/obj/item/weapon/storage/belt/security(src.loc)
 		if("mbelt")
-			if (check_cost(300/efficiency)) return 0
+			if(check_cost(300/efficiency)) return 0
 			else new/obj/item/weapon/storage/belt/medical(src.loc)
 		if("jbelt")
-			if (check_cost(300/efficiency)) return 0
+			if(check_cost(300/efficiency)) return 0
 			else new/obj/item/weapon/storage/belt/janitor(src.loc)
 		if("band")
-			if (check_cost(300/efficiency)) return 0
+			if(check_cost(300/efficiency)) return 0
 			else new/obj/item/weapon/storage/belt/bandolier(src.loc)
 	processing = 0
 	menustat = "complete"

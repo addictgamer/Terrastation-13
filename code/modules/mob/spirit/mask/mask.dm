@@ -15,10 +15,10 @@
 	set desc = "Select who you would like to go too."
 
 	var/obj/cult_viewpoint/cultist = pick_cultist()
-	if (cultist)
+	if(cultist)
 		follow_cultist(cultist.owner)
 		cult_log("[key_name_admin(src)] started following [key_name_admin(cultist)].")
-		src << "You start following [cultist.get_display_name()]."
+		to_chat(src, "You start following [cultist.get_display_name()].")
 
 
 /mob/spirit/mask/verb/urge_cultist()
@@ -27,11 +27,11 @@
 	set desc = "Push your cultists to do something."
 
 	var/obj/cult_viewpoint/cultist = pick_cultist()
-	if (cultist)
-		if (cultist.owner)
+	if(cultist)
+		if(cultist.owner)
 			var/newUrge = stripped_input(usr, "", "Set Urge", "")
 			cultist.set_urge(newUrge)
-			src << "You urge [cultist.owner.name] to [newUrge]."
+			to_chat(src, "You urge [cultist.owner.name] to [newUrge].")
 			cult_log("controlled by [key_name_admin(src)] has urged [key_name_admin(cultist.owner)] to [newUrge].")
 
 /mob/spirit/mask/verb/set_cult_name()
@@ -40,13 +40,13 @@
 	set desc = "Grant a cultist a name."
 
 	var/obj/cult_viewpoint/cultist = pick_cultist()
-	if (cultist)
+	if(cultist)
 		var/newName = stripped_input(usr, "", "Set Cult Name", "")
-		if (!newName)
+		if(!newName)
 			return
 		cultist.set_cult_name(newName)
-		src << "You grant [cultist.owner.name] the secret name of [newName]."
-		if (cultist.owner)
+		to_chat(src, "You grant [cultist.owner.name] the secret name of [newName].")
+		if(cultist.owner)
 			cult_log("[key_name_admin(src)] has set [key_name_admin(cultist.owner)] to \'[newName]\'")
 
 
@@ -58,7 +58,7 @@
 	var/newUrge = stripped_input(usr, "Please choose an urge.", "Set Urge", "")
 	for(var/obj/cult_viewpoint/viewpoint in cult_viewpoints)
 		viewpoint.set_urge(newUrge)
-	src << "You urge the entire cult to [newUrge]."
+	to_chat(src, "You urge the entire cult to [newUrge].")
 	cult_log("[key_name_admin(src)] has urged the entire cult to [newUrge]")
 
 
@@ -68,8 +68,8 @@
 	set desc = "Set the favor for a cultist"
 
 	var/obj/cult_viewpoint/cultist = pick_cultist()
-	if (cultist)
-		if (cultist.owner)
+	if(cultist)
+		if(cultist.owner)
 			var/list/favor = list("Pleased", "Displeased", "Indifference")
 			var/emotion = input("Pick your emotion", "Mask", null, null) in favor
 			switch(emotion)
@@ -88,7 +88,7 @@
 	spawn(0)
 		var/newName = stripped_input(src, "Please pick a name.", "Pick Name for Mask", "")
 		name = newName ? newName : "Mask of Nar'sie"
-		src << "You have set your name to [name]."
+		to_chat(src, "You have set your name to [name].")
 
 
 /mob/spirit/mask/proc/pick_cultist()
@@ -132,10 +132,10 @@
 	cult_log("[key_name_admin(usr)]says : [input]")
 	flicker_mask(usr)
 	for(var/datum/mind/H in ticker.mode.cult)
-		if (H.current)
-			H.current << "<span class='cultspeech'><font size=3><span class='name'>[usr.name]: </span><span class='message'>[input]</span></font></span>"
+		if(H.current)
+			to_chat(H.current, "<span class='cultspeech'><font size=3><span class='name'>[usr.name]: </span><span class='message'>[input]</span></font></span>")
 	for(var/mob/spirit/spirit in spirits)
-		spirit << "<span class='cultspeech'><font size=3><span class='name'>[usr.name]: </span><span class='message'>[input]</span></font></span>"
+		to_chat(spirit, "<span class='cultspeech'><font size=3><span class='name'>[usr.name]: </span><span class='message'>[input]</span></font></span>")
 
 
 /obj/effect/proc_holder/spell/aoe_turf/shatter_lights
@@ -193,8 +193,8 @@
 
 	var/talisman = input("Pick a talisman type", "Talisman", null, null) as null|anything in talismans
 	var/imbue_value = talismans[talisman]
-	if (!talisman)
-		usr << "You choose not to create a talisman."
+	if(!talisman)
+		to_chat(usr, "You choose not to create a talisman.")
 		revert_cast(usr)
 		return
 
@@ -203,20 +203,20 @@
 
 	switch(talisman)
 
-		if ("Teleport")
+		if("Teleport")
 			var/target_rune = input("Pick a teleport target", "Teleport Rune", null, null) as null|anything in engwords
-			if (!target_rune)
-				usr << "You choose not to create a talisman."
+			if(!target_rune)
+				to_chat(usr, "You choose not to create a talisman.")
 				revert_cast(usr)
 				return
 			summon_type = list(/obj/item/weapon/paper/talisman)
 			newVars = list("imbue" = "[target_rune]", "info" = "[target_rune]")
 
-		if ("Soul Stone")
+		if("Soul Stone")
 			summon_type = list(/obj/item/device/soulstone)
 			newVars = list()
 
-		if ("Construct")
+		if("Construct")
 			summon_type = list(/obj/structure/constructshell)
 			newVars = list()
 

@@ -151,13 +151,13 @@ obj/structure/door_assembly/multi_tile/Move()
 
 	if(istype(W, /obj/item/weapon/weldingtool) && ( (istext(glass)) || (glass == 1) || (!anchored) ))
 		var/obj/item/weapon/weldingtool/WT = W
-		if (WT.remove_fuel(0, user))
+		if(WT.remove_fuel(0, user))
 			playsound(src.loc, 'sound/items/Welder2.ogg', 50, 1)
 			if(istext(glass))
 				user.visible_message("[user] welds the [glass] plating off the airlock assembly.", "You start to weld the [glass] plating off the airlock assembly.")
 				if(do_after(user, 40, target = src))
 					if(!src || !WT.isOn()) return
-					user << "\blue You welded the [glass] plating off!"
+					to_chat(user, "\blue You welded the [glass] plating off!")
 					var/M = text2path("/obj/item/stack/sheet/mineral/[glass]")
 					new M(src.loc, 2)
 					glass = 0
@@ -165,18 +165,18 @@ obj/structure/door_assembly/multi_tile/Move()
 				user.visible_message("[user] welds the glass panel out of the airlock assembly.", "You start to weld the glass panel out of the airlock assembly.")
 				if(do_after(user, 40, target = src))
 					if(!src || !WT.isOn()) return
-					user << "\blue You welded the glass panel out!"
+					to_chat(user, "\blue You welded the glass panel out!")
 					new /obj/item/stack/sheet/rglass(src.loc)
 					glass = 0
 			else if(!anchored)
 				user.visible_message("[user] dissassembles the airlock assembly.", "You start to dissassemble the airlock assembly.")
 				if(do_after(user, 40, target = src))
 					if(!src || !WT.isOn()) return
-					user << "\blue You dissasembled the airlock assembly!"
+					to_chat(user, "\blue You dissasembled the airlock assembly!")
 					new /obj/item/stack/sheet/metal(src.loc, 4)
 					qdel(src)
 		else
-			user << "\blue You need more welding fuel."
+			to_chat(user, "\blue You need more welding fuel.")
 			return
 
 	else if(istype(W, /obj/item/weapon/wrench) && state == 0)
@@ -188,7 +188,7 @@ obj/structure/door_assembly/multi_tile/Move()
 
 		if(do_after(user, 40, target = src))
 			if(!src) return
-			user << "\blue You [anchored? "un" : ""]secured the airlock assembly!"
+			to_chat(user, "\blue You [anchored? "un" : ""]secured the airlock assembly!")
 			anchored = !anchored
 
 	else if(istype(W, /obj/item/stack/cable_coil) && state == 0 && anchored )
@@ -198,7 +198,7 @@ obj/structure/door_assembly/multi_tile/Move()
 			if(!src) return
 			coil.use(1)
 			src.state = 1
-			user << "\blue You wire the Airlock!"
+			to_chat(user, "\blue You wire the Airlock!")
 
 	else if(istype(W, /obj/item/weapon/wirecutters) && state == 1 )
 		playsound(src.loc, 'sound/items/Wirecutter.ogg', 100, 1)
@@ -206,7 +206,7 @@ obj/structure/door_assembly/multi_tile/Move()
 
 		if(do_after(user, 40, target = src))
 			if(!src) return
-			user << "\blue You cut the airlock wires.!"
+			to_chat(user, "\blue You cut the airlock wires.!")
 			new/obj/item/stack/cable_coil(src.loc, 1)
 			src.state = 0
 
@@ -218,7 +218,7 @@ obj/structure/door_assembly/multi_tile/Move()
 
 		if(do_after(user, 40, target = src))
 			if(!src) return
-			user << "\blue You installed the airlock electronics!"
+			to_chat(user, "\blue You installed the airlock electronics!")
 			src.state = 2
 			src.name = "Near finished Airlock Assembly"
 			src.electronics = W
@@ -231,11 +231,11 @@ obj/structure/door_assembly/multi_tile/Move()
 
 		if(do_after(user, 40, target = src))
 			if(!src) return
-			user << "\blue You removed the airlock electronics!"
+			to_chat(user, "\blue You removed the airlock electronics!")
 			src.state = 1
 			src.name = "Wired Airlock Assembly"
 			var/obj/item/weapon/airlock_electronics/ae
-			if (!electronics)
+			if(!electronics)
 				ae = new/obj/item/weapon/airlock_electronics( src.loc )
 			else
 				ae = electronics
@@ -244,13 +244,13 @@ obj/structure/door_assembly/multi_tile/Move()
 
 	else if(istype(W, /obj/item/stack/sheet) && !glass)
 		var/obj/item/stack/sheet/S = W
-		if (S)
-			if (S.amount>=1)
+		if(S)
+			if(S.amount>=1)
 				if(istype(S, /obj/item/stack/sheet/rglass))
 					playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
 					user.visible_message("[user] adds [S.name] to the airlock assembly.", "You start to install [S.name] into the airlock assembly.")
 					if(do_after(user, 40, target = src))
-						user << "\blue You installed reinforced glass windows into the airlock assembly!"
+						to_chat(user, "\blue You installed reinforced glass windows into the airlock assembly!")
 						S.use(1)
 						glass = 1
 				else if(istype(S, /obj/item/stack/sheet/mineral) && S.sheettype)
@@ -259,21 +259,21 @@ obj/structure/door_assembly/multi_tile/Move()
 						playsound(src.loc, 'sound/items/Crowbar.ogg', 100, 1)
 						user.visible_message("[user] adds [S.name] to the airlock assembly.", "You start to install [S.name] into the airlock assembly.")
 						if(do_after(user, 40, target = src))
-							user << "\blue You installed [M] plating into the airlock assembly!"
+							to_chat(user, "\blue You installed [M] plating into the airlock assembly!")
 							S.use(2)
 							glass = "[M]"
 
 	else if(istype(W, /obj/item/weapon/screwdriver) && state == 2 )
 		playsound(src.loc, 'sound/items/Screwdriver.ogg', 100, 1)
-		user << "\blue Now finishing the airlock."
+		to_chat(user, "\blue Now finishing the airlock.")
 
 		if(do_after(user, 40, target = src))
 			if(!src) return
-			user << "\blue You finish the airlock!"
+			to_chat(user, "\blue You finish the airlock!")
 			var/path
 			if(istext(glass))
 				path = text2path("/obj/machinery/door/airlock/[glass]")
-			else if (glass == 1)
+			else if(glass == 1)
 				path = text2path("/obj/machinery/door/airlock[glass_type]")
 			else
 				path = text2path("/obj/machinery/door/airlock[airlock_type]")
@@ -298,9 +298,9 @@ obj/structure/door_assembly/multi_tile/Move()
 /obj/structure/door_assembly/proc/update_state()
 	icon_state = "door_as_[glass == 1 ? "g" : ""][istext(glass) ? glass : base_icon_state][state]"
 	name = ""
-	switch (state)
+	switch(state)
 		if(0)
-			if (anchored)
+			if(anchored)
 				name = "Secured "
 		if(1)
 			name = "Wired "

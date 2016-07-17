@@ -4,21 +4,17 @@
 /datum/game_mode/wizard
 	name = "wizard"
 	config_tag = "wizard"
-	required_players = 2
-	required_players_secret = 10
+	required_players = 20
 	required_enemies = 1
 	recommended_enemies = 1
-
-	uplink_welcome = "Wizardly Uplink Console:"
-	uplink_uses = 20
 
 	var/use_huds = 0
 	var/finished = 0
 	var/but_wait_theres_more = 0
 
 /datum/game_mode/wizard/announce()
-	world << "<B>The current game mode is - Wizard!</B>"
-	world << "<B>There is a \red SPACE WIZARD\black on the station. You can't let him achieve his objective!</B>"
+	to_chat(world, "<B>The current game mode is - Wizard!</B>")
+	to_chat(world, "<B>There is a <font color='red'>SPACE WIZARD</font> on the station. You can't let him achieve his objective!</B>")
 
 
 /datum/game_mode/wizard/can_start()//This could be better, will likely have to recode it later
@@ -35,7 +31,7 @@
 	wizard.special_role = "Wizard"
 	wizard.original = wizard.current
 	if(wizardstart.len == 0)
-		wizard.current << "<B>\red A starting location for you could not be found, please report this bug!</B>"
+		to_chat(wizard.current, "<B>\red A starting location for you could not be found, please report this bug!</B>")
 		return 0
 	return 1
 
@@ -83,7 +79,7 @@
 			steal_objective.find_target()
 			wizard.objectives += steal_objective
 
-			if (!(locate(/datum/objective/escape) in wizard.objectives))
+			if(!(locate(/datum/objective/escape) in wizard.objectives))
 				var/datum/objective/escape/escape_objective = new
 				escape_objective.owner = wizard
 				wizard.objectives += escape_objective
@@ -98,7 +94,7 @@
 			steal_objective.find_target()
 			wizard.objectives += steal_objective
 
-			if (!(locate(/datum/objective/survive) in wizard.objectives))
+			if(!(locate(/datum/objective/survive) in wizard.objectives))
 				var/datum/objective/survive/survive_objective = new
 				survive_objective.owner = wizard
 				wizard.objectives += survive_objective
@@ -109,7 +105,7 @@
 			kill_objective.find_target()
 			wizard.objectives += kill_objective
 
-			if (!(locate(/datum/objective/hijack) in wizard.objectives))
+			if(!(locate(/datum/objective/hijack) in wizard.objectives))
 				var/datum/objective/hijack/hijack_objective = new
 				hijack_objective.owner = wizard
 				wizard.objectives += hijack_objective
@@ -120,7 +116,7 @@
 			steal_objective.find_target()
 			wizard.objectives += steal_objective
 
-			if (!(locate(/datum/objective/hijack) in wizard.objectives))
+			if(!(locate(/datum/objective/hijack) in wizard.objectives))
 				var/datum/objective/hijack/hijack_objective = new
 				hijack_objective.owner = wizard
 				wizard.objectives += hijack_objective
@@ -135,7 +131,7 @@
 	spawn(0)
 		var/newname = sanitize(copytext(input(wizard_mob, "You are the Space Wizard. Would you like to change your name to something else?", "Name change", randomname) as null|text,1,MAX_NAME_LEN))
 
-		if (!newname)
+		if(!newname)
 			newname = randomname
 
 		wizard_mob.real_name = newname
@@ -146,19 +142,19 @@
 
 
 /datum/game_mode/proc/greet_wizard(var/datum/mind/wizard, var/you_are=1)
-	if (you_are)
-		wizard.current << "<B>\red You are the Space Wizard!</B>"
-	wizard.current << "<B>The Space Wizards Federation has given you the following tasks:</B>"
+	if(you_are)
+		to_chat(wizard.current, "<B>\red You are the Space Wizard!</B>")
+	to_chat(wizard.current, "<B>The Space Wizards Federation has given you the following tasks:</B>")
 
 	var/obj_count = 1
 	for(var/datum/objective/objective in wizard.objectives)
-		wizard.current << "<B>Objective #[obj_count]</B>: [objective.explanation_text]"
+		to_chat(wizard.current, "<B>Objective #[obj_count]</B>: [objective.explanation_text]")
 		obj_count++
 	return
 
 
 /*/datum/game_mode/proc/learn_basic_spells(mob/living/carbon/human/wizard_mob)
-	if (!istype(wizard_mob))
+	if(!istype(wizard_mob))
 		return
 	if(!config.feature_object_spell_system)
 		wizard_mob.verbs += /client/proc/jaunt
@@ -168,7 +164,7 @@
 */
 
 /datum/game_mode/proc/equip_wizard(mob/living/carbon/human/wizard_mob)
-	if (!istype(wizard_mob))
+	if(!istype(wizard_mob))
 		return
 
 	//So zards properly get their items when they are admin-made.
@@ -195,10 +191,11 @@
 
 	wizard_mob.species.equip(wizard_mob)
 
-	wizard_mob << "You will find a list of available spells in your spell book. Choose your magic arsenal carefully."
-	wizard_mob << "In your pockets you will find a teleport scroll. Use it as needed."
+	to_chat(wizard_mob, "You will find a list of available spells in your spell book. Choose your magic arsenal carefully.")
+	to_chat(wizard_mob, "In your pockets you will find a teleport scroll. Use it as needed.")
 	wizard_mob.mind.store_memory("<B>Remember:</B> do not forget to prepare your spells.")
 	wizard_mob.update_icons()
+	wizard_mob.gene_stability += DEFAULT_GENE_STABILITY //magic
 	return 1
 
 
@@ -220,7 +217,7 @@
 				continue
 			traitors_alive++
 
-	if (wizards_alive || traitors_alive || but_wait_theres_more)
+	if(wizards_alive || traitors_alive || but_wait_theres_more)
 		return ..()
 	else
 		finished = 1
@@ -231,7 +228,7 @@
 /datum/game_mode/wizard/declare_completion(var/ragin = 0)
 	if(finished && !ragin)
 		feedback_set_details("round_end_result","loss - wizard killed")
-		world << "\red <FONT size = 3><B> The wizard[(wizards.len>1)?"s":""] has been killed by the crew! The Space Wizards Federation has been taught a lesson they will not soon forget!</B></FONT>"
+		to_chat(world, "\red <FONT size = 3><B> The wizard[(wizards.len>1)?"s":""] has been killed by the crew! The Space Wizards Federation has been taught a lesson they will not soon forget!</B></FONT>")
 	..()
 	return 1
 
@@ -282,7 +279,7 @@
 					i++
 			text += "<br>"
 
-		world << text
+		to_chat(world, text)
 	return 1
 
 //OTHER PROCS
@@ -307,13 +304,13 @@ Made a proc so this is not repeated 14 (or more) times.*/
 /mob/proc/casting()
 //Removed the stat check because not all spells require clothing now.
 	if(!istype(usr:wear_suit, /obj/item/clothing/suit/wizrobe))
-		usr << "I don't feel strong enough without my robe."
+		to_chat(usr, "I don't feel strong enough without my robe.")
 		return 0
 	if(!istype(usr:shoes, /obj/item/clothing/shoes/sandal))
-		usr << "I don't feel strong enough without my sandals."
+		to_chat(usr, "I don't feel strong enough without my sandals.")
 		return 0
 	if(!istype(usr:head, /obj/item/clothing/head/wizard))
-		usr << "I don't feel strong enough without my hat."
+		to_chat(usr, "I don't feel strong enough without my hat.")
 		return 0
 	else
 		return 1

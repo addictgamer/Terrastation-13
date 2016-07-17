@@ -35,20 +35,20 @@
 	if(O.force)
 		if(O.force >= 25)
 			var/damage = O.force
-			if (O.damtype == STAMINA)
+			if(O.damtype == STAMINA)
 				damage = 0
 			health -= damage
 			for(var/mob/M in viewers(src, null))
-				if ((M.client && !( M.blinded )))
+				if((M.client && !( M.blinded )))
 					M.show_message("\red \b [src] has been attacked with the [O] by [user]. ")
 		else
 			for(var/mob/M in viewers(src, null))
-				if ((M.client && !( M.blinded )))
+				if((M.client && !( M.blinded )))
 					M.show_message("\red \b The [O] bounces harmlessly off of [src]. ")
 	else
-		usr << "\red This weapon is ineffective, it does no damage."
+		to_chat(usr, "\red This weapon is ineffective, it does no damage.")
 		for(var/mob/M in viewers(src, null))
-			if ((M.client && !( M.blinded )))
+			if((M.client && !( M.blinded )))
 				M.show_message("\red [user] gently taps [src] with the [O]. ")
 
 /mob/living/simple_animal/vox/armalis/verb/fire_quill(mob/target as mob in oview())
@@ -60,19 +60,30 @@
 	if(quills<=0)
 		return
 
-	src << "\red You launch a razor-sharp quill at [target]!"
+	to_chat(src, "\red You launch a razor-sharp quill at [target]!")
 	for(var/mob/O in oviewers())
-		if ((O.client && !( O.blinded )))
-			O << "\red [src] launches a razor-sharp quill at [target]!"
+		if((O.client && !( O.blinded )))
+			to_chat(O, "\red [src] launches a razor-sharp quill at [target]!")
 
-	var/obj/item/weapon/arrow/quill/Q = new(loc)
+	var/obj/item/weapon/quill/Q = new(loc)
 	Q.fingerprintslast = src.ckey
 	Q.throw_at(target,10,30)
+
 	quills--
 
 	spawn(100)
-		src << "\red You feel a fresh quill slide into place."
+		to_chat(src, "\red You feel a fresh quill slide into place.")
 		quills++
+
+/obj/item/weapon/quill
+	name = "vox quill"
+	desc = "A wickedly barbed quill from some bizarre animal."
+	icon_state = "quill"
+	item_state = "quill"
+	throwforce = 5
+	w_class = 3
+	sharp = 1
+	edge = 0
 
 /mob/living/simple_animal/vox/armalis/verb/message_mob()
 	set category = "Alien"
@@ -87,21 +98,21 @@
 	target = input("Select a creature!", "Speak to creature", null, null) as null|anything in targets
 	text = input("What would you like to say?", "Speak to creature", null, null)
 
-	if (!target || !text)
+	if(!target || !text)
 		return
 
 	var/mob/M = targets[target]
 
 	if(istype(M, /mob/dead/observer) || M.stat == DEAD)
-		src << "Not even the armalis can speak to the dead."
+		to_chat(src, "Not even the armalis can speak to the dead.")
 		return
 
-	M << "\blue Like lead slabs crashing into the ocean, alien thoughts drop into your mind: [text]"
+	to_chat(M, "\blue Like lead slabs crashing into the ocean, alien thoughts drop into your mind: [text]")
 	if(istype(M,/mob/living/carbon/human))
 		var/mob/living/carbon/human/H = M
 		if(H.species.name == "Vox")
 			return
-		H << "\red Your nose begins to bleed..."
+		to_chat(H, "\red Your nose begins to bleed...")
 		H.drip(1)
 
 /mob/living/simple_animal/vox/armalis/verb/shriek()

@@ -53,6 +53,15 @@
 
 	action_icon_state = "mutate"
 
+/obj/effect/proc_holder/spell/targeted/genetic/mutate/cast(list/targets)
+	for(var/mob/living/target in targets)
+		target.dna.SetSEState(HULKBLOCK, 1)
+		genemutcheck(target, HULKBLOCK, null, MUTCHK_FORCED)
+		spawn(duration)
+			target.dna.SetSEState(HULKBLOCK, 0)
+			genemutcheck(target, HULKBLOCK, null, MUTCHK_FORCED)
+	..()
+
 /obj/effect/proc_holder/spell/targeted/smoke
 	name = "Smoke"
 	desc = "This spell spawns a cloud of choking smoke at your location and does not require wizard garb."
@@ -298,10 +307,10 @@
 				var/mob/living/M = AM
 				M.Weaken(5)
 				M.adjustBruteLoss(5)
-				M << "<span class='userdanger'>You're slammed into the floor by a mystical force!</span>"
+				to_chat(M, "<span class='userdanger'>You're slammed into the floor by a mystical force!</span>")
 		else
 			if(istype(AM, /mob/living))
 				var/mob/living/M = AM
 				M.Weaken(2)
-				M << "<span class='userdanger'>You're thrown back by a mystical force!</span>"
+				to_chat(M, "<span class='userdanger'>You're thrown back by a mystical force!</span>")
 			spawn(0) AM.throw_at(throwtarget, ((Clamp((maxthrow - (Clamp(distfromcaster - 2, 0, distfromcaster))), 3, maxthrow))), 1)//So stuff gets tossed around at the same time.

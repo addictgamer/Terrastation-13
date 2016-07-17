@@ -21,24 +21,24 @@
 	..()
 	switch(stage)
 		if(1)
-			if (prob(stage_prob) && stage1)
-				affected_mob << pick(stage1)
+			if(prob(stage_prob) && stage1)
+				to_chat(affected_mob, pick(stage1))
 		if(2)
-			if (prob(stage_prob) && stage2)
-				affected_mob << pick(stage2)
+			if(prob(stage_prob) && stage2)
+				to_chat(affected_mob, pick(stage2))
 		if(3)
-			if (prob(stage_prob*2) && stage3)
-				affected_mob << pick(stage3)
+			if(prob(stage_prob*2) && stage3)
+				to_chat(affected_mob, pick(stage3))
 		if(4)
-			if (prob(stage_prob*2) && stage4)
-				affected_mob << pick(stage4)
+			if(prob(stage_prob*2) && stage4)
+				to_chat(affected_mob, pick(stage4))
 		if(5)
 			do_disease_transformation(affected_mob)
 
 /datum/disease/transformation/proc/do_disease_transformation(mob/living/affected_mob)
 	if(istype(affected_mob, /mob/living/carbon) && affected_mob.stat != DEAD)
 		if(stage5)
-			affected_mob << pick(stage5)
+			to_chat(affected_mob, pick(stage5))
 		if(jobban_isbanned(affected_mob, new_form))
 			affected_mob.death(1)
 			return
@@ -54,6 +54,7 @@
 				qdel(W)
 				continue
 			W.layer = initial(W.layer)
+			W.plane = initial(W.plane)
 			W.loc = affected_mob.loc
 			W.dropped(affected_mob)
 		var/mob/living/new_mob = new new_form(affected_mob.loc)
@@ -101,10 +102,10 @@
 	switch(stage)
 		if(2)
 			if(prob(2))
-				affected_mob << "<span class='notice'>Your [pick("back", "arm", "leg", "elbow", "head")] itches.</span>"
+				to_chat(affected_mob, "<span class='notice'>Your [pick("back", "arm", "leg", "elbow", "head")] itches.</span>")
 		if(3)
 			if(prob(4))
-				affected_mob << "<span class='danger'>You feel a stabbing pain in your head.</span>"
+				to_chat(affected_mob, "<span class='danger'>You feel a stabbing pain in your head.</span>")
 				affected_mob.confused += 10
 		if(4)
 			if(prob(3))
@@ -133,13 +134,13 @@
 	..()
 	switch(stage)
 		if(3)
-			if (prob(8))
+			if(prob(8))
 				affected_mob.say(pick("Beep, boop", "beep, beep!", "Boop...bop"))
-			if (prob(4))
-				affected_mob << "<span class='danger'>You feel a stabbing pain in your head.</span>"
+			if(prob(4))
+				to_chat(affected_mob, "<span class='danger'>You feel a stabbing pain in your head.</span>")
 				affected_mob.Paralyse(2)
 		if(4)
-			if (prob(20))
+			if(prob(20))
 				affected_mob.say(pick("beep, beep!", "Boop bop boop beep.", "kkkiiiill mmme", "I wwwaaannntt tttoo dddiiieeee..."))
 
 
@@ -164,11 +165,11 @@
 	..()
 	switch(stage)
 		if(3)
-			if (prob(4))
-				affected_mob << "<span class='danger'>You feel a stabbing pain in your head.</span>"
+			if(prob(4))
+				to_chat(affected_mob, "<span class='danger'>You feel a stabbing pain in your head.</span>")
 				affected_mob.Paralyse(2)
 		if(4)
-			if (prob(20))
+			if(prob(20))
 				affected_mob.say(pick("You look delicious.", "Going to... devour you...", "Hsssshhhhh!"))
 
 
@@ -220,10 +221,10 @@
 	..()
 	switch(stage)
 		if(3)
-			if (prob(8))
+			if(prob(8))
 				affected_mob.say(pick("YAP", "Woof!"))
 		if(4)
-			if (prob(20))
+			if(prob(20))
 				affected_mob.say(pick("Bark!", "AUUUUUU"))
 
 /datum/disease/transformation/morph

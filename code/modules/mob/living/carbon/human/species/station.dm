@@ -55,6 +55,19 @@
 	flesh_color = "#34AF10"
 	reagent_tag = PROCESS_ORG
 	base_color = "#066000"
+	//Default styles for created mobs.
+	default_hair = "Unathi Horns"
+	butt_sprite = "unathi"
+
+	has_organ = list(
+		"heart" =    /obj/item/organ/internal/heart,
+		"lungs" =    /obj/item/organ/internal/lungs,
+		"liver" =    /obj/item/organ/internal/liver/unathi,
+		"kidneys" =  /obj/item/organ/internal/kidneys,
+		"brain" =    /obj/item/organ/internal/brain,
+		"appendix" = /obj/item/organ/internal/appendix,
+		"eyes" =     /obj/item/organ/internal/eyes,
+		)
 
 	allowed_consumed_mobs = list(/mob/living/simple_animal/mouse, /mob/living/simple_animal/lizard, /mob/living/simple_animal/chick, /mob/living/simple_animal/chicken,
 								 /mob/living/simple_animal/crab, /mob/living/simple_animal/butterfly, /mob/living/simple_animal/parrot, /mob/living/simple_animal/tribble)
@@ -104,11 +117,24 @@
 
 	flags = HAS_LIPS | CAN_BE_FAT
 	clothing_flags = HAS_UNDERWEAR | HAS_UNDERSHIRT | HAS_SOCKS
-	bodyflags = FEET_PADDED | HAS_TAIL | HAS_HEAD_ACCESSORY | HAS_MARKINGS | HAS_SKIN_COLOR | TAIL_WAGGING
+	bodyflags = FEET_PADDED | HAS_TAIL | HAS_HEAD_ACCESSORY | HAS_MARKINGS | HAS_SKIN_COLOR | TAIL_WAGGING | HAS_FUR
 	dietflags = DIET_OMNI
 	reagent_tag = PROCESS_ORG
 	flesh_color = "#AFA59E"
 	base_color = "#333333"
+	//Default styles for created mobs.
+	default_headacc = "Tajaran Ears"
+	butt_sprite = "tajaran"
+
+	has_organ = list(
+		"heart" =    /obj/item/organ/internal/heart,
+		"lungs" =    /obj/item/organ/internal/lungs,
+		"liver" =    /obj/item/organ/internal/liver/tajaran,
+		"kidneys" =  /obj/item/organ/internal/kidneys,
+		"brain" =    /obj/item/organ/internal/brain,
+		"appendix" = /obj/item/organ/internal/appendix,
+		"eyes" =     /obj/item/organ/internal/eyes,
+		)
 
 	allowed_consumed_mobs = list(/mob/living/simple_animal/mouse, /mob/living/simple_animal/chick, /mob/living/simple_animal/butterfly, /mob/living/simple_animal/parrot,
 								 /mob/living/simple_animal/tribble)
@@ -148,11 +174,22 @@
 
 	flags = HAS_LIPS
 	clothing_flags = HAS_UNDERWEAR | HAS_UNDERSHIRT | HAS_SOCKS
-	bodyflags = FEET_PADDED | HAS_TAIL | HAS_HEAD_ACCESSORY | HAS_MARKINGS | HAS_SKIN_COLOR | TAIL_WAGGING
+	bodyflags = FEET_PADDED | HAS_TAIL | HAS_HEAD_ACCESSORY | HAS_MARKINGS | HAS_SKIN_COLOR | TAIL_WAGGING | HAS_FUR
 	dietflags = DIET_OMNI
 	reagent_tag = PROCESS_ORG
 	flesh_color = "#966464"
 	base_color = "#B43214"
+	butt_sprite = "vulp"
+
+	has_organ = list(
+		"heart" =    /obj/item/organ/internal/heart,
+		"lungs" =    /obj/item/organ/internal/lungs,
+		"liver" =    /obj/item/organ/internal/liver/vulpkanin,
+		"kidneys" =  /obj/item/organ/internal/kidneys,
+		"brain" =    /obj/item/organ/internal/brain,
+		"appendix" = /obj/item/organ/internal/appendix,
+		"eyes" =     /obj/item/organ/internal/eyes,
+		)
 
 	allowed_consumed_mobs = list(/mob/living/simple_animal/mouse, /mob/living/simple_animal/lizard, /mob/living/simple_animal/chick, /mob/living/simple_animal/chicken,
 								 /mob/living/simple_animal/crab, /mob/living/simple_animal/butterfly, /mob/living/simple_animal/parrot, /mob/living/simple_animal/tribble)
@@ -189,7 +226,20 @@
 	dietflags = DIET_HERB
 	flesh_color = "#8CD7A3"
 	blood_color = "#1D2CBF"
+	//Default styles for created mobs.
+	default_hair = "Skrell Male Tentacles"
 	reagent_tag = PROCESS_ORG
+	butt_sprite = "skrell"
+
+	has_organ = list(
+		"heart" =    /obj/item/organ/internal/heart,
+		"lungs" =    /obj/item/organ/internal/lungs,
+		"liver" =    /obj/item/organ/internal/liver/skrell,
+		"kidneys" =  /obj/item/organ/internal/kidneys,
+		"brain" =    /obj/item/organ/internal/brain,
+		"appendix" = /obj/item/organ/internal/appendix,
+		"eyes" =     /obj/item/organ/internal/eyes,
+		)
 
 	suicide_messages = list(
 		"is attempting to bite their tongue off!",
@@ -201,8 +251,8 @@
 /datum/species/vox
 	name = "Vox"
 	name_plural = "Vox"
-	icobase = 'icons/mob/human_races/r_vox.dmi'
-	deform = 'icons/mob/human_races/r_def_vox.dmi'
+	icobase = 'icons/mob/human_races/vox/r_vox.dmi'
+	deform = 'icons/mob/human_races/vox/r_def_vox.dmi'
 	path = /mob/living/carbon/human/vox
 
 	default_language = "Galactic Common"
@@ -226,6 +276,19 @@
 	cold_level_2 = 50
 	cold_level_3 = 0
 
+	atmos_requirements = list(
+		"min_oxy" = 0,
+		"max_oxy" = 1,
+		"min_nitro" = 16,
+		"max_nitro" = 0,
+		"min_tox" = 0,
+		"max_tox" = 0.005,
+		"min_co2" = 0,
+	 	"max_co2" = 10,
+	 	"sa_para" = 1,
+		"sa_sleep" = 5
+		)
+
 	eyes = "vox_eyes_s"
 
 	breath_type = "nitrogen"
@@ -234,15 +297,39 @@
 	flags = NO_SCAN | IS_WHITELISTED
 	clothing_flags = HAS_SOCKS
 	dietflags = DIET_OMNI
-	bodyflags = HAS_TAIL | TAIL_WAGGING | TAIL_OVERLAPPED
+	bodyflags = HAS_ICON_SKIN_TONE | HAS_TAIL | TAIL_WAGGING | TAIL_OVERLAPPED
 
 	blood_color = "#2299FC"
 	flesh_color = "#808D11"
+	//Default styles for created mobs.
+	default_hair = "Short Vox Quills"
+	default_hair_colour = "#614f19" //R: 97, G: 79, B: 25
+	butt_sprite = "vox"
 
 	reagent_tag = PROCESS_ORG
 	scream_verb = "shrieks"
 	male_scream_sound = 'sound/voice/shriek1.ogg'
 	female_scream_sound = 'sound/voice/shriek1.ogg'
+
+	icon_skin_tones = list(
+		1 = "Default Green",
+		2 = "Dark Green",
+		3 = "Brown",
+		4 = "Grey",
+		5 = "Emerald",
+		6 = "Azure"
+		)
+
+	has_organ = list(
+		"heart" =    /obj/item/organ/internal/heart,
+		"lungs" =    /obj/item/organ/internal/lungs,
+		"liver" =    /obj/item/organ/internal/liver/vox,
+		"kidneys" =  /obj/item/organ/internal/kidneys,
+		"brain" =    /obj/item/organ/internal/brain,
+		"appendix" = /obj/item/organ/internal/appendix,
+		"eyes" =     /obj/item/organ/internal/eyes,
+		"stack" =    /obj/item/organ/internal/stack/vox //Not the same as the cortical stack implant Vox Raiders spawn with. The cortical stack implant is used
+		)												//for determining the success of the heist game-mode's 'leave nobody behind' objective, while this is just an organ.
 
 	suicide_messages = list(
 		"is attempting to bite their tongue off!",
@@ -275,17 +362,49 @@
 		H.equip_or_collect(new /obj/item/weapon/tank/nitrogen(H), slot_l_hand)
 	else
 		H.equip_or_collect(new /obj/item/weapon/tank/emergency_oxygen/vox(H), slot_l_hand)
-	H << "<span class='notice'>You are now running on nitrogen internals from the [H.l_hand] in your hand. Your species finds oxygen toxic, so you must breathe nitrogen only.</span>"
+	to_chat(H, "<span class='notice'>You are now running on nitrogen internals from the [H.l_hand] in your hand. Your species finds oxygen toxic, so you must breathe nitrogen only.</span>")
 	H.internal = H.l_hand
-	if (H.internals)
+	if(H.internals)
 		H.internals.icon_state = "internal1"
 
-/*
 /datum/species/vox/handle_post_spawn(var/mob/living/carbon/human/H)
-	H.verbs += /mob/living/carbon/human/proc/leap
-	..() */
+	updatespeciescolor(H)
+	H.update_icons()
+	//H.verbs += /mob/living/carbon/human/proc/leap
+	..()
+
+/datum/species/vox/updatespeciescolor(var/mob/living/carbon/human/H) //Handling species-specific skin-tones for the Vox race.
+	if(H.species.name == "Vox") //Making sure we don't break Armalis.
+		switch(H.s_tone)
+			if(6) //Azure Vox.
+				icobase = 'icons/mob/human_races/vox/r_voxazu.dmi'
+				deform = 'icons/mob/human_races/vox/r_def_voxazu.dmi'
+				tail = "voxtail_azu"
+			if(5) //Emerald Vox.
+				icobase = 'icons/mob/human_races/vox/r_voxemrl.dmi'
+				deform = 'icons/mob/human_races/vox/r_def_voxemrl.dmi'
+				tail = "voxtail_emrl"
+			if(4) //Grey Vox.
+				icobase = 'icons/mob/human_races/vox/r_voxgry.dmi'
+				deform = 'icons/mob/human_races/vox/r_def_voxgry.dmi'
+				tail = "voxtail_gry"
+			if(3) //Brown Vox.
+				icobase = 'icons/mob/human_races/vox/r_voxbrn.dmi'
+				deform = 'icons/mob/human_races/vox/r_def_voxbrn.dmi'
+				tail = "voxtail_brn"
+			if(2) //Dark Green Vox.
+				icobase = 'icons/mob/human_races/vox/r_voxdgrn.dmi'
+				deform = 'icons/mob/human_races/vox/r_def_voxdgrn.dmi'
+				tail = "voxtail_dgrn"
+			else  //Default Green Vox.
+				icobase = 'icons/mob/human_races/vox/r_vox.dmi'
+				deform = 'icons/mob/human_races/vox/r_def_vox.dmi'
+				tail = "voxtail" //Ensures they get an appropriately coloured tail depending on the skin-tone.
+
+		H.update_dna()
 
 /datum/species/vox/armalis/handle_post_spawn(var/mob/living/carbon/human/H)
+	H.verbs += /mob/living/carbon/human/proc/leap
 	H.verbs += /mob/living/carbon/human/proc/gut
 	..()
 
@@ -334,8 +453,8 @@
 		"kidneys" =  /obj/item/organ/internal/kidneys,
 		"brain" =    /obj/item/organ/internal/brain,
 		"eyes" =     /obj/item/organ/internal/eyes,
-		"stack" =    /obj/item/organ/internal/stack/vox
-		)
+		"stack" =    /obj/item/organ/internal/stack/vox //Not the same as the cortical stack implant Vox Raiders spawn with. The cortical stack implant is used
+		)												//for determining the success of the heist game-mode's 'leave nobody behind' objective, while this is just an organ.
 
 	suicide_messages = list(
 		"is attempting to bite their tongue off!",
@@ -363,6 +482,17 @@
 	dietflags = DIET_HERB
 	blood_color = "#FB9800"
 	reagent_tag = PROCESS_ORG
+	butt_sprite = "kidan"
+
+	has_organ = list(
+		"heart" =    /obj/item/organ/internal/heart,
+		"lungs" =    /obj/item/organ/internal/lungs,
+		"liver" =    /obj/item/organ/internal/liver/kidan,
+		"kidneys" =  /obj/item/organ/internal/kidneys,
+		"brain" =    /obj/item/organ/internal/brain,
+		"appendix" = /obj/item/organ/internal/appendix,
+		"eyes" =     /obj/item/organ/internal/eyes,
+		)
 
 	allowed_consumed_mobs = list(/mob/living/simple_animal/diona)
 
@@ -395,6 +525,7 @@
 	reagent_tag = PROCESS_ORG
 	exotic_blood = "water"
 	//ventcrawler = 1 //ventcrawling commented out
+	butt_sprite = "slime"
 
 	has_organ = list(
 		"brain" = /obj/item/organ/internal/brain/slime
@@ -443,17 +574,17 @@
 	var/datum/species/slime/S = all_species[get_species()]
 	if(!istype(S))
 		if(!silent)
-			src << "You're not a slime person!"
+			to_chat(src, "You're not a slime person!")
 		return
 
 	if(src in S.recolor_list)
 		S.recolor_list -= src
 		if(!silent)
-			src << "You adjust your internal chemistry to filter out pigments from things you consume."
+			to_chat(src, "You adjust your internal chemistry to filter out pigments from things you consume.")
 	else
 		S.recolor_list += src
 		if(!silent)
-			src << "You adjust your internal chemistry to permit pigments in chemicals you consume to tint you."
+			to_chat(src, "You adjust your internal chemistry to permit pigments in chemicals you consume to tint you.")
 
 /mob/living/carbon/human/verb/toggle_recolor_verb()
 	set category = "IC"
@@ -473,11 +604,11 @@
 #define SLIMEPERSON_REGROWTHDELAY 450 // 45 seconds
 
 	if(stat || paralysis || stunned)
-		src << "<span class='warning'>You cannot regenerate missing limbs in your current state.</span>"
+		to_chat(src, "<span class='warning'>You cannot regenerate missing limbs in your current state.</span>")
 		return
 
 	if(nutrition < SLIMEPERSON_MINHUNGER)
-		src << "<span class='warning'>You're too hungry to regenerate a limb!</span>"
+		to_chat(src, "<span class='warning'>You're too hungry to regenerate a limb!</span>")
 		return
 
 	var/list/missing_limbs = list()
@@ -493,7 +624,7 @@
 			missing_limbs[initial(limb.name)] = l
 
 	if(!missing_limbs.len)
-		src << "<span class='warning'>You're not missing any limbs!</span>"
+		to_chat(src, "<span class='warning'>You're not missing any limbs!</span>")
 		return
 
 	var/limb_select = input(src, "Choose a limb to regrow", "Limb Regrowth") as null|anything in missing_limbs
@@ -502,11 +633,11 @@
 	visible_message("<span class='notice'>[src] begins to hold still and concentrate on their missing [limb_select]...</span>", "<span class='notice'>You begin to focus on regrowing your missing [limb_select]... (This will take [round(SLIMEPERSON_REGROWTHDELAY/10)] seconds, and you must hold still.)</span>")
 	if(do_after(src, SLIMEPERSON_REGROWTHDELAY, needhand=0, target = src))
 		if(stat || paralysis || stunned)
-			src << "<span class='warning'>You cannot regenerate missing limbs in your current state.</span>"
+			to_chat(src, "<span class='warning'>You cannot regenerate missing limbs in your current state.</span>")
 			return
 
 		if(nutrition < SLIMEPERSON_MINHUNGER)
-			src << "<span class='warning'>You're too hungry to regenerate a limb!</span>"
+			to_chat(src, "<span class='warning'>You're too hungry to regenerate a limb!</span>")
 			return
 
 		var/obj/item/organ/external/O = organs_by_name[chosen_limb]
@@ -515,10 +646,10 @@
 		var/stored_burn = 0
 		if(istype(O))
 			if(!O.is_stump())
-				src << "<span class='warning'>Your limb has already been replaced in some way!</span>"
+				to_chat(src, "<span class='warning'>Your limb has already been replaced in some way!</span>")
 				return
 			else
-				src << "<span class='warning'>You distribute the damaged tissue around your body, out of the way of your new pseudopod!</span>"
+				to_chat(src, "<span class='warning'>You distribute the damaged tissue around your body, out of the way of your new pseudopod!</span>")
 				var/obj/item/organ/external/doomedStump = O
 				stored_brute = doomedStump.brute_dam
 				stored_burn = doomedStump.burn_dam
@@ -529,7 +660,7 @@
 		// Parent check
 		var/obj/item/organ/external/potential_parent = organs_by_name[initial(limb_path.parent_organ)]
 		if(!istype(potential_parent) || potential_parent.is_stump())
-			src << "<span class='danger'>You've lost the organ that you've been growing your new part on!</span>"
+			to_chat(src, "<span class='danger'>You've lost the organ that you've been growing your new part on!</span>")
 			return // No rayman for you
 		// Grah this line will leave a "not used" warning, in spite of the fact that the new() proc WILL do the thing.
 		// Bothersome.
@@ -543,7 +674,7 @@
 		nutrition -= SLIMEPERSON_HUNGERCOST
 		visible_message("<span class='notice'>[src] finishes regrowing their missing [new_limb]!</span>", "<span class='notice'>You finish regrowing your [limb_select]</span>")
 	else
-		src << "<span class='warning'>You need to hold still in order to regrow a limb!</span>"
+		to_chat(src, "<span class='warning'>You need to hold still in order to regrow a limb!</span>")
 	return
 
 #undef SLIMEPERSON_HUNGERCOST
@@ -561,10 +692,21 @@
 	icobase = 'icons/mob/human_races/r_grey.dmi'
 	deform = 'icons/mob/human_races/r_def_grey.dmi'
 	default_language = "Galactic Common"
-	//language = "Grey" // Perhaps if they ever get a hivemind
+	language = "Psionic Communication"
 	unarmed_type = /datum/unarmed_attack/punch
 	darksight = 5 // BOOSTED from 2
 	eyes = "grey_eyes_s"
+	butt_sprite = "grey"
+
+	has_organ = list(
+		"heart" =    /obj/item/organ/internal/heart,
+		"lungs" =    /obj/item/organ/internal/lungs,
+		"liver" =    /obj/item/organ/internal/liver/grey,
+		"kidneys" =  /obj/item/organ/internal/kidneys,
+		"brain" =    /obj/item/organ/internal/brain/grey,
+		"appendix" = /obj/item/organ/internal/appendix,
+		"eyes" =     /obj/item/organ/internal/eyes,
+		)
 
 	brute_mod = 1.25 //greys are fragile
 
@@ -586,8 +728,6 @@
 		C.dna.SetSEState(REMOTETALKBLOCK,0,1)
 		C.mutations -= REMOTE_TALK
 		genemutcheck(C,REMOTETALKBLOCK,null,MUTCHK_FORCED)
-	C.mutations.Add(GREY)
-	C.update_mutations()
 	..()
 
 /datum/species/diona
@@ -622,13 +762,14 @@
 	even the simplest concepts of other minds. Their alien physiology allows them survive happily off a diet of nothing but light, \
 	water and other radiation."
 
-	flags = NO_BREATHE | REQUIRE_LIGHT | IS_PLANT | RAD_ABSORB | NO_BLOOD | NO_PAIN
+	flags = NO_BREATHE | RADIMMUNE | IS_PLANT | NO_BLOOD | NO_PAIN
 	clothing_flags = HAS_SOCKS
 	dietflags = 0		//Diona regenerate nutrition in light, no diet necessary
 
 	body_temperature = T0C + 15		//make the plant people have a bit lower body temperature, why not
 	blood_color = "#004400"
 	flesh_color = "#907E4A"
+	butt_sprite = "diona"
 
 	reagent_tag = PROCESS_ORG
 
@@ -643,17 +784,17 @@
 
 	vision_organ = /obj/item/organ/internal/diona_receptor
 	has_limbs = list(
-		"chest" =  list("path" = /obj/item/organ/external/diona/chest),
-		"groin" =  list("path" = /obj/item/organ/external/diona/groin),
-		"head" =   list("path" = /obj/item/organ/external/diona/head),
-		"l_arm" =  list("path" = /obj/item/organ/external/diona/arm),
-		"r_arm" =  list("path" = /obj/item/organ/external/diona/arm/right),
-		"l_leg" =  list("path" = /obj/item/organ/external/diona/leg),
-		"r_leg" =  list("path" = /obj/item/organ/external/diona/leg/right),
-		"l_hand" = list("path" = /obj/item/organ/external/diona/hand),
-		"r_hand" = list("path" = /obj/item/organ/external/diona/hand/right),
-		"l_foot" = list("path" = /obj/item/organ/external/diona/foot),
-		"r_foot" = list("path" = /obj/item/organ/external/diona/foot/right)
+		"chest" =  list("path" = /obj/item/organ/external/chest/diona),
+		"groin" =  list("path" = /obj/item/organ/external/groin/diona),
+		"head" =   list("path" = /obj/item/organ/external/head/diona),
+		"l_arm" =  list("path" = /obj/item/organ/external/arm/diona),
+		"r_arm" =  list("path" = /obj/item/organ/external/arm/right/diona),
+		"l_leg" =  list("path" = /obj/item/organ/external/leg/diona),
+		"r_leg" =  list("path" = /obj/item/organ/external/leg/right/diona),
+		"l_hand" = list("path" = /obj/item/organ/external/hand/diona),
+		"r_hand" = list("path" = /obj/item/organ/external/hand/right/diona),
+		"l_foot" = list("path" = /obj/item/organ/external/foot/diona),
+		"r_foot" = list("path" = /obj/item/organ/external/foot/right/diona)
 		)
 
 	suicide_messages = list(
@@ -672,23 +813,32 @@
 
 	return ..()
 
-/*        //overpowered and dumb as hell; they get cloning back, though.
-/datum/species/diona/handle_death(var/mob/living/carbon/human/H)
+/datum/species/diona/handle_life(var/mob/living/carbon/human/H)
+	var/rads = H.radiation/25
+	H.radiation = Clamp(H.radiation - rads, 0, 100)
+	H.nutrition += rads
+	H.adjustBruteLoss(-(rads))
+	H.adjustOxyLoss(-(rads))
+	H.adjustToxLoss(-(rads))
 
-	var/mob/living/simple_animal/diona/S = new(get_turf(H))
+	var/light_amount = 0 //how much light there is in the place, affects receiving nutrition and healing
+	if(isturf(H.loc)) //else, there's considered to be no light
+		var/turf/T = H.loc
+		light_amount = min(T.get_lumcount()*10, 5)  //hardcapped so it's not abused by having a ton of flashlights
+	H.nutrition += light_amount
+	H.traumatic_shock -= light_amount
 
-	if(H.mind)
-		H.mind.transfer_to(S)
-	else
-		S.key = H.key
+	if(H.nutrition > 450)
+		H.nutrition = 450
 
-	for(var/mob/living/simple_animal/diona/D in H.contents)
-		if(D.client)
-			D.loc = H.loc
-		else
-			qdel(D)
+	if((light_amount >= 5) && !H.suiciding) //if there's enough light, heal
+		H.adjustBruteLoss(-(light_amount/2))
+		H.adjustFireLoss(-(light_amount/4))
+		H.adjustOxyLoss(-(light_amount))
 
-	H.visible_message("<span class='danger">[H] splits apart with a wet slithering noise!"</span>) */
+	if(H.nutrition < 200)
+		H.take_overall_damage(10,0)
+		H.traumatic_shock++
 
 /datum/species/machine
 	name = "Machine"
@@ -712,28 +862,20 @@
 	burn_mod = 2.5  // So they take 50% extra damage from brute/burn overall.
 	death_message = "gives one shrill beep before falling limp, their monitor flashing blue before completely shutting off..."
 
-	cold_level_1 = 50
-	cold_level_2 = -1
-	cold_level_3 = -1
-
-	heat_level_1 = 500		//gives them about 25 seconds in space before taking damage
-	heat_level_2 = 540
-	heat_level_3 = 600
-	heat_level_3_breathe = 600
-
-	passive_temp_gain = 10 //this should cause IPCs to stabilize at ~80 C in a 20 C environment.
-
 	flags = IS_WHITELISTED | NO_BREATHE | NO_SCAN | NO_BLOOD | NO_PAIN | NO_DNA | NO_POISON | RADIMMUNE | ALL_RPARTS
 	clothing_flags = HAS_UNDERWEAR | HAS_UNDERSHIRT | HAS_SOCKS
 	bodyflags = HAS_SKIN_COLOR | HAS_MARKINGS | HAS_HEAD_ACCESSORY
 	dietflags = 0		//IPCs can't eat, so no diet
 	blood_color = "#1F181F"
 	flesh_color = "#AAAAAA"
+	//Default styles for created mobs.
+	default_hair = "Blue IPC Screen"
 	virus_immune = 1
 	can_revive_by_healing = 1
 	reagent_tag = PROCESS_SYN
 	male_scream_sound = 'sound/goonstation/voice/robot_scream.ogg'
 	female_scream_sound = 'sound/goonstation/voice/robot_scream.ogg'
+	butt_sprite = "machine"
 
 	has_organ = list(
 		"brain" = /obj/item/organ/internal/brain/mmi_holder/posibrain,
@@ -769,6 +911,10 @@
 		)
 
 /datum/species/machine/handle_death(var/mob/living/carbon/human/H)
-	H.h_style = ""
+	var/obj/item/organ/external/head/head_organ = H.get_organ("head")
+	head_organ.h_style = "Bald"
+	head_organ.f_style = "Shaved"
 	spawn(100)
-		if(H) H.update_hair()
+		if(H)
+			H.update_hair()
+			H.update_fhair()

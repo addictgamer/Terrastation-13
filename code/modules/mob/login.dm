@@ -31,12 +31,13 @@
 
 	client.images = null				//remove the images such as AIs being unable to see runes
 	client.screen = list()				//remove hud items just in case
-	if(hud_used)
-		qdel(hud_used)		//remove the hud objects
-		hud_used = null
 	if(client.click_intercept)
 		client.click_intercept.quit() // Let's not keep any old click_intercepts
-	hud_used = new /datum/hud(src)
+
+	if(!hud_used)
+		create_mob_hud()
+	if(hud_used)
+		hud_used.show_hud(hud_used.hud_version)
 
 	next_move = 1
 	sight |= SEE_SELF
@@ -70,7 +71,13 @@
 	//readd this mob's HUDs (antag, med, etc)
 	reload_huds()
 
-	CallHook("Login", list("client" = src.client, "mob" = src))
+	add_click_catcher()
+
+	if(viewing_alternate_appearances && viewing_alternate_appearances.len)
+		for(var/datum/alternate_appearance/AA in viewing_alternate_appearances)
+			AA.display_to(list(src))
+
+	callHook("mob_login", list("client" = client, "mob" = src))
 
 // Calling update_interface() in /mob/Login() causes the Cyborg to immediately be ghosted; because of winget().
 // Calling it in the overriden Login, such as /mob/living/Login() doesn't cause this.

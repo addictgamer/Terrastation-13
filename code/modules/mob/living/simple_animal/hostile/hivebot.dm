@@ -18,9 +18,12 @@
 	projectilesound = 'sound/weapons/Gunshot.ogg'
 	projectiletype = /obj/item/projectile/hivebotbullet
 	faction = list("hivebot")
+	check_friendly_fire = 1
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
 	minbodytemp = 0
 	speak_emote = list("states")
+	gold_core_spawnable = CHEM_MOB_SPAWN_HOSTILE
+	loot = list(/obj/effect/decal/cleanable/blood/gibs/robot)
 
 /mob/living/simple_animal/hostile/hivebot/range
 	name = "Hivebot"
@@ -39,12 +42,12 @@
 	name = "Strong Hivebot"
 	desc = "A robot, this one is armed and looks tough!"
 	health = 80
+	maxHealth = 80
 	ranged = 1
 
 /mob/living/simple_animal/hostile/hivebot/death()
 	..()
 	visible_message("<b>[src]</b> blows apart!")
-	new /obj/effect/decal/cleanable/blood/gibs/robot(src.loc)
 	var/datum/effect/system/spark_spread/s = new /datum/effect/system/spark_spread
 	s.set_up(3, 1, src)
 	s.start()
@@ -99,9 +102,8 @@
 		qdel(src)
 	return
 
-/mob/living/simple_animal/hostile/hivebot/tele/process_ai()
-	. = ..()
-	if(!.)
+/mob/living/simple_animal/hostile/hivebot/tele/handle_automated_action()
+	if(!..())
 		return
 	if(prob(2))//Might be a bit low, will mess with it likely
 		warpbots()

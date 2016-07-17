@@ -32,6 +32,7 @@
 #define slot_r_ear 20
 #define slot_wear_pda 21
 #define slot_tie 22
+#define slots_amt 22
 
 //Cant seem to find a mob bitflags area other than the powers one
 
@@ -77,3 +78,5 @@
 
 #define BLOCKHEADHAIR 			4		// temporarily removes the user's hair overlay. Leaves facial hair.
 #define BLOCKHAIR				32768	// temporarily removes the user's hair, facial and otherwise.
+
+#define ONESIZEFITSALL 			1		// determines if something can be worn by a fatty or not.

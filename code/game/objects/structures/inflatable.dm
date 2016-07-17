@@ -3,11 +3,11 @@
 	desc = "A folded membrane which rapidly expands into a large cubical shape on activation."
 	icon = 'icons/obj/inflatable.dmi'
 	icon_state = "folded_wall"
-	w_class = 3.0
+	w_class = 3
 
 /obj/item/inflatable/attack_self(mob/user)
 	playsound(loc, 'sound/items/zip.ogg', 75, 1)
-	user << "\blue You inflate [src]."
+	to_chat(user, "\blue You inflate [src].")
 	var/obj/structure/inflatable/R = new /obj/structure/inflatable(user.loc)
 	src.transfer_fingerprints_to(R)
 	R.add_fingerprint(user)
@@ -25,7 +25,7 @@
 
 	var/health = 50.0
 
-/obj/structure/inflatable/New(location)
+/obj/structure/inflatable/initialize(location)
 	..()
 	air_update_turf(1)
 
@@ -89,14 +89,14 @@
 
 /obj/structure/inflatable/attack_slime(mob/user as mob)
 	var/mob/living/carbon/slime/S = user
-	if (!S.is_adult)
+	if(!S.is_adult)
 		return
 	attack_generic(user, rand(10, 15))
 
 /obj/structure/inflatable/attackby(obj/item/weapon/W as obj, mob/user as mob, params)
 	if(!istype(W))
 		return
-	if (can_puncture(W))
+	if(can_puncture(W))
 		visible_message("\red <b>[user] pierces [src] with [W]!</b>")
 		deflate(1)
 	if(W.damtype == BRUTE || W.damtype == BURN)
@@ -150,7 +150,7 @@
 
 /obj/item/inflatable/door/attack_self(mob/user)
 	playsound(loc, 'sound/items/zip.ogg', 75, 1)
-	user << "\blue You inflate [src]."
+	to_chat(user, "\blue You inflate [src].")
 	var/obj/structure/inflatable/door/R = new /obj/structure/inflatable/door(user.loc)
 	src.transfer_fingerprints_to(R)
 	R.add_fingerprint(user)
@@ -262,7 +262,7 @@
 	icon_state = "folded_wall_torn"
 
 /obj/item/inflatable/torn/attack_self(mob/user)
-	user << "<span class='warning'>The inflatable wall is too torn to be inflated!</span>"
+	to_chat(user, "<span class='warning'>The inflatable wall is too torn to be inflated!</span>")
 	add_fingerprint(user)
 
 /obj/item/inflatable/door/torn
@@ -272,7 +272,7 @@
 	icon_state = "folded_door_torn"
 
 /obj/item/inflatable/door/torn/attack_self(mob/user)
-	user << "<span class='warning'>The inflatable door is too torn to be inflated!</span>"
+	to_chat(user, "<span class='warning'>The inflatable door is too torn to be inflated!</span>")
 	add_fingerprint(user)
 
 /obj/item/weapon/storage/briefcase/inflatable

@@ -27,7 +27,7 @@
 		if(prob(50))
 			M.say("[sonic_message]")
 		else
-			M << "<span class='notice'>[sonic_message ]</span>"
+			to_chat(M, "<span class='notice'>[sonic_message ]</span>")
 	..()
 	return
 
@@ -36,9 +36,6 @@
 	id = "applejack"
 	description = "A highly concentrated alcoholic beverage made by repeatedly freezing cider and removing the ice."
 	color = "#997A00"
-	slur_start = 30
-	brawl_start = 40
-	confused_start = 100
 	alcohol_perc = 0.4
 
 /datum/chemical_reaction/applejack
@@ -67,6 +64,47 @@
 	mix_sound = 'sound/goonstation/misc/drinkfizz.ogg'
 
 
+/datum/reagent/ethanol/dragons_breath //inaccessible to players, but here for admin shennanigans
+	name = "Dragon's Breath"
+	id = "dragonsbreath"
+	description = "Possessing this stuff probably breaks the Geneva convention."
+	reagent_state = LIQUID
+	color = "#DC0000"
+	alcohol_perc = 1
+
+/datum/reagent/ethanol/dragons_breath/reaction_mob(var/mob/living/M, var/method=TOUCH, var/volume)
+	if(method == INGEST && prob(20))
+		if(M.on_fire)
+			M.adjust_fire_stacks(3)
+
+/datum/reagent/ethanol/dragons_breath/on_mob_life(var/mob/living/M as mob)
+	if(!M) M = holder.my_atom
+	if(M.reagents.has_reagent("milk"))
+		to_chat(M, "<span class='notice'>The milk stops the burning. Ahhh.</span>")
+		M.reagents.del_reagent("milk")
+		M.reagents.del_reagent("dragonsbreath")
+		return
+	if(prob(8))
+		to_chat(M, "<span class='userdanger'>Oh god! Oh GODD!!</span>")
+	if(prob(50))
+		to_chat(M, "<span class='danger'>Your throat burns terribly!</span>")
+		M.emote(pick("scream","cry","choke","gasp"))
+		M.Stun(1)
+	if(prob(8))
+		to_chat(M, "<span class='danger'>Why!? WHY!?</span>")
+	if(prob(8))
+		to_chat(M, "<span class='danger'>ARGHHHH!</span>")
+	if(prob(2 * volume))
+		to_chat(M, "<span class='userdanger'>OH GOD OH GOD PLEASE NO!!</b></span>")
+		if(M.on_fire)
+			M.adjust_fire_stacks(5)
+		if(prob(50))
+			to_chat(M, "<span class='userdanger'>IT BURNS!!!!</span>")
+			M.visible_message("<span class='danger'>[M] is consumed in flames!</span>")
+			M.dust()
+			return
+	..()
+
 // ROBOT ALCOHOL PAST THIS POINT
 // WOOO!
 
@@ -79,14 +117,7 @@
 	color = "#1BB1FF"
 	process_flags = ORGANIC | SYNTHETIC
 	metabolization_rate = 0.4
-	vomit_start = INFINITY		//
-	blur_start = INFINITY		//
-	pass_out = INFINITY		//INFINITY, so that IPCs don't puke and stuff
-	var/spark_start = 50	//amount absorbed after which mob starts sparking
-	var/collapse_start = 80	//amount absorbed after wich mob starts sparking and collapsing (DOUBLE THE SPARKS, DOUBLE THE FUN)
-	var/braindamage_start = 250 //amount absorbed after which mob starts taking a small amount of brain damage
-
-
+	alcohol_perc = 0.5
 
 /datum/chemical_reaction/synthanol
 	name = "Synthanol"
@@ -98,26 +129,7 @@
 	mix_sound = 'sound/goonstation/misc/drinkfizz.ogg'
 
 /datum/reagent/ethanol/synthanol/on_mob_life(var/mob/living/M as mob, var/alien)
-
-	var/d = 0
-	//	make all the beverages work together
-	for(var/datum/reagent/ethanol/synthanol/A in holder.reagent_list)
-		if(isnum(A.current_cycle)) d += A.current_cycle * A.alcohol_perc
-
-	if(M.isSynthetic()) //works normally on synthetics
-		if(d >= spark_start && prob(25))
-			var/datum/effect/system/spark_spread/s = new /datum/effect/system/spark_spread
-			s.set_up(3, 1, M)
-			s.start()
-		if(d >= collapse_start && prob(10))
-			M.emote("collapse")
-			var/datum/effect/system/spark_spread/s = new /datum/effect/system/spark_spread
-			s.set_up(3, 1, M)
-			s.start()
-		if(d >= braindamage_start && prob(10))
-			M.adjustBrainLoss(1)
-
-	else
+	if(!M.isSynthetic())
 		holder.remove_reagent(id, 3.6) //gets removed from organics very fast
 		if(prob(25))
 			holder.remove_reagent(id, 15)
@@ -130,7 +142,7 @@ datum/reagent/ethanol/synthanol/reaction_mob(var/mob/M, var/method=TOUCH, var/vo
 	if(M.isSynthetic())
 		return
 	if(method == INGEST)
-		M << pick("<span class = 'danger'>That was awful!</span>", "<span class = 'danger'>Yuck!</span>")
+		to_chat(M, pick("<span class = 'danger'>That was awful!</span>", "<span class = 'danger'>Yuck!</span>"))
 
 /datum/reagent/ethanol/synthanol/robottears
 	name = "Robot Tears"
@@ -138,7 +150,7 @@ datum/reagent/ethanol/synthanol/reaction_mob(var/mob/M, var/method=TOUCH, var/vo
 	description = "An oily substance that an IPC could technically consider a 'drink'."
 	reagent_state = LIQUID
 	color = "#363636"
-	alcohol_perc = 0.5
+	alcohol_perc = 0.25
 
 /datum/chemical_reaction/synthanol/robottears
 	name = "Robot Tears"
@@ -154,7 +166,7 @@ datum/reagent/ethanol/synthanol/reaction_mob(var/mob/M, var/method=TOUCH, var/vo
 	description = "A fruit drink meant only for synthetics, however that works."
 	reagent_state = LIQUID
 	color = "#adb21f"
-	alcohol_perc = 0.3
+	alcohol_perc = 0.2
 
 /datum/chemical_reaction/synthanol/trinary
 	name = "Trinary"
@@ -170,7 +182,7 @@ datum/reagent/ethanol/synthanol/reaction_mob(var/mob/M, var/method=TOUCH, var/vo
 	description = "A drink containing some organic ingredients, but meant only for synthetics."
 	reagent_state = LIQUID
 	color = "#5b3210"
-	alcohol_perc = 0.5
+	alcohol_perc = 0.25
 
 /datum/chemical_reaction/synthanol/servo
 	name = "Servo"
@@ -186,7 +198,7 @@ datum/reagent/ethanol/synthanol/reaction_mob(var/mob/M, var/method=TOUCH, var/vo
 	description = "A potent mix of alcohol and synthanol. Will only work on synthetics."
 	reagent_state = LIQUID
 	color = "#e7ae04"
-	alcohol_perc = 0.2
+	alcohol_perc = 0.15
 
 /datum/chemical_reaction/synthanol/uplink
 	name = "Uplink"
@@ -201,7 +213,7 @@ datum/reagent/ethanol/synthanol/reaction_mob(var/mob/M, var/method=TOUCH, var/vo
 	description = "The classic drink adjusted for a robot's tastes."
 	reagent_state = LIQUID
 	color = "#7204e7"
-	alcohol_perc = 0.5
+	alcohol_perc = 0.25
 
 /datum/chemical_reaction/synthanol/synthnsoda
 	name = "Synth 'n Soda"
@@ -216,7 +228,7 @@ datum/reagent/ethanol/synthanol/reaction_mob(var/mob/M, var/method=TOUCH, var/vo
 	description = "Someone mixed wine and alcohol for robots. Hope you're proud of yourself."
 	reagent_state = LIQUID
 	color = "#d004e7"
-	alcohol_perc = 0.5
+	alcohol_perc = 0.25
 
 /datum/chemical_reaction/synthanol/synthignon
 	name = "Synthignon"

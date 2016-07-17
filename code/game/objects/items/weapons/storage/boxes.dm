@@ -39,21 +39,28 @@
 	New()
 		..()
 		contents = list()
-		sleep(1)
 		new /obj/item/clothing/mask/breath( src )
 		new /obj/item/weapon/tank/emergency_oxygen( src )
 		new /obj/item/weapon/reagent_containers/hypospray/autoinjector( src )
 		return
 
-/obj/item/weapon/storage/box/engineer/
+/obj/item/weapon/storage/box/engineer
 	New()
 		..()
 		contents = list()
-		sleep(1)
 		new /obj/item/clothing/mask/breath( src )
 		new /obj/item/weapon/tank/emergency_oxygen/engi( src )
 		new /obj/item/weapon/reagent_containers/hypospray/autoinjector( src )
 		return
+
+/obj/item/weapon/storage/box/survival_mining
+	New()
+		..()
+		contents = list()
+		new /obj/item/clothing/mask/breath(src)
+		new /obj/item/weapon/tank/emergency_oxygen/engi(src)
+		new /obj/item/weapon/crowbar/red(src)
+		new /obj/item/weapon/reagent_containers/hypospray/autoinjector(src)
 
 /obj/item/weapon/storage/box/gloves
 	name = "box of latex gloves"
@@ -261,6 +268,19 @@
 		new /obj/item/weapon/implantcase/death_alarm(src)
 		new /obj/item/weapon/implanter(src)
 
+/obj/item/weapon/storage/box/tapes
+	name = "Tape Box"
+	desc = "A box of spare recording tapes"
+	icon_state = "box"
+
+	New()
+		..()
+		new /obj/item/device/tape(src)
+		new /obj/item/device/tape(src)
+		new /obj/item/device/tape(src)
+		new /obj/item/device/tape(src)
+		new /obj/item/device/tape(src)
+		new /obj/item/device/tape(src)
 
 /obj/item/weapon/storage/box/rxglasses
 	name = "prescription glasses"
@@ -512,6 +532,16 @@
 		new /obj/item/weapon/restraints/handcuffs/cable/zipties(src)
 		new /obj/item/weapon/restraints/handcuffs/cable/zipties(src)
 
+/obj/item/weapon/storage/box/alienhandcuffs
+	name = "box of spare handcuffs"
+	desc = "A box full of handcuffs."
+	icon_state = "alienboxCuffs"
+
+	New()
+		..()
+		for(var/i in 1 to 7)
+			new	/obj/item/weapon/restraints/handcuffs/alien(src)
+
 /obj/item/weapon/storage/box/fakesyndiesuit
 	name = "boxed space suit and helmet"
 	desc = "A sleek, sturdy box used to hold replica spacesuits."
@@ -593,7 +623,7 @@
 	icon_state = "syringe"
 	New()
 		..()
-		for (var/i; i < storage_slots; i++)
+		for(var/i; i < storage_slots; i++)
 			new /obj/item/weapon/reagent_containers/hypospray/autoinjector(src)
 
 /obj/item/weapon/storage/box/autoinjector/utility
@@ -675,14 +705,3 @@
 	new /obj/item/weapon/lipstick/green(src)
 	new /obj/item/weapon/lipstick/blue(src)
 	new /obj/item/weapon/lipstick/white(src)
-
-/obj/item/weapon/storage/box/foam_darts
-	name = "Foam Dart Pack"
-	desc = "Extra ammo for foam dart launchers. Contains 10 darts."
-	storage_slots = 10
-	max_combined_w_class = 10
-
-/obj/item/weapon/storage/box/foam_darts/New()
-	..()
-	for(var/i=1; i <= storage_slots; i++)
-		new /obj/item/toy/ammo/crossbow(src)

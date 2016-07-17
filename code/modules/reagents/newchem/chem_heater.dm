@@ -74,13 +74,13 @@
 
 	if(istype(I, /obj/item/weapon/reagent_containers/glass))
 		if(beaker)
-			user << "<span class='notice'>A beaker is already loaded into the machine.</span>"
+			to_chat(user, "<span class='notice'>A beaker is already loaded into the machine.</span>")
 			return
 
 		if(user.drop_item())
 			beaker = I
 			I.forceMove(src)
-			user << "<span class='notice'>You add the beaker to the machine!</span>"
+			to_chat(user, "<span class='notice'>You add the beaker to the machine!</span>")
 			icon_state = "mixer1b"
 			nanomanager.update_uis(src)
 
@@ -147,7 +147,7 @@
 
 	// update the ui if it exists, returns null if no ui is passed/found
 	ui = nanomanager.try_update_ui(user, src, ui_key, ui, data)
-	if (!ui)
+	if(!ui)
 		ui = new(user, src, ui_key, "chem_heater.tmpl", "ChemHeater", 350, 270)
 		ui.set_initial_data(data)
 		ui.open()

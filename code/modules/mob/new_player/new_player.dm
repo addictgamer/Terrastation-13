@@ -24,7 +24,8 @@
 
 
 /mob/new_player/proc/new_player_panel_proc()
-	var/output = "<center><p><a href='byond://?src=\ref[src];show_preferences=1'>Setup Character</A></p>"
+	var/real_name = client.prefs.real_name
+	var/output = "<center><p><a href='byond://?src=\ref[src];show_preferences=1'>Setup Character</A><br /><i>[real_name]</i></p>"
 
 	if(!ticker || ticker.current_state <= GAME_STATE_PREGAME)
 		if(!ready)	output += "<p><a href='byond://?src=\ref[src];ready=1'>Declare Ready</A></p>"
@@ -69,8 +70,8 @@
 	..()
 
 	statpanel("Status")
-	if (client.statpanel == "Status" && ticker)
-		if (ticker.current_state != GAME_STATE_PREGAME)
+	if(client.statpanel == "Status" && ticker)
+		if(ticker.current_state != GAME_STATE_PREGAME)
 			stat(null, "Station Time: [worldtime2text()]")
 	statpanel("Lobby")
 	if(client.statpanel=="Lobby" && ticker)
@@ -88,13 +89,17 @@
 			stat("Time To Start:", "DELAYED")
 
 		if(ticker.current_state == GAME_STATE_PREGAME)
-			stat("Players: [totalPlayers]", "Players Ready: [totalPlayersReady]")
+			stat("Players:", "[totalPlayers]")
+			if(check_rights(R_ADMIN, 0, src))
+				stat("Players Ready:", "[totalPlayersReady]")
 			totalPlayers = 0
 			totalPlayersReady = 0
 			for(var/mob/new_player/player in player_list)
-				stat("[player.key]", (player.ready)?("(Playing)"):(null))
+				if(check_rights(R_ADMIN, 0, src))
+					stat("[player.key]", (player.ready)?("(Playing)"):(null))
 				totalPlayers++
-				if(player.ready)totalPlayersReady++
+				if(player.ready)
+					totalPlayersReady++
 
 /mob/new_player/Topic(href, href_list[])
 	if(!client)	return 0
@@ -118,12 +123,13 @@
 			var/mob/dead/observer/observer = new()
 			src << browse(null, "window=playersetup")
 			spawning = 1
-			src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // MAD JAMS cant last forever yo
+			src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1)// MAD JAMS cant last forever yo
+
 
 			observer.started_as_observer = 1
 			close_spawn_windows()
 			var/obj/O = locate("landmark*Observer-Start")
-			src << "\blue Now teleporting."
+			to_chat(src, "\blue Now teleporting.")
 			observer.loc = O.loc
 			observer.timeofdeath = world.time // Set the time of death so that the respawn timer works correctly.
 			client.prefs.update_preview_icon(1)
@@ -143,13 +149,13 @@
 
 	if(href_list["late_join"])
 		if(!ticker || ticker.current_state != GAME_STATE_PLAYING)
-			usr << "\red The round is either not ready, or has already finished..."
+			to_chat(usr, "\red The round is either not ready, or has already finished...")
 			return
 
 		if(client.prefs.species in whitelisted_species)
 
 			if(!is_alien_whitelisted(src, client.prefs.species) && config.usealienwhitelist)
-				src << alert("You are currently not whitelisted to play [client.prefs.species].")
+				to_chat(src, alert("You are currently not whitelisted to play [client.prefs.species]."))
 				return 0
 
 		LateChoices()
@@ -160,12 +166,12 @@
 	if(href_list["SelectedJob"])
 
 		if(!enter_allowed)
-			usr << "\blue There is an administrative lock on entering the game!"
+			to_chat(usr, "\blue There is an administrative lock on entering the game!")
 			return
 
 		if(client.prefs.species in whitelisted_species)
 			if(!is_alien_whitelisted(src, client.prefs.species) && config.usealienwhitelist)
-				src << alert("You are currently not whitelisted to play [client.prefs.species].")
+				to_chat(src, alert("You are currently not whitelisted to play [client.prefs.species]."))
 				return 0
 
 		AttemptLateSpawn(href_list["SelectedJob"],client.prefs.spawnpoint)
@@ -206,7 +212,7 @@
 				var/id_max = text2num(href_list["maxid"])
 
 				if( (id_max - id_min) > 100 )	//Basic exploit prevention
-					usr << "The option ID difference is too big. Please contact administration or the database admin."
+					to_chat(usr, "The option ID difference is too big. Please contact administration or the database admin.")
 					return
 
 				for(var/optionid = id_min; optionid <= id_max; optionid++)
@@ -225,7 +231,7 @@
 				var/id_max = text2num(href_list["maxoptionid"])
 
 				if( (id_max - id_min) > 100 )	//Basic exploit prevention
-					usr << "The option ID difference is too big. Please contact administration or the database admin."
+					to_chat(usr, "The option ID difference is too big. Please contact administration or the database admin.")
 					return
 
 				for(var/optionid = id_min; optionid <= id_max; optionid++)
@@ -239,6 +245,8 @@
 	if(jobban_isbanned(src,rank))	return 0
 	if(!is_job_whitelisted(src, rank))	 return 0
 	if(!job.player_old_enough(src.client))	return 0
+	if(job.admin_only && !(check_rights(R_ADMIN, 0))) return 0
+
 	if(config.assistantlimit)
 		if(job.title == "Civilian")
 			var/count = 0
@@ -252,18 +260,31 @@
 				return 0
 	return 1
 
+/mob/new_player/proc/IsAdminJob(rank)
+	var/datum/job/job = job_master.GetJob(rank)
+	if(job.admin_only)
+		return 1
+	else
+		return 0
+
+/mob/new_player/proc/IsERTSpawnJob(rank)
+	var/datum/job/job = job_master.GetJob(rank)
+	if(job.spawn_ert)
+		return 1
+	else
+		return 0
 
 /mob/new_player/proc/AttemptLateSpawn(rank,var/spawning_at)
-	if (src != usr)
+	if(src != usr)
 		return 0
 	if(!ticker || ticker.current_state != GAME_STATE_PLAYING)
-		usr << "\red The round is either not ready, or has already finished..."
+		to_chat(usr, "\red The round is either not ready, or has already finished...")
 		return 0
 	if(!enter_allowed)
-		usr << "\blue There is an administrative lock on entering the game!"
+		to_chat(usr, "\blue There is an administrative lock on entering the game!")
 		return 0
 	if(!IsJobAvailable(rank))
-		src << alert("[rank] is not available. Please try another.")
+		to_chat(src, alert("[rank] is not available. Please try another."))
 		return 0
 
 	job_master.AssignRole(src, rank, 1)
@@ -294,20 +315,26 @@
 	var/join_message
 	var/datum/spawnpoint/S
 
-	if(spawning_at)
-		S = spawntypes[spawning_at]
-
-	if(S && istype(S))
-		if(S.check_job_spawning(rank))
-			character.loc = pick(S.turfs)
-			join_message = S.msg
+	if(IsAdminJob(rank))
+		if(IsERTSpawnJob(rank))
+			character.loc = pick(ertdirector)
 		else
-			character << "Your chosen spawnpoint ([S.display_name]) is unavailable for your chosen job. Spawning you at the Arrivals shuttle instead."
+			character.loc = pick(aroomwarp)
+		join_message = "has arrived"
+	else
+		if(spawning_at)
+			S = spawntypes[spawning_at]
+		if(S && istype(S))
+			if(S.check_job_spawning(rank))
+				character.loc = pick(S.turfs)
+				join_message = S.msg
+			else
+				to_chat(character, "Your chosen spawnpoint ([S.display_name]) is unavailable for your chosen job. Spawning you at the Arrivals shuttle instead.")
+				character.loc = pick(latejoin)
+				join_message = "has arrived on the station"
+		else
 			character.loc = pick(latejoin)
 			join_message = "has arrived on the station"
-	else
-		character.loc = pick(latejoin)
-		join_message = "has arrived on the station"
 
 	character.lastarea = get_area(loc)
 	// Moving wheelchair if they have one
@@ -317,23 +344,27 @@
 
 	ticker.mode.latespawn(character)
 
-	if(character.mind.assigned_role != "Cyborg")
+	if(character.mind.assigned_role == "Cyborg")
+		AnnounceCyborg(character, rank, join_message)
+		callHook("latespawn", list(character))
+	else if(IsAdminJob(rank))
+		callHook("latespawn", list(character))
+	else
 		data_core.manifest_inject(character)
 		ticker.minds += character.mind//Cyborgs and AIs handle this in the transform proc.	//TODO!!!!! ~Carn
 		AnnounceArrival(character, rank, join_message)
 		callHook("latespawn", list(character))
-	else
-		AnnounceCyborg(character, rank, join_message)
-		callHook("latespawn", list(character))
+
+
 	qdel(src)
 
 
 /mob/new_player/proc/AnnounceArrival(var/mob/living/carbon/human/character, var/rank, var/join_message)
-	if (ticker.current_state == GAME_STATE_PLAYING)
+	if(ticker.current_state == GAME_STATE_PLAYING)
 		var/ailist[] = list()
-		for (var/mob/living/silicon/ai/A in living_mob_list)
+		for(var/mob/living/silicon/ai/A in living_mob_list)
 			ailist += A
-		if (ailist.len)
+		if(ailist.len)
 			var/mob/living/silicon/ai/announcer = pick(ailist)
 			if(character.mind)
 				if((character.mind.assigned_role != "Cyborg") && (character.mind.special_role != "MODE"))
@@ -354,11 +385,11 @@
 					global_announcer.autosay("[character.real_name],[rank ? " [rank]," : " visitor," ] [join_message ? join_message : "has arrived on the station"].", "Arrivals Announcement Computer")
 
 /mob/new_player/proc/AnnounceCyborg(var/mob/living/character, var/rank, var/join_message)
-	if (ticker.current_state == GAME_STATE_PLAYING)
+	if(ticker.current_state == GAME_STATE_PLAYING)
 		var/ailist[] = list()
-		for (var/mob/living/silicon/ai/A in living_mob_list)
+		for(var/mob/living/silicon/ai/A in living_mob_list)
 			ailist += A
-		if (ailist.len)
+		if(ailist.len)
 			var/mob/living/silicon/ai/announcer = pick(ailist)
 			if(character.mind)
 				if((character.mind.special_role != "MODE"))
@@ -384,21 +415,64 @@
 	else if(shuttle_master.emergency.mode >= SHUTTLE_CALL)
 		dat += "<font color='red'>The station is currently undergoing evacuation procedures.</font><br>"
 
-	dat += "Choose from the following open positions:<br>"
+	dat += "Choose from the following open positions:<br><br>"
+
+	var/list/activePlayers = list()
+	var/list/categorizedJobs = list(
+		"Command" = list(jobs = list(), titles = command_positions, color = "#aac1ee"),
+		"Engineering" = list(jobs = list(), titles = engineering_positions, color = "#ffd699"),
+		"Security" = list(jobs = list(), titles = security_positions, color = "#ff9999"),
+		"Miscellaneous" = list(jobs = list(), titles = list(), color = "#ffffff", colBreak = 1),
+		"Synthetic" = list(jobs = list(), titles = nonhuman_positions, color = "#ccffcc"),
+		"Support / Service" = list(jobs = list(), titles = service_positions, color = "#cccccc"),
+		"Medical" = list(jobs = list(), titles = medical_positions, color = "#99ffe6", colBreak = 1),
+		"Science" = list(jobs = list(), titles = science_positions, color = "#e6b3e6"),
+		"Supply" = list(jobs = list(), titles = supply_positions, color = "#ead4ae"),
+		)
 	for(var/datum/job/job in job_master.occupations)
 		if(job && IsJobAvailable(job.title))
-			var/active = 0
+			activePlayers[job] = 0
+			var/categorized = 0
 			// Only players with the job assigned and AFK for less than 10 minutes count as active
-			for(var/mob/M in player_list) if(M.mind && M.client && M.mind.assigned_role == job.title && M.client.inactivity <= 10 * 60 * 10)
-				active++
-			dat += "<a href='byond://?src=\ref[src];SelectedJob=[job.title]'>[job.title] ([job.current_positions]) (Active: [active])</a><br>"
+			for(var/mob/M in player_list) if(M.mind && M.client && M.mind.assigned_role == job.title && M.client.inactivity <= 10 MINUTES)
+				activePlayers[job]++
+			for(var/jobcat in categorizedJobs)
+				var/list/jobs = categorizedJobs[jobcat]["jobs"]
+				if(job.title in categorizedJobs[jobcat]["titles"])
+					categorized = 1
+					if(jobcat == "Command") // Put captain at top of command jobs
+						if(job.title == "Captain")
+							jobs.Insert(1, job)
+						else
+							jobs += job
+					else // Put heads at top of non-command jobs
+						if(job.title in command_positions)
+							jobs.Insert(1, job)
+						else
+							jobs += job
+			if(!categorized)
+				categorizedJobs["Miscellaneous"]["jobs"] += job
 
-	dat += "</center>"
+	dat += "<table><tr><td valign='top'>"
+	for(var/jobcat in categorizedJobs)
+		if(categorizedJobs[jobcat]["colBreak"])
+			dat += "</td><td valign='top'>"
+		if(length(categorizedJobs[jobcat]["jobs"]) < 1)
+			continue
+		var/color = categorizedJobs[jobcat]["color"]
+		dat += "<fieldset style='border: 2px solid [color]; display: inline'>"
+		dat += "<legend align='center' style='color: [color]'>[jobcat]</legend>"
+		for(var/datum/job/job in categorizedJobs[jobcat]["jobs"])
+			dat += "<a href='byond://?src=\ref[src];SelectedJob=[job.title]'>[job.title] ([job.current_positions]) (Active: [activePlayers[job]])</a><br>"
+		dat += "</fieldset><br>"
+
+	dat += "</td></tr></table></center>"
 	// Removing the old window method but leaving it here for reference
 //		src << browse(dat, "window=latechoices;size=300x640;can_close=1")
 	// Added the new browser window method
-	var/datum/browser/popup = new(src, "latechoices", "Choose Profession", 440, 500)
+	var/datum/browser/popup = new(src, "latechoices", "Choose Profession", 900, 600)
 	popup.add_stylesheet("playeroptions", 'html/browser/playeroptions.css')
+	popup.add_script("delay_interactivity", 'html/browser/delay_interactivity.js')
 	popup.set_content(dat)
 	popup.open(0) // 0 is passed to open so that it doesn't use the onclose() proc
 
@@ -415,7 +489,8 @@
 		client.prefs.real_name = random_name(client.prefs.gender)
 	client.prefs.copy_to(new_character)
 
-	src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1) // MAD JAMS cant last forever yo
+	src << sound(null, repeat = 0, wait = 0, volume = 85, channel = 1)// MAD JAMS cant last forever yo
+
 
 	if(mind)
 		mind.active = 0					//we wish to transfer the key manually
@@ -440,14 +515,14 @@
 		chosen_species = all_species[client.prefs.species]
 	if(!(chosen_species && (is_species_whitelisted(chosen_species) || has_admin_rights())))
 		// Have to recheck admin due to no usr at roundstart. Latejoins are fine though.
-		log_to_dd("[src] had species [client.prefs.species], though they weren't supposed to. Setting to Human.")
+		log_debug("[src] had species [client.prefs.species], though they weren't supposed to. Setting to Human.")
 		client.prefs.species = "Human"
 
 	var/datum/language/chosen_language
 	if(client.prefs.language)
 		chosen_language = all_languages[client.prefs.language]
-	if(!((chosen_language || client.prefs.language == "None") && (is_alien_whitelisted(src, client.prefs.language) || !config.usealienwhitelist || !(chosen_language.flags & WHITELISTED))))
-		log_to_dd("[src] had language [client.prefs.language], though they weren't supposed to. Setting to None.")
+	if((chosen_language == null && client.prefs.language != "None") || (chosen_language && chosen_language.flags & RESTRICTED))
+		log_debug("[src] had language [client.prefs.language], though they weren't supposed to. Setting to None.")
 		client.prefs.language = "None"
 
 /mob/new_player/proc/ViewManifest()

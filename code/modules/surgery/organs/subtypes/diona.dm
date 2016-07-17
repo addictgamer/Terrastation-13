@@ -17,125 +17,92 @@
 					D.death()
 		return 1 */
 
-/obj/item/organ/external/diona
-	name = "tendril"
-	cannot_break = 1
-	amputation_point = "branch"
-
-/obj/item/organ/external/diona/chest
+/obj/item/organ/external/chest/diona
 	name = "core trunk"
-	limb_name = "chest"
-	icon_name = "torso"
 	max_damage = 200
 	min_broken_damage = 50
-	w_class = 5
-	body_part = UPPER_TORSO
-	vital = 1
-	cannot_amputate = 1
-	parent_organ = null
+	cannot_break = 1
+	amputation_point = "trunk"
+	encased = null
+	gendered_icon = 0
+	species = "Diona"
 
-/obj/item/organ/external/diona/groin
+/obj/item/organ/external/groin/diona
 	name = "fork"
-	limb_name = "groin"
-	icon_name = "groin"
-	max_damage = 100
 	min_broken_damage = 50
-	w_class = 4
-	body_part = LOWER_TORSO
-	parent_organ = "chest"
+	cannot_break = 1
+	amputation_point = "lower trunk"
+	gendered_icon = 0
+	species = "Diona"
 
-/obj/item/organ/external/diona/arm
+/obj/item/organ/external/arm/diona
 	name = "left upper tendril"
-	limb_name = "l_arm"
-	icon_name = "l_arm"
 	max_damage = 35
 	min_broken_damage = 20
-	w_class = 3
-	body_part = ARM_LEFT
-	parent_organ = "chest"
-	can_grasp = 1
+	cannot_break = 1
+	amputation_point = "upper left trunk"
+	species = "Diona"
 
-/obj/item/organ/external/diona/arm/right
+/obj/item/organ/external/arm/right/diona
 	name = "right upper tendril"
-	limb_name = "r_arm"
-	icon_name = "r_arm"
-	body_part = ARM_RIGHT
-
-/obj/item/organ/external/diona/leg
-	name = "left lower tendril"
-	limb_name = "l_leg"
-	icon_name = "l_leg"
 	max_damage = 35
 	min_broken_damage = 20
-	w_class = 3
-	body_part = LEG_LEFT
-	icon_position = LEFT
-	parent_organ = "groin"
-	can_stand = 1
+	cannot_break = 1
+	amputation_point = "upper right trunk"
+	species = "Diona"
 
-/obj/item/organ/external/diona/leg/right
+/obj/item/organ/external/leg/diona
+	name = "left lower tendril"
+	max_damage = 35
+	min_broken_damage = 20
+	cannot_break = 1
+	amputation_point = "lower left fork"
+	species = "Diona"
+
+/obj/item/organ/external/leg/right/diona
 	name = "right lower tendril"
-	limb_name = "r_leg"
-	icon_name = "r_leg"
-	body_part = LEG_RIGHT
-	icon_position = RIGHT
+	max_damage = 35
+	min_broken_damage = 20
+	cannot_break = 1
+	amputation_point = "lower right fork"
+	species = "Diona"
 
-/obj/item/organ/external/diona/foot
+/obj/item/organ/external/foot/diona
 	name = "left foot"
-	limb_name = "l_foot"
-	icon_name = "l_foot"
 	max_damage = 20
 	min_broken_damage = 10
-	w_class = 2
-	body_part = FOOT_LEFT
-	icon_position = LEFT
-	parent_organ = "l_leg"
-	can_stand = 1
+	cannot_break = 1
+	amputation_point = "branch"
+	species = "Diona"
 
-/obj/item/organ/external/diona/foot/right
+/obj/item/organ/external/foot/right/diona
 	name = "right foot"
-	limb_name = "r_foot"
-	icon_name = "r_foot"
-	body_part = FOOT_RIGHT
-	icon_position = RIGHT
-	parent_organ = "r_leg"
-	amputation_point = "right ankle"
+	max_damage = 20
+	min_broken_damage = 10
+	cannot_break = 1
+	amputation_point = "branch"
+	species = "Diona"
 
-/obj/item/organ/external/diona/hand
+/obj/item/organ/external/hand/diona
 	name = "left grasper"
-	limb_name = "l_hand"
-	icon_name = "l_hand"
-	max_damage = 30
-	min_broken_damage = 15
-	w_class = 2
-	body_part = HAND_LEFT
-	parent_organ = "l_arm"
-	can_grasp = 1
+	cannot_break = 1
+	amputation_point = "branch"
+	species = "Diona"
 
-/obj/item/organ/external/diona/hand/right
+/obj/item/organ/external/hand/right/diona
 	name = "right grasper"
-	limb_name = "r_hand"
-	icon_name = "r_hand"
-	body_part = HAND_RIGHT
-	parent_organ = "r_arm"
+	cannot_break = 1
+	amputation_point = "branch"
+	species = "Diona"
 
-/obj/item/organ/external/diona/head
-	limb_name = "head"
-	icon_name = "head"
-	name = "head"
+/obj/item/organ/external/head/diona
 	max_damage = 50
 	min_broken_damage = 25
-	vital = 1
-	w_class = 3
-	body_part = HEAD
-	parent_organ = "chest"
-	var/can_intake_reagents = 1
-
-/obj/item/organ/external/diona/head/remove()
-	if(owner)
-		owner.unEquip(owner.head)
-		owner.unEquip(owner.l_ear)
-	..()
+	cannot_break = 1
+	encased = null
+	amputation_point = "upper trunk"
+	gendered_icon = 0
+	species = "Diona"
 
 //DIONA ORGANS.
 /* /obj/item/organ/external/diona/removed()
@@ -157,6 +124,7 @@
 	origin_tech = "biotech=3"
 	parent_organ = "chest"
 	slot = "heart"
+	species = "Diona"
 
 /obj/item/organ/internal/brain/diona
 	name = "gas bladder"
@@ -166,6 +134,7 @@
 	organ_tag = "brain" // Turns into a nymph instantly, no transplanting possible.
 	origin_tech = "biotech=3"
 	slot = "brain"
+	species = "Diona"
 
 /obj/item/organ/internal/kidneys/diona
 	name = "polyp segment"
@@ -175,6 +144,7 @@
 	origin_tech = "biotech=3"
 	parent_organ = "groin"
 	slot = "kidneys"
+	species = "Diona"
 
 /obj/item/organ/internal/appendix/diona
 	name = "anchoring ligament"
@@ -184,6 +154,7 @@
 	origin_tech = "biotech=3"
 	parent_organ = "groin"
 	slot = "appendix"
+	species = "Diona"
 
 /obj/item/organ/internal/diona_receptor
 	name = "receptor node"
@@ -193,7 +164,7 @@
 	origin_tech = "biotech=3"
 	parent_organ = "head"
 	slot = "eyes"
-
+	species = "Diona"
 
 /obj/item/organ/internal/diona_receptor/surgeryize()
 	if(!owner)
@@ -213,6 +184,8 @@
 	icon = 'icons/mob/alien.dmi'
 	icon_state = "claw"
 	slot = "liver"
+	alcohol_intensity = 0.5
+	species = "Diona"
 
 //TODO:Make absorb light on insert.
 

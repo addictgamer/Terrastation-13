@@ -7,8 +7,8 @@
 	throwforce = 5.0
 	throw_speed = 1
 	throw_range = 5
-	w_class = 2.0
-	flags = NOSHIELD
+	w_class = 2
+	armour_penetration = 100
 	attack_verb = list("bludgeoned", "whacked", "disciplined")
 
 /obj/item/weapon/twohanded/staff/broom
@@ -29,7 +29,7 @@
 		if(user.mind in ticker.mode.wizards)
 			user.flying = wielded ? 1 : 0
 			if(wielded)
-				user << "<span class='notice'>You hold \the [src] between your legs.</span>"
+				to_chat(user, "<span class='notice'>You hold \the [src] between your legs.</span>")
 				user.say("QUID 'ITCH")
 				animate(user, pixel_y = pixel_y + 10 , time = 10, loop = 1, easing = SINE_EASING)
 			else
@@ -40,7 +40,7 @@
 					user.pixel_y -= 6
 		else
 			if(wielded)
-				user << "<span class='notice'>You hold \the [src] between your legs.</span>"
+				to_chat(user, "<span class='notice'>You hold \the [src] between your legs.</span>")
 
 /obj/item/weapon/twohanded/staff/broom/attackby(var/obj/O, mob/user)
 	if(istype(O, /obj/item/clothing/mask/horsehead))
@@ -72,5 +72,4 @@
 	throwforce = 5.0
 	throw_speed = 1
 	throw_range = 5
-	w_class = 2.0
-	flags = NOSHIELD
+	w_class = 2

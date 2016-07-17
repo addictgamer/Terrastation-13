@@ -21,7 +21,7 @@
 	if(istype(W, /obj/item/assembly/shock_kit))
 		var/obj/item/assembly/shock_kit/SK = W
 		if(!SK.status)
-			user << "<span class='notice'>[SK] is not ready to be attached!</span>"
+			to_chat(user, "<span class='notice'>[SK] is not ready to be attached!</span>")
 			return
 		user.drop_item()
 		var/obj/structure/stool/bed/chair/e_chair/E = new /obj/structure/stool/bed/chair/e_chair(src.loc)
@@ -139,6 +139,15 @@
 /obj/structure/stool/bed/chair/office
 	anchored = 0
 	movable = 1
+
+/obj/structure/stool/bed/chair/comfy/attackby(obj/item/weapon/W, mob/user, params)
+	if(iswrench(W))
+		playsound(loc, 'sound/items/Ratchet.ogg', 50, 1)
+		new /obj/item/stack/sheet/metal(get_turf(src))
+		new /obj/item/stack/sheet/metal(get_turf(src))
+		qdel(src)
+	else
+		..()
 
 /obj/structure/stool/bed/chair/office/Bump(atom/A)
 	..()

@@ -43,9 +43,13 @@
 	H.set_species(H.species.primitive_form)
 
 	if(H.hud_used)
-		H.hud_used.instantiate()
+		qdel(H.hud_used)
+		H.hud_used = null
 
-	H << "<B>You are now a [H.species.name].</B>"
+	if(H.client)
+		H.hud_used = new /datum/hud/monkey(H, ui_style2icon(H.client.prefs.UI_style), H.client.prefs.UI_style_color, H.client.prefs.UI_style_alpha)
+
+	to_chat(H, "<B>You are now a [H.species.name].</B>")
 
 	return H
 
@@ -53,7 +57,7 @@
 	if(!istype(H,/mob/living/carbon/human))
 		return
 	for(var/obj/item/W in H)
-		if (W == H.w_uniform) // will be torn
+		if(W == H.w_uniform) // will be torn
 			continue
 		if(istype(W,/obj/item/organ))
 			continue
@@ -86,8 +90,12 @@
 	H.name = H.real_name
 
 	if(H.hud_used)
-		H.hud_used.instantiate()
+		qdel(H.hud_used)
+		H.hud_used = null
 
-	H << "<B>You are now a [H.species.name].</B>"
+	if(H.client)
+		H.hud_used = new /datum/hud/human(H, ui_style2icon(H.client.prefs.UI_style), H.client.prefs.UI_style_color, H.client.prefs.UI_style_alpha)
+
+	to_chat(H, "<B>You are now a [H.species.name].</B>")
 
 	return H

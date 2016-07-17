@@ -31,14 +31,14 @@
 
 		if(sortTag != O.currTag)
 			var/tag = uppertext(TAGGERLOCATIONS[O.currTag])
-			user << "<span class='notice'>*[tag]*</span>"
+			to_chat(user, "<span class='notice'>*[tag]*</span>")
 			sortTag = O.currTag
 			playsound(loc, 'sound/machines/twobeep.ogg', 100, 1)
 
 	else if(istype(W, /obj/item/weapon/pen))
 		var/str = copytext(sanitize(input(user,"Label text?","Set label","")),1,MAX_NAME_LEN)
 		if(!str || !length(str))
-			user << "<span class='notice'>Invalid text.</span>"
+			to_chat(user, "<span class='notice'>Invalid text.</span>")
 			return
 		user.visible_message("<span class='notice'>[user] labels [src] as [str].</span>")
 		name = "[name] ([str])"
@@ -55,7 +55,7 @@
 			if(WP.amount <= 0 && !WP.loc) //if we used our last wrapping paper, drop a cardboard tube
 				new /obj/item/weapon/c_tube( get_turf(user) )
 		else
-			user << "<span class='notice'>You need more paper.</span>"
+			to_chat(user, "<span class='notice'>You need more paper.</span>")
 
 
 /obj/item/smallDelivery
@@ -85,14 +85,14 @@
 
 		if(sortTag != O.currTag)
 			var/tag = uppertext(TAGGERLOCATIONS[O.currTag])
-			user << "<span class='notice'>*[tag]*</span>"
+			to_chat(user, "<span class='notice'>*[tag]*</span>")
 			sortTag = O.currTag
 			playsound(loc, 'sound/machines/twobeep.ogg', 100, 1)
 
 	else if(istype(W, /obj/item/weapon/pen))
 		var/str = copytext(sanitize(input(user,"Label text?","Set label","")),1,MAX_NAME_LEN)
 		if(!str || !length(str))
-			user << "<span class='notice'>Invalid text.</span>"
+			to_chat(user, "<span class='notice'>Invalid text.</span>")
 			return
 		user.visible_message("<span class='notice'>[user] labels [src] as [str].</span>")
 		name = "[name] ([str])"
@@ -106,7 +106,7 @@
 			if(WP.amount <= 0 && !WP.loc) //if we used our last wrapping paper, drop a cardboard tube
 				new /obj/item/weapon/c_tube( get_turf(user) )
 		else
-			user << "<span class='notice'>You need more paper.</span>"
+			to_chat(user, "<span class='notice'>You need more paper.</span>")
 
 
 
@@ -161,7 +161,7 @@
 			P.wrapped = O
 			O.loc = P
 		else
-			user << "<span class='notice'>You need more paper.</span>"
+			to_chat(user, "<span class='notice'>You need more paper.</span>")
 			return
 	else if(istype (target, /obj/structure/closet))
 		var/obj/structure/closet/O = target
@@ -174,10 +174,10 @@
 			O.welded = 1
 			O.loc = P
 		else
-			user << "<span class='notice'>You need more paper.</span>"
+			to_chat(user, "<span class='notice'>You need more paper.</span>")
 			return
 	else
-		user << "<span class='notice'>The object you are trying to wrap is unsuitable for the sorting machinery.</span>"
+		to_chat(user, "<span class='notice'>The object you are trying to wrap is unsuitable for the sorting machinery.</span>")
 		return
 
 	user.visible_message("<span class='notice'>[user] wraps [target].</span>")
@@ -204,10 +204,10 @@
 		var/dat = "<tt><center><h1><b>TagMaster 2.2</b></h1></center>"
 
 		dat += "<table style='width:100%; padding:4px;'><tr>"
-		for (var/i = 1, i <= TAGGERLOCATIONS.len, i++)
+		for(var/i = 1, i <= TAGGERLOCATIONS.len, i++)
 			dat += "<td><a href='?src=\ref[src];nextTag=[i]'>[TAGGERLOCATIONS[i]]</a></td>"
 
-			if (i%4==0)
+			if(i%4==0)
 				dat += "</tr><tr>"
 
 		dat += "</tr></table><br>Current Selection: [currTag ? TAGGERLOCATIONS[currTag] : "None"]</tt>"
@@ -279,7 +279,7 @@
 				O.sortTag = 1
 		for(var/obj/item/smallDelivery/O in src)
 			deliveryCheck = 1
-			if (O.sortTag == 0)
+			if(O.sortTag == 0)
 				O.sortTag = 1
 		if(deliveryCheck == 0)
 			H.destinationTag = 1
@@ -307,21 +307,21 @@
 			if(c_mode==0)
 				c_mode=1
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
-				user << "You remove the screws around the power connection."
+				to_chat(user, "You remove the screws around the power connection.")
 				return
 			else if(c_mode==1)
 				c_mode=0
 				playsound(src.loc, 'sound/items/Screwdriver.ogg', 50, 1)
-				user << "You attach the screws around the power connection."
+				to_chat(user, "You attach the screws around the power connection.")
 				return
 		else if(istype(I,/obj/item/weapon/weldingtool) && c_mode==1)
 			var/obj/item/weapon/weldingtool/W = I
 			if(W.remove_fuel(0,user))
 				playsound(src.loc, 'sound/items/Welder2.ogg', 100, 1)
-				user << "You start slicing the floorweld off the delivery chute."
+				to_chat(user, "You start slicing the floorweld off the delivery chute.")
 				if(do_after(user,20, target = src))
 					if(!src || !W.isOn()) return
-					user << "You sliced the floorweld off the delivery chute."
+					to_chat(user, "You sliced the floorweld off the delivery chute.")
 					var/obj/structure/disposalconstruct/C = new (src.loc)
 					C.ptype = 8 // 8 =  Delivery chute
 					C.update()
@@ -330,5 +330,5 @@
 					qdel(src)
 				return
 			else
-				user << "You need more welding fuel to complete this task."
+				to_chat(user, "You need more welding fuel to complete this task.")
 				return

@@ -61,7 +61,7 @@
 			if(!(A.returntype in valid_returntypes))
 				continue
 			choices[A.name]=A
-		if (choices.len==0)
+		if(choices.len==0)
 			testing("Unable to find automations with returntype in [english_list(valid_returntypes)]!")
 			return 0
 		var/label=input(user, "Select new automation:", "Automations", "Cancel") as null|anything in choices
@@ -206,11 +206,11 @@
 		var/list/json[0]
 		for(var/datum/automation/A in automations)
 			json += list(A.Export())
-		return list2json(json)
+		return json_encode(json)
 
 	proc/ReadCode(var/jsonStr)
 		automations.Cut()
-		var/list/json=json2list(jsonStr)
+		var/list/json = json_decode(jsonStr)
 		if(json.len>0)
 			for(var/list/cData in json)
 				if(isnull(cData) || !("type" in cData))

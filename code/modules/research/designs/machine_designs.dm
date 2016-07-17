@@ -92,6 +92,16 @@
 	build_path = /obj/item/weapon/circuitboard/teleporter_station
 	category = list ("Teleportation Machinery")
 
+/datum/design/teleport_perma
+	name = "Machine Board (Permanent Teleporter)"
+	desc = "Allows for the construction of circuit boards used to build a Permanent Teleporter."
+	id = "tele_perma"
+	req_tech = list("programming" = 3, "bluespace" = 5, "materials" = 4, "engineering" = 5)
+	build_type = IMPRINTER
+	materials = list(MAT_GLASS = 1000, "sacid" = 20)
+	build_path = /obj/item/weapon/circuitboard/teleporter_perma
+	category = list ("Teleportation Machinery")
+
 /datum/design/bodyscanner
 	name = "Machine Board (Body Scanner)"
 	desc = "Allows for the construction of circuit boards used to build a Body Scanner."
@@ -422,6 +432,16 @@
 	build_path = /obj/item/weapon/circuitboard/candy_maker
 	category = list("Misc. Machinery")
 
+/datum/design/deepfryer
+	name = "Machine Board (Deep Fryer)"
+	desc = "The circuit board for a Deep Fryer."
+	id = "deepfryer"
+	req_tech = list("programming" = 2)
+	build_type = IMPRINTER
+	materials = list(MAT_GLASS = 1000, "sacid" = 20)
+	build_path = /obj/item/weapon/circuitboard/deepfryer
+	category = list("Misc. Machinery")
+
 /datum/design/orion_trail
 	name = "Machine Board (Orion Trail Arcade Machine)"
 	desc = "Allows for the construction of circuit boards used to build a new Orion Trail machine."
@@ -440,16 +460,6 @@
 	build_type = IMPRINTER
 	materials = list(MAT_GLASS = 2000, "sacid" = 20)
 	build_path = /obj/item/weapon/circuitboard/programmable
-	category = list("Misc. Machinery")
-
-/datum/design/vendor
-	name = "Machine Board (Vendor)"
-	desc = "The circuit board for a Vendor."
-	id = "vendor"
-	req_tech = list("programming" = 1)
-	build_type = IMPRINTER
-	materials = list(MAT_GLASS = 1000, "sacid" = 20)
-	build_path = /obj/item/weapon/circuitboard/vendor
 	category = list("Misc. Machinery")
 
 /datum/design/pod
@@ -501,6 +511,17 @@
 	materials = list(MAT_GLASS=1000, "sacid"=20)
 	build_path = /obj/item/weapon/circuitboard/prize_counter
 	category = list("Misc. Machinery")
+
+/datum/design/gameboard
+	name = "Machine Design (Virtual Gameboard)"
+	desc = "The circuit board for a Virtual Gameboard."
+	id = "gameboard"
+	req_tech = list("programming" = 2)
+	build_type = IMPRINTER
+	materials = list(MAT_GLASS=1000, "sacid"=20)
+	build_path = /obj/item/weapon/circuitboard/gameboard
+	category = list("Misc. Machinery")
+
 
 /datum/design/botany_extractor
 	name = "Machine Design (Lysis-Isolation Centrifuge)"

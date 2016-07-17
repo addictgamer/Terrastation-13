@@ -45,11 +45,13 @@
 			bound_width = world.icon_size
 			bound_height = width * world.icon_size
 
-	air_update_turf(1)
 	update_freelook_sight()
 	airlocks += src
 	return
 
+/obj/machinery/door/initialize()
+	air_update_turf(1)
+	..()
 
 /obj/machinery/door/Destroy()
 	density = 0
@@ -74,7 +76,7 @@
 			if(mecha.occupant && (src.allowed(mecha.occupant) || src.check_access_list(mecha.operation_req_access) || emergency == 1))
 				open()
 			else
-				flick("door_deny", src)
+				do_animate("deny")
 		return
 	return
 
@@ -102,7 +104,7 @@
 				var/mob/living/simple_animal/bot/B = user
 				B.door_opened(src)
 		else
-			flick("door_deny", src)
+			do_animate("deny")
 	return
 
 /obj/machinery/door/attack_ai(mob/user as mob)
@@ -135,7 +137,7 @@
 			close()
 		return
 	if(src.density)
-		flick("door_deny", src)
+		do_animate("deny")
 	return
 
 /obj/machinery/door/emag_act(user as mob)

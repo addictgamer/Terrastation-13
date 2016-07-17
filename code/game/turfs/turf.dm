@@ -29,6 +29,8 @@
 
 	var/image/obscured	//camerachunks
 
+	var/list/blueprint_data //for the station blueprints, images of objects eg: pipes
+
 	var/list/footstep_sounds = list()
 	var/shoe_running_volume = 50
 	var/shoe_walking_volume = 20
@@ -37,6 +39,21 @@
 	..()
 	for(var/atom/movable/AM in src)
 		Entered(AM)
+	if(smooth && ticker && ticker.current_state == GAME_STATE_PLAYING)
+		smooth_icon(src)
+
+/hook/startup/proc/smooth_world()
+	var/watch = start_watch()
+	log_startup_progress("Smoothing atoms...")
+	for(var/turf/T in world)
+		if(T.smooth)
+			smooth_icon(T)
+		for(var/A in T)
+			var/atom/AA = A
+			if(AA.smooth)
+				smooth_icon(AA)
+	log_startup_progress(" Smoothed atoms in [stop_watch(watch)]s.")
+	return 1
 
 /turf/Destroy()
 // Adds the adjacent turfs to the current atmos processing
@@ -69,7 +86,7 @@
 	return 0
 
 /turf/Enter(atom/movable/mover as mob|obj, atom/forget as mob|obj|turf|area)
-	if (!mover)
+	if(!mover)
 		return 1
 
 
@@ -92,7 +109,7 @@
 			large_dense += border_obstacle
 
 	//Then, check the turf itself
-	if (!src.CanPass(mover, src))
+	if(!src.CanPass(mover, src))
 		mover.Bump(src, 1)
 		return 0
 
@@ -104,7 +121,7 @@
 	return 1 //Nothing found to block so return success!
 
 
-/turf/Entered(atom/movable/M)
+/turf/Entered(atom/movable/M, atom/OL, ignoreRest = 0)
 	if(ismob(M))
 		var/mob/O = M
 		if(!O.lastarea)
@@ -139,22 +156,24 @@
 		qdel(L)
 
 //Creates a new turf
-/turf/proc/ChangeTurf(var/path)
-	if(!path)			return
-	if(path == type)	return src
+/turf/proc/ChangeTurf(path, defer_change = FALSE, keep_icon = TRUE)
+	if(!path)
+		return
+	if(!use_preloader && path == type) // Don't no-op if the map loader requires it to be reconstructed
+		return src
 	var/old_opacity = opacity
 	var/old_dynamic_lighting = dynamic_lighting
 	var/list/old_affecting_lights = affecting_lights
 	var/old_lighting_overlay = lighting_overlay
+	var/old_blueprint_data = blueprint_data
 
 	if(air_master)
 		air_master.remove_from_active(src)
-
 	var/turf/W = new path(src)
+	if(!defer_change)
+		W.AfterChange()
 
-	if(istype(W, /turf/simulated))
-		W:Assimilate_Air()
-		W.RemoveLattice()
+	W.blueprint_data = old_blueprint_data
 
 	for(var/turf/space/S in range(W,1))
 		S.update_starlight()
@@ -170,13 +189,22 @@
 		else
 			lighting_clear_overlays()
 
-	W.levelupdate()
-	W.CalculateAdjacentTurfs()
+	return W
 
-	if(!can_have_cabling())
+// I'm including `ignore_air` because BYOND lacks positional-only arguments
+/turf/proc/AfterChange(ignore_air, keep_cabling = FALSE) //called after a turf has been replaced in ChangeTurf()
+	levelupdate()
+	CalculateAdjacentTurfs()
+
+	if(!keep_cabling && !can_have_cabling())
 		for(var/obj/structure/cable/C in contents)
 			qdel(C)
-	return W
+
+/turf/simulated/AfterChange(ignore_air, keep_cabling = FALSE)
+	..()
+	RemoveLattice()
+	if(!ignore_air)
+		Assimilate_Air()
 
 //////Assimilate Air//////
 /turf/simulated/proc/Assimilate_Air()
@@ -370,3 +398,19 @@
 
 /turf/proc/can_lay_cable()
 	return can_have_cabling() & !intact
+
+/turf/proc/add_blueprints(atom/movable/AM)
+	var/image/I = new
+	I.appearance = AM.appearance
+	I.appearance_flags = RESET_COLOR|RESET_ALPHA|RESET_TRANSFORM
+	I.loc = src
+	I.dir = AM.dir
+	I.alpha = 128
+
+	if(!blueprint_data)
+		blueprint_data = list()
+	blueprint_data += I
+
+/turf/proc/add_blueprints_preround(atom/movable/AM)
+	if(!ticker || ticker.current_state != GAME_STATE_PLAYING)
+		add_blueprints(AM)

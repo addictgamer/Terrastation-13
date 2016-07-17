@@ -28,7 +28,7 @@
 		return
 
 /datum/reagent/water/reaction_turf(var/turf/simulated/T, var/volume)
-	if (!istype(T)) return
+	if(!istype(T)) return
 	src = null
 	if(volume >= 3)
 		T.MakeSlippery()
@@ -74,7 +74,7 @@
 	color = "#1BB1AB"
 
 /datum/reagent/lube/reaction_turf(var/turf/simulated/T, var/volume)
-	if (!istype(T)) return
+	if(!istype(T)) return
 	src = null
 	if(volume >= 1)
 		T.MakeSlippery(TURF_WET_LUBE)
@@ -254,7 +254,7 @@
 	if(!istype(M, /mob/living))
 		return
 	if(method == INGEST)
-		M << "Oh god, why did you drink that?"
+		to_chat(M, "Oh god, why did you drink that?")
 
 /datum/reagent/fishwater/on_mob_life(var/mob/living/M as mob)
 	if(!M) M = holder.my_atom
@@ -289,14 +289,21 @@
 	data++
 	M.jitteriness = max(M.jitteriness-5,0)
 	if(data >= 30)		// 12 units, 60 seconds @ metabolism 0.4 units & tick rate 2.0 sec
-		if (!M.stuttering) M.stuttering = 1
+		if(!M.stuttering) M.stuttering = 1
 		M.stuttering += 4
 		M.Dizzy(5)
 		if(iscultist(M) && prob(5))
 			M.say(pick("Av'te Nar'sie","Pa'lid Mors","INO INO ORA ANA","SAT ANA!","Daim'niodeis Arc'iai Le'eones","Egkau'haom'nai en Chaous","Ho Diak'nos tou Ap'iron","R'ge Na'sie","Diabo us Vo'iscum","Si gn'um Co'nu"))
 	if(data >= 75 && prob(33))	// 30 units, 150 seconds
-		if (!M.confused) M.confused = 1
+		if(!M.confused) M.confused = 1
 		M.confused += 3
+		if(isvampirethrall(M))
+			ticker.mode.remove_vampire_mind(M.mind)
+			holder.remove_reagent(src.id, src.volume)
+			M.jitteriness = 0
+			M.stuttering = 0
+			M.confused = 0
+			return
 		if(iscultist(M))
 			ticker.mode.remove_cultist(M.mind)
 			holder.remove_reagent(src.id, src.volume)	// maybe this is a little too perfect and a max() cap on the statuses would be better??
@@ -307,14 +314,14 @@
 	if(ishuman(M) && M.mind && M.mind.vampire && !M.mind.vampire.get_ability(/datum/vampire_passive/full) && prob(80))
 		switch(data)
 			if(1 to 4)
-				M << "<span class = 'warning'>Something sizzles in your veins!</span>"
+				to_chat(M, "<span class = 'warning'>Something sizzles in your veins!</span>")
 				M.mind.vampire.nullified = max(5, M.mind.vampire.nullified + 2)
 			if(5 to 12)
-				M << "<span class = 'danger'>You feel an intense burning inside of you!</span>"
+				to_chat(M, "<span class = 'danger'>You feel an intense burning inside of you!</span>")
 				M.adjustFireLoss(1)
 				M.mind.vampire.nullified = max(5, M.mind.vampire.nullified + 2)
 			if(13 to INFINITY)
-				M << "<span class = 'danger'>You suddenly ignite in a holy fire!</span>"
+				to_chat(M, "<span class = 'danger'>You suddenly ignite in a holy fire!</span>")
 				for(var/mob/O in viewers(M, null))
 					O.show_message(text("<span class = 'danger'>[] suddenly bursts into flames!<span>", M), 1)
 				M.fire_stacks = min(5,M.fire_stacks + 3)
@@ -330,13 +337,13 @@
 		var/mob/living/carbon/human/H=M
 		if(method == TOUCH)
 			if(H.wear_mask)
-				H << "\red Your mask protects you from the holy water!"
+				to_chat(H, "\red Your mask protects you from the holy water!")
 				return
 			else if(H.head)
-				H << "\red Your helmet protects you from the holy water!"
+				to_chat(H, "\red Your helmet protects you from the holy water!")
 				return
 			else
-				M << "<span class='warning'>Something holy interferes with your powers!</span>"
+				to_chat(M, "<span class='warning'>Something holy interferes with your powers!</span>")
 				M.mind.vampire.nullified = max(5, M.mind.vampire.nullified + 2)
 
 

@@ -28,10 +28,10 @@
 		W.forceMove(src)		//TODO: move to equipped?
 		l_hand = W
 		W.layer = 20	//TODO: move to equipped?
-//		l_hand.screen_loc = ui_lhand
+		W.plane = HUD_PLANE	//TODO: move to equipped?
 		W.equipped(src,slot_l_hand)
-		if(client)	client.screen |= W
-		if(pulling == W) stop_pulling()
+		if(pulling == W)
+			stop_pulling()
 		update_inv_l_hand()
 		return 1
 	return 0
@@ -44,10 +44,10 @@
 		W.forceMove(src)
 		r_hand = W
 		W.layer = 20
-//		r_hand.screen_loc = ui_rhand
+		W.plane = HUD_PLANE
 		W.equipped(src,slot_r_hand)
-		if(client)	client.screen |= W
-		if(pulling == W) stop_pulling()
+		if(pulling == W)
+			stop_pulling()
 		update_inv_r_hand()
 		return 1
 	return 0
@@ -74,6 +74,7 @@
 /mob/proc/put_in_hands(obj/item/W)
 	W.forceMove(get_turf(src))
 	W.layer = initial(W.layer)
+	W.plane = initial(W.plane)
 	W.dropped()
 
 /mob/proc/drop_item_v()		//this is dumb.
@@ -126,7 +127,7 @@
 		I.dropped(src)
 		if(I)
 			I.layer = initial(I.layer)
-
+			I.plane = initial(I.plane)
 	return 1
 
 

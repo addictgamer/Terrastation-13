@@ -296,7 +296,7 @@
 		//meh
 		switch(mode)
 			if(0)
-				if (istype(target, /turf/simulated/wall))
+				if(istype(target, /turf/simulated/wall))
 					if(istype(target, /turf/simulated/wall/r_wall) && !canRwall)
 						return 0
 					occupant_message("Deconstructing [target]...")
@@ -306,7 +306,7 @@
 						target:ChangeTurf(/turf/simulated/floor/plating)
 						playsound(target, 'sound/items/Deconstruct.ogg', 50, 1)
 						chassis.use_power(energy_drain)
-				else if (istype(target, /turf/simulated/floor))
+				else if(istype(target, /turf/simulated/floor))
 					occupant_message("Deconstructing [target]...")
 					set_ready_state(0)
 					if(do_after_cooldown(target))
@@ -314,7 +314,7 @@
 						target:ChangeTurf(/turf/space)
 						playsound(target, 'sound/items/Deconstruct.ogg', 50, 1)
 						chassis.use_power(energy_drain)
-				else if (istype(target, /obj/machinery/door/airlock))
+				else if(istype(target, /obj/machinery/door/airlock))
 					occupant_message("Deconstructing [target]...")
 					set_ready_state(0)
 					if(do_after_cooldown(target))
@@ -545,7 +545,7 @@
 			return chassis.dynattackby(W,user, params)
 		chassis.log_message("Attacked by [W]. Attacker - [user]")
 		if(prob(chassis.deflect_chance*deflect_coeff))
-			user << "\red The [W] bounces off [chassis] armor."
+			to_chat(user, "\red The [W] bounces off [chassis] armor.")
 			chassis.log_append_to_last("Armor saved.")
 		else
 			chassis.occupant_message("<font color='red'><b>[user] hits [chassis] with [W].</b></font>")
@@ -932,7 +932,7 @@
 		if(isnull(result))
 			user.visible_message("[user] tries to shove [weapon_name] into [src], but \the [src] rejects it.","<font color='red'>[fuel_name] traces in target minimal. [weapon_name] cannot be used as fuel.</font>")
 		else if(!result)
-			user << "Unit is full."
+			to_chat(user, "Unit is full.")
 		else
 			user.visible_message("[user] loads [src] with \the [weapon_name].","[result] unit\s of [fuel_name] successfully loaded.")
 		return

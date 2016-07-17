@@ -19,6 +19,13 @@
 	else
 		set_light(0)
 
+/obj/machinery/bodyscanner/process()
+	for(var/mob/M as mob in src) // makes sure that simple mobs don't get stuck inside a sleeper when they resist out of occupant's grasp
+		if(M == occupant)
+			continue
+		else
+			M.forceMove(src.loc)
+
 /obj/machinery/bodyscanner/New()
 	..()
 	component_parts = list()
@@ -40,48 +47,51 @@
 	RefreshParts()
 
 /obj/machinery/bodyscanner/attackby(var/obj/item/weapon/G as obj, var/mob/user as mob)
-	if (istype(G, /obj/item/weapon/screwdriver))
+	if(istype(G, /obj/item/weapon/screwdriver))
 		if(src.occupant)
-			user << "<span class='notice'>The maintenance panel is locked.</span>"
+			to_chat(user, "<span class='notice'>The maintenance panel is locked.</span>")
 			return
 		default_deconstruction_screwdriver(user, "bodyscanner-o", "bodyscanner-open", G)
 		return
 
-	if (istype(G, /obj/item/weapon/wrench))
+	if(istype(G, /obj/item/weapon/wrench))
 		if(src.occupant)
-			user << "<span class='notice'>The scanner is occupied.</span>"
+			to_chat(user, "<span class='notice'>The scanner is occupied.</span>")
 			return
 		if(panel_open)
-			user << "<span class='notice'>Close the maintenance panel first.</span>"
+			to_chat(user, "<span class='notice'>Close the maintenance panel first.</span>")
 			return
 		if(dir == 4)
 			dir = 8
 		else
 			dir = 4
 		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
+		return
 
 	if(exchange_parts(user, G))
 		return
 
-	default_deconstruction_crowbar(G)
+	if(istype(G, /obj/item/weapon/crowbar))
+		default_deconstruction_crowbar(G)
+		return
 
 	if(istype(G, /obj/item/weapon/grab))
 		var/obj/item/weapon/grab/TYPECAST_YOUR_SHIT = G
 		if(panel_open)
-			user << "<span class='notice'>Close the maintenance panel first.</span>"
+			to_chat(user, "<span class='notice'>Close the maintenance panel first.</span>")
 			return
 		if(!ismob(TYPECAST_YOUR_SHIT.affecting))
 			return
 		if(occupant)
-			user << "<span class='notice'>The scanner is already occupied!</span>"
+			to_chat(user, "<span class='notice'>The scanner is already occupied!</span>")
 			return
 		for(var/mob/living/carbon/slime/M in range(1, TYPECAST_YOUR_SHIT.affecting))
 			if(M.Victim == TYPECAST_YOUR_SHIT.affecting)
-				user << "<span class='danger'>[TYPECAST_YOUR_SHIT.affecting.name] has a fucking slime attached to them, deal with that first.</span>"
+				to_chat(user, "<span class='danger'>[TYPECAST_YOUR_SHIT.affecting.name] has a fucking slime attached to them, deal with that first.</span>")
 				return
 		var/mob/M = TYPECAST_YOUR_SHIT.affecting
 		if(M.abiotic())
-			user << "<span class='notice'>Subject cannot have abiotic items on.</span>"
+			to_chat(user, "<span class='notice'>Subject cannot have abiotic items on.</span>")
 			return
 		/*if(M.client)
 			M.client.perspective = EYE_PERSPECTIVE
@@ -105,20 +115,20 @@
 	if(!ishuman(user) && !isrobot(user))
 		return 0 //not a borg or human
 	if(panel_open)
-		user << "<span class='notice'>Close the maintenance panel first.</span>"
+		to_chat(user, "<span class='notice'>Close the maintenance panel first.</span>")
 		return 0 //panel open
 	if(occupant)
-		user << "<span class='notice'>\The [src] is already occupied.</span>"
+		to_chat(user, "<span class='notice'>\The [src] is already occupied.</span>")
 		return 0 //occupied
 
 	if(O.buckled)
 		return 0
 	if(O.abiotic())
-		user << "<span class='notice'>Subject cannot have abiotic items on.</span>"
+		to_chat(user, "<span class='notice'>Subject cannot have abiotic items on.</span>")
 		return 0
 	for(var/mob/living/carbon/slime/M in range(1, O))
 		if(M.Victim == O)
-			user << "<span class='danger'>[O] has a fucking slime attached to them, deal with that first.</span>"
+			to_chat(user, "<span class='danger'>[O] has a fucking slime attached to them, deal with that first.</span>")
 			return 0
 
 	if(O == user)
@@ -147,52 +157,55 @@
 	add_fingerprint(usr)
 
 /obj/machinery/bodyscanner/proc/go_out()
-	if ((!( src.occupant ) || src.locked))
+	if(!occupant || locked)
 		return
-	if (src.occupant.client)
-		src.occupant.client.eye = src.occupant.client.mob
-		src.occupant.client.perspective = MOB_PERSPECTIVE
-	src.occupant.loc = src.loc
-	src.occupant = null
-	src.icon_state = "body_scanner_0"
-	return
+	if(occupant.client)
+		occupant.client.eye = occupant.client.mob
+		occupant.client.perspective = MOB_PERSPECTIVE
+	occupant.forceMove(loc)
+	occupant = null
+	icon_state = "body_scanner_0"
+	// eject trash the occupant dropped
+	for(var/atom/movable/A in contents - component_parts)
+		A.forceMove(loc)
 
 /obj/machinery/bodyscanner/ex_act(severity)
 	switch(severity)
 		if(1.0)
 			for(var/atom/movable/A as mob|obj in src)
-				A.loc = src.loc
-				ex_act(severity)
-				//Foreach goto(35)
-			//SN src = null
+				A.forceMove(src.loc)
+				A.ex_act(severity)
 			qdel(src)
 			return
 		if(2.0)
-			if (prob(50))
+			if(prob(50))
 				for(var/atom/movable/A as mob|obj in src)
-					A.loc = src.loc
-					ex_act(severity)
-					//Foreach goto(108)
-				//SN src = null
+					A.forceMove(src.loc)
+					A.ex_act(severity)
 				qdel(src)
 				return
 		if(3.0)
-			if (prob(25))
+			if(prob(25))
 				for(var/atom/movable/A as mob|obj in src)
-					A.loc = src.loc
-					ex_act(severity)
-					//Foreach goto(181)
-				//SN src = null
+					A.forceMove(src.loc)
+					A.ex_act(severity)
 				qdel(src)
 				return
-		else
-	return
 
 /obj/machinery/bodyscanner/blob_act()
 	if(prob(50))
-		for(var/atom/movable/A as mob|obj in src)
-			A.loc = src.loc
+		var/atom/movable/A = occupant
+		go_out()
+		A.blob_act()
 		qdel(src)
+
+/obj/machinery/bodyscanner/attack_animal(var/mob/living/simple_animal/M)//Stop putting hostile mobs in things guise
+	if(M.environment_smash)
+		M.do_attack_animation(src)
+		visible_message("<span class='danger'>[M.name] smashes [src] apart!</span>")
+		go_out()
+		qdel(src)
+	return
 
 /obj/machinery/body_scanconsole
 	var/obj/machinery/bodyscanner/connected
@@ -238,7 +251,7 @@
 			qdel(src)
 			return
 		if(2.0)
-			if (prob(50))
+			if(prob(50))
 				//SN src = null
 				qdel(src)
 				return
@@ -248,6 +261,13 @@
 /obj/machinery/body_scanconsole/blob_act()
 	if(prob(50))
 		qdel(src)
+
+/obj/machinery/body_scanconsole/attack_animal(var/mob/living/simple_animal/M)//Stop putting hostile mobs in things guise
+	if(M.environment_smash)
+		M.do_attack_animation(src)
+		visible_message("<span class='danger'>[M.name] smashes [src] apart!</span>")
+		qdel(src)
+	return
 
 /obj/machinery/body_scanconsole/proc/findscanner()
 	var/obj/machinery/bodyscanner/bodyscannernew = null
@@ -262,13 +282,13 @@
 
 
 /obj/machinery/body_scanconsole/attackby(var/obj/item/weapon/G as obj, var/mob/user as mob, params)
-	if (istype(G, /obj/item/weapon/screwdriver))
+	if(istype(G, /obj/item/weapon/screwdriver))
 		default_deconstruction_screwdriver(user, "bodyscannerconsole-p", "bodyscannerconsole", G)
 		return
 
-	if (istype(G, /obj/item/weapon/wrench))
+	if(istype(G, /obj/item/weapon/wrench))
 		if(panel_open)
-			user << "<span class='notice'>Close the maintenance panel first.</span>"
+			to_chat(user, "<span class='notice'>Close the maintenance panel first.</span>")
 			return
 		if(dir == 4)
 			dir = 8
@@ -291,8 +311,8 @@
 	if(stat & (NOPOWER|BROKEN))
 		return
 
-	if (panel_open)
-		user << "<span class='notice'>Close the maintenance panel first.</span>"
+	if(panel_open)
+		to_chat(user, "<span class='notice'>Close the maintenance panel first.</span>")
 		return
 
 	if(!src.connected)
@@ -337,12 +357,13 @@
 			var/bloodData[0]
 			bloodData["hasBlood"] = 0
 			if(ishuman(H) && H.vessel && !(H.species && H.species.flags & NO_BLOOD))
-				var/blood_volume = round(H.vessel.get_reagent_amount("blood"))
+				var/blood_type = H.get_blood_name()
+				var/blood_volume = round(H.vessel.get_reagent_amount(blood_type))
 				bloodData["hasBlood"] = 1
 				bloodData["volume"] = blood_volume
-				bloodData["percent"] = round(((blood_volume / 560)*100))
+				bloodData["percent"] = round(((blood_volume / BLOOD_VOLUME_NORMAL)*100))
 				bloodData["pulse"] = H.get_pulse(GETPULSE_TOOL)
-				bloodData["bloodLevel"] = round(H.vessel.get_reagent_amount("blood"))
+				bloodData["bloodLevel"] = blood_volume
 				bloodData["bloodMax"] = H.max_blood
 			occupantData["blood"] = bloodData
 
@@ -440,13 +461,13 @@
 	if(..())
 		return 1
 
-	if (href_list["ejectify"])
+	if(href_list["ejectify"])
 		src.connected.eject()
 
-	if (href_list["print_p"])
+	if(href_list["print_p"])
 		generate_printing_text()
 
-		if (!(printing) && printing_text)
+		if(!(printing) && printing_text)
 			printing = 1
 			visible_message("<span class='notice'>\The [src] rattles and prints out a sheet of paper.</span>")
 			var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(loc)
@@ -510,8 +531,9 @@
 				dat += "Large growth detected in frontal lobe, possibly cancerous. Surgical removal is recommended.<br>"
 
 			if(occupant.vessel)
-				var/blood_volume = round(occupant.vessel.get_reagent_amount("blood"))
-				var/blood_percent =  blood_volume / 560
+				var/blood_type = occupant.get_blood_name()
+				var/blood_volume = round(occupant.vessel.get_reagent_amount(blood_type))
+				var/blood_percent =  blood_volume / BLOOD_VOLUME_NORMAL
 				blood_percent *= 100
 
 				extra_font = (blood_volume > 448 ? "<font color='blue'>" : "<font color='red'>")
@@ -564,20 +586,20 @@
 					robot = "Prosthetic:"
 				if(e.open)
 					open = "Open:"
-				switch (e.germ_level)
-					if (INFECTION_LEVEL_ONE to INFECTION_LEVEL_ONE + 200)
+				switch(e.germ_level)
+					if(INFECTION_LEVEL_ONE to INFECTION_LEVEL_ONE + 200)
 						infected = "Mild Infection:"
-					if (INFECTION_LEVEL_ONE + 200 to INFECTION_LEVEL_ONE + 300)
+					if(INFECTION_LEVEL_ONE + 200 to INFECTION_LEVEL_ONE + 300)
 						infected = "Mild Infection+:"
-					if (INFECTION_LEVEL_ONE + 300 to INFECTION_LEVEL_ONE + 400)
+					if(INFECTION_LEVEL_ONE + 300 to INFECTION_LEVEL_ONE + 400)
 						infected = "Mild Infection++:"
-					if (INFECTION_LEVEL_TWO to INFECTION_LEVEL_TWO + 200)
+					if(INFECTION_LEVEL_TWO to INFECTION_LEVEL_TWO + 200)
 						infected = "Acute Infection:"
-					if (INFECTION_LEVEL_TWO + 200 to INFECTION_LEVEL_TWO + 300)
+					if(INFECTION_LEVEL_TWO + 200 to INFECTION_LEVEL_TWO + 300)
 						infected = "Acute Infection+:"
-					if (INFECTION_LEVEL_TWO + 300 to INFECTION_LEVEL_TWO + 400)
+					if(INFECTION_LEVEL_TWO + 300 to INFECTION_LEVEL_TWO + 400)
 						infected = "Acute Infection++:"
-					if (INFECTION_LEVEL_THREE to INFINITY)
+					if(INFECTION_LEVEL_THREE to INFINITY)
 						infected = "Septic:"
 
 				var/unknown_body = 0
@@ -596,18 +618,18 @@
 			for(var/obj/item/organ/internal/i in occupant.internal_organs)
 				var/mech = i.desc
 				var/infection = "None"
-				switch (i.germ_level)
-					if (1 to INFECTION_LEVEL_ONE + 200)
+				switch(i.germ_level)
+					if(1 to INFECTION_LEVEL_ONE + 200)
 						infection = "Mild Infection:"
-					if (INFECTION_LEVEL_ONE + 200 to INFECTION_LEVEL_ONE + 300)
+					if(INFECTION_LEVEL_ONE + 200 to INFECTION_LEVEL_ONE + 300)
 						infection = "Mild Infection+:"
-					if (INFECTION_LEVEL_ONE + 300 to INFECTION_LEVEL_ONE + 400)
+					if(INFECTION_LEVEL_ONE + 300 to INFECTION_LEVEL_ONE + 400)
 						infection = "Mild Infection++:"
-					if (INFECTION_LEVEL_TWO to INFECTION_LEVEL_TWO + 200)
+					if(INFECTION_LEVEL_TWO to INFECTION_LEVEL_TWO + 200)
 						infection = "Acute Infection:"
-					if (INFECTION_LEVEL_TWO + 200 to INFECTION_LEVEL_TWO + 300)
+					if(INFECTION_LEVEL_TWO + 200 to INFECTION_LEVEL_TWO + 300)
 						infection = "Acute Infection+:"
-					if (INFECTION_LEVEL_TWO + 300 to INFINITY)
+					if(INFECTION_LEVEL_TWO + 300 to INFINITY)
 						infection = "Acute Infection++:"
 
 				dat += "<tr>"
