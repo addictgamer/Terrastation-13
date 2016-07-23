@@ -20,3 +20,4 @@ terrastation.rsc
 stddef.dm
 .atom-build.json
 
+*.rsc

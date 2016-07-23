@@ -147,6 +147,12 @@ area/salvage/support //intended for the ministation's supportability
 //TODO: add shuttle areas for this section
 
 
+//Derelicts
+/area/derelict/jettison
+	name = "Jettisonned Station Engine"
+	icon_state = "engine"
+
+
 //ABSOLUTELY POINTLESS!
 
 /area/maintenance/pointless
