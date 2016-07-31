@@ -350,19 +350,12 @@
 	item_state = "griffinhat"
 	flags = BLOCKHAIR|NODROP
 	flags_inv = HIDEMASK|HIDEEARS|HIDEEYES|HIDEFACE
-	action_button_name = "Caw"
+	actions_types = list(/datum/action/item_action/caw)
 
 /obj/item/clothing/head/griffin/attack_self()
 	caw()
 
-/obj/item/clothing/head/griffin/verb/caw()
-
-	set category = "Object"
-	set name = "Caw"
-	set src in usr
-	if(!istype(usr, /mob/living)) return
-	if(usr.stat) return
-
+/obj/item/clothing/head/griffin/proc/caw()
 	if(cooldown < world.time - 20) // A cooldown, to stop people being jerks
 		playsound(src.loc, "sound/misc/caw.ogg", 50, 1)
 		cooldown = world.time
@@ -379,3 +372,17 @@
 	desc = "A horribly bloated and mismatched human head."
 	icon_state = "lingspacehelmet"
 	item_state = "lingspacehelmet"
+
+/obj/item/clothing/head/papersack
+	name = "paper sack hat"
+	desc = "A paper sack with crude holes cut out for eyes. Useful for hiding one's identity or ugliness."
+	icon_state = "papersack"
+	flags = BLOCKHAIR
+	flags_inv = HIDEFACE|HIDEEARS
+
+/obj/item/clothing/head/papersack/smiley
+	name = "paper sack hat"
+	desc = "A paper sack with crude holes cut out for eyes and a sketchy smile drawn on the front. Not creepy at all."
+	icon_state = "papersack_smile"
+	flags = BLOCKHAIR
+	flags_inv = HIDEFACE|HIDEEARS

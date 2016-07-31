@@ -31,7 +31,7 @@ var/list/potential_theft_objectives=subtypesof(/datum/theft_objective) \
 	proc/find_target()
 		var/list/possible_targets = list()
 		for(var/datum/mind/possible_target in ticker.minds)
-			if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != DEAD))
+			if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != DEAD) && possible_target.current.client)
 				possible_targets += possible_target
 		if(possible_targets.len > 0)
 			target = pick(possible_targets)
@@ -39,7 +39,7 @@ var/list/potential_theft_objectives=subtypesof(/datum/theft_objective) \
 	proc/find_target_by_role(role, role_type=0)//Option sets either to check assigned role or special role. Default to assigned.
 		var/list/possible_targets = list()
 		for(var/datum/mind/possible_target in ticker.minds)
-			if((possible_target != owner) && ishuman(possible_target.current) && ((role_type ? possible_target.special_role : possible_target.assigned_role) == role) && (possible_target.current.stat != DEAD) )
+			if((possible_target != owner) && ishuman(possible_target.current) && ((role_type ? possible_target.special_role : possible_target.assigned_role) == role) && (possible_target.current.stat != DEAD) && possible_target.current.client)
 				possible_targets += possible_target
 		if(possible_targets.len > 0)
 			target = pick(possible_targets)
@@ -48,7 +48,7 @@ var/list/potential_theft_objectives=subtypesof(/datum/theft_objective) \
 	proc/find_target_with_special_role(role)
 		var/list/possible_targets = list()
 		for(var/datum/mind/possible_target in ticker.minds)
-			if((possible_target != owner) && ishuman(possible_target.current) && (role && possible_target.special_role == role || !role && possible_target.special_role) && (possible_target.current.stat != DEAD) )
+			if((possible_target != owner) && ishuman(possible_target.current) && (role && possible_target.special_role == role || !role && possible_target.special_role) && (possible_target.current.stat != DEAD) && possible_target.current.client)
 				possible_targets += possible_target
 		if(possible_targets.len > 0)
 			target = pick(possible_targets)
@@ -376,7 +376,7 @@ var/list/potential_theft_objectives=subtypesof(/datum/theft_objective) \
 	find_target()
 		var/list/possible_targets = list() //Copypasta because NO_SCAN races, yay for snowflakes.
 		for(var/datum/mind/possible_target in ticker.minds)
-			if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != DEAD))
+			if(possible_target != owner && ishuman(possible_target.current) && (possible_target.current.stat != DEAD) && possible_target.current.client)
 				var/mob/living/carbon/human/H = possible_target.current
 				if(!(H.species.flags & NO_SCAN))
 					possible_targets += possible_target
@@ -799,7 +799,17 @@ var/list/potential_theft_objectives=subtypesof(/datum/theft_objective) \
 
 /datum/objective/heist/inviolate_death
 	explanation_text = "Follow the Inviolate. Minimise death and loss of resources."
-	completed = 1
+
+	check_completion()
+		var/vox_allowed_kills = 3 // The number of people the vox can accidently kill. Mostly a counter to people killing themselves if a raider touches them to force fail.
+		var/vox_total_kills = 0
+
+		var/datum/game_mode/heist/H = ticker.mode
+		for(var/datum/mind/raider in H.raiders)
+			vox_total_kills += raider.kills.len // Kills are listed in the mind; uses this to calculate vox kills
+
+		if(vox_total_kills > vox_allowed_kills) return 0
+		return 1
 
 // Traders
 
@@ -846,3 +856,9 @@ var/list/potential_theft_objectives=subtypesof(/datum/theft_objective) \
 			target_amount = 6
 			itemname = "six flashes"
 	explanation_text = "We are running low on spare parts. Trade for [itemname]."
+
+//wizard
+
+/datum/objective/wizchaos
+	explanation_text = "Wreak havoc upon the station as much you can. Send those wandless Nanotrasen scum a message!"
+	completed = 1

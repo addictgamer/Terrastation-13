@@ -422,7 +422,7 @@ var/ert_request_answered = 0
 	switch(officer_type)
 		if("Engineer")
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/magboots(M), slot_shoes)
-			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/color/yellow(M), slot_gloves)
+			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(M), slot_gloves)
 			M.equip_to_slot_or_del(new /obj/item/clothing/suit/space/rig/ert/engineer(M), slot_wear_suit)
 			M.equip_to_slot_or_del(new /obj/item/weapon/tank/emergency_oxygen/engi(M), slot_s_store)
 			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/meson(M), slot_glasses)
@@ -442,7 +442,7 @@ var/ert_request_answered = 0
 
 		if("Security")
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/combat(M), slot_shoes)
-			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/color/black(M), slot_gloves)
+			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(M), slot_gloves)
 			M.equip_to_slot_or_del(new /obj/item/clothing/suit/space/rig/ert/security(M), slot_wear_suit)
 			M.equip_to_slot_or_del(new /obj/item/weapon/gun/energy/gun/advtaser(M), slot_s_store)
 			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/security/sunglasses(M), slot_glasses)
@@ -460,7 +460,7 @@ var/ert_request_answered = 0
 
 		if("Medic")
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/white(M), slot_shoes)
-			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/color/latex/nitrile(M), slot_gloves)
+			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(M), slot_gloves)
 			M.equip_to_slot_or_del(new /obj/item/clothing/suit/space/rig/ert/medical(M), slot_wear_suit)
 			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/health/health_advanced(M), slot_glasses)
 
@@ -479,7 +479,7 @@ var/ert_request_answered = 0
 
 		if("Commander")
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/combat(M), slot_shoes)
-			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/color/black(M), slot_gloves)
+			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(M), slot_gloves)
 			M.equip_to_slot_or_del(new /obj/item/clothing/suit/space/rig/ert/commander(M), slot_wear_suit)
 			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/hud/security/sunglasses(M), slot_glasses)
 
@@ -489,6 +489,7 @@ var/ert_request_answered = 0
 			M.equip_to_slot_or_del(new /obj/item/clothing/mask/gas/sechailer/swat(M), slot_in_backpack)
 			M.equip_to_slot_or_del(new /obj/item/weapon/restraints/handcuffs(M), slot_in_backpack)
 			M.equip_to_slot_or_del(new /obj/item/weapon/storage/lockbox/loyalty(M), slot_in_backpack)
+
 
 			M.equip_to_slot_or_del(new /obj/item/weapon/pinpointer(M), slot_l_store)
 			M.equip_to_slot_or_del(new /obj/item/weapon/melee/classic_baton/telescopic(M), slot_r_store)
@@ -506,7 +507,7 @@ var/ert_request_answered = 0
 	switch(officer_type)
 		if("Engineer")
 			M.equip_to_slot_or_del(new /obj/item/clothing/shoes/magboots/advance(M), slot_shoes)
-			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/color/yellow(M), slot_gloves)
+			M.equip_to_slot_or_del(new /obj/item/clothing/gloves/combat(M), slot_gloves)
 			M.equip_to_slot_or_del(new /obj/item/clothing/suit/space/rig/ert/engineer(M), slot_wear_suit)
 			M.equip_to_slot_or_del(new /obj/item/weapon/tank/emergency_oxygen/double/full(M), slot_s_store)
 			M.equip_to_slot_or_del(new /obj/item/clothing/glasses/meson/night(M), slot_glasses)

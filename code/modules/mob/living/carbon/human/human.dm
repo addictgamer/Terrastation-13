@@ -39,6 +39,8 @@
 
 	martial_art = default_martial_art
 
+	handcrafting = new()
+
 	var/mob/M = src
 	faction |= "\ref[M]" //what
 
@@ -52,6 +54,9 @@
 		species.handle_dna(src)
 
 	UpdateAppearance()
+
+/mob/living/carbon/human/OpenCraftingMenu()
+	handcrafting.craft(src)
 
 /mob/living/carbon/human/prepare_data_huds()
 	//Update med hud images...
@@ -350,8 +355,7 @@
 				else valid_limbs -= processing_dismember
 
 			if(!istype(l_ear, /obj/item/clothing/ears/earmuffs) && !istype(r_ear, /obj/item/clothing/ears/earmuffs))
-				ear_damage += 30
-				ear_deaf += 120
+				adjustEarDamage(30, 120)
 			if(prob(70) && !shielded)
 				Paralyse(10)
 
@@ -375,8 +379,7 @@
 					else valid_limbs -= processing_dismember
 
 			if(!istype(l_ear, /obj/item/clothing/ears/earmuffs) && !istype(r_ear, /obj/item/clothing/ears/earmuffs))
-				ear_damage += 15
-				ear_deaf += 60
+				adjustEarDamage(15,60)
 			if(prob(50) && !shielded)
 				Paralyse(10)
 
