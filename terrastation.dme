@@ -17,6 +17,7 @@
 #define FILE_DIR "icons/effects/unused"
 #define FILE_DIR "icons/goonstation"
 #define FILE_DIR "icons/goonstation/48x48"
+#define FILE_DIR "icons/goonstation/effects"
 #define FILE_DIR "icons/goonstation/mob"
 #define FILE_DIR "icons/goonstation/mob/clothing"
 #define FILE_DIR "icons/goonstation/mob/inhands"

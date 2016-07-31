@@ -97,7 +97,7 @@
 "bS" = (/obj/structure/computerframe{anchored = 1},/turf/simulated/floor/plasteel{icon_state = "grimy"},/area/djstation)
 "bT" = (/obj/structure/stool/bed/chair{dir = 8},/turf/simulated/floor/plasteel{icon_state = "grimy"},/area/djstation)
 "bU" = (/obj/machinery/light/small,/obj/machinery/sleeper{dir = 8},/turf/simulated/floor/plasteel{icon_state = "grimy"},/area/djstation)
-"bV" = (/obj/machinery/sleep_console{dir = 8},/turf/simulated/floor/plasteel{icon_state = "grimy"},/area/djstation)
+"bV" = (/turf/simulated/floor/plasteel{icon_state = "grimy"},/area/djstation)
 "bW" = (/obj/structure/disposalpipe/segment,/turf/simulated/wall,/area/djstation)
 "bX" = (/obj/machinery/door/airlock{name = "Restroom"; req_access_txt = "0"},/turf/simulated/floor/plasteel{icon_state = "showroomfloor"},/area/djstation)
 "bY" = (/obj/machinery/light{dir = 4},/turf/simulated/floor/plasteel{dir = 6; icon_state = "caution"},/area/djstation)
