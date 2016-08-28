@@ -7,13 +7,12 @@ current as of idunfukkenknoe
 z1 = station
 z2 = centcomm
 z3 = telecommunications center
-z4 = salvage yard
+z4 = AI satellite and other hogshit
 z5 = mining
 z6 = ruskie station and other spessdiver goodies
-z7 = AI satellite and other hogshit
+z7 = salvage yard
 z8 = terralabs
 
-*But high likelyhood ^that shit won't stay that way
 
 
 */
@@ -54,13 +53,13 @@ Central Command;2;unlinked
 
 Telecommunications Satellite;3;linked
 
-Salvage Yard;4;linked
+AI Sat;4;linked
 
 Mining Asteroid;5;linked
 
 Ruskie plus;6;linked
 
-AI Sat;7;linked
+Salvage Yard;7;linked
 
 Terralabs;8;unlinked
 }
@@ -69,4 +68,8 @@ By which I mean possibly (but not likely) causing server crashes, and VERY possi
 Remember how Trorbes and it's terralabs wing behaved? yeah. Don't link that Z-Level. It's going to be WAY harder to get stuff in it,
 but ONLY if the players are accessing it from the direction they should. If someone flies in from outside they have the potential to bypass
 the hazards which is COMPLETE HOGSHIT.
+
+I also would like to note that I switched the order of the salvage yard and the AI satellite. This is because the new space ruins feature
+will always load into z7 and as of writing this I haven't found where it is defined to do this or what its method is. It makes more sense
+to spawn these into a Z-Level such as the salvage yard where this kind of shit would logically be anyway.
 */

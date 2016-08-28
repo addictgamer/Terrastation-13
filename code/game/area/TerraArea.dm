@@ -159,6 +159,6 @@ area/salvage/support //intended for the ministation's supportability
 	name = "Absolutely Pointless"
 	icon = 'icons/turf/areas2.dmi' //Because FAK
 	icon_state = "honk"
-	ambientsounds = list('music/atmosdel.ogg')
+	ambientsounds = list('sound/music/atmosdel.ogg')
 
 //butts
