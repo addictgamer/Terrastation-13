@@ -22,7 +22,7 @@
 	minbodytemp = 0
 	speak_emote = list("whines")
 	gold_core_spawnable = CHEM_MOB_SPAWN_HOSTILE
-	loot = list(/obj/effect/decal/cleanable/blood/splatter/animated)
+	loot = list(/obj/effect/gibspawner/human, /obj/effect/decal/cleanable/molten_item)
 	deathmessage = "melts!"
 	del_on_death = 1
 
@@ -58,12 +58,6 @@
 
 
 
-/mob/living/simple_animal/hostile/melterling/death(gibbed)
-	var/datum/effect/system/spark_spread/diks = new /datum/effect/system/spark_spread
-	diks.set_up(3, 1, src)
-	diks.start()
-	..()
-
 
 //This is an exact copy of the other one, but is a 'neutral' mob. This is more or less the old behavior of this mob.
 //No range variants here tho. 		--LZ
@@ -88,6 +82,6 @@
 	minbodytemp = 0
 	speak_emote = list("whines")
 	gold_core_spawnable = CHEM_MOB_SPAWN_HOSTILE
-	loot = list(/obj/effect/decal/cleanable/blood/splatter/animated)
+	loot = list(/obj/effect/gibspawner/human, /obj/effect/decal/cleanable/dirt/blackpowder)
 	deathmessage = "melts!"
 	del_on_death = 1
