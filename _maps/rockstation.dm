@@ -9,8 +9,8 @@ z2 = centcomm
 z3 = telecommunications center
 z4 = AI satellite and other hogshit
 z5 = mining
-z6 = ruskie station and other spessdiver goodies
-z7 = salvage yard
+z6 = salvage yard
+z7 = ruskie station and other spessdiver goodies
 z8 = terralabs
 
 
@@ -57,9 +57,9 @@ AI Sat;4;linked
 
 Mining Asteroid;5;linked
 
-Ruskie plus;6;linked
+Salvage Yard;6;linked
 
-Salvage Yard;7;linked
+Ruskie plus;7;linked
 
 Terralabs;8;unlinked
 }

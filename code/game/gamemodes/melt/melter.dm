@@ -85,3 +85,54 @@
 	loot = list(/obj/effect/gibspawner/human, /obj/effect/decal/cleanable/dirt/blackpowder)
 	deathmessage = "melts!"
 	del_on_death = 1
+
+
+
+//WIP for an intermediary mob
+/*
+/mob/living/simple_animal/hostile/meltar
+	name = "Avatar of Meltion"
+	desc = "Sweet space Jesus RUN"
+	icon = 'code/game/gamemodes/melt/melter.dmi'
+	icon_state = "avatar"
+	icon_living = "avatar"
+	health = 100
+	maxHealth = 100
+	melee_damage_lower = 2
+	melee_damage_upper = 50
+	ranged = 1
+	attacktext = "banlances"
+	attack_sound = 'sound/weapons/Kenetic_accel.ogg'
+	projectilesound = 'sound/weapons/marauder.ogg'
+	projectiletype = /obj/item/projectile/heavymelt
+	faction = list("melter")
+	check_friendly_fire = 1
+	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
+	minbodytemp = 0
+	speak_emote = list("murmurs")
+	gold_core_spawnable = CHEM_MOB_SPAWN_HOSTILE
+	loot = list(/obj/effect/gibspawner/human, /obj/effect/decal/cleanable/dirt/blackpowder)
+	deathmessage = "melts!"
+	del_on_death = 1
+*/
+
+//bullet for above
+/obj/item/projectile/heavymelt
+	name = "wtf"
+	desc = "WTF?!"
+	icon_state = "pulse1_bl"
+	damage = 25
+	damage_type = BURN
+	flag = "energy"
+
+//TODO: find way to make this thing's basic attack cause huge knockback. below is snippet from plasma fist that might help:
+/*
+/datum/martial_art/plasma_fist/proc/Throwback(var/mob/living/carbon/human/A, var/mob/living/carbon/human/D)
+	D.visible_message("<span class='danger'>[A] has hit [D] with Plasma Punch!</span>", \
+								"<span class='userdanger'>[A] has hit [D] with Plasma Punch!</span>")
+	playsound(D.loc, 'sound/weapons/punch1.ogg', 50, 1, -1)
+	var/atom/throw_target = get_edge_target_turf(D, get_dir(D, get_step_away(D, A)))
+	D.throw_at(throw_target, 200, 4,A)
+	A.say("HYAH!")
+	return
+*/
