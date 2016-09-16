@@ -12,7 +12,7 @@
 "al" = (/obj/machinery/door/airlock/external{frequency = 1379; icon_state = "door_locked"; id_tag = "engineering_dock_inner"; locked = 1; name = "Engineering Dock Airlock"; req_access = null; req_access_txt = "13"},/obj/machinery/atmospherics/pipe/simple/hidden,/turf/simulated/floor/plating,/area/maintenance/engi_shuttle)
 "am" = (/obj/effect/spawner/window/reinforced,/turf/simulated/floor/plating,/area/maintenance/engi_shuttle)
 "an" = (/obj/structure/lattice,/turf/space,/area/space)
-"ao" = (/obj/machinery/atmospherics/unary/vent_pump/high_volume{dir = 4; frequency = 1379; id_tag = "engineering_dock_pump"},/obj/machinery/embedded_controller/radio/airlock/docking_port{frequency = 1379; id_tag = "engineering_dock_airlock"; pixel_x = -25; pixel_y = 0; req_access_txt = "0"; req_one_access_txt = "13;10;24"; tag_airpump = "engineering_dock_pump"; tag_chamber_sensor = "engineering_dock_sensor"; tag_exterior_door = "engineering_dock_outer"; tag_interior_door = "engineering_dock_inner"},/turf/simulated/floor/plating,/area/maintenance/engi_shuttle)
+"ao" = (/obj/machinery/atmospherics/unary/vent_pump/high_volume{dir = 4; frequency = 1379; id_tag = "engineering_dock_pump"},/turf/simulated/floor/plating,/area/maintenance/engi_shuttle)
 "ap" = (/obj/machinery/atmospherics/pipe/manifold/hidden{dir = 4},/turf/simulated/floor/plating,/area/maintenance/engi_shuttle)
 "aq" = (/turf/simulated/shuttle/wall{tag = "icon-swall_s6"; icon_state = "swall_s6"; dir = 2},/area/space)
 "ar" = (/turf/simulated/shuttle/wall{tag = "icon-swall14"; icon_state = "swall14"; dir = 2},/area/space)

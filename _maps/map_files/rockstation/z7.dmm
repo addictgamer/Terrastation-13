@@ -70,7 +70,7 @@
 "br" = (/obj/structure/closet/emcloset,/turf/simulated/floor/plasteel{dir = 6; icon_state = "caution"},/area/djstation)
 "bs" = (/turf/simulated/floor/plasteel{dir = 6; icon_state = "caution"},/area/djstation)
 "bt" = (/obj/machinery/atmospherics/pipe/simple/hidden,/turf/simulated/floor/plasteel{dir = 6; icon_state = "caution"},/area/djstation)
-"bu" = (/obj/machinery/newscaster{pixel_y = 32},/obj/machinery/media/jukebox/dj,/turf/simulated/floor/plasteel{dir = 6; icon_state = "caution"},/area/djstation)
+"bu" = (/obj/machinery/newscaster{pixel_y = 32},/turf/simulated/floor/plasteel{dir = 6; icon_state = "caution"},/area/djstation)
 "bv" = (/obj/structure/table,/obj/machinery/cell_charger,/turf/simulated/floor/plasteel{icon_state = "bar"},/area/djstation)
 "bw" = (/obj/machinery/status_display{layer = 4; pixel_x = 0; pixel_y = 32},/turf/simulated/floor/plasteel{icon_state = "bar"},/area/djstation)
 "bx" = (/turf/simulated/floor/plasteel{icon_state = "bar"},/area/djstation)

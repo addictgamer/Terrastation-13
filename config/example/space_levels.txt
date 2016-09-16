@@ -1,0 +1,15 @@
+Main Station;1;linked
+
+Central Command;2;unlinked
+
+Telecommunications Satellite;3;linked
+
+AI Sat;4;linked
+
+Mining Asteroid;5;linked
+
+Salvage Yard;6;linked
+
+Ruskie plus;7;linked
+
+Terralabs;8;unlinked
