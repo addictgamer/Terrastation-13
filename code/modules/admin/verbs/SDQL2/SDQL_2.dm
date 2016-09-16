@@ -89,12 +89,12 @@
 
 				if("delete")
 					for(var/datum/d in objs)
-						del(d)
+						qdel(d)
 
 				if("select")
 					var/text = ""
 					for(var/datum/t in objs)
-						text += "<A HREF='?_src_=vars;Vars=\ref[t]'>\ref[t]</A>"
+						text += "<A HREF='?_src_=vars;Vars=[t.UID()]'>\ref[t]</A>"
 						if(istype(t, /atom))
 							var/atom/a = t
 
