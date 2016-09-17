@@ -89,7 +89,7 @@
 
 
 //WIP for an intermediary mob
-/*
+
 /mob/living/simple_animal/hostile/meltar
 	name = "Avatar of Meltion"
 	desc = "Sweet space Jesus RUN"
@@ -114,7 +114,7 @@
 	loot = list(/obj/effect/gibspawner/human, /obj/effect/decal/cleanable/dirt/blackpowder)
 	deathmessage = "melts!"
 	del_on_death = 1
-*/
+
 
 //bullet for above
 /obj/item/projectile/heavymelt
@@ -124,6 +124,15 @@
 	damage = 25
 	damage_type = BURN
 	flag = "energy"
+
+
+//This next snippet is an attempt at something that doesn't yet compile
+/*
+/mob/living/simple_animal/hostile/meltar/AttackingTarget()
+	..()
+	var/atom/throw_target = get_edge_target_turf(target, get_dir(target, get_step_away(target, src)))
+	target.throw_at(throw_target, 200, 4,src)
+*/
 
 //TODO: find way to make this thing's basic attack cause huge knockback. below is snippet from plasma fist that might help:
 /*
@@ -136,3 +145,4 @@
 	A.say("HYAH!")
 	return
 */
+//it currently does not, however.
