@@ -33,3 +33,24 @@ z8 = syndicate station
 	#warn a map has already been included, ignoring outpostgamma.
 
 #endif
+
+
+/*
+Begin Design Logic
+
+Science and Engie close together
+Sec more involved with other areas; more checkpoints (arrivals and escape)
+crew quarters/recreation/cafeteria near each other
+"antag area" in upper left, randomize if feasible
+Turn ruskie station into a functioning syndicate structure
+roundish shape
+AI onboard
+Substation use
+'assembly' and tech storage betwixt engie and sci with access to both
+RD and CE have view of tech storage
+Colored lighting:
+	blue around engi hardsuit storage and EVA
+	yellow around rest of engi
+	red/yellow lights around airlocks
+
+*/

@@ -1993,6 +1993,7 @@
 #include "code\modules\shuttle\shuttle.dm"
 #include "code\modules\shuttle\supply.dm"
 #include "code\modules\shuttle\syndicate.dm"
+#include "code\modules\shuttle\terraShuttle.dm"
 #include "code\modules\space_management\heap_space_level.dm"
 #include "code\modules\space_management\level_check.dm"
 #include "code\modules\space_management\level_traits.dm"

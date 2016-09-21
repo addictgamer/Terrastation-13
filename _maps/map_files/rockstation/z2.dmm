@@ -373,7 +373,7 @@
 "hi" = (/obj/structure/rack,/obj/item/clothing/suit/wizrobe/marisa,/obj/item/clothing/shoes/sandal/marisa,/obj/item/clothing/head/wizard/marisa,/obj/item/weapon/twohanded/staff/broom,/turf/unsimulated/floor{icon_state = "grimy"},/area/wizard_station)
 "hj" = (/obj/structure/rack,/obj/item/clothing/suit/wizrobe/magusblue,/obj/item/clothing/head/wizard/magus,/obj/item/weapon/twohanded/staff,/turf/unsimulated/floor{icon_state = "grimy"},/area/wizard_station)
 "hk" = (/obj/machinery/vending/snack,/turf/unsimulated/floor{tag = "icon-floor"; icon_state = "floor"},/area/trader_station/sol)
-"hl" = (/obj/machinery/computer/shuttle/trade/sol,/turf/unsimulated/floor{tag = "icon-floor"; icon_state = "floor"},/area/trader_station/sol)
+"hl" = (/obj/machinery/computer/shuttle/trade/sol/terra/rock2,/turf/unsimulated/floor{tag = "icon-floor"; icon_state = "floor"},/area/trader_station/sol)
 "hm" = (/obj/structure/girder/displaced,/turf/unsimulated/floor/vox,/area/vox_station)
 "hn" = (/obj/structure/closet/crate,/turf/unsimulated/floor/vox,/area/vox_station)
 "ho" = (/obj/machinery/light/spot{tag = "icon-tube1 (WEST)"; icon_state = "tube1"; dir = 8},/turf/unsimulated/floor{dir = 8; icon_state = "wood"},/area/wizard_station)

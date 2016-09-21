@@ -132,18 +132,22 @@
 
 /area/salvage //intended for station dock
 	name = "Salvage Captain"
+	icon_state = "south"
 
 /area/salvage/lobby //intended for waiting area
 	name = "Salvage Expedition Lobby"
+	icon_state = "southeast"
 
 /area/salvage/q //intended for captain's quarters
 	name = "Salvage Captain Quarters"
+	icon_state = "red"
 
 /area/salvage/main //intended for the whateverdiks big area
 	name = "something"
 
 area/salvage/support //intended for the ministation's supportability
 	name = "Support Room"
+	icon_state = "auxstorage"
 //TODO: add shuttle areas for this section
 
 

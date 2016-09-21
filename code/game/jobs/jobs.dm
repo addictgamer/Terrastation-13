@@ -54,6 +54,7 @@ var/const/MECHANIC			=(1<<4)
 var/const/BRIGDOC			=(1<<5)
 var/const/JUDGE				=(1<<6)
 var/const/PILOT				=(1<<7)
+var/const/SALVAGE			=(1<<8)
 
 var/list/assistant_occupations = list(
 )
@@ -113,14 +114,16 @@ var/list/support_positions = list(
 	"Barber",
 	"Magistrate",
 	"Nanotrasen Representative",
-	"Blueshield"
+	"Blueshield",
+	"Salvage Captain"
 )
 
 var/list/supply_positions = list(
 	"Head of Personnel",
 	"Quartermaster",
 	"Cargo Technician",
-	"Shaft Miner"
+	"Shaft Miner",
+	"Salvage Captain"
 )
 
 var/list/service_positions = support_positions - supply_positions + list("Head of Personnel")
@@ -155,6 +158,7 @@ var/list/whitelisted_positions = list(
 	"Brig Physician",
 	"Magistrate",
 	"Security Pod Pilot",
+	"Salvage Captain"
 )
 
 
