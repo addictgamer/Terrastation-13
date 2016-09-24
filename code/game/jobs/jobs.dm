@@ -43,6 +43,7 @@ var/const/CHAPLAIN			=(1<<10)
 var/const/CLOWN				=(1<<11)
 var/const/MIME				=(1<<12)
 var/const/CIVILIAN			=(1<<13)
+var/const/SALVAGE			=(1<<14)
 
 
 var/const/KARMA				=(1<<3)
@@ -54,7 +55,7 @@ var/const/MECHANIC			=(1<<4)
 var/const/BRIGDOC			=(1<<5)
 var/const/JUDGE				=(1<<6)
 var/const/PILOT				=(1<<7)
-var/const/SALVAGE			=(1<<8)
+
 
 var/list/assistant_occupations = list(
 )
@@ -157,8 +158,7 @@ var/list/whitelisted_positions = list(
 	"Mechanic",
 	"Brig Physician",
 	"Magistrate",
-	"Security Pod Pilot",
-	"Salvage Captain"
+	"Security Pod Pilot"
 )
 
 

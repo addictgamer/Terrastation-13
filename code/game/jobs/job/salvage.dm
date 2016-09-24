@@ -1,7 +1,7 @@
 /datum/job/salvage_captain
 	title = "Salvage Captain"
 	flag = SALVAGE
-	department_flag = KARMA
+	department_flag = SUPPORT
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the head of personnel"
@@ -25,3 +25,9 @@
 		H.equip_or_collect(new /obj/item/device/pda(H), slot_wear_pda)
 		H.equip_or_collect(new /obj/item/weapon/storage/box/engineer(H), slot_in_backpack)
 		return 1
+
+
+//this is so the salvage captain can fukken maintain his shit without faggot atmos techs being needed
+/obj/machinery/alarm/sc
+	req_one_access = list(access_salvage_captain, access_atmospherics, access_engine_equip)
+	aidisabled = 1

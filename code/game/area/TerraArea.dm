@@ -145,10 +145,14 @@
 /area/salvage/main //intended for the whateverdiks big area
 	name = "something"
 
-area/salvage/support //intended for the ministation's supportability
+/area/salvage/support //intended for the ministation's supportability
 	name = "Support Room"
 	icon_state = "auxstorage"
-//TODO: add shuttle areas for this section
+
+/area/shuttle/salvageshuttle
+	name = "Salvage Shuttle"
+	icon_state = "shuttle"
+	//do I need a requires_power here?
 
 
 //Derelicts

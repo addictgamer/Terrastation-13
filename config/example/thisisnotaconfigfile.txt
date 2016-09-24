@@ -1,0 +1,3 @@
+preferences.dm has been edited directly on line 505, turning the limit variable to 13 from 12
+jobs.dm has been edited directly in the first directory, appending salvage captain to Support.
+	It has also been appended to support_positions and supply_positions lists.
