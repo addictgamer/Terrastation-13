@@ -17,7 +17,8 @@
 
 /obj/machinery/computer/shuttle/white_ship/terra //again, to separate
 
-/obj/item/weapon/circuitboard/white_ship/rock2 //Needed for below
+/obj/item/weapon/circuitboard/white_ship/rock2 //Needed for below, since this console needs to be built to exist ingame without adminhax
+	build_path = /obj/machinery/computer/shuttle/white_ship/terra/rock2
 
 /obj/machinery/computer/shuttle/white_ship/terra/rock2 //unowot
 	circuit = /obj/item/weapon/circuitboard/white_ship/rock2
