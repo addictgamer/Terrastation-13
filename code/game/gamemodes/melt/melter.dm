@@ -100,6 +100,7 @@
 	maxHealth = 100
 	melee_damage_lower = 2
 	melee_damage_upper = 50
+	speed = 3
 	ranged = 1
 	attacktext = "banlances"
 	attack_sound = 'sound/weapons/Kenetic_accel.ogg'
@@ -126,23 +127,13 @@
 	flag = "energy"
 
 
-//This next snippet is an attempt at something that doesn't yet compile
-/*
+/mob/living/simple_animal/hostile/meltar/proc/ban(mob/living/target as mob)
+	var/atom/throw_target = get_edge_target_turf(target, get_dir(src, get_step_away(target, src)))
+	target.throw_at(throw_target, 200, 4)
+
 /mob/living/simple_animal/hostile/meltar/AttackingTarget()
 	..()
-	var/atom/throw_target = get_edge_target_turf(target, get_dir(target, get_step_away(target, src)))
-	target.throw_at(throw_target, 200, 4,src)
-*/
+	if(isliving(target))
+		ban(target)
 
-//TODO: find way to make this thing's basic attack cause huge knockback. below is snippet from plasma fist that might help:
-/*
-/datum/martial_art/plasma_fist/proc/Throwback(var/mob/living/carbon/human/A, var/mob/living/carbon/human/D)
-	D.visible_message("<span class='danger'>[A] has hit [D] with Plasma Punch!</span>", \
-								"<span class='userdanger'>[A] has hit [D] with Plasma Punch!</span>")
-	playsound(D.loc, 'sound/weapons/punch1.ogg', 50, 1, -1)
-	var/atom/throw_target = get_edge_target_turf(D, get_dir(D, get_step_away(D, A)))
-	D.throw_at(throw_target, 200, 4,A)
-	A.say("HYAH!")
-	return
-*/
-//it currently does not, however.
+//motherfucker will torso flail your bitch ass

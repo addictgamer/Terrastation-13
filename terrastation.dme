@@ -880,6 +880,7 @@
 #include "code\game\objects\random\random.dm"
 #include "code\game\objects\structures\artstuff.dm"
 #include "code\game\objects\structures\barsign.dm"
+#include "code\game\objects\structures\beacons.dm"
 #include "code\game\objects\structures\bedsheet_bin.dm"
 #include "code\game\objects\structures\coathanger.dm"
 #include "code\game\objects\structures\curtains.dm"
