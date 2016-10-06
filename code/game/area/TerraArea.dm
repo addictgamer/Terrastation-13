@@ -111,7 +111,7 @@
 /area/maintenance/substation/cargo //Not initially on this list when I stole it; but I'm gonna have a dedicated substation for cargo. As always.
 	name = "Cargo Substation"
 
-/area/maintenance/substation/command // Bridge and HoS plus whatever else is up there
+/area/maintenance/substation/command // Bridge and HoS or whatever else is up there
 	name = "Command Substation"
 
 /area/maintenance/substation/security // sec
@@ -136,14 +136,15 @@
 
 /area/salvage/lobby //intended for waiting area
 	name = "Salvage Expedition Lobby"
-	icon_state = "southeast"
+	icon_state = "southeast" //GET IT GET IT 'SE' 'SALVAGE EXPEDITION'
 
 /area/salvage/q //intended for captain's quarters
 	name = "Salvage Captain Quarters"
 	icon_state = "red"
 
 /area/salvage/main //intended for the whateverdiks big area
-	name = "something"
+	name = "Salvage Main Concourse"
+	icon_state = "southeast" //CUZ IT'S THE SOUTHEAST CORNER TOO
 
 /area/salvage/support //intended for the ministation's supportability
 	name = "Support Room"
@@ -153,6 +154,32 @@
 	name = "Salvage Shuttle"
 	icon_state = "shuttle"
 	//do I need a requires_power here?
+
+		//below until derelicts are all salvage yard stuffs
+/area/salvage/post/southwest
+	name = "Southwest Outpost"
+	icon_state = "southwest"
+
+/area/salvage/post/east
+	name = "East Outpost"
+	icon_state = "east"
+
+/area/salvage/post/northeast
+	name = "Northeast Outpost"
+	icon_state = "northeast"
+
+/area/salvage/yard
+	name = "generic"
+	icon = 'icons/turf/areas2.dmi'
+	icon_state = "..."
+
+/area/salvage/yard/honk
+	name = "honk"
+	icon_state = "honk"
+
+/area/salvage/yard/hidanger
+	name = "Hazard zone"
+	icon_state = "danger"
 
 
 //Derelicts

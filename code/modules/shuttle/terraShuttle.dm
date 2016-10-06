@@ -37,4 +37,4 @@
 	name = "Salvage Shuttle Console"
 	desc = "Used to jump around the salvage yard and to dock at the main/salvage stations"
 	shuttleId = "salvage"
-	possible_destinations = "salvage_home;salvage_ss13"
+	possible_destinations = "salvage_home;salvage_ss13;salvage_p_SW"

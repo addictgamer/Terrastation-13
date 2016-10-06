@@ -5108,7 +5108,7 @@
 "bUl" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 10},/turf/simulated/floor/plasteel{dir = 4; icon_state = "whitegreen"},/area/toxins/xenobiology)
 "bUm" = (/obj/structure/sign/biohazard,/turf/simulated/wall/r_wall,/area/toxins/xenobiology)
 "bUn" = (/obj/structure/sign/securearea{pixel_x = -32; pixel_y = 0},/turf/simulated/wall/r_wall,/area/toxins/xenobiology)
-"bUo" = (/obj/machinery/atmospherics/unary/vent_pump/on,/turf/simulated/floor/plating/airless{icon_state = "asteroidplating"},/area/toxins/xenobiology)
+"bUo" = (/obj/machinery/atmospherics/unary/outlet_injector,/turf/simulated/floor/plating/airless{icon_state = "asteroidplating"},/area/toxins/xenobiology)
 "bUp" = (/obj/effect/glowshroom,/turf/simulated/floor/plating/airless{icon_state = "asteroidplating"},/area/space)
 "bUq" = (/obj/machinery/door/poddoor{density = 0; icon_state = "pdoor0"; id_tag = "xenobio4"; name = "Containment Blast Doors"; opacity = 0},/obj/machinery/computer/reconstitutor/animal,/turf/simulated/floor/engine,/area/toxins/xenobiology)
 "bUr" = (/obj/machinery/door/poddoor{density = 0; icon_state = "pdoor0"; id_tag = "xenobio4"; name = "Containment Blast Doors"; opacity = 0},/obj/structure/window/reinforced{dir = 8},/obj/machinery/door/window/southright{dir = 1; name = "Containment Pen"; req_access_txt = "55"},/turf/simulated/floor/engine,/area/toxins/xenobiology)
