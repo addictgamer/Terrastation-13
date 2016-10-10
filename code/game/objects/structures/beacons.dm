@@ -14,3 +14,7 @@
 /obj/structure/landing_beacon/s_yard
 	desc = "Marks a border for something."
 	icon_state = "s_yard"
+
+/obj/structure/landing_beacon/antag_r
+	desc = "What is this? How did it get there?"
+	icon_state = "nefarious_r"
