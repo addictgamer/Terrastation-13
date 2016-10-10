@@ -1429,7 +1429,7 @@
 "By" = (/obj/effect/spawner/window/reinforced,/obj/structure/disposalpipe/segment,/turf/simulated/floor/plating,/area/geostat/hydro)
 "Bz" = (/turf/simulated/wall,/area/geostat)
 "BA" = (/obj/machinery/door/airlock,/turf/simulated/floor/plasteel,/area/geostat)
-"BB" = (/obj/structure/noticeboard/anomaly,/turf/simulated/wall,/area/geostat)
+"BB" = (/obj/structure/noticeboard/geostation,/turf/simulated/wall,/area/geostat)
 "BC" = (/turf/simulated/floor/plating{icon_state = "panelscorched"},/area/geostat)
 "BD" = (/turf/simulated/floor/plasteel{icon_state = "floorgrime"},/area/geostat)
 "BE" = (/turf/simulated/wall,/area/geostat/hydro)
