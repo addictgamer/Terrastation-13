@@ -78,7 +78,7 @@
 	name = "maintenance"
 	icon_state = "maintcentral"
 
-/area/geostat/exterior
+/area/mine/dangerous/explored/geostatexterior
 	name = "Geostation Exterior"
 	icon_state = "cave"
 
