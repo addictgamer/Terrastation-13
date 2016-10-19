@@ -124,7 +124,7 @@
 	name = "Drone Fabrication"
 	icon_state = "engine"
 
-/area/engine/e_waste
+/area/engine/e_waste //no longer in use in rock2 since addition of tesla
 	name = "Engine Waste Handling"
 	icon_state = "engine"
 
@@ -181,6 +181,9 @@
 	name = "Hazard zone"
 	icon_state = "danger"
 
+/area/salvage/ashut/m
+	name = "Abandoned Shuttle"
+	icon_state = "shuttlered2"
 
 //Derelicts
 /area/derelict/jettison

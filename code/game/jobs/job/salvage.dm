@@ -31,3 +31,10 @@
 /obj/machinery/alarm/sc
 	req_one_access = list(access_salvage_captain, access_atmospherics, access_engine_equip)
 	aidisabled = 1
+
+//this is to dissuade space fgts from breaking the main salvage station
+//the altered instance on the station is going to stay there cuz it's a different name and totally not because I'm lazy no sir
+/obj/machinery/gun_turret/exterior/countermeasure
+	name = "Xeno Countermeasure System (7.62)"
+	desc = "A gun turret manufactured by the Terraform subdivision of Nanotrasen, modeled after a syndicate device. Designed to keep hostile space life away from outposts."
+	faction = "neutral"

@@ -7,6 +7,7 @@
 	name = "asteroid"
 	icon = 'icons/turf/oldwalls.dmi'
 	icon_state = "asteroid"
+	hidden = 0
 
 
 /turf/simulated/mineral/iron/asteroid //iron wall
