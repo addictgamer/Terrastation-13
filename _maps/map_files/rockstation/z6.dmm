@@ -433,7 +433,7 @@
 "iq" = (/obj/structure/disposalpipe/segment,/turf/simulated/wall/r_wall,/area/salvage/support)
 "ir" = (/obj/structure/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/turf/simulated/wall/r_wall,/area/salvage/q)
 "is" = (/obj/machinery/light{dir = 8},/obj/machinery/disposal,/obj/structure/disposalpipe/trunk{dir = 8},/turf/simulated/floor/wood,/area/salvage/q)
-"it" = (/obj/machinery/atmospherics/unary/vent_scrubber{dir = 1; on = 1; scrub_N2O = 1; scrub_Toxins = 1},/obj/structure/table,/turf/simulated/floor/wood,/area/salvage/q)
+"it" = (/obj/machinery/atmospherics/unary/vent_scrubber{dir = 1; on = 1; scrub_N2O = 1; scrub_Toxins = 1},/obj/structure/table,/obj/item/clothing/suit/space/rig,/obj/item/clothing/head/helmet/space/syndicate/green/dark,/turf/simulated/floor/wood,/area/salvage/q)
 "iu" = (/obj/structure/stool/bed,/obj/item/weapon/bedsheet/blue,/turf/simulated/floor/wood,/area/salvage/q)
 "iv" = (/obj/machinery/atmospherics/unary/vent_pump/on{dir = 4},/turf/simulated/floor/plasteel,/area/salvage/main)
 "iw" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 9; pixel_y = 0},/turf/simulated/floor/plasteel,/area/salvage/main)
