@@ -56,7 +56,7 @@ Also insert actual attacks, such as the one with the same name
 	school = "conjuration"
 	charge_max = 120
 	clothes_req = 0
-	invocation = "fart"
+	invocation = "Somebody farts like the nasty bastard they are."
 	invocation_type = "emote"
 	range = -1
 	include_user = 1

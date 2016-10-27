@@ -1,5 +1,11 @@
+//File contains areas needed for whatever hogshit this server uses that other servers don't / we implemented that others defk
+
+
+
+
 //PERIPHERAL STATION AREAS -- For use with that little area disconnected from the station that has the solar array to itself sorta
 //Being maintenance, should block rad storms and shit
+//Introduced in rock2, currently only used there. This area needs to be powered for the endgame award to register.
 
 /area/maintenance/peris
 	name = "outpost"
@@ -60,7 +66,8 @@
 	icon_state = "yellow"
 
 
-//GEOSTATION AREAS -- Because I want this back sorta
+//GEOSTATION AREAS -- Former mining derelict on our ancient code, brought back for rock2
+//(which also re-implemented old mining station from said codebase)
 
 /area/geostat
 	name = "Geostation"
@@ -176,6 +183,9 @@
 /area/salvage/yard/honk
 	name = "honk"
 	icon_state = "honk"
+
+/area/salvage/yard/silent
+	name = "..."
 
 /area/salvage/yard/hidanger
 	name = "Hazard zone"
