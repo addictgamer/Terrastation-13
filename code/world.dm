@@ -283,7 +283,7 @@ var/world_topic_spam_protect_time = world.timeofday
 	//kick_clients_in_lobby("<span class='boldannounce'>The round came to an end with you in the lobby.</span>", 1)
 
 	spawn(0)
-		world << sound(pick('sound/AI/newroundsexy.ogg','sound/misc/apcdestroyed.ogg','sound/misc/bangindonk.ogg', 'sound/goonstation/misc/newround1.ogg', 'sound/goonstation/misc/newround2.ogg', 'sound/misc/thatwasinteresting.ogg'))// random end sounds!! - LastyBatsy
+		world << sound(pick('sound/AI/newroundsexy.ogg','sound/misc/apcdestroyed.ogg','sound/misc/bangindonk.ogg', 'sound/goonstation/misc/newround1.ogg', 'sound/misc/billychristmas.ogg', 'sound/misc/thatwasinteresting.ogg'))// random end sounds!! - LastyBatsy
 
 
 	processScheduler.stop()
