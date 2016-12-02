@@ -619,7 +619,7 @@
 "lU" = (/obj/docking_port/stationary/transit{dwidth = 3; height = 5; id = "science_transit"; name = "science in transit"; turf_type = /turf/space/transit/horizontal; width = 7},/turf/space/transit/horizontal,/area/space)
 "lV" = (/turf/space/transit/horizontal{dir = 4},/area/space)
 "lW" = (/turf/unsimulated/wall,/area/start)
-"lX" = (/obj/effect/landmark/start,/turf/unsimulated/floor,/area/start)
+"lX" = (/turf/unsimulated/floor,/area/start)
 "lY" = (/obj/docking_port/stationary/transit{dir = 8; dwidth = 10; height = 35; id = "whiteship_transit"; name = "whiteship in transit"; width = 21},/turf/space/transit/horizontal{dir = 4},/area/space)
 "lZ" = (/turf/unsimulated/wall/splashscreen,/area/start)
 "ma" = (/obj/docking_port/stationary/transit{dir = 2; dwidth = 3; height = 5; id = "engineering_transit"; name = "engineering in transit"; turf_type = /turf/space/transit/horizontal; width = 7},/turf/space/transit/horizontal,/area/space)
