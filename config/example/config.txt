@@ -1,5 +1,5 @@
 ## Server name: This appears at the top of the screen in-game. In this case it will read "spacestation13: station_name" where station_name is the randomly generated name of the station for the round. Remove the # infront of SERVERNAME and replace 'spacestation13' with the name of your choice
-# SERVERNAME spacestation13
+SERVERNAME Terrastation 13
 
 ## Add a # infront of this if you want to use the SQL based admin system, the legacy system uses admins.txt. You need to set up your database to use the SQL based system.
 ADMIN_LEGACY_SYSTEM
@@ -160,13 +160,13 @@ GUEST_BAN
 # SERVER server.net:port
 
 ## Forum address
-# FORUMURL http://example.org
+FORUMURL http://www.rockraidersunited.com/topic/7613-space-station-13-where-work-is-honk/
 
 ## Wiki address
-# WIKIURL http://example.org
+WIKIURL https://nanotrasen.se/wiki/index.php/Main_Page
 
 ## Rules address
-# RULESURL http://example.org
+RULESURL http://www.rockraidersunited.com/topic/7613-space-station-13-where-work-is-honk/?do=findComment&comment=128871
 
 ## Donations address
 # DONATIONSURL http://example.org
@@ -285,7 +285,7 @@ PLAYER_REROUTE_CAP 0
 #DISABLE_AWAY_MISSIONS
 
 ## Disable the loading of space ruins
-DISABLE_SPACE_RUINS
+#DISABLE_SPACE_RUINS
 
 ## Uncomment to disable the OOC/LOOC channel by default.
 #DISABLE_OOC
