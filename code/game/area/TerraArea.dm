@@ -210,3 +210,9 @@
 	ambientsounds = list('sound/music/atmosdel.ogg')
 
 //butts
+
+//Quisoves' Dabbling
+
+/area/aisat/communications
+	name = "\improper AI Satellite Communications"
+	icon_state = "storage"
