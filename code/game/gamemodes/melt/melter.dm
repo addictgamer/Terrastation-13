@@ -14,7 +14,7 @@
 	melee_damage_upper = 3
 	attacktext = "flails against"
 	attack_sound = 'sound/weapons/thudswoosh.ogg'
-	projectilesound = 'sound/voice/shriek1.ogg'
+	projectilesound = 'sound/effects/meltscream.ogg'
 	projectiletype = /obj/item/projectile/melterblast
 	faction = list("melter")
 	check_friendly_fire = 1
@@ -74,7 +74,7 @@
 	melee_damage_upper = 9
 	attacktext = "flails against"
 	attack_sound = 'sound/weapons/thudswoosh.ogg'
-	projectilesound = 'sound/voice/shriek1.ogg'
+	projectilesound = 'sound/effects/meltscream.ogg'
 	projectiletype = /obj/item/projectile/melterblast
 	faction = list("melter")
 	check_friendly_fire = 1
@@ -92,7 +92,7 @@
 
 /mob/living/simple_animal/hostile/meltar
 	name = "Avatar of Meltion"
-	desc = "Sweet space Jesus RUN"
+	desc = "A crude manifestation of eons of Meltion's infernal agony. Suffice it to say, it is not a nice thing."
 	icon = 'code/game/gamemodes/melt/melter.dmi'
 	icon_state = "avatar"
 	icon_living = "avatar"

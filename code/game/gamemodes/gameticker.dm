@@ -41,7 +41,7 @@ var/round_start_time = 0
 	login_music = pick(\
 	'sound/music/after_light_that_burns.ogg',\
 	'sound/music/Atmosdel_Sub_Balloon.ogg',\
-	'sound/music/muh_face.ogg',\
+	'sound/music/shelterlong.ogg',\
 	'sound/music/lazarus.ogg',\
 	'sound/music/redsky.ogg',\
 	'sound/music/firefucker.ogg',\

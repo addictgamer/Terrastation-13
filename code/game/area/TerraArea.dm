@@ -135,6 +135,14 @@
 	name = "Engine Waste Handling"
 	icon_state = "engine"
 
+
+//OTHER MISCELLANY- QUI IS RESPONSIBLE FOR THIS PROBABLY
+
+/area/aisat/communications
+    name = "\improper AI Satellite Communications"
+    icon_state = "storage"
+
+
 // SALVAGE - Salvage captain and all associated areas
 
 /area/salvage //intended for station dock
@@ -194,6 +202,10 @@
 /area/salvage/ashut/m
 	name = "Abandoned Shuttle"
 	icon_state = "shuttlered2"
+
+/area/salvage/yard/shelter
+	name = "Abandoned Emergency Shelter"
+	requires_power = 0
 
 //Derelicts
 /area/derelict/jettison

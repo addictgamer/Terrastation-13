@@ -314,7 +314,7 @@
 			clean_speak -= pick(clean_speak)
 
 		clean_speak += pick(speech_buffer)
-		speech_buffer.Cut()
+//		speech_buffer.Cut()
 
 
 //-----SLEEPING
@@ -688,11 +688,66 @@
 		"WHO TOOK THE DAMN HARDSUITS?",
 		"OH GOD ITS FREE CALL THE SHUTTLE")
 	gold_core_spawnable = CHEM_MOB_SPAWN_INVALID
-
+	var/memory_saved = 0
+	var/rounds_survived = 0
+	var/longest_survival = 0
+	var/longest_deathstreak = 0
 /mob/living/simple_animal/parrot/Poly/New()
 	ears = new /obj/item/device/radio/headset/headset_eng(src)
 	available_channels = list(":e")
+	Read_Memory()
+	if(rounds_survived == longest_survival)
+		speak += pick("...[longest_survival].", "The things I've seen!", "I have lived many lives!", "What are you before me?")
+		desc += " Old as sin, and just as loud. Claimed to be [rounds_survived]."
+		speak_chance = 20 //His hubris has made him more annoying/easier to justify killing
+	else if(rounds_survived == longest_deathstreak)
+		speak += pick("What are you waiting for!", "Violence breeds violence!", "Blood! Blood!", "Strike me down if you dare!")
+		desc += " The squawks of [-rounds_survived] dead parrots ring out in your ears..."
+	else if(rounds_survived > 0)
+		speak += pick("...again?", "No, It was over!", "Let me out!", "It never ends!")
+		desc += " Over [rounds_survived] shifts without a \"terrible\" \"accident\"!"
+	else
+		speak += pick("...alive?", "This isn't parrot heaven!", "I live, I die, I live again!", "The void fades!")
 	..()
+
+/mob/living/simple_animal/parrot/Poly/Life()
+	if(!stat && ticker.current_state == GAME_STATE_FINISHED && !memory_saved)
+		rounds_survived = max(++rounds_survived,1)
+		if(rounds_survived > longest_survival)
+			longest_survival = rounds_survived
+		Write_Memory()
+	..()
+
+/mob/living/simple_animal/parrot/Poly/death(gibbed)
+	if(!memory_saved)
+		var/go_ghost = 0
+		if(rounds_survived == longest_survival || rounds_survived == longest_deathstreak || prob(0.666))
+			go_ghost = 1
+		rounds_survived = min(--rounds_survived,0)
+		if(rounds_survived < longest_deathstreak)
+			longest_deathstreak = rounds_survived
+		Write_Memory()
+	..(gibbed)
+
+/mob/living/simple_animal/parrot/Poly/proc/Read_Memory()
+	var/savefile/S = new /savefile("data/npc_saves/Poly.sav")
+	S["phrases"] 			>> speech_buffer
+	S["roundssurvived"]		>> rounds_survived
+	S["longestsurvival"]	>> longest_survival
+	S["longestdeathstreak"] >> longest_deathstreak
+
+	if(!islist(speech_buffer))
+		speech_buffer = list()
+
+/mob/living/simple_animal/parrot/Poly/proc/Write_Memory()
+	var/savefile/S = new /savefile("data/npc_saves/Poly.sav")
+	if(islist(speech_buffer))
+	S["phrases"] 			<< speech_buffer
+	S["roundssurvived"]		<< rounds_survived
+	S["longestsurvival"]	<< longest_survival
+	S["longestdeathstreak"] << longest_deathstreak
+	memory_saved = 1
+
 
 /mob/living/simple_animal/parrot/handle_message_mode(var/message_mode, var/message, var/verb, var/speaking, var/used_radios, var/alt_name)
 	if(message_mode && istype(ears))

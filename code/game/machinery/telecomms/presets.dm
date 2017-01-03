@@ -39,6 +39,11 @@
 	//idle_power_usage = 0
 	autolinkers = list("c_relay")
 
+/obj/machinery/telecomms/relay/preset/ai
+	id = "AI Relay"
+	autolinkers = list("ai_relay")
+
+
 //HUB
 
 /obj/machinery/telecomms/hub/preset
@@ -46,14 +51,14 @@
 	network = "tcommsat"
 	autolinkers = list("hub", "relay", "c_relay", "s_relay", "m_relay", "r_relay", "e_relay", "science", "medical",
 	"supply", "service", "common", "command", "engineering", "security",
-	"receiverA", "receiverB", "broadcasterA", "broadcasterB")
+	"receiverA", "receiverB", "broadcasterA", "broadcasterB", "ai_relay")
 
 /obj/machinery/telecomms/hub/preset_cent
 	id = "CentComm Hub"
 	network = "tcommsat"
 	use_power = 0
 	autolinkers = list("hub_cent", "c_relay", "s_relay", "m_relay", "r_relay", "e_relay",
-	 "centcomm", "receiverCent", "broadcasterCent")
+	 "centcomm", "receiverCent", "broadcasterCent", "ai_relay")
 
 //Receivers
 
