@@ -27,6 +27,10 @@
 	name = "fuckoff"
 	icon_state = "dark128"
 
+/area/exterior/rockstat
+	name = "Rockstation Exterior Cave"
+	icon_state = "yellow"
+
 
 //TERRALABS AREAS -- Oh fuck
 
