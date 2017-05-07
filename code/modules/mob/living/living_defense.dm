@@ -49,7 +49,12 @@
 
 	if(!P.nodamage)
 		apply_damage(P.damage, P.damage_type, def_zone, armor)
+		if(P.dismemberment)
+			check_projectile_dismemberment(P, def_zone)
 	return P.on_hit(src, armor, def_zone)
+	
+/mob/living/proc/check_projectile_dismemberment(obj/item/projectile/P, def_zone)
+	return 0
 
 /mob/living/proc/electrocute_act(shock_damage, obj/source, siemens_coeff = 1, safety = 0, tesla_shock = 0)
 	  return 0 //only carbon liveforms have this proc
@@ -76,7 +81,7 @@
 
 		var/throw_damage = I.throwforce*(speed/5)
 
-		src.visible_message("\red [src] has been hit by [I].")
+		src.visible_message("<span class='warning'>[src] has been hit by [I].</span>")
 		var/armor = run_armor_check(zone, "melee", "Your armor has protected your [parse_zone(zone)].", "Your armor has softened hit to your [parse_zone(zone)].", I.armour_penetration)
 
 		apply_damage(throw_damage, dtype, zone, armor, is_sharp(I), has_edge(I), I)
@@ -86,8 +91,8 @@
 		if(ismob(I.thrower))
 			var/mob/M = I.thrower
 			if(M)
-				attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been hit with a [I], thrown by [key_name(M)]</font>")
-				M.attack_log += text("\[[time_stamp()]\] <font color='red'>Hit [key_name(src)] with a thrown [I]</font>")
+				create_attack_log("<font color='orange'>Has been hit with a [I], thrown by [key_name(M)]</font>")
+				M.create_attack_log("<font color='red'>Hit [key_name(src)] with a thrown [I]</font>")
 				if(!istype(src,/mob/living/simple_animal/mouse))
 					msg_admin_attack("[key_name_admin(src)] was hit by a [I], thrown by [key_name_admin(M)]")
 
@@ -97,7 +102,7 @@
 			var/momentum = speed/2
 			var/dir = get_dir(I.throw_source, src)
 
-			visible_message("\red [src] staggers under the impact!","\red You stagger under the impact!")
+			visible_message("<span class='warning'>[src] staggers under the impact!</span>","<span class='warning'>You stagger under the impact!</span>")
 			src.throw_at(get_edge_target_turf(src,dir),1,momentum)
 
 			if(!W || !src) return
@@ -135,14 +140,14 @@
 		M.occupant_message("<span class='danger'>You hit [src].</span>")
 		visible_message("<span class='danger'>[src] has been hit by [M.name].</span>", \
 						"<span class='userdanger'>[src] has been hit by [M.name].</span>")
-		attack_log += text("\[[time_stamp()]\] <font color='orange'>Has been attacked by \the [M] controlled by [key_name(M.occupant)] (INTENT: [uppertext(M.occupant.a_intent)])</font>")
-		M.occupant.attack_log += text("\[[time_stamp()]\] <font color='red'>Attacked [src] with \the [M] (INTENT: [uppertext(M.occupant.a_intent)])</font>")
+		create_attack_log("<font color='orange'>Has been attacked by \the [M] controlled by [key_name(M.occupant)] (INTENT: [uppertext(M.occupant.a_intent)])</font>")
+		M.occupant.create_attack_log("<font color='red'>Attacked [src] with \the [M] (INTENT: [uppertext(M.occupant.a_intent)])</font>")
 		msg_admin_attack("[key_name_admin(M.occupant)] attacked [key_name_admin(src)] with \the [M] (INTENT: [uppertext(M.occupant.a_intent)])")
 
 	else
 
 		step_away(src,M)
-		add_logs(M.occupant, src, "pushed", object=M, admin=0)
+		add_logs(M.occupant, src, "pushed", object=M, admin=0, print_attack_log = 0)
 		M.occupant_message("<span class='warning'>You push [src] out of the way.</span>")
 		visible_message("<span class='warning'>[M] pushes [src] out of the way.</span>")
 		return

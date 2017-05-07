@@ -23,6 +23,15 @@
 			computer.table = src
 			break
 
+/obj/machinery/optable/Destroy()
+	if(computer)
+		computer.table = null
+		computer.victim = null
+		computer = null
+	if(victim)
+		victim = null
+	return ..()
+
 /obj/machinery/optable/ex_act(severity)
 	switch(severity)
 		if(1.0)
@@ -46,14 +55,14 @@
 
 /obj/machinery/optable/attack_hand(mob/user as mob)
 	if(HULK in usr.mutations)
-		to_chat(usr, text("\blue You destroy the table."))
-		visible_message("\red [usr] destroys the operating table!")
+		to_chat(usr, text("<span class='notice'>You destroy the table.</span>"))
+		visible_message("<span class='warning'>[usr] destroys the operating table!</span>")
 		src.density = 0
 		qdel(src)
 	return
 
-/obj/machinery/optable/CanPass(atom/movable/mover, turf/target, height=0, air_group=0)
-	if(air_group || (height==0)) return 1
+/obj/machinery/optable/CanPass(atom/movable/mover, turf/target, height=0)
+	if(height==0) return 1
 
 	if(istype(mover) && mover.checkpass(PASSTABLE))
 		return 1
@@ -130,8 +139,8 @@
 			qdel(W)
 			return
 	if(istype(W, /obj/item/weapon/wrench))
-		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
-		if(do_after(user, 20, target = src))
+		playsound(src.loc, W.usesound, 50, 1)
+		if(do_after(user, 20 * W.toolspeed, target = src))
 			to_chat(user, "<span class='notice'>You deconstruct the table.</span>")
 			new /obj/item/stack/sheet/plasteel(loc, 5)
 			qdel(src)

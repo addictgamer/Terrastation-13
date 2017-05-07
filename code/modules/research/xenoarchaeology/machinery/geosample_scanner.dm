@@ -126,7 +126,7 @@
 		// auto update every Master Controller tick
 		ui.set_auto_update(1)
 
-/obj/machinery/radiocarbon_spectrometer/ui_data(mob/user, datum/topic_state/state = default_state)
+/obj/machinery/radiocarbon_spectrometer/ui_data(mob/user, ui_key = "main", datum/topic_state/state = default_state)
 	var/data[0]
 	data["scanned_item"] = (scanned_item ? scanned_item.name : "")
 	data["scanned_item_desc"] = (scanned_item ? (scanned_item.desc ? scanned_item.desc : "No information on record.") : "")
@@ -226,16 +226,16 @@
 			//emergency stop if seal integrity reaches 0
 			if(scanner_seal_integrity <= 0 || (scanner_temperature >= 1273 && !rad_shield))
 				stop_scanning()
-				src.visible_message("\blue [bicon(src)] buzzes unhappily. It has failed mid-scan!", 2)
+				src.visible_message("<span class='notice'>[bicon(src)] buzzes unhappily. It has failed mid-scan!</span>", 2)
 
 			if(prob(5))
-				src.visible_message("\blue [bicon(src)] [pick("whirrs","chuffs","clicks")][pick(" excitedly"," energetically"," busily")].", 2)
+				src.visible_message("<span class='notice'>[bicon(src)] [pick("whirrs","chuffs","clicks")][pick(" excitedly"," energetically"," busily")].</span>", 2)
 	else
 		//gradually cool down over time
 		if(scanner_temperature > 0)
 			scanner_temperature = max(scanner_temperature - 5 - 10 * rand(), 0)
 		if(prob(0.75))
-			src.visible_message("\blue [bicon(src)] [pick("plinks","hisses")][pick(" quietly"," softly"," sadly"," plaintively")].", 2)
+			src.visible_message("<span class='notice'>[bicon(src)] [pick("plinks","hisses")][pick(" quietly"," softly"," sadly"," plaintively")].</span>", 2)
 	last_process_worldtime = world.time
 
 /obj/machinery/radiocarbon_spectrometer/proc/stop_scanning()
@@ -253,11 +253,11 @@
 		used_coolant = 0
 
 /obj/machinery/radiocarbon_spectrometer/proc/complete_scan()
-	src.visible_message("\blue [bicon(src)] makes an insistent chime.", 2)
+	src.visible_message("<span class='notice'>[bicon(src)] makes an insistent chime.</span>", 2)
 
 	if(scanned_item)
 		//create report
-		playsound(loc, "sound/goonstation/machines/printer_dotmatrix.ogg", 50, 1)
+		playsound(loc, 'sound/goonstation/machines/printer_dotmatrix.ogg', 50, 1)
 		var/obj/item/weapon/paper/P = new(src)
 		P.name = "[src] report #[++report_num]: [scanned_item.name]"
 		P.stamped = list(/obj/item/weapon/stamp)

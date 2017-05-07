@@ -57,7 +57,7 @@
 		var/list/options = list("[holder_atom] seems to be listening intently to [source]...",\
 			"[holder_atom] seems to be focussing on [source]...",\
 			"[holder_atom] seems to turn it's attention to [source]...")
-		holder_atom.loc.visible_message("\blue [bicon(holder_atom)] [pick(options)]")
+		holder_atom.loc.visible_message("<span class='notice'>[bicon(holder_atom)] [pick(options)]</span>")
 
 	if(prob(20))
 		spawn(2)
@@ -117,9 +117,9 @@
 			continue //skip monkeys and leavers
 		if(istype(M, /mob/new_player))
 			continue
-		if(M.stat == 2 &&  M.client.prefs.toggles & CHAT_GHOSTEARS)
+		if(M.stat == DEAD && M.get_preference(CHAT_GHOSTEARS))
 			listening|=M
 
 	for(var/mob/M in listening)
-		to_chat(M, "[bicon(holder_atom)] <b>[holder_atom]</b> reverberates, \blue\"[msg]\"")
+		to_chat(M, "[bicon(holder_atom)] <b>[holder_atom]</b> reverberates, <span class='notice'>\"[msg]\"</span>")
 	last_talk_time = world.time

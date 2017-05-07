@@ -43,6 +43,8 @@ Pipelines + Other Objects -> Pipe network
 
 	if(!pipe_color_check(pipe_color))
 		pipe_color = null
+	// No need for a tween worldstart roundstart handler - pipenet creation is
+	// handled there
 
 /obj/machinery/atmospherics/initialize()
 	..()
@@ -51,20 +53,20 @@ Pipelines + Other Objects -> Pipe network
 		stored = new(src, make_from = src)
 
 /obj/machinery/atmospherics/Destroy()
-	if(stored)
-		qdel(stored)
-		stored = null
+	QDEL_NULL(stored)
 	for(var/mob/living/L in src) //ventcrawling is serious business
 		L.remove_ventcrawl()
 		L.forceMove(get_turf(src))
-	if(pipe_image)
-		qdel(pipe_image) //we have to del it, or it might keep a ref somewhere else
-		pipe_image = null
+	QDEL_NULL(pipe_image) //we have to del it, or it might keep a ref somewhere else
 	return ..()
 
 // Icons/overlays/underlays
 /obj/machinery/atmospherics/update_icon()
 	return null
+
+/obj/machinery/atmospherics/proc/update_pipe_image()
+	pipe_image = image(src, loc, layer = 20, dir = dir) //the 20 puts it above Byond's darkness (not its opacity view)
+	pipe_image.plane = HUD_PLANE
 
 /obj/machinery/atmospherics/proc/check_icon_cache(var/safety = 0)
 	if(!istype(icon_manager))
@@ -166,13 +168,13 @@ Pipelines + Other Objects -> Pipe network
 		var/unsafe_wrenching = FALSE
 		var/internal_pressure = int_air.return_pressure()-env_air.return_pressure()
 
-		playsound(src.loc, 'sound/items/Ratchet.ogg', 50, 1)
+		playsound(src.loc, W.usesound, 50, 1)
 		to_chat(user, "<span class='notice'>You begin to unfasten \the [src]...</span>")
 		if(internal_pressure > 2*ONE_ATMOSPHERE)
 			to_chat(user, "<span class='warning'>As you begin unwrenching \the [src] a gush of air blows in your face... maybe you should reconsider?</span>")
 			unsafe_wrenching = TRUE //Oh dear oh dear
 
-		if(do_after(user, 40, target = src) && isnull(gcDestroyed))
+		if(do_after(user, 40 * W.toolspeed, target = src) && isnull(gcDestroyed))
 			user.visible_message( \
 				"[user] unfastens \the [src].", \
 				"<span class='notice'>You have unfastened \the [src].</span>", \
@@ -211,7 +213,7 @@ Pipelines + Other Objects -> Pipe network
 
 	qdel(src)
 
-/obj/machinery/atmospherics/construction(D, P, C)
+/obj/machinery/atmospherics/on_construction(D, P, C)
 	if(C)
 		color = C
 	dir = D

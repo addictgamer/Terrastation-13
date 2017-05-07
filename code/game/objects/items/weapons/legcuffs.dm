@@ -27,12 +27,8 @@
 	icon_state = "[initial(icon_state)][armed]"
 
 /obj/item/weapon/restraints/legcuffs/beartrap/Destroy()
-	if(IED)
-		qdel(IED)
-		IED = null
-	if(sig)
-		qdel(sig)
-		sig = null
+	QDEL_NULL(IED)
+	QDEL_NULL(sig)
 	return ..()
 
 /obj/item/weapon/restraints/legcuffs/beartrap/suicide_act(mob/user)
@@ -103,7 +99,7 @@
 
 /obj/item/weapon/restraints/legcuffs/beartrap/Crossed(AM as mob|obj)
 	if(armed && isturf(src.loc))
-		if( (iscarbon(AM) || isanimal(AM)) && !istype(AM, /mob/living/simple_animal/parrot) && !istype(AM, /mob/living/simple_animal/construct) && !istype(AM, /mob/living/simple_animal/shade) && !istype(AM, /mob/living/simple_animal/hostile/viscerator))
+		if( (iscarbon(AM) || isanimal(AM)) && !istype(AM, /mob/living/simple_animal/parrot) && !istype(AM, /mob/living/simple_animal/hostile/construct) && !istype(AM, /mob/living/simple_animal/shade) && !istype(AM, /mob/living/simple_animal/hostile/viscerator))
 			var/mob/living/L = AM
 			armed = 0
 			icon_state = "[initial(icon_state)][armed]"

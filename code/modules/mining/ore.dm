@@ -63,6 +63,10 @@
 	refined_type = /obj/item/stack/sheet/glass
 	materials = list(MAT_GLASS=MINERAL_MATERIAL_AMOUNT)
 
+/obj/item/weapon/ore/glass/basalt
+	name = "volcanic ash"
+	icon_state = "volcanic_sand"
+
 /obj/item/weapon/ore/glass/attack_self(mob/living/user as mob)
 	to_chat(user, "<span class='notice'>You use the sand to make sandstone.</span>")
 	var/sandAmt = 1
@@ -159,8 +163,7 @@
 	var/datum/wires/explosive/gibtonite/wires
 
 /obj/item/weapon/twohanded/required/gibtonite/Destroy()
-	qdel(wires)
-	wires = null
+	QDEL_NULL(wires)
 	return ..()
 
 /obj/item/weapon/twohanded/required/gibtonite/attackby(obj/item/I, mob/user, params)
@@ -189,7 +192,11 @@
 			return
 	..()
 
-/obj/item/weapon/twohanded/required/gibtonite/attack_self(user)
+/obj/item/weapon/twohanded/required/gibtonite/attack_ghost(mob/user)
+	if(wires)
+		wires.Interact(user)
+
+/obj/item/weapon/twohanded/required/gibtonite/attack_self(mob/user)
 	if(wires)
 		wires.Interact(user)
 	else

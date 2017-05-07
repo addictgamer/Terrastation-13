@@ -103,6 +103,16 @@
 	can_cut_open = 1
 	icon_state = "workboots"
 
+/obj/item/clothing/shoes/winterboots
+	name = "winter boots"
+	desc = "Boots lined with 'synthetic' animal fur."
+	can_cut_open = 1
+	icon_state = "winterboots"
+	cold_protection = FEET|LEGS
+	min_cold_protection_temperature = SHOES_MIN_TEMP_PROTECT
+	heat_protection = FEET|LEGS
+	max_heat_protection_temperature = SHOES_MAX_TEMP_PROTECT
+
 /obj/item/clothing/shoes/cult
 	name = "boots"
 	desc = "A pair of boots worn by the followers of Nar-Sie."
@@ -157,8 +167,6 @@
 	icon_state = "griffinboots"
 	item_state = "griffinboots"
 
-/obj/item/clothing/shoes/griffin/super_hero
-	flags = NODROP
 
 /obj/item/clothing/shoes/fluff/noble_boot
 	name = "noble boots"
@@ -212,3 +220,15 @@
 	righthand_file = 'icons/goonstation/mob/inhands/clothing_righthand.dmi'
 	flags = NODROP
 	shoe_sound = "clownstep"
+
+/obj/item/clothing/shoes/singery
+	name = "yellow performer's boots"
+	desc = "These boots were made for dancing."
+	icon_state = "ysing"
+	put_on_delay = 50
+
+/obj/item/clothing/shoes/singerb
+	name = "blue performer's boots"
+	desc = "These boots were made for dancing."
+	icon_state = "bsing"
+	put_on_delay = 50

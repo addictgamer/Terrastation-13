@@ -3,7 +3,7 @@
 	desc = "A rod of pure obsidian, its very presence disrupts and dampens the powers of Nar-Sie's followers."
 	icon_state = "nullrod"
 	item_state = "nullrod"
-	force = 18
+	force = 15
 	throw_speed = 3
 	throw_range = 4
 	throwforce = 10
@@ -189,7 +189,7 @@
 	sharp = 1
 	edge = 1
 	attack_verb = list("chopped", "sliced", "cut", "reaped")
-	hitsound = 'sound/weapons/bladeslice.ogg'
+	hitsound = 'sound/weapons/rapierhit.ogg'
 
 /obj/item/weapon/nullrod/scythe/vibro
 	name = "high frequency blade"
@@ -198,13 +198,21 @@
 	desc = "Bad references are the DNA of the soul."
 	attack_verb = list("chopped", "sliced", "cut", "zandatsu'd")
 
+/obj/item/weapon/nullrod/scythe/spellblade
+	icon_state = "spellblade"
+	item_state = "spellblade"
+	icon = 'icons/obj/guns/magic.dmi'
+	name = "dormant spellblade"
+	desc = "The blade grants the wielder nearly limitless power...if they can figure out how to turn it on, that is."
+	hitsound = 'sound/weapons/rapierhit.ogg'
+
 /obj/item/weapon/nullrod/scythe/talking
 	name = "possessed blade"
 	icon_state = "talking_sword"
 	item_state = "talking_sword"
 	desc = "When the station falls into chaos, it's nice to have a friend by your side."
 	attack_verb = list("chopped", "sliced", "cut")
-	hitsound = 'sound/weapons/bladeslice.ogg'
+	hitsound = 'sound/weapons/rapierhit.ogg'
 	var/possessed = FALSE
 
 /obj/item/weapon/nullrod/scythe/talking/attack_self(mob/living/user)
@@ -320,7 +328,7 @@
 	icon = 'icons/obj/toy.dmi'
 	icon_state = "carpplushie"
 	item_state = "carp_plushie"
-	force = 15
+	force = 13
 	attack_verb = list("bitten", "eaten", "fin slapped")
 	hitsound = 'sound/weapons/bite.ogg'
 	var/used_blessing = FALSE
@@ -338,7 +346,7 @@
 	name = "monk's staff"
 	desc = "A long, tall staff made of polished wood. Traditionally used in ancient old-Earth martial arts, now used to harass the clown."
 	w_class = 4
-	force = 15
+	force = 13
 	block_chance = 40
 	slot_flags = SLOT_BACK
 	sharp = 0
@@ -453,6 +461,51 @@
 					if(prob(10))
 						to_chat(H, "<span class='userdanger'>Being in the presence of [holder]'s [src] is interfering with your powers!</span>")
 
+/obj/item/weapon/nullrod/salt
+	name = "Holy Salt"
+	icon = 'icons/obj/food/containers.dmi'
+	icon_state = "saltshakersmall"
+	desc = "While commonly used to repel some ghosts, it appears others are downright attracted to it."
+	force = 0
+	throwforce = 0
+	var/ghostcall_CD = 0
+
+
+/obj/item/weapon/nullrod/salt/attack_self(mob/user)
+
+	if(!user.mind || user.mind.assigned_role != "Chaplain")
+		to_chat(user, "<span class='notice'>You are not close enough with [ticker.Bible_deity_name] to use [src].</span>")
+		return
+
+	if(!(ghostcall_CD > world.time))
+		ghostcall_CD = world.time + 3000 //deciseconds..5 minutes
+		user.visible_message("<span class='info'>[user] kneels and begins to utter a prayer to [ticker.Bible_deity_name] while drawing a circle with salt!</span>", \
+		"<span class='info'>You kneel and begin a prayer to [ticker.Bible_deity_name] while drawing a circle!</span>")
+		notify_ghosts("The Chaplain is calling ghosts to [get_area(src)] with [name]!", source = src)
+	else
+		to_chat(user, "<span class='notice'>You need to wait before using [src] again.</span>")
+		return
+
+
+/obj/item/weapon/nullrod/rosary/bread
+	name = "prayer bread"
+	icon = 'icons/obj/food/food.dmi'
+	icon_state = "baguette"
+	desc = "a staple of worshipers of the Silentfather, this holy mime artifact has an odd effect on clowns."
+
+/obj/item/weapon/nullrod/rosary/bread/process()
+	if(ishuman(loc))
+		var/mob/living/carbon/human/holder = loc
+		//would like to make the holder mime if they have it in on thier person in general
+		if(src == holder.l_hand || src == holder.r_hand) // Holding this in your hand will
+			for(var/mob/living/carbon/human/H in range(5))
+				if(H.mind.assigned_role == "Clown")
+					H.Silence(10)
+					animate_fade_grayscale(H,20)
+					if(prob(10))
+						to_chat(H, "<span class='userdanger'>Being in the presence of [holder]'s [src] is interfering with your honk!</span>")
+
+
 /obj/item/weapon/nullrod/missionary_staff
 	name = "holy staff"
 	desc = "It has a mysterious, protective aura."
@@ -539,7 +592,7 @@
 		to_chat(missionary, "<span class='warning'>Your faith is strong, but their mind is already slaved to someone else's ideals. Perhaps an inquisition would reveal more...</span>")
 		faith -= 25		//same faith cost as losing sight of them mid-conversion, but did you just find someone who can lead you to a fellow traitor?
 		return
-	if(isloyal(target))
+	if(ismindshielded(target))
 		if(prob(20))	//loyalty implants typically overpower this, but you CAN get lucky and convert still (20% chance of success)
 			faith -= 125	//yes, this puts it negative. it's gonna take longer to recharge if you manage to convert a one of these people to balance the new power you gained through them
 			to_chat(missionary, "<span class='notice'>Through sheer willpower, you overcome their closed mind and rally [target] to your cause! You may need a bit longer than usual before your faith is fully recharged, and they won't remain loyal to you for long ...</span>")

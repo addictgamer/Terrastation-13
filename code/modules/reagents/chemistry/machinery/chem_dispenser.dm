@@ -121,7 +121,7 @@
 		// open the new ui window
 		ui.open()
 
-/obj/machinery/chem_dispenser/ui_data(mob/user, datum/topic_state/state = default_state)
+/obj/machinery/chem_dispenser/ui_data(mob/user, ui_key = "main", datum/topic_state/state = default_state)
 	var/data[0]
 
 	data["amount"] = amount
@@ -358,7 +358,7 @@
 		return
 
 	if(istype(I, /obj/item/weapon/wrench))
-		playsound(src, 'sound/items/Ratchet.ogg', 50, 1)
+		playsound(src, I.usesound, 50, 1)
 		if(anchored)
 			anchored = 0
 			to_chat(user, "<span class='caution'>[src] can now be moved.</span>")

@@ -55,7 +55,7 @@
 /obj/machinery/computer/teleporter/emag_act(user as mob)
 	if(!emagged)
 		emagged = 1
-		to_chat(user, "\blue The teleporter can now lock on to Syndicate beacons!")
+		to_chat(user, "<span class='notice'>The teleporter can now lock on to Syndicate beacons!</span>")
 	else
 		ui_interact(user)
 
@@ -75,7 +75,7 @@
 		ui = new(user, src, ui_key, "teleporter_console.tmpl", "Teleporter Console UI", 400, 400)
 		ui.open()
 
-/obj/machinery/computer/teleporter/ui_data(mob/user, datum/topic_state/state = default_state)
+/obj/machinery/computer/teleporter/ui_data(mob/user, ui_key = "main", datum/topic_state/state = default_state)
 	var/data[0]
 	data["powerstation"] = power_station
 	if(power_station)

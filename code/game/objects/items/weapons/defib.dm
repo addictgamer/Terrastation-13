@@ -172,12 +172,8 @@
 	if(on)
 		var/M = get(paddles, /mob)
 		remove_paddles(M)
-	if(paddles)
-		qdel(paddles)
-		paddles = null
-	if(bcell)
-		qdel(bcell)
-		bcell = null
+	QDEL_NULL(paddles)
+	QDEL_NULL(bcell)
 	return ..()
 
 /obj/item/weapon/defibrillator/proc/deductcharge(var/chrgdeductamt)
@@ -256,6 +252,7 @@
 	force = 0
 	throwforce = 6
 	w_class = 4
+	toolspeed = 1
 
 	var/revivecost = 1000
 	var/cooldown = 0
@@ -346,7 +343,7 @@
 			user.visible_message("<span class='warning'>[user] begins to place [src] on [M.name]'s chest.</span>", "<span class='warning'>You begin to place [src] on [M.name]'s chest.</span>")
 			busy = 1
 			update_icon()
-			if(do_after(user, 30, target = M)) //beginning to place the paddles on patient's chest to allow some time for people to move away to stop the process
+			if(do_after(user, 30 * toolspeed, target = M)) //beginning to place the paddles on patient's chest to allow some time for people to move away to stop the process
 				user.visible_message("<span class='notice'>[user] places [src] on [M.name]'s chest.</span>", "<span class='warning'>You place [src] on [M.name]'s chest.</span>")
 				playsound(get_turf(src), 'sound/machines/defib_charge.ogg', 50, 0)
 				var/mob/dead/observer/ghost = H.get_ghost()
@@ -362,7 +359,7 @@
 				var/tloss = 600 //brain damage starts setting in on the patient after some time left rotting
 				var/total_burn	= 0
 				var/total_brute	= 0
-				if(do_after(user, 20, target = M)) //placed on chest and short delay to shock for dramatic effect, revive time is 5sec total
+				if(do_after(user, 20 * toolspeed, target = M)) //placed on chest and short delay to shock for dramatic effect, revive time is 5sec total
 					for(var/obj/item/carried_item in H.contents)
 						if(istype(carried_item, /obj/item/clothing/suit/space))
 							if(!defib.combat)
@@ -396,7 +393,7 @@
 						M.visible_message("<span class='warning'>[M]'s body convulses a bit.")
 						playsound(get_turf(src), "bodyfall", 50, 1)
 						playsound(get_turf(src), 'sound/machines/defib_zap.ogg', 50, 1, -1)
-						for(var/obj/item/organ/external/O in H.organs)
+						for(var/obj/item/organ/external/O in H.bodyparts)
 							total_brute	+= O.brute_dam
 							total_burn	+= O.burn_dam
 						if(total_burn <= 180 && total_brute <= 180 && !H.suiciding && !ghost && tplus < tlimit && !(NOCLONE in H.mutations) && (H.get_int_organ(/obj/item/organ/internal/heart) || H.get_int_organ(/obj/item/organ/internal/brain/slime)))
@@ -424,6 +421,7 @@
 							else if(ghost)
 								user.visible_message("<span class='notice'>[defib] buzzes: Resuscitation failed: Patient's brain is unresponsive. Further attempts may succeed.</span>")
 								to_chat(ghost, "<span class='ghostalert'>Your heart is being defibrillated. Return to your body if you want to be revived!</span> (Verbs -> Ghost -> Re-enter corpse)")
+								window_flash(ghost.client)
 								ghost << sound('sound/effects/genetics.ogg')
 							else
 								user.visible_message("<span class='notice'>[defib] buzzes: Resuscitation failed.</span>")
@@ -454,6 +452,7 @@
 	var/busy = 0
 	var/safety = 1
 	flags = NODROP
+	toolspeed = 1
 
 /obj/item/weapon/borg_defib/attack(mob/M, mob/user)
 	var/tobehealed
@@ -494,7 +493,7 @@
 			user.visible_message("<span class='warning'>[user] begins to place [src] on [M.name]'s chest.</span>", "<span class='warning'>You begin to place [src] on [M.name]'s chest.</span>")
 			busy = 1
 			update_icon()
-			if(do_after(user, 30, target = M)) //beginning to place the paddles on patient's chest to allow some time for people to move away to stop the process
+			if(do_after(user, 30 * toolspeed, target = M)) //beginning to place the paddles on patient's chest to allow some time for people to move away to stop the process
 				user.visible_message("<span class='notice'>[user] places [src] on [M.name]'s chest.</span>", "<span class='warning'>You place [src] on [M.name]'s chest.</span>")
 				playsound(get_turf(src), 'sound/machines/defib_charge.ogg', 50, 0)
 				var/mob/dead/observer/ghost = H.get_ghost()
@@ -510,13 +509,13 @@
 				var/tloss = 600 //brain damage starts setting in on the patient after some time left rotting
 				var/total_burn	= 0
 				var/total_brute	= 0
-				if(do_after(user, 20, target = M)) //placed on chest and short delay to shock for dramatic effect, revive time is 5sec total
+				if(do_after(user, 20 * toolspeed, target = M)) //placed on chest and short delay to shock for dramatic effect, revive time is 5sec total
 					if(H.stat == 2)
 						var/health = H.health
 						M.visible_message("<span class='warning'>[M]'s body convulses a bit.")
 						playsound(get_turf(src), "bodyfall", 50, 1)
 						playsound(get_turf(src), 'sound/machines/defib_zap.ogg', 50, 1, -1)
-						for(var/obj/item/organ/external/O in H.organs)
+						for(var/obj/item/organ/external/O in H.bodyparts)
 							total_brute	+= O.brute_dam
 							total_burn	+= O.burn_dam
 						if(total_burn <= 180 && total_brute <= 180 && !H.suiciding && !ghost && tplus < tlimit && !(NOCLONE in H.mutations))
@@ -546,6 +545,7 @@
 							else if(ghost)
 								user.visible_message("<span class='notice'>[user] buzzes: Resuscitation failed: Patient's brain is unresponsive. Further attempts may succeed.</span>")
 								to_chat(ghost, "<span class='ghostalert'>Your heart is being defibrillated. Return to your body if you want to be revived!</span> (Verbs -> Ghost -> Re-enter corpse)")
+								window_flash(ghost.client)
 								ghost << sound('sound/effects/genetics.ogg')
 							else
 								user.visible_message("<span class='warning'>[user] buzzes: Resuscitation failed.</span>")

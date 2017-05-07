@@ -1,6 +1,6 @@
 /obj/item/weapon/gun/projectile/automatic/l6_saw
 	name = "\improper L6 SAW"
-	desc = "A heavily modified 5.56 light machine gun, designated 'L6 SAW'. Has 'Aussec Armoury - 2531' engraved on the reciever below the designation."
+	desc = "A heavily modified 5.56 light machine gun, designated 'L6 SAW'. Has 'Aussec Armoury - 2531' engraved on the receiver below the designation."
 	icon_state = "l6closed100"
 	item_state = "l6closedmag"
 	w_class = 5
@@ -87,7 +87,7 @@ obj/item/projectile/bullet/saw/incen/Move()
 	..()
 	var/turf/location = get_turf(src)
 	if(location)
-		PoolOrNew(/obj/effect/hotspot, location)
+		new /obj/effect/hotspot(location)
 		location.hotspot_expose(700, 50, 1)
 
 /obj/item/projectile/bullet/saw/incen/on_hit(atom/target, blocked = 0)

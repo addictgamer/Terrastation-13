@@ -75,7 +75,7 @@
 		ui = new(user, src, ui_key, "keycard_auth.tmpl", "Keycard Authentication Device UI", 540, 320)
 		ui.open()
 
-/obj/machinery/keycard_auth/ui_data(mob/user, datum/topic_state/state = default_state)
+/obj/machinery/keycard_auth/ui_data(mob/user, ui_key = "main", datum/topic_state/state = default_state)
 	var/data[0]
 	data["screen"] = screen
 	data["event"] = event
@@ -156,7 +156,7 @@
 			feedback_inc("alert_keycard_auth_maintRevoke",1)
 		if("Emergency Response Team")
 			if(is_ert_blocked())
-				to_chat(usr, "\red All Emergency Response Teams are dispatched and can not be called at this time.")
+				to_chat(usr, "<span class='warning'>All Emergency Response Teams are dispatched and can not be called at this time.</span>")
 				return
 			to_chat(usr, "<span class = 'notice'>ERT request transmitted.</span>")
 
@@ -186,7 +186,7 @@ var/global/maint_all_access = 0
 		for(var/obj/machinery/door/airlock/D in A)
 			D.emergency = 1
 			D.update_icon(0)
-	minor_announcement.Announce("The maintenance access requirement has been revoked on all airlocks.")
+	minor_announcement.Announce("Access restrictions on maintenance and external airlocks have been removed.")
 	maint_all_access = 1
 
 /proc/revoke_maint_all_access()
@@ -194,5 +194,5 @@ var/global/maint_all_access = 0
 		for(var/obj/machinery/door/airlock/D in A)
 			D.emergency = 0
 			D.update_icon(0)
-	minor_announcement.Announce("The maintenance access requirement has been readded on all maintenance airlocks.")
+	minor_announcement.Announce("Access restrictions on maintenance and external airlocks have been re-added.")
 	maint_all_access = 0

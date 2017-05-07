@@ -33,7 +33,7 @@
 
 	var/msg = "<span class='info'>*---------*\nThis is "
 
-	if(skipjumpsuit && skipface) //big suits/masks/helmets make it hard to tell their gender
+	if((skipjumpsuit && skipface)) //big suits/masks/helmets make it hard to tell their gender
 		t_He = "They"
 		t_his = "their"
 		t_him = "them"
@@ -51,6 +51,12 @@
 				t_He = "She"
 				t_his = "her"
 				t_him = "her"
+			if(PLURAL)
+				t_He = "They"
+				t_his = "their"
+				t_him = "them"
+				t_has = "have"
+				t_is = "are"
 
 	msg += "<EM>[name]</EM>"
 
@@ -253,10 +259,10 @@
 		if(5)
 			msg += "[t_He] looks absolutely soaked.\n"
 
-	if(nutrition < 100)
+	if(nutrition < NUTRITION_LEVEL_STARVING - 50)
 		msg += "[t_He] [t_is] severely malnourished.\n"
-	else if(nutrition >= 500)
-		if(user.nutrition < 100)
+	else if(nutrition >= NUTRITION_LEVEL_FAT)
+		if(user.nutrition < NUTRITION_LEVEL_STARVING - 50)
 			msg += "[t_He] [t_is] plump and delicious looking - Like a fat little piggy. A tasty piggy.\n"
 		else
 			msg += "[t_He] [t_is] quite chubby.\n"
@@ -289,7 +295,7 @@
 		var/organ_descriptor = organ_data["descriptor"]
 		is_destroyed["[organ_data["descriptor"]]"] = 1
 
-		var/obj/item/organ/external/E = organs_by_name[organ_tag]
+		var/obj/item/organ/external/E = bodyparts_by_name[organ_tag]
 		if(!E)
 			wound_flavor_text["[organ_tag]"] = "<span class='warning'><b>[t_He] [t_is] missing [t_his] [organ_descriptor].</b></span>\n"
 		else if(E.is_stump())
@@ -297,7 +303,7 @@
 		else
 			continue
 
-	for(var/obj/item/organ/external/temp in organs)
+	for(var/obj/item/organ/external/temp in bodyparts)
 		if(temp && !temp.is_stump())
 			if(temp.status & ORGAN_ROBOT)
 				if(!(temp.brute_dam + temp.burn_dam))
@@ -494,7 +500,8 @@
 		msg += "<span class = 'deptradio'>Medical records:</span> <a href='?src=[UID()];medrecord=`'>\[View\]</a> <a href='?src=[UID()];medrecordadd=`'>\[Add comment\]</a>\n"
 
 
-	if(print_flavor_text()) msg += "[print_flavor_text()]\n"
+	if(print_flavor_text() && !skipface)
+		msg += "[print_flavor_text()]\n"
 
 	msg += "*---------*</span>"
 	if(pose)
@@ -516,7 +523,7 @@
 				return istype(H.glasses, /obj/item/clothing/glasses/hud/health) || istype(H.glasses, /obj/item/clothing/glasses/hud/health/health_advanced) ||  istype(CIH,/obj/item/organ/internal/cyberimp/eyes/hud/medical)
 			else
 				return 0
-	else if(istype(M, /mob/living/silicon))
+	else if(isrobot(M) || isAI(M)) //Stand-in/Stopgap to prevent pAIs from freely altering records, pending a more advanced Records system
 		switch(hudtype)
 			if("security")
 				return 1

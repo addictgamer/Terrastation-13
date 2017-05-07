@@ -102,7 +102,7 @@ var/list/diseases = subtypesof(/datum/disease)
 		return
 
 	if(affected_mob)
-		if(affected_mob.reagents.has_reagent("spaceacillin"))
+		if(affected_mob.reagents.has_reagent("spaceacillin") || (affected_mob.satiety > 0 && prob(affected_mob.satiety/10)))
 			return
 
 	var/spread_range = 1
@@ -164,7 +164,7 @@ var/list/diseases = subtypesof(/datum/disease)
 		if(ishuman(affected_mob))
 			var/mob/living/carbon/human/H = affected_mob
 			for(var/obj/item/organ/O in required_organs)
-				if(!locate(O) in H.organs)
+				if(!locate(O) in H.bodyparts)
 					if(!locate(O) in H.internal_organs)
 						cure()
 						return

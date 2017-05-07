@@ -18,7 +18,7 @@
 		ui.open()
 		ui.set_auto_update(1)
 
-/datum/nano_module/power_monitor/ui_data(mob/user, datum/topic_state/state = default_state)
+/datum/nano_module/power_monitor/ui_data(mob/user, ui_key = "main", datum/topic_state/state = default_state)
 	var/data[0]
 
 	data["powermonitor"] = powermonitor
@@ -33,7 +33,7 @@
 		data["poweravail"] = powermonitor.powernet.avail
 		data["powerload"] = powermonitor.powernet.viewload
 		data["powerdemand"] = powermonitor.powernet.load
-		data["apcs"] = apc_repository.apc_data(powermonitor)
+		data["apcs"] = apc_repository.apc_data(powermonitor.powernet)
 
 	return data
 

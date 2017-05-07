@@ -217,12 +217,13 @@
 		ui.open()
 		ui.set_auto_update(1)
 
-/datum/nano_module/appearance_changer/ui_data(mob/user, datum/topic_state/state = default_state)
+/datum/nano_module/appearance_changer/ui_data(mob/user, ui_key = "main", datum/topic_state/state = default_state)
 	generate_data(check_whitelist, whitelist, blacklist)
 	var/data[0]
 
 	data["specimen"] = owner.species.name
 	data["gender"] = owner.gender
+	data["has_gender"] = owner.species.has_gender
 	data["change_race"] = can_change(APPEARANCE_RACE)
 	if(data["change_race"])
 		var/species[0]

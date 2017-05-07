@@ -41,7 +41,7 @@
 		ui.open()
 		ui.set_auto_update(1)
 
-/obj/machinery/computer/robotics/ui_data(mob/user, datum/topic_state/state = default_state)
+/obj/machinery/computer/robotics/ui_data(mob/user, ui_key = "main", datum/topic_state/state = default_state)
 	var/data[0]
 	var/list/robots = get_cyborgs(user)
 	if(robots.len)
@@ -146,7 +146,7 @@
 		if(!target || !istype(target))
 			return
 
-		message_admins("\blue [key_name_admin(usr)] emagged [key_name_admin(target)] using robotic console!")
+		message_admins("<span class='notice'>[key_name_admin(usr)] emagged [key_name_admin(target)] using robotic console!</span>")
 		log_game("[key_name(usr)] emagged [key_name(target)] using robotic console!")
 		target.emagged = 1
 		to_chat(target, "<span class='notice'>Failsafe protocols overriden. New tools available.</span>")

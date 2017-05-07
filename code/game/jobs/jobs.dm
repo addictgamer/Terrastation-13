@@ -43,7 +43,6 @@ var/const/CHAPLAIN			=(1<<10)
 var/const/CLOWN				=(1<<11)
 var/const/MIME				=(1<<12)
 var/const/CIVILIAN			=(1<<13)
-var/const/SALVAGE			=(1<<14)
 
 
 var/const/KARMA				=(1<<3)
@@ -55,7 +54,6 @@ var/const/MECHANIC			=(1<<4)
 var/const/BRIGDOC			=(1<<5)
 var/const/JUDGE				=(1<<6)
 var/const/PILOT				=(1<<7)
-
 
 var/list/assistant_occupations = list(
 )
@@ -115,16 +113,14 @@ var/list/support_positions = list(
 	"Barber",
 	"Magistrate",
 	"Nanotrasen Representative",
-	"Blueshield",
-	"Salvage Captain"
+	"Blueshield"
 )
 
 var/list/supply_positions = list(
 	"Head of Personnel",
 	"Quartermaster",
 	"Cargo Technician",
-	"Shaft Miner",
-	"Salvage Captain"
+	"Shaft Miner"
 )
 
 var/list/service_positions = support_positions - supply_positions + list("Head of Personnel")
@@ -158,7 +154,7 @@ var/list/whitelisted_positions = list(
 	"Mechanic",
 	"Brig Physician",
 	"Magistrate",
-	"Security Pod Pilot"
+	"Security Pod Pilot",
 )
 
 
@@ -187,3 +183,10 @@ var/list/whitelisted_positions = list(
 
 	return titles
 
+var/global/list/exp_jobsmap = list(
+	EXP_TYPE_LIVING = list(), // all living mobs
+	EXP_TYPE_CREW = list(titles = command_positions | engineering_positions | medical_positions | science_positions | support_positions | supply_positions | security_positions | civilian_positions | list("AI","Cyborg") | whitelisted_positions), // crew positions
+	EXP_TYPE_SPECIAL = list(), // antags, ERT, etc
+	EXP_TYPE_GHOST = list(), // dead people, observers
+	EXP_TYPE_EXEMPT = list() // special grandfather setting
+)

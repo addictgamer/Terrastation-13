@@ -67,6 +67,8 @@
 			Your character moves slower.
 	*	Slurring				*
 			Your character cannot enunciate clearly.
+	*	CultSlurring			*
+			Your character cannot enunciate clearly while mumbling about elder codes.
 	*	Stunned					*
 			Your character is unable to move, and drops stuff in their hands. They keep standing, though.
 	* Stuttering			*
@@ -108,6 +110,7 @@
 
 /mob // On `/mob` for now, to support legacy code
 	var/confused = 0
+	var/cultslurring = 0
 	var/dizziness = 0
 	var/drowsyness = 0
 	var/druggy = 0
@@ -137,12 +140,14 @@
 /mob/living/proc/StartResting(updating = 1)
 	var/val_change = !resting
 	resting = TRUE
+
 	if(updating && val_change)
 		update_canmove()
 
 /mob/living/proc/StopResting(updating = 1)
 	var/val_change = !!resting
 	resting = FALSE
+
 	if(updating && val_change)
 		update_canmove()
 
@@ -349,19 +354,19 @@
 
 // SLEEPING
 
-/mob/living/Sleeping(amount, updating = 1)
-	SetSleeping(max(sleeping, amount), updating)
+/mob/living/Sleeping(amount, updating = 1, no_alert = FALSE)
+	SetSleeping(max(sleeping, amount), updating, no_alert)
 
-/mob/living/SetSleeping(amount, updating = 1)
+/mob/living/SetSleeping(amount, updating = 1, no_alert = FALSE)
 	sleeping = max(amount, 0)
-	update_sleeping_effects()
+	update_sleeping_effects(no_alert)
 	if(updating)
 		update_stat()
 		update_canmove()
 
-/mob/living/AdjustSleeping(amount, bound_lower = 0, bound_upper = INFINITY, updating = 1)
+/mob/living/AdjustSleeping(amount, bound_lower = 0, bound_upper = INFINITY, updating = 1, no_alert = FALSE)
 	var/new_value = directional_bounded_sum(sleeping, amount, bound_lower, bound_upper)
-	SetSleeping(new_value, updating)
+	SetSleeping(new_value, updating, no_alert)
 
 // SLOWED
 
@@ -386,6 +391,18 @@
 /mob/living/AdjustSlur(amount, bound_lower = 0, bound_upper = INFINITY)
 	var/new_value = directional_bounded_sum(slurring, amount, bound_lower, bound_upper)
 	SetSlur(new_value)
+
+// CULTSLURRING
+
+/mob/living/CultSlur(amount)
+	SetSlur(max(slurring, amount))
+
+/mob/living/SetCultSlur(amount)
+	slurring = max(amount, 0)
+
+/mob/living/AdjustCultSlur(amount, bound_lower = 0, bound_upper = INFINITY)
+	var/new_value = directional_bounded_sum(cultslurring, amount, bound_lower, bound_upper)
+	SetCultSlur(new_value)
 
 // STUN
 
