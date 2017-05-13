@@ -28,7 +28,7 @@
 "aB" = (/obj/effect/spawner/window/reinforced,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0},/turf/simulated/floor/plating,/area/salvage/post/northeast)
 "aC" = (/obj/structure/cable{d2 = 2; icon_state = "0-2"; pixel_y = 0},/obj/machinery/power/solar,/turf/simulated/floor/plating/airless,/area/space)
 "aD" = (/turf/simulated/floor/plating/airless,/area/salvage/post/northeast)
-"aE" = (/obj/machinery/gun_turret/exterior/countermeasure,/turf/simulated/floor/plating/airless,/area/salvage/post/northeast)
+"aE" = (/obj/machinery/porta_turret/syndicate/exterior/countermeasure,/turf/simulated/floor/plating/airless,/area/salvage/post/northeast)
 "aF" = (/obj/machinery/atmospherics/unary/portables_connector{dir = 4},/obj/machinery/portable_atmospherics/canister/air{filled = 0.1},/turf/simulated/floor/plating,/area/salvage/post/northeast)
 "aG" = (/obj/machinery/atmospherics/pipe/simple/hidden{dir = 10; initialize_directions = 10},/turf/simulated/floor/plating,/area/salvage/post/northeast)
 "aH" = (/obj/machinery/atmospherics/unary/vent_pump/on{dir = 4},/turf/simulated/floor/plating,/area/salvage/post/northeast)
@@ -86,7 +86,7 @@
 "bH" = (/obj/structure/alien/weeds/node,/turf/simulated/floor/plating/airless,/area/space)
 "bI" = (/obj/structure/alien/weeds,/obj/structure/stool/bed/nest,/turf/simulated/floor/plating/airless,/area/space)
 "bJ" = (/obj/structure/alien/weeds,/obj/structure/stool/bed/nest,/obj/effect/decal/remains/human,/turf/simulated/floor/plating/airless,/area/space)
-"bK" = (/obj/effect/glowshroom,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"bK" = (/obj/structure/glowshroom,/turf/simulated/floor/plating/airless/asteroid,/area/space)
 "bL" = (/obj/machinery/access_button{command = "cycle_exterior"; frequency = 1379; master_tag = "SYPNE_airlock2"; name = "exterior access button"; pixel_x = 25; pixel_y = -25; req_access_txt = "13"},/turf/simulated/floor/plating/airless,/area/salvage/post/northeast)
 "bM" = (/obj/machinery/door/airlock/external{frequency = 1379; icon_state = "door_locked"; id_tag = "SYPNE_o2"; locked = 1; name = "Salvage Yard External Access"; req_access = null; req_access_txt = "13"},/turf/simulated/floor/plating/airless,/area/salvage/post/northeast)
 "bN" = (/obj/machinery/embedded_controller/radio/airlock/airlock_controller{frequency = 1379; id_tag = "SYPNE_airlock2"; name = "Hazard Zone Airlock Controller"; pixel_x = 0; pixel_y = -24; req_access_txt = "13"; tag_airpump = "SYPNE_pump2"; tag_chamber_sensor = "SYPNE_sensor2"; tag_exterior_door = "SYPNE_o2"; tag_interior_door = "SYPNE_i2"},/obj/machinery/atmospherics/unary/vent_pump/high_volume{dir = 4; frequency = 1379; id_tag = "SYPNE_pump2"; name = "large somewhat rusty vent"},/turf/simulated/floor/plating,/area/salvage/post/northeast)
@@ -148,7 +148,7 @@
 "cR" = (/obj/structure/stool/bed/chair,/obj/structure/window/reinforced{tag = "icon-rwindow (WEST)"; icon_state = "rwindow"; dir = 8},/turf/simulated/floor/plasteel/airless{icon_plating = "plating"; icon_regular_floor = "shuttlefloor"; icon_state = "shuttlefloor"},/area/space)
 "cS" = (/obj/structure/stool/bed/chair,/turf/simulated/floor/plasteel/airless{icon_plating = "plating"; icon_regular_floor = "shuttlefloor"; icon_state = "shuttlefloor"},/area/space)
 "cT" = (/obj/effect/spawner/lootdrop/crate_spawner,/turf/simulated/floor/plasteel/airless{icon_plating = "plating"; icon_regular_floor = "shuttlefloor"; icon_state = "shuttlefloor"},/area/space)
-"cU" = (/obj/structure/shuttle/engine/propulsion{tag = "icon-propulsion (WEST)"; icon_state = "propulsion"; dir = 8},/turf/simulated/floor/plating/airless,/area/space)
+"cU" = (/obj/structure/shuttle/engine/propulsion{icon_state = "burst_r"; dir = 4},/turf/simulated/floor/plating/airless,/area/space)
 "cV" = (/obj/item/weapon/shard,/turf/simulated/floor/plating/airless,/area/space)
 "cW" = (/obj/structure/stool/bed/chair{tag = "icon-chair (WEST)"; icon_state = "chair"; dir = 8},/turf/simulated/floor/plating/airless,/area/space)
 "cX" = (/mob/living/simple_animal/hostile/hivebot/tele,/turf/simulated/floor/plasteel/airless{icon_plating = "plating"; icon_regular_floor = "shuttlefloor"; icon_state = "shuttlefloor"},/area/space)
@@ -169,7 +169,7 @@
 "dm" = (/obj/structure/table,/turf/simulated/floor/plating,/area/space)
 "dn" = (/mob/living/simple_animal/hostile/melterling,/turf/simulated/floor/plating/airless,/area/space)
 "do" = (/obj/structure/barricade/wooden,/turf/simulated/floor/plating,/area/space)
-"dp" = (/obj/structure/closet/crate,/obj/item/seeds/killertomatoseed,/turf/simulated/floor/plating/airless,/area/space)
+"dp" = (/obj/structure/closet/crate,/obj/item/seeds/tomato/killer,/turf/simulated/floor/plating/airless,/area/space)
 "dq" = (/obj/structure/barricade/wooden,/obj/machinery/door/airlock/external,/turf/simulated/floor/plating/airless/asteroid,/area/space)
 "dr" = (/obj/machinery/door/airlock/external,/turf/simulated/floor/plating,/area/space)
 "ds" = (/mob/living/simple_animal/hostile/meltar,/turf/simulated/floor/plating/airless,/area/space)
@@ -184,7 +184,7 @@
 "dB" = (/turf/simulated/shuttle/wall{dir = 8; icon_state = "diagonalWall3"},/area/salvage/ashut/m)
 "dC" = (/turf/simulated/shuttle/wall{icon_state = "wall3"},/area/salvage/ashut/m)
 "dD" = (/turf/simulated/shuttle/wall{dir = 1; icon_state = "diagonalWall3"},/area/salvage/ashut/m)
-"dE" = (/obj/structure/shuttle/engine/propulsion{tag = "icon-propulsion (EAST)"; icon_state = "propulsion"; dir = 4},/turf/space,/area/salvage/ashut/m)
+"dE" = (/obj/structure/shuttle/engine/propulsion{icon_state = "burst_r"; dir = 8},/turf/space,/area/salvage/ashut/m)
 "dF" = (/obj/structure/window/reinforced{dir = 4},/obj/structure/shuttle/engine/heater{tag = "icon-heater (WEST)"; icon_state = "heater"; dir = 8},/turf/simulated/floor/plating,/area/salvage/ashut/m)
 "dG" = (/obj/structure/table/woodentable,/obj/item/clothing/under/shorts/black,/turf/simulated/shuttle/floor{tag = "icon-floor5"; icon_state = "floor5"},/area/salvage/ashut/m)
 "dH" = (/turf/simulated/floor/plating,/area/salvage/ashut/m)
@@ -231,10 +231,10 @@
 "ew" = (/obj/item/stack/rods,/turf/simulated/floor/plating,/area/space)
 "ex" = (/mob/living/simple_animal/hostile/asteroid/basilisk,/turf/simulated/floor/plating/airless/asteroid,/area/space)
 "ey" = (/obj/machinery/door/airlock,/turf/simulated/floor/plating,/area/space)
-"ez" = (/obj/structure/closet/crate,/obj/item/seeds/random,/obj/item/seeds/bloodtomatoseed,/turf/simulated/floor/plating,/area/space)
+"ez" = (/obj/structure/closet/crate,/obj/item/seeds/random,/obj/item/seeds/tomato/blood,/turf/simulated/floor/plating,/area/space)
 "eA" = (/obj/item/stack/cable_coil,/turf/simulated/floor/plating,/area/space)
-"eB" = (/obj/structure/closet/crate,/obj/item/seeds/icepepperseed,/turf/simulated/floor/plating/airless/asteroid,/area/space)
-"eC" = (/obj/item/seeds/libertymycelium,/obj/structure/closet/crate,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"eB" = (/obj/structure/closet/crate,/obj/item/seeds/chili/ice,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"eC" = (/obj/item/seeds/liberty,/obj/structure/closet/crate,/turf/simulated/floor/plating/airless/asteroid,/area/space)
 "eD" = (/mob/living/simple_animal/hostile/asteroid/hivelord,/turf/simulated/floor/plating/airless/asteroid,/area/space)
 "eE" = (/obj/docking_port/stationary{dir = 1; dwidth = 4; height = 9; id = "salvage_out_se"; lock_shuttle_doors = 1; name = "Just north of Salvage Station"; width = 9},/turf/space,/area/space)
 "eF" = (/turf/simulated/mineral/clown,/area/space)
@@ -245,7 +245,7 @@
 "eK" = (/turf/simulated/floor/plating/airless/catwalk{tag = "icon-catwalk6"; icon_state = "catwalk6"},/area/space)
 "eL" = (/turf/simulated/floor/plating/airless/catwalk{tag = "icon-catwalk14"; icon_state = "catwalk14"},/area/space)
 "eM" = (/obj/machinery/light,/turf/space,/area/salvage/main)
-"eN" = (/obj/machinery/gun_turret/exterior/countermeasure,/turf/simulated/floor/plating/airless,/area/salvage/main)
+"eN" = (/obj/machinery/porta_turret/syndicate/exterior/countermeasure,/turf/simulated/floor/plating/airless,/area/salvage/main)
 "eO" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0},/turf/simulated/floor/plating/airless/catwalk,/area/space)
 "eP" = (/turf/simulated/wall/r_wall/rust,/area/salvage/post/southwest)
 "eQ" = (/obj/effect/spawner/window/reinforced,/turf/simulated/floor/plating,/area/salvage/post/southwest)
@@ -335,7 +335,7 @@
 "gw" = (/obj/structure/shuttle/engine/heater{dir = 1},/turf/simulated/floor/plating/airless,/area/salvage/main)
 "gx" = (/turf/simulated/floor/grass,/area/salvage/main)
 "gy" = (/obj/structure/flora/tree/dead,/turf/simulated/floor/grass,/area/salvage/main)
-"gz" = (/obj/machinery/portable_atmospherics/hydroponics/soil,/turf/simulated/floor/grass,/area/salvage/main)
+"gz" = (/obj/machinery/hydroponics/soil,/turf/simulated/floor/grass,/area/salvage/main)
 "gA" = (/obj/structure/flora/tree/pine,/turf/simulated/floor/grass,/area/salvage/main)
 "gB" = (/obj/structure/flora/rock,/turf/simulated/floor/grass,/area/salvage/main)
 "gC" = (/obj/structure/flora/grass/both,/turf/simulated/floor/grass,/area/salvage/main)
@@ -461,8 +461,8 @@
 "iS" = (/obj/machinery/atmospherics/pipe/manifold/hidden{dir = 1},/obj/machinery/meter,/obj/machinery/alarm/sc{pixel_y = 26},/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
 "iT" = (/obj/machinery/atmospherics/pipe/simple/hidden{dir = 10; initialize_directions = 10},/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
 "iU" = (/obj/machinery/biogenerator,/obj/machinery/status_display{layer = 4; pixel_x = 0; pixel_y = 32},/obj/item/weapon/reagent_containers/glass/bucket,/turf/simulated/floor/plasteel{icon_state = "dark"},/area/space)
-"iV" = (/obj/machinery/portable_atmospherics/hydroponics,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
-"iW" = (/obj/machinery/light{dir = 1},/obj/machinery/portable_atmospherics/hydroponics,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
+"iV" = (/obj/machinery/hydroponics/constructable,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
+"iW" = (/obj/machinery/light{dir = 1},/obj/machinery/hydroponics/constructable,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
 "iX" = (/obj/machinery/vending/hydronutrients,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
 "iY" = (/obj/machinery/atmospherics/unary/tank/air,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
 "iZ" = (/obj/structure/cable{icon_state = "0-4"; d2 = 4},/obj/machinery/power/apc{dir = 1; name = "NAPC"; pixel_x = 0; pixel_y = 24},/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
@@ -472,7 +472,7 @@
 "jd" = (/obj/structure/disposalpipe/segment,/turf/simulated/wall/r_wall,/area/salvage/support)
 "je" = (/obj/structure/disposalpipe/segment{dir = 1; icon_state = "pipe-c"},/turf/simulated/wall/r_wall,/area/salvage/q)
 "jf" = (/obj/machinery/light{dir = 8},/obj/machinery/disposal,/obj/structure/disposalpipe/trunk{dir = 8},/turf/simulated/floor/wood,/area/salvage/q)
-"jg" = (/obj/machinery/atmospherics/unary/vent_scrubber{dir = 1; on = 1; scrub_N2O = 1; scrub_Toxins = 1},/obj/structure/table,/obj/item/clothing/suit/space/rig,/obj/item/clothing/head/helmet/space/syndicate/green/dark,/turf/simulated/floor/wood,/area/salvage/q)
+"jg" = (/obj/machinery/atmospherics/unary/vent_scrubber{dir = 1; on = 1; scrub_N2O = 1; scrub_Toxins = 1},/obj/structure/table,/obj/item/clothing/suit/space/hardsuit,/obj/item/clothing/head/helmet/space/syndicate/green/dark,/turf/simulated/floor/wood,/area/salvage/q)
 "jh" = (/obj/structure/stool/bed,/obj/item/weapon/bedsheet/blue,/turf/simulated/floor/wood,/area/salvage/q)
 "ji" = (/obj/machinery/atmospherics/unary/vent_pump/on{dir = 4},/turf/simulated/floor/plasteel,/area/salvage/main)
 "jj" = (/obj/machinery/atmospherics/pipe/simple/hidden/supply{dir = 9; pixel_y = 0},/turf/simulated/floor/plasteel,/area/salvage/main)
@@ -511,47 +511,46 @@
 "jQ" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"; pixel_y = 0},/obj/machinery/atmospherics/pipe/simple/hidden{dir = 9; icon_state = "intact"},/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
 "jR" = (/obj/structure/cable{d1 = 2; d2 = 8; icon_state = "2-8"},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/structure/cable{d1 = 1; d2 = 8; icon_state = "1-8"; tag = ""},/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
 "jS" = (/obj/structure/shuttle/engine/heater{icon_state = "heater"; dir = 4},/turf/simulated/floor/plating/airless,/area/space)
-"jT" = (/obj/structure/shuttle/engine/propulsion{icon_state = "propulsion"; dir = 8},/turf/simulated/floor/plating/airless,/area/space)
-"jU" = (/turf/simulated/shuttle/wall{icon_state = "swall3"; dir = 2},/area/space)
-"jV" = (/obj/item/weapon/shard,/turf/simulated/shuttle/floor,/area/space)
-"jW" = (/turf/simulated/wall/r_wall/rust,/area/salvage/support)
-"jX" = (/obj/effect/spawner/window/reinforced,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
-"jY" = (/obj/effect/spawner/window/reinforced,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
-"jZ" = (/obj/item/weapon/reagent_containers/glass/beaker/large,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
-"ka" = (/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
-"kb" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
-"kc" = (/obj/structure/disposalpipe/segment{dir = 4; icon_state = "pipe-c"},/turf/simulated/wall/r_wall/rust,/area/salvage/support)
-"kd" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/wall/r_wall/rust,/area/salvage/support)
-"ke" = (/obj/effect/spawner/window/reinforced,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
-"kf" = (/obj/structure/disposalpipe/segment{dir = 8; icon_state = "pipe-c"},/turf/simulated/wall/r_wall,/area/salvage/support)
-"kg" = (/turf/simulated/shuttle/floor,/area/space)
-"kh" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating/airless,/area/salvage/support)
-"ki" = (/turf/simulated/floor/plating/airless,/area/salvage/support)
-"kj" = (/obj/machinery/chem_dispenser/constructable,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
-"kk" = (/obj/machinery/vending/hydroseeds{name = "Kinda Shoddy MegaSeed Servitor"; product_slogans = "THIS'S WHERE TH' SEEDS LIVE! GIT YOU SOME!;poot lul;Also certain mushroom varieties available, more for experts! Get certified today!;I've got a potato stuck in my exhaust port!"; products = list(/obj/item/seeds/bananaseed = 0, /obj/item/seeds/berryseed = 0, /obj/item/seeds/carrotseed = 0, /obj/item/seeds/chantermycelium = 2, /obj/item/seeds/chiliseed = 0, /obj/item/seeds/cornseed = 1, /obj/item/seeds/eggplantseed = 0, /obj/item/seeds/potatoseed = 5, /obj/item/seeds/replicapod = 1, /obj/item/seeds/soyaseed = 0, /obj/item/seeds/sunflowerseed = 2, /obj/item/seeds/tomatoseed = 0, /obj/item/seeds/towermycelium = 1, /obj/item/seeds/wheatseed = 0, /obj/item/seeds/appleseed = 0, /obj/item/seeds/poppyseed = 0, /obj/item/seeds/ambrosiavulgarisseed = 0, /obj/item/seeds/whitebeetseed = 0, /obj/item/seeds/watermelonseed = 1, /obj/item/seeds/limeseed = 0, /obj/item/seeds/lemonseed = 0, /obj/item/seeds/orangeseed = 0, /obj/item/seeds/grassseed = 3, /obj/item/seeds/cocoapodseed = 1, /obj/item/seeds/cabbageseed = 3, /obj/item/seeds/grapeseed = 0, /obj/item/seeds/pumpkinseed = 1, /obj/item/seeds/cherryseed = 0, /obj/item/seeds/plastiseed = 0, /obj/item/seeds/riceseed = 0, /obj/item/seeds/tobaccoseed = 1, /obj/item/seeds/coffeeaseed = 0, /obj/item/seeds/teaasperaseed = 0, /obj/item/seeds/peanutseed = 1)},/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
-"kl" = (/obj/machinery/seed_extractor,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
-"km" = (/obj/structure/cable,/obj/machinery/power/solar_control{id = "salvage"; name = "Salvage Solar Control"},/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
-"kn" = (/obj/structure/rack,/obj/item/weapon/grenade/chem_grenade/metalfoam,/obj/item/weapon/grenade/chem_grenade/metalfoam,/obj/item/weapon/grenade/chem_grenade/metalfoam,/obj/item/weapon/grenade/chem_grenade/metalfoam,/obj/item/device/analyzer,/obj/item/weapon/minihoe,/obj/item/weapon/reagent_containers/spray/cleaner,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
-"ko" = (/obj/structure/closet/crate,/obj/item/weapon/grenade/smokebomb,/obj/item/weapon/grenade/smokebomb,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
-"kp" = (/turf/simulated/floor/plating,/obj/structure/shuttle/engine/propulsion/burst,/turf/simulated/shuttle/wall{icon_state = "swall_f5"; dir = 2},/area/space)
-"kq" = (/obj/machinery/door/airlock/shuttle{name = "Escape Pod Airlock"},/turf/space,/area/space)
-"kr" = (/obj/structure/shuttle/engine/propulsion/burst,/turf/simulated/floor/plating,/area/space)
-"ks" = (/obj/structure/lattice,/obj/structure/grille,/turf/space,/area/salvage/support)
-"kt" = (/obj/structure/grille,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
-"ku" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"; tag = ""},/turf/simulated/floor/plating/airless,/area/salvage/support)
-"kv" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"; pixel_y = 0},/turf/simulated/floor/plating/airless,/area/salvage/support)
-"kw" = (/obj/structure/cable{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/plating/airless,/area/salvage/support)
-"kx" = (/obj/structure/disposalpipe/segment{dir = 4; icon_state = "pipe-c"},/turf/simulated/wall/r_wall,/area/salvage/support)
-"ky" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/wall/r_wall,/area/salvage/support)
-"kz" = (/obj/structure/lattice,/turf/space,/area/salvage/support)
-"kA" = (/obj/machinery/power/solar,/obj/structure/cable{icon_state = "0-4"; d2 = 4},/turf/simulated/floor/plasteel/airless{icon_state = "solarpanel"},/area/salvage/support)
-"kB" = (/obj/machinery/power/solar,/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/structure/cable{icon_state = "0-4"; d2 = 4},/turf/simulated/floor/plasteel/airless{icon_state = "solarpanel"},/area/salvage/support)
-"kC" = (/obj/machinery/power/solar,/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/structure/cable{icon_state = "0-4"; d2 = 4},/obj/structure/cable,/turf/simulated/floor/plasteel/airless{icon_state = "solarpanel"},/area/salvage/support)
-"kD" = (/obj/machinery/power/solar,/obj/structure/cable{d2 = 8; icon_state = "0-8"},/turf/simulated/floor/plasteel/airless{icon_state = "solarpanel"},/area/salvage/support)
-"kE" = (/obj/machinery/power/tracker,/obj/structure/cable,/turf/simulated/floor/plating/airless,/area/salvage/support)
-"kF" = (/obj/structure/lattice,/obj/structure/disposaloutlet,/obj/structure/disposalpipe/trunk{dir = 1},/turf/space,/area/salvage/support)
-"kG" = (/obj/structure/lattice,/obj/structure/grille{density = 0; icon_state = "brokengrille"},/turf/space,/area/salvage/support)
-"kH" = (/obj/structure/lattice,/obj/structure/landing_beacon/s_yard,/turf/space,/area/space)
+"jT" = (/turf/simulated/shuttle/wall{icon_state = "swall3"; dir = 2},/area/space)
+"jU" = (/obj/item/weapon/shard,/turf/simulated/shuttle/floor,/area/space)
+"jV" = (/turf/simulated/wall/r_wall/rust,/area/salvage/support)
+"jW" = (/obj/effect/spawner/window/reinforced,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
+"jX" = (/obj/effect/spawner/window/reinforced,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
+"jY" = (/obj/item/weapon/reagent_containers/glass/beaker/large,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
+"jZ" = (/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
+"ka" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
+"kb" = (/obj/structure/disposalpipe/segment{dir = 4; icon_state = "pipe-c"},/turf/simulated/wall/r_wall/rust,/area/salvage/support)
+"kc" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/wall/r_wall/rust,/area/salvage/support)
+"kd" = (/obj/effect/spawner/window/reinforced,/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
+"ke" = (/obj/structure/disposalpipe/segment{dir = 8; icon_state = "pipe-c"},/turf/simulated/wall/r_wall,/area/salvage/support)
+"kf" = (/turf/simulated/shuttle/floor,/area/space)
+"kg" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating/airless,/area/salvage/support)
+"kh" = (/turf/simulated/floor/plating/airless,/area/salvage/support)
+"ki" = (/obj/machinery/chem_dispenser/constructable,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
+"kj" = (/obj/machinery/vending/hydroseeds{name = "Kinda Shoddy MegaSeed Servitor"; product_slogans = "THIS'S WHERE TH' SEEDS LIVE! GIT YOU SOME!;poot lul;Also certain mushroom varieties available, more for experts! Get certified today!;I've got a potato stuck in my exhaust port!"; products = list(/obj/item/seeds/banana = 0, /obj/item/seeds/berry = 0, /obj/item/seeds/carrot = 0, /obj/item/seeds/chanter = 2, /obj/item/seeds/chili = 0, /obj/item/seeds/corn = 1, /obj/item/seeds/eggplant = 0, /obj/item/seeds/potato = 5, /obj/item/seeds/replicapod = 1, /obj/item/seeds/soya = 0, /obj/item/seeds/sunflower = 2, /obj/item/seeds/tomato = 0, /obj/item/seeds/tower = 1, /obj/item/seeds/wheat = 0, /obj/item/seeds/apple = 0, /obj/item/seeds/poppy = 0, /obj/item/seeds/ambrosia = 0, /obj/item/seeds/whitebeet = 0, /obj/item/seeds/watermelon = 1, /obj/item/seeds/lime = 0, /obj/item/seeds/lemon = 0, /obj/item/seeds/orange = 0, /obj/item/seeds/grass = 3, /obj/item/seeds/cocoapod = 1, /obj/item/seeds/cabbage = 3, /obj/item/seeds/grape = 0, /obj/item/seeds/pumpkin = 1, /obj/item/seeds/cherry = 0, /obj/item/seeds/wheat/rice = 0, /obj/item/seeds/tobacco = 1, /obj/item/seeds/coffee = 0, /obj/item/seeds/tea = 0, /obj/item/seeds/peanuts = 1)},/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
+"kk" = (/obj/machinery/seed_extractor,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
+"kl" = (/obj/structure/cable,/obj/machinery/power/solar_control{id = "salvage"; name = "Salvage Solar Control"},/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
+"km" = (/obj/structure/rack,/obj/item/weapon/grenade/chem_grenade/metalfoam,/obj/item/weapon/grenade/chem_grenade/metalfoam,/obj/item/weapon/grenade/chem_grenade/metalfoam,/obj/item/weapon/grenade/chem_grenade/metalfoam,/obj/item/device/analyzer,/obj/item/weapon/cultivator,/obj/item/weapon/reagent_containers/spray/cleaner,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
+"kn" = (/obj/structure/closet/crate,/obj/item/weapon/grenade/smokebomb,/obj/item/weapon/grenade/smokebomb,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
+"ko" = (/turf/simulated/floor/plating,/obj/structure/shuttle/engine/propulsion/burst,/turf/simulated/shuttle/wall{icon_state = "swall_f5"; dir = 2},/area/space)
+"kp" = (/obj/machinery/door/airlock/shuttle{name = "Escape Pod Airlock"},/turf/space,/area/space)
+"kq" = (/obj/structure/shuttle/engine/propulsion/burst,/turf/simulated/floor/plating,/area/space)
+"kr" = (/obj/structure/lattice,/obj/structure/grille,/turf/space,/area/salvage/support)
+"ks" = (/obj/structure/grille,/turf/simulated/floor/plating{dir = 10; icon_regular_floor = "purplecorner"},/area/salvage/support)
+"kt" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"; tag = ""},/turf/simulated/floor/plating/airless,/area/salvage/support)
+"ku" = (/obj/structure/cable{d1 = 4; d2 = 8; icon_state = "4-8"; pixel_y = 0},/turf/simulated/floor/plating/airless,/area/salvage/support)
+"kv" = (/obj/structure/cable{d1 = 2; d2 = 8; icon_state = "2-8"},/turf/simulated/floor/plating/airless,/area/salvage/support)
+"kw" = (/obj/structure/disposalpipe/segment{dir = 4; icon_state = "pipe-c"},/turf/simulated/wall/r_wall,/area/salvage/support)
+"kx" = (/obj/structure/disposalpipe/segment{dir = 4},/turf/simulated/wall/r_wall,/area/salvage/support)
+"ky" = (/obj/structure/lattice,/turf/space,/area/salvage/support)
+"kz" = (/obj/machinery/power/solar,/obj/structure/cable{icon_state = "0-4"; d2 = 4},/turf/simulated/floor/plasteel/airless{icon_state = "solarpanel"},/area/salvage/support)
+"kA" = (/obj/machinery/power/solar,/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/structure/cable{icon_state = "0-4"; d2 = 4},/turf/simulated/floor/plasteel/airless{icon_state = "solarpanel"},/area/salvage/support)
+"kB" = (/obj/machinery/power/solar,/obj/structure/cable{d2 = 8; icon_state = "0-8"},/obj/structure/cable{icon_state = "0-4"; d2 = 4},/obj/structure/cable,/turf/simulated/floor/plasteel/airless{icon_state = "solarpanel"},/area/salvage/support)
+"kC" = (/obj/machinery/power/solar,/obj/structure/cable{d2 = 8; icon_state = "0-8"},/turf/simulated/floor/plasteel/airless{icon_state = "solarpanel"},/area/salvage/support)
+"kD" = (/obj/machinery/power/tracker,/obj/structure/cable,/turf/simulated/floor/plating/airless,/area/salvage/support)
+"kE" = (/obj/structure/lattice,/obj/structure/disposaloutlet,/obj/structure/disposalpipe/trunk{dir = 1},/turf/space,/area/salvage/support)
+"kF" = (/obj/structure/lattice,/obj/structure/grille{density = 0; icon_state = "brokengrille"},/turf/space,/area/salvage/support)
+"kG" = (/obj/structure/lattice,/obj/structure/landing_beacon/s_yard,/turf/space,/area/space)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -736,18 +735,18 @@ aaaaaaaaaaaaaaaaaQaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahahaRaRahaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaafQixfMiyizhKiAiBiCiyfMfMiDfQiEfQiFiGiGiGiGiGiGiGiHiIiJiGiKiLiLiMhEiNhEhEgJaaiOaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahahaheFahahaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagvacaafKiPfMiyfMfMizfMiziyfMfMiQfQiRiSiTiUiViWiViViXiYiZjajbjcjdacacjejfjghEjhgJaaeuaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacaaaaaaaaaaaaaaaaaaaaaaaaaaaaacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagahaheFeFdeahaRaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagMgMfKfQfMjijjfMfMfMfMfMgmhAfMjkfQjljmiRjnjojojojojojpjnjqjrjsjtjuachohohohohohoaaeuaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaajvaaaaaaaaaaacacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagagahjwjxdeahaRaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaajyjzhefMjAfMjBfMfMfMjBjCjDjEjFfMjGfQjHjIjJjKjLjLjMjLjNjOjJjPjQjRjdacacbkjSjTacaaacaaeuaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacacacabcLcKabcKcLabacacacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagagahjUjVjUahahaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagMfKfKfQfQfQfQfQfQfQfQfQfQfQfQfQfQjWjXjYjWjWjZkakakbkakakckdkekfacaabkjSjTacaceueueuaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahjUkgjUahaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagvacaaacaaaaaaaaacaaaaaaaaaaacaaaaaakhkiaajWkjkkklkmknkojdaakhaaacaabkjSjTacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaakpkqkraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaksksktktktktktktktktktktktktktktktkukvkwkxkykykykykykykfkzkhktktktktktktktktaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaakAkBkBkBkBkBkBkBkBkBkBkBkBkBkBkBkBkCkDkEkFkAkBkBkBkBkBkBkBkCkBkBkBkBkBkBkBkDaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaakskskskskskskskskskskskskskskskskskskskskGksksksksksksksksksksksksksksksksksaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaajvaaaaaaaaaaacacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagagahjwjxdeahaRaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaajyjzhefMjAfMjBfMfMfMjBjCjDjEjFfMjGfQjHjIjJjKjLjLjMjLjNjOjJjPjQjRjdacacbkjScUacaaacaaeuaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacacacabcLcKabcKcLabacacacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagagahjTjUjTahahaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagMfKfKfQfQfQfQfQfQfQfQfQfQfQfQfQfQjVjWjXjVjVjYjZjZkajZjZkbkckdkeacaabkjScUacaceueueuaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahjTkfjTahaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaagvacaaacaaaaaaaaacaaaaaaaaaaacaaaaaakgkhaajVkikjkkklkmknjdaakgaaacaabkjScUacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaakokpkqaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaakrkrksksksksksksksksksksksksksksksktkukvkwkxkxkxkxkxkxkekykgksksksksksksksksaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaakzkAkAkAkAkAkAkAkAkAkAkAkAkAkAkAkAkBkCkDkEkzkAkAkAkAkAkAkAkBkAkAkAkAkAkAkAkCaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaakrkrkrkrkrkrkrkrkrkrkrkrkrkrkrkrkrkrkrkrkFkrkrkrkrkrkrkrkrkrkrkrkrkrkrkrkrkraaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaQaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaacacacacacacacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacackHacacacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaakHaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacackHacacaaaaaaaaaaaaaaaaaaaaaaaaacackHacacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacackHacacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacackHacacacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacackHacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacackHacacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaacacacacacacacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacackGacacacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaakGaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacackGacacaaaaaaaaaaaaaaaaaaaaaaaaacackGacacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacackGacacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacackGacacacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacackGacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaacackGacacaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa

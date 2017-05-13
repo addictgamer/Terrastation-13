@@ -22,7 +22,7 @@
 	minbodytemp = 0
 	speak_emote = list("whines")
 	gold_core_spawnable = CHEM_MOB_SPAWN_HOSTILE
-	loot = list(/obj/effect/gibspawner/human, /obj/effect/decal/cleanable/molten_item)
+	loot = list(/obj/effect/gibspawner/human, /obj/effect/decal/cleanable/molten_object)
 	deathmessage = "melts!"
 	del_on_death = 1
 
