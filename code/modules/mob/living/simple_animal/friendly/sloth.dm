@@ -29,3 +29,15 @@
 	name = "Paperwork"
 	desc = "Cargo's pet sloth. About as useful as the rest of the techs."
 	gold_core_spawnable = CHEM_MOB_SPAWN_INVALID
+
+//Cargo Sloth 2
+
+/mob/living/simple_animal/pet/sloth/citrus
+	name = "Citrus"
+	desc = "Cargo's pet sloth. She's dressed in a horrible sweater."
+	icon_state = "cool_sloth"
+	icon_living = "cool_sloth"
+	icon_dead = "cool_sloth_dead"
+	gender = FEMALE
+	butcher_results = list(/obj/item/toy/spinningtoy = 1)
+	gold_core_spawnable = CHEM_MOB_SPAWN_INVALID

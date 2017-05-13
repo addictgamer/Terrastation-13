@@ -406,7 +406,7 @@
 				if(!parrot_perch || parrot_interest.loc != parrot_perch.loc)
 					held_item = parrot_interest
 					parrot_interest.loc = src
-					visible_message("[src] grabs the [held_item]!", "<span class='notice'>You grab the [held_item]!</span>", "You hear the sounds of wings flapping furiously.")
+					visible_message("[src] grabs the [held_item]!", "\blue You grab the [held_item]!", "You hear the sounds of wings flapping furiously.")
 
 			parrot_interest = null
 			parrot_state = PARROT_SWOOP | PARROT_RETURN
@@ -720,9 +720,9 @@
 
 /mob/living/simple_animal/parrot/Poly/death(gibbed)
 	if(!memory_saved)
-		var/go_ghost = 0
-		if(rounds_survived == longest_survival || rounds_survived == longest_deathstreak || prob(0.666))
-			go_ghost = 1
+//		var/go_ghost = 0
+//		if(rounds_survived == longest_survival || rounds_survived == longest_deathstreak || prob(0.666))
+//			go_ghost = 1
 		rounds_survived = min(--rounds_survived,0)
 		if(rounds_survived < longest_deathstreak)
 			longest_deathstreak = rounds_survived
@@ -742,7 +742,7 @@
 /mob/living/simple_animal/parrot/Poly/proc/Write_Memory()
 	var/savefile/S = new /savefile("data/npc_saves/Poly.sav")
 	if(islist(speech_buffer))
-	S["phrases"] 			<< speech_buffer
+		S["phrases"] 			<< speech_buffer
 	S["roundssurvived"]		<< rounds_survived
 	S["longestsurvival"]	<< longest_survival
 	S["longestdeathstreak"] << longest_deathstreak
