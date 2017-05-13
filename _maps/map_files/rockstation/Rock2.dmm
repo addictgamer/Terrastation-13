@@ -3408,7 +3408,7 @@
 "bnB" = (/turf/simulated/wall/r_wall,/area/maintenance/port)
 "bnC" = (/obj/structure/sign/securearea{desc = "A warning sign which reads 'EXTERNAL AIRLOCK'"; icon_state = "space"; layer = 4; name = "EXTERNAL AIRLOCK"; pixel_x = 0; pixel_y = 0},/turf/simulated/wall/r_wall,/area/maintenance/port)
 "bnD" = (/obj/effect/decal/cleanable/fungus,/turf/simulated/wall/r_wall,/area/maintenance/port)
-"bnE" = (/obj/machinery/door/airlock/maintenance{req_access_txt = "12"},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; tag = ""},/obj/structure/disposalpipe/segment,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/plating,/area/maintenance/electrical)
+"bnE" = (/obj/machinery/door/airlock/maintenance{req_access_txt = "12"},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; tag = ""},/obj/structure/disposalpipe/segment,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/turf/simulated/floor/plating,/area/maintenance/electrical)
 "bnF" = (/turf/simulated/wall,/area/lawoffice)
 "bnG" = (/obj/machinery/door/firedoor,/obj/machinery/door/airlock{name = "Internal Affairs Office"; req_access_txt = "38"},/turf/simulated/floor/plasteel,/area/lawoffice)
 "bnH" = (/turf/simulated/wall,/area/maintenance/atmos_control)
