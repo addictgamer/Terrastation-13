@@ -16,7 +16,7 @@
 "ap" = (/turf/simulated/wall/r_wall,/area/aisat/communications)
 "aq" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0},/obj/machinery/door/airlock/maintenance_hatch{name = "MiniSat Communications"; req_access_txt = "75"},/turf/simulated/floor/plasteel{icon_state = "dark"},/area/aisat/communications)
 "ar" = (/turf/simulated/wall,/area/aisat/communications)
-"as" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0},/obj/machinery/power/apc{dir = 4; name = "AI Satellite Communications APC"; pixel_x = -25},/turf/simulated/floor/plasteel{icon_state = "dark"},/area/aisat/communications)
+"as" = (/obj/machinery/power/apc{dir = 8; name = "west bump"; pixel_x = -24},/obj/structure/cable,/obj/structure/cable{icon_state = "0-2"; pixel_y = 1; d2 = 2},/turf/simulated/floor/plasteel{icon_state = "dark"},/area/aisat/communications)
 "at" = (/turf/simulated/floor/plasteel{icon_state = "dark"},/area/aisat/communications)
 "au" = (/obj/machinery/camera{c_tag = "Mini Satellite Entrance"; dir = 2; network = list("SS13","MiniSat")},/turf/simulated/floor/plasteel{icon_state = "dark"},/area/aisat/communications)
 "av" = (/turf/simulated/floor/bluegrid,/area/aisat/communications)
