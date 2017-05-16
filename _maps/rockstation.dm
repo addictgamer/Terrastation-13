@@ -79,7 +79,13 @@ Remember how Trorbes and it's terralabs wing behaved? yeah. Don't link that Z-Le
 but ONLY if the players are accessing it from the direction they should. If someone flies in from outside they have the potential to bypass
 the hazards which is COMPLETE HOGSHIT.
 
+Old PS:
 I also would like to note that I switched the order of the salvage yard and the AI satellite. This is because the new space ruins feature
 will always load into z7 and as of writing this I haven't found where it is defined to do this or what its method is. It makes more sense
 to spawn these into a Z-Level such as the salvage yard where this kind of shit would logically be anyway.
+
+NEW PS:
+To amend the above, Z7 is and should be Ruskie Plus and not Salvage Yard. The space ruin random generation is too sparse to make sense in
+salvage yard and is more of a space diver attraction than it is a Salvage Captain attraction. Besides, salvage yard is currently a hellscape
+and space divers probably DON'T want to be in there unprotected.
 */

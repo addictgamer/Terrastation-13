@@ -1,24 +1,12 @@
-CREATE DATABASE  IF NOT EXISTS `feedback` /*!40100 DEFAULT CHARACTER SET utf8 */;
+CREATE DATABASE  IF NOT EXISTS `feedback`
 USE `feedback`;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-/*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
-/*!40103 SET TIME_ZONE='+00:00' */;
-/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
---
+
 -- Table structure for table `characters`
---
+
 
 DROP TABLE IF EXISTS `characters`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `characters` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ckey` varchar(32) NOT NULL,
@@ -90,15 +78,12 @@ CREATE TABLE `characters` (
   `gear` mediumtext NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18747 DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
+
+
 -- Table structure for table `customuseritems`
---
 
 DROP TABLE IF EXISTS `customuseritems`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `customuseritems` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `cuiCKey` varchar(36) NOT NULL,
@@ -111,15 +96,12 @@ CREATE TABLE `customuseritems` (
   `cuiJobMask` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=56 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
+
 -- Table structure for table `death`
---
+
 
 DROP TABLE IF EXISTS `death`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `death` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `pod` text NOT NULL COMMENT 'Place of death',
@@ -138,15 +120,13 @@ CREATE TABLE `death` (
   `oxyloss` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=166546 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
+
+
 -- Table structure for table `donators`
---
+
 
 DROP TABLE IF EXISTS `donators`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `donators` (
   `patreon_name` varchar(32) NOT NULL,
   `tier` int(2),
@@ -156,16 +136,14 @@ CREATE TABLE `donators` (
   `active` boolean,
   PRIMARY KEY (`patreon_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 
---
+
+
 -- Table structure for table `admin`
---
+
 
 DROP TABLE IF EXISTS `admin`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `admin` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ckey` varchar(32) NOT NULL,
@@ -174,15 +152,13 @@ CREATE TABLE `admin` (
   `flags` int(16) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
+
+
 -- Table structure for table `admin_log`
---
+
 
 DROP TABLE IF EXISTS `admin_log`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `admin_log` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `datetime` datetime NOT NULL,
@@ -191,15 +167,13 @@ CREATE TABLE `admin_log` (
   `log` text NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
+
+
 -- Table structure for table `ban`
---
+
 
 DROP TABLE IF EXISTS `ban`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `ban` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `bantime` datetime NOT NULL,
@@ -226,15 +200,13 @@ CREATE TABLE `ban` (
   `unbanned_ip` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10685 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
+
+
 -- Table structure for table `feedback`
---
+
 
 DROP TABLE IF EXISTS `feedback`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `feedback` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `time` datetime NOT NULL,
@@ -244,15 +216,13 @@ CREATE TABLE `feedback` (
   `details` text,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=257638 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
+
+
 -- Table structure for table `player`
---
+
 
 DROP TABLE IF EXISTS `player`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `player` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ckey` varchar(32) NOT NULL,
@@ -280,15 +250,13 @@ CREATE TABLE `player` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `ckey` (`ckey`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32446 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
+
+
 -- Table structure for table `poll_option`
---
+
 
 DROP TABLE IF EXISTS `poll_option`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `poll_option` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `pollid` int(11) NOT NULL,
@@ -301,15 +269,13 @@ CREATE TABLE `poll_option` (
   `descmax` varchar(32) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
+
+
 -- Table structure for table `poll_question`
---
+
 
 DROP TABLE IF EXISTS `poll_question`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `poll_question` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `polltype` varchar(16) NOT NULL DEFAULT 'OPTION',
@@ -322,15 +288,13 @@ CREATE TABLE `poll_question` (
   `createdby_ip` varchar(45) NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
+
+
 -- Table structure for table `poll_textreply`
---
+
 
 DROP TABLE IF EXISTS `poll_textreply`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `poll_textreply` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `datetime` datetime NOT NULL,
@@ -341,15 +305,12 @@ CREATE TABLE `poll_textreply` (
   `adminrank` varchar(32) NOT NULL DEFAULT 'Player',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
+
 -- Table structure for table `poll_vote`
---
+
 
 DROP TABLE IF EXISTS `poll_vote`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `poll_vote` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `datetime` datetime NOT NULL,
@@ -361,15 +322,13 @@ CREATE TABLE `poll_vote` (
   `rating` int(2) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
+
+
 -- Table structure for table `privacy`
---
+
 
 DROP TABLE IF EXISTS `privacy`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `privacy` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `datetime` datetime NOT NULL,
@@ -377,15 +336,12 @@ CREATE TABLE `privacy` (
   `option` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
+
 -- Table structure for table `karma`
---
+
 
 DROP TABLE IF EXISTS `karma`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `karma` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `spendername` text NOT NULL,
@@ -399,15 +355,13 @@ CREATE TABLE `karma` (
   `time` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=73614 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
+
+
 -- Table structure for table `karmatotals`
---
+
 
 DROP TABLE IF EXISTS `karmatotals`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `karmatotals` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `byondkey` text NOT NULL,
@@ -415,15 +369,13 @@ CREATE TABLE `karmatotals` (
   `karmaspent` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=6765 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
+
+
 -- Table structure for table `library`
---
+
 
 DROP TABLE IF EXISTS `library`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `library` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `author` text NOT NULL,
@@ -434,15 +386,13 @@ CREATE TABLE `library` (
   `flagged` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=929 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
+
+
 -- Table structure for table `legacy_population`
---
+
 
 DROP TABLE IF EXISTS `legacy_population`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `legacy_population` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `playercount` int(11) DEFAULT NULL,
@@ -450,15 +400,13 @@ CREATE TABLE `legacy_population` (
   `time` datetime NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2550 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
+
+
 -- Table structure for table `whitelist`
---
+
 
 DROP TABLE IF EXISTS `whitelist`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `whitelist` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ckey` text NOT NULL,
@@ -466,24 +414,13 @@ CREATE TABLE `whitelist` (
   `species` text,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=877 DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
-/*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
---
+
 -- Table structure for table `watch`
---
+
 
 DROP TABLE IF EXISTS `watch`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `watch` (
   `ckey` varchar(32) NOT NULL,
   `reason` text NOT NULL,
@@ -493,16 +430,14 @@ CREATE TABLE `watch` (
   `edits` text,
   PRIMARY KEY (`ckey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
 
---
+
+
 -- Table structure for table `notes`
---
+
 
 DROP TABLE IF EXISTS `notes`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `notes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ckey` varchar(32) NOT NULL,
@@ -514,15 +449,13 @@ CREATE TABLE `notes` (
   `server` varchar(50) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
+
+
 -- Table structure for table `memo`
---
+
 
 DROP TABLE IF EXISTS `memo`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `memo` (
   `ckey` varchar(32) NOT NULL,
   `memotext` text NOT NULL,
@@ -531,4 +464,3 @@ CREATE TABLE `memo` (
   `edits` text,
   PRIMARY KEY (`ckey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-/*!40101 SET character_set_client = @saved_cs_client */;

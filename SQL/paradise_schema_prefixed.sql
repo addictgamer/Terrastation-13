@@ -2,9 +2,7 @@ CREATE DATABASE  IF NOT EXISTS `feedback`;
 USE `feedback`;
 
 
---
--- Table structure for table `SS13_characters`
---
+--SS13 Characters Table
 
 DROP TABLE IF EXISTS `SS13_characters`;
 
@@ -81,9 +79,7 @@ CREATE TABLE `SS13_characters` (
 ) ENGINE=InnoDB AUTO_INCREMENT=18747 DEFAULT CHARSET=utf8;
 
 
---
--- Table structure for table `SS13_customuseritems`
---
+--Custom User Items Table
 
 DROP TABLE IF EXISTS `SS13_customuseritems`;
 CREATE TABLE `SS13_customuseritems` (
@@ -100,13 +96,9 @@ CREATE TABLE `SS13_customuseritems` (
 ) ENGINE=MyISAM AUTO_INCREMENT=56 DEFAULT CHARSET=latin1;
 
 
---
--- Table structure for table `SS13_death`
---
+--Death Table
 
 DROP TABLE IF EXISTS `SS13_death`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `SS13_death` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `pod` text NOT NULL COMMENT 'Place of death',
@@ -127,9 +119,7 @@ CREATE TABLE `SS13_death` (
 ) ENGINE=MyISAM AUTO_INCREMENT=166546 DEFAULT CHARSET=latin1;
 
 
---
--- Table structure for table `donators`
---
+--Donator Tracking Table
 
 DROP TABLE IF EXISTS `SS13_donators`;
 
@@ -143,14 +133,10 @@ CREATE TABLE `donators` (
   PRIMARY KEY (`patreon_name`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-
---
--- Table structure for table `SS13_admin`
---
+--Administration Table
 
 DROP TABLE IF EXISTS `SS13_admin`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+
 CREATE TABLE `SS13_admin` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `ckey` varchar(32) NOT NULL,
@@ -160,9 +146,7 @@ CREATE TABLE `SS13_admin` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=99 DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `SS13_admin_log`
---
+--Admin Log Table
 
 DROP TABLE IF EXISTS `SS13_admin_log`;
 CREATE TABLE `SS13_admin_log` (
@@ -175,9 +159,7 @@ CREATE TABLE `SS13_admin_log` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
---
--- Table structure for table `SS13_ban`
---
+--Banned User Table
 
 DROP TABLE IF EXISTS `SS13_ban`;
 CREATE TABLE `SS13_ban` (
@@ -207,9 +189,7 @@ CREATE TABLE `SS13_ban` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10685 DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `SS13_feedback`
---
+--Feedback Table
 
 DROP TABLE IF EXISTS `SS13_feedback`;
 CREATE TABLE `SS13_feedback` (
@@ -223,9 +203,7 @@ CREATE TABLE `SS13_feedback` (
 ) ENGINE=MyISAM AUTO_INCREMENT=257638 DEFAULT CHARSET=latin1;
 
 
---
--- Table structure for table `SS13_player`
---
+--Player Userlist Table
 
 DROP TABLE IF EXISTS `SS13_player`;
 CREATE TABLE `SS13_player` (
@@ -256,9 +234,7 @@ CREATE TABLE `SS13_player` (
   UNIQUE KEY `ckey` (`ckey`)
 ) ENGINE=InnoDB AUTO_INCREMENT=32446 DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `SS13_poll_option`
---
+--Polling Tracking Table
 
 DROP TABLE IF EXISTS `SS13_poll_option`;
 CREATE TABLE `SS13_poll_option` (
@@ -274,9 +250,7 @@ CREATE TABLE `SS13_poll_option` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `SS13_poll_question`
---
+--Poll Queestion Tracking Table
 
 DROP TABLE IF EXISTS `SS13_poll_question`;
 CREATE TABLE `SS13_poll_question` (
@@ -293,13 +267,9 @@ CREATE TABLE `SS13_poll_question` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
---
--- Table structure for table `SS13_poll_textreply`
---
+--Poll Text Replies Table
 
 DROP TABLE IF EXISTS `SS13_poll_textreply`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `SS13_poll_textreply` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `datetime` datetime NOT NULL,
@@ -311,9 +281,7 @@ CREATE TABLE `SS13_poll_textreply` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `SS13_poll_vote`
---
+--Poll Voting Trracking Table
 
 DROP TABLE IF EXISTS `SS13_poll_vote`;
 CREATE TABLE `SS13_poll_vote` (
@@ -329,9 +297,7 @@ CREATE TABLE `SS13_poll_vote` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
---
--- Table structure for table `SS13_privacy`
---
+--Privacy Settings Table
 
 DROP TABLE IF EXISTS `SS13_privacy`;
 CREATE TABLE `SS13_privacy` (
@@ -342,9 +308,8 @@ CREATE TABLE `SS13_privacy` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10000 DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `SS13_karma`
---
+
+--Karma Gift Table
 
 DROP TABLE IF EXISTS `SS13_karma`;
 CREATE TABLE `SS13_karma` (
@@ -361,9 +326,8 @@ CREATE TABLE `SS13_karma` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=73614 DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `SS13_karmatotals`
---
+
+--Karma Totals Table
 
 DROP TABLE IF EXISTS `SS13_karmatotals`;
 CREATE TABLE `SS13_karmatotals` (
@@ -375,9 +339,7 @@ CREATE TABLE `SS13_karmatotals` (
 ) ENGINE=MyISAM AUTO_INCREMENT=6765 DEFAULT CHARSET=latin1;
 
 
---
--- Table structure for table `SS13_library`
---
+--Library Books Table
 
 DROP TABLE IF EXISTS `SS13_library`;
 
@@ -392,9 +354,8 @@ CREATE TABLE `SS13_library` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=929 DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `SS13_legacy_population`
---
+
+--Legacy Population Table
 
 DROP TABLE IF EXISTS `SS13_legacy_population`;
 CREATE TABLE `SS13_legacy_population` (
@@ -405,9 +366,8 @@ CREATE TABLE `SS13_legacy_population` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=2550 DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `SS13_whitelist`
---
+
+--Whitelist Table
 
 DROP TABLE IF EXISTS `SS13_whitelist`;
 CREATE TABLE `SS13_whitelist` (
@@ -418,9 +378,8 @@ CREATE TABLE `SS13_whitelist` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=877 DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `SS13_watch`
---
+
+--Watched Player Table
 
 DROP TABLE IF EXISTS `SS13_watch`;
 CREATE TABLE `SS13_watch` (
@@ -433,9 +392,8 @@ CREATE TABLE `SS13_watch` (
   PRIMARY KEY (`ckey`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `SS13_notes`
---
+
+--Notes Table
 
 DROP TABLE IF EXISTS `SS13_notes`;
 CREATE TABLE `SS13_notes` (
@@ -450,10 +408,10 @@ CREATE TABLE `SS13_notes` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Table structure for table `SS13_memo`
---
 
+--Memos Table
+
+information_schemainformation_schemamysqlfeedback
 DROP TABLE IF EXISTS `SS13_memo`;
 CREATE TABLE `SS13_memo` (
   `ckey` varchar(32) NOT NULL,

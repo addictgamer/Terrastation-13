@@ -12,7 +12,7 @@
 	//add some memos
 	var/obj/item/weapon/paper/P = new()
 	P.name = "Standard Shit, DO NOT REMOVE"
-	P.info = "<br>Welcome to The Geostation. <br> There are a couple rules everyone must abide by. Failure to adhere to these rules will result in a write-up. Not trying to be a prick, but I need to impress on you all how serious you need to take your work.<br>1. Do not force the airlocks. Ever. There is no properly functioning atmos system on-board and canister shipments are few and far between. Wasting air is a huge no-no. <br>2.Do not carry any radio device that is set to our frequency out with you. This includes headsets. If you need to make a call out in the field, set the correct frequency to broadcast, and then set it back.<br>3. Do no leave the station without a kinetic accelerator on your person. You are difficult and expensive to replace. You are also expensive and time-consuming to recover in the event you die outside. <br>4. If you have a personality conflict with any of your partners, make a note in writing when you file your paperwork. All employees stationed here should know what company policy is for such events, and as such will not be posted here."
+	P.info = "<br>Welcome to The Geostation. <br> There are a couple rules everyone must abide by. Failure to adhere to these rules will result in a write-up. Not trying to be a prick, but I need to impress on you all how serious you need to take your work.<br>1. Do not force the airlocks. Ever. There is no properly functioning atmos system on-board and canister shipments are few and far between. Wasting air is a huge no-no. <br>2.Do not carry any radio device that is set to our frequency out with you. This includes headsets. If you need to make a call out in the field, set the correct frequency to broadcast, and then set it back.<br>3. Do not leave the station without a kinetic accelerator on your person. You are difficult and expensive to replace. You are also expensive and time-consuming to recover in the event you die outside. <br>4. If you have a personality conflict with any of your partners, make a note in writing when you file your paperwork. All employees stationed here should know what company policy is for such events, and as such will not be posted here."
 	P.stamp(stamp)
 	src.contents += P
 
@@ -30,7 +30,7 @@
 
 	P = new()
 	P.name = "URGENT"
-	P.info = "I'm posting this on the noticeboard before our command rep gets here and posts something about it, because we can't fuckin afford to wait on this. We need to blow all our tunnels. Those xenos we killed last week weren't here to colonize us or whatevershit. They were running. I'm going to start doing what I can; when your cryo wears off, you need to start doing the same. DO NOT ENGAGE NATIVE WILDLIFE UNLESS ABSOLUTELY NECESSARY.<br><br>-Rick"
+	P.info = "I'm posting this on the noticeboard before our command rep gets here and posts something about it, because we can't fuckin afford to wait on this. We need to blow all our tunnels. Those xenos we killed last month weren't here to colonize us or whatevershit. They were running. I'm going to start doing what I can; when your cryo wears off, you need to start doing the same. DO NOT ENGAGE NATIVE WILDLIFE UNLESS ABSOLUTELY NECESSARY.<br><br>-Rick"
 	src.contents += P
 
 	P = new()
