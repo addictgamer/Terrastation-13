@@ -1,0 +1,24 @@
+"a" = (/turf/space,/area/space)
+"b" = (/turf/simulated/mineral/asteroid,/area/space)
+"c" = (/mob/living/simple_animal/hostile/retaliate/melterling,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"d" = (/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"e" = (/turf/simulated/mineral/iron/asteroid,/area/space)
+"f" = (/mob/living/simple_animal/hostile/retaliate/melterling,/turf/space,/area/space)
+
+(1,1,1) = {"
+aaaaaaaaaaaaaaa
+aaaaaaaaabbbaaa
+aaaaaaaaabcddaa
+aaaaaaaabeeedeb
+aaaaaaaabdeedeb
+aaaaaaaabdeedaa
+aaaaaaaaaddddaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aeaafaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaabaaaaa
+aaaaaaaaeaaaaaa
+aaaaaaaaaaaaaaa
+"}
