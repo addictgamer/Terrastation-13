@@ -1,0 +1,24 @@
+"a" = (/turf/space,/area/space)
+"b" = (/obj/structure/lattice,/turf/space,/area/space)
+"c" = (/turf/simulated/wall/rust,/area/space)
+"d" = (/turf/simulated/floor/plating/airless,/area/space)
+"e" = (/obj/structure/girder,/turf/simulated/floor/plating/airless,/area/space)
+"f" = (/mob/living/simple_animal/hostile/melterling/range,/turf/simulated/floor/plating/airless,/area/space)
+
+(1,1,1) = {"
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaabaaa
+aaaaaaaaabbbaaa
+aaaaabaacbbaaaa
+aaaabbbcddbbaaa
+aaabbdddddbbaaa
+aabecffdddbbaaa
+aabeffffcbbaaaa
+aabeffffdbaaaaa
+aaaccccebbaaaaa
+aaaaabbbbaaaaaa
+aaaaaaaaaaaaaaa
+"}
