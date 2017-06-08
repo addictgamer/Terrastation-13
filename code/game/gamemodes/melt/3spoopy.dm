@@ -44,7 +44,7 @@
 
 //barrelfire stolen right out of goon's butthole
 
-/obj/burning_barrel
+/obj/structure/burning_barrel
 	name = "burning barrel"
 	desc = "Strangely cozy, but the flames feel somewhat unnatural. What the hell is burning in there?"
 	icon = 'icons/obj/stationobjs.dmi'
@@ -72,3 +72,52 @@
 A temporary solution will be implemented below. It will be expanded upon/improved/replaced at some point. maybe.*/
 	light_color = "#FF9933"
 	light_range = 4
+
+
+//Void turfs stolenageifieded from goon
+
+
+/turf/simulated/wall/void
+	name = "dense void"
+	icon = 'icons/turf/oldwalls.dmi'
+	icon_state = "darkvoid"
+	desc = "It seems solid..."
+	opacity = 1
+	density = 1
+
+	ex_act()
+		return
+
+	ex_act(severity)
+		return
+
+	blob_act(var/power)
+		return
+
+	attack_hand(mob/user as mob)
+		return
+
+	attackby(obj/item/W as obj, mob/user as mob)
+		return
+
+
+/turf/simulated/floor/void
+	name = "void"
+	icon = 'icons/turf/oldwalls.dmi'
+	icon_state = "void"
+	desc = "A strange shifting void ..."
+
+	ex_act()
+		return
+
+	ex_act(severity)
+		return
+
+	blob_act(var/power)
+		return
+
+	attack_hand(mob/user as mob)
+		return
+
+	attackby(obj/item/W as obj, mob/user as mob)
+		return

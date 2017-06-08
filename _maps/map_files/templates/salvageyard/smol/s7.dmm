@@ -1,0 +1,33 @@
+"a" = (/turf/space,/area/space)
+"b" = (/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"c" = (/turf/simulated/mineral,/area/space)
+"d" = (/turf/simulated/mineral/random/high_chance,/area/space)
+"e" = (/turf/unsimulated/wall/fakemineral,/area/space)
+"f" = (/turf/simulated/mineral/clown,/area/space)
+"g" = (/turf/simulated/floor/plating,/area/space)
+"h" = (/obj/item/weapon/shard,/obj/item/weapon/paper{info = "Extraction was successful! The disguise was perfect, the clowns never knew what hit 'em! Once I get back to base with the bananium samples I'll be rich, I tell you! RICH!"},/turf/simulated/floor/plating,/area/space)
+"i" = (/obj/item/stack/sheet/mineral/bananium{amount = 15},/turf/simulated/floor/plating,/area/space)
+"j" = (/turf/simulated/shuttle/wall{icon_state = "swall3"; dir = 2},/area/space)
+"k" = (/obj/item/weapon/shard,/turf/simulated/shuttle/floor,/area/space)
+"l" = (/turf/simulated/shuttle/floor,/area/space)
+"m" = (/turf/simulated/floor/plating,/obj/structure/shuttle/engine/propulsion/burst,/turf/simulated/shuttle/wall{icon_state = "swall_f5"; dir = 2},/area/space)
+"n" = (/obj/machinery/door/airlock/shuttle{name = "Escape Pod Airlock"},/turf/space,/area/space)
+"o" = (/obj/structure/shuttle/engine/propulsion/burst,/turf/simulated/floor/plating,/area/space)
+
+(1,1,1) = {"
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaabbbaaaa
+aabcaaaccbbbaaa
+aaccaabdddcbaaa
+aaaaabccddccaaa
+aaaaccccedccaaa
+aaaccccefeccbaa
+aaacbceffgedcaa
+aaabbcehigedcaa
+aaaabbejkjeddaa
+aaaaaacjljccaaa
+aaaaaaamnoaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+"}
