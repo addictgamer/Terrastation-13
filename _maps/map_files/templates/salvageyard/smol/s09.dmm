@@ -1,0 +1,23 @@
+"a" = (/turf/space,/area/space)
+"b" = (/turf/simulated/mineral/asteroid,/area/space)
+"c" = (/turf/simulated/mineral/iron/asteroid,/area/space)
+"d" = (/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"e" = (/obj/item/asteroid/goliath_hide,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+
+(1,1,1) = {"
+aabaaaaaaaaaaaa
+abbcaaaaaaaaaaa
+aabbbaaaaaaaaaa
+aaaaaaabaaaaaaa
+aaaaaabbdaaaaaa
+aaaaaabbdaaaaaa
+aaaaabbdddaaaaa
+aaaaaabdddaaaaa
+aaaaaabdddaaaaa
+aaaaabbcddbaaaa
+aaaaaabdedbaaaa
+aaaaaabcdcbaaaa
+aaaaaabccbaaaaa
+aaaaaaabaaaaaaa
+aaacaaaaaaaaaaa
+"}

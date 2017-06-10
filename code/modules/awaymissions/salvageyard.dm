@@ -61,6 +61,20 @@
 	name = "Blasted"
 	description = "Probably an explosives mishap, given the residue."
 
+/datum/map_template/junk/normal/n3
+	id = "hivecrash"
+	suffix = "n3.dmm"
+	name = "Hive Crash"
+	description = "Hivebot signals are painfully evident here."
+
+/datum/map_template/junk/normal/n4
+	id = "poot"
+	suffix = "n4.dmm"
+	name = "LZ's Spacetime-rending Poot"
+	description = "Behold, a Beligerant BackBlast Begotten \
+	By the Bowels of LZ's Butt, Bereft of logic! Yeah, \
+	Spacetime is horribly fucked up somehow."
+
 //& small ones
 /datum/map_template/junk/smol
 	prefix = "_maps/map_files/templates/salvageyard/smol/"
@@ -77,12 +91,14 @@
 	suffix = "s02.dmm"
 	name = "Jank 1"
 	description = "might be something useful there. who knows"
+	allow_duplicates = TRUE
 
 /datum/map_template/junk/smol/s03
 	id = "jank2"
 	suffix = "s03.dmm"
 	name = "Jank 2"
 	description = "doesn't seem worth it, really."
+	allow_duplicates = TRUE
 
 /datum/map_template/junk/smol/s04
 	id = "jank3"
@@ -109,6 +125,45 @@
 	suffix = "s07.dmm"
 	name = "Pod Honk Fail"
 	description = "Does this even need a description?"
+
+/datum/map_template/junk/smol/s08
+	id = "spessturd"
+	suffix = "s08.dmm"
+	name = "Space Turd"
+	description = "Kinda what it looks like IMO."
+	allow_duplicates = TRUE
+
+/datum/map_template/junk/smol/s09
+	id = "vaster"
+	suffix = "s09.dmm"
+	name = "Asteroid with some actual value"
+	description = "I think a diver would appreciate that."
+
+//these are basic shit to fall back on (alongside a few others defined above)
+/datum/map_template/junk/smol/s10
+	id = "enoir1"
+	suffix = "s10.dmm"
+	name = "Iron Asteroid"
+	description = "Some value within"
+	allow_duplicates = TRUE
+/datum/map_template/junk/smol/s11
+	id = "enoir2"
+	suffix = "s11.dmm"
+	name = "Iron Asteroid"
+	description = "Some value within"
+	allow_duplicates = TRUE
+/datum/map_template/junk/smol/s12
+	id = "enoir3"
+	suffix = "s12.dmm"
+	name = "Iron Asteroid"
+	description = "Some value within"
+	allow_duplicates = TRUE
+/datum/map_template/junk/smol/s13
+	id = "enoir4"
+	suffix = "s13.dmm"
+	name = "Iron Asteroid"
+	description = "Some value within"
+	allow_duplicates = TRUE
 
 //^That list is incomplete.
 

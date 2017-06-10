@@ -1,0 +1,60 @@
+"a" = (/turf/space,/area/space)
+"b" = (/turf/simulated/mineral,/area/space)
+"c" = (/turf/simulated/mineral/random/high_chance,/area/space)
+"d" = (/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"e" = (/mob/living/simple_animal/hostile/retaliate/melterling,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"f" = (/turf/simulated/shuttle/wall,/area/space)
+"g" = (/obj/machinery/door/airlock/shuttle,/turf/simulated/floor/plating/airless,/area/space)
+"h" = (/turf/simulated/mineral/iron/asteroid,/area/space)
+"i" = (/mob/living/simple_animal/hostile/hivebot/strong,/turf/simulated/floor/plating/airless,/area/space)
+"j" = (/turf/simulated/floor/plating/airless,/area/space)
+"k" = (/turf/simulated/floor/plasteel/airless{icon_plating = "plating"; icon_regular_floor = "shuttlefloor"; icon_state = "shuttlefloor"},/area/space)
+"l" = (/obj/structure/stool/bed/chair,/obj/structure/window/reinforced{tag = "icon-rwindow (WEST)"; icon_state = "rwindow"; dir = 8},/turf/simulated/floor/plasteel/airless{icon_plating = "plating"; icon_regular_floor = "shuttlefloor"; icon_state = "shuttlefloor"},/area/space)
+"m" = (/obj/structure/stool/bed/chair,/turf/simulated/floor/plasteel/airless{icon_plating = "plating"; icon_regular_floor = "shuttlefloor"; icon_state = "shuttlefloor"},/area/space)
+"n" = (/obj/effect/spawner/lootdrop/crate_spawner,/turf/simulated/floor/plasteel/airless{icon_plating = "plating"; icon_regular_floor = "shuttlefloor"; icon_state = "shuttlefloor"},/area/space)
+"o" = (/obj/structure/shuttle/engine/propulsion{icon_state = "burst_r"; dir = 4},/turf/simulated/floor/plating/airless,/area/space)
+"p" = (/obj/item/weapon/shard,/turf/simulated/floor/plating/airless,/area/space)
+"q" = (/obj/structure/stool/bed/chair{tag = "icon-chair (WEST)"; icon_state = "chair"; dir = 8},/turf/simulated/floor/plating/airless,/area/space)
+"r" = (/mob/living/simple_animal/hostile/hivebot/tele,/turf/simulated/floor/plasteel/airless{icon_plating = "plating"; icon_regular_floor = "shuttlefloor"; icon_state = "shuttlefloor"},/area/space)
+"s" = (/mob/living/simple_animal/hostile/hivebot/range,/turf/simulated/floor/plasteel/airless{icon_plating = "plating"; icon_regular_floor = "shuttlefloor"; icon_state = "shuttlefloor"},/area/space)
+"t" = (/obj/structure/grille,/turf/simulated/floor/plating/airless,/area/space)
+"u" = (/obj/structure/table,/turf/simulated/floor/plasteel/airless{icon_plating = "plating"; icon_regular_floor = "shuttlefloor"; icon_state = "shuttlefloor"},/area/space)
+"v" = (/obj/item/weapon/shard,/obj/structure/stool/bed/chair{tag = "icon-chair (WEST)"; icon_state = "chair"; dir = 8},/turf/simulated/floor/plasteel/airless{icon_plating = "plating"; icon_regular_floor = "shuttlefloor"; icon_state = "shuttlefloor"},/area/space)
+"w" = (/obj/structure/stool/bed/chair{dir = 1},/obj/structure/window/reinforced{tag = "icon-rwindow (WEST)"; icon_state = "rwindow"; dir = 8},/turf/simulated/floor/plasteel/airless{icon_plating = "plating"; icon_regular_floor = "shuttlefloor"; icon_state = "shuttlefloor"},/area/space)
+"x" = (/obj/structure/stool/bed/chair{dir = 1},/turf/simulated/floor/plating/airless,/area/space)
+"y" = (/obj/structure/girder,/turf/simulated/floor/plating/airless,/area/space)
+"z" = (/turf/simulated/mineral/random/high_chance_clown,/area/space)
+"A" = (/obj/effect/spawner/lootdrop/crate_spawner,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+
+(1,1,1) = {"
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaa
+aaaaabbbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaabbbbaaaaaaaaaabbcccccbbaaabbbbaaaaaa
+aaaddebbbbaaaaaabbbbccccbbbbbbbbbbbaaaaa
+aaadddbbbbaaaaaadbbbbbcbbbbbbbbbbbbbaaaa
+aaaaddbbaaaaaddddbbbbbbbbbddbbcccbbbaaaa
+aaaaaaaaaaaaadddddbccbbddddddddddbddaaaa
+aaaaaaaaaaaaaaddddbccbbffffgfffffdddaaaa
+aaaahaaaaaaaaadddddbbbijjjkklmnfodddaaaa
+aaaaaaaahaaaaadddddbbbjpqkrkkksfodddaaaa
+aaaaaaaaaaaaaaddddbbbbtuvkkkskjfodddaaaa
+aaaaaaaaaaaaaaddddbbcbbjskkkwxjfodaaaaaa
+aaaaaaaaaaabaaabddbbbbbffffgfyjffdaaaaaa
+aaaaaaaaaaaaaaabbbbbbbddddddddddddaaaaaa
+aaaaaaaabaaaaaabbbbbbbbbbdddddddddaaaaaa
+aaaaaaaaaaaaaaaaabbbbbbbbbddddaaaaaaaaaa
+aaaaaaaaaabbaaaaaabcbbcccbddddaaaaaaaaaa
+aaaaaaaaabbbaaaaaaaaabcccbbbaaaaaaaaaaaa
+aaaaaaaaabbaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahhhdaaaa
+aaaaahaaaaahaaaaaaaaaaaaaaaaaaahheehdaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaahebzdhaaa
+aaaaaaaaaaaaaaaaaaaaaaaadaaaaaahecbAhaaa
+aaaaaaahaaaaaaaaaaaaaaadddaaaaadhddhhaaa
+aaaaaaaaaaaaaaaaaaaaaadddddaaaaadhhaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaadaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+"}
