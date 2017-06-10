@@ -115,6 +115,7 @@
 	preloadShelterTemplates()
 	preloadShuttleTemplates()
 	preloadVRTemplates()
+	preloadSYTemplates()
 
 /proc/preloadRuinTemplates()
 	// Still supporting bans by filename

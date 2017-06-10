@@ -1113,6 +1113,7 @@
 #include "code\modules\awaymissions\loot.dm"
 #include "code\modules\awaymissions\map_rng.dm"
 #include "code\modules\awaymissions\pamphlet.dm"
+#include "code\modules\awaymissions\salvageyard.dm"
 #include "code\modules\awaymissions\snpc.dm"
 #include "code\modules\awaymissions\trigger.dm"
 #include "code\modules\awaymissions\zlevel.dm"
