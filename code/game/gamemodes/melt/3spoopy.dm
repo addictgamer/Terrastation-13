@@ -41,4 +41,34 @@
 	qdel(stamp)
 
 
-//
+
+//barrelfire stolen right out of goon's butthole
+
+/obj/burning_barrel
+	name = "burning barrel"
+	desc = "Strangely cozy, but the flames feel somewhat unnatural. What the hell is burning in there?"
+	icon = 'icons/obj/stationobjs.dmi'
+	icon_state = "barrel1"
+	density = 1
+	anchored = 1
+	opacity = 0
+/* what follows is the original code pulled from goon. It doesn't work here. Because codebase differences. and stuff.
+	var/datum/particleSystem/barrelSmoke/particles
+	var/datum/light/light
+
+	New()
+		particles = particleMaster.SpawnSystem(new /datum/particleSystem/barrelSmoke(src))
+		light = new /datum/light/point
+		light.attach(src)
+		light.set_brightness(1)
+		light.set_color(0.5, 0.3, 0)
+		light.enable()
+
+		..()
+
+	Del()
+		particleMaster.RemoveSystem(/datum/particleSystem/barrelSmoke, src)
+		..()
+A temporary solution will be implemented below. It will be expanded upon/improved/replaced at some point. maybe.*/
+	light_color = "#FF9933"
+	light_range = 4

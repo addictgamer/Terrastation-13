@@ -1,0 +1,146 @@
+"aa" = (/turf/space/transit,/area/space)
+"ab" = (/turf/unsimulated/wall/metal{icon = 'icons/turf/walls/uranium_wall.dmi'; icon_state = "uranium"},/area/wizard_station)
+"ac" = (/turf/unsimulated/wall/fakeglass{color = "#008000"; dir = 8; icon_state = "fakewindows"},/area/wizard_station)
+"ad" = (/turf/unsimulated/wall/fakeglass{color = "#008000"; dir = 8; icon_state = "fakewindows2"},/area/wizard_station)
+"ae" = (/turf/unsimulated/wall/fakeglass{color = "#008000"; dir = 4; icon_state = "fakewindows"},/area/wizard_station)
+"af" = (/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"ag" = (/obj/machinery/computer/shuttle,/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"ah" = (/obj/effect/light_emitter,/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"ai" = (/obj/structure/showcase{desc = "A strange machine supposedly from another world. The Wizard Federation has been meddling with it for years."; icon = 'icons/obj/stationobjs.dmi'; icon_state = "processor"; name = "byond random number generator"},/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"aj" = (/obj/structure/showcase{desc = "A historical figure of great importance to the wizard federation. He spent his long life learning magic, stealing artifacts, and harassing idiots with swords. May he rest forever, Rodney."; icon = 'icons/mob/mob.dmi'; icon_state = "nim"; name = "wizard of yendor showcase"},/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"ak" = (/turf/unsimulated/wall/fakeglass{color = "#008000"; dir = 8; icon_state = "fakewindows3"; tag = "icon-fakewindows (WEST)"},/area/wizard_station)
+"al" = (/obj/machinery/door/airlock{icon = 'icons/obj/doors/Dooruranium.dmi'; name = "Cockpit"},/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"am" = (/obj/machinery/computer/camera_advanced,/turf/simulated/floor/wood,/area/wizard_station)
+"an" = (/obj/structure/table/woodentable/fancy,/obj/item/device/radio/intercom{desc = "Talk smack through this."; syndie = 1},/turf/simulated/floor/wood,/area/wizard_station)
+"ao" = (/turf/simulated/floor/carpet,/area/wizard_station)
+"ap" = (/obj/structure/stool/bed/chair/wood/wings,/obj/effect/light_emitter,/turf/simulated/floor/carpet,/area/wizard_station)
+"aq" = (/obj/effect/light_emitter,/turf/simulated/floor/wood,/area/wizard_station)
+"ar" = (/obj/structure/stool/bed/chair/wood/wings{icon_state = "wooden_chair_wings"; dir = 1},/turf/simulated/floor/wood,/area/wizard_station)
+"as" = (/turf/simulated/floor/wood,/area/wizard_station)
+"at" = (/obj/structure/stool/bed/chair/wood/wings{tag = "icon-wooden_chair_wings (EAST)"; icon_state = "wooden_chair_wings"; dir = 4},/turf/simulated/floor/carpet,/area/wizard_station)
+"au" = (/obj/structure/table/woodentable/poker,/obj/item/toy/figure/wizard,/turf/simulated/floor/carpet,/area/wizard_station)
+"av" = (/obj/structure/stool/bed/chair/wood/wings{tag = "icon-wooden_chair_wings (WEST)"; icon_state = "wooden_chair_wings"; dir = 8},/turf/simulated/floor/carpet,/area/wizard_station)
+"aw" = (/obj/machinery/door/airlock{icon = 'icons/obj/doors/Dooruranium.dmi'; name = "Observation Room"},/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"ax" = (/obj/machinery/door/airlock{icon = 'icons/obj/doors/Dooruranium.dmi'; name = "Game Room"},/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"ay" = (/obj/structure/stool/bed/chair/wood/wings{icon_state = "wooden_chair_wings"; dir = 1},/turf/simulated/floor/carpet,/area/wizard_station)
+"az" = (/obj/structure/stool/bed/chair/wood/wings,/turf/simulated/floor/carpet,/area/wizard_station)
+"aA" = (/obj/structure/stool/bed/chair/wood/wings{tag = "icon-wooden_chair_wings (WEST)"; icon_state = "wooden_chair_wings"; dir = 8},/turf/simulated/floor/wood,/area/wizard_station)
+"aB" = (/obj/structure/table/woodentable/fancy,/obj/item/device/camera/spooky,/turf/simulated/floor/carpet,/area/wizard_station)
+"aC" = (/obj/structure/table/woodentable/poker,/obj/item/toy/cards/deck,/turf/simulated/floor/carpet,/area/wizard_station)
+"aD" = (/obj/item/weapon/statuebust{pixel_y = 12},/obj/structure/table/woodentable/fancy,/turf/simulated/floor/wood,/area/wizard_station)
+"aE" = (/obj/machinery/vending/magivend,/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"aF" = (/obj/machinery/vending/snack,/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"aG" = (/obj/structure/table/woodentable/fancy,/obj/item/weapon/storage/pill_bottle/dice{icon_state = "magicdicebag"},/turf/simulated/floor/carpet,/area/wizard_station)
+"aH" = (/obj/structure/table/woodentable/fancy,/obj/item/weapon/storage/photo_album,/turf/simulated/floor/carpet,/area/wizard_station)
+"aI" = (/obj/machinery/door/airlock{icon = 'icons/obj/doors/Dooruranium.dmi'; name = "Study"},/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"aJ" = (/obj/machinery/door/airlock{icon = 'icons/obj/doors/Dooruranium.dmi'; name = "Break Room"},/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"aK" = (/obj/structure/stool/bed/chair/wood/wings,/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"aL" = (/obj/structure/table/woodentable,/obj/item/stack/medical/bruise_pack,/obj/item/stack/medical/ointment,/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"aM" = (/obj/structure/table/woodentable,/obj/item/weapon/retractor,/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"aN" = (/obj/structure/table/woodentable,/obj/item/clothing/suit/wizrobe/magusblue,/obj/item/clothing/head/wizard/magus,/obj/item/weapon/twohanded/staff,/obj/structure/mirror/magic{pixel_y = 28},/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"aO" = (/obj/structure/table/woodentable,/obj/item/clothing/suit/wizrobe/magusred,/obj/item/clothing/head/wizard/magus,/obj/item/weapon/twohanded/staff,/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"aP" = (/obj/item/weapon/reagent_containers/food/snacks/lizardmeat,/turf/simulated/floor/grass,/area/wizard_station)
+"aQ" = (/obj/effect/decal/cleanable/blood/splatter,/obj/effect/decal/cleanable/blood/gibs/body,/turf/simulated/floor/grass,/area/wizard_station)
+"aR" = (/obj/effect/decal/remains/xeno/larva,/turf/simulated/floor/grass,/area/wizard_station)
+"aS" = (/obj/effect/decal/cleanable/blood/splatter,/turf/simulated/floor/grass,/area/wizard_station)
+"aT" = (/turf/unsimulated/wall/fakeglass{color = "#008000"; dir = 1; icon_state = "fakewindows"},/area/wizard_station)
+"aU" = (/obj/structure/cult/tome,/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"aV" = (/obj/structure/closet/crate{icon_state = "crateopen"; opened = 1},/obj/item/clothing/suit/wizrobe/red,/obj/item/clothing/head/wizard/red,/obj/item/weapon/twohanded/staff,/obj/item/clothing/shoes/sandal,/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"aW" = (/turf/simulated/floor/grass,/area/wizard_station)
+"aX" = (/obj/item/weapon/reagent_containers/food/snacks/meat/corgi,/turf/simulated/floor/grass,/area/wizard_station)
+"aY" = (/turf/unsimulated/wall/fakeglass{color = "#008000"; dir = 1; icon_state = "fakewindows2"},/area/wizard_station)
+"aZ" = (/obj/structure/bookcase/random/reference,/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"ba" = (/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/space)
+"bb" = (/obj/structure/cult/talisman{desc = "A altar dedicated to the Wizard's Federation"},/obj/item/weapon/kitchen/knife/ritual,/obj/effect/light_emitter,/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"bc" = (/obj/item/clothing/shoes/sandal/marisa,/obj/item/clothing/suit/wizrobe/marisa,/obj/item/clothing/head/wizard/marisa,/obj/item/weapon/twohanded/staff/broom,/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"bd" = (/obj/effect/decal/cleanable/blood/splatter,/mob/living/simple_animal/hostile/creature{name = "Experiment 35b"},/turf/simulated/floor/grass,/area/wizard_station)
+"be" = (/turf/unsimulated/wall/fakeglass{color = "#008000"},/area/wizard_station)
+"bf" = (/obj/effect/landmark/start{name = "wizard"},/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"bg" = (/obj/effect/decal/remains/human,/obj/effect/decal/cleanable/blood/splatter,/turf/simulated/floor/grass,/area/wizard_station)
+"bh" = (/obj/item/weapon/reagent_containers/food/snacks/meat/pug,/turf/simulated/floor/grass,/area/wizard_station)
+"bi" = (/obj/effect/decal/remains/xeno,/turf/simulated/floor/grass,/area/wizard_station)
+"bj" = (/obj/structure/stool/bed/chair/wood/wings{icon_state = "wooden_chair_wings"; dir = 1},/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"bk" = (/mob/living/simple_animal/bot/medbot/mysterious{desc = "If you don't accidentally blow yourself up from time to time you're not really a wizard anyway."; faction = list("neutral","silicon","creature"); name = "Nobody's Perfect"},/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"bl" = (/obj/item/weapon/reagent_containers/food/snacks/xenomeat,/turf/simulated/floor/grass,/area/wizard_station)
+"bm" = (/obj/machinery/door/airlock{icon = 'icons/obj/doors/Dooruranium.dmi'; name = "Observation Deck"},/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"bn" = (/obj/effect/light_emitter,/turf/simulated/floor/carpet,/area/wizard_station)
+"bo" = (/obj/machinery/door/airlock{icon = 'icons/obj/doors/Dooruranium.dmi'; name = "Storage"},/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"bp" = (/obj/machinery/door/airlock{icon = 'icons/obj/doors/Dooruranium.dmi'; name = "Personal Quarters"},/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"bq" = (/obj/machinery/door/airlock{icon = 'icons/obj/doors/Dooruranium.dmi'; name = "Bathroom"},/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"br" = (/obj/item/clothing/suit/wizrobe/black,/obj/item/clothing/head/wizard/black,/turf/simulated/floor/plasteel{icon_state = "bot"},/area/wizard_station)
+"bs" = (/turf/simulated/floor/plasteel{icon_state = "bot"},/area/wizard_station)
+"bt" = (/obj/item/cardboard_cutout,/turf/simulated/floor/plasteel{icon_state = "bot"},/area/wizard_station)
+"bu" = (/obj/structure/table/woodentable,/obj/effect/landmark{name = "Teleport-Scroll"},/obj/item/weapon/dice/d20,/obj/item/weapon/dice,/turf/simulated/floor/carpet,/area/wizard_station)
+"bv" = (/obj/structure/punching_bag,/turf/simulated/floor/carpet,/area/wizard_station)
+"bw" = (/obj/structure/urinal{pixel_y = 28},/turf/simulated/floor/plasteel{icon_state = "white"},/area/wizard_station)
+"bx" = (/turf/simulated/floor/plasteel{icon_state = "white"},/area/wizard_station)
+"by" = (/obj/structure/mirror/magic{pixel_y = 28},/obj/structure/sink{pixel_y = 20},/turf/simulated/floor/plasteel{icon_state = "white"},/area/wizard_station)
+"bz" = (/obj/item/weapon/cautery/alien,/turf/simulated/floor/plasteel{icon_state = "bot"},/area/wizard_station)
+"bA" = (/obj/effect/light_emitter,/turf/simulated/floor/plasteel{icon_state = "bot"},/area/wizard_station)
+"bB" = (/obj/item/weapon/coin/antagtoken,/turf/simulated/floor/plasteel{icon_state = "bot"},/area/wizard_station)
+"bC" = (/obj/structure/stool/bed,/obj/item/weapon/bedsheet/wiz,/obj/effect/light_emitter,/turf/simulated/floor/carpet,/area/wizard_station)
+"bD" = (/obj/item/weapon/soap/homemade,/turf/simulated/floor/plasteel{icon_state = "white"},/area/wizard_station)
+"bE" = (/obj/effect/light_emitter,/turf/simulated/floor/plasteel{icon_state = "white"},/area/wizard_station)
+"bF" = (/obj/structure/closet/cardboard,/obj/item/weapon/banhammer,/turf/simulated/floor/plasteel{icon_state = "hazard"},/area/wizard_station)
+"bG" = (/turf/simulated/floor/plasteel{icon_state = "hazard"},/area/wizard_station)
+"bH" = (/obj/vehicle/scooter/skateboard{tag = "icon-skateboard (EAST)"; icon_state = "skateboard"; dir = 4},/turf/simulated/floor/plasteel{icon_state = "hazard"},/area/wizard_station)
+"bI" = (/obj/structure/dresser,/obj/item/weapon/storage/backpack/satchel,/turf/simulated/floor/carpet,/area/wizard_station)
+"bJ" = (/obj/structure/table/woodentable,/obj/item/weapon/storage/bag/tray,/obj/item/weapon/reagent_containers/food/snacks/spellburger,/turf/simulated/floor/carpet,/area/wizard_station)
+"bK" = (/obj/structure/bookcase/random/adult,/turf/simulated/floor/plasteel{icon_state = "white"},/area/wizard_station)
+"bL" = (/obj/structure/toilet{tag = "icon-toilet00 (NORTH)"; icon_state = "toilet00"; dir = 1},/turf/simulated/floor/plasteel{icon_state = "white"},/area/wizard_station)
+"bM" = (/obj/structure/table/woodentable/fancy,/obj/item/weapon/skub{pixel_y = 16},/turf/simulated/floor/plasteel{icon_state = "white"},/area/wizard_station)
+"bN" = (/obj/machinery/door/airlock{icon = 'icons/obj/doors/Dooruranium.dmi'; name = "Engine Room"},/obj/structure/barricade/wooden,/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"bO" = (/obj/structure/table/woodentable,/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"bP" = (/obj/structure/table/woodentable,/obj/item/weapon/gun/magic/wand{desc = "Used in emergencies to reignite magma engines."; max_charges = 0; name = "wand of emergency engine ignition"},/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"bQ" = (/obj/structure/table/woodentable,/obj/item/weapon/bikehorn/golden{pixel_x = -8; pixel_y = 8},/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"bR" = (/obj/structure/cult/forge{desc = "An infernal device which, in fashion typical of the Wizard Federation, contravenes physics to power a spaceship with molten rock."; name = "magma engine"},/turf/simulated/floor/plasteel{tag = "icon-cult"; icon_state = "cult"; dir = 2},/area/wizard_station)
+"bS" = (/obj/structure/window/reinforced{color = "#008000"; dir = 1},/turf/unsimulated/floor/lava{icon = 'icons/tgstation/turf/floors/lava.dmi'},/area/wizard_station)
+"bT" = (/obj/structure/shuttle/engine/heater,/obj/structure/window/reinforced{color = "#008000"; dir = 1},/turf/unsimulated/floor/lava{icon = 'icons/tgstation/turf/floors/lava.dmi'},/area/wizard_station)
+"bU" = (/obj/structure/shuttle/engine/propulsion,/turf/simulated/floor/plasteel{icon_state = "hazard"},/area/wizard_station)
+
+(1,1,1) = {"
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaabacadaeabaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaababafagafababaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaabafafahafafabaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaabaiafafafajabaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaababababakalakababababaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaababamanabafafafabaoapababaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaababaqarasabafafafabatauavababaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaababanasasasawafafafaxaoayaoazababaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaabamaAasasasabafafafabaBaoataCavabaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaabasasasasaDabaEafaFabaGaHaoayaoabaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaababaIababababababaJababababacadaeababaaaaaaaaaaaa
+aaaaaaaaaaaaaaabaKafafaKabaLaMafafafaNaOabaPaQaRaSabaaaaaaaaaaaa
+aaaaaaaaaaaaaaaTaUafafaUaTafafafafafafaVaTaSaWaXaWabaaaaaaaaaaaa
+aaaaaaaaaaaaaaaYaZahafafaYafbaafbbafafbcaYbdaQaSaQabaaaaaaaaaaaa
+aaaaaaaaaaaaaabeaUafafaUbeafafafbfafafafbebgbhaWbiabaaaaaaaaaaaa
+aaaaaaaaaaaaaaabbjafafbjabbkafafafafafafabaSaQaSblabaaaaaaaaaaaa
+aaaaaaaaaaaaaaababbmabababababakbmakabababacadaeababaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaTafafafafafafafafafafafafafafafaTaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaabeafbnafaoafaoafaoafaoafaoafbnafbeaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaababafafafafafafafafafafafafafababaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaabababboabababbpabababbqabababaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaabbrbsbtabbuaobvabbwbxbyabaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaabbzbAbBabaobCaoabbDbEbxabaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaabbFbGbHabbIaobJabbKbLbMabaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaababbNabababakababababababaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabafabafbObPbObQabaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaakafbNafafafafafakaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaabababbRafafafbRabaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaabbSbSbSbSbSabaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaababbTbTbTababaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaabUbUbUaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+"}

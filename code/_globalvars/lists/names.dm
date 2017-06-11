@@ -10,6 +10,8 @@ var/list/last_names = file2list("config/names/last.txt")
 var/list/clown_names = file2list("config/names/clown.txt")
 var/list/mime_names = file2list("config/names/mime.txt")
 var/list/diona_names = file2list ("config/names/diona.txt")
+var/list/lizard_names_male = file2list("config/names/lizard_male.txt")
+var/list/lizard_names_female = file2list("config/names/lizard_female.txt")
 
 var/list/verbs = file2list("config/names/verbs.txt")
 var/list/adjectives = file2list("config/names/adjectives.txt")

@@ -8,6 +8,7 @@
 	anchored = 1
 	var/shattered = 0
 	var/list/ui_users = list()
+	var/ismagicmirror = 0
 
 /obj/structure/mirror/attack_hand(mob/user as mob)
 	if(shattered)	return
@@ -16,8 +17,12 @@
 		var/datum/nano_module/appearance_changer/AC = ui_users[user]
 		if(!AC)
 			AC = new(src, user)
-			AC.name = "SalonPro Nano-Mirror&trade;"
-			AC.flags = APPEARANCE_ALL_BODY
+			if(ismagicmirror == 1)
+				AC.name = "Mondain's Skin"
+				AC.flags = APPEARANCE_ALL_BODY|APPEARANCE_SKIN|APPEARANCE_RACE|APPEARANCE_GENDER|APPEARANCE_EYE_COLOR
+			else:
+				AC.name = "SalonPro Nano-Mirror&trade;"
+				AC.flags = APPEARANCE_ALL_BODY
 			ui_users[user] = AC
 		AC.ui_interact(user)
 
