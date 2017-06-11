@@ -1,0 +1,38 @@
+"a" = (/turf/space,/area/space)
+"b" = (/turf/simulated/mineral,/area/space)
+"c" = (/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"d" = (/obj/effect/decal/cleanable/dirt/blackpowder,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"e" = (/obj/effect/decal/cleanable/dirt/blackpowder,/turf/simulated/mineral,/area/space)
+
+(1,1,1) = {"
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaabccaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaa
+aaaaccdbaaaaaaaaaaaaabbbbaaaaaaabaaaaaaa
+aaaababaaaaaaaaaaaaabbdcbaaaaaabbaaaaaaa
+aaaaaaaaaaaaaaaaaaaabbccaaaaaaaabaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaaaaaaabbbbbaaaaaaaaaaaaaaaaaaaaabaaa
+aaaaaaabbbbbbbbccbcaaaaaaaaaaaaaaaaabbaa
+adbaaaaabbbbbbeddccbbbbaaaaaaaaaaaaabbaa
+bebbaaaaaacccccddccbbbbcbaaaaaaaaaaabaaa
+bbcaaaaaddccccccdcccddcccaaaaaaaaaaaaaaa
+aaaaaaaabbdccccccccbccdccaaaaaaaaaaaaaaa
+aaaaaaaabbbbbbdccccccbbccaaaaaaaaaaaaaaa
+aaaaaabbbbbbbbddcccccccccaaaaabbaaaaaaaa
+aaaaaaaabbbbbccccdbbbbcccaaaaabddaaaaaaa
+aaaaaaaaaacccccccdbbbbccaaaaaaabbaaaaaaa
+aaaaaaaaaaacccccccbbccccaaaaaaaaaaaaaaaa
+aaaaaaaaaaaccddcccbbcdcaaaaaaaaaaaaaaaaa
+aaaaaaaaaaabbbddccbcddcaaaaaaaaaaaaaaaaa
+aaaaaaaaaabbbbbddcbccdaaaaaaaaaaaaaaaaaa
+aaaaaaaaaabbbbbdccbccbbaaaaaaaaaaaaaaaaa
+aaaaaaaaabbbbbacccbccbbaaaaaaaabaaaaaaaa
+aaaaaaaaabbbbbaccabaabaaaaaaaaaaaaaaaaaa
+aaaaaaaaaaabaaaaaaaaaaaaaaaabbbaaaaaaaaa
+aaabaaaaaaaaaaaaaaaaaaaaaaaabbbbaaaaaaaa
+abbbaaaaaaaaaaaaaaabbbcaaaaaaabaaaaaaaaa
+abbbaaaaaaaaaaaaaaabdbcaaaaaaaaaaaaaaaaa
+bccaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+"}

@@ -1,0 +1,23 @@
+"a" = (/turf/space,/area/space)
+"b" = (/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"c" = (/turf/simulated/mineral/random/high_chance,/area/space)
+"d" = (/obj/structure/closet/crate,/obj/item/seeds/chili/ice,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"e" = (/turf/simulated/mineral/iron/asteroid,/area/space)
+
+(1,1,1) = {"
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaabcbaaaaaaa
+aaaabcccaaaaaaa
+aaacccdcaaaaaee
+aaaabbcbaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaeaaaa
+aaaaaaaaaeeaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+eaaaaaaaaaaaaaa
+"}

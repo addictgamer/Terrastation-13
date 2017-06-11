@@ -1,0 +1,39 @@
+"a" = (/turf/space,/area/space)
+"b" = (/turf/simulated/mineral,/area/space)
+"c" = (/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"d" = (/turf/simulated/mineral/random/high_chance,/area/space)
+"e" = (/obj/effect/decal/remains/human,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"f" = (/obj/item/weapon/pickaxe/diamond,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+
+(1,1,1) = {"
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aabbbaaaaabbaaabbaabbbaaaaaaaaaaaaabbbaa
+aabbbbbaabbbaabbbbaccbbaaabbaabbaabbcbba
+abbbbbaabbbbabbcbaaccbbabbbcaabcabbccbba
+abbbaaaacbbbabbccaabbbaaabbbaabbabbbccaa
+abbaabcccbbbaabbbaabaaaaaaaaaaacabbbccaa
+aaaabbccaaaaaaaaaaaaaaaaaaaaaaaaabbbbbba
+aaaabbbbaaacccaaaaaaaaacaaaaaaaaaaabbbaa
+aaaaaaaaaaaccccaccccaaaaaaaaacaaaaaaaaaa
+aaabbcaaacaacbbccccccccccaacaaaaaabbbaaa
+aabbccbbaaaccbbcbbbbdddbccaaaaaaabbbbcaa
+aabbcbbaaaacbbbbbbbbdddbccaaaccbaabbbcaa
+abbbbbaaaaacbbbdbbcbbbbbbbaaacbbbabbbbaa
+abbbaaaaaaaacbbbbbcbbbbbbbbaabbbaabbaaaa
+abbaaaaaaacccbbbcccbbbbbbddaabaaaaaaaaaa
+aaaabbbaacccbbbcccccbdbbbddaaaacbbbbbcaa
+aaabbbaaabdddbbcceccbbbbbbaaaabccbbbaaaa
+aabbbbbaabdddbccfccbbbbbbbaaaaabbbbaaaaa
+abbcccbaabbbbbbccccbbbbbccaaaaabbaaaaaaa
+abbcccbaabbbbbbbccbbbbbbccacabbbbcaaaaaa
+abbccbbaacbdddbbbbbbbbccaaaaaabbbbaabcba
+aabbbbbaaabdddbbbbbddbcaaaaaabbbbaaabbba
+aaabbbaaaabdddbbcbbddccaaaaaabbaaaabaaaa
+aaaaaaaaaaaccbccccbcccaaaaacaaaaaabbaaaa
+aaaaaabcaaaaaaaacccccaacaaaaaaaaabbbaaba
+aabbaaccaaaaaaaaaaaaaaaaaaaaacaaabbccaba
+aabbaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+aaaaadbaaabcaaaabbcaaaabcabbbcbabbbcaaaa
+aaaabddaaabbbababccaaaabbaaabbbaabbbaaaa
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+"}

@@ -44,7 +44,7 @@
 
 //barrelfire stolen right out of goon's butthole
 
-/obj/burning_barrel
+/obj/structure/burning_barrel
 	name = "burning barrel"
 	desc = "Strangely cozy, but the flames feel somewhat unnatural. What the hell is burning in there?"
 	icon = 'icons/obj/stationobjs.dmi'
@@ -72,3 +72,95 @@
 A temporary solution will be implemented below. It will be expanded upon/improved/replaced at some point. maybe.*/
 	light_color = "#FF9933"
 	light_range = 4
+
+
+//Void/etc turfs stolenageifieded from goon
+
+
+/turf/simulated/wall/void
+	name = "dense void"
+	icon = 'icons/turf/oldwalls.dmi'
+	icon_state = "darkvoid"
+	desc = "It seems solid..."
+	opacity = 1
+	density = 1
+
+	ex_act()
+		return
+
+	ex_act(severity)
+		return
+
+	blob_act(var/power)
+		return
+
+	attack_hand(mob/user as mob)
+		return
+
+	attackby(obj/item/W as obj, mob/user as mob)
+		return
+
+
+/turf/simulated/floor/void
+	name = "void"
+	icon = 'icons/turf/oldwalls.dmi'
+	icon_state = "void"
+	desc = "A strange shifting void ..."
+
+	ex_act()
+		return
+
+	ex_act(severity)
+		return
+
+	blob_act(var/power)
+		return
+
+	attack_hand(mob/user as mob)
+		return
+
+	attackby(obj/item/W as obj, mob/user as mob)
+		return
+
+/obj/effect/decal/floatingtiles
+	name = "floating tiles"
+	desc = "These tiles are just floating around in the void."
+	opacity = 0
+	density = 0
+	anchored = 1
+	icon = 'icons/turf/oldwalls.dmi'
+	icon_state = "floattiles1"
+
+/area/timewarp/ship
+	name = "Strange Craft"
+	icon_state = "shuttle"
+	//RL_Lighting = 1
+	requires_power = 0
+	//ambientSound = 'sound/ambience/timeship_amb2.ogg' //gotta go find this var later and find out what it actually is
+/*
+	New()
+		..()
+		fxlist = timewarp_interior_sounds*/ //what even
+
+/turf/simulated/floor/void/timewarp
+	name = "time-space breach"
+	desc = "Uhh.  UHHHH.  uh."
+	//RL_Ignore = 0
+	icon_state = "timehole"
+
+/obj/effect/decal/timeplug
+	name = "time-space breach"
+	desc = "Uhh.  UHHH.  uh!!"
+	icon = 'icons/turf/oldwalls.dmi'
+	icon_state = "timehole_edge"
+	anchored = 1
+
+//this is not stolen stuff
+/obj/effect/decal/anus
+	name = "LZ's Butt"
+	desc = "This appears to be what has been left behind after LZ's poot fractured spacetime. This ugly scar on reality appears otherwise immovable and will likely persits in the depths of space until the end of time."
+	icon = 'icons/obj/objects.dmi'
+	icon_state = "anom"
+	anchored = 1
+	opacity = 0
+	density = 1

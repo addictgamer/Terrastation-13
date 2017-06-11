@@ -1,0 +1,28 @@
+"a" = (/turf/space,/area/space)
+"b" = (/obj/structure/lattice,/turf/space,/area/space)
+"c" = (/turf/simulated/floor/plating/airless,/area/space)
+"d" = (/turf/simulated/wall/rust,/area/space)
+"e" = (/turf/simulated/mineral/iron/asteroid,/area/space)
+"f" = (/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"g" = (/obj/effect/spawner/lootdrop/crate_spawner,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"h" = (/turf/simulated/mineral,/area/space)
+"i" = (/turf/simulated/mineral/random/high_chance_clown,/area/space)
+"j" = (/turf/simulated/mineral/random/high_chance,/area/space)
+
+(1,1,1) = {"
+aaaaaaaaaaaaaaa
+abaaaaaaaaaaaaa
+abbcaaaaaaaaaaa
+aadcbbbabbaaaaa
+aaddcbaabbbbbaa
+aaaabbaaaabbaaa
+aaaaaaaaaabbbaa
+aaaaaaaaaabaaaa
+aaaeeefaaabaaaa
+aaeefgefaaaaaaa
+aaefhifeaaaaaaa
+aaefjhfeaaaaaaa
+aafeffeeaaaaaaa
+aaafeeaaaaaaaaa
+aaaaaaaaaaaaaaa
+"}

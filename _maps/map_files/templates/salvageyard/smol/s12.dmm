@@ -1,0 +1,21 @@
+"a" = (/turf/space,/area/space)
+"b" = (/turf/simulated/mineral/iron/asteroid,/area/space)
+"c" = (/obj/effect/spawner/lootdrop/crate_spawner,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+
+(1,1,1) = {"
+aaaaaaaaaaaaaaa
+aabbbaaaaaaaaaa
+aabbbbaaaaaaaaa
+aabbbbbbaaaaaaa
+aaaabbbbaaaaaaa
+aaaabaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aabbbbaaaaaaaaa
+abbcbbaaaaaabaa
+abbcbaaaaaabbaa
+aabbbaaaaaaabba
+aaaaaaaaaaaaaaa
+"}

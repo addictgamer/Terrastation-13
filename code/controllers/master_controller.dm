@@ -55,7 +55,7 @@ var/global/pipe_processing_killed = 0
 	if(!config.disable_space_ruins)
 		var/timer = start_watch()
 		log_startup_progress("Creating random space levels...")
-		seedRuins(level_name_to_num(EMPTY_AREA), rand(0, 3), /area/space, space_ruins_templates)
+		seedRuins(level_name_to_num(EMPTY_AREA), rand(2, 3), /area/space, space_ruins_templates)
 		log_startup_progress("Loaded random space levels in [stop_watch(timer)]s.")
 
 		// We'll keep this around for the time when we finally expunge all
@@ -65,6 +65,13 @@ var/global/pipe_processing_killed = 0
 		// for(var/i = 1, i <= num_extra_space, i++)
 		// 	var/zlev = space_manager.add_new_zlevel("[EMPTY_AREA] #[i]", linkage = CROSSLINKED)
 		// 	seedRuins(zlev, rand(0, 3), /area/space, space_ruins_templates)
+
+	//BEGIN SHIT LZ ADDED TO THIS FILE FOR SALVAGE YARD HORSESHITTERY
+	log_startup_progress("Creating random salvage shit...")
+	seedMids(level_name_to_num(DERELICT), rand(3, 4), /area/salvage/yard/genarea, salvage_yard_Mtemplates)
+	seedSmols(level_name_to_num(DERELICT), rand(13, 15), /area/salvage/yard/genarea, salvage_yard_Stemplates)
+	log_startup_progress("Loaded junk in probably a relative lot of time all things considered.")
+	//END SAID SHIT LZ DID
 
 	space_manager.do_transition_setup()
 

@@ -1,0 +1,45 @@
+"a" = (/turf/space,/area/space)
+"b" = (/obj/structure/shuttle/engine/propulsion{dir = 1},/turf/space,/area/space)
+"c" = (/obj/structure/lattice,/turf/space,/area/space)
+"d" = (/obj/item/weapon/shard,/turf/space,/area/space)
+"e" = (/obj/structure/shuttle/engine/heater{tag = "icon-heater (NORTH)"; icon_state = "heater"; dir = 1},/turf/simulated/floor/plating,/area/space)
+"f" = (/obj/effect/spawner/lootdrop/crate_spawner,/turf/space,/area/space)
+"g" = (/obj/item/weapon/shard{icon_state = "small"},/turf/space,/area/space)
+"h" = (/obj/structure/shuttle/engine/heater{tag = "icon-heater (NORTH)"; icon_state = "heater"; dir = 1},/obj/structure/window/reinforced,/turf/simulated/floor/plating,/area/space)
+"i" = (/turf/simulated/floor/plating,/area/space)
+"j" = (/obj/effect/spawner/lootdrop/crate_spawner,/turf/simulated/shuttle/floor{icon_state = "floor4"},/area/space)
+"k" = (/turf/simulated/shuttle/floor{icon_state = "floor4"},/turf/simulated/shuttle/wall{dir = 8; icon_state = "diagonalWall3"},/area/space)
+"l" = (/turf/simulated/shuttle/wall{dir = 4; icon_state = "diagonalWall3"},/area/space)
+"m" = (/obj/item/weapon/shard,/turf/simulated/floor/plating/airless,/area/space)
+"n" = (/turf/simulated/shuttle/floor{icon_state = "floor4"},/area/space)
+"o" = (/turf/simulated/shuttle/wall{dir = 4; icon_state = "wall3"},/area/space)
+"p" = (/turf/simulated/shuttle/wall{icon_state = "diagonalWall3"},/area/space)
+"q" = (/turf/simulated/shuttle/floor{icon_state = "floor4"},/turf/simulated/shuttle/wall{dir = 1; icon_state = "diagonalWall3"},/area/space)
+"r" = (/obj/item/weapon/storage/box/syndie_kit/space,/turf/simulated/shuttle/floor{icon_state = "floor4"},/area/space)
+"s" = (/turf/simulated/mineral/asteroid,/turf/simulated/shuttle/wall{icon_state = "diagonalWall3"},/area/space)
+"t" = (/turf/simulated/mineral/asteroid,/area/space)
+"u" = (/turf/simulated/floor/plating/airless{icon_state = "asteroidplating"; tag = ""},/area/space)
+"v" = (/obj/item/weapon/shard,/turf/simulated/shuttle/floor{icon_state = "floor4"},/area/space)
+"w" = (/obj/structure/lattice,/obj/structure/landing_beacon/antag_r,/turf/space,/area/space)
+"x" = (/obj/item/weapon/shard{icon_state = "medium"},/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"y" = (/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"z" = (/obj/item/weapon/storage/box/dragonsbreath,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"A" = (/obj/item/weapon/shard{icon_state = "small"},/turf/simulated/floor/plating/airless/asteroid,/area/space)
+
+(1,1,1) = {"
+aaaaaaaaaaaaaaa
+aaaaaaaaaaaaaaa
+aaaabcaaaadaaca
+aaaceaaabaaaaaa
+aaaaaaacecaacaa
+aafagaaaagabcaa
+aagaaacaccchiaa
+aaaaacciiijklaa
+aaccaacmnnolaaa
+apqncaonrnoaaaa
+aasotsounvolawa
+aaattttxuuotaaa
+aataattyxzyttaa
+aattaatyyAttaaa
+aaaaaaaaaaaaaaa
+"}

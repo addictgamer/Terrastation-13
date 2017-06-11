@@ -16,5 +16,5 @@
 	icon_state = "s_yard"
 
 /obj/structure/landing_beacon/antag_r
-	desc = "That... is most certainly a not-standard-issue beacon that shows signs of heavy use. How did it get there?"
+	desc = "That... is most certainly NOT a beacon of Nanotrasen origin. It also looks incredibly worn. How did it get there?"
 	icon_state = "nefarious_r"

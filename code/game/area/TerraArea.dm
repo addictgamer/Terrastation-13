@@ -203,6 +203,10 @@
 	name = "Hazard zone"
 	icon_state = "danger"
 
+/area/salvage/yard/genarea
+	name = "template spawn area"
+	icon_state = "junk"
+
 /area/salvage/ashut/m
 	name = "Abandoned Shuttle"
 	icon_state = "shuttlered2"
