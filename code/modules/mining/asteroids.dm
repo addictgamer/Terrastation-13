@@ -29,3 +29,27 @@
 	//and everything should inherit
 	//why am I still typing
 	//pignut
+
+//why the fuck are these all different hnng
+/obj/effect/decal/wall
+	name = "rock"
+	icon = 'icons/turf/walls.dmi'
+	icon_state = "rock_side_s"
+	desc = "watch out for LANDSLIDEs lol"
+	anchored = 1
+	opacity = 0
+	density = 0
+/obj/effect/decal/wall/hz
+	icon = 'icons/turf/oldwalls.dmi'
+/obj/effect/decal/wall/n
+	icon_state = "rock_side_n"
+/obj/effect/decal/wall/n/hz
+	icon = 'icons/turf/oldwalls.dmi'
+/obj/effect/decal/wall/e
+	icon_state = "rock_side_e"
+/obj/effect/decal/wall/e/hz
+	icon = 'icons/turf/oldwalls.dmi'
+/obj/effect/decal/wall/w
+	icon_state = "rock_side_w"
+/obj/effect/decal/wall/w/hz
+	icon = 'icons/turf/oldwalls.dmi'

@@ -140,7 +140,7 @@ A temporary solution will be implemented below. It will be expanded upon/improve
 /*
 	New()
 		..()
-		fxlist = timewarp_interior_sounds*/ //what even
+		fxlist = timewarp_interior_sounds*/ //what even does this do in goon code
 
 /turf/simulated/floor/void/timewarp
 	name = "time-space breach"
@@ -158,7 +158,7 @@ A temporary solution will be implemented below. It will be expanded upon/improve
 //this is not stolen stuff
 /obj/effect/decal/anus
 	name = "LZ's Butt"
-	desc = "This appears to be what has been left behind after LZ's poot fractured spacetime. This ugly scar on reality appears otherwise immovable and will likely persits in the depths of space until the end of time."
+	desc = "This appears to be what has been left behind after LZ's poot fractured spacetime. This ugly scar on reality appears otherwise immovable and will likely persist in the depths of space until the end of time."
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "anom"
 	anchored = 1
