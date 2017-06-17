@@ -91,14 +91,14 @@
 	suffix = "s02.dmm"
 	name = "Jank 1"
 	description = "might be something useful there. who knows"
-	allow_duplicates = TRUE
+	//allow_duplicates = TRUE //NEVERMIND
 
 /datum/map_template/junk/smol/s03
 	id = "jank2"
 	suffix = "s03.dmm"
 	name = "Jank 2"
 	description = "doesn't seem worth it, really."
-	allow_duplicates = TRUE
+	//allow_duplicates = TRUE //NEVERMIND
 
 /datum/map_template/junk/smol/s04
 	id = "jank3"
