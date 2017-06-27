@@ -4,6 +4,7 @@
 "d" = (/turf/simulated/floor/plating/airless,/area/space)
 "e" = (/obj/structure/girder,/turf/simulated/floor/plating/airless,/area/space)
 "f" = (/mob/living/simple_animal/hostile/melterling/range,/turf/simulated/floor/plating/airless,/area/space)
+"g" = (/obj/item/seeds/apple{desc = "These seeds grow into apple trees. At least, you would assume they do, but given that these are labelled in such a way and the fact it's guarded so well leads you to have a few suspicions."; name = "God Apples"; potency = 100; weed_chance = 0; weed_rate = 0; yield = 10},/mob/living/simple_animal/hostile/m_hoardling,/turf/simulated/floor/plating/airless,/area/space)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaa
@@ -17,7 +18,7 @@ aaaabbbcddbbaaa
 aaabbdddddbbaaa
 aabecffdddbbaaa
 aabeffffcbbaaaa
-aabeffffdbaaaaa
+aabefgffdbaaaaa
 aaaccccebbaaaaa
 aaaaabbbbaaaaaa
 aaaaaaaaaaaaaaa

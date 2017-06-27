@@ -2,6 +2,8 @@
 "b" = (/turf/simulated/mineral,/area/space)
 "c" = (/turf/simulated/mineral/random/high_chance,/area/space)
 "d" = (/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"e" = (/obj/effect/spawner/lootdrop/maintenance,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"f" = (/obj/effect/spawner/lootdrop/trade_sol_rare,/turf/simulated/floor/plating/airless/asteroid,/area/space)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaa
@@ -9,9 +11,9 @@ aaaaaaaaabbbaaa
 aaaaaaaacbbbbaa
 aaaaaacbbbbddaa
 aaaaacbbbbdaaaa
-aaaaccbbdddaaaa
+aaaaccbbeddaaaa
 ababbbbbdddaaaa
-abbbbbddddaaaaa
+abbbbbfdddaaaaa
 abbbbcdddaaaaaa
 aabbdddddaaaaaa
 aaabddaaaaaaaaa

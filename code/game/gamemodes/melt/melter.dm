@@ -137,3 +137,34 @@
 		ban(target)
 
 //motherfucker will torso flail your bitch ass
+
+
+//another mob idea I had; this one is going here because it's remarkably similar to the avatar of meltion even though it's arguably not a melterling
+
+/mob/living/simple_animal/hostile/m_hoardling
+	name = "Melted Hoardling"
+	desc = "Effectively some kind of space-Gollum, this skinchanging beast usually finds somewhere secluded to guard some valuable object it has fixated on. This particular one hangs around melterlings."
+	icon = 'code/game/gamemodes/melt/melter.dmi'
+	icon_state = "hoardling" //PLACEHOLDER FOR NOW; THIS WILL CHANGE EVENTUALLY ONCE I GET HOARDLINGS MORE FLASHED OUT.
+	icon_living = "hoardling"//THIS WAS A SPUR OF THE MOMENT IDEA AND I DIDN'T PLAN MUCH YET FML RIGHT
+	health = 200
+	maxHealth = 200
+	melee_damage_lower = 5
+	melee_damage_upper = 35
+	speed = 0
+	ranged = 1
+	attacktext = "banlances"
+	attack_sound = 'sound/weapons/Kenetic_accel.ogg'
+	projectilesound = 'sound/weapons/marauder.ogg'
+	projectiletype = /obj/item/projectile/heavymelt
+	faction = list("melter", "hoardling")
+	check_friendly_fire = 1
+	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
+	minbodytemp = 0
+	speak_emote = list("murmurs")
+	gold_core_spawnable = CHEM_MOB_SPAWN_HOSTILE
+	loot = list(/obj/effect/gibspawner/human)
+	deathmessage = "melts!"
+	del_on_death = 1
+	anchored = 1
+	stop_automated_movement = 1
