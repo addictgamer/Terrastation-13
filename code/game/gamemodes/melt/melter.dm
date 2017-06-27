@@ -151,7 +151,7 @@
 	maxHealth = 200
 	melee_damage_lower = 5
 	melee_damage_upper = 35
-	speed = 0
+	speed = 3
 	ranged = 1
 	attacktext = "banlances"
 	attack_sound = 'sound/weapons/Kenetic_accel.ogg'
@@ -167,4 +167,15 @@
 	deathmessage = "melts!"
 	del_on_death = 1
 	anchored = 1
-	stop_automated_movement = 1
+	wander = 0
+	minimum_distance = 9
+	move_to_delay = 40
+
+/mob/living/simple_animal/hostile/m_hoardling/proc/ban(mob/living/target as mob)
+	var/atom/throw_target = get_edge_target_turf(target, get_dir(src, get_step_away(target, src)))
+	target.throw_at(throw_target, 200, 4)
+
+/mob/living/simple_animal/hostile/m_hoardling/AttackingTarget()
+	..()
+	if(isliving(target))
+		ban(target)
