@@ -202,6 +202,7 @@
 /area/salvage/yard/hidanger
 	name = "Hazard zone"
 	icon_state = "danger"
+	ambientsounds = list('sound/ambience/ahead_slow.ogg','sound/ambience/deathclub.ogg')
 
 /area/salvage/yard/hidanger/synd
 	name = "Syndicate base"

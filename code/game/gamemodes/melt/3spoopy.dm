@@ -147,6 +147,7 @@ A temporary solution will be implemented below. It will be expanded upon/improve
 	desc = "Uhh.  UHHHH.  uh."
 	//RL_Ignore = 0
 	icon_state = "timehole"
+	light_range = 1
 
 /obj/effect/decal/timeplug
 	name = "time-space breach"
