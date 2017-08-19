@@ -1,5 +1,3 @@
-//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
-
 /obj/machinery/computer/prisoner
 	name = "prisoner management console"
 	icon = 'icons/obj/computer.dmi'
@@ -19,6 +17,14 @@
 
 /obj/machinery/computer/prisoner/attack_ai(var/mob/user as mob)
 	return src.attack_hand(user)
+
+/obj/machinery/computer/prisoner/New()
+ 	prisoncomputer_list += src
+ 	return ..()
+
+/obj/machinery/computer/prisoner/Destroy()
+ 	prisoncomputer_list -= src
+ 	return ..()
 
 /obj/machinery/computer/prisoner/attack_hand(var/mob/user as mob)
 	if(..())

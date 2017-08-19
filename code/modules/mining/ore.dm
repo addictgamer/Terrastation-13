@@ -153,7 +153,7 @@
 	icon = 'icons/obj/mining.dmi'
 	icon_state = "Gibtonite ore"
 	item_state = "Gibtonite ore"
-	w_class = 4
+	w_class = WEIGHT_CLASS_BULKY
 	throw_range = 0
 	anchored = 1 //Forces people to carry it by hand, no pulling!
 	var/primed = 0
@@ -252,10 +252,3 @@
 
 /obj/item/weapon/ore/ex_act()
 	return
-
-/obj/item/weapon/ore/attackby(obj/item/weapon/W as obj, mob/user as mob)
-	if(istype(W,/obj/item/device/core_sampler))
-		var/obj/item/device/core_sampler/C = W
-		C.sample_item(src, user)
-	else
-		return ..()

@@ -3,11 +3,10 @@
 	desc = "An arcane weapon wielded by the followers of a cult."
 	icon_state = "cultblade"
 	item_state = "cultblade"
-	w_class = 4
+	w_class = WEIGHT_CLASS_BULKY
 	force = 30
 	throwforce = 10
 	sharp = 1
-	edge = 1
 	hitsound = 'sound/weapons/bladeslice.ogg'
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 
@@ -38,18 +37,20 @@
 	desc = "A strange dagger said to be used by sinister groups for \"preparing\" a corpse before sacrificing it to their dark gods."
 	icon = 'icons/obj/wizard.dmi'
 	icon_state = "render"
-	w_class = 2
+	w_class = WEIGHT_CLASS_SMALL
 	force = 15
 	throwforce = 25
+	embed_chance = 75
 	var/cooldown = 0
 
-/obj/item/weapon/melee/cultblade/dagger/afterattack(mob/living/target as mob, mob/living/carbon/human/user as mob)
+/obj/item/weapon/melee/cultblade/dagger/afterattack(atom/target, mob/living/carbon/human/user)
 	..()
-	var/mob/living/carbon/human/bleeder = target
-	if(!(cooldown > world.time) && ((bleeder.stat != DEAD) && !(bleeder.species.flags & NO_BLOOD)))
-		user.visible_message("<span class='danger'>The runes on the blade absorb the blood of [target]!</span>")
-		bleeder.drip(5000)
-		cooldown = world.time + 2400
+	if(ishuman(target))
+		var/mob/living/carbon/human/H = target
+		if(!(cooldown > world.time) && ((H.stat != DEAD) && !(NO_BLOOD in H.species.species_traits)))
+			user.visible_message("<span class='danger'>The runes on the blade absorb the blood of [H]!</span>")
+			H.bleed(5000)
+			cooldown = world.time + 2400
 
 /obj/item/weapon/restraints/legcuffs/bola/cult
 	name = "runed bola"
@@ -123,7 +124,7 @@
 	icon_state = "cult_armour"
 	item_state = "cult_armour"
 	desc = "A bulky suit of armour, bristling with spikes. It looks space proof."
-	w_class = 3
+	w_class = WEIGHT_CLASS_NORMAL
 	allowed = list(/obj/item/weapon/tome,/obj/item/weapon/melee/cultblade,/obj/item/weapon/tank)
 	slowdown = 1
 	armor = list(melee = 60, bullet = 50, laser = 30, energy = 15, bomb = 30, bio = 30, rad = 30)
@@ -133,7 +134,7 @@
 	desc = "Empowered garb which creates a powerful shield around the user."
 	icon_state = "cult_armour"
 	item_state = "cult_armour"
-	w_class = 4
+	w_class = WEIGHT_CLASS_BULKY
 	armor = list(melee = 50, bullet = 40, laser = 50, energy = 30, bomb = 50, bio = 30, rad = 30)
 	body_parts_covered = UPPER_TORSO|LOWER_TORSO|LEGS|ARMS
 	allowed = list(/obj/item/weapon/tome,/obj/item/weapon/melee/cultblade)

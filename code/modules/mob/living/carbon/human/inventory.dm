@@ -24,8 +24,7 @@
 
 /mob/living/carbon/human/proc/has_organ(name)
 	var/obj/item/organ/external/O = bodyparts_by_name[name]
-
-	return (O && !(O.status & ORGAN_DESTROYED)  && !O.is_stump())
+	return O
 
 /mob/living/carbon/human/proc/has_organ_for_slot(slot)
 	switch(slot)
@@ -151,7 +150,7 @@
 			update_hair()	//rebuild hair
 			update_fhair()
 			update_head_accessory()
-		if(internal)
+		if(internal && !get_organ_slot("breathing_tube"))
 			internal = null
 			update_internals_hud_icon(0)
 		wear_mask_update(I, toggle_off = FALSE)
@@ -546,7 +545,7 @@
 				return 0
 			if(I.slot_flags & SLOT_DENYPOCKET)
 				return
-			if(I.w_class <= 2 || (I.slot_flags & SLOT_POCKET))
+			if(I.w_class <= WEIGHT_CLASS_SMALL || (I.slot_flags & SLOT_POCKET))
 				return 1
 		if(slot_r_store)
 			if(I.flags & NODROP)
@@ -559,7 +558,7 @@
 				return 0
 			if(I.slot_flags & SLOT_DENYPOCKET)
 				return 0
-			if(I.w_class <= 2 || (I.slot_flags & SLOT_POCKET))
+			if(I.w_class <= WEIGHT_CLASS_SMALL || (I.slot_flags & SLOT_POCKET))
 				return 1
 			return 0
 		if(slot_s_store)
@@ -575,7 +574,7 @@
 				if(!disable_warning)
 					to_chat(src, "You somehow have a suit with no defined allowed items for suit storage, stop that.")
 				return 0
-			if(I.w_class > 4)
+			if(I.w_class > WEIGHT_CLASS_BULKY)
 				if(!disable_warning)
 					to_chat(src, "The [name] is too big to attach.")
 				return 0

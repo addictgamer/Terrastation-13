@@ -43,7 +43,7 @@
 	desc = "A peel from a banana."
 	icon_state = "banana_peel"
 	item_state = "banana_peel"
-	w_class = 1
+	w_class = WEIGHT_CLASS_TINY
 	throwforce = 0
 	throw_speed = 3
 	throw_range = 7
@@ -113,9 +113,12 @@
 /obj/item/weapon/grown/bananapeel/specialpeel     //used by /obj/item/clothing/shoes/clown_shoes/banana_shoes
 	name = "synthesized banana peel"
 	desc = "A synthetic banana peel."
+	trip_stun = 2
+	trip_weaken = 2
+	trip_chance = 100
+	trip_walksafe = FALSE
+	trip_verb = TV_SLIP
 
-/obj/item/weapon/grown/bananapeel/specialpeel/Crossed(AM)
-	if(iscarbon(AM))
-		var/mob/living/carbon/carbon = AM
-		if(carbon.slip("[src]", 2, 2))
-			qdel(src)
+/obj/item/weapon/grown/bananapeel/specialpeel/on_trip(mob/living/carbon/human/H)
+	if(..())
+		qdel(src)

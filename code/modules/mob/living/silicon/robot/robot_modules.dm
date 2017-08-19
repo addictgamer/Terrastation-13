@@ -32,9 +32,7 @@
 	emag.name = "Placeholder Emag Item"
 
 /obj/item/weapon/robot_module/Destroy()
-	for(var/module in modules)
-		qdel(module)
-	modules.Cut()
+	QDEL_LIST(modules)
 	QDEL_NULL(emag)
 	return ..()
 
@@ -257,8 +255,9 @@
 	modules += new /obj/item/weapon/reagent_containers/food/condiment/enzyme(src)
 	modules += new /obj/item/weapon/pen(src)
 	modules += new /obj/item/weapon/razor(src)
-	modules += new /obj/item/device/violin(src)
-	modules += new /obj/item/device/guitar(src)
+	modules += new /obj/item/device/instrument/violin(src)
+	modules += new /obj/item/device/instrument/guitar(src)
+	modules += new /obj/item/device/instrument/eguitar(src)
 
 	var/obj/item/weapon/rsf/M = new /obj/item/weapon/rsf(src)
 	M.matter = 30

@@ -3,8 +3,8 @@
 	desc = "A cube of shining metal, four inches to a side and covered in shallow grooves."
 	icon = 'icons/obj/assemblies.dmi'
 	icon_state = "posibrain"
-	w_class = 3
-	origin_tech = "biotech=3;programming=2"
+	w_class = WEIGHT_CLASS_NORMAL
+	origin_tech = "biotech=3;programming=3;plasmatech=2"
 
 	var/searching = 0
 	var/askDelay = 10 * 60 * 1
@@ -25,19 +25,21 @@
 		to_chat(user, "<span class='notice'>You carefully locate the manual activation switch and start the positronic brain's boot process.</span>")
 		icon_state = "posibrain-searching"
 		ghost_volunteers.Cut()
-		src.searching = 1
-		src.request_player()
+		searching = 1
+		request_player()
 		spawn(600)
 			if(ghost_volunteers.len)
-				var/mob/dead/observer/O = pick(ghost_volunteers)
-				if(check_observer(O))
+				var/mob/dead/observer/O
+				while(!istype(O) && ghost_volunteers.len)
+					O = pick_n_take(ghost_volunteers)
+				if(istype(O) && check_observer(O))
 					transfer_personality(O)
 			reset_search()
 	else
 		silenced = !silenced
 		to_chat(user, "<span class='notice'>You toggle the speaker [silenced ? "off" : "on"].</span>")
 		if(brainmob && brainmob.key)
-			to_chat(brainmob, "<span class='warning'>Your internal speaker has been toggled [silenced ? "off" : "on"].</span>")		
+			to_chat(brainmob, "<span class='warning'>Your internal speaker has been toggled [silenced ? "off" : "on"].</span>")
 
 /obj/item/device/mmi/posibrain/proc/request_player()
 	for(var/mob/dead/observer/O in player_list)

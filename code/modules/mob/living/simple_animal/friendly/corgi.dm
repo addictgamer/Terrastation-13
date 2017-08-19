@@ -22,12 +22,13 @@
 	see_in_dark = 5
 	childtype = /mob/living/simple_animal/pet/corgi/puppy
 	simplespecies = /mob/living/simple_animal/pet/corgi
+	gold_core_spawnable = CHEM_MOB_SPAWN_FRIENDLY
 	var/shaved = 0
 	var/obj/item/inventory_head
 	var/obj/item/inventory_back
 	var/facehugger
 	var/default_atmos_requirements = 0
-	gold_core_spawnable = CHEM_MOB_SPAWN_FRIENDLY
+	var/last_eaten = 0
 
 /mob/living/simple_animal/pet/corgi/New()
 	..()
@@ -470,41 +471,6 @@
 	name = "Corgi meat"
 	desc = "Tastes like... well you know..."
 
-/mob/living/simple_animal/pet/corgi/Ian/Bump(atom/movable/AM as mob|obj, yes)
-
-	spawn( 0 )
-		if((!( yes ) || now_pushing))
-			return
-		now_pushing = 1
-		if(ismob(AM))
-			var/mob/tmob = AM
-			if(istype(tmob, /mob/living/carbon/human) && (FAT in tmob.mutations))
-				if(prob(70))
-					to_chat(src, "<span class='danger'>You fail to push [tmob]'s fat ass out of the way.</span>")
-					now_pushing = 0
-					return
-			if(!(tmob.status_flags & CANPUSH))
-				now_pushing = 0
-				return
-
-			tmob.LAssailant = src
-		now_pushing = 0
-		..()
-		if(!( istype(AM, /atom/movable) ))
-			return
-		if(!( now_pushing ))
-			now_pushing = 1
-			if(!( AM.anchored ))
-				var/t = get_dir(src, AM)
-				if(istype(AM, /obj/structure/window/full))
-					for(var/obj/structure/window/win in get_step(AM,t))
-						now_pushing = 0
-						return
-				step(AM, t)
-			now_pushing = null
-		return
-	return
-
 /mob/living/simple_animal/pet/corgi/regenerate_icons()
 	overlays.Cut()
 	if(inventory_head)
@@ -592,8 +558,8 @@
 /mob/living/simple_animal/pet/corgi/attack_hand(mob/living/carbon/human/M)
 	. = ..()
 	switch(M.a_intent)
-		if(I_HELP)	wuv(1,M)
-		if(I_HARM)	wuv(-1,M)
+		if(INTENT_HELP)	wuv(1,M)
+		if(INTENT_HARM)	wuv(-1,M)
 
 /mob/living/simple_animal/pet/corgi/proc/wuv(change, mob/M)
 	if(change)
