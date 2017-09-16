@@ -2,8 +2,9 @@
 "b" = (/turf/simulated/mineral,/area/space)
 "c" = (/turf/simulated/floor/plating/airless/asteroid,/area/space)
 "d" = (/turf/simulated/mineral/random/high_chance,/area/space)
-"e" = (/obj/effect/decal/remains/human,/turf/simulated/floor/plating/airless/asteroid,/area/space)
-"f" = (/obj/item/weapon/pickaxe/diamond,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"e" = (/obj/machinery/artifact,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"f" = (/obj/effect/decal/remains/human,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"g" = (/obj/item/weapon/pickaxe/diamond,/turf/simulated/floor/plating/airless/asteroid,/area/space)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -21,9 +22,9 @@ aabbcbbaaaacbbbbbbbbdddbccaaaccbaabbbcaa
 abbbbbaaaaacbbbdbbcbbbbbbbaaacbbbabbbbaa
 abbbaaaaaaaacbbbbbcbbbbbbbbaabbbaabbaaaa
 abbaaaaaaacccbbbcccbbbbbbddaabaaaaaaaaaa
-aaaabbbaacccbbbcccccbdbbbddaaaacbbbbbcaa
-aaabbbaaabdddbbcceccbbbbbbaaaabccbbbaaaa
-aabbbbbaabdddbccfccbbbbbbbaaaaabbbbaaaaa
+aaaabbbaacccbbbcecccbdbbbddaaaacbbbbbcaa
+aaabbbaaabdddbbccfccbbbbbbaaaabccbbbaaaa
+aabbbbbaabdddbccgccbbbbbbbaaaaabbbbaaaaa
 abbcccbaabbbbbbccccbbbbbccaaaaabbaaaaaaa
 abbcccbaabbbbbbbccbbbbbbccacabbbbcaaaaaa
 abbccbbaacbdddbbbbbbbbccaaaaaabbbbaabcba
