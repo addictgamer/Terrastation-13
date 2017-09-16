@@ -1,14 +1,33 @@
 //shit I stole from other places that adds probably cosmetic stuff that I felt needed be separate from the 3spoopy file
 
-//solarium shit
+//glow effects - idea taken from goon
+//implemented via niggerriggery and not how they did. Well, obviously not how they did; this codebase is different and shit. It's not the equivalent in our codebase is what I mean.
+/obj/effect/decal/glow
+	name = "glowy shit"
+	desc = "It's glowy."
+	light_color = "#111111"
+	light_range = 5
+	anchored = 1
+	opacity = 0
+	density = 0
+/obj/effect/decal/glow/time //'timewarp' effect - Solid white; the light blue I originally used caused aesthetic issues. >:C
+	light_color = "#FFFFFF"
+/obj/effect/decal/glow/void //'void' effect - purple as fuk
+	light_color = "#8000BA"
+/obj/effect/decal/glow/sun //Sol effect: the pre-existing niggerriggery with the Sol object emitting its own light will remain because why not
+	light_color = "#FF9933"
+
+
+//solarium shit - obviously from goon
 //aka stuff I ported/stole/wtvr because I was going to put the solarium into the game
+//doesn't do anything yet
 /obj/effect/the_sun
 	name = "Sol"
 	desc = "It's goddamn bright. Should you even be looking at this?"
 	icon = 'icons/effects/160x160goon.dmi'
 	icon_state = "sun_ripple"
 	//layer = EFFECTS_LAYER_UNDER_4 //ok but why tho | also wot
-	//luminosity = 5 //wait do I need this
+	//luminosity = 5 //wait do I need this | just checked; it doesn't appear I do so fuck it
 	light_color = "#FF9933"
 	light_range = 10
 

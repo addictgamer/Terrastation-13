@@ -147,7 +147,7 @@ A temporary solution will be implemented below. It will be expanded upon/improve
 	desc = "Uhh.  UHHHH.  uh."
 	//RL_Ignore = 0
 	icon_state = "timehole"
-	light_range = 1
+
 
 /obj/effect/decal/timeplug
 	name = "time-space breach"
@@ -155,6 +155,14 @@ A temporary solution will be implemented below. It will be expanded upon/improve
 	icon = 'icons/turf/oldwalls.dmi'
 	icon_state = "timehole_edge"
 	anchored = 1
+
+//piggies
+/turf/simulated/floor/void/airless
+	oxygen = 0.01
+	nitrogen = 0.01
+/turf/simulated/floor/void/timewarp/airless
+	oxygen = 0.01
+	nitrogen = 0.01
 
 //this is not stolen stuff
 /obj/effect/decal/anus
@@ -165,3 +173,5 @@ A temporary solution will be implemented below. It will be expanded upon/improve
 	anchored = 1
 	opacity = 0
 	density = 1
+	light_color = "#000000"
+	light_range = 3
