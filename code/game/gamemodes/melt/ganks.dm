@@ -66,3 +66,26 @@
 	name = "Solarium"
 	icon_state = "yellow"
 	requires_power = 0
+
+
+////Martian Turf stuff that I stole from goon//////////////
+//Full functionality not included; this isn't meant to be destroyed and have a health tracker like it is in goon.
+//Not for what I'm gonna use it for, anyway.
+/turf/simulated/martian
+	name = "martian"
+	icon = 'icons/turf/martian.dmi'
+	//thermal_conductivity = 0.05 //yeah not using this
+	//heat_capacity = 0 //or this
+
+/turf/simulated/martian/floor
+	name = "organic floor"
+	icon_state = "floor1"
+
+/turf/simulated/martian/wall
+	name = "organic wall"
+	icon_state = "wall1"
+	opacity = 1
+	density = 1
+	blocks_air = 1
+/turf/simulated/martian/wall/angle
+	icon_state = "diagonalWall"

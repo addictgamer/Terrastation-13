@@ -234,4 +234,8 @@
 	icon_state = "honk"
 	ambientsounds = list('sound/music/atmosdel.ogg')
 
+/area/maintenance/pointless/dafuq //OR IS IT?!?!?!?!?
+	name = "Da fuq"
+	ambientsounds = list('sound/ambience/ahead_slow.ogg')
+
 //butts

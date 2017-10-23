@@ -175,3 +175,55 @@ A temporary solution will be implemented below. It will be expanded upon/improve
 	density = 1
 	light_color = "#000000"
 	light_range = 3
+/* //attempting to build up a method to shoost the fugger to a landmark or summat
+/obj/effect/decal/anus/attack_hand(mob/user)
+	teleport(user)
+/obj/effect/decal/anus/teleport(atom/movable/M) //stolen from wormhole, and then modified
+	if(istype(M, /obj/effect))	//sparks don't teleport
+		return
+	if(M.anchored && istype(M, /obj/mecha))
+		return
+	if(istype(M, /mob/living/simple_animal)) //No critters are allowed through this; players only.
+		return
+
+	if(istype(M, /atom/movable))
+		var/turf/target
+		//<INSERT CODE HERE THAT FINDS THE ANUS LANDMARK INSIDE MY BUTT AND SETS target TO THE TURF IT'S ON>
+		if(!target)	return
+		M.forceMove(target) //forcemove instead of do_teleport because fuck bitches get money smoke weed hail satan etc
+*/
+
+//Insert get out here
+/*
+/obj/effect/decal/froge
+	name = "Get Out frog"
+	desc = "It wants you to get out."
+	icon = //Put some shit here pls
+	icon_state = "getout"
+	anchored = 1
+	opacity = 0
+	density = 1
+	light_range = 3
+
+/obj/effect/decal/froge/attack_hand(mob/user)
+	teleport(user)
+/obj/effect/decal/froge/teleport(atom/movable/M) //stolen from the anus hole
+	if(istype(M, /obj/effect))	//sparks don't teleport
+		return
+	if(M.anchored && istype(M, /obj/mecha))
+		return
+	if(istype(M, /mob/living/simple_animal)) //No critters are allowed through this; players only.
+		return
+
+	if(istype(M, /atom/movable))
+		var/turf/target
+		//<INSERT CODE HERE THAT SPITS THE INTERACTOR INTO THAT ONE ROOM ON THE STATION THAT IS PURE WTF
+		//by which I mean the return landmark I plan on putting in there ofc lol yeah>
+		if(!target)	return
+		do_teleport(M, target, 1, 1, 0, 0) 	//so this supposedly puts you adjacent to the place but I want it on the same tile. How does this method work?
+*/											//also I figured I'd use do_teleport here instead of forcemove like above
+
+/area/timewarp/ship/rectum
+	name = "up LZ's butt"
+	icon = 'icons/turf/areas2.dmi'
+	icon_state = "turds"
