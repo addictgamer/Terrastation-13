@@ -1463,6 +1463,7 @@
 #include "code\modules\map_fluff\cyberiad.dm"
 #include "code\modules\map_fluff\maps.dm"
 #include "code\modules\map_fluff\metastation.dm"
+#include "code\modules\map_fluff\rockstation.dm"
 #include "code\modules\martial_arts\adminfu.dm"
 #include "code\modules\martial_arts\brawling.dm"
 #include "code\modules\martial_arts\krav_maga.dm"
