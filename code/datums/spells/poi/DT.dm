@@ -40,7 +40,7 @@ Also insert actual attacks, such as the one with the same name
 /obj/effect/proc_holder/spell/targeted/call_wanker/invocation(mob/user = usr) //I don't want those damn backticks in here
 	user.say(invocation)
 
-/obj/effect/proc_holder/spell/targeted/call_wanker/cast(list/targets)
+/obj/effect/proc_holder/spell/targeted/call_wanker/cast(list/targets, mob/user = usr)
 	playsound(usr.loc, 'sound/voice/LZ/ufuknwanka.ogg', 30, 1)
 	return
 
@@ -67,6 +67,6 @@ Also insert actual attacks, such as the one with the same name
 
 	action_icon_state = "smoke"
 
-/obj/effect/proc_holder/spell/targeted/fart/cast(list/targets)
+/obj/effect/proc_holder/spell/targeted/fart/cast(list/targets, mob/user = usr)
 	playsound(usr.loc, 'sound/effects/fart2.ogg', 40, 0)
 	return
