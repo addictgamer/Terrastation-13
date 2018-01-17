@@ -89,3 +89,8 @@
 	blocks_air = 1
 /turf/simulated/martian/wall/angle
 	icon_state = "diagonalWall"
+
+//trees - goon gank again
+/obj/structure/flora/tree/reg
+	icon = 'icons/effects/96x96.dmi'
+	icon_state = "tree"
