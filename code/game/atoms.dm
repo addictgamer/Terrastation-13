@@ -517,6 +517,8 @@ var/list/blood_splatter_icons = list()
 		blood_DNA = null
 		return 1
 
+/obj/effect/decal/cleanable/blood/clean_blood()
+	return // While this seems nonsensical, clean_blood isn't supposed to be used like this on a blood decal.
 
 /obj/item/clean_blood()
 	. = ..()

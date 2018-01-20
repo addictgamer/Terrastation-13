@@ -165,6 +165,29 @@
 /obj/item/weapon/storage/firstaid/tactical/New()
 	..()
 	if(empty) return
+	new /obj/item/weapon/reagent_containers/hypospray/combat(src)
+	new /obj/item/weapon/reagent_containers/food/pill/patch/synthflesh(src) // Because you ain't got no time to look at what damage dey taking yo
+	new /obj/item/weapon/reagent_containers/food/pill/patch/synthflesh(src)
+	new /obj/item/weapon/reagent_containers/food/pill/patch/synthflesh(src)
+	new /obj/item/weapon/reagent_containers/food/pill/patch/synthflesh(src)
+	new /obj/item/weapon/defibrillator/compact/combat/loaded(src)
+	new /obj/item/clothing/glasses/hud/health/night(src)
+	return
+
+/obj/item/weapon/storage/firstaid/tactical2
+	name = "first-aid kit"
+	icon_state = "bezerk"
+	desc = "I hope you've got insurance."
+	max_w_class = WEIGHT_CLASS_NORMAL
+	treatment_oxy = "perfluorodecalin"
+	treatment_brute = "styptic_powder"
+	treatment_fire = "silver_sulfadiazine"
+	treatment_tox = "charcoal"
+	req_one_access =list(access_syndicate)
+
+/obj/item/weapon/storage/firstaid/tactical2/New()
+	..()
+	if(empty) return
 	new /obj/item/clothing/accessory/stethoscope( src )
 	new /obj/item/weapon/defibrillator/compact/combat/loaded(src)
 	new /obj/item/weapon/reagent_containers/hypospray/combat(src)

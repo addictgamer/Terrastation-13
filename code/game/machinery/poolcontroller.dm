@@ -59,6 +59,7 @@
 				qdel(decal)
 
 /obj/machinery/poolcontroller/proc/handleTemp(var/mob/M)
+	M.water_act(100, 0, src)//leave temp at 0, we handle it in the switch.
 	if(temperature == "normal")		//This setting does nothing, so let's skip the next checks since we won't be doing jack
 		return
 	if(!M || isAIEye(M) || issilicon(M) || isobserver(M) || M.stat == DEAD)
