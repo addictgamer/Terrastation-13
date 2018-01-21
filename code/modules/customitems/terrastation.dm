@@ -24,6 +24,10 @@
 	new /obj/item/weapon/katana(src.pockets) //yes, I know, wtf. Cannot resheath it in here. Yes, I know, wtf.
 	new /obj/item/device/analyzer(src.pockets) //this was originally a test line but it stayed in cuz lol
 
+/obj/item/clothing/suit/storage/hazardvest/terraform/armed/New()
+	..()
+	new /obj/item/weapon/gun/projectile/revolver/mateba(src.pockets)
+
 /*
 /obj/item/clothing/suit/storage/hazardvest/terraform/addict
 	desc = "A high-visibility vest used in work zones. This one is colored differently and has the letters A and G embroidered on it."
