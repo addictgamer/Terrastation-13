@@ -2,6 +2,7 @@
 /obj/machinery/power/port_gen/pacman/pingas
 	name = "Pingas Wheel Generator"
 	desc = "A portable generator for emergency backup power. It is rumored that this model generates its power with a disc that never stops spinning."
+	icon = 'icons/obj/power2.dmi'
 	power_gen = 13220
 
 /obj/machinery/power/port_gen/pacman/pingas/HasFuel()
