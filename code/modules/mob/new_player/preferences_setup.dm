@@ -571,6 +571,17 @@
 						clothes_s.Blend(new /icon('icons/mob/back.dmi', "satchel-norm"), ICON_OVERLAY)
 					if(4)
 						clothes_s.Blend(new /icon('icons/mob/back.dmi', "satchel"), ICON_OVERLAY)
+		/*	if(SALVAGE)		//OH MY SWEET MONKEY JESUS FUCK ME SIDEWAYS THIS WILL WORK RIGHT ALSO THESE UNIFORMS ARE PROBABLY GONNA CHANGE AT SOME POINT   --LZ
+				clothes_s = new /icon(uniform_dmi, "secred_s")
+				clothes_s.Blend(new /icon('icons/mob/feet.dmi', "orange"), ICON_UNDERLAY)
+				clothes_s.Blend(new /icon('icons/mob/belt.dmi', "utility"), ICON_OVERLAY)
+				switch(backbag)
+					if(2)
+						clothes_s.Blend(new /icon('icons/mob/back.dmi', "engiepack"), ICON_OVERLAY)
+					if(3)
+						clothes_s.Blend(new /icon('icons/mob/back.dmi', "satchel-eng"), ICON_OVERLAY)
+					if(4)
+						clothes_s.Blend(new /icon('icons/mob/back.dmi', "satchel"), ICON_OVERLAY)*/
 
 	else if(job_medsci_high)
 		switch(job_medsci_high)

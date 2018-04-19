@@ -156,6 +156,7 @@
 	if(getYield() >= 1)
 		feedback_add_details("food_harvested","[product_name]|[getYield()]")
 	parent.update_tray()
+	score_stuffharvested++  //WILL THIS FIX THE FUCKIN SCOREBOARD?! --LZ
 
 	return result
 
