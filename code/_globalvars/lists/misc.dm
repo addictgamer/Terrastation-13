@@ -31,4 +31,4 @@ var/list/round_end_sounds = list( // Maps available round end sounds to their du
 		'sound/goonstation/misc/newround2.ogg' = 14.8 SECONDS
 		)
 
-GLOBAL_LIST(station_level_space_turfs)
+//GLOBAL_LIST(station_level_space_turfs)

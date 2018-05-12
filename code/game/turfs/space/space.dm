@@ -18,11 +18,14 @@
 	. = ..()
 
 	if(!istype(src, /turf/space/transit))
-		icon_state = SPACE_ICON_STATE
+		icon_state = "[((x + y) ^ ~(x * y) + z) % 25]"
+	update_starlight()
+/*		icon_state = SPACE_ICON_STATE
 	if(update_starlight() && is_station_level(z))
-	// before you ask: Yes, this is fucking stupid, but looping through turf/space in world is how you make the server freeze 
+	// before you ask: Yes, this is fucking stupid, but looping through turf/space in world is how you make the server freeze
 	// so I don't see a better way of doing this
-		LAZYADD(GLOB.station_level_space_turfs, src)
+		LAZYADD(GLOB.station_level_space_turfs, src) */
+		//new code by paradise in Aurora Caelus commit. Relies on a var introduced somewhere I didn't take; didn't see this issue until it was too late.
 
 /turf/space/Destroy(force)
 	if(force)
@@ -46,13 +49,16 @@
 
 /turf/space/proc/update_starlight()
 	if(!config.starlight)
-		return FALSE
+		return
+//		return FALSE //ahem
 	if(locate(/turf/simulated) in orange(src,1))
 		set_light(config.starlight)
-		return TRUE
+//		return TRUE
 	else
 		set_light(0)
-		return FALSE
+//		return FALSE
+//These return statements should be appended assuming the code words, but it doesn't.
+//If I figure out what the Aurora Caelus commit relies on I will put these back where they belong.
 
 /turf/space/attackby(obj/item/C as obj, mob/user as mob, params)
 	..()
