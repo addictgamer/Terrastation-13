@@ -3541,7 +3541,7 @@
 "bqe" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"; pixel_y = 0},/obj/structure/disposalpipe/segment,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers,/obj/machinery/atmospherics/pipe/simple/hidden/supply,/turf/simulated/floor/plating,/area/maintenance/atmos_control)
 "bqf" = (/obj/structure/closet/jcloset,/turf/simulated/floor/plasteel,/area/janitor)
 "bqg" = (/obj/structure/closet/l3closet/janitor,/obj/machinery/alarm{frequency = 1439; pixel_y = 23},/turf/simulated/floor/plasteel,/area/janitor)
-"bqh" = (/obj/machinery/camera{c_tag = "Custodial Closet"; network = list("SS13")},/obj/machinery/status_display{density = 0; layer = 4; pixel_x = 0; pixel_y = 32},/turf/simulated/floor/plasteel,/area/janitor)
+"bqh" = (/obj/machinery/camera{c_tag = "Custodial Closet"; network = list("SS13")},/obj/machinery/status_display{density = 0; layer = 4; pixel_x = 0; pixel_y = 32},/obj/vehicle/janicart,/turf/simulated/floor/plasteel,/area/janitor)
 "bqi" = (/obj/machinery/newscaster{pixel_y = 30},/obj/item/weapon/storage/box/lights/mixed,/obj/item/weapon/storage/box/lights/mixed,/turf/simulated/floor/plasteel,/area/janitor)
 "bqj" = (/obj/structure/disposalpipe/segment,/obj/machinery/atmospherics/pipe/simple/hidden/scrubbers{dir = 6; level = 1},/turf/simulated/floor/plasteel,/area/janitor)
 "bqk" = (/obj/structure/reagent_dispensers/spacecleanertank{pixel_y = 30},/obj/machinery/atmospherics/unary/vent_scrubber{dir = 8; on = 1},/turf/simulated/floor/plasteel,/area/janitor)
