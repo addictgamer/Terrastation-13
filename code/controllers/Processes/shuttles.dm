@@ -20,7 +20,7 @@ var/const/CALL_SHUTTLE_REASON_LENGTH = 12
 	var/obj/docking_port/mobile/supply/supply
 	var/ordernum = 1					//order number given to next order
 	var/points = 50						//number of trade-points we have
-	var/points_per_decisecond = 0.00005	//points gained every decisecond
+	var/points_per_decisecond = 0.0001	//points gained every decisecond
 	var/points_per_slip = 2				//points gained per slip returned
 	var/points_per_crate = 5			//points gained per crate returned
 	var/points_per_intel = 250			//points gained per intel returned
