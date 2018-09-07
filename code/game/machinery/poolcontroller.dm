@@ -64,7 +64,6 @@
 		return
 	if(!M || isAIEye(M) || issilicon(M) || isobserver(M) || M.stat == DEAD)
 		return
-
 	switch(temperature) //Apply different effects based on what the temperature is set to.
 		if("scalding") //Burn the mob.
 			M.bodytemperature = min(500, M.bodytemperature + 35) //heat mob at 35k(elvin) per cycle
