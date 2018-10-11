@@ -6,6 +6,7 @@ var/datum/announcement/minor/captain_announcement = new(do_newscast = 0)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "Nanotrasen officials"
+	department_head = list("Nanotrasen Navy Officer")
 	selection_color = "#ccccff"
 	req_admin_notify = 1
 	is_command = 1
@@ -64,6 +65,7 @@ var/datum/announcement/minor/captain_announcement = new(do_newscast = 0)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the captain"
+	department_head = list("Captain")
 	selection_color = "#ddddff"
 	req_admin_notify = 1
 	is_command = 1
@@ -111,6 +113,7 @@ var/datum/announcement/minor/captain_announcement = new(do_newscast = 0)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the command staff"
+	department_head = list("Captain")
 	selection_color = "#ddddff"
 	req_admin_notify = 1
 	is_command = 1
@@ -156,6 +159,7 @@ var/datum/announcement/minor/captain_announcement = new(do_newscast = 0)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the Nanotrasen representative"
+	department_head = list("Captain")
 	selection_color = "#ddddff"
 	req_admin_notify = 1
 	is_command = 1
@@ -202,6 +206,7 @@ var/datum/announcement/minor/captain_announcement = new(do_newscast = 0)
 	total_positions = 1
 	spawn_positions = 1
 	supervisors = "the Nanotrasen Supreme Court"
+	department_head = list("Captain")
 	selection_color = "#ddddff"
 	req_admin_notify = 1
 	is_legal = 1
@@ -250,12 +255,13 @@ var/datum/announcement/minor/captain_announcement = new(do_newscast = 0)
 	spawn_positions = 2
 	is_legal = 1
 	supervisors = "the magistrate"
+	department_head = list("Captain")
 	selection_color = "#ddddff"
-	access = list(access_lawyer, access_court, access_sec_doors, access_maint_tunnels)
-	minimal_access = list(access_lawyer, access_court, access_sec_doors, access_maint_tunnels)
-	alt_titles = list("Lawyer","Public Defender")
+	access = list(access_lawyer, access_court, access_sec_doors, access_maint_tunnels, access_research, access_medical, access_construction, access_mailsorting)
+	minimal_access = list(access_lawyer, access_court, access_sec_doors, access_maint_tunnels, access_research, access_medical, access_construction, access_mailsorting)
+	alt_titles = list("Human Resources Agent")
 	minimal_player_age = 30
-	exp_requirements = 300
+	exp_requirements = 600
 	exp_type = EXP_TYPE_CREW
 	outfit = /datum/outfit/job/lawyer
 

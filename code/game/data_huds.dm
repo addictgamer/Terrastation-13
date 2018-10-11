@@ -46,6 +46,12 @@
 /datum/atom_hud/data/diagnostic
 	hud_icons = list (DIAG_HUD, DIAG_STAT_HUD, DIAG_BATT_HUD, DIAG_MECH_HUD, DIAG_BOT_HUD, DIAG_TRACK_HUD)
 
+/datum/atom_hud/data/diagnostic/advanced
+	hud_icons = list (DIAG_HUD, DIAG_STAT_HUD, DIAG_BATT_HUD, DIAG_MECH_HUD, DIAG_BOT_HUD, DIAG_TRACK_HUD, DIAG_PATH_HUD)
+
+/datum/atom_hud/data/bot_path
+	hud_icons = list(DIAG_PATH_HUD)
+
 /datum/atom_hud/data/hydroponic
 	hud_icons = list (PLANT_NUTRIENT_HUD, PLANT_WATER_HUD, PLANT_STATUS_HUD, PLANT_HEALTH_HUD, PLANT_TOXIN_HUD, PLANT_PEST_HUD, PLANT_WEED_HUD)
 
@@ -63,14 +69,22 @@
 
 //called when a carbon changes virus
 /mob/living/carbon/proc/check_virus()
-	for(var/datum/disease/D in viruses)
+	for(var/thing in viruses)
+		var/datum/disease/D = thing
 		if((!(D.visibility_flags & HIDDEN_SCANNER)) && (D.severity != NONTHREAT))
 			return 1
 	return 0
 
 //helper for getting the appropriate health status UPDATED BY PUCKABOO2 TO INCLUDE NEGATIVES.
-/proc/RoundHealth(health)
-	switch(health)
+/proc/RoundHealth(mob/living/M)
+	if(M.stat == DEAD || (M.status_flags & FAKEDEATH))
+		return "health-100" //what's our health? it doesn't matter, we're dead, or faking
+	var/maxi_health = M.maxHealth
+	if(iscarbon(M) && M.health < 0)
+		maxi_health = 100 //so crit shows up right for aliens and other high-health carbon mobs; noncarbons don't have crit.
+	var/resulthealth = (M.health / maxi_health) * 100
+
+	switch(resulthealth)
 		if(100 to INFINITY)
 			return "health100"
 		if(95 to 100)
@@ -119,6 +133,7 @@
 			return "health-100" //doc u had 1 job
 	return "0"
 
+
 ///HOOKS
 
 //called when a human changes suit sensors
@@ -127,31 +142,34 @@
 	B.update_suit_sensors(src)
 
 
-//called when a carbon changes health
-/mob/living/carbon/proc/med_hud_set_health()
+//called when a living mob changes health
+/mob/living/proc/med_hud_set_health()
 	var/image/holder = hud_list[HEALTH_HUD]
-	if(stat == 2)
-		holder.icon_state = "hudhealth-100"
-	else
-		holder.icon_state = "hud[RoundHealth(health)]"
+	holder.icon_state = "hud[RoundHealth(src)]"
+
 
 //called when a carbon changes stat, virus or XENO_HOST
-/mob/living/carbon/proc/med_hud_set_status()
+/mob/living/proc/med_hud_set_status()
 	var/image/holder = hud_list[STATUS_HUD]
-	//var/image/holder2 = hud_list[STATUS_HUD_OOC]
-	var/mob/living/simple_animal/borer/B = has_brain_worms()
-	if(stat == 2)
+	if(stat == DEAD)
 		holder.icon_state = "huddead"
-		//holder2.icon_state = "huddead"
+	else
+		holder.icon_state = "hudhealthy"
+
+//called when a carbon changes stat, virus or XENO_HOST
+/mob/living/carbon/med_hud_set_status()
+	var/image/holder = hud_list[STATUS_HUD]
+	var/mob/living/simple_animal/borer/B = has_brain_worms()
+	if(stat == DEAD)
+		holder.icon_state = "huddead"
 	else if(status_flags & XENO_HOST)
 		holder.icon_state = "hudxeno"
 	else if(check_virus())
 		holder.icon_state = "hudill"
-	else if(has_brain_worms() && B != null && B.controlling)
+	else if(B && B.controlling)
 		holder.icon_state = "hudbrainworm"
 	else
 		holder.icon_state = "hudhealthy"
-		//holder2.icon_state = "hudhealthy"
 
 
 
@@ -190,12 +208,15 @@
 
 /mob/living/carbon/human/proc/sec_hud_set_security_status()
 	var/image/holder = hud_list[WANTED_HUD]
-	var/perpname = get_face_name(get_id_name(""))
+	var/perpname = get_visible_name(TRUE) //gets the name of the perp, works if they have an id or if their face is uncovered
 	if(!ticker) return //wait till the game starts or the monkeys runtime....
 	if(perpname)
 		var/datum/data/record/R = find_record("name", perpname, data_core.security)
 		if(R)
 			switch(R.fields["criminal"])
+				if("*Execute*")
+					holder.icon_state = "hudexecute"
+					return
 				if("*Arrest*")
 					holder.icon_state = "hudwanted"
 					return

@@ -5,7 +5,7 @@
 /obj/item/seeds
 	icon = 'icons/obj/hydroponics/seeds.dmi'
 	icon_state = "seed"				// Unknown plant seed - these shouldn't exist in-game.
-	w_class = 1
+	w_class = WEIGHT_CLASS_TINY
 	burn_state = FLAMMABLE
 	var/plantname = "Plants"		// Name of plant when planted.
 	var/product						// A type path. The thing that is created when the plant is harvested.
@@ -156,6 +156,7 @@
 	if(getYield() >= 1)
 		feedback_add_details("food_harvested","[product_name]|[getYield()]")
 	parent.update_tray()
+	score_stuffharvested++  //WILL THIS FIX THE FUCKIN SCOREBOARD?! --LZ
 
 	return result
 

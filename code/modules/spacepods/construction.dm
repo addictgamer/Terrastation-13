@@ -140,8 +140,8 @@
 					state_next = list(
 						"key"      = /obj/item/stack/sheet/metal,
 						"amount"   = 5,
-						"vis_msg"  = "{USER} frabricates a pressure bulkhead for the {HOLDER}.",
-						"self_msg" = "You frabricate a pressure bulkhead for the {HOLDER}."
+						"vis_msg"  = "{USER} fabricates a pressure bulkhead for the {HOLDER}.",
+						"self_msg" = "You fabricate a pressure bulkhead for the {HOLDER}."
 					)
 				),
 				// 8. Bulkhead added

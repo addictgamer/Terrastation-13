@@ -3,7 +3,7 @@
 	desc = "A device used to project your voice. Loudly."
 	icon_state = "megaphone"
 	item_state = "radio"
-	w_class = 1
+	w_class = WEIGHT_CLASS_SMALL
 	flags = CONDUCT
 
 	var/spamcheck = 0
@@ -21,6 +21,11 @@
 	if(!user.can_speak())
 		to_chat(user, "<span class='warning'>You find yourself unable to speak at all.</span>")
 		return
+	if(ishuman(user))
+		var/mob/living/carbon/human/abductor/H = user
+		if(H && H.mind.abductor)
+			to_chat(user, "<span class='warning'>Megaphones can't project psionic communication!</span>")
+			return
 	if(ishuman(user))
 		var/mob/living/carbon/human/H = user
 		if(H && H.mind && H.mind.miming)

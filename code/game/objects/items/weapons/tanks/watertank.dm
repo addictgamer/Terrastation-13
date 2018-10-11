@@ -5,7 +5,7 @@
 	icon = 'icons/obj/watertank.dmi'
 	icon_state = "waterbackpack"
 	item_state = "waterbackpack"
-	w_class = 4
+	w_class = WEIGHT_CLASS_BULKY
 	slot_flags = SLOT_BACK
 	slowdown = 1
 	actions_types = list(/datum/action/item_action/toggle_mister)
@@ -69,8 +69,7 @@
 /obj/item/weapon/watertank/Destroy()
 	if(on)
 		remove_noz()
-		qdel(noz)
-		noz = null
+		QDEL_NULL(noz)
 	return ..()
 
 /obj/item/weapon/watertank/attack_hand(mob/user as mob)
@@ -113,7 +112,7 @@
 	icon = 'icons/obj/watertank.dmi'
 	icon_state = "mister"
 	item_state = "mister"
-	w_class = 4
+	w_class = WEIGHT_CLASS_BULKY
 	amount_per_transfer_from_this = 50
 	possible_transfer_amounts = list(25,50,100)
 	volume = 500
@@ -221,7 +220,7 @@
 	power = 8
 	precision = 1
 	cooling_power = 5
-	w_class = 5
+	w_class = WEIGHT_CLASS_HUGE
 	flags = NODROP //Necessary to ensure that the nozzle and tank never seperate
 	var/obj/item/weapon/watertank/tank
 	var/nozzle_mode = 0
@@ -278,22 +277,22 @@
 		if(Adj)
 			return //Safety check so you don't blast yourself trying to refill your tank
 		var/datum/reagents/R = reagents
-		if(R.total_volume < 100)
-			to_chat(user, "You need at least 100 units of water to use the nanofrost launcher!")
+		if(R.total_volume < 50)
+			to_chat(user, "You need at least 50 units of water to use the nanofrost launcher!")
 			return
 		if(nanofrost_cooldown)
 			to_chat(user, "Nanofrost launcher is still recharging")
 			return
 		nanofrost_cooldown = 1
-		R.remove_any(100)
+		R.remove_any(50)
 		var/obj/effect/nanofrost_container/A = new /obj/effect/nanofrost_container(get_turf(src))
 		log_game("[user.ckey] ([user.name]) used Nanofrost at [get_area(user)] ([user.x], [user.y], [user.z]).")
 		playsound(src,'sound/items/syringeproj.ogg',40,1)
 		for(var/a=0, a<5, a++)
 			step_towards(A, target)
-			sleep(2)
+			sleep(1)
 		A.Smoke()
-		spawn(100)
+		spawn(50)
 			if(src)
 				nanofrost_cooldown = 0
 		return

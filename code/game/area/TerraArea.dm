@@ -202,6 +202,11 @@
 /area/salvage/yard/hidanger
 	name = "Hazard zone"
 	icon_state = "danger"
+	ambientsounds = list('sound/ambience/ahead_slow.ogg','sound/ambience/deathclub.ogg')
+
+/area/salvage/yard/hidanger/synd
+	name = "Syndicate base"
+	icon_state = "turds"
 
 /area/salvage/yard/genarea
 	name = "template spawn area"
@@ -228,5 +233,9 @@
 	icon = 'icons/turf/areas2.dmi' //Because FAK
 	icon_state = "honk"
 	ambientsounds = list('sound/music/atmosdel.ogg')
+
+/area/maintenance/pointless/dafuq //OR IS IT?!?!?!?!?
+	name = "Da fuq"
+	ambientsounds = list('sound/ambience/ahead_slow.ogg')
 
 //butts

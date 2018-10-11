@@ -104,9 +104,8 @@ var/global/list/datum/stack_recipe/abductor_recipes = list ( \
 /obj/item/stack/sheet/mineral
 	force = 5.0
 	throwforce = 5
-	w_class = 3
+	w_class = WEIGHT_CLASS_NORMAL
 	throw_speed = 3
-	throw_range = 3
 
 /obj/item/stack/sheet/mineral/New()
 	..()
@@ -118,7 +117,6 @@ var/global/list/datum/stack_recipe/abductor_recipes = list ( \
 	desc = "This appears to be a combination of both sand and stone."
 	singular_name = "sandstone brick"
 	icon_state = "sheet-sandstone"
-	throw_speed = 3
 	throw_range = 5
 	origin_tech = "materials=1"
 	sheettype = "sandstone"
@@ -170,6 +168,7 @@ var/global/list/datum/stack_recipe/abductor_recipes = list ( \
 	if(is_hot(W) > 300)//If the temperature of the object is over 300, then ignite
 		message_admins("Plasma sheets ignited by [key_name_admin(user)](<A HREF='?_src_=holder;adminmoreinfo=\ref[user]'>?</A>) (<A HREF='?_src_=holder;adminplayerobservefollow=\ref[user]'>FLW</A>) in ([x],[y],[z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>)",0,1)
 		log_game("Plasma sheets ignited by [key_name(user)] in ([x],[y],[z])")
+		investigate_log("was <font color='red'><b>ignited</b></font> by [key_name(user)]","atmos")
 		fire_act()
 	else
 		return ..()
@@ -194,7 +193,7 @@ var/global/list/datum/stack_recipe/abductor_recipes = list ( \
 	name = "silver"
 	icon_state = "sheet-silver"
 	singular_name = "silver bar"
-	origin_tech = "materials=3"
+	origin_tech = "materials=4"
 	sheettype = "silver"
 	materials = list(MAT_SILVER=MINERAL_MATERIAL_AMOUNT)
 
@@ -240,9 +239,8 @@ var/global/list/datum/stack_recipe/abductor_recipes = list ( \
 	singular_name = "alien alloy sheet"
 	force = 5
 	throwforce = 5
-	w_class = 3
+	w_class = WEIGHT_CLASS_NORMAL
 	throw_speed = 1
-	throw_range = 3
 	origin_tech = "materials=6;abductor=1"
 	sheettype = "abductor"
 

@@ -17,6 +17,8 @@
 	window_id = "autoclean"
 	window_name = "Automatic Station Cleaner v1.1"
 	pass_flags = PASSMOB
+	path_image_color = "#993299"
+
 
 	var/blood = 1
 	var/list/target_types = list()
@@ -167,9 +169,8 @@
 	mode = BOT_CLEANING
 	spawn(50)
 		if(mode == BOT_CLEANING)
-			qdel(target)
+			QDEL_NULL(target)
 			anchored = 0
-			target = null
 		mode = BOT_IDLE
 		icon_state = "cleanbot[on]"
 

@@ -15,6 +15,8 @@ var/list/lizard_names_female = file2list("config/names/lizard_female.txt")
 
 var/list/verbs = file2list("config/names/verbs.txt")
 var/list/adjectives = file2list("config/names/adjectives.txt")
+var/list/dream_strings = file2list("config/names/dreams.txt")
+var/list/nightmare_strings = file2list("config/names/nightmares.txt")
 //loaded on startup because of "
 //would include in rsc if ' was used
 

@@ -647,13 +647,12 @@ About the new airlock wires panel:
 				src.attack_ai(user)
 
 /obj/machinery/door/airlock/CanPass(atom/movable/mover, turf/target, height=0)
-	if(src.isElectrified())
-		if(istype(mover, /obj/item))
-			var/obj/item/i = mover
-			if(i.materials[MAT_METAL])
-				var/datum/effect/system/spark_spread/s = new /datum/effect/system/spark_spread
-				s.set_up(5, 1, src)
-				s.start()
+	if(isElectrified() && density && istype(mover, /obj/item))
+		var/obj/item/I = mover
+		if(I.flags & CONDUCT)
+			var/datum/effect/system/spark_spread/s = new /datum/effect/system/spark_spread
+			s.set_up(5, 1, src)
+			s.start()
 	return ..()
 
 /obj/machinery/door/airlock/attack_hand(mob/user as mob)
@@ -934,6 +933,7 @@ About the new airlock wires panel:
 	if(is_hot(C) > 300)
 		message_admins("Plasma airlock ignited by [key_name_admin(user)] in ([x],[y],[z] - <A HREF='?_src_=holder;adminplayerobservecoodjump=1;X=[x];Y=[y];Z=[z]'>JMP</a>)")
 		log_game("Plasma wall ignited by [key_name(user)] in ([x],[y],[z])")
+		investigate_log("was <font color='red'><b>ignited</b></font> by [key_name(user)]","atmos")
 		ignite(is_hot(C))
 	..()
 
@@ -1141,6 +1141,14 @@ About the new airlock wires panel:
 		electrified_until = 0
 		open()
 		safe = TRUE
+
+/obj/machinery/door/airlock/narsie_act()
+	var/turf/T = get_turf(src)
+	if(prob(20))
+		new/obj/machinery/door/airlock/cult(T)
+		qdel(src)
+
+
 
 //////////////////////////////////
 /*

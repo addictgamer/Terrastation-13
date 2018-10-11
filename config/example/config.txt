@@ -95,6 +95,9 @@ PROBABILITY EXTENDED 2
 PROBABILITY NUCLEAR 3
 PROBABILITY ABDUCTION 0
 
+## Maximum cycles shadowlings can remain unhatched before they take damage. 1800 = 60 minutes, 900 = 30 minutes, 0 = feature disabled.
+SHADOWLING_MAX_AGE 0
+
 ## Hash out to disable random events during the round.
 ALLOW_RANDOM_EVENTS
 
@@ -177,6 +180,9 @@ CHECK_RANDOMIZER
 ## Rules address
 # RULESURL http://example.org
 
+## GitHub address
+# GITHUBURL http://example.org
+
 ## Donations address
 # DONATIONSURL http://example.org
 
@@ -205,9 +211,6 @@ ALLOW_HOLIDAYS
 
 ##Defines the ticklag for the world.  0.9 is the normal one, 0.5 is smoother.
 TICKLAG 0.5
-
-## Defines if Tick Compensation is used.  It results in a minor slowdown of movement of all mobs, but attempts to result in a level movement speed across all ticks.  Recommended if tickrate is lowered.
-TICKCOMP 1
 
 ## Whether the server will talk to other processes through socket_talk
 SOCKET_TALK 0

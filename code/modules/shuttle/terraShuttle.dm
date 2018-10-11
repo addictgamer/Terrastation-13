@@ -10,7 +10,7 @@
 /obj/machinery/computer/shuttle/trade/sol/terra/rock2 //Rock2 stuff
 	possible_destinations_dock = "trade_sol_base;trade_sol_offstation;trade_dock_ruskie;trade_dock_junk;trade_dock"
 	possible_destinations_nodock = "trade_sol_base;trade_sol_offstation;trade_dock_ruskie;trade_dock_junk"
-	docking_request_message = "A trading ship of Sol origin has requested docking aboard NSS Rockstation for trading. This request can be accepted or denied using a communications console."
+	docking_request_message = "A trading ship of Sol origin has requested docking aboard NSS Rock for trading. This request can be accepted or denied using a communications console."
 
 
 //white ship

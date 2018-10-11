@@ -49,8 +49,8 @@ proc/pick_species_allowed_underwear(list/all_picks, species)
 proc/random_hair_style(var/gender, species = "Human", var/datum/robolimb/robohead)
 	var/h_style = "Bald"
 	var/list/valid_hairstyles = list()
-	for(var/hairstyle in hair_styles_list)
-		var/datum/sprite_accessory/S = hair_styles_list[hairstyle]
+	for(var/hairstyle in hair_styles_public_list)
+		var/datum/sprite_accessory/S = hair_styles_public_list[hairstyle]
 
 		if(hairstyle == "Bald") //Just in case.
 			valid_hairstyles += hairstyle
@@ -464,3 +464,7 @@ proc/add_logs(mob/user, mob/target, what_done, var/object=null, var/addition=nul
 	set hidden = 1
 	set name = ".mouse"
 	LogMouseMacro(".mouse", params)
+
+/proc/update_all_mob_security_hud()
+	for(var/mob/living/carbon/human/H in mob_list)
+		H.sec_hud_set_security_status()

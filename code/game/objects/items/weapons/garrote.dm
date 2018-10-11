@@ -8,7 +8,7 @@
 	name = "fiber wire"
 	desc = "A length of razor-thin wire with an elegant wooden handle on either end.<br>You suspect you'd have to be behind the target to use this weapon effectively."
 	icon_state = "garrot_wrap"
-	w_class = 1
+	w_class = WEIGHT_CLASS_TINY
 	var/mob/living/carbon/human/strangling
 	var/improvised = 0
 	var/garrote_time
@@ -134,7 +134,7 @@
 		G = user.r_hand
 
 	else
-		user.visible_message("<span class='warning'>[user] loses his grip on [strangling]'s neck.</span>", \
+		user.visible_message("<span class='warning'>[user] loses \his grip on [strangling]'s neck.</span>", \
 				 "<span class='warning'>You lose your grip on [strangling]'s neck.</span>")
 
 		strangling = null
@@ -144,7 +144,7 @@
 		return
 
 	if(!G.affecting)
-		user.visible_message("<span class='warning'>[user] loses his grip on [strangling]'s neck.</span>", \
+		user.visible_message("<span class='warning'>[user] loses \his grip on [strangling]'s neck.</span>", \
 				"<span class='warning'>You lose your grip on [strangling]'s neck.</span>")
 
 		strangling = null

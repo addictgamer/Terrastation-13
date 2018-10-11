@@ -17,7 +17,7 @@
 	damage = 10
 	damage_type = BRUTE
 	nodamage = 0
-	
+
 	//explosion values
 	var/exp_heavy = 0
 	var/exp_light = 2
@@ -55,7 +55,7 @@
 	if(ismob(target)) //multiple flavors of pain
 		var/mob/living/M = target
 		M.take_overall_damage(0,10) //between this 10 burn, the 10 brute, the explosion brute, and the onfire burn, your at about 65 damage if you stop drop and roll immediately
-		
+
 
 /obj/item/projectile/magic/fireball/infernal
 	name = "infernal fireball"
@@ -187,7 +187,7 @@ proc/wabbajack(mob/living/M)
 					if(ishuman(M))
 						Robot.mmi.transfer_identity(M)	//Does not transfer key/client.
 				if("slime")
-					new_mob = new /mob/living/carbon/slime(M.loc)
+					new_mob = new /mob/living/carbon/slime/random(M.loc)
 					new_mob.universal_speak = 1
 				if("xeno")
 					if(prob(50))
@@ -243,7 +243,7 @@ proc/wabbajack(mob/living/M)
 			M.create_attack_log("<font color='orange'>[M.real_name] ([M.ckey]) became [new_mob.real_name].</font>")
 			new_mob.attack_log = M.attack_log
 
-			new_mob.a_intent = I_HARM
+			new_mob.a_intent = INTENT_HARM
 			if(M.mind)
 				M.mind.transfer_to(new_mob)
 			else
@@ -293,4 +293,4 @@ proc/wabbajack(mob/living/M)
 	damage_type = BURN
 	flag = "magic"
 	dismemberment = 50
-	nodamage = 0		
+	nodamage = 0

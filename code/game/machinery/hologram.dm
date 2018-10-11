@@ -142,8 +142,7 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 
 /obj/machinery/hologram/holopad/proc/clear_holo()
 //	hologram.set_light(0)//Clear lighting.	//handled by the lighting controller when its ower is deleted
-	qdel(hologram)//Get rid of hologram.
-	hologram = null
+	QDEL_NULL(hologram)//Get rid of hologram.
 	if(master.holo == src)
 		master.holo = null
 	master = null//Null the master, since no-one is using it now.
@@ -173,7 +172,7 @@ For the other part of the code, check silicon say.dm. Particularly robot talk.*/
 		clear_holo()//If not, we want to get rid of the hologram.
 		var/obj/machinery/hologram/holopad/pad_close = get_closest_atom(/obj/machinery/hologram/holopad, holopads, theai.eyeobj)
 		if(get_dist(pad_close, theai.eyeobj) <= pad_close.holo_range)
-			if(!(pad_close.stat & NOPOWER) && !pad_close.hologram)
+			if(!(pad_close.stat & NOPOWER) && !pad_close.hologram && (theai && !theai.stat && theai.client))
 				pad_close.activate_holo(theai, 1)
 				if(pad_close.hologram)
 					pad_close.hologram.forceMove(target_turf)

@@ -8,6 +8,7 @@
 	display_name = "embroidered veil"
 	description = "A common traditional nano-fiber veil worn by many Tajaran, It is rare and offensive to see it on other races."
 	path = /obj/item/clothing/glasses/tajblind
+	cost = 1
 
 /datum/gear/racial/tajsec
 	display_name = "sleek veil"
@@ -19,7 +20,7 @@
 	display_name = "lightweight veil"
 	description = "A common traditional nano-fiber veil worn by many Tajaran, It is rare and offensive to see it on other races. This one has an in-built medical HUD."
 	path = /obj/item/clothing/glasses/hud/health/tajblind
-	allowed_roles = list("Chief Medical Officer", "Medical Doctor", "Chemist", "Psychiatrist", "Paramedic", "Virologist", "Brig Physician")
+	allowed_roles = list("Chief Medical Officer", "Medical Doctor", "Chemist", "Psychiatrist", "Paramedic", "Virologist", "Brig Physician" , "Coroner")
 
 /datum/gear/racial/tajsci
 	display_name = "hi-tech veil"
@@ -38,3 +39,8 @@
 	description = "A common traditional nano-fiber veil worn by many Tajaran, It is rare and offensive to see it on other races. It is light and comfy!"
 	path = /obj/item/clothing/glasses/tajblind/cargo
 	allowed_roles = list("Quartermaster","Cargo Technician", "Miner")
+
+/datum/gear/racial/footwraps
+	display_name = "cloth footwraps"
+	path = /obj/item/clothing/shoes/footwraps
+	cost = 1

@@ -20,7 +20,7 @@ z8 = terralabs
 //This is for the next block of shit; only putting above it in case it doesn't like comments in its pingas (too lazy to test it)
 //		#include "map_files\rockstation\(whatever Z is named goes here).dmm"
 
-#if !defined(MAP_FILE)
+#if !defined(USING_MAP_DATUM)
 
 		#include "map_files\rockstation\Rock2.dmm"
 		#include "map_files\rockstation\z2.dmm"
@@ -43,6 +43,7 @@ DECLARE_LEVEL(DERELICT, CROSSLINKED, list(REACHABLE)),\
 DECLARE_LEVEL(EMPTY_AREA, CROSSLINKED, list(REACHABLE)),\
 DECLARE_LEVEL(TERRALABS, SELFLOOPING, list(REACHABLE)))
 
+		#define USING_MAP_DATUM /datum/map/rockstation
 
 #elif !defined(MAP_OVERRIDE)
 

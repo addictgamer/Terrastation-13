@@ -7,7 +7,7 @@
 	icon = 'icons/mob/slimes.dmi'
 	icon_state = "grey slime extract"
 	force = 1
-	w_class = 1
+	w_class = WEIGHT_CLASS_TINY
 	throwforce = 0
 	throw_speed = 3
 	throw_range = 6
@@ -121,7 +121,7 @@
 /obj/item/slimepotion
 	name = "slime potion"
 	desc = "A hard yet gelatinous capsule excreted by a slime, containing mysterious substances."
-	w_class = 1
+	w_class = WEIGHT_CLASS_TINY
 	origin_tech = "biotech=4"
 
 /obj/item/slimepotion/afterattack(obj/item/weapon/reagent_containers/target, mob/user, proximity_flag)
@@ -179,7 +179,7 @@
 	desc = "A miraculous chemical mix that can raise the intelligence of creatures to human levels."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle19"
-	origin_tech = "biotech=5"
+	origin_tech = "biotech=6"
 	var/list/not_interested = list()
 	var/being_used = 0
 	var/sentience_type = SENTIENCE_ORGANIC
@@ -350,6 +350,7 @@
 	desc = "A potent chemical mix that will remove the slowdown from any item."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle3"
+	origin_tech = "biotech=5"
 
 /obj/item/slimepotion/speed/afterattack(obj/item/C, mob/user, proximity_flag)
 	if(!proximity_flag)
@@ -371,6 +372,7 @@
 	desc = "A potent chemical mix that will fireproof any article of clothing. Has three uses."
 	icon = 'icons/obj/chemical.dmi'
 	icon_state = "bottle17"
+	origin_tech = "biotech=5"
 	var/uses = 3
 
 /obj/item/slimepotion/fireproof/afterattack(obj/item/clothing/C, mob/user, proximity_flag)
@@ -456,7 +458,7 @@
 		return FALSE
 	if(!O.can_reenter_corpse)
 		return FALSE
-	if(O.has_enabled_antagHUD == 1 && config.antag_hud_restricted)
+	if(cannotPossess(O))
 		return FALSE
 	return TRUE
 
@@ -552,7 +554,7 @@
 	singular_name = "floor tile"
 	desc = "Through a series of micro-teleports, these tiles let people move at incredible speeds."
 	icon_state = "tile-bluespace"
-	w_class = 3
+	w_class = WEIGHT_CLASS_NORMAL
 	force = 6
 	materials = list(MAT_METAL=500)
 	throwforce = 10
@@ -575,7 +577,7 @@
 	singular_name = "floor tile"
 	desc = "Time seems to flow very slowly around these tiles."
 	icon_state = "tile-sepia"
-	w_class = 3
+	w_class = WEIGHT_CLASS_NORMAL
 	force = 6
 	materials = list(MAT_METAL=500)
 	throwforce = 10
@@ -587,16 +589,16 @@
 
 /obj/item/areaeditor/blueprints/slime
 	name = "cerulean prints"
-	desc = "A one use set of blueprints made of jelly like organic material. Renaming an area to 'Xenobiology Lab' will extend the reach of the management console."
+	desc = "A one use set of blueprints made of jelly like organic material. Extends the reach of the management console."
 	color = "#2956B2"
 
 /obj/item/areaeditor/blueprints/slime/edit_area()
-	. = ..()
+	..()
 	var/area/A = get_area(src)
-	if(.)
-		for(var/turf/T in A)
-			T.color = "#2956B2"
-		qdel(src)
+	for(var/turf/T in A)
+		T.color = "#2956B2"
+	A.xenobiology_compatible = TRUE
+	qdel(src)
 
 /turf/simulated/floor/sepia
 	slowdown = 2

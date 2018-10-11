@@ -63,13 +63,16 @@ var/global/list/map_transition_config = MAP_TRANSITION_CONFIG
 		master_controller.setup()
 		sleep_offline = 1
 
-	#ifdef MAP_NAME
-	map_name = "[MAP_NAME]"
-	#else
-	map_name = "Unknown"
-	#endif
-
-
+	if(using_map && using_map.name)
+		map_name = "[using_map.name]"
+	else
+		map_name = "Unknown"
+	
+	
+	if(config && config.server_name)
+		name = "[config.server_name]: [station_name()]"
+	else
+		name = station_name()
 
 
 #undef RECOMMENDED_VERSION
@@ -244,6 +247,27 @@ var/world_topic_spam_protect_time = world.timeofday
 				for(var/client/C in clients)
 					to_chat(C, "<span class='announce'>PR: [input["announce"]]</span>")
 
+	else if("kick" in input)
+		/*
+			We have a kick request over coms.
+			Only needed portion is the ckey
+		*/
+		if(!key_valid)
+			return keySpamProtect(addr)
+
+		var/client/C
+
+		for(var/client/K in clients)
+			if(K.ckey == input["kick"])
+				C = K
+				break
+		if(!C)
+			return "No client with that name on server"
+
+		del(C)
+
+		return "Kick Successful"
+
 /proc/keySpamProtect(var/addr)
 	if(world_topic_spam_protect_ip == addr && abs(world_topic_spam_protect_time - world.time) < 50)
 		spawn(50)
@@ -378,7 +402,7 @@ var/world_topic_spam_protect_time = world.timeofday
 
 	s += "<b>[station_name()]</b>";
 	s += " ("
-	s += "<a href=\"http://nanotrasen.se/phpBB3/index.php\">" //Change this to wherever you want the hub to link to.
+	s += "<a href=\"http://nanotrasen.se\">" //Change this to wherever you want the hub to link to.
 	s += "[game_version]"
 	s += "</a>"
 	s += ")"

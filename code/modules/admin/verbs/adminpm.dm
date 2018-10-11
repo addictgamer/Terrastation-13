@@ -150,12 +150,11 @@
 						adminhelp(reply)													//sender has left, adminhelp instead
 				return
 
-	// for emoji, we have to define a specific span for jquery to look for
-	msg = "<span class='emoji_enabled'>[msg]</span>"
 
-	recieve_message = "<span class='[recieve_span]'>[type] from-<b>[recieve_pm_type][key_name(src, C, C.holder ? 1 : 0, type)]</b>: [msg]</span>"
+	var/emoji_msg = "<span class='emoji_enabled'>[msg]</span>"
+	recieve_message = "<span class='[recieve_span]'>[type] from-<b>[recieve_pm_type][key_name(src, C, C.holder ? 1 : 0, type)]</b>: [emoji_msg]</span>"
 	to_chat(C, recieve_message)
-	to_chat(src, "<font color='blue'>[send_pm_type][type] to-<b>[key_name(C, src, holder ? 1 : 0, type)]</b>: [msg]</font>")
+	to_chat(src, "<font color='blue'>[send_pm_type][type] to-<b>[key_name(C, src, holder ? 1 : 0, type)]</b>: [emoji_msg]</font>")
 
 	/*if(holder && !C.holder)
 		C.last_pm_recieved = world.time
@@ -176,13 +175,30 @@
 			switch(type)
 				if("Mentorhelp")
 					if(check_rights(R_ADMIN|R_MOD|R_MENTOR, 0, X.mob))
-						to_chat(X, "<span class='mentorhelp'>[type]: [key_name(src, X, 0, type)]-&gt;[key_name(C, X, 0, type)]: [msg]</span>")
+						to_chat(X, "<span class='mentorhelp'>[type]: [key_name(src, X, 0, type)]-&gt;[key_name(C, X, 0, type)]: [emoji_msg]</span>")
 				if("Adminhelp")
 					if(check_rights(R_ADMIN|R_MOD, 0, X.mob))
-						to_chat(X, "<span class='adminhelp'>[type]: [key_name(src, X, 0, type)]-&gt;[key_name(C, X, 0, type)]: [msg]</span>")
+						to_chat(X, "<span class='adminhelp'>[type]: [key_name(src, X, 0, type)]-&gt;[key_name(C, X, 0, type)]: [emoji_msg]</span>")
 				else
 					if(check_rights(R_ADMIN|R_MOD, 0, X.mob))
-						to_chat(X, "<span class='boldnotice'>[type]: [key_name(src, X, 0, type)]-&gt;[key_name(C, X, 0, type)]: [msg]</span>")
+						to_chat(X, "<span class='boldnotice'>[type]: [key_name(src, X, 0, type)]-&gt;[key_name(C, X, 0, type)]: [emoji_msg]</span>")
+
+	//Check if the mob being PM'd has any open admin tickets.
+	var/tickets = list()
+	tickets = globAdminTicketHolder.checkForTicket(C)
+	if(tickets)
+		for(var/datum/admin_ticket/i in tickets)
+			i.addResponse(src, msg) // Add this response to their open tickets.
+		return
+
+	tickets = globAdminTicketHolder.checkForTicket(src)
+	if(check_rights(R_ADMIN|R_MOD, 0, C.mob)) //Is the person being pm'd an admin? If so we check if the pm'er has open tickets
+		tickets = globAdminTicketHolder.checkForTicket(src)
+		if(tickets)
+			for(var/datum/admin_ticket/i in tickets)
+				i.addResponse(src, msg)
+			return
+
 
 /client/proc/cmd_admin_irc_pm()
 	if(prefs.muted & MUTE_ADMINHELP)

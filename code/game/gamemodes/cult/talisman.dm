@@ -64,7 +64,7 @@
 	dat += "<A href='?src=[UID()];rune=emp'>Ta'gh fara'qha fel d'amar det!</A> - Allows you to destroy technology in a short range.<BR>"
 	dat += "<A href='?src=[UID()];rune=runestun'>Fuu ma'jin!</A> - Allows you to stun a person by attacking them with the talisman.<BR>"
 	dat += "<A href='?src=[UID()];rune=veiling'>Kla'atu barada nikt'o!</A> - Two use talisman, first use makes all nearby runes invisible, second use reveals nearby hidden runes.<BR>"
-	dat += "<A href='?src=[UID()];rune=soulstone'>Kal'om neth!</A> - Summons a soul stone, used to capure the spirits of dead or dying humans.<BR>"
+	dat += "<A href='?src=[UID()];rune=soulstone'>Kal'om neth!</A> - Summons a soul stone, used to capture the spirits of dead or dying humans.<BR>"
 	dat += "<A href='?src=[UID()];rune=construct'>Daa'ig osk!</A> - Summons a construct shell for use with soulstone-captured souls. It is too large to carry on your person.<BR>"
 	var/datum/browser/popup = new(user, "talisman", "", 400, 400)
 	popup.set_content(jointext(dat, ""))
@@ -148,8 +148,9 @@
 
 	var/input_rune_key = input(user, "Choose a rune to teleport to.", "Rune to Teleport to") as null|anything in potential_runes //we know what key they picked
 	var/obj/effect/rune/teleport/actual_selected_rune = potential_runes[input_rune_key] //what rune does that key correspond to?
-	if(!actual_selected_rune)
+	if(!src || qdeleted(src) || !user || user.l_hand != src && user.r_hand != src || user.incapacitated() || !actual_selected_rune)
 		return ..(user, 0)
+
 	user.visible_message("<span class='warning'>Dust flows from [user]'s hand, and they disappear in a flash of red light!</span>", \
 						 "<span class='cultitalic'>You speak the words of the talisman and find yourself somewhere else!</span>")
 	user.forceMove(get_turf(actual_selected_rune))
@@ -248,6 +249,7 @@
 			target.visible_message("<span class='warning'>[target]'s holy weapon absorbs the talisman's light!</span>", \
 								   "<span class='userdanger'>Your holy weapon absorbs the blinding light!</span>")
 		else
+			add_logs(user, target, "stunned", addition="with a talisman")
 			target.Weaken(10)
 			target.Stun(10)
 			target.flash_eyes(1,1)
@@ -277,7 +279,11 @@
 	var/mob/living/carbon/human/H = user
 	user.visible_message("<span class='warning'>Otherworldly armor suddenly appears on [user]!</span>", \
 						 "<span class='cultitalic'>You speak the words of the talisman, arming yourself!</span>")
-	H.equip_to_slot_or_del(new /obj/item/clothing/suit/hooded/cultrobes/alt(user), slot_wear_suit)
+	if(H.get_species() == "Plasmaman")
+		H.equip_to_slot(new /obj/item/clothing/suit/space/eva/plasmaman/cultist(H), slot_wear_suit)
+		H.equip_to_slot(new /obj/item/clothing/head/helmet/space/eva/plasmaman/cultist(H), slot_head)
+	else
+		H.equip_to_slot_or_del(new /obj/item/clothing/suit/hooded/cultrobes/alt(user), slot_wear_suit)
 	H.equip_to_slot_or_del(new /obj/item/weapon/storage/backpack/cultpack(user), slot_back)
 	H.equip_to_slot_or_del(new /obj/item/clothing/shoes/cult(user), slot_shoes)
 	H.put_in_hands(new /obj/item/weapon/melee/cultblade(user))
@@ -300,7 +306,7 @@
 
 /obj/item/weapon/paper/talisman/horror/attack(mob/living/target, mob/living/user)
 	if(iscultist(user))
-		to_chat(user, "<span class='cultitalic'>You disturb [target] with visons of the end!</span>")
+		to_chat(user, "<span class='cultitalic'>You disturb [target] with visions of the end!</span>")
 		if(iscarbon(target))
 			var/mob/living/carbon/H = target
 			H.AdjustHallucinate(30)

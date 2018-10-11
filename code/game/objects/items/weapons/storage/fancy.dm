@@ -115,7 +115,7 @@
 	desc = "A box of crayons for all your rune drawing needs."
 	icon = 'icons/obj/crayons.dmi'
 	icon_state = "crayonbox"
-	w_class = 2
+	w_class = WEIGHT_CLASS_SMALL
 	storage_slots = 6
 	icon_type = "crayon"
 	can_hold = list(
@@ -158,7 +158,7 @@
 	icon = 'icons/obj/cigarettes.dmi'
 	icon_state = "cigpacket"
 	item_state = "cigpacket"
-	w_class = 2
+	w_class = WEIGHT_CLASS_SMALL
 	throwforce = 2
 	slot_flags = SLOT_BELT
 	storage_slots = 6
@@ -266,6 +266,13 @@
 	item_state = "cigpacket"
 	default_reagents = list("nicotine" = 15, "omnizine" = 15)
 
+/obj/item/weapon/storage/fancy/cigarettes/cigpack_med
+	name = "Medical Marijuana Packet"
+	desc = "A prescription packet containing six marijuana cigarettes."
+	icon_state = "medpacket"
+	item_state = "cigpacket"
+	default_reagents = list("thc" = 15)
+
 /obj/item/weapon/storage/fancy/cigarettes/cigpack_uplift
 	name = "\improper Uplift Smooth packet"
 	desc = "Your favorite brand, now menthol flavored."
@@ -317,8 +324,8 @@
 
 /obj/item/weapon/storage/fancy/rollingpapers
 	name = "rolling paper pack"
-	desc = "A pack of NanoTrasen brand rolling papers."
-	w_class = 1
+	desc = "A pack of Nanotrasen brand rolling papers."
+	w_class = WEIGHT_CLASS_TINY
 	icon = 'icons/obj/cigarettes.dmi'
 	icon_state = "cig_paper_pack"
 	storage_slots = 10
@@ -360,7 +367,7 @@
 	icon = 'icons/obj/vialbox.dmi'
 	icon_state = "vialbox0"
 	item_state = "syringe_kit"
-	max_w_class = 3
+	max_w_class = WEIGHT_CLASS_NORMAL
 	can_hold = list(/obj/item/weapon/reagent_containers/glass/beaker/vial)
 	max_combined_w_class = 14 //The sum of the w_classes of all the items in this storage item.
 	storage_slots = 6

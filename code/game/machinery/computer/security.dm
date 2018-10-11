@@ -12,6 +12,7 @@
 	var/obj/item/weapon/card/id/scan = null
 	var/authenticated = null
 	var/rank = null
+	var/list/authcard_access = list()
 	var/screen = null
 	var/datum/data/record/active1 = null
 	var/datum/data/record/active2 = null
@@ -66,6 +67,8 @@
 								break
 						var/background = "''"
 						switch(crimstat)
+							if("*Execute*")
+								background = "'background-color:#5E0A1A'"
 							if("*Arrest*")
 								background = "'background-color:#890E26'"
 							if("Incarcerated")
@@ -120,7 +123,7 @@
 				else
 					security["empty"] = 1
 	return data
-	
+
 /obj/machinery/computer/secure_data/Topic(href, href_list)
 	if(..())
 		return 1
@@ -141,6 +144,12 @@
 					qdel(R)
 				update_all_mob_security_hud()
 				setTemp("<h3>All records deleted.</h3>")
+			if("del_alllogs2")
+				if(cell_logs.len)
+					setTemp("<h3>All cell logs deleted.</h3>")
+					cell_logs.Cut()
+				else
+					to_chat(usr, "<span class='notice'>Error; No cell logs to delete.</span>")
 			if("del_r2")
 				if(active2)
 					qdel(active2)
@@ -150,27 +159,46 @@
 					for(var/datum/data/record/R in data_core.medical)
 						if(R.fields["name"] == active1.fields["name"] && R.fields["id"] == active1.fields["id"])
 							qdel(R)
-					qdel(active1)
-					active1 = null
-				if(active2)
-					qdel(active2)
-					active2 = null
+					QDEL_NULL(active1)
+				QDEL_NULL(active2)
 				update_all_mob_security_hud()
 				screen = SEC_DATA_R_LIST
 			if("criminal")
 				if(active2)
+					var/their_name = active2.fields["name"]
+					var/their_rank = active2.fields["rank"]
+					var/t1
+					if(temp_href[2] == "execute")
+						t1 = copytext(trim(sanitize(input("Explain why they are being executed. Include a list of their crimes, and victims.", "EXECUTION ORDER", null, null) as text)), 1, MAX_MESSAGE_LEN)
+					else
+						t1 = copytext(trim(sanitize(input("Enter Reason:", "Secure. records", null, null) as text)), 1, MAX_MESSAGE_LEN)
+					var/visible_reason
+					if(t1)
+						visible_reason = t1
+					else
+						t1 = "(none)"
+						visible_reason = "<span class='warning'>NO REASON PROVIDED</span>"
 					switch(temp_href[2])
 						if("none")
 							active2.fields["criminal"] = "None"
 						if("arrest")
 							active2.fields["criminal"] = "*Arrest*"
+						if("execute")
+							if((access_magistrate in authcard_access) || (access_armory in authcard_access))
+								active2.fields["criminal"] = "*Execute*"
+								message_admins("[ADMIN_FULLMONTY(usr)] authorized <span class='warning'>EXECUTION</span> for [their_rank] [their_name], with comment: [visible_reason]")
+							else
+								setTemp("<h3 class='bad'>Error: permission denied.</h3>")
+								return 1
 						if("incarcerated")
 							active2.fields["criminal"] = "Incarcerated"
 						if("parolled")
 							active2.fields["criminal"] = "Parolled"
 						if("released")
 							active2.fields["criminal"] = "Released"
-
+					var/newstatus = active2.fields["criminal"]
+					log_admin("[key_name_admin(usr)] set secstatus of [their_rank] [their_name] to [newstatus], comment: [t1]")
+					active2.fields["comments"] += "Set to [newstatus] by [usr.name] ([rank]) on [current_date_string] [worldtime2text()], comment: [t1]"
 					update_all_mob_security_hud()
 			if("rank")
 				if(active1)
@@ -203,6 +231,7 @@
 			if(check_access(scan))
 				authenticated = scan.registered_name
 				rank = scan.assignment
+				authcard_access = scan.access
 
 		if(authenticated)
 			active1 = null
@@ -215,6 +244,7 @@
 			screen = null
 			active1 = null
 			active2 = null
+			authcard_access = list()
 
 		else if(href_list["sort"])
 			// Reverse the order if clicked twice
@@ -253,6 +283,12 @@
 			buttons[++buttons.len] = list("name" = "Yes", "icon" = "check", "href" = "del_all2=1", "status" = null)
 			buttons[++buttons.len] = list("name" = "No", "icon" = "times", "href" = null, "status" = null)
 			setTemp("<h3>Are you sure you wish to delete all records?</h3>", buttons)
+
+		else if(href_list["del_alllogs"])
+			var/list/buttons = list()
+			buttons[++buttons.len] = list("name" = "Yes", "icon" = "check", "href" = "del_alllogs2=1", "status" = null)
+			buttons[++buttons.len] = list("name" = "No", "icon" = "times", "href" = null, "status" = null)
+			setTemp("<h3>Are you sure you wish to delete all cell logs?</h3>", buttons)
 
 		else if(href_list["del_rg"])
 			if(active1)
@@ -341,6 +377,24 @@
 				if(istype(active1, /datum/data/record) && data_core.general.Find(active1))
 					create_record_photo(active1)
 				printing = 0
+
+		else if(href_list["printlogs"])
+			if(cell_logs.len && !printing)
+				var/obj/item/weapon/paper/P = input(usr, "Select log to print", "Available Cell Logs") as null|anything in cell_logs
+				if(!P)
+					return 0
+				printing = 1
+				playsound(loc, "sound/goonstation/machines/printer_dotmatrix.ogg", 50, 1)
+				to_chat(usr, "<span class='notice'>Printing file [P.name].</span>")
+				sleep(50)
+				var/obj/item/weapon/paper/log = new /obj/item/weapon/paper(loc)
+				log.name = P.name
+				log.info = P.info
+				printing = 0
+				return 1
+			else
+				to_chat(usr, "<span class='notice'>[src] has no logs stored or is already printing.</span>")
+
 
 		else if(href_list["add_c"])
 			if(istype(active2, /datum/data/record))
@@ -431,6 +485,7 @@
 						buttons[++buttons.len] = list("name" = "None", "icon" = "unlock", "href" = "criminal=none", "status" = (active2.fields["criminal"] == "None" ? "selected" : null))
 						buttons[++buttons.len] = list("name" = "*Arrest*", "icon" = "lock", "href" = "criminal=arrest", "status" = (active2.fields["criminal"] == "*Arrest*" ? "selected" : null))
 						buttons[++buttons.len] = list("name" = "Incarcerated", "icon" = "lock", "href" = "criminal=incarcerated", "status" = (active2.fields["criminal"] == "Incarcerated" ? "selected" : null))
+						buttons[++buttons.len] = list("name" = "*Execute*", "icon" = "lock", "href" = "criminal=execute", "status" = (active2.fields["criminal"] == "*Execute*" ? "selected" : null))
 						buttons[++buttons.len] = list("name" = "Parolled", "icon" = "unlock-alt", "href" = "criminal=parolled", "status" = (active2.fields["criminal"] == "Parolled" ? "selected" : null))
 						buttons[++buttons.len] = list("name" = "Released", "icon" = "unlock", "href" = "criminal=released", "status" = (active2.fields["criminal"] == "Released" ? "selected" : null))
 						setTemp("<h3>Criminal Status</h3>", buttons)
@@ -454,10 +509,6 @@
 
 /obj/machinery/computer/secure_data/proc/setTemp(text, list/buttons = list())
 	temp = list("text" = text, "buttons" = buttons, "has_buttons" = buttons.len > 0)
-	
-/obj/machinery/computer/secure_data/proc/update_all_mob_security_hud()	
-	for(var/mob/living/carbon/human/H in mob_list)
-		H.sec_hud_set_security_status()	
 
 /obj/machinery/computer/secure_data/proc/create_record_photo(datum/data/record/R)
 	// basically copy-pasted from the camera code but different enough that it has to be redone
@@ -527,6 +578,14 @@
 /obj/machinery/computer/secure_data/detective_computer
 	icon = 'icons/obj/computer.dmi'
 	icon_state = "messyfiles"
+
+/obj/machinery/computer/secure_data/laptop
+	name = "security laptop"
+	desc = "Nanotrasen Security laptop. Bringing modern compact computing to this century!"
+	icon_state = "laptop"
+	icon_keyboard = "seclaptop_key"
+	icon_screen = "seclaptop"
+	density = 0
 
 #undef SEC_DATA_R_LIST
 #undef SEC_DATA_MAINT

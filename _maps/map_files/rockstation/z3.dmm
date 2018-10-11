@@ -322,7 +322,7 @@
 "gj" = (/obj/machinery/atmospherics/pipe/manifold/hidden/supply{dir = 4; initialize_directions = 11; level = 1},/turf/simulated/floor/plasteel,/area/tcommsat/entrance)
 "gk" = (/obj/structure/cable{d1 = 1; d2 = 4; icon_state = "1-4"; tag = ""},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plasteel,/area/tcommsat/entrance)
 "gl" = (/obj/machinery/power/apc{dir = 1; name = "Telecoms Sat. Teleporter APC"; pixel_x = 1; pixel_y = 26},/obj/structure/cable{d2 = 8; icon_state = "0-8"},/turf/simulated/floor/plasteel,/area/tcommsat/entrance)
-"gm" = (/obj/machinery/door/airlock/external{frequency = 1381; icon_state = "door_locked"; id_tag = "telecoms_outer"; locked = 1; name = "External Access"; req_access = null; req_access_txt = "10;13"},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating,/area/tcommsat/powercontrol)
+"gm" = (/obj/machinery/door/airlock/external{frequency = 1381; icon_state = "door_locked"; id_tag = "telecoms_outer"; locked = 1; name = "External Access"; req_access = null; req_access_txt = "10;13"},/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/turf/simulated/floor/plating/airless,/area/tcommsat/powercontrol)
 "gn" = (/obj/structure/cable{d1 = 1; d2 = 2; icon_state = "1-2"},/obj/structure/closet/crate,/obj/item/stack/sheet/glass{amount = 50},/obj/item/stack/cable_coil/random,/obj/item/stack/cable_coil/random,/turf/simulated/floor/plating,/area/tcommsat/powercontrol)
 "go" = (/turf/simulated/floor/plating,/area/tcommsat/powercontrol)
 "gp" = (/obj/machinery/hologram/holopad,/turf/simulated/floor/plating,/area/tcommsat/powercontrol)

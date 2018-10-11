@@ -17,14 +17,15 @@
 					if(affecting && istype(affecting))
 						affecting.heal_damage(25 * weakness, 25 * weakness)
 				//H:heal_organ_damage(25, 25)
-				H.vessel.add_reagent("blood",5)
+//				H.vessel.add_reagent("blood",5) //former line, changed to the following:
+				H.restore_blood()				//because fuck it why not at least this will compile with the new system
 				H.nutrition += 50 * weakness
 				H.adjustBrainLoss(-25 * weakness)
 				var/radiation = min(H.radiation, 25 * weakness)
 				H.apply_effect(-radiation,IRRADIATE,0)
 				H.bodytemperature = initial(H.bodytemperature)
-				spawn(1)
-					H.fixblood()
+//				spawn(1)
+//					H.fixblood() //I don't think this is needed anymore because I think I blanket healed it above besides this proc no longer exists
 			//
 			C.adjustOxyLoss(-25 * weakness)
 			C.adjustToxLoss(-25 * weakness)

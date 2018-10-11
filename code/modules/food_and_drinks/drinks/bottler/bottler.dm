@@ -286,9 +286,7 @@
 		drink_container.desc = "[recipe_to_use.description]"
 	flick("bottler_on", src)
 	spawn(45)
-		for(var/i = 1, i <= slots.len, i++)
-			qdel(slots[i])
-			slots[i] = null
+		resetSlots()
 		bottling = 0
 		drink_container.forceMove(loc)
 		updateUsrDialog()
@@ -407,3 +405,7 @@
 		icon_state = "bottler_on"
 	else
 		icon_state = "bottler_off"
+
+/obj/machinery/bottler/proc/resetSlots()
+	QDEL_LIST_ASSOC_VAL(slots)
+	slots.len = 3

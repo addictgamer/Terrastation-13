@@ -27,7 +27,7 @@
 	power_equip = 0
 	power_light = 0
 	outdoors = 1
-	ambientsounds = list('sound/ambience/ambimine.ogg')
+	ambientsounds = list('sound/ambience/ambimine.ogg','sound/ambience/song_game.ogg')
 
 /area/mine/lobby
 	name = "Mining Station"

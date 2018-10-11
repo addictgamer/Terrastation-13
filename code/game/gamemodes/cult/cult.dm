@@ -1,4 +1,4 @@
-//This file was auto-corrected by findeclaration.exe on 25.5.2012 20:42:31
+#define SUMMON_POSSIBILITIES 3
 var/global/list/all_cults = list()
 
 /datum/game_mode
@@ -107,6 +107,12 @@ var/global/list/all_cults = list()
 	modePlayer += cult
 	acolytes_needed = acolytes_needed + round((num_players_started() / 10))
 
+	if(!summon_spots.len)
+		while(summon_spots.len < SUMMON_POSSIBILITIES)
+			var/area/summon = pick(return_sorted_areas() - summon_spots)
+			if(summon && is_station_level(summon.z) && summon.valid_territory)
+				summon_spots += summon
+
 	for(var/datum/mind/cult_mind in cult)
 		equip_cultist(cult_mind.current)
 		cult_mind.current.faction |= "cult"
@@ -136,7 +142,7 @@ var/global/list/all_cults = list()
 				else
 					explanation = "Free objective."
 			if("eldergod")
-				explanation = "Summon [ticker.mode.cultdat.entity_name]. It will only work if nine cultists stand on and around it."
+				explanation = "Summon [ticker.mode.cultdat.entity_name] by invoking the 'Tear Reality' rune.<b>The summoning can only be accomplished in [english_list(summon_spots)] - where the veil is weak enough for the ritual to begin.</b>"
 		to_chat(cult_mind.current, "<B>Objective #[obj_count]</B>: [explanation]")
 		cult_mind.memory += "<B>Objective #[obj_count]</B>: [explanation]<BR>"
 
@@ -170,6 +176,7 @@ var/global/list/all_cults = list()
 /datum/game_mode/proc/add_cultist(datum/mind/cult_mind) //BASE
 	if(!istype(cult_mind))
 		return 0
+	var/datum/game_mode/cult/cult_mode = ticker.mode
 	if(!(cult_mind in cult) && is_convertable_to_cult(cult_mind))
 		cult += cult_mind
 		cult_mind.current.faction |= "cult"
@@ -179,17 +186,10 @@ var/global/list/all_cults = list()
 		if(jobban_isbanned(cult_mind.current, ROLE_CULTIST) || jobban_isbanned(cult_mind.current, ROLE_SYNDICATE))
 			replace_jobbanned_player(cult_mind.current, ROLE_CULTIST)
 		update_cult_icons_added(cult_mind)
+		cult_mode.memorize_cult_objectives(cult_mind)
 		if(GAMEMODE_IS_CULT)
-			var/datum/game_mode/cult/cult_mode = ticker.mode
 			cult_mode.check_numbers()
 		return 1
-
-
-/datum/game_mode/cult/add_cultist(datum/mind/cult_mind) //INHERIT
-	if(!..(cult_mind))
-		return
-	memorize_cult_objectives(cult_mind)
-
 
 /datum/game_mode/proc/remove_cultist(datum/mind/cult_mind, show_message = 1)
 	if(cult_mind in cult)

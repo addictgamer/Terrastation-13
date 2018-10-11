@@ -69,7 +69,7 @@
 				new /obj/item/clothing/suit/hooded/chaplain_hoodie(src)
 				new /obj/item/weapon/card/id/syndicate(src)
 				return
-				
+
 			if("gadgets")
 				new /obj/item/clothing/gloves/color/yellow/power(src)
 				new /obj/item/weapon/pen/sleepy(src)
@@ -88,7 +88,7 @@
 /obj/item/weapon/storage/box/syndie_kit/space
 	name = "Boxed Space Suit and Helmet"
 	can_hold = list(/obj/item/clothing/suit/space/syndicate/black/red, /obj/item/clothing/head/helmet/space/syndicate/black/red)
-	max_w_class = 3
+	max_w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/weapon/storage/box/syndie_kit/space/New()
 	..()
@@ -99,7 +99,7 @@
 /obj/item/weapon/storage/box/syndie_kit/hardsuit
 	name = "Boxed Blood Red Suit and Helmet"
 	can_hold = list(/obj/item/clothing/suit/space/hardsuit/syndi, /obj/item/clothing/head/helmet/space/hardsuit/syndi)
-	max_w_class = 3
+	max_w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/weapon/storage/box/syndie_kit/hardsuit/New()
 	..()
@@ -110,7 +110,7 @@
 /obj/item/weapon/storage/box/syndie_kit/elite_hardsuit
 	name = "Boxed Elite Syndicate Hardsuit and Helmet"
 	can_hold = list(/obj/item/clothing/suit/space/hardsuit/syndi/elite, /obj/item/clothing/head/helmet/space/hardsuit/syndi/elite)
-	max_w_class = 3
+	max_w_class = WEIGHT_CLASS_NORMAL
 
 /obj/item/weapon/storage/box/syndie_kit/elite_hardsuit/New()
 	..()
@@ -120,7 +120,7 @@
 /obj/item/weapon/storage/box/syndie_kit/shielded_hardsuit
 	name = "Boxed Shielded Syndicate Hardsuit and Helmet"
 	can_hold = list(/obj/item/clothing/suit/space/hardsuit/shielded/syndi, /obj/item/clothing/head/helmet/space/hardsuit/shielded/syndi)
-	max_w_class = 4
+	max_w_class = WEIGHT_CLASS_BULKY
 
 /obj/item/weapon/storage/box/syndie_kit/shielded_hardsuit/New()
 	..()
@@ -156,6 +156,22 @@
 	new /obj/item/weapon/grenade/empgrenade(src)
 	new /obj/item/weapon/grenade/empgrenade(src)
 	new /obj/item/weapon/implanter/emp/(src)
+
+/obj/item/weapon/storage/box/syndie_kit/throwing_weapons
+	name = "boxed throwing kit"
+	can_hold = list(/obj/item/weapon/throwing_star, /obj/item/weapon/restraints/legcuffs/bola/tactical)
+	max_combined_w_class = 16
+	max_w_class = WEIGHT_CLASS_NORMAL
+
+/obj/item/weapon/storage/box/syndie_kit/throwing_weapons/New()
+	..()
+	new /obj/item/weapon/throwing_star(src)
+	new /obj/item/weapon/throwing_star(src)
+	new /obj/item/weapon/throwing_star(src)
+	new /obj/item/weapon/throwing_star(src)
+	new /obj/item/weapon/throwing_star(src)
+	new /obj/item/weapon/restraints/legcuffs/bola/tactical(src)
+	new /obj/item/weapon/restraints/legcuffs/bola/tactical(src)
 
 /obj/item/weapon/storage/box/syndie_kit/sarin
 	name = "Sarin Gas Grenades"
@@ -216,3 +232,33 @@
 		B.deity_name = "Success"
 		B.icon_state = "greentext"
 		B.item_state = "greentext"
+
+
+/obj/item/weapon/storage/box/syndie_kit/cutouts
+	name = "Fortified Artistic Box"
+
+/obj/item/weapon/storage/box/syndie_kit/cutouts/New()
+	..()
+	for(var/i in 1 to 3)
+		new/obj/item/cardboard_cutout/adaptive(src)
+	new/obj/item/toy/crayon/spraycan(src)
+
+/obj/item/weapon/storage/box/syndie_kit/bonerepair
+	name = "bone repair kit"
+	desc = "A box containing one prototype field bone repair kit."
+
+/obj/item/weapon/storage/box/syndie_kit/bonerepair/New()
+	..()
+	new /obj/item/weapon/reagent_containers/hypospray/autoinjector/nanocalcium(src)
+	var/obj/item/weapon/paper/P = new /obj/item/weapon/paper(src)
+	P.name = "Bone repair guide"
+	P.desc = "For when you want to safely get off Mr Bones' Wild Ride."
+	P.info = {"
+<font face="Verdana" color=black></font><font face="Verdana" color=black><center><B>Prototype Bone Repair Nanites</B><HR></center><BR><BR>
+
+<B>Usage:</B> <BR><BR><BR>
+
+<font size = "1">This is a highly experimental prototype chemical designed to repair damaged bones of soldiers in the field, use only as a last resort. The autoinjector contains prototype nanites bearing a calcium based payload. The nanites will simultaneously shut down body systems whilst aiding bone repair.<BR><BR><BR>Warning: Side effects can cause temporary paralysis, loss of co-ordination and sickness. <B>Do not use with any kind of stimulant or drugs. Serious damage can occur!</B><BR><BR><BR>
+
+To apply, hold the injector a short distance away from the outer thigh before applying firmly to the skin surface. Bones should begin repair after a short time, during which you are advised to remain still. <BR><BR><BR><BR>After use you are advised to see a doctor at the next available opportunity. Mild scarring and tissue damage may occur after use. This is a prototype.</font><BR><HR></font>
+	"}

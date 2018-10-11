@@ -30,7 +30,7 @@
 
 	var/med_hud = DATA_HUD_MEDICAL_ADVANCED //Determines the med hud to use
 	var/sec_hud = DATA_HUD_SECURITY_ADVANCED //Determines the sec hud to use
-	var/d_hud = DATA_HUD_DIAGNOSTIC //There is only one kind of diag hud
+	var/d_hud = DATA_HUD_DIAGNOSTIC_ADVANCED //There is only one kind of diag hud
 
 	var/obj/item/device/radio/common_radio
 
@@ -43,6 +43,12 @@
 	diag_hud_set_health()
 	add_language("Galactic Common")
 	init_subsystems()
+
+/mob/living/silicon/med_hud_set_health()
+	return //we use a different hud
+
+/mob/living/silicon/med_hud_set_status()
+	return //we use a different hud
 
 /mob/living/silicon/Destroy()
 	silicon_mob_list -= src
@@ -144,11 +150,11 @@
 
 // This adds the basic clock, shuttle recall timer, and malf_ai info to all silicon lifeforms
 /mob/living/silicon/Stat()
+	..()
 	if(statpanel("Status"))
 		show_stat_station_time()
 		show_stat_emergency_shuttle_eta()
 		show_system_integrity()
-	..()
 
 //Silicon mob language procs
 
@@ -195,31 +201,6 @@
 	src << browse(dat, "window=airoster")
 	onclose(src, "airoster")
 
-/mob/living/silicon/Bump(atom/movable/AM as mob|obj, yes)  //Allows the AI to bump into mobs if it's itself pushed
-        if((!( yes ) || now_pushing))
-                return
-        now_pushing = 1
-        if(ismob(AM))
-                var/mob/tmob = AM
-                if(!(tmob.status_flags & CANPUSH))
-                        now_pushing = 0
-                        return
-        now_pushing = 0
-        ..()
-        if(!istype(AM, /atom/movable))
-                return
-        if(!now_pushing)
-                now_pushing = 1
-                if(!AM.anchored)
-                        var/t = get_dir(src, AM)
-                        if(istype(AM, /obj/structure/window))
-                                if(AM:ini_dir == NORTHWEST || AM:ini_dir == NORTHEAST || AM:ini_dir == SOUTHWEST || AM:ini_dir == SOUTHEAST)
-                                        for(var/obj/structure/window/win in get_step(AM,t))
-                                                now_pushing = 0
-                                                return
-                        step(AM, t)
-                now_pushing = null
-
 /mob/living/silicon/assess_threat() //Secbots won't hunt silicon units
 	return -10
 
@@ -257,8 +238,8 @@
 	medsensor.add_hud_to(src)
 
 /mob/living/silicon/proc/add_diag_hud()
-	var/datum/atom_hud/diagsensor = huds[d_hud]
-	diagsensor.add_hud_to(src)
+	for(var/datum/atom_hud/data/diagnostic/diagsensor in huds)
+		diagsensor.add_hud_to(src)
 
 
 /mob/living/silicon/proc/toggle_sensor_mode()

@@ -23,8 +23,8 @@
 	var/l_hacking = 0
 	var/emagged = 0
 	var/open = 0
-	w_class = 3
-	max_w_class = 2
+	w_class = WEIGHT_CLASS_NORMAL
+	max_w_class = WEIGHT_CLASS_SMALL
 	max_combined_w_class = 14
 
 /obj/item/weapon/storage/secure/examine(mob/user)
@@ -180,8 +180,8 @@
 	force = 8
 	throw_speed = 2
 	throw_range = 4
-	w_class = 4
-	max_w_class = 3
+	w_class = WEIGHT_CLASS_BULKY
+	max_w_class = WEIGHT_CLASS_NORMAL
 	max_combined_w_class = 21
 	attack_verb = list("bashed", "battered", "bludgeoned", "thrashed", "whacked")
 
@@ -216,6 +216,14 @@
 	for(var/i = 0, i < storage_slots - 2, i++)
 		handle_item_insertion(new /obj/item/stack/spacecash/c1000, 1)
 
+/obj/item/weapon/storage/secure/briefcase/reaper/New()
+	..()
+	handle_item_insertion(new /obj/item/weapon/gun/energy/kinetic_accelerator/crossbow, 1)
+	handle_item_insertion(new /obj/item/weapon/gun/projectile/revolver/mateba, 1)
+	handle_item_insertion(new /obj/item/ammo_box/a357, 1)
+	handle_item_insertion(new /obj/item/weapon/grenade/plastic/c4, 1)
+
+
 // -----------------------------
 //        Secure Safe
 // -----------------------------
@@ -228,7 +236,7 @@
 	icon_locking = "safeb"
 	icon_sparking = "safespark"
 	force = 8
-	w_class = 5
+	w_class = WEIGHT_CLASS_HUGE
 	max_w_class = 8
 	anchored = 1
 	density = 0

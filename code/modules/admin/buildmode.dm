@@ -123,8 +123,7 @@
 		if(istype(cl))
 			cl.images -= I
 			cl = null
-		qdel(I)
-		I = null
+		QDEL_NULL(I)
 	return ..()
 
 /datum/click_intercept
@@ -139,9 +138,7 @@
 	holder.screen += buttons
 
 /datum/click_intercept/Destroy()
-	for(var/button in buttons)
-		qdel(button)
-	buttons.Cut()
+	QDEL_LIST(buttons)
 	return ..()
 
 
@@ -379,10 +376,8 @@
 	return 1
 
 /datum/click_intercept/buildmode/proc/deselect_region()
-	qdel(cornerA)
-	cornerA = null
-	qdel(cornerB)
-	cornerB = null
+	QDEL_NULL(cornerA)
+	QDEL_NULL(cornerB)
 
 /datum/click_intercept/buildmode/proc/Reset()//Reset temporary variables
 	deselect_region()
