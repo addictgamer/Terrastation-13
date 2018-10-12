@@ -11,6 +11,8 @@ var/list/robot_verbs_default = list(
 	health = 100
 	universal_understand = 1
 
+	var/obj/item/device/station_map/station_holomap = null
+
 	var/sight_mode = 0
 	var/custom_name = ""
 	var/custom_sprite = 0 //Due to all the sprites involved, a var for our custom borgs may be best
@@ -107,6 +109,7 @@ var/list/robot_verbs_default = list(
 	update_icons()
 	update_headlamp()
 
+	station_holomap = new(src)
 	radio = new /obj/item/device/radio/borg(src)
 	common_radio = radio
 

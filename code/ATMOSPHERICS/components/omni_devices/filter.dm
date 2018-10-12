@@ -5,14 +5,14 @@
 	name = "omni gas filter"
 	icon_state = "map_filter"
 
-	var/list/filters = new()
+	var/list/gasfilters = new()
 	var/datum/omni_port/input
 	var/datum/omni_port/output
 
 /obj/machinery/atmospherics/omni/filter/Destroy()
 	input = null
 	output = null
-	filters.Cut()
+	gasfilters.Cut()
 	return ..()
 
 /obj/machinery/atmospherics/omni/filter/sort_ports()
@@ -22,8 +22,8 @@
 				output = null
 			if(input == P)
 				input = null
-			if(filters.Find(P))
-				filters -= P
+			if(gasfilters.Find(P))
+				gasfilters -= P
 
 			P.air.volume = 200
 			switch(P.mode)
@@ -32,12 +32,12 @@
 				if(ATM_OUTPUT)
 					output = P
 				if(ATM_O2 to ATM_N2O)
-					filters += P
+					gasfilters += P
 
 /obj/machinery/atmospherics/omni/filter/error_check()
-	if(!input || !output || !filters)
+	if(!input || !output || !gasfilters)
 		return 1
-	if(filters.len < 1 || filters.len > 2) //requires 1 or 2 filters ~otherwise why are you using a filter?
+	if(gasfilters.len < 1 || gasfilters.len > 2) //requires 1 or 2 gasfilters ~otherwise why are you using a filter?
 		return 1
 
 	return 0
@@ -57,7 +57,7 @@
 
 	if(output_pressure >= target_pressure)
 		return 1
-	for(var/datum/omni_port/P in filters)
+	for(var/datum/omni_port/P in gasfilters)
 		if(P.air.return_pressure() >= target_pressure)
 			return 1
 
@@ -72,7 +72,7 @@
 		if(!removed)
 			return 1
 
-		for(var/datum/omni_port/P in filters)
+		for(var/datum/omni_port/P in gasfilters)
 			var/datum/gas_mixture/filtered_out = new
 			filtered_out.temperature = removed.return_temperature()
 
@@ -114,7 +114,7 @@
 
 	ui = nanomanager.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
-		ui = new(user, src, ui_key, "omni_filter.tmpl", "Omni Filter Control", 330, 330)
+		ui = new(user, src, ui_key, "omni_topic_filter.tmpl", "Omni Filter Control", 330, 330)
 		ui.open()
 
 /obj/machinery/atmospherics/omni/filter/ui_data(mob/user, datum/topic_state/state)

@@ -84,6 +84,11 @@ var/global/pipe_processing_killed = 0
 		make_mining_asteroid_secret()
 
 	populate_spawn_points()
+	var/watch=start_watch()
+	log_startup_progress("Generating holominimaps...")
+	generateHoloMinimaps()
+	log_startup_progress("  Finished holominimaps in [stop_watch(watch)]s.")
+
 
 /datum/controller/game_controller/proc/setup_objects()
 	var/watch = start_watch()

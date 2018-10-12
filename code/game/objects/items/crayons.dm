@@ -230,7 +230,7 @@
 /obj/item/toy/crayon/spraycan
 	icon_state = "spraycan_cap"
 	desc = "A metallic container containing tasty paint."
-//	var/capped = 1
+	var/capped = 1
 	instant = 1
 	validSurfaces = list(/turf/simulated/floor,/turf/simulated/wall)
 

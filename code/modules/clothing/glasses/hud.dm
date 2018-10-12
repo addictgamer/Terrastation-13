@@ -40,7 +40,7 @@
 
 /obj/item/clothing/glasses/hud/health/health_advanced
 	name = "\improper Advanced Health Scanner HUD"
-	desc = "A heads-up display that scans the humans in view and provides accurate data about their health status.  Includes anti-flash filter."
+	desc = "A heads-up display that scans the humans in view and provides accurate data about their health status.  Includes anti-flash topic_filter."
 	icon_state = "advmedhud"
 	flash_protect = 1
 

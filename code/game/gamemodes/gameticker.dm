@@ -45,6 +45,9 @@ var/round_start_time = 0
 	'sound/music/lazarus.ogg',\
 	'sound/music/redsky.ogg',\
 	'sound/music/firefucker.ogg',\
+	'sound/music/dawsonschristian.ogg',\
+	'sound/music/carmenmirandasghost.ogg',\
+	'sound/music/space_asshole.ogg',\
 	'sound/music/darkcloud.ogg',)
 	do
 		pregame_timeleft = 180

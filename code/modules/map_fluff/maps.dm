@@ -10,3 +10,15 @@ var/datum/map/using_map = new USING_MAP_DATUM
 	var/company_name  = "BadMan"
 	var/company_short = "BM"
 	var/starsys_name  = "Dull Star"
+	var/list/zLevels = list()
+	var/zMainStation = 1
+	var/zCentcomm = 2
+	var/zTCommSat = 3
+	var/zDerelict = 4
+	var/zAsteroid = 5
+	var/zSalvageYard = 6
+	var/zDeepSpace = 7
+
+	//Holomap offsets
+	var/list/holomap_offset_x = list()
+	var/list/holomap_offset_y = list()

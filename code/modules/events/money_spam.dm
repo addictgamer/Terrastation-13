@@ -92,7 +92,7 @@
 					"You have won tickets to the newest romantic comedy 16 RULES OF LOVE!",\
 					"You have won tickets to the newest thriller THE CULT OF THE SLEEPING ONE!")
 
-			if(useMS.send_pda_message("[P.owner]", sender, message))	//Message been filtered by spam filter.
+			if(useMS.send_pda_message("[P.owner]", sender, message))	//Message been filtered by spam topic_filter.
 				return
 
 			last_spam_time = world.time

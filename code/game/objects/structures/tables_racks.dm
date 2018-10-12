@@ -375,7 +375,7 @@
 	icon_state = "wood_table"
 	parts = /obj/item/weapon/table_parts/wood
 	health = 50
-	canSmoothWith = list(/obj/structure/table/woodentable, /obj/structure/table/woodentable/poker, /obj/structure/table/woodentable/fancy)
+	canSmoothWith = list(/obj/structure/table/woodentable, /obj/structure/table/woodentable/poker)
 	burn_state = FLAMMABLE
 	burntime = 20
 	var/canPokerize = 1

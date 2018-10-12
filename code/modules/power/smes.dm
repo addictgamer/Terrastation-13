@@ -5,7 +5,7 @@
 #define SMESMAXOUTPUT 200000
 #define SMESRATE 0.05			// rate of internal charge to external power
 
-
+var/list/smes_list = list()
 
 /obj/machinery/power/smes
 	name = "power storage unit"
@@ -51,6 +51,9 @@
 	component_parts += new /obj/item/weapon/stock_parts/cell/high(null)
 	component_parts += new /obj/item/weapon/stock_parts/capacitor(null)
 	component_parts += new /obj/item/stack/cable_coil(null, 5)
+
+	smes_list |= src
+
 	RefreshParts()
 
 	spawn(5)
@@ -209,6 +212,7 @@
 	return 0
 
 /obj/machinery/power/smes/Destroy()
+	smes_list -= src
 	if(ticker && ticker.current_state == GAME_STATE_PLAYING)
 		var/area/area = get_area(src)
 		if(area)

@@ -31,6 +31,7 @@
 
 /area/mine/lobby
 	name = "Mining Station"
+	holomap_color = HOLOMAP_AREACOLOR_CARGO
 
 /area/mine/storage
 	name = "Mining Station Storage"
@@ -45,10 +46,12 @@
 /area/mine/living_quarters
 	name = "Mining Station Port Wing"
 	icon_state = "mining_living"
+	holomap_color = HOLOMAP_AREACOLOR_CARGO
 
 /area/mine/eva
 	name = "Mining Station EVA"
 	icon_state = "mining_eva"
+	holomap_color = HOLOMAP_AREACOLOR_COMMAND
 
 /area/mine/maintenance
 	name = "Mining Station Communications"
@@ -61,6 +64,7 @@
 
 /area/mine/sleeper
 	name = "Mining Station Emergency Sleeper"
+	holomap_color = HOLOMAP_AREACOLOR_MEDICAL
 
 /area/mine/north_outpost
 	name = "North Mining Outpost"
