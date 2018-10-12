@@ -2,6 +2,7 @@
 /area/research_outpost
 	name = "Research Outpost"
 	icon_state = "anomaly"
+	holomap_color = HOLOMAP_AREACOLOR_SCIENCE
 
 /area/research_outpost/hallway
 	name = "Research Outpost Hallway"
@@ -14,10 +15,12 @@
 /area/research_outpost/power
 	name = "Research Outpost Power"
 	icon_state = "engine"
+	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
 
 /area/research_outpost/atmos
 	name = "Research Outpost Atmospherics"
 	icon_state = "atmos"
+	holomap_color = HOLOMAP_AREACOLOR_ENGINEERING
 
 /area/research_outpost/maint
 	name = "Research Outpost Maintenance"
@@ -54,6 +57,7 @@
 /area/research_outpost/med
 	name = "Research Outpost Medbay"
 	icon_state = "medbay3"
+	holomap_color = HOLOMAP_AREACOLOR_MEDICAL
 
 /area/research_outpost/entry
 	name = "Research Outpost Shuttle Dock"

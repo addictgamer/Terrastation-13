@@ -1,4 +1,5 @@
 var/bomb_set
+var/obj/item/weapon/disk/nuclear/nukedisk
 
 /obj/machinery/nuclearbomb
 	name = "\improper Nuclear Fission Explosive"
@@ -403,6 +404,8 @@ var/bomb_set
 
 /obj/item/weapon/disk/nuclear/New()
 	..()
+	if(!nukedisk)
+		nukedisk = src
 	processing_objects.Add(src)
 	poi_list |= src
 

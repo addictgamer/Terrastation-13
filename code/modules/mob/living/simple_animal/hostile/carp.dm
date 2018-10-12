@@ -73,3 +73,20 @@
 
 	melee_damage_lower = 20
 	melee_damage_upper = 20
+
+
+/mob/living/simple_animal/hostile/carp/old_bailey
+	icon = 'icons/mob/named_mobs.dmi'
+	name = "Old Bailey"
+	desc = "An aged, irascible space carp, hardened by Time into an Hephaestian juggernaut."
+	icon_state = "old_bailey"
+	icon_living = "old_bailey"
+	icon_dead = "old_bailey_dead"
+	icon_gib = "old_bailey_gib"
+	maxHealth = 130
+	health = 130
+	pixel_x = -16
+	mob_size = MOB_SIZE_LARGE
+
+	melee_damage_lower = 40
+	melee_damage_upper = 40

@@ -14,8 +14,8 @@
         filter - thing for optimization. Optional, but recommended.
                  All filters should be consolidated in this file, see defines later.
                  Device without listening filter will receive all signals (on specified frequency).
-                 Device with filter will receive any signals sent without filter.
-                 Device with filter will not receive any signals sent with different filter.
+                 Device with filter will receive any signals sent without topic_filter.
+                 Device with filter will not receive any signals sent with different topic_filter.
       returns:
        Reference to frequency object.
 
@@ -185,11 +185,11 @@ var/list/DEPT_FREQS = list(AI_FREQ, COMM_FREQ, ENG_FREQ, MED_FREQ, SEC_FREQ, SCI
 	return "radio"
 
 /* filters */
-//When devices register with the radio controller, they might register under a certain filter.
-//Other devices can then choose to send signals to only those devices that belong to a particular filter.
+//When devices register with the radio controller, they might register under a certain topic_filter.
+//Other devices can then choose to send signals to only those devices that belong to a particular topic_filter.
 //This is done for performance, so we don't send signals to lots of machines unnecessarily.
 
-//This filter is special because devices belonging to default also recieve signals sent to any other filter.
+//This filter is special because devices belonging to default also recieve signals sent to any other topic_filter.
 var/const/RADIO_DEFAULT = "radio_default"
 
 var/const/RADIO_TO_AIRALARM = "radio_airalarm" //air alarms
@@ -275,7 +275,7 @@ var/global/datum/controller/radio/radio_controller
 		for(var/next_filter in devices)
 			send_to_filter(source, signal, next_filter, start_point, range)
 
-//Sends a signal to all machines belonging to a given filter. Should be called by post_signal()
+//Sends a signal to all machines belonging to a given topic_filter. Should be called by post_signal()
 /datum/radio_frequency/proc/send_to_filter(obj/source, datum/signal/signal, var/filter, var/turf/start_point = null, var/range = null)
 	if(range && !start_point)
 		return

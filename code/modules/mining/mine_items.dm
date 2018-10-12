@@ -9,6 +9,11 @@
 	light_range = 8
 	light_power = 0
 
+/obj/effect/light_emitter/New()
+	..()
+	set_light(light_range, light_power)
+
+
 /**********************Miner Lockers**************************/
 
 /obj/structure/closet/wardrobe/miner

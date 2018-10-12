@@ -1,0 +1,68 @@
+#define HOLOMAP_OBSTACLE	"#FFFFFFDD"
+#define HOLOMAP_PATH		"#66666699"
+
+//Holomap filters
+#define HOLOMAP_FILTER_DEATHSQUAD				1
+#define HOLOMAP_FILTER_ERT						2
+#define HOLOMAP_FILTER_NUKEOPS					4
+#define HOLOMAP_FILTER_ELITESYNDICATE			8
+#define HOLOMAP_FILTER_VOX						16
+#define HOLOMAP_FILTER_STATIONMAP				32
+#define HOLOMAP_FILTER_STATIONMAP_STRATEGIC		64//features markers over the captain's office, the armory, the SMES
+
+#define HOLOMAP_AREACOLOR_COMMAND		"#447FC299"
+#define HOLOMAP_AREACOLOR_SECURITY		"#AE121299"
+#define HOLOMAP_AREACOLOR_MEDICAL		"#35803099"
+#define HOLOMAP_AREACOLOR_SCIENCE		"#A154A699"
+#define HOLOMAP_AREACOLOR_ENGINEERING	"#F1C23199"
+#define HOLOMAP_AREACOLOR_CARGO			"#E06F0099"
+#define HOLOMAP_AREACOLOR_HALLWAYS		"#FFFFFF66"
+#define HOLOMAP_AREACOLOR_ARRIVALS		"#0000FFCC"
+#define HOLOMAP_AREACOLOR_ESCAPE		"#FF0000CC"
+
+#define HOLOMAP_EXTRA_STATIONMAP				"stationmapformatted"
+#define HOLOMAP_EXTRA_STATIONMAP_STRATEGIC		"stationmapstrategic"
+#define HOLOMAP_EXTRA_STATIONMAPAREAS			"stationareas"
+#define HOLOMAP_EXTRA_STATIONMAPSMALL_NORTH		"stationmapsmallnorth"
+#define HOLOMAP_EXTRA_STATIONMAPSMALL_SOUTH		"stationmapsmallsouth"
+#define HOLOMAP_EXTRA_STATIONMAPSMALL_EAST		"stationmapsmalleast"
+#define HOLOMAP_EXTRA_STATIONMAPSMALL_WEST		"stationmapsmallwest"
+
+#define HOLOMAP_MARKER_SMES				"smes"
+#define HOLOMAP_MARKER_DISK				"diskspawn"
+#define HOLOMAP_MARKER_SKIPJACK			"skipjack"
+#define HOLOMAP_MARKER_SYNDISHUTTLE		"syndishuttle"
+
+#define WORLD_ICON_SIZE 32
+#define PIXEL_MULTIPLIER WORLD_ICON_SIZE/32
+
+//#define LIGHTING_PLANE 			100
+	#define LIGHTBULB_LAYER 		0
+	#define POINTER_LAYER 			1
+	#define LIGHTING_LAYER 			2
+	#define ABOVE_LIGHTING_LAYER 	3
+	#define SUPERMATTER_WALL_LAYER 	4
+	#define SUPER_PORTAL_LAYER		5
+	#define NARSIE_GLOW 			6
+
+//#define ABOVE_LIGHTING_PLANE		101
+
+#define ABOVE_TURF_PLANE 		1			// For items which should appear above turfs but below other objects and hiding mobs, eg: wires & pipes
+
+	#define HOLOMAP_LAYER				1
+	#define RUNE_LAYER					2
+	#define DECAL_LAYER					1
+	#define TURF_FIRE_LAYER				4
+	#define ABOVE_TILE_LAYER			5
+	#define UNARY_PIPE_LAYER			6
+	#define TRINARY_PIPE_LAYER			7
+	#define BINARY_PIPE_LAYER			8
+	#define EXPOSED_PIPE_LAYER			9
+	#define EXPOSED_UNARY_PIPE_LAYER	10
+	#define EXPOSED_TRINARY_PIPE_LAYER	11
+	#define EXPOSED_BINARY_PIPE_LAYER	12
+	#define SNOW_LAYER					13
+	#define MOUSETRAP_LAYER 			14
+	#define FIREAXE_LOCKER_LAYER		15
+	#define BLOOD_LAYER					16
+	#define WEED_LAYER					420

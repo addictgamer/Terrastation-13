@@ -36,6 +36,9 @@
 
 /turf/New()
 	..()
+	if(loc)
+		var/area/A = loc
+		A.area_turfs += src
 	for(var/atom/movable/AM in src)
 		Entered(AM)
 	if(smooth && ticker && ticker.current_state == GAME_STATE_PLAYING)
@@ -153,6 +156,9 @@
 
 //Creates a new turf
 /turf/proc/ChangeTurf(path, defer_change = FALSE, keep_icon = TRUE)
+	if(loc)
+		var/area/A = loc
+		A.area_turfs -= src
 	if(!path)
 		return
 	if(!use_preloader && path == type) // Don't no-op if the map loader requires it to be reconstructed

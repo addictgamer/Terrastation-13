@@ -836,7 +836,7 @@ obj/item/weapon/circuitboard/rdserver
 	build_path = /obj/machinery/telecomms/hub
 	board_type = "machine"
 	origin_tech = "programming=2;engineering=2"
-	frame_desc = "Requires 2 Manipulators, 2 Cable Coil and 2 Hyperwave Filter."
+	frame_desc = "Requires 2 Manipulators, 2 Cable Coil and 2 Hyperwave topic_filter."
 	req_components = list(
 							/obj/item/weapon/stock_parts/manipulator = 2,
 							/obj/item/stack/cable_coil = 2,
@@ -858,7 +858,7 @@ obj/item/weapon/circuitboard/rdserver
 	build_path = /obj/machinery/telecomms/bus
 	board_type = "machine"
 	origin_tech = "programming=2;engineering=2"
-	frame_desc = "Requires 2 Manipulators, 1 Cable Coil and 1 Hyperwave Filter."
+	frame_desc = "Requires 2 Manipulators, 1 Cable Coil and 1 Hyperwave topic_filter."
 	req_components = list(
 							/obj/item/weapon/stock_parts/manipulator = 2,
 							/obj/item/stack/cable_coil = 1,
@@ -883,7 +883,7 @@ obj/item/weapon/circuitboard/rdserver
 	build_path = /obj/machinery/telecomms/server
 	board_type = "machine"
 	origin_tech = "programming=2;engineering=2"
-	frame_desc = "Requires 2 Manipulators, 1 Cable Coil and 1 Hyperwave Filter."
+	frame_desc = "Requires 2 Manipulators, 1 Cable Coil and 1 Hyperwave topic_filter."
 	req_components = list(
 							/obj/item/weapon/stock_parts/manipulator = 2,
 							/obj/item/stack/cable_coil = 1,

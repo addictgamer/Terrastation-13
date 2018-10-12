@@ -1,9 +1,13 @@
 // Areas.dm
 
 // ===
+
+var/global/list/areas = list() //I shall regret my disorganization.
+
 /area
 	var/global/global_uid = 0
 	var/uid
+	var/list/area_turfs
 	var/list/ambientsounds = list('sound/ambience/ambigen1.ogg','sound/ambience/ambigen3.ogg',\
 								'sound/ambience/ambigen4.ogg','sound/ambience/ambigen5.ogg',\
 								'sound/ambience/ambigen6.ogg','sound/ambience/ambigen7.ogg',\
@@ -21,11 +25,14 @@
 /area/New()
 
 	..()
+	area_turfs = list()
 	icon_state = ""
 	layer = 10
 	uid = ++global_uid
 	all_areas += src
 	map_name = name // Save the initial (the name set in the map) name of the area.
+	if (x) // If we're actually located in the world
+		areas |= src
 
 	if(type == /area)	// override defaults for space. TODO: make space areas of type /area/space rather than /area
 		requires_power = 1
@@ -379,3 +386,26 @@
 		temp_airlock.prison_open()
 	for(var/obj/machinery/door/window/temp_windoor in src)
 		temp_windoor.open()
+
+/area/proc/getAreaCenter(var/zLevel=1)
+	if(!area_turfs.len)
+		return null
+
+	var/center_x = 0
+	var/center_y = 0
+
+	for(var/turf/T in area_turfs)
+		if(T.z == zLevel)
+			center_x += T.x
+			center_y += T.y
+
+	center_x = round(center_x / area_turfs.len)
+	center_y = round(center_y / area_turfs.len)
+
+	if(!center_x || !center_y)
+		return null
+
+	var/turf/T = locate(center_x,center_y,zLevel)
+
+	return T
+

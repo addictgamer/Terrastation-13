@@ -60,6 +60,7 @@ var/list/ai_verbs_default = list(
 	var/custom_hologram = 0 //For our custom holograms
 
 	var/obj/item/device/radio/headset/heads/ai_integrated/aiRadio = null
+	var/obj/item/device/station_map/station_holomap = null
 
 	//MALFUNCTION
 	var/datum/module_picker/malf_picker
@@ -129,6 +130,7 @@ var/list/ai_verbs_default = list(
 				pickedName = null
 
 	aiPDA = new/obj/item/device/pda/silicon/ai(src)
+	station_holomap = new(src)
 	rename_character(null, pickedName)
 	anchored = 1
 	canmove = 0
@@ -225,6 +227,16 @@ var/list/ai_verbs_default = list(
 	to_chat(src, "<b>These laws may be changed by other players, or by you being the traitor.</b>")
 
 	job = "AI"
+
+
+/mob/living/silicon/ai/verb/toggle_station_map()
+	set name = "Toggle Holomap"
+	set desc = "Toggle holomap on your screen"
+	set category = "AI Commands"
+	if(stat == UNCONSCIOUS)
+		return
+
+	station_holomap.toggleHolomap(src,1)
 
 /mob/living/silicon/ai/rename_character(oldname, newname)
 	if(!..(oldname, newname))

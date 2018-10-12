@@ -138,3 +138,51 @@
 	dump_contents()
 	visible_message("<span class='warning'>[src] shatters!. </span>")
 	qdel(src)
+
+obj/structure/statue/male_broken
+	icon_state = "human_male_broken"
+
+obj/structure/statue/female_broken
+	icon_state = "human_female_broken"
+
+obj/structure/statue/angel
+	icon_state = "angelseen"
+
+obj/structure/statue/angel2
+	icon_state = "angel"
+
+obj/structure/statue/angel3
+	icon_state = "angelattack"
+
+obj/structure/statue/monkey
+	icon_state = "monkey"
+
+obj/structure/statue/monkey2
+	icon_state = "monkey2"
+
+obj/structure/statue/monkey3
+	icon_state = "monkey3"
+
+obj/structure/statue/corgi
+	icon_state = "corgi"
+
+obj/structure/statue/corgi2
+	icon_state = "corgi2"
+
+obj/structure/statue/broken_corgi_1
+	icon_state = "broken corgi 1"
+
+obj/structure/statue/broken_corgi_2
+	icon_state = "broken corgi 2"
+
+obj/structure/statue/broken_corgi_3
+	icon_state = "broken corgi 3"
+
+obj/structure/statue/broken_corgi_4
+	icon_state = "broken corgi 4"
+
+obj/structure/statue/broken_corgi_5
+	icon_state = "broken corgi 5"
+
+obj/structure/statue/broken_angel_1
+	icon_state = "brokenangel1"

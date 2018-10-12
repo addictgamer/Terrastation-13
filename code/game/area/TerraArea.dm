@@ -152,10 +152,13 @@
 /area/salvage //intended for station dock
 	name = "Salvage Captain"
 	icon_state = "south"
+	holomap_color = HOLOMAP_AREACOLOR_CARGO
+
 
 /area/salvage/lobby //intended for waiting area
 	name = "Salvage Expedition Lobby"
 	icon_state = "southeast" //GET IT GET IT 'SE' 'SALVAGE EXPEDITION'
+
 
 /area/salvage/q //intended for captain's quarters
 	name = "Salvage Captain Quarters"
@@ -211,7 +214,7 @@
 /area/salvage/yard/genarea
 	name = "template spawn area"
 	icon_state = "junk"
-
+	holomap_color = null
 /area/salvage/ashut/m
 	name = "Abandoned Shuttle"
 	icon_state = "shuttlered2"

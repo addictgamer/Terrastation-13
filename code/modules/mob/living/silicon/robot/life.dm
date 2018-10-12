@@ -43,6 +43,9 @@
 		cell.use(amt) //Usage table: 1/tick if off/lowest setting, 4 = 4/tick, 6 = 8/tick, 8 = 12/tick, 10 = 16/tick
 	else
 		uneq_all()
+		if(station_holomap)
+			if(station_holomap.watching_mob)
+				station_holomap.stopWatching()
 		low_power_mode = 1
 		update_headlamp()
 	diag_hud_set_borgcell()

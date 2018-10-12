@@ -53,6 +53,8 @@
 	update_canmove()
 	if(camera)
 		camera.status = 0
+	if(station_holomap)
+		station_holomap.stopWatching()
 	update_headlamp(1) //So borg lights are disabled when killed.
 
 	if(in_contents_of(/obj/machinery/recharge_station))//exit the recharge station

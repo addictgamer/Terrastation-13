@@ -23,7 +23,7 @@
 						mtbl.innerHTML = complete_list;
 					}
 
-					if(filter.value == ""){
+					if(topic_filter.value == ""){
 						return;
 					}else{
 
