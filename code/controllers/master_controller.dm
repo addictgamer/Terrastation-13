@@ -69,7 +69,7 @@ var/global/pipe_processing_killed = 0
 	//BEGIN SHIT LZ ADDED TO THIS FILE FOR SALVAGE YARD HORSESHITTERY
 	log_startup_progress("Creating random salvage shit...")
 	seedMids(level_name_to_num(DERELICT), rand(3, 4), /area/salvage/yard/genarea, salvage_yard_Mtemplates)
-	seedSmols(level_name_to_num(DERELICT), rand(13, 15), /area/salvage/yard/genarea, salvage_yard_Stemplates)
+	seedMids(level_name_to_num(DERELICT), rand(13, 15), /area/salvage/yard/genarea, salvage_yard_Stemplates)
 	log_startup_progress("Loaded junk in probably a relative lot of time all things considered.")
 	//END SAID SHIT LZ DID
 
