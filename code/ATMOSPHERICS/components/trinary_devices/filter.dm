@@ -164,7 +164,7 @@ Filter types:
 	user.set_machine(src)
 	ui = nanomanager.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
-		ui = new(user, src, ui_key, "atmos_topic_filter.tmpl", name, 475, 155, state = state)
+		ui = new(user, src, ui_key, "atmos_filter.tmpl", name, 475, 155, state = state)
 		ui.open()
 
 /obj/machinery/atmospherics/trinary/filter/ui_data(mob/user)
