@@ -114,7 +114,7 @@
 
 	ui = nanomanager.try_update_ui(user, src, ui_key, ui, force_open)
 	if(!ui)
-		ui = new(user, src, ui_key, "omni_topic_filter.tmpl", "Omni Filter Control", 330, 330)
+		ui = new(user, src, ui_key, "omni_filter.tmpl", "Omni Filter Control", 330, 330)
 		ui.open()
 
 /obj/machinery/atmospherics/omni/filter/ui_data(mob/user, datum/topic_state/state)

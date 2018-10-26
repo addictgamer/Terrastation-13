@@ -203,48 +203,82 @@ var/list/datum/map_template/salvage_yard_Stemplates = list()
 
 //first the larger ones
 /proc/seedMids(z_level = 1, budget = 0, whitelist = /area/salvage/yard/genarea, list/potentialMids = salvage_yard_Mtemplates)
-	var/overall_sanity = 100
-	var/ruins = potentialMids.Copy()
+//	var/overall_sanity = 100 There ain't no sanity clause!
+	var/list/ruins = potentialMids.Copy()
 	var/initialbudget = budget
 	var/watch = start_watch()
-
-	while(budget > 0 && overall_sanity > 0)
-		// Pick a ruin
-		var/datum/map_template/ruin/ruin = ruins[pick(ruins)]
-		// Can we afford it
-		if(ruin.cost > budget)
-			overall_sanity--
-			continue
-		// If so, try to place it
-		var/sanity = 100
-		// And if we can't fit it anywhere, give up, try again
-		//I left the ruin variable the same for now. I don't THINK this will cause a problem? I mean, it's declared inside the method and therefore exclusive to it, right?
-
-		while(sanity > 0)
-			sanity--
-			var/turf/T = locate(rand(25, world.maxx - 25), rand(25, world.maxy - 25), z_level)
-			var/valid = 1
-
-			for(var/turf/check in ruin.get_affected_turfs(T,1))
-				var/area/new_area = get_area(check)
-				if(!(istype(new_area, whitelist)))
-					valid = 0
-					break
-
-			if(!valid)
-				continue
-
-			log_to_dd("   \"[ruin.name]\" loaded to the salvage yard in [stop_watch(watch)]s at ([T.x], [T.y], [T.z]).")
-
-			var/obj/effect/Mjunk_loader/R = new /obj/effect/Mjunk_loader(T)
-			R.Load(ruins,ruin) //DENNIS
-			budget -= ruin.cost
-			if(!ruin.allow_duplicates)
-				ruins -= ruin.name
+	var/list/rectangles = GetRectangles(whitelist, z_level)
+	while(budget > 0)
+		if(!ruins.len || !rectangles.len)
 			break
+		// Pick a ruin
+		var/list/validruins = list()
+		var/datum/rectangle/R = pick(rectangles)
+		for(var/S in ruins)
+			var/datum/map_template/ruin/P = ruins[S]
+			if(P.cost > budget || !P.suffix)
+				ruins -= S
+				continue
+			else if(P.width > R.x || P.height > R.y)
+				continue
+			else
+				validruins += P
+
+		if(!validruins.len)
+			rectangles -= R
+			R.Destroy()
+			continue
+
+		var/datum/map_template/ruin/ruin = pick(validruins)
+
+//		var/sanity = 100
+
+
+		var/turf/T = locate(rand(R.offx, R.offx + (R.x - ruin.width)), rand(R.offy, R.offy + (R.y - ruin.height)), z_level)
+		if(ruin.load(T))
+			log_to_dd("   \"[ruin.name]\" loaded to the salvage yard in [stop_watch(watch)]s at ([T.x], [T.y], [T.z]).")
+		else
+			log_to_dd("   \"[ruin.name]\" failed to load at ([T.x], [T.y], [T.z]).")
+		var/datum/rectangle/ruinrec = new /datum/rectangle(ruin.width, ruin.height, T.x, T.y)
+		var/list/remainders = new /list()
+		for(var/datum/rectangle/O in rectangles)
+			var/datum/rectangle/O_2 = ruinrec.overlaps_with(O)
+			var/list/O_3
+			if(O_2)
+				O_3 = O.get_rectangle_remainders(O_2)
+				if(O_3)
+					remainders += O_3
+					rectangles -= O
+					O.Destroy()
+		if(R)
+			rectangles -= R
+			R.Destroy()
+		if(remainders.len)
+			rectangles += remainders
+			remainders.Cut()
+
+/*		var/valid = 1
+
+		for(var/turf/check in ruin.get_affected_turfs(T,1))
+			var/area/new_area = get_area(check)
+			if(!(istype(new_area, whitelist)))
+				valid = 0
+				break
+
+		if(!valid)
+			continue*/
+
+
+//			var/obj/effect/Mjunk_loader/R = new /obj/effect/Mjunk_loader(T) This is Pingas Melter levels of borked.
+//			R.Load(ruins,ruin) //DENNIS
+		budget -= ruin.cost
+		if(!ruin.allow_duplicates)
+			ruins -= ruin.name
 	if(initialbudget == budget) //Kill me
 		log_to_dd("  No large salvages loaded.")
-
+	if(rectangles.len)					//Cleanup
+		for(var/datum/rectangle/rm in rectangles)
+			rm.Destroy()
 
 
 //then the smaller ones
