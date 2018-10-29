@@ -8,15 +8,19 @@
 "h" = (/obj/item/stack/sheet/metal,/turf/space,/area/space)
 "i" = (/mob/living/simple_animal/hostile/retaliate/melterling,/turf/space,/area/space)
 "j" = (/obj/item/stack/sheet/metal{amount = 7},/turf/space,/area/space)
+"k" = (/obj/effect/decal/cleanable/molten_object/large,/obj/effect/spawner/lootdrop/maintenance,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"l" = (/obj/item/organ/internal/brain/grey,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"m" = (/obj/effect/decal/cleanable/ash,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"n" = (/obj/item/flag/grey,/turf/simulated/floor/plating/airless/asteroid,/area/space)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaa
 aaaaaaaaabbbaaa
 aaaaaaaaabcdeaa
 aaaaaaaabfffdfb
-aaaaaaaabdffdfb
+aaaaaaaabkffdfb
 aaaaaaaabdffdaa
-aaaaagaaaddddaa
+aaaaagaaaldmnaa
 aaahaaaaaaaaaaa
 aaaaaaaaaaaaaaa
 afaaiaaaaaaahaa

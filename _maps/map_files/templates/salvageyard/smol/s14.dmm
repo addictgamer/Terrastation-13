@@ -1,0 +1,31 @@
+"a" = (/turf/space,/area/space)
+"b" = (/turf/simulated/mineral/asteroid,/area/space)
+"c" = (/obj/item/weapon/ore,/turf/space,/area/space)
+"d" = (/obj/item/weapon/ore/glass,/turf/space,/area/space)
+"e" = (/turf/simulated/wall/mineral/abductor,/area/space)
+"f" = (/obj/item/weapon/ore,/turf/simulated/mineral/asteroid,/area/space)
+"g" = (/obj/item/weapon/ore/glass/basalt,/obj/item/weapon/ore/glass/basalt,/turf/simulated/floor/mineral/abductor,/area/space)
+"h" = (/obj/structure/lattice,/turf/space,/area/space)
+"i" = (/obj/structure/lattice,/obj/item/weapon/ore/strangerock,/turf/space,/area/space)
+"j" = (/obj/structure/table/abductor,/obj/item/weapon/ore/glass/basalt,/obj/item/weapon/wrench/abductor,/turf/simulated/floor/mineral/abductor,/area/space)
+"k" = (/turf/simulated/floor/mineral/abductor,/area/space)
+"l" = (/obj/item/weapon/ore/glass,/turf/simulated/floor/mineral/abductor,/area/space)
+"m" = (/obj/item/weapon/ore/strangerock,/turf/space,/area/space)
+
+(1,1,1) = {"
+aaaaaaaaaabbbaa
+aaaabbbaaaabbba
+abaaabbbbaacaba
+abbaabaaaaaaaaa
+aabbbbbdadaaaaa
+abbbbbbbbcaabaa
+abbbbeeebaaaaaa
+aabbfghidaaaaad
+abbejkkhhaaaaaa
+abbeklhacaabaaa
+abbehhacaaaaaaa
+aabbiaaadabamaa
+aabbfaadaaadaaa
+aabbbadbaaaaaba
+aaaadaaaaabaaaa
+"}

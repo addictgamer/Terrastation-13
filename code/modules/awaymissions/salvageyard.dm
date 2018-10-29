@@ -165,7 +165,12 @@
 	description = "Some value within"
 	allow_duplicates = TRUE
 
-//^That list is incomplete.
+//^That list is what existed at inception, and any amendments are below. List still probably incomplete.
+/datum/map_template/junk/smol/s14
+	id = "abduct"
+	suffix = "s14.dmm"
+	name = "Something Abductor"
+	description = "Probably either a crashed abductor ship, or an outpost that got blow'd up."
 
 //now for the declaration thing I think we need?
 var/list/datum/map_template/salvage_yard_Mtemplates = list()

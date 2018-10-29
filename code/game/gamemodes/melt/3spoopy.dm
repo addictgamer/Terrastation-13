@@ -227,3 +227,8 @@ A temporary solution will be implemented below. It will be expanded upon/improve
 	name = "up LZ's butt"
 	icon = 'icons/turf/areas2.dmi'
 	icon_state = "turds"
+
+/area/timewarp/ship/rectum/tacticalanalinsertion
+	name = "entry"
+//This tactical anal insertion area is so players can be send-ed there and always pop up in the same spot.
+//This solution is janky and lame I know but until I get a proper verb for this this is an easy pseudofix

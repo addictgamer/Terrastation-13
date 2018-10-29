@@ -4,22 +4,27 @@
 "d" = (/turf/simulated/floor/plating/airless,/area/space)
 "e" = (/obj/structure/girder,/turf/simulated/floor/plating/airless,/area/space)
 "f" = (/mob/living/simple_animal/hostile/melterling/range,/turf/simulated/floor/plating/airless,/area/space)
-"g" = (/obj/item/seeds/apple{desc = "These seeds grow into apple trees. At least, you would assume they do, but given that these are labelled in such a way and the fact it's guarded so well leads you to have a few suspicions."; name = "God Apples"; potency = 100; weed_chance = 0; weed_rate = 0; yield = 10},/mob/living/simple_animal/hostile/m_hoardling,/turf/simulated/floor/plating/airless,/area/space)
+"g" = (/obj/effect/decal/cleanable/molten_object,/turf/space,/area/space)
+"h" = (/obj/effect/decal/cleanable/molten_object,/turf/simulated/floor/plating/airless,/area/space)
+"i" = (/obj/effect/decal/cleanable/molten_object/large,/turf/simulated/floor/plating/airless,/area/space)
+"j" = (/obj/effect/decal/cleanable/molten_object/large,/mob/living/simple_animal/hostile/melterling/range,/turf/simulated/floor/plating/airless,/area/space)
+"k" = (/obj/item/seeds/apple{desc = "These seeds grow into apple trees. At least, you would assume they do, but given that these are labelled in such a way and the fact it's guarded so well leads you to have a few suspicions."; name = "God Apples"; potency = 100; weed_chance = 0; weed_rate = 0; yield = 10},/obj/effect/decal/cleanable/molten_object/large,/mob/living/simple_animal/hostile/m_hoardling,/turf/simulated/floor/plating/airless,/area/space)
+"l" = (/turf/simulated/mineral/iron/asteroid,/area/space)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaa
-aaaaaaaaaaabaaa
-aaaaaaaaabbbaaa
-aaaaabaacbbaaaa
-aaaabbbcddbbaaa
-aaabbdddddbbaaa
-aabecffdddbbaaa
-aabeffffcbbaaaa
-aabefgffdbaaaaa
-aaaccccebbaaaaa
-aaaaabbbbaaaaaa
-aaaaaaaaaaaaaaa
+aaccaaaaaaaaaaa
+aacbbbaaaaaaaaa
+aacagbaaaaaaaaa
+aacaabaaaagbaaa
+aaaaabaaabbbaaa
+aaacbbaacbbaaaa
+aaaabbbchhbbaaa
+aaabbihihhbbgaa
+aabecfjihdbbaaa
+aabefjffcbbaaaa
+aabefkfjdbagaaa
+aaaccccebbaaala
+aaaaabbbbaaalll
+aaaaaaaaaaallla
 "}

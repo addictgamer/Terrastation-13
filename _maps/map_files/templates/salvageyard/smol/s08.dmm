@@ -4,21 +4,24 @@
 "d" = (/turf/simulated/floor/plating/airless/asteroid,/area/space)
 "e" = (/obj/effect/spawner/lootdrop/maintenance,/turf/simulated/floor/plating/airless/asteroid,/area/space)
 "f" = (/obj/effect/spawner/lootdrop/trade_sol_rare,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"g" = (/turf/simulated/mineral/asteroid,/area/space)
+"h" = (/obj/effect/spawner/lootdrop/maintenance{lootcount = 2; name = "2maintenance loot spawner"},/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"i" = (/obj/effect/spawner/lootdrop/maintenance,/turf/space,/area/space)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaa
 aaaaaaaaabbbaaa
-aaaaaaaacbbbbaa
-aaaaaacbbbbddaa
+agaaaaaacbbbbaa
+aaaaaacbbbbddag
 aaaaacbbbbdaaaa
-aaaaccbbeddaaaa
+aaaaccbbhddaaaa
 ababbbbbdddaaaa
 abbbbbfdddaaaaa
-abbbbcdddaaaaaa
+abbbbcdddaaagaa
 aabbdddddaaaaaa
-aaabddaaaaaaaaa
-aaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaa
-aaaaaaaaaaaaaaa
+aaabedaaaaaaaaa
+aaaaaaaaaagaaaa
+aaaaaaaaaaaaaga
+gaagaaaaaaiaaaa
+aaaaaaagaaaaaaa
 "}

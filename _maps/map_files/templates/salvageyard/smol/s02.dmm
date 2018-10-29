@@ -1,13 +1,15 @@
 "a" = (/turf/space,/area/space)
 "b" = (/turf/simulated/floor/plating/airless/asteroid,/area/space)
 "c" = (/turf/simulated/mineral/random/high_chance,/area/space)
-"d" = (/obj/structure/closet/crate,/obj/item/seeds/chili/ice,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"d" = (/obj/structure/closet/crate,/obj/item/seeds/chili/ice,/obj/effect/spawner/lootdrop/maintenance{lootcount = 3; name = "3maintenance loot spawner"},/turf/simulated/floor/plating/airless/asteroid,/area/space)
 "e" = (/turf/simulated/mineral/iron/asteroid,/area/space)
 "f" = (/obj/item/stack/sheet/metal,/turf/space,/area/space)
 "g" = (/obj/item/stack/rods,/turf/space,/area/space)
 "h" = (/obj/item/stack/sheet/metal{amount = 7},/turf/space,/area/space)
 "i" = (/obj/structure/lattice,/turf/space,/area/space)
 "j" = (/obj/item/stack/rods{amount = 50},/turf/space,/area/space)
+"k" = (/obj/structure/closet/excavation,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"l" = (/obj/structure/girder/displaced,/turf/space,/area/space)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaa
@@ -16,13 +18,13 @@ aaaaaaaaaaaaaaa
 aaaaabcbaaaaaaa
 aaaabcccaaaaaaa
 aaacccdcaaaaaee
-aaaabbcbaafaaaa
+aaaabkcbaafaaaa
 aaaaaaaaaaaaaaa
 aaaagaaagaaaaaa
 aagaafaaaaeaaaa
 aaaaaaaaaeeaaaa
 aaahaiiaaaaaaaa
 agaaiijaaaaaaaa
-aaaaaaaaaaaaaaa
+aaaaaaaaaaaalaa
 eaaaaaaaaaaaaaa
 "}
