@@ -23,7 +23,7 @@
 	if(emagged == 2)
 		if(user)
 			to_chat(user, "<span class='danger'>[src] buzzes and beeps.</span>")
-		playsound(src.loc, "sound/effects/fart2.ogg", 50, 1)
+		playsound(src.loc, "sound/effects/fart2.ogg", 50, 0)
 
 /mob/living/simple_animal/bot/buttbot/handle_automated_action()
 	if(!..())

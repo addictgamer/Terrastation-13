@@ -56,7 +56,7 @@ Also insert actual attacks, such as the one with the same name
 	school = "conjuration"
 	charge_max = 120
 	clothes_req = 0
-	invocation = "Somebody farts like the nasty bastard they are."
+	invocation = ""
 	invocation_type = "emote"
 	range = -1
 	include_user = 1
@@ -68,5 +68,9 @@ Also insert actual attacks, such as the one with the same name
 	action_icon_state = "smoke"
 
 /obj/effect/proc_holder/spell/targeted/fart/cast(list/targets, mob/user = usr)
-	playsound(usr.loc, 'sound/effects/fart2.ogg', 40, 0)
+	if(isliving(usr))
+		usr.emote("fart")
+	else
+		visible_message("Somebody farts like the nasty bastard they are.")
+		playsound(usr.loc, 'sound/effects/fart2.ogg', 40, 0)
 	return

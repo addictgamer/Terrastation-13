@@ -803,7 +803,25 @@
 		if("fart", "farts")
 			if(reagents.has_reagent("simethicone"))
 				return
-//			playsound(loc, 'sound/effects/fart.ogg', 50, 1, -3) //Admins still vote no to fun
+//			playsound(loc, 'sound/effects/fart.ogg', 50, 1, -3) //<s>Admins still vote no to fun</s> --ps, only kept this line in for posterity. Sincerely, LordZakida.
+//			WELL FUCK THOSE ADMINS I'M MAKING THIS HEPPEN HARDER DOWN BELOWWW
+//			Fag.
+			var/fartnoise = 'sound/effects/fart2.ogg'
+			var/fartvariance = 1
+			var/farttone = 1.0
+			switch(rand(1,12))
+				if(1) farttone = 0.5
+				if(2) farttone = 0.6
+				if(3) farttone = 0.7
+				if(4) farttone = 0.8
+				if(5) farttone = 0.9
+				if(6) farttone = 1.0
+				if(7) farttone = 1.0
+				if(8) farttone = 1.05
+				if(9) farttone = 1.075
+				if(10) farttone = 1.1
+				if(11) farttone = 1.1
+				if(12) farttone = 1.2
 			if(locate(/obj/item/weapon/storage/bible) in get_turf(src))
 				to_chat(viewers(src), "<span class='warning'><b>[src] farts on the Bible!</b></span>")
 				var/image/cross = image('icons/obj/storage.dmi',"bible")
@@ -817,8 +835,88 @@
 				message = "<b>[src]</b> unleashes a [pick("loud","deafening")] fart."
 				newtonian_move(dir)
 			else
-				message = "<b>[src]</b> [pick("passes wind","farts")]."
+				switch(rand(1, 42))
+					if (1)
+						message = "<B>[src]</B> lets out a girly little 'toot' from \his butt."
+						fartnoise = 'sound/effects/fart.ogg'
+					if (2) message = "<B>[src]</B> farts loudly!"
+					if (3)
+						message = "<B>[src]</B> lets one rip!"
+						fartnoise = 'sound/effects/fart3.ogg'
+						fartvariance = 0
+					if (4) message = "<B>[src]</B> farts! It sounds wet and smells like rotten eggs."
+					if (5) message = "<B>[src]</B> farts robustly!"
+					if (6)
+						message = "<B>[src]</B> farted! It smells like something died."
+						farttone = 0.25
+					if (7)
+						message = "<B>[src]</B> farts like a muppet!"
+						fartnoise = 'sound/effects/fart.ogg'
+					if (8) message = "<B>[src]</B> defiles the station's air supply."
+					if (9)
+						message = "<B>[src]</B> farts a ten second long fart."
+						fartnoise = 'sound/effects/fartlong.ogg'
+					if (10)
+						message = "<B>[src]</B> groans and moans, farting like the world depended on it."
+						fartnoise = 'sound/effects/fartCM8.ogg'
+						fartvariance = 0
+					if (11) message = "<B>[src]</B> breaks wind!"
+					if (12)
+						message = "<B>[src]</B> expels intestinal gas through the anus."
+						fartnoise = 'sound/effects/fart.ogg'
+					if (13) message = "<B>[src]</B> release an audible discharge of intestinal gas."
+					if (14) message = "<B>[src]</B> is a farting motherfucker!!!"
+					if (15)
+						message = "<B>[src]</B> suffers from flatulence!"
+						fartnoise = 'sound/effects/fart3.ogg'
+						fartvariance = 0
+					if (16)
+						message = "<B>[src]</B> releases flatus."
+						fartnoise = 'sound/effects/fart.ogg'
+					if (17)
+						message = "<B>[src]</B> releases methane."
+						fartnoise = 'sound/effects/fart.ogg'
+					if (18)
+						message = "<B>[src]</B> farts up a storm."
+						fartnoise = 'sound/effects/fartcluster.ogg'
+						fartvariance = 0
+					if (19) message = "<B>[src]</B> farts. It smells like Soylent Surprise!"
+					if (20) message = "<B>[src]</B> farts. It smells like pizza!"
+					if (21) message = "<B>[src]</B> farts. It smells like George Melons' perfume!"
+					if (22) message = "<B>[src]</B> farts. It smells like the kitchen!"
+					if (23) message = "<B>[src]</B> farts. It smells like medbay in here now!"
+					if (24) message = "<B>[src]</B> farts. It smells like the bridge in here now!"
+					if (25)
+						message = "<B>[src]</B> farts like a pubby!"
+						fartnoise = 'sound/effects/fart.ogg'
+					if (26) message = "<B>[src]</B> farts like a goone!"
+					if (27) message = "<B>[src]</B> sharts! That's just nasty."
+					if (28)
+						message = "<B>[src]</B> farts delicately."
+						fartnoise = 'sound/effects/fart.ogg'
+					if (29)
+						message = "<B>[src]</B> farts timidly."
+						fartnoise = 'sound/effects/fart.ogg'
+					if (30)
+						message = "<B>[src]</B> farts very, very quietly. The stench is OVERPOWERING."
+						fartnoise = 'sound/effects/fart.ogg'
+					if (31) message = "<B>[src]</B> farts egregiously."
+					if (32) message = "<B>[src]</B> farts voraciously."
+					if (33) message = "<B>[src]</B> farts cantankerously."
+					if (34) message = "<B>[src]</B> fart in \he own mouth. A shameful [src]."
+					if (35) message = "<B>[src]</B> farts out pure plasma! <span style=\"color:red\"><B>FUCK!</B></span>"
+					if (36) message = "<B>[src]</B> farts out pure oxygen. What the fuck did \he eat?"
+					if (37) message = "<B>[src]</B> breaks wind noisily!"
+					if (38) message = "<B>[src]</B> releases gas with the power of the gods! The very station trembles!!"
+					if (39)
+						message = "<B>[src] <span style=\"color:red\">f</span><span style=\"color:blue\">a</span>r<span style=\"color:red\">t</span><span style=\"color:blue\">s</span>!</B>"
+						fartnoise = 'sound/effects/fart3.ogg'
+						fartvariance = 0
+					if (40) message = "<B>[src]</B> laughs! \His breath smells like a fart."
+					if (41) message = "<B>[src]</B> farts. You can faintly hear a harmonica..."
+					if (42) message = "<b>[src]</B> farts. It might have been the Citizen Kane of farts."
 			m_type = 2
+			playsound(loc, fartnoise, 50, fartvariance, 0, frequency = farttone)
 
 			var/turf/location = get_turf(src)
 			var/aoe_range=2 // Default
