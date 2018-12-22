@@ -16,12 +16,13 @@
 "p" = (/turf/simulated/wall/void,/area/timewarp/ship/rectum)
 "q" = (/turf/simulated/floor/void,/area/timewarp/ship/rectum)
 "r" = (/obj/effect/decal/glow/void,/turf/simulated/floor/void,/area/timewarp/ship/rectum)
-"s" = (/obj/effect/decal/glow/void,/turf/simulated/wall/void,/area/timewarp/ship/rectum/tacticalanalinsertion)
+"s" = (/obj/effect/decal/glow/void,/turf/simulated/floor/void,/area/timewarp/ship/rectum/tacticalanalinsertion)
 "t" = (/obj/effect/decal/timeplug{dir = 10},/turf/space,/area/space)
 "u" = (/obj/effect/decal/timeplug,/turf/space,/area/space)
 "v" = (/obj/effect/decal/timeplug{dir = 6},/turf/space,/area/space)
 "w" = (/mob/living/simple_animal/hostile/creature{desc = "A sanity-destroying anal polyp of unfathomable unfathomableness. You fucked up, sir or madam."; name = "anal-dwelling buttblob"; wander = 0},/turf/simulated/martian/wall,/area/timewarp/ship/rectum)
 "x" = (/mob/living/simple_animal/hostile/creature{desc = "A sanity-destroying anal polyp of unfathomable unfathomableness. You fucked up, sir or madam."; name = "anal-dwelling buttblob"; wander = 0},/turf/simulated/martian/floor,/area/timewarp/ship/rectum)
+"y" = (/obj/effect/landmark{name = "tacticalanalinsertion"},/turf/simulated/wall/void,/area/space)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -67,7 +68,7 @@ aaefhiiiiiiiiiiiiiiiijjljjiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii
 aaefhiiiiiiiiiiiiiiiiijljiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiihfgaa
 aaefhiiiiiiiiiiiiiiiiijljiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiihfgaa
 aaefhiiiiiiiiiiiiiiiiijsjiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiihfgaa
-aaefhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiihfgaa
+aaefhiiiiiiiiiiiiiiiiiiyiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiihfgaa
 aaefhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiihfgaa
 aaefhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiihfgaa
 aaefhiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiihfgaa

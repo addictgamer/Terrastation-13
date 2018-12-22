@@ -175,10 +175,10 @@ A temporary solution will be implemented below. It will be expanded upon/improve
 	density = 1
 	light_color = "#000000"
 	light_range = 3
-/* //attempting to build up a method to shoost the fugger to a landmark or summat
+ //attempting to build up a method to shoost the fugger to a landmark or summat
 /obj/effect/decal/anus/attack_hand(mob/user)
 	teleport(user)
-/obj/effect/decal/anus/teleport(atom/movable/M) //stolen from wormhole, and then modified
+/obj/effect/decal/anus/proc/teleport(atom/movable/M) //stolen from wormhole, and then modified
 	if(istype(M, /obj/effect))	//sparks don't teleport
 		return
 	if(M.anchored && istype(M, /obj/mecha))
@@ -186,12 +186,21 @@ A temporary solution will be implemented below. It will be expanded upon/improve
 	if(istype(M, /mob/living/simple_animal)) //No critters are allowed through this; players only.
 		return
 
-	if(istype(M, /atom/movable))
-		var/turf/target
-		//<INSERT CODE HERE THAT FINDS THE ANUS LANDMARK INSIDE MY BUTT AND SETS target TO THE TURF IT'S ON>
-		if(!target)	return
-		M.forceMove(target) //forcemove instead of do_teleport because fuck bitches get money smoke weed hail satan etc
-*/
+	if(istype(M, /atom/movable)) //this went thru a few revisions, ugh.
+		var/list/thereshouldonlybe1ofthese = list()
+
+		for(var/obj/effect/landmark/L in landmarks_list)
+			if(L.name != "tacticalanalinsertion")
+				continue
+			thereshouldonlybe1ofthese.Add(L)
+
+		var/turf/target = pick(thereshouldonlybe1ofthese)
+		if(!target)
+			to_chat(M, "<span class='notice'>You briefy smell a stinky arse.</span>")
+			return
+		M.forceMove(target.loc) //forcemove instead of do_teleport because fuck bitches get money smoke weed hail satan etc
+		to_chat(M, "<span class='notice'>You get the uncanny feeling that you were just rammed up someones ass.</span>")
+
 
 //Insert get out here
 /*

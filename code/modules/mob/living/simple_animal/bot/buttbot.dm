@@ -40,3 +40,10 @@
 
 /mob/living/simple_animal/bot/buttbot/update_icon()
 	return
+
+
+
+
+//There is no real reason that I am hiding this here other than because butts
+/obj/machinery/chem_dispenser/complete_ass
+	dispensable_reagents = list("fartonium")
