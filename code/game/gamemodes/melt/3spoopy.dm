@@ -203,12 +203,12 @@ A temporary solution will be implemented below. It will be expanded upon/improve
 
 
 //Insert get out here
-/*
+
 /obj/effect/decal/froge
 	name = "Get Out frog"
 	desc = "It wants you to get out."
-	icon = //Put some shit here pls
-	icon_state = "getout"
+	icon = 'icons/obj/terra/buttstuff.dmi'
+	icon_state = "frogout"
 	anchored = 1
 	opacity = 0
 	density = 1
@@ -216,7 +216,7 @@ A temporary solution will be implemented below. It will be expanded upon/improve
 
 /obj/effect/decal/froge/attack_hand(mob/user)
 	teleport(user)
-/obj/effect/decal/froge/teleport(atom/movable/M) //stolen from the anus hole
+/obj/effect/decal/froge/proc/teleport(atom/movable/M) //stolen from the anus hole
 	if(istype(M, /obj/effect))	//sparks don't teleport
 		return
 	if(M.anchored && istype(M, /obj/mecha))
@@ -225,12 +225,19 @@ A temporary solution will be implemented below. It will be expanded upon/improve
 		return
 
 	if(istype(M, /atom/movable))
-		var/turf/target
-		//<INSERT CODE HERE THAT SPITS THE INTERACTOR INTO THAT ONE ROOM ON THE STATION THAT IS PURE WTF
-		//by which I mean the return landmark I plan on putting in there ofc lol yeah>
-		if(!target)	return
-		do_teleport(M, target, 1, 1, 0, 0) 	//so this supposedly puts you adjacent to the place but I want it on the same tile. How does this method work?
-*/											//also I figured I'd use do_teleport here instead of forcemove like above
+		var/list/thereshouldonlybe1ofthese = list()
+
+		for(var/obj/effect/landmark/L in landmarks_list)
+			if(L.name != "youweretoldtogetout")
+				continue
+			thereshouldonlybe1ofthese.Add(L)
+
+		var/turf/target = pick(thereshouldonlybe1ofthese)
+		if(!target)
+			to_chat(M, "<span class='notice'>You fail to succeed.</span>")
+			return
+		M.forceMove(target.loc) //forcemove instead of do_teleport because fuck bitches and the z-level this is supposed to be on should be teleblocked
+		to_chat(M, "<span class='notice'>You get out.</span>")
 
 /area/timewarp/ship/rectum
 	name = "up LZ's butt"
