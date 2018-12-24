@@ -248,3 +248,9 @@ A temporary solution will be implemented below. It will be expanded upon/improve
 	name = "entry"
 //This tactical anal insertion area is so players can be send-ed there and always pop up in the same spot.
 //This solution is janky and lame I know but until I get a proper verb for this this is an easy pseudofix
+//Update: The new Ram verb uses this area, but the LZ's Butt decal's functionality uses a landmark. Why? iunnoe.
+
+/mob/living/simple_animal/hostile/creature/polyp
+	name = "anal-dwelling buttblob"
+	desc = "A sanity-destroying anal polyp of unfathomable unfathomableness. You fucked up, sir or madam."
+	wander = 0

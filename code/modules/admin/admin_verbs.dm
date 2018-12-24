@@ -37,6 +37,7 @@ var/list/admin_verbs_admin = list(
 	/client/proc/jumptokey,				/*allows us to jump to the location of a mob with a certain ckey*/
 	/client/proc/jumptomob,				/*allows us to jump to a specific mob*/
 	/client/proc/jumptoturf,			/*allows us to jump to a specific turf*/
+	/client/proc/sendmob,				/*Uhhh... why was this one not on this list? am I missing something important here?  --LZ*/
 	/client/proc/admin_call_shuttle,	/*allows us to call the emergency shuttle*/
 	/client/proc/admin_cancel_shuttle,	/*allows us to cancel the emergency shuttle, sending it back to centcomm*/
 	/client/proc/check_ai_laws,			/*shows AI and borg laws*/
@@ -80,6 +81,7 @@ var/list/admin_verbs_admin = list(
 	/client/proc/toggle_mentor_chat,
 	/client/proc/toggle_advanced_interaction, /*toggle admin ability to interact with not only machines, but also atoms such as buttons and doors*/
 	/client/proc/list_ssds,
+	/client/proc/RamUpAss, /*Rams a player up my ass. Use only if pissed off at said player and with great responsibility.  --LZ*/
 )
 var/list/admin_verbs_ban = list(
 	/client/proc/unban_panel,

@@ -835,7 +835,7 @@
 				message = "<b>[src]</b> unleashes a [pick("loud","deafening")] fart."
 				newtonian_move(dir)
 			else
-				switch(rand(1, 42))
+				switch(rand(1, 43))
 					if (1)
 						message = "<B>[src]</B> lets out a girly little 'toot' from \his butt."
 						fartnoise = 'sound/effects/fart.ogg'
@@ -915,6 +915,9 @@
 					if (40) message = "<B>[src]</B> laughs! \His breath smells like a fart."
 					if (41) message = "<B>[src]</B> farts. You can faintly hear a harmonica..."
 					if (42) message = "<b>[src]</B> farts. It might have been the Citizen Kane of farts."
+					if (43)
+						message = "<B>[src]</B> makes Randolph proud!"
+						fartnoise = 'sound/effects/fartR.ogg'
 			m_type = 2
 			playsound(loc, fartnoise, 50, fartvariance, 0, frequency = farttone)
 
