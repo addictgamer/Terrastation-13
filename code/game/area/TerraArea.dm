@@ -139,6 +139,12 @@
 	name = "Engine Waste Handling"
 	icon_state = "engine"
 
+//EXTRA ENGINEERING AREA DUE TO ROCK2 NEW DEMANDS WHYYY
+
+/area/engine/exterior
+	name = "Engine Exterior"
+	icon_state = "engine"
+
 
 //OTHER MISCELLANY- QUI IS RESPONSIBLE FOR THIS PROBABLY
 
