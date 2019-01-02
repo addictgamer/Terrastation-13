@@ -1,6 +1,7 @@
 /obj/structure
 	icon = 'icons/obj/structures.dmi'
 	pressure_resistance = 8
+	layer = OBJ_LAYER - 0.1
 	var/climbable
 	var/mob/climber
 
