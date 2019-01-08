@@ -56,6 +56,9 @@
 	var/spawn_ert = 0
 
 	var/outfit = null
+	var/outfit_male = null
+	var/outfit_female = null
+	var/list/alt_outfits	//Corresponds to alternative titles.
 
 	/////////////////////////////////
 	// /vg/ feature: Job Objectives!
@@ -75,7 +78,24 @@
 	H.species.before_equip_job(src, H, visualsOnly)
 
 	if(outfit)
-		H.equipOutfit(outfit, visualsOnly)
+		var/outfit_equipped = FALSE
+		if(outfit_male && H.gender == MALE)
+			H.equipOutfit(outfit_male, visualsOnly)
+			outfit_equipped = TRUE
+		else if(outfit_female && H.gender == FEMALE)
+			H.equipOutfit(outfit_female, visualsOnly)
+			outfit_equipped = TRUE
+		else if(alt_outfits && H.mind.role_alt_title)
+			var/list/valid_outfits = list()
+			for(var/O in alt_outfits)
+				if(alt_outfits[O] == H.mind.role_alt_title || alt_outfits[O] == "[H.mind.role_alt_title]_male" && H.gender == MALE || alt_outfits[O] == "[H.mind.role_alt_title]_female" && H.gender == FEMALE)
+					valid_outfits += O
+			if(valid_outfits.len)
+				H.equipOutfit(pick(valid_outfits), visualsOnly)
+				outfit_equipped = TRUE
+
+		if(!outfit_equipped)
+			H.equipOutfit(outfit, visualsOnly)
 
 	H.species.after_equip_job(src, H, visualsOnly)
 

@@ -57,7 +57,7 @@
 	exp_requirements = 180
 	exp_type = EXP_TYPE_CREW
 	outfit = /datum/outfit/job/doctor
-
+	alt_outfits = list(/datum/outfit/job/doctor/surgeon = "Surgeon", /datum/outfit/job/doctor/nurse_1 = "Nurse_female", /datum/outfit/job/doctor/nurse_2 = "Nurse_female", /datum/outfit/job/doctor/nurse_male = "Nurse_male")
 /datum/outfit/job/doctor
 	name = "Medical Doctor"
 	jobtype = /datum/job/doctor
@@ -114,7 +114,7 @@
 					/obj/item/weapon/autopsy_scanner = 1,
 					/obj/item/device/mass_spectrometer = 1,
 					/obj/item/weapon/storage/box/bodybags = 1)
-
+/*
 /datum/outfit/job/doctor/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	. = ..()
 	if(H.mind.role_alt_title)
@@ -133,9 +133,22 @@
 					head = /obj/item/clothing/head/nursehat
 				else
 					uniform = /obj/item/clothing/under/rank/medical/purple
+*/
+/datum/outfit/job/doctor/surgeon
+	uniform = /obj/item/clothing/under/rank/medical/blue
+	head = /obj/item/clothing/head/surgery/blue
 
 
+/datum/outfit/job/doctor/nurse_1
+	uniform = /obj/item/clothing/under/rank/nursesuit
+	head = /obj/item/clothing/head/nursehat
 
+/datum/outfit/job/doctor/nurse_2
+	uniform = /obj/item/clothing/under/rank/nurse
+	head = /obj/item/clothing/head/nursehat
+
+/datum/outfit/job/doctor/nurse_male
+	uniform = /obj/item/clothing/under/rank/medical/purple
 //Chemist is a medical job damnit	//YEAH FUCK YOU SCIENCE	-Pete	//Guys, behave -Erro
 /datum/job/chemist
 	title = "Chemist"
@@ -149,11 +162,12 @@
 	selection_color = "#ffeef0"
 	access = list(access_medical, access_morgue, access_surgery, access_chemistry, access_virology, access_genetics, access_mineral_storeroom)
 	minimal_access = list(access_medical, access_chemistry, access_maint_tunnels, access_mineral_storeroom)
-	alt_titles = list("Pharmacist","Pharmacologist")
+	alt_titles = list("Pharmacist","Pharmacologist","Street Pharmacist")
 	minimal_player_age = 7
 	exp_requirements = 300
 	exp_type = EXP_TYPE_CREW
 	outfit = /datum/outfit/job/chemist
+	alt_outfits = list(/datum/outfit/job/street_pharmacist = "Street Pharmacist")
 
 /datum/outfit/job/chemist
 	name = "Chemist"
@@ -170,6 +184,23 @@
 	backpack = /obj/item/weapon/storage/backpack/chemistry
 	satchel = /obj/item/weapon/storage/backpack/satchel_chem
 	dufflebag = /obj/item/weapon/storage/backpack/duffel/chemistry
+
+/datum/outfit/job/street_pharmacist
+	name = "Street Pharmacist"
+	jobtype = /datum/job/chemist
+	uniform = /obj/item/clothing/under/lawyer/bluesuit
+	suit = /obj/item/clothing/suit/storage/labcoat
+	shoes = /obj/item/clothing/shoes/black
+	l_ear = /obj/item/device/radio/headset/headset_med
+	glasses = /obj/item/clothing/glasses/regular
+	id = /obj/item/weapon/card/id/medical
+	pda = /obj/item/device/pda
+	head = /obj/item/clothing/head/fedora
+
+	backpack = /obj/item/weapon/storage/backpack
+	satchel = /obj/item/weapon/storage/backpack/satchel
+	dufflebag = /obj/item/weapon/storage/backpack/duffel
+
 
 /datum/job/geneticist
 	title = "Geneticist"
@@ -254,12 +285,12 @@
 	minimal_access = list(access_medical, access_psychiatrist, access_maint_tunnels)
 	alt_titles = list("Psychologist","Therapist")
 	outfit = /datum/outfit/job/psychiatrist
-
+	alt_outfits = list(/datum/outfit/job/psychiatrist/psychologist = "Psychologist", /datum/outfit/job/psychiatrist/therapist = "Therapist")
 /datum/outfit/job/psychiatrist
 	name = "Psychiatrist"
 	jobtype = /datum/job/psychiatrist
 
-	uniform = /obj/item/clothing/under/rank/medical
+	uniform = /obj/item/clothing/under/rank/psych
 	suit = /obj/item/clothing/suit/storage/labcoat
 	shoes = /obj/item/clothing/shoes/laceup
 	l_ear = /obj/item/device/radio/headset/headset_med
@@ -267,6 +298,13 @@
 	suit_store = /obj/item/device/flashlight/pen
 	pda = /obj/item/device/pda/medical
 
+/datum/outfit/job/psychiatrist/psychologist
+	uniform = /obj/item/clothing/under/rank/psych/turtleneck
+
+/datum/outfit/job/psychiatrist/therapist
+	uniform = /obj/item/clothing/under/rank/medical
+
+/*
 /datum/outfit/job/psychiatrist/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	. = ..()
 	if(H.mind.role_alt_title)
@@ -277,6 +315,7 @@
 				uniform = /obj/item/clothing/under/rank/psych/turtleneck
 			if("Therapist")
 				uniform = /obj/item/clothing/under/rank/medical
+*/
 
 /datum/job/paramedic
 	title = "Paramedic"
