@@ -103,7 +103,6 @@
 	supervisors = "the head of security"
 	department_head = list("Head of Security")
 	selection_color = "#ffeeee"
-	alt_titles = list("Forensic Technician")
 	access = list(access_security, access_sec_doors, access_forensics_lockers, access_morgue, access_maint_tunnels, access_court, access_weapons)
 	minimal_access = list(access_sec_doors, access_forensics_lockers, access_morgue, access_maint_tunnels, access_court, access_weapons)
 	alt_titles = list("Forensic Technician")
@@ -111,6 +110,7 @@
 	exp_requirements = 300
 	exp_type = EXP_TYPE_CREW
 	outfit = /datum/outfit/job/detective
+	alt_outfits = list(/datum/outfit/job/detective/forensic_technician = "Forensic Technician")
 
 /datum/outfit/job/detective
 	name = "Detective"
@@ -135,6 +135,10 @@
 
 	implants = list(/obj/item/weapon/implant/mindshield)
 
+/datum/outfit/job/detective/forensic_technician
+	suit = /obj/item/clothing/suit/storage/det_suit/forensics/blue
+	head = null
+/*
 /datum/outfit/job/detective/pre_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	. = ..()
 	if(H.mind.role_alt_title)
@@ -142,7 +146,7 @@
 			if("Forensic Technician")
 				suit = /obj/item/clothing/suit/storage/det_suit/forensics/blue
 				head = null
-
+*/
 /datum/outfit/job/detective/post_equip(mob/living/carbon/human/H, visualsOnly = FALSE)
 	. = ..()
 	if(visualsOnly)
