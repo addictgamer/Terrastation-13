@@ -10,6 +10,7 @@
 #define DEBUG
 // END_PREFERENCES
 // BEGIN_INCLUDE
+#include "manuals.dm"
 #include "_maps\__MAP_DEFINES.dm"
 #include "_maps\rockstation.dm"
 #include "code\_compile_options.dm"
