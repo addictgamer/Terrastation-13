@@ -9,74 +9,15 @@
 	density = 1
 	pixel_x = -16
 	layer = 9
-	var/icon_count = 1
-	var/icon_prefix
-	var/fruit = null
-	var/fruit_yield = 0
-	var/wood = /obj/item/weapon/grown/log
-	var/wood_yield = 2
-	var/chops = 0 //How many times it's been chopped. Gotta make them work for it!
-	var/chops_needed = 6 //Number of chops needed to fell it.
-	var/fell_tool = /obj/item/weapon/hatchet //Item needed to fell it.
-	var/fruitless //Icon_state to use when tree runs out of fruit.
-
-/obj/structure/flora/tree/New()
-	..()
-	icon_state = "[icon_prefix][rand(1, icon_count)]"
-
-
-/obj/structure/flora/tree/attackby(var/obj/item/I, mob/user as mob)
-	if(istype(I, fell_tool))
-		user.show_message("<span class='notice'>You chop [src] with [I].</span>")
-
-		playsound(src.loc, 'sound/effects/chopchop.ogg', 100, 1)
-
-		sleep(5)
-
-
-		chops += 1
-
-		if(chops == chops_needed)
-			user.show_message("<span class='notice'>[src] comes crashing down!</span>")
-			playsound(src.loc, 'sound/effects/treefalling.ogg', 100, 1)
-			var/displacement = 0
-			while(wood_yield)
-				var/obj/item/L = new wood(get_step(src, NORTH))
-				L.y += displacement
-				displacement += 0.1
-				wood_yield -= 1
-			if(fruit)
-				displacement = 0
-				while(fruit_yield)
-					var/obj/item/F = new fruit(get_step(src, NORTH))
-					F.y += displacement
-					displacement += 0.1
-					fruit_yield -= 1
-
-			qdel(src)
-
-	return
-
-/obj/structure/flora/tree/attack_hand(mob/user)
-	if(fruit)
-		var/obj/item/F = new fruit
-		if(fruit_yield)
-			fruit_yield -= 1
-			user.show_message("<span class='notice'>You pick the [F] from [src]</span>")
-			user.put_in_hands(F)
-			if(!fruit_yield && fruitless)
-				icon_state = fruitless
-		else
-			user.show_message("<span class='notice'>[src] has nothing left to pick!</span>")
-	return
 
 /obj/structure/flora/tree/pine
 	name = "pine tree"
 	icon = 'icons/obj/flora/pinetrees.dmi'
-	icon_prefix = "pine_"
 	icon_state = "pine_1"
-	icon_count = 3
 
+/obj/structure/flora/tree/pine/New()
+	..()
+	icon_state = "pine_[rand(1, 3)]"
 
 /obj/structure/flora/tree/pine/xmas
 	name = "xmas tree"
@@ -89,31 +30,20 @@
 
 /obj/structure/flora/tree/dead
 	icon = 'icons/obj/flora/deadtrees.dmi'
-	icon_prefix = "tree_"
 	icon_state = "tree_1"
-	icon_count = 6
 
+/obj/structure/flora/tree/dead/New()
+	..()
+	icon_state = "tree_[rand(1, 6)]"
 
 /obj/structure/flora/tree/palm
 	icon = 'icons/misc/beach2.dmi'
-	icon_prefix = "palm"
 	icon_state = "palm1"
-	icon_count = 2
 
 /obj/structure/flora/tree/palm/New()
 	..()
+	icon_state = pick("palm1","palm2")
 	pixel_x = 0
-
-/obj/structure/flora/tree/apple
-	name = "apple tree"
-	icon = 'icons/obj/flora/appletree.dmi'
-	icon_state = "apple"
-	fruit = /obj/item/weapon/reagent_containers/food/snacks/grown/apple
-	fruit_yield = 10
-
-/obj/structure/flora/tree/apple/New()
-	..()
-	icon_state = "apple"
 
 //grass
 /obj/structure/flora/grass
@@ -316,6 +246,7 @@
 	anchored = 1
 
 /obj/structure/flora/rock/New()
+	..()
 	icon_state = "rock[rand(1,5)]"
 
 /obj/structure/flora/rock/pile
@@ -324,82 +255,8 @@
 	icon_state = "rockpile1"
 
 /obj/structure/flora/rock/pile/New()
+	..()
 	icon_state = "rockpile[rand(1,5)]"
-//a rock is flora according to where the icon file is
-//and now these defines
-
-/obj/structure/flora/rock/basalt
-	icon_state = "basalt"
-	desc = "A volcanic rock"
-	icon = 'icons/obj/flora/rocks2.dmi'
-	burn_state = FIRE_PROOF
-	density = 1
-
-/obj/structure/flora/rock/basalt/New()
-	icon_state = "[icon_state][rand(1,3)]"
-
-/obj/structure/flora/rock/basalt/pile
-	icon_state = "lavarocks"
-	desc = "A pile of rocks"
-
-/obj/structure/flora/rock/basalt/pile/New()
-	icon_state = "[icon_state][rand(1,3)]"
-
-/obj/structure/flora/rock/basalt/icy
-	name = "icy rock"
-	color = rgb(114,228,250)
-
-/obj/structure/flora/rock/pile/basalt/icy
-	name = "icy rocks"
-	color = rgb(114,228,250)
-
-/obj/structure/flora/rock/jungle
-	icon_state = "pile of rocks"
-	desc = "A pile of rocks."
-	icon_state = "rock"
-	icon = 'icons/obj/flora/jungleflora.dmi'
-	density = FALSE
-
-/obj/structure/flora/rock/jungle/New()
-	..()
-	icon_state = "[initial(icon_state)][rand(1,5)]"
-
-
-//Jungle bushes
-
-/obj/structure/flora/junglebush
-	name = "bush"
-	icon = 'icons/obj/flora/jungleflora.dmi'
-	icon_state = "busha"
-
-/obj/structure/flora/junglebush/New()
-	icon_state = "[icon_state][rand(1, 3)]"
-	..()
-
-/obj/structure/flora/junglebush/b
-	icon_state = "bushb"
-
-/obj/structure/flora/junglebush/c
-	icon_state = "bushc"
-
-/obj/structure/flora/junglebush/large
-	icon_state = "bush"
-	icon = 'icons/obj/flora/largejungleflora.dmi'
-	pixel_x = -16
-	pixel_y = -12
-	layer = ABOVE_ALL_MOB_LAYER
-
-/obj/structure/flora/rock/pile/largejungle
-	name = "rocks"
-	icon_state = "rocks"
-	icon = 'icons/obj/flora/largejungleflora.dmi'
-	density = FALSE
-	pixel_x = -16
-	pixel_y = -16
-
-/obj/structure/flora/rock/pile/largejungle/New()
-	..()
-	icon_state = "[initial(icon_state)][rand(1,3)]"
 
 /obj/structure/flora/corn_stalk
 	name = "corn stalk"
