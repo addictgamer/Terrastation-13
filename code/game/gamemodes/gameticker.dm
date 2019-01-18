@@ -48,6 +48,8 @@ var/round_start_time = 0
 	'sound/music/dawsonschristian.ogg',\
 	'sound/music/carmenmirandasghost.ogg',\
 	'sound/music/space_asshole.ogg',\
+	'sound/music/urbanspaceman.ogg',\
+	'sound/music/asteroidasteroid.ogg',\
 	'sound/music/darkcloud.ogg',)
 	do
 		pregame_timeleft = 180
