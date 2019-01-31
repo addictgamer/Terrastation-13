@@ -145,7 +145,7 @@
 	name = "Melted Hoardling"
 	desc = "Effectively some kind of space-Gollum, this skinchanging beast usually finds somewhere secluded to guard some valuable object it has fixated on. This particular one hangs around melterlings."
 	icon = 'code/game/gamemodes/melt/melter.dmi'
-	icon_state = "hoardling" //PLACEHOLDER FOR NOW; THIS WILL CHANGE EVENTUALLY ONCE I GET HOARDLINGS MORE FLASHED OUT.
+	icon_state = "hoardling" //PLACEHOLDER FOR NOW; THIS WILL CHANGE EVENTUALLY ONCE I GET HOARDLINGS MORE FLESHED OUT.
 	icon_living = "hoardling"//THIS WAS A SPUR OF THE MOMENT IDEA AND I DIDN'T PLAN MUCH YET FML RIGHT
 	health = 200
 	maxHealth = 200
