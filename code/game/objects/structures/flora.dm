@@ -41,14 +41,16 @@
 			playsound(src.loc, 'sound/effects/treefalling.ogg', 100, 1)
 			var/displacement = 0
 			while(wood_yield)
-				var/obj/item/L = new wood(get_step(src, NORTH))
+				var/obj/item/L = new wood(loc)
+				L.Move(get_step(src, NORTH), NORTH)
 				L.y += displacement
 				displacement += 0.1
 				wood_yield -= 1
 			if(fruit)
 				displacement = 0
 				while(fruit_yield)
-					var/obj/item/F = new fruit(get_step(src, NORTH))
+					var/obj/item/F = new fruit(loc)
+					F.Move(get_step(src, NORTH), NORTH)
 					F.y += displacement
 					displacement += 0.1
 					fruit_yield -= 1
