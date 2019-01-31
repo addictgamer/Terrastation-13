@@ -93,4 +93,7 @@
 //trees - goon gank again
 /obj/structure/flora/tree/reg
 	icon = 'icons/effects/96x96.dmi'
-	icon_state = "tree"
+	icon_state = "tree_1"
+	icon_prefix = "tree_"
+	wood_yield = 5
+	chops_needed = 8
