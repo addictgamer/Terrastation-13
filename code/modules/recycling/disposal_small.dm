@@ -12,3 +12,10 @@
 		dir = SOUTH
 	west
 		dir = WEST
+
+	MouseDrop_T(mob/target, mob/user)
+		if(target == user)
+			to_chat(user, "You won't fit in the [src].")
+		else
+			to_chat(user, "[target.name] won't fit in the [src].")
+		return
