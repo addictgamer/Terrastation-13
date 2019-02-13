@@ -84,8 +84,7 @@ list(
 	var/r4 = r3 - radius
 	var/list/G = list()
 	if(A)
-		for(var/turf/T in A.contents)
-			G += T
+			G = get_area_turfs(A)
 		if(!L)
 			L = pick(G)
 	for(var/i1 = r4; i1 <= r3; i1++)
@@ -112,7 +111,7 @@ list(
 			free_turfs -= Pt
 		else
 			Pt = pick(total_turfs)
-		M2 = member.New(Pt.loc)
+		M2 = new member(Pt.loc)
 		src.AddMember(M2, role)
 	return
 /datum/swarm/New(var/obj/effect/spawner/swarm/spawner = null, var/turf/T = null, I = "", doSubswarms = 0, var/area/A = null, onground = null, prespawned = 0)
