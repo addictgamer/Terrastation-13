@@ -44,7 +44,7 @@
 
 /client/proc/jumptomob(var/mob/M in mob_list)
 	set category = "Admin"
-	set name = "Jump to Mob"
+	set name = "Teleport to Mob"
 
 	if(!check_rights(R_ADMIN))
 		return
