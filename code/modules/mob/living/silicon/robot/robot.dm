@@ -302,6 +302,7 @@ var/list/robot_verbs_default = list(
 			module_sprites["Android"] = "droid"
 			module_sprites["Default"] = "robot"
 			module_sprites["Noble-STD"] = "Noble-STD"
+			module_sprites["Drone"] = "drone-stand"
 
 		if("Service")
 			module = new /obj/item/weapon/robot_module/butler(src)
@@ -314,6 +315,7 @@ var/list/robot_verbs_default = list(
 			module_sprites["Standard"] = "robotServ"
 			module_sprites["Noble-SRV"] = "Noble-SRV"
 			module_sprites["Cricket"] = "Cricket-SERV"
+			module_sprites["Drone"] = "drone-serv"
 
 		if("Miner")
 			module = new /obj/item/weapon/robot_module/miner(src)
@@ -326,6 +328,7 @@ var/list/robot_verbs_default = list(
 			module_sprites["Standard"] = "robotMine"
 			module_sprites["Noble-DIG"] = "Noble-DIG"
 			module_sprites["Cricket"] = "Cricket-MINE"
+			module_sprites["Drone"] = "drone-miner"
 
 		if("Medical")
 			module = new /obj/item/weapon/robot_module/medical(src)
@@ -339,6 +342,7 @@ var/list/robot_verbs_default = list(
 			module_sprites["Standard"] = "robotMedi"
 			module_sprites["Noble-MED"] = "Noble-MED"
 			module_sprites["Cricket"] = "Cricket-MEDI"
+			module_sprites["Drone"] = "drone-medical"
 			status_flags &= ~CANPUSH
 
 		if("Security")
@@ -351,6 +355,7 @@ var/list/robot_verbs_default = list(
 			module_sprites["Standard"] = "robotSecy"
 			module_sprites["Noble-SEC"] = "Noble-SEC"
 			module_sprites["Cricket"] = "Cricket-SEC"
+			module_sprites["Drone"] = "drone-sec"
 			status_flags &= ~CANPUSH
 
 		if("Peacekeeper")
@@ -369,6 +374,7 @@ var/list/robot_verbs_default = list(
 			module_sprites["Standard"] = "robotEngi"
 			module_sprites["Noble-ENG"] = "Noble-ENG"
 			module_sprites["Cricket"] = "Cricket-ENGI"
+			module_sprites["Drone"] = "drone-engineer"
 			magpulse = 1
 
 		if("Janitor")
@@ -380,6 +386,7 @@ var/list/robot_verbs_default = list(
 			module_sprites["Standard"] = "robotJani"
 			module_sprites["Noble-CLN"] = "Noble-CLN"
 			module_sprites["Cricket"] = "Cricket-JANI"
+			module_sprites["Drone"] = "drone-jani"
 
 		if("Combat")
 			module = new /obj/item/weapon/robot_module/combat(src)
