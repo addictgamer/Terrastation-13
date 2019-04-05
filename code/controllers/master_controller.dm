@@ -70,6 +70,14 @@ var/global/pipe_processing_killed = 0
 	log_startup_progress("Creating random salvage shit...")
 	seedMids(level_name_to_num(DERELICT), rand(3, 4), /area/salvage/yard/genarea, salvage_yard_Mtemplates)
 	seedMids(level_name_to_num(DERELICT), rand(13, 15), /area/salvage/yard/genarea, salvage_yard_Stemplates)
+	var/list/garbage = get_area_turfs(/area/salvage/yard/genarea, level_name_to_num(DERELICT))
+	for(var/area/space/S in world) //You'd think there'd be a better way of doing this, but then again, this *is* BYOND...
+		S.contents.Add(garbage)
+		break
+	for(var/area/salvage/yard/genarea/G in world)
+		qdel(G)
+		break
+
 	log_startup_progress("Loaded junk in probably a relative lot of time all things considered.")
 	//END SAID SHIT LZ DID
 
