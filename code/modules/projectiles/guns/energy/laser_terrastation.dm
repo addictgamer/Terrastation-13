@@ -52,14 +52,14 @@ Any non-energy weapon (aka slugthrower guns or wtvr) will be defined in a separa
 	projectile_type = /obj/item/projectile/meteor/fuck
 
 /obj/item/projectile/meteor/fuck
-	damage = 32.2
+	damage = 132.2
 	var/stoppls = 0
 
 /obj/item/weapon/gun/energy/meteorgun/fuck
 	ammo_type = list(/obj/item/ammo_casing/energy/meteor/fuck)
 
 /obj/item/weapon/gun/energy/meteorgun/fuck/pen
-	name = "The 322"
+	name = "Pen 322"
 	desc = "322 322 322 322 322 322 are you pissed the fuck off yet"
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "pen"
