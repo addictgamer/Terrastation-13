@@ -246,6 +246,34 @@
 
 	fix_modules()
 
+//obj/item/weapon/robot_module/research
+	name = "research module"
+	module_type = "Research"
+
+/obj/item/weapon/robot_module/research/New()
+
+	..()
+	modules += new /obj/item/device/flash(src)
+	//modules += new /obj/item/weapon/portable_destructive_analyzer(src)
+	modules += new /obj/item/weapon/gripper/research(src)
+	modules += new /obj/item/weapon/gripper/no_use/loader(src)
+	modules += new /obj/item/device/robotanalyzer(src)
+	modules += new /obj/item/weapon/card/id/borg(src)
+	modules += new /obj/item/weapon/wrench(src)
+	modules += new /obj/item/weapon/screwdriver(src)
+	modules += new /obj/item/weapon/weldingtool/mini(src)
+	modules += new /obj/item/weapon/wirecutters(src)
+	modules += new /obj/item/weapon/crowbar(src)
+	modules += new /obj/item/weapon/scalpel/laser/laser3(src)
+	modules += new /obj/item/weapon/circular_saw(src)
+	modules += new /obj/item/weapon/extinguisher/mini(src)
+	modules += new /obj/item/weapon/reagent_containers/syringe(src)
+	modules += new /obj/item/weapon/gripper/chemistry(src)
+	modules += new /obj/item/stack/nanopaste(src)
+	//emag = new /obj/prefab/hand_teleporter(src)
+
+	fix_modules()
+
 /obj/item/weapon/robot_module/janitor
 	name = "janitorial robot module"
 	module_type = "Janitor"

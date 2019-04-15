@@ -34,3 +34,8 @@
 	icon_state = "hazardag"
 	//I still need a proper gimmick for this one.
 */
+
+/obj/item/clothing/suit/storage/hazardvest/bast //has no tangible gimmick (like different storage), but makes the user appear as a gravekeeper drone
+	desc = "A.... vest. It's a vest. At least, it appears to be."
+	icon_state = "doorkeeper"
+	item_state = "doorkeeper"
