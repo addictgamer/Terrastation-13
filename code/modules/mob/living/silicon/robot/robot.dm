@@ -417,9 +417,10 @@ var/list/robot_verbs_default = list(
 		if ("Research")
 			module = new /obj/item/weapon/robot_module/research(src)
 			module.channels = list ("Science" = 1)
-			module_sprites["Drone"] = "drone-science"
+			module_sprites ["Drone"] = "drone-science"
 			module_sprites ["Insekt"]= "insekt-Sci"
 			module_sprites ["Eyeball"]= "eyebot-science"
+			module_sprites ["Heavy"] = "heavyRes"
 
 
 
