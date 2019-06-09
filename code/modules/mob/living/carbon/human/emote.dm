@@ -1,4 +1,4 @@
-/mob/living/carbon/human/emote(var/act,var/m_type=1,var/message = null,var/force)
+/mob/living/carbon/human/emote(var/act,var/m_type=1,var/message = null,var/force,var/CDBP=0)
 
 	if((stat == DEAD) || (status_flags & FAKEDEATH))
 		return // No screaming bodies
@@ -105,6 +105,12 @@
 		//Everything else, including typos of the above emotes
 		else
 			on_CD = 0	//If it doesn't induce the cooldown, we won't check for the cooldown
+
+	if(CDBP == 1)		//If the emote is supposed to ignore the cooldown for whatever reason, reset the fukr so it doesn't proc cooldown
+		on_CD = 0		//This current implementation I think just allows these kinds of emotes to ignore any active CDs,
+						//but they still appear to (amusingly) start a timer. This makes emotes that aren't passed the bypass flag
+						//fail if used after one that is. Do we want to keep this as is?  --LZ
+//todo: admin bypass for all emotes
 
 	if(on_CD == 1)		// Check if we need to suppress the emote attempt.
 		return			// Suppress emote, you're still cooling off.
