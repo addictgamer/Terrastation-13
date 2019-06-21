@@ -363,7 +363,7 @@
 
 /datum/reagent/fartonium/on_mob_life(mob/living/M)
 	if(prob(66))
-		M.emote("fart")
+		M.emote("fart",CDBP=1)
 
 	if(holder.has_reagent("simethicone"))
 		if(prob(25))
@@ -373,7 +373,7 @@
 			M.custom_emote(1,"strains, but nothing happens.")
 			M.adjustBruteLoss(2)
 		if(prob(5))
-			M.emote("scream")
+			M.emote("scream",CDBP=1)
 			M.adjustBruteLoss(4)
 	..()
 
