@@ -55,7 +55,7 @@ var/global/pipe_processing_killed = 0
 	if(!config.disable_space_ruins)
 		var/timer = start_watch()
 		log_startup_progress("Creating random space levels...")
-		seedRuins(level_name_to_num(EMPTY_AREA), rand(2, 3), /area/space, space_ruins_templates)
+		seedMids(level_name_to_num(EMPTY_AREA), rand(2, 3), /area/space, space_ruins_templates)
 		log_startup_progress("Loaded random space levels in [stop_watch(timer)]s.")
 
 		// We'll keep this around for the time when we finally expunge all
@@ -95,6 +95,8 @@ var/global/pipe_processing_killed = 0
 	var/watch=start_watch()
 	log_startup_progress("Generating holominimaps...")
 	generateHoloMinimaps()
+	for(var/obj/machinery/station_map/map in station_holomaps)
+		map.initialize()
 	log_startup_progress("  Finished holominimaps in [stop_watch(watch)]s.")
 
 

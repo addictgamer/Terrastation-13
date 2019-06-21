@@ -70,3 +70,14 @@
 	materials = list (MAT_METAL = 150, MAT_GLASS = 100)
 	build_path = /obj/item/device/radio/beacon
 	category = list("Bluespace")
+
+
+/datum/design/shuttle_beacon
+	name = "Portable Landing Beacon"
+	desc = "Beloved by salvors everywhere. (C) 2452, ScataLogic."
+	id = "landing_beacon"
+	req_tech = list("programming" = 5, "bluespace" = 5)
+	build_type = PROTOLATHE
+	materials = list (MAT_METAL = 2000, MAT_GLASS = 2000, MAT_SILVER = 500)
+	build_path = /obj/item/shuttle_beacon/salvage
+	category = list("Bluespace")

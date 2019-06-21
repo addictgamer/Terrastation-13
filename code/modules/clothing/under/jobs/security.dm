@@ -90,6 +90,15 @@
 		"Vox" = 'icons/mob/species/vox/uniform.dmi'
 		)
 
+
+/obj/item/clothing/under/det/noir
+	desc = "This suit's stayed with you for years, like an old friend. Sure, it's seen better days, but it ain't shabby; after all, you can afford a blemish on your character, but not on your clothes."
+	icon_state = "sl_suit"
+	flags_size = 0
+	item_state = "detective_noir"
+	item_color = "detective_noir"
+
+
 /*
  * Head of Security
  */

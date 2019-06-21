@@ -106,14 +106,20 @@
 	return text
 */
 /datum/construction/proc/fixText(step,text,user, prefix, self = 0)
-	var/verb2 = step["[prefix]_2nd"]
-	var/verb3 = step["[prefix]_3rd"]
+	var/verb2 = ""
+	if(step["[prefix]_2nd"])
+		verb2 = step["[prefix]_2nd"]
+	var/verb3 = ""
+	if(step["[prefix]_3rd"])
+		verb3 = step["[prefix]_3rd"]
 	if(self)
 		text = replacetext(text, "{VERB}", verb2)
 		text = replacetext(text, "{USER}", "You")
+		text = replacetext(text, "{s}", "")
 	else
 		text = replacetext(text, "{VERB}", verb3)
 		text = replacetext(text,"{USER}","[user]")
+		text = replacetext(text, "{s}", "s")
 	text = replacetext(text,"{HOLDER}","[holder]")
 	return text
 
@@ -220,10 +226,19 @@
 /datum/construction/reversible
 	var/index
 	var/original
+	var/front_to_back = FALSE	//Order to read steps in.
 
 /datum/construction/reversible/New(atom)
 	..()
 	index = steps.len
+	if(front_to_back)
+		for(var/blergh = 1; blergh <= steps.len; blergh++)
+			var/foo = steps.len - (blergh - 1)
+			if(foo == blergh)
+				break
+			steps.Swap(blergh, foo)
+			if(foo == (blergh + 1))
+				break
 	return
 
 /datum/construction/reversible/proc/update_index(diff as num, mob/user as mob)

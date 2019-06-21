@@ -82,8 +82,12 @@
 			if(istype(get_area(T), A))
 				turfs += T
 	return turfs
-/proc/GetRectangles(var/area/A, zlevel = 1)
+/proc/GetRectangles(var/area/A, zlevel = 1, avoid_transitions = TRUE)
 	var/list/turfs = GetAreaTurfsInOrder(A, zlevel)
+	if(avoid_transitions)
+		for(var/turf/cull in turfs)
+			if(cull.x <= (TRANSITION_BORDER_WEST + 1) || cull.y <= (TRANSITION_BORDER_SOUTH + 1) || cull.x >= (TRANSITION_BORDER_EAST - 1) || cull.y >= (TRANSITION_BORDER_NORTH - 1 ))
+				turfs -= cull
 	if(!turfs.len)
 		return
 	var/list/rectangles = list()
