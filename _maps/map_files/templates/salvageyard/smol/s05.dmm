@@ -25,11 +25,12 @@
 "y" = (/turf/simulated/floor/plating/airless/asteroid,/area/space)
 "z" = (/obj/item/weapon/storage/box/dragonsbreath,/turf/simulated/floor/plating/airless/asteroid,/area/space)
 "A" = (/obj/item/weapon/shard{icon_state = "small"},/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"B" = (/obj/structure/lattice,/obj/item/shuttle_beacon/salvage,/turf/space,/area/space)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaa
 aaaaaaaaaaaaaaa
-aaaabcaaaadaaca
+aaaabcaaaadaaBa
 aaaceaaabaaaaaa
 aaaaaaacecaacaa
 aafagaaaagabcaa

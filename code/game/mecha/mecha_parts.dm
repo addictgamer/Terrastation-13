@@ -14,7 +14,7 @@
 /obj/item/mecha_parts/chassis
 	name="Mecha Chassis"
 	icon_state = "backbone"
-	var/datum/construction/construct
+	var/datum/construction/reversible/construct
 	flags = CONDUCT
 
 /obj/item/mecha_parts/chassis/Destroy()
@@ -35,7 +35,7 @@
 
 	New()
 		..()
-		construct = new /datum/construction/mecha/ripley_chassis(src)
+		construct = new /datum/construction/mecha_chassis/ripley(src)
 
 /obj/item/mecha_parts/part/ripley_torso
 	name="Ripley Torso"
@@ -70,7 +70,7 @@
 
 	New()
 		..()
-		construct = new /datum/construction/mecha/gygax_chassis(src)
+		construct = new /datum/construction/mecha_chassis/gygax(src)
 
 /obj/item/mecha_parts/part/gygax_torso
 	name="Gygax Torso"
@@ -119,7 +119,7 @@
 
 	New()
 		..()
-		construct = new /datum/construction/mecha/durand_chassis(src)
+		construct = new /datum/construction/mecha_chassis/durand(src)
 
 /obj/item/mecha_parts/part/durand_torso
 	name="Durand Torso"
@@ -165,7 +165,7 @@
 
 	New()
 		..()
-		construct = new /datum/construction/mecha/firefighter_chassis(src)
+		construct = new /datum/construction/mecha_chassis/firefighter(src)
 /*
 /obj/item/mecha_parts/part/firefighter_torso
 	name="Ripley-on-Fire Torso"
@@ -195,7 +195,7 @@
 
 	New()
 		..()
-		construct = new /datum/construction/mecha/honker_chassis(src)
+		construct = new /datum/construction/mecha_chassis/honker(src)
 
 /obj/item/mecha_parts/part/honker_torso
 	name="H.O.N.K Torso"
@@ -229,7 +229,7 @@
 
 /obj/item/mecha_parts/chassis/reticence/New()
 	..()
-	construct = new /datum/construction/mecha/reticence_chassis(src)
+	construct = new /datum/construction/mecha_chassis/reticence(src)
 
 /obj/effect/dummy/mecha_emote_step
 	var/emote
@@ -238,11 +238,12 @@
 	emote = e
 
 /obj/item/mecha_parts/chassis/reticence/hear_message(mob/living/M, msg)
-	if(!istype(M) || !istype(construct, /datum/construction/mecha/reticence))
+	if(!istype(M) || !istype(construct, /datum/construction/reversible/mecha/reticence))
 		return
 	// is the current step the dummy emote object?
-	var/list/steps = construct.steps
-	if(steps[steps.len]["key"] == /obj/effect/dummy/mecha_emote_step)
+	var/next = construct.get_forward_step(construct.index)
+	if(next[Co_KEY] == /obj/effect/dummy/mecha_emote_step)
+		next[Co_VIS_MSG] = replacetext(next[Co_VIS_MSG], "{EMOTE}", msg)
 		construct.action(new /obj/effect/dummy/mecha_emote_step(msg), M)
 
 /obj/item/mecha_parts/part/reticence_torso
@@ -277,7 +278,7 @@
 
 	New()
 		..()
-		construct = new /datum/construction/mecha/phazon_chassis(src)
+		construct = new /datum/construction/mecha_chassis/phazon(src)
 
 /obj/item/mecha_parts/part/phazon_torso
 	name="Phazon Torso"
@@ -321,7 +322,7 @@
 
 	New()
 		..()
-		construct = new /datum/construction/mecha/odysseus_chassis(src)
+		construct = new /datum/construction/mecha_chassis/odysseus(src)
 
 /obj/item/mecha_parts/part/odysseus_head
 	name="Odysseus Head"

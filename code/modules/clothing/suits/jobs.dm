@@ -169,6 +169,11 @@
 		"Vox" = 'icons/mob/species/vox/suit.dmi'
 		)
 
+/obj/item/clothing/suit/storage/det_suit/noir
+	desc = "Ah, your trusty coat. There's a few tears here and there, giving it a more timely look. Or at least, that's what you told yourself when you found out gettin' it repaired would set you back 200 credits."
+	icon_state = "noir_detective"
+	item_state = "noir_detective"
+
 //Forensics
 /obj/item/clothing/suit/storage/det_suit/forensics
 	name = "jacket"

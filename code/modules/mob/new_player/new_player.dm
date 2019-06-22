@@ -422,10 +422,11 @@
 		dat += "<fieldset style='border: 2px solid [color]; display: inline'>"
 		dat += "<legend align='center' style='color: [color]'>[jobcat]</legend>"
 		for(var/datum/job/job in categorizedJobs[jobcat]["jobs"])
+			var/job_display_name = client.prefs.GetPlayerAltTitle(job)
 			if(job in job_master.prioritized_jobs)
-				dat += "<a href='byond://?src=[UID()];SelectedJob=[job.title]'><font color='lime'><B>[job.title] ([job.current_positions]) (Active: [activePlayers[job]])</B></font></a><br>"
+				dat += "<a href='byond://?src=[UID()];SelectedJob=[job.title]'><font color='lime'><B>[job_display_name] ([job.current_positions]) (Active: [activePlayers[job]])</B></font></a><br>"
 			else
-				dat += "<a href='byond://?src=[UID()];SelectedJob=[job.title]'>[job.title] ([job.current_positions]) (Active: [activePlayers[job]])</a><br>"
+				dat += "<a href='byond://?src=[UID()];SelectedJob=[job.title]'>[job_display_name] ([job.current_positions]) (Active: [activePlayers[job]])</a><br>"
 		dat += "</fieldset><br>"
 
 	dat += "</td></tr></table></center>"

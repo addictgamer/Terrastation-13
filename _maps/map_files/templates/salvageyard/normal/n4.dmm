@@ -57,6 +57,7 @@
 "be" = (/obj/item/weapon/circuitboard/chem_dispenser,/turf/simulated/floor/void/timewarp/airless,/area/timewarp/ship)
 "bf" = (/obj/effect/decal/timeplug,/obj/effect/decal/timeplug{dir = 8},/turf/space,/area/timewarp/ship)
 "bg" = (/obj/effect/decal/timeplug,/obj/effect/decal/timeplug{dir = 4},/turf/space,/area/timewarp/ship)
+"bh" = (/obj/item/shuttle_beacon/salvage,/turf/simulated/wall/void,/area/timewarp/ship)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -68,7 +69,7 @@ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaeaeacafaeaeaeaeaeaeaeagagagagaeaeaeaeaeaeahadaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaeaeaiajaiaiakakalagagagagagagagagagagagagagaeamaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaabacafaiaianaiaiaialakagagagagagagagagagagagagagaeamaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaoanaiaiaiakaiaiaiaiagagapapapapapapapapapapapagaeamaaaa
-aaaaaaaaaaaaaqaqaaaaaaaaaoaiakalakakaianaiaiagapaparasarasasasarasatapapaeamaaaa
+aaaaaaaaaaaaaqaqaaaaaaaaaoaiakalakakaianaiaiagbhaparasarasasasarasatapapaeamaaaa
 aaaaaaaaaaaqauaqaaaaaaaaaoaiaiakaiaiaiavawaiagapapasapapaxasasapapasapapaeamaaaa
 aaaaaaaaaaaaaqaqaaaaaaaaaoanaiaiaianaiaiaianaeapasarapasasasasasaparapagaeamaaaa
 aaaaaaaaaaaaaaaaaaaaaaaaaoaiaiaeaeaiaiaiaiakaeaparayasasasazasapapasapaeaAaBaaaa

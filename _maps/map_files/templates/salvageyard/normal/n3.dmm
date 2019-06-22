@@ -25,6 +25,7 @@
 "y" = (/obj/structure/girder,/turf/simulated/floor/plating/airless,/area/space)
 "z" = (/turf/simulated/mineral/random/high_chance_clown,/area/space)
 "A" = (/obj/effect/spawner/lootdrop/crate_spawner,/turf/simulated/floor/plating/airless/asteroid,/area/space)
+"B" = (/obj/item/shuttle_beacon/salvage,/turf/simulated/floor/plating/airless,/area/space)
 
 (1,1,1) = {"
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
@@ -38,7 +39,7 @@ aaadddbbbbaaaaaadbbbbbcbbbbbbbbbbbbbaaaa
 aaaaddbbaaaaaddddbbbbbbbbbddbbcccbbbaaaa
 aaaaaaaaaaaaadddddbccbbddddddddddbddaaaa
 aaaaaaaaaaaaaaddddbccbbffffgfffffdddaaaa
-aaaahaaaaaaaaadddddbbbijjjkklmnfodddaaaa
+aaaahaaaaaaaaadddddbbbijjBkklmnfodddaaaa
 aaaaaaaahaaaaadddddbbbjpqkrkkksfodddaaaa
 aaaaaaaaaaaaaaddddbbbbtuvkkkskjfodddaaaa
 aaaaaaaaaaaaaaddddbbcbbjskkkwxjfodaaaaaa
