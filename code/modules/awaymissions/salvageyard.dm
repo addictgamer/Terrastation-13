@@ -241,7 +241,8 @@ var/list/datum/map_template/salvage_yard_Stemplates = list()
 
 		var/turf/T = locate(rand(R.offx, R.offx + (R.x - ruin.width)), rand(R.offy, R.offy + (R.y - ruin.height)), z_level)
 		if(ruin.load(T))
-			log_to_dd("   \"[ruin.name]\" loaded to the salvage yard in [stop_watch(watch)]s at ([T.x], [T.y], [T.z]).")
+			log_to_dd("   \"[ruin.name]\" loaded in [stop_watch(watch)]s at ([T.x], [T.y], [T.z]).")
+			new /obj/effect/landmark/ruin(locate(round(T.x + (ruin.width/2)), round(T.y + (ruin.height/2)), T.z), ruin)
 		else
 			log_to_dd("   \"[ruin.name]\" failed to load at ([T.x], [T.y], [T.z]).")
 		var/datum/rectangle/ruinrec = new /datum/rectangle(ruin.width, ruin.height, T.x, T.y)

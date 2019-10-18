@@ -55,7 +55,7 @@ var/global/pipe_processing_killed = 0
 	if(!config.disable_space_ruins)
 		var/timer = start_watch()
 		log_startup_progress("Creating random space levels...")
-		seedRuins(level_name_to_num(EMPTY_AREA), rand(2, 3), /area/space, space_ruins_templates)
+		seedMids(level_name_to_num(EMPTY_AREA), rand(2, 3), /area/space, space_ruins_templates)
 		log_startup_progress("Loaded random space levels in [stop_watch(timer)]s.")
 
 		// We'll keep this around for the time when we finally expunge all
@@ -70,6 +70,14 @@ var/global/pipe_processing_killed = 0
 	log_startup_progress("Creating random salvage shit...")
 	seedMids(level_name_to_num(DERELICT), rand(3, 4), /area/salvage/yard/genarea, salvage_yard_Mtemplates)
 	seedMids(level_name_to_num(DERELICT), rand(13, 15), /area/salvage/yard/genarea, salvage_yard_Stemplates)
+	var/list/garbage = get_area_turfs(/area/salvage/yard/genarea, level_name_to_num(DERELICT))
+	for(var/area/space/S in world) //You'd think there'd be a better way of doing this, but then again, this *is* BYOND...
+		S.contents.Add(garbage)
+		break
+	for(var/area/salvage/yard/genarea/G in world)
+		qdel(G)
+		break
+
 	log_startup_progress("Loaded junk in probably a relative lot of time all things considered.")
 	//END SAID SHIT LZ DID
 
@@ -87,6 +95,8 @@ var/global/pipe_processing_killed = 0
 	var/watch=start_watch()
 	log_startup_progress("Generating holominimaps...")
 	generateHoloMinimaps()
+	for(var/obj/machinery/station_map/map in station_holomaps)
+		map.initialize()
 	log_startup_progress("  Finished holominimaps in [stop_watch(watch)]s.")
 
 

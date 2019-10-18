@@ -6,7 +6,8 @@ var/const/CALL_SHUTTLE_REASON_LENGTH = 12
 	var/list/mobile = list()
 	var/list/stationary = list()
 	var/list/transit = list()
-
+	var/list/consoles = list()
+	var/portable_beacon_count = 0
 		//emergency shuttle stuff
 	var/obj/docking_port/mobile/emergency/emergency
 	var/obj/docking_port/mobile/emergency/backup/backup_shuttle
@@ -53,7 +54,8 @@ var/const/CALL_SHUTTLE_REASON_LENGTH = 12
 		WARNING("No /obj/docking_port/mobile/emergency/backup placed on the map!")
 	if(!supply)
 		WARNING("No /obj/docking_port/mobile/supply placed on the map!")
-
+	for(var/obj/machinery/computer/shuttle/console in world)
+		consoles += console
 	ordernum = rand(1,9000)
 
 	for(var/typepath in subtypesof(/datum/supply_packs))
@@ -77,7 +79,6 @@ DECLARE_GLOBAL_CONTROLLER(shuttle, shuttle_master)
 /datum/controller/process/shuttle/proc/initialize_docks()
 	for(var/obj/docking_port/D in world)
 		D.register()
-
 
 /datum/controller/process/shuttle/proc/getShuttle(id)
 	for(var/obj/docking_port/mobile/M in mobile)

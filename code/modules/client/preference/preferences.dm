@@ -560,7 +560,7 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 	metadata["[tweak]"] = new_metadata
 
 
-/datum/preferences/proc/SetChoices(mob/user, limit = 17, list/splitJobs = list("Civilian","Research Director","AI","Bartender"), width = 760, height = 790)
+/datum/preferences/proc/SetChoices(mob/user, limit = 17, list/splitJobs = list("Research Director","AI","Bartender"), width = 1760, height = 790)
 	if(!job_master)
 		return
 
@@ -576,7 +576,7 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 	HTML += "<center><a href='?_src_=prefs;preference=job;task=close'>\[Done\]</a></center><br>" // Easier to press up here.
 	HTML += "<div align='center'>Left-click to raise an occupation preference, right-click to lower it.<br></div>"
 	HTML += "<script type='text/javascript'>function setJobPrefRedirect(level, rank) { window.location.href='?_src_=prefs;preference=job;task=setJobLevel;level=' + level + ';text=' + encodeURIComponent(rank); return false; }</script>"
-	HTML += "<table width='100%' cellpadding='1' cellspacing='0'><tr><td width='20%'>" // Table within a table for alignment, also allows you to easily add more colomns.
+	HTML += "<table width='100%' align='center' cellpadding='1' cellspacing='0'><tr><td width='20%'>" // Table within a table for alignment, also allows you to easily add more colomns.
 	HTML += "<table width='100%' cellpadding='1' cellspacing='0'>"
 	var/index = -1
 
@@ -600,28 +600,33 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 
 		HTML += "<tr bgcolor='[job.selection_color]'><td width='60%' align='right'>"
 		var/rank = job.title
+		var/rank_display = GetPlayerAltTitle(job)
 		lastJob = job
 		if(!is_job_whitelisted(user, rank))
-			HTML += "<font color=red>[rank]</font></td><td><font color=red><b> \[KARMA]</b></font></td></tr>"
+			HTML += "<font color=red>[rank_display]</font></td><td><font color=red><b> \[KARMA]</b></font></td></tr>"
 			continue
 		if(jobban_isbanned(user, rank))
-			HTML += "<del>[rank]</del></td><td><b> \[BANNED]</b></td></tr>"
+			HTML += "<del>[rank_display]</del></td><td><b> \[BANNED]</b></td></tr>"
 			continue
 		var/available_in_playtime = job.available_in_playtime(user.client)
 		if(available_in_playtime)
-			HTML += "<del>[rank]</del></td><td> \[ " + get_exp_format(available_in_playtime) + " as " + job.get_exp_req_type()  + " \]</td></tr>"
+			HTML += "<del>[rank_display]</del></td><td> \[ " + get_exp_format(available_in_playtime) + " as " + job.get_exp_req_type()  + " \]</td></tr>"
 			continue
 		if(!job.player_old_enough(user.client))
 			var/available_in_days = job.available_in_days(user.client)
-			HTML += "<del>[rank]</del></td><td> \[IN [(available_in_days)] DAYS]</td></tr>"
+			HTML += "<del>[rank_display]</del></td><td> \[IN [(available_in_days)] DAYS]</td></tr>"
 			continue
 		if((job_support_low & CIVILIAN) && (rank != "Civilian"))
-			HTML += "<font color=orange>[rank]</font></td><td></td></tr>"
+			HTML += "<font color=orange>[rank_display]</font></td><td></td></tr>"
 			continue
 		if((rank in command_positions) || (rank == "AI"))//Bold head jobs
-			HTML += "<b><span class='dark'>[rank]</span></b>"
+			HTML += "<b><span class='dark'>[rank_display]</span></b>"
+
+		else if(job.alt_titles)
+			HTML += "<b><a width = 70% class='white' href=\"?_src_=prefs;preference=job;task=alt_title;job=\ref[job]\">\[[rank_display]\]</a></b>"
+
 		else
-			HTML += "<span class='dark'>[rank]</span>"
+			HTML += "<span class='dark'>[rank_display]</span>"
 
 		HTML += "</td><td width='40%'>"
 
@@ -661,8 +666,8 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 				HTML += " <font color=green>\[Yes]</font></a>"
 			else
 				HTML += " <font color=red>\[No]</font></a>"
-			if(job.alt_titles)
-				HTML += "<br><b><a class='white' href=\"byond://?_src_=prefs;preference=job;task=alt_title;job=\ref[job]\">\[[GetPlayerAltTitle(job)]\]</a></b></td></tr>"
+//			if(job.alt_titles)
+//				HTML += "<br><b><a class='white' href=\"byond://?_src_=prefs;preference=job;task=alt_title;job=\ref[job]\">\[[GetPlayerAltTitle(job)]\]</a></b></td></tr>"
 			HTML += "</td></tr>"
 			continue
 /*
@@ -677,8 +682,8 @@ var/global/list/special_role_times = list( //minimum age (in days) for accounts 
 			*/
 		HTML += "<font color=[prefLevelColor]>[prefLevelLabel]</font></a>"
 
-		if(job.alt_titles)
-			HTML += "<br><b><a class='white' href=\"?_src_=prefs;preference=job;task=alt_title;job=\ref[job]\">\[[GetPlayerAltTitle(job)]\]</a></b></td></tr>"
+//		if(job.alt_titles)
+//			HTML += "<br><b><a width = 70% class='white' href=\"?_src_=prefs;preference=job;task=alt_title;job=\ref[job]\">\[[GetPlayerAltTitle(job)]\]</a></b></td></tr>"
 
 
 		HTML += "</td></tr>"

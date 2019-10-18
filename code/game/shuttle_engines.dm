@@ -1,13 +1,13 @@
 /obj/structure/shuttle
 	name = "shuttle"
 	icon = 'icons/turf/shuttle.dmi'
-
+/*
 /obj/structure/shuttle/shuttleRotate(rotation)
 	..()
 	var/matrix/M = transform
 	M.Turn(rotation)
 	transform = M
-
+*/
 /obj/structure/shuttle/window
 	name = "shuttle window"
 	icon = 'icons/obj/podwindows.dmi'

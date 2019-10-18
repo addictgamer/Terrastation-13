@@ -56,6 +56,14 @@
 	if(buckled_mob)
 		buckled_mob.dir = dir
 
+
+/obj/structure/stool/bed/chair/shuttleRotate(rotation)
+	..()
+	if(src.dir == NORTH)
+		src.layer = FLY_LAYER
+	else
+		src.layer = OBJ_LAYER
+
 /obj/structure/stool/bed/chair/verb/rotate()
 	set name = "Rotate Chair"
 	set category = "Object"

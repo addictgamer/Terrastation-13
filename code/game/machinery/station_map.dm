@@ -207,6 +207,8 @@ obj/machinery/station_map/attack_ai(var/mob/living/silicon/robot/user)
 	update_icon()
 
 /obj/machinery/station_map/update_icon()
+	if(!holomaps_initialized)
+		return
 	overlays.len = 0
 	if(stat & BROKEN)
 		icon_state = "station_mapb"

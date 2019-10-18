@@ -11,12 +11,13 @@
 "k" = (/turf/simulated/floor/mineral/abductor,/area/space)
 "l" = (/obj/item/weapon/ore/glass,/turf/simulated/floor/mineral/abductor,/area/space)
 "m" = (/obj/item/weapon/ore/strangerock,/turf/space,/area/space)
+"n" = (/obj/item/shuttle_beacon/salvage,/turf/simulated/mineral/asteroid,/area/space)
 
 (1,1,1) = {"
 aaaaaaaaaabbbaa
 aaaabbbaaaabbba
 abaaabbbbaacaba
-abbaabaaaaaaaaa
+abnaabaaaaaaaaa
 aabbbbbdadaaaaa
 abbbbbbbbcaabaa
 abbbbeeebaaaaaa

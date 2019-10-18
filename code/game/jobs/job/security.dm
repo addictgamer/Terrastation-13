@@ -105,12 +105,12 @@
 	selection_color = "#ffeeee"
 	access = list(access_security, access_sec_doors, access_forensics_lockers, access_morgue, access_maint_tunnels, access_court, access_weapons)
 	minimal_access = list(access_sec_doors, access_forensics_lockers, access_morgue, access_maint_tunnels, access_court, access_weapons)
-	alt_titles = list("Forensic Technician")
+	alt_titles = list("Forensic Technician", "Gumshoe")
 	minimal_player_age = 14
 	exp_requirements = 300
 	exp_type = EXP_TYPE_CREW
 	outfit = /datum/outfit/job/detective
-	alt_outfits = list(/datum/outfit/job/detective/forensic_technician = "Forensic Technician")
+	alt_outfits = list(/datum/outfit/job/detective/forensic_technician = "Forensic Technician", /datum/outfit/job/detective/noir = "Gumshoe")
 
 /datum/outfit/job/detective
 	name = "Detective"
@@ -135,6 +135,15 @@
 
 	implants = list(/obj/item/weapon/implant/mindshield)
 
+
+
+/datum/outfit/job/detective/noir
+	uniform = /obj/item/clothing/under/det/noir
+	suit = /obj/item/clothing/suit/storage/det_suit/noir
+	head = /obj/item/clothing/head/det_hat/noir
+	shoes = /obj/item/clothing/shoes/laceup
+
+
 /datum/outfit/job/detective/forensic_technician
 	suit = /obj/item/clothing/suit/storage/det_suit/forensics/blue
 	head = null
@@ -155,6 +164,7 @@
 	H.dna.SetSEState(SOBERBLOCK,1)
 	H.mutations += SOBER
 	H.check_mutations = 1
+
 
 /datum/job/officer
 	title = "Security Officer"

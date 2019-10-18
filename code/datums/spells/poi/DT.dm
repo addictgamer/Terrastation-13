@@ -69,8 +69,9 @@ Also insert actual attacks, such as the one with the same name
 
 /obj/effect/proc_holder/spell/targeted/fart/cast(list/targets, mob/user = usr)
 	if(isliving(usr))
-		usr.emote("fart")
+		usr.emote("fart",CDBP=1)
 	else
 		visible_message("Somebody farts like the nasty bastard they are.")
 		playsound(usr.loc, 'sound/effects/fart2.ogg', 40, 0)
+	usr.visible_message("<B>[usr]</B> <span style=\"color:red\">blows smoke out their ass!</span>")
 	return
