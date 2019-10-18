@@ -2,6 +2,15 @@ var/list/robot_verbs_default = list(
 	/mob/living/silicon/robot/proc/sensor_mode,
 )
 
+/obj/item/weapon/card/id/borg
+	name = "borg card"
+	icon_state = "data"
+	assignment = "cyborg"
+	//untrackable = 1// not shure if neccesary
+
+/obj/item/weapon/card/id/borg/New()
+	access = get_all_accesses()
+	..()
 /mob/living/silicon/robot
 	name = "Cyborg"
 	real_name = "Cyborg"
@@ -271,7 +280,7 @@ var/list/robot_verbs_default = list(
 /mob/living/silicon/robot/proc/pick_module()
 	if(module)
 		return
-	var/list/modules = list("Standard", "Engineering", "Medical", "Miner", "Janitor", "Service")
+	var/list/modules = list("Standard", "Engineering", "Medical", "Miner", "Janitor", "Service")  //add     >, "Research"<     when it's ready
 	if(!config.forbid_secborg)
 		modules += "Security"
 	if(!config.forbid_peaceborg)
@@ -404,6 +413,15 @@ var/list/robot_verbs_default = list(
 			icon_state = "xenoborg-state-a"
 			modtype = "Xeno-Hu"
 			feedback_inc("xeborg_hunter",1)
+
+		if ("Research")
+			module = new /obj/item/weapon/robot_module/research(src)
+			module.channels = list ("Science" = 1)
+			module_sprites ["Drone"] = "drone-science"
+			module_sprites ["Insekt"]= "insekt-Sci"
+			module_sprites ["Eyeball"]= "eyebot-science"
+			module_sprites ["Heavy"] = "heavyRes"
+
 
 
 	//languages

@@ -8,33 +8,33 @@
 
 	//Has a list of items that it can hold.
 	var/list/can_hold = list(
-		/obj/item/weapon/stock_parts/cell,
-		/obj/item/weapon/firealarm_electronics,
-		/obj/item/weapon/airalarm_electronics,
-		/obj/item/weapon/airlock_electronics,
-		/obj/item/weapon/firelock_electronics,
-		/obj/item/weapon/intercom_electronics,
-		/obj/item/weapon/apc_electronics,
-		/obj/item/weapon/tracker_electronics,
-		/obj/item/weapon/stock_parts,
-		/obj/item/weapon/vending_refill,
-		/obj/item/mounted/frame/light_fixture,
-		/obj/item/mounted/frame/apc_frame,
-		/obj/item/mounted/frame/alarm_frame,
-		/obj/item/mounted/frame/firealarm,
-		/obj/item/mounted/frame/newscaster_frame,
-		/obj/item/mounted/frame/intercom,
-		/obj/item/weapon/table_parts,
-		/obj/item/weapon/rack_parts,
-		/obj/item/weapon/camera_assembly,
-		/obj/item/weapon/tank,
-		/obj/item/weapon/circuitboard,
-		/obj/item/stack/tile/light,
-		/obj/item/weapon/ore/bluespace_crystal
-		)
+	/obj/item/weapon/stock_parts/cell,
+	/obj/item/weapon/firealarm_electronics,
+	/obj/item/weapon/airalarm_electronics,
+	/obj/item/weapon/airlock_electronics,
+	/obj/item/weapon/firelock_electronics,
+	/obj/item/weapon/intercom_electronics,
+	/obj/item/weapon/apc_electronics,
+	/obj/item/weapon/tracker_electronics,
+	/obj/item/weapon/stock_parts,
+	/obj/item/weapon/vending_refill,
+	/obj/item/mounted/frame/light_fixture,
+	/obj/item/mounted/frame/apc_frame,
+	/obj/item/mounted/frame/alarm_frame,
+	/obj/item/mounted/frame/firealarm,
+	/obj/item/mounted/frame/newscaster_frame,
+	/obj/item/mounted/frame/intercom,
+	/obj/item/weapon/table_parts,
+	/obj/item/weapon/rack_parts,
+	/obj/item/weapon/camera_assembly,
+	/obj/item/weapon/tank,
+	/obj/item/weapon/circuitboard,
+	/obj/item/stack/tile/light,
+	/obj/item/weapon/ore/bluespace_crystal
+	)
 
-	//Item currently being held.
-	var/obj/item/wrapped = null
+//Item currently being held.
+var/obj/item/wrapped = null
 
 /obj/item/weapon/gripper/paperwork
 	name = "paperwork gripper"
@@ -43,10 +43,64 @@
 	icon_state = "gripper"
 
 	can_hold = list(
-		/obj/item/weapon/clipboard,
-		/obj/item/weapon/paper,
-//		/obj/item/weapon/paper_bundle,
-		/obj/item/weapon/card/id
+	/obj/item/weapon/clipboard,
+	/obj/item/weapon/paper,
+//obj/item/weapon/paper_bundle,
+	/obj/item/weapon/card/id
+	)
+
+/obj/item/weapon/gripper/chemistry
+	name = "chemistry gripper"
+	desc = "A simple grasping tool for chemical work."
+
+	can_hold = list(
+	/obj/item/weapon/reagent_containers/glass,
+	/obj/item/weapon/reagent_containers/food/pill,
+	/obj/item/weapon/reagent_containers/blood,
+	/obj/item/weapon/storage/pill_bottle,
+	)
+
+/obj/item/weapon/gripper/research //A general usage gripper, used for toxins/robotics/xenobio/etc
+	name = "scientific gripper"
+	//icon_state = "gripper-sci"
+	desc = "A simple grasping tool suited to assist in a wide array of research applications."
+
+	can_hold = list(
+	/obj/item/weapon/stock_parts/cell,
+	/obj/item/weapon/stock_parts,
+	/obj/item/device/mmi,
+	/obj/item/robot_parts,
+	/obj/item/borg/upgrade,
+	/obj/item/device/flash,
+	/obj/item/organ/internal/brain,
+	/obj/item/device/mmi/posibrain,
+	/obj/item/stack/cable_coil,
+	/obj/item/weapon/circuitboard,
+	/obj/item/slime_extract,
+	/obj/item/weapon/reagent_containers/glass,
+	/obj/item/weapon/reagent_containers/food/snacks/monkeycube,
+	/obj/item/mecha_parts,
+	/obj/item/weapon/computer_hardware,
+	/obj/item/device/transfer_valve,
+	/obj/item/device/assembly/signaler,
+	/obj/item/device/assembly/timer,
+	/obj/item/device/assembly/igniter,
+	/obj/item/device/assembly/infra,
+	/obj/item/weapon/tank
+	)
+
+	/obj/item/weapon/gripper/no_use //Used when you want to hold and put items in other things, but not able to 'use' the item
+
+/obj/item/weapon/gripper/no_use/attack_self(mob/user as mob)
+	return
+
+/obj/item/weapon/gripper/no_use/loader //This is used to disallow building with metal.
+	name = "sheet loader"
+	desc = "A specialized loading device, designed to pick up and insert sheets of materials inside machines."
+	//icon_state = "gripper-sheet"
+
+	can_hold = list(
+		/obj/item/stack/sheet
 		)
 
 /obj/item/weapon/gripper/New()
@@ -64,6 +118,8 @@
 	set category = "Drone"
 
 	drop_item_p()
+
+
 
 // The "p" stands for proc, since I was having annoying weird stuff happening with this in the verb
 // when trying to have default values for arguments and stuff

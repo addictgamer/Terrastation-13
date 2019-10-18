@@ -34,3 +34,23 @@
 	icon_state = "hazardag"
 	//I still need a proper gimmick for this one.
 */
+
+/obj/item/clothing/suit/storage/hazardvest/bast //has no tangible gimmick (like different storage), but makes the user appear as a gravekeeper drone
+	desc = "A.... vest. It's a vest. At least, it appears to be."
+	icon_state = "doorkeeper"
+	item_state = "doorkeeper"
+
+/obj/item/clothing/suit/storage/hazardvest/bast/equipped(mob/living/user, slot)
+	..()
+	if(slot == slot_wear_suit)
+		enspoob(user)
+
+/obj/item/clothing/suit/storage/hazardvest/bast/dropped(mob/living/user)
+	..()
+	user.remove_alt_appearance("bastborg")
+
+/obj/item/clothing/suit/storage/hazardvest/bast/proc/enspoob(mob/living/QQ)
+	if(istype(QQ))
+		var/image/I = image(icon = 'icons/mob/robots.dmi' , icon_state = pick("drone-gravekeeper", "drone-lost"), loc = QQ)
+		I.override = 1
+		QQ.add_alt_appearance("bastborg", I, living_mob_list) //you look like a robot to robots! (including yourself because you're totally a robot)
