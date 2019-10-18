@@ -280,7 +280,7 @@ var/list/robot_verbs_default = list(
 /mob/living/silicon/robot/proc/pick_module()
 	if(module)
 		return
-	var/list/modules = list("Standard", "Engineering", "Medical", "Miner", "Janitor", "Service", "Research")
+	var/list/modules = list("Standard", "Engineering", "Medical", "Miner", "Janitor", "Service")  //add     >, "Research"<     when it's ready
 	if(!config.forbid_secborg)
 		modules += "Security"
 	if(!config.forbid_peaceborg)

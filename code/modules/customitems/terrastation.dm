@@ -51,6 +51,6 @@
 
 /obj/item/clothing/suit/storage/hazardvest/bast/proc/enspoob(mob/living/QQ)
 	if(istype(QQ))
-		var/image/I = image(icon = 'icons/mob/robots.dmi' , icon_state = "drone-gravekeeper", loc = QQ)
+		var/image/I = image(icon = 'icons/mob/robots.dmi' , icon_state = pick("drone-gravekeeper", "drone-lost"), loc = QQ)
 		I.override = 1
 		QQ.add_alt_appearance("bastborg", I, living_mob_list) //you look like a robot to robots! (including yourself because you're totally a robot)
