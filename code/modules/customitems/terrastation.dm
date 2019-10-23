@@ -18,6 +18,7 @@
 	icon_state = "hazardfgt"
 	item_state = "hazardfgt"
 	allowed = list (/obj/item/weapon/tank/emergency_oxygen, /obj/item/weapon/katana)
+	//Maybe if Tauka reads the correct documentation he would understand what the fuck is going on better. Hey, since I'm not documenting I made this comment, will he even see it? Who knows?! I'm still going to call him a fucking wankass spooby fuckwit!
 
 /obj/item/clothing/suit/storage/hazardvest/tauka/New()
 	..()
@@ -53,4 +54,18 @@
 	if(istype(QQ))
 		var/image/I = image(icon = 'icons/mob/robots.dmi' , icon_state = pick("drone-gravekeeper", "drone-lost"), loc = QQ)
 		I.override = 1
-		QQ.add_alt_appearance("bastborg", I, living_mob_list) //you look like a robot to robots! (including yourself because you're totally a robot)
+		QQ.add_alt_appearance("bastborg", I, living_mob_list)
+
+
+//end haz vests, begin other spoob
+
+/obj/item/clothing/head/helmet/space/hardsuit/mining/last
+	name = "last miner standing helmet"
+	icon_state = "hardsuit0-xenominer"
+	item_state = "xenos_helm"
+	item_color = "xenominer"
+
+/obj/item/clothing/suit/space/hardsuit/mining/last
+	name = "last miner standing suit"
+	icon_state = "xenos"
+	item_state = "xenos_helm"

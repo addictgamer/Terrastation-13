@@ -912,7 +912,7 @@
 "rB" = (/turf/simulated/floor/plasteel/airless{tag = "icon-asteroidwarning (EAST)"; icon_state = "asteroidwarning"; dir = 4},/area/mine/dangerous/explored)
 "rC" = (/obj/structure/disposalpipe/segment,/turf/simulated/wall/r_wall,/area/mine/lobby)
 "rD" = (/turf/simulated/wall/r_wall,/area/mine/lobby)
-"rE" = (/obj/structure/closet/abductor,/obj/item/clothing/glasses/meson/night{name = "NOPtical Meson Scanner"; icon_state = "jensenshades"; darkness_view = 30},/obj/item/weapon/storage/bag/ore/holding,/obj/item/clothing/suit/space/hardsuit/mining{armor = list("melee" = 60, "bullet" = 15, "laser" = 15, "energy" = 10, "bomb" = 80, "bio" = 100, "rad" = 50); boots = /obj/item/clothing/shoes/magboots; icon_state = "xenos"; move_speed = 15; name = "last miner standing suit"},/obj/item/clothing/head/helmet/space/hardsuit/mining{actions_types = null; darkness_view = 15; explosion_block = 100; heat_protection = 100; icon_state = "xenos"; light_power = 20; name = "last miner standing helmet"},/turf/simulated/floor/plating,/area/mine/dangerous/explored)
+"rE" = (/obj/structure/closet/abductor,/obj/item/clothing/glasses/meson/night{name = "NOPtical Meson Scanner"; icon_state = "jensenshades"; darkness_view = 30},/obj/item/weapon/storage/bag/ore/holding,/obj/item/clothing/suit/space/hardsuit/mining/last,/obj/item/clothing/head/helmet/space/hardsuit/mining/last,/turf/simulated/floor/plating,/area/mine/dangerous/explored)
 "rF" = (/obj/structure/table,/obj/machinery/alarm{dir = 1; icon_state = "alarm0"; pixel_y = -22},/turf/simulated/floor/carpet,/area/mine/living_quarters{name = "Mining Station Break Room"})
 "rG" = (/turf/simulated/floor/carpet,/area/mine/living_quarters{name = "Mining Station Break Room"})
 "rH" = (/turf/simulated/wall/r_wall,/area/mine/eva)
