@@ -1,3 +1,5 @@
+//please put the relevant icon filepaths here, plese!
+
 /obj/item/clothing/suit/storage/hazardvest/lz
 	name = "LZ's Hazard vest"
 	desc = "A somewhat-high-visibility vest used in work zones. This one appears to have been modified to carry something specific."
@@ -56,6 +58,16 @@
 		I.override = 1
 		QQ.add_alt_appearance("bastborg", I, living_mob_list)
 
+//begin qui prelim code
+/obj/item/clothing/suit/storage/hazardvest/qui
+	desc = "A high-visibility vest that screams you are not to be taken seriously."
+	icon_state = "hazardqp"
+	item_state = "hazardqp"
+	allowed = list (/obj/item/weapon)
+
+/obj/item/clothing/suit/storage/hazardvest/qui/armed/New()
+	..()
+	new /obj/item/weapon/gun/throw/piecannon/qui(src.pockets)
 
 //end haz vests, begin other spoob
 
