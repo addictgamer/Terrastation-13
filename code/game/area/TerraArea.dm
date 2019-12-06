@@ -217,6 +217,11 @@
 	name = "Syndicate base"
 	icon_state = "turds"
 
+/area/salvage/yard/hidanger/genarea
+	name = "hazardzone template spawn area"
+	icon_state = "junk"
+	holomap_color = null
+
 /area/salvage/yard/genarea
 	name = "template spawn area"
 	icon_state = "junk"
