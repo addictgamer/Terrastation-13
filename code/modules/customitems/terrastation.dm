@@ -1,7 +1,8 @@
-//please put the relevant icon filepaths here, plese!
+//icons/mob/suit.dmi for the mob overlay
+//icons/obj/clothing/suits.dmi for the item
 
 /obj/item/clothing/suit/storage/hazardvest/lz
-	name = "LZ's Hazard vest"
+	name = "LZ's Hazard Vest"
 	desc = "A somewhat-high-visibility vest used in work zones. This one appears to have been modified to carry something specific."
 	allowed = list (/obj/item/device/flashlight, /obj/item/weapon/tank/emergency_oxygen, /obj/item/weapon/crowbar/large)
 	icon_state = "hazardlz"
@@ -15,7 +16,7 @@
 	allowed = list (/obj/item/device/flashlight, /obj/item/weapon/tank/emergency_oxygen, /obj/item/device/t_scanner, /obj/item/weapon/gun/projectile/revolver/mateba)
 
 /obj/item/clothing/suit/storage/hazardvest/tauka
-	name = "Tauka's Hazard vest"
+	name = "Tauka's Hazard Vest"
 	desc = "A visibility vest supposedly used in work zones. This one seems to defy the laws of spacetime as well as common fucking sense."
 	icon_state = "hazardfgt"
 	item_state = "hazardfgt"
@@ -31,14 +32,16 @@
 	..()
 	new /obj/item/weapon/gun/projectile/revolver/mateba(src.pockets)
 
-/*
+
 /obj/item/clothing/suit/storage/hazardvest/terraform/addict
+	name = "Addictgamer Hazard Vest"
 	desc = "A high-visibility vest used in work zones. This one is colored differently and has the letters A and G embroidered on it."
 	icon_state = "hazardag"
+	item_state = "hazardag"
 	//I still need a proper gimmick for this one.
-*/
 
 /obj/item/clothing/suit/storage/hazardvest/bast //has no tangible gimmick (like different storage), but makes the user appear as a gravekeeper drone
+	name = "Doorkeeper Hazard Vest"
 	desc = "A.... vest. It's a vest. At least, it appears to be."
 	icon_state = "doorkeeper"
 	item_state = "doorkeeper"
@@ -58,8 +61,8 @@
 		I.override = 1
 		QQ.add_alt_appearance("bastborg", I, living_mob_list)
 
-//begin qui prelim code
 /obj/item/clothing/suit/storage/hazardvest/qui
+	name = "Qui's Hazard Vest"
 	desc = "A high-visibility vest that screams you are not to be taken seriously."
 	icon_state = "hazardqp"
 	item_state = "hazardqp"
