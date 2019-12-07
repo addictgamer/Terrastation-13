@@ -6,11 +6,11 @@ Names irrelevant, order matters a shitload because revheads (n'stuff) might get 
 current as of idunfukkenknoe
 z1 = station
 z2 = centcomm
-z3 = telecommunications center
-z4 = AI satellite and other hogshit
+z3 = telecommunications center, AI satellite, ruskie station, and other hogshit
+z4 = lavaland and spess throw
 z5 = mining
 z6 = salvage yard
-z7 = ruskie station and other spessdiver goodies
+z7 = empty?
 z8 = terralabs
 
 
@@ -53,6 +53,10 @@ DECLARE_LEVEL(TERRALABS, SELFLOOPING, list(REACHABLE)))
 
 
 //I'M ABOUT TO KILL SOME MOTHERFUCKERS
+
+
+
+//The following comment is hereby marked for removal, pending the completion of the relevant PR.  --LZ
 /*
 THIS NEXT SEGMENT MAY NOT BE NEEDED ANYMORE BECAUSE PARADISE CHANGED SHIT AGAIN
 
